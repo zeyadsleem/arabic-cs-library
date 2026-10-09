@@ -1,61 +1,61 @@
 ---
-title: "Building Abstractions with Data"
-lang: en
+title: "بناء التجريدات بالبيانات"
+lang: ar
 ---
 
-> We now come to the decisive step of mathematical abstraction: we forget about what the symbols stand for. … [The mathematician] need not be idle; there are many operations which he may carry out with these symbols, without ever having to look at the things they stand for. —Hermann Weyl, The Mathematical Way of Thinking
+> نأتي الآن إلى الخطوة الحاسمة في التجريد الرياضيّ: ننسى ما ترمز إليه الرموز. … [الرياضيّ] لا يلزم أن يبقى عاطلًا؛ فهناك عمليّاتٌ كثيرةٌ قد يجريها على هذه الرموز، دون أن ينظر قطّ إلى الأشياء التي ترمز إليها. —هرمان فايل، طريقة التفكير الرياضيّة
 
-We concentrated in [Chapter 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1) on computational processes and on the role of procedures in program design. We saw how to use primitive data (numbers) and primitive operations (arithmetic operations), how to combine procedures to form compound procedures through composition, conditionals, and the use of parameters, and how to abstract procedures by using `define`. We saw that a procedure can be regarded as a pattern for the local evolution of a process, and we classified, reasoned about, and performed simple algorithmic analyses of some common patterns for processes as embodied in procedures. We also saw that higher-order procedures enhance the power of our language by enabling us to manipulate, and thereby to reason in terms of, general methods of computation. This is much of the essence of programming.
+تركّزنا في [الفصل 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1) على العمليّات الحسابيّة وعلى دور الإجراءات في تصميم البرامج. فرأينا كيف نستخدم البيانات الأوّليّة (الأعداد) والعمليّات الأوّليّة (العمليّات الحسابيّة)، وكيف نُركّب الإجراءات لتكوين إجراءاتٍ مركّبةٍ عبر التركيب والتعبيرات الشرطيّة واستخدام الوسائط، وكيف نُجرّد الإجراءات باستخدام `define`. ورأينا أنّ الإجراء يمكن اعتباره نمطًا للتطوّر المحليّ لعمليّة، وصنّفنا بعض الأنماط الشائعة للعمليّات كما تتجسّد في الإجراءات، وتفكّرنا فيها، وأجرينا تحليلاتٍ خوارزميّةً بسيطةً لها. ورأينا أيضًا أنّ الإجراءات من الرتبة العليا تعزّز قوّة لغتنا بتمكيننا من التلاعب بالطرق العامّة للاحتساب، ومن التفكير من خلالها. وهذا كثيرٌ من جوهر البرمجة.
 
-In this chapter we are going to look at more complex data. All the procedures in chapter 1 operate on simple numerical data, and simple data are not sufficient for many of the problems we wish to address using computation. Programs are typically designed to model complex phenomena, and more often than not one must construct computational objects that have several parts in order to model real-world phenomena that have several aspects. Thus, whereas our focus in chapter 1 was on building abstractions by combining procedures to form compound procedures, we turn in this chapter to another key aspect of any programming language: the means it provides for building abstractions by combining data objects to form *compound data*.
+سوف ننظر في هذا الفصل إلى بياناتٍ أكثر تعقيدًا. فجميع الإجراءات في الفصل 1 تعمل على بياناتٍ عدديّةٍ بسيطة، والبيانات البسيطة غير كافيّة للعديد من المسائل التي نرغب في معالجتها بالاحتساب. والبرامج تُصمَّم عادةً لنمذجة ظواهر معقّدة، وأكثر ما يكون المرء مضطرًّا إلى بناء كائناتٍ حسابيّةٍ لها عدّة أجزاء، وذلك لنمذجة ظواهر العالم الواقعيّ التي لها عدّة جوانب. وبذلك، فإنّا حيث كان تركيزنا في الفصل 1 على بناء التجريدات بتركيب الإجراءات لتكوين إجراءاتٍ مركّبة، فإنّنا نتوجّه في هذا الفصل إلى جانبٍ رئيسيّ آخر لأيّ لغة برمجة: الوسيلة التي توفّرها لبناء التجريدات بتركيب كائنات البيانات لتكوين *بياناتٍ مركّبة (compound data)*.
 
-Why do we want compound data in a programming language? For the same reasons that we want compound procedures: to elevate the conceptual level at which we can design our programs, to increase the modularity of our designs, and to enhance the expressive power of our language. Just as the ability to define procedures enables us to deal with processes at a higher conceptual level than that of the primitive operations of the language, the ability to construct compound data objects enables us to deal with data at a higher conceptual level than that of the primitive data objects of the language.
+لماذا نريد البيانات المركّبة في لغة برمجةٍ؟ لنحو السبب ذاتها التي تجعلنا نريد الإجراءات المركّبة: لنرفع المستوى المفاهيميّ الذي نُصمّم عنده برامجنا، ولنزيد وحدانيّة تصميماتنا، ولنعزّز القوّة التعبيريّة للغتنا. فكما أنّ القدرة على تعريف الإجراءات تُمكّننا من التعامل مع العمليّات على مستوى مفاهيميّ أعلى من مستوى العمليّات الأوّليّة للغة، فإنّ القدرة على بناء كائنات البيانات المركّبة تُمكّننا من التعامل مع البيانات على مستوى مفاهيميّ أعلى من مستوى كائنات البيانات الأوّليّة للغة.
 
-Consider the task of designing a system to perform arithmetic with rational numbers. We could imagine an operation `add-rat` that takes two rational numbers and produces their sum. In terms of simple data, a rational number can be thought of as two integers: a numerator and a denominator. Thus, we could design a program in which each rational number would be represented by two integers (a numerator and a denominator) and where `add-rat` would be implemented by two procedures (one producing the numerator of the sum and one producing the denominator). But this would be awkward, because we would then need to explicitly keep track of which numerators corresponded to which denominators. In a system intended to perform many operations on many rational numbers, such bookkeeping details would clutter the programs substantially, to say nothing of what they would do to our minds. It would be much better if we could “glue together” a numerator and denominator to form a pair—a *compound data object*—that our programs could manipulate in a way that would be consistent with regarding a rational number as a single conceptual unit.
+تأمّل مهمّة تصميم نظامٍ لأداء العمليّات الحسابيّة على الأعداد الكسريّة. يمكننا أن نتخيّل عمليّةً `add-rat` تأخذ عددين كسريّين وتُنتج مجموعهما. ومن منظور البيانات البسيطة، يمكن النظر إلى العدد الكسريّ كعددين صحيحين: بسطٌ ومقام. وبذلك، يمكننا تصميم برنامجٍ يُعبَّر فيه عن كلّ عددٍ كسريّ بعددين صحيحين (بسطٌ ومقام)، وحيث يُنفَّذ `add-rat` بإجراءين (أحدهما يُنتج بسط المجموع والآخر يُنتج مقامه). لكنّ ذلك سيكون أمرًا عسيرًا، لأنّنا سنحتاج إذن إلى تتبّع أيّ بسطٍ يقابل أيّ مقامٍ صراحةً. ففي نظامٍ يُقصد به أداء عمليّاتٍ كثيرةٍ على أعدادٍ كسريّةٍ كثيرة، فإنّ تفاصيل مسك الدفاتر كهذه ستُشوّش البرامج تشويشًا كبيرًا، فضلًا عمّا ستفعله بعقولنا. لَكان أفضلَ كثيرًا لو استطعنا «لصق» بسطٍ ومقامٍ معًا لتكوين زوجٍ - وهو *كائن بيانات مركّب* - تستطيع برامجنا التلاعب به بطريقةٍ متّسقةٍ مع اعتبار العدد الكسريّ وحدةً مفاهيميّةً واحدة.
 
-The use of compound data also enables us to increase the modularity of our programs. If we can manipulate rational numbers directly as objects in their own right, then we can separate the part of our program that deals with rational numbers per se from the details of how rational numbers may be represented as pairs of integers. The general technique of isolating the parts of a program that deal with how data objects are represented from the parts of a program that deal with how data objects are used is a powerful design methodology called *data abstraction*. We will see how data abstraction makes programs much easier to design, maintain, and modify.
+واستخدام البيانات المركّبة يُمكّننا أيضًا من زيادة وحدانيّة برامجنا. فإذا استطعنا التلاعب بالأعداد الكسريّة مباشرةً بوصفها كائناتٍ بحقّة ذاتها، فسنقدر على فصل الجزء من برنامجنا الذي يعنى بالأعداد الكسريّة في ذاتها عن تفاصيل كيفيّة تمثيل الأعداد الكسريّة بأزواجٍ من الأعداد الصحيحة. وأمّا التقنيّة العامّة في عزل أجزاء البرنامج التي تعنى بكيفيّة تمثيل كائنات البيانات عن أجزاء البرنامج التي تعنى بكيفيّة استخدام كائنات البيانات، فهي منهجيّة تصميمٍ قويّةٌ تُسمّى *تجريد البيانات (data abstraction)*. وسنرى كيف يجعل تجريد البيانات تصميم البرامج وصيانتها وتعديلها أسهلَ بكثيرٍ.
 
-The use of compound data leads to a real increase in the expressive power of our programming language. Consider the idea of forming a “linear combination” $a x + b y$ . We might like to write a procedure that would accept $a$ , $b$ , $x$ , and $y$ as arguments and return the value of $a x + b y$ . This presents no difficulty if the arguments are to be numbers, because we can readily define the procedure
+ويؤدّي استخدام البيانات المركّبة إلى زيادةٍ حقيقيّةٍ في القوّة التعبيريّة للغة البرمجة لدينا. تأمّل فكرة تكوين «تركيب خطّيّ» $a x + b y$ . فقد نرغب في كتابة إجراءٍ يقبل $a$ و$b$ و$x$ و$y$ كمعطياتٍ ويعيد قيمة $a x + b y$ . ولا يطرح هذا أيّ صعوبةٍ إذا كان على المعطيات أن تكون أعدادًا، لأنّنا نستطيع بسهولةٍ تعريف الإجراء
 
 ```scheme
 (define (linear-combination a b x y)
   (+ (* a x) (* b y)))
 ```
 
-But suppose we are not concerned only with numbers. Suppose we would like to express, in procedural terms, the idea that one can form linear combinations whenever addition and multiplication are defined—for rational numbers, complex numbers, polynomials, or whatever. We could express this as a procedure of the form
+لكن افترض أنّنا لا نعني بالأعداد فقط. افترض أنّنا نرغب في التعبير، من حيث الإجراءات، عن الفكرة القائلة إنّه يمكن تكوين تركيباتٍ خطّيّةٍ كلّما عُرِّف الجمع والضرب - للأعداد الكسريّة، أو الأعداد المركّبة، أو كثيرات الحدود، أو أيّ شيءٍ آخر. ويمكننا التعبير عن هذا كإجراءٍ على الصيغة
 
 ```scheme
 (define (linear-combination a b x y)
   (add (mul a x) (mul b y)))
 ```
 
-where `add` and `mul` are not the primitive procedures `+` and `*` but rather more complex things that will perform the appropriate operations for whatever kinds of data we pass in as the arguments `a`, `b`, `x`, and `y`. The key point is that the only thing `linear-combination` should need to know about `a`, `b`, `x`, and `y` is that the procedures `add` and `mul` will perform the appropriate manipulations. From the perspective of the procedure `linear-combination`, it is irrelevant what `a`, `b`, `x`, and `y` are and even more irrelevant how they might happen to be represented in terms of more primitive data. This same example shows why it is important that our programming language provide the ability to manipulate compound objects directly: Without this, there is no way for a procedure such as `linear-combination` to pass its arguments along to `add` and `mul` without having to know their detailed structure.[^1]
+حيث `add` و`mul` ليسا الإجراءين الأوّليّين `+` و`*`، بل شيئان أكثر تعقيدًا سيؤدّيان العمليّات المناسبة لأيّ أنواع بياناتٍ نمرّرها كمعطيات `a` و`b` و`x` و`y`. والنقطة الجوهريّة هي أنّ الشيء الوحيد الذي ينبغي أن يعرفه `linear-combination` عن `a` و`b` و`x` و`y` هو أنّ الإجراءين `add` و`mul` سيؤدّيان التلاعبات المناسبة. فمن منظور الإجراء `linear-combination`، لا صلة لما هي `a` و`b` و`x` و`y`، وأقلّ صلةً بعدُ بكيفيّة تمثيلها من حيث بياناتٍ أكثر أوّليّة. ويُظهر هذا المثال ذاته أهمّيّة أن توفّر لغة البرمجة لدينا القدرة على التلاعب بالكائنات المركّبة مباشرةً: فدون ذلك، لا سبيل لإجراءٍ كـ`linear-combination` لتمرير معطياته إلى `add` و`mul` دون أن يضطرّ إلى معرفة بنيتها المفصّلة.[^1]
 
-We begin this chapter by implementing the rational-number arithmetic system mentioned above. This will form the background for our discussion of compound data and data abstraction. As with compound procedures, the main issue to be addressed is that of abstraction as a technique for coping with complexity, and we will see how data abstraction enables us to erect suitable *abstraction barriers* between different parts of a program.
+نبدأ هذا الفصل بتنفيذ نظام العمليّات الحسابيّة للأعداد الكسريّة المذكور أعلاه. وسيشكّل هذا الخلفيّة لمناقشتنا للبيانات المركّبة وتجريد البيانات. وكما هو الحال مع الإجراءات المركّبة، فإنّ المسألة الرئيسيّة الواجب معالجتها هي التجريد كتقنيّةٍ لمواجهة التعقيد، وسنرى كيف يمكّننا تجريد البيانات من إقامة *حواجز تجريد (abstraction barriers)* مناسبةٍ بين أجزاء البرنامج المختلفة.
 
-We will see that the key to forming compound data is that a programming language should provide some kind of “glue” so that data objects can be combined to form more complex data objects. There are many possible kinds of glue. Indeed, we will discover how to form compound data using no special “data” operations at all, only procedures. This will further blur the distinction between “procedure” and “data,” which was already becoming tenuous toward the end of chapter 1. We will also explore some conventional techniques for representing sequences and trees. One key idea in dealing with compound data is the notion of *closure*—that the glue we use for combining data objects should allow us to combine not only primitive data objects, but compound data objects as well. Another key idea is that compound data objects can serve as *conventional interfaces* for combining program modules in mix-and-match ways. We illustrate some of these ideas by presenting a simple graphics language that exploits closure.
+وسنرى أنّ مفتاح تكوين البيانات المركّبة هو أنّ لغة البرمجة ينبغي أن توفّر نوعًا من «اللصق» بحيث يمكن جمع كائنات البيانات معًا لتكوين كائنات بياناتٍ أكثر تعقيدًا. وهناك أنواعٌ كثيرةٌ ممكنةٌ من اللصق. فإنّا سنكتشف كيف نُكوّن بياناتٍ مركّبةً دون أيّ عمليّاتٍ خاصّةٍ «للبيانات» على الإطلاق، بل باستخدام الإجراءات فقط. وسيطمس هذا التمييز بين «الإجراء» و«البيانات» تطميسًا أكبر، وهو الذي كان قد بدأ يتضعضع نحو نهاية الفصل 1. وسنستكشف أيضًا بعض التقنيّات المتعارف عليها لتمثيل التسلسلات والأشجار. وإحدى الأفكار الرئيسيّة في التعامل مع البيانات المركّبة هي مفهوم *الإغلاق (closure)* - وهو أنّ اللصق الذي نستخدمه لجمع كائنات البيانات ينبغي أن يسمح لنا بجمع كائنات البيانات الأوّليّة لا فحسب، بل كائنات البيانات المركّبة كذلك. وفكرة رئيسيّة أخرى أنّ كائنات البيانات المركّبة يمكن أن تخدم بوصفها *واجهاتٍ متعارف عليها (conventional interfaces)* لجمع وحدات البرنامج بطرائق التجميع والتبادل. ونوضّح بعض هذه الأفكار بتقديم لغة رسوميّات بسيطةٍ تستثمر الإغلاق.
 
-We will then augment the representational power of our language by introducing *symbolic expressions*—data whose elementary parts can be arbitrary symbols rather than only numbers. We explore various alternatives for representing sets of objects. We will find that, just as a given numerical function can be computed by many different computational processes, there are many ways in which a given data structure can be represented in terms of simpler objects, and the choice of representation can have significant impact on the time and space requirements of processes that manipulate the data. We will investigate these ideas in the context of symbolic differentiation, the representation of sets, and the encoding of information.
+ثم سنزيد القوّة التمثيليّة للغتنا بإدخال *تعبيراتٍ رمزيّة (symbolic expressions)* - أي بياناتٍ يمكن أن تكون أجزاؤها الأوّليّة رموزًا اعتراضيّةً بدلًا من الأعداد فقط. ونحن نستكشف بدائل مختلفة لتمثيل مجموعات الكائنات. وسنجد أنّّه، كما أنّ دالّةً عدديّةً معيّنةً يمكن احتسابها بعديدٍ من العمليّات الحسابيّة المختلفة، فهناك طرائق كثيرة يمكن أن تُعبَّر بها بنية بياناتٍ معيّنةً من حيث كائناتٍ أبسط منها، وأنّ اختيار التمثيل يمكن أن يكون له أثرٌ مهمٌّ على المتطلّبات الزمنيّة والمكانيّة للعمليّات التي تتلاعب بالبيانات. وسنبحث هذه الأفكار في سياق التفاضل الرمزيّ، وتمثيل المجموعات، وترميز المعلومات.
 
-Next we will take up the problem of working with data that may be represented differently by different parts of a program. This leads to the need to implement *generic operations*, which must handle many different types of data. Maintaining modularity in the presence of generic operations requires more powerful abstraction barriers than can be erected with simple data abstraction alone. In particular, we introduce *data-directed programming* as a technique that allows individual data representations to be designed in isolation and then combined *additively* (i.e., without modification). To illustrate the power of this approach to system design, we close the chapter by applying what we have learned to the implementation of a package for performing symbolic arithmetic on polynomials, in which the coefficients of the polynomials can be integers, rational numbers, complex numbers, and even other polynomials.
+وسنتناول تاليًا مسألة العمل مع بياناتٍ قد تُمثَّل بطرائق مختلفة في أجزاء مختلفة من البرنامج. وهذا يستدعي الحاجة إلى تنفيذ *عمليّاتٍ عامّة (generic operations)*، وهي التي ينبغي لها أن تتعامل مع أنواعٍ كثيرةٍ مختلفةٍ من البيانات. والحفاظ على الوحدانيّة بحضور العمليّات العامّة يتطلّب حواجز تجريدٍ أقوى ممّا يمكن إقامته بتجريد البيانات البسيط وحده. وعلى وجه الخصوص، فإنّا نُقدّم *البرمجة الموجَّهة بالبيانات (data-directed programming)* كتقنيّةٍ تسمح بأن يُصمَّم التمثيل الفرديّ للبيانات على انفراد، ثم تُجمع التمثيلات *جمعًا إضافيًّا (additively)* (أي دون تعديل). ولتوضيح قوّة هذا المنهج في تصميم النظم، نُغلق الفصل بتطبيق ما تعلّمناه على تنفيذ حزمةٍ لأداء العمليّات الحسابيّة الرمزيّة على كثيرات الحدود، والتي يمكن أن تكون معاملاتها أعدادًا صحيحة، أو أعدادًا كسريّة، أو أعدادًا مركّبة، أو حتّى كثيرات حدودٍ أخرى.
 
-### 2.1 Introduction to Data Abstraction
+### 2.1 مقدّمة في تجريد البيانات
 
-In [1.1.8](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e8), we noted that a procedure used as an element in creating a more complex procedure could be regarded not only as a collection of particular operations but also as a procedural abstraction. That is, the details of how the procedure was implemented could be suppressed, and the particular procedure itself could be replaced by any other procedure with the same overall behavior. In other words, we could make an abstraction that would separate the way the procedure would be used from the details of how the procedure would be implemented in terms of more primitive procedures. The analogous notion for compound data is called *data abstraction*. Data abstraction is a methodology that enables us to isolate how a compound data object is used from the details of how it is constructed from more primitive data objects.
+لقد لاحظنا في [1.1.8](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e8) أنّ الإجراء المستخدم كعنصرٍ في إنشاء إجراءٍ أكثر تعقيدًا يمكن اعتباره لا مجرّد مجموعةٍ من العمليّات الخاصّة فحسب، بل تجريدًا إجرائيًّا أيضًا. أي أنّ تفاصيل كيفيّة تنفيذ الإجراء يمكن إخفاؤها، ويمكن استبدال الإجراء نفسه بأيّ إجراءٍ آخر ذي سلوكٍ كلّيٍّ مماثل. وبعبارة أخرى، فبوسعنا أن نُجرّد بحيث نفصل الطريقة التي سيُستخدم فيها الإجراء عن تفاصيل كيفيّة تنفيذه من حيث إجراءاتٍ أكثر أوّليّة. والمفهوم الموازي للبيانات المركّبة يُسمّى *تجريد البيانات (data abstraction)*. وتجريد البيانات منهجيّةٌ تُمكّننا من عزل كيفيّة استخدام كائن بيانات مركّب عن تفاصيل كيفيّة بنائه من كائنات بياناتٍ أكثر أوّليّة.
 
-The basic idea of data abstraction is to structure the programs that are to use compound data objects so that they operate on “abstract data.” That is, our programs should use data in such a way as to make no assumptions about the data that are not strictly necessary for performing the task at hand. At the same time, a “concrete” data representation is defined independent of the programs that use the data. The interface between these two parts of our system will be a set of procedures, called *selectors* and *constructors*, that implement the abstract data in terms of the concrete representation. To illustrate this technique, we will consider how to design a set of procedures for manipulating rational numbers.
+والفكرة الأساسيّة في تجريد البيانات هي بناءة البرامج التي ستستخدم كائنات البيانات المركّبة بحيث تعمل على «بياناتٍ مجرّدة». أي أنّ برامجنا ينبغي أن تستخدم البيانات على نحوٍ لا يفترض عنها شيئًا ليس ضروريًّا على نحوٍ حتميّ لأداء المهمّة بين اليدين. وفي الوقت نفسه، يُعرَّف تمثيلٌ «ملموس» للبيانات مستقلًّا عن البرامج التي تستخدم البيانات. والواجهة بين هذين الجزأين من نظامنا ستكون مجموعةً من الإجراءات، تُسمّى *المحدِّدات (selectors)* و*البانيّات (constructors)*، والتي تنفّذ البيانات المجرّدة من حيث التمثيل الملموس. ولتوضيح هذه التقنيّة، سنُفكّر في كيفيّة تصميم مجموعةٍ من الإجراءات للتلاعب بالأعداد الكسريّة.
 
-#### 2.1.1 Example: Arithmetic Operations for Rational Numbers
+#### 2.1.1 مثال: العمليّات الحسابيّة للأعداد الكسريّة
 
-Suppose we want to do arithmetic with rational numbers. We want to be able to add, subtract, multiply, and divide them and to test whether two rational numbers are equal.
+لنفترض أنّنا نريد أداء العمليّات الحسابيّة على الأعداد الكسريّة. ونريد أن نكون قادرين على جمعها وطرحها وضربها وقسمتها، وعلى اختبار ما إذا كان عددان كسريّان متساويين.
 
-Let us begin by assuming that we already have a way of constructing a rational number from a numerator and a denominator. We also assume that, given a rational number, we have a way of extracting (or selecting) its numerator and its denominator. Let us further assume that the constructor and selectors are available as procedures:
+لنبدأ بافتراض أنّ لدينا بالفعل طريقةً لبناء عددٍ كسريّ من بسطٍ ومقام. ونفترض أيضًا أنّّه، إذا أُعطي عددٌ كسريّ، فلدينا طريقةٌ لاستخراج (أو تحديد) بسطه ومقامه. ولنفترض أيضًا أنّ البانيّ والمحدِّدات متاحةٌ بوصفها إجراءات:
 
-- `(make-rat ⟨n⟩ ⟨d⟩)` returns the rational number whose numerator is the integer `⟨n⟩` and whose denominator is the integer `⟨d⟩`.
-- `(numer ⟨x⟩)` returns the numerator of the rational number `⟨x⟩`.
-- `(denom ⟨x⟩)` returns the denominator of the rational number `⟨x⟩`.
+- يُعيد `(make-rat ⟨n⟩ ⟨d⟩)` العددَ الكسريّ الذي بسطه هو العدد الصحيح `⟨n⟩` ومقامه هو العدد الصحيح `⟨d⟩`.
+- يُعيد `(numer ⟨x⟩)` بسط العدد الكسريّ `⟨x⟩`.
+- يُعيد `(denom ⟨x⟩)` مقام العدد الكسريّ `⟨x⟩`.
 
-We are using here a powerful strategy of synthesis: *wishful thinking*. We haven’t yet said how a rational number is represented, or how the procedures `numer`, `denom`, and `make-rat` should be implemented. Even so, if we did have these three procedures, we could then add, subtract, multiply, divide, and test equality by using the following relations: $\frac{n_{1}}{d_{1}} + \frac{n_{2}}{d_{2}} = \frac{n_{1} d_{2} + n_{2} d_{1}}{d_{1} d_{2}} , \frac{n_{1}}{d_{1}} − \frac{n_{2}}{d_{2}} = \frac{n_{1} d_{2} − n_{2} d_{1}}{d_{1} d_{2}} , \frac{n_{1}}{d_{1}} × \frac{n_{2}}{d_{2}} = \frac{n_{1} n_{2}}{d_{1} d_{2}} , \frac{n_{1} / d_{1}}{n_{2} / d_{2}} = \frac{n_{1} d_{2}}{d_{1} n_{2}} , \frac{n_{1}}{d_{1}} = \frac{n_{2}}{d_{2}} i f a n d o n l y i f n_{1} d_{2} = n_{2} d_{1} .$ We can express these rules as procedures:
+نحن نستخدم هنا استراتيجيّة قويّة في التركيب: *التفكير الأمنيويّ (wishful thinking)*. فنحن لم نقل بعد كيف يُعبَّر عن العدد الكسريّ، أو كيف ينبغي تنفيذ الإجراءين `numer` و`denom` والبانيّ `make-rat`. ومع ذلك، فلو كان لدينا هذه الإجراءات الثلاثة، لاستطعنا آنذاك أن نجمع ونطرح ونضرب ونقسم ونختبر التساوي باستخدام العلاقات التالية: $\frac{n_{1}}{d_{1}} + \frac{n_{2}}{d_{2}} = \frac{n_{1} d_{2} + n_{2} d_{1}}{d_{1} d_{2}} , \frac{n_{1}}{d_{1}} − \frac{n_{2}}{d_{2}} = \frac{n_{1} d_{2} − n_{2} d_{1}}{d_{1} d_{2}} , \frac{n_{1}}{d_{1}} × \frac{n_{2}}{d_{2}} = \frac{n_{1} n_{2}}{d_{1} d_{2}} , \frac{n_{1} / d_{1}}{n_{2} / d_{2}} = \frac{n_{1} d_{2}}{d_{1} n_{2}} , \frac{n_{1}}{d_{1}} = \frac{n_{2}}{d_{2}} i f a n d o n l y i f n_{1} d_{2} = n_{2} d_{1} .$ ونستطيع التعبير عن هذه القواعد كإجراءات:
 
 ```scheme
 (define (add-rat x y)
@@ -81,11 +81,11 @@ We are using here a powerful strategy of synthesis: *wishful thinking*. We haven
      (* (numer y) (denom x))))
 ```
 
-Now we have the operations on rational numbers defined in terms of the selector and constructor procedures `numer`, `denom`, and `make-rat`. But we haven’t yet defined these. What we need is some way to glue together a numerator and a denominator to form a rational number.
+صار لدينا الآن العمليّات على الأعداد الكسريّة معرَّفةً من حيث إجراءات التحديد والبناء `numer` و`denom` و`make-rat`. لكننا لم نُعرّفها بعد. وما نحتاجه هو طريقةٌ ما للصق بسطٍ ومقامٍ معًا لتكوين عددٍ كسريّ.
 
-#### Pairs
+#### الأزواج
 
-To enable us to implement the concrete level of our data abstraction, our language provides a compound structure called a *pair*, which can be constructed with the primitive procedure `cons`. This procedure takes two arguments and returns a compound data object that contains the two arguments as parts. Given a pair, we can extract the parts using the primitive procedures `car` and `cdr`.[^2] Thus, we can use `cons`, `car`, and `cdr` as follows:
+وليتيح لنا تنفيذ المستوى الملموس من تجريد البيانات، توفّر لغتنا بنيةً مركّبةً تُسمّى *زوجًا (pair)*، والتي يمكن بناؤها بالإجراء الأوّليّ `cons`. وهذا الإجراء يأخذ معطيين ويعيد كائن بياناتٍ مركّبًا يحتوي المعطيين كجزأين. وبإعطائنا زوجًا، نستطيع استخراج جزأيه باستخدام الإجراءين الأوّليّين `car` و`cdr`.[^2] وهكذا، فيمكننا استخدام `cons` و`car` و`cdr` كما يلي:
 
 ```scheme
 (define x (cons 1 2))
@@ -97,7 +97,7 @@ To enable us to implement the concrete level of our data abstraction, our langua
 2
 ```
 
-Notice that a pair is a data object that can be given a name and manipulated, just like a primitive data object. Moreover, `cons` can be used to form pairs whose elements are pairs, and so on:
+لاحِظ أنّ الزوج كائن بياناتٍ يمكن إعطاؤه اسمٌ ثم التلاعب به، تمامًا مثل كائن البيانات الأوّليّ. فضلًا عن ذلك، فيمكن استخدام `cons` لتكوين أزواجٍ عناصرها أزواج، وهكذا:
 
 ```scheme
 (define x (cons 1 2))
@@ -111,11 +111,11 @@ Notice that a pair is a data object that can be given a name and manipulated, ju
 3
 ```
 
-In [2.2](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2) we will see how this ability to combine pairs means that pairs can be used as general-purpose building blocks to create all sorts of complex data structures. The single compound-data primitive *pair*, implemented by the procedures `cons`, `car`, and `cdr`, is the only glue we need. Data objects constructed from pairs are called *list-structured* data.
+سنرى في [2.2](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2) كيف تعني هذه القدرة على جمع الأزواج أنّ الأزواج يمكن استخدامها وحداتِ بناءٍ عامّة الغرض لإنشاء جميع أنواع بنيات البيانات المعقّدة. فالأوّليّة الوحيدة للبيانات المركّبة، وهي *الزوج*، المنفّذة بالإجراءات `cons` و`car` و`cdr`، هي اللصق الوحيد الذي نحتاجه. وتُسمّى كائنات البيانات المبنية من الأزواج بياناتٍ *مبنيّة على القوائم (list-structured)*.
 
-#### Representing rational numbers
+#### تمثيل الأعداد الكسريّة
 
-Pairs offer a natural way to complete the rational-number system. Simply represent a rational number as a pair of two integers: a numerator and a denominator. Then `make-rat`, `numer`, and `denom` are readily implemented as follows:[^3]
+تُتيح الأزواج طريقةً طبيعيّةً لإتمام نظام الأعداد الكسريّة. فما عليك إلّا أن تمثّل العدد الكسريّ بزوجٍ من عددين صحيحين: بسطٌ ومقام. وحينئذٍ يُنفَّذ `make-rat` و`numer` و`denom` بسهولةٍ كما يلي:[^3]
 
 ```scheme
 (define (make-rat n d) (cons n d))
@@ -123,7 +123,7 @@ Pairs offer a natural way to complete the rational-number system. Simply represe
 (define (denom x) (cdr x))
 ```
 
-Also, in order to display the results of our computations, we can print rational numbers by printing the numerator, a slash, and the denominator:[^4]
+وكذلك، فإنّه لعرض نتائج احتساباتنا، يمكننا طباعة الأعداد الكسريّة بطباعة البسط، ثم شرطة مائلة، ثم المقام:[^4]
 
 ```scheme
 (define (print-rat x)
@@ -133,7 +133,7 @@ Also, in order to display the results of our computations, we can print rational
   (display (denom x)))
 ```
 
-Now we can try our rational-number procedures:
+يمكننا الآن تجربة إجراءاتنا للأعداد الكسريّة:
 
 ```scheme
 (define one-half (make-rat 1 2))
@@ -154,7 +154,7 @@ Now we can try our rational-number procedures:
 6/9
 ```
 
-As the final example shows, our rational-number implementation does not reduce rational numbers to lowest terms. We can remedy this by changing `make-rat`. If we have a `gcd` procedure like the one in [1.2.5](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e5) that produces the greatest common divisor of two integers, we can use `gcd` to reduce the numerator and the denominator to lowest terms before constructing the pair:
+كما يُظهر المثال الأخير، فإنّ تنفيذنا لا يُختزل الأعداد الكسريّة إلى أبسط صورة. ونستطيع معالجة هذا بتغيير `make-rat`. فإذا كان لدينا إجراءٌ `gcd` مثل الإجراء الوارد في [1.2.5](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e5) والذي يُنتج القاسم المشترك الأكبر لعددين صحيحين، فنستطيع استخدام `gcd` لاختزال البسط والمقام إلى أبسط صورهما قبل بناء الزوج:
 
 ```scheme
 (define (make-rat n d)
@@ -163,7 +163,7 @@ As the final example shows, our rational-number implementation does not reduce r
           (/ d g))))
 ```
 
-Now we have
+فإنّا نحصل الآن على
 
 ```scheme
 (print-rat 
@@ -171,23 +171,23 @@ Now we have
 2/3
 ```
 
-as desired. This modification was accomplished by changing the constructor `make-rat` without changing any of the procedures (such as `add-rat` and `mul-rat`) that implement the actual operations.
+كما هو مطلوب. وقد أُنجز هذا التعديل بتغيير البانيّ `make-rat` دون تغيير أيّ من الإجراءات (مثل `add-rat` و`mul-rat`) التي تنفّذ العمليّات الفعليّة.
 
-> **Exercise 2.1:** Define a better version of `make-rat` that handles both positive and negative arguments. `Make-rat` should normalize the sign so that if the rational number is positive, both the numerator and denominator are positive, and if the rational number is negative, only the numerator is negative.
+> **التمرين 2.1:** عرّف نسخةً أفضل من `make-rat` تتعامل مع المعطيات الموجبة والسالبة جميعًا. وينبغي لـ`Make-rat` أن يُوحّد الإشارة بحيث إن كان العدد الكسريّ موجبًا، فالبسط والمقام كلاهما موجب، وإن كان العدد الكسريّ سالبًا، فالبسط وحده هو السالب.
 
-#### 2.1.2 Abstraction Barriers
+#### 2.1.2 حواجز التجريد
 
-Before continuing with more examples of compound data and data abstraction, let us consider some of the issues raised by the rational-number example. We defined the rational-number operations in terms of a constructor `make-rat` and selectors `numer` and `denom`. In general, the underlying idea of data abstraction is to identify for each type of data object a basic set of operations in terms of which all manipulations of data objects of that type will be expressed, and then to use only those operations in manipulating the data.
+وقبل المواصلة بمزيدٍ من الأمثلة على البيانات المركّبة وتجريد البيانات، دعنا ننظر في بعض القضايا التي أثارها مثال العدد الكسريّ. فقد عرّفنا العمليّات على الأعداد الكسريّة من حيث بانيّ `make-rat` ومحدِّدين `numer` و`denom`. وبصورةٍ عامّة، فإنّ الفكرة الكامنة في تجريد البيانات هي تحديد مجموعةٍ أساسيّةٍ من العمليّات لكلّ نوعٍ من كائنات البيانات، والتي ستُعبَّر بها جميع التلاعبات بكائنات البيانات من ذلك النوع، ثم استخدام تلك العمليّات وحدها في التلاعب بالبيانات.
 
-We can envision the structure of the rational-number system as shown in [Figure 2.1](#Figure-2_002e1). The horizontal lines represent *abstraction barriers* that isolate different “levels” of the system. At each level, the barrier separates the programs (above) that use the data abstraction from the programs (below) that implement the data abstraction. Programs that use rational numbers manipulate them solely in terms of the procedures supplied “for public use” by the rational-number package: `add-rat`, `sub-rat`, `mul-rat`, `div-rat`, and `equal-rat?`. These, in turn, are implemented solely in terms of the constructor and selectors `make-rat`, `numer`, and `denom`, which themselves are implemented in terms of pairs. The details of how pairs are implemented are irrelevant to the rest of the rational-number package so long as pairs can be manipulated by the use of `cons`, `car`, and `cdr`. In effect, procedures at each level are the interfaces that define the abstraction barriers and connect the different levels.
+يمكننا تصوّر بنية نظام الأعداد الكسريّة كما هو موضّح في [الشكل 2.1](#Figure-2_002e1). فالخطوط الأفقيّة تمثّل *حواجز تجريد* تعزل «مستويات» مختلفة للنظام. فعند كلّ مستوىٍ، يفصل الحاجز البرامج (أعلاه) التي تستخدم تجريد البيانات عن البرامج (أسفله) التي تنفّذ تجريد البيانات. والبرامج التي تستخدم الأعداد الكسريّة تتلاعب بها حصريًّا من حيث الإجراءات التي تُوفّرها حزمة العدد الكسريّ «للاستخدام العامّ»: `add-rat` و`sub-rat` و`mul-rat` و`div-rat` و`equal-rat?`. وهذه، بدورها، تُنفَّذ حصريًّا من حيث البانيّ والمحدِّدين `make-rat` و`numer` و`denom`، والذين يُنفَّذون بدورهم من حيث الأزواج. وتفاصيل كيفيّة تنفيذ الأزواج لا صلة لها ببقيّة حزمة العدد الكسريّ ما دام يمكن التلاعب بالأزواج باستخدام `cons` و`car` و`cdr`. وفي الواقع، فإنّ الإجراءات عند كلّ مستوىٍ هي الواجهات التي تُعرِّف حواجز التجريد وتصل المستويات المختلفة.
 
 ![](/images/sicp/c2-building-abstractions-with-data-0-Fig2.1d.std.webp)
 
-**Figure 2.1:** Data-abstraction barriers in the rational-number package.
+**الشكل 2.1:** حواجز تجريد البيانات في حزمة العدد الكسريّ.
 
-This simple idea has many advantages. One advantage is that it makes programs much easier to maintain and to modify. Any complex data structure can be represented in a variety of ways with the primitive data structures provided by a programming language. Of course, the choice of representation influences the programs that operate on it; thus, if the representation were to be changed at some later time, all such programs might have to be modified accordingly. This task could be time-consuming and expensive in the case of large programs unless the dependence on the representation were to be confined by design to a very few program modules.
+ولهذه الفكرة البسيطة مزايا كثيرة. ومن مزاياها أنّها تجعل البرامج أسهلَ بكثيرٍ في الصيانة والتعديل. فأيّ بنية بياناتٍ معقّدةٍ يمكن تمثيلها بطرائق متنوّعة باستخدام بنيات البيانات الأوّليّة التي توفّرها لغة البرمجة. وبالطبع، فإنّ اختيار التمثيل يؤثّر في البرامج التي تعمل عليه؛ وبذلك، فلو كان التمثيل سيُغيَّر في وقتٍ لاحقٍ، فقد تضطرّ جميع تلك البرامج إلى التعديل وفقًا لذلك. وقد تكون هذه المهمّة مستهلكةً للوقت ومكلفةً في البرامج الكبيرة، ما لم يُحْبَس الاعتماد على التمثيل بحكم التصميم في وحداتِ برنامجٍ قليلةٍ جدًّا.
 
-For example, an alternate way to address the problem of reducing rational numbers to lowest terms is to perform the reduction whenever we access the parts of a rational number, rather than when we construct it. This leads to different constructor and selector procedures:
+فمثلًا، فإنّ طريقةً بديلةً لمعالجة مسألة اختزال الأعداد الكسريّة إلى أبسط صورة هي أداء الاختزال كلّما نصل إلى أجزاء عددٍ كسريّ، بدلًا من حين نبنيه. وهذا يؤدّي إلى إجراءات بناءٍ وتحديدٍ مختلفة:
 
 ```scheme
 (define (make-rat n d)
@@ -202,11 +202,11 @@ For example, an alternate way to address the problem of reducing rational number
     (/ (cdr x) g)))
 ```
 
-The difference between this implementation and the previous one lies in when we compute the `gcd`. If in our typical use of rational numbers we access the numerators and denominators of the same rational numbers many times, it would be preferable to compute the `gcd` when the rational numbers are constructed. If not, we may be better off waiting until access time to compute the `gcd`. In any case, when we change from one representation to the other, the procedures `add-rat`, `sub-rat`, and so on do not have to be modified at all.
+يكمن الفرق بين هذا التنفيذ والتنفيذ السابق في وقت احتسابنا لـ`gcd`. فإذا كنّا في استخدامنا المعتاد للأعداد الكسريّة نصل إلى بسط الأعداد الكسريّة ذاتها ومقاماتها مرّاتٍ كثيرة، فسيكون الأفضل احتساب `gcd` حين تُبنى الأعداد الكسريّة. وإلّا، فقد نكون أحسنَ حالًا بأن ننتظر حتّى وقت الوصول لاحتساب `gcd`. وعلى أيّ حال، فإنّا حين ننتقل من تمثيلٍ إلى آخر، لا يتحتّم تعديل الإجراءات `add-rat` و`sub-rat` وما شابهها إطلاقًا.
 
-Constraining the dependence on the representation to a few interface procedures helps us design programs as well as modify them, because it allows us to maintain the flexibility to consider alternate implementations. To continue with our simple example, suppose we are designing a rational-number package and we can’t decide initially whether to perform the `gcd` at construction time or at selection time. The data-abstraction methodology gives us a way to defer that decision without losing the ability to make progress on the rest of the system.
+وقصر الاعتماد على التمثيل على بضعة إجراءاتِ واجهةٍ يساعدنا على تصميم البرامج كما يساعدنا على تعديلها، لأنّه يسمح لنا بالمحافظة على المرونة اللازمة للنظر في تنفيذاتٍ بديلة. ولمواصلة مثالنا البسيط، لنفترض أنّنا نُصمّم حزمة عددٍ كسريّ ولا نستطيع في البادئ حسم ما إذا كنّا سنؤدّي الـ`gcd` في وقت البناء أم في وقت التحديد. فإنّ منهجيّة تجريد البيانات تعطينا طريقةً لتأخير ذلك القرار دون فقدان القدرة على إحراز التقدّم في بقيّة النظام.
 
-**Exercise 2.2:** Consider the problem of representing line segments in a plane. Each segment is represented as a pair of points: a starting point and an ending point. Define a constructor `make-segment` and selectors `start-segment` and `end-segment` that define the representation of segments in terms of points. Furthermore, a point can be represented as a pair of numbers: the $x$ coordinate and the $y$ coordinate. Accordingly, specify a constructor `make-point` and selectors `x-point` and `y-point` that define this representation. Finally, using your selectors and constructors, define a procedure `midpoint-segment` that takes a line segment as argument and returns its midpoint (the point whose coordinates are the average of the coordinates of the endpoints). To try your procedures, you’ll need a way to print points:
+**التمرين 2.2:** فكّر في مسألة تمثيل قطع المستقيم في مستوًى. يُعبَّر عن كلّ قطعةٍ بزوجٍ من النقاط: نقطة بدايةٍ ونقطة نهاية. عرّف بانيًّا `make-segment` ومحدِّدين `start-segment` و`end-segment` يُعرِّفان تمثيل القطع من حيث النقاط. فضلًا عن ذلك، يمكن تمثيل النقطة بزوجٍ من الأعداد: الإحداثيّ $x$ والإحداثيّ $y$. ووفقًا لذلك، حدّد بانيًّا `make-point` ومحدِّدين `x-point` و`y-point` يُعرِّفان هذا التمثيل. وأخيرًا، باستخدام محدِّديك وبانيّيك، عرّف إجراءً `midpoint-segment` يأخذ قطعةَ مستقيمٍ كمعطىً ويعيد نقطة منتصفها (أي النقطة التي إحداثيّاها متوسّط إحداثيّي طرفيها). ولتجربة إجراءاتك، ستحتاج إلى طريقةٍ لطباعة النقاط:
 
 ```scheme
 (define (print-point p)
@@ -218,15 +218,15 @@ Constraining the dependence on the representation to a few interface procedures 
   (display ")"))
 ```
 
-> **Exercise 2.3:** Implement a representation for rectangles in a plane. (Hint: You may want to make use of [Exercise 2.2](#Exercise-2_002e2).) In terms of your constructors and selectors, create procedures that compute the perimeter and the area of a given rectangle. Now implement a different representation for rectangles. Can you design your system with suitable abstraction barriers, so that the same perimeter and area procedures will work using either representation?
+> **التمرين 2.3:** نفّذ تمثيلًا للمستطيلات في مستوًى. (تلميح: قد ترغب في الاستعانة بـ[التمرين 2.2](#Exercise-2_002e2).) وبناءً على بانيّيك ومحدِّديك، أنشئ إجراءاتٍ تحسب محيط مستطيلٍ معطىً ومساحته. ثم نفّذ تمثيلًا مختلفًا للمستطيلات. فهل تستطيع تصميم نظامك بحواجز تجريدٍ مناسبة، بحيث تعمل الإجراءات ذاتها للمحيط والمساحة باستخدام أيّ التمثيلين؟
 
-#### 2.1.3 What Is Meant by Data?
+#### 2.1.3 ما المقصود بالبيانات؟
 
-We began the rational-number implementation in [2.1.1](#g_t2_002e1_002e1) by implementing the rational-number operations `add-rat`, `sub-rat`, and so on in terms of three unspecified procedures: `make-rat`, `numer`, and `denom`. At that point, we could think of the operations as being defined in terms of data objects—numerators, denominators, and rational numbers—whose behavior was specified by the latter three procedures.
+بدأنا تنفيذ العدد الكسريّ في [2.1.1](#g_t2_002e1_002e1) بتنفيذ العمليّات على الأعداد الكسريّة `add-rat` و`sub-rat` وما شابهها من حيث ثلاثة إجراءاتٍ غير محدّدةٍ: `make-rat` و`numer` و`denom`. وعند تلك النقطة، كان بإمكاننا أن نفكّر في العمليّات بوصفها معرَّفةً من حيث كائنات بيانات - أعداد كسريّة وبسط ومقام - كان سلوكها محدَّدًا بالإجراءات الثلاثة الأخيرة.
 
-But exactly what is meant by *data*? It is not enough to say “whatever is implemented by the given selectors and constructors.” Clearly, not every arbitrary set of three procedures can serve as an appropriate basis for the rational-number implementation. We need to guarantee that, if we construct a rational number `x` from a pair of integers `n` and `d`, then extracting the `numer` and the `denom` of `x` and dividing them should yield the same result as dividing `n` by `d`. In other words, `make-rat`, `numer`, and `denom` must satisfy the condition that, for any integer `n` and any non-zero integer `d`, if `x` is `(make-rat n d)`, then $\frac{(numer x)}{(denom x)} = \frac{n}{d} .$ In fact, this is the only condition `make-rat`, `numer`, and `denom` must fulfill in order to form a suitable basis for a rational-number representation. In general, we can think of data as defined by some collection of selectors and constructors, together with specified conditions that these procedures must fulfill in order to be a valid representation.[^5]
+لكن ما المقصود بالبيانات (*data*) بالضبط؟ ولا يكفي القول إنّها «كلّ ما يُنفَّذ بالمحدِّدات والبانيّات المعطاة». فمن الواضح أنّ ليس كلّ مجموعة اعتراضيّة من ثلاثة إجراءاتٍ يمكن أن تخدم أساسًا مناسبًا لتنفيذ العدد الكسريّ. فنحن نحتاج إلى ضمان أنّّه، إذا بنينا عددًا كسريًّا `x` من زوجٍ من الأعداد الصحيحة `n` و`d`، فإنّ استخراج `numer` و`denom` من `x` وقسمتهما ينبغي أن يُنتج النتيجة ذاتها التي تُنتجها قسمة `n` على `d`. وبعبارة أخرى، ينبغي لـ`make-rat` و`numer` و`denom` أن تُحقّق الشرط القائم بأنّه، لأيّ عددٍ صحيح `n` وأيّ عددٍ صحيح غير صفريّ `d`، إذا كان `x` هو `(make-rat n d)`، فإنّ $\frac{(numer x)}{(denom x)} = \frac{n}{d} .$ وفي الحقيقة، فإنّ هذا هو الشرط الوحيد الذي ينبغي لـ`make-rat` و`numer` و`denom` أن تفي به لتشكيل أساسٍ مناسبٍ لتمثيل العدد الكسريّ. وبصورةٍ عامّة، فيمكننا أن نفكّر في البيانات بوصفها معرَّفةً بمجموعةٍ ما من محدِّداتٍ وبانيّات، جنبًا إلى جنبٍ مع شروطٍ محدَّدةٍ ينبغي لهذه الإجراءات أن تفي بها لتكون تمثيلًا صالحًا.[^5]
 
-This point of view can serve to define not only “high-level” data objects, such as rational numbers, but lower-level objects as well. Consider the notion of a pair, which we used in order to define our rational numbers. We never actually said what a pair was, only that the language supplied procedures `cons`, `car`, and `cdr` for operating on pairs. But the only thing we need to know about these three operations is that if we glue two objects together using `cons` we can retrieve the objects using `car` and `cdr`. That is, the operations satisfy the condition that, for any objects `x` and `y`, if `z` is `(cons x y)` then `(car z)` is `x` and `(cdr z)` is `y`. Indeed, we mentioned that these three procedures are included as primitives in our language. However, any triple of procedures that satisfies the above condition can be used as the basis for implementing pairs. This point is illustrated strikingly by the fact that we could implement `cons`, `car`, and `cdr` without using any data structures at all but only using procedures. Here are the definitions:
+وهذا المنظور يمكن أن يخدم لا لتعريف كائنات بياناتٍ «عالية المستوى» فقط، كالأعداد الكسريّة، بل أيضًا كائناتٍ أدنى مستوىً. فتأمّل مفهوم الزوج، الذي استخدمناه لتعريف أعدادنا الكسريّة. فنحن لم نقل قطّ ما الزوج فعلًا، بل قلنا فقط إنّ اللغة توفّر الإجراءات `cons` و`car` و`cdr` للتلاعب بالأزواج. لكن الشيء الوحيد الذي نحتاج إلى معرفته عن هذه العمليّات الثلاث هو أنّنا إذا لصقنا كائنين معًا باستخدام `cons`، فسنستطيع استرجاع الكائنين باستخدام `car` و`cdr`. أي أنّ العمليّات تُحقّق الشرط القائم بأنّه، لأيّ كائنين `x` و`y`، إذا كان `z` هو `(cons x y)` فإنّ `(car z)` هو `x` و`(cdr z)` هو `y`. فإنّا ذكرنا أنّ هذه الإجراءات الثلاثة مُدرجةٌ كأوّليّاتٍ في لغتنا. ومع ذلك، فإنّ أيّ ثلاثيّةٍ من الإجراءات تُحقّق الشرط الوارد أعلاه يمكن استخدامها أساسًا لتنفيذ الأزواج. ويوضّح هذا بشكلٍ لافتٍ أنّنا نستطيع تنفيذ `cons` و`car` و`cdr` دون استخدام أيّ بنيات بياناتٍ إطلاقًا، بل باستخدام الإجراءات فقط. وها هي التعريفات:
 
 ```scheme
 (define (cons x y)
@@ -242,13 +242,13 @@ This point of view can serve to define not only “high-level” data objects, s
 (define (cdr z) (z 1))
 ```
 
-This use of procedures corresponds to nothing like our intuitive notion of what data should be. Nevertheless, all we need to do to show that this is a valid way to represent pairs is to verify that these procedures satisfy the condition given above.
+وهذا الاستخدام للإجراءات لا يقابل شيئًا يشبه مفهومنا البديهيّ عمّا ينبغي أن تكون عليه البيانات. ومع ذلك، فكلّ ما يلزمنا لإظهار أنّ هذه طريقةٌ صالحةٌ لتمثيل الأزواج هو أن نتحقّق من أنّ هذه الإجراءات تُحقّق الشرط المعطى أعلاه.
 
-The subtle point to notice is that the value returned by `(cons x y)` is a procedure—namely the internally defined procedure `dispatch`, which takes one argument and returns either `x` or `y` depending on whether the argument is 0 or 1. Correspondingly, `(car z)` is defined to apply `z` to 0. Hence, if `z` is the procedure formed by `(cons x y)`, then `z` applied to 0 will yield `x`. Thus, we have shown that `(car (cons x y))` yields `x`, as desired. Similarly, `(cdr (cons x y))` applies the procedure returned by `(cons x y)` to 1, which returns `y`. Therefore, this procedural implementation of pairs is a valid implementation, and if we access pairs using only `cons`, `car`, and `cdr` we cannot distinguish this implementation from one that uses “real” data structures.
+والنقطة الدقيقة التي يلزم ملاحظتها هي أنّ القيمة التي يُعيدها `(cons x y)` هي إجراء - أي الإجراء المعرَّف داخليًّا `dispatch`، الذي يأخذ معطىً واحدًا ويُعيد إمّا `x` وإمّا `y` بحسب ما إذا كان المعطى 0 أو 1. وعلى النحو المقابل، فإنّ `(car z)` مُعرَّفٌ بأنّه يُطبّق `z` على 0. ومن ثمّ، فإن كان `z` هو الإجراء المُكّون بـ`(cons x y)`، فإنّ تطبيق `z` على 0 سيُعطي `x`. وهكذا، فقد أظهرنا أنّ `(car (cons x y))` يُعطي `x` كما هو مطلوب. وبالطريقة ذاتها، فإنّ `(cdr (cons x y))` يُطبّق الإجراء الذي يُعيده `(cons x y)` على 1، وهو ما يُعيد `y`. وبالتالي، فإنّ هذا التنفيذ الإجرائيّ للأزواج تنفيذٌ صالح، وإذا كنّا نصل إلى الأزواج باستخدام `cons` و`car` و`cdr` وحدها، فلن نستطيع التمييز بين هذا التنفيذ وتنفيذٍ يستخدم بنيات بياناتٍ «حقيقيّة».
 
-The point of exhibiting the procedural representation of pairs is not that our language works this way (Scheme, and Lisp systems in general, implement pairs directly, for efficiency reasons) but that it could work this way. The procedural representation, although obscure, is a perfectly adequate way to represent pairs, since it fulfills the only conditions that pairs need to fulfill. This example also demonstrates that the ability to manipulate procedures as objects automatically provides the ability to represent compound data. This may seem a curiosity now, but procedural representations of data will play a central role in our programming repertoire. This style of programming is often called *message passing*, and we will be using it as a basic tool in [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) when we address the issues of modeling and simulation.
+وقصدي من عرض التمثيل الإجرائيّ للأزواج ليس أنّ لغتنا تعمل على هذا النحو (فإنّ Scheme، ونظم Lisp بصفةٍ عامّة، تُنفّذ الأزواج مباشرةً، لأسباب تعلّق بالكفاءة)، بل إنّها *تستطيع* أن تعمل على هذا النحو. فالتمثيل الإجرائيّ، على الرغم من غموضه، طريقةٌ ملائمةٌ تمامًا لتمثيل الأزواج، بما أنّه يفي بالشروط الوحيدة التي يلزم للأزواج أن تفي بها. ويُظهر هذا المثال أيضًا أنّ القدرة على التلاعب بالإجراءات بوصفها كائناتٍ تُوفّر تلقائيًّا القدرة على تمثيل البيانات المركّبة. وقد يبدو هذا غرابةً الآن، لكن تمثيلات البيانات الإجرائيّة ستلعب دورًا مركزيًّا في ذخيرتنا البرمجيّة. ويُسمّى هذا الأسلوب من البرمجة *تمرير الرسائل (message passing)*، وسنستخدمه أداةً أساسيّةً في [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) حين نعالج قضايا النمذجة والمحاكاة.
 
-**Exercise 2.4:** Here is an alternative procedural representation of pairs. For this representation, verify that `(car (cons x y))` yields `x` for any objects `x` and `y`.
+**التمرين 2.4:** ها هو تمثيلٌ إجرائيٌّ بديلٌ للأزواج. وبالنسبة لهذا التمثيل، تحقّق من أنّ `(car (cons x y))` يُعطي `x` لأيّ كائنين `x` و`y`.
 
 ```scheme
 (define (cons x y) 
@@ -258,11 +258,11 @@ The point of exhibiting the procedural representation of pairs is not that our l
   (z (lambda (p q) p)))
 ```
 
-What is the corresponding definition of `cdr`? (Hint: To verify that this works, make use of the substitution model of [1.1.5](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e5).)
+وما التعريف المقابل لـ`cdr`؟ (تلميح: للتحقّق من أنّ هذا يعمل، استعن بنموذج الاستبدال الوارد في [1.1.5](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e5).)
 
-> **Exercise 2.5:** Show that we can represent pairs of nonnegative integers using only numbers and arithmetic operations if we represent the pair $a$ and $b$ as the integer that is the product $2^{a} 3^{b}$ . Give the corresponding definitions of the procedures `cons`, `car`, and `cdr`.
+> **التمرين 2.5:** أظهر أنّنا نستطيع تمثيل أزواج الأعداد الصحيحة غير السالبة باستخدام الأعداد والعمليّات الحسابيّة فقط، إذا مثّلنا الزوج $a$ و$b$ بالعدد الصحيح الذي هو الجداء $2^{a} 3^{b}$ . وأعطِ التعريفات المقابلة للإجراءات `cons` و`car` و`cdr`.
 
-**Exercise 2.6:** In case representing pairs as procedures wasn’t mind-boggling enough, consider that, in a language that can manipulate procedures, we can get by without numbers (at least insofar as nonnegative integers are concerned) by implementing 0 and the operation of adding 1 as
+**التمرين 2.6:** وفي حالة أنّ تمثيل الأزواج كإجراءاتٍ لم يكن مُحيِّرًا بما يكفي، فكّر في أنّنا، في لغةٍ قادرةٍ على التلاعب بالإجراءات، نستطيع أن نتدبّر أمرنا دون أعدادٍ (على الأقلّ بقدر ما يتعلّق بالأعداد الصحيحة غير السالبة) بتنفيذ 0 وعمليّة إضافة 1 كما يلي
 
 ```scheme
 (define zero (lambda (f) (lambda (x) x)))
@@ -271,19 +271,19 @@ What is the corresponding definition of `cdr`? (Hint: To verify that this works,
   (lambda (f) (lambda (x) (f ((n f) x)))))
 ```
 
-This representation is known as *Church numerals*, after its inventor, Alonzo Church, the logician who invented the λ-calculus.
+ويُعرف هذا التمثيل بـ*أعداد تشرتش (Church numerals)*، نسبةً إلى مُخترعه، ألونزو تشرتش، المنطقيّ الذي اخترع حساب λ.
 
-Define `one` and `two` directly (not in terms of `zero` and `add-1`). (Hint: Use substitution to evaluate `(add-1 zero)`). Give a direct definition of the addition procedure `+` (not in terms of repeated application of `add-1`).
+عرِّف `one` و`two` مباشرةً (لا من حيث `zero` و`add-1`). (تلميح: استخدم الاستبدال لتقييم `(add-1 zero)`.) وأعطِ تعريفًا مباشرًا لإجراء الجمع `+` (لا من حيث التطبيق المتكرّر لـ`add-1`).
 
-#### 2.1.4 Extended Exercise: Interval Arithmetic
+#### 2.1.4 تمرين ممتدّ: حساب الفواصل
 
-Alyssa P. Hacker is designing a system to help people solve engineering problems. One feature she wants to provide in her system is the ability to manipulate inexact quantities (such as measured parameters of physical devices) with known precision, so that when computations are done with such approximate quantities the results will be numbers of known precision.
+أليسا ب. هاكر تُصمّم نظامًا لمساعدة الناس على حلّ مسائل الهندسة. وإحدى الميزات التي تريد توفيرها في نظامها هي القدرة على التعامل مع الكمّيّات غير الدقيقة (كالمعطيات المقيسة للأجهزة الفيزيائيّة) بدقّةٍ معروفة، بحيث إنّه حين تُجرى الاحتسابات بكمّيّاتٍ تقريبيّةٍ كهذه، فإنّ النتائج ستكون أعدادًا ذات دقّةٍ معروفة.
 
-Electrical engineers will be using Alyssa’s system to compute electrical quantities. It is sometimes necessary for them to compute the value of a parallel equivalent resistance $R_{p}$ of two resistors $R_{1}$ and $R_{2}$ using the formula $R_{p} = \frac{1}{1 / R_{1} + 1 / R_{2}} .$ Resistance values are usually known only up to some tolerance guaranteed by the manufacturer of the resistor. For example, if you buy a resistor labeled “6.8 ohms with 10% tolerance” you can only be sure that the resistor has a resistance between 6.8 $−$ 0.68 = 6.12 and 6.8 + 0.68 = 7.48 ohms. Thus, if you have a 6.8-ohm 10% resistor in parallel with a 4.7-ohm 5% resistor, the resistance of the combination can range from about 2.58 ohms (if the two resistors are at the lower bounds) to about 2.97 ohms (if the two resistors are at the upper bounds).
+سيستخدم مهندسو الكهرباء نظام أليسا لاحتساب الكمّيّات الكهربائيّة. وفبعض الأحيان يلزمهم أن يحسبوا قيمة مقاومة مكافئة توازيّة $R_{p}$ لمقاومتين $R_{1}$ و$R_{2}$ باستخدام الصيغة $R_{p} = \frac{1}{1 / R_{1} + 1 / R_{2}} .$ وقيم المقاومة تُعرف عادةً فقط حتّى قدرٍ من التفاوت يضمنه مُصنّع المقاومة. فمثلًا، إذا اشتريت مقاومةً موسومةً بـ«6.8 أوم بتفاوت 10%»، فلن تستطيع أن تكون واثقًا إلّا من أنّ المقاومة لها مقاومةٌ كهربائيّةٌ بين 6.8 $−$ 0.68 = 6.12 و6.8 + 0.68 = 7.48 أوم. وهكذا، فإذا كان لديك مقاومةٌ 6.8 أوم بتفاوت 10% على التوازي مع مقاومةٍ 4.7 أوم بتفاوت 5%، فإنّ مقاومة التوليفة يمكن أن تتراوح من نحو 2.58 أوم (إذا كانت المقاومتان عند الحدّين الأدنيين) إلى نحو 2.97 أوم (إذا كانت المقاومتان عند الحدّين العلويّين).
 
-Alyssa’s idea is to implement “interval arithmetic” as a set of arithmetic operations for combining “intervals” (objects that represent the range of possible values of an inexact quantity). The result of adding, subtracting, multiplying, or dividing two intervals is itself an interval, representing the range of the result.
+وفكرة أليسا هي تنفيذ «حساب الفواصل» كمجموعةٍ من العمليّات الحسابيّة لجمع «فواصل» (كائناتٌ تمثّل مدى القيم الممكنة لكمّيّةٍ غير دقيقة). ونتيجة جمع فاصلين أو طرحهما أو ضربهما أو قسمتهما هي فاصلٌ بدروها، يمثّل مدى النتيجة.
 
-Alyssa postulates the existence of an abstract object called an “interval” that has two endpoints: a lower bound and an upper bound. She also presumes that, given the endpoints of an interval, she can construct the interval using the data constructor `make-interval`. Alyssa first writes a procedure for adding two intervals. She reasons that the minimum value the sum could be is the sum of the two lower bounds and the maximum value it could be is the sum of the two upper bounds:
+تفترض أليسا وجود كائنٍ مجرّدٍ يُسمّى «فاصلًا» له طرفان: حدٌّ أدنى وحدٌّ أعلى. وتفترض أيضًا أنّّه، بإعطائها طرفي فاصلٍ، فهي قادرةٌ على بناء الفاصل باستخدام بانيّ البيانات `make-interval`. وتكتب أليسا أوّلًا إجراءً لجمع فاصلين. فإنّها تستنبط أنّ القيمة الأدنى التي يمكن أن يكون عليها المجموع هي مجموع الحدّين الأدنيين، وأنّ القيمة العظمى التي يمكن أن يكون عليها هي مجموع الحدّين العلويّين:
 
 ```scheme
 (define (add-interval x y)
@@ -293,7 +293,7 @@ Alyssa postulates the existence of an abstract object called an “interval” t
                     (upper-bound y))))
 ```
 
-Alyssa also works out the product of two intervals by finding the minimum and the maximum of the products of the bounds and using them as the bounds of the resulting interval. (`Min` and `max` are primitives that find the minimum or maximum of any number of arguments.)
+وتستنبط أليسا أيضًا جداء فاصلين بإيجاد الأدنى والأعلى من جداءات الحدود، وباستخدامهما كحدّي الفاصل الناتج. (و`min` و`max` أوّليّتان تجدان الأدنى أو الأعلى من أيّ عددٍ من المعطيات.)
 
 ```scheme
 (define (mul-interval x y)
@@ -309,7 +309,7 @@ Alyssa also works out the product of two intervals by finding the minimum and th
                    (max p1 p2 p3 p4))))
 ```
 
-To divide two intervals, Alyssa multiplies the first by the reciprocal of the second. Note that the bounds of the reciprocal interval are the reciprocal of the upper bound and the reciprocal of the lower bound, in that order.
+ولقسمة فاصلين، تضرب أليسا الأوّل في مقلوب الثاني. ولاحِظ أنّ حدّي الفاصل المقلوب هما مقلوب الحدّ الأعلى ومقلوب الحدّ الأدنى، بهذا الترتيب.
 
 ```scheme
 (define (div-interval x y)
@@ -319,23 +319,23 @@ To divide two intervals, Alyssa multiplies the first by the reciprocal of the se
                  (/ 1.0 (lower-bound y)))))
 ```
 
-**Exercise 2.7:** Alyssa’s program is incomplete because she has not specified the implementation of the interval abstraction. Here is a definition of the interval constructor:
+**التمرين 2.7:** برنامج أليسا غير مكتملٍ لأنّها لم تُحدّد تنفيذ تجريد الفاصل. وإليك تعريفُ بانيّ الفاصل:
 
 ```scheme
 (define (make-interval a b) (cons a b))
 ```
 
-Define selectors `upper-bound` and `lower-bound` to complete the implementation.
+عرِّف محدِّدي `upper-bound` و`lower-bound` لإتمام التنفيذ.
 
-> **Exercise 2.8:** Using reasoning analogous to Alyssa’s, describe how the difference of two intervals may be computed. Define a corresponding subtraction procedure, called `sub-interval`.
+> **التمرين 2.8:** باستخدام استنباطٍ مماثلٍ لاستنباط أليسا، صِف كيف يمكن احتساب الفرق بين فاصلين. عرّف إجراءَ طرحٍ مقابلًا، يُسمّى `sub-interval`.
 
-> **Exercise 2.9:** The *width* of an interval is half of the difference between its upper and lower bounds. The width is a measure of the uncertainty of the number specified by the interval. For some arithmetic operations the width of the result of combining two intervals is a function only of the widths of the argument intervals, whereas for others the width of the combination is not a function of the widths of the argument intervals. Show that the width of the sum (or difference) of two intervals is a function only of the widths of the intervals being added (or subtracted). Give examples to show that this is not true for multiplication or division.
+> **التمرين 2.9:** *عرض* الفاصل هو نصف الفرق بين حدّيه الأعلى والأدنى. والعرض مقياسٌ لعدم التيقّن من العدد الذي يُحدّده الفاصل. فبالنسبة لبعض العمليّات الحسابيّة، فإنّ عرض نتيجة دمج فاصلين هو دالّةٌ في عروضي الفاصلين المعطيين فقط، بينما بالنسبة لبعضها الآخر، فإنّ عرض التوليفة ليس دالّةً في عروضي الفاصلين المعطيين. أظهر أنّ عرض المجموع (أو الفرق) بين فاصلين هو دالّةٌ في عروضي الفاصلين المُجمعين (أو المطروحين) فقط. وأعطِ أمثلةً تُظهر أنّ هذا لا يصدق في الضرب أو القسمة.
 
-> **Exercise 2.10:** Ben Bitdiddle, an expert systems programmer, looks over Alyssa’s shoulder and comments that it is not clear what it means to divide by an interval that spans zero. Modify Alyssa’s code to check for this condition and to signal an error if it occurs.
+> **التمرين 2.10:** ينظر بن بِتدل، مبرمج النُظم الخبيرة، من فوق كتف أليسا ويعلّق بأنّه ليس واضحًا ما معنى القسمة على فاصلٍ يمتدّ على الصفر. عدّل شيفرة أليسا لتفحص هذه الحالة ولتُشير إلى خطأٍ إذا وقعت.
 
-**Exercise 2.11:** In passing, Ben also cryptically comments: “By testing the signs of the endpoints of the intervals, it is possible to break `mul-interval` into nine cases, only one of which requires more than two multiplications.” Rewrite this procedure using Ben’s suggestion.
+**التمرين 2.11:** وعلى سبيل الاستطراد، يعلّق بن أيضًا بعبارةٍ غامضة: «بفحص إشارات طرفي الفواصل، فإنّ من الممكن تفكيك `mul-interval` إلى تسع حالات، حالةٌ واحدةٌ فقط منها تتطلّب أكثر من عمليّتي ضرب.» أعد كتابة هذا الإجراء باستخدام اقتراح بن.
 
-After debugging her program, Alyssa shows it to a potential user, who complains that her program solves the wrong problem. He wants a program that can deal with numbers represented as a center value and an additive tolerance; for example, he wants to work with intervals such as 3.5 $±$ 0.15 rather than [3.35, 3.65]. Alyssa returns to her desk and fixes this problem by supplying an alternate constructor and alternate selectors:
+وبعد تصحيح برنامجها، تعرضه أليسا على مستخدمٍ محتمل، فيشتكي أنّ برنامجها يحلّ المسألة الخطأ. وهو يريد برنامجًا قادرًا على التعامل مع أعدادٍ مُعبَّرًا عنها كقيمةٍ مركزيّةٍ وتفاوتٍ مضاف؛ فهو يريد، مثلًا، أن يعمل مع فواصلَ مثل 3.5 $±$ 0.15 بدلًا من [3.35, 3.65]. فتعود أليسا إلى مكتبها وتُصلح هذه المسألة بتوفير بانيّ بديلٍ ومحدِّدين بديلين:
 
 ```scheme
 (define (make-center-width c w)
@@ -352,13 +352,13 @@ After debugging her program, Alyssa shows it to a potential user, who complains 
      2))
 ```
 
-Unfortunately, most of Alyssa’s users are engineers. Real engineering situations usually involve measurements with only a small uncertainty, measured as the ratio of the width of the interval to the midpoint of the interval. Engineers usually specify percentage tolerances on the parameters of devices, as in the resistor specifications given earlier.
+للأسف، معظم مستخدمي أليسا مهندسون. فإنّ مواقف الهندسة الحقيقيّة تتضمّن عادةً قياساتٍ عدمُ يقينها صغيرٌ فقط، ويُقاس ذلك بنسبة عرض الفترة إلى منتصف الفترة. وعادةً ما يحدّد المهندسون تفاوتاتٍ مئويّةً على مُعطيات الأجهزة، كما في مواصفات المقاومات الواردة أعلاه.
 
-> **Exercise 2.12:** Define a constructor `make-center-percent` that takes a center and a percentage tolerance and produces the desired interval. You must also define a selector `percent` that produces the percentage tolerance for a given interval. The `center` selector is the same as the one shown above.
+> **التمرين 2.12:** عرّف بانيًا (constructor) باسم `make-center-percent` يأخذ مركزًا ونسبة تفاوتٍ مئويّةً وينتج الفترة المطلوبة. ويجب أن تعرّف أيضًا منتقيًا (selector) باسم `percent` يُنتج نسبة التفاوت المئويّة لفترةٍ معطاة. أمّا المنتقي `center` فهو ذاته المبيَّن أعلاه.
 
-**Exercise 2.13:** Show that under the assumption of small percentage tolerances there is a simple formula for the approximate percentage tolerance of the product of two intervals in terms of the tolerances of the factors. You may simplify the problem by assuming that all numbers are positive.
+**التمرين 2.13:** أظهر أنّه تحت افتراض تفاوتاتٍ مئويّةٍ صغيرة، ثمّة صيغةٌ بسيطةٌ لنسبة التفاوت المئويّة التقريبيّة لحاصل ضرب فترتين بدلالة تفاوتي العاملين. ويجوز لك تبسيط المسألة بافتراض أنّ جميع الأعداد موجبة.
 
-After considerable work, Alyssa P. Hacker delivers her finished system. Several years later, after she has forgotten all about it, she gets a frenzied call from an irate user, Lem E. Tweakit. It seems that Lem has noticed that the formula for parallel resistors can be written in two algebraically equivalent ways: $\frac{R_{1} R_{2}}{R_{1} + R_{2}}$ and $\frac{1}{1 / R_{1} + 1 / R_{2}} .$ He has written the following two programs, each of which computes the parallel-resistors formula differently:
+بعد جهدٍ جهيد، تُسلّم أليسا بي. هاكر نظامها المنتهي. وبعد سنواتٍ عدّة، وبعد أن تكون قد نسيت الأمر كلَّه، تتلقّى اتصالًا هيجانًا من مستخدمٍ غاضبٍ يُدعى ليم إي. تويكيت. ويبدو أنّ ليم قد لاحظ أنّ صيغة المقاومات المتوازية يمكن كتابتها بطريقتين متكافئتين جبريًّا: $\frac{R_{1} R_{2}}{R_{1} + R_{2}}$ و$\frac{1}{1 / R_{1} + 1 / R_{2}} .$ وقد كتب البرنامجين الآتيين، كلٌّ منهما يحتسب صيغة المقاومات المتوازية بطريقةٍ مختلفة:
 
 ```scheme
 (define (par1 r1 r2)
@@ -375,35 +375,35 @@ After considerable work, Alyssa P. Hacker delivers her finished system. Several 
       (div-interval one r2)))))
 ```
 
-Lem complains that Alyssa’s program gives different answers for the two ways of computing. This is a serious complaint.
+يشتكي ليم من أنّ برنامج أليسا يُعطي جوابين مختلفين للطريقتين في الاحتساب. وهذه شكوى جديّة.
 
-> **Exercise 2.14:** Demonstrate that Lem is right. Investigate the behavior of the system on a variety of arithmetic expressions. Make some intervals $A$ and $B$ , and use them in computing the expressions $A / A$ and $A / B$ . You will get the most insight by using intervals whose width is a small percentage of the center value. Examine the results of the computation in center-percent form (see [Exercise 2.12](#Exercise-2_002e12)).
+> **التمرين 2.14:** بيّن أنّ ليم على حقّ. افحص سلوك النظام على مجموعةٍ متنوّعةٍ من التعابير الحسابيّة. أنشئ بعض الفترات $A$ و$B$ ، واستخدمها في احتساب التعبيرين $A / A$ و$A / B$ . وستحصل على أعمق إدراكٍ باستخدام فتراتٍ عرضُها نسبةٌ صغيرةٌ من قيمة المركز. وافحص نتائج الاحتساب في صيغة المركز والنسبة (انظر [التمرين 2.12](#Exercise-2_002e12)).
 
-> **Exercise 2.15:** Eva Lu Ator, another user, has also noticed the different intervals computed by different but algebraically equivalent expressions. She says that a formula to compute with intervals using Alyssa’s system will produce tighter error bounds if it can be written in such a form that no variable that represents an uncertain number is repeated. Thus, she says, `par2` is a “better” program for parallel resistances than `par1`. Is she right? Why?
+> **التمرين 2.15:** لاحظت إيفا لو أتور، وهي مستخدمة أخرى، الفترات المختلفة التي تحتسبها تعابيرُ متكافئةٌ جبريًّا لكنّها مختلفة. وهي تقول إنّ صيغةً للاحتساب بالفترات باستخدام نظام أليسا ستُنتج حدودًا أضيقَ للخطأ إذا أمكن كتابتها بشكلٍ لا يتكرّر فيه أيّ متغيّرٍ يمثّل عددًا غير أكيد. وبالتالي - كما تقول - فإنّ `par2` برنامجٌ «أفضل» للمقاومات المتوازية من `par1`. فهل هي محقّة؟ ولماذا؟
 
-> **Exercise 2.16:** Explain, in general, why equivalent algebraic expressions may lead to different answers. Can you devise an interval-arithmetic package that does not have this shortcoming, or is this task impossible? (Warning: This problem is very difficult.)
+> **التمرين 2.16:** اشرح، بصورةٍ عامّة، لماذا قد تؤدّي التعابير الجبريّة المتكافئة إلى أجوبةٍ مختلفة. فهل تستطيع ابتكار حزمةٍ للحساب بالفترات خاليةٍ من هذا القصور، أم أنّ هذه المهمّة مستحيلة؟ (تحذير: هذه المسألة في غاية الصعوبة.)
 
-### 2.2 Hierarchical Data and the Closure Property
+### 2.2 البيانات الهرميّة وخاصّيّة الإغلاق
 
-As we have seen, pairs provide a primitive “glue” that we can use to construct compound data objects. [Figure 2.2](#Figure-2_002e2) shows a standard way to visualize a pair—in this case, the pair formed by `(cons 1 2)`. In this representation, which is called *box-and-pointer notation*, each object is shown as a *pointer* to a box. The box for a primitive object contains a representation of the object. For example, the box for a number contains a numeral. The box for a pair is actually a double box, the left part containing (a pointer to) the `car` of the pair and the right part containing the `cdr`.
+كما رأينا، توفّر الأزواج (pairs) مادّةَ لصقٍ أوّليّةً يمكننا استخدامها لبناء كائنات بياناتٍ مركّبة. ويُظهر [الشكل 2.2](#Figure-2_002e2) طريقةً قياسيّةً لتصوّر زوجٍ — في هذه الحالة، الزوج المتشكّل بـ`(cons 1 2)`. في هذا التمثيل، الذي يُسمّى *ترميز الصناديق والمؤشّرات (box-and-pointer notation)*، يُعرَض كلّ كائنٍ بمثابة *مؤشّر (pointer)* إلى صندوق. وصندوق الكائن الأوّليّ يحتوي تمثيلًا للكائن. فمثلًا، صندوق العدد يحتوي رقمًا. وأمّا صندوق الزوج فهو صندوقٌ مزدوجٌ في الحقيقة، جزءه الأيسر يحتوي (مؤشّرًا إلى) `car` الزوج وجزؤه الأيمن يحتوي `cdr`.
 
 ![](/images/sicp/c2-building-abstractions-with-data-0-Fig2.2e.std.webp)
 
-**Figure 2.2:** Box-and-pointer representation of `(cons 1 2)`.
+**الشكل 2.2:** تمثيل `(cons 1 2)` بالصناديق والمؤشّرات.
 
-We have already seen that `cons` can be used to combine not only numbers but pairs as well. (You made use of this fact, or should have, in doing [Exercise 2.2](https://sarabander.github.io/sicp/html/2_002e1.xhtml#Exercise-2_002e2) and [Exercise 2.3](https://sarabander.github.io/sicp/html/2_002e1.xhtml#Exercise-2_002e3).) As a consequence, pairs provide a universal building block from which we can construct all sorts of data structures. [Figure 2.3](#Figure-2_002e3) shows two ways to use pairs to combine the numbers 1, 2, 3, and 4.
+وقد رأينا بالفعل أنّ `cons` يمكن استخدامه لدمج لا الأعداد فحسب بل الأزواج أيضًا. (وأنت قد استفدت من هذه الحقيقة، أو كان ينبغي لك ذلك، عند أداء [التمرين 2.2](https://sarabander.github.io/sicp/html/2_002e1.xhtml#Exercise-2_002e2) و[التمرين 2.3](https://sarabander.github.io/sicp/html/2_002e1.xhtml#Exercise-2_002e3).) ونتيجةً لذلك، توفّر الأزواج لبنةَ بناءٍ عامّةً نستطيع بها تشييد جميع أنواع بنيات البيانات. ويُظهر [الشكل 2.3](#Figure-2_002e3) طريقتين لاستخدام الأزواج في دمج الأعداد 1، و2، و3، و4.
 
 ![](/images/sicp/c2-building-abstractions-with-data-1-Fig2.3e.std.webp)
 
-**Figure 2.3:** Two ways to combine 1, 2, 3, and 4 using pairs.
+**الشكل 2.3:** طريقتان لدمج الأعداد 1، و2، و3، و4 باستخدام الأزواج.
 
-The ability to create pairs whose elements are pairs is the essence of list structure’s importance as a representational tool. We refer to this ability as the *closure property* of `cons`. In general, an operation for combining data objects satisfies the closure property if the results of combining things with that operation can themselves be combined using the same operation.[^6] Closure is the key to power in any means of combination because it permits us to create *hierarchical* structures—structures made up of parts, which themselves are made up of parts, and so on.
+إنّ القدرة على إنشاء أزواجٍ عناصرها أزواجٌ هي جوهر أهمّيّة بنية القائمة بوصفها أداةً تمثيليّة. ونحن نشير إلى هذه القدرة بـ*خاصّيّة الإغلاق (closure property)* لـ`cons`. وبصورةٍ عامّة، فإنّ عمليّةً لدمج كائنات البيانات تُحقّق خاصّيّة الإغلاق إذا كانت نتائج دمج الأشياء بتلك العمليّة قابلةً بذاتها للدمج باستخدام العمليّة ذاتها.[^6] والإغلاق هو مفتاح القوّة في أيّ وسيلةِ دمجٍ لأنّه يسمح لنا بإنشاء بنى *هرميّة* — بنىً مركّبةٍ من أجزاء، هي بذاتها مركّبةٌ من أجزاء، وهكذا.
 
-From the outset of [Chapter 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1), we’ve made essential use of closure in dealing with procedures, because all but the very simplest programs rely on the fact that the elements of a combination can themselves be combinations. In this section, we take up the consequences of closure for compound data. We describe some conventional techniques for using pairs to represent sequences and trees, and we exhibit a graphics language that illustrates closure in a vivid way.[^7]
+فمنذ بداية [الفصل 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1)، استخدمنا الإغلاق استخدامًا جوهريًّا في تعاملنا مع الإجراءات، لأنّ جميع البرامج إلّا أبسطها تعتمد على حقيقة أنّ عناصر التركيب يمكن أن تكون تركيبًا بذاتها. وفي هذا القسم نتناول تبعات الإغلاق بالنسبة للبيانات المركّبة. فنحن نصف بعض التقنيّات المتعارَف عليها لاستخدام الأزواج في تمثيل التسلسلات والأشجار، ونعرض لغةً رسوميّةً تُجسّد الإغلاق بطريقةٍ بالغة الوضوح.[^7]
 
-#### 2.2.1 Representing Sequences
+#### 2.2.1 تمثيل التسلسلات
 
-One of the useful structures we can build with pairs is a *sequence*—an ordered collection of data objects. There are, of course, many ways to represent sequences in terms of pairs. One particularly straightforward representation is illustrated in [Figure 2.4](#Figure-2_002e4), where the sequence 1, 2, 3, 4 is represented as a chain of pairs. The `car` of each pair is the corresponding item in the chain, and the `cdr` of the pair is the next pair in the chain. The `cdr` of the final pair signals the end of the sequence by pointing to a distinguished value that is not a pair, represented in box-and-pointer diagrams as a diagonal line and in programs as the value of the variable `nil`. The entire sequence is constructed by nested `cons` operations:
+إحدى البنيات المفيدة التي نستطيع تشييدها بالأزواج هي *التسلسل (sequence)* — مجموعةٌ مرتَّبةٌ من كائنات البيانات. ثمّة، بالطبع، طرائقُ كثيرةٌ لتمثيل التسلسلات بدلالة الأزواج. وأحد التمثيلات المباشرة على نحوٍ خاصّ موضَّحٌ في [الشكل 2.4](#Figure-2_002e4)، حيث يُتمثَّل التسلسل 1، و2، و3، و4 سلسلةً من الأزواج. فالـ`car` لكلّ زوجٍ هو العنصر المقابل له في السلسلة، والـ`cdr` للزوج هو الزوج التالي في السلسلة. والـ`cdr` للزوج الأخير يُشير إلى نهاية التسلسل بالإشارة إلى قيمةٍ مميّزةٍ ليست زوجًا، وهي مُتمثَّلة في مخطّطات الصناديق والمؤشّرات بخطٍّ قطريّ وفي البرامج بقيمة المتغيّر `nil`. ويُبنى التسلسل كلُّه بعمليّات `cons` متداخلة:
 
 ```scheme
 (cons 1
@@ -414,15 +414,15 @@ One of the useful structures we can build with pairs is a *sequence*—an ordere
 
 ![](/images/sicp/c2-building-abstractions-with-data-2-Fig2.4e.std.webp)
 
-**Figure 2.4:** The sequence 1, 2, 3, 4 represented as a chain of pairs.
+**الشكل 2.4:** التسلسل 1، و2، و3، و4 مُمثَّلًا سلسلةً من الأزواج.
 
-Such a sequence of pairs, formed by nested `cons`es, is called a *list*, and Scheme provides a primitive called `list` to help in constructing lists.[^8] The above sequence could be produced by `(list 1 2 3 4)`. In general,
+إنّ تسلسلًا كهذا من الأزواج، المتشكّل بعمليّات `cons` متداخلة، يُسمّى *قائمة (list)*، وتوفّر Scheme أوّليًّا يُسمّى `list` للمساعدة في بناء القوائم.[^8] ويمكن إنتاج التسلسل أعلاه بـ`(list 1 2 3 4)`. وبصورةٍ عامّة،
 
 ```scheme
 (list ⟨a₁⟩ ⟨a₂⟩ … ⟨aₙ⟩)
 ```
 
-is equivalent to
+وهو مكافئٌ لـ
 
 ```scheme
 (cons ⟨a₁⟩
@@ -432,7 +432,7 @@ is equivalent to
                         nil)…)))
 ```
 
-Lisp systems conventionally print lists by printing the sequence of elements, enclosed in parentheses. Thus, the data object in [Figure 2.4](#Figure-2_002e4) is printed as `(1 2 3 4)`:
+تطبع نظم Lisp القوائم اصطلاحًا بطباعة تسلسل العناصر محاطًا بأقواس. وبذلك، فإنّ كائن البيانات في [الشكل 2.4](#Figure-2_002e4) يُطبع بالشكل `(1 2 3 4)`:
 
 ```scheme
 (define one-through-four (list 1 2 3 4))
@@ -441,9 +441,9 @@ one-through-four
 (1 2 3 4)
 ```
 
-Be careful not to confuse the expression `(list 1 2 3 4)` with the list `(1 2 3 4)`, which is the result obtained when the expression is evaluated. Attempting to evaluate the expression `(1 2 3 4)` will signal an error when the interpreter tries to apply the procedure `1` to arguments `2`, `3`, `4`.
+احرص على ألّا تخلط بين التعبير `(list 1 2 3 4)` والقائمة `(1 2 3 4)`، وهي النتيجة المتحصّلة عند تقييم التعبير. فإنّ محاولة تقييم التعبير `(1 2 3 4)` ستُطلق إشارة خطأٍ عندما يحاول المفسّر تطبيق الإجراء `1` على المعطيات `2`، و`3`، و`4`.
 
-We can think of `car` as selecting the first item in the list, and of `cdr` as selecting the sublist consisting of all but the first item. Nested applications of `car` and `cdr` can be used to extract the second, third, and subsequent items in the list.[^9] The constructor `cons` makes a list like the original one, but with an additional item at the beginning.
+يمكننا النظر إلى `car` على أنّه ينتقي أوّل عنصر في القائمة، وإلى `cdr` على أنّه ينتقي القائمة الفرعيّة المكوّنة من جميع العناصر عدا الأوّل. ويمكن استخدام تطبيقات `car` و`cdr` المتداخلة لاستخراج العنصر الثاني، والثالث، والعناصر اللاحقة في القائمة.[^9] والباني `cons` يُنتج قائمةً شبيهة بالأصليّة، لكن مع عنصرٍ إضافيّ في البداية.
 
 ```scheme
 (car one-through-four)
@@ -462,14 +462,14 @@ We can think of `car` as selecting the first item in the list, and of `cdr` as s
 (5 1 2 3 4)
 ```
 
-The value of `nil`, used to terminate the chain of pairs, can be thought of as a sequence of no elements, the *empty list*. The word *nil* is a contraction of the Latin word *nihil*, which means “nothing.”[^10]
+قيمة `nil`، المستخدمة لإنهاء سلسلة الأزواج، يمكن النظر إليها بوصفها تسلسلًا لا عناصر له، وهو *القائمة الفارغة (empty list)*. وكلمة *nil* اختصارٌ للكلمة اللاتينيّة *nihil*، التي تعني «لا شيء».[^10]
 
-#### List operations
+#### عمليّات القوائم
 
-The use of pairs to represent sequences of elements as lists is accompanied by conventional programming techniques for manipulating lists by successively “`cdr`ing down” the lists. For example, the procedure `list-ref` takes as arguments a list and a number $n$ and returns the $n^{th}$ item of the list. It is customary to number the elements of the list beginning with 0. The method for computing `list-ref` is the following:
+يُرافق استخدام الأزواج في تمثيل تسلسلات العناصر كقوائم تقنيّاتٌ برمجةٍ متعارَف عليها لمعالجة القوائم بالتنزّل المتتالي بـ`cdr` عبرها. فمثلًا، يأخذ الإجراء `list-ref` كمعطياتٍ قائمةً وعددًا $n$ ويُعيد العنصر $n^{th}$ من القائمة. ومن المتعارف عليه ترقيم عناصر القائمة ابتداءً من 0. وطريقة احتساب `list-ref` هي الآتية:
 
-- For $n = 0$ , `list-ref` should return the `car` of the list.
-- Otherwise, `list-ref` should return the $( n − 1 )$ -st item of the `cdr` of the list.
+- من أجل $n = 0$ ، ينبغي أن يُعيد `list-ref` الـ`car` للقائمة.
+- وإلّا، فينبغي أن يُعيد `list-ref` العنصر $( n − 1 )$ -st من `cdr` القائمة.
 
 ```scheme
 (define (list-ref items n)
@@ -485,7 +485,7 @@ The use of pairs to represent sequences of elements as lists is accompanied by c
 16
 ```
 
-Often we `cdr` down the whole list. To aid in this, Scheme includes a primitive predicate `null?`, which tests whether its argument is the empty list. The procedure `length`, which returns the number of items in a list, illustrates this typical pattern of use:
+غالبًا ما نتنزّل بـ`cdr` عبر القائمة كلّها. ولمساعدتنا في ذلك، تتضمّن Scheme مُسَيِّمًا أوّليًّا يُسمّى `null?`، يختبر ما إذا كان معطاه هو القائمة الفارغة. والإجراء `length`، الذي يُعيد عدد العناصر في قائمةٍ، يُجسّد هذا النمط الاستخداميّ النموذجيّ:
 
 ```scheme
 (define (length items)
@@ -500,15 +500,15 @@ Often we `cdr` down the whole list. To aid in this, Scheme includes a primitive 
 4
 ```
 
-The `length` procedure implements a simple recursive plan. The reduction step is:
+يُنفّذ الإجراء `length` خطةً تعاوديّةً بسيطة. وخطوة الاختزال هي:
 
-- The `length` of any list is 1 plus the `length` of the `cdr` of the list.
+- إنّ `length` أيّ قائمةٍ يساوي 1 زائد `length` الـ`cdr` منها.
 
-This is applied successively until we reach the base case:
+وهذا يُطبَّق تتاليًّا حتّى نصل إلى الحالة الأساسيّة:
 
-- The `length` of the empty list is 0.
+- إنّ `length` القائمة الفارغة هو 0.
 
-We could also compute `length` in an iterative style:
+ويمكننا أيضًا احتساب `length` بأسلوبٍ تكراريّ:
 
 ```scheme
 (define (length items)
@@ -520,7 +520,7 @@ We could also compute `length` in an iterative style:
   (length-iter items 0))
 ```
 
-Another conventional programming technique is to “`cons` up” an answer list while `cdr`ing down a list, as in the procedure `append`, which takes two lists as arguments and combines their elements to make a new list:
+وثمّة تقنيّةٌ برمجةٍ متعارَف عليها أخرى، وهي «تجميع قائمة الجواب بـ`cons`» أثناء التنزّل بـ`cdr` عبر قائمةٍ، كما في الإجراء `append`، الذي يأخذ قائمتين كمعطياتٍ ويدمج عناصرهما لإنتاج قائمةٍ جديدة:
 
 ```scheme
 (append squares odds)
@@ -530,10 +530,10 @@ Another conventional programming technique is to “`cons` up” an answer list 
 (1 3 5 7 1 4 9 16 25)
 ```
 
-`Append` is also implemented using a recursive plan. To `append` lists `list1` and `list2`, do the following:
+يُنفّذ `Append` أيضًا باستخدام خطةٍ تعاوديّة. ولدمج (`append`) القائمتين `list1` و`list2`، افعل الآتي:
 
-- If `list1` is the empty list, then the result is just `list2`.
-- Otherwise, `append` the `cdr` of `list1` and `list2`, and `cons` the `car` of `list1` onto the result:
+- إذا كانت `list1` هي القائمة الفارغة، فالنتيجة هي `list2` فحسب.
+- وإلّا، فادمج (`append`) الـ`cdr` لـ`list1` مع `list2`، وثبّت (`cons`) الـ`car` لـ`list1` في رأس النتيجة:
 
 ```scheme
 (define (append list1 list2)
@@ -544,23 +544,23 @@ Another conventional programming technique is to “`cons` up” an answer list 
                     list2))))
 ```
 
-**Exercise 2.17:** Define a procedure `last-pair` that returns the list that contains only the last element of a given (nonempty) list:
+**التمرين 2.17:** عرّف إجراءً `last-pair` يُعيد القائمة التي تحتوي العنصر الأخير لقائمةٍ معطاةٍ (غير فارغة) فقط:
 
 ```scheme
 (last-pair (list 23 72 149 34))
 (34)
 ```
 
-**Exercise 2.18:** Define a procedure `reverse` that takes a list as argument and returns a list of the same elements in reverse order:
+**التمرين 2.18:** عرّف إجراءً `reverse` يأخذ قائمةً كمعطى ويُعيد قائمةً بالعناصر ذاتها بترتيبٍ معكوس:
 
 ```scheme
 (reverse (list 1 4 9 16 25))
 (25 16 9 4 1)
 ```
 
-**Exercise 2.19:** Consider the change-counting program of [1.2.2](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e2). It would be nice to be able to easily change the currency used by the program, so that we could compute the number of ways to change a British pound, for example. As the program is written, the knowledge of the currency is distributed partly into the procedure `first-denomination` and partly into the procedure `count-change` (which knows that there are five kinds of U.S. coins). It would be nicer to be able to supply a list of coins to be used for making change.
+**التمرين 2.19:** تأمّل برنامج عدّ النقود الوارد في [1.2.2](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e2). سيكون من الجميل أن نتمكّن من تغيير العملة التي يستخدمها البرنامج بسهولة، حتّى نتمكّن من احتساب عدد طرائق صرف جنيه إسترليني مثلًا. فبالبرنامج مكتوبًا كما هو، فإنّ المعرفة بالعملة موزّعةٌ جزئيًّا في الإجراء `first-denomination` وجزئيًّا في الإجراء `count-change` (الذي يعلم أنّ ثمّة خمسة أنواعٍ من عملات الولايات المتّحدة). وسيكون من الأجمل أن نتمكّن من تزويد البرنامج بقائمة العملات التي تُستخدم في الصرف.
 
-We want to rewrite the procedure `cc` so that its second argument is a list of the values of the coins to use rather than an integer specifying which coins to use. We could then have lists that defined each kind of currency:
+نريد إعادة كتابة الإجراء `cc` بحيث يكون معطاه الثاني قائمةً بقيم العملات التي ستُستخدم بدلًا من عددٍ صحيحٍ يحدّد أيّ العملات تُستخدم. وحينها يمكن أن تكون لدينا قوائم تُعرّف كلّ نوعٍ من العملات:
 
 ```scheme
 (define us-coins 
@@ -570,14 +570,14 @@ We want to rewrite the procedure `cc` so that its second argument is a list of t
   (list 100 50 20 10 5 2 1 0.5))
 ```
 
-We could then call `cc` as follows:
+ويمكننا حينها مناداة `cc` على النحو الآتي:
 
 ```scheme
 (cc 100 us-coins)
 292
 ```
 
-To do this will require changing the program `cc` somewhat. It will still have the same form, but it will access its second argument differently, as follows:
+سيتطلّب القيام بذلك تغيير برنامج `cc` إلى حدٍّ ما. فسيظلّ بالشكل ذاته، لكنّه سيصل إلى معطاه الثاني بطريقةٍ مختلفة، كما يلي:
 
 ```scheme
 (define (cc amount coin-values)
@@ -598,35 +598,35 @@ To do this will require changing the program `cc` somewhat. It will still have t
              coin-values)))))
 ```
 
-Define the procedures `first-denomination`, `except-first-denomination` and `no-more?` in terms of primitive operations on list structures. Does the order of the list `coin-values` affect the answer produced by `cc`? Why or why not?
+عرّف الإجراءات `first-denomination`، و`except-first-denomination`، و`no-more?` بدلالة عمليّاتٍ أوّليّةٍ على بنيات القوائم. فهل يؤثّر ترتيب القائمة `coin-values` في الجواب الذي يُنتجه `cc`؟ ولماذا أو لماذا لا؟
 
-**Exercise 2.20:** The procedures `+`, `*`, and `list` take arbitrary numbers of arguments. One way to define such procedures is to use `define` with *dotted-tail notation*. In a procedure definition, a parameter list that has a dot before the last parameter name indicates that, when the procedure is called, the initial parameters (if any) will have as values the initial arguments, as usual, but the final parameter’s value will be a *list* of any remaining arguments. For instance, given the definition
+**التمرين 2.20:** تأخذ الإجراءات `+`، و`*`، و`list` أعدادًا اعتباطيّةً من المعطيات. وإحدى طرائق تعريف إجراءاتٍ كهذا هي استخدام `define` مع *الترميز ذي النقطة في الذيل (dotted-tail notation)*. ففي تعريف الإجراء، فإنّ قائمة الوسائط التي تحتوي نقطةً قبل اسم الوسيط الأخير تُشير إلى أنّه حين يُنادى الإجراء، فإنّ الوسائط الأوّليّة (إن وُجِدت) ستكون لها المعطيات الأوّليّة قيمًا، كالمعتاد، لكنّ قيمة الوسيط الأخير ستكون *قائمةً* بأيّ معطياتٍ متبقّية. فمثلًا، إذا كان لدينا التعريف
 
 ```scheme
 (define (f x y . z) ⟨body⟩)
 ```
 
-the procedure `f` can be called with two or more arguments. If we evaluate
+فإنّ الإجراء `f` يمكن مناداته بمعطيين أو أكثر. فإن قيّمنا
 
 ```scheme
 (f 1 2 3 4 5 6)
 ```
 
-then in the body of `f`, `x` will be 1, `y` will be 2, and `z` will be the list `(3 4 5 6)`. Given the definition
+فإنّه في جسم `f`، سيكون `x` هو 1، و`y` هو 2، و`z` هو القائمة `(3 4 5 6)`. وبالنظر إلى التعريف
 
 ```scheme
 (define (g . w) ⟨body⟩)
 ```
 
-the procedure `g` can be called with zero or more arguments. If we evaluate
+فإنّ الإجراء `g` يمكن مناداته بصفر من المعطيات أو أكثر. فإن قيّمنا
 
 ```scheme
 (g 1 2 3 4 5 6)
 ```
 
-then in the body of `g`, `w` will be the list `(1 2 3 4 5 6)`.[^11]
+فإنّه في جسم `g`، سيكون `w` هو القائمة `(1 2 3 4 5 6)`.[^11]
 
-Use this notation to write a procedure `same-parity` that takes one or more integers and returns a list of all the arguments that have the same even-odd parity as the first argument. For example,
+استخدم هذا الترميز لكتابة إجراءٍ `same-parity` يأخذ عددًا صحيحًا أو أكثر ويُعيد قائمةً بجميع المعطيات التي تتّسم بالتكافؤ نفسه (زوجيّةً أو فرديّةً) كما المعطى الأوّل. فمثلًا،
 
 ```scheme
 (same-parity 1 2 3 4 5 6 7)
@@ -636,9 +636,9 @@ Use this notation to write a procedure `same-parity` that takes one or more inte
 (2 4 6)
 ```
 
-#### Mapping over lists
+#### الرسم الخرائطي على القوائم
 
-One extremely useful operation is to apply some transformation to each element in a list and generate the list of results. For instance, the following procedure scales each number in a list by a given factor:
+إحدى العمليّات المفيدة للغاية هي تطبيق تحويلٍ ما على كلّ عنصرٍ في قائمةٍ وإنتاج قائمة النتائج. فمثلًا، يضرب الإجراء الآتي كلّ عددٍ في قائمةٍ في معاملٍ معطًى:
 
 ```scheme
 (define (scale-list items factor)
@@ -652,7 +652,7 @@ One extremely useful operation is to apply some transformation to each element i
 (10 20 30 40 50)
 ```
 
-We can abstract this general idea and capture it as a common pattern expressed as a higher-order procedure, just as in [1.3](https://sarabander.github.io/sicp/html/1_002e3.xhtml#g_t1_002e3). The higher-order procedure here is called `map`. `Map` takes as arguments a procedure of one argument and a list, and returns a list of the results produced by applying the procedure to each element in the list:[^12]
+يمكننا تجريد هذه الفكرة العامّة والتقاطها بوصفها نمطًا مشتركًا مُعبَّرًا عنه بإجراءٍ من رتبةٍ عليا، تمامًا كما في [1.3](https://sarabander.github.io/sicp/html/1_002e3.xhtml#g_t1_002e3). والإجراء عليا الرتبة هنا يُسمّى `map`. و`Map` يأخذ كمعطياتٍ إجراءً ذا معطى واحد وقائمةً، ويُعيد قائمةَ النتائج الناتجة عن تطبيق الإجراء على كلّ عنصرٍ في القائمة:[^12]
 
 ```scheme
 (define (map proc items)
@@ -668,7 +668,7 @@ We can abstract this general idea and capture it as a common pattern expressed a
 (1 4 9 16)
 ```
 
-Now we can give a new definition of `scale-list` in terms of `map`:
+والآن يمكننا إعطاء تعريفٍ جديد لـ`scale-list` بدلالة `map`:
 
 ```scheme
 (define (scale-list items factor)
@@ -676,16 +676,16 @@ Now we can give a new definition of `scale-list` in terms of `map`:
        items))
 ```
 
-`Map` is an important construct, not only because it captures a common pattern, but because it establishes a higher level of abstraction in dealing with lists. In the original definition of `scale-list`, the recursive structure of the program draws attention to the element-by-element processing of the list. Defining `scale-list` in terms of `map` suppresses that level of detail and emphasizes that scaling transforms a list of elements to a list of results. The difference between the two definitions is not that the computer is performing a different process (it isn’t) but that we think about the process differently. In effect, `map` helps establish an abstraction barrier that isolates the implementation of procedures that transform lists from the details of how the elements of the list are extracted and combined. Like the barriers shown in [Figure 2.1](https://sarabander.github.io/sicp/html/2_002e1.xhtml#Figure-2_002e1), this abstraction gives us the flexibility to change the low-level details of how sequences are implemented, while preserving the conceptual framework of operations that transform sequences to sequences. Section [2.2.3](#g_t2_002e2_002e3) expands on this use of sequences as a framework for organizing programs.
+إنّ `Map` بناءٌ مهمّ، لا لأنه يلتقط نمطًا مشتركًا فحسب، بل لأنه يُرسّي مستوىً أعلى من التجريد في التعامل مع القوائم. ففي تعريف `scale-list` الأصليّ، تجذب بنية البرنامج التعاوديّة الانتباه إلى المعالجة العنصريّة للقائمة. أمّا تعريف `scale-list` بدلالة `map` فيحجب ذلك المستوى من التفصيل ويُبرز أنّ الضرب في معاملٍ يحوّل قائمةَ عناصرٍ إلى قائمة نتائج. والفرق بين التعريفين ليس أنّ الحاسوب يؤدّي عمليّةً مختلفة (فهو لا يفعل ذلك)، بل أنّنا نفكّر في العمليّة تفكيرًا مختلفًا. وفي الواقع، يساعد `map` في إرساء حاجز تجريدٍ يعزل تنفيذ الإجراءات التي تحوّل القوائم عن تفاصيل كيفيّة استخراج عناصر القائمة ودمجها. ومثل الحواجز المبيّنة في [الشكل 2.1](https://sarabander.github.io/sicp/html/2_002e1.xhtml#Figure-2_002e1)، يمنحنا هذا التجريد مرونةَ تغيير التفاصيل منخفضة المستوى لكيفيّة تنفيذ التسلسلات، مع الحفاظ على الإطار المفاهيميّ للعمليّات التي تحوّل التسلسلات إلى تسلسلات. ويوسّع القسم [2.2.3](#g_t2_002e2_002e3) هذا الاستخدام للتسلسلات بوصفها إطارًا لتنظيم البرامج.
 
-**Exercise 2.21:** The procedure `square-list` takes a list of numbers as argument and returns a list of the squares of those numbers.
+**التمرين 2.21:** يأخذ الإجراء `square-list` قائمة أعداد كمعطى ويُعيد قائمةً بمربّعات تلك الأعداد.
 
 ```scheme
 (square-list (list 1 2 3 4))
 (1 4 9 16)
 ```
 
-Here are two different definitions of `square-list`. Complete both of them by filling in the missing expressions:
+إليك تعريفان مختلفان لـ`square-list`. أكمل كليهما بسدّ التعابير الناقصة:
 
 ```scheme
 (define (square-list items)
@@ -697,7 +697,7 @@ Here are two different definitions of `square-list`. Complete both of them by fi
   (map ⟨??⟩ ⟨??⟩))
 ```
 
-**Exercise 2.22:** Louis Reasoner tries to rewrite the first `square-list` procedure of [Exercise 2.21](#Exercise-2_002e21) so that it evolves an iterative process:
+**التمرين 2.22:** يحاول لويس ريزنر إعادة كتابة إجراء `square-list` الأوّل في [التمرين 2.21](#Exercise-2_002e21) بحيث يولّد عمليّةً تكراريّة:
 
 ```scheme
 (define (square-list items)
@@ -710,9 +710,9 @@ Here are two different definitions of `square-list`. Complete both of them by fi
   (iter items nil))
 ```
 
-Unfortunately, defining `square-list` this way produces the answer list in the reverse order of the one desired. Why?
+للأسف، إنّ تعريف `square-list` بهذه الطريقة يُنتج قائمة الإجابة بترتيبٍ معكوسٍ عن المراد. لماذا؟
 
-Louis then tries to fix his bug by interchanging the arguments to `cons`:
+ثم يحاول لويس إصلاح علّته بتبادل الوسيطين إلى `cons`:
 
 ```scheme
 (define (square-list items)
@@ -726,9 +726,9 @@ Louis then tries to fix his bug by interchanging the arguments to `cons`:
   (iter items nil))
 ```
 
-This doesn’t work either. Explain.
+وهذا لا ينجح أيضًا. فسّر.
 
-**Exercise 2.23:** The procedure `for-each` is similar to `map`. It takes as arguments a procedure and a list of elements. However, rather than forming a list of the results, `for-each` just applies the procedure to each of the elements in turn, from left to right. The values returned by applying the procedure to the elements are not used at all—`for-each` is used with procedures that perform an action, such as printing. For example,
+**التمرين 2.23:** الإجراء `for-each` شبيهٌ بـ`map`. وهو يأخذ كوسائطَ إجراءً وقائمةَ عناصر. غير أنّه، بدلًا من تكوين قائمةٍ بالنتائج، يُطبّق `for-each` الإجراء على كلّ عنصرٍ بدوره، من اليسار إلى اليمين. والقيم المُعادة من تطبيق الإجراء على العناصر لا تُستخدم إطلاقًا—يُستخدم `for-each` مع إجراءاتٍ تؤدّي فعلًا، كالطبع. فعلى سبيل المثال،
 
 ```scheme
 (for-each 
@@ -740,29 +740,29 @@ This doesn’t work either. Explain.
 88
 ```
 
-The value returned by the call to `for-each` (not illustrated above) can be something arbitrary, such as true. Give an implementation of `for-each`.
+والقيمة المُعادة من نداء `for-each` (غير موضّحةٍ أعلاه) يمكن أن تكون شيئًا اعتباطيًّا، مثل true. فأعطِ تنفيذًا لـ`for-each`.
 
-#### 2.2.2 Hierarchical Structures
+#### 2.2.2 البنى الهرميّة
 
-The representation of sequences in terms of lists generalizes naturally to represent sequences whose elements may themselves be sequences. For example, we can regard the object `((1 2) 3 4)` constructed by
+إنّ تمثيل التسلسلات بدلالة القوائم يتعمّم تعمّمًا طبيعيًّا لتمثيل تسلسلاتٍ قد تكون عناصرها هي نفسها تسلسلات. فعلى سبيل المثال، يمكننا اعتبار الكائن `((1 2) 3 4)` المُنشأ بـ
 
 ```scheme
 (cons (list 1 2) (list 3 4))
 ```
 
-as a list of three items, the first of which is itself a list, `(1 2)`. Indeed, this is suggested by the form in which the result is printed by the interpreter. [Figure 2.5](#Figure-2_002e5) shows the representation of this structure in terms of pairs.
+قائمةً من ثلاثة عناصر، أوّلُها قائمةٌ بذاته، `(1 2)`. وإنّ ذلك لمُستفادٌ من الصورة التي تُطبع بها النتيجة بواسطة المفسّر. ويُظهر [الشكل 2.5](#Figure-2_002e5) تمثيل هذه البنية بدلالة الأزواج.
 
 ![](/images/sicp/c2-building-abstractions-with-data-3-Fig2.5e.std.webp)
 
-**Figure 2.5:** Structure formed by `(cons (list 1 2) (list 3 4))`.
+**الشكل 2.5:** بنيةٌ مُشكَّلةٌ بـ`(cons (list 1 2) (list 3 4))`.
 
-Another way to think of sequences whose elements are sequences is as *trees*. The elements of the sequence are the branches of the tree, and elements that are themselves sequences are subtrees. [Figure 2.6](#Figure-2_002e6) shows the structure in [Figure 2.5](#Figure-2_002e5) viewed as a tree.
+وثمّة طريقةٌ أخرى للنظر إلى التسلسلات التي عناصرها تسلسلات، وهي اعتبارها *أشجارًا (trees)*. فعناصر التسلسل هي فروع الشجرة، والعناصر التي هي تسلسلاتٌ بذاتها هي أشجارٌ فرعيّة. ويُظهر [الشكل 2.6](#Figure-2_002e6) البنية في [الشكل 2.5](#Figure-2_002e5) من منظور الشجرة.
 
 ![](/images/sicp/c2-building-abstractions-with-data-4-Fig2.6b.std.webp)
 
-**Figure 2.6:** The list structure in [Figure 2.5](#Figure-2_002e5) viewed as a tree.
+**الشكل 2.6:** بنية القائمة في [الشكل 2.5](#Figure-2_002e5) من منظور الشجرة.
 
-Recursion is a natural tool for dealing with tree structures, since we can often reduce operations on trees to operations on their branches, which reduce in turn to operations on the branches of the branches, and so on, until we reach the leaves of the tree. As an example, compare the `length` procedure of [2.2.1](#g_t2_002e2_002e1) with the `count-leaves` procedure, which returns the total number of leaves of a tree:
+والتعاود أداةٌ طبيعيّةٌ للتعامل مع بنى الأشجار، إذ يمكننا غالبًا اختزال العمليّات على الأشجار إلى عمليّاتٍ على فروعها، التي تختزل بدورها إلى عمليّاتٍ على فروع الفروع، وهكذا، حتّى نصل إلى أوراق الشجرة. فكمثالٍ على ذلك، قارن الإجراء `length` في [2.2.1](#g_t2_002e2_002e1) بالإجراء `count-leaves`، الذي يُعيد العدد الكلّي لأوراق شجرة:
 
 ```scheme
 (define x (cons (list 1 2) (list 3 4)))
@@ -787,24 +787,24 @@ Recursion is a natural tool for dealing with tree structures, since we can often
 8
 ```
 
-To implement `count-leaves`, recall the recursive plan for computing `length`:
+ولتنفيذ `count-leaves`، تذكّر الخطة التعاوديّة لاحتساب `length`:
 
-- `Length` of a list `x` is 1 plus `length` of the `cdr` of `x`.
-- `Length` of the empty list is 0.
+- `Length` قائمة `x` هو 1 زائد `length` الـ`cdr` لـ`x`.
+- `Length` القائمة الفارغة هو 0.
 
-`Count-leaves` is similar. The value for the empty list is the same:
+أمّا `count-leaves` فهو شبيه. وأمّا القيمة من أجل القائمة الفارغة فهي نفسها:
 
-- `Count-leaves` of the empty list is 0.
+- `count-leaves` القائمة الفارغة يساوي 0.
 
-But in the reduction step, where we strip off the `car` of the list, we must take into account that the `car` may itself be a tree whose leaves we need to count. Thus, the appropriate reduction step is
+لكن في خطوة الاختزال، حيث نُزيل الـ`car` من القائمة، ينبغي أن نأخذ في الحسبان أنّ الـ`car` قد يكون هو نفسه شجرةً نحتاج إلى إحصاء أوراقها. وبالتالي، فإنّ خطوة الاختزال الملائمة هي
 
-- `Count-leaves` of a tree `x` is `count-leaves` of the `car` of `x` plus `count-leaves` of the `cdr` of `x`.
+- `count-leaves` شجرة `x` يساوي `count-leaves` الـ`car` لـ`x` زائد `count-leaves` الـ`cdr` لـ`x`.
 
-Finally, by taking `car`s we reach actual leaves, so we need another base case:
+وأخيرًا، فبأخذ `car`s نصل إلى أوراقَ فعليّة، لذا نحتاج إلى حالة أساسٍ أخرى:
 
-- `Count-leaves` of a leaf is 1.
+- `count-leaves` ورقةٍ هو 1.
 
-To aid in writing recursive procedures on trees, Scheme provides the primitive predicate `pair?`, which tests whether its argument is a pair. Here is the complete procedure:[^13]
+ومعاونةً في كتابة الإجراءات التعاوديّة على الأشجار، توفّر Scheme المسيّم الأوّلي `pair?`، الذي يختبر ما إذا كان مُدخله زوجًا. وإليك الإجراء الكامل:[^13]
 
 ```scheme
 (define (count-leaves x)
@@ -814,9 +814,9 @@ To aid in writing recursive procedures on trees, Scheme provides the primitive p
                  (count-leaves (cdr x))))))
 ```
 
-> **Exercise 2.24:** Suppose we evaluate the expression `(list 1 (list 2 (list 3 4)))`. Give the result printed by the interpreter, the corresponding box-and-pointer structure, and the interpretation of this as a tree (as in [Figure 2.6](#Figure-2_002e6)).
+> **التمرين 2.24:** لنفترض أنّنا قيّمنا التعبير `(list 1 (list 2 (list 3 4)))`. فأعطِ النتيجة التي يطبعها المفسّر، وبنية الصناديق والمؤشّرات المقابلة، وتأويل هذا بوصفه شجرةً (كما في [الشكل 2.6](#Figure-2_002e6)).
 
-**Exercise 2.25:** Give combinations of `car`s and `cdr`s that will pick 7 from each of the following lists:
+**التمرين 2.25:** أعطِ تركيباتٍ من `car`s و`cdr`s ستنتزع 7 من كلّ واحدة من القوائم التالية:
 
 ```scheme
 (1 3 (5 7) 9)
@@ -824,14 +824,14 @@ To aid in writing recursive procedures on trees, Scheme provides the primitive p
 (1 (2 (3 (4 (5 (6 7))))))
 ```
 
-**Exercise 2.26:** Suppose we define `x` and `y` to be two lists:
+**التمرين 2.26:** لنفترض أنّنا عرّفنا `x` و`y` ليكونا قائمتين:
 
 ```scheme
 (define x (list 1 2 3))
 (define y (list 4 5 6))
 ```
 
-What result is printed by the interpreter in response to evaluating each of the following expressions:
+فما النتيجة التي يطبعها المفسّر استجابةً لتقييم كلّ واحدٍ من التعابير التالية:
 
 ```scheme
 (append x y)
@@ -839,7 +839,7 @@ What result is printed by the interpreter in response to evaluating each of the 
 (list x y)
 ```
 
-**Exercise 2.27:** Modify your `reverse` procedure of [Exercise 2.18](#Exercise-2_002e18) to produce a `deep-reverse` procedure that takes a list as argument and returns as its value the list with its elements reversed and with all sublists deep-reversed as well. For example,
+**التمرين 2.27:** عدّل إجراءك `reverse` من [التمرين 2.18](#Exercise-2_002e18) لتُنتج إجراءً هو `deep-reverse` يأخذ قائمةً كمعطىً ويُعيد قيمته قائمةً عناصرها معكوسةٌ وجميع قوائمها الفرعيّة معكوسةٌ عكسًا عميقًا كذلك. فعلى سبيل المثال،
 
 ```scheme
 (define x 
@@ -855,7 +855,7 @@ x
 ((4 3) (2 1))
 ```
 
-**Exercise 2.28:** Write a procedure `fringe` that takes as argument a tree (represented as a list) and returns a list whose elements are all the leaves of the tree arranged in left-to-right order. For example,
+**التمرين 2.28:** اكتب إجراءً هو `fringe` يأخذ كمعطىً شجرةً (ممثَّلةً كقائمة) ويُعيد قائمةً عناصرها هي جميع أوراق الشجرة مرتَّبةً من اليسار إلى اليمين. فعلى سبيل المثال،
 
 ```scheme
 (define x 
@@ -868,21 +868,21 @@ x
 (1 2 3 4 1 2 3 4)
 ```
 
-**Exercise 2.29:** A binary mobile consists of two branches, a left branch and a right branch. Each branch is a rod of a certain length, from which hangs either a weight or another binary mobile. We can represent a binary mobile using compound data by constructing it from two branches (for example, using `list`):
+**التمرين 2.29:** يتكوّن المِهْبَل الثنائيّ من فرعين، فرعٍ أيسر وفرعٍ أيمن. وكلّ فرعٍ هو قضيبٌ ذو طولٍ معيّن، يتدلّى منه إمّا ثقلٌ وإمّا مِهْبَلٌ ثنائيٌّ آخر. ويمكننا تمثيل المِهْبَل الثنائيّ باستخدام بياناتٍ مركّبةٍ وذلك بإنشائه من فرعين (فعلى سبيل المثال، باستخدام `list`):
 
 ```scheme
 (define (make-mobile left right)
   (list left right))
 ```
 
-A branch is constructed from a `length` (which must be a number) together with a `structure`, which may be either a number (representing a simple weight) or another mobile:
+أمّا الفرع فيُبنى من `length` (الذي ينبغي أن يكون عددًا) مع `structure`، الذي قد يكون إمّا عددًا (يمثّل ثقلًا بسيطًا) وإمّا مِهْبَلًا آخر:
 
 ```scheme
 (define (make-branch length structure)
   (list length structure))
 ```
 
-Write the corresponding selectors `left-branch` and `right-branch`, which return the branches of a mobile, and `branch-length` and `branch-structure`, which return the components of a branch. Using your selectors, define a procedure `total-weight` that returns the total weight of a mobile. A mobile is said to be *balanced* if the torque applied by its top-left branch is equal to that applied by its top-right branch (that is, if the length of the left rod multiplied by the weight hanging from that rod is equal to the corresponding product for the right side) and if each of the submobiles hanging off its branches is balanced. Design a predicate that tests whether a binary mobile is balanced. Suppose we change the representation of mobiles so that the constructors are
+فاكتب المُنَتقيات المُقابلة `left-branch` و`right-branch`، التي تُعيد فروض المِهْبَل، و`branch-length` و`branch-structure`، التي تُعيد مكوّنات الفرع. وباستخدام مُنَتقياتك، عرّف إجراءً هو `total-weight` يُعيد الثقل الكلّي لمِهْبَلٍ ما. ويُقال عن مِهْبَلٍ إنّه *متوازنٌ* إذا كان عزم الالتواء الذي يُطبّقه فرعه الأيسر العلويّ مساويًا لذاك الذي يُطبّقه فرعه الأيمن العلويّ (أي إذا كان طول القضيب الأيسر مضروبًا في الثقل المتدلّي من ذاك القضيب مساويًا للجداء المقابل من الجهة اليمنى) وإذا كان كلٌّ من المِهْبَلات الفرعيّة المتدلّية من فروضه متوازنًا. فصمّم مسيّمًا يختبر ما إذا كان المِهْبَل الثنائيّ متوازنًا. ولنفترض أنّنا غيّرنا تمثيل المِهْبَلات بحيث تصير البواني هي
 
 ```scheme
 (define (make-mobile left right)
@@ -892,11 +892,11 @@ Write the corresponding selectors `left-branch` and `right-branch`, which return
   (cons length structure))
 ```
 
-How much do you need to change your programs to convert to the new representation?
+فما القدر الذي يتعيّن عليك تغييره في برامجك للتحوّل إلى التمثيل الجديد؟
 
-#### Mapping over trees
+#### الإسناد على الأشجار
 
-Just as `map` is a powerful abstraction for dealing with sequences, `map` together with recursion is a powerful abstraction for dealing with trees. For instance, the `scale-tree` procedure, analogous to `scale-list` of [2.2.1](#g_t2_002e2_002e1), takes as arguments a numeric factor and a tree whose leaves are numbers. It returns a tree of the same shape, where each number is multiplied by the factor. The recursive plan for `scale-tree` is similar to the one for `count-leaves`:
+فكما أنّ `map` تجريدٌ قويٌّ للتعامل مع التسلسلات، فإنّ `map` مع التعاوب تجريدٌ قويٌّ للتعامل مع الأشجار. فعلى سبيل المثال، يأخذ الإجراء `scale-tree`، النظير لـ`scale-list` في [2.2.1](#g_t2_002e2_002e1)، كوسائطَ معاملًا عدديًّا وشجرةً أوراقها أعداد. وهو يُعيد شجرةً بالشكل نفسه، حيث يُضرب كلّ عددٍ في المعامل. والخطة التعاوديّة لـ`scale-tree` شبيهةٌ بتلك الخاصّة بـ`count-leaves`:
 
 ```scheme
 (define (scale-tree tree factor)
@@ -917,7 +917,7 @@ Just as `map` is a powerful abstraction for dealing with sequences, `map` togeth
 (10 (20 (30 40) 50) (60 70))
 ```
 
-Another way to implement `scale-tree` is to regard the tree as a sequence of sub-trees and use `map`. We map over the sequence, scaling each sub-tree in turn, and return the list of results. In the base case, where the tree is a leaf, we simply multiply by the factor:
+وثمّة طريقةٌ أخرى لتنفيذ `scale-tree`، وهي اعتبار الشجرة تسلسلًا من الأشجار الفرعيّة واستخدام `map`. فنُسند على التسلسل، مُكبّرين كلّ شجرةٍ فرعيّةٍ بدورها، ونُعيد قائمة النتائج. وفي الحالة الأساسّة، حيث تكون الشجرة ورقةً، نضرب ببساطةٍ في المعامل:
 
 ```scheme
 (define (scale-tree tree factor)
@@ -928,9 +928,9 @@ Another way to implement `scale-tree` is to regard the tree as a sequence of sub
        tree))
 ```
 
-Many tree operations can be implemented by similar combinations of sequence operations and recursion.
+ويمكن تنفيذ كثيرٍ من عمليّات الأشجار بتركيباتٍ مشابهةٍ من عمليّات التسلسلات والتعاوب.
 
-**Exercise 2.30:** Define a procedure `square-tree` analogous to the `square-list` procedure of [Exercise 2.21](#Exercise-2_002e21). That is, `square-tree` should behave as follows:
+**التمرين 2.30:** عرّف إجراءً هو `square-tree` نظيرًا لإجراء `square-list` في [التمرين 2.21](#Exercise-2_002e21). أي أنّ `square-tree` ينبغي أن يسلك سلوكًا كما يلي:
 
 ```scheme
 (square-tree
@@ -940,16 +940,16 @@ Many tree operations can be implemented by similar combinations of sequence oper
 (1 (4 (9 16) 25) (36 49))
 ```
 
-Define `square-tree` both directly (i.e., without using any higher-order procedures) and also by using `map` and recursion.
+فعرّف `square-tree` مباشرةً (أي دون استخدام أيّ إجراءاتٍ عليا الرتبة) وكذلك باستخدام `map` والتعاوب.
 
-**Exercise 2.31:** Abstract your answer to [Exercise 2.30](#Exercise-2_002e30) to produce a procedure `tree-map` with the property that `square-tree` could be defined as
+**التمرين 2.31:** جرّد إجابتك على [التمرين 2.30](#Exercise-2_002e30) لتُنتج إجراءً هو `tree-map` بالخاصّيّة أنّ `square-tree` يمكن تعريفه كـ
 
 ```scheme
 (define (square-tree tree) 
   (tree-map square tree))
 ```
 
-**Exercise 2.32:** We can represent a set as a list of distinct elements, and we can represent the set of all subsets of the set as a list of lists. For example, if the set is `(1 2 3)`, then the set of all subsets is `(() (3) (2) (2 3) (1) (1 3) (1 2) (1 2 3))`. Complete the following definition of a procedure that generates the set of subsets of a set and give a clear explanation of why it works:
+**التمرين 2.32:** يمكننا تمثيل مجموعةٍ كقائمةٍ من عناصرٍ متمايزة، ويمكننا تمثيل مجموعة جميع المجموعات الفرعيّة للمجموعة كقائمةٍ من القوائم. فعلى سبيل المثال، إذا كانت المجموعة هي `(1 2 3)`، فإنّ مجموعة جميع المجموعات الفرعيّة هي `(() (3) (2) (2 3) (1) (1 3) (1 2) (1 2 3))`. فأكمل التعريف التالي لإجراءٍ يولّد مجموعة المجموعات الفرعيّة لمجموعةٍ ما، وأعطِ تفسيرًا واضحًا لسبب نجاحه:
 
 ```scheme
 (define (subsets s)
@@ -959,11 +959,11 @@ Define `square-tree` both directly (i.e., without using any higher-order procedu
         (append rest (map ⟨??⟩ rest)))))
 ```
 
-#### 2.2.3 Sequences as Conventional Interfaces
+#### 2.2.3 التسلسلات كَوَاجهاتٍ اعتياديّة
 
-In working with compound data, we’ve stressed how data abstraction permits us to design programs without becoming enmeshed in the details of data representations, and how abstraction preserves for us the flexibility to experiment with alternative representations. In this section, we introduce another powerful design principle for working with data structures—the use of *conventional interfaces*.
+وفي العمل مع البيانات المركّبة، أكّدنا كيف يسمح لنا تجريد البيانات بتصميم برامجٍ دون أن نتشابك في تفاصيل تمثيلات البيانات، وكيف يحفظ لنا التجريد المرونة اللازمة لتجربة تمثيلاتٍ بديلة. وفي هذا القسم، نستعرض مبدأً تصميميًّا قويًّا آخر للعمل مع بنى البيانات—ألا وهو استخدام *الوَاجهات الاعتياديّة*.
 
-In [1.3](https://sarabander.github.io/sicp/html/1_002e3.xhtml#g_t1_002e3) we saw how program abstractions, implemented as higher-order procedures, can capture common patterns in programs that deal with numerical data. Our ability to formulate analogous operations for working with compound data depends crucially on the style in which we manipulate our data structures. Consider, for example, the following procedure, analogous to the `count-leaves` procedure of [2.2.2](#g_t2_002e2_002e2), which takes a tree as argument and computes the sum of the squares of the leaves that are odd:
+في [1.3](https://sarabander.github.io/sicp/html/1_002e3.xhtml#g_t1_002e3) رأينا كيف يمكن لتجريدات البرامج، المنفَّذةً كإجراءاتٍ عليا الرتبة، أن تلتقط الأنماط الشائعة في البرامج التي تتعامل مع بياناتٍ عدديّة. وإنّ قدرتنا على صياغة عمليّاتٍ نظيرةٍ للعمل مع بياناتٍ مركّبةٍ تعتمد اعتمادًا حاسمًا على الأسلوب الذي نعالج به بنى بياناتنا. فتأمّل مثلًا الإجراء التالي، النظير لإجراء `count-leaves` في [2.2.2](#g_t2_002e2_002e2)، الذي يأخذ شجرةً كمعطىً ويحتسب مجموع مربّعات الأوراق الفرديّة:
 
 ```scheme
 (define (sum-odd-squares tree)
@@ -976,7 +976,7 @@ In [1.3](https://sarabander.github.io/sicp/html/1_002e3.xhtml#g_t1_002e3) we saw
                   (cdr tree))))))
 ```
 
-On the surface, this procedure is very different from the following one, which constructs a list of all the even Fibonacci numbers $Fib ( k )$ , where $k$ is less than or equal to a given integer $n$ :
+أمّا في الظّاهر، فهذا الإجراء مختلفٌ كلّ الاختلاف عن الإجراء التالي، الذي يبني قائمةً بجميع أعداد فيبوناتشي الزوجيّة $Fib ( k )$ ، حيث $k$ لا تزيد على عددٍ صحيحٍ معطىً $n$ :
 
 ```scheme
 (define (even-fibs n)
@@ -990,38 +990,38 @@ On the surface, this procedure is very different from the following one, which c
   (next 0))
 ```
 
-Despite the fact that these two procedures are structurally very different, a more abstract description of the two computations reveals a great deal of similarity. The first program
+وعلى الرغم من أنّ هذين الإجراءين مختلفان بنيويًّا اختلافًا كبيرًا، فإنّ وصفًا أكثر تجريدًا للاحتسابين يكشف عن قدرٍ كبيرٍ من التشابه. فالبرنامج الأوّل
 
-- enumerates the leaves of a tree;
-- filters them, selecting the odd ones;
-- squares each of the selected ones; and
-- accumulates the results using `+`, starting with 0.
+- يُعدّد أوراق شجرة؛
+- يرشّحها، منتقيًا الفرديّة منها؛
+- يُربّع كلّ واحدٍ من المُنتقى؛ و
+- يُراكم النتائج باستخدام `+`، بدءًا من 0.
 
-The second program
+أمّا البرنامج الثاني
 
-- enumerates the integers from 0 to $n$ ;
-- computes the Fibonacci number for each integer;
-- filters them, selecting the even ones; and
-- accumulates the results using `cons`, starting with the empty list.
+- يُعدّد الأعداد الصحيحة من 0 إلى $n$ ؛
+- يحتسب عدد فيبوناتشي لكلّ عددٍ صحيح؛
+- يرشّحها، منتقيًا الزوجيّة منها؛ و
+- يُراكم النتائج باستخدام `cons`، بدءًا من القائمة الفارغة.
 
-A signal-processing engineer would find it natural to conceptualize these processes in terms of signals flowing through a cascade of stages, each of which implements part of the program plan, as shown in [Figure 2.7](#Figure-2_002e7). In `sum-odd-squares`, we begin with an *enumerator*, which generates a “signal” consisting of the leaves of a given tree. This signal is passed through a *filter*, which eliminates all but the odd elements. The resulting signal is in turn passed through a *map*, which is a “transducer” that applies the `square` procedure to each element. The output of the map is then fed to an *accumulator*, which combines the elements using `+`, starting from an initial 0. The plan for `even-fibs` is analogous.
+سيجد مهندسُ معالجة الإشارات من الطبيعيّ أن يُصوّر هذه العمليّات بدلالة إشاراتٍ تتدفّق عبر تتابعٍ من المراحل، كلٌّ منها ينفّذ جزءًا من خطة البرنامج، كما هو موضّح في [الشكل 2.7](#Figure-2_002e7). ففي `sum-odd-squares`، نبدأ بـ*mُعَدِّد (enumerator)*، الذي يُولّد «إشارة» تتكوّن من أوراق شجرةٍ معطاة. وهذه الإشارة تُمرَّر عبر *مرشّح (filter)*، يُقصي جميع العناصر عدا الفرديّة. ثمّ تُمرَّر الإشارة الناتجة بدورها عبر *إسناد (map)*، وهو «محوّلٌ» يُطبّق الإجراء `square` على كلّ عنصر. ثمّ يُغذّى خرج الإسناد إلى *مُراكم (accumulator)*، الذي يجمع العناصر باستخدام `+`، بدءًا من 0 أوّليّة. أمّا خطة `even-fibs` فهي نظيرة.
 
 ![](/images/sicp/c2-building-abstractions-with-data-5-Fig2.7e.std.webp)
 
-**Figure 2.7:** The signal-flow plans for the procedures `sum-odd-squares` (top) and `even-fibs` (bottom) reveal the commonality between the two programs.
+**الشكل 2.7:** تكشف خطط تدفّق الإشارة الخاصّة بالإجراءين `sum-odd-squares` (أعلى) و`even-fibs` (أسفل) عن القاسم المشترك بين البرنامجين.
 
-Unfortunately, the two procedure definitions above fail to exhibit this signal-flow structure. For instance, if we examine the `sum-odd-squares` procedure, we find that the enumeration is implemented partly by the `null?` and `pair?` tests and partly by the tree-recursive structure of the procedure. Similarly, the accumulation is found partly in the tests and partly in the addition used in the recursion. In general, there are no distinct parts of either procedure that correspond to the elements in the signal-flow description. Our two procedures decompose the computations in a different way, spreading the enumeration over the program and mingling it with the map, the filter, and the accumulation. If we could organize our programs to make the signal-flow structure manifest in the procedures we write, this would increase the conceptual clarity of the resulting code.
+وللأسف، فإنّ تعريفَي الإجراءين المذكورين أعلاه لا يُظهران بنية تدفّق الإشارة هذه. فعلى سبيل المثال، إذا فحصنا الإجراء `sum-odd-squares`، نجد أنّ الإعداد منفَّذٌ جزئيًّا باختبارَي `null?` و`pair?` وجزئيًّا بالبنية التعاوديّة الشجريّة للإجراء. وبشكلٍ مماثل، نجد التراكم جزءًا منه في الاختبارات وجزءًا منه في الجمع المستخدم في التعاوب. وبصورةٍ عامّة، ليس ثمّة أجزاءٌ متمايزةٌ في أيّ من الإجراءين تقابل العناصر في وصف تدفّق الإشارة. فإجراءانا يُفكّكان الاحتساب بطريقةٍ مختلفة، يبثّان الإعداد في البرنامج كله ويمزجانه بالإسناد والترشيح والتراكم. ولو كنّا قادرين على تنظيم برامجنا بحيث تصير بنية تدفّق الإشارة ظاهرةً في الإجراءات التي نكتبها، لَزاد ذلك وضوح الشيفرة الناتجة مفهوميًّا.
 
-#### Sequence Operations
+#### عمليّات التسلسلات
 
-The key to organizing programs so as to more clearly reflect the signal-flow structure is to concentrate on the “signals” that flow from one stage in the process to the next. If we represent these signals as lists, then we can use list operations to implement the processing at each of the stages. For instance, we can implement the mapping stages of the signal-flow diagrams using the `map` procedure from [2.2.1](#g_t2_002e2_002e1):
+ومفتاح تنظيم البرامج بحيث تعكس بنية تدفّق الإشارة على نحوٍ أوضح هو التركيز على «الإشارات» التي تتدفّق من مرحلةٍ في العمليّة إلى المرحلة التالية. فإذا مثّلنا هذه الإشارات كقوائم، أمكننا استخدام عمليّات القوائم لتنفيذ المعالجة في كلّ مرحلة. فعلى سبيل المثال، يمكننا تنفيذ مراحل الإسناد في مخطّطات تدفّق الإشارة باستخدام الإجراء `map` من [2.2.1](#g_t2_002e2_002e1):
 
 ```scheme
 (map square (list 1 2 3 4 5))
 (1 4 9 16 25)
 ```
 
-Filtering a sequence to select only those elements that satisfy a given predicate is accomplished by
+وأمّا ترشيح تسلسلٍ لانتقاء العناصر التي تحقّق مسيّمًا معيَّنًا فقط فيُنجَز بـ
 
 ```scheme
 (define (filter predicate sequence)
@@ -1034,14 +1034,14 @@ Filtering a sequence to select only those elements that satisfy a given predicat
                        (cdr sequence)))))
 ```
 
-For example,
+فعلى سبيل المثال،
 
 ```scheme
 (filter odd? (list 1 2 3 4 5))
 (1 3 5)
 ```
 
-Accumulations can be implemented by
+ويمكن تنفيذ التراكمات (accumulations) بالإجراء
 
 ```scheme
 (define (accumulate op initial sequence)
@@ -1060,7 +1060,7 @@ Accumulations can be implemented by
 (1 2 3 4 5)
 ```
 
-All that remains to implement signal-flow diagrams is to enumerate the sequence of elements to be processed. For `even-fibs`, we need to generate the sequence of integers in a given range, which we can do as follows:
+وكلّ ما يبقى لتنفيذ مخططات تدفق الإشارة (signal-flow diagrams) هو تعداد التسلسل من العناصر التي ستُعالَج. وبالنسبة إلى `even-fibs`، نحتاج إلى توليد تسلسل الأعداد الصحيحة في مدىً معطًى، وهو ما يمكننا فعله كما يلي:
 
 ```scheme
 (define (enumerate-interval low high)
@@ -1075,7 +1075,7 @@ All that remains to implement signal-flow diagrams is to enumerate the sequence 
 (2 3 4 5 6 7)
 ```
 
-To enumerate the leaves of a tree, we can use[^14]
+ولتعداد (enumerate) أوراق شجرةٍ، يمكننا استخدام[^14]
 
 ```scheme
 (define (enumerate-tree tree)
@@ -1089,7 +1089,7 @@ To enumerate the leaves of a tree, we can use[^14]
 (1 2 3 4 5)
 ```
 
-Now we can reformulate `sum-odd-squares` and `even-fibs` as in the signal-flow diagrams. For `sum-odd-squares`, we enumerate the sequence of leaves of the tree, filter this to keep only the odd numbers in the sequence, square each element, and sum the results:
+ويمكننا الآن إعادة صياغة `sum-odd-squares` و`even-fibs` كما في مخططات تدفق الإشارة. فبالنسبة إلى `sum-odd-squares`، نُعدِّد (enumerate) تسلسل أوراق الشجرة، ونُرَشِّحه (filter) لنحتفظ بالأعداد الفرديّة وحدها في التسلسل، ونُربّع كلّ عنصر، ونجمع النتائج:
 
 ```scheme
 (define (sum-odd-squares tree)
@@ -1101,7 +1101,7 @@ Now we can reformulate `sum-odd-squares` and `even-fibs` as in the signal-flow d
                 (enumerate-tree tree)))))
 ```
 
-For `even-fibs`, we enumerate the integers from 0 to $n$ , generate the Fibonacci number for each of these integers, filter the resulting sequence to keep only the even elements, and accumulate the results into a list:
+وبالنسبة إلى `even-fibs`، نُعدِّد الأعداد الصحيحة من 0 إلى $n$ ، ونُولِّد عدد فيبوناتشي لكلّ عددٍ من هذه الأعداد، ونُرَشِّح التسلسل الناتج لنحتفظ بالعناصر الزوجيّة وحدها، ونُتراكِم النتائج (accumulate) في قائمة:
 
 ```scheme
 (define (even-fibs n)
@@ -1113,9 +1113,9 @@ For `even-fibs`, we enumerate the integers from 0 to $n$ , generate the Fibonacc
                 (enumerate-interval 0 n)))))
 ```
 
-The value of expressing programs as sequence operations is that this helps us make program designs that are modular, that is, designs that are constructed by combining relatively independent pieces. We can encourage modular design by providing a library of standard components together with a conventional interface for connecting the components in flexible ways.
+وقيمة التعبير عن البرامج كعمليّاتٍ تسلسليّةٍ هي أنّ ذلك يساعدنا على جعل تصاميم برامجنا وحدانيّةً (modular)، أي مبنيّةً بدمج أجزاءٍ مستقلّةٍ نسبيًّا. ويمكننا تشجيع التصميم الوحدانيّ بتوفير مكتبة (library) من المكوّنات المعياريّة إلى جانب واجهةٍ اعتياديّةٍ (conventional interface) لربط المكوّنات بطرائقٍ مرنةٍ.
 
-Modular construction is a powerful strategy for controlling complexity in engineering design. In real signal-processing applications, for example, designers regularly build systems by cascading elements selected from standardized families of filters and transducers. Similarly, sequence operations provide a library of standard program elements that we can mix and match. For instance, we can reuse pieces from the `sum-odd-squares` and `even-fibs` procedures in a program that constructs a list of the squares of the first $n + 1$ Fibonacci numbers:
+والبناء الوحدانيّ استراتيجيّةٌ قويّةٌ للتحكّم في التعقيد في التصميم الهندسيّ. ففي تطبيقات معالجة الإشارة (signal processing) الواقعيّة، مثلًا، يبني المصمّمون بانتظامٍ أنظمةً بربط عناصرَ متتاليةٍ منتقاةٍ من عائلاتٍ معياريّةٍ من المرشّحات (filters) والمحوّلات (transducers). وعلى نحوٍ مماثل، تُوفّر عمليّات التسلسل مكتبةً من عناصر البرامج المعياريّة التي يمكننا مزجها ومطابقتها. فعلى سبيل المثال، يمكننا إعادة استخدام أجزاءٍ من الإجراءين `sum-odd-squares` و`even-fibs` في برنامجٍ يبني قائمةً بمربّعات أوّل $n + 1$ عدد فيبوناتشي:
 
 ```scheme
 (define (list-fib-squares n)
@@ -1130,7 +1130,7 @@ Modular construction is a powerful strategy for controlling complexity in engine
 (0 1 1 4 9 25 64 169 441 1156 3025)
 ```
 
-We can rearrange the pieces and use them in computing the product of the squares of the odd integers in a sequence:
+ويمكننا إعادة ترتيب الأجزاء واستخدامها في احتساب حاصل ضرب مربّعات الأعداد الصحيحة الفرديّة في تسلسلٍ ما:
 
 ```scheme
 (define 
@@ -1146,7 +1146,7 @@ We can rearrange the pieces and use them in computing the product of the squares
 225
 ```
 
-We can also formulate conventional data-processing applications in terms of sequence operations. Suppose we have a sequence of personnel records and we want to find the salary of the highest-paid programmer. Assume that we have a selector `salary` that returns the salary of a record, and a predicate `programmer?` that tests if a record is for a programmer. Then we can write
+ويمكننا أيضًا صياغة تطبيقات معالجة البيانات (data processing) الاعتياديّة بدلالة عمليّات التسلسل. فلنفترض أنّ لدينا تسلسلًا من سجلّات الموظفين (personnel records) ونريد إيجاد راتب المبرمج الأعلى أجرًا (highest-paid programmer). ولنفترض أنّ لدينا منتقيًّا (selector) اسمه `salary` يُعيد راتب سجلّ، ومسيِّمًا (predicate) اسمه `programmer?` يختبر فيما إذا كان السجلّ لمبرمجٍ. فيمكننا حينئذٍ الكتابة
 
 ```scheme
 (define 
@@ -1159,11 +1159,11 @@ We can also formulate conventional data-processing applications in terms of sequ
         (filter programmer? records))))
 ```
 
-These examples give just a hint of the vast range of operations that can be expressed as sequence operations.[^15]
+وهذه الأمثلة لا تُعطي سوى لمحةٍ عن المدى الواسع من العمليّات التي يمكن التعبير عنها كعمليّاتٍ تسلسليّةٍ.[^15]
 
-Sequences, implemented here as lists, serve as a conventional interface that permits us to combine processing modules. Additionally, when we uniformly represent structures as sequences, we have localized the data-structure dependencies in our programs to a small number of sequence operations. By changing these, we can experiment with alternative representations of sequences, while leaving the overall design of our programs intact. We will exploit this capability in [3.5](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5), when we generalize the sequence-processing paradigm to admit infinite sequences.
+والتسلسلات، المنفَّذة هنا كقوائم، تعمل كواجهةٍ اعتياديّةٍ (conventional interface) تسمح لنا بدمج وحدات المعالجة. وإضافةً إلى ذلك، حين نمثّل البنى تمثيلًا موحّدًا كتسلسلاتٍ، فإنّنا نُركّز اعتماديات بنية البيانات في برامجنا على عددٍ قليلٍ من عمليّات التسلسل. وبتغيير هذه، يمكننا تجربة تمثيلاتٍ بديلةٍ للتسلسلات، دون المساس بالتصميم الكلّيّ لبرامجنا. وسنستغلّ هذه القدرة في [3.5](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5)، حين نُعمّم نمط معالجة التسلسلات ليقرّ بتسلسلاتٍ لا نهائيّةٍ (infinite sequences).
 
-**Exercise 2.33:** Fill in the missing expressions to complete the following definitions of some basic list-manipulation operations as accumulations:
+**التمرين 2.33:** أكمل التعابير الناقصة لإتمام التعريفات الآتية لبعض عمليّات التلاعب الأساسيّة بالقوائم، على هيئة تراكماتٍ:
 
 ```scheme
 (define (map p sequence)
@@ -1177,9 +1177,9 @@ Sequences, implemented here as lists, serve as a conventional interface that per
   (accumulate ⟨??⟩ 0 sequence))
 ```
 
-**Exercise 2.34:** Evaluating a polynomial in $x$ at a given value of $x$ can be formulated as an accumulation. We evaluate the polynomial $a_{n} x^{n} + a_{n − 1} x^{n − 1} + ⋯ + a_{1} x + a_{0}$ using a well-known algorithm called *Horner’s rule*, which structures the computation as $( … ( a_{n} x + a_{n − 1} ) x + ⋯ + a_{1} ) x + a_{0} .$ In other words, we start with $a_{n}$ , multiply by $x$ , add $a_{n − 1}$ , multiply by $x$ , and so on, until we reach $a_{0}$ .[^16]
+**التمرين 2.34:** يمكن صياغة تقييم كثير حدودٍ في $x$ عند قيمةٍ معطاةٍ من $x$ كتراكمٍ. فنُقيّم كثير الحدود $a_{n} x^{n} + a_{n − 1} x^{n − 1} + ⋯ + a_{1} x + a_{0}$ باستخدام خوارزميّةٍ معروفةٍ تُسمّى *قاعدة هورنر (Horner’s rule)*، وهي تبني الاحتساب على الشكل $( … ( a_{n} x + a_{n − 1} ) x + ⋯ + a_{1} ) x + a_{0} .$ وبعبارةٍ أخرى، نبدأ من $a_{n}$ ، ونضرب في $x$ ، ونضيف $a_{n − 1}$ ، ونضرب في $x$ ، وهكذا، حتّى نبلغ $a_{0}$ .[^16]
 
-Fill in the following template to produce a procedure that evaluates a polynomial using Horner’s rule. Assume that the coefficients of the polynomial are arranged in a sequence, from $a_{0}$ through $a_{n}$ .
+وأكمل القالب الآتي لإنتاج إجراءٍ يُقيّم كثير حدودٍ باستخدام قاعدة هورنر. وافترض أنّ معاملات كثير الحدود مرتّبةٌ في تسلسلٍ، من $a_{0}$ إلى $a_{n}$ .
 
 ```scheme
 (define 
@@ -1191,20 +1191,20 @@ Fill in the following template to produce a procedure that evaluates a polynomia
    coefficient-sequence))
 ```
 
-For example, to compute $1 + 3 x + 5 x^{3} + x^{5}$ at $x = 2$ you would evaluate
+فعلى سبيل المثال، لاحتساب $1 + 3 x + 5 x^{3} + x^{5}$ عند $x = 2$ ستُقيّم
 
 ```scheme
 (horner-eval 2 (list 1 3 0 5 0 1))
 ```
 
-**Exercise 2.35:** Redefine `count-leaves` from [2.2.2](#g_t2_002e2_002e2) as an accumulation:
+**التمرين 2.35:** أعِد تعريف `count-leaves` الوارد في [2.2.2](#g_t2_002e2_002e2) كتراكمٍ:
 
 ```scheme
 (define (count-leaves t)
   (accumulate ⟨??⟩ ⟨??⟩ (map ⟨??⟩ ⟨??⟩)))
 ```
 
-**Exercise 2.36:** The procedure `accumulate-n` is similar to `accumulate` except that it takes as its third argument a sequence of sequences, which are all assumed to have the same number of elements. It applies the designated accumulation procedure to combine all the first elements of the sequences, all the second elements of the sequences, and so on, and returns a sequence of the results. For instance, if `s` is a sequence containing four sequences, `((1 2 3) (4 5 6) (7 8 9) (10 11 12)),` then the value of `(accumulate-n + 0 s)` should be the sequence `(22 26 30)`. Fill in the missing expressions in the following definition of `accumulate-n`:
+**التمرين 2.36:** الإجراء `accumulate-n` شبيهٌ بـ`accumulate`، إلّا أنّه يأخذ كمعطاه الثالث تسلسلًا من التسلسلات، ويُفترض أنّ جميعها تملك العدد نفسه من العناصر. وهو يُطبّق إجراء التراكم المعيَّن لدمج جميع العناصر الأوّلة من التسلسلات، وجميع العناصر الثانية من التسلسلات، وهكذا، ويُعيد تسلسلًا من النتائج. فعلى سبيل المثال، إذا كان `s` تسلسلًا يحتوي على أربعة تسلسلاتٍ، `((1 2 3) (4 5 6) (7 8 9) (10 11 12)),` فينبغي أن تكون قيمة `(accumulate-n + 0 s)` هي التسلسل `(22 26 30)`. وأكمل التعابير الناقصة في التعريف الآتي لـ`accumulate-n`:
 
 ```scheme
 (define (accumulate-n op init seqs)
@@ -1214,14 +1214,14 @@ For example, to compute $1 + 3 x + 5 x^{3} + x^{5}$ at $x = 2$ you would evaluat
             (accumulate-n op init ⟨??⟩))))
 ```
 
-**Exercise 2.37:** Suppose we represent vectors **v** = $( v_{i} )$ as sequences of numbers, and matrices **m** = $( m_{i j} )$ as sequences of vectors (the rows of the matrix). For example, the matrix $( 1 2 3 4 4 5 6 6 6 7 8 9 )$ is represented as the sequence `((1 2 3 4) (4 5 6 6) (6 7 8 9))`. With this representation, we can use sequence operations to concisely express the basic matrix and vector operations. These operations (which are described in any book on matrix algebra) are the following: $(dot-product v w) returns the sum Σ_{i} v_{i} w_{i} ; (matrix-*-vector m v) returns the vector t , where t_{i} = Σ_{j} m_{i j} v_{j} ; (matrix-*-matrix m n) returns the matrix p , where p_{i j} = Σ_{k} m_{i k} n_{k j} ; (transpose m) returns the matrix n , where n_{i j} = m_{j i} .$ We can define the dot product as[^17]
+**التمرين 2.37:** لنفترض أنّنا نمثّل المتجهات (vectors) **v** = $( v_{i} )$ كتسلسلاتٍ من الأعداد، والمصفوفات (matrices) **m** = $( m_{i j} )$ كتسلسلاتٍ من المتجهات (صفوف المصفوفة). فعلى سبيل المثال، المصفوفة $( 1 2 3 4 4 5 6 6 6 7 8 9 )$ ممثَّلةٌ بالتسلسل `((1 2 3 4) (4 5 6 6) (6 7 8 9))`. وبهذا التمثيل، يمكننا استخدام عمليّات التسلسل للتعبير موجزٍ عن عمليّات المتجهات والمصفوفات الأساسيّة. وهذه العمليّات (الموصوفة في أيّ كتابٍ عن جبر المصفوفات) هي الآتية: $(dot-product v w) returns the sum Σ_{i} v_{i} w_{i} ; (matrix-*-vector m v) returns the vector t , where t_{i} = Σ_{j} m_{i j} v_{j} ; (matrix-*-matrix m n) returns the matrix p , where p_{i j} = Σ_{k} m_{i k} n_{k j} ; (transpose m) returns the matrix n , where n_{i j} = m_{j i} .$ ويمكننا تعريف الجداء القياسيّ (dot product) كالآتي[^17]
 
 ```scheme
 (define (dot-product v w)
   (accumulate + 0 (map * v w)))
 ```
 
-Fill in the missing expressions in the following procedures for computing the other matrix operations. (The procedure `accumulate-n` is defined in [Exercise 2.36](#Exercise-2_002e36).)
+وأكمل التعابير الناقصة في الإجراءات الآتية لاحتساب عمليّات المصفوفات الأخرى. (والإجراء `accumulate-n` معرَّفٌ في [التمرين 2.36](#Exercise-2_002e36).)
 
 ```scheme
 (define (matrix-*-vector m v)
@@ -1235,7 +1235,7 @@ Fill in the missing expressions in the following procedures for computing the ot
     (map ⟨??⟩ m)))
 ```
 
-**Exercise 2.38:** The `accumulate` procedure is also known as `fold-right`, because it combines the first element of the sequence with the result of combining all the elements to the right. There is also a `fold-left`, which is similar to `fold-right`, except that it combines elements working in the opposite direction:
+**التمرين 2.38:** الإجراء `accumulate` يُعرَف أيضًا باسم `fold-right`، لأنّه يدمج العنصر الأوّل من التسلسل مع نتيجة دمج جميع العناصر الواقعة إلى اليمين. وهناك أيضًا `fold-left`، وهو شبيهٌ بـ`fold-right`، إلّا أنّه يدمج العناصر عاملًا في الاتجاه المعاكس:
 
 ```scheme
 (define (fold-left op initial sequence)
@@ -1247,7 +1247,7 @@ Fill in the missing expressions in the following procedures for computing the ot
   (iter initial sequence))
 ```
 
-What are the values of
+ما هي قيم
 
 ```scheme
 (fold-right / 1 (list 1 2 3))
@@ -1256,9 +1256,9 @@ What are the values of
 (fold-left  list nil (list 1 2 3))
 ```
 
-Give a property that `op` should satisfy to guarantee that `fold-right` and `fold-left` will produce the same values for any sequence.
+اذكر خاصّيّةً ينبغي أن يحقّقها `op` لضمان أن يُنتج `fold-right` و`fold-left` القيمَ نفسها لأيّ تسلسلٍ.
 
-**Exercise 2.39:** Complete the following definitions of `reverse` ([Exercise 2.18](#Exercise-2_002e18)) in terms of `fold-right` and `fold-left` from [Exercise 2.38](#Exercise-2_002e38):
+**التمرين 2.39:** أكمل التعريفات الآتية للإجراء `reverse` ([التمرين 2.18](#Exercise-2_002e18)) بدلالة `fold-right` و`fold-left` الواردين في [التمرين 2.38](#Exercise-2_002e38):
 
 ```scheme
 (define (reverse sequence)
@@ -1270,11 +1270,11 @@ Give a property that `op` should satisfy to guarantee that `fold-right` and `fol
    (lambda (x y) ⟨??⟩) nil sequence))
 ```
 
-#### Nested Mappings
+#### التعيينات المتداخلة
 
-We can extend the sequence paradigm to include many computations that are commonly expressed using nested loops.[^18] Consider this problem: Given a positive integer $n$ , find all ordered pairs of distinct positive integers $i$ and $j$ , where $1 ≤ j < i ≤ n$ , such that $i + j$ is prime. For example, if $n$ is 6, then the pairs are the following: $i 2 3 4 4 5 6 6 j 1 2 1 3 2 1 5 i + j 3 5 5 7 7 7 11$ A natural way to organize this computation is to generate the sequence of all ordered pairs of positive integers less than or equal to $n$ , filter to select those pairs whose sum is prime, and then, for each pair $( i , j )$ that passes through the filter, produce the triple $( i , j , i + j )$ .
+ويمكننا توسيع نمط التسلسل ليشمل احتساباتٍ كثيرةً تُعبَّر عنها عادةً باستخدام حلقاتٍ متداخلةٍ (nested loops).[^18] وانظر هذه المسألة: إذا أُعطي عددٌ صحيحٌ موجب $n$ ، فأوجد جميع الأزواج المرتّبة (ordered pairs) من الأعداد الصحيحة الموجبة المتمايزة $i$ و$j$ ، حيث $1 ≤ j < i ≤ n$ ، بحيث يكون المجموع $i + j$ أوّليًّا (prime). فعلى سبيل المثال، إذا كان $n$ هو 6، فإنّ الأزواج هي الآتية: $i 2 3 4 4 5 6 6 j 1 2 1 3 2 1 5 i + j 3 5 5 7 7 7 11$ والطريقة الطبيعيّة لتنظيم هذا الاحتساب هي توليد تسلسل جميع الأزواج المرتّبة من الأعداد الصحيحة الموجبة الأصغر من أو المساوية لـ$n$ ، ثمّ الترشيح لاختيار تلك الأزواج التي يكون مجموعها أوّليًّا، ثمّ - لكلّ زوجٍ $( i , j )$ يجتاز المرشّح - إنتاج الثلاثيّة $( i , j , i + j )$ .
 
-Here is a way to generate the sequence of pairs: For each integer $i ≤ n$ , enumerate the integers $j < i$ , and for each such $i$ and $j$ generate the pair $( i , j )$ . In terms of sequence operations, we map along the sequence `(enumerate-interval 1 n)`. For each $i$ in this sequence, we map along the sequence `(enumerate-interval 1 (- i 1))`. For each $j$ in this latter sequence, we generate the pair `(list i j)`. This gives us a sequence of pairs for each $i$ . Combining all the sequences for all the $i$ (by accumulating with `append`) produces the required sequence of pairs:[^19]
+وهذه طريقةٌ لتوليد تسلسل الأزواج: لكلّ عددٍ صحيحٍ $i ≤ n$ ، عُدِّد الأعداد $j < i$ ، ولكلّ $i$ و$j$ هكذا وُلِّد الزوج $( i , j )$ . وبدلالة عمليّات التسلسل، نعيّن (map) على التسلسل `(enumerate-interval 1 n)`. ولكلّ $i$ في هذا التسلسل، نعيّن على التسلسل `(enumerate-interval 1 (- i 1))`. ولكلّ $j$ في هذا التسلسل الأخير، نُولِّد الزوج `(list i j)`. وهذا يُعطينا تسلسلًا من الأزواج لكلّ $i$ . ودمج جميع التسلسلات لجميع قيم $i$ (بالتراكم باستخدام `append`) يُنتج التسلسل المطلوب من الأزواج:[^19]
 
 ```scheme
 (accumulate 
@@ -1287,21 +1287,21 @@ Here is a way to generate the sequence of pairs: For each integer $i ≤ n$ , en
       (enumerate-interval 1 n)))
 ```
 
-The combination of mapping and accumulating with `append` is so common in this sort of program that we will isolate it as a separate procedure:
+إنّ تركيب التعيين والتراكم بـ`append` شائعٌ إلى هذا الحدّ في هذا النوع من البرامج، حتّى إنّنا سنعزله كإجراءٍ منفصل:
 
 ```scheme
 (define (flatmap proc seq)
   (accumulate append nil (map proc seq)))
 ```
 
-Now filter this sequence of pairs to find those whose sum is prime. The filter predicate is called for each element of the sequence; its argument is a pair and it must extract the integers from the pair. Thus, the predicate to apply to each element in the sequence is
+والآن رُشِّح تسلسل الأزواج هذا لإيجاد تلك التي يكون مجموعها أوّليًّا. فمسيِّم الترشيح يُنادى لكلّ عنصرٍ من التسلسل، ومعطاه زوجٌ ينبغي أن يستخرج منه العددين الصحيحين. ومن ثمّ، المسيِّم الذي يُطبَّق على كلّ عنصر في التسلسل هو
 
 ```scheme
 (define (prime-sum? pair)
   (prime? (+ (car pair) (cadr pair))))
 ```
 
-Finally, generate the sequence of results by mapping over the filtered pairs using the following procedure, which constructs a triple consisting of the two elements of the pair along with their sum:
+وأخيرًا، وُلِّد تسلسل النتائج بالتعيين على الأزواج المُرَشَّحة باستخدام الإجراء الآتي، الذي يبني ثلاثيّةً تتألّف من عنصري الزوج إلى جانب مجموعهما:
 
 ```scheme
 (define (make-pair-sum pair)
@@ -1310,7 +1310,7 @@ Finally, generate the sequence of results by mapping over the filtered pairs usi
         (+ (car pair) (cadr pair))))
 ```
 
-Combining all these steps yields the complete procedure:
+وجميع هذه الخطوات مجتمعةً تُعطي الإجراء الكامل:
 
 ```scheme
 (define (prime-sum-pairs n)
@@ -1327,7 +1327,7 @@ Combining all these steps yields the complete procedure:
          (enumerate-interval 1 n)))))
 ```
 
-Nested mappings are also useful for sequences other than those that enumerate intervals. Suppose we wish to generate all the permutations of a set $S ;$ that is, all the ways of ordering the items in the set. For instance, the permutations of ${ 1 , 2 , 3 }$ are ${ 1 , 2 , 3 }$ , ${ 1 , 3 , 2 }$ , ${ 2 , 1 , 3 }$ , ${ 2 , 3 , 1 }$ , ${ 3 , 1 , 2 }$ , and ${ 3 , 2 , 1 }$ . Here is a plan for generating the permutations of $S$ : For each item $x$ in $S$ , recursively generate the sequence of permutations of $S − x$ ,[^20] and adjoin $x$ to the front of each one. This yields, for each $x$ in $S$ , the sequence of permutations of $S$ that begin with $x$ . Combining these sequences for all $x$ gives all the permutations of $S$ :[^21]
+والتعيينات المتداخلة مفيدةٌ أيضًا للتسلسلات الأخرى غير تلك التي تُعدِّد المديات. فلنفترض أنّنا نريد توليد جميع تبديلات (permutations) مجموعةٍ $S ;$ أي جميع طرق ترتيب عناصر المجموعة. فعلى سبيل المثال، تبديلات ${ 1 , 2 , 3 }$ هي ${ 1 , 2 , 3 }$ ، ${ 1 , 3 , 2 }$ ، ${ 2 , 1 , 3 }$ ، ${ 2 , 3 , 1 }$ ، ${ 3 , 1 , 2 }$ ، و${ 3 , 2 , 1 }$ . وهذه خطّةٌ لتوليد تبديلات $S$ : لكلّ عنصرٍ $x$ في $S$ ، وُلِّد تعاوديًّا تسلسل تبديلات المجموعة $S − x$ ،[^20] وألحِق $x$ بمقدّمة كلٍّ منها. وهذا يُعطي، لكلّ $x$ في $S$ ، تسلسل تبديلات $S$ التي تبدأ بـ$x$ . ودمج هذه التسلسلات لجميع قيم $x$ يُعطي جميع تبديلات $S$ :[^21]
 
 ```scheme
 (define (permutations s)
@@ -1341,7 +1341,7 @@ Nested mappings are also useful for sequences other than those that enumerate in
                s)))
 ```
 
-Notice how this strategy reduces the problem of generating permutations of $S$ to the problem of generating the permutations of sets with fewer elements than $S$ . In the terminal case, we work our way down to the empty list, which represents a set of no elements. For this, we generate `(list nil)`, which is a sequence with one item, namely the set with no elements. The `remove` procedure used in `permutations` returns all the items in a given sequence except for a given item. This can be expressed as a simple filter:
+لاحِظ كيف تُرجِع هذه الاستراتيجيّة مسألة توليد تبديلات $S$ إلى مسألة توليد تبديلات مجموعاتٍ ذات عناصرَ أقلّ من $S$ . وفي الحالة النهائيّة، نهبط إلى القائمة الخالية، التي تمثّل مجموعةً لا عناصر لها. ومن أجل ذلك، نُولِّد `(list nil)`، وهو تسلسلٌ ذو عنصرٍ واحد، هو المجموعة الخالية. والإجراء `remove` المستخدم في `permutations` يُعيد جميع العناصر في تسلسلٍ معطًى فيما عدا عنصرًا معطًى. ويمكن التعبير عن ذلك بترشيحٍ بسيط:
 
 ```scheme
 (define (remove item sequence)
@@ -1349,16 +1349,16 @@ Notice how this strategy reduces the problem of generating permutations of $S$ t
           sequence))
 ```
 
-> **Exercise 2.40:** Define a procedure `unique-pairs` that, given an integer $n$ , generates the sequence of pairs $( i , j )$ with $1 ≤ j < i ≤ n$ . Use `unique-pairs` to simplify the definition of `prime-sum-pairs` given above.
+> **التمرين 2.40:** عرّف إجراءً `unique-pairs` يُولِّد، إذا أُعطي عددٌ صحيحٌ $n$ ، تسلسل الأزواج $( i , j )$ حيث $1 ≤ j < i ≤ n$ . واستخدم `unique-pairs` لتبسيط تعريف `prime-sum-pairs` المعطى أعلاه.
 
-> **Exercise 2.41:** Write a procedure to find all ordered triples of distinct positive integers $i$ , $j$ , and $k$ less than or equal to a given integer $n$ that sum to a given integer $s$ .
+> **التمرين 2.41:** اكتب إجراءً لإيجاد جميع الثلاثيّات المرتّبة من الأعداد الصحيحة الموجبة المتمايزة $i$ و$j$ و$k$ الأصغر من أو المساوية لعددٍ صحيحٍ معطًى $n$ والتي يساوي مجموعها عددًا صحيحًا معطًى $s$ .
 
-> **Exercise 2.42:** The “eight-queens puzzle” asks how to place eight queens on a chessboard so that no queen is in check from any other (i.e., no two queens are in the same row, column, or diagonal). One possible solution is shown in [Figure 2.8](#Figure-2_002e8). One way to solve the puzzle is to work across the board, placing a queen in each column. Once we have placed $k − 1$ queens, we must place the $k^{th}$ queen in a position where it does not check any of the queens already on the board. We can formulate this approach recursively: Assume that we have already generated the sequence of all possible ways to place $k − 1$ queens in the first $k − 1$ columns of the board. For each of these ways, generate an extended set of positions by placing a queen in each row of the $k^{th}$ column. Now filter these, keeping only the positions for which the queen in the $k^{th}$ column is safe with respect to the other queens. This produces the sequence of all ways to place $k$ queens in the first $k$ columns. By continuing this process, we will produce not only one solution, but all solutions to the puzzle.
+> **التمرين 2.42:** تسأل «أحجية الملكات الثماني» كيف يمكن وضع ثماني ملكات على رقعة الشطرنج بحيث لا تكون أيّ ملكةٍ تحت الكشّ من أيٍّ منهنّ (أي أنّه لا توجد ملكتان في الصفّ نفسه أو العمود نفسه أو القطر نفسه). وحلٌّ ممكنٌ موضّحٌ في [الشكل 2.8](#Figure-2_002e8). وإحدى طرق حلّ الأحجية هي العمل على امتداد الرقعة، بوضع ملكةٍ في كلّ عمود. فمتى وضعنا $k − 1$ ملكة، يجب أن نضع الملكة الـ$k^{th}$ في موضعٍ لا تتعارض فيه مع أيٍّ من الملكات الموجودة أصلًا على الرقعة. ويمكننا صياغة هذا المنهج تعاوديًّا: افترض أنّنا قد ولّدنا بالفعل تسلسل جميع الطرق الممكنة لوضع $k − 1$ ملكة في أوّل $k − 1$ عمودًا من الرقعة. ولكلّ من هذه الطرق، وُلِّد مجموعةً موسّعةً من المواضع بوضع ملكةٍ في كلّ صفٍّ من العمود الـ$k^{th}$. والآن رُشِّح هذه المواضع، مُبقيًا فقط تلك التي تكون الملكة في العمود الـ$k^{th}$ آمنةً فيها بالنسبة إلى الملكات الأخرى. وهذا يُنتج تسلسل جميع الطرق لوضع $k$ ملكة في أوّل $k$ عمودًا. وبمواصلة هذا الإجراء، فلن نُنتج حلًّا واحدًا فحسب، بل جميع حلول الأحجية.
 > > ![](/images/sicp/c2-building-abstractions-with-data-6-Fig2.8c.std.webp)
-> > **Figure 2.8:** A solution to the eight-queens puzzle.
+> > **الشكل 2.8:** حلٌّ ممكنٌ لأحجية الملكات الثماني.
 > > 
 
-We implement this solution as a procedure `queens`, which returns a sequence of all solutions to the problem of placing $n$ queens on an $n × n$ chessboard. `Queens` has an internal procedure `queen-cols` that returns the sequence of all ways to place queens in the first $k$ columns of the board.
+ونُنفّذ هذا الحلّ كإجراءٍ `queens`، يُعيد تسلسل جميع حلول مسألة وضع $n$ ملكة على رقعة شطرنجٍ $n × n$ . و`Queens` له إجراءٌ داخليٌّ `queen-cols` يُعيد تسلسل جميع الطرق لوضع الملكات في أوّل $k$ عمودًا من الرقعة.
 
 ```scheme
 (define (queens board-size)
@@ -1382,9 +1382,9 @@ We implement this solution as a procedure `queens`, which returns a sequence of 
   (queen-cols board-size))
 ```
 
-In this procedure `rest-of-queens` is a way to place $k − 1$ queens in the first $k − 1$ columns, and `new-row` is a proposed row in which to place the queen for the $k^{th}$ column. Complete the program by implementing the representation for sets of board positions, including the procedure `adjoin-position`, which adjoins a new row-column position to a set of positions, and `empty-board`, which represents an empty set of positions. You must also write the procedure `safe?`, which determines for a set of positions, whether the queen in the $k^{th}$ column is safe with respect to the others. (Note that we need only check whether the new queen is safe—the other queens are already guaranteed safe with respect to each other.)
+في هذا الإجراء، يمثّل `rest-of-queens` طريقةً لتموضع $k − 1$ من الملكات في الأعمدة الـ$k − 1$ الأولى، ويمثّل `new-row` صفًّا مقترحًا لوضع ملكة العمود الـ$k^{th}$. أكمل البرنامج بتنفيذ التمثيل الخاصّ بمجموعات مواضع الرقعة، بما في ذلك الإجراء `adjoin-position`، الذي يُضيف موضع صفّ-عمود جديد إلى مجموعة من المواضع، و`empty-board`، الذي يمثّل مجموعةً خاليةً من المواضع. وعليك أيضًا كتابة الإجراء `safe?`، الذي يحدّد، من أجل مجموعة من المواضع، ما إذا كانت ملكة العمود الـ$k^{th}$ في مأمنٍ من الأخريات. (ولاحِظ أنّنا نحتاج فقط إلى التحقّق ممّا إذا كانت الملكة الجديدة في مأمنٍ، أمّا الملكات الأخرى فمضمونٌ بالفعل أنّها في مأمنٍ من بعضها بعضًا.)
 
-**Exercise 2.43:** Louis Reasoner is having a terrible time doing [Exercise 2.42](#Exercise-2_002e42). His `queens` procedure seems to work, but it runs extremely slowly. (Louis never does manage to wait long enough for it to solve even the $6 × 6$ case.) When Louis asks Eva Lu Ator for help, she points out that he has interchanged the order of the nested mappings in the `flatmap`, writing it as
+**التمرين 2.43:** يمرّ لويس ريزنر بوقتٍ عصيبٍ للغاية في أداء [التمرين 2.42](#Exercise-2_002e42). فإجراء `queens` الخاصّ به يبدو أنه يعمل، لكنّه يعمل ببطءٍ بالغ. (ولم يتمكّن لويس قطّ من الانتظار طويلًا بما يكفي لأن يحلّه حتّى حالة $6 × 6$.) وحين سأل لويس إيفا لو أتور طالبًا المساعدة، أشارت إلى أنّه بدّل ترتيب التعيينات المتداخلة في `flatmap`، كاتبةً إيّاه على الصورة
 
 ```scheme
 (flatmap
@@ -1396,33 +1396,33 @@ In this procedure `rest-of-queens` is a way to place $k − 1$ queens in the fir
  (enumerate-interval 1 board-size))
 ```
 
-Explain why this interchange makes the program run slowly. Estimate how long it will take Louis’s program to solve the eight-queens puzzle, assuming that the program in [Exercise 2.42](#Exercise-2_002e42) solves the puzzle in time $T$ .
+اشرح لماذا يؤدّي هذا التبديل إلى جعل البرنامج يعمل ببطء. وقدّر كم من الوقت سيستغرقه برنامج لويس لحلّ أحجية الملكات الثماني، بافتراض أنّ البرنامج في [التمرين 2.42](#Exercise-2_002e42) يحلّ الأحجية في زمنٍ قدره $T$.
 
-#### 2.2.4 Example: A Picture Language
+#### 2.2.4 مثال: لغة رسم الصور
 
-This section presents a simple language for drawing pictures that illustrates the power of data abstraction and closure, and also exploits higher-order procedures in an essential way. The language is designed to make it easy to experiment with patterns such as the ones in [Figure 2.9](#Figure-2_002e9), which are composed of repeated elements that are shifted and scaled.[^22] In this language, the data objects being combined are represented as procedures rather than as list structure. Just as `cons`, which satisfies the closure property, allowed us to easily build arbitrarily complicated list structure, the operations in this language, which also satisfy the closure property, allow us to easily build arbitrarily complicated patterns.
+يقدّم هذا القسم لغةً بسيطةً لرسم الصور توضّح قوّة تجريد البيانات والإغلاق، وتستثمر أيضًا الإجراءات ذات الرتبة العليا على نحوٍ جوهريّ. وقد صُمّمت اللغة لتسهيل التجريب بأنماطٍ كالتي في [الشكل 2.9](#Figure-2_002e9)، وهي مركّبةٌ من عناصر مُكرَّرةٍ مُزاحةٍ ومُكبَّرةٍ.[^22] ففي هذه اللغة، تُُمثَّل كائنات البيانات التي تُدمَج بوصفها إجراءاتٍ لا ببنيةٍ قائمةٍ على القوائم. فكما أنّ `cons`، الذي يحقّق خاصّيّة الإغلاق، أتاح لنا بناء بنية قوائم معقّدةٍ تعسّفيًّا بسهولة، فإنّ عمليّات هذه اللغة، التي تحقّق هي أيضًا خاصّيّة الإغلاق، تتيح لنا بناء أنماطٍ معقّدةٍ تعسّفيًّا بسهولة.
 
 ![](/images/sicp/c2-building-abstractions-with-data-7-Fig2.9.std.webp)
 
-**Figure 2.9:** Designs generated with the picture language.
+**الشكل 2.9:** تصاميم أُنشئت بلغة الرسم.
 
-#### The picture language
+#### لغة الرسم
 
-When we began our study of programming in [1.1](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1), we emphasized the importance of describing a language by focusing on the language’s primitives, its means of combination, and its means of abstraction. We’ll follow that framework here.
+حين بدأنا دراسة البرمجة في [1.1](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1)، أكّدنا على أهمّيّة وصف لغةٍ بالتركيز على أوّليّات اللغة ووسائل تركيبها ووسائل تجريدها. وسنتبع هذا الإطار هنا.
 
-Part of the elegance of this picture language is that there is only one kind of element, called a *painter*. A painter draws an image that is shifted and scaled to fit within a designated parallelogram-shaped frame. For example, there’s a primitive painter we’ll call `wave` that makes a crude line drawing, as shown in [Figure 2.10](#Figure-2_002e10). The actual shape of the drawing depends on the frame—all four images in figure 2.10 are produced by the same `wave` painter, but with respect to four different frames. Painters can be more elaborate than this: The primitive painter called `rogers` paints a picture of MIT’s founder, William Barton Rogers, as shown in [Figure 2.11](#Figure-2_002e11).[^23] The four images in figure 2.11 are drawn with respect to the same four frames as the `wave` images in figure 2.10.
+وجزءٌ من أناقة لغة الرسم هذه أنّ هناك نوعًا واحدًا فقط من العناصر، يُسمّى *الرسّام (painter)*. فالرسّام يرسم صورةً تُزاح وتُكبَّر لتتناسب مع إطارٍ مُعيَّنٍ على شكل متوازي أضلاع. فمثلًا، هناك رسّامٌ أوّليٌّ سنُسمّيه `wave` يرسم رسمًا خطّيًّا بدائيًّا، كما في [الشكل 2.10](#Figure-2_002e10). وشكل الرسم الفعليّ يعتمد على الإطار، فالصور الأربع كلّها في الشكل 2.10 أُنتجت بالرسّام `wave` عينه، لكن بالنسبة إلى أربعة إطاراتٍ مختلفةٍ. ويمكن أن تكون الرسّامون أكثر تعقيدًا من هذا: فالرسّام الأوّلي المسمّى `rogers` يرسم صورةً لمؤسّس MIT، وليام بارتون روجرز، كما في [الشكل 2.11](#Figure-2_002e11).[^23] والصور الأربع في الشكل 2.11 مرسومةٌ بالنسبة إلى الإطارات الأربعة عينها التي رُسمت بها صور `wave` في الشكل 2.10.
 
 ![](/images/sicp/c2-building-abstractions-with-data-8-Fig2.10.std.webp)
 
-**Figure 2.10:** Images produced by the `wave` painter, with respect to four different frames. The frames, shown with dotted lines, are not part of the images.
+**الشكل 2.10:** صور أُنتجت بالرسّام `wave`، بالنسبة إلى أربعة إطاراتٍ مختلفةٍ. والإطارات، الموضّحة بخطوطٍ منقّطةٍ، ليست جزءًا من الصور.
 
 ![](/images/sicp/c2-building-abstractions-with-data-9-Fig2.11.std.webp)
 
-**Figure 2.11:** Images of William Barton Rogers, founder and first president of MIT, painted with respect to the same four frames as in [Figure 2.10](#Figure-2_002e10) (original image from Wikimedia Commons).
+**الشكل 2.11:** صور وليام بارتون روجرز، المؤسّس والرئيس الأوّل لـMIT، مرسومةً بالنسبة إلى الإطارات الأربعة عينها كما في [الشكل 2.10](#Figure-2_002e10) (الصورة الأصليّة من ويكيميديا كومنز).
 
-To combine images, we use various operations that construct new painters from given painters. For example, the `beside` operation takes two painters and produces a new, compound painter that draws the first painter’s image in the left half of the frame and the second painter’s image in the right half of the frame. Similarly, `below` takes two painters and produces a compound painter that draws the first painter’s image below the second painter’s image. Some operations transform a single painter to produce a new painter. For example, `flip-vert` takes a painter and produces a painter that draws its image upside-down, and `flip-horiz` produces a painter that draws the original painter’s image left-to-right reversed.
+ولدمج الصور، نستخدم عمليّاتٍ متنوّعةً تبني رسّامين جديدين من رسّامين مُعطَيين. فمثلًا، تأخذ العمليّة `beside` رسّامين وتُنتج رسّامًا مركّبًا جديدًا يرسم صورة الرسّام الأوّل في النصف الأيسر للإطار وصورة الرسّام الثاني في النصف الأيمن للإطار. وبالمثل، تأخذ `below` رسّامين وتُنتج رسّامًا مركّبًا يرسم صورة الرسّام الأوّل تحت صورة الرسّام الثاني. وبعض العمليّات تحوّل رسّامًا واحدًا لإنتاج رسّامٍ جديد. فمثلًا، تأخذ `flip-vert` رسّامًا وتُنتج رسّامًا يرسم صورته مقلوبةً رأسيًّا، وتُنتج `flip-horiz` رسّامًا يرسم صورة الرسّام الأصليّ معكوسةً من اليسار إلى اليمين.
 
-[Figure 2.12](#Figure-2_002e12) shows the drawing of a painter called `wave4` that is built up in two stages starting from `wave`:
+يُظهر [الشكل 2.12](#Figure-2_002e12) رسم رسّامٍ يُسمّى `wave4` بُني على مرحلتين بالانطلاق من `wave`:
 
 ```scheme
 (define wave2 (beside wave (flip-vert wave)))
@@ -1431,11 +1431,11 @@ To combine images, we use various operations that construct new painters from gi
 
 ![](/images/sicp/c2-building-abstractions-with-data-10-Fig2.12.std.webp)
 
-**Figure 2.12:** Creating a complex figure, starting from the `wave` painter of [Figure 2.10](#Figure-2_002e10).
+**الشكل 2.12:** إنشاء شكلٍ معقّد، بالانطلاق من الرسّام `wave` في [الشكل 2.10](#Figure-2_002e10).
 
-In building up a complex image in this manner we are exploiting the fact that painters are closed under the language’s means of combination. The `beside` or `below` of two painters is itself a painter; therefore, we can use it as an element in making more complex painters. As with building up list structure using `cons`, the closure of our data under the means of combination is crucial to the ability to create complex structures while using only a few operations.
+عند بناء صورةٍ معقّدةٍ على هذا النحو، نستثمر حقيقة أنّ الرسّامين منغلقون بالنسبة إلى وسائل تركيب اللغة. فـ`beside` أو `below` لرّسّامين هي نفسها رسّام؛ وبالتالي، يمكننا استخدامها كعنصرٍ في صنع رسّامين أكثر تعقيدًا. وكما هو الحال في بناء بنية القوائم باستخدام `cons`، فإنّ انغلاق بياناتنا بالنسبة إلى وسائل التركيب أمرٌ حاسمٌ في القدرة على إنشاء بنياتٍ معقّدةٍ باستخدام عمليّاتٍ قليلةٍ فقط.
 
-Once we can combine painters, we would like to be able to abstract typical patterns of combining painters. We will implement the painter operations as Scheme procedures. This means that we don’t need a special abstraction mechanism in the picture language: Since the means of combination are ordinary Scheme procedures, we automatically have the capability to do anything with painter operations that we can do with procedures. For example, we can abstract the pattern in `wave4` as
+حين نتمكّن من دمج الرسّامين، نودّ أن نكون قادرين على تجريد أنماطٍ نموذجيّةٍ لدمج الرسّامين. وسنُنفّذ عمليّات الرسم كإجراءات Scheme. وهذا يعني أنّنا لا نحتاج إلى آليّة تجريدٍ خاصّةٍ في لغة الرسم: فبما أنّ وسائل التركيب إجراءات Scheme اعتياديّة، فإنّنا نمتلك تلقائيًّا القدرة على فعل أيّ شيءٍ بعمليّات الرسم يمكننا فعله بالإجراءات. فمثلًا، يمكننا تجريد النمط في `wave4` كالآتي
 
 ```scheme
 (define (flipped-pairs painter)
@@ -1445,13 +1445,13 @@ Once we can combine painters, we would like to be able to abstract typical patte
     (below painter2 painter2)))
 ```
 
-and define `wave4` as an instance of this pattern:
+وتعريف `wave4` بوصفه حالةً من هذا النمط:
 
 ```scheme
 (define wave4 (flipped-pairs wave))
 ```
 
-We can also define recursive operations. Here’s one that makes painters split and branch towards the right as shown in [Figure 2.13](#Figure-2_002e13) and [Figure 2.14](#Figure-2_002e14):
+ويمكننا تعريف عمليّاتٍ تعاوديّةٍ أيضًا. وهذه واحدةٌ تجعل الرسّامين ينقسمون ويتفرّعون نحو اليمين كما في [الشكل 2.13](#Figure-2_002e13) و[الشكل 2.14](#Figure-2_002e14):
 
 ```scheme
 (define (right-split painter n)
@@ -1465,9 +1465,9 @@ We can also define recursive operations. Here’s one that makes painters split 
 
 ![](/images/sicp/c2-building-abstractions-with-data-11-Fig2.13a.std.webp)
 
-**Figure 2.13:** Recursive plans for `right-split` and `corner-split`.
+**الشكل 2.13:** مخطّطات تعاوديّة لـ`right-split` و`corner-split`.
 
-We can produce balanced patterns by branching upwards as well as towards the right (see [Exercise 2.44](#Exercise-2_002e44), [Figure 2.13](#Figure-2_002e13) and [Figure 2.14](#Figure-2_002e14)):
+ويمكننا إنتاج أنماطٍ متوازنةٍ بالتفرّع نحو الأعلى فضلًا عن التفرّع نحو اليمين (انظر [التمرين 2.44](#Exercise-2_002e44) و[الشكل 2.13](#Figure-2_002e13) و[الشكل 2.14](#Figure-2_002e14)):
 
 ```scheme
 (define (corner-split painter n)
@@ -1488,9 +1488,9 @@ We can produce balanced patterns by branching upwards as well as towards the rig
 
 ![](/images/sicp/c2-building-abstractions-with-data-12-Fig2.14b.std.webp)
 
-**Figure 2.14:** The recursive operations `right-split` and `corner-split` applied to the painters `wave` and `rogers`. Combining four `corner-split` figures produces symmetric `square-limit` designs as shown in [Figure 2.9](#Figure-2_002e9).
+**الشكل 2.14:** العمليّتان التعاوديتان `right-split` و`corner-split` مطبَّقتين على الرسّامين `wave` و`rogers`. ودمج أربع رَسومات `corner-split` يُنتج تصاميم `square-limit` متناظرةً كما في [الشكل 2.9](#Figure-2_002e9).
 
-By placing four copies of a `corner-split` appropriately, we obtain a pattern called `square-limit`, whose application to `wave` and `rogers` is shown in [Figure 2.9](#Figure-2_002e9):
+بوضع أربع نسخٍ من `corner-split` على النحو الملائم، نحصل على نمطٍ يُسمّى `square-limit`، تطبيقه على `wave` و`rogers` موضّحٌ في [الشكل 2.9](#Figure-2_002e9):
 
 ```scheme
 (define (square-limit painter n)
@@ -1500,13 +1500,13 @@ By placing four copies of a `corner-split` appropriately, we obtain a pattern ca
       (below (flip-vert half) half))))
 ```
 
-> **Exercise 2.44:** Define the procedure `up-split` used by `corner-split`. It is similar to `right-split`, except that it switches the roles of `below` and `beside`.
+> **التمرين 2.44:** عرّف الإجراء `up-split` الذي يستخدمه `corner-split`. فهو شبيهٌ بـ`right-split`، إلّا أنّه يبدّل أدوار `below` و`beside`.
 
-#### Higher-order operations
+#### عمليّات ذات رتبةٍ عليا
 
-In addition to abstracting patterns of combining painters, we can work at a higher level, abstracting patterns of combining painter operations. That is, we can view the painter operations as elements to manipulate and can write means of combination for these elements—procedures that take painter operations as arguments and create new painter operations.
+فضلًا عن تجريد أنماط دمج الرسّامين، يمكننا العمل في مستوى أعلى، مُجَرِّدين أنماط دمج عمليّات الرسم. أي أنّه يمكننا اعتبار عمليّات الرسم عناصرَ للتلاعب بها، وكتابة وسائل تركيبٍ لهذه العناصر، وهي إجراءاتٌ تأخذ عمليّات رسمٍ كمعطياتٍ وتُنشئ عمليّات رسمٍ جديدة.
 
-For example, `flipped-pairs` and `square-limit` each arrange four copies of a painter’s image in a square pattern; they differ only in how they orient the copies. One way to abstract this pattern of painter combination is with the following procedure, which takes four one-argument painter operations and produces a painter operation that transforms a given painter with those four operations and arranges the results in a square. `Tl`, `tr`, `bl`, and `br` are the transformations to apply to the top left copy, the top right copy, the bottom left copy, and the bottom right copy, respectively.
+فمثلًا، يُنظّم كلٌّ من `flipped-pairs` و`square-limit` أربع نسخٍ من صورة رسّامٍ في نمطٍ مربّعيّ؛ وهما لا يختلفان إلّا في كيفيّة توجيه النسخ. وإحدى طرائق تجريد نمط دمج الرسّامين هي بالإجراء الآتي، الذي يأخذ أربع عمليّات رسمٍ أحاديّة المعطى ويُنتج عمليّة رسمٍ تحوّل رسّامًا مُعطًى بتلك العمليّات الأربع وتُنظّم النتائج في مربّع. والتحويلات `Tl` و`tr` و`bl` و`br` هي التحويلات التي تُطبَّق على النسخة العلوية اليسرى والنسخة العلوية اليمنى والنسخة السفلية اليسرى والنسخة السفلية اليمنى، على الترتيب.
 
 ```scheme
 (define (square-of-four tl tr bl br)
@@ -1518,7 +1518,7 @@ For example, `flipped-pairs` and `square-limit` each arrange four copies of a pa
       (below bottom top))))
 ```
 
-Then `flipped-pairs` can be defined in terms of `square-of-four` as follows:[^24]
+وبعدئذٍ يمكن تعريف `flipped-pairs` بدلالة `square-of-four` كالآتي:[^24]
 
 ```scheme
 (define (flipped-pairs painter)
@@ -1530,7 +1530,7 @@ Then `flipped-pairs` can be defined in terms of `square-of-four` as follows:[^24
     (combine4 painter)))
 ```
 
-and `square-limit` can be expressed as[^25]
+ويمكن التعبير عن `square-limit` كالآتي:[^25]
 
 ```scheme
 (define (square-limit painter n)
@@ -1542,26 +1542,26 @@ and `square-limit` can be expressed as[^25]
     (combine4 (corner-split painter n))))
 ```
 
-**Exercise 2.45:** `Right-split` and `up-split` can be expressed as instances of a general splitting operation. Define a procedure `split` with the property that evaluating
+**التمرين 2.45:** يمكن التعبير عن `Right-split` و`up-split` كحالتين من عمليّة تقسيمٍ عامّة. عرّف إجراءً `split` بالخاصّيّة أنّ تقييم
 
 ```scheme
 (define right-split (split beside below))
 (define up-split (split below beside))
 ```
 
-produces procedures `right-split` and `up-split` with the same behaviors as the ones already defined.
+يُنتج الإجراءين `right-split` و`up-split` بالسلوك نفسه الذي للإجراءين المعرَّفين سابقًا.
 
-#### Frames
+#### الإطارات
 
-Before we can show how to implement painters and their means of combination, we must first consider frames. A frame can be described by three vectors—an origin vector and two edge vectors. The origin vector specifies the offset of the frame’s origin from some absolute origin in the plane, and the edge vectors specify the offsets of the frame’s corners from its origin. If the edges are perpendicular, the frame will be rectangular. Otherwise the frame will be a more general parallelogram.
+قبل أن نُبيّن كيف تُنفَّذ الرسّامون ووسائل تركيبهم، ينبغي أن نُفكّر أوّلًا في الإطارات. ويمكن وصف الإطار بثلاثة متجهات، متجه أصلٍ ومتجهي حافتَين. ومتجه الأصل يحدّد إزاحة أصل الإطار عن أصلٍ مطلقٍ معيّنٍ في المستوى، ومتجها الحافتين يحدّدان إزاحتي زاويتي الإطار عن أصله. فإذا كانت الحافتان متعامدتين، سيكون الإطار مستطيلًا. وإلّا فسيكون الإطار متوازي أضلاعٍ أكثر عمومًا.
 
-[Figure 2.15](#Figure-2_002e15) shows a frame and its associated vectors. In accordance with data abstraction, we need not be specific yet about how frames are represented, other than to say that there is a constructor `make-frame`, which takes three vectors and produces a frame, and three corresponding selectors `origin-frame`, `edge1-frame`, and `edge2-frame` (see [Exercise 2.47](#Exercise-2_002e47)).
+يُظهر [الشكل 2.15](#Figure-2_002e15) إطارًا ومتجهاته المرتبطة به. وتماشيًا مع تجريد البيانات، لا يلزم أن نُحدّد بعد كيف تُُمثَّل الإطارات، عدا أن نقول إنّ هناك بانِيًا `make-frame` يأخذ ثلاثة متجهاتٍ ويُنتج إطارًا، وثلاثة مُنتَقٍيات مناظرة `origin-frame` و`edge1-frame` و`edge2-frame` (انظر [التمرين 2.47](#Exercise-2_002e47)).
 
 ![](/images/sicp/c2-building-abstractions-with-data-13-Fig2.15a.std.webp)
 
-**Figure 2.15:** A frame is described by three vectors — an origin and two edges.
+**الشكل 2.15:** يُوصَف الإطار بثلاثة متجهات: أصلٌ وحافتان.
 
-We will use coordinates in the unit square $( 0 ≤ x , y ≤ 1 )$ to specify images. With each frame, we associate a *frame coordinate map*, which will be used to shift and scale images to fit the frame. The map transforms the unit square into the frame by mapping the vector $v = ( x , y )$ to the vector sum $Origin(Frame) + x ⋅ Edge_{1} (Frame) + y ⋅ Edge_{2} (Frame) .$ For example, (0, 0) is mapped to the origin of the frame, (1, 1) to the vertex diagonally opposite the origin, and (0.5, 0.5) to the center of the frame. We can create a frame’s coordinate map with the following procedure:[^26]
+سنستخدم الإحداثيّات في المربّع الوحدويّ $( 0 ≤ x , y ≤ 1 )$ لتحديد الصور. ومع كلّ إطارٍ، نربط *خريطة إحداثيّات الإطار (frame coordinate map)*، التي ستُستخدم لإزاحة الصور وتكبيرها لتتناسب مع الإطار. وتُحوّل الخريطة المربّع الوحدويّ إلى الإطار بربط المتجه $v = ( x , y )$ بالمجموع المتجهيّ $Origin(Frame) + x ⋅ Edge_{1} (Frame) + y ⋅ Edge_{2} (Frame) .$ فمثلًا، يُربط (0, 0) بأصل الإطار، و(1, 1) بالرأس القُطريّ المقابل للأصل، و(0.5, 0.5) بمركز الإطار. ويمكننا إنشاء خريطة إحداثيّات إطارٍ بالإجراء الآتي:[^26]
 
 ```scheme
 (define (frame-coord-map frame)
@@ -1575,21 +1575,21 @@ We will use coordinates in the unit square $( 0 ≤ x , y ≤ 1 )$ to specify im
                   (edge2-frame frame))))))
 ```
 
-Observe that applying `frame-coord-map` to a frame returns a procedure that, given a vector, returns a vector. If the argument vector is in the unit square, the result vector will be in the frame. For example,
+لاحِظ أنّ تطبيق `frame-coord-map` على إطارٍ يُعيد إجراءً يُعيد، حين يُعطى متجهًا، متجهًا. فإذا كان المتجه المعطى في المربّع الوحدويّ، فإنّ المتجه الناتج سيكون في الإطار. فمثلًا،
 
 ```scheme
 ((frame-coord-map a-frame) (make-vect 0 0))
 ```
 
-returns the same vector as
+يُعيد المتجه نفسه الذي تُعيده
 
 ```scheme
 (origin-frame a-frame)
 ```
 
-> **Exercise 2.46:** A two-dimensional vector $v$ running from the origin to a point can be represented as a pair consisting of an $x$ -coordinate and a $y$ -coordinate. Implement a data abstraction for vectors by giving a constructor `make-vect` and corresponding selectors `xcor-vect` and `ycor-vect`. In terms of your selectors and constructor, implement procedures `add-vect`, `sub-vect`, and `scale-vect` that perform the operations vector addition, vector subtraction, and multiplying a vector by a scalar: $( x_{1} , y_{1} ) + ( x_{2} , y_{2} ) = ( x_{1} + x_{2} , y_{1} + y_{2} ) , ( x_{1} , y_{1} ) − ( x_{2} , y_{2} ) = ( x_{1} − x_{2} , y_{1} − y_{2} ) , s ⋅ ( x , y ) = ( s x , s y ) .$
+> **التمرين 2.46:** يمكن تمثيل المتجه الثنائيّ الأبعاد $v$ الممتدّ من الأصل إلى نقطةٍ بزوجٍ يتألّف من إحداثي $x$ وإحداثي $y$. نَفِّذ تجريد بياناتٍ للمتجهات بتقديم بانٍ `make-vect` ومُنتَقٍيات مناظرة `xcor-vect` و`ycor-vect`. وبدلالة مُنتَقٍياتك وبانيك، نَفِّذ الإجراءات `add-vect` و`sub-vect` و`scale-vect` التي تؤدّي عمليّات جمع المتجهات وطرحها وضرب متجهٍ في مقدارٍ قياسيّ: $( x_{1} , y_{1} ) + ( x_{2} , y_{2} ) = ( x_{1} + x_{2} , y_{1} + y_{2} ) , ( x_{1} , y_{1} ) − ( x_{2} , y_{2} ) = ( x_{1} − x_{2} , y_{1} − y_{2} ) , s ⋅ ( x , y ) = ( s x , s y ) .$
 
-**Exercise 2.47:** Here are two possible constructors for frames:
+**التمرين 2.47:** في ما يلي بانِيان محتملان للإطارات:
 
 ```scheme
 (define (make-frame origin edge1 edge2)
@@ -1599,13 +1599,13 @@ returns the same vector as
   (cons origin (cons edge1 edge2)))
 ```
 
-For each constructor supply the appropriate selectors to produce an implementation for frames.
+من أجل كلّ بانٍ، قدّم المُنتَقِيات الملائمة لإنتاج تنفيذٍ للإطارات.
 
-#### Painters
+#### الرسّامون
 
-A painter is represented as a procedure that, given a frame as argument, draws a particular image shifted and scaled to fit the frame. That is to say, if `p` is a painter and `f` is a frame, then we produce `p`’s image in `f` by calling `p` with `f` as argument.
+يُُمثَّل الرسّام بإجراءٍ يرسم، حين يُعطى إطارًا كمعطى، صورةً معيّنةً مُزاحةً ومُكبَّرةً لتتناسب مع الإطار. أي أنّنا إذا كان `p` رسّامًا و`f` إطارًا، فإنّنا نُنتج صورة `p` في `f` بنداء `p` وإعطائها `f` كمعطى.
 
-The details of how primitive painters are implemented depend on the particular characteristics of the graphics system and the type of image to be drawn. For instance, suppose we have a procedure `draw-line` that draws a line on the screen between two specified points. Then we can create painters for line drawings, such as the `wave` painter in [Figure 2.10](#Figure-2_002e10), from lists of line segments as follows:[^27]
+وتفاصيل كيفيّة تنفيذ الرسّامين الأوّليّين تعتمد على الخصائص الخاصّة لنظام الرسوميّات ونوع الصورة المطلوب رسمها. فمثلًا، لنفترض أنّ لدينا إجراءً `draw-line` يرسم خطًّا على الشاشة بين نقطتين محدَّدتين. فحينئذٍ يمكننا إنشاء رسّامين للرسوم الخطّيّة، كالرسّام `wave` في [الشكل 2.10](#Figure-2_002e10)، من قوائم قطعٍ خطّيّةٍ كالآتي:[^27]
 
 ```scheme
 (define (segments->painter segment-list)
@@ -1620,23 +1620,23 @@ The details of how primitive painters are implemented depend on the particular c
      segment-list)))
 ```
 
-The segments are given using coordinates with respect to the unit square. For each segment in the list, the painter transforms the segment endpoints with the frame coordinate map and draws a line between the transformed points.
+والقطع مُعطاةٌ باستخدام إحداثيّاتٍ بالنسبة إلى المربّع الوحدويّ. ومن أجل كلّ قطعٍ في القائمة، يحوّل الرسّام نهايتَي القطع بخريطة إحداثيّات الإطار ويرسم خطًّا بين النقطتين المحوَّلتين.
 
-Representing painters as procedures erects a powerful abstraction barrier in the picture language. We can create and intermix all sorts of primitive painters, based on a variety of graphics capabilities. The details of their implementation do not matter. Any procedure can serve as a painter, provided that it takes a frame as argument and draws something scaled to fit the frame.[^28]
+إنّ تمثيل الرسّامين بإجراءاتٍ يُقيم حاجز تجريدٍ قويًّا في لغة الرسم. فيمكننا إنشاء جميع أنواع الرسّامين الأوّليّين ومزجها، بناءً على مجموعةٍ متنوّعةٍ من قدرات الرسوميّات. وتفاصيل تنفيذهم لا تهمّ. فأيّ إجراءٍ يمكن أن يقوم مقام رسّامٍ، شريطة أن يأخذ إطارًا كمعطى ويرسم شيئًا مُكبَّرًا ليتناسب مع الإطار.[^28]
 
-> **Exercise 2.48:** A directed line segment in the plane can be represented as a pair of vectors—the vector running from the origin to the start-point of the segment, and the vector running from the origin to the end-point of the segment. Use your vector representation from [Exercise 2.46](#Exercise-2_002e46) to define a representation for segments with a constructor `make-segment` and selectors `start-segment` and `end-segment`.
+> **التمرين 2.48:** يمكن تمثيل قطعةٍ خطّيّةٍ موجّهةٍ في المستوى بزوجٍ من المتجهات، المتجه الممتدّ من الأصل إلى نقطة بداية القطعة، والمتجه الممتدّ من الأصل إلى نقطة نهايتها. واستخدم تمثيلك للمتجهات من [التمرين 2.46](#Exercise-2_002e46) لتعريف تمثيلٍ للقطع ببانٍ `make-segment` ومُنتَقٍيات `start-segment` و`end-segment`.
 
-> **Exercise 2.49:** Use `segments->painter` to define the following primitive painters: The painter that draws the outline of the designated frame.
-> > The painter that draws an “X” by connecting opposite corners of the frame.
-> > The painter that draws a diamond shape by connecting the midpoints of the sides of the frame.
-> > The `wave` painter.
+> **التمرين 2.49:** استخدم `segments->painter` لتعريف الرسّامين الأوّليّين الآتيين: الرسّام الذي يرسم المحيط الخارجيّ للإطار المُعيَّن.
+> > الرسّام الذي يرسم شكل «X» بوصل الزوايا المتقابلة للإطار.
+> > الرسّام الذي يرسم شكلًا ماسيًّا بوصل نقاط منتصف أضلاع الإطار.
+> > الرسّام `wave`.
 > > 
 
-#### Transforming and combining painters
+#### تحويل الرسّامين ودمجهم
 
-An operation on painters (such as `flip-vert` or `beside`) works by creating a painter that invokes the original painters with respect to frames derived from the argument frame. Thus, for example, `flip-vert` doesn’t have to know how a painter works in order to flip it—it just has to know how to turn a frame upside down: The flipped painter just uses the original painter, but in the inverted frame.
+والعمليّة على الرسّامين (كـ`flip-vert` أو `beside`) تعمل بإنشاء رسّامٍ ينادي الرسّامين الأصليّين بالنسبة إلى إطاراتٍ مُستنبطةٍ من الإطار المعطى. وهكذا، مثلًا، لا يلزم أن يعرف `flip-vert` كيف يعمل رسّامٌ ما لكي يقلبه، بل يلزمه فقط أن يعرف كيف يقلب إطارًا رأسًا على عقب: فالرسّام المقلوب يستخدم الرسّام الأصليّ فحسب، لكن في إطارٍ مقلوب.
 
-Painter operations are based on the procedure `transform-painter`, which takes as arguments a painter and information on how to transform a frame and produces a new painter. The transformed painter, when called on a frame, transforms the frame and calls the original painter on the transformed frame. The arguments to `transform-painter` are points (represented as vectors) that specify the corners of the new frame: When mapped into the frame, the first point specifies the new frame’s origin and the other two specify the ends of its edge vectors. Thus, arguments within the unit square specify a frame contained within the original frame.
+وتقوم عمليّات الرسم على الإجراء `transform-painter`، الذي يأخذ كمعطياتٍ رسّامًا ومعلوماتٍ عن كيفيّة تحويل إطارٍ ويُنتج رسّامًا جديدًا. فالرسّام المحوَّل، حين يُنادى على إطارٍ، يحوّل الإطار ثم ينادي الرسّام الأصليّ على الإطار المحوَّل. ومعطيات `transform-painter` هي نقاطٌ (مُمثَّلةٌ كمتجهاتٍ) تُحدّد زوايا الإطار الجديد: فعند ربطها في الإطار، تحدّد النقطة الأولى أصل الإطار الجديد، وتحدّد النقطتان الأخريان نهايتي متجهي حافتيه. وبالتالي، فإنّ المعطيات الواقعة داخل المربّع الوحدويّ تُحدّد إطارًا محتوىً داخل الإطار الأصليّ.
 
 ```scheme
 (define (transform-painter 
@@ -1651,7 +1651,7 @@ Painter operations are based on the procedure `transform-painter`, which takes a
                             new-origin)))))))
 ```
 
-Here’s how to flip painter images vertically:
+وهذه هي كيفيّة قلب صور الرسّامين رأسيًّا:
 
 ```scheme
 (define (flip-vert painter)
@@ -1662,7 +1662,7 @@ Here’s how to flip painter images vertically:
    (make-vect 0.0 0.0))) ; new end of edge2
 ```
 
-Using `transform-painter`, we can easily define new transformations. For example, we can define a painter that shrinks its image to the upper-right quarter of the frame it is given:
+وباستخدام `transform-painter`، يمكننا تعريف تحويلاتٍ جديدةٍ بسهولة. فمثلًا، يمكننا تعريف رسّامٍ يُصغّر صورته إلى الربع العلوي الأيمن من الإطار المُعطى له:
 
 ```scheme
 (define (shrink-to-upper-right painter)
@@ -1672,7 +1672,7 @@ Using `transform-painter`, we can easily define new transformations. For example
                      (make-vect 0.5 1.0)))
 ```
 
-Other transformations rotate images counterclockwise by 90 degrees[^29]
+وتحويلاتٌ أخرى تُدوّر الصور عكس عقارب الساعة 90 درجةً[^29]
 
 ```scheme
 (define (rotate90 painter)
@@ -1682,7 +1682,7 @@ Other transformations rotate images counterclockwise by 90 degrees[^29]
                      (make-vect 0.0 0.0)))
 ```
 
-or squash images towards the center of the frame:[^30]
+أو تُضغط الصور نحو مركز الإطار:[^30]
 
 ```scheme
 (define (squash-inwards painter)
@@ -1692,7 +1692,7 @@ or squash images towards the center of the frame:[^30]
                      (make-vect 0.35 0.65)))
 ```
 
-Frame transformation is also the key to defining means of combining two or more painters. The `beside` procedure, for example, takes two painters, transforms them to paint in the left and right halves of an argument frame respectively, and produces a new, compound painter. When the compound painter is given a frame, it calls the first transformed painter to paint in the left half of the frame and calls the second transformed painter to paint in the right half of the frame:
+وتحويل الإطار هو أيضًا مفتاح تعريف وسائل دمج رسّامين أو أكثر. فالإجراء `beside`، مثلًا، يأخذ رسّامين، ويحوّلهما ليرسما في النصفين الأيسر والأيمن من إطارٍ معطى على الترتيب، ويُنتج رسّامًا مركّبًا جديدًا. وحين يُعطى الرسّام المركّب إطارًا، ينادي الرسّام المحوَّل الأوّل ليرسم في النصف الأيسر للإطار، وينادي الرسّام المحوَّل الثاني ليرسم في النصف الأيمن للإطار:
 
 ```scheme
 (define (beside painter1 painter2)
@@ -1712,36 +1712,36 @@ Frame transformation is also the key to defining means of combining two or more 
         (paint-right frame)))))
 ```
 
-Observe how the painter data abstraction, and in particular the representation of painters as procedures, makes `beside` easy to implement. The `beside` procedure need not know anything about the details of the component painters other than that each painter will draw something in its designated frame.
+لاحِظ كيف يجعل تجريد بيانات الرسّامين (painter data abstraction)، ولا سيّما تمثيل الرسّامين بوصفهم إجراءات، تنفيذ `beside` سهلًا. فالإجراء `beside` لا يحتاج إلى معرفة أيّ شيءٍ عن تفاصيل الرسّامين المكوّنين سوى أنّ كلّ رسّامٍ سيرسم شيئًا ما في إطاره المخصّص.
 
-> **Exercise 2.50:** Define the transformation `flip-horiz`, which flips painters horizontally, and transformations that rotate painters counterclockwise by 180 degrees and 270 degrees.
+> **تمرين 2.50:** عرّف التحويل `flip-horiz`، الذي يقلب الرسّامين أفقيًّا، وتحويلاتٍ تُدوّر الرسّامين عكس اتجاه عقارب الساعة بمقدار 180 درجة و270 درجة.
 
-> **Exercise 2.51:** Define the `below` operation for painters. `Below` takes two painters as arguments. The resulting painter, given a frame, draws with the first painter in the bottom of the frame and with the second painter in the top. Define `below` in two different ways—first by writing a procedure that is analogous to the `beside` procedure given above, and again in terms of `beside` and suitable rotation operations (from [Exercise 2.50](#Exercise-2_002e50)).
+> **تمرين 2.51:** عرّف عمليّة `below` من أجل الرسّامين. تأخذ `below` رسّامين كمعطيات. والرسّام الناتج، إذا أُعطي إطارًا، يرسم بالرسّام الأوّل في أسفل الإطار وبالرسّام الثاني في أعلاه. عرّف `below` بطريقتين مختلفتين—أوّلًا بكتابة إجراءٍ مماثلٍ لإجراء `beside` المعطى أعلاه، وثانيًا بدلالة `beside` وعمليّات تدويرٍ ملائمةٍ (من [التمرين 2.50](#Exercise-2_002e50)).
 
-#### Levels of language for robust design
+#### مستويات اللغة من أجل تصميم متين
 
-The picture language exercises some of the critical ideas we’ve introduced about abstraction with procedures and data. The fundamental data abstractions, painters, are implemented using procedural representations, which enables the language to handle different basic drawing capabilities in a uniform way. The means of combination satisfy the closure property, which permits us to easily build up complex designs. Finally, all the tools for abstracting procedures are available to us for abstracting means of combination for painters.
+إنّ لغة الصورة تطبّق بعضَ الأفكار الحاسمة التي استعرضناها عن التجريد بالإجراءات والبيانات. فالتجاريد الأساسيّة للبيانات، أي الرسّامين، مُنفَّذةٌ باستخدام تمثيلاتٍ إجرائيّة، وهذا ما يمكّن اللغة من معالجة قدرات الرسم الأساسيّة المختلفة معاملةً موحّدة. ووسائل التركيب تحقّق خاصّيّة الإغلاق، وهو ما يسمح لنا ببناء تصاميمَ معقّدةٍ بسهولة. وأخيرًا، فإنّ جميع أدوات تجريد الإجراءات مُتاحةٌ لنا لأجل تجريد وسائل تركيب الرسّامين.
 
-We have also obtained a glimpse of another crucial idea about languages and program design. This is the approach of *stratified design*, the notion that a complex system should be structured as a sequence of levels that are described using a sequence of languages. Each level is constructed by combining parts that are regarded as primitive at that level, and the parts constructed at each level are used as primitives at the next level. The language used at each level of a stratified design has primitives, means of combination, and means of abstraction appropriate to that level of detail.
+وقد ألقينا أيضًا لمحةً عن فكرةٍ حاسمةٍ أخرى عن اللغات وتصميم البرامج. وهي مقاربة *التصميم الطبقيّ (stratified design)*، أي المفهوم القائل بأنّ النظم المعقّدة ينبغي أن تُبنى على هيئة تسلسلٍ من المستويات الموصوفة باستخدام تسلسلٍ من اللغات. فكلّ مستوىٍ يُبنَى بتركيب أجزاءَ تُعتبر أوّليّةً على ذلك المستوى، والأجزاء المبنيّة على كلّ مستوىٍ تُستخدم كأوّليّاتٍ على المستوى التالي. واللغة المستخدمة على كلّ مستوىٍ من التصميم الطبقيّ لها أوّليّات، ووسائل تركيب، ووسائل تجريدٍ ملائمةً لذلك المستوى من التفصيل.
 
-Stratified design pervades the engineering of complex systems. For example, in computer engineering, resistors and transistors are combined (and described using a language of analog circuits) to produce parts such as and-gates and or-gates, which form the primitives of a language for digital-circuit design.[^31] These parts are combined to build processors, bus structures, and memory systems, which are in turn combined to form computers, using languages appropriate to computer architecture. Computers are combined to form distributed systems, using languages appropriate for describing network interconnections, and so on.
+والتصميم الطبقيّ سائدٌ في هندسة النظم المعقّدة. فمثلًا، في هندسة الحاسوب، تُركَّب المقاومات والترانزستورات (وتُوصَف بلغة الدارات التناظريّة) لإنتاج أجزاءَ كبوابات AND وبوابات OR، وهي التي تشكّل أوّليّات لغة تصميم الدارات الرقميّة.[^31] وهذه الأجزاء تُركَّب لبناء المعالجات، وبنى النواقل (bus)، وأنظمة الذاكرة، التي تُركَّب بدورها لتشكيل الحواسيب، باستخدام لغاتٍ ملائمةٍ لهندسة الحاسوب. والحواسيب تُركَّب لتشكيل أنظمةٍ موزّعة، باستخدام لغاتٍ ملائمةٍ لوصف ترابط الشبكات، وهكذا.
 
-As a tiny example of stratification, our picture language uses primitive elements (primitive painters) that are created using a language that specifies points and lines to provide the lists of line segments for `segments->painter`, or the shading details for a painter like `rogers`. The bulk of our description of the picture language focused on combining these primitives, using geometric combiners such as `beside` and `below`. We also worked at a higher level, regarding `beside` and `below` as primitives to be manipulated in a language whose operations, such as `square-of-four`, capture common patterns of combining geometric combiners.
+وكمثالٍ صغيرٍ على التصميم الطبقيّ، فإنّ لغة الصورة التي نعمل بها تستخدم عناصرَ أوّليّةً (رسّامين أوّليّين) تُنشأ باستخدام لغةٍ تحدّد النقاط والخطوط لتوفير قوائم مقاطع الخطوط من أجل `segments->painter`، أو تفاصيل التظليل من أجل رسّامٍ كـ`rogers`. وقد ركّز الجزء الأكبر من وصفنا للغة الصورة على تركيب هذه الأوّليّات، باستخدام مزيّجاتٍ هندسيّةٍ كـ`beside` و`below`. وقد عملنا أيضًا على مستوى أعلى، باعتبار `beside` و`below` أوّليّاتٍ تُعالَج في لغةٍ عمليّاتها، كـ`square-of-four` مثلًا، تصوّر أنماطًا شائعةً لتركيب المزيّجات الهندسيّة.
 
-Stratified design helps make programs *robust*, that is, it makes it likely that small changes in a specification will require correspondingly small changes in the program. For instance, suppose we wanted to change the image based on `wave` shown in [Figure 2.9](#Figure-2_002e9). We could work at the lowest level to change the detailed appearance of the `wave` element; we could work at the middle level to change the way `corner-split` replicates the `wave`; we could work at the highest level to change how `square-limit` arranges the four copies of the corner. In general, each level of a stratified design provides a different vocabulary for expressing the characteristics of the system, and a different kind of ability to change it.
+والتصميم الطبقيّ يساعد على جعل البرامج *متينة (robust)*، أي أنّه يجعل من المرجّح أن تستدعي التغييرات الصغيرة في المواصفة تغييراتٍ صغيرةً مقابلةً في البرنامج. فمثلًا، لنفترض أنّنا أردنا تغيير الصورة المبنيّة على `wave` والمبيّنة في [الشكل 2.9](#Figure-2_002e9). فيمكننا العمل على المستوى الأدنى لتغيير المظهر التفصيليّ لعنصر `wave`؛ ويمكننا العمل على المستوى الأوسط لتغيير الطريقة التي يُكرّر بها `corner-split` العنصر `wave`؛ ويمكننا العمل على المستوى الأعلى لتغيير الطريقة التي يرتّب بها `square-limit` النسخ الأربع من الزاوية. وبصورةٍ عامّة، فإنّ كلّ مستوىٍ من التصميم الطبقيّ يوفّر معجمًا مختلفًا للتعبير عن خصائص النظام، ونوعًا مختلفًا من القدرة على تغييره.
 
-> **Exercise 2.52:** Make changes to the square limit of `wave` shown in [Figure 2.9](#Figure-2_002e9) by working at each of the levels described above. In particular: Add some segments to the primitive `wave` painter of [Exercise 2.49](#Exercise-2_002e49) (to add a smile, for example).
-> > Change the pattern constructed by `corner-split` (for example, by using only one copy of the `up-split` and `right-split` images instead of two).
-> > Modify the version of `square-limit` that uses `square-of-four` so as to assemble the corners in a different pattern. (For example, you might make the big Mr. Rogers look outward from each corner of the square.)
-> >
+> **تمرين 2.52:** أجرِ تغييراتٍ على حدود المربّع الخاص بـ`wave` المبيّن في [الشكل 2.9](#Figure-2_002e9) بالعمل على كلّ من المستويات الموصوفة أعلاه. وبالأخصّ: أضف بعض المقاطع إلى رسّام `wave` الأوّل في [التمرين 2.49](#Exercise-2_002e49) (لإضافة ابتسامةٍ مثلًا).
+> > غيّر النمط الذي يبنيه `corner-split` (مثلًا، باستخدام نسخةٍ واحدة فقط من صورتَي `up-split` و`right-split` بدلًا من نسختين).
+> > عَدّل النسخة من `square-limit` التي تستخدم `square-of-four` بحيث تُجمّع الزوايا في نمطٍ مختلف. (مثلًا، يمكنك أن تجعل مستر روجرز الكبير ينظر إلى الخارج من كلّ زاويةٍ من زوايا المربّع.)
+> > 
 
-### 2.3 Symbolic Data
+### 2.3 البيانات الرمزيّة
 
-All the compound data objects we have used so far were constructed ultimately from numbers. In this section we extend the representational capability of our language by introducing the ability to work with arbitrary symbols as data.
+جميع كائنات البيانات المركّبة التي استخدمناها حتّى الآن كانت مبنيةً في نهاية المطاف من الأعداد. وفي هذا القسم نوسّع القدرة التمثيليّة للغتنا بإدخال القدرة على العمل مع رموزٍ اعتباطيّةٍ بوصفها بيانات.
 
-#### 2.3.1 Quotation
+#### 2.3.1 الاقتباس
 
-If we can form compound data using symbols, we can have lists such as
+إذا أمكننا تشكيل بياناتٍ مركّبةٍ باستخدام الرموز، فيمكننا أن نحصل على قوائمَ مثل
 
 ```scheme
 (a b c d)
@@ -1753,7 +1753,7 @@ If we can form compound data using symbols, we can have lists such as
  (Charlotte 4))
 ```
 
-Lists containing symbols can look just like the expressions of our language:
+ويمكن أن تبدو القوائم التي تحتوي على رموزٍ تمامًا كتعبيرات لغتنا:
 
 ```scheme
 (* (+ 23 45) (+ x 9))
@@ -1763,11 +1763,11 @@ Lists containing symbols can look just like the expressions of our language:
       (* n (fact (- n 1)))))
 ```
 
-In order to manipulate symbols we need a new element in our language: the ability to *quote* a data object. Suppose we want to construct the list `(a b)`. We can’t accomplish this with `(list a b)`, because this expression constructs a list of the *values* of `a` and `b` rather than the symbols themselves. This issue is well known in the context of natural languages, where words and sentences may be regarded either as semantic entities or as character strings (syntactic entities). The common practice in natural languages is to use quotation marks to indicate that a word or a sentence is to be treated literally as a string of characters. For instance, the first letter of “John” is clearly “J.” If we tell somebody “say your name aloud,” we expect to hear that person’s name. However, if we tell somebody “say ‘your name’ aloud,” we expect to hear the words “your name.” Note that we are forced to nest quotation marks to describe what somebody else might say.[^32]
+ومن أجل معالجة الرموز نحتاج إلى عنصرٍ جديدٍ في لغتنا: القدرة على *اقتباس (quote)* كائن بيانات. فلنفترض أنّنا نريد بناء القائمة `(a b)`. فلا يمكننا تحقيق ذلك بـ`(list a b)`، لأنّ هذا التعبير يبني قائمةً من *قيم* `a` و`b` بدلًا من الرموز ذاتها. وهذه المسألة معروفةٌ جيّدًا في سياق اللغات الطبيعيّة، حيث يمكن اعتبار الكلمات والجُمل إمّا كياناتٍ دلاليّةٍ وإمّا كسلاسلَ محرفيّةٍ (كياناتٍ صياغيّة). والممارسة الشائعة في اللغات الطبيعيّة هي استخدام علامات التنصيص للإشارة إلى أنّ كلمةً أو جملةً يُتعامل معها حرفيًّا بوصفها سلسلةً من المحارف. فعلى سبيل المثال، فإنّ الحرف الأوّل من «جون» هو «ج» بيّنًا. فإن قلنا لشخصٍ ما «قل اسمك بصوت عالٍ»، فنتوقّع أن نسمع اسم ذلك الشخص. ولكن إن قلنا لشخصٍ ما «قل ‹اسمك› بصوت عالٍ»، فنتوقّع أن نسمع الكلمتين «اسمك». ولاحِظ أنّنا مُلزَمون بتداخل علامات التنصيص لوصف ما قد يقوله شخصٌ آخر.[^32]
 
-We can follow this same practice to identify lists and symbols that are to be treated as data objects rather than as expressions to be evaluated. However, our format for quoting differs from that of natural languages in that we place a quotation mark (traditionally, the single quote symbol `'`) only at the beginning of the object to be quoted. We can get away with this in Scheme syntax because we rely on blanks and parentheses to delimit objects. Thus, the meaning of the single quote character is to quote the next object.[^33]
+ويمكننا اتّباع الممارسة ذاتها لتحديد القوائم والرموز التي يُتعامل معها بوصفها كائنات بيانات لا تعبيراتٍ يُقيَّم. غير أنّ صيغة الاقتباس التي نستخدمها تختلف عن صيغة اللغات الطبيعيّة في أنّنا نضع علامة تنصيص (وتقليديًّا، رمز التنصيص المفرد `'`) في بداية الكائن المُراد اقتباسه فقط. ويمكننا الاكتفاء بذلك في صياغة Scheme لأنّنا نعتمد على الفراغات والأقواس في تحديد حدود الكائنات. وهكذا، فإنّ معنى محرف التنصيص المفرد هو اقتباس الكائن التالي.[^33]
 
-Now we can distinguish between symbols and their values:
+يمكننا الآن التمييز بين الرموز وقيمها:
 
 ```scheme
 (define a 1)
@@ -1783,7 +1783,7 @@ Now we can distinguish between symbols and their values:
 (a 2)
 ```
 
-Quotation also allows us to type in compound objects, using the conventional printed representation for lists:[^34]
+ويسمح الاقتباس أيضًا بكتابة كائناتٍ مركّبةٍ باستخدام التمثيل المطبوع المعتاد للقوائم:[^34]
 
 ```scheme
 (car '(a b c))
@@ -1793,9 +1793,9 @@ a
 (b c)
 ```
 
-In keeping with this, we can obtain the empty list by evaluating `'()`, and thus dispense with the variable `nil`.
+واتّفاقًا مع هذا، يمكننا الحصول على القائمة الفارغة بتقييم `'()`، وبالتّالي الاستغناء عن المتغيّر `nil`.
 
-One additional primitive used in manipulating symbols is `eq?`, which takes two symbols as arguments and tests whether they are the same.[^35] Using `eq?`, we can implement a useful procedure called `memq`. This takes two arguments, a symbol and a list. If the symbol is not contained in the list (i.e., is not `eq?` to any item in the list), then `memq` returns false. Otherwise, it returns the sublist of the list beginning with the first occurrence of the symbol:
+وهناك أوّليّةٌ إضافيّةٌ تُستخدم في معالجة الرموز، وهي `eq?`، التي تأخذ رمزين كمعطيات وتختبر كونَهما الرمز نفسه.[^35] وباستخدام `eq?`، نستطيع تنفيذ إجراءٍ مفيدٍ يُسمّى `memq`. ويأخذ هذا معطيين، رمزًا وقائمةً. فإن لم يكن الرمز محتوىً في القائمة (أي أنّه ليس `eq?` لأيّ عنصرٍ فيها)، فإنّ `memq` يُعيد false. وإلّا، فإنّه يُعيد القائمة الجزئيّة من القائمة بدءًا من أوّل ظهورٍ للرمز:
 
 ```scheme
 (define (memq item x)
@@ -1804,21 +1804,21 @@ One additional primitive used in manipulating symbols is `eq?`, which takes two 
         (else (memq item (cdr x)))))
 ```
 
-For example, the value of
+فعلى سبيل المثال، قيمة
 
 ```scheme
 (memq 'apple '(pear banana prune))
 ```
 
-is false, whereas the value of
+هي false، بينما قيمة
 
 ```scheme
 (memq 'apple '(x (apple sauce) y apple pear))
 ```
 
-is `(apple pear)`.
+هو `(apple pear)`.
 
-**Exercise 2.53:** What would the interpreter print in response to evaluating each of the following expressions?
+**تمرين 2.53:** ماذا سيطبعه المفسّر استجابةً لتقييم كلّ من التعبيرات التالية؟
 
 ```scheme
 (list 'a 'b 'c)
@@ -1830,41 +1830,41 @@ is `(apple pear)`.
 (memq 'red '(red shoes blue socks))
 ```
 
-**Exercise 2.54:** Two lists are said to be `equal?` if they contain equal elements arranged in the same order. For example,
+**تمرين 2.54:** يُقال عن قائمتين إنّهما `equal?` إذا احتوتا على عناصرَ متساويةٍ مرتّبةٍ في الترتيب نفسه. فمثلًا،
 
 ```scheme
 (equal? '(this is a list) 
         '(this is a list))
 ```
 
-is true, but
+فالقيمة true، لكن
 
 ```scheme
 (equal? '(this is a list) 
         '(this (is a) list))
 ```
 
-is false. To be more precise, we can define `equal?` recursively in terms of the basic `eq?` equality of symbols by saying that `a` and `b` are `equal?` if they are both symbols and the symbols are `eq?`, or if they are both lists such that `(car a)` is `equal?` to `(car b)` and `(cdr a)` is `equal?` to `(cdr b)`. Using this idea, implement `equal?` as a procedure.[^36]
+أمّا القيمة فهي false. وبصورةٍ أدقّ، يمكننا تعريف `equal?` بشكلٍ تعاوديٍّ بدلالة مساواة الرموز الأساسيّة `eq?`، بقولنا إنّ `a` و`b` هما `equal?` إذا كانا رمزين والرمزان `eq?`، أو إذا كانا قائمتين بحيث يكون `(car a)` بـ`equal?` مساويًا لـ`(car b)` ويكون `(cdr a)` بـ`equal?` مساويًا لـ`(cdr b)`. وباستخدام هذه الفكرة، نُفِّذ `equal?` بوصفه إجراءً.[^36]
 
-**Exercise 2.55:** Eva Lu Ator types to the interpreter the expression
+**تمرين 2.55:** تكتب إيفا لو أتور إلى المفسّر التعبير
 
 ```scheme
 (car ''abracadabra)
 ```
 
-To her surprise, the interpreter prints back `quote`. Explain.
+ولدهشتها، يطبعه المفسّر من جديد `quote`. اشرح.
 
-#### 2.3.2 Example: Symbolic Differentiation
+#### 2.3.2 مثال: التفاضل الرمزيّ
 
-As an illustration of symbol manipulation and a further illustration of data abstraction, consider the design of a procedure that performs symbolic differentiation of algebraic expressions. We would like the procedure to take as arguments an algebraic expression and a variable and to return the derivative of the expression with respect to the variable. For example, if the arguments to the procedure are $a x^{2} + b x + c$ and $x$ , the procedure should return $2 a x + b$ . Symbolic differentiation is of special historical significance in Lisp. It was one of the motivating examples behind the development of a computer language for symbol manipulation. Furthermore, it marked the beginning of the line of research that led to the development of powerful systems for symbolic mathematical work, which are currently being used by a growing number of applied mathematicians and physicists.
+وكتوضيحٍ على معالجة الرموز، وتوضيحٍ إضافيٍّ على تجريد البيانات، تأمّل تصميم إجراءٍ يؤدي التفاضل الرمزيّ للتعبيرات الجبريّة. فنحن نريد من الإجراء أن يأخذ تعبيرًا جبريًّا ومتغيّرًا كمعطيات ويعيد مشتقّة التعبير بدلالة المتغيّر. فمثلًا، إذا كانت معطيات الإجراء هي $a x^{2} + b x + c$ و$x$ ، فينبغي أن يعيد الإجراء $2 a x + b$ . والتفاضل الرمزيّ ذو أهمّيّة تاريخيّة خاصّة في Lisp. فقد كان أحد الأمثلة المحرّضة وراء تطوير لغة حاسوبٍ لمعالجة الرموز. وبالإضافة إلى ذلك، فقد مثّل بداية خطّ البحث الذي أدّى إلى تطوير نظمٍ قويّةٍ للعمل الرياضيّ الرمزيّ، التي يستخدمها حاليًّا عددٌ متزايدٌ من الرياضياتيّين التطبيقيّين والفيزيائيّين.
 
-In developing the symbolic-differentiation program, we will follow the same strategy of data abstraction that we followed in developing the rational-number system of [2.1.1](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e1). That is, we will first define a differentiation algorithm that operates on abstract objects such as “sums,” “products,” and “variables” without worrying about how these are to be represented. Only afterward will we address the representation problem.
+وعند تطوير برنامج التفاضل الرمزيّ، سنتبع استراتيجيّة تجريد البيانات ذاتها التي اتبعناها عند تطوير نظام الأعداد الكسريّة في [2.1.1](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e1). أي أنّنا سنعرّف أوّلًا خوارزميّة تفاضلٍ تعمل على كائناتٍ مجرّدةٍ كـ«المجاميع»، و«المضروبات»، و«المتغيّرات» دون القلق بشأن كيف سيُمثَّل أيٌّ منها. وبعد ذلك فقط سنتناول مسألة التمثيل.
 
-#### The differentiation program with abstract data
+#### برنامج التفاضل ببيانات مجرّدة
 
-In order to keep things simple, we will consider a very simple symbolic-differentiation program that handles expressions that are built up using only the operations of addition and multiplication with two arguments. Differentiation of any such expression can be carried out by applying the following reduction rules: $\frac{d c}{d x} = 0 , for c a constant or a variable different from x ,$ $\frac{d x}{d x} = 1 , \frac{d ( u + v )}{d x} = \frac{d u}{d x} + \frac{d v}{d x} , \frac{d ( u v )}{d x} = u \frac{d v}{d x} + v \frac{d u}{d x} .$ Observe that the latter two rules are recursive in nature. That is, to obtain the derivative of a sum we first find the derivatives of the terms and add them. Each of the terms may in turn be an expression that needs to be decomposed. Decomposing into smaller and smaller pieces will eventually produce pieces that are either constants or variables, whose derivatives will be either 0 or 1.
+ومن أجل إبقاء الأمور بسيطة، سننظر في برنامج تفاضلٍ رمزيّ بسيطٍ للغاية يعالج تعبيراتٍ مبنيةً باستخدام عمليّتَي الجمع والضرب فقط وبمعطيين. ويمكن أداء تفاضل أيّ تعبيرٍ كهذا بتطبيق قواعد الاختزال التالية: $\frac{d c}{d x} = 0 , for c a constant or a variable different from x ,$ $\frac{d x}{d x} = 1 , \frac{d ( u + v )}{d x} = \frac{d u}{d x} + \frac{d v}{d x} , \frac{d ( u v )}{d x} = u \frac{d v}{d x} + v \frac{d u}{d x} .$ ولاحِظ أنّ القاعدتين الأخيرتين تعاوديّتان بطبيعتهما. أي أنّنا للحصول على مشتقّة مجموعٍ نجد أوّلًا مشتقّات الحدود ثمّ نجمعها. وكلّ حدٍّ من الحدود قد يكون بدوره تعبيرًا يحتاج إلى التفكيك. وتفكيك الأجزاء إلى أجزاءَ أصغر فأصغر سيُنتج في النهاية أجزاءً إمّا ثوابتَ وإمّا متغيّرات، ومشقّاتها ستكون إمّا 0 وإمّا 1.
 
-To embody these rules in a procedure we indulge in a little wishful thinking, as we did in designing the rational-number implementation. If we had a means for representing algebraic expressions, we should be able to tell whether an expression is a sum, a product, a constant, or a variable. We should be able to extract the parts of an expression. For a sum, for example we want to be able to extract the addend (first term) and the augend (second term). We should also be able to construct expressions from parts. Let us assume that we already have procedures to implement the following selectors, constructors, and predicates:
+ولتجسيد هذه القواعد في إجراءٍ ننغمس في قليلٍ من التفكير بالأمانيّ، كما فعلنا عند تصميم تنفيذ الأعداد الكسريّة. فلو كانت لدينا وسيلةٌ لتمثيل التعبيرات الجبريّة، لأمكننا أن نقول ما إذا كان التعبير مجموعًا، أم مضروبًا، أم ثابتًا، أم متغيّرًا. وأمكننا استخلاص أجزاء التعبير. فمن أجل المجموع مثلًا، نريد أن نكون قادرين على استخلاص المُضَاف (addend) والمُضَاف إليه (augend). وينبغي أيضًا أن نكون قادرين على بناء تعبيراتٍ من أجزاء. فلنفترض أنّ لدينا سلفًا إجراءاتٍ تُنفّذ المُحدِّدات (selectors) والبنّاءات (constructors) والمسيّمات (predicates) التالية:
 
 ```
 (variable? e)          Is e a variable?
@@ -1879,7 +1879,7 @@ To embody these rules in a procedure we indulge in a little wishful thinking, as
 (make-product m1 m2)   Construct the product of m1 and m2.
 ```
 
-Using these, and the primitive predicate `number?`, which identifies numbers, we can express the differentiation rules as the following procedure:
+وباستخدام هذه، ومع المسيّم الأوّليّ `number?` الذي يحدّد الأعداد، نستطيع التعبير عن قواعد التفاضل بالإجراء التالي:
 
 ```scheme
 (define (deriv exp var)
@@ -1901,19 +1901,19 @@ Using these, and the primitive predicate `number?`, which identifies numbers, we
                       type: DERIV" exp))))
 ```
 
-This `deriv` procedure incorporates the complete differentiation algorithm. Since it is expressed in terms of abstract data, it will work no matter how we choose to represent algebraic expressions, as long as we design a proper set of selectors and constructors. This is the issue we must address next.
+والإجراء `deriv` هذا يتضمّن خوارزميّة التفاضل كاملةً. وبما أنّه معبَّرٌ عنه بدلالة بياناتٍ مجرّدة، فإنّه سيعمل مهما اختَرنا كيف نمثّل التعبيرات الجبريّة، طالما نصمّم مجموعةً ملائمةً من المُحدِّدات والبنّاءات. وهذه هي المسألة التي ينبغي أن نتناولها تاليًا.
 
-#### Representing algebraic expressions
+#### تمثيل التعبيرات الجبريّة
 
-We can imagine many ways to use list structure to represent algebraic expressions. For example, we could use lists of symbols that mirror the usual algebraic notation, representing $a x + b$ as the list `(a * x + b)`. However, one especially straightforward choice is to use the same parenthesized prefix notation that Lisp uses for combinations; that is, to represent $a x + b$ as `(+ (* a x) b)`. Then our data representation for the differentiation problem is as follows:
+يمكننا تصوّر طرائقَ كثيرةً لاستخدام بنية القوائم لتمثيل التعبيرات الجبريّة. فمثلًا، يمكننا استخدام قوائمَ من الرموز تعكس الترميز الجبريّ المعتاد، فنمثّل $a x + b$ بالقائمة `(a * x + b)`. غير أنّ أحد الخيارات المباشرة بصورةٍ خاصّةٍ هو استخدام الترميز البادئ ذي الأقواس نفسه الذي تستخدمه Lisp للتركيبات؛ أي أن نمثّل $a x + b$ بـ`(+ (* a x) b)`. وحينئذٍ يكون تمثيل البيانات الخاصّ بمسألة التفاضل كما يلي:
 
-The variables are symbols. They are identified by the primitive predicate `symbol?`:
+والمتغيّرات هي رموز. وهي تُعرَّف بالمسيّم الأوّل `symbol?`:
 
 ```scheme
 (define (variable? x) (symbol? x))
 ```
 
-Two variables are the same if the symbols representing them are `eq?`:
+والمتغيّران متساويان إذا كانت الرموز التي تمثّلهما `eq?`:
 
 ```scheme
 (define (same-variable? v1 v2)
@@ -1922,52 +1922,52 @@ Two variables are the same if the symbols representing them are `eq?`:
        (eq? v1 v2)))
 ```
 
-Sums and products are constructed as lists:
+والمجاميع والمضروبات تُبنى كقوائم:
 
 ```scheme
 (define (make-sum a1 a2) (list '+ a1 a2))
 (define (make-product m1 m2) (list '* m1 m2))
 ```
 
-A sum is a list whose first element is the symbol `+`:
+والمجموع قائمةٌ أوّل عنصرٍ فيها هو الرمز `+`:
 
 ```scheme
 (define (sum? x)
   (and (pair? x) (eq? (car x) '+)))
 ```
 
-The addend is the second item of the sum list:
+والمُضَاف هو العنصر الثاني من قائمة المجموع:
 
 ```scheme
 (define (addend s) (cadr s))
 ```
 
-The augend is the third item of the sum list:
+والمُضَاف إليه هو العنصر الثالث من قائمة المجموع:
 
 ```scheme
 (define (augend s) (caddr s))
 ```
 
-A product is a list whose first element is the symbol `*`:
+والمضروب قائمةٌ أوّل عنصرها هو الرمز `*`:
 
 ```scheme
 (define (product? x)
   (and (pair? x) (eq? (car x) '*)))
 ```
 
-The multiplier is the second item of the product list:
+والمضروب هو العنصر الثاني من قائمة الضرب:
 
 ```scheme
 (define (multiplier p) (cadr p))
 ```
 
-The multiplicand is the third item of the product list:
+والمضروب فيه هو العنصر الثالث من قائمة الضرب:
 
 ```scheme
 (define (multiplicand p) (caddr p))
 ```
 
-Thus, we need only combine these with the algorithm as embodied by `deriv` in order to have a working symbolic-differentiation program. Let us look at some examples of its behavior:
+وهكذا، لا نحتاج إلّا إلى الجمع بين هذه وبين الخوارزميّة كما تجسّدها `deriv` كي نحصل على برنامج تفاضلٍ رمزيّ يعمل. فلننظر في بعض الأمثلة على سلوكه:
 
 ```scheme
 (deriv '(+ x 3) 'x)
@@ -1982,9 +1982,9 @@ Thus, we need only combine these with the algorithm as embodied by `deriv` in or
       (+  x 3)))
 ```
 
-The program produces answers that are correct; however, they are unsimplified. It is true that $\frac{d ( x y )}{d x} = x ⋅ 0 + 1 ⋅ y ,$ but we would like the program to know that $x ⋅ 0 = 0$ , $1 ⋅ y = y$ , and $0 + y = y$ . The answer for the second example should have been simply `y`. As the third example shows, this becomes a serious issue when the expressions are complex.
+وإنّ البرنامج يُنتج إجاباتٍ صحيحة؛ غير أنّها غير مُبسَّطة. من الصحيح أنّ $\frac{d ( x y )}{d x} = x ⋅ 0 + 1 ⋅ y ,$ ولكنّنا نريد من البرنامج أن يعلم أنّ $x ⋅ 0 = 0$ ، و$1 ⋅ y = y$ ، و$0 + y = y$ . وكان ينبغي أن تكون الإجابة عن المثال الثاني هي `y` ببساطة. وكما يُظهر المثال الثالث، فإنّ هذه تصير مسألةً جسيمة عندما تكون التعابير معقّدة.
 
-Our difficulty is much like the one we encountered with the rational-number implementation: we haven’t reduced answers to simplest form. To accomplish the rational-number reduction, we needed to change only the constructors and the selectors of the implementation. We can adopt a similar strategy here. We won’t change `deriv` at all. Instead, we will change `make-sum` so that if both summands are numbers, `make-sum` will add them and return their sum. Also, if one of the summands is 0, then `make-sum` will return the other summand:
+وصعوبتنا تشبه إلى حدٍّ كبيرٍ تلك التي واجهناها مع تنفيذ الأعداد الكسريّة: فنحن لم نُبسّط الإجابات إلى أبسط صورة. ولتحقيق تبسيط الأعداد الكسريّة، احتجنا إلى تغيير البنّاءات والمُحدِّدات في التنفيذ فقط. ويمكننا اتّباع استراتيجيّة مشابهة هنا. فلن نُغيّر `deriv` إطلاقًا. وبدلًا من ذلك، سنُغيّر `make-sum` بحيث إذا كان كلٌّ من الحدّين عددًا، فإنّ `make-sum` يجمعهما ويعيد مجموعهما. وأيضًا، إذا كان أحد الحدّين 0، فإنّ `make-sum` يعيد الحدّ الآخر:
 
 ```scheme
 (define (make-sum a1 a2)
@@ -1995,14 +1995,14 @@ Our difficulty is much like the one we encountered with the rational-number impl
         (else (list '+ a1 a2))))
 ```
 
-This uses the procedure `=number?`, which checks whether an expression is equal to a given number:
+وهذا يستخدم الإجراء `=number?`، الذي يتحقّق ممّا إذا كان تعبيرٌ ما مساويًا لعددٍ معطى:
 
 ```scheme
 (define (=number? exp num)
   (and (number? exp) (= exp num)))
 ```
 
-Similarly, we will change `make-product` to build in the rules that 0 times anything is 0 and 1 times anything is the thing itself:
+وبالمثل، سنُغيّر `make-product` ليدمج القاعدتين بأنّ صفرًا مضروبًا في أيّ شيءٍ يساوي 0، وأنّ واحدًا مضروبًا في أيّ شيءٍ يساوي ذلك الشيء نفسه:
 
 ```scheme
 (define (make-product m1 m2)
@@ -2016,7 +2016,7 @@ Similarly, we will change `make-product` to build in the rules that 0 times anyt
         (else (list '* m1 m2))))
 ```
 
-Here is how this version works on our three examples:
+وإليك كيف تعمل هذه النسخة على أمثلتنا الثلاثة:
 
 ```scheme
 (deriv '(+ x 3) 'x)
@@ -2029,31 +2029,31 @@ y
 (+ (* x y) (* y (+ x 3)))
 ```
 
-Although this is quite an improvement, the third example shows that there is still a long way to go before we get a program that puts expressions into a form that we might agree is “simplest.” The problem of algebraic simplification is complex because, among other reasons, a form that may be simplest for one purpose may not be for another.
+وعلى الرغم من أنّ هذا تحسينٌ كبير، إلّا أنّ المثال الثالث يُظهر أنّ الطريق لا يزال طويلًا قبل أن نحصل على برنامجٍ يضع التعابير في صورةٍ قد نتفّق على أنّها «الأبسط». ومسألة التبسيط الجبريّ معقّدةٌ لأنّه، من بين أسبابٍ أخرى، قد تكون صورةٌ ما أبسطَ صورةٍ لغرضٍ ما وغيرَ أبسطِ صورةٍ لغرضٍ آخر.
 
-> **Exercise 2.56:** Show how to extend the basic differentiator to handle more kinds of expressions. For instance, implement the differentiation rule $\frac{d ( u^{n} )}{d x} = n u^{n − 1} \frac{d u}{d x}$ by adding a new clause to the `deriv` program and defining appropriate procedures `exponentiation?`, `base`, `exponent`, and `make-exponentiation`. (You may use the symbol `**` to denote exponentiation.) Build in the rules that anything raised to the power 0 is 1 and anything raised to the power 1 is the thing itself.
+> **تمرين 2.56:** أظهِر كيف نُوسّع المُفاضِلَ الأساسيّ ليتعامل مع أنواعٍ أكثر من التعبيرات. فنفّذ مثلًا قاعدة التفاضل $\frac{d ( u^{n} )}{d x} = n u^{n − 1} \frac{d u}{d x}$ بإضافة بندٍ جديد إلى برنامج `deriv` وتعريف الإجراءات الملائمة `exponentiation?`، و`base`، و`exponent`، و`make-exponentiation`. (يمكنك استخدام الرمز `**` للدلالة على الأُسّ.) وادمج القاعدتين بأنّ أيّ شيءٍ مرفوع إلى الأُسّ 0 يساوي 1، وأنّ أيّ شيءٍ مرفوع إلى الأُسّ 1 يساوي ذلك الشيء نفسه.
 
-**Exercise 2.57:** Extend the differentiation program to handle sums and products of arbitrary numbers of (two or more) terms. Then the last example above could be expressed as
+**تمرين 2.57:** وسّع برنامج التفاضل ليتعامل مع مجاميعَ ومضروباتٍ لها عددٌ اعتراضيٌّ (اثنان أو أكثر) من الحدود. وحينئذٍ يمكن التعبير عن المثال الأخير أعلاه كما يلي:
 
 ```scheme
 (deriv '(* x y (+ x 3)) 'x)
 ```
 
-Try to do this by changing only the representation for sums and products, without changing the `deriv` procedure at all. For example, the `addend` of a sum would be the first term, and the `augend` would be the sum of the rest of the terms.
+حاول فعل ذلك بتغيير تمثيل المجاميع والمضروبات فقط، دون تغيير الإجراء `deriv` إطلاقًا. فإنّ `addend` المجموع مثلًا هو الحدّ الأوّل، و`augend` هو مجموع بقيّة الحدود.
 
-> **Exercise 2.58:** Suppose we want to modify the differentiation program so that it works with ordinary mathematical notation, in which `+` and `*` are infix rather than prefix operators. Since the differentiation program is defined in terms of abstract data, we can modify it to work with different representations of expressions solely by changing the predicates, selectors, and constructors that define the representation of the algebraic expressions on which the differentiator is to operate. Show how to do this in order to differentiate algebraic expressions presented in infix form, such as `(x + (3 * (x + (y + 2))))`. To simplify the task, assume that `+` and `*` always take two arguments and that expressions are fully parenthesized.
-> > The problem becomes substantially harder if we allow standard algebraic notation, such as `(x + 3 * (x + y + 2))`, which drops unnecessary parentheses and assumes that multiplication is done before addition. Can you design appropriate predicates, selectors, and constructors for this notation such that our derivative program still works?
+> **تمرين 2.58:** لنفترض أنّنا نريد تعديل برنامج التفاضل بحيث يعمل بالترميز الرياضيّ المعتاد، حيث يكون `+` و`*` مشغّلين داخلين (infix) لا بادئين (prefix). وبما أنّ برنامج التفاضل معرَّفٌ بدلالة بياناتٍ مجرّدة، فيمكننا تعديله ليعمل مع تمثيلاتٍ مختلفةٍ للتعبيرات بتغيير المسيّمات والمُحدِّدات والبنّاءات التي تُحدّد تمثيل التعبيرات الجبريّة التي سيعمل عليها المُفاضِل فقط. أظهِر كيف نفعل ذلك كي نُفاضل تعبيراتٍ جبريّةً مقدَّمةً بالصيغة الداخلية، مثل `(x + (3 * (x + (y + 2))))`. ولتبسيط المهمّة، افترض أنّ `+` و`*` يأخذان معطيين دائمًا، وأنّ التعابير مُحاطةٌ بالأقواس بالكامل.
+> > وتصير المسألة أصعبَ بكثيرٍ إذا سمحنا بالترميز الجبريّ المعياريّ، مثل `(x + 3 * (x + y + 2))`، الذي يُسقط الأقواس غير الضروريّة ويفترض أنّ الضرب يُنجَز قبل الجمع. فهل يمكنك تصميم مسيّماتٍ ومُحدِّداتٍ وبنّاءاتٍ ملائمةٍ لهذا الترميز بحيث يظلّ برنامج المشتقّات لدينا يعمل؟
 > > 
 
-#### 2.3.3 Example: Representing Sets
+#### 2.3.3 مثال: تمثيل المجموعات
 
-In the previous examples we built representations for two kinds of compound data objects: rational numbers and algebraic expressions. In one of these examples we had the choice of simplifying (reducing) the expressions at either construction time or selection time, but other than that the choice of a representation for these structures in terms of lists was straightforward. When we turn to the representation of sets, the choice of a representation is not so obvious. Indeed, there are a number of possible representations, and they differ significantly from one another in several ways.
+في الأمثلة السابقة بنينا تمثيلاتٍ لنوعين من كائنات البيانات المركّبة: الأعداد الكسريّة والتعبيرات الجبريّة. وفي أحد هذه الأمثلة كان لدينا الخيار بين تبسيط (اختزال) التعبيرات إمّا وقت البناء وإمّا وقت الانتقاء، لكن بخلاف ذلك كان اختيار تمثيل هذه البنى من حيث القوائم مباشرًا. وحين ننتقل إلى تمثيل المجموعات، لا يكون اختيار التمثيل بهذه الوضوح. فإنّ هناك عددًا من التمثيلات الممكنة، وهي تختلف اختلافًا جوهريًّا عن بعضها البعض في عدّة نواحٍ.
 
-Informally, a set is simply a collection of distinct objects. To give a more precise definition we can employ the method of data abstraction. That is, we define “set” by specifying the operations that are to be used on sets. These are `union-set`, `intersection-set`, `element-of-set?`, and `adjoin-set`. `Element-of-set?` is a predicate that determines whether a given element is a member of a set. `Adjoin-set` takes an object and a set as arguments and returns a set that contains the elements of the original set and also the adjoined element. `Union-set` computes the union of two sets, which is the set containing each element that appears in either argument. `Intersection-set` computes the intersection of two sets, which is the set containing only elements that appear in both arguments. From the viewpoint of data abstraction, we are free to design any representation that implements these operations in a way consistent with the interpretations given above.[^37]
+وبصورةٍ غير رسميّة، فإنّ المجموعة هي مجرّد تجميعٍ لكائناتٍ متمايزة. ولإعطاء تعريفٍ أدقّ يمكننا استخدام منهج تجريد البيانات. أي أنّنا نعرّف «المجموعة» بتحديد العمليّات التي ستُستخدم على المجموعات. وهذه هي `union-set`، و`intersection-set`، و`element-of-set?`، و`adjoin-set`. و`element-of-set?` مسيّمٌ يحدّد ما إذا كان عنصرٌ معطى ما عضوًا في مجموعة. و`adjoin-set` يأخذ كائنًا ومجموعةً كمعطيات ويعيد مجموعةً تحتوي على عناصر المجموعة الأصليّة والعنصر الملاحَق أيضًا. و`union-set` يحسب اتحاد مجموعتين، وهو المجموعة التي تحتوي على كلّ عنصرٍ يظهر في أيّ من المعطيين. و`intersection-set` يحسب تقاطع مجموعتين، وهو المجموعة التي تحتوي فقط على العناصر التي تظهر في كلا المعطيين. ومن وجهة نظر تجريد البيانات، فنحن أحرارٌ في تصميم أيّ تمثيلٍ يُنفّذ هذه العمليّات بما يتّفق مع التأويلات المعطاة أعلاه.[^37]
 
-#### Sets as unordered lists
+#### المجموعات كقوائم غير مرتّبة
 
-One way to represent a set is as a list of its elements in which no element appears more than once. The empty set is represented by the empty list. In this representation, `element-of-set?` is similar to the procedure `memq` of [2.3.1](#g_t2_002e3_002e1). It uses `equal?` instead of `eq?` so that the set elements need not be symbols:
+إحدى طرق تمثيل المجموعة (set) هي قائمةٌ بعناصرها لا يظهر فيها أيّ عنصرٍ أكثر من مرّة. والمجموعة الخالية تُعبَّر عنها بالقائمة الخالية. وفي هذا التمثيل، الإجراء `element-of-set?` شبيهٌ بالإجراء `memq` المذكور في [2.3.1](#g_t2_002e3_002e1). وهو يستخدم `equal?` بدلًا من `eq?` حتّى لا يلزم أن تكون عناصر المجموعة رموزًا:
 
 ```scheme
 (define (element-of-set? x set)
@@ -2062,7 +2062,7 @@ One way to represent a set is as a list of its elements in which no element appe
         (else (element-of-set? x (cdr set)))))
 ```
 
-Using this, we can write `adjoin-set`. If the object to be adjoined is already in the set, we just return the set. Otherwise, we use `cons` to add the object to the list that represents the set:
+وباستخدامه، يمكننا كتابة `adjoin-set`. فإن كان الكائن المطلوب إضافته موجودًا في المجموعة فعلًا، فإنّنا نُعيد المجموعة كما هي. وإلّا، فإنّنا نستخدم `cons` لإضافة الكائن إلى القائمة التي تمثّل المجموعة:
 
 ```scheme
 (define (adjoin-set x set)
@@ -2071,7 +2071,7 @@ Using this, we can write `adjoin-set`. If the object to be adjoined is already i
       (cons x set)))
 ```
 
-For `intersection-set` we can use a recursive strategy. If we know how to form the intersection of `set2` and the `cdr` of `set1`, we only need to decide whether to include the `car` of `set1` in this. But this depends on whether `(car set1)` is also in `set2`. Here is the resulting procedure:
+ومن أجل `intersection-set`، يمكننا استخدام استراتيجيّة تعاوديّة. فإن كنّا نعرف كيف نُشكّل تقاطع `set2` مع `cdr` الخاصّ بـ`set1`، فلا يبقى علينا إلّا أن نُقرّر ما إذا كنّا سنُضمّن `car` الخاصّ بـ`set1` في هذا التقاطع. لكنّ ذلك مرتهنٌ بكون `(car set1)` موجودًا في `set2` أيضًا. وهذا هو الإجراء الناتج:
 
 ```scheme
 (define (intersection-set set1 set2)
@@ -2085,17 +2085,17 @@ For `intersection-set` we can use a recursive strategy. If we know how to form t
                                 set2))))
 ```
 
-In designing a representation, one of the issues we should be concerned with is efficiency. Consider the number of steps required by our set operations. Since they all use `element-of-set?`, the speed of this operation has a major impact on the efficiency of the set implementation as a whole. Now, in order to check whether an object is a member of a set, `element-of-set?` may have to scan the entire set. (In the worst case, the object turns out not to be in the set.) Hence, if the set has $n$ elements, `element-of-set?` might take up to $n$ steps. Thus, the number of steps required grows as $Θ ( n )$ . The number of steps required by `adjoin-set`, which uses this operation, also grows as $Θ ( n )$ . For `intersection-set`, which does an `element-of-set?` check for each element of `set1`, the number of steps required grows as the product of the sizes of the sets involved, or $Θ ( n^{2} )$ for two sets of size $n$ . The same will be true of `union-set`.
+وفي تصميم التمثيل، إحدى المسائل التي ينبغي أن نُعيرها اهتمامنا هي الكفاءة. فتأمّل عدد الخطوات التي تتطلّبها عمليّاتنا على المجموعات. فبما أنّها جميعًا تستخدم `element-of-set?`، فإنّ سرعة هذه العمليّة تؤثّر تأثيرًا كبيرًا على كفاءة تنفيذ المجموعة ككلّ. والآن، من أجل التحقّق ممّا إذا كان كائنٌ ما عضوًا في مجموعة، قد يضطرّ `element-of-set?` إلى تمشيط المجموعة برمّتها. (وفي أسوأ الحالات، يتبيّن أنّ الكائن ليس في المجموعة.) وبالتالي، فإن كانت المجموعة تضمّ $n$ عنصرًا، فإنّ `element-of-set?` قد يستغرق حتّى $n$ خطوة. وهكذا، فإنّ عدد الخطوات المطلوبة ينمو نموًّا يقابل $Θ ( n )$ . وعدد الخطوات التي يتطلّبها `adjoin-set`، الذي يستخدم هذه العمليّة، ينمو كذلك نحو $Θ ( n )$ . وأمّا `intersection-set`، الذي يُجري فحص `element-of-set?` لكلّ عنصرٍ من عناصر `set1`، فإنّ عدد الخطوات المطلوب ينمو بجداء حجمَي المجموعتين المعنيّتين، أي $Θ ( n^{2} )$ من أجل مجموعتين حجم كلٍّ منهما $n$ . والشيء نفسه سيصدق على `union-set`.
 
-> **Exercise 2.59:** Implement the `union-set` operation for the unordered-list representation of sets.
+> **التمرين 2.59:** نفّذ عمليّة `union-set` من أجل تمثيل المجموعات بالقوائم غير المرتّبة.
 
-> **Exercise 2.60:** We specified that a set would be represented as a list with no duplicates. Now suppose we allow duplicates. For instance, the set ${ 1 , 2 , 3 }$ could be represented as the list `(2 3 2 1 3 2 2)`. Design procedures `element-of-set?`, `adjoin-set`, `union-set`, and `intersection-set` that operate on this representation. How does the efficiency of each compare with the corresponding procedure for the non-duplicate representation? Are there applications for which you would use this representation in preference to the non-duplicate one?
+> **التمرين 2.60:** حدّدنا أنّ المجموعة ستُمثَّل بقائمةٍ خالية من التكرار. والآن، افترض أنّنا نسمح بالتكرار. فمثلًا، يمكن تمثيل المجموعة ${ 1 , 2 , 3 }$ بالقائمة `(2 3 2 1 3 2 2)`. صمّم إجراءات `element-of-set?` و`adjoin-set` و`union-set` و`intersection-set` تعمل على هذا التمثيل. فكيف تُقارن كفاءة كلٍّ منها بكفاءة الإجراء المقابل في التمثيل الخالي من التكرار؟ وهل ثمّة تطبيقاتٌ كنتَ ستستخدم فيها هذا التمثيل تفضيلًا له على التمثيل الخالي من التكرار؟
 
-#### Sets as ordered lists
+#### المجموعات كقوائم مرتّبة
 
-One way to speed up our set operations is to change the representation so that the set elements are listed in increasing order. To do this, we need some way to compare two objects so that we can say which is bigger. For example, we could compare symbols lexicographically, or we could agree on some method for assigning a unique number to an object and then compare the elements by comparing the corresponding numbers. To keep our discussion simple, we will consider only the case where the set elements are numbers, so that we can compare elements using `>` and `<`. We will represent a set of numbers by listing its elements in increasing order. Whereas our first representation above allowed us to represent the set ${ 1 , 3 , 6 , 10 }$ by listing the elements in any order, our new representation allows only the list `(1 3 6 10)`.
+إحدى طرائق تسريع عمليّاتنا على المجموعات هي تغيير التمثيل بحيث تُدرَج عناصر المجموعة بترتيبٍ تصاعديّ. ولكي نفعل ذلك، نحتاج إلى طريقةٍ ما لمقارنة كائنين بحيث نستطيع القول أيّهما أكبر. فمثلًا، يمكننا مقارنة الرموز ترتيبًا معجميًّا، أو يمكننا الاتّفاق على طريقةٍ ما لإسناد عددٍ فريدٍ إلى كائنٍ ثمّ مقارنة العناصر بمقارنة الأعداد المقابلة لها. ولكي تبقي مناقشتنا بسيطة، سنقتصر على الحالة التي تكون فيها عناصر المجموعة أعدادًا، حتّى نستطيع مقارنة العناصر باستخدام `>` و`<`. وسنُمثّل مجموعة الأعداد بإدراج عناصرها بترتيبٍ تصاعديّ. فبينما كان تمثيلنا الأوّل أعلاه يسمح لنا بتمثيل المجموعة ${ 1 , 3 , 6 , 10 }$ بإدراج العناصر بأيّ ترتيبٍ، فإنّ تمثيلنا الجديد لا يسمح إلّا بالقائمة `(1 3 6 10)`.
 
-One advantage of ordering shows up in `element-of-set?`: In checking for the presence of an item, we no longer have to scan the entire set. If we reach a set element that is larger than the item we are looking for, then we know that the item is not in the set:
+تظهر إحدى مزايا الترتيب في `element-of-set?`: فعند التحقّق من وجود عنصرٍ ما، لم نعد مضطرّين إلى تمشيط المجموعة برمّتها. فإن وصلنا إلى عنصرٍ من المجموعة أكبر من العنصر الذي نبحث عنه، فإنّنا نعلم أنّ العنصر ليس في المجموعة:
 
 ```scheme
 (define (element-of-set? x set)
@@ -2105,9 +2105,9 @@ One advantage of ordering shows up in `element-of-set?`: In checking for the pre
         (else (element-of-set? x (cdr set)))))
 ```
 
-How many steps does this save? In the worst case, the item we are looking for may be the largest one in the set, so the number of steps is the same as for the unordered representation. On the other hand, if we search for items of many different sizes we can expect that sometimes we will be able to stop searching at a point near the beginning of the list and that other times we will still need to examine most of the list. On the average we should expect to have to examine about half of the items in the set. Thus, the average number of steps required will be about $n / 2$ . This is still $Θ ( n )$ growth, but it does save us, on the average, a factor of 2 in number of steps over the previous implementation.
+فكم خطوةً يُوفّرها هذا؟ في أسوأ الحالات، قد يكون العنصر الذي نبحث عنه هو أكبر عنصرٍ في المجموعة، فيكون عدد الخطوات هو نفسُه كما في التمثيل غير المرتّب. ومن جانبٍ آخر، فإن كنّا نبحث عن عناصرَ كثيرةٍ مختلفة الأحجام، فيمكننا أن نتوقّع أنّنا سنكون قادرين أحيانًا على إيقاف البحث عند نقطةٍ قريبةٍ من بداية القائمة، وأنّنا سنكون في أحيانٍ أخرى مضطرّين إلى فحص معظم القائمة. وفي المتوسّط، ينبغي أن نتوقّع فحص نحو نصف عناصر المجموعة. وهكذا، فإنّ متوسّط عدد الخطوات المطلوبة سيكون قرابة $n / 2$ . وهذا لا يزال نموًّا من رتبة $Θ ( n )$ ، لكنّه يُوفّر علينا، في المتوسّط، عامل 2 في عدد الخطوات مُقارنةً بالتنفيذ السابق.
 
-We obtain a more impressive speedup with `intersection-set`. In the unordered representation this operation required $Θ ( n^{2} )$ steps, because we performed a complete scan of `set2` for each element of `set1`. But with the ordered representation, we can use a more clever method. Begin by comparing the initial elements, `x1` and `x2`, of the two sets. If `x1` equals `x2`, then that gives an element of the intersection, and the rest of the intersection is the intersection of the `cdr`-s of the two sets. Suppose, however, that `x1` is less than `x2`. Since `x2` is the smallest element in `set2`, we can immediately conclude that `x1` cannot appear anywhere in `set2` and hence is not in the intersection. Hence, the intersection is equal to the intersection of `set2` with the `cdr` of `set1`. Similarly, if `x2` is less than `x1`, then the intersection is given by the intersection of `set1` with the `cdr` of `set2`. Here is the procedure:
+ونحصل على تسريعٍ أكثر إذهالًا مع `intersection-set`. ففي التمثيل غير المرتّب، تطلّبت هذه العمليّة $Θ ( n^{2} )$ خطوة، لأنّنا كنّا نُجري تمشيطًا كاملًا لـ`set2` من أجل كلّ عنصرٍ من عناصر `set1`. لكنّ مع التمثيل المرتّب، يمكننا استخدام طريقةٍ أُذكى. ابدأ بمقارنة العنصرين الأوّلين، `x1` و`x2`، في المجموعتين. فإن كان `x1` مساويًا لـ`x2`، فإنّ ذلك يُعطينا عنصرًا من التقاطع، وبقيّة التقاطع هي تقاطع `cdr` كلٍّ من المجموعتين. وأمّا إن كان `x1` أصغر من `x2`، فبما أنّ `x2` هو أصغر عنصرٍ في `set2`، فيمكننا أن نستنتج مباشرةً أنّ `x1` لا يمكن أن يظهر في أيّ موضعٍ من `set2`، وبالتالي فهو ليس في التقاطع. وعليه، فإنّ التقاطع يساوي تقاطع `set2` مع `cdr` الخاصّ بـ`set1`. وبطريقةٍ مشابهة، فإن كان `x2` أصغر من `x1`، فإنّ التقاطع يُعطى بتقاطع `set1` مع `cdr` الخاصّ بـ`set2`. وهذا هو الإجراء:
 
 ```scheme
 (define (intersection-set set1 set2)
@@ -2126,23 +2126,23 @@ We obtain a more impressive speedup with `intersection-set`. In the unordered re
                           (cdr set2)))))))
 ```
 
-To estimate the number of steps required by this process, observe that at each step we reduce the intersection problem to computing intersections of smaller sets—removing the first element from `set1` or `set2` or both. Thus, the number of steps required is at most the sum of the sizes of `set1` and `set2`, rather than the product of the sizes as with the unordered representation. This is $Θ ( n )$ growth rather than $Θ ( n^{2} )$ —a considerable speedup, even for sets of moderate size.
+ولتقدير عدد الخطوات التي تتطلّبها هذه العمليّة، لاحِظ أنّنا في كلّ خطوةٍ نُخفّض مسألة التقاطع إلى احتساب تقاطعات مجموعاتٍ أصغر — بإزالة أوّل عنصرٍ من `set1` أو `set2` أو من كليهما. وهكذا، فإنّ عدد الخطوات المطلوب هو على الأكثر مجموع حجمَي `set1` و`set2`، بدلًا من جداء الحجمين كما في التمثيل غير المرتّب. وهذا نموٌّ من رتبة $Θ ( n )$ بدلًا من $Θ ( n^{2} )$ — تسريعٌ كبير، حتّى من أجل مجموعاتٍ متوسّطة الحجم.
 
-> **Exercise 2.61:** Give an implementation of `adjoin-set` using the ordered representation. By analogy with `element-of-set?` show how to take advantage of the ordering to produce a procedure that requires on the average about half as many steps as with the unordered representation.
+> **التمرين 2.61:** أعطِ تنفيذًا لـ`adjoin-set` باستخدام التمثيل المرتّب. وبتحليلٍ مشابهٍ للتحليل المتعلّق بـ`element-of-set?`، أظهِر كيف نستفيد من الترتيب لإنتاج إجراءٍ يتطلّب، في المتوسّط، قرابة نصف عدد الخطوات التي يتطلّبها التمثيل غير المرتّب.
 
-> **Exercise 2.62:** Give a $Θ ( n )$ implementation of `union-set` for sets represented as ordered lists.
+> **التمرين 2.62:** أعطِ تنفيذًا رتبة نموّه $Θ ( n )$ لـ`union-set` من أجل المجموعات الممثّلة كقوائمَ مرتّبة.
 
-#### Sets as binary trees
+#### المجموعات كأشجار ثنائيّة
 
-We can do better than the ordered-list representation by arranging the set elements in the form of a tree. Each node of the tree holds one element of the set, called the “entry” at that node, and a link to each of two other (possibly empty) nodes. The “left” link points to elements smaller than the one at the node, and the “right” link to elements greater than the one at the node. [Figure 2.16](#Figure-2_002e16) shows some trees that represent the set ${ 1 , 3 , 5 , 7 , 9 , 11 }$ . The same set may be represented by a tree in a number of different ways. The only thing we require for a valid representation is that all elements in the left subtree be smaller than the node entry and that all elements in the right subtree be larger.
+يمكننا فعل ما هو أفضل من تمثيل القوائم المرتّبة بترتيب عناصر المجموعة في صورة شجرة. فكلّ عقدةٍ في الشجرة تحمل عنصرًا واحدًا من المجموعة، يُسمّى «المُدخَل» (entry) في تلك العقدة، ورابطًا إلى كلٍّ من عقدتين أُخريين (قد تكونان خاليتين). والرابط «الأيسر» يُشير إلى العناصر الأصغر من العنصر الموجود في العقدة، والرابط «الأيمن» يُشير إلى العناصر الأكبر منه. ويُظهر [الشكل 2.16](#Figure-2_002e16) بعض الأشجار التي تمثّل المجموعة ${ 1 , 3 , 5 , 7 , 9 , 11 }$ . والمجموعة نفسها قد تُُمثَّل بشجرةٍ بعدّة طرقٍ مختلفة. والشرط الوحيد الذي نُلزم به أنفسنا من أجل تمثيلٍ صحيحٍ هو أن تكون جميع العناصر في الشجرة الفرعيّة اليسرى أصغر من مُدخَل العقدة، وأن تكون جميع العناصر في الشجرة الفرعيّة اليمنى أكبر منه.
 
 ![](/images/sicp/c2-building-abstractions-with-data-0-Fig2.16c.std.webp)
 
-**Figure 2.16:** Various binary trees that represent the set ${ 1 , 3 , 5 , 7 , 9 , 11 }$ .
+**الشكل 2.16:** أشجارٌ ثنائيّةٌ مختلفة تمثّل المجموعة ${ 1 , 3 , 5 , 7 , 9 , 11 }$ .
 
-The advantage of the tree representation is this: Suppose we want to check whether a number $x$ is contained in a set. We begin by comparing $x$ with the entry in the top node. If $x$ is less than this, we know that we need only search the left subtree; if $x$ is greater, we need only search the right subtree. Now, if the tree is “balanced,” each of these subtrees will be about half the size of the original. Thus, in one step we have reduced the problem of searching a tree of size $n$ to searching a tree of size $n / 2$ . Since the size of the tree is halved at each step, we should expect that the number of steps needed to search a tree of size $n$ grows as $Θ ( log ⁡ n )$ .[^38] For large sets, this will be a significant speedup over the previous representations.
+وميزة تمثيل الأشجار هي هذه: افترض أنّنا نريد التحقّق ممّا إذا كان عددٌ $x$ موجودًا في مجموعة. فنبدأ بمقارنة $x$ بالمُدخَل الموجود في العقدة العليا. فإن كان $x$ أصغر منه، فإنّنا نعلم أنّنا لا نحتاج إلّا إلى البحث في الشجرة الفرعيّة اليسرى؛ وإن كان $x$ أكبر، فإنّنا لا نحتاج إلّا إلى البحث في الشجرة الفرعيّة اليمنى. والآن، فإن كانت الشجرة «متوازنة»، فإنّ كلًّا من هاتين الشجرتين الفرعيّتين سيكون قرابة نصف حجم الشجرة الأصليّة. وهكذا، فقد خفّضنا في خطوةٍ واحدة مسألة البحث في شجرةٍ حجمها $n$ إلى البحث في شجرةٍ حجمها $n / 2$ . وبما أنّ حجم الشجرة يتنصف في كلّ خطوةٍ، فينبغي أن نتوقّع أنّ عدد الخطوات اللازم للبحث في شجرةٍ حجمها $n$ ينمو نموًّا يقابل $Θ ( log ⁡ n )$ .[^38] ومن أجل المجموعات الكبيرة، سيكون هذا تسريعًا مهمًّا مُقارنةً بالتمثيلات السابقة.
 
-We can represent trees by using lists. Each node will be a list of three items: the entry at the node, the left subtree, and the right subtree. A left or a right subtree of the empty list will indicate that there is no subtree connected there. We can describe this representation by the following procedures:[^39]
+يمكننا تمثيل الأشجار باستخدام القوائم. فكلّ عقدةٍ ستكون قائمةً من ثلاثة بنود: مُدخَل العقدة، والشجرة الفرعيّة اليسرى، والشجرة الفرعيّة اليمنى. وأمّا إذا كانت الشجرة الفرعيّة اليسرى أو اليمنى هي القائمة الخالية، فذلك يُشير إلى عدم وجود شجرةٍ فرعيّةٍ موصولة في ذلك الموضع. ويمكننا وصف هذا التمثيل بالإجراءات الآتية:[^39]
 
 ```scheme
 (define (entry tree) (car tree))
@@ -2152,7 +2152,7 @@ We can represent trees by using lists. Each node will be a list of three items: 
   (list entry left right))
 ```
 
-Now we can write the `element-of-set?` procedure using the strategy described above:
+والآن يمكننا كتابة إجراء `element-of-set?` باستخدام الاستراتيجيّة الموصوفة أعلاه:
 
 ```scheme
 (define (element-of-set? x set)
@@ -2168,7 +2168,7 @@ Now we can write the `element-of-set?` procedure using the strategy described ab
           (right-branch set)))))
 ```
 
-Adjoining an item to a set is implemented similarly and also requires $Θ ( log ⁡ n )$ steps. To adjoin an item `x`, we compare `x` with the node entry to determine whether `x` should be added to the right or to the left branch, and having adjoined `x` to the appropriate branch we piece this newly constructed branch together with the original entry and the other branch. If `x` is equal to the entry, we just return the node. If we are asked to adjoin `x` to an empty tree, we generate a tree that has `x` as the entry and empty right and left branches. Here is the procedure:
+وإضافة عنصرٍ إلى مجموعةٍ تُنفَّذ بطريقةٍ مشابهة، وهي تتطلّب كذلك $Θ ( log ⁡ n )$ خطوة. فلكي نُضيف عنصرًا `x`، نقارن `x` بمُدخَل العقدة لتحديد ما إذا كان ينبغي إضافة `x` إلى الفرع الأيمن أم إلى الفرع الأيسر، وبعد إضافة `x` إلى الفرع المناسب، نُعيد تجميع هذا الفرع المُنشأ حديثًا مع المُدخَل الأصليّ والفرع الآخر. فإن كان `x` مساويًا للمُدخَل، فإنّنا نُعيد العقدة كما هي. وإن طُلِب منّا إضافة `x` إلى شجرةٍ خالية، فإنّنا نُنشئ شجرةً يكون `x` فيها هو المُدخَل ويكون فرعاها الأيمن والأيسر خاليين. وهذا هو الإجراء:
 
 ```scheme
 (define (adjoin-set x set)
@@ -2186,13 +2186,13 @@ Adjoining an item to a set is implemented similarly and also requires $Θ ( log 
           (adjoin-set x (right-branch set))))))
 ```
 
-The above claim that searching the tree can be performed in a logarithmic number of steps rests on the assumption that the tree is “balanced,” i.e., that the left and the right subtree of every tree have approximately the same number of elements, so that each subtree contains about half the elements of its parent. But how can we be certain that the trees we construct will be balanced? Even if we start with a balanced tree, adding elements with `adjoin-set` may produce an unbalanced result. Since the position of a newly adjoined element depends on how the element compares with the items already in the set, we can expect that if we add elements “randomly” the tree will tend to be balanced on the average. But this is not a guarantee. For example, if we start with an empty set and adjoin the numbers 1 through 7 in sequence we end up with the highly unbalanced tree shown in [Figure 2.17](#Figure-2_002e17). In this tree all the left subtrees are empty, so it has no advantage over a simple ordered list. One way to solve this problem is to define an operation that transforms an arbitrary tree into a balanced tree with the same elements. Then we can perform this transformation after every few `adjoin-set` operations to keep our set in balance. There are also other ways to solve this problem, most of which involve designing new data structures for which searching and insertion both can be done in $Θ ( log ⁡ n )$ steps.[^40]
+إنّ الادّعاء السابق بأنّ البحث في الشجرة يمكن أداؤه بعددٍ لوغاريتميٍّ من الخطوات يقوم على افتراض أنّ الشجرة «متوازنة»، أي أنّ الشجرة الفرعيّة اليسرى والشجرة الفرعيّة اليمنى لكلّ شجرةٍ تضمّان العدد نفسه من العناصر تقريبًا، بحيث تحتوي كلّ شجرةٍ فرعيّةٍ على قرابة نصف عناصر الشجرة الأمّ. ولكن كيف يمكننا أن نتيقّن من أنّ الأشجار التي نُنشئها ستكون متوازنة؟ فحتّى إن كنّا بدأنا بشجرةٍ متوازنة، فإنّ إضافة عناصرٍ بـ`adjoin-set` قد تُنتج نتيجةً غير متوازنة. وبما أنّ موضع العنصر المُضاف حديثًا مرتهنٌ بكيفيّة مقارنة العنصر بالبنود الموجودة في المجموعة فعلًا، فيمكننا أن نتوقّع أنّه إن أضفنا عناصرٍ «عشوائيًّا» فإنّ الشجرة ستُميل إلى التوازن في المتوسّط. ولكنّ هذا ليس ضمانًا. فمثلًا، إن بدأنا بمجموعةٍ خاليةٍ وأضفنا الأعداد من 1 إلى 7 بالتتالي، فإنّنا ننتهي بالشجرة غير المتوازنة إلى حدٍّ كبير الموضّحة في [الشكل 2.17](#Figure-2_002e17). ففي هذه الشجرة، جميع الأشجار الفرعيّة اليسرى خالية، وليس لها بذلك أيّ ميزةٍ على قائمةٍ مرتّبةٍ بسيطة. وإحدى طرائق حلّ هذه المسألة هي تعريف عمليّةٍ تُحوّل شجرةً اعتباطيّةً إلى شجرةٍ متوازنةٍ بالعناصر نفسها. وبعدها يمكننا أداء هذا التحويل بعد كلّ بضع عمليّات `adjoin-set` لكي نُبقي مجموعتنا متوازنة. وثمّة طرائق أُخرى لحلّ هذه المسألة، أكثرها يتضمّن تصميم بنى بياناتٍ جديدة يمكن أداء البحث والإدخال فيها كلاهما بـ$Θ ( log ⁡ n )$ خطوة.[^40]
 
 ![](/images/sicp/c2-building-abstractions-with-data-1-Fig2.17a.std.webp)
 
-**Figure 2.17:** Unbalanced tree produced by adjoining 1 through 7 in sequence.
+**الشكل 2.17:** شجرةٌ غير متوازنةٍ ناتجةٌ عن إضافة الأعداد من 1 إلى 7 بالتتالي.
 
-**Exercise 2.63:** Each of the following two procedures converts a binary tree to a list.
+**التمرين 2.63:** كلٌّ من الإجراءين الآتيين يُحوّل شجرةً ثنائيّةً إلى قائمة.
 
 ```scheme
 (define (tree->list-1 tree)
@@ -2218,10 +2218,10 @@ The above claim that searching the tree can be performed in a logarithmic number
   (copy-to-list tree '()))
 ```
 
-1. Do the two procedures produce the same result for every tree? If not, how do the results differ? What lists do the two procedures produce for the trees in [Figure 2.16](#Figure-2_002e16)?
-2. Do the two procedures have the same order of growth in the number of steps required to convert a balanced tree with $n$ elements to a list? If not, which one grows more slowly?
+1. فهل يُنتج الإجراءان النتيجة نفسها من أجل كلّ شجرة؟ فإن لم يكونا كذلك، فكيف تختلف النتائج؟ وأيّ قوائم يُنتجها الإجراءان من أجل الأشجار في [الشكل 2.16](#Figure-2_002e16)؟
+2. فهل للإجراءين رتبة النموّ نفسها في عدد الخطوات اللازم لتحويل شجرةٍ متوازنةٍ لها $n$ عنصرًا إلى قائمة؟ فإن لم تكونا متساويتين، فأيّهما ينمو أبطأ؟
 
-**Exercise 2.64:** The following procedure `list->tree` converts an ordered list to a balanced binary tree. The helper procedure `partial-tree` takes as arguments an integer $n$ and list of at least $n$ elements and constructs a balanced tree containing the first $n$ elements of the list. The result returned by `partial-tree` is a pair (formed with `cons`) whose `car` is the constructed tree and whose `cdr` is the list of elements not included in the tree.
+**التمرين 2.64:** الإجراء `list->tree` الآتي يُحوّل قائمةً مرتّبةً إلى شجرةٍ ثنائيّةٍ متوازنة. والإجراء المساعد `partial-tree` يأخذ كمعطيين عددًا صحيحًا $n$ وقائمةً من $n$ عنصرٍ على الأقلّ، ويُنشئ شجرةً متوازنةً تحتوي أوّل $n$ عنصرًا من القائمة. والنتيجة التي يُعيدها `partial-tree` هي زوجٌ (مُشكَّلٌ بـ`cons`) `car` الخاصّ به هو الشجرة المُنشأة، و`cdr` الخاصّ به هو قائمة العناصر غير المُضمَّنة في الشجرة.
 
 ```scheme
 (define (list->tree elements)
@@ -2258,18 +2258,18 @@ The above claim that searching the tree can be performed in a logarithmic number
                       remaining-elts))))))))
 ```
 
-1. Write a short paragraph explaining as clearly as you can how `partial-tree` works. Draw the tree produced by `list->tree` for the list `(1 3 5 7 9 11)`.
-2. What is the order of growth in the number of steps required by `list->tree` to convert a list of $n$ elements?
+1. اكتب فقرةً قصيرةً تُفسّر بأوضح ما تستطيع كيف يعمل `partial-tree`. وارسم الشجرة التي يُنتجها `list->tree` من أجل القائمة `(1 3 5 7 9 11)`.
+2. فما رتبة النموّ في عدد الخطوات التي يتطلّبها `list->tree` لتحويل قائمةٍ من $n$ عنصر؟
 
-> **Exercise 2.65:** Use the results of [Exercise 2.63](#Exercise-2_002e63) and [Exercise 2.64](#Exercise-2_002e64) to give $Θ ( n )$ implementations of `union-set` and `intersection-set` for sets implemented as (balanced) binary trees.[^41]
+> **التمرين 2.65:** استخدم نتائج [التمرين 2.63](#Exercise-2_002e63) و[التمرين 2.64](#Exercise-2_002e64) لإعطاء تنفيذاتٍ رتبة نموّها $Θ ( n )$ لـ`union-set` و`intersection-set` من أجل المجموعات المُنفَّذة كأشجارٍ ثنائيّةٍ (متوازنة).[^41]
 
-#### Sets and information retrieval
+#### المجموعات واسترجاع المعلومات
 
-We have examined options for using lists to represent sets and have seen how the choice of representation for a data object can have a large impact on the performance of the programs that use the data. Another reason for concentrating on sets is that the techniques discussed here appear again and again in applications involving information retrieval.
+لقد فحصنا خيارات استخدام القوائم لتمثيل المجموعات، ورأينا كيف يمكن أن يكون لاختيار تمثيلٍ ما لكائن بياناتٍ أثرٌ كبيرٌ على أداء البرامج التي تستخدم تلك البيانات. وهناك سببٌ آخر للتركيز على المجموعات هو أنّ التقنيّات المناقشة هنا تظهر مرّةً بعد أخرى في التطبيقات التي تتضمّن استرجاع المعلومات.
 
-Consider a data base containing a large number of individual records, such as the personnel files for a company or the transactions in an accounting system. A typical data-management system spends a large amount of time accessing or modifying the data in the records and therefore requires an efficient method for accessing records. This is done by identifying a part of each record to serve as an identifying *key*. A key can be anything that uniquely identifies the record. For a personnel file, it might be an employee’s ID number. For an accounting system, it might be a transaction number. Whatever the key is, when we define the record as a data structure we should include a `key` selector procedure that retrieves the key associated with a given record.
+تأمّل قاعدة بياناتٍ تحتوي عددًا كبيرًا من السجلّات الفرديّة، كملفّات العاملين في شركةٍ أو العمليات الماليّة في نظامٍ محاسبيّ. فإنّ نظام إدارة البيانات النموذجيّ يقضي قدرًا كبيرًا من الوقت في الوصول إلى البيانات في السجلّات أو تعديلها، ولذلك يتطلّب طريقةً فعّالةً للوصول إلى السجلّات. ويُنجَز ذلك بتحديد جزءٍ من كلّ سجلٍّ ليقوم بدور *مفتاح* تعريفيّ. ويمكن أن يكون المفتاح أيّ شيءٍ يُعرِّف السجلّ تعريفًا فريدًا. فمن أجل ملفّ عامل، قد يكون رقم هويّة الموظّف. ومن أجل نظامٍ محاسبيّ، قد يكون رقم العمليّة الماليّة. وأيًّا كان المفتاح، فإنّنا حين نُعرّف السجلّ كبنية بياناتٍ، ينبغي أن نُضمّن إجراءً مُنتقِيًا `key` يُسترجِع المفتاح المرتبط بسجلٍّ معطًى.
 
-Now we represent the data base as a set of records. To locate the record with a given key we use a procedure `lookup`, which takes as arguments a key and a data base and which returns the record that has that key, or false if there is no such record. `Lookup` is implemented in almost the same way as `element-of-set?`. For example, if the set of records is implemented as an unordered list, we could use
+والآن نُمثّل قاعدة البيانات كمجموعةٍ من السجلّات. ولكي نُحدّد موضع السجلّ ذي مفتاحٍ معطًى، نستخدم إجراءً `lookup` يأخذ كمعطيين مفتاحًا وقاعدة بياناتٍ، ويُعيد السجلّ الذي يحمل ذلك المفتاح، أو القيمة false إن لم يكن هناك سجلٌّ كهذا. والإجراء `lookup` مُنفَّذٌ بالطريقة نفسها تقريبًا كـ`element-of-set?`. فمثلًا، إن كانت مجموعة السجلّات مُنفَّذةً كقائمةٍ غير مرتّبة، فقد نستخدم
 
 ```scheme
 (define (lookup given-key set-of-records)
@@ -2282,67 +2282,67 @@ Now we represent the data base as a set of records. To locate the record with a 
                  (cdr set-of-records)))))
 ```
 
-Of course, there are better ways to represent large sets than as unordered lists. Information-retrieval systems in which records have to be “randomly accessed” are typically implemented by a tree-based method, such as the binary-tree representation discussed previously. In designing such a system the methodology of data abstraction can be a great help. The designer can create an initial implementation using a simple, straightforward representation such as unordered lists. This will be unsuitable for the eventual system, but it can be useful in providing a “quick and dirty” data base with which to test the rest of the system. Later on, the data representation can be modified to be more sophisticated. If the data base is accessed in terms of abstract selectors and constructors, this change in representation will not require any changes to the rest of the system.
+وبالطبع، ثمّة طرائق أفضل لتمثيل المجموعات الكبيرة من تمثيلها كقوائمَ غير مرتّبةٍ. فإنّ أنظمة استرجاع المعلومات التي يجب الوصول إلى السجلّات فيها وصولًا «عشوائيًّا» تُنفَّذ عادةً بطريقةٍ تعتمد على الأشجار، كتمثيل الأشجار الثنائيّة المناقَش سابقًا. ومن أجل تصميم نظامٍ كهذا، يمكن أن تكون منهجيّة تجريد البيانات عونًا كبيرًا. فيستطيع المصمّم أن يُنشئ تنفيذًا أوّليًّا باستخدام تمثيلٍ بسيطٍ مباشرٍ كالقوائم غير المرتّبة. وهذا سيكون غير ملائمٍ للنظام النهائيّ، لكنّه قد يكون مفيدًا في توفير قاعدة بياناتٍ «سريعةٍ وخشنة» يُختبر بها بقيّة النظام. ولاحقًا، يمكن تعديل تمثيل البيانات ليصبح أكثر تطورًا. فإن كانت قاعدة البيانات تُستخدَم بدلالة المُنتقِيَات والبانيات المجرّدة، فإنّ هذا التغيير في التمثيل لن يفرض أيّ تغييراتٍ على بقيّة النظام.
 
-> **Exercise 2.66:** Implement the `lookup` procedure for the case where the set of records is structured as a binary tree, ordered by the numerical values of the keys.
+> **التمرين 2.66:** نفّذ إجراء `lookup` من أجل الحالة التي تكون فيها مجموعة السجلّات مبنيّةً كشجرةٍ ثنائيّةٍ مرتّبةٍ وفقًا للقيم العدديّة للمفاتيح.
 
-#### 2.3.4 Example: Huffman Encoding Trees
+#### 2.3.4 مثال: أشجار ترميز هافمان
 
-This section provides practice in the use of list structure and data abstraction to manipulate sets and trees. The application is to methods for representing data as sequences of ones and zeros (bits). For example, the ASCII standard code used to represent text in computers encodes each character as a sequence of seven bits. Using seven bits allows us to distinguish $2^{7}$ , or 128, possible different characters. In general, if we want to distinguish $n$ different symbols, we will need to use $log_{2} ⁡ n$ bits per symbol. If all our messages are made up of the eight symbols A, B, C, D, E, F, G, and H, we can choose a code with three bits per character, for example
+يُوفّر هذا القسم تدريبًا على استخدام بنية القوائم وتجريد البيانات للتلاعب بالمجموعات والأشجار. والتطبيق هنا هو على طرائق تمثيل البيانات كتسلسلاتٍ من الآحاد والأصفار (البتّات). فمثلًا، تُشفّر الشيفرة المعياريّة ASCII المستخدمة لتمثيل النصوص في الحواسيب كلّ حرفٍ كتسلسلٍ من سبع بتّات. ويسمح لنا استخدام سبع بتّات بالتمييز بين $2^{7}$ ، أو 128، من الحروف المختلفة الممكنة. وبصورةٍ عامّة، إن كنّا نريد التمييز بين $n$ رمزًا مختلفًا، فسنحتاج إلى استخدام $log_{2} ⁡ n$ بِتّة لكلّ رمز. فإن كانت جميع رسائلنا مُكوَّنةً من الرموز الثمانية A، وB، وC، وD، وE، وF، وG، وH، فيمكننا اختيار شيفرةٍ بثلاث بتّات لكلّ حرف، مثلًا:
 
 ```
 A 000  C 010  E 100  G 110
 B 001  D 011  F 101  H 111
 ```
 
-With this code, the message
+وباستخدام هذه الشيفرة، فإنّ الرسالة
 
 ```
 BACADAEAFABBAAAGAH
 ```
 
-is encoded as the string of 54 bits
+تُشفَّر كسلسلةٍ من 54 بِتّة
 
 ```
 001000010000011000100000101
 000001001000000000110000111
 ```
 
-Codes such as ASCII and the A-through-H code above are known as *fixed-length* codes, because they represent each symbol in the message with the same number of bits. It is sometimes advantageous to use *variable-length* codes, in which different symbols may be represented by different numbers of bits. For example, Morse code does not use the same number of dots and dashes for each letter of the alphabet. In particular, E, the most frequent letter, is represented by a single dot. In general, if our messages are such that some symbols appear very frequently and some very rarely, we can encode data more efficiently (i.e., using fewer bits per message) if we assign shorter codes to the frequent symbols. Consider the following alternative code for the letters A through H:
+وتُعرَف الشيفرات كـASCII والشيفرة الخاصّة بالحروف من A إلى H أعلاه بأنّها شيفرات *ثابتة الطول*، لأنّها تمثّل كلّ رمزٍ في الرسالة بالعدد نفسه من البتّات. ومن المفيد أحيانًا استخدام شيفرات *متغيّرة الطول*، التي قد تُُمثَّل فيها رموزٌ مختلفة بأعدادٍ مختلفةٍ من البتّات. فمثلًا، لا تستخدم شيفرة مورس العدد نفسه من النقاط والشرطات لكلّ حرفٍ من حروف الأبجديّة. وعلى وجه الخصوص، فإنّ الحرف E، وهو الحرف الأكثر تكرارًا، يُمثَّل بنقطةٍ واحدة. وبصورةٍ عامّة، إن كانت رسائلنا على نحوٍ تظهر فيه بعض الرموز بتكرارٍ كبيرٍ جدًّا وبعضها بتكرارٍ نادرٍ جدًّا، فيمكننا ترميز البيانات بكفاءةٍ أكبر (أي باستخدام عددٍ أقلّ من البتّات لكلّ رسالة) إن أسندنا شيفراتٍ أقصر إلى الرموز المتكرّرة. فتأمّل شيفرة الحروف من A إلى H البديلة الآتية:
 
 ```
 A 0    C 1010  E 1100  G 1110
 B 100  D 1011  F 1101  H 1111
 ```
 
-With this code, the same message as above is encoded as the string
+وباستخدام هذه الشيفرة، فإنّ الرسالة نفسها المذكورة أعلاه تُشفَّر كالسلسلة
 
 ```
 100010100101101100011
 010100100000111001111
 ```
 
-This string contains 42 bits, so it saves more than 20% in space in comparison with the fixed-length code shown above.
+تحتوي هذه السلسلة 42 بِتّة، وبذلك تُوفّر أكثر من 20% من المساحة مُقارنةً بالشيفرة ثابتة الطول الموضّحة أعلاه.
 
-One of the difficulties of using a variable-length code is knowing when you have reached the end of a symbol in reading a sequence of zeros and ones. Morse code solves this problem by using a special *separator code* (in this case, a pause) after the sequence of dots and dashes for each letter. Another solution is to design the code in such a way that no complete code for any symbol is the beginning (or *prefix*) of the code for another symbol. Such a code is called a *prefix code*. In the example above, A is encoded by 0 and B is encoded by 100, so no other symbol can have a code that begins with 0 or with 100.
+إحدى صعوبات استخدام شيفرةٍ متغيّرة الطول هي معرفة متى تكون قد وصلت إلى نهاية رمزٍ أثناء قراءة تسلسلٍ من الأصفار والآحاد. وتحلّ شيفرة مورس هذه المسألة باستخدام *شيفرة فواصل* خاصّة (وهي في هذه الحالة وقفةٌ زمنيّة) بعد تسلسل النقاط والشرطات الخاصّ بكلّ حرف. والحلّ الآخر هو تصميم الشيفرة على نحوٍ لا تكون فيه الشيفرة الكاملة لأيّ رمزٍ بدايةً (أي *بادئة*) لشيفرة رمزٍ آخر. وتُسمّى الشيفرة كهذه *شيفرة بادئة*. ففي المثال أعلاه، يُشفَّر الحرف A بـ0 ويُشفَّر الحرف B بـ100، فلا يمكن لأيّ رمزٍ آخر أن يملك شيفرةً تبدأ بـ0 أو بـ100.
 
-In general, we can attain significant savings if we use variable-length prefix codes that take advantage of the relative frequencies of the symbols in the messages to be encoded. One particular scheme for doing this is called the Huffman encoding method, after its discoverer, David Huffman. A Huffman code can be represented as a binary tree whose leaves are the symbols that are encoded. At each non-leaf node of the tree there is a set containing all the symbols in the leaves that lie below the node. In addition, each symbol at a leaf is assigned a weight (which is its relative frequency), and each non-leaf node contains a weight that is the sum of all the weights of the leaves lying below it. The weights are not used in the encoding or the decoding process. We will see below how they are used to help construct the tree.
+وبصورةٍ عامّة، يمكننا تحقيق توفيراتٍ كبيرةٍ إن استخدمنا شيفرات بادئة متغيّرة الطول تستفيد من التردّدات النسبيّة للرموز في الرسائل المطلوب ترميزها. وتُسمّى إحدى الطرائق الخاصّة لفعل ذلك طريقة ترميز هافمان، نسبةً إلى مكتشفها، دافيد هافمان. ويمكن تمثيل شيفرة هافمان كشجرةٍ ثنائيّةٍ أوراقها هي الرموز المُرَمَّزة. وعند كلّ عقدةٍ غير طرفيّةٍ من الشجرة، توجد مجموعةٌ تحتوي جميع الرموز الموجودة في الأوراق الكائنة أسفل العقدة. وبالإضافة إلى ذلك، يُسنَد إلى كلّ رمزٍ في ورقةٍ وزنٌ (وهو تردّده النسبيّ)، وتحتوي كلّ عقدةٍ غير طرفيّةٍ على وزنٍ هو مجموع أوزان جميع الأوراق الكائنة أسفلها. والأوزان لا تُستخدم في عمليّة الترميز أو فكّ الترميز. وسنرى أدناه كيف تُستخدم للمساعدة في بناء الشجرة.
 
-[Figure 2.18](#Figure-2_002e18) shows the Huffman tree for the A-through-H code given above. The weights at the leaves indicate that the tree was designed for messages in which A appears with relative frequency 8, B with relative frequency 3, and the other letters each with relative frequency 1.
+ويُظهر [الشكل 2.18](#Figure-2_002e18) شجرة هافمان الخاصّة بشيفرة الحروف من A إلى H المُعطاة أعلاه. وتُشير الأوزان في الأوراق إلى أنّ الشجرة صُمّمت من أجل رسائلٍ يظهر فيها الحرف A بتردّدٍ نسبيٍّ قدره 8، ويظهر فيها الحرف B بتردّدٍ نسبيٍّ قدره 3، ويظهر كلٌّ من الحروف الأخرى بتردّدٍ نسبيٍّ قدره 1.
 
 ![](/images/sicp/c2-building-abstractions-with-data-2-Fig2.18a.std.webp)
 
-**Figure 2.18:** A Huffman encoding tree.
+**الشكل 2.18:** شجرة ترميز هافمان.
 
-Given a Huffman tree, we can find the encoding of any symbol by starting at the root and moving down until we reach the leaf that holds the symbol. Each time we move down a left branch we add a 0 to the code, and each time we move down a right branch we add a 1. (We decide which branch to follow by testing to see which branch either is the leaf node for the symbol or contains the symbol in its set.) For example, starting from the root of the tree in [Figure 2.18](#Figure-2_002e18), we arrive at the leaf for D by following a right branch, then a left branch, then a right branch, then a right branch; hence, the code for D is 1011.
+وبإعطائنا شجرة هافمان، يمكننا إيجاد ترميز أيّ رمزٍ بالانطلاق من الجذر والنزول حتّى نصل إلى الورقة التي تحمل الرمز. ففي كلّ مرّةٍ ننزل فيها عبر فرعٍ أيسر نُضيف 0 إلى الشيفرة، وفي كلّ مرّةٍ ننزل فيها عبر فرعٍ أيمن نُضيف 1. (ونحن نُقرّر أيّ فرعٍ نتّبعه بفحص أيّ الفرعين هو إمّا عقدة ورقة الرمز وإمّا يحتوي الرمز في مجموعةٍ.) فمثلًا، فإنّنا بالانطلاق من جذر الشجرة في [الشكل 2.18](#Figure-2_002e18)، نصل إلى ورقة الحرف D باتّباع فرعٍ أيمن، ثمّ فرعٍ أيسر، ثمّ فرعٍ أيمن، ثمّ فرعٍ أيمن؛ وبذلك، فإنّ شيفرة الحرف D هي 1011.
 
-To decode a bit sequence using a Huffman tree, we begin at the root and use the successive zeros and ones of the bit sequence to determine whether to move down the left or the right branch. Each time we come to a leaf, we have generated a new symbol in the message, at which point we start over from the root of the tree to find the next symbol. For example, suppose we are given the tree above and the sequence 10001010. Starting at the root, we move down the right branch, (since the first bit of the string is 1), then down the left branch (since the second bit is 0), then down the left branch (since the third bit is also 0). This brings us to the leaf for B, so the first symbol of the decoded message is B. Now we start again at the root, and we make a left move because the next bit in the string is 0. This brings us to the leaf for A. Then we start again at the root with the rest of the string 1010, so we move right, left, right, left and reach C. Thus, the entire message is BAC.
+ولفكّ ترميز تسلسلٍ من البتّات باستخدام شجرة هافمان، نبدأ من الجذر ونستخدم الأصفار والآحاد المتعاقبة في تسلسل البتّات لتحديد ما إذا كنّا سننزل عبر الفرع الأيسر أم الفرع الأيمن. ففي كلّ مرّةٍ نصل فيها إلى ورقةٍ، نكون قد أنشأنا رمزًا جديدًا في الرسالة، وعند تلك النقطة نبدأ من جديدٍ من جذر الشجرة لإيجاد الرمز التالي. فمثلًا، لنفترض أنّنا أُعطينا الشجرة أعلاه والتسلسل 10001010. فإنّنا بالانطلاق من الجذر ننزل عبر الفرع الأيمن (إذ أوّل بِتّة في السلسلة هي 1)، ثمّ عبر الفرع الأيسر (إذ البِتّة الثانية هي 0)، ثمّ عبر الفرع الأيسر (إذ البِتّة الثالثة هي 0 كذلك). وهذا يصل بنا إلى ورقة الحرف B، وبذلك يكون أوّل رمزٍ في الرسالة المفكوكة الترميز هو B. والآن نبدأ مرّةً أخرى من الجذر، ونُحرّك يسارًا لأنّ البِتّة التالية في السلسلة هي 0. وهذا يصل بنا إلى ورقة الحرف A. ثمّ نبدأ مرّةً أخرى من الجذر مع بقيّة السلسلة 1010، فنُحرّك يمينًا، ويسارًا، ويمينًا، ويسارًا، ونصل إلى C. وهكذا، فإنّ الرسالة بأكملها هي BAC.
 
-#### Generating Huffman trees
+#### توليد أشجار هافمان
 
-Given an “alphabet” of symbols and their relative frequencies, how do we construct the “best” code? (In other words, which tree will encode messages with the fewest bits?) Huffman gave an algorithm for doing this and showed that the resulting code is indeed the best variable-length code for messages where the relative frequency of the symbols matches the frequencies with which the code was constructed. We will not prove this optimality of Huffman codes here, but we will show how Huffman trees are constructed.[^42]
+وبإعطائنا «أبجديّة» من الرموز وتردّداتها النسبيّة، فكيف نُنشئ الشيفرة «الأفضل»؟ (وبعبارةٍ أُخرى، أيّ شجرةٍ ستُرمِّز الرسائل بأقلّ عددٍ من البتّات؟) لقد أعطانا هافمان خوارزميّةً لفعل ذلك، وأظهر أنّ الشيفرة الناتجة هي فعلًا أفضل شيفرةٍ متغيّرة الطول من أجل الرسائل التي تطابق فيها التردّدات النسبيّة للرموز التردّدات التي بُنيت الشيفرة وفقًا لها. ولن نُثبت هنا أمثليّة شيفرات هافمان، لكنّنا سنُبيّن كيف تُبنى أشجار هافمان.[^42]
 
-The algorithm for generating a Huffman tree is very simple. The idea is to arrange the tree so that the symbols with the lowest frequency appear farthest away from the root. Begin with the set of leaf nodes, containing symbols and their frequencies, as determined by the initial data from which the code is to be constructed. Now find two leaves with the lowest weights and merge them to produce a node that has these two nodes as its left and right branches. The weight of the new node is the sum of the two weights. Remove the two leaves from the original set and replace them by this new node. Now continue this process. At each step, merge two nodes with the smallest weights, removing them from the set and replacing them with a node that has these two as its left and right branches. The process stops when there is only one node left, which is the root of the entire tree. Here is how the Huffman tree of [Figure 2.18](#Figure-2_002e18) was generated:
+إنّ خوارزميّة توليد شجرة هافمان بسيطةٌ جدًّا. والفكرة هي ترتيب الشجرة بحيث تظهر الرموز ذات التردّد الأدنى في أقصى بُعدٍ عن الجذر. ابدأ بمجموعة عُقَد الأوراق، التي تحتوي الرموز وتردّداتها، كما تحدّدها البيانات الأوّليّة التي يُفترض بناء الشيفرة منها. والآن ابحث عن ورقتين ذواتَي أقلّ وزنين، وادمجهما لإنتاج عقدةٍ تكون هاتان العقدتان فرعيها الأيسر والأيمن. ووزن العقدة الجديدة هو مجموع الوزنين. وأزِل الورقتين من المجموعة الأصليّة وعوّضهما بهذه العقدة الجديدة. والآن تابع هذه العمليّة. ففي كلّ خطوةٍ، ادمج عقدتين ذواتَي أصغر وزنين، بإزالتهما من المجموعة وعوّضهما بعقدةٍ تكون هاتان فرعيها الأيسر والأيمن. وتتوقّف العمليّة عندما لا يبقى إلّا عقدةٌ واحدة، وهي جذر الشجرة بأكملها. وهذه هي الطريقة التي وُلِّدت بها شجرة هافمان الخاصّة بـ[الشكل 2.18](#Figure-2_002e18):
 
 ```
 Initial {(A 8) (B 3) (C 1) (D 1) 
@@ -2369,13 +2369,13 @@ Final   {({A B C D E F G H} 17)}
 merge
 ```
 
-The algorithm does not always specify a unique tree, because there may not be unique smallest-weight nodes at each step. Also, the choice of the order in which the two nodes are merged (i.e., which will be the right branch and which will be the left branch) is arbitrary.
+فالخوارزميّة لا تحدّد شجرةً فريدةً دائمًا، لأنّه قد لا تكون هناك عقدٌ فريدةٌ ذات أقلّ وزنٍ في كلّ خطوةٍ. وكذلك، فإنّ اختيار الترتيب الذي تُدمَج به العقدتان (أيّهما سيكون الفرع الأيمن وأيّهما سيكون الفرع الأيسر) اعتباطيّ.
 
-#### Representing Huffman trees
+#### تمثيل أشجار هافمان
 
-In the exercises below we will work with a system that uses Huffman trees to encode and decode messages and generates Huffman trees according to the algorithm outlined above. We will begin by discussing how trees are represented.
+وفي التمارين أدناه، سنعمل مع نظامٍ يستخدم أشجار هافمان لترميز الرسائل وفكّ ترميزها، ويُولّد أشجار هافمان وفقًا للخوارزميّة الموصوفة إجمالًا أعلاه. وسنبدأ بمناقشة كيف تُُمثَّل الأشجار.
 
-Leaves of the tree are represented by a list consisting of the symbol `leaf`, the symbol at the leaf, and the weight:
+وتُُمثَّل أوراق الشجرة بقائمةٍ تتكوّن من الرمز `leaf`، والرمز الموجود في الورقة، والوزن:
 
 ```scheme
 (define (make-leaf symbol weight)
@@ -2386,7 +2386,7 @@ Leaves of the tree are represented by a list consisting of the symbol `leaf`, th
 (define (weight-leaf x) (caddr x))
 ```
 
-A general tree will be a list of a left branch, a right branch, a set of symbols, and a weight. The set of symbols will be simply a list of the symbols, rather than some more sophisticated set representation. When we make a tree by merging two nodes, we obtain the weight of the tree as the sum of the weights of the nodes, and the set of symbols as the union of the sets of symbols for the nodes. Since our symbol sets are represented as lists, we can form the union by using the `append` procedure we defined in [2.2.1](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e1):
+وأمّا الشجرة العامّة فستكون قائمةً تتضمّن فرعًا أيسر، وفرعًا أيمن، ومجموعة رموز، ووزنًا. ومجموعة الرموز ستكون ببساطةٍ قائمةً بالرموز، لا بعض تمثيلات المجموعات الأكثر تطورًا. وحين نُنشئ شجرةً بدمج عقدتين، فإنّنا نحصل على وزن الشجرة كمجموع أوزان العقدتين، وعلى مجموعة الرموز كاتّحاد مجموعة الرموز الخاصّتين بالعقدتين. وبما أنّ مجموعات الرموز عندنا ممثّلةٌ كقوائم، فيمكننا تكوين الاتّحاد باستخدام الإجراء `append` الذي عرّفناه في [2.2.1](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e1):
 
 ```scheme
 (define (make-code-tree left right)
@@ -2397,7 +2397,7 @@ A general tree will be a list of a left branch, a right branch, a set of symbols
         (+ (weight left) (weight right))))
 ```
 
-If we make a tree in this way, we have the following selectors:
+فإن أنشأنا شجرةً بهذه الطريقة، فإنّنا نملك المُنتقِيَات الآتية:
 
 ```scheme
 (define (left-branch tree) (car tree))
@@ -2414,11 +2414,11 @@ If we make a tree in this way, we have the following selectors:
       (cadddr tree)))
 ```
 
-The procedures `symbols` and `weight` must do something slightly different depending on whether they are called with a leaf or a general tree. These are simple examples of *generic procedures* (procedures that can handle more than one kind of data), which we will have much more to say about in [2.4](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4) and [2.5](https://sarabander.github.io/sicp/html/2_002e5.xhtml#g_t2_002e5).
+ينبغي أن يفعل الإجراءان `symbols` و`weight` شيئًا مختلفًا بعض الشيء بحسب ما إذا كانا قد دُعيا بورقةٍ أو بشجرةٍ عامّة. وهذان مثالان بسيطان على *الإجراءات العامّة (generic procedures)* (أي الإجراءات التي تستطيع معالجة أكثر من نوعٍ واحدٍ من البيانات)، وسيكون لنا الكثير لنتحدّث عنه بشأنها في [2.4](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4) و[2.5](https://sarabander.github.io/sicp/html/2_002e5.xhtml#g_t2_002e5).
 
-#### The decoding procedure
+#### إجراء فكّ الترميز
 
-The following procedure implements the decoding algorithm. It takes as arguments a list of zeros and ones, together with a Huffman tree.
+يُنفّذ الإجراء الآتي خوارزميّة فكّ الترميز. وهو يأخذ كمعطياتٍ قائمةً من الأصفار والآحاد، بالإضافة إلى شجرة هافمان.
 
 ```scheme
 (define (decode bits tree)
@@ -2444,13 +2444,13 @@ The following procedure implements the decoding algorithm. It takes as arguments
                CHOOSE-BRANCH" bit))))
 ```
 
-The procedure `decode-1` takes two arguments: the list of remaining bits and the current position in the tree. It keeps moving “down” the tree, choosing a left or a right branch according to whether the next bit in the list is a zero or a one. (This is done with the procedure `choose-branch`.) When it reaches a leaf, it returns the symbol at that leaf as the next symbol in the message by `cons`ing it onto the result of decoding the rest of the message, starting at the root of the tree. Note the error check in the final clause of `choose-branch`, which complains if the procedure finds something other than a zero or a one in the input data.
+يأخذ الإجراء `decode-1` معطيين: قائمة البتّات المتبقّية والموضع الحاليّ في الشجرة. وهو يواصل التحرّك «نزولًا» في الشجرة، فيختار فرعًا أيسر أو أيمن بحسب ما إذا كانت البِتّة التالية في القائمة صفرًا أو واحدًا. (ويتحقّق ذلك بالإجراء `choose-branch`.) وحين يصل إلى ورقةٍ، يُعيد الرمز الموجود في تلك الورقة بوصفه الرمز التالي في الرسالة، عن طريق إلحاقه (`cons`) بنتيجة فكّ ترميز بقيّة الرسالة، منطلقًا من جذر الشجرة. لاحِظ فحص الخطأ في البند الأخير من `choose-branch`، الذي يحتجّ إذا وجد الإجراء شيئًا آخر غير الصفر أو الواحد في بيانات الدخل.
 
-#### Sets of weighted elements
+#### مجموعات العناصر الموزونة
 
-In our representation of trees, each non-leaf node contains a set of symbols, which we have represented as a simple list. However, the tree-generating algorithm discussed above requires that we also work with sets of leaves and trees, successively merging the two smallest items. Since we will be required to repeatedly find the smallest item in a set, it is convenient to use an ordered representation for this kind of set.
+في تمثيلنا للأشجار، تحتوي كلّ عقدةٍ غير طرفيّةٍ على مجموعةٍ من الرموز، وقد مثّلناها كقائمةٍ بسيطة. غير أنّ خوارزميّة توليد الأشجار المناقشة أعلاه تتطلّب منّا أيضًا أن نعمل مع مجموعاتٍ من الأوراق والأشجار، بدمج العنصرين الأصغرين تباعًا. وبما أنّنا سنُطالب بإيجاد العنصر الأصغر في مجموعةٍ بشكلٍ متكرّر، فمن الملائم استخدام تمثيلٍ مرتّبٍ لهذا النوع من المجموعات.
 
-We will represent a set of leaves and trees as a list of elements, arranged in increasing order of weight. The following `adjoin-set` procedure for constructing sets is similar to the one described in [Exercise 2.61](#Exercise-2_002e61); however, items are compared by their weights, and the element being added to the set is never already in it.
+سنُمثّل مجموعةً من الأوراق والأشجار كقائمةٍ من العناصر، مرتّبةً بترتيبٍ متزايدٍ بحسب الوزن. وإنّ الإجراء `adjoin-set` الآتي لبناء المجموعات شبيهٌ بالذي وُصف في [Exercise 2.61](#Exercise-2_002e61)؛ غير أنّ العناصر تُقارَن بأوزانها، وأنّ العنصر الذي يُضاف إلى المجموعة ليس موجودًا فيها أصلًا.
 
 ```scheme
 (define (adjoin-set x set)
@@ -2462,7 +2462,7 @@ We will represent a set of leaves and trees as a list of elements, arranged in i
                (adjoin-set x (cdr set))))))
 ```
 
-The following procedure takes a list of symbol-frequency pairs such as `((A 4) (B 2) (C 1) (D 1))` and constructs an initial ordered set of leaves, ready to be merged according to the Huffman algorithm:
+يأخذ الإجراء الآتي قائمةً من أزواج الرمز والتردّد مثل `((A 4) (B 2) (C 1) (D 1))` ويبني مجموعةً أوّليّةً مرتّبةً من الأوراق، جاهزةً للدمج وفقًا لخوارزميّة هافمان:
 
 ```scheme
 (define (make-leaf-set pairs)
@@ -2475,7 +2475,7 @@ The following procedure takes a list of symbol-frequency pairs such as `((A 4) (
          (make-leaf-set (cdr pairs))))))
 ```
 
-**Exercise 2.67:** Define an encoding tree and a sample message:
+**التمرين 2.67:** عرّف شجرة ترميزٍ ورسالةً نموذجيّةً:
 
 ```scheme
 (define sample-tree
@@ -2491,9 +2491,9 @@ The following procedure takes a list of symbol-frequency pairs such as `((A 4) (
   '(0 1 1 0 0 1 0 1 0 1 1 1 0))
 ```
 
-Use the `decode` procedure to decode the message, and give the result.
+استخدم الإجراء `decode` لفكّ ترميز الرسالة، وأعطِ النتيجة.
 
-**Exercise 2.68:** The `encode` procedure takes as arguments a message and a tree and produces the list of bits that gives the encoded message.
+**التمرين 2.68:** يأخذ الإجراء `encode` كمعطياتٍ رسالةً وشجرةً، ويُنتج قائمة البتّات التي تُعطي الرسالة المرمّزة.
 
 ```scheme
 (define (encode message tree)
@@ -2505,9 +2505,9 @@ Use the `decode` procedure to decode the message, and give the result.
        (encode (cdr message) tree))))
 ```
 
-`Encode-symbol` is a procedure, which you must write, that returns the list of bits that encodes a given symbol according to a given tree. You should design `encode-symbol` so that it signals an error if the symbol is not in the tree at all. Test your procedure by encoding the result you obtained in [Exercise 2.67](#Exercise-2_002e67) with the sample tree and seeing whether it is the same as the original sample message.
+إنّ `encode-symbol` إجراءٌ عليك أنت كتابته، يُعيد قائمة البتّات التي تُشفّر رمزًا معطًى وفقًا لشجرةٍ معطاة. وعليك أن تُصمّم `encode-symbol` بحيث يُشير إلى خطأٍ إذا لم يكن الرمز موجودًا في الشجرة أصلًا. اختبر إجراءك بترميز النتيجة التي حصلت عليها في [Exercise 2.67](#Exercise-2_002e67) بشجرة النموذج، وانظر هل هي مطابقةٌ لرسالة النموذج الأصليّة أم لا.
 
-**Exercise 2.69:** The following procedure takes as its argument a list of symbol-frequency pairs (where no symbol appears in more than one pair) and generates a Huffman encoding tree according to the Huffman algorithm.
+**التمرين 2.69:** يأخذ الإجراء الآتي كمعطاه قائمةً من أزواج الرمز والتردّد (حيث لا يظهر أيّ رمزٍ في أكثر من زوجٍ واحدٍ) ويُولّد شجرة ترميز هافمان وفقًا لخوارزميّة هافمان.
 
 ```scheme
 (define (generate-huffman-tree pairs)
@@ -2515,9 +2515,9 @@ Use the `decode` procedure to decode the message, and give the result.
    (make-leaf-set pairs)))
 ```
 
-`Make-leaf-set` is the procedure given above that transforms the list of pairs into an ordered set of leaves. `Successive-merge` is the procedure you must write, using `make-code-tree` to successively merge the smallest-weight elements of the set until there is only one element left, which is the desired Huffman tree. (This procedure is slightly tricky, but not really complicated. If you find yourself designing a complex procedure, then you are almost certainly doing something wrong. You can take significant advantage of the fact that we are using an ordered set representation.)
+إنّ `make-leaf-set` هو الإجراء المُعطى أعلاه الذي يحوّل قائمة الأزواج إلى مجموعةٍ مرتّبةٍ من الأوراق. و`successive-merge` هو الإجراء الذي عليك كتابته، باستخدام `make-code-tree` لدمج عناصر المجموعة الأقلّ وزنًا تباعًا حتّى لا يبقى إلّا عنصرٌ واحد، وهو شجرة هافمان المطلوبة. (وهذا الإجراء يحتاج إلى بعض الحذر بعض الشيء، لكنّه ليس معقّدًا حقًّا. فإن وجدت نفسك تُصمّم إجراءً معقّدًا، فأنت تُخطئ على الأرجح. ويمكنك أن تستفيد استفادةً كبيرةً من حقيقة أنّنا نستخدم تمثيلًا لمجموعةٍ مرتّبة.)
 
-**Exercise 2.70:** The following eight-symbol alphabet with associated relative frequencies was designed to efficiently encode the lyrics of 1950s rock songs. (Note that the “symbols” of an “alphabet” need not be individual letters.)
+**التمرين 2.70:** صُمّم أبجديّةٌ من ثمانية رموزٍ بالتردّدات النسبيّة المرافقة لها لترميز كلمات أغاني الروك الخمسينيّة بكفاءة. (ولاحِظ أنّ «رموز» «الأبجديّة» لا يلزم أن تكون حروفًا فرديّة.)
 
 ```
 A    2    NA  16
@@ -2526,7 +2526,7 @@ GET  2    YIP  9
 JOB  2    WAH  1
 ```
 
-Use `generate-huffman-tree` ([Exercise 2.69](#Exercise-2_002e69)) to generate a corresponding Huffman tree, and use `encode` ([Exercise 2.68](#Exercise-2_002e68)) to encode the following message:
+استخدم `generate-huffman-tree` ([التمرين 2.69](#Exercise-2_002e69)) لتوليد شجرة هافمان مناظرة، واستخدم `encode` ([التمرين 2.68](#Exercise-2_002e68)) لترميز الرسالة الآتية:
 
 ```
 Get a job
@@ -2540,63 +2540,63 @@ yip yip yip yip yip
 Sha boom
 ```
 
-How many bits are required for the encoding? What is the smallest number of bits that would be needed to encode this song if we used a fixed-length code for the eight-symbol alphabet?
+كم بِتّة يلزم للترميز؟ وما هو أصغر عددٍ من البتّات يكون لازمًا لترميز هذا اللحن لو استخدمنا شيفرةً ثابتة الطول لأبجديّة الرموز الثمانية؟
 
-> **Exercise 2.71:** Suppose we have a Huffman tree for an alphabet of $n$ symbols, and that the relative frequencies of the symbols are $1 , 2 , 4 , … , 2^{n − 1}$ . Sketch the tree for $n = 5$ ; for $n = 10$ . In such a tree (for general $n$ ) how many bits are required to encode the most frequent symbol? The least frequent symbol?
+> **التمرين 2.71:** لنفترض أنّ لدينا شجرة هافمان لأبجديّةٍ تحتوي $n$ رمزًا، وأنّ التردّدات النسبيّة للرموز هي $1 , 2 , 4 , … , 2^{n − 1}$ . ارسم الشجرة من أجل $n = 5$ ؛ ومن أجل $n = 10$ . في شجرةٍ كهذه (من أجل $n$ عامّة) فكم بِتّة يلزم لترميز الرمز الأكثر تكرارًا؟ والرمز الأقلّ تكرارًا؟
 
-> **Exercise 2.72:** Consider the encoding procedure that you designed in [Exercise 2.68](#Exercise-2_002e68). What is the order of growth in the number of steps needed to encode a symbol? Be sure to include the number of steps needed to search the symbol list at each node encountered. To answer this question in general is difficult. Consider the special case where the relative frequencies of the $n$ symbols are as described in [Exercise 2.71](#Exercise-2_002e71), and give the order of growth (as a function of $n$ ) of the number of steps needed to encode the most frequent and least frequent symbols in the alphabet.
+> **التمرين 2.72:** تأمّل إجراء الترميز الذي صمّمته في [التمرين 2.68](#Exercise-2_002e68). ما هو رتبة النمو في عدد الخطوات اللازمة لترميز رمزٍ واحد؟ تأكّد من إدراج عدد الخطوات اللازمة للبحث في قائمة الرموز عند كلّ عقدةٍ تُصادَف. والإجابة عن هذا السؤال بصورةٍ عامّة صعبة. فتأمّل الحالة الخاصّة التي تكون فيها التردّدات النسبيّة للرموز $n$ كما هي موصوفة في [التمرين 2.71](#Exercise-2_002e71)، وأعطِ رتبة النمو (كدالّةٍ في $n$ ) لعدد الخطوات اللازمة لترميز الرمزين الأكثر تكرارًا والأقلّ تكرارًا في الأبجديّة.
 
-### 2.4 Multiple Representations for Abstract Data
+### 2.4 تمثيلات متعدّدة للبيانات المجرّدة
 
-We have introduced data abstraction, a methodology for structuring systems in such a way that much of a program can be specified independent of the choices involved in implementing the data objects that the program manipulates. For example, we saw in [2.1.1](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e1) how to separate the task of designing a program that uses rational numbers from the task of implementing rational numbers in terms of the computer language’s primitive mechanisms for constructing compound data. The key idea was to erect an abstraction barrier – in this case, the selectors and constructors for rational numbers (`make-rat`, `numer`, `denom`)—that isolates the way rational numbers are used from their underlying representation in terms of list structure. A similar abstraction barrier isolates the details of the procedures that perform rational arithmetic (`add-rat`, `sub-rat`, `mul-rat`, and `div-rat`) from the “higher-level” procedures that use rational numbers. The resulting program has the structure shown in [Figure 2.1](https://sarabander.github.io/sicp/html/2_002e1.xhtml#Figure-2_002e1).
+لقد عرّفنا تجريد البيانات (data abstraction)، وهو منهجيّةٌ لبناء النظم بحيث يمكن تحديد الكثير من البرنامج بشكلٍ مستقلّ عن الخيارات الداخلة في تنفيذ كائنات البيانات التي يعالجها البرنامج. فمثلًا، رأينا في [2.1.1](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e1) كيف نفصل بين مهمّة تصميم برنامجٍ يستخدم الأعداد النسبيّة وبين مهمّة تنفيذ الأعداد النسبيّة بدلالة الآليّات الأوّليّة للغة الحاسوب في بناء البيانات المركّبة. وكانت الفكرة الجوهريّة هي إقامة حاجز تجريدٍ (abstraction barrier) - وهو في هذه الحالة المُنتقِيّات والبواني الخاصّة بالأعداد النسبيّة (`make-rat` و`numer` و`denom`) - يعزل طريقة استخدام الأعداد النسبيّة عن تمثيلها الأساسيّ بدلالة بنية القوائم. ويقوم حاجز تجريدٍ شبيهٌ يعزل تفاصيل الإجراءات التي تؤدّي الحساب على الأعداد النسبيّة (`add-rat` و`sub-rat` و`mul-rat` و`div-rat`) عن الإجراءات ذات «المستوى الأعلى» التي تستخدم الأعداد النسبيّة. وللبرنامج الناتج البنية الموضّحة في [الشكل 2.1](https://sarabander.github.io/sicp/html/2_002e1.xhtml#Figure-2_002e1).
 
-These data-abstraction barriers are powerful tools for controlling complexity. By isolating the underlying representations of data objects, we can divide the task of designing a large program into smaller tasks that can be performed separately. But this kind of data abstraction is not yet powerful enough, because it may not always make sense to speak of “the underlying representation” for a data object.
+وحواجز تجريد البيانات هذه أدواتٌ قويّةٌ للتحكّم في التعقيد. فبعزل التمثيلات الأساسيّة لكائنات البيانات، يمكننا تقسيم مهمّة تصميم برنامجٍ كبيرٍ إلى مهامّ أصغر يمكن أداؤها كلٌّ على حدة. غير أنّ هذا النوع من تجريد البيانات ليس قويًّا بما يكفي بعد، لأنّه قد لا يكون من المنطقيّ دائمًا الكلام عن «التمثيل الأساسيّ» لكائن بياناتٍ ما.
 
-For one thing, there might be more than one useful representation for a data object, and we might like to design systems that can deal with multiple representations. To take a simple example, complex numbers may be represented in two almost equivalent ways: in rectangular form (real and imaginary parts) and in polar form (magnitude and angle). Sometimes rectangular form is more appropriate and sometimes polar form is more appropriate. Indeed, it is perfectly plausible to imagine a system in which complex numbers are represented in both ways, and in which the procedures for manipulating complex numbers work with either representation.
+فمن ناحية، قد يوجد أكثر من تمثيلٍ مفيدٍ لكائن بياناتٍ واحد، وقد نرغب في تصميم نظمٍ قادرةٍ على التعامل مع تمثيلاتٍ متعدّدة. ولنأخذ مثالًا بسيطًا، قد تُُمثَّل الأعداد المركّبة بطريقتين شبه مكافئتين: بالتمثيل المستطيل (جزء حقيقيّ وجزء تخيّليّ) وبالتمثيل القطريّ (مقدار وزاوية). فأحيانًا يكون التمثيل المستطيل أنسب، وأحيانًا يكون التمثيل القطريّ أنسب. وفي الحقيقة، إنّه من المنطقيّ تمامًا تخيّل نظامٍ تُُمثَّل فيه الأعداد المركّبة بطريقتي التمثيل هاتين، وتعمل فيه الإجراءات المعالجة للأعداد المركّبة مع أيّ من التمثيلين.
 
-More importantly, programming systems are often designed by many people working over extended periods of time, subject to requirements that change over time. In such an environment, it is simply not possible for everyone to agree in advance on choices of data representation. So in addition to the data-abstraction barriers that isolate representation from use, we need abstraction barriers that isolate different design choices from each other and permit different choices to coexist in a single program. Furthermore, since large programs are often created by combining pre-existing modules that were designed in isolation, we need conventions that permit programmers to incorporate modules into larger systems *additively*, that is, without having to redesign or reimplement these modules.
+والأهمّ من ذلك، أنّ نظم البرمجة تُصمَّم غالبًا على يد أشخاصٍ كثيرين يعملون على مدى فتراتٍ زمنيّةٍ ممتدّة، وتخضع لمتطلّباتٍ تتغيّر مع مرور الوقت. وفي بيئةٍ كهذه، ليس ممكنًا ببساطةٍ أن يتّفق الجميع مسبقًا على خيارات تمثيل البيانات. ولذلك، بالإضافة إلى حواجز تجريد البيانات التي تعزل التمثيل عن الاستخدام، نحتاج إلى حواجز تجريدٍ تعزل خيارات التصميم المختلفة بعضها عن بعض وتسمح للخيارات المختلفة بالتعايش في برنامجٍ واحد. وفوق ذلك، وبما أنّ البرامج الكبيرة تُنشأ غالبًا بدمج وحداتٍ قائمةٍ مسبقًا صُمّمت كلٌّ على حدة، فنحن نحتاج إلى اصطلاحاتٍ تسمح للمبرمجين بإدماج الوحدات في نظمٍ أكبر *إدماجًا جمعيًّا (additive)*، أي دون الحاجة إلى إعادة تصميم هذه الوحدات أو إعادة تنفيذها.
 
-In this section, we will learn how to cope with data that may be represented in different ways by different parts of a program. This requires constructing *generic procedures*—procedures that can operate on data that may be represented in more than one way. Our main technique for building generic procedures will be to work in terms of data objects that have *type tags*, that is, data objects that include explicit information about how they are to be processed. We will also discuss *data-directed* programming, a powerful and convenient implementation strategy for additively assembling systems with generic operations.
+في هذا القسم، سنتعلّم كيف نتعامل مع بياناتٍ قد تُنمَّم بطرائق مختلفةٍ من قِبل أجزاء مختلفةٍ من البرنامج. وهذا يتطلّب بناء *إجراءات عامّة (generic procedures)* - أي الإجراءات التي تستطيع العمل على بياناتٍ قد تُنمَّم بأكثر من طريقةٍ واحدة. وإنّ تقنيّتنا الرئيسيّة لبناء الإجراءات العامّة ستكون العمل بدلالة كائنات بياناتٍ ذات *أوسمة أنواع (type tags)*، أي كائنات بياناتٍ تتضمّن معلوماتٍ صريحةً عن كيفيّة معالجتها. وسنناقش أيضًا *البرمجة الموجَّهة بالبيانات (data-directed programming)*، وهي استراتيجيّة تنفيذٍ قويّةٌ وملائمةٌ لتجميع النظم التي لها عمليّات عامّة إدماجًا جمعيًّا.
 
-We begin with the simple complex-number example. We will see how type tags and data-directed style enable us to design separate rectangular and polar representations for complex numbers while maintaining the notion of an abstract “complex-number” data object. We will accomplish this by defining arithmetic procedures for complex numbers (`add-complex`, `sub-complex`, `mul-complex`, and `div-complex`) in terms of generic selectors that access parts of a complex number independent of how the number is represented. The resulting complex-number system, as shown in [Figure 2.19](#Figure-2_002e19), contains two different kinds of abstraction barriers. The “horizontal” abstraction barriers play the same role as the ones in [Figure 2.1](https://sarabander.github.io/sicp/html/2_002e1.xhtml#Figure-2_002e1). They isolate “higher-level” operations from “lower-level” representations. In addition, there is a “vertical” barrier that gives us the ability to separately design and install alternative representations.
+نبدأ بمثال الأعداد المركّبة البسيط. وسنرى كيف تُتيح لنا أوسمة الأنواع وأسلوب البرمجة الموجَّهة بالبيانات تصميم تمثيلين منفصلين - مستطيل وقطريّ - للأعداد المركّبة مع الحفاظ على مفهوم كائن بياناتٍ «عدد مركّب» مجرّد. وسنُحقّق ذلك بتعريف إجراءات للحساب على الأعداد المركّبة (`add-complex` و`sub-complex` و`mul-complex` و`div-complex`) بدلالة مُنتقِيّات عامّة تنفذ إلى أجزاء العدد المركّب بصورةٍ مستقلّةٍ عن كيفيّة تمثيل العدد. ونظام الأعداد المركّبة الناتج، كما هو موضّح في [الشكل 2.19](#Figure-2_002e19)، يحتوي على نوعين مختلفين من حواجز التجريد. وحواجز التجريد «الأفقيّة» تؤدّي الدور نفسه الذي تؤدّيه الحواجز في [الشكل 2.1](https://sarabander.github.io/sicp/html/2_002e1.xhtml#Figure-2_002e1). فهي تعزل العمليّات «ذات المستوى الأعلى» عن التمثيلات «ذات المستوى الأدنى». وبالإضافة إلى ذلك، هناك حاجزٌ «عموديّ» يمنحنا القدرة على تصميم تمثيلات بديلةٍ وتثبيتها كلٌّ على حدة.
 
 ![](/images/sicp/c2-building-abstractions-with-data-0-Fig2.19a.std.webp)
 
-**Figure 2.19:** Data-abstraction barriers in the complex-number system.
+**الشكل 2.19:** حواجز تجريد البيانات في نظام الأعداد المركّبة.
 
-In [2.5](https://sarabander.github.io/sicp/html/2_002e5.xhtml#g_t2_002e5) we will show how to use type tags and data-directed style to develop a generic arithmetic package. This provides procedures (`add`, `mul`, and so on) that can be used to manipulate all sorts of “numbers” and can be easily extended when a new kind of number is needed. In [2.5.3](https://sarabander.github.io/sicp/html/2_002e5.xhtml#g_t2_002e5_002e3), we’ll show how to use generic arithmetic in a system that performs symbolic algebra.
+في [2.5](https://sarabander.github.io/sicp/html/2_002e5.xhtml#g_t2_002e5) سنُبيّن كيف نستخدم أوسمة الأنواع وأسلوب البرمجة الموجَّهة بالبيانات لتطوير حزمة حسابٍ عامّة. وهذه تُوفّر إجراءات (`add` و`mul` وغيرها) يمكن استخدامها للتلاعب بجميع أنواع «الأعداد»، ويمكن توسعتها بسهولةٍ حين يلزم نوعٌ جديدٌ من الأعداد. وفي [2.5.3](https://sarabander.github.io/sicp/html/2_002e5.xhtml#g_t2_002e5_002e3)، سنُبيّن كيف نستخدم الحساب العامّ في نظامٍ يؤدّي الجبر الرمزيّ.
 
-#### 2.4.1 Representations for Complex Numbers
+#### 2.4.1 تمثيلات الأعداد المركّبة
 
-We will develop a system that performs arithmetic operations on complex numbers as a simple but unrealistic example of a program that uses generic operations. We begin by discussing two plausible representations for complex numbers as ordered pairs: rectangular form (real part and imaginary part) and polar form (magnitude and angle).[^43] Section [2.4.2](#g_t2_002e4_002e2) will show how both representations can be made to coexist in a single system through the use of type tags and generic operations.
+سنُطوّر نظامًا يؤدّي عمليّات الحساب على الأعداد المركّبة، بوصفه مثالًا بسيطًا لكنّه غير واقعيٍّ على برنامجٍ يستخدم عمليّاتٍ عامّة. ونبدأ بمناقشة تمثيلين معقولين للأعداد المركّبة كأزواجٍ مرتّبة: التمثيل المستطيل (جزء حقيقيّ وجزء تخيّليّ) والتمثيل القطريّ (مقدار وزاوية).[^43] وسيُظهر القسم [2.4.2](#g_t2_002e4_002e2) كيف يمكن جعل التمثيلين يتعايشان في نظامٍ واحدٍ باستخدام أوسمة الأنواع والعمليّات العامّة.
 
-Like rational numbers, complex numbers are naturally represented as ordered pairs. The set of complex numbers can be thought of as a two-dimensional space with two orthogonal axes, the “real” axis and the “imaginary” axis. (See [Figure 2.20](#Figure-2_002e20).) From this point of view, the complex number $z = x + i y$ (where $i^{2} = −1$ ) can be thought of as the point in the plane whose real coordinate is $x$ and whose imaginary coordinate is $y$ . Addition of complex numbers reduces in this representation to addition of coordinates: $Real-part ( z_{1} + z_{2} ) = Real-part ( z_{1} ) + Real-part ( z_{2} ) , Imaginary-part ( z_{1} + z_{2} ) = Imaginary-part ( z_{1} ) + Imaginary-part ( z_{2} ) .$
+مثلها مثل الأعداد النسبيّة، تُنمَّم الأعداد المركّبة بصورةٍ طبيعيّةٍ كأزواجٍ مرتّبة. ويمكن النظر إلى مجموعة الأعداد المركّبة بوصفها فضاءً ثنائيّ الأبعاد له محوران متعامدان، المحور «الحقيقيّ» والمحور «التخيّليّ». (انظر [الشكل 2.20](#Figure-2_002e20).) ومن هذا المنظور، يمكن النظر إلى العدد المركّب $z = x + i y$ (حيث $i^{2} = −1$ ) بوصفه النقطة في المستوى التي إحداثيّها الحقيقيّ هو $x$ وإحداثيّها التخيّليّ هو $y$ . وجمع الأعداد المركّبة ينحلّ في هذا التمثيل إلى جمع الإحداثيّات: $Real-part ( z_{1} + z_{2} ) = Real-part ( z_{1} ) + Real-part ( z_{2} ) , Imaginary-part ( z_{1} + z_{2} ) = Imaginary-part ( z_{1} ) + Imaginary-part ( z_{2} ) .$
 
 ![](/images/sicp/c2-building-abstractions-with-data-1-Fig2.20.std.webp)
 
-**Figure 2.20:** Complex numbers as points in the plane.
+**الشكل 2.20:** الأعداد المركّبة كنقاطٍ في المستوى.
 
-When multiplying complex numbers, it is more natural to think in terms of representing a complex number in polar form, as a magnitude and an angle ( $r$ and $A$ in [Figure 2.20](#Figure-2_002e20)). The product of two complex numbers is the vector obtained by stretching one complex number by the length of the other and then rotating it through the angle of the other: $Magnitude ( z_{1} ⋅ z_{2} ) = Magnitude ( z_{1} ) ⋅ Magnitude ( z_{2} ) , Angle ( z_{1} ⋅ z_{2} ) = Angle ( z_{1} ) + Angle ( z_{2} ) .$
+وعند ضرب الأعداد المركّبة، يكون من الأنسب التفكير بدلالة تمثيل العدد المركّب بالتمثيل القطريّ، كمقدارٍ وزاوية ( $r$ و$A$ في [الشكل 2.20](#Figure-2_002e20)). وحاصل ضرب عددين مركّبين هو المتجه الناتج عن تمديد أحد العددين المركّبين بطول الآخر ثمّ تدويره بالزاوية الخاصّة بالآخر: $Magnitude ( z_{1} ⋅ z_{2} ) = Magnitude ( z_{1} ) ⋅ Magnitude ( z_{2} ) , Angle ( z_{1} ⋅ z_{2} ) = Angle ( z_{1} ) + Angle ( z_{2} ) .$
 
-Thus, there are two different representations for complex numbers, which are appropriate for different operations. Yet, from the viewpoint of someone writing a program that uses complex numbers, the principle of data abstraction suggests that all the operations for manipulating complex numbers should be available regardless of which representation is used by the computer. For example, it is often useful to be able to find the magnitude of a complex number that is specified by rectangular coordinates. Similarly, it is often useful to be able to determine the real part of a complex number that is specified by polar coordinates.
+وبذلك، فهناك تمثيلان مختلفان للأعداد المركّبة، كلٌّ منهما مناسبٌ لعمليّاتٍ مختلفة. ومع ذلك، فمن وجهة نظر شخصٍ يكتب برنامجًا يستخدم الأعداد المركّبة، فإنّ مبدأ تجريد البيانات يقترح أن تتوفّر جميع العمليّات المعالجة للأعداد المركّبة بغضّ النظر عن التمثيل الذي يستخدمه الحاسوب. فمثلًا، كثيرًا ما يكون من المفيد القدرة على إيجاد مقدار عددٍ مركّبٍ محدَّدٍ بإحداثيّاتٍ مستطيلة. وبالمثل، كثيرًا ما يكون من المفيد القدرة على تحديد الجزء الحقيقيّ لعددٍ مركّبٍ محدَّدٍ بإحداثيّاتٍ قطبيّة.
 
-To design such a system, we can follow the same data-abstraction strategy we followed in designing the rational-number package in [2.1.1](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e1). Assume that the operations on complex numbers are implemented in terms of four selectors: `real-part`, `imag-part`, `magnitude`, and `angle`. Also assume that we have two procedures for constructing complex numbers: `make-from-real-imag` returns a complex number with specified real and imaginary parts, and `make-from-mag-ang` returns a complex number with specified magnitude and angle. These procedures have the property that, for any complex number `z`, both
+لتصميم نظامٍ كهذا، يمكننا اتّباع الاستراتيجيّة نفسها لتجريد البيانات التي اتّبعناها في تصميم حزمة الأعداد النسبيّة في [2.1.1](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e1). افترض أنّ العمليّات على الأعداد المركّبة مُنفَّذة بدلالة أربعة مُنتقِيّات: `real-part` و`imag-part` و`magnitude` و`angle`. وافترض أيضًا أنّ لدينا إجراءين لبناء الأعداد المركّبة: يُعيد `make-from-real-imag` عددًا مركّبًا بجزءٍ حقيقيّ وجزءٍ تخيّليّ محدَّدين، ويُعيد `make-from-mag-ang` عددًا مركّبًا بمقدارٍ وزاويةٍ محدَّدين. وهذه الإجراءات لها الخاصّيّة أنّّه، لأيّ عددٍ مركّبٍ `z`، كلٌّ من
 
 ```scheme
 (make-from-real-imag (real-part z) 
                      (imag-part z))
 ```
 
-and
+و
 
 ```scheme
 (make-from-mag-ang (magnitude z) 
                    (angle z))
 ```
 
-produce complex numbers that are equal to `z`.
+تُنتج أعدادًا مركّبةً مساويةً لـ`z`.
 
-Using these constructors and selectors, we can implement arithmetic on complex numbers using the “abstract data” specified by the constructors and selectors, just as we did for rational numbers in [2.1.1](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e1). As shown in the formulas above, we can add and subtract complex numbers in terms of real and imaginary parts while multiplying and dividing complex numbers in terms of magnitudes and angles:
+باستخدام هذه البواني وهذه المُنتقِيّات، يمكننا تنفيذ الحساب على الأعداد المركّبة باستخدام «البيانات المجرّدة» التي يحدّدها البواني والمُنتقِيّات، تمامًا كما فعلنا مع الأعداد النسبيّة في [2.1.1](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e1). وكما هو موضّح في الصيغ أعلاه، فيمكننا جمع الأعداد المركّبة وطرحها بدلالة الجزأين الحقيقيّ والتخيّليّ، بينما نضرب الأعداد المركّبة ونقسمها بدلالة المقدارين والزاويتين:
 
 ```scheme
 (define (add-complex z1 z2)
@@ -2620,13 +2620,13 @@ Using these constructors and selectors, we can implement arithmetic on complex n
    (- (angle z1) (angle z2))))
 ```
 
-To complete the complex-number package, we must choose a representation and we must implement the constructors and selectors in terms of primitive numbers and primitive list structure. There are two obvious ways to do this: We can represent a complex number in “rectangular form” as a pair (real part, imaginary part) or in “polar form” as a pair (magnitude, angle). Which shall we choose?
+لاكتمال حزمة الأعداد المركّبة، يجب أن نختار تمثيلًا، وأن نُنفّذ البواني والمُنتقِيّات بدلالة الأعداد الأوّليّة وبنية القوائم الأوّليّة. وهناك طريقتان واضحتان لفعل ذلك: فيمكننا تمثيل العدد المركّب «بالتمثيل المستطيل» كزوجٍ (جزء حقيقيّ، جزء تخيّليّ) أو «بالتمثيل القطريّ» كزوجٍ (مقدار، زاوية). فأيّهما نختار؟
 
-In order to make the different choices concrete, imagine that there are two programmers, Ben Bitdiddle and Alyssa P. Hacker, who are independently designing representations for the complex-number system. Ben chooses to represent complex numbers in rectangular form. With this choice, selecting the real and imaginary parts of a complex number is straightforward, as is constructing a complex number with given real and imaginary parts. To find the magnitude and the angle, or to construct a complex number with a given magnitude and angle, he uses the trigonometric relations
+حتّى نجعل الخيارات المختلفة ملموسة، تخيّل أنّ هناك مبرمجَين، بن بيتدِل وأليسا بي. هاكر، يُصمّم كلٌّ منهما على حدةٍ تمثيلًا لنظام الأعداد المركّبة. فيختار بن تمثيل الأعداد المركّبة بالتمثيل المستطيل. وبهذا الخيار، يكون انتقاء الجزأين الحقيقيّ والتخيّليّ لعددٍ مركّبٍ مباشرًا، تمامًا كبناء عددٍ مركّبٍ بجزءٍ حقيقيّ وجزءٍ تخيّليّ معطيين. أمّا لإيجاد المقدار والزاوية، أو لبناء عددٍ مركّبٍ بمقدارٍ وزاويةٍ معطيين، فإنّه يستخدم العلاقات المثلثيّة
 
 $x = r cos ⁡ A , y = r sin ⁡ A , r = \sqrt{x^{2} + y^{2} ,} A = arctan ⁡ ( y , x ) ,$
 
-which relate the real and imaginary parts $( x , y )$ to the magnitude and the angle $( r , A )$ .[^44] Ben’s representation is therefore given by the following selectors and constructors:
+التي تربط الجزأين الحقيقيّ والتخيّليّ $( x , y )$ بالمقدار والزاوية $( r , A )$ .[^44] ولذلك، يتعيّن تمثيل بن بالمُنتقِيّات والبواني الآتية:
 
 ```scheme
 (define (real-part z) (car z))
@@ -2646,7 +2646,7 @@ which relate the real and imaginary parts $( x , y )$ to the magnitude and the a
   (cons (* r (cos a)) (* r (sin a))))
 ```
 
-Alyssa, in contrast, chooses to represent complex numbers in polar form. For her, selecting the magnitude and angle is straightforward, but she has to use the trigonometric relations to obtain the real and imaginary parts. Alyssa’s representation is:
+أمّا أليسا، فعلى العكس، تختار تمثيل الأعداد المركّبة بالتمثيل القطريّ. فبالنسبة لها، يكون انتقاء المقدار والزاوية مباشرًا، لكنّها مضطرة إلى استخدام العلاقات المثلثيّة للحصول على الجزأين الحقيقيّ والتخيّليّ. وتمثيل أليسا هو:
 
 ```scheme
 (define (real-part z)
@@ -2666,15 +2666,15 @@ Alyssa, in contrast, chooses to represent complex numbers in polar form. For her
   (cons r a))
 ```
 
-The discipline of data abstraction ensures that the same implementation of `add-complex`, `sub-complex`, `mul-complex`, and `div-complex` will work with either Ben’s representation or Alyssa’s representation.
+يضمن انضباط تجريد البيانات أنّ التنفيذ نفسه للإجراءات `add-complex` و`sub-complex` و`mul-complex` و`div-complex` سيعمل مع تمثيل بن أو مع تمثيل أليسا.
 
-#### 2.4.2 Tagged data
+#### 2.4.2 البيانات المَوْسومة
 
-One way to view data abstraction is as an application of the “principle of least commitment.” In implementing the complex-number system in [2.4.1](#g_t2_002e4_002e1), we can use either Ben’s rectangular representation or Alyssa’s polar representation. The abstraction barrier formed by the selectors and constructors permits us to defer to the last possible moment the choice of a concrete representation for our data objects and thus retain maximum flexibility in our system design.
+إحدى طرائق النظر إلى تجريد البيانات هي النظر إليه بوصفه تطبيقًا لـ«مبدأ أقلّ التزام». فعند تنفيذ نظام الأعداد المركّبة في [2.4.1](#g_t2_002e4_002e1)، يمكننا استخدام إمّا تمثيل بن المستطيل وإمّا تمثيل أليسا القطريّ. وحاجز التجريد المُقام بالمُنتقِيّات والبواني يسمح لنا بتأجيل اختيار تمثيلٍ ملموسٍ لكائنات بياناتنا إلى آخر لحظةٍ ممكنة، وبذلك نحتفظ بأقصى مرونةٍ ممكنةٍ في تصميم نظامنا.
 
-The principle of least commitment can be carried to even further extremes. If we desire, we can maintain the ambiguity of representation even *after* we have designed the selectors and constructors, and elect to use both Ben’s representation *and* Alyssa’s representation. If both representations are included in a single system, however, we will need some way to distinguish data in polar form from data in rectangular form. Otherwise, if we were asked, for instance, to find the `magnitude` of the pair (3, 4), we wouldn’t know whether to answer 5 (interpreting the number in rectangular form) or 3 (interpreting the number in polar form). A straightforward way to accomplish this distinction is to include a *type tag*—the symbol `rectangular` or `polar`—as part of each complex number. Then when we need to manipulate a complex number we can use the tag to decide which selector to apply.
+ويمكن التوسّع في مبدأ أقلّ الالتزام إلى حدودٍ أشدّ حتّى من ذلك. فإن أردنا، فيمكننا الحفاظ على غموض التمثيل حتّى *بعد* أن نُصمّم المُنتقِيّات والبواني، ونختار استخدام تمثيل بن *و*تمثيل أليسا معًا. غير أنّ ضَمّ التمثيلين في نظامٍ واحدٍ يتطلّب منّا طريقةً ما للتمييز بين البيانات ذات التمثيل القطريّ والبيانات ذات التمثيل المستطيل. وإلّا، فلو طُلب منّا، مثلًا، إيجاد `magnitude` الزوج (3, 4)، فلن نعرف هل نُجيب بـ5 (بقراءة العدد بالتمثيل المستطيل) أم بـ3 (بقراءة العدد بالتمثيل القطريّ). وطريقةٌ مباشرةٌ لإنجاز هذا التمييز هي إدراج *وسم نوع (type tag)* - وهو الرمز `rectangular` أو `polar` - كجزءٍ من كلّ عددٍ مركّب. وحين نحتاج حينئذٍ إلى معالجة عددٍ مركّبٍ، يمكننا استخدام الوسم لتحديد أيّ المُنتقِيّات نطبّق.
 
-In order to manipulate tagged data, we will assume that we have procedures `type-tag` and `contents` that extract from a data object the tag and the actual contents (the polar or rectangular coordinates, in the case of a complex number). We will also postulate a procedure `attach-tag` that takes a tag and contents and produces a tagged data object. A straightforward way to implement this is to use ordinary list structure:
+لكي نتعامل مع البيانات المَوْسومة، سنفترض أنّ لدينا إجراءين، `type-tag` و`contents`، يستخرجان من كائن البيانات الوسم والمحتويات الفعليّة (الإحداثيّات القطريّة أو المستطيلة، في حالة العدد المركّب). وسنفترض أيضًا وجود إجراءٍ `attach-tag` يأخذ وسمًا ومحتويات ويُنتج كائن بياناتٍ موسومًا. وأحد الطرق المباشرة لتنفيذ ذلك هو استخدام بنية القوائم الاعتياديّة:
 
 ```scheme
 (define (attach-tag type-tag contents)
@@ -2693,7 +2693,7 @@ In order to manipulate tagged data, we will assume that we have procedures `type
               CONTENTS" datum)))
 ```
 
-Using these procedures, we can define predicates `rectangular?` and `polar?`, which recognize rectangular and polar numbers, respectively:
+باستخدام هذه الإجراءات، يمكننا تعريف مُسَيِّمَين، `rectangular?` و`polar?`، يتعرّفان على الأعداد المستطيلة والأعداد القطريّة على الترتيب:
 
 ```scheme
 (define (rectangular? z)
@@ -2703,7 +2703,7 @@ Using these procedures, we can define predicates `rectangular?` and `polar?`, wh
   (eq? (type-tag z) 'polar))
 ```
 
-With type tags, Ben and Alyssa can now modify their code so that their two different representations can coexist in the same system. Whenever Ben constructs a complex number, he tags it as rectangular. Whenever Alyssa constructs a complex number, she tags it as polar. In addition, Ben and Alyssa must make sure that the names of their procedures do not conflict. One way to do this is for Ben to append the suffix `rectangular` to the name of each of his representation procedures and for Alyssa to append `polar` to the names of hers. Here is Ben’s revised rectangular representation from [2.4.1](#g_t2_002e4_002e1):
+وباستخدام أوسمة الأنواع، يمكن لبن وأليسا الآن تعديل شيفرتيهما بحيث يتعايش تمثيلاهما المختلفان في النظام نفسه. فكلّما يبني بن عددًا مركّبًا، فإنّه يوسمه بأنّه مستطيل. وكلّما تبني أليسا عددًا مركّبًا، فإنّها توسمه بأنّه قطريّ. وبالإضافة إلى ذلك، يجب على بن وأليسا أن يضمنا ألّا تتعارض أسماء إجراءاتهما. وإحدى طرائق فعل ذلك هي أن يُلحق بن اللاحقة `rectangular` باسم كلّ إجراءٍ من إجراءات تمثيله، وأن تُلحق أليسا اللاحقة `polar` بأسماء إجراءاتها. وهذه هي نسخة بن المُعدَّلة من التمثيل المستطيل الواردة في [2.4.1](#g_t2_002e4_002e1):
 
 ```scheme
 (define (real-part-rectangular z) (car z))
@@ -2726,7 +2726,7 @@ With type tags, Ben and Alyssa can now modify their code so that their two diffe
    (cons (* r (cos a)) (* r (sin a)))))
 ```
 
-and here is Alyssa’s revised polar representation:
+وهذه هي نسخة أليسا المُعدَّلة من التمثيل القطريّ:
 
 ```scheme
 (define (real-part-polar z)
@@ -2750,7 +2750,7 @@ and here is Alyssa’s revised polar representation:
   (attach-tag 'polar (cons r a)))
 ```
 
-Each generic selector is implemented as a procedure that checks the tag of its argument and calls the appropriate procedure for handling data of that type. For example, to obtain the real part of a complex number, `real-part` examines the tag to determine whether to use Ben’s `real-part-rectangular` or Alyssa’s `real-part-polar`. In either case, we use `contents` to extract the bare, untagged datum and send this to the rectangular or polar procedure as required:
+يُنفَّذ كلّ مُنتقٍ عامّ (generic selector) بإجراءٍ يفحص وسم (tag) معطاه ويستدعي الإجراء المناسب لمعالجة البيانات من ذلك النوع. فمثلًا، للحصول على الجزء الحقيقيّ لعددٍ مركّب، يفحص `real-part` الوسم ليحدّد هل يستخدم `real-part-rectangular` الذي كتبه بن أم `real-part-polar` الذي كتبته أليسا. وفي كلتا الحالتين، نستخدم `contents` لاستخراج البيان المجرّد غير الموسوم ونرسله إلى الإجراء المستطيل أو القطبيّ بحسب الحاجة:
 
 ```scheme
 (define (real-part z)
@@ -2786,7 +2786,7 @@ Each generic selector is implemented as a procedure that checks the tag of its a
                ANGLE" z))))
 ```
 
-To implement the complex-number arithmetic operations, we can use the same procedures `add-complex`, `sub-complex`, `mul-complex`, and `div-complex` from [2.4.1](#g_t2_002e4_002e1), because the selectors they call are generic, and so will work with either representation. For example, the procedure `add-complex` is still
+ولتنفيذ عمليّات الحساب على الأعداد المركّبة، يمكننا استخدام الإجراءات نفسها `add-complex` و`sub-complex` و`mul-complex` و`div-complex` الواردة في [2.4.1](#g_t2_002e4_002e1)، إذ المُنتقِيّات التي تستدعيها عامّة، وبذلك ستعمل مع أيّ من التمثيلين. فمثلًا، ما زال الإجراء `add-complex` كما هو:
 
 ```scheme
 (define (add-complex z1 z2)
@@ -2795,7 +2795,7 @@ To implement the complex-number arithmetic operations, we can use the same proce
    (+ (imag-part z1) (imag-part z2))))
 ```
 
-Finally, we must choose whether to construct complex numbers using Ben’s representation or Alyssa’s representation. One reasonable choice is to construct rectangular numbers whenever we have real and imaginary parts and to construct polar numbers whenever we have magnitudes and angles:
+وأخيرًا، يجب أن نختار هل نُبنِي الأعداد المركّبة باستخدام تمثيل بن أم تمثيل أليسا. وأحد الخيارات المعقولة هو بناء الأعداد المستطيلة كلّما توفّر لدينا الجزء الحقيقيّ والجزء التخيّليّ، وبناء الأعداد القطبيّة كلّما توفّر لدينا المقدار والزاوية:
 
 ```scheme
 (define (make-from-real-imag x y)
@@ -2805,38 +2805,38 @@ Finally, we must choose whether to construct complex numbers using Ben’s repre
   (make-from-mag-ang-polar r a))
 ```
 
-The resulting complex-number system has the structure shown in [Figure 2.21](#Figure-2_002e21). The system has been decomposed into three relatively independent parts: the complex-number-arithmetic operations, Alyssa’s polar implementation, and Ben’s rectangular implementation. The polar and rectangular implementations could have been written by Ben and Alyssa working separately, and both of these can be used as underlying representations by a third programmer implementing the complex-arithmetic procedures in terms of the abstract constructor/selector interface.
+إنّ نظام الأعداد المركّبة الناتج له البنية الموضحة في [الشكل 2.21](#Figure-2_002e21). وقد فُكِّك النظام إلى ثلاثة أجزاءٍ مستقلّةٍ نسبيًّا: عمليّات الحساب على الأعداد المركّبة، وتنفيذ أليسا للتمثيل القطبيّ، وتنفيذ بن للتمثيل المستطيل. وكان يمكن كتابة التنفيذين القطبيّ والمستطيل على يد بن وأليسا عاملين كلٌّ على حدة، ويمكن استخدام كلٍّ منهما بوصفه تمثيلًا أساسيًّا من قِبل مبرمجٍ ثالثٍ يُنفّذ إجراءات الحساب على الأعداد المركّبة بدلالة واجهة البواني والمُنتقِيّات المجرّدة.
 
 ![](/images/sicp/c2-building-abstractions-with-data-2-Fig2.21a.std.webp)
 
-**Figure 2.21:** Structure of the generic complex-arithmetic system.
+**الشكل 2.21:** بنية نظام الحساب العامّ على الأعداد المركّبة.
 
-Since each data object is tagged with its type, the selectors operate on the data in a generic manner. That is, each selector is defined to have a behavior that depends upon the particular type of data it is applied to. Notice the general mechanism for interfacing the separate representations: Within a given representation implementation (say, Alyssa’s polar package) a complex number is an untyped pair (magnitude, angle). When a generic selector operates on a number of `polar` type, it strips off the tag and passes the contents on to Alyssa’s code. Conversely, when Alyssa constructs a number for general use, she tags it with a type so that it can be appropriately recognized by the higher-level procedures. This discipline of stripping off and attaching tags as data objects are passed from level to level can be an important organizational strategy, as we shall see in [2.5](https://sarabander.github.io/sicp/html/2_002e5.xhtml#g_t2_002e5).
+لأنّ كلّ كائن بياناتٍ مَوْسومٌ بنوعه، فإنّ المُنتقِيّات تشتغل على البيانات بصورةٍ عامّة. أي أنّ كلّ مُنتقٍ مُعرَّفٌ بأنّ له سلوكًا يتوقّف على النوع الخاصّ للبيانات التي يُطبَّق عليها. ولاحِظ الآليّة العامّة لربط التمثيلات المتفرّقة: فداخل تنفيذ تمثيلٍ معيّن (مثلًا حزمة أليسا القطبيّة) يكون العدد المركّب زوجًا غير موسوم (مقدار، زاوية). وحين يعمل مُنتقٍ عامّ على عددٍ من نوع `polar`، فإنّه ينزع الوسم ويمرّر المحتويات إلى شيفرة أليسا. وبالعكس، حين تبني أليسا عددًا للاستخدام العامّ، فإنها توسمه بنوعٍ حتّى يتعرّف عليه الإجراءات ذات المستوى الأعلى كما ينبغي. وهذا النظام في نزع الأوسمة وإلحاقها كلّما انتقلت كائنات البيانات من مستوى إلى آخر قد يكون استراتيجيّةً تنظيميّةً مهمّة، كما سنرى في [2.5](https://sarabander.github.io/sicp/html/2_002e5.xhtml#g_t2_002e5).
 
-#### 2.4.3 Data-Directed Programming and Additivity
+#### 2.4.3 البرمجة الموجَّهة بالبيانات والجمعيّة
 
-The general strategy of checking the type of a datum and calling an appropriate procedure is called *dispatching on type*. This is a powerful strategy for obtaining modularity in system design. On the other hand, implementing the dispatch as in [2.4.2](#g_t2_002e4_002e2) has two significant weaknesses. One weakness is that the generic interface procedures (`real-part`, `imag-part`, `magnitude`, and `angle`) must know about all the different representations. For instance, suppose we wanted to incorporate a new representation for complex numbers into our complex-number system. We would need to identify this new representation with a type, and then add a clause to each of the generic interface procedures to check for the new type and apply the appropriate selector for that representation.
+تُسمّى الاستراتيجيّة العامّة المتمثّلة في فحص نوع البيان واستدعاء إجراءٍ مناسب *التوجيه بحسب النوع (dispatching on type)*. وهذه استراتيجيّة قويّة لتحقيق الوحدانيّة في تصميم النظم. ومن ناحية أخرى، فإنّ تنفيذ التوجيه كما في [2.4.2](#g_t2_002e4_002e2) له نقطتا ضعفٍ مهمّتان. والضعف الأوّل أنّ إجراءات الواجهة العامّة (`real-part` و`imag-part` و`magnitude` و`angle`) يجب أن تعرف جميع التمثيلات المختلفة. فمثلًا، لنفترض أنّنا أردنا إدخال تمثيلٍ جديدٍ للأعداد المركّبة في نظام الأعداد المركّبة لدينا. فسنحتاج إلى ربط هذا التمثيل بنوع، ثمّ إضافة بندٍ إلى كلّ واحدٍ من إجراءات الواجهة العامّة ليفحص النوع الجديد ويطبّق المُنتقِي المناسب لذلك التمثيل.
 
-Another weakness of the technique is that even though the individual representations can be designed separately, we must guarantee that no two procedures in the entire system have the same name. This is why Ben and Alyssa had to change the names of their original procedures from [2.4.1](#g_t2_002e4_002e1).
+والضعف الآخر في التقنيّة أنّنا ورغم إمكان تصميم التمثيلات الفرديّة كلٌّ على حدة، يجب أن نضمن ألّا يحمل إجراءان في النظام بأكمله الاسم نفسه. ولهذا اضطرّ بن وأليسا إلى تغيير أسماء إجراءاتهما الأصليّة الواردة في [2.4.1](#g_t2_002e4_002e1).
 
-The issue underlying both of these weaknesses is that the technique for implementing generic interfaces is not *additive*. The person implementing the generic selector procedures must modify those procedures each time a new representation is installed, and the people interfacing the individual representations must modify their code to avoid name conflicts. In each of these cases, the changes that must be made to the code are straightforward, but they must be made nonetheless, and this is a source of inconvenience and error. This is not much of a problem for the complex-number system as it stands, but suppose there were not two but hundreds of different representations for complex numbers. And suppose that there were many generic selectors to be maintained in the abstract-data interface. Suppose, in fact, that no one programmer knew all the interface procedures or all the representations. The problem is real and must be addressed in such programs as large-scale data-base-management systems.
+والمسألة الكامنة وراء هذين الضعفين هي أنّ التقنيّة المستخدمة في تنفيذ الواجهات العامّة ليست *جمعيّة (additive)*. فالشخص الذي يُنفّذ إجراءات المُنتقِي العامّة يجب أن يُعدّل تلك الإجراءات في كلّ مرّةٍ يُثبَّت فيها تمثيلٌ جديد، والناس الذين يربطون التمثيلات الفرديّة يجب أن يُعدّلوا شيفراتهم لتفادي تعارض الأسماء. وفي كلٍّ من هاتين الحالتين، فإنّ التعديلات الواجب إجراؤها على الشيفرة مباشرة، لكن لا بدّ من إجرائها مع ذلك، وهذا مصدرٌ للإزعاج والخطأ. وهذا ليس مشكلةً كبيرةً في نظام الأعداد المركّبة في وضعه الحاليّ، لكن لنفترض أنّ هناك ليس تمثيلين بل مئاتٍ من التمثيلات المختلفة للأعداد المركّبة. ولنفترض أيضًا أنّ هناك مُنتقِيّات عامّة كثيرة يجب صيانتها في واجهة البيانات المجرّدة. ولنفترض، في الحقيقة، أنّ أحدًا من المبرمجين لا يعرف جميع إجراءات الواجهة ولا جميع التمثيلات. فالمشكلة حقيقيّة ويجب مواجهتها في برامج مثل نظم إدارة قواعد البيانات واسعة النطاق.
 
-What we need is a means for modularizing the system design even further. This is provided by the programming technique known as *data-directed programming*. To understand how data-directed programming works, begin with the observation that whenever we deal with a set of generic operations that are common to a set of different types we are, in effect, dealing with a two-dimensional table that contains the possible operations on one axis and the possible types on the other axis. The entries in the table are the procedures that implement each operation for each type of argument presented. In the complex-number system developed in the previous section, the correspondence between operation name, data type, and actual procedure was spread out among the various conditional clauses in the generic interface procedures. But the same information could have been organized in a table, as shown in [Figure 2.22](#Figure-2_002e22).
+ما نحتاجه هو وسيلةٌ لوحدنة تصميم النظم إلى حدٍّ أبعد. وتوفّرها تقنيّة البرمجة المعروفة بـ*البرمجة الموجَّهة بالبيانات (data-directed programming)*. ولتفهّم كيف تعمل البرمجة الموجَّهة بالبيانات، ابدأ بالملاحظة أنّنا كلّما تعاملنا مع مجموعةٍ من العمليّات العامّة المشتركة بين مجموعةٍ من الأنواع المختلفة، فإنّنا في الواقع نتعامل مع جدولٍ ثنائيّ الأبعاد يحتوي العمليّات الممكنة على أحد المحورين والأنواع الممكنة على المحور الآخر. ومدخلات الجدول هي الإجراءات التي تُنفّذ كلّ عمليّةٍ لكلّ نوعٍ من المعطيات المقدَّمة. وفي نظام الأعداد المركّبة المطوَّر في القسم السابق، فإنّ المطابقة بين اسم العمليّة ونوع البيانات والإجراء الفعليّ كانت موزّعةً على البنود الشرطيّة المختلفة في إجراءات الواجهة العامّة. لكنّ المعلومات نفسها كان يمكن تنظيمها في جدول، كما هو موضح في [الشكل 2.22](#Figure-2_002e22).
 
 ![](/images/sicp/c2-building-abstractions-with-data-3-Fig2.22.std.webp)
 
 **Figure 2.22:** Table of operations for the complex-number system.
 
-Data-directed programming is the technique of designing programs to work with such a table directly. Previously, we implemented the mechanism that interfaces the complex-arithmetic code with the two representation packages as a set of procedures that each perform an explicit dispatch on type. Here we will implement the interface as a single procedure that looks up the combination of the operation name and argument type in the table to find the correct procedure to apply, and then applies it to the contents of the argument. If we do this, then to add a new representation package to the system we need not change any existing procedures; we need only add new entries to the table.
+إنّ البرمجة الموجَّهة بالبيانات هي تقنيّة تصميم البرامج للعمل مع مثل هذا الجدول مباشرةً. فقد نُفّذنا سابقًا الآليّة التي تربط شيفرة الحساب على الأعداد المركّبة بحزمتَي التمثيل بوصفها مجموعةً من الإجراءات يؤدّي كلٌّ منها توجيهًا صريحًا بحسب النوع. وهنا سنُنفّذ الواجهة بإجراءٍ واحدٍ يبحث في الجدول عن تركيبة اسم العمليّة ونوع المعطى ليجد الإجراء الصحيح الذي ينبغي تطبيقه، ثمّ يطبّقه على محتويات المعطى. فإذا فعلنا ذلك، فحتّى نُضيف حزمة تمثيلٍ جديدةٍ إلى النظام فإنّنا لا نحتاج إلى تغيير أيّ إجراءٍ قائم؛ فكلّ ما نحتاجه هو إضافة مدخلاتٍ جديدةٍ إلى الجدول.
 
-To implement this plan, assume that we have two procedures, `put` and `get`, for manipulating the operation-and-type table:
+ولتنفيذ هذه الخطة، افترض أنّ لدينا إجراءين، `put` و`get`، للتلاعب بجدول العمليّات والأنواع:
 
-- `(put ⟨op⟩ ⟨type⟩ ⟨item⟩)` installs the `⟨`item`⟩` in the table, indexed by the `⟨`op`⟩` and the `⟨`type`⟩`.
-- `(get ⟨op⟩ ⟨type⟩)` looks up the `⟨`op`⟩`, `⟨`type`⟩` entry in the table and returns the item found there. If no item is found, `get` returns false.
+- `(put ⟨op⟩ ⟨type⟩ ⟨item⟩)` يُثبّت `⟨`item`⟩` في الجدول، مفهرَسًا بـ`⟨`op`⟩` و`⟨`type`⟩`.
+- `(get ⟨op⟩ ⟨type⟩)` يبحث عن `⟨`op`⟩` و`⟨`type`⟩` في الجدول ويعيد العنصر الذي يجده هناك. فإن لم يُعثر على عنصر، فإنّ `get` يعيد القيمة false.
 
-For now, we can assume that `put` and `get` are included in our language. In [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) ([3.3.3](https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e3)) we will see how to implement these and other operations for manipulating tables.
+وفي الوقت الحاليّ، يمكننا الافتراض أنّ `put` و`get` مُدمَجَان في لغتنا. وفي [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) ([3.3.3](https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e3)) سنرى كيف نُنفّذ هذه العمليّات وغيرها من عمليّات التلاعب بالجداول.
 
-Here is how data-directed programming can be used in the complex-number system. Ben, who developed the rectangular representation, implements his code just as he did originally. He defines a collection of procedures, or a *package*, and interfaces these to the rest of the system by adding entries to the table that tell the system how to operate on rectangular numbers. This is accomplished by calling the following procedure:
+وهكذا يمكن استخدام البرمجة الموجَّهة بالبيانات في نظام الأعداد المركّبة. فأمّا بن، الذي طوّر التمثيل المستطيل، فيُنفّذ شيفرته تمامًا كما فعل في الأصل. فهو يُعرّف مجموعةً من الإجراءات، أو *حزمة (package)*، ويربطها ببقيّة النظام بإضافة مدخلاتٍ إلى الجدول تُخبر النظام كيف يعمل على الأعداد المستطيلة. وهذا يتحقّق باستدعاء الإجراء الآتي:
 
 ```scheme
 (define (install-rectangular-package)
@@ -2868,9 +2868,9 @@ Here is how data-directed programming can be used in the complex-number system. 
   'done)
 ```
 
-Notice that the internal procedures here are the same procedures from [2.4.1](#g_t2_002e4_002e1) that Ben wrote when he was working in isolation. No changes are necessary in order to interface them to the rest of the system. Moreover, since these procedure definitions are internal to the installation procedure, Ben needn’t worry about name conflicts with other procedures outside the rectangular package. To interface these to the rest of the system, Ben installs his `real-part` procedure under the operation name `real-part` and the type `(rectangular)`, and similarly for the other selectors.[^45] The interface also defines the constructors to be used by the external system.[^46] These are identical to Ben’s internally defined constructors, except that they attach the tag.
+لاحِظ أنّ الإجراءات الداخليّة هنا هي الإجراءات نفسها الواردة في [2.4.1](#g_t2_002e4_002e1) التي كتبها بن عندما كان يعمل منفردًا. ولا يلزم أيّ تغييرٍ لربطها ببقيّة النظام. وبالإضافة إلى ذلك، فبما أنّ تعريفات الإجراءات هذه داخليّةٌ في إجراء التثبيت، فإنّ بن لا يقلق من تعارض الأسماء مع إجراءاتٍ أخرى خارج الحزمة المستطيلة. ولربط هذه الإجراءات ببقيّة النظام، يُثبِّت بن إجراء `real-part` الخاصّ به تحت اسم العمليّة `real-part` والنوع `(rectangular)`، وكذلك الحال بالنسبة إلى المُنتقِيّات الأخرى.[^45] وتُعرّف الواجهة أيضًا البواني التي سيستخدمها النظام الخارجيّ.[^46] وهذه مطابقةٌ للبواني التي عرّفها بن داخليًّا، فيما عدا أنّها تُلحق الوسم.
 
-Alyssa’s polar package is analogous:
+وحزمة أليسا القطبيّة مماثلة:
 
 ```scheme
 (define (install-polar-package)
@@ -2900,9 +2900,9 @@ Alyssa’s polar package is analogous:
   'done)
 ```
 
-Even though Ben and Alyssa both still use their original procedures defined with the same names as each other’s (e.g., `real-part`), these definitions are now internal to different procedures (see [1.1.8](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e8)), so there is no name conflict.
+ورغم أنّ بن وأليسا كلًّا منهما لا يزالان يستخدمان إجراءاتهما الأصليّة المعرّفةً بالأسماء نفسها التي يستخدمها كلٌّ منهما للآخر (مثل `real-part`)، فإنّ هذه التعريفات أصبحت داخليّةً في إجراءاتٍ مختلفة (انظر [1.1.8](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e8))، فلا يقع تعارضٌ في الأسماء.
 
-The complex-arithmetic selectors access the table by means of a general “operation” procedure called `apply-generic`, which applies a generic operation to some arguments. `Apply-generic` looks in the table under the name of the operation and the types of the arguments and applies the resulting procedure if one is present:[^47]
+تَصِل مُنتقِيّات الحساب على الأعداد المركّبة إلى الجدول بوساطة إجراء «عمليّة» عامّ يُسمّى `apply-generic`، وهو يُطبّق عمليّةً عامّةً على بعض المعطيات. و`apply-generic` يبحث في الجدول تحت اسم العمليّة وأنواع المعطيات ويطبّق الإجراء الناتج إن كان موجودًا:[^47]
 
 ```scheme
 (define (apply-generic op . args)
@@ -2916,7 +2916,7 @@ The complex-arithmetic selectors access the table by means of a general “opera
             (list op type-tags))))))
 ```
 
-Using `apply-generic`, we can define our generic selectors as follows:
+وباستخدام `apply-generic`، يمكننا تعريف مُنتقِيّاتنا العامّة كما يأتي:
 
 ```scheme
 (define (real-part z) 
@@ -2929,9 +2929,9 @@ Using `apply-generic`, we can define our generic selectors as follows:
   (apply-generic 'angle z))
 ```
 
-Observe that these do not change at all if a new representation is added to the system.
+ولاحِظ أنّ هذه لا تتغيّر إطلاقًا إن أُضيف تمثيلٌ جديدٌ إلى النظام.
 
-We can also extract from the table the constructors to be used by the programs external to the packages in making complex numbers from real and imaginary parts and from magnitudes and angles. As in [2.4.2](#g_t2_002e4_002e2), we construct rectangular numbers whenever we have real and imaginary parts, and polar numbers whenever we have magnitudes and angles:
+ويمكننا أيضًا استخراج البواني التي ستستخدمها البرامج الخارجيّة عن الحزم من الجدول، وذلك لبناء أعدادٍ مركّبةٍ من الأجزاء الحقيقيّة والتخيّليّة ومن المقادير والزوايا. فكما في [2.4.2](#g_t2_002e4_002e2)، نُبنِي الأعداد المستطيلة كلّما توفّر لدينا الجزء الحقيقيّ والجزء التخيّليّ، والأعداد القطبيّة كلّما توفّر لدينا المقدار والزاوية:
 
 ```scheme
 (define (make-from-real-imag x y)
@@ -2945,7 +2945,7 @@ We can also extract from the table the constructors to be used by the programs e
    r a))
 ```
 
-**Exercise 2.73:** [2.3.2](https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e2) described a program that performs symbolic differentiation:
+**التمرين 2.73:** وصفت [2.3.2](https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e2) برنامجًا يُؤدّي الاشتقاق الرمزيّ:
 
 ```scheme
 (define (deriv exp var)
@@ -2968,7 +2968,7 @@ We can also extract from the table the constructors to be used by the programs e
                       DERIV" exp))))
 ```
 
-We can regard this program as performing a dispatch on the type of the expression to be differentiated. In this situation the “type tag” of the datum is the algebraic operator symbol (such as `+`) and the operation being performed is `deriv`. We can transform this program into data-directed style by rewriting the basic derivative procedure as
+يمكننا اعتبار هذا البرنامج مؤدّيًا توجيهًا بحسب نوع التعبير المطلوب اشتقاقه. وفي هذا الموقف، يكون «وسم النوع» الخاصّ بالبيان هو رمز المؤثّل الجبريّ (مثل `+`) والعمليّة التي تُؤدّى هي `deriv`. ويمكننا تحويل هذا البرنامج إلى النمط الموجَّه بالبيانات بإعادة كتابة إجراء الاشتقاق الأساسيّ كما يأتي:
 
 ```scheme
 (define (deriv exp var)
@@ -2985,26 +2985,26 @@ We can regard this program as performing a dispatch on the type of the expressio
 (define (operands exp) (cdr exp))
 ```
 
-Explain what was done above. Why can’t we assimilate the predicates `number?` and `variable?` into the data-directed dispatch? Write the procedures for derivatives of sums and products, and the auxiliary code required to install them in the table used by the program above. Choose any additional differentiation rule that you like, such as the one for exponents ([Exercise 2.56](https://sarabander.github.io/sicp/html/2_002e3.xhtml#Exercise-2_002e56)), and install it in this data-directed system. In this simple algebraic manipulator the type of an expression is the algebraic operator that binds it together. Suppose, however, we indexed the procedures in the opposite way, so that the dispatch line in `deriv` looked like
+اشرح ما جرى أعلاه. فلماذا لا نستطيع استيعاب المُسَيِّمَين `number?` و`variable?` في التوجيه الموجَّه بالبيانات؟ واكتب الإجراءات الخاصّة باشتقاق المجاميع والجداءات، والشيفرة المساعدة اللازمة لتثبيتها في الجدول الذي يستخدمه البرنامج أعلاه. واختر أيّ قاعدة اشتقاقٍ إضافيّةٍ تحبّها، مثل القاعدة الخاصّة بالأسّ ([التمرين 2.56](https://sarabander.github.io/sicp/html/2_002e3.xhtml#Exercise-2_002e56))، وثبّتها في هذا النظام الموجَّه بالبيانات. وفي هذه المُعالِجة الجبريّة البسيطة، يكون نوع التعبير هو المؤثّل الجبريّ الذي يربطه معًا. لكن لنفترض أنّنا فهرسنا الإجراءات بالعكس، بحيث صار سطر التوجيه في `deriv` كالآتي:
 
 ```scheme
 ((get (operator exp) 'deriv) 
  (operands exp) var)
 ```
 
-What corresponding changes to the derivative system are required?
+فما التعديلات المقتضاة في نظام الاشتقاق؟
 
-> **Exercise 2.74:** Insatiable Enterprises, Inc., is a highly decentralized conglomerate company consisting of a large number of independent divisions located all over the world. The company’s computer facilities have just been interconnected by means of a clever network-interfacing scheme that makes the entire network appear to any user to be a single computer. Insatiable’s president, in her first attempt to exploit the ability of the network to extract administrative information from division files, is dismayed to discover that, although all the division files have been implemented as data structures in Scheme, the particular data structure used varies from division to division. A meeting of division managers is hastily called to search for a strategy to integrate the files that will satisfy headquarters’ needs while preserving the existing autonomy of the divisions. Show how such a strategy can be implemented with data-directed programming. As an example, suppose that each division’s personnel records consist of a single file, which contains a set of records keyed on employees’ names. The structure of the set varies from division to division. Furthermore, each employee’s record is itself a set (structured differently from division to division) that contains information keyed under identifiers such as `address` and `salary`. In particular: Implement for headquarters a `get-record` procedure that retrieves a specified employee’s record from a specified personnel file. The procedure should be applicable to any division’s file. Explain how the individual divisions’ files should be structured. In particular, what type information must be supplied?
-> > Implement for headquarters a `get-salary` procedure that returns the salary information from a given employee’s record from any division’s personnel file. How should the record be structured in order to make this operation work?
-> > Implement for headquarters a `find-employee-record` procedure. This should search all the divisions’ files for the record of a given employee and return the record. Assume that this procedure takes as arguments an employee’s name and a list of all the divisions’ files.
-> > When Insatiable takes over a new company, what changes must be made in order to incorporate the new personnel information into the central system?
+> **التمرين 2.74:** شركة «Insatiable Enterprises, Inc.» هي شركةٌ عملاقةٌ لامركزيّةٌ للغاية، تتكوّن من عددٍ كبيرٍ من الأقسام المستقلّة المنتشرة في أنحاء العالم. وقد رُبطت تسهيلات الشركة الحاسوبيّة للتوّ بعضها ببعض بوساطة نظامٍ ذكيّ للواجهة مع الشبكة يجعل الشبكة بأكملها تبدو لأيّ مستخدمٍ حاسوبًا واحدًا. ورئيسة شركة Insatiable، في محاولتها الأولى لاستغلال قدرة الشبكة على استخراج المعلومات الإداريّة من ملفّات الأقسام، تفزع حين تكتشف أنّ جميع ملفّات الأقسام - وإن كانت قد نُفّذت كبنيات بياناتٍ في Scheme - تختلف بنية البيانات الخاصّة المستخدمة من قسمٍ إلى آخر. ويُدعى مديرو الأقسام على عجلٍ إلى اجتماعٍ للبحث عن استراتيجيّةٍ لدمج الملفّات تُلبّي احتياجات المقرّ الرئيسيّ مع الحفاظ على الاستقلاليّة القائمة للأقسام. وأرِ كيف يمكن تنفيذ مثل هذه الاستراتيجيّة بالبرمجة الموجَّهة بالبيانات. فعلى سبيل المثال، لنفترض أنّ سجلّات العاملين في كلّ قسمٍ تتكوّن من ملفٍّ واحدٍ يحتوي مجموعةً من السجلّات مفهرسةً بأسماء العاملين. وبنية المجموعة تختلف من قسمٍ إلى آخر. وبالإضافة إلى ذلك، فإنّ سجلّ كلّ عاملٍ هو بذاته مجموعةٌ (ذات بنيةٍ مختلفة من قسمٍ إلى آخر) تحتوي معلوماتٍ مفهرسةً تحت معرّفاتٍ مثل `address` و`salary`. وبالتحديد: نُنفّذ للمقرّ الرئيسيّ إجراء `get-record` يسترجع سجلّ عاملٍ محدَّدٍ من ملفّ عمالٍ محدَّد. وينبغي أن يكون الإجراء قابلًا للتطبيق على ملفّ أيّ قسم. واشرح كيف ينبغي بنيّة ملفّات الأقسام الفرديّة. وبالتحديد، ما معلومات النوع التي يجب توفيرها؟
+> > نُنفّذ للمقرّ الرئيسيّ إجراء `get-salary` يعيد معلومات الراتب من سجلّ عاملٍ معطىً من ملفّ عمالٍ في أيّ قسم. فكيف ينبغي بنيّة السجلّ حتّى تعمل هذه العمليّة؟
+> > نُنفّذ للمقرّ الرئيسيّ إجراء `find-employee-record`. وينبغي أن يبحث هذا الإجراء في ملفّات جميع الأقسام عن سجلّ عاملٍ معطىً ويعيد ذلك السجلّ. وافترض أنّ هذا الإجراء يأخذ كمعطياتٍ اسم العامل وقائمةً بملفّات جميع الأقسام.
+> > عندما تستحوذ Insatiable على شركةٍ جديدة، فأيّ تغييراتٍ يجب إجراؤها لإدماج معلومات العاملين الجديدة في النظام المركزيّ؟
 > > 
 
-#### Message passing
+#### تمرير الرسائل
 
-The key idea of data-directed programming is to handle generic operations in programs by dealing explicitly with operation-and-type tables, such as the table in [Figure 2.22](#Figure-2_002e22). The style of programming we used in [2.4.2](#g_t2_002e4_002e2) organized the required dispatching on type by having each operation take care of its own dispatching. In effect, this decomposes the operation-and-type table into rows, with each generic operation procedure representing a row of the table.
+الفكرة المحوريّة في البرمجة الموجَّهة بالبيانات هي معالجة العمليّات العامّة في البرامج بالتصرّف صراحةً مع جداول العمليّات والأنواع، مثل الجدول في [الشكل 2.22](#Figure-2_002e22). وقد نظّم نمط البرمجة الذي استخدمناه في [2.4.2](#g_t2_002e4_002e2) التوجيه المطلوب بحسب النوع بجعل كلّ عمليّةٍ تتولّى توجيهها بنفسها. وهذا يفكّك في الواقع جدول العمليّات والأنواع إلى صفوف، بحيث يمثّل كلّ إجراء عمليّةٍ عامّة صفًّا من الجدول.
 
-An alternative implementation strategy is to decompose the table into columns and, instead of using “intelligent operations” that dispatch on data types, to work with “intelligent data objects” that dispatch on operation names. We can do this by arranging things so that a data object, such as a rectangular number, is represented as a procedure that takes as input the required operation name and performs the operation indicated. In such a discipline, `make-from-real-imag` could be written as
+أمّا الاستراتيجيّة البديلة في التنفيذ فهي تفكيك الجدول إلى أعمدة، وبدلًا من استخدام «عمليّات ذكيّة» توجّه بحسب أنواع البيانات، العمل مع «كائنات بيانات ذكيّة» توجّه بحسب أسماء العمليّات. ويمكننا فعل ذلك بترتيب الأمور بحيث يُمثَّل كائن البيانات - مثل العدد المستطيل - بإجراءٍ يأخذ اسم العمليّة المطلوبة مدخلًا ويؤدّي العمليّة المُشار إليها. وفي نظامٍ مثل هذا، يمكن كتابة `make-from-real-imag` على النحو الآتي:
 
 ```scheme
 (define (make-from-real-imag x y)
@@ -3020,35 +3020,35 @@ An alternative implementation strategy is to decompose the table into columns an
   dispatch)
 ```
 
-The corresponding `apply-generic` procedure, which applies a generic operation to an argument, now simply feeds the operation’s name to the data object and lets the object do the work:[^48]
+أمّا إجراء `apply-generic` المطابق، وهو يُطبّق عمليّةً عامّةً على معطىً، فإنّه الآن يغذّي كائن البيانات باسم العمليّة ويترك الكائن يقوم بالعمل:[^48]
 
 ```scheme
 (define (apply-generic op arg) (arg op))
 ```
 
-Note that the value returned by `make-from-real-imag` is a procedure—the internal `dispatch` procedure. This is the procedure that is invoked when `apply-generic` requests an operation to be performed.
+لاحِظ أنّ القيمة التي يعيدها `make-from-real-imag` هي إجراء - وهو إجراء `dispatch` الداخليّ. وهذا هو الإجراء الذي يُستدعى حين يطلب `apply-generic` أداء عمليّةٍ ما.
 
-This style of programming is called *message passing*. The name comes from the image that a data object is an entity that receives the requested operation name as a “message.” We have already seen an example of message passing in [2.1.3](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e3), where we saw how `cons`, `car`, and `cdr` could be defined with no data objects but only procedures. Here we see that message passing is not a mathematical trick but a useful technique for organizing systems with generic operations. In the remainder of this chapter we will continue to use data-directed programming, rather than message passing, to discuss generic arithmetic operations. In [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) we will return to message passing, and we will see that it can be a powerful tool for structuring simulation programs.
+يُسمّى هذا النمط من البرمجة *تمرير الرسائل (message passing)*. واسمه مستمدٌ من تصوّر كائن البيانات ككيانٍ يستقبل اسم العمليّة المطلوبة بوصفه «رسالة». وقد رأينا مثلًا على تمرير الرسائل سابقًا في [2.1.3](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e3)، حيث رأينا كيف يمكن تعريف `cons` و`car` و`cdr` دون أيّ كائنات بياناتٍ بل بإجراءاتٍ فقط. وهنا نرى أنّ تمرير الرسائل ليس خُدعةً رياضيّةً بل تقنيّةً مفيدةً لتنظيم النظم ذات العمليّات العامّة. وفي بقية هذا الفصل سنواصل استخدام البرمجة الموجَّهة بالبيانات، لا تمرير الرسائل، لمناقشة عمليّات الحساب العامّة. وفي [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) سنعود إلى تمرير الرسائل، وسنرى أنّه قد يكون أداةً قويّةً لبناء برامج المحاكاة.
 
-> **Exercise 2.75:** Implement the constructor `make-from-mag-ang` in message-passing style. This procedure should be analogous to the `make-from-real-imag` procedure given above.
+> **التمرين 2.75:** نُنفّذ الباني `make-from-mag-ang` بنمط تمرير الرسائل. وينبغي أن يكون هذا الإجراء مماثلًا لإجراء `make-from-real-imag` المعطى أعلاه.
 
-> **Exercise 2.76:** As a large system with generic operations evolves, new types of data objects or new operations may be needed. For each of the three strategies—generic operations with explicit dispatch, data-directed style, and message-passing-style—describe the changes that must be made to a system in order to add new types or new operations. Which organization would be most appropriate for a system in which new types must often be added? Which would be most appropriate for a system in which new operations must often be added?
+> **التمرين 2.76:** مع تطوّر نظامٍ كبيرٍ ذي عمليّاتٍ عامّة، قد تصير هناك حاجةٌ إلى أنواعٍ جديدةٍ من كائنات البيانات أو إلى عمليّاتٍ جديدة. وبالنسبة إلى كلٍّ من الاستراتيجيّات الثلاث - العمليّات العامّة ذات التوجيه الصريح، والنمط الموجَّه بالبيانات، ونمط تمرير الرسائل - صِف التعديلات التي يجب إجراؤها على نظامٍ ما لإضافة أنواعٍ أو عمليّاتٍ جديدة. فأيّ تنظيمٍ يكون أنسب لنظامٍ يجب إضافة أنواعٍ جديدةٍ إليه كثيرًا؟ وأيّها يكون أنسب لنظامٍ يجب إضافة عمليّاتٍ جديدةٍ إليه كثيرًا؟
 
-### 2.5 Systems with Generic Operations
+### 2.5 أنظمة ذات عمليّات عامّة
 
-In the previous section, we saw how to design systems in which data objects can be represented in more than one way. The key idea is to link the code that specifies the data operations to the several representations by means of generic interface procedures. Now we will see how to use this same idea not only to define operations that are generic over different representations but also to define operations that are generic over different kinds of arguments. We have already seen several different packages of arithmetic operations: the primitive arithmetic (`+`, `-`, `*`, `/`) built into our language, the rational-number arithmetic (`add-rat`, `sub-rat`, `mul-rat`, `div-rat`) of [2.1.1](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e1), and the complex-number arithmetic that we implemented in [2.4.3](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e3). We will now use data-directed techniques to construct a package of arithmetic operations that incorporates all the arithmetic packages we have already constructed.
+في القسم السابق، رأينا كيف نصمّم نظمًا يمكن تمثيل كائنات البيانات فيها بأكثر من طريقةٍ واحدة. والفكرة المحوريّة هي ربط الشيفرة التي تحدّد عمليّات البيانات بالتمثيلات المتعدّدة بوساطة إجراءات واجهةٍ عامّة. والآن سنرى كيف نستخدم هذه الفكرة نفسها لا لتحديد عمليّاتٍ عامّةٍ على تمثيلاتٍ مختلفةٍ فحسب، بل أيضًا لتحديد عمليّاتٍ عامّةٍ على أنواعٍ مختلفةٍ من المعطيات. فقد رأينا سابقًا عدّة حزمٍ مختلفةٍ لعمليّات الحساب: الحساب الأوّليّ (`+` و`-` و`*` و`/`) المدمج في لغتنا، والحساب على الأعداد الكسريّة (`add-rat` و`sub-rat` و`mul-rat` و`div-rat`) الوارد في [2.1.1](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e1)، والحساب على الأعداد المركّبة الذي نُفّذناه في [2.4.3](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e3). وسنستخدم الآن تقنيّات البرمجة الموجَّهة بالبيانات لبناء حزمةٍ من عمليّات الحساب تُدمج جميع حزم الحساب التي بنيناها سابقًا.
 
-[Figure 2.23](#Figure-2_002e23) shows the structure of the system we shall build. Notice the abstraction barriers. From the perspective of someone using “numbers,” there is a single procedure `add` that operates on whatever numbers are supplied. `Add` is part of a generic interface that allows the separate ordinary-arithmetic, rational-arithmetic, and complex-arithmetic packages to be accessed uniformly by programs that use numbers. Any individual arithmetic package (such as the complex package) may itself be accessed through generic procedures (such as `add-complex`) that combine packages designed for different representations (such as rectangular and polar). Moreover, the structure of the system is additive, so that one can design the individual arithmetic packages separately and combine them to produce a generic arithmetic system.
+يُظهر [الشكل 2.23](#Figure-2_002e23) بنية النظام الذي سنبنيه. ولاحِظ حواجز التجريد. فمن منظور من يستخدم «الأعداد»، هناك إجراءٌ واحدٌ هو `add` يعمل على أيّ أعدادٍ تُعطى له. و`add` جزءٌ من واجهةٍ عامّةٍ تسمح بالنفاذ الموحّد إلى حزم الحساب الاعتياديّ والحساب الكسريّ والحساب المركّب المتفرّقة من قِبل البرامج التي تستخدم الأعداد. وأيّ حزمة حسابٍ فرديّة (مثل الحزمة المركّبة) قد يُنفَذ إليها هي نفسها بوساطة إجراءاتٍ عامّة (مثل `add-complex`) تجمع حزمًا صُمّمت لتمثيلاتٍ مختلفة (مثل المستطيلة والقطبيّة). وبالإضافة إلى ذلك، فإنّ بنية النظام جمعيّة، بحيث يمكن تصميم حزم الحساب الفرديّة كلٌّ على حدة ثمّ جمعها لإنتاج نظام حسابٍ عامّ.
 
 ![](/images/sicp/c2-building-abstractions-with-data-0-Fig2.23b.std.webp)
 
-**Figure 2.23:** Generic arithmetic system.
+**الشكل 2.23:** نظام حسابيّ عامّ.
 
-#### 2.5.1 Generic Arithmetic Operations
+#### 2.5.1 عمليّات الحساب العامّة
 
-The task of designing generic arithmetic operations is analogous to that of designing the generic complex-number operations. We would like, for instance, to have a generic addition procedure `add` that acts like ordinary primitive addition `+` on ordinary numbers, like `add-rat` on rational numbers, and like `add-complex` on complex numbers. We can implement `add`, and the other generic arithmetic operations, by following the same strategy we used in [2.4.3](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e3) to implement the generic selectors for complex numbers. We will attach a type tag to each kind of number and cause the generic procedure to dispatch to an appropriate package according to the data type of its arguments.
+إنّ مهمّة تصميم عمليّات الحساب العامّة مماثلةٌ لمهمّة تصميم العمليّات العامّة على الأعداد المركّبة. فنودّ - مثلًا - أن يكون لدينا إجراء جمعٍ عامّ هو `add` يتصرّف كالجمع الأوّليّ الاعتياديّ `+` على الأعداد الاعتياديّة، وكـ`add-rat` على الأعداد الكسريّة، وكـ`add-complex` على الأعداد المركّبة. ويمكننا تنفيذ `add`، وسائر عمليّات الحساب العامّة، باتّباع الاستراتيجيّة نفسها التي استخدمنها في [2.4.3](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e3) لتنفيذ المُنتقِيّات العامّة للأعداد المركّبة. فسنُلحق وسم نوعٍ بكلّ نوعٍ من الأعداد ونجعل الإجراء العامّ يوجّه إلى الحزمة المناسبة بحسب نوع بيانات معطياته.
 
-The generic arithmetic procedures are defined as follows:
+وتُعرَّف إجراءات الحساب العامّة كما يأتي:
 
 ```scheme
 (define (add x y) (apply-generic 'add x y))
@@ -3057,7 +3057,7 @@ The generic arithmetic procedures are defined as follows:
 (define (div x y) (apply-generic 'div x y))
 ```
 
-We begin by installing a package for handling *ordinary* numbers, that is, the primitive numbers of our language. We will tag these with the symbol `scheme-number`. The arithmetic operations in this package are the primitive arithmetic procedures (so there is no need to define extra procedures to handle the untagged numbers). Since these operations each take two arguments, they are installed in the table keyed by the list `(scheme-number scheme-number)`:
+نبدأ بتثبيت حزمةٍ لمعالجة الأعداد *الاعتياديّة*، أي الأعداد الأوّليّة في لغتنا. وسَنَوسم هذه بالرمز `scheme-number`. وعمليّات الحساب في هذه الحزمة هي إجراءات الحساب الأوّليّة (فلا حاجة إلى تعريف إجراءاتٍ إضافيّةٍ لمعالجة الأعداد غير الموسومة). وبما أنّ كلًّا من هذه العمليّات يأخذ معطيين، فإنّها تُثبَّت في الجدول مفهرسةً بالقائمة `(scheme-number scheme-number)`:
 
 ```scheme
 (define (install-scheme-number-package)
@@ -3076,14 +3076,14 @@ We begin by installing a package for handling *ordinary* numbers, that is, the p
   'done)
 ```
 
-Users of the Scheme-number package will create (tagged) ordinary numbers by means of the procedure:
+سيُنشئ مستخدمو حزمة Scheme-number أعدادًا اعتياديّةً موسومةً (tagged) بواسطة الإجراء:
 
 ```scheme
 (define (make-scheme-number n)
   ((get 'make 'scheme-number) n))
 ```
 
-Now that the framework of the generic arithmetic system is in place, we can readily include new kinds of numbers. Here is a package that performs rational arithmetic. Notice that, as a benefit of additivity, we can use without modification the rational-number code from [2.1.1](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e1) as the internal procedures in the package:
+وبعد أن صار هيكل نظام الحساب العامّ في مكانه، يمكننا بسهولةٍ إدخال أنواعٍ جديدةٍ من الأعداد. وهذه حزمةٌ تؤدّي الحساب الكسريّ. ولاحِظ أنّنا، بفضل الجمعيّة، نستطيع استخدام شيفرة الأعداد الكسريّة الواردة في [2.1.1](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e1) دون تعديلٍ بوصفها الإجراءات الداخليّة في الحزمة:
 
 ```scheme
 (define (install-rational-package)
@@ -3125,7 +3125,7 @@ Now that the framework of the generic arithmetic system is in place, we can read
   ((get 'make 'rational) n d))
 ```
 
-We can install a similar package to handle complex numbers, using the tag `complex`. In creating the package, we extract from the table the operations `make-from-real-imag` and `make-from-mag-ang` that were defined by the rectangular and polar packages. Additivity permits us to use, as the internal operations, the same `add-complex`, `sub-complex`, `mul-complex`, and `div-complex` procedures from [2.4.1](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e1).
+ويمكننا تثبيت حزمةٍ شبيهةٍ للتعامل مع الأعداد المركّبة باستخدام الوسم `complex`. وعند إنشاء الحزمة نستخرج من الجدول العمليّتين `make-from-real-imag` و`make-from-mag-ang` اللتين عرّفتهما الحزمتان المستطيلة والقطبيّة. وتسمح لنا الجمعيّة باستخدام الإجراءات `add-complex` و`sub-complex` و`mul-complex` و`div-complex` ذاتها الواردة في [2.4.1](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e1) بوصفها العمليّات الداخليّة.
 
 ```scheme
 (define (install-complex-package)
@@ -3178,7 +3178,7 @@ We can install a similar package to handle complex numbers, using the tag `compl
   'done)
 ```
 
-Programs outside the complex-number package can construct complex numbers either from real and imaginary parts or from magnitudes and angles. Notice how the underlying procedures, originally defined in the rectangular and polar packages, are exported to the complex package, and exported from there to the outside world.
+وتستطيع البرامج الواقعة خارج حزمة الأعداد المركّبة بناء أعدادٍ مركّبةٍ إمّا من الأجزاء الحقيقيّة والتخيّليّة وإمّا من المقادير والزوايا. ولاحِظ كيف تُصدَّر الإجراءات الكامنة، المعرَّفة أصلًا في الحزمتين المستطيلة والقطبيّة، إلى حزمة الأعداد المركّبة، ثم تُصدَّر من هناك إلى العالم الخارجيّ.
 
 ```scheme
 (define (make-complex-from-real-imag x y)
@@ -3187,15 +3187,15 @@ Programs outside the complex-number package can construct complex numbers either
   ((get 'make-from-mag-ang 'complex) r a))
 ```
 
-What we have here is a two-level tag system. A typical complex number, such as $3 + 4 i$ in rectangular form, would be represented as shown in [Figure 2.24](#Figure-2_002e24). The outer tag (`complex`) is used to direct the number to the complex package. Once within the complex package, the next tag (`rectangular`) is used to direct the number to the rectangular package. In a large and complicated system there might be many levels, each interfaced with the next by means of generic operations. As a data object is passed “downward,” the outer tag that is used to direct it to the appropriate package is stripped off (by applying `contents`) and the next level of tag (if any) becomes visible to be used for further dispatching.
+ما لدينا هنا هو نظام وسمٍ من مستويين. فالعدد المركّب النموذجيّ، مثل $3 + 4 i$ في الصيغة المستطيلة، سيُمثَّل كما هو موضّح في [الشكل 2.24](#Figure-2_002e24). ويُستخدم الوسم الخارجيّ (`complex`) لتوجيه العدد إلى حزمة الأعداد المركّبة. وحالما يصير داخل حزمة الأعداد المركّبة، يُستخدم الوسم التالي (`rectangular`) لتوجيه العدد إلى الحزمة المستطيلة. وفي نظامٍ كبيرٍ ومعقّدٍ قد تكون هناك مستوياتٌ عديدةٌ، تتصل كلٌّ منها بما يليها بواسطة عمليّاتٍ عامّة. وحين يُمرَّر كائن البيانات «إلى الأسفل»، يُجرَّد الوسم الخارجيّ المستخدم في توجيهه إلى الحزمة المناسبة (بتطبيق `contents`) ويصير مستوى الوسم التالي (إن وُجد) مرئيًّا ليُستخدم في مزيدٍ من التوزيع.
 
 ![](/images/sicp/c2-building-abstractions-with-data-1-Fig2.24d.std.webp)
 
-**Figure 2.24:** Representation of $3 + 4 i$ in rectangular form.
+**الشكل 2.24:** تمثيل $3 + 4 i$ في الصيغة المستطيلة.
 
-In the above packages, we used `add-rat`, `add-complex`, and the other arithmetic procedures exactly as originally written. Once these definitions are internal to different installation procedures, however, they no longer need names that are distinct from each other: we could simply name them `add`, `sub`, `mul`, and `div` in both packages.
+في الحزمتين أعلاه، استخدمنا `add-rat` و`add-complex` وسائر الإجراءات الحسابيّة تمامًا كما كُتبت أصلًا. غير أنّ هذه التعريفات، متى صارت داخليّةً في إجراءات تثبيتٍ مختلفة، فإنّها لم تعُد تحتاج إلى أسماءٍ متمايزةٍ بعضها عن بعض: فيمكننا تسميتها ببساطةٍ `add` و`sub` و`mul` و`div` في الحزمتين معًا.
 
-**Exercise 2.77:** Louis Reasoner tries to evaluate the expression `(magnitude z)` where `z` is the object shown in [Figure 2.24](#Figure-2_002e24). To his surprise, instead of the answer 5 he gets an error message from `apply-generic`, saying there is no method for the operation `magnitude` on the types `(complex)`. He shows this interaction to Alyssa P. Hacker, who says “The problem is that the complex-number selectors were never defined for `complex` numbers, just for `polar` and `rectangular` numbers. All you have to do to make this work is add the following to the `complex` package:”
+**التمرين 2.77:** يحاول لويس ريزنر تقييم التعبير `(magnitude z)` حيث `z` هو الكائن الموضّح في [الشكل 2.24](#Figure-2_002e24). وإلى حدّ دهشته، فبدلًا من الجواب 5 يحصل على رسالة خطأٍ من `apply-generic` تقول إنّه لا توجد طريقة للعمليّة `magnitude` على الأنواع `(complex)`. فيعرض هذا التفاعل على أليسا بي. هاكر التي تقول: «المشكلة هي أنّ محدِّدات الأعداد المركّبة لم تُعرَّف قطّ من أجل الأعداد `complex`، بل من أجل الأعداد `polar` و`rectangular` فقط. وكلّ ما عليك فعله ليعمل هذا هو إضافة الآتي إلى حزمة `complex`:»
 
 ```scheme
 (put 'real-part '(complex) real-part)
@@ -3204,19 +3204,19 @@ In the above packages, we used `add-rat`, `add-complex`, and the other arithmeti
 (put 'angle '(complex) angle)
 ```
 
-Describe in detail why this works. As an example, trace through all the procedures called in evaluating the expression `(magnitude z)` where `z` is the object shown in [Figure 2.24](#Figure-2_002e24). In particular, how many times is `apply-generic` invoked? What procedure is dispatched to in each case?
+صُف بتفصيلٍ سبب نجاح هذا. ومثلًا، تعقّب جميع الإجراءات المستدعاة في تقييم التعبير `(magnitude z)` حيث `z` هو الكائن الموضّح في [الشكل 2.24](#Figure-2_002e24). وعلى وجه الخصوص، كم مرّةً يُنادى `apply-generic`؟ وما الإجراء الذي يُوزَّع إليه في كلّ حالة؟
 
-> **Exercise 2.78:** The internal procedures in the `scheme-number` package are essentially nothing more than calls to the primitive procedures `+`, `-`, etc. It was not possible to use the primitives of the language directly because our type-tag system requires that each data object have a type attached to it. In fact, however, all Lisp implementations do have a type system, which they use internally. Primitive predicates such as `symbol?` and `number?` determine whether data objects have particular types. Modify the definitions of `type-tag`, `contents`, and `attach-tag` from [2.4.2](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e2) so that our generic system takes advantage of Scheme’s internal type system. That is to say, the system should work as before except that ordinary numbers should be represented simply as Scheme numbers rather than as pairs whose `car` is the symbol `scheme-number`.
+> **التمرين 2.78:** إنّ الإجراءات الداخليّة في حزمة `scheme-number` ليست في جوهرها إلّا نداءاتٍ للإجراءات الأوّليّة `+` و`-` ونحوها. ولم يكن ممكنًا استخدام أوّليّات اللغة مباشرةً لأنّ نظام وسم النوع الذي لدينا يتطلّب أن يكون لكلّ كائن بياناتٍ نوعٌ ملحقٌ به. لكنّ جميع تنفيذات Lisp تملك في الحقيقة نظام أنواعٍ تستخدمه داخليًّا. والمسيّمات الأوّليّة مثل `symbol?` و`number?` تحدّد ما إذا كانت كائنات البيانات تنتمي إلى أنواعٍ معيّنة. فعَدّل تعريفات `type-tag` و`contents` و`attach-tag` الواردة في [2.4.2](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e2) بحيث يستفيد نظامنا العامّ من نظام أنواع Scheme الداخليّ. أي أنّ النظام ينبغي أن يعمل كما كان يعمل، إلّا أنّ الأعداد الاعتياديّة ينبغي أن تُُمثَّل ببساطةٍ كأرقام Scheme بدلًا من أزواجٍ يكون `car` كلٍّ منها هو الرمز `scheme-number`.
 
-> **Exercise 2.79:** Define a generic equality predicate `equ?` that tests the equality of two numbers, and install it in the generic arithmetic package. This operation should work for ordinary numbers, rational numbers, and complex numbers.
+> **التمرين 2.79:** عرّف مسيّمًا عامًّا للمساواة هو `equ?` يختبر تساوي عددين، وثبّته في حزمة الحساب العامّ. وينبغي أن تعمل هذه العمليّة مع الأعداد الاعتياديّة والكسريّة والمركّبة.
 
-> **Exercise 2.80:** Define a generic predicate `=zero?` that tests if its argument is zero, and install it in the generic arithmetic package. This operation should work for ordinary numbers, rational numbers, and complex numbers.
+> **التمرين 2.80:** عرّف مسيّمًا عامًّا هو `=zero?` يختبر ما إذا كان معطاه صفرًا، وثبّته في حزمة الحساب العامّ. وينبغي أن تعمل هذه العمليّة مع الأعداد الاعتياديّة والكسريّة والمركّبة.
 
-#### 2.5.2 Combining Data of Different Types
+#### 2.5.2 الجمع بين بيانات من أنواع مختلفة
 
-We have seen how to define a unified arithmetic system that encompasses ordinary numbers, complex numbers, rational numbers, and any other type of number we might decide to invent, but we have ignored an important issue. The operations we have defined so far treat the different data types as being completely independent. Thus, there are separate packages for adding, say, two ordinary numbers, or two complex numbers. What we have not yet considered is the fact that it is meaningful to define operations that cross the type boundaries, such as the addition of a complex number to an ordinary number. We have gone to great pains to introduce barriers between parts of our programs so that they can be developed and understood separately. We would like to introduce the cross-type operations in some carefully controlled way, so that we can support them without seriously violating our module boundaries.
+رأينا كيف نُعرّف نظامًا حسابيًّا موحّدًا يشمل الأعداد الاعتياديّة والمركّبة والكسريّة وأيّ نوع عددٍ آخر قد نُقدّر اختراعه، لكنّنا أهمَلنا مسألةً مهمّة. فالعمليّات التي عرّفناها حتّى الآن تعامل أنواع البيانات المختلفة باعتبارها مستقلّةً تمامًا. وهكذا، توجد حزمٌ منفصلةٌ لجمع عددين اعتياديّين، مثلًا، أو عددين مركّبين. وما لم نفكّر فيه بعد هو أنّ من ذي المعنى تعريف عمليّاتٍ تتجاوز حدود الأنواع، كإضافة عددٍ مركّبٍ إلى عددٍ اعتياديّ. وقد بذلنا جهدًا كبيرًا في إدخال حواجزَ بين أجزاء برامجنا حتّى يُمكن تطويرها وفهمها كلٌّ على حدة. ونودّ أن نُدخل العمليّات العابرة للأنواع بطريقةٍ محكومةٍ بعنايةٍ، حتّى نتمكّن من دعمها دون انتهاك حدود وحدانيّتنا انتهاكًا جسيمًا.
 
-One way to handle cross-type operations is to design a different procedure for each possible combination of types for which the operation is valid. For example, we could extend the complex-number package so that it provides a procedure for adding complex numbers to ordinary numbers and installs this in the table using the tag `(complex scheme-number)`:[^49]
+إحدى طرائق التعامل مع العمليّات العابرة للأنواع هي تصميم إجراءٍ مختلفٍ لكلّ تركيبةٍ ممكنةٍ من الأنواع التي تكون العمليّة صالحةً لها. فمثلًا، يمكننا توسيع حزمة الأعداد المركّبة بحيث تُوفّر إجراءً لجمع الأعداد المركّبة مع الأعداد الاعتياديّة وتُثبّته في الجدول باستخدام الوسم `(complex scheme-number)`:[^49]
 
 ```scheme
 (define (add-complex-to-schemenum z x)
@@ -3229,13 +3229,13 @@ One way to handle cross-type operations is to design a different procedure for e
        (tag (add-complex-to-schemenum z x))))
 ```
 
-This technique works, but it is cumbersome. With such a system, the cost of introducing a new type is not just the construction of the package of procedures for that type but also the construction and installation of the procedures that implement the cross-type operations. This can easily be much more code than is needed to define the operations on the type itself. The method also undermines our ability to combine separate packages additively, or at least to limit the extent to which the implementors of the individual packages need to take account of other packages. For instance, in the example above, it seems reasonable that handling mixed operations on complex numbers and ordinary numbers should be the responsibility of the complex-number package. Combining rational numbers and complex numbers, however, might be done by the complex package, by the rational package, or by some third package that uses operations extracted from these two packages. Formulating coherent policies on the division of responsibility among packages can be an overwhelming task in designing systems with many packages and many cross-type operations.
+هذه التقنيّة تُجدي، لكنّها متعثّرة. فمع نظامٍ كهذا، لا تقتصر كلفة إدخال نوعٍ جديد على بناء حزمة الإجراءات الخاصّة بذلك النوع، بل تشمل أيضًا بناء الإجراءات التي تُنفّذ العمليّات العابرة للأنواع وتثبيتها. ويمكن أن تكون هذه بسهولةٍ شيفرةً أكثر كثيرًا ممّا يلزم لتعريف العمليّات على النوع ذاته. وهذه الطريقة تُضعف أيضًا قدرتنا على دمج حزمٍ منفصلةٍ جمعًا، أو على الأقلّ تحدّ المدى الذي يحتاج معه منفّذو الحزم الفرديّة إلى مراعاة الحزم الأخرى. فمثلًا، في المثال أعلاه، يبدو من المعقول أن تكون معالجة العمليّات المختلطة على الأعداد المركّبة والأعداد الاعتياديّة من مسؤوليّة حزمة الأعداد المركّبة. أمّا جمع الأعداد الكسريّة والأعداد المركّبة فيمكن أن تنجزه حزمة الأعداد المركّبة، أو حزمة الأعداد الكسريّة، أو حزمةٌ ثالثةٌ تستخدم عمليّاتٍ مستخرجةً من هاتين الحزمتين. وقد تكون صياغة سياسيّاتٍ متناسقةٍ لتقسيم المسؤوليّة بين الحزم مهمّةً ساحقةً في تصميم أنظمةٍ كثيرة الحزم والعمليّات العابرة للأنواع.
 
-#### Coercion
+#### الإكراه
 
-In the general situation of completely unrelated operations acting on completely unrelated types, implementing explicit cross-type operations, cumbersome though it may be, is the best that one can hope for. Fortunately, we can usually do better by taking advantage of additional structure that may be latent in our type system. Often the different data types are not completely independent, and there may be ways by which objects of one type may be viewed as being of another type. This process is called *coercion*. For example, if we are asked to arithmetically combine an ordinary number with a complex number, we can view the ordinary number as a complex number whose imaginary part is zero. This transforms the problem to that of combining two complex numbers, which can be handled in the ordinary way by the complex-arithmetic package.
+في الحالة العامّة المتمثّلة في عمليّاتٍ غير مترابطةٍ إطلاقًا تعمل على أنواعٍ غير مترابطةٍ إطلاقًا، فإنّ تنفيذ عمليّاتٍ صريحةٍ عابرةٍ للأنواع، على رغم تعثّره، هو أفضلُ ما يمكن للمرء أن يأمله. لكنّنا نستطيع لحسن الحظّ أن نأتي بأفضلَ من ذلك عادةً بالاستفادة من بنيةٍ إضافيّةٍ قد تكون كامنةً في نظام أنواعنا. فكثيرًا ما لا تكون أنواع البيانات مختلفة الاستقلال تمامًا، وقد توجد طرائقٌ يمكن بها النظر إلى كائنات نوعٍ ما على أنّها من نوعٍ آخر. وتُسمّى هذه العمليّة *الإكراه (coercion)*. فمثلًا، إذا طُلب منّا أن نجمع حسابيًّا عددًا اعتياديًّا مع عددٍ مركّبٍ، فيمكننا النظر إلى العدد الاعتياديّ بوصفه عددًا مركّبًا جزءه التخيّليّ صفر. وهذا يحوّل المسألة إلى جمع عددين مركّبين، وهو ما يمكن التعامل معه بالطريقة المعتادة بواسطة حزمة الحساب المركّب.
 
-In general, we can implement this idea by designing coercion procedures that transform an object of one type into an equivalent object of another type. Here is a typical coercion procedure, which transforms a given ordinary number to a complex number with that real part and zero imaginary part:
+وبصورةٍ عامّة، يمكننا تنفيذ هذه الفكرة بتصميم إجراءات إكراهٍ تحوّل كائنًا من نوعٍ ما إلى كائنٍ مكافئٍ من نوعٍ آخر. وهذا إجراء إكراهٍ نموذجيّ، يحوّل عددًا اعتياديًّا معطىً إلى عددٍ مركّبٍ جزؤه الحقيقيّ هو ذلك العدد وجزؤه التخيّليّ صفر:
 
 ```scheme
 (define (scheme-number->complex n)
@@ -3243,16 +3243,16 @@ In general, we can implement this idea by designing coercion procedures that tra
    (contents n) 0))
 ```
 
-We install these coercion procedures in a special coercion table, indexed under the names of the two types:
+نُثبّت إجراءات الإكراه هذه في جدول إكراهٍ خاصّ، مُفهرَسٍ باسمَي النوعين:
 
 ```scheme
 (put-coercion 'scheme-number 'complex 
               scheme-number->complex)
 ```
 
-(We assume that there are `put-coercion` and `get-coercion` procedures available for manipulating this table.) Generally some of the slots in the table will be empty, because it is not generally possible to coerce an arbitrary data object of each type into all other types. For example, there is no way to coerce an arbitrary complex number to an ordinary number, so there will be no general `complex->scheme-number` procedure included in the table.
+(ونحن نفترض توفّر إجراءَي `put-coercion` و`get-coercion` للتلاعب بهذا الجدول.) وبصورةٍ عامّة، ستكون بعض خانات الجدول فارغة، لأنّه ليس ممكنًا على العموم إكراه كائن بياناتٍ اعتباطيّ من كلّ نوعٍ إلى جميع الأنواع الأخرى. فمثلًا، لا توجد طريقة لإكراه عددٍ مركّبٍ اعتباطيّ إلى عددٍ اعتياديّ، فلن يكون هناك إجراء `complex->scheme-number` عامٌّ مُدرَجٌ في الجدول.
 
-Once the coercion table has been set up, we can handle coercion in a uniform manner by modifying the `apply-generic` procedure of [2.4.3](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e3). When asked to apply an operation, we first check whether the operation is defined for the arguments’ types, just as before. If so, we dispatch to the procedure found in the operation-and-type table. Otherwise, we try coercion. For simplicity, we consider only the case where there are two arguments.[^50] We check the coercion table to see if objects of the first type can be coerced to the second type. If so, we coerce the first argument and try the operation again. If objects of the first type cannot in general be coerced to the second type, we try the coercion the other way around to see if there is a way to coerce the second argument to the type of the first argument. Finally, if there is no known way to coerce either type to the other type, we give up. Here is the procedure:
+وبمجرّد إعداد جدول الإكراه، يمكننا التعامل مع الإكراه بطريقةٍ موحّدةٍ بتعديل إجراء `apply-generic` الوارد في [2.4.3](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e3). وحين يُطلَب تطبيق عمليّةٍ ما، نتحقّق أوّلًا ممّا إذا كانت العمليّة معرَّفةً لأنواع المعطيات، تمامًا كما قبل. فإن كانت كذلك، نُوزّع إلى الإجراء الموجود في جدول العمليّات والأنواع. وإلّا فنجرّب الإكراه. وللتبسيط، لن نفكّر إلّا في حالة وجود مُدخَلين.[^50] فنفحص جدول الإكراه لنرى ما إذا كانت كائنات النوع الأوّل يمكن إكراهها إلى النوع الثاني. فإن كان ممكنًا، فنُكرِه المعطى الأوّل ونُعيد تجريب العمليّة. وإن كانت كائنات النوع الأوّل لا يمكن إكراهها على العموم إلى النوع الثاني، فنجرّب الإكراه بالاتجاه المعاكس لنرى هل توجد طريقة لإكراه المعطى الثاني إلى نوع المعطى الأوّل. وأخيرًا، إن لم تكن هناك طريقةٌ معروفةٌ لإكراه أيّ النوعين إلى النوع الآخر، فإنّنا نستسلم. وهذا هو الإجراء:
 
 ```scheme
 (define (apply-generic op . args)
@@ -3289,35 +3289,35 @@ Once the coercion table has been set up, we can handle coercion in a uniform man
                (list op type-tags)))))))
 ```
 
-This coercion scheme has many advantages over the method of defining explicit cross-type operations, as outlined above. Although we still need to write coercion procedures to relate the types (possibly $n^{2}$ procedures for a system with $n$ types), we need to write only one procedure for each pair of types rather than a different procedure for each collection of types and each generic operation.[^51] What we are counting on here is the fact that the appropriate transformation between types depends only on the types themselves, not on the operation to be applied.
+لهذا المخطّط الإكراهيّ مزايا كثيرة على طريقة تعريف عمليّاتٍ صريحةٍ عابرةٍ للأنواع، كما بُيّن أعلاه. فرغم أنّنا ما نزال نحتاج إلى كتابة إجراءات إكراهٍ لربط الأنواع (وربّما $n^{2}$ إجراءً لنظامٍ فيه $n$ أنواع)، فإنّنا نحتاج إلى كتابة إجراءٍ واحدٍ فقط لكلّ زوجٍ من الأنواع بدلًا من إجراءٍ مختلفٍ لكلّ مجموعةٍ من الأنواع ولكلّ عمليّةٍ عامّة.[^51] وما نعتمد عليه هنا هو حقيقة أنّ التحويل المناسب بين الأنواع يعتمد على الأنواع ذاتها وحدها، لا على العمليّة المطلوب تطبيقها.
 
-On the other hand, there may be applications for which our coercion scheme is not general enough. Even when neither of the objects to be combined can be converted to the type of the other it may still be possible to perform the operation by converting both objects to a third type. In order to deal with such complexity and still preserve modularity in our programs, it is usually necessary to build systems that take advantage of still further structure in the relations among types, as we discuss next.
+ومن ناحية أخرى، قد توجد تطبيقاتٌ لا يكون مخطّط الإكراه الذي لدينا عامًّا بالقدر الكافي من أجلها. فإنّه حتّى حين لا يمكن تحويل أيّ من الكائنين المطلوب جمعهما إلى نوع الآخر، فقد يظلّ أداء العمليّة ممكنًا بتحويل الكائنين معًا إلى نوعٍ ثالث. ولكي نتعامل مع هذا القدر من التعقيد مع الحفاظ على وحدانيّة برامجنا، فإنّه من الضروريّ عادةً بناء أنظمةٍ تستفيد من بنيةٍ أبعدَ في العلاقات بين الأنواع، كما سنناقش تاليًا.
 
-#### Hierarchies of types
+#### تسلسلات الأنواع
 
-The coercion scheme presented above relied on the existence of natural relations between pairs of types. Often there is more “global” structure in how the different types relate to each other. For instance, suppose we are building a generic arithmetic system to handle integers, rational numbers, real numbers, and complex numbers. In such a system, it is quite natural to regard an integer as a special kind of rational number, which is in turn a special kind of real number, which is in turn a special kind of complex number. What we actually have is a so-called *hierarchy of types*, in which, for example, integers are a *subtype* of rational numbers (i.e., any operation that can be applied to a rational number can automatically be applied to an integer). Conversely, we say that rational numbers form a *supertype* of integers. The particular hierarchy we have here is of a very simple kind, in which each type has at most one supertype and at most one subtype. Such a structure, called a *tower*, is illustrated in [Figure 2.25](#Figure-2_002e25).
+اعتمد مخطّط الإكراه المعروض أعلاه على وجود علاقاتٍ طبيعيّةٍ بين أزواج الأنواع. وكثيرًا ما تكون هناك بنيةٌ أكثر «شموليّةً» في كيفية ارتباط الأنواع المختلفة بعضها ببعض. فمثلًا، لنفترض أنّنا نبني نظام حسابٍ عامّ للتعامل مع الأعداد الصحيحة والكسريّة والحقيقيّة والمركّبة. وفي نظامٍ كهذا، فمن الطبيعيّ جدًّا اعتبار العدد الصحيح نوعًا خاصًّا من العدد الكسريّ، وهو بدوره نوعٌ خاصٌّ من العدد الحقيقيّ، وهو بدوره نوعٌ خاصٌّ من العدد المركّب. وما لدينا فعلًا هو ما يُسمّى *تسلسل أنواع (hierarchy of types)*، تكون فيه، مثلًا، الأعداد الصحيحة *نوعًا فرعيًّا (subtype)* من الأعداد الكسريّة (أي أنّ أيّ عمليّةٍ يمكن تطبيقها على عددٍ كسريٍّ يمكن تطبيقها تلقائيًّا على عددٍ صحيح). وبالعكس، نقول إنّ الأعداد الكسريّة تُشكّل *نوعًا أعلى (supertype)* من الأعداد الصحيحة. والتسلسل المعيّن الذي لدينا هنا هو من نوعٍ بالغ البساطة، يكون فيه لكلّ نوعٍ نوعٌ أعلى واحدٌ على الأكثرّ ونوعٌ فرعيٌّ واحدٌ على الأكثرّ. وهذه البنية، التي تُسمّى *برجًا (tower)*، موضّحةٌ في [الشكل 2.25](#Figure-2_002e25).
 
 ![](/images/sicp/c2-building-abstractions-with-data-2-Fig2.25.std.webp)
 
-**Figure 2.25:** A tower of types.
+**الشكل 2.25:** برج من الأنواع.
 
-If we have a tower structure, then we can greatly simplify the problem of adding a new type to the hierarchy, for we need only specify how the new type is embedded in the next supertype above it and how it is the supertype of the type below it. For example, if we want to add an integer to a complex number, we need not explicitly define a special coercion procedure `integer->complex`. Instead, we define how an integer can be transformed into a rational number, how a rational number is transformed into a real number, and how a real number is transformed into a complex number. We then allow the system to transform the integer into a complex number through these steps and then add the two complex numbers.
+فإن كان لدينا بنية برجٍ، فإنّنا نستطيع تبسيط مسألة إضافة نوعٍ جديدٍ إلى التسلسل تبسيطًا كبيرًا، إذ ما علينا إلّا أن نُحدّد كيف يُدَمَج النوع الجديد في النوع الأعلى التالي له وكيف يكون هو النوع الأعلى للنوع الذي تحته. فمثلًا، إذا أردنا جمع عددٍ صحيحٍ مع عددٍ مركّبٍ، فليس علينا أن نُعرّف صراحةً إجراء إكراهٍ خاصًّا `integer->complex`. وبدلًا من ذلك، نُعرّف كيف يمكن تحويل عددٍ صحيحٍ إلى عددٍ كسريّ، وكيف يُحوَّل العدد الكسريّ إلى عددٍ حقيقيّ، وكيف يُحوَّل العدد الحقيقيّ إلى عددٍ مركّب. ثمّ نسمح للنظام بتحويل العدد الصحيح إلى عددٍ مركّبٍ عبر هذه الخطوات، ثمّ نجمع العددين المركّبين.
 
-We can redesign our `apply-generic` procedure in the following way: For each type, we need to supply a `raise` procedure, which “raises” objects of that type one level in the tower. Then when the system is required to operate on objects of different types it can successively raise the lower types until all the objects are at the same level in the tower. ([Exercise 2.83](#Exercise-2_002e83) and [Exercise 2.84](#Exercise-2_002e84) concern the details of implementing such a strategy.)
+ويمكننا إعادة تصميم إجراء `apply-generic` على النحو الآتي: فمن أجل كلّ نوعٍ، نحتاج إلى توفير إجراء `raise` «يرفع» كائنات ذلك النوع مستوىً واحدًا في البرج. وحين يلزم أن يعمل النظام على كائناتٍ من أنواعٍ مختلفة، فإنّه يستطيع رفع الأنواع الأدنى تباعًا حتّى تصير جميع الكائنات في المستوى ذاته داخل البرج. (و[التمرين 2.83](#Exercise-2_002e83) و[التمرين 2.84](#Exercise-2_002e84) يتناولان تفاصيل تنفيذ استراتيجيّةٍ كهذه.)
 
-Another advantage of a tower is that we can easily implement the notion that every type “inherits” all operations defined on a supertype. For instance, if we do not supply a special procedure for finding the real part of an integer, we should nevertheless expect that `real-part` will be defined for integers by virtue of the fact that integers are a subtype of complex numbers. In a tower, we can arrange for this to happen in a uniform way by modifying `apply-generic`. If the required operation is not directly defined for the type of the object given, we raise the object to its supertype and try again. We thus crawl up the tower, transforming our argument as we go, until we either find a level at which the desired operation can be performed or hit the top (in which case we give up).
+وميزةٌ أخرى للبرج هي أنّنا نستطيع تنفيذ فكرة أنّ كلّ نوعٍ «يَرِث» جميع العمليّات المعرَّفة على نوعٍ أعلى منه. فمثلًا، إن لم نُوفّر إجراءً خاصًّا لإيجاد الجزء الحقيقيّ لعددٍ صحيحٍ، فينبغي أن نتوقّع مع ذلك أنّ `real-part` سيُعرَّف للأعداد الصحيحة بحقيقة أنّ الأعداد الصحيحة نوعٌ فرعيٌّ من الأعداد المركّبة. وفي البرج، يمكننا ترتيب الأمر ليحدث هذا بطريقةٍ موحّدةٍ بتعديل `apply-generic`. فإن لم تكن العمليّة المطلوبة معرَّفةً مباشرةً لنوع الكائن المعطى، نرفع الكائن إلى نوعه الأعلى ونُعيد المحاولة. وهكذا نصعد البرج زحفًا، محوّلين معطانا أثناء ذلك، حتّى نجد إمّا مستوىً يمكن أداء العمليّة المطلوبة عنده، وإمّا نصطدم بالقمة (وحينها نستسلم).
 
-Yet another advantage of a tower over a more general hierarchy is that it gives us a simple way to “lower” a data object to the simplest representation. For example, if we add $2 + 3 i$ to $4 − 3 i$ , it would be nice to obtain the answer as the integer 6 rather than as the complex number $6 + 0 i$ . [Exercise 2.85](#Exercise-2_002e85) discusses a way to implement such a lowering operation. (The trick is that we need a general way to distinguish those objects that can be lowered, such as $6 + 0 i$ , from those that cannot, such as $6 + 2 i$ .)
+وثمّة ميزةٌ أخرى للبرج على تسلسلٍ أكثر عموميّةً، وهي أنّه يُتيح لنا طريقةً بسيطةً لـ«إنزال» كائن بياناتٍ إلى أبسط تمثيلٍ له. فمثلًا، إذا أضفنا $2 + 3 i$ إلى $4 − 3 i$، فسيكون من الجميل الحصول على الجواب كالعدد الصحيح 6 بدلًا من العدد المركّب $6 + 0 i$ . ويناقش [التمرين 2.85](#Exercise-2_002e85) طريقةً لتنفيذ عمليّة إنزالٍ كهذه. (والحيلة هي أنّنا نحتاج إلى طريقةٍ عامّةٍ للتمييز بين تلك الكائنات التي يمكن إنزالها، مثل $6 + 0 i$، وتلك التي لا يمكن إنزالها، مثل $6 + 2 i$.)
 
-#### Inadequacies of hierarchies
+#### أوجه القصور في التسلسلات
 
-If the data types in our system can be naturally arranged in a tower, this greatly simplifies the problems of dealing with generic operations on different types, as we have seen. Unfortunately, this is usually not the case. [Figure 2.26](#Figure-2_002e26) illustrates a more complex arrangement of mixed types, this one showing relations among different types of geometric figures. We see that, in general, a type may have more than one subtype. Triangles and quadrilaterals, for instance, are both subtypes of polygons. In addition, a type may have more than one supertype. For example, an isosceles right triangle may be regarded either as an isosceles triangle or as a right triangle. This multiple-supertypes issue is particularly thorny, since it means that there is no unique way to “raise” a type in the hierarchy. Finding the “correct” supertype in which to apply an operation to an object may involve considerable searching through the entire type network on the part of a procedure such as `apply-generic`. Since there generally are multiple subtypes for a type, there is a similar problem in coercing a value “down” the type hierarchy. Dealing with large numbers of interrelated types while still preserving modularity in the design of large systems is very difficult, and is an area of much current research.[^52]
+فإن كانت أنواع البيانات في نظامنا قابلةً للترتيب في برجٍ ترتيبًا طبيعيًّا، فإنّ ذلك يُبسّط مسائل التعامل مع العمليّات العامّة على الأنواع المختلفة تبسيطًا كبيرًا، كما رأينا. لكنّ ذلك، للأسف، ليس هو الحال عادةً. ويوضّح [الشكل 2.26](#Figure-2_002e26) ترتيبًا أكثر تعقيدًا لأنواعٍ مختلطة، يُظهر هذا الترتيب العلاقات بين أنواعٍ مختلفةٍ من الأشكال الهندسيّة. فنرى أنّ النوع، بصورةٍ عامّة، قد يكون له أكثر من نوعٍ فرعيٍّ واحد. فالمثلّثات والرباعيّات، مثلًا، كلاهما نوعان فرعيّان من المضلّعات. وبالإضافة إلى ذلك، قد يكون للنوع أكثر من نوعٍ أعلى واحدٍ. فمثلًا، يمكن النظر إلى المثلّث القائم متساوي الساقين إمّا بوصفه مثلّثًا متساوي الساقين وإمّا بوصفه مثلّثًا قائمًا. وهذه المسألة المتعلّقة بتعدّد الأنواع العليا شائكةٌ بصورةٍ خاصّة، إذ تعني أنّه لا توجد طريقةٌ وحيدةٌ لـ«رفع» نوعٍ في التسلسل. وقد يتطلّب إيجاد النوع الأعلى «الصحيح» الذي تُطبَّق فيه عمليّةٌ على كائنٍ بحثًا واسعًا في شبكة الأنواع بأكملها من جانب إجراءٍ مثل `apply-generic`. وبما أنّ للنوع أنواعٌ فرعيّةٌ متعدّدةٌ عمومًا، فهناك مسألةٌ مماثلةٌ في إكراه قيمةٍ «إلى الأسفل» في تسلسل الأنواع. فالتعامل مع أعدادٍ كبيرةٍ من الأنواع المترابطة مع الحفاظ في الوقت نفسه على وحدانيّة تصميم الأنظمة الكبيرة أمرٌ صعبٌ جدًّا، وهو مجالٌ لكثيرٍ من الأبحاث الجارية.[^52]
 
 ![](/images/sicp/c2-building-abstractions-with-data-3-Fig2.26f.std.webp)
 
-**Figure 2.26:** Relations among types of geometric figures.
+**الشكل 2.26:** العلاقات بين أنواع الأشكال الهندسيّة.
 
-**Exercise 2.81:** Louis Reasoner has noticed that `apply-generic` may try to coerce the arguments to each other’s type even if they already have the same type. Therefore, he reasons, we need to put procedures in the coercion table to *coerce* arguments of each type to their own type. For example, in addition to the `scheme-number->complex` coercion shown above, he would do:
+**التمرين 2.81:** لاحَظ لويس ريزنر أنّ `apply-generic` قد يحاول إكراه المعطيات إلى نوع بعضها بعضًا حتّى ولو كانت من النوع ذاته أصلًا. ولذلك، بحسب منطقه، فإنّ علينا وضع إجراءاتٍ في جدول الإكراه *تُكرِهُ* مُدخلات كلّ نوعٍ إلى نوعها هي نفسها. فمثلًا، بالإضافة إلى إكراه `scheme-number->complex` الموضّح أعلاه، سيفعل الآتي:
 
 ```scheme
 (define (scheme-number->scheme-number n) n)
@@ -3330,14 +3330,14 @@ If the data types in our system can be naturally arranged in a tower, this great
               complex->complex)
 ```
 
-With Louis’s coercion procedures installed, what happens if `apply-generic` is called with two arguments of type `scheme-number` or two arguments of type `complex` for an operation that is not found in the table for those types? For example, assume that we’ve defined a generic exponentiation operation:
+ومع تثبيت إجراءات إكراه لويس، فماذا يحدث إذا نُودي `apply-generic` بمعطيّن من نوع `scheme-number` أو بمعطيّن من نوع `complex` من أجل عمليّةٍ غير موجودةٍ في الجدول لتلك الأنواع؟ فمثلًا، لنفترض أنّنا عرّفنا عمليّة أُسٍّ عامّة:
 
 ```scheme
 (define (exp x y) 
   (apply-generic 'exp x y))
 ```
 
-and have put a procedure for exponentiation in the Scheme-number package but not in any other package:
+ووضعنا إجراءً للأُسّ في حزمة Scheme-number، ولكن ليس في أيّ حزمةٍ أخرى:
 
 ```scheme
 ;; following added to Scheme-number package
@@ -3348,35 +3348,35 @@ and have put a procedure for exponentiation in the Scheme-number package but not
        ; using primitive expt
 ```
 
-What happens if we call `exp` with two complex numbers as arguments?
+فماذا يحدث إذا نادينا `exp` بعددين مركّبين كمعطيّن؟
 
-Is Louis correct that something had to be done about coercion with arguments of the same type, or does `apply-generic` work correctly as is? Modify `apply-generic` so that it doesn’t try coercion if the two arguments have the same type.
+فهل لويس محقٌّ في أنّه كان لا بدّ من فعل شيءٍ بشأن الإكراه مع معطياتٍ من النوع ذاته، أم أنّ `apply-generic` يعمل صحيحًا كما هو؟ عَدّل `apply-generic` كي لا يُحاول الإكراه إذا كان المعطيّان من النوع ذاته.
 
-> **Exercise 2.82:** Show how to generalize `apply-generic` to handle coercion in the general case of multiple arguments. One strategy is to attempt to coerce all the arguments to the type of the first argument, then to the type of the second argument, and so on. Give an example of a situation where this strategy (and likewise the two-argument version given above) is not sufficiently general. (Hint: Consider the case where there are some suitable mixed-type operations present in the table that will not be tried.)
+> **التمرين 2.82:** أظهِر كيف تُعمّم `apply-generic` للتعامل مع الإكراه في الحالة العامّة للمعطيات المتعدّدة. وإحدى الاستراتيجيّات هي محاولة إكراه جميع المعطيات إلى نوع المعطى الأوّل، ثمّ إلى نوع المعطى الثاني، وهكذا. وأعطِ مثالًا لحالةٍ لا تكون فيها هذه الاستراتيجيّة (وكذلك النسخة الثنائيّة المعطاة أعلاه) عامّةً بالقدر الكافي. (تلميح: انظر في الحالة التي توجد فيها بعض عمليّات الأنواع المختلطة المناسبة في الجدول والتي لن تُجرَّب.)
 
-> **Exercise 2.83:** Suppose you are designing a generic arithmetic system for dealing with the tower of types shown in [Figure 2.25](#Figure-2_002e25): integer, rational, real, complex. For each type (except complex), design a procedure that raises objects of that type one level in the tower. Show how to install a generic `raise` operation that will work for each type (except complex).
+> **التمرين 2.83:** لنفترض أنّك تصمّم نظام حسابٍ عامّ للتعامل مع برج الأنواع الموضّح في [الشكل 2.25](#Figure-2_002e25): صحيح، وكسريّ، وحقيقيّ، ومركّب. فمن أجل كلّ نوعٍ (عدا المركّب)، صمّم إجراءً يرفع كائنات ذلك النوع مستوىً واحدًا في البرج. وأظهِر كيف تُثبّت عمليّة `raise` عامّةً تعمل من أجل كلّ نوعٍ (عدا المركّب).
 
-> **Exercise 2.84:** Using the `raise` operation of [Exercise 2.83](#Exercise-2_002e83), modify the `apply-generic` procedure so that it coerces its arguments to have the same type by the method of successive raising, as discussed in this section. You will need to devise a way to test which of two types is higher in the tower. Do this in a manner that is “compatible” with the rest of the system and will not lead to problems in adding new levels to the tower.
+> **التمرين 2.84:** باستخدام عمليّة `raise` الواردة في [التمرين 2.83](#Exercise-2_002e83)، عَدّل إجراء `apply-generic` بحيث يُكرِه معطيّيه ليكونا من النوع ذاته بطريقة الرفع المتتالي، كما نُوقش في هذا القسم. وستحتاج إلى ابتكار طريقةٍ لاختبار أيّ النوعين أعلى في البرج. وافعل ذلك بطريقةٍ «متوافقة» مع بقيّة النظام ولا تؤدّي إلى مشاكلَ عند إضافة مستوياتٍ جديدةٍ إلى البرج.
 
-> **Exercise 2.85:** This section mentioned a method for “simplifying” a data object by lowering it in the tower of types as far as possible. Design a procedure `drop` that accomplishes this for the tower described in [Exercise 2.83](#Exercise-2_002e83). The key is to decide, in some general way, whether an object can be lowered. For example, the complex number $1.5 + 0 i$ can be lowered as far as `real`, the complex number $1 + 0 i$ can be lowered as far as `integer`, and the complex number $2 + 3 i$ cannot be lowered at all. Here is a plan for determining whether an object can be lowered: Begin by defining a generic operation `project` that “pushes” an object down in the tower. For example, projecting a complex number would involve throwing away the imaginary part. Then a number can be dropped if, when we `project` it and `raise` the result back to the type we started with, we end up with something equal to what we started with. Show how to implement this idea in detail, by writing a `drop` procedure that drops an object as far as possible. You will need to design the various projection operations[^53] and install `project` as a generic operation in the system. You will also need to make use of a generic equality predicate, such as described in [Exercise 2.79](#Exercise-2_002e79). Finally, use `drop` to rewrite `apply-generic` from [Exercise 2.84](#Exercise-2_002e84) so that it “simplifies” its answers.
+> **التمرين 2.85:** ذكر هذا القسم طريقةً لـ«تبسيط» كائن بياناتٍ بإنزاله في برج الأنواع إلى أدنى حدٍّ ممكن. صمّم إجراء `drop` يُنجز ذلك من أجل البرج الموصوف في [التمرين 2.83](#Exercise-2_002e83). والمفتاح هو أن تقرّر، بطريقةٍ عامّةٍ ما، ما إذا كان الكائن يمكن إنزاله أم لا. فمثلًا، يمكن إنزال العدد المركّب $1.5 + 0 i$ إلى `real`، ويمكن إنزال العدد المركّب $1 + 0 i$ إلى `integer`، أمّا العدد المركّب $2 + 3 i$ فلا يمكن إنزاله إطلاقًا. وهذه خطةٌ لتحديد ما إذا كان الكائن يمكن إنزاله: ابدأ بتعريف عمليّة عامّةٍ `project` «تُسقِط» كائنًا إلى الأسفل في البرج. فمثلًا، إنّ إسقاط عددٍ مركّبٍ ينطوي على إلقاء الجزء التخيّليّ بعيدًا. وبعدها يمكن إنزال عددٍ متى كان، حين نُسقِطه بـ`project` ونرفع النتيجة بـ`raise` عودةً إلى النوع الذي بدأنا به، ننتهي إلى شيءٍ مساوٍ لما بدأنا به. وأظهِر كيف تُنفَّذ هذه الفكرة بالتفصيل، بكتابة إجراء `drop` يُنزّل كائنًا إلى أدنى حدٍّ ممكن. وستحتاج إلى تصميم عمليّات الإسقاط المختلفة[^53] وتثبيت `project` بوصفها عمليّةً عامّةً في النظام. وستحتاج أيضًا إلى الاستفادة من مسيّم مساواةٍ عامّ، كالموصوف في [التمرين 2.79](#Exercise-2_002e79). وأخيرًا، استخدم `drop` لإعادة كتابة `apply-generic` الوارد في [التمرين 2.84](#Exercise-2_002e84) بحيث «يُبسّط» أجوبته.
 
-> **Exercise 2.86:** Suppose we want to handle complex numbers whose real parts, imaginary parts, magnitudes, and angles can be either ordinary numbers, rational numbers, or other numbers we might wish to add to the system. Describe and implement the changes to the system needed to accommodate this. You will have to define operations such as `sine` and `cosine` that are generic over ordinary numbers and rational numbers.
+> **التمرين 2.86:** لنفترض أنّنا نريد التعامل مع أعدادٍ مركّبةٍ يمكن أن تكون أجزاؤها الحقيقيّة، وأجزاؤها التخيّليّة، ومقاديرها، وزواياها إمّا أعدادًا اعتياديّةً أو أعدادًا كسريّةً أو أعدادًا أخرى قد نرغب في إضافتها إلى النظام. صُغ ونفّذ التغييرات اللازمة في النظام لاستيعاب ذلك. وستكون مضطرًّا إلى تعريف عمليّاتٍ مثل `sine` و`cosine` تكون عامّةً على الأعداد الاعتياديّة والكسريّة.
 
-#### 2.5.3 Example: Symbolic Algebra
+#### 2.5.3 مثال: الجبر الرمزيّ
 
-The manipulation of symbolic algebraic expressions is a complex process that illustrates many of the hardest problems that occur in the design of large-scale systems. An algebraic expression, in general, can be viewed as a hierarchical structure, a tree of operators applied to operands. We can construct algebraic expressions by starting with a set of primitive objects, such as constants and variables, and combining these by means of algebraic operators, such as addition and multiplication. As in other languages, we form abstractions that enable us to refer to compound objects in simple terms. Typical abstractions in symbolic algebra are ideas such as linear combination, polynomial, rational function, or trigonometric function. We can regard these as compound “types,” which are often useful for directing the processing of expressions. For example, we could describe the expression $x^{2} sin ⁡ ( y^{2} + 1 ) + x cos ⁡ 2 y + cos ⁡ ( y^{3} − 2 y^{2} )$ as a polynomial in $x$ with coefficients that are trigonometric functions of polynomials in $y$ whose coefficients are integers.
+إنّ التلاعب بالتعبيرات الجبريّة الرمزيّة عمليّةٌ معقّدةٌ تُبيّن كثيرًا من أصعب المسائل التي تقع في تصميم الأنظمة واسعة النطاق. فأيّ تعبيرٍ جبريّ، بصورةٍ عامّة، يمكن النظر إليه بوصفه بنيةً هرميّةً، شجرةً من المشغّلات المطبَّقة على العوامل. ونستطيع بناء التعبيرات الجبريّة بالانطلاق من مجموعةٍ من الكائنات الأوّليّة، كالثوابت والمتغيّرات، وتركيب هذه بعضها إلى بعضٍ بواسطة مشغّلاتٍ جبريّةٍ، كالجمع والضرب. وكما في اللغات الأخرى، فإنّنا نُشكّل تجريداتٍ تُمكّننا من الإشارة إلى الكائنات المركّبة بعباراتٍ بسيطة. والتجريدات النموذجيّة في الجبر الرمزيّ هي أفكارٌ مثل التركيب الخطّيّ، وكثير الحدود، والدالّة النسبيّة، والدالّة المثلّثاتيّة. ونستطيع اعتبار هذه «أنواعًا» مركّبةً، وهي مفيدةٌ غالبًا في توجيه معالجة التعبيرات. فمثلًا، يمكننا وصف التعبير $x^{2} sin ⁡ ( y^{2} + 1 ) + x cos ⁡ 2 y + cos ⁡ ( y^{3} − 2 y^{2} )$ بوصفه كثيرةَ حدودٍ في $x$ معاملاتها دوالّ مثلّثاتيّةٌ لكثيرات حدودٍ في $y$ معاملاتها أعدادٌ صحيحة.
 
-We will not attempt to develop a complete algebraic-manipulation system here. Such systems are exceedingly complex programs, embodying deep algebraic knowledge and elegant algorithms. What we will do is look at a simple but important part of algebraic manipulation: the arithmetic of polynomials. We will illustrate the kinds of decisions the designer of such a system faces, and how to apply the ideas of abstract data and generic operations to help organize this effort.
+لن نحاول تطوير نظامٍ كاملٍ للتلاعب الجبريّ هنا. فإنّ مثل هذه الأنظمة برامجٌ بالغة التعقيد، تجسّد معرفةً جبريّةً عميقةً وخوارزميّاتٍ أنيقة. وما سنفعله هو النظر إلى جزءٍ بسيطٍ لكنّه مهمٌّ من التلاعب الجبريّ: حساب كثيرات الحدود. وسنُبيّن أنواع القرارات التي يواجهها مصمّم نظامٍ كهذا، وكيف يُطبّق أفكار البيانات المجرّدة والعمليّات العامّة للمساعدة في تنظيم هذا الجهد.
 
-#### Arithmetic on polynomials
+#### الحساب على كثيرات الحدود
 
-Our first task in designing a system for performing arithmetic on polynomials is to decide just what a polynomial is. Polynomials are normally defined relative to certain variables (the *indeterminates* of the polynomial). For simplicity, we will restrict ourselves to polynomials having just one indeterminate ( *univariate polynomials*).[^54] We will define a polynomial to be a sum of terms, each of which is either a coefficient, a power of the indeterminate, or a product of a coefficient and a power of the indeterminate. A coefficient is defined as an algebraic expression that is not dependent upon the indeterminate of the polynomial. For example, $5 x^{2} + 3 x + 7$ is a simple polynomial in $x$ , and $( y^{2} + 1 ) x^{3} + ( 2 y ) x + 1$ is a polynomial in $x$ whose coefficients are polynomials in $y$ .
+أوّل مهمّةٍ في تصميم نظامٍ لأداء الحساب على كثيرات الحدود هي أن نقرّر ما هو كثيرة الحدود تمامًا. فكثيرات الحدود تُعرَّف عادةً نسبةً إلى متغيّراتٍ معيّنةٍ (وهي *المجاهيل (indeterminates)* للكثيرة). وللتبسيط، سنقصر أنفسنا على كثيرات حدودٍ لها مجهولٌ واحدٌ فقط (*كثيرات حدودٍ أحاديّة المجهول (univariate polynomials)*).[^54] وسنُعرِّف كثيرة الحدود بوصفها مجموعَ حدودٍ، كلٌّ منها إمّا معامل، وإمّا قوّةٌ للمجهول، وإمّا جداءَ معاملٍ وقوّةٍ للمجهول. والمعامل يُعرَّف بوصفه تعبيرًا جبريًّا لا يعتمد على مجهول كثيرة الحدود. فمثلًا، إنّ $5 x^{2} + 3 x + 7$ كثيرةَ حدودٍ بسيطةٌ في $x$ ، وإنّ $( y^{2} + 1 ) x^{3} + ( 2 y ) x + 1$ كثيرةَ حدودٍ في $x$ معاملاتها كثيرات حدودٍ في $y$ .
 
-Already we are skirting some thorny issues. Is the first of these polynomials the same as the polynomial $5 y^{2} + 3 y + 7$ , or not? A reasonable answer might be “yes, if we are considering a polynomial purely as a mathematical function, but no, if we are considering a polynomial to be a syntactic form.” The second polynomial is algebraically equivalent to a polynomial in $y$ whose coefficients are polynomials in $x$ . Should our system recognize this, or not? Furthermore, there are other ways to represent a polynomial—for example, as a product of factors, or (for a univariate polynomial) as the set of roots, or as a listing of the values of the polynomial at a specified set of points.[^55] We can finesse these questions by deciding that in our algebraic-manipulation system a “polynomial” will be a particular syntactic form, not its underlying mathematical meaning.
+إنّنا نتجنّب منذ الآن بعض المسائل الشائكة. فهل أوّل هاتين الكثريتين هي نفسها كثيرة الحدود $5 y^{2} + 3 y + 7$ ، أم لا؟ وقد يكون الجواب المعقول «نعم، إذا كنّا ننظر إلى كثيرة الحدود بوصفها دالّةً رياضيّةً محضة، لكن لا، إذا كنّا ننظر إليها بوصفها صيغةً نحويّة.» والكثيرة الثانية مكافئةٌ جبريًّا لكثيرة حدودٍ في $y$ معاملاتها كثيرات حدودٍ في $x$ . فهل ينبغي لنظامنا أن يتعرّف على ذلك، أم لا؟ وبالإضافة إلى ذلك، هناك طرائق أخرى لتمثيل كثيرة الحدود—فمثلًا، بوصفها جداءَ عواملٍ، أو (من أجل كثيرة حدودٍ أحاديّة المجهول) بوصفها مجموعة الجذور، أو بوصفها قائمةً بقيم كثيرة الحدود في مجموعةٍ محدَّدةٍ من النقاط.[^55] ونستطيع تجاوز هذه الأسئلة بالحكم بأنّ «كثيرة الحدود» في نظام التلاعب الجبريّ الذي لدينا ستكون صيغةً نحويّةً معيّنةً، لا معناها الرياضيّ الكامن.
 
-Now we must consider how to go about doing arithmetic on polynomials. In this simple system, we will consider only addition and multiplication. Moreover, we will insist that two polynomials to be combined must have the same indeterminate.
+والعلينا الآن أن ننظر في كيفية أداء الحساب على كثيرات الحدود. ففي هذا النظام البسيط، لن ننظر إلّا في الجمع والضرب. وبالإضافة إلى ذلك، سنُصرّ على أن يكون لكثيرتَي الحدود المطلوب دمجهما المجهول ذاته.
 
-We will approach the design of our system by following the familiar discipline of data abstraction. We will represent polynomials using a data structure called a *poly*, which consists of a variable and a collection of terms. We assume that we have selectors `variable` and `term-list` that extract those parts from a poly and a constructor `make-poly` that assembles a poly from a given variable and a term list. A variable will be just a symbol, so we can use the `same-variable?` procedure of [2.3.2](https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e2) to compare variables. The following procedures define addition and multiplication of polys:
+سنتناول تصميم نظامنا باتّباع نظام البيانات المجرّدة المألوف. وسنمثّل كثيرات الحدود باستخدام بنية بياناتٍ تُسمّى *كثيرةَ حدود (poly)*، تتكوّن من متغيّرٍ ومجموعةٍ من الحدود. ونحن نفترض أنّ لدينا مُنتقيَين (selectors) `variable` و`term-list` يستخرجان هذين الجزأين من كثيرة الحدود، وبانٍ (constructor) `make-poly` يُجمّع كثيرةَ حدودٍ من متغيّرٍ معطى وقائمة حدود. والمتغيّر لن يكون إلّا رمزًا، فيمكننا استخدام إجراء `same-variable?` الوارد في [2.3.2](https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e2) لمقارنة المتغيّرات. والإجراءات الآتية تُعرِّف جمع كثيرات الحدود وضربها:
 
 ```scheme
 (define (add-poly p1 p2)
@@ -3402,7 +3402,7 @@ We will approach the design of our system by following the familiar discipline o
              (list p1 p2))))
 ```
 
-To incorporate polynomials into our generic arithmetic system, we need to supply them with type tags. We’ll use the tag `polynomial`, and install appropriate operations on tagged polynomials in the operation table. We’ll embed all our code in an installation procedure for the polynomial package, similar to the ones in [2.5.1](#g_t2_002e5_002e1):
+ولإدخال كثيرات الحدود في نظام الحساب العامّ خاصّتنا، نحتاج إلى تزويدها بأوسمة أنواع. وسنستخدم الوسم `polynomial`، وسنُثبّت العمليّات المناسبة على كثيرات الحدود الموسومة في جدول العمليّات. وسنُضمّن جميع شيفرتنا في إجراء تثبيتٍ من أجل حزمة كثيرات الحدود، شبيهٍ بتلك الواردة في [2.5.1](#g_t2_002e5_002e1):
 
 ```scheme
 (define (install-polynomial-package)
@@ -3438,11 +3438,11 @@ To incorporate polynomials into our generic arithmetic system, we need to supply
   'done)
 ```
 
-Polynomial addition is performed termwise. Terms of the same order (i.e., with the same power of the indeterminate) must be combined. This is done by forming a new term of the same order whose coefficient is the sum of the coefficients of the addends. Terms in one addend for which there are no terms of the same order in the other addend are simply accumulated into the sum polynomial being constructed.
+يُجرى جمع كثيرات الحدود (polynomials) حدًّا حدًّا. فيجب جمع الحدود من الرتبة ذاتها (أيّ ذات القوة ذاتها في المجهول) بعضها إلى بعضٍ. ويتمّ ذلك بتكوين حدٍّ جديدٍ من الرتبة ذاتها يكون معاملُه مجموع معامِلي الحدود المُضَافة. وأمّا الحدود في أحد الحدّين المضافَين التي لا يقابلها في الآخر حدٌّ من الرتبة ذاتها فهي تُتراكم ببساطةٍ في كثير الحدود الحاصل الجاري بنائه.
 
-In order to manipulate term lists, we will assume that we have a constructor `the-empty-termlist` that returns an empty term list and a constructor `adjoin-term` that adjoins a new term to a term list. We will also assume that we have a predicate `empty-termlist?` that tells if a given term list is empty, a selector `first-term` that extracts the highest-order term from a term list, and a selector `rest-terms` that returns all but the highest-order term. To manipulate terms, we will suppose that we have a constructor `make-term` that constructs a term with given order and coefficient, and selectors `order` and `coeff` that return, respectively, the order and the coefficient of the term. These operations allow us to consider both terms and term lists as data abstractions, whose concrete representations we can worry about separately.
+لكي نعالج قوائم الحدود، سنفترض أنّ لدينا بانٍ (constructor) هو `the-empty-termlist` يعيد قائمة حدود فارغة، وبانٍ هو `adjoin-term` يُلحق حدًّا جديدًا بقائمة حدود. وسنفترض أيضًا أنّ لدينا مُسَيِّمًا هو `empty-termlist?` يخبرنا عمّا إذا كانت قائمة حدود معيّنة فارغة، ومُنتقيًا (selector) هو `first-term` يستخرج الحدّ ذا الرتبة الأعلى من قائمة حدود، ومُنتقيًا هو `rest-terms` يعيد كلّ الحدود عدا ذي الرتبة الأعلى. ولكي نعالج الحدود، سنفترض أنّ لدينا بانٍ هو `make-term` يبني حدًّا له رتبةٌ ومعاملٌ مُعطَيان، ومُنتقيين هما `order` و`coeff` يعيدان، على الترتيب، رتبة الحدّ ومعاملَه. وتتيح لنا هذه العمليّات اعتبار الحدود وقوائم الحدود جميعًا تجريداتٍ للبيانات (data abstractions)، يمكننا الاشتغال بتمثيلاتها الملموسة كلًّا على حدة.
 
-Here is the procedure that constructs the term list for the sum of two polynomials:[^56]
+وهذا هو الإجراء الذي يبني قائمة الحدود الخاصّة بمجموع كثيرَي حدود:[^56]
 
 ```scheme
 (define (add-terms L1 L2)
@@ -3473,9 +3473,9 @@ Here is the procedure that constructs the term list for the sum of two polynomia
                     (rest-terms L2)))))))))
 ```
 
-The most important point to note here is that we used the generic addition procedure `add` to add together the coefficients of the terms being combined. This has powerful consequences, as we will see below.
+وأهمّ ما ينبغي ملاحظته هنا أنّنا استخدمنا إجراء الجمع العامّ `add` في جمع معامِلي الحدود التي تُجمَع بعضها إلى بعضٍ. ولهذا عواقب جسيمة، كما سنرى أدناه.
 
-In order to multiply two term lists, we multiply each term of the first list by all the terms of the other list, repeatedly using `mul-term-by-all-terms`, which multiplies a given term by all terms in a given term list. The resulting term lists (one for each term of the first list) are accumulated into a sum. Multiplying two terms forms a term whose order is the sum of the orders of the factors and whose coefficient is the product of the coefficients of the factors:
+لكي نضرب قائمتَي حدود، نضرب كلّ حدّ من القائمة الأولى بجميع حدود القائمة الأخرى، مستخدمين بشكلٍ متكرّرٍ `mul-term-by-all-terms` الذي يضرب حدًّا معيّنًا بجميع حدود قائمة حدود معيّنة. وتُتراكم قوائم الحدود الناتجة (واحدةٌ لكلّ حدّ من القائمة الأولى) في مجموع. وأمّا ضرب حدّين فينتج عنه حدٌّ رتبتُه مجموع رتبتَي العاملين ومعاملُه حاصل ضرب معاملَي العاملين:
 
 ```scheme
 (define (mul-terms L1 L2)
@@ -3499,15 +3499,15 @@ In order to multiply two term lists, we multiply each term of the first list by 
           (rest-terms L))))))
 ```
 
-This is really all there is to polynomial addition and multiplication. Notice that, since we operate on terms using the generic procedures `add` and `mul`, our polynomial package is automatically able to handle any type of coefficient that is known about by the generic arithmetic package. If we include a coercion mechanism such as one of those discussed in [2.5.2](#g_t2_002e5_002e2), then we also are automatically able to handle operations on polynomials of different coefficient types, such as $[ 3 x^{2} + ( 2 + 3 i ) x + 7 ] ⋅ [ x^{4} + \frac{2}{3} x^{2} + ( 5 + 3 i ) ] .$ Because we installed the polynomial addition and multiplication procedures `add-poly` and `mul-poly` in the generic arithmetic system as the `add` and `mul` operations for type `polynomial`, our system is also automatically able to handle polynomial operations such as $[ ( y + 1 ) x^{2} + ( y^{2} + 1 ) x + ( y − 1 ) ] ⋅ [ ( y − 2 ) x + ( y^{3} + 7 ) ] .$ The reason is that when the system tries to combine coefficients, it will dispatch through `add` and `mul`. Since the coefficients are themselves polynomials (in $y$ ), these will be combined using `add-poly` and `mul-poly`. The result is a kind of “data-directed recursion” in which, for example, a call to `mul-poly` will result in recursive calls to `mul-poly` in order to multiply the coefficients. If the coefficients of the coefficients were themselves polynomials (as might be used to represent polynomials in three variables), the data direction would ensure that the system would follow through another level of recursive calls, and so on through as many levels as the structure of the data dictates.[^57]
+وهذا في الحقيقة كلّ ما يتعلّق بجمع كثيرات الحدود وضربها. ولاحِظ أنّنا، بما أنّنا نعالج الحدود باستخدام إجراءَي الجمع والضرب العامّين `add` و`mul`، فإنّ حزمة كثيرات الحدود خاصّتنا قادرةٌ تلقائيًّا على معالجة أيّ نوعٍ من المعاملات تعرفه حزمة الحساب العامّ. فإذا أدرجنا آلية إكراه مثل إحدى الآليّات المناقشة في [2.5.2](#g_t2_002e5_002e2)، صرنا قادرين تلقائيًّا كذلك على معالجة العمليّات على كثيرات حدود ذات أنواع معاملات مختلفة، مثل $[ 3 x^{2} + ( 2 + 3 i ) x + 7 ] ⋅ [ x^{4} + \frac{2}{3} x^{2} + ( 5 + 3 i ) ] .$ وبما أنّنا ثبّتنا إجراءَي جمع كثيرات الحدود وضربها `add-poly` و`mul-poly` في نظام الحساب العامّ بوصفهما عمليتَي `add` و`mul` للنوع `polynomial`، فإنّ نظامنا قادرٌ تلقائيًّا كذلك على معالجة عمليّاتٍ على كثيرات الحدود مثل $[ ( y + 1 ) x^{2} + ( y^{2} + 1 ) x + ( y − 1 ) ] ⋅ [ ( y − 2 ) x + ( y^{3} + 7 ) ] .$ والسبب أنّ النظام، حين يحاول جمع المعاملات بعضها إلى بعضٍ، يوحّد عبر `add` و`mul`. وبما أنّ المعاملات هي نفسها كثيرات حدود (في $y$ )، فإنّها ستُجمَع باستخدام `add-poly` و`mul-poly`. والنتيجة نوعٌ من «التعاود الموجّه بالبيانات (data-directed recursion)» فيه، مثلًا، يؤدّي نداءٌ إلى `mul-poly` إلى نداءاتٍ تعاوديّةٍ إلى `mul-poly` لكي تُضرب المعاملات. ولو كانت معاملات المعاملات هي نفسها كثيرات حدود (كما قد يُستخدم لتمثيل كثيرات الحدود في ثلاثة متغيّرات)، لكان اتّجاه البيانات يضمن أنّ النظام يتابع مستوى آخر من النداءات التعاوديّة، وهكذا عبر ما يمتدّ إليه البناء بحسب ما تملي به بنية البيانات.[^57]
 
-#### Representing term lists
+#### تمثيل قوائم الحدود
 
-Finally, we must confront the job of implementing a good representation for term lists. A term list is, in effect, a set of coefficients keyed by the order of the term. Hence, any of the methods for representing sets, as discussed in [2.3.3](https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e3), can be applied to this task. On the other hand, our procedures `add-terms` and `mul-terms` always access term lists sequentially from highest to lowest order. Thus, we will use some kind of ordered list representation.
+وأخيرًا، لا بدّ لنا من مواجهة مهمّة تنفيذ تمثيلٍ حسنٍ لقوائم الحدود. فإنّ قائمة الحدود هي في الواقع مجموعةٌ من المعاملات مُفتاحها رتبة الحدّ. وبالتالي، يمكن تطبيق أيّ من طرائق تمثيل المجموعات، كما نُوقشت في [2.3.3](https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e3)، على هذه المهمّة. ومن جهة أخرى، فإنّ إجراءَي `add-terms` و`mul-terms` ينفذان إلى قوائم الحدود تسلسليًّا دائمًا من الرتبة الأعلى إلى الأدنى. وعليه، فسوف نستخدم نوعًا ما من تمثيل القائمة المرتّبة.
 
-How should we structure the list that represents a term list? One consideration is the “density” of the polynomials we intend to manipulate. A polynomial is said to be *dense* if it has nonzero coefficients in terms of most orders. If it has many zero terms it is said to be *sparse*. For example, $A : x^{5} + 2 x^{4} + 3 x^{2} − 2 x − 5$ is a dense polynomial, whereas $B : x^{100} + 2 x^{2} + 1$ is sparse.
+وكيف ينبغي لنا أن نُبنّي القائمة التي تمثّل قائمة الحدود؟ وأحد الاعتبارات هو «كثافة» كثيرات الحدود التي ننوي معالجتها. فيُقال عن كثير الحدود إنّه *كثيف (dense)* إذا كانت له معاملات غير صفرية في الحدود ذات معظم الرتب. وأمّا إذا كانت له حدودٌ صفريةٌ كثيرة فيُقال عنه إنّه *متناثر (sparse)*. فمثلًا، $A : x^{5} + 2 x^{4} + 3 x^{2} − 2 x − 5$ كثير حدود كثيف، بينما $B : x^{100} + 2 x^{2} + 1$ متناثر.
 
-The term lists of dense polynomials are most efficiently represented as lists of the coefficients. For example, $A$ above would be nicely represented as `(1 2 0 3 -2 -5)`. The order of a term in this representation is the length of the sublist beginning with that term’s coefficient, decremented by 1.[^58] This would be a terrible representation for a sparse polynomial such as $B$ : There would be a giant list of zeros punctuated by a few lonely nonzero terms. A more reasonable representation of the term list of a sparse polynomial is as a list of the nonzero terms, where each term is a list containing the order of the term and the coefficient for that order. In such a scheme, polynomial $B$ is efficiently represented as `((100 1) (2 2) (0 1))`. As most polynomial manipulations are performed on sparse polynomials, we will use this method. We will assume that term lists are represented as lists of terms, arranged from highest-order to lowest-order term. Once we have made this decision, implementing the selectors and constructors for terms and term lists is straightforward:[^59]
+إنّ قوائم حدود كثيرات الحدود الكثيفة تُُمثَّل بأقصى كفاءةٍ كقوائم من المعاملات. فمثلًا، يمكن تمثيل $A$ أعلاه تمثيلًا حسنًا بالقائمة `(1 2 0 3 -2 -5)`. ورتبة الحدّ في هذا التمثيل هي طول القائمة الفرعيّة التي تبدأ بمعامل ذلك الحدّ، ناقصًا واحدًا.[^58] وسيكون هذا تمثيلًا فظيعًا لكثير حدود متناثرٍ مثل $B$ : إذ سيكون هناك قائمةٌ عملاقةٌ من الأصفار تتخلّلها حدود غير صفرية وحيدةٌ قليلة. وأمّا التمثيل الأكثر معقوليّةً لقائمة حدود كثير الحدود المتناثر فهو قائمةٌ بالحدود غير الصفرية، حيث كلّ حدّ قائمةٌ تحتوي رتبة الحدّ ومعاملَ تلك الرتبة. وفي هذا المخطّط، يُُمثَّل كثير الحدود $B$ بكفاءةٍ بالقائمة `((100 1) (2 2) (0 1))`. وبما أنّ معظم عمليّات معالجة كثيرات الحدود تُجرى على كثيرات الحدود المتناثرة، فإنّنا سنستخدم هذه الطريقة. وسنفترض أنّ قوائم الحدود مُمثَّلةٌ كقوائمٍ من الحدود، مرتّبةٍ من الحدّ ذي الرتبة الأعلى إلى الحدّ ذي الرتبة الأدنى. وبمجرّد اتّخاذنا هذا القرار، يصبح تنفيذ المُنتقيات والبانِياء الخاصّين بالحدود وبقوائم الحدود مباشرًا:[^59]
 
 ```scheme
 (define (adjoin-term term term-list)
@@ -3525,28 +3525,28 @@ The term lists of dense polynomials are most efficiently represented as lists of
 (define (coeff term) (cadr term))
 ```
 
-where `=zero?` is as defined in [Exercise 2.80](#Exercise-2_002e80). (See also [Exercise 2.87](#Exercise-2_002e87) below.)
+حيث `=zero?` كما عُرِّف في [التمرين 2.80](#Exercise-2_002e80). (انظر أيضًا [التمرين 2.87](#Exercise-2_002e87) أدناه.)
 
-Users of the polynomial package will create (tagged) polynomials by means of the procedure:
+وسينشئ مستخدمو حزمة كثيرات الحدود كثيرات حدود (موسومة) بالإجراء:
 
 ```scheme
 (define (make-polynomial var terms)
   ((get 'make 'polynomial) var terms))
 ```
 
-> **Exercise 2.87:** Install `=zero?` for polynomials in the generic arithmetic package. This will allow `adjoin-term` to work for polynomials with coefficients that are themselves polynomials.
+> **التمرين 2.87:** ثبّت `=zero?` لكثيرات الحدود في حزمة الحساب العامّ. سيتيح ذلك لـ`adjoin-term` العمل مع كثيرات حدود معاملاتها هي نفسها كثيرات حدود.
 
-> **Exercise 2.88:** Extend the polynomial system to include subtraction of polynomials. (Hint: You may find it helpful to define a generic negation operation.)
+> **التمرين 2.88:** وسّع نظام كثيرات الحدود ليضمّ طرح كثيرات الحدود. (تلميح: قد تجد من المفيد تعريف عمليّة نفي عامّة.)
 
-> **Exercise 2.89:** Define procedures that implement the term-list representation described above as appropriate for dense polynomials.
+> **التمرين 2.89:** عرّف إجراءات تنفّذ تمثيل قوائم الحدود الموصوف أعلاه بصورةٍ مناسبةٍ لكثيرات الحدود الكثيفة.
 
-> **Exercise 2.90:** Suppose we want to have a polynomial system that is efficient for both sparse and dense polynomials. One way to do this is to allow both kinds of term-list representations in our system. The situation is analogous to the complex-number example of [2.4](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4), where we allowed both rectangular and polar representations. To do this we must distinguish different types of term lists and make the operations on term lists generic. Redesign the polynomial system to implement this generalization. This is a major effort, not a local change.
+> **التمرين 2.90:** لنفترض رغبتنا في امتلاك نظامٍ لكثيرات الحدود يعمل جيّدًا مع المتناثرة والكثيفة على حدٍّ سواء. وإحدى طرائق فعل ذلك هي السماح بنوعَي تمثيل قوائم الحدود في نظامنا. والحالة شبيهة بمثال العدد المركّب الوارد في [2.4](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4)، حيث سمحنا بكلٍّ من التمثيلين المستطيّل والقطبيّ. ولكي نفعل ذلك، ينبغي لنا أن نميّز أنواع قوائم الحدود المختلفة وأن نجعل العمليّات على قوائم الحدود عامّة. فأعِد تصميم نظام كثيرات الحدود لتنفيذ هذا التعميم. وهذا جهدٌ كبير، لا تغييرٌ موضعيّ.
 
-**Exercise 2.91:** A univariate polynomial can be divided by another one to produce a polynomial quotient and a polynomial remainder. For example, $\frac{x^{5} − 1}{x^{2} − 1} = x^{3} + x , remainder x − 1.$ Division can be performed via long division. That is, divide the highest-order term of the dividend by the highest-order term of the divisor. The result is the first term of the quotient. Next, multiply the result by the divisor, subtract that from the dividend, and produce the rest of the answer by recursively dividing the difference by the divisor. Stop when the order of the divisor exceeds the order of the dividend and declare the dividend to be the remainder. Also, if the dividend ever becomes zero, return zero as both quotient and remainder.
+**التمرين 2.91:** يمكن قسمة كثير الحدود أحاديّ المتغيّر على آخر لإنتاج حاصلٍ كثيرة حدود وباقٍ كثيرة حدود. فمثلًا، $\frac{x^{5} − 1}{x^{2} − 1} = x^{3} + x , remainder x − 1.$ ويمكن أداء القسمة بالقسمة المطوّلة. أي أنّنا نقسم الحدّ ذا الرتبة الأعلى من المقسوم على الحدّ ذا الرتبة الأعلى من المقسوم عليه. والنتيجة هي الحدّ الأوّل من الحاصل. ثمّ نضرب النتيجة في المقسوم عليه، ونطرح ذلك من المقسوم، وننتج بقيّة الجواب بالقسمة التعاوديّة للفارق على المقسوم عليه. ونتوقّف عندما تتجاوز رتبة المقسوم عليه رتبة المقسوم ونعلن المقسوم باقيًا. وكذلك، إذا صار المقسوم صفرًا في أيّ حين، نعيد صفرًا حاصلًا وباقيًا.
 
-We can design a `div-poly` procedure on the model of `add-poly` and `mul-poly`. The procedure checks to see if the two polys have the same variable. If so, `div-poly` strips off the variable and passes the problem to `div-terms`, which performs the division operation on term lists. `Div-poly` finally reattaches the variable to the result supplied by `div-terms`. It is convenient to design `div-terms` to compute both the quotient and the remainder of a division. `Div-terms` can take two term lists as arguments and return a list of the quotient term list and the remainder term list.
+يمكننا تصميم إجراء `div-poly` على نمط `add-poly` و`mul-poly`. ويفحص الإجراء ما إذا كان كثيرا الحدود لهما المتغيّر ذاته. فإن كان الأمر كذلك، فإنّ `div-poly` ينزع المتغيّر ويمرّر المسألة إلى `div-terms` الذي يؤدّي عمليّة القسمة على قوائم الحدود. وأخيرًا، يعيد `Div-poly` إلحاق المتغيّر بالنتيجة التي يزوّده بها `div-terms`. ومن الملائم تصميم `div-terms` ليحتسب الحاصل والباقي معًا. ويمكن أن يأخذ `Div-terms` قائمتَي حدود كمعطيات ويعيد قائمةً بقائمة الحدود الحاصلة وقائمة الحدود الباقية.
 
-Complete the following definition of `div-terms` by filling in the missing expressions. Use this to implement `div-poly`, which takes two polys as arguments and returns a list of the quotient and remainder polys.
+أكمل التعريف التالي لـ`div-terms` بملء التعابير الناقصة. واستخدم ذلك لتنفيذ `div-poly` الذي يأخذ كثيرَي حدود كمعطيات ويعيد قائمةً بالحاصل والباقي.
 
 ```scheme
 (define (div-terms L1 L2)
@@ -3567,23 +3567,23 @@ Complete the following definition of `div-terms` by filling in the missing expre
                 ⟨form complete result⟩ ))))))
 ```
 
-#### Hierarchies of types in symbolic algebra
+#### تسلسلات الأنواع في الجبر الرمزيّ
 
-Our polynomial system illustrates how objects of one type (polynomials) may in fact be complex objects that have objects of many different types as parts. This poses no real difficulty in defining generic operations. We need only install appropriate generic operations for performing the necessary manipulations of the parts of the compound types. In fact, we saw that polynomials form a kind of “recursive data abstraction,” in that parts of a polynomial may themselves be polynomials. Our generic operations and our data-directed programming style can handle this complication without much trouble.
+يُبيّن نظام كثيرات الحدود خاصّتنا كيف أنّ كائنات نوعٍ واحدٍ (كثيرات الحدود) قد تكون في الحقيقة كائنات مركّبة لها كائنات من أنواعٍ عدّة مختلفةٍ أجزاءً. ولا يطرح هذا صعوبة حقيقيّةً في تعريف العمليّات العامّة. فكلّ ما نحتاجه هو تثبيت عمليّات عامّة مناسبةٍ لإجراء المعالجات اللازمة لأجزاء الأنواع المركّبة. وقد رأينا في الحقيقة أنّ كثيرات الحدود تشكّل نوعًا من «تجريد البيانات التعاوديّ»، إذ قد تكون أجزاء كثير الحدود هي نفسها كثيرات حدود. ويمكن لعمليّاتنا العامّة وأسلوبنا في البرمجة الموجّهة بالبيانات أن يتعامل مع هذا التعقيد دون عناءٍ كبير.
 
-On the other hand, polynomial algebra is a system for which the data types cannot be naturally arranged in a tower. For instance, it is possible to have polynomials in $x$ whose coefficients are polynomials in $y$ . It is also possible to have polynomials in $y$ whose coefficients are polynomials in $x$ . Neither of these types is “above” the other in any natural way, yet it is often necessary to add together elements from each set. There are several ways to do this. One possibility is to convert one polynomial to the type of the other by expanding and rearranging terms so that both polynomials have the same principal variable. One can impose a towerlike structure on this by ordering the variables and thus always converting any polynomial to a “canonical form” with the highest-priority variable dominant and the lower-priority variables buried in the coefficients. This strategy works fairly well, except that the conversion may expand a polynomial unnecessarily, making it hard to read and perhaps less efficient to work with. The tower strategy is certainly not natural for this domain or for any domain where the user can invent new types dynamically using old types in various combining forms, such as trigonometric functions, power series, and integrals.
+ومن جهة أخرى، فإنّ جبر كثيرات الحدود نظامٌ لا يمكن ترتيب أنواع بياناته ترتيبًا طبيعيًّا في برج. فمثلًا، من الممكن أن تكون هناك كثيرات حدود في $x$ معاملاتها كثيرات حدود في $y$. ومن الممكن أيضًا أن تكون هناك كثيرات حدود في $y$ معاملاتها كثيرات حدود في $x$. ولا أيٌّ من هذين النوعين «أعلى» من الآخر بأيّ نحوٍ طبيعيّ، مع أنّ الجمع بين عناصر من كلّ مجموعةٍ لازمٌ في أغلب الأحيان. وهناك طرائق عدّة لفعل ذلك. وأحد الاحتمالات تحويل أحد كثيرَي الحدود إلى نوع الآخر بفكّه وإعادة ترتيب حدوده بحيث يكون لكثيرَي الحدود المتغيّر الرئيس ذاته. ويمكننا فرض بنيةٍ شبيهة بالبرج على هذا بترتيب المتغيّرات، وبالتالي تحويل أيّ كثير حدود دائمًا إلى «صيغة نموذجيّة» يكون فيها المتغيّر ذو الأولويّة الأعلى مسيطرًا والمتغيّرات ذوات الأولويّة الأدنى مدفونةً في المعاملات. وهذه الاستراتيجيّة تنجح نجاحًا حسنًا إلى حدّ ما، إلّا أنّ التحويل قد يفكّ كثير الحدود بغير حاجةٍ، فيصعب قراءته وربّما تقلّ كفاءته في المعالجة. وأمّا استراتيجيّة البرج فليست طبيعيّةً قطعًا لهذا المجال ولا لأيّ مجالٍ يستطيع المستخدم فيه أن يبتكر أنواعًا جديدةً ديناميكيًّا باستخدام أنواعٍ قديمةٍ في صيغ تركيبٍ مختلفة، كالدوالّ المثلثيّة ومتسلسلات القوى والتكاملات.
 
-It should not be surprising that controlling coercion is a serious problem in the design of large-scale algebraic-manipulation systems. Much of the complexity of such systems is concerned with relationships among diverse types. Indeed, it is fair to say that we do not yet completely understand coercion. In fact, we do not yet completely understand the concept of a data type. Nevertheless, what we know provides us with powerful structuring and modularity principles to support the design of large systems.
+ولا ينبغي أن يكون مفاجئًا أنّ التحكّم في الإكراه مسألة جدّيّة في تصميم أنظمة الجبر الرمزيّ واسعة النطاق. فإنّ الكثير من تعقيد مثل هذه الأنظمة يتعلّق بالعلاقات بين أنواعٍ متنوّعة. والحقّ أنّ من العدل القول إنّنا لا نفهم الإكراه فهمًا تامًّا بعد. في الحقيقة، إنّنا لا نفهم مفهوم نوع البيانات فهمًا تامًّا بعد. ومع ذلك، فإنّ ما نعرفه يزوّدنا بمبادئ قويّة للهيكلة والوحدانية تدعم تصميم الأنظمة الكبرى.
 
-> **Exercise 2.92:** By imposing an ordering on variables, extend the polynomial package so that addition and multiplication of polynomials works for polynomials in different variables. (This is not easy!)
+> **التمرين 2.92:** بفرض ترتيبٍ على المتغيّرات، وسّع حزمة كثيرات الحدود بحيث يعمل جمع كثيرات الحدود وضربها مع كثيرات الحدود في متغيّراتٍ مختلفة. (وهذا ليس بالسهل!)
 
-#### Extended exercise: Rational functions
+#### تمرين موسّع: الدوالّ النسبيّة
 
-We can extend our generic arithmetic system to include *rational functions*. These are “fractions” whose numerator and denominator are polynomials, such as $\frac{x + 1}{x^{3} − 1} .$ The system should be able to add, subtract, multiply, and divide rational functions, and to perform such computations as $\frac{x + 1}{x^{3} − 1} + \frac{x}{x^{2} − 1} = \frac{x^{3} + 2 x^{2} + 3 x + 1}{x^{4} + x^{3} − x − 1} .$ (Here the sum has been simplified by removing common factors. Ordinary “cross multiplication” would have produced a fourth-degree polynomial over a fifth-degree polynomial.)
+يمكننا توسيع نظام الحساب العامّ خاصّتنا ليضمّ *الدوالّ النسبيّة (rational functions)*. وهذه «كسور» بسطُها ومقامُها كثيرات حدود، مثل $\frac{x + 1}{x^{3} − 1} .$ وينبغي للنظام أن يكون قادرًا على جمع الدوالّ النسبيّة وطرحها وضربها وقسمتها، وعلى أداء احتساباتٍ مثل $\frac{x + 1}{x^{3} − 1} + \frac{x}{x^{2} − 1} = \frac{x^{3} + 2 x^{2} + 3 x + 1}{x^{4} + x^{3} − x − 1} .$ (وهنا بُسِّط المجموع بإزالة العوامل المشتركة. أمّا «الضرب التصافيّ» الاعتيادي لأنتج كثير حدود من الدرجة الرابعة على كثير حدود من الدرجة الخامسة.)
 
-If we modify our rational-arithmetic package so that it uses generic operations, then it will do what we want, except for the problem of reducing fractions to lowest terms.
+فإذا عدّلنا حزمة الحساب الكسريّ خاصّتنا بحيث تستخدم العمليّات العامّة، فإنّها ستفعل ما نريده، إلّا فيما يخصّ مسألة اختزال الكسور إلى أدنى حدود.
 
-**Exercise 2.93:** Modify the rational-arithmetic package to use generic operations, but change `make-rat` so that it does not attempt to reduce fractions to lowest terms. Test your system by calling `make-rational` on two polynomials to produce a rational function:
+**التمرين 2.93:** عدّل حزمة الحساب الكسريّ لتستخدم العمليّات العامّة، لكن غيّر `make-rat` بحيث لا تحاول اختزال الكسور إلى أدنى حدود. واختبر نظامك بنداء `make-rational` على كثيرَي حدود لإنتاج دالّة نسبيّة:
 
 ```scheme
 (define p1 (make-polynomial 'x '((2 1) (0 1))))
@@ -3591,9 +3591,9 @@ If we modify our rational-arithmetic package so that it uses generic operations,
 (define rf (make-rational p2 p1))
 ```
 
-Now add `rf` to itself, using `add`. You will observe that this addition procedure does not reduce fractions to lowest terms.
+والآن أضف `rf` إلى نفسه باستخدام `add`. ستلاحظ أنّ إجراء الجمع هذا لا يختزل الكسور إلى أدنى حدود.
 
-We can reduce polynomial fractions to lowest terms using the same idea we used with integers: modifying `make-rat` to divide both the numerator and the denominator by their greatest common divisor. The notion of “greatest common divisor” makes sense for polynomials. In fact, we can compute the GCD of two polynomials using essentially the same Euclid’s Algorithm that works for integers.[^60] The integer version is
+يمكننا اختزال كسور كثيرات الحدود إلى أدنى حدود باستخدام الفكرة ذاتها التي استخدمناها مع الأعداد الصحيحة: تعديل `make-rat` بحيث يقسم البسط والمقام على القاسم المشترك الأكبر لهما. ومفهوم «القاسم المشترك الأكبر» مفهومٌ ذو معنىً لكثيرات الحدود. في الحقيقة، يمكننا احتساب القاسم المشترك الأكبر (GCD) لكثيرَي حدود باستخدام خوارزميّة أقليدس مماثلةٍ في الجوهر لتلك التي تعمل مع الأعداد الصحيحة.[^60] وأمّا النسخة الخاصّة بالأعداد الصحيحة فهي
 
 ```scheme
 (define (gcd a b)
@@ -3602,7 +3602,7 @@ We can reduce polynomial fractions to lowest terms using the same idea we used w
       (gcd b (remainder a b))))
 ```
 
-Using this, we could make the obvious modification to define a GCD operation that works on term lists:
+وباستخدام هذا، يمكننا إجراء التعديل البديهي لتعريف عمليّة القاسم المشترك الأكبر التي تعمل على قوائم الحدود:
 
 ```scheme
 (define (gcd-terms a b)
@@ -3611,9 +3611,9 @@ Using this, we could make the obvious modification to define a GCD operation tha
       (gcd-terms b (remainder-terms a b))))
 ```
 
-where `remainder-terms` picks out the remainder component of the list returned by the term-list division operation `div-terms` that was implemented in [Exercise 2.91](#Exercise-2_002e91).
+حيث ينتقي `remainder-terms` مكوّن الباقي من القائمة التي تعيدها عمليّة قسمة قوائم الحدود `div-terms` والتي نُفّذت في [التمرين 2.91](#Exercise-2_002e91).
 
-**Exercise 2.94:** Using `div-terms`, implement the procedure `remainder-terms` and use this to define `gcd-terms` as above. Now write a procedure `gcd-poly` that computes the polynomial GCD of two polys. (The procedure should signal an error if the two polys are not in the same variable.) Install in the system a generic operation `greatest-common-divisor` that reduces to `gcd-poly` for polynomials and to ordinary `gcd` for ordinary numbers. As a test, try
+**التمرين 2.94:** باستخدام `div-terms`، نفّذ الإجراء `remainder-terms` واستخدم ذلك لتعريف `gcd-terms` كما أعلاه. والآن اكتب إجراء `gcd-poly` يحتسب القاسم المشترك الأكبر لكثيرَي حدود. (وينبغي للإجراء أن يشير بخطأٍ إذا لم يكن كثيرا الحدود في المتغيّر ذاته.) وثبّت في النظام عمليّة عامّة `greatest-common-divisor` تُختزل إلى `gcd-poly` لكثيرات الحدود وإلى `gcd` الاعتياديّة للأعداد الاعتياديّة. وكاختبار، جرّب
 
 ```scheme
 (define p1 
@@ -3627,27 +3627,27 @@ where `remainder-terms` picks out the remainder component of the list returned b
 (greatest-common-divisor p1 p2)
 ```
 
-and check your result by hand.
+وتحقّق من نتيجتك يدويًّا.
 
-> **Exercise 2.95:** Define $P_{1}$ , $P_{2}$ , and $P_{3}$ to be the polynomials $P_{1} : x^{2} − 2 x + 1 , P_{2} : 11 x^{2} + 7 , P_{3} : 13 x + 5.$ Now define $Q_{1}$ to be the product of $P_{1}$ and $P_{2}$ , and $Q_{2}$ to be the product of $P_{1}$ and $P_{3}$ , and use `greatest-common-divisor` ([Exercise 2.94](#Exercise-2_002e94)) to compute the GCD of $Q_{1}$ and $Q_{2}$ . Note that the answer is not the same as $P_{1}$ . This example introduces noninteger operations into the computation, causing difficulties with the GCD algorithm.[^61] To understand what is happening, try tracing `gcd-terms` while computing the GCD or try performing the division by hand.
+> **التمرين 2.95:** عرّف $P_{1}$ و$P_{2}$ و$P_{3}$ بحيث تكون كثيرات الحدود $P_{1} : x^{2} − 2 x + 1 , P_{2} : 11 x^{2} + 7 , P_{3} : 13 x + 5.$ والآن عرّف $Q_{1}$ بحيث يكون حاصل ضرب $P_{1}$ في $P_{2}$ ، و$Q_{2}$ بحيث يكون حاصل ضرب $P_{1}$ في $P_{3}$ ، واستخدم `greatest-common-divisor` ([التمرين 2.94](#Exercise-2_002e94)) لاحتساب القاسم المشترك الأكبر لـ$Q_{1}$ و$Q_{2}$ . ولاحِظ أنّ الجواب ليس هو $P_{1}$ . وهذا المثال يُدخل عمليّاتٍ على أعدادٍ غير صحيحةٍ في الاحتساب، مسبّبةً صعوباتٍ لخوارزميّة القاسم المشترك الأكبر.[^61] ولتفهم ما يحدث، جرّب تتبّع `gcd-terms` أثناء احتساب القاسم المشترك الأكبر، أو جرّب أداء القسمة يدويًّا.
 
-We can solve the problem exhibited in [Exercise 2.95](#Exercise-2_002e95) if we use the following modification of the GCD algorithm (which really works only in the case of polynomials with integer coefficients). Before performing any polynomial division in the GCD computation, we multiply the dividend by an integer constant factor, chosen to guarantee that no fractions will arise during the division process. Our answer will thus differ from the actual GCD by an integer constant factor, but this does not matter in the case of reducing rational functions to lowest terms; the GCD will be used to divide both the numerator and denominator, so the integer constant factor will cancel out.
+يمكننا حلّ المسألة التي أظهرها [التمرين 2.95](#Exercise-2_002e95) إذا استخدمنا التعديل التالي لخوارزميّة القاسم المشترك الأكبر (وهي التي تعمل حقًّا في حالة كثيرات الحدود ذات المعاملات الصحيحة فقط). فقبل أداء أيّ قسمةٍ لكثيرات الحدود في احتساب القاسم المشترك الأكبر، نضرب المقسوم في عامل ثابتٍ صحيحٍ، مُختارٍ ليضمن ألّا تنشأ كسورٌ أثناء عمليّة القسمة. وسيختلف جوابنا عن القاسم المشترك الأكبر الحقيقيّ بعاملٍ ثابتٍ صحيحٍ، لكنّ هذا لا يهمّ في حالة اختزال الدوالّ النسبيّة إلى أدنى حدود؛ إذ سيُستخدم القاسم المشترك الأكبر في قسمة البسط والمقام، فيلغي عامل الثابت الصحيح.
 
-More precisely, if $P$ and $Q$ are polynomials, let $O_{1}$ be the order of $P$ (i.e., the order of the largest term of $P$ ) and let $O_{2}$ be the order of $Q$ . Let $c$ be the leading coefficient of $Q$ . Then it can be shown that, if we multiply $P$ by the *integerizing factor* $c^{1 + O_{1} − O_{2}}$ , the resulting polynomial can be divided by $Q$ by using the `div-terms` algorithm without introducing any fractions. The operation of multiplying the dividend by this constant and then dividing is sometimes called the *pseudodivision* of $P$ by $Q$ . The remainder of the division is called the *pseudoremainder*.
+وبأكثر دقّة، إذا كان $P$ و$Q$ كثيرَي حدود، فلتجعل $O_{1}$ رتبة $P$ (أي رتبة الحدّ الأكبر في $P$ ) وليكن $O_{2}$ رتبة $Q$ . وليكن $c$ المعامل الأوّل لـ$Q$ . فيمكن إثبات أنّنا، إذا ضربنا $P$ في *عامل التصحيح (integerizing factor)* $c^{1 + O_{1} − O_{2}}$ ، فإنّ كثير الحدود الناتج يمكن قسمته على $Q$ باستخدام خوارزميّة `div-terms` من دون إدخال أيّ كسور. وعمليّة ضرب المقسوم في هذا الثابت ثمّ القسمة تُسمّى أحيانًا *القسمة الكاذبة (pseudodivision)* لـ$P$ على $Q$ . وأمّا باقي القسمة فيُسمّى *الباقي الكاذب (pseudoremainder)*.
 
-> **Exercise 2.96:** Implement the procedure `pseudoremainder-terms`, which is just like `remainder-terms` except that it multiplies the dividend by the integerizing factor described above before calling `div-terms`. Modify `gcd-terms` to use `pseudoremainder-terms`, and verify that `greatest-common-divisor` now produces an answer with integer coefficients on the example in [Exercise 2.95](#Exercise-2_002e95).
-> > The GCD now has integer coefficients, but they are larger than those of $P_{1}$ . Modify `gcd-terms` so that it removes common factors from the coefficients of the answer by dividing all the coefficients by their (integer) greatest common divisor.
+> **التمرين 2.96:** نفّذ الإجراء `pseudoremainder-terms`، الذي هو تمامًا مثل `remainder-terms` إلّا أنّه يضرب المقسوم في عامل التصحيح الموصوف أعلاه قبل نداء `div-terms`. وعدّل `gcd-terms` ليستخدم `pseudoremainder-terms`، وتأكّد أنّ `greatest-common-divisor` ينتج الآن جوابًا بمعاملاتٍ صحيحةٍ على المثال الوارد في [التمرين 2.95](#Exercise-2_002e95).
+> > أصبح للقاسم المشترك الأكبر الآن معاملاتٌ صحيحة، لكنّها أكبر من معاملات $P_{1}$ . عدّل `gcd-terms` بحيث يزيل العوامل المشتركة من معاملات الجواب بقسمة جميع المعاملات على قاسمها المشترك الأكبر (الصحيح).
 > > 
 
-Thus, here is how to reduce a rational function to lowest terms:
+وهكذا، هذه هي طريقة اختزال الدالّة النسبيّة إلى أدنى حدود:
 
-- Compute the GCD of the numerator and denominator, using the version of `gcd-terms` from [Exercise 2.96](#Exercise-2_002e96).
-- When you obtain the GCD, multiply both numerator and denominator by the same integerizing factor before dividing through by the GCD, so that division by the GCD will not introduce any noninteger coefficients. As the factor you can use the leading coefficient of the GCD raised to the power $1 + O_{1} − O_{2}$ , where $O_{2}$ is the order of the GCD and $O_{1}$ is the maximum of the orders of the numerator and denominator. This will ensure that dividing the numerator and denominator by the GCD will not introduce any fractions.
-- The result of this operation will be a numerator and denominator with integer coefficients. The coefficients will normally be very large because of all of the integerizing factors, so the last step is to remove the redundant factors by computing the (integer) greatest common divisor of all the coefficients of the numerator and the denominator and dividing through by this factor.
+- احتسب القاسم المشترك الأكبر للبسط والمقام، باستخدام نسخة `gcd-terms` الواردة في [التمرين 2.96](#Exercise-2_002e96).
+- عندما تحصل على القاسم المشترك الأكبر، اضرب البسط والمقام في عامل التصحيح ذاته قبل القسمة على القاسم المشترك الأكبر، بحيث لا تُدخل القسمة على القاسم المشترك الأكبر أيّ معاملاتٍ غير صحيحة. وبوصفه عاملًا، يمكنك استخدام المعامل الأوّل للقاسم المشترك الأكبر مرفوعًا إلى القوة $1 + O_{1} − O_{2}$ ، حيث $O_{2}$ رتبة القاسم المشترك الأكبر و$O_{1}$ هو أكبر رتبتين للبسط والمقام. وهذا سيضمن أنّ قسمة البسط والمقام على القاسم المشترك الأكبر لن تُدخل أيّ كسور.
+- وستكون نتيجة هذه العمليّة بسطًا ومقامًا ذوي معاملاتٍ صحيحة. وغالبًا ما ستكون المعاملات كبيرةً جدًّا بسبب كلّ عوامل التصحيح، لذا فإنّ الخطوة الأخيرة هي إزالة العوامل الزائدة باحتساب القاسم المشترك الأكبر (الصحيح) لجميع معاملات البسط والمقام والقسمة على هذا العامل.
 
-**Exercise 2.97:**
+**التمرين 2.97:**
 
-Implement this algorithm as a procedure `reduce-terms` that takes two term lists `n` and `d` as arguments and returns a list `nn`, `dd`, which are `n` and `d` reduced to lowest terms via the algorithm given above. Also write a procedure `reduce-poly`, analogous to `add-poly`, that checks to see if the two polys have the same variable. If so, `reduce-poly` strips off the variable and passes the problem to `reduce-terms`, then reattaches the variable to the two term lists supplied by `reduce-terms`. Define a procedure analogous to `reduce-terms` that does what the original `make-rat` did for integers:
+نفّذ هذه الخوارزميّة كإجراءٍ `reduce-terms` يأخذ قائمتَي حدود `n` و`d` كمعطيات ويعيد قائمتَي `nn` و`dd`، وهما `n` و`d` مختزلتان إلى أدنى حدودٍ وفقًا للخوارزميّة المعطاة أعلاه. واكتب أيضًا إجراء `reduce-poly`، شبيهًا بـ`add-poly`، يفحص ما إذا كان كثيرا الحدود لهما المتغيّر ذاته. فإن كان الأمر كذلك، فإنّ `reduce-poly` ينزع المتغيّر ويمرّر المسألة إلى `reduce-terms`، ثمّ يعيد إلحاق المتغيّر بقائمتَي الحدود التي يزوّده بها `reduce-terms`. وعرّف إجراءً شبيهًا بـ`reduce-terms` يؤدّي ما كان `make-rat` الأصليّ يؤدّيه للأعداد الصحيحة:
 
 ```scheme
 (define (reduce-integers n d)
@@ -3655,7 +3655,7 @@ Implement this algorithm as a procedure `reduce-terms` that takes two term lists
     (list (/ n g) (/ d g))))
 ```
 
-and define `reduce` as a generic operation that calls `apply-generic` to dispatch to either `reduce-poly` (for `polynomial` arguments) or `reduce-integers` (for `scheme-number` arguments). You can now easily make the rational-arithmetic package reduce fractions to lowest terms by having `make-rat` call `reduce` before combining the given numerator and denominator to form a rational number. The system now handles rational expressions in either integers or polynomials. To test your program, try the example at the beginning of this extended exercise:
+وعرّف `reduce` كعمليّةٍ عامّةٍ تنادي `apply-generic` لتوحّد إلى `reduce-poly` (لمعطيات `polynomial`) أو إلى `reduce-integers` (لمعطيات `scheme-number`). ويمكنك الآن أن تجعل حزمة الحساب الكسريّ تختزل الكسور إلى أدنى حدودٍ بسهولةٍ بجعل `make-rat` ينادي `reduce` قبل أن يجمّع البسط والمقام المعطيين لتكوين عددٍ كسريّ. والنظام الآن يتعامل مع التعابير النسبيّة في الأعداد الصحيحة أو في كثيرات الحدود. ولتختبر برنامجك، جرّب المثال الوارد في بداية هذا التمرين الموسّع:
 
 ```scheme
 (define p1 
@@ -3671,130 +3671,130 @@ and define `reduce` as a generic operation that calls `apply-generic` to dispatc
 (add rf1 rf2)
 ```
 
-See if you get the correct answer, correctly reduced to lowest terms.
+وانظر إن كنت ستحصل على الجواب الصحيح، مختزلًا إلى أدنى حدودٍ اختزالًا صحيحًا.
 
-The GCD computation is at the heart of any system that does operations on rational functions. The algorithm used above, although mathematically straightforward, is extremely slow. The slowness is due partly to the large number of division operations and partly to the enormous size of the intermediate coefficients generated by the pseudodivisions. One of the active areas in the development of algebraic-manipulation systems is the design of better algorithms for computing polynomial GCDs.[^62]
+إنّ احتساب القاسم المشترك الأكبر هو قلب أيّ نظامٍ يؤدّي عمليّاتٍ على الدوالّ النسبيّة. فالخوارزميّة المستخدمة أعلاه، على مباشرة رياضيّتها، بطيئةٌ للغاية. ويعود البطء جزئيًّا إلى العدد الكبير من عمليّات القسمة، وجزئيًّا إلى الحجم الهائل للمعاملات الوسيطة التي تولّدها القسمات الكاذبة. وأحد المجالات الفعّالة في تطوير أنظمة الجبر الرمزيّ هو تصميم خوارزميّاتٍ أفضل لاحتساب القواسم المشتركة الكبرى لكثيرات الحدود.[^62]
 
-[^1]: The ability to directly manipulate procedures provides an analogous increase in the expressive power of a programming language. For example, in [1.3.1](https://sarabander.github.io/sicp/html/1_002e3.xhtml#g_t1_002e3_002e1) we introduced the `sum` procedure, which takes a procedure `term` as an argument and computes the sum of the values of `term` over some specified interval. In order to define `sum`, it is crucial that we be able to speak of a procedure such as `term` as an entity in its own right, without regard for how `term` might be expressed with more primitive operations. Indeed, if we did not have the notion of “a procedure,” it is doubtful that we would ever even think of the possibility of defining an operation such as `sum`. Moreover, insofar as performing the summation is concerned, the details of how `term` may be constructed from more primitive operations are irrelevant.
+[^1]: إنّ القدرة على معالجة الإجراءات مباشرةً توفّر زيادةً مماثلةً في القوّة التعبيريّة للغة البرمجة. فمثلًا، في [1.3.1](https://sarabander.github.io/sicp/html/1_002e3.xhtml#g_t1_002e3_002e1) قدّمنا الإجراء `sum` الذي يأخذ إجراءً هو `term` كمعطىً ويحتسب مجموع قيم `term` على مدىً معيّنٍ. ولكي نعرّف `sum`، فمن الجوهريّ أن نكون قادرين على التحدّث عن إجراءٍ مثل `term` بوصفه كيانًا قائمًا بذاته، دون اعتبارٍ لكيفيّة التعبير عن `term` بعمليّاتٍ أكثر أوّليّة. في الحقيقة، لو لم يكن لدينا مفهوم «الإجراء»، لمشكوكٌ فيه أنّنا كنا سنفكّر حتّى في إمكانيّة تعريف عمليّةٍ مثل `sum`. وفوق ذلك، فإنّ تفاصيل كيفيّة بناء `term` من عمليّاتٍ أكثر أوّليّة لا صلة لها بالأمر، بالقدر الذي يتعلّق بأداء الجمع.
 
-[^2]: The name `cons` stands for “construct.” The names `car` and `cdr` derive from the original implementation of Lisp on the IBM 704. That machine had an addressing scheme that allowed one to reference the “address” and “decrement” parts of a memory location. `Car` stands for “Contents of Address part of Register” and `cdr` (pronounced “could-er”) stands for “Contents of Decrement part of Register.”
+[^2]: الاسم `cons` اختصارٌ لـ«construct»، أي البناء. وأمّا الاسمان `car` و`cdr` فيشتقّان من التنفيذ الأصليّ لـLisp على IBM 704. وكان لتلك الآلة مخطّط عنونةٍ يسمح بالإشارة إلى جزأي «العنوان» و«النقص» في موضع الذاكرة. و`Car` اختصارٌ لـ«Contents of Address part of Register»، أي محتويات جزء العنوان من المسجّل، و`cdr` (وتُنطق «could-er») اختصارٌ لـ«Contents of Decrement part of Register»، أي محتويات جزء النقص من المسجّل.
 
-[^3]: Another way to define the selectors and constructor is ```scheme (define make-rat cons) (define numer car) (define denom cdr) ```
+[^3]: هناك طريقة أخرى لتعريف المُنتقيات والبانيء، وهي ```scheme (define make-rat cons) (define numer car) (define denom cdr) ```
 
-[^4]: `Display` is the Scheme primitive for printing data. The Scheme primitive `newline` starts a new line for printing. Neither of these procedures returns a useful value, so in the uses of `print-rat` below, we show only what `print-rat` prints, not what the interpreter prints as the value returned by `print-rat`.
+[^4]: إنّ `Display` هو الأوّليّة في Scheme لطباعة البيانات. والأوّليّة `newline` في Scheme تبدأ سطرًا جديدًا للطباعة. ولا يعيد أيٌّ من هذين الإجراءين قيمةً مفيدة، لذا فإنّنا في استخدامات `print-rat` أدناه نُظهر ما تطبعه `print-rat` فقط، لا ما يطبعه المفسّر قيمةً معادةً من `print-rat`.
 
-[^5]: Surprisingly, this idea is very difficult to formulate rigorously. There are two approaches to giving such a formulation. One, pioneered by C. A. R. [Hoare (1972)](https://sarabander.github.io/sicp/html/References.xhtml#Hoare-_00281972_0029), is known as the method of *abstract models*. It formalizes the “procedures plus conditions” specification as outlined in the rational-number example above. Note that the condition on the rational-number representation was stated in terms of facts about integers (equality and division). In general, abstract models define new kinds of data objects in terms of previously defined types of data objects. Assertions about data objects can therefore be checked by reducing them to assertions about previously defined data objects. Another approach, introduced by Zilles at MIT, by Goguen, Thatcher, Wagner, and Wright at IBM (see [Thatcher et al. 1978](https://sarabander.github.io/sicp/html/References.xhtml#Thatcher-et-al_002e-1978)), and by Guttag at Toronto (see [Guttag 1977](https://sarabander.github.io/sicp/html/References.xhtml#Guttag-1977)), is called *algebraic specification*. It regards the “procedures” as elements of an abstract algebraic system whose behavior is specified by axioms that correspond to our “conditions,” and uses the techniques of abstract algebra to check assertions about data objects. Both methods are surveyed in the paper by [Liskov and Zilles (1975)](https://sarabander.github.io/sicp/html/References.xhtml#Liskov-and-Zilles-_00281975_0029).
+[^5]: ومن المدهش أنّ هذه الفكرة يصعب صياغتها صياغةً دقيقة. وهناك منهجان لتقديم مثل هذه الصياغة. أحدهما، الذي ابتكره C. A. R. [هوير (1972)](https://sarabander.github.io/sicp/html/References.xhtml#Hoare-_00281972_0029)، يُعرَف بطريقة *النماذج المجرّدة*. وهو يُصاغ «مواصفات الإجراءات زائد الشروط» صياغةً رسميّةً على النحو المبيَّن في مثال العدد الكسريّ أعلاه. ولاحِظ أنّ الشرط على تمثيل العدد الكسريّ قد قيل بدلالة حقائق عن الأعداد الصحيحة (المساواة والقسمة). وعمومًا، فإنّ النماذج المجرّدة تعرّف أنواعًا جديدةً من كائنات البيانات بدلالة أنواعٍ من كائنات البيانات عُرِّفَت سابقًا. وبالتالي، يمكن فحص التأكيدات عن كائنات البيانات باختزالها إلى تأكيداتٍ عن كائنات بياناتٍ عُرِّفَت سابقًا. وأمّا المنهج الآخر، الذي قدّمه زايلاس في MIT، وگوجوين وثاتشر وواغنر ورايت في IBM (انظر [ثاتشر وآخرون 1978](https://sarabander.github.io/sicp/html/References.xhtml#Thatcher-et-al_002e-1978))، وغوتاغ في تورونتو (انظر [غوتاغ 1977](https://sarabander.github.io/sicp/html/References.xhtml#Guttag-1977))، فيُسمّى *المواصفة الجبريّة*. وهو يعتبر «الإجراءات» عناصرَ في نظامٍ جبريٍّ مجرّدٍ سلوكُه محدَّدٌ بمسلّماتٍ تقابل «شروطنا»، ويستخدم تقنيّات الجبر المجرّد لفحص التأكيدات عن كائنات البيانات. أمّا المنهجان معًا فمبحوثان في الورقة التي كتبها [ليسكوف وزايلاس (1975)](https://sarabander.github.io/sicp/html/References.xhtml#Liskov-and-Zilles-_00281975_0029).
 
-[^6]: The use of the word “closure” here comes from abstract algebra, where a set of elements is said to be closed under an operation if applying the operation to elements in the set produces an element that is again an element of the set. The Lisp community also (unfortunately) uses the word “closure” to describe a totally unrelated concept: A closure is an implementation technique for representing procedures with free variables. We do not use the word “closure” in this second sense in this book.
+[^6]: إنّ استخدام كلمة «الإغلاق (closure)» هنا مستمدٌّ من الجبر المجرّد، حيث يُقال عن مجموعةٍ من العناصر إنّها مغلقةٌ تحت عمليّةٍ إذا كانت تطبيق العمليّة على عناصر المجموعة ينتج عنصرًا هو من عناصر المجموعة مرّةً أخرى. ومجتمع Lisp أيضًا (للأسف) يستخدم كلمة «closure» لوصف مفهومٍ لا صلة له بتاتًا: فالإغلاق هناك تقنيّةُ تنفيذٍ لتمثيل الإجراءات ذات المتغيّرات الحرّة. ونحن لا نستخدم كلمة «closure» بهذا المعنى الثاني في هذا الكتاب.
 
-[^7]: The notion that a means of combination should satisfy closure is a straightforward idea. Unfortunately, the data combiners provided in many popular programming languages do not satisfy closure, or make closure cumbersome to exploit. In Fortran or Basic, one typically combines data elements by assembling them into arrays—but one cannot form arrays whose elements are themselves arrays. Pascal and C admit structures whose elements are structures. However, this requires that the programmer manipulate pointers explicitly, and adhere to the restriction that each field of a structure can contain only elements of a prespecified form. Unlike Lisp with its pairs, these languages have no built-in general-purpose glue that makes it easy to manipulate compound data in a uniform way. This limitation lies behind Alan Perlis’s comment in his foreword to this book: “In Pascal the plethora of declarable data structures induces a specialization within functions that inhibits and penalizes casual cooperation. It is better to have 100 functions operate on one data structure than to have 10 functions operate on 10 data structures.”
+[^7]: إنّ فكرة أنّ وسيلة التركيب ينبغي أن تحقّق الانغلاق فكرةٌ يسيرة. ولسوء الحظّ، فإنّ أدوات تركيب البيانات التي توفّرها لغات البرمجة الشعبيّة الكثيرة لا تحقّق الانغلاق، أو تجعل استغلاله شاقًّا. ففي Fortran أو Basic، يتركّب المرء عادةً عناصر البيانات بتجميعها في مصفوفات — لكن لا يمكن تكوين مصفوفاتٍ عناصرها هي نفسها مصفوفات. أمّا Pascal وC فتسمحان ببنياتٍ عناصرها بنيات. لكنّ هذا يتطلّب من المبرمج أن يعالج المؤشّرات صراحةً، وأن يلتزم بالقييد أنّ كلّ حقلٍ من بنيةٍ يمكن أن يحتوي إلّا على عناصرٍ من صيغةٍ محدّدةٍ سابقًا. وبخلاف Lisp بأزواجها، فإنّ هذه اللغات لا تملك أيّ مادّة لاصقة عامّة الغرض مدمجة تجعل معالجة البيانات المركّبة على نحوٍ موحّدٍ أمرًا يسيرًا. وهذا القيد يكمن خلف ملاحظة آلان بيرليس في تقديمه لهذا الكتاب: «في Pascal، فإنّ وفرة بنيات البيانات القابلة للتعريف تُحدث تخصّصًا داخل الدوالّ يُعيق التعاون العارض ويعاقبه. فالأفضل أن تعمل 100 دالّة على بنية بياناتٍ واحدةٍ من أن تعمل 10 دوالٍ على 10 بنيات بيانات.»
 
-[^8]: In this book, we use *list* to mean a chain of pairs terminated by the end-of-list marker. In contrast, the term *list structure* refers to any data structure made out of pairs, not just to lists.
+[^8]: في هذا الكتاب، نستخدم *القائمة (list)* للدلالة على سلسلةٍ من الأزواج تنتهي بعلامة نهاية القائمة. وعلى النقيض، فإنّ مصطلح *بنية القائمة (list structure)* يشير إلى أيّ بنية بياناتٍ مصنوعةٍ من الأزواج، لا إلى القوائم وحدها.
 
-[^9]: Since nested applications of `car` and `cdr` are cumbersome to write, Lisp dialects provide abbreviations for them—for instance, ```scheme (cadr ⟨arg⟩) = (car (cdr ⟨arg⟩)) ```
+[^9]: بما أنّ تطبيقات `car` و`cdr` المتداخلة متعبةٌ في الكتابة، فإنّ لهجات Lisp توفّر اختصاراتٍ لها — فمثلًا، ```scheme (cadr ⟨arg⟩) = (car (cdr ⟨arg⟩)) ```
 
-[^10]: It’s remarkable how much energy in the standardization of Lisp dialects has been dissipated in arguments that are literally over nothing: Should `nil` be an ordinary name? Should the value of `nil` be a symbol? Should it be a list? Should it be a pair? In Scheme, `nil` is an ordinary name, which we use in this section as a variable whose value is the end-of-list marker (just as `true` is an ordinary variable that has a true value). Other dialects of Lisp, including Common Lisp, treat `nil` as a special symbol. The authors of this book, who have endured too many language standardization brawls, would like to avoid the entire issue. Once we have introduced quotation in [2.3](https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3), we will denote the empty list as `'()` and dispense with the variable `nil` entirely.
+[^10]: ومن المدهش كمٍّ هائل من الطاقة تبدّد في توحيد لهجات Lisp في جدالاتٍ هي حرفيًّا لا حول ولا قوّة: فهل ينبغي أن يكون `nil` اسمًا اعتياديًّا؟ وهل ينبغي أن تكون قيمة `nil` رمزًا؟ وهل ينبغي أن تكون قائمة؟ وهل ينبغي أن تكون زوجًا؟ في Scheme، يكون `nil` اسمًا اعتياديًّا، نستخدمه في هذا القسم متغيّرًا قيمتُه علامة نهاية القائمة (تمامًا كما أنّ `true` متغيّرٌ اعتياديّ قيمتُه قيمة صحيحة). وأمّا لهجات Lisp الأخرى، ومنها Common Lisp، فتعامل `nil` معاملة رمزٍ خاصّ. ومؤلّفا هذا الكتاب، الذين احتملوا من جدالات توحيد اللغات أكثر من اللازم، يحبّان تجنّب المسألة برمّتها. وبمجرّد أن نُنشئ الاقتباس في [2.3](https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3)، فإنّا سنُرمّز القائمة الفارغة بـ`'()` ونتخلّص نهائيًّا من المتغيّر `nil`.
 
-[^11]: To define `f` and `g` using `lambda` we would write ```scheme (define f (lambda (x y . z) ⟨body⟩)) (define g (lambda w ⟨body⟩)) ```
+[^11]: لتعريف `f` و`g` باستخدام `lambda`، نكتب ```scheme (define f (lambda (x y . z) ⟨body⟩)) (define g (lambda w ⟨body⟩)) ```
 
-[^12]: Scheme standardly provides a `map` procedure that is more general than the one described here. This more general `map` takes a procedure of $undefined$ arguments, together with $undefined$ lists, and applies the procedure to all the first elements of the lists, all the second elements of the lists, and so on, returning a list of the results. For example: ```scheme (map + (list 1 2 3) (list 40 50 60) (list 700 800 900)) (741 852 963) (map (lambda (x y) (+ x (* 2 y))) (list 1 2 3) (list 4 5 6)) (9 12 15) ```
+[^12]: توفّر Scheme قياسيًّا إجراء `map` أعمّ من ذلك الموصوف هنا. وهذا `map` الأعمّ يأخذ إجراءً ذا $undefined$ معطى، مع $undefined$ قائمة، ويطبّق الإجراء على جميع العناصر الأولى للقوائم، وجميع العناصر الثانية للقوائم، وهكذا، معيدًا قائمةً بالنتائج. فمثلًا: ```scheme (map + (list 1 2 3) (list 40 50 60) (list 700 800 900)) (741 852 963) (map (lambda (x y) (+ x (* 2 y))) (list 1 2 3) (list 4 5 6)) (9 12 15) ```
 
-[^13]: The order of the first two clauses in the `cond` matters, since the empty list satisfies `null?` and also is not a pair.
+[^13]: إنّ ترتيب البندين الأوّلين في `cond` مهمّ، إذ إنّ القائمة الفارغة تُرضي `null?` وهي ليست زوجًا أيضًا.
 
-[^14]: This is, in fact, precisely the `fringe` procedure from [Exercise 2.28](#Exercise-2_002e28). Here we’ve renamed it to emphasize that it is part of a family of general sequence-manipulation procedures.
+[^14]: هذا في الحقيقة هو بالضبط الإجراء `fringe` الوارد في [التمرين 2.28](#Exercise-2_002e28). وقد أعدنا هنا تسميته لإبراز أنّه جزءٌ من عائلة إجراءاتٍ عامّةٍ لمعالجة التسلسلات.
 
-[^15]: Richard [Waters (1979)](https://sarabander.github.io/sicp/html/References.xhtml#Waters-_00281979_0029) developed a program that automatically analyzes traditional Fortran programs, viewing them in terms of maps, filters, and accumulations. He found that fully 90 percent of the code in the Fortran Scientific Subroutine Package fits neatly into this paradigm. One of the reasons for the success of Lisp as a programming language is that lists provide a standard medium for expressing ordered collections so that they can be manipulated using higher-order operations. The programming language APL owes much of its power and appeal to a similar choice. In APL all data are represented as arrays, and there is a universal and convenient set of generic operators for all sorts of array operations.
+[^15]: طوّر ريتشارد [ووترز (1979)](https://sarabander.github.io/sicp/html/References.xhtml#Waters-_00281979_0029) برنامجًا يحلّل تحليلًا آليًّا برامج Fortran التقليديّة، نظرةً إليها من حيث التطبيقات والترشيحات والتراكمات. فقد وجد أنّ 90 بالمئة كاملةً من الشيفرة في حزمة Fortran Scientific Subroutine Package تتّسق اتّساقًا تامًّا مع هذا النموذج. وأحد أسباب نجاح Lisp لغةً للبرمجة هو أنّ القوائم توفّر وسطًا قياسيًّا للتعبير عن المجموعات المرتّبة بحيث يمكن معالجتها باستخدام عمليّاتٍ من رتبةٍ أعلى. وتَدِين لغة البرمجة APL بكثير من قوّتها وجاذبيّتها إلى اختيارٍ مشابه. ففي APL، جميع البيانات مُمثَّلةٌ بمصفوفات، وهناك مجموعةٌ شاملةٌ ومريحةٌ من المشغّلات العامّة لجميع أنواع عمليّات المصفوفات.
 
-[^16]: According to [Knuth 1981](https://sarabander.github.io/sicp/html/References.xhtml#Knuth-1981), this rule was formulated by W. G. Horner early in the nineteenth century, but the method was actually used by Newton over a hundred years earlier. Horner’s rule evaluates the polynomial using fewer additions and multiplications than does the straightforward method of first computing $undefined$ , then adding $undefined$ , and so on. In fact, it is possible to prove that any algorithm for evaluating arbitrary polynomials must use at least as many additions and multiplications as does Horner’s rule, and thus Horner’s rule is an optimal algorithm for polynomial evaluation. This was proved (for the number of additions) by A. M. Ostrowski in a 1954 paper that essentially founded the modern study of optimal algorithms. The analogous statement for multiplications was proved by V. Y. Pan in 1966. The book by [Borodin and Munro (1975)](https://sarabander.github.io/sicp/html/References.xhtml#Borodin-and-Munro-_00281975_0029) provides an overview of these and other results about optimal algorithms.
+[^16]: وفقًا لـ[كنوث 1981](https://sarabander.github.io/sicp/html/References.xhtml#Knuth-1981)، فقد صاغ هذه القاعدة W. G. هورنر في أوائل القرن التاسع عشر، لكنّ الطريقة استُخدمت فعلًا على يد نيوتن منذ أكثر من مئة سنةٍ قبل ذلك. وتُقيّم قاعدة هورنر كثير الحدود باستخدام عددٍ من الجمعات والضروبات أقلّ من الطريقة المباشرة التي تحتسب أوّلًا $undefined$ ثمّ تجمع $undefined$ وهكذا. في الحقيقة، يمكن إثبات أنّ أيّ خوارزميّةٍ لتقييم كثريات الحدود الاعتباطيّة ينبغي أن تستخدم عددًا من الجمعات والضروبات لا يقلّ عمّا تستخدمه قاعدة هورنر، وبالتالي فإنّ قاعدة هورنر خوارزميّةٌ أمثل لتقييم كثيرات الحدود. وقد أُثبت هذا (بالنسبة لعدد الجمعات) على يد A. M. أوستروفسكي في ورقةٍ عام 1954 أرست دراسة الخوارزميّات الأمثل دراسةً حديثة. أمّا القول المماثل بالنسبة للضروبات فقد أثبته V. Y. بان عام 1966. ويقدّم كتاب [بورودين ومونرو (1975)](https://sarabander.github.io/sicp/html/References.xhtml#Borodin-and-Munro-_00281975_0029) نظرةً عامّة على هذه النتائج وغيرها من النتائج عن الخوارزميّات الأمثل.
 
-[^17]: This definition uses the extended version of `map` described in [Footnote 78](#Footnote-78).
+[^17]: يستخدم هذا التعريف النسخة الممدودة من `map` الموصوفة في [الحاشية 78](#Footnote-78).
 
-[^18]: This approach to nested mappings was shown to us by David Turner, whose languages KRC and Miranda provide elegant formalisms for dealing with these constructs. The examples in this section (see also [Exercise 2.42](#Exercise-2_002e42)) are adapted from [Turner 1981](https://sarabander.github.io/sicp/html/References.xhtml#Turner-1981). In [3.5.3](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e3), we’ll see how this approach generalizes to infinite sequences.
+[^18]: لقد أُرينا هذا المنهج في التطبيقات المتداخلة على يد ديفيد تيرنر، الذي توفّر لغتاه KRC وMiranda صياغاتٍ رسميّةً أنيقةً للتعامل مع هذه البنى. وأمّا الأمثلة في هذا القسم (انظر أيضًا [التمرين 2.42](#Exercise-2_002e42)) فمقتبسةٌ من [تيرنر 1981](https://sarabander.github.io/sicp/html/References.xhtml#Turner-1981). وفي [3.5.3](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e3)، سوف نرى كيف يعمّم هذا المنهج على التسلسلات اللانهائيّة.
 
-[^19]: We’re representing a pair here as a list of two elements rather than as a Lisp pair. Thus, the “pair” $undefined$ is represented as `(list i j)`, not `(cons i j)`.
+[^19]: نحن نمثّل الزوج هنا كقائمةٍ من عنصرين بدلًا من زوج Lisp. وبالتالي، فإنّ «الزوج» $undefined$ مُمثَّلٌ بالقائمة `(list i j)`، لا بـ`(cons i j)`.
 
-[^20]: The set $undefined$ is the set of all elements of $undefined$ , excluding $undefined$ .
+[^20]: المجموعة $undefined$ هي مجموعة جميع عناصر $undefined$ ، مستثنىً منها $undefined$ .
 
-[^21]: Semicolons in Scheme code are used to introduce *comments*. Everything from the semicolon to the end of the line is ignored by the interpreter. In this book we don’t use many comments; we try to make our programs self-documenting by using descriptive names.
+[^21]: تُستخدم الفاصلة المنقوطة في شيفرة Scheme لإدخال *التعليقات (comments)*. وكلّ شيءٍ من الفاصلة المنقوطة إلى نهاية السطر يتجاهله المفسّر. ونحن في هذا الكتاب لا نستخدم تعليقاتٍ كثيرة؛ فإنّا نحاول أن نجعل برامجنا موثّقةً لذاتها باستخدام أسماءٍ وصفيّة.
 
-[^22]: The picture language is based on the language Peter Henderson created to construct images like M.C. Escher’s “Square Limit” woodcut (see [Henderson 1982](https://sarabander.github.io/sicp/html/References.xhtml#Henderson-1982)). The woodcut incorporates a repeated scaled pattern, similar to the arrangements drawn using the `square-limit` procedure in this section.
+[^22]: لغة الرسم مستندةٌ إلى اللغة التي أنشأها بيتر هندرسون لبناء صورٍ مثل نقش «Square Limit» الخشبيّ لـM.C. إيشر (انظر [هندرسون 1982](https://sarabander.github.io/sicp/html/References.xhtml#Henderson-1982)). ويتضمّن هذا النقش نقشًا متكرّرًا مُكيّفًا بالمقياس، شبيهًا بالترتيبات المرسومة باستخدام الإجراء `square-limit` في هذا القسم.
 
-[^23]: William Barton Rogers (1804-1882) was the founder and first president of MIT. A geologist and talented teacher, he taught at William and Mary College and at the University of Virginia. In 1859 he moved to Boston, where he had more time for research, worked on a plan for establishing a “polytechnic institute,” and served as Massachusetts’s first State Inspector of Gas Meters. When MIT was established in 1861, Rogers was elected its first president. Rogers espoused an ideal of “useful learning” that was different from the university education of the time, with its overemphasis on the classics, which, as he wrote, “stand in the way of the broader, higher and more practical instruction and discipline of the natural and social sciences.” This education was likewise to be different from narrow trade-school education. In Rogers’s words: > The world-enforced distinction between the practical and the scientific worker is utterly futile, and the whole experience of modern times has demonstrated its utter worthlessness. Rogers served as president of MIT until 1870, when he resigned due to ill health. In 1878 the second president of MIT, John Runkle, resigned under the pressure of a financial crisis brought on by the Panic of 1873 and strain of fighting off attempts by Harvard to take over MIT. Rogers returned to hold the office of president until 1881. Rogers collapsed and died while addressing MIT’s graduating class at the commencement exercises of 1882. Runkle quoted Rogers’s last words in a memorial address delivered that same year: > “As I stand here today and see what the Institute is, … I call to mind the beginnings of science. I remember one hundred and fifty years ago Stephen Hales published a pamphlet on the subject of illuminating gas, in which he stated that his researches had demonstrated that 128 grains of bituminous coal – ” “Bituminous coal,” these were his last words on earth. Here he bent forward, as if consulting some notes on the table before him, then slowly regaining an erect position, threw up his hands, and was translated from the scene of his earthly labors and triumphs to “the tomorrow of death,” where the mysteries of life are solved, and the disembodied spirit finds unending satisfaction in contemplating the new and still unfathomable mysteries of the infinite future. In the words of Francis A. Walker (MIT’s third president): > All his life he had borne himself most faithfully and heroically, and he died as so good a knight would surely have wished, in harness, at his post, and in the very part and act of public duty.
+[^23]: كان وليام بارتون روجرز (1804-1882) مؤّسس MIT ورئيسها الأوّل. وكان جيولوجيًّا ومعلّمًا موهوبًا، درس في كلّيّة وليام وماري وفي جامعة فيرجينيا. وفي عام 1859 انتقل إلى بوسطن، حيث أمضى وقتًا أطول في البحث، وعمل على خطّةٍ لإقامة «معهد متعدّد الاختصاصات»، وخدم بوصفه أوّل مفتشٍ للعدادات الغازيّة في ولاية ماساتشوستس. وحين أُقيم MIT في عام 1861، انتُخب روجرز رئيسًا أوّل له. ودافع روجرز عن مثُلِ «التعلّم النافع» التي تختلف عن التعليم الجامعيّ في ذلك الوقت، بإفراطه في التركيز على الكلاسيكيّات التي قال عنها إنّها «تقف في طريق التعليم والتأديب الأوسع والأسمى والأكثر عمليّةً في العلوم الطبيعيّة والاجتماعيّة». وكان من المفروض أن يكون هذا التعليم مختلفًا أيضًا عن التعليم الضيّق في المدارس التجاريّة. وبكلمات روجرز: > إنّ التمييز الذي يفرضه العالم بين العامل العمليّ والعامل العلميّ تباطُلٌ عبثيّ، وقد أظهرت تجربة العصر الحديث برمّتها تفاهته التامّة. وخدم روجرز رئيسًا لـMIT حتّى عام 1870، حين استقال بسبب تدهور صحّته. وفي عام 1878، استقال رئيس MIT الثاني، جون رانكل، تحت ضغط أزمة ماليّة أثقلتها حمى عام 1873 ووطأة صدّ محاولات جامعة هارفارد للاستيلاء على MIT. وعاد روجرز ليتولّى منصب الرئيس حتّى عام 1881. وانهار روجرز ومات وهو يخاطب الدفعة المتخرّجة من MIT في حفل تخرّج عام 1882. ونقل رانكل كلمات روجرز الأخيرة في خطاب تأبينٍ ألقاه في العام نفسه: > «وأنا واقفٌ اليومَ أرى ما صار إليه المعهد، … فإنّي أستحضر بدايات العلم. وأتذكّر منذ مئة وخمسين سنةً نشر ستيفن هيلز كرّاسةً في موضوع غاز الإضاءة، ذكر فيها أنّ بحوثه قد أظهرت أنّ 128 حبّةً من الفحم القاري — » «الفحم القاري»، كانت هذه آخر كلماته على الأرض. وهنا مال إلى الأمام، كأنّه يستشير بعض الأوراق الموضوعة أمامه على الطاولة، ثمّ عاد واقفًا منتصبًا على استقامته ببطءٍ، ورفع يديه، ونُقل من مسرح أعماله وانتصاراته الأرضيّة إلى «غد الموت»، حيث تُحلّ ألغاز الحياة، ويجد الروح المنفصّ سعادةً لا تنتهي في التأمّل في ألغاز المستقبل اللانهائيّة الجديدة التي لم تُفهم بعد. وبكلمات فرانسيس أ. ووكر (رئيس MIT الثالث): > لقد تحمّل طوال حياته بأوفى إخلاصٍ وأسمى بطولة، ومات كما لَ ودّ فارسٌ صالحٌ أن يموت: في عتاده، في موقعه، وفي ذروة مباشرته واجبه العامّ.
 
-[^24]: Equivalently, we could write ```scheme (define flipped-pairs (square-of-four identity flip-vert identity flip-vert)) ```
+[^24]: وعلى نحوٍ مكافئ، كان بوسعنا أن نكتب ```scheme (define flipped-pairs (square-of-four identity flip-vert identity flip-vert)) ```
 
-[^25]: `Rotate180` rotates a painter by 180 degrees (see [Exercise 2.50](#Exercise-2_002e50)). Instead of `rotate180` we could say `(compose flip-vert flip-horiz)`, using the `compose` procedure from [Exercise 1.42](https://sarabander.github.io/sicp/html/1_002e3.xhtml#Exercise-1_002e42).
+[^25]: يُدير `Rotate180` الرسّام 180 درجة (انظر [التمرين 2.50](#Exercise-2_002e50)). وبدلًا من `rotate180`، كان بوسعنا أن نقول `(compose flip-vert flip-horiz)`، باستخدام الإجراء `compose` الوارد في [التمرين 1.42](https://sarabander.github.io/sicp/html/1_002e3.xhtml#Exercise-1_002e42).
 
-[^26]: `Frame-coord-map` uses the vector operations described in [Exercise 2.46](#Exercise-2_002e46) below, which we assume have been implemented using some representation for vectors. Because of data abstraction, it doesn’t matter what this vector representation is, so long as the vector operations behave correctly.
+[^26]: يستخدم `Frame-coord-map` عمليّات المتجهات الموصوفة في [التمرين 2.46](#Exercise-2_002e46) أدناه، والتي نفترض أنّها نُفّذت باستخدام تمثيلٍ ما للمتجهات. وبسبب تجريد البيانات، فلا يهمّ أيّ تمثيلٍ للمتجهات يكون هو، طالما أنّ عمليّات المتجهات تسلك سلوكًا صحيحًا.
 
-[^27]: `Segments->painter` uses the representation for line segments described in [Exercise 2.48](#Exercise-2_002e48) below. It also uses the `for-each` procedure described in [Exercise 2.23](#Exercise-2_002e23).
+[^27]: يستخدم `Segments->painter` تمثيل مقاطع الخطوط الموصوف في [التمرين 2.48](#Exercise-2_002e48) أدناه. كما يستخدم الإجراء `for-each` الموصوف في [التمرين 2.23](#Exercise-2_002e23).
 
-[^28]: For example, the `rogers` painter of [Figure 2.11](#Figure-2_002e11) was constructed from a gray-level image. For each point in a given frame, the `rogers` painter determines the point in the image that is mapped to it under the frame coordinate map, and shades it accordingly. By allowing different types of painters, we are capitalizing on the abstract data idea discussed in [2.1.3](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e3), where we argued that a rational-number representation could be anything at all that satisfies an appropriate condition. Here we’re using the fact that a painter can be implemented in any way at all, so long as it draws something in the designated frame. [2.1.3](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e3) also showed how pairs could be implemented as procedures. Painters are our second example of a procedural representation for data.
+[^28]: فمثلًا، بُني رسّام `rogers` الوارد في [الشكل 2.11](#Figure-2_002e11) من صورةٍ بدرجات الرماديّ. فلكلّ نقطةٍ في إطارٍ معطى، يحدّد رسّام `rogers` النقطة في الصورة التي تُخطَّط إليها تحت خريطة إحداثيّات الإطار، ويُظلّلها وفقًا لذلك. وبالسماح بأنواعٍ مختلفة من الرسّامين، فإنّا نستثمر فكرة تجريد البيانات المناقشة في [2.1.3](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e3)، حيث أثبتنا أنّ تمثيل العدد الكسريّ يمكن أن يكون أيّ شيءٍ على الإطلاق يُرضي شرطًا مناسبًا. وهنا نستخدم الحقيقة أنّ الرسّام يمكن تنفيذه بأيّ طريقةٍ على الإطلاق، طالما أنّه يرسم شيئًا ما في الإطار المعيّن. كما أظهر [2.1.3](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e3) كيف يمكن تنفيذ الأزواج كإجراءات. والرسّامون هم مثالنا الثاني على التمثيل الإجرائيّ للبيانات.
 
-[^29]: `Rotate90` is a pure rotation only for square frames, because it also stretches and shrinks the image to fit into the rotated frame.
+[^29]: إنّ `Rotate90` دورانٌ خالصٌ فقط بالنسبة للإطارات المربّعة، لأنّه يمدّ الصورة ويقلّصها أيضًا لتلائم الإطار المدوَّر.
 
-[^30]: The diamond-shaped images in [Figure 2.10](#Figure-2_002e10) and [Figure 2.11](#Figure-2_002e11) were created with `squash-inwards` applied to `wave` and `rogers`.
+[^30]: أُنشئت الصور على شكل المعيّن في [الشكل 2.10](#Figure-2_002e10) و[الشكل 2.11](#Figure-2_002e11) باستخدام `squash-inwards` مطبَّقًا على `wave` و`rogers`.
 
-[^31]: Section [3.3.4](https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e4) describes one such language.
+[^31]: يصف القسم [3.3.4](https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e4) إحدى هذه اللغات.
 
-[^32]: Allowing quotation in a language wreaks havoc with the ability to reason about the language in simple terms, because it destroys the notion that equals can be substituted for equals. For example, three is one plus two, but the word “three” is not the phrase “one plus two.” Quotation is powerful because it gives us a way to build expressions that manipulate other expressions (as we will see when we write an interpreter in [Chapter 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4)). But allowing statements in a language that talk about other statements in that language makes it very difficult to maintain any coherent principle of what “equals can be substituted for equals” should mean. For example, if we know that the evening star is the morning star, then from the statement “the evening star is Venus” we can deduce “the morning star is Venus.” However, given that “John knows that the evening star is Venus” we cannot infer that “John knows that the morning star is Venus.”
+[^32]: إنّ السمح بالاقتباس في لغةٍ يُحدث خللًا في القدرة على الاستدلال على اللغة بشروطٍ يسيرة، لأنّه يدمّر فكرة أنّ المتماثل يمكن أن يُبدَّل بالمتماثل. فمثلًا، الثلاثة هو واحد زائد اثنان، لكنّ كلمة «ثلاثة» ليست العبارة «واحد زائد اثنان». والاقتباس قويّ لأنّه يمنحنا طريقةً لبناء تعابيرَ تعالج تعابيرَ أخرى (كما سنرى حين نكتب مفسّرًا في [الفصل 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4)). لكن السماح بعباراتٍ في لغةٍ تتحدّث عن عباراتٍ أخرى في تلك اللغة يجعل من الصعب جدًّا المحافظة على أيّ مبدأٍ متماسكٍ لمعنى «المتماثل يمكن أن يُبدَّل بالمتماثل». فمثلًا، إذا عرفنا أنّ نجم المساء هو نجم الصباح، فمن العبارة «نجم المساء هو كوكب الزهرة» يمكننا استنتاج «نجم الصباح هو كوكب الزهرة». لكن بناءً على أنّ «يوحنا يعلم أنّ نجم المساء هو كوكب الزهرة»، لا نستطيع أن نستنتج أنّ «يوحنا يعلم أنّ نجم الصباح هو كوكب الزهرة».
 
-[^33]: The single quote is different from the double quote we have been using to enclose character strings to be printed. Whereas the single quote can be used to denote lists or symbols, the double quote is used only with character strings. In this book, the only use for character strings is as items to be printed.
+[^33]: إنّ علامة التنصيص المفردة مختلفة عن علامة التنصيص المزدوجة التي كنّا نستخدمها لإحاطة مقاطع الحروف المراد طباعتها. فبينما يمكن استخدام علامة التنصيص المفردة للدلالة على القوائم أو الرموز، فإنّ علامة التنصيص المزدوجة تُستخدم فقط مع مقاطع الحروف. وفي هذا الكتاب، الاستخدام الوحيد لمقاطع الحروف هو بوصفها عناصرَ تُطبع.
 
-[^34]: Strictly, our use of the quotation mark violates the general rule that all compound expressions in our language should be delimited by parentheses and look like lists. We can recover this consistency by introducing a special form `quote`, which serves the same purpose as the quotation mark. Thus, we would type `(quote a)` instead of `'a`, and we would type `(quote (a b c))` instead of `'(a b c)`. This is precisely how the interpreter works. The quotation mark is just a single-character abbreviation for wrapping the next complete expression with `quote` to form `(quote ⟨expression⟩)`. This is important because it maintains the principle that any expression seen by the interpreter can be manipulated as a data object. For instance, we could construct the expression `(car '(a b c))`, which is the same as `(car (quote (a b c)))`, by evaluating `(list 'car (list 'quote '(a b c)))`.
+[^34]: على وجه الدقّة، فإنّ استخدامنا علامة التنصيص يخالف القاعدة العامّة التي تقول إنّ جميع التعابير المركّبة في لغتنا ينبغي أن تُحدَّد بالأقواس وتبدو قوائم. ويمكننا استعادة هذا الاتّساق بإدخال صيغةٍ خاصّةٍ `quote` تؤدّي الغرض نفسه الذي تؤدّيه علامة التنصيص. وبالتالي، فسنكتب `(quote a)` بدلًا من `'a`، وسنكتب `(quote (a b c))` بدلًا من `'(a b c)`. وهذا هو بالضبط كيف يعمل المفسّر. فعلامة التنصيص ما هي إلّا اختصارٌ بحرفٍ واحدٍ لإحاطة التعبير التالي الكامل بـ`quote` لتكوين `(quote ⟨expression⟩)`. وهذا مهمّ لأنّه يحافظ على المبدأ القائل إنّ أيّ تعبيرٍ يراه المفسّر يمكن معالجته ككائنٍ من كائنات البيانات. فمثلًا، أمكننا بناء التعبير `(car '(a b c))`، الذي هو نفسه `(car (quote (a b c)))`، بتقييم `(list 'car (list 'quote '(a b c)))`.
 
-[^35]: We can consider two symbols to be “the same” if they consist of the same characters in the same order. Such a definition skirts a deep issue that we are not yet ready to address: the meaning of “sameness” in a programming language. We will return to this in [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) ([3.1.3](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e3)).
+[^35]: يمكننا اعتبار رمزين «متطابقين» إذا تكوّنا من الحروف ذاتها بالترتيب ذاته. ومثل هذا التعريف يحاذي مسألةً عميقةً لسنا مستعدّين بعد لمعالجتها: ألا وهي معنى «التطابق» في لغة البرمجة. وسوف نعود إلى هذا في [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) ([3.1.3](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e3)).
 
-[^36]: In practice, programmers use `equal?` to compare lists that contain numbers as well as symbols. Numbers are not considered to be symbols. The question of whether two numerically equal numbers (as tested by `=`) are also `eq?` is highly implementation-dependent. A better definition of `equal?` (such as the one that comes as a primitive in Scheme) would also stipulate that if `a` and `b` are both numbers, then `a` and `b` are `equal?` if they are numerically equal.
+[^36]: في الممارسة، يستخدم المبرمجون `equal?` لمقارنة قوائمَ تحتوي أعدادًا بالإضافة إلى رموز. والأعداد لا تُعتبر رموزًا. وأمّا المسألة المتعلّقة بما إذا كان عددان متساويان عدديًّا (كما يختبرهما `=`) هما أيضًا `eq?` فهي مسألةٌ تعتمد إلى حدٍّ كبيرٍ على التنفيذ. وأمّا تعريفٌ أفضل لـ`equal?` (مثل الذي يأتي كأوّليّةٍ في Scheme) فيقرّر أيضًا أنّ `a` و`b`، إذا كانا عددين، فإنّ `a` و`b` هما `equal?` إذا كانا متساويين عدديًّا.
 
-[^37]: If we want to be more formal, we can specify “consistent with the interpretations given above” to mean that the operations satisfy a collection of rules such as these: - For any set `S` and any object `x`, `(element-of-set? x (adjoin-set x S))` is true (informally: “Adjoining an object to a set produces a set that contains the object”). - For any sets `S` and `T` and any object `x`, `(element-of-set? x (union-set S T))` is equal to `(or (element-of-set? x S) (element-of-set? x T))` (informally: “The elements of `(union S T)` are the elements that are in `S` or in `T`”). - For any object `x`, `(element-of-set? x '())` is false (informally: “No object is an element of the empty set”).
+[^37]: إذا أردنا أن نكون أكثر رسميّةً، فيمكننا تحديد «متوافقٍ مع التأويلات المعطاة أعلاه» بمعنى أنّ العمليّات تُرضي مجموعةً من القواعد كهذه: - لأيّ مجموعة `S` وأيّ كائن `x`، فإنّ `(element-of-set? x (adjoin-set x S))` صحيح (بصورةٍ غير رسميّة: «إلحاق كائن بمجموعةٍ ينتج مجموعةً تحتوي هذا الكائن»). - ولأيّ مجموعتين `S` و`T` وأيّ كائن `x`، فإنّ `(element-of-set? x (union-set S T))` يساوي `(or (element-of-set? x S) (element-of-set? x T))` (بصورةٍ غير رسميّة: «عناصر `(union S T)` هي العناصر الموجودة في `S` أو في `T`»). - ولأيّ كائن `x`، فإنّ `(element-of-set? x '())` خاطئ (بصورةٍ غير رسميّة: «لا كائن يكون عنصرًا في المجموعة الفارغة»).
 
-[^38]: Halving the size of the problem at each step is the distinguishing characteristic of logarithmic growth, as we saw with the fast-exponentiation algorithm of [1.2.4](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e4) and the half-interval search method of [1.3.3](https://sarabander.github.io/sicp/html/1_002e3.xhtml#g_t1_002e3_002e3).
+[^38]: إنّ تنصيف حجم المسألة عند كلّ خطوةٍ هو السمة المميّزة للنموّ اللوغاريتميّ، كما رأينا مع خوارزميّة الأسّ السريع الواردة في [1.2.4](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e4) وطريقة البحث بنصف الفترة الواردة في [1.3.3](https://sarabander.github.io/sicp/html/1_002e3.xhtml#g_t1_002e3_002e3).
 
-[^39]: We are representing sets in terms of trees, and trees in terms of lists—in effect, a data abstraction built upon a data abstraction. We can regard the procedures `entry`, `left-branch`, `right-branch`, and `make-tree` as a way of isolating the abstraction of a “binary tree” from the particular way we might wish to represent such a tree in terms of list structure.
+[^39]: نحن نمثّل المجموعات بأشجار، والأشجار بقوائم — تجريد بياناتٍ مبنيٌّ في الواقع على تجريد بياناتٍ آخر. ويمكننا النظر إلى الإجراءات `entry` و`left-branch` و`right-branch` و`make-tree` على أنّها طريقةٌ لعزل تجريد «الشجرة الثنائيّة» عن الطريقة الخاصّة التي قد نرغب في تمثيل شجرةٍ كهذه ببنية القوائم.
 
-[^40]: Examples of such structures include *B-trees* and *red-black trees*. There is a large literature on data structures devoted to this problem. See [Cormen et al. 1990](https://sarabander.github.io/sicp/html/References.xhtml#Cormen-et-al_002e-1990).
+[^40]: إنّ أمثلة مثل هذه البنى تشمل *أشجار B* و*أشجار الأحمر-الأسود*. وهناك أدبيّاتٌ غزيرةٌ عن بنيات البيانات مخصّصةٌ لهذه المسألة. انظر [كورمن وآخرون 1990](https://sarabander.github.io/sicp/html/References.xhtml#Cormen-et-al_002e-1990).
 
-[^41]: [Exercise 2.63](#Exercise-2_002e63) through [Exercise 2.65](#Exercise-2_002e65) are due to Paul Hilfinger.
+[^41]: إنّ [التمرين 2.63](#Exercise-2_002e63) إلى [التمرين 2.65](#Exercise-2_002e65) من وضع بول هيلفينغر.
 
-[^42]: See [Hamming 1980](https://sarabander.github.io/sicp/html/References.xhtml#Hamming-1980) for a discussion of the mathematical properties of Huffman codes.
+[^42]: انظر [هامينغ 1980](https://sarabander.github.io/sicp/html/References.xhtml#Hamming-1980) لمناقشة الخصائص الرياضيّة لشيفرات هوفمان.
 
-[^43]: In actual computational systems, rectangular form is preferable to polar form most of the time because of roundoff errors in conversion between rectangular and polar form. This is why the complex-number example is unrealistic. Nevertheless, it provides a clear illustration of the design of a system using generic operations and a good introduction to the more substantial systems to be developed later in this chapter.
+[^43]: في أنظمة الحساب الفعليّة، فإنّ الصيغة المستطيلة مفضّلةٌ على الصيغة القطبيّة في معظم الأحيان بسبب أخطاء التقريب في التحويل بين الصيغتين. ولهذا فإنّ مثال العدد المركّب غير واقعيّ. ومع ذلك، فإنّه يوفّر توضيحًا واضحًا لتصميم نظامٍ باستخدام العمليّات العامّة، ومدخلًا جيّدًا إلى الأنظمة الأكثر أهمّيّة التي ستُطوّر لاحقًا في هذا الفصل.
 
-[^44]: The arctangent function referred to here, computed by Scheme’s `atan` procedure, is defined so as to take two arguments $undefined$ and $undefined$ and to return the angle whose tangent is $undefined$ . The signs of the arguments determine the quadrant of the angle.
+[^44]: أمّا دالّة ظلّ الزاوية المعنيّة هنا، والتي يحتسبها إجراء `atan` في Scheme، فمُعرَّفةٌ بحيث تأخذ معطيين $undefined$ و$undefined$ وتعيد الزاوية التي ظلّها هو $undefined$ . وإشارات المعطيات هي التي تحدّد الربع الذي تقع فيه الزاوية.
 
-[^45]: We use the list `(rectangular)` rather than the symbol `rectangular` to allow for the possibility of operations with multiple arguments, not all of the same type.
+[^45]: نستخدم القائمة `(rectangular)` بدلًا من الرمز `rectangular` للسماح بإمكانيّة عمليّاتٍ ذات معطياتٍ متعدّدةٍ ليست كلّها من النوع ذاته.
 
-[^46]: The type the constructors are installed under needn’t be a list because a constructor is always used to make an object of one particular type.
+[^46]: ليس من الضروريّ أن يكون النوع الذي تُثبَّت تحته البواني (constructors) قائمةً، إذ يُستخدم البانيّ دائمًا لصنع كائن من نوعٍ واحدٍ معيّن.
 
-[^47]: `Apply-generic` uses the dotted-tail notation described in [Exercise 2.20](https://sarabander.github.io/sicp/html/2_002e2.xhtml#Exercise-2_002e20), because different generic operations may take different numbers of arguments. In `apply-generic`, `op` has as its value the first argument to `apply-generic` and `args` has as its value a list of the remaining arguments. `Apply-generic` also uses the primitive procedure `apply`, which takes two arguments, a procedure and a list. `Apply` applies the procedure, using the elements in the list as arguments. For example, ```scheme (apply + (list 1 2 3 4)) ```
+[^47]: يستخدم `Apply-generic` الترميز بالذيل المنقّط الموصوف في [التمرين 2.20](https://sarabander.github.io/sicp/html/2_002e2.xhtml#Exercise-2_002e20)، لأنّ العمليّات العامّة المختلفة قد تأخذ أعدادًا مختلفة من المعطيات. ففي `apply-generic`، تكون `op` قيمتها المعطى الأوّل لـ`apply-generic`، وتكون `args` قيمتها قائمةٌ ببقيّة المعطيات. كما يستخدم `Apply-generic` الإجراء الأوّليّ `apply` الذي يأخذ معطيين: إجراءً وقائمة. و`Apply` يطبّق الإجراء باستخدام عناصر القائمة كمعطيات. فمثلًا، ```scheme (apply + (list 1 2 3 4)) ```
 
-[^48]: One limitation of this organization is it permits only generic procedures of one argument.
+[^48]: وأحد قيود هذا التنظيم أنّه لا يسمح إلّا بإجراءاتٍ عامّةٍ ذات معطىً واحد.
 
-[^49]: We also have to supply an almost identical procedure to handle the types `(scheme-number complex)`.
+[^49]: ويتعيّن علينا أيضًا تزويد إجراءٍ شبه مطابقةٍ للتعامل مع النوعين `(scheme-number complex)`.
 
-[^50]: See [Exercise 2.82](#Exercise-2_002e82) for generalizations.
+[^50]: انظر [التمرين 2.82](#Exercise-2_002e82) للتعميمات.
 
-[^51]: If we are clever, we can usually get by with fewer than $undefined$ coercion procedures. For instance, if we know how to convert from type 1 to type 2 and from type 2 to type 3, then we can use this knowledge to convert from type 1 to type 3. This can greatly decrease the number of coercion procedures we need to supply explicitly when we add a new type to the system. If we are willing to build the required amount of sophistication into our system, we can have it search the “graph” of relations among types and automatically generate those coercion procedures that can be inferred from the ones that are supplied explicitly.
+[^51]: إذا نحن بارعون، فيمكننا العيش عادةً بعددٍ أقلّ من $undefined$ إجراء إكراه. فمثلًا، إذا عرفنا كيف نحوّل من النوع 1 إلى النوع 2 ومن النوع 2 إلى النوع 3، فيمكننا استخدام هذه المعرفة للتحويل من النوع 1 إلى النوع 3. وهذا يستطيع أن يُقلّل إلى حدٍّ كبيرٍ عدد إجراءات الإكراه التي يتعيّن علينا تزويدها صراحةً حين نضيف نوعًا جديدًا إلى النظام. فإذا كنّا على استعدادٍ لبناء القدر المطلوب من التطوّر في نظامنا، أمكننا له أن يبحث في «الرسم البيانيّ» للعلاقات بين الأنواع ويولّد تلقائيًّا إجراءات الإكراه التي يمكن استنتاجها من تلك المزوَّدة صراحةً.
 
-[^52]: This statement, which also appears in the first edition of this book, is just as true now as it was when we wrote it twelve years ago. Developing a useful, general framework for expressing the relations among different types of entities (what philosophers call “ontology”) seems intractably difficult. The main difference between the confusion that existed ten years ago and the confusion that exists now is that now a variety of inadequate ontological theories have been embodied in a plethora of correspondingly inadequate programming languages. For example, much of the complexity of object-oriented programming languages—and the subtle and confusing differences among contemporary object-oriented languages—centers on the treatment of generic operations on interrelated types. Our own discussion of computational objects in [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) avoids these issues entirely. Readers familiar with object-oriented programming will notice that we have much to say in chapter 3 about local state, but we do not even mention “classes” or “inheritance.” In fact, we suspect that these problems cannot be adequately addressed in terms of computer-language design alone, without also drawing on work in knowledge representation and automated reasoning.
+[^52]: هذا القول، الذي يظهر أيضًا في الطبعة الأولى من هذا الكتاب، صحيحٌ الآن كما كان حين كتبناه منذ اثنتَي عشرة سنة. ويبدو أنّ تطوير إطارٍ مفيدٍ وعامٍّ للتعبير عن العلاقات بين كياناتٍ من أنواعٍ مختلفة (وهو ما يسمّيه الفلاسفة «الأنطولوجيا (ontology)») عسيرٌ عسرًا مستعصيًا. وأمّا الفرق الرئيسيّ بين الالتباس الذي كان قائمًا منذ عشر سنوات والالتباس القائم اليوم فهو أنّ نظريّاتٍ أنطولوجيّةً متعدّدةً ناقصةً قد تجسّدت في وفرةٍ من لغات البرمجة الناقصة المقابلة لها. فمثلًا، يتمحور الكثير من تعقيد لغات البرمجة كائنيّة التوجّه — والاختلافات الخفيّة والمربكة بين لغات البرمجة كائنيّة التوجّه المعاصرة — حول معالجة العمليّات العامّة على الأنواع المترابطة. أمّا مناقشتنا نحن للكائنات الحسابيّة في [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) فهي تتجنّب هذه المسائل تمامًا. وسيلاحظ القرّاء الملمّون بالبرمجة كائنيّة التوجّه أنّ لدينا الكثير لتقوله في الفصل 3 عن الحالة المحليّة، لكنّنا لا نذكر حتّى «الأصناف» ولا «الوراثة». في الحقيقة، إنّنا نشكّ في أنّ هذه المسائل لا يمكن معالجتها معالجةً كافيةً من حيث تصميم لغات الحاسوب وحده، دون الاعتماد أيضًا على أعمالٍ في تمثيل المعرفة والاستدلال الآلي.
 
-[^53]: A real number can be projected to an integer using the `round` primitive, which returns the closest integer to its argument.
+[^53]: يمكن إسقاط العدد الحقيقيّ على عددٍ صحيحٍ باستخدام الأوّليّة `round` التي تعيد أقرب عددٍ صحيحٍ لمعطاها.
 
-[^54]: On the other hand, we will allow polynomials whose coefficients are themselves polynomials in other variables. This will give us essentially the same representational power as a full multivariate system, although it does lead to coercion problems, as discussed below.
+[^54]: ومن جهة أخرى، فإنّنا سنسمح بكثيرات حدودٍ معاملاتها هي نفسها كثيرات حدودٍ في متغيّراتٍ أخرى. وهذا سيمنحنا في الأساس القدرة التمثيليّة ذاتها التي يمنحها نظامٌ متعدّد المتغيّرات كامل، رغم أنّه يؤدّي إلى مسائل إكراهٍ، كما سنناقش أدناه.
 
-[^55]: For univariate polynomials, giving the value of a polynomial at a given set of points can be a particularly good representation. This makes polynomial arithmetic extremely simple. To obtain, for example, the sum of two polynomials represented in this way, we need only add the values of the polynomials at corresponding points. To transform back to a more familiar representation, we can use the Lagrange interpolation formula, which shows how to recover the coefficients of a polynomial of degree $undefined$ given the values of the polynomial at $undefined$ points.
+[^55]: أمّا في كثريات الحدود أحاديّة المتغيّر، فقد يكون إعطاء قيمة كثير الحدود عند مجموعةٍ معيّنةٍ من النقاط تمثيلًا جيّدًا بصفةٍ خاصّة. وهذا يجعل حساب كثيرات الحدود بالغ البساطة. فللحصول، مثلًا، على مجموع كثيرَي حدودٍ مُمثَّلين بهذه الطريقة، لا يحتاج إلّا أن نجمع قيمتَي كثيرَي الحدود عند النقاط المقابلة. وللتحويل رجعةً إلى تمثيلٍ أكثر ألفةً، يمكننا استخدام صيغة استكمال لاغرانج (Lagrange interpolation)، التي تُظهر كيف نستعيد معاملات كثير الحدود ذي الدرجة $undefined$ بمعلوميّة قيم كثير الحدود عند $undefined$ نقطة.
 
-[^56]: This operation is very much like the ordered `union-set` operation we developed in [Exercise 2.62](https://sarabander.github.io/sicp/html/2_002e3.xhtml#Exercise-2_002e62). In fact, if we think of the terms of the polynomial as a set ordered according to the power of the indeterminate, then the program that produces the term list for a sum is almost identical to `union-set`.
+[^56]: هذه العمليّة تشبه إلى حدٍّ بعيدٍ عمليّة `union-set` المرتّبة التي طوّرناها في [التمرين 2.62](https://sarabander.github.io/sicp/html/2_002e3.xhtml#Exercise-2_002e62). في الحقيقة، إذا فكّرنا في حدود كثير الحدود على أنّها مجموعةٌ مرتّبةٌ وفقًا لقوّة المجهول، فإنّ البرنامج الذي ينتج قائمة الحدود الخاصّة بمجموعٍ يكاد يكون مطابقًا لـ`union-set`.
 
-[^57]: To make this work completely smoothly, we should also add to our generic arithmetic system the ability to coerce a “number” to a polynomial by regarding it as a polynomial of degree zero whose coefficient is the number. This is necessary if we are going to perform operations such as $undefined$ which requires adding the coefficient $undefined$ to the coefficient 2.
+[^57]: ولكي يعمل هذا بسلاسةٍ تامّة، ينبغي لنا أيضًا أن نضيف إلى نظام الحساب العامّ خاصّتنا القدرة على إكراه «العدد» إلى كثير حدود باعتباره كثير حدودٍ من الدرجة صفرٍ معاملُه ذلك العدد. وهذا لازمٌ إذا كنّا سنؤدّي عمليّاتٍ مثل $undefined$ التي تتطلّب جمع المعامل $undefined$ إلى المعامل 2.
 
-[^58]: In these polynomial examples, we assume that we have implemented the generic arithmetic system using the type mechanism suggested in [Exercise 2.78](#Exercise-2_002e78). Thus, coefficients that are ordinary numbers will be represented as the numbers themselves rather than as pairs whose `car` is the symbol `scheme-number`.
+[^58]: في أمثلة كثيرات الحدود هذه، نفترض أنّنا نفّذنا نظام الحساب العامّ باستخدام آليّة الأنواع المقترحة في [التمرين 2.78](#Exercise-2_002e78). وبالتالي، فإنّ المعاملات التي هي أعدادٌ اعتياديّة ستُُمثَّل بالأعداد نفسها بدلًا من الأزواج التي `car` فيها هو الرمز `scheme-number`.
 
-[^59]: Although we are assuming that term lists are ordered, we have implemented `adjoin-term` to simply `cons` the new term onto the existing term list. We can get away with this so long as we guarantee that the procedures (such as `add-terms`) that use `adjoin-term` always call it with a higher-order term than appears in the list. If we did not want to make such a guarantee, we could have implemented `adjoin-term` to be similar to the `adjoin-set` constructor for the ordered-list representation of sets ([Exercise 2.61](https://sarabander.github.io/sicp/html/2_002e3.xhtml#Exercise-2_002e61)).
+[^59]: رغم أنّنا نفترض أنّ قوائم الحدود مرتّبة، فإنّنا نفّذنا `adjoin-term` بحيث يربط (`cons`) ببساطةٍ الحدّ الجديد على قائمة الحدود القائمة. ويمكننا الإفلات من هذا طالما نضمن أنّ الإجراءات (مثل `add-terms`) التي تستخدم `adjoin-term` تناديه دائمًا بحدٍّ ذي رتبةٍ أعلى ممّا يظهر في القائمة. ولو كنّا لا نريد تقديم مثل هذا الضمان، لأمكننا تنفيذ `adjoin-term` بحيث يكون شبيهًا ببانيّ `adjoin-set` الخاصّ بتمثيل المجموعات بالقوائم المرتّبة ([التمرين 2.61](https://sarabander.github.io/sicp/html/2_002e3.xhtml#Exercise-2_002e61)).
 
-[^60]: The fact that Euclid’s Algorithm works for polynomials is formalized in algebra by saying that polynomials form a kind of algebraic domain called a *Euclidean ring*. A Euclidean ring is a domain that admits addition, subtraction, and commutative multiplication, together with a way of assigning to each element $undefined$ of the ring a positive integer “measure” $undefined$ with the properties that $undefined$ for any nonzero $undefined$ and $undefined$ and that, given any $undefined$ and $undefined$ , there exists a $undefined$ such that $undefined$ and either $undefined$ or $undefined$ . From an abstract point of view, this is what is needed to prove that Euclid’s Algorithm works. For the domain of integers, the measure $undefined$ of an integer is the absolute value of the integer itself. For the domain of polynomials, the measure of a polynomial is its degree.
+[^60]: أمّا حقيقة أنّ خوارزميّة أقليدس تعمل مع كثيرات الحدود فتُصاغ رسميًّا في الجبر بالقول إنّ كثيرات الحدود تشكّل نوعًا من المجالات الجبريّة يُسمّى *الحلقة الإقليديّة (Euclidean ring)*. والحلقة الإقليديّة مجالٌ يقبل الجمع والطرح والضرب التبادليّ، مع طريقةٍ لإسناد «قياس» $undefined$ لكلّ عنصرٍ $undefined$ من الحلقة عددٌ صحيحٌ موجبٌ له الخصائص أنّ $undefined$ لأيّ $undefined$ غير الصفريّ و$undefined$ وأنّه، لأيّ $undefined$ و$undefined$ معطيين، هناك $undefined$ بحيث $undefined$ وإمّا $undefined$ أو $undefined$ . ومن وجهة نظرٍ مجرّدة، هذا هو ما يلزم لإثبات أنّ خوارزميّة أقليدس تعمل. وأمّا في مجال الأعداد الصحيحة، فالقياس $undefined$ لعددٍ صحيحٍ هو القيمة المطلقة للعدد نفسه. وأمّا في مجال كثيرات الحدود، فقياس كثير الحدود هو درجته.
 
-[^61]: In an implementation like MIT Scheme, this produces a polynomial that is indeed a divisor of $undefined$ and $undefined$ , but with rational coefficients. In many other Scheme systems, in which division of integers can produce limited-precision decimal numbers, we may fail to get a valid divisor.
+[^61]: في تنفيذٍ مثل MIT Scheme، ينتج هذا كثير حدودٍ هو بالفعل قاسمٌ لـ$undefined$ و$undefined$ ، لكن بمعاملاتٍ نسبيّة. وفي أنظمة Scheme عدّة أخرى، حيث يمكن لقسمة الأعداد الصحيحة أن تنتج أعدادًا عشريّة بدقّةٍ محدودة، قد نفشل في الحصول على قاسمٍ صالح.
 
-[^62]: One extremely efficient and elegant method for computing polynomial GCDs was discovered by Richard [Zippel (1979)](https://sarabander.github.io/sicp/html/References.xhtml#Zippel-_00281979_0029). The method is a probabilistic algorithm, as is the fast test for primality that we discussed in [Chapter 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1). Zippel’s book ([Zippel 1993](https://sarabander.github.io/sicp/html/References.xhtml#Zippel-1993)) describes this method, together with other ways to compute polynomial GCDs.
+[^62]: اكتشف ريتشارد [زيبل (1979)](https://sarabander.github.io/sicp/html/References.xhtml#Zippel-_00281979_0029) طريقةً بالغة الكفاءة والأناقة لاحتساب القواسم المشتركة الكبرى لكثيرات الحدود. وهذه الطريقة خوارزميّة احتماليّة، شأنها شأن الاختبار السريع لأوليّة العدد الذي ناقشناه في [الفصل 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1). ويصف كتاب زيبل ([زيبل 1993](https://sarabander.github.io/sicp/html/References.xhtml#Zippel-1993)) هذه الطريقة، مع طرائق أخرى لاحتساب القواسم المشتركة الكبرى لكثيرات الحدود.
