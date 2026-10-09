@@ -3,7 +3,7 @@
     {
       "key": "index",
       "title": "The SQL Murder Mystery",
-      "titleAr": "The SQL Murder Mystery",
+      "titleAr": "لغز القتل في SQL",
       "sections": [
         {
           "slug": "index",
@@ -15,7 +15,7 @@
     {
       "key": "walkthrough",
       "title": "The SQL Murder Mystery: Detailed Walkthrough",
-      "titleAr": "The SQL Murder Mystery: Detailed Walkthrough",
+      "titleAr": "لغز القتل في SQL: شرح تفصيلي",
       "sections": [
         {
           "slug": "index",

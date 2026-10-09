@@ -9,7 +9,8 @@
           "title": "Frontmatter",
           "order": 0
         }
-      ]
+      ],
+      "titleAr": "مقدّمة الكتاب"
     },
     {
       "key": "c1-building-abstractions-with-procedures",
@@ -20,7 +21,8 @@
           "title": "Building Abstractions with Procedures",
           "order": 1
         }
-      ]
+      ],
+      "titleAr": "بناء التجريدات بالإجراءات"
     },
     {
       "key": "c2-building-abstractions-with-data",
@@ -31,7 +33,8 @@
           "title": "Building Abstractions with Data",
           "order": 2
         }
-      ]
+      ],
+      "titleAr": "بناء التجريدات بالبيانات"
     },
     {
       "key": "c3-modularity-objects-and-state",
@@ -42,7 +45,8 @@
           "title": "Modularity, Objects, and State",
           "order": 3
         }
-      ]
+      ],
+      "titleAr": "الوحدانية والكائنات والحالة"
     },
     {
       "key": "c4-metalinguistic-abstraction",
@@ -53,7 +57,8 @@
           "title": "Metalinguistic Abstraction",
           "order": 4
         }
-      ]
+      ],
+      "titleAr": "التجريد فوق اللغوي"
     },
     {
       "key": "c5-computing-with-register-machines",
@@ -64,7 +69,8 @@
           "title": "Computing with Register Machines",
           "order": 5
         }
-      ]
+      ],
+      "titleAr": "الحوسبة بآلات المسجّلات"
     },
     {
       "key": "c6-backmatter",
@@ -75,7 +81,8 @@
           "title": "Backmatter",
           "order": 6
         }
-      ]
+      ],
+      "titleAr": "الملاحق والمصطلحات"
     }
   ]
 }

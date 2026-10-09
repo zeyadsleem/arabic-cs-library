@@ -3,7 +3,7 @@
     {
       "key": "introduction",
       "title": "Introduction",
-      "titleAr": "Introduction",
+      "titleAr": "مقدّمة",
       "sections": [
         {
           "slug": "index",
@@ -15,7 +15,7 @@
     {
       "key": "a-map-of-the-territory",
       "title": "A Map of the Territory",
-      "titleAr": "A Map of the Territory",
+      "titleAr": "خريطة الإقليم",
       "sections": [
         {
           "slug": "index",
@@ -27,7 +27,7 @@
     {
       "key": "welcome",
       "title": "Welcome",
-      "titleAr": "Welcome",
+      "titleAr": "مرحبًا",
       "sections": [
         {
           "slug": "index",
@@ -39,7 +39,7 @@
     {
       "key": "the-lox-language",
       "title": "The Lox Language",
-      "titleAr": "The Lox Language",
+      "titleAr": "لغة Lox",
       "sections": [
         {
           "slug": "index",
@@ -51,7 +51,7 @@
     {
       "key": "types-of-values",
       "title": "Types of Values",
-      "titleAr": "Types of Values",
+      "titleAr": "أنواع القيم",
       "sections": [
         {
           "slug": "index",
@@ -63,7 +63,7 @@
     {
       "key": "scanning",
       "title": "Scanning",
-      "titleAr": "Scanning",
+      "titleAr": "الفحص",
       "sections": [
         {
           "slug": "index",
@@ -75,7 +75,7 @@
     {
       "key": "scanning-on-demand",
       "title": "Scanning On Demand",
-      "titleAr": "Scanning On Demand",
+      "titleAr": "الفحص عند الطلب",
       "sections": [
         {
           "slug": "index",
@@ -87,7 +87,7 @@
     {
       "key": "representing-code",
       "title": "Representing Code",
-      "titleAr": "Representing Code",
+      "titleAr": "تمثيل الشيفرة",
       "sections": [
         {
           "slug": "index",
@@ -99,7 +99,7 @@
     {
       "key": "resolving-and-binding",
       "title": "Resolving and Binding",
-      "titleAr": "Resolving and Binding",
+      "titleAr": "تحديد الأسماء والربط",
       "sections": [
         {
           "slug": "index",
@@ -111,7 +111,7 @@
     {
       "key": "statements-and-state",
       "title": "Statements and State",
-      "titleAr": "Statements and State",
+      "titleAr": "العبارات التعليمية والحالة",
       "sections": [
         {
           "slug": "index",
@@ -123,7 +123,7 @@
     {
       "key": "classes",
       "title": "Classes",
-      "titleAr": "Classes",
+      "titleAr": "الأصناف",
       "sections": [
         {
           "slug": "index",
@@ -135,7 +135,7 @@
     {
       "key": "classes-and-instances",
       "title": "Classes and Instances",
-      "titleAr": "Classes and Instances",
+      "titleAr": "الأصناف والنسخ",
       "sections": [
         {
           "slug": "index",
@@ -147,7 +147,7 @@
     {
       "key": "methods-and-initializers",
       "title": "Methods and Initializers",
-      "titleAr": "Methods and Initializers",
+      "titleAr": "الطرق والمُهيِّئات",
       "sections": [
         {
           "slug": "index",
@@ -159,7 +159,7 @@
     {
       "key": "inheritance",
       "title": "Inheritance",
-      "titleAr": "Inheritance",
+      "titleAr": "الوراثة",
       "sections": [
         {
           "slug": "index",
@@ -171,7 +171,7 @@
     {
       "key": "superclasses",
       "title": "Superclasses",
-      "titleAr": "Superclasses",
+      "titleAr": "الأصناف الأب",
       "sections": [
         {
           "slug": "index",
@@ -183,7 +183,7 @@
     {
       "key": "control-flow",
       "title": "Control Flow",
-      "titleAr": "Control Flow",
+      "titleAr": "انسياب التحكم",
       "sections": [
         {
           "slug": "index",
@@ -195,7 +195,7 @@
     {
       "key": "parsing-expressions",
       "title": "Parsing Expressions",
-      "titleAr": "Parsing Expressions",
+      "titleAr": "تحليل التعابير",
       "sections": [
         {
           "slug": "index",
@@ -207,7 +207,7 @@
     {
       "key": "evaluating-expressions",
       "title": "Evaluating Expressions",
-      "titleAr": "Evaluating Expressions",
+      "titleAr": "تقييم التعابير",
       "sections": [
         {
           "slug": "index",
@@ -219,7 +219,7 @@
     {
       "key": "strings",
       "title": "Strings",
-      "titleAr": "Strings",
+      "titleAr": "السلاسل النصية",
       "sections": [
         {
           "slug": "index",
@@ -231,7 +231,7 @@
     {
       "key": "functions",
       "title": "Functions",
-      "titleAr": "Functions",
+      "titleAr": "الدوال",
       "sections": [
         {
           "slug": "index",
@@ -243,7 +243,7 @@
     {
       "key": "calls-and-functions",
       "title": "Calls and Functions",
-      "titleAr": "Calls and Functions",
+      "titleAr": "النداءات والدوال",
       "sections": [
         {
           "slug": "index",
@@ -255,7 +255,7 @@
     {
       "key": "closures",
       "title": "Closures",
-      "titleAr": "Closures",
+      "titleAr": "الإغلاقات",
       "sections": [
         {
           "slug": "index",
@@ -267,7 +267,7 @@
     {
       "key": "local-variables",
       "title": "Local Variables",
-      "titleAr": "Local Variables",
+      "titleAr": "المتغيّرات المحلية",
       "sections": [
         {
           "slug": "index",
@@ -279,7 +279,7 @@
     {
       "key": "a-virtual-machine",
       "title": "A Virtual Machine",
-      "titleAr": "A Virtual Machine",
+      "titleAr": "آلة افتراضية",
       "sections": [
         {
           "slug": "index",
@@ -291,7 +291,7 @@
     {
       "key": "compiling-expressions",
       "title": "Compiling Expressions",
-      "titleAr": "Compiling Expressions",
+      "titleAr": "تصريف التعابير",
       "sections": [
         {
           "slug": "index",
@@ -303,7 +303,7 @@
     {
       "key": "a-bytecode-virtual-machine",
       "title": "A Bytecode Virtual Machine",
-      "titleAr": "A Bytecode Virtual Machine",
+      "titleAr": "آلة افتراضية للبايت-كود",
       "sections": [
         {
           "slug": "index",
@@ -315,7 +315,7 @@
     {
       "key": "chunks-of-bytecode",
       "title": "Chunks of Bytecode",
-      "titleAr": "Chunks of Bytecode",
+      "titleAr": "كتل البايت-كود",
       "sections": [
         {
           "slug": "index",
@@ -327,7 +327,7 @@
     {
       "key": "a-tree-walk-interpreter",
       "title": "A Tree-Walk Interpreter",
-      "titleAr": "A Tree-Walk Interpreter",
+      "titleAr": "مُفسِّر باجتياز الشجرة",
       "sections": [
         {
           "slug": "index",
@@ -339,7 +339,7 @@
     {
       "key": "jumping-back-and-forth",
       "title": "Jumping Back and Forth",
-      "titleAr": "Jumping Back and Forth",
+      "titleAr": "القفز ذهابًا وإيابًا",
       "sections": [
         {
           "slug": "index",
@@ -351,7 +351,7 @@
     {
       "key": "global-variables",
       "title": "Global Variables",
-      "titleAr": "Global Variables",
+      "titleAr": "المتغيّرات العامة",
       "sections": [
         {
           "slug": "index",
@@ -363,7 +363,7 @@
     {
       "key": "hash-tables",
       "title": "Hash Tables",
-      "titleAr": "Hash Tables",
+      "titleAr": "جداول التجزئة",
       "sections": [
         {
           "slug": "index",
@@ -375,7 +375,7 @@
     {
       "key": "optimization",
       "title": "Optimization",
-      "titleAr": "Optimization",
+      "titleAr": "التحسين",
       "sections": [
         {
           "slug": "index",
@@ -387,7 +387,7 @@
     {
       "key": "garbage-collection",
       "title": "Garbage Collection",
-      "titleAr": "Garbage Collection",
+      "titleAr": "جمع القمامة",
       "sections": [
         {
           "slug": "index",
@@ -399,7 +399,7 @@
     {
       "key": "appendix-i",
       "title": "Appendix I",
-      "titleAr": "Appendix I",
+      "titleAr": "التذييل I",
       "sections": [
         {
           "slug": "index",
@@ -411,7 +411,7 @@
     {
       "key": "appendix-ii",
       "title": "Appendix II",
-      "titleAr": "Appendix II",
+      "titleAr": "التذييل II",
       "sections": [
         {
           "slug": "index",

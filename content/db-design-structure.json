@@ -3,7 +3,7 @@
     {
       "key": "chapter-1",
       "title": "Before the Advent of Database Systems",
-      "titleAr": "Before the Advent of Database Systems",
+      "titleAr": "قبل ظهور أنظمة قواعد البيانات",
       "sections": [
         {
           "slug": "index",
@@ -15,7 +15,7 @@
     {
       "key": "chapter-2",
       "title": "Fundamental Concepts",
-      "titleAr": "Fundamental Concepts",
+      "titleAr": "مفاهيم أساسية",
       "sections": [
         {
           "slug": "index",
@@ -27,7 +27,7 @@
     {
       "key": "chapter-3",
       "title": "Characteristics and Benefits of a Database",
-      "titleAr": "Characteristics and Benefits of a Database",
+      "titleAr": "خصائص قاعدة البيانات وفوائدها",
       "sections": [
         {
           "slug": "index",
@@ -39,7 +39,7 @@
     {
       "key": "chapter-4",
       "title": "Types of Database Models",
-      "titleAr": "Types of Database Models",
+      "titleAr": "أنواع نماذج قواعد البيانات",
       "sections": [
         {
           "slug": "index",
@@ -51,7 +51,7 @@
     {
       "key": "chapter-5",
       "title": "Data Modelling",
-      "titleAr": "Data Modelling",
+      "titleAr": "نمذجة البيانات",
       "sections": [
         {
           "slug": "index",
@@ -63,7 +63,7 @@
     {
       "key": "chapter-6",
       "title": "Classification of Database Systems",
-      "titleAr": "Classification of Database Systems",
+      "titleAr": "تصنيف أنظمة قواعد البيانات",
       "sections": [
         {
           "slug": "index",
@@ -75,7 +75,7 @@
     {
       "key": "chapter-7",
       "title": "The Relational Data Model",
-      "titleAr": "The Relational Data Model",
+      "titleAr": "النموذج العلائقي للبيانات",
       "sections": [
         {
           "slug": "index",
@@ -87,7 +87,7 @@
     {
       "key": "chapter-8",
       "title": "Entity Relationship Model",
-      "titleAr": "Entity Relationship Model",
+      "titleAr": "نموذج الكيانات والعلاقات",
       "sections": [
         {
           "slug": "index",
@@ -99,7 +99,7 @@
     {
       "key": "chapter-9",
       "title": "Integrity Rules and Constraints",
-      "titleAr": "Integrity Rules and Constraints",
+      "titleAr": "قواعد السلامة والقيود",
       "sections": [
         {
           "slug": "index",
@@ -111,7 +111,7 @@
     {
       "key": "chapter-10",
       "title": "ER Modelling",
-      "titleAr": "ER Modelling",
+      "titleAr": "نمذجة ER",
       "sections": [
         {
           "slug": "index",
@@ -123,7 +123,7 @@
     {
       "key": "chapter-11",
       "title": "Functional Dependencies",
-      "titleAr": "Functional Dependencies",
+      "titleAr": "التبعيات الوظيفية",
       "sections": [
         {
           "slug": "index",
@@ -135,7 +135,7 @@
     {
       "key": "chapter-12",
       "title": "Normalization",
-      "titleAr": "Normalization",
+      "titleAr": "التطبيع",
       "sections": [
         {
           "slug": "index",
@@ -147,7 +147,7 @@
     {
       "key": "chapter-13",
       "title": "The Database Development Process",
-      "titleAr": "The Database Development Process",
+      "titleAr": "عملية تطوير قواعد البيانات",
       "sections": [
         {
           "slug": "index",
@@ -159,7 +159,7 @@
     {
       "key": "chapter-14",
       "title": "Database Users",
-      "titleAr": "Database Users",
+      "titleAr": "مستخدمو قواعد البيانات",
       "sections": [
         {
           "slug": "index",
@@ -171,7 +171,7 @@
     {
       "key": "chapter-sql",
       "title": "Structured Query Language",
-      "titleAr": "Structured Query Language",
+      "titleAr": "لغة الاستعلام البنيوية (SQL)",
       "sections": [
         {
           "slug": "index",
@@ -183,7 +183,7 @@
     {
       "key": "chapter-sql-dml",
       "title": "SQL Data Manipulation",
-      "titleAr": "SQL Data Manipulation",
+      "titleAr": "معالجة البيانات في SQL",
       "sections": [
         {
           "slug": "index",
@@ -195,7 +195,7 @@
     {
       "key": "appendix-a",
       "title": "Appendix A: A university registration data model",
-      "titleAr": "Appendix A: A university registration data model",
+      "titleAr": "التذييل أ: نموذج بيانات تسجيل الجامعة",
       "sections": [
         {
           "slug": "index",
@@ -207,7 +207,7 @@
     {
       "key": "appendix-b",
       "title": "Appendix B: ERD exercises",
-      "titleAr": "Appendix B: ERD exercises",
+      "titleAr": "التذييل ب: تمارين ERD",
       "sections": [
         {
           "slug": "index",
@@ -219,7 +219,7 @@
     {
       "key": "appendix-d",
       "title": "Appendix D: SQL lab with solutions",
-      "titleAr": "Appendix D: SQL lab with solutions",
+      "titleAr": "التذييل د: تمرين SQL محلول",
       "sections": [
         {
           "slug": "index",

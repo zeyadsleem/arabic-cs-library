@@ -29,7 +29,7 @@
     {
       "key": "v1-bash",
       "title": "The Bourne-Again Shell",
-      "titleAr": "The Bourne-Again Shell",
+      "titleAr": "صدفة بورن-أغين (Bash)",
       "volume": "المجلد الأول",
       "sections": [
         {
@@ -42,7 +42,7 @@
     {
       "key": "v1-bdb",
       "title": "Berkeley DB",
-      "titleAr": "Berkeley DB",
+      "titleAr": "بيركلي DB",
       "volume": "المجلد الأول",
       "sections": [
         {
@@ -94,7 +94,7 @@
     {
       "key": "v1-hdfs",
       "title": "The Hadoop Distributed File System",
-      "titleAr": "The Hadoop Distributed File System",
+      "titleAr": "نظام هادوب الموزَّع للملفات (HDFS)",
       "volume": "المجلد الأول",
       "sections": [
         {
@@ -107,7 +107,7 @@
     {
       "key": "v1-integration",
       "title": "Continuous Integration",
-      "titleAr": "Continuous Integration",
+      "titleAr": "التكامل المستمر (Continuous Integration)",
       "volume": "المجلد الأول",
       "sections": [
         {
@@ -120,7 +120,7 @@
     {
       "key": "v1-intro1",
       "title": "Introduction",
-      "titleAr": "Introduction",
+      "titleAr": "مقدّمة",
       "volume": "المجلد الأول",
       "sections": [
         {
@@ -172,7 +172,7 @@
     {
       "key": "v1-nosql",
       "title": "The NoSQL Ecosystem",
-      "titleAr": "The NoSQL Ecosystem",
+      "titleAr": "منظومة NoSQL",
       "volume": "المجلد الأول",
       "sections": [
         {
@@ -185,7 +185,7 @@
     {
       "key": "v1-packaging",
       "title": "Python Packaging",
-      "titleAr": "Python Packaging",
+      "titleAr": "تغليف حِزم Python",
       "volume": "المجلد الأول",
       "sections": [
         {
@@ -198,7 +198,7 @@
     {
       "key": "v1-riak",
       "title": "Riak and Erlang/OTP",
-      "titleAr": "Riak and Erlang/OTP",
+      "titleAr": "Riak وErlang/OTP",
       "volume": "المجلد الأول",
       "sections": [
         {
@@ -341,7 +341,7 @@
     {
       "key": "v2-distsys",
       "title": "Scalable Web Architecture and Distributed Systems",
-      "titleAr": "Scalable Web Architecture and Distributed Systems",
+      "titleAr": "بنية الويب القابلة للتوسّع والأنظمة الموزّعة",
       "volume": "المجلد الثاني",
       "sections": [
         {
@@ -354,7 +354,7 @@
     {
       "key": "v2-ffreleng",
       "title": "Firefox Release Engineering",
-      "titleAr": "Firefox Release Engineering",
+      "titleAr": "هندسة إصدارات Firefox",
       "volume": "المجلد الثاني",
       "sections": [
         {
@@ -393,7 +393,7 @@
     {
       "key": "v2-ghc",
       "title": "The Glasgow Haskell Compiler",
-      "titleAr": "The Glasgow Haskell Compiler",
+      "titleAr": "مُصرِّف Glasgow لـHaskell",
       "volume": "المجلد الثاني",
       "sections": [
         {
@@ -432,7 +432,7 @@
     {
       "key": "v2-intro2",
       "title": "Introduction",
-      "titleAr": "Introduction",
+      "titleAr": "مقدّمة",
       "volume": "المجلد الثاني",
       "sections": [
         {
@@ -445,7 +445,7 @@
     {
       "key": "v2-ironlang",
       "title": "The Dynamic Language Runtime and the Iron Languages",
-      "titleAr": "The Dynamic Language Runtime and the Iron Languages",
+      "titleAr": "بيئة تشغيل اللغات الديناميكية ولغات Iron",
       "volume": "المجلد الثاني",
       "sections": [
         {
@@ -640,7 +640,7 @@
     {
       "key": "v2-yocto",
       "title": "The Yocto Project",
-      "titleAr": "The Yocto Project",
+      "titleAr": "مشروع Yocto",
       "volume": "المجلد الثاني",
       "sections": [
         {

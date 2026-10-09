@@ -3,7 +3,7 @@
     {
       "key": "introduction",
       "title": "Introduction",
-      "titleAr": "Introduction",
+      "titleAr": "مقدّمة",
       "sections": [
         {
           "slug": "index",
@@ -15,7 +15,7 @@
     {
       "key": "design-patterns-revisited",
       "title": "Design Patterns Revisited",
-      "titleAr": "Design Patterns Revisited",
+      "titleAr": "إعادة النظر في أنماط التصميم",
       "sections": [
         {
           "slug": "index",
@@ -27,7 +27,7 @@
     {
       "key": "command",
       "title": "Command",
-      "titleAr": "Command",
+      "titleAr": "الأمر (command)",
       "sections": [
         {
           "slug": "index",
@@ -39,7 +39,7 @@
     {
       "key": "flyweight",
       "title": "Flyweight",
-      "titleAr": "Flyweight",
+      "titleAr": "وزن الريش (flyweight)",
       "sections": [
         {
           "slug": "index",
@@ -51,7 +51,7 @@
     {
       "key": "observer",
       "title": "Observer",
-      "titleAr": "Observer",
+      "titleAr": "المراقب (observer)",
       "sections": [
         {
           "slug": "index",
@@ -63,7 +63,7 @@
     {
       "key": "prototype",
       "title": "Prototype",
-      "titleAr": "Prototype",
+      "titleAr": "النموذج الأولي (prototype)",
       "sections": [
         {
           "slug": "index",
@@ -75,7 +75,7 @@
     {
       "key": "singleton",
       "title": "Singleton",
-      "titleAr": "Singleton",
+      "titleAr": "الحالة الواحدة (singleton)",
       "sections": [
         {
           "slug": "index",
@@ -87,7 +87,7 @@
     {
       "key": "state",
       "title": "State",
-      "titleAr": "State",
+      "titleAr": "الحالة (state)",
       "sections": [
         {
           "slug": "index",
@@ -99,7 +99,7 @@
     {
       "key": "subclass-sandbox",
       "title": "Subclass Sandbox",
-      "titleAr": "Subclass Sandbox",
+      "titleAr": "ملعب الأصناف الفرعية (subclass sandbox)",
       "sections": [
         {
           "slug": "index",
@@ -111,7 +111,7 @@
     {
       "key": "bytecode",
       "title": "Bytecode",
-      "titleAr": "Bytecode",
+      "titleAr": "بايت-كود",
       "sections": [
         {
           "slug": "index",
@@ -123,7 +123,7 @@
     {
       "key": "type-object",
       "title": "Type Object",
-      "titleAr": "Type Object",
+      "titleAr": "كائن النوع (type object)",
       "sections": [
         {
           "slug": "index",
@@ -135,7 +135,7 @@
     {
       "key": "behavioral-patterns",
       "title": "Behavioral Patterns",
-      "titleAr": "Behavioral Patterns",
+      "titleAr": "الأنماط السلوكية",
       "sections": [
         {
           "slug": "index",
@@ -147,7 +147,7 @@
     {
       "key": "double-buffer",
       "title": "Double Buffer",
-      "titleAr": "Double Buffer",
+      "titleAr": "مخزَن مزدوج (double buffer)",
       "sections": [
         {
           "slug": "index",
@@ -159,7 +159,7 @@
     {
       "key": "game-loop",
       "title": "Game Loop",
-      "titleAr": "Game Loop",
+      "titleAr": "حلقة اللعبة (game loop)",
       "sections": [
         {
           "slug": "index",
@@ -171,7 +171,7 @@
     {
       "key": "update-method",
       "title": "Update Method",
-      "titleAr": "Update Method",
+      "titleAr": "طريقة التحديث (update method)",
       "sections": [
         {
           "slug": "index",
@@ -183,7 +183,7 @@
     {
       "key": "event-queue",
       "title": "Event Queue",
-      "titleAr": "Event Queue",
+      "titleAr": "طابور الأحداث (event queue)",
       "sections": [
         {
           "slug": "index",
@@ -195,7 +195,7 @@
     {
       "key": "component",
       "title": "Component",
-      "titleAr": "Component",
+      "titleAr": "مكوّن",
       "sections": [
         {
           "slug": "index",
@@ -207,7 +207,7 @@
     {
       "key": "decoupling-patterns",
       "title": "Decoupling Patterns",
-      "titleAr": "Decoupling Patterns",
+      "titleAr": "أنماط فك الارتباط",
       "sections": [
         {
           "slug": "index",
@@ -219,7 +219,7 @@
     {
       "key": "service-locator",
       "title": "Service Locator",
-      "titleAr": "Service Locator",
+      "titleAr": "مُحدِّد الخدمة (service locator)",
       "sections": [
         {
           "slug": "index",
@@ -231,7 +231,7 @@
     {
       "key": "sequencing-patterns",
       "title": "Sequencing Patterns",
-      "titleAr": "Sequencing Patterns",
+      "titleAr": "أنماط التسلسل",
       "sections": [
         {
           "slug": "index",
@@ -243,7 +243,7 @@
     {
       "key": "optimization-patterns",
       "title": "Optimization Patterns",
-      "titleAr": "Optimization Patterns",
+      "titleAr": "أنماط التحسين",
       "sections": [
         {
           "slug": "index",
@@ -255,7 +255,7 @@
     {
       "key": "dirty-flag",
       "title": "Dirty Flag",
-      "titleAr": "Dirty Flag",
+      "titleAr": "راية التلويث (dirty flag)",
       "sections": [
         {
           "slug": "index",
@@ -267,7 +267,7 @@
     {
       "key": "object-pool",
       "title": "Object Pool",
-      "titleAr": "Object Pool",
+      "titleAr": "مجموعة الكائنات (object pool)",
       "sections": [
         {
           "slug": "index",
@@ -279,7 +279,7 @@
     {
       "key": "spatial-partition",
       "title": "Spatial Partition",
-      "titleAr": "Spatial Partition",
+      "titleAr": "التقسيم المكاني (spatial partition)",
       "sections": [
         {
           "slug": "index",
@@ -291,7 +291,7 @@
     {
       "key": "data-locality",
       "title": "Data Locality",
-      "titleAr": "Data Locality",
+      "titleAr": "قرب البيانات (data locality)",
       "sections": [
         {
           "slug": "index",
@@ -303,7 +303,7 @@
     {
       "key": "architecture-performance-and-games",
       "title": "Architecture, Performance, and Games",
-      "titleAr": "Architecture, Performance, and Games",
+      "titleAr": "المعمارية والأداء والألعاب",
       "sections": [
         {
           "slug": "index",

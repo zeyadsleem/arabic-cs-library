@@ -3,7 +3,7 @@
     {
       "key": "c0-introduction",
       "title": "0. Introduction",
-      "titleAr": "0. Introduction",
+      "titleAr": "0. مقدمة",
       "sections": [
         {
           "slug": "index",
@@ -15,7 +15,7 @@
     {
       "key": "c1-intro",
       "title": "1. By the C, by the C, by the Beautiful C",
-      "titleAr": "1. By the C, by the C, by the Beautiful C",
+      "titleAr": "1. إلى C، بواسطة C، عبر C الجميلة",
       "sections": [
         {
           "slug": "index",
@@ -27,7 +27,7 @@
     {
       "key": "c2-depth",
       "title": "2. A Deeper Dive into C Programming",
-      "titleAr": "2. A Deeper Dive into C Programming",
+      "titleAr": "2. غوص أعمق في برمجة C",
       "sections": [
         {
           "slug": "index",
@@ -39,7 +39,7 @@
     {
       "key": "c3-debug",
       "title": "3. C Debugging Tools",
-      "titleAr": "3. C Debugging Tools",
+      "titleAr": "3. أدوات تنقيح C",
       "sections": [
         {
           "slug": "index",
@@ -51,7 +51,7 @@
     {
       "key": "c4-binary",
       "title": "4. Binary and Data Representation",
-      "titleAr": "4. Binary and Data Representation",
+      "titleAr": "4. التمثيل الثنائي والبيانات",
       "sections": [
         {
           "slug": "index",
@@ -63,7 +63,7 @@
     {
       "key": "c5-arch",
       "title": "5. What von Neumann Knew: Computer Architecture",
-      "titleAr": "5. What von Neumann Knew: Computer Architecture",
+      "titleAr": "5. ما عرفه von Neumann: بنية الحاسوب",
       "sections": [
         {
           "slug": "index",
@@ -75,7 +75,7 @@
     {
       "key": "c6-asm-intro",
       "title": "6. Under the C: Diving into Assembly",
-      "titleAr": "6. Under the C: Diving into Assembly",
+      "titleAr": "6. تحت C: الغوص في لغة التجميع",
       "sections": [
         {
           "slug": "index",
@@ -87,7 +87,7 @@
     {
       "key": "c7-x86-64",
       "title": "7. 64-bit x86 Assembly (x86-64)",
-      "titleAr": "7. 64-bit x86 Assembly (x86-64)",
+      "titleAr": "7. لغة تجميع x86 ذات 64 بت (x86-64)",
       "sections": [
         {
           "slug": "index",
@@ -99,7 +99,7 @@
     {
       "key": "c8-ia32",
       "title": "8. 32-bit x86 Assembly (IA32)",
-      "titleAr": "8. 32-bit x86 Assembly (IA32)",
+      "titleAr": "8. لغة تجميع x86 ذات 32 بت (IA32)",
       "sections": [
         {
           "slug": "index",
@@ -111,7 +111,7 @@
     {
       "key": "c9-arm64",
       "title": "9. ARM Assembly",
-      "titleAr": "9. ARM Assembly",
+      "titleAr": "9. لغة تجميع ARM",
       "sections": [
         {
           "slug": "index",
@@ -123,7 +123,7 @@
     {
       "key": "c10-asm-takeaways",
       "title": "10. Key Assembly Takeaways",
-      "titleAr": "10. Key Assembly Takeaways",
+      "titleAr": "10. أبرز خلاصات لغة التجميع",
       "sections": [
         {
           "slug": "index",
@@ -135,7 +135,7 @@
     {
       "key": "c11-memhierarchy",
       "title": "11. Storage and the Memory Hierarchy",
-      "titleAr": "11. Storage and the Memory Hierarchy",
+      "titleAr": "11. التخزين وتدرّج الذاكرة",
       "sections": [
         {
           "slug": "index",
@@ -147,7 +147,7 @@
     {
       "key": "c12-codeopt",
       "title": "12. Code Optimization",
-      "titleAr": "12. Code Optimization",
+      "titleAr": "12. تحسين الشيفرة",
       "sections": [
         {
           "slug": "index",
@@ -159,7 +159,7 @@
     {
       "key": "c13-os",
       "title": "13. The Operating System",
-      "titleAr": "13. The Operating System",
+      "titleAr": "13. نظام التشغيل",
       "sections": [
         {
           "slug": "index",
@@ -171,7 +171,7 @@
     {
       "key": "c14-sharedmemory",
       "title": "14. Leveraging Shared Memory in the Multicore Era",
-      "titleAr": "14. Leveraging Shared Memory in the Multicore Era",
+      "titleAr": "14. استغلال الذاكرة المشتركة في عصر الأنوية المتعدّدة",
       "sections": [
         {
           "slug": "index",
@@ -183,7 +183,7 @@
     {
       "key": "c15-parallel",
       "title": "15. Looking Ahead: Other Parallel Systems and Parallel Programming Models",
-      "titleAr": "15. Looking Ahead: Other Parallel Systems and Parallel Programming Models",
+      "titleAr": "15. نظرة إلى المستقبل: أنظمة متوازية أخرى ونماذج البرمجة المتوازية",
       "sections": [
         {
           "slug": "index",
@@ -195,7 +195,7 @@
     {
       "key": "c16-appendix-1",
       "title": "16. Appendix 1: Chapter 1 for Java Programmers",
-      "titleAr": "16. Appendix 1: Chapter 1 for Java Programmers",
+      "titleAr": "16. التذييل 1: الفصل 1 لمبرمجي Java",
       "sections": [
         {
           "slug": "index",
@@ -207,7 +207,7 @@
     {
       "key": "c17-appendix-2",
       "title": "17. Appendix 2: Using Unix",
-      "titleAr": "17. Appendix 2: Using Unix",
+      "titleAr": "17. التذييل 2: استخدام Unix",
       "sections": [
         {
           "slug": "index",

@@ -274,7 +274,7 @@ const run = () => {
   const emitSection = (book, chapter, slug, title, html) => {
     html = resolveImages(html);
     const entry = {
-      book: book.id, chapter: chapter.key, chapterTitle: chapter.title,
+      book: book.id, chapter: chapter.key, chapterTitle: chapter.titleAr || chapter.title,
       slug, title, headings: extractHeadings(html), html,
     };
     fs.writeFileSync(
@@ -284,11 +284,11 @@ const run = () => {
     chapter.sections.push({ slug, title });
     searchIndex.push({
       book: book.id, bookTitle: book.title, chapter: chapter.key,
-      chapterTitle: chapter.title, slug, title,
+      chapterTitle: chapter.titleAr || chapter.title, slug, title,
       text: normalizeText(stripHtml(html)).slice(0, 3000),
     });
     flatSections.push({
-      book: book.id, chapter: chapter.key, chapterTitle: chapter.title, slug, title,
+      book: book.id, chapter: chapter.key, chapterTitle: chapter.titleAr || chapter.title, slug, title,
     });
   };
 

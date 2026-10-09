@@ -3,7 +3,7 @@
     {
       "key": "1_Introduction",
       "title": "1. Introduction",
-      "titleAr": "1. Introduction",
+      "titleAr": "1. مقدمة",
       "sections": [
         {
           "slug": "index",
@@ -15,7 +15,7 @@
     {
       "key": "2_Array_Based_Lists",
       "title": "2. Array-Based Lists",
-      "titleAr": "2. Array-Based Lists",
+      "titleAr": "2. القوائم المبنية على مصفوفة",
       "sections": [
         {
           "slug": "index",
@@ -27,7 +27,7 @@
     {
       "key": "3_Linked_Lists",
       "title": "3. Linked Lists",
-      "titleAr": "3. Linked Lists",
+      "titleAr": "3. القوائم المترابطة",
       "sections": [
         {
           "slug": "index",
@@ -39,7 +39,7 @@
     {
       "key": "4_Skiplists",
       "title": "4. Skiplists",
-      "titleAr": "4. Skiplists",
+      "titleAr": "4. القوائم المتخطّاة",
       "sections": [
         {
           "slug": "index",
@@ -51,7 +51,7 @@
     {
       "key": "5_Hash_Tables",
       "title": "5. Hash Tables",
-      "titleAr": "5. Hash Tables",
+      "titleAr": "5. جداول التجزئة",
       "sections": [
         {
           "slug": "index",
@@ -63,7 +63,7 @@
     {
       "key": "6_Binary_Trees",
       "title": "6. Binary Trees",
-      "titleAr": "6. Binary Trees",
+      "titleAr": "6. الأشجار الثنائية",
       "sections": [
         {
           "slug": "index",
@@ -75,7 +75,7 @@
     {
       "key": "7_Random_Binary_Search_Tree",
       "title": "7. Random Binary Search Trees",
-      "titleAr": "7. Random Binary Search Trees",
+      "titleAr": "7. أشجار البحث الثنائية العشوائية",
       "sections": [
         {
           "slug": "index",
@@ -87,7 +87,7 @@
     {
       "key": "8_Scapegoat_Trees",
       "title": "8. Scapegoat Trees",
-      "titleAr": "8. Scapegoat Trees",
+      "titleAr": "8. أشجار كبش الفداء",
       "sections": [
         {
           "slug": "index",
@@ -99,7 +99,7 @@
     {
       "key": "9_Red_Black_Trees",
       "title": "9. Red-Black Trees",
-      "titleAr": "9. Red-Black Trees",
+      "titleAr": "9. الأشجار الحمراء-السوداء",
       "sections": [
         {
           "slug": "index",
@@ -111,7 +111,7 @@
     {
       "key": "10_Heaps",
       "title": "10. Heaps",
-      "titleAr": "10. Heaps",
+      "titleAr": "10. الأكوام",
       "sections": [
         {
           "slug": "index",
@@ -123,7 +123,7 @@
     {
       "key": "11_Sorting_Algorithms",
       "title": "11. Sorting Algorithms",
-      "titleAr": "11. Sorting Algorithms",
+      "titleAr": "11. خوارزميات الترتيب",
       "sections": [
         {
           "slug": "index",
@@ -135,7 +135,7 @@
     {
       "key": "12_Graphs",
       "title": "12. Graphs",
-      "titleAr": "12. Graphs",
+      "titleAr": "12. الرسوم البيانية",
       "sections": [
         {
           "slug": "index",
@@ -147,7 +147,7 @@
     {
       "key": "13_Data_Structures_Integers",
       "title": "13. Data Structures for Integers",
-      "titleAr": "13. Data Structures for Integers",
+      "titleAr": "13. بنى بيانات الأعداد الصحيحة",
       "sections": [
         {
           "slug": "index",
@@ -159,7 +159,7 @@
     {
       "key": "14_External_Memory_Searchin",
       "title": "14. External Memory Searching",
-      "titleAr": "14. External Memory Searching",
+      "titleAr": "14. البحث في الذاكرة الخارجية",
       "sections": [
         {
           "slug": "index",

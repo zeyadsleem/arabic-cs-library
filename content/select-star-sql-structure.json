@@ -3,7 +3,7 @@
     {
       "key": "frontmatter",
       "title": "Front Matter",
-      "titleAr": "Front Matter",
+      "titleAr": "الصفحات التمهيدية",
       "sections": [
         {
           "slug": "index",
@@ -15,7 +15,7 @@
     {
       "key": "beazley",
       "title": "Beazley's Last Statement",
-      "titleAr": "Beazley's Last Statement",
+      "titleAr": "آخر عبارة لـ Beazley",
       "sections": [
         {
           "slug": "index",
@@ -27,7 +27,7 @@
     {
       "key": "innocence",
       "title": "Claims of Innocence",
-      "titleAr": "Claims of Innocence",
+      "titleAr": "ادّعاءات البراءة",
       "sections": [
         {
           "slug": "index",
@@ -39,7 +39,7 @@
     {
       "key": "hiatuses",
       "title": "Execution Hiatuses",
-      "titleAr": "Execution Hiatuses",
+      "titleAr": "انقطاعات التنفيذ",
       "sections": [
         {
           "slug": "index",
@@ -51,7 +51,7 @@
     {
       "key": "longtail",
       "title": "The Long Tail",
-      "titleAr": "The Long Tail",
+      "titleAr": "الذيل الطويل",
       "sections": [
         {
           "slug": "index",
@@ -63,7 +63,7 @@
     {
       "key": "questions",
       "title": "Closing Remarks and Challenge Questions",
-      "titleAr": "Closing Remarks and Challenge Questions",
+      "titleAr": "خاتمة وأسئلة للتحدي",
       "sections": [
         {
           "slug": "index",

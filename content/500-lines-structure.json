@@ -3,7 +3,7 @@
     {
       "key": "introduction",
       "title": "Introduction",
-      "titleAr": "Introduction",
+      "titleAr": "مقدّمة",
       "sections": [
         {
           "slug": "index",
@@ -15,7 +15,7 @@
     {
       "key": "blockcode",
       "title": "Blockcode: A visual programming toolkit",
-      "titleAr": "Blockcode: A visual programming toolkit",
+      "titleAr": "Blockcode: أدوات برمجة بصرية",
       "sections": [
         {
           "slug": "index",
@@ -27,7 +27,7 @@
     {
       "key": "ci",
       "title": "A Continuous Integration System",
-      "titleAr": "A Continuous Integration System",
+      "titleAr": "نظام تكامل مستمر",
       "sections": [
         {
           "slug": "index",
@@ -39,7 +39,7 @@
     {
       "key": "cluster",
       "title": "Clustering by Consensus",
-      "titleAr": "Clustering by Consensus",
+      "titleAr": "التجميع بالتوافق",
       "sections": [
         {
           "slug": "index",
@@ -51,7 +51,7 @@
     {
       "key": "contingent",
       "title": "Contingent: A Fully Dynamic Build System",
-      "titleAr": "Contingent: A Fully Dynamic Build System",
+      "titleAr": "Contingent: نظام بناء ديناميكي بالكامل",
       "sections": [
         {
           "slug": "index",
@@ -63,7 +63,7 @@
     {
       "key": "crawler",
       "title": "A Web Crawler With asyncio Coroutines",
-      "titleAr": "A Web Crawler With asyncio Coroutines",
+      "titleAr": "زاحف ويب باستخدام coroutines في asyncio",
       "sections": [
         {
           "slug": "index",
@@ -75,7 +75,7 @@
     {
       "key": "dagoba",
       "title": "Dagoba: an in-memory graph database",
-      "titleAr": "Dagoba: an in-memory graph database",
+      "titleAr": "Dagoba: قاعدة بيانات رسم بياني في الذاكرة",
       "sections": [
         {
           "slug": "index",
@@ -87,7 +87,7 @@
     {
       "key": "data-store",
       "title": "DBDB: Dog Bed Database",
-      "titleAr": "DBDB: Dog Bed Database",
+      "titleAr": "DBDB: قاعدة بيانات Dog Bed",
       "sections": [
         {
           "slug": "index",
@@ -99,7 +99,7 @@
     {
       "key": "event-web-framework",
       "title": "An Event-Driven Web Framework",
-      "titleAr": "An Event-Driven Web Framework",
+      "titleAr": "إطار عمل ويب قائم على الأحداث",
       "sections": [
         {
           "slug": "index",
@@ -111,7 +111,7 @@
     {
       "key": "flow-shop",
       "title": "A Flow Shop Scheduler",
-      "titleAr": "A Flow Shop Scheduler",
+      "titleAr": "مجدوّل ورشة التدفّق",
       "sections": [
         {
           "slug": "index",
@@ -123,7 +123,7 @@
     {
       "key": "functionalDB",
       "title": "An Archaeology-Inspired Database",
-      "titleAr": "An Archaeology-Inspired Database",
+      "titleAr": "قاعدة بيانات مستوحاة من علم الآثار",
       "sections": [
         {
           "slug": "index",
@@ -135,7 +135,7 @@
     {
       "key": "image-filters",
       "title": "Making Your Own Image Filters",
-      "titleAr": "Making Your Own Image Filters",
+      "titleAr": "إنشاء مرشّحات صورك بنفسك",
       "sections": [
         {
           "slug": "index",
@@ -147,7 +147,7 @@
     {
       "key": "interpreter",
       "title": "A Python Interpreter Written in Python",
-      "titleAr": "A Python Interpreter Written in Python",
+      "titleAr": "مُفسِّر Python مكتوب بـ Python",
       "sections": [
         {
           "slug": "index",
@@ -159,7 +159,7 @@
     {
       "key": "modeller",
       "title": "A 3D Modeller",
-      "titleAr": "A 3D Modeller",
+      "titleAr": "مُصمِّم نماذج ثلاثية الأبعاد",
       "sections": [
         {
           "slug": "index",
@@ -171,7 +171,7 @@
     {
       "key": "objmodel",
       "title": "A Simple Object Model",
-      "titleAr": "A Simple Object Model",
+      "titleAr": "نموذج كائنات بسيط",
       "sections": [
         {
           "slug": "index",
@@ -183,7 +183,7 @@
     {
       "key": "ocr",
       "title": "Optical Character Recognition (OCR)",
-      "titleAr": "Optical Character Recognition (OCR)",
+      "titleAr": "التعرّف الضوئي على المحارف (OCR)",
       "sections": [
         {
           "slug": "index",
@@ -195,7 +195,7 @@
     {
       "key": "pedometer",
       "title": "A Pedometer in the Real World",
-      "titleAr": "A Pedometer in the Real World",
+      "titleAr": "عدّاد خطوات في العالم الحقيقي",
       "sections": [
         {
           "slug": "index",
@@ -207,7 +207,7 @@
     {
       "key": "same-origin-policy",
       "title": "The Same-Origin Policy",
-      "titleAr": "The Same-Origin Policy",
+      "titleAr": "سياسة الأصل نفسه",
       "sections": [
         {
           "slug": "index",
@@ -219,7 +219,7 @@
     {
       "key": "sampler",
       "title": "A Rejection Sampler",
-      "titleAr": "A Rejection Sampler",
+      "titleAr": "أخذ عينات بأسلوب الرفض",
       "sections": [
         {
           "slug": "index",
@@ -231,7 +231,7 @@
     {
       "key": "spreadsheet",
       "title": "Web Spreadsheet",
-      "titleAr": "Web Spreadsheet",
+      "titleAr": "جدول بيانات على الويب",
       "sections": [
         {
           "slug": "index",
@@ -243,7 +243,7 @@
     {
       "key": "static-analysis",
       "title": "Static Analysis",
-      "titleAr": "Static Analysis",
+      "titleAr": "التحليل الساكن",
       "sections": [
         {
           "slug": "index",
@@ -255,7 +255,7 @@
     {
       "key": "template-engine",
       "title": "A Template Engine",
-      "titleAr": "A Template Engine",
+      "titleAr": "محرّك قوالب",
       "sections": [
         {
           "slug": "index",
@@ -267,7 +267,7 @@
     {
       "key": "web-server",
       "title": "A Simple Web Server",
-      "titleAr": "A Simple Web Server",
+      "titleAr": "خادم ويب بسيط",
       "sections": [
         {
           "slug": "index",

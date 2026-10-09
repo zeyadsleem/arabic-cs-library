@@ -3,7 +3,7 @@
     {
       "key": "model-data",
       "title": "Data and information",
-      "titleAr": "Data and information",
+      "titleAr": "البيانات والمعلومات",
       "sections": [
         {
           "slug": "index",
@@ -15,7 +15,7 @@
     {
       "key": "sql-pgadmin",
       "title": "Installation of pgAdmin",
-      "titleAr": "Installation of pgAdmin",
+      "titleAr": "تثبيت pgAdmin",
       "sections": [
         {
           "slug": "index",
@@ -27,7 +27,7 @@
     {
       "key": "sql-intro",
       "title": "Intro SQL",
-      "titleAr": "Intro SQL",
+      "titleAr": "مقدمة في SQL",
       "sections": [
         {
           "slug": "index",
@@ -39,7 +39,7 @@
     {
       "key": "model-vraag-naar-data",
       "title": "From question to data",
-      "titleAr": "From question to data",
+      "titleAr": "من السؤال إلى البيانات",
       "sections": [
         {
           "slug": "index",
@@ -51,7 +51,7 @@
     {
       "key": "model-conceptueel",
       "title": "Conceptual data model",
-      "titleAr": "Conceptual data model",
+      "titleAr": "النموذج المفاهيمي للبيانات",
       "sections": [
         {
           "slug": "index",
@@ -63,7 +63,7 @@
     {
       "key": "model-conceptueel-oefeningen",
       "title": "Conceptual data model: exercises",
-      "titleAr": "Conceptual data model: exercises",
+      "titleAr": "تمارين النموذج المفاهيمي للبيانات",
       "sections": [
         {
           "slug": "index",
@@ -75,7 +75,7 @@
     {
       "key": "sql-csv",
       "title": "Fetching information from a data file via SQL",
-      "titleAr": "Fetching information from a data file via SQL",
+      "titleAr": "استخراج المعلومات من ملف بيانات باستخدام SQL",
       "sections": [
         {
           "slug": "index",
@@ -87,7 +87,7 @@
     {
       "key": "sql-select",
       "title": "The SELECT clause in detail",
-      "titleAr": "The SELECT clause in detail",
+      "titleAr": "بَند SELECT بالتفصيل",
       "sections": [
         {
           "slug": "index",
@@ -99,7 +99,7 @@
     {
       "key": "sql-where",
       "title": "The WHERE clause in detail",
-      "titleAr": "The WHERE clause in detail",
+      "titleAr": "بَند WHERE بالتفصيل",
       "sections": [
         {
           "slug": "index",
@@ -111,7 +111,7 @@
     {
       "key": "sql-groupby-having",
       "title": "The GROUP BY and HAVING clauses in detail",
-      "titleAr": "The GROUP BY and HAVING clauses in detail",
+      "titleAr": "بَندا GROUP BY و HAVING بالتفصيل",
       "sections": [
         {
           "slug": "index",
@@ -123,7 +123,7 @@
     {
       "key": "sql-orderby",
       "title": "The ORDER BY clause in detail",
-      "titleAr": "The ORDER BY clause in detail",
+      "titleAr": "بَند ORDER BY بالتفصيل",
       "sections": [
         {
           "slug": "index",
@@ -135,7 +135,7 @@
     {
       "key": "sql-limit",
       "title": "The LIMIT clause",
-      "titleAr": "The LIMIT clause",
+      "titleAr": "بَند LIMIT",
       "sections": [
         {
           "slug": "index",
@@ -147,7 +147,7 @@
     {
       "key": "sql-eenopveel",
       "title": "One-to-many relationships",
-      "titleAr": "One-to-many relationships",
+      "titleAr": "العلاقات واحد-إلى-متعدد",
       "sections": [
         {
           "slug": "index",
@@ -159,7 +159,7 @@
     {
       "key": "sql-innerjoin",
       "title": "Combining tables with INNER JOIN",
-      "titleAr": "Combining tables with INNER JOIN",
+      "titleAr": "وصل الجداول باستخدام INNER JOIN",
       "sections": [
         {
           "slug": "index",
@@ -171,7 +171,7 @@
     {
       "key": "sql-outerjoin",
       "title": "Combining tables with OUTER JOIN",
-      "titleAr": "Combining tables with OUTER JOIN",
+      "titleAr": "وصل الجداول باستخدام OUTER JOIN",
       "sections": [
         {
           "slug": "index",
@@ -183,7 +183,7 @@
     {
       "key": "sql-tennis",
       "title": "SQL Exercises on tennis club database",
-      "titleAr": "SQL Exercises on tennis club database",
+      "titleAr": "تمارين SQL على قاعدة بيانات نادي التنس",
       "sections": [
         {
           "slug": "index",
@@ -195,7 +195,7 @@
     {
       "key": "model-logisch",
       "title": "Logical data model",
-      "titleAr": "Logical data model",
+      "titleAr": "النموذج المنطقي للبيانات",
       "sections": [
         {
           "slug": "index",
@@ -207,7 +207,7 @@
     {
       "key": "model-logisch-oefeningen",
       "title": "Logical data model: exercises",
-      "titleAr": "Logical data model: exercises",
+      "titleAr": "تمارين النموذج المنطقي للبيانات",
       "sections": [
         {
           "slug": "index",
@@ -219,7 +219,7 @@
     {
       "key": "model-fysiek",
       "title": "Physical data model",
-      "titleAr": "Physical data model",
+      "titleAr": "النموذج المادي للبيانات",
       "sections": [
         {
           "slug": "index",
@@ -231,7 +231,7 @@
     {
       "key": "sql-dbschema",
       "title": "DBSchema PostgreSQL client",
-      "titleAr": "DBSchema PostgreSQL client",
+      "titleAr": "عميل DBSchema لقاعدة بيانات PostgreSQL",
       "sections": [
         {
           "slug": "index",
@@ -243,7 +243,7 @@
     {
       "key": "sql-privileges",
       "title": "Allocation of PRIVILEGES",
-      "titleAr": "Allocation of PRIVILEGES",
+      "titleAr": "منح PRIVILEGES",
       "sections": [
         {
           "slug": "index",
@@ -255,7 +255,7 @@
     {
       "key": "sql-subquery",
       "title": "Subqueries",
-      "titleAr": "Subqueries",
+      "titleAr": "الاستعلامات الفرعية",
       "sections": [
         {
           "slug": "index",
@@ -267,7 +267,7 @@
     {
       "key": "sql-kookclub",
       "title": "Exercises SQL on database for a cooking club",
-      "titleAr": "Exercises SQL on database for a cooking club",
+      "titleAr": "تمارين SQL على قاعدة بيانات نادي الطبخ",
       "sections": [
         {
           "slug": "index",
@@ -279,7 +279,7 @@
     {
       "key": "model-drawio",
       "title": "Draw models with draw.io",
-      "titleAr": "Draw models with draw.io",
+      "titleAr": "رسم المخططات باستخدام draw.io",
       "sections": [
         {
           "slug": "index",

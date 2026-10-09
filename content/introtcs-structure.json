@@ -3,7 +3,7 @@
     {
       "key": "lec_00_0_preface",
       "title": "Preface {#prefacechap }",
-      "titleAr": "Preface",
+      "titleAr": "تمهيد",
       "sections": [
         {
           "slug": "index",
@@ -15,7 +15,7 @@
     {
       "key": "lec_00_1_math_background",
       "title": "Mathematical Background { #chapmath }",
-      "titleAr": "Mathematical Background",
+      "titleAr": "الخلفية الرياضية",
       "sections": [
         {
           "slug": "index",
@@ -27,7 +27,7 @@
     {
       "key": "lec_01_introduction",
       "title": "Introduction { #chapintro }",
-      "titleAr": "Introduction",
+      "titleAr": "مقدمة",
       "sections": [
         {
           "slug": "index",
@@ -39,7 +39,7 @@
     {
       "key": "lec_02_representation",
       "title": "Computation and Representation {#chaprepres }",
-      "titleAr": "Representing Information",
+      "titleAr": "الاحتساب والتمثيل",
       "sections": [
         {
           "slug": "index",
@@ -51,7 +51,7 @@
     {
       "key": "lec_03_computation",
       "title": "Defining computation {#compchap }",
-      "titleAr": "Computation",
+      "titleAr": "تعريف الاحتساب",
       "sections": [
         {
           "slug": "index",
@@ -63,7 +63,7 @@
     {
       "key": "lec_03a_computing_every_function",
       "title": "Syntactic sugar, and computing every function {#finiteuniversalchap }",
-      "titleAr": "Computing Every Function",
+      "titleAr": "السكر النحوي واحتساب كل دالة",
       "sections": [
         {
           "slug": "index",
@@ -75,7 +75,7 @@
     {
       "key": "lec_04_code_and_data",
       "title": "Code as data, data as code { #codeanddatachap }",
-      "titleAr": "Code and Data",
+      "titleAr": "الشيفرة بيانات، والبيانات شيفرة",
       "sections": [
         {
           "slug": "index",
@@ -87,7 +87,7 @@
     {
       "key": "lec_05_infinite",
       "title": "Functions with Infinite domains, Automata, and Regular expressions { #chapinfinite }",
-      "titleAr": "Infinite Sets",
+      "titleAr": "المجالات اللانهائية والآلات والتعبيرات النمطية",
       "sections": [
         {
           "slug": "index",
@@ -99,7 +99,7 @@
     {
       "key": "lec_06_loops",
       "title": "Loops and infinity { #chaploops }",
-      "titleAr": "Loops and Recursions",
+      "titleAr": "الحلقات واللانهاية",
       "sections": [
         {
           "slug": "index",
@@ -111,7 +111,7 @@
     {
       "key": "lec_07_other_models",
       "title": "Equivalent models of computation { #chapequivalentmodels }",
-      "titleAr": "Other Models of Computation",
+      "titleAr": "نماذج مكافئة للاحتساب",
       "sections": [
         {
           "slug": "index",
@@ -123,7 +123,7 @@
     {
       "key": "lec_08_uncomputability",
       "title": "Universality and uncomputability {#chapcomputable }",
-      "titleAr": "Uncomputability",
+      "titleAr": "الشمولية وعدم القابلية للاحتساب",
       "sections": [
         {
           "slug": "index",
@@ -135,7 +135,7 @@
     {
       "key": "lec_08a_restricted_models",
       "title": "Restricted computational models { #restrictedchap }",
-      "titleAr": "Restricted Models of Computation",
+      "titleAr": "نماذج حسابية مقيَّدة",
       "sections": [
         {
           "slug": "index",
@@ -147,7 +147,7 @@
     {
       "key": "lec_09_godel",
       "title": "Is every theorem provable? { #godelchap }",
-      "titleAr": "The Gödel Theorem",
+      "titleAr": "هل كل مبرهنة قابلة للإثبات؟",
       "sections": [
         {
           "slug": "index",
@@ -159,7 +159,7 @@
     {
       "key": "lec_10_efficient_alg",
       "title": "Efficient computation: An informal introduction { #chapefficient }",
-      "titleAr": "Efficient Algorithms",
+      "titleAr": "الاحتساب الكفؤ: مقدمة غير رسمية",
       "sections": [
         {
           "slug": "index",
@@ -171,7 +171,7 @@
     {
       "key": "lec_11_running_time",
       "title": "Modeling running time { #chapmodelruntime }",
-      "titleAr": "Running Time",
+      "titleAr": "نمذجة زمن التشغيل",
       "sections": [
         {
           "slug": "index",
@@ -183,7 +183,7 @@
     {
       "key": "lec_12_NP",
       "title": "Polynomial-time reductions {#reductionchap }",
-      "titleAr": "NP",
+      "titleAr": "اختزالات بزمن متعدد الحدود",
       "sections": [
         {
           "slug": "index",
@@ -195,7 +195,7 @@
     {
       "key": "lec_13_Cook_Levin",
       "title": "NP, NP completeness, and the Cook-Levin Theorem {#cooklevinchap }",
-      "titleAr": "The Cook-Levin Theorem",
+      "titleAr": "NP وNP-كامل ومبرهنة كوك-ليفين",
       "sections": [
         {
           "slug": "index",
@@ -207,7 +207,7 @@
     {
       "key": "lec_14_PvsNP",
       "title": "What if P equals NP? { #chappvsnp }",
-      "titleAr": "P versus NP",
+      "titleAr": "ماذا لو تساوت P وNP؟",
       "sections": [
         {
           "slug": "index",
@@ -219,7 +219,7 @@
     {
       "key": "lec_14a_space_complexity",
       "title": "Space bounded computation { #spacechap }",
-      "titleAr": "Space Complexity",
+      "titleAr": "الاحتساب المحدود مكانيًا",
       "sections": [
         {
           "slug": "index",
@@ -231,7 +231,7 @@
     {
       "key": "lec_15_probability",
       "title": "Probability Theory 101 {#probabilitychap }",
-      "titleAr": "Probability and Randomized Algorithms",
+      "titleAr": "مدخل إلى نظرية الاحتمال",
       "sections": [
         {
           "slug": "index",
@@ -243,7 +243,7 @@
     {
       "key": "lec_16_randomized_alg",
       "title": "Probabilistic computation { #randomizedalgchap }",
-      "titleAr": "Randomized Algorithms",
+      "titleAr": "الاحتساب الاحتمالي",
       "sections": [
         {
           "slug": "index",
@@ -255,7 +255,7 @@
     {
       "key": "lec_17_model_rand",
       "title": "Modeling randomized computation  { #chapmodelrand }",
-      "titleAr": "Models of Randomized Algorithms",
+      "titleAr": "نمذجة الاحتساب العشوائي",
       "sections": [
         {
           "slug": "index",
@@ -267,7 +267,7 @@
     {
       "key": "lec_19_cryptography",
       "title": "Cryptography { #chapcryptography  }",
-      "titleAr": "Cryptography",
+      "titleAr": "التعمية",
       "sections": [
         {
           "slug": "index",
@@ -279,7 +279,7 @@
     {
       "key": "lec_20_alg_society",
       "title": "Algorithms and society",
-      "titleAr": "Algorithms and Society",
+      "titleAr": "الخوارزميات والمجتمع",
       "sections": [
         {
           "slug": "index",
@@ -291,7 +291,7 @@
     {
       "key": "lec_24_proofs",
       "title": "Proofs and algorithms  { #chapproofs }",
-      "titleAr": "Proofs",
+      "titleAr": "البراهين والخوارزميات",
       "sections": [
         {
           "slug": "index",
@@ -303,7 +303,7 @@
     {
       "key": "lec_26_quantum_computing",
       "title": "Quantum computing { #quantumchap }",
-      "titleAr": "Quantum Computing",
+      "titleAr": "الحوسبة الكمومية",
       "sections": [
         {
           "slug": "index",

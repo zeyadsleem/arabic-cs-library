@@ -3,7 +3,7 @@
     {
       "key": "sql-preface",
       "title": "Developers Need to Index",
-      "titleAr": "Developers Need to Index",
+      "titleAr": "المطوّرون يحتاجون الفهرسة",
       "sections": [
         {
           "slug": "index",
@@ -15,7 +15,7 @@
     {
       "key": "sql-anatomy",
       "title": "Anatomy of an SQL Index",
-      "titleAr": "Anatomy of an SQL Index",
+      "titleAr": "تشريح فهرس SQL",
       "sections": [
         {
           "slug": "index",
@@ -27,7 +27,7 @@
     {
       "key": "sql-anatomy-the-leaf-nodes",
       "title": "The Index Leaf Nodes",
-      "titleAr": "The Index Leaf Nodes",
+      "titleAr": "العقد الورقية للفهرس",
       "sections": [
         {
           "slug": "index",
@@ -39,7 +39,7 @@
     {
       "key": "sql-anatomy-the-tree",
       "title": "The Search Tree (B-Tree) Makes the Index Fast",
-      "titleAr": "The Search Tree (B-Tree) Makes the Index Fast",
+      "titleAr": "شجرة البحث (B-Tree) تجعل الفهرس سريعًا",
       "sections": [
         {
           "slug": "index",
@@ -51,7 +51,7 @@
     {
       "key": "sql-anatomy-slow-indexes",
       "title": "Slow Indexes, Part I",
-      "titleAr": "Slow Indexes, Part I",
+      "titleAr": "الفهارس البطيئة، الجزء الأول",
       "sections": [
         {
           "slug": "index",
@@ -63,7 +63,7 @@
     {
       "key": "sql-where-clause",
       "title": "The Where Clause",
-      "titleAr": "The Where Clause",
+      "titleAr": "بَند WHERE",
       "sections": [
         {
           "slug": "index",
@@ -75,7 +75,7 @@
     {
       "key": "sql-where-clause-the-equals-operator",
       "title": "The Equality Operator",
-      "titleAr": "The Equality Operator",
+      "titleAr": "عامل التساوي",
       "sections": [
         {
           "slug": "index",
@@ -87,7 +87,7 @@
     {
       "key": "sql-where-clause-the-equals-operator-primary-keys",
       "title": "Primary Keys",
-      "titleAr": "Primary Keys",
+      "titleAr": "المفاتيح الأساسية",
       "sections": [
         {
           "slug": "index",
@@ -99,7 +99,7 @@
     {
       "key": "sql-where-clause-the-equals-operator-concatenated-keys",
       "title": "Concatenated Indexes",
-      "titleAr": "Concatenated Indexes",
+      "titleAr": "الفهارس المركّبة",
       "sections": [
         {
           "slug": "index",
@@ -111,7 +111,7 @@
     {
       "key": "sql-where-clause-the-equals-operator-slow-indexes-part-ii",
       "title": "Slow Indexes, Part II",
-      "titleAr": "Slow Indexes, Part II",
+      "titleAr": "الفهارس البطيئة، الجزء الثاني",
       "sections": [
         {
           "slug": "index",
@@ -123,7 +123,7 @@
     {
       "key": "sql-where-clause-functions",
       "title": "Functions",
-      "titleAr": "Functions",
+      "titleAr": "الدوال",
       "sections": [
         {
           "slug": "index",
@@ -135,7 +135,7 @@
     {
       "key": "sql-where-clause-functions-case-insensitive-search",
       "title": "Case-Insensitive Search Using `UPPER` or `LOWER`",
-      "titleAr": "Case-Insensitive Search Using `UPPER` or `LOWER`",
+      "titleAr": "البحث غير الحسّاس لحالة الأحرف باستخدام UPPER أو LOWER",
       "sections": [
         {
           "slug": "index",
@@ -147,7 +147,7 @@
     {
       "key": "sql-where-clause-functions-user-defined-functions",
       "title": "User-Defined Functions",
-      "titleAr": "User-Defined Functions",
+      "titleAr": "دوال معرَّفة من المستخدم",
       "sections": [
         {
           "slug": "index",
@@ -159,7 +159,7 @@
     {
       "key": "sql-where-clause-functions-over-indexing",
       "title": "Over-Indexing",
-      "titleAr": "Over-Indexing",
+      "titleAr": "فرط الفهرسة",
       "sections": [
         {
           "slug": "index",
@@ -171,7 +171,7 @@
     {
       "key": "sql-where-clause-bind-parameters",
       "title": "Parameterized Queries",
-      "titleAr": "Parameterized Queries",
+      "titleAr": "الاستعلامات ذات المعاملات",
       "sections": [
         {
           "slug": "index",
@@ -183,7 +183,7 @@
     {
       "key": "sql-where-clause-searching-for-ranges",
       "title": "Searching for Ranges",
-      "titleAr": "Searching for Ranges",
+      "titleAr": "البحث عن المدىات",
       "sections": [
         {
           "slug": "index",
@@ -195,7 +195,7 @@
     {
       "key": "sql-where-clause-searching-for-ranges-greater-less-between-tuning-sql-access-filter-predicates",
       "title": "Greater, Less and `BETWEEN`",
-      "titleAr": "Greater, Less and `BETWEEN`",
+      "titleAr": "أكبر وأصغر وBETWEEN",
       "sections": [
         {
           "slug": "index",
@@ -207,7 +207,7 @@
     {
       "key": "sql-where-clause-searching-for-ranges-like-performance-tuning",
       "title": "Indexing `LIKE` Filters",
-      "titleAr": "Indexing `LIKE` Filters",
+      "titleAr": "فهرسة مُرشِّحات LIKE",
       "sections": [
         {
           "slug": "index",
@@ -219,7 +219,7 @@
     {
       "key": "sql-where-clause-searching-for-ranges-index-merge-performance",
       "title": "Index Merge",
-      "titleAr": "Index Merge",
+      "titleAr": "دمج الفهارس (Index Merge)",
       "sections": [
         {
           "slug": "index",
@@ -231,7 +231,7 @@
     {
       "key": "sql-where-clause-partial-and-filtered-indexes",
       "title": "Partial Indexes",
-      "titleAr": "Partial Indexes",
+      "titleAr": "الفهارس الجزئية",
       "sections": [
         {
           "slug": "index",
@@ -243,7 +243,7 @@
     {
       "key": "sql-where-clause-null",
       "title": "`NULL` in the Oracle Database",
-      "titleAr": "`NULL` in the Oracle Database",
+      "titleAr": "NULL في قاعدة بيانات Oracle",
       "sections": [
         {
           "slug": "index",
@@ -255,7 +255,7 @@
     {
       "key": "sql-where-clause-null-index",
       "title": "Indexing `NULL`",
-      "titleAr": "Indexing `NULL`",
+      "titleAr": "فهرسة NULL",
       "sections": [
         {
           "slug": "index",
@@ -267,7 +267,7 @@
     {
       "key": "sql-where-clause-null-not-null-constraint",
       "title": "`NOT NULL` Constraints",
-      "titleAr": "`NOT NULL` Constraints",
+      "titleAr": "قيود NOT NULL",
       "sections": [
         {
           "slug": "index",
@@ -279,7 +279,7 @@
     {
       "key": "sql-where-clause-null-partial-index",
       "title": "Emulating Partial Indexes in the Oracle Database",
-      "titleAr": "Emulating Partial Indexes in the Oracle Database",
+      "titleAr": "محاكاة الفهارس الجزئية في Oracle",
       "sections": [
         {
           "slug": "index",
@@ -291,7 +291,7 @@
     {
       "key": "sql-where-clause-obfuscation",
       "title": "Obfuscated Conditions",
-      "titleAr": "Obfuscated Conditions",
+      "titleAr": "الشروط المُعمَّاة",
       "sections": [
         {
           "slug": "index",
@@ -303,7 +303,7 @@
     {
       "key": "sql-where-clause-obfuscation-dates",
       "title": "Date Types",
-      "titleAr": "Date Types",
+      "titleAr": "أنواع التاريخ",
       "sections": [
         {
           "slug": "index",
@@ -315,7 +315,7 @@
     {
       "key": "sql-where-clause-obfuscation-numeric-strings",
       "title": "Numeric Strings",
-      "titleAr": "Numeric Strings",
+      "titleAr": "النصوص الرقمية",
       "sections": [
         {
           "slug": "index",
@@ -327,7 +327,7 @@
     {
       "key": "sql-where-clause-obfuscation-concatenation",
       "title": "Combining Columns",
-      "titleAr": "Combining Columns",
+      "titleAr": "دمج الأعمدة",
       "sections": [
         {
           "slug": "index",
@@ -339,7 +339,7 @@
     {
       "key": "sql-where-clause-obfuscation-smart-logic",
       "title": "Smart Logic",
-      "titleAr": "Smart Logic",
+      "titleAr": "منطق ذكي",
       "sections": [
         {
           "slug": "index",
@@ -351,7 +351,7 @@
     {
       "key": "sql-where-clause-obfuscation-math",
       "title": "Math",
-      "titleAr": "Math",
+      "titleAr": "الحساب",
       "sections": [
         {
           "slug": "index",
@@ -363,7 +363,7 @@
     {
       "key": "sql-testing-scalability",
       "title": "Performance and Scalability",
-      "titleAr": "Performance and Scalability",
+      "titleAr": "الأداء وقابلية التوسّع",
       "sections": [
         {
           "slug": "index",
@@ -375,7 +375,7 @@
     {
       "key": "sql-testing-scalability-data-volume",
       "title": "Performance Impacts of Data Volume",
-      "titleAr": "Performance Impacts of Data Volume",
+      "titleAr": "تأثير حجم البيانات على الأداء",
       "sections": [
         {
           "slug": "index",
@@ -387,7 +387,7 @@
     {
       "key": "sql-testing-scalability-system-load",
       "title": "Performance Impacts of System Load",
-      "titleAr": "Performance Impacts of System Load",
+      "titleAr": "تأثير حمل النظام على الأداء",
       "sections": [
         {
           "slug": "index",
@@ -399,7 +399,7 @@
     {
       "key": "sql-testing-scalability-response-time-throughput-scaling-horizontal",
       "title": "Response Time, Throughput and Horizontal Scalability",
-      "titleAr": "Response Time, Throughput and Horizontal Scalability",
+      "titleAr": "زمن الاستجابة ومعدل الإنتاجية والتوسّع الأفقي",
       "sections": [
         {
           "slug": "index",
@@ -411,7 +411,7 @@
     {
       "key": "sql-join",
       "title": "The Join Operation",
-      "titleAr": "The Join Operation",
+      "titleAr": "عملية الوصل",
       "sections": [
         {
           "slug": "index",
@@ -423,7 +423,7 @@
     {
       "key": "sql-join-nested-loops-join-n1-problem",
       "title": "Nested Loops",
-      "titleAr": "Nested Loops",
+      "titleAr": "الحلقات المتداخلة (Nested Loops)",
       "sections": [
         {
           "slug": "index",
@@ -435,7 +435,7 @@
     {
       "key": "sql-join-hash-join-partial-objects",
       "title": "Hash Join",
-      "titleAr": "Hash Join",
+      "titleAr": "الوصل بالتجزئة (Hash Join)",
       "sections": [
         {
           "slug": "index",
@@ -447,7 +447,7 @@
     {
       "key": "sql-join-sort-merge-join",
       "title": "Sort Merge",
-      "titleAr": "Sort Merge",
+      "titleAr": "الدمج بالترتيب (Sort Merge)",
       "sections": [
         {
           "slug": "index",
@@ -459,7 +459,7 @@
     {
       "key": "sql-clustering",
       "title": "Clustering Data",
-      "titleAr": "Clustering Data",
+      "titleAr": "تجميع البيانات",
       "sections": [
         {
           "slug": "index",
@@ -471,7 +471,7 @@
     {
       "key": "sql-clustering-index-filter-predicates",
       "title": "Index Filter Predicates Used Intentionally",
-      "titleAr": "Index Filter Predicates Used Intentionally",
+      "titleAr": "الاستخدام المقصود لمُحدِّدات مرشّح الفهرس",
       "sections": [
         {
           "slug": "index",
@@ -483,7 +483,7 @@
     {
       "key": "sql-clustering-index-only-scan-covering-index",
       "title": "Index-Only Scan: Avoiding Table Access",
-      "titleAr": "Index-Only Scan: Avoiding Table Access",
+      "titleAr": "مسح الفهرس فقط: تجنّب الوصول إلى الجدول",
       "sections": [
         {
           "slug": "index",
@@ -495,7 +495,7 @@
     {
       "key": "sql-clustering-index-organized-clustered-index",
       "title": "Index-Organized Tables and Clustered Indexes",
-      "titleAr": "Index-Organized Tables and Clustered Indexes",
+      "titleAr": "المنظّمة بفهرسة والفهارس المُجمَّعة",
       "sections": [
         {
           "slug": "index",
@@ -507,7 +507,7 @@
     {
       "key": "sql-sorting-grouping",
       "title": "Sorting and Grouping",
-      "titleAr": "Sorting and Grouping",
+      "titleAr": "الترتيب والتجميع",
       "sections": [
         {
           "slug": "index",
@@ -519,7 +519,7 @@
     {
       "key": "sql-sorting-grouping-indexed-order-by",
       "title": "Indexing Order By",
-      "titleAr": "Indexing Order By",
+      "titleAr": "فهرسة الترتيب حسب",
       "sections": [
         {
           "slug": "index",
@@ -531,7 +531,7 @@
     {
       "key": "sql-sorting-grouping-order-by-asc-desc-nulls-last",
       "title": "Indexing `ASC`, `DESC` and `NULLS FIRST`/`LAST`",
-      "titleAr": "Indexing `ASC`, `DESC` and `NULLS FIRST`/`LAST`",
+      "titleAr": "فهرسة ASC وDESC وNULLS FIRST/LAST",
       "sections": [
         {
           "slug": "index",
@@ -543,7 +543,7 @@
     {
       "key": "sql-sorting-grouping-indexed-group-by",
       "title": "Indexing Group By",
-      "titleAr": "Indexing Group By",
+      "titleAr": "فهرسة التجميع حسب",
       "sections": [
         {
           "slug": "index",
@@ -555,7 +555,7 @@
     {
       "key": "sql-partial-results",
       "title": "Partial Results",
-      "titleAr": "Partial Results",
+      "titleAr": "النتائج الجزئية",
       "sections": [
         {
           "slug": "index",
@@ -567,7 +567,7 @@
     {
       "key": "sql-partial-results-top-n-queries",
       "title": "Querying Top-N Rows",
-      "titleAr": "Querying Top-N Rows",
+      "titleAr": "الاستعلام عن أعلى N صفوفًا",
       "sections": [
         {
           "slug": "index",
@@ -579,7 +579,7 @@
     {
       "key": "sql-partial-results-fetch-next-page",
       "title": "Paging Through Results",
-      "titleAr": "Paging Through Results",
+      "titleAr": "الترقيم بالصفحات عبر النتائج",
       "sections": [
         {
           "slug": "index",
@@ -591,7 +591,7 @@
     {
       "key": "sql-partial-results-window-functions",
       "title": "Using Window Functions for Efficient Pagination",
-      "titleAr": "Using Window Functions for Efficient Pagination",
+      "titleAr": "استخدام دوال النافذة لترقيم فعّال",
       "sections": [
         {
           "slug": "index",
@@ -603,7 +603,7 @@
     {
       "key": "sql-dml",
       "title": "Modifying Data",
-      "titleAr": "Modifying Data",
+      "titleAr": "تعديل البيانات",
       "sections": [
         {
           "slug": "index",
@@ -615,7 +615,7 @@
     {
       "key": "sql-dml-insert",
       "title": "Insert",
-      "titleAr": "Insert",
+      "titleAr": "الإدخال",
       "sections": [
         {
           "slug": "index",
@@ -627,7 +627,7 @@
     {
       "key": "sql-dml-delete",
       "title": "Delete",
-      "titleAr": "Delete",
+      "titleAr": "الحذف",
       "sections": [
         {
           "slug": "index",
@@ -639,7 +639,7 @@
     {
       "key": "sql-dml-update",
       "title": "Update",
-      "titleAr": "Update",
+      "titleAr": "التحديث",
       "sections": [
         {
           "slug": "index",
@@ -651,7 +651,7 @@
     {
       "key": "sql-explain-plan",
       "title": "Execution Plans",
-      "titleAr": "Execution Plans",
+      "titleAr": "خطط التنفيذ",
       "sections": [
         {
           "slug": "index",
@@ -663,7 +663,7 @@
     {
       "key": "sql-explain-plan-db2",
       "title": "Working With Execution Plans in Db2 (LUW)",
-      "titleAr": "Working With Execution Plans in Db2 (LUW)",
+      "titleAr": "العمل مع خطط التنفيذ في Db2 (LUW)",
       "sections": [
         {
           "slug": "index",
@@ -675,7 +675,7 @@
     {
       "key": "sql-explain-plan-db2-getting-an-execution-plan",
       "title": "Getting an Execution Plan",
-      "titleAr": "Getting an Execution Plan",
+      "titleAr": "الحصول على خطة تنفيذ",
       "sections": [
         {
           "slug": "index",
@@ -687,7 +687,7 @@
     {
       "key": "sql-explain-plan-db2-operations",
       "title": "Db2 (LUW) Execution Plan Operations",
-      "titleAr": "Db2 (LUW) Execution Plan Operations",
+      "titleAr": "عمليات خطة تنفيذ Db2 (LUW)",
       "sections": [
         {
           "slug": "index",
@@ -699,7 +699,7 @@
     {
       "key": "sql-explain-plan-db2-filter-predicates",
       "title": "Distinguishing Access and Filter-Predicates",
-      "titleAr": "Distinguishing Access and Filter-Predicates",
+      "titleAr": "التمييز بين مُحدِّدات الوصول والترشيح",
       "sections": [
         {
           "slug": "index",
@@ -723,7 +723,7 @@
     {
       "key": "sql-explain-plan-mysql-getting-an-execution-plan",
       "title": "Getting an Execution Plan",
-      "titleAr": "Getting an Execution Plan",
+      "titleAr": "الحصول على خطة تنفيذ",
       "sections": [
         {
           "slug": "index",
@@ -735,7 +735,7 @@
     {
       "key": "sql-explain-plan-mysql-operations",
       "title": "Operations",
-      "titleAr": "Operations",
+      "titleAr": "العمليات",
       "sections": [
         {
           "slug": "index",
@@ -747,7 +747,7 @@
     {
       "key": "sql-explain-plan-mysql-access-filter-predicates",
       "title": "Distinguishing Access and Filter-Predicates",
-      "titleAr": "Distinguishing Access and Filter-Predicates",
+      "titleAr": "التمييز بين مُحدِّدات الوصول والترشيح",
       "sections": [
         {
           "slug": "index",
@@ -759,7 +759,7 @@
     {
       "key": "sql-explain-plan-oracle",
       "title": "Oracle Database",
-      "titleAr": "Oracle Database",
+      "titleAr": "قاعدة بيانات Oracle",
       "sections": [
         {
           "slug": "index",
@@ -771,7 +771,7 @@
     {
       "key": "sql-explain-plan-oracle-getting-an-execution-plan",
       "title": "Getting an Execution Plan",
-      "titleAr": "Getting an Execution Plan",
+      "titleAr": "الحصول على خطة تنفيذ",
       "sections": [
         {
           "slug": "index",
@@ -783,7 +783,7 @@
     {
       "key": "sql-explain-plan-oracle-operations",
       "title": "Operations",
-      "titleAr": "Operations",
+      "titleAr": "العمليات",
       "sections": [
         {
           "slug": "index",
@@ -795,7 +795,7 @@
     {
       "key": "sql-explain-plan-oracle-filter-predicates",
       "title": "Distinguishing Access and Filter-Predicates",
-      "titleAr": "Distinguishing Access and Filter-Predicates",
+      "titleAr": "التمييز بين مُحدِّدات الوصول والترشيح",
       "sections": [
         {
           "slug": "index",
@@ -819,7 +819,7 @@
     {
       "key": "sql-explain-plan-postgresql-getting-an-execution-plan",
       "title": "Getting an Execution Plan",
-      "titleAr": "Getting an Execution Plan",
+      "titleAr": "الحصول على خطة تنفيذ",
       "sections": [
         {
           "slug": "index",
@@ -831,7 +831,7 @@
     {
       "key": "sql-explain-plan-postgresql-operations",
       "title": "Operations",
-      "titleAr": "Operations",
+      "titleAr": "العمليات",
       "sections": [
         {
           "slug": "index",
@@ -843,7 +843,7 @@
     {
       "key": "sql-explain-plan-postgresql-filter-predicates",
       "title": "Distinguishing Access and Filter-Predicates",
-      "titleAr": "Distinguishing Access and Filter-Predicates",
+      "titleAr": "التمييز بين مُحدِّدات الوصول والترشيح",
       "sections": [
         {
           "slug": "index",
@@ -867,7 +867,7 @@
     {
       "key": "sql-explain-plan-sql-server-getting-an-execution-plan",
       "title": "Getting an Execution Plan",
-      "titleAr": "Getting an Execution Plan",
+      "titleAr": "الحصول على خطة تنفيذ",
       "sections": [
         {
           "slug": "index",
@@ -879,7 +879,7 @@
     {
       "key": "sql-explain-plan-sql-server-operations",
       "title": "Operations",
-      "titleAr": "Operations",
+      "titleAr": "العمليات",
       "sections": [
         {
           "slug": "index",
@@ -891,7 +891,7 @@
     {
       "key": "sql-explain-plan-sql-server-filter-predicates",
       "title": "Distinguishing Access and Filter-Predicates",
-      "titleAr": "Distinguishing Access and Filter-Predicates",
+      "titleAr": "التمييز بين مُحدِّدات الوصول والترشيح",
       "sections": [
         {
           "slug": "index",
@@ -903,7 +903,7 @@
     {
       "key": "sql-explain-plan-sqlite",
       "title": "Working With Execution Plans in SQLite",
-      "titleAr": "Working With Execution Plans in SQLite",
+      "titleAr": "العمل مع خطط التنفيذ في SQLite",
       "sections": [
         {
           "slug": "index",
@@ -915,7 +915,7 @@
     {
       "key": "sql-explain-plan-sqlite-getting-an-execution-plan",
       "title": "Getting an Execution Plan",
-      "titleAr": "Getting an Execution Plan",
+      "titleAr": "الحصول على خطة تنفيذ",
       "sections": [
         {
           "slug": "index",
@@ -927,7 +927,7 @@
     {
       "key": "sql-explain-plan-sqlite-operations",
       "title": "SQLite Execution Plan Operations",
-      "titleAr": "SQLite Execution Plan Operations",
+      "titleAr": "العمليات",
       "sections": [
         {
           "slug": "index",
@@ -939,7 +939,7 @@
     {
       "key": "sql-explain-plan-sqlbase",
       "title": "Working With Execution Plans in SQLBase",
-      "titleAr": "Working With Execution Plans in SQLBase",
+      "titleAr": "العمل مع خطط التنفيذ في SQLBase",
       "sections": [
         {
           "slug": "index",
@@ -951,7 +951,7 @@
     {
       "key": "sql-explain-plan-sqlbase-getting-an-execution-plan",
       "title": "Getting an Execution Plan",
-      "titleAr": "Getting an Execution Plan",
+      "titleAr": "الحصول على خطة تنفيذ",
       "sections": [
         {
           "slug": "index",
@@ -963,7 +963,7 @@
     {
       "key": "sql-explain-plan-sqlbase-operations",
       "title": "SQLBase Execution Plan Operations",
-      "titleAr": "SQLBase Execution Plan Operations",
+      "titleAr": "العمليات",
       "sections": [
         {
           "slug": "index",
@@ -975,7 +975,7 @@
     {
       "key": "sql-myth-directory",
       "title": "Myth Directory",
-      "titleAr": "Myth Directory",
+      "titleAr": "دليل الخرافات",
       "sections": [
         {
           "slug": "index",
@@ -987,7 +987,7 @@
     {
       "key": "sql-myth-directory-indexes-can-degenerate",
       "title": "Indexes Can Degenerate",
-      "titleAr": "Indexes Can Degenerate",
+      "titleAr": "الفهارس قد تتدهور",
       "sections": [
         {
           "slug": "index",
@@ -999,7 +999,7 @@
     {
       "key": "sql-myth-directory-most-selective-first",
       "title": "Most Selective First",
-      "titleAr": "Most Selective First",
+      "titleAr": "الأكثر انتقائيةً أولاً",
       "sections": [
         {
           "slug": "index",
@@ -1011,7 +1011,7 @@
     {
       "key": "sql-myth-directory-null-cannot-be-indexed",
       "title": "The Oracle Database Cannot Index NULL",
-      "titleAr": "The Oracle Database Cannot Index NULL",
+      "titleAr": "قاعدة بيانات Oracle لا تفهرس NULL",
       "sections": [
         {
           "slug": "index",
@@ -1023,7 +1023,7 @@
     {
       "key": "sql-myth-directory-dynamic-sql-is-slow",
       "title": "Dynamic SQL is Slow",
-      "titleAr": "Dynamic SQL is Slow",
+      "titleAr": "SQL الديناميكي بطيء",
       "sections": [
         {
           "slug": "index",
@@ -1035,7 +1035,7 @@
     {
       "key": "sql-example-schema",
       "title": "Example Schema",
-      "titleAr": "Example Schema",
+      "titleAr": "مخطط المثال",
       "sections": [
         {
           "slug": "index",
@@ -1047,7 +1047,7 @@
     {
       "key": "sql-glossary",
       "title": "Glossary",
-      "titleAr": "Glossary",
+      "titleAr": "المصطلحات",
       "sections": [
         {
           "slug": "index",
@@ -1059,7 +1059,7 @@
     {
       "key": "sql-explain-plan-postgres-concrete-planning",
       "title": "Concrete Planning",
-      "titleAr": "Concrete Planning",
+      "titleAr": "التخطيط الملموس",
       "sections": [
         {
           "slug": "index",
@@ -1071,7 +1071,7 @@
     {
       "key": "sql-example-schema-oracle-performance-testing-scalability",
       "title": "Oracle Example Scripts for “Testing and Scalability”",
-      "titleAr": "Oracle Example Scripts for “Testing and Scalability”",
+      "titleAr": "Oracle سكربتات المثال لـ «الأداء وقابلية التوسّع»",
       "sections": [
         {
           "slug": "index",
@@ -1083,7 +1083,7 @@
     {
       "key": "sql-example-schema-postgresql-performance-testing-scalability",
       "title": "PostgreSQL Example Scripts for “Testing and Scalability”",
-      "titleAr": "PostgreSQL Example Scripts for “Testing and Scalability”",
+      "titleAr": "PostgreSQL سكربتات المثال لـ «الأداء وقابلية التوسّع»",
       "sections": [
         {
           "slug": "index",
@@ -1095,7 +1095,7 @@
     {
       "key": "sql-example-schema-sql-server-performance-testing-scalability",
       "title": "SQL Server Scripts for “Testing and Scalability”",
-      "titleAr": "SQL Server Scripts for “Testing and Scalability”",
+      "titleAr": "SQL Server سكربتات المثال لـ «الأداء وقابلية التوسّع»",
       "sections": [
         {
           "slug": "index",
@@ -1107,7 +1107,7 @@
     {
       "key": "sql-glossary-index-filter-predicates",
       "title": "Index Filter Predicates",
-      "titleAr": "Index Filter Predicates",
+      "titleAr": "مُحدِّدات مرشّح الفهرس",
       "sections": [
         {
           "slug": "index",
@@ -1119,7 +1119,7 @@
     {
       "key": "sql-glossary-heap-table",
       "title": "Heap-Table",
-      "titleAr": "Heap-Table",
+      "titleAr": "جدول كومي",
       "sections": [
         {
           "slug": "index",
@@ -1131,7 +1131,7 @@
     {
       "key": "sql-glossary-secondary-index",
       "title": "Secondary Index",
-      "titleAr": "Secondary Index",
+      "titleAr": "فهرس ثانوي",
       "sections": [
         {
           "slug": "index",
@@ -1143,7 +1143,7 @@
     {
       "key": "sql-example-schema-postgresql-sorting-grouping",
       "title": "PostgreSQL Example Scripts for “Sorting and Grouping”",
-      "titleAr": "PostgreSQL Example Scripts for “Sorting and Grouping”",
+      "titleAr": "PostgreSQL سكربتات المثال لـ «الترتيب والتجميع»",
       "sections": [
         {
           "slug": "index",
@@ -1155,7 +1155,7 @@
     {
       "key": "sql-example-schema-oracle-sorting-grouping",
       "title": "Oracle Example Scripts for “Sorting and Grouping”",
-      "titleAr": "Oracle Example Scripts for “Sorting and Grouping”",
+      "titleAr": "Oracle سكربتات المثال لـ «الترتيب والتجميع»",
       "sections": [
         {
           "slug": "index",
@@ -1167,7 +1167,7 @@
     {
       "key": "sql-example-schema-db2",
       "title": "Db2 (LUW) Example Scripts",
-      "titleAr": "Db2 (LUW) Example Scripts",
+      "titleAr": "Db2 (LUW) سكربتات المثال",
       "sections": [
         {
           "slug": "index",
@@ -1179,7 +1179,7 @@
     {
       "key": "sql-example-schema-db2-where-clause",
       "title": "Db2 (LUW) Example Scripts for “The Where Clause”",
-      "titleAr": "Db2 (LUW) Example Scripts for “The Where Clause”",
+      "titleAr": "Db2 (LUW) سكربتات المثال لـ «بَند WHERE»",
       "sections": [
         {
           "slug": "index",
@@ -1191,7 +1191,7 @@
     {
       "key": "sql-example-schema-db2-performance-testing-scalability",
       "title": "Db2 (LUW) Example Scripts for “Testing and Scalability”",
-      "titleAr": "Db2 (LUW) Example Scripts for “Testing and Scalability”",
+      "titleAr": "Db2 (LUW) سكربتات المثال لـ «الأداء وقابلية التوسّع»",
       "sections": [
         {
           "slug": "index",
@@ -1203,7 +1203,7 @@
     {
       "key": "sql-example-schema-db2-join",
       "title": "Db2 (LUW) Example Scripts for “The Join Operation”",
-      "titleAr": "Db2 (LUW) Example Scripts for “The Join Operation”",
+      "titleAr": "Db2 (LUW) سكربتات المثال لـ «عملية الوصل»",
       "sections": [
         {
           "slug": "index",
@@ -1215,7 +1215,7 @@
     {
       "key": "sql-example-schema-mysql",
       "title": "MySQL Example Scripts",
-      "titleAr": "MySQL Example Scripts",
+      "titleAr": "MySQL سكربتات المثال",
       "sections": [
         {
           "slug": "index",
@@ -1227,7 +1227,7 @@
     {
       "key": "sql-example-schema-mysql-where-clause",
       "title": "MySQL Example Scripts for “The Where Clause”",
-      "titleAr": "MySQL Example Scripts for “The Where Clause”",
+      "titleAr": "MySQL سكربتات المثال لـ «بَند WHERE»",
       "sections": [
         {
           "slug": "index",
@@ -1239,7 +1239,7 @@
     {
       "key": "sql-example-schema-mysql-join",
       "title": "MySQL Example Scripts for “The Join Operation”",
-      "titleAr": "MySQL Example Scripts for “The Join Operation”",
+      "titleAr": "MySQL سكربتات المثال لـ «عملية الوصل»",
       "sections": [
         {
           "slug": "index",
@@ -1251,7 +1251,7 @@
     {
       "key": "sql-example-schema-mysql-clustering-data",
       "title": "MySQL Example Scripts for “Clustering Data”",
-      "titleAr": "MySQL Example Scripts for “Clustering Data”",
+      "titleAr": "MySQL سكربتات المثال لـ «تجميع البيانات»",
       "sections": [
         {
           "slug": "index",
@@ -1263,7 +1263,7 @@
     {
       "key": "sql-example-schema-mysql-sorting-grouping",
       "title": "MySQL Example Scripts for “Sorting and Grouping”",
-      "titleAr": "MySQL Example Scripts for “Sorting and Grouping”",
+      "titleAr": "MySQL سكربتات المثال لـ «الترتيب والتجميع»",
       "sections": [
         {
           "slug": "index",
@@ -1275,7 +1275,7 @@
     {
       "key": "sql-example-schema-mysql-partial-results",
       "title": "MySQL Example Scripts for “Partial Results”",
-      "titleAr": "MySQL Example Scripts for “Partial Results”",
+      "titleAr": "MySQL سكربتات المثال لـ «النتائج الجزئية»",
       "sections": [
         {
           "slug": "index",
@@ -1287,7 +1287,7 @@
     {
       "key": "sql-example-schema-oracle",
       "title": "Oracle Example Scripts",
-      "titleAr": "Oracle Example Scripts",
+      "titleAr": "Oracle سكربتات المثال",
       "sections": [
         {
           "slug": "index",
@@ -1299,7 +1299,7 @@
     {
       "key": "sql-example-schema-oracle-where-clause",
       "title": "Oracle Example Scripts for “The Where Clause”",
-      "titleAr": "Oracle Example Scripts for “The Where Clause”",
+      "titleAr": "Oracle سكربتات المثال لـ «بَند WHERE»",
       "sections": [
         {
           "slug": "index",
@@ -1311,7 +1311,7 @@
     {
       "key": "sql-example-schema-oracle-join",
       "title": "Oracle Example Scripts for “The Join Operation”",
-      "titleAr": "Oracle Example Scripts for “The Join Operation”",
+      "titleAr": "Oracle سكربتات المثال لـ «عملية الوصل»",
       "sections": [
         {
           "slug": "index",
@@ -1323,7 +1323,7 @@
     {
       "key": "sql-example-schema-oracle-clustering-data",
       "title": "Oracle Example Scripts for “Clustering Data”",
-      "titleAr": "Oracle Example Scripts for “Clustering Data”",
+      "titleAr": "Oracle سكربتات المثال لـ «تجميع البيانات»",
       "sections": [
         {
           "slug": "index",
@@ -1335,7 +1335,7 @@
     {
       "key": "sql-example-schema-oracle-partial-results",
       "title": "Oracle Example Scripts for “Partial Results”",
-      "titleAr": "Oracle Example Scripts for “Partial Results”",
+      "titleAr": "Oracle سكربتات المثال لـ «النتائج الجزئية»",
       "sections": [
         {
           "slug": "index",
@@ -1347,7 +1347,7 @@
     {
       "key": "sql-example-schema-oracle-dml",
       "title": "Oracle Example Scripts for “Insert, Delete and Update”",
-      "titleAr": "Oracle Example Scripts for “Insert, Delete and Update”",
+      "titleAr": "Oracle سكربتات المثال لـ «الإدخال والحذف والتحديث»",
       "sections": [
         {
           "slug": "index",
@@ -1359,7 +1359,7 @@
     {
       "key": "sql-example-schema-postgresql",
       "title": "PostgreSQL Example Scripts",
-      "titleAr": "PostgreSQL Example Scripts",
+      "titleAr": "PostgreSQL سكربتات المثال",
       "sections": [
         {
           "slug": "index",
@@ -1371,7 +1371,7 @@
     {
       "key": "sql-example-schema-postgresql-where-clause",
       "title": "PostgreSQL Example Scripts for “The Where Clause”",
-      "titleAr": "PostgreSQL Example Scripts for “The Where Clause”",
+      "titleAr": "PostgreSQL سكربتات المثال لـ «بَند WHERE»",
       "sections": [
         {
           "slug": "index",
@@ -1383,7 +1383,7 @@
     {
       "key": "sql-example-schema-postgresql-join",
       "title": "PostgreSQL Example Scripts for “The Join Operation”",
-      "titleAr": "PostgreSQL Example Scripts for “The Join Operation”",
+      "titleAr": "PostgreSQL سكربتات المثال لـ «عملية الوصل»",
       "sections": [
         {
           "slug": "index",
@@ -1395,7 +1395,7 @@
     {
       "key": "sql-example-schema-postgresql-partial-results",
       "title": "PostgreSQL Example Scripts for “Partial Results”",
-      "titleAr": "PostgreSQL Example Scripts for “Partial Results”",
+      "titleAr": "PostgreSQL سكربتات المثال لـ «النتائج الجزئية»",
       "sections": [
         {
           "slug": "index",
@@ -1407,7 +1407,7 @@
     {
       "key": "sql-example-schema-postgresql-dml",
       "title": "PostgreSQL Example Scripts for “Insert, Delete and Update”",
-      "titleAr": "PostgreSQL Example Scripts for “Insert, Delete and Update”",
+      "titleAr": "PostgreSQL سكربتات المثال لـ «الإدخال والحذف والتحديث»",
       "sections": [
         {
           "slug": "index",
@@ -1419,7 +1419,7 @@
     {
       "key": "sql-example-schema-sql-server",
       "title": "SQL Server Example Scripts",
-      "titleAr": "SQL Server Example Scripts",
+      "titleAr": "SQL Server سكربتات المثال",
       "sections": [
         {
           "slug": "index",
@@ -1431,7 +1431,7 @@
     {
       "key": "sql-example-schema-sql-server-where-clause",
       "title": "SQL Server Scripts for “The Where Clause”",
-      "titleAr": "SQL Server Scripts for “The Where Clause”",
+      "titleAr": "SQL Server سكربتات المثال لـ «بَند WHERE»",
       "sections": [
         {
           "slug": "index",
@@ -1443,7 +1443,7 @@
     {
       "key": "sql-example-schema-sql-server-join",
       "title": "SQL Server Scripts for “The Join Operation”",
-      "titleAr": "SQL Server Scripts for “The Join Operation”",
+      "titleAr": "SQL Server سكربتات المثال لـ «عملية الوصل»",
       "sections": [
         {
           "slug": "index",
@@ -1455,7 +1455,7 @@
     {
       "key": "sql-example-schema-sql-server-clustering-data",
       "title": "SQL Server Scripts for “Clustering Data”",
-      "titleAr": "SQL Server Scripts for “Clustering Data”",
+      "titleAr": "SQL Server سكربتات المثال لـ «تجميع البيانات»",
       "sections": [
         {
           "slug": "index",
@@ -1467,7 +1467,7 @@
     {
       "key": "sql-example-schema-sql-server-sorting-grouping",
       "title": "SQL Server Scripts for “Sorting and Grouping”",
-      "titleAr": "SQL Server Scripts for “Sorting and Grouping”",
+      "titleAr": "SQL Server سكربتات المثال لـ «الترتيب والتجميع»",
       "sections": [
         {
           "slug": "index",
@@ -1479,7 +1479,7 @@
     {
       "key": "sql-example-schema-sql-server-partial-results",
       "title": "SQL Server Scripts for “Partial Results”",
-      "titleAr": "SQL Server Scripts for “Partial Results”",
+      "titleAr": "SQL Server سكربتات المثال لـ «النتائج الجزئية»",
       "sections": [
         {
           "slug": "index",
@@ -1491,7 +1491,7 @@
     {
       "key": "sql-example-schema-sql-server-dml",
       "title": "SQL Server Scripts for “Insert, Delete and Update”",
-      "titleAr": "SQL Server Scripts for “Insert, Delete and Update”",
+      "titleAr": "SQL Server سكربتات المثال لـ «الإدخال والحذف والتحديث»",
       "sections": [
         {
           "slug": "index",
@@ -1515,7 +1515,7 @@
     {
       "key": "sql-example-schema-sqlite-where-clause",
       "title": "SQLite Example Scripts for “The Where Clause”",
-      "titleAr": "SQLite Example Scripts for “The Where Clause”",
+      "titleAr": "SQLite سكربتات المثال لـ «بَند WHERE»",
       "sections": [
         {
           "slug": "index",
@@ -1527,7 +1527,7 @@
     {
       "key": "sql-example-schema-sqlite-join",
       "title": "SQLite Example Scripts for “The Join Operation”",
-      "titleAr": "SQLite Example Scripts for “The Join Operation”",
+      "titleAr": "SQLite سكربتات المثال لـ «عملية الوصل»",
       "sections": [
         {
           "slug": "index",
@@ -1539,7 +1539,7 @@
     {
       "key": "sql-example-schema-sqlbase",
       "title": "SQLBase Example Scripts",
-      "titleAr": "SQLBase Example Scripts",
+      "titleAr": "SQLBase سكربتات المثال",
       "sections": [
         {
           "slug": "index",
@@ -1551,7 +1551,7 @@
     {
       "key": "sql-example-schema-sqlbase-where-clause",
       "title": "SQLBase Example Scripts for “The Where Clause”",
-      "titleAr": "SQLBase Example Scripts for “The Where Clause”",
+      "titleAr": "SQLBase سكربتات المثال لـ «بَند WHERE»",
       "sections": [
         {
           "slug": "index",
@@ -1563,7 +1563,7 @@
     {
       "key": "sql-example-schema-sqlbase-join",
       "title": "SQLBase Example Scripts for “The Join Operation”",
-      "titleAr": "SQLBase Example Scripts for “The Join Operation”",
+      "titleAr": "SQLBase سكربتات المثال لـ «عملية الوصل»",
       "sections": [
         {
           "slug": "index",
@@ -1575,7 +1575,7 @@
     {
       "key": "sql-glossary-execution-plan-explain-plan",
       "title": "Execution Plan - Explain Plan - Query Plan",
-      "titleAr": "Execution Plan - Explain Plan - Query Plan",
+      "titleAr": "خطة التنفيذ - خطة الشرح - خطة الاستعلام",
       "sections": [
         {
           "slug": "index",
@@ -1587,7 +1587,7 @@
     {
       "key": "sql-glossary-clustered-index",
       "title": "Clustered Index / Non-Clustered Index",
-      "titleAr": "Clustered Index / Non-Clustered Index",
+      "titleAr": "فهرس مُجمَّع / فهرس غير مُجمَّع",
       "sections": [
         {
           "slug": "index",
@@ -1599,7 +1599,7 @@
     {
       "key": "sql-glossary-index-clustering-factor",
       "title": "Index Clustering Factor",
-      "titleAr": "Index Clustering Factor",
+      "titleAr": "عامل تجميع الفهرس",
       "sections": [
         {
           "slug": "index",
@@ -1611,7 +1611,7 @@
     {
       "key": "sql-glossary-covering-index",
       "title": "Covering Index",
-      "titleAr": "Covering Index",
+      "titleAr": "فهرس شامل",
       "sections": [
         {
           "slug": "index",
@@ -1623,7 +1623,7 @@
     {
       "key": "sql-glossary-index-only-scan",
       "title": "Index-Only Scan",
-      "titleAr": "Index-Only Scan",
+      "titleAr": "مسح الفهرس فقط",
       "sections": [
         {
           "slug": "index",
@@ -1635,7 +1635,7 @@
     {
       "key": "sql-glossary-index-organized-table",
       "title": "Index-Organized Table",
-      "titleAr": "Index-Organized Table",
+      "titleAr": "جدول منظّم بفهرسه",
       "sections": [
         {
           "slug": "index",
@@ -1647,7 +1647,7 @@
     {
       "key": "sql-glossary-query-optimizer-query-planner",
       "title": "Optimizer - Query Optimizer - Query Planner",
-      "titleAr": "Optimizer - Query Optimizer - Query Planner",
+      "titleAr": "المُحسِّن - مُحسِّن الاستعلامات - مُخطِّط الاستعلامات",
       "sections": [
         {
           "slug": "index",
@@ -1659,7 +1659,7 @@
     {
       "key": "sql-glossary-parsing-query-planning-compiling",
       "title": "Parsing - Query Planning - Compiling",
-      "titleAr": "Parsing - Query Planning - Compiling",
+      "titleAr": "التحليل - تخطيط الاستعلام - التصريف",
       "sections": [
         {
           "slug": "index",

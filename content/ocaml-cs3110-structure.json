@@ -3,7 +3,7 @@
     {
       "key": "preface",
       "title": "Preface",
-      "titleAr": "Preface",
+      "titleAr": "تصدير",
       "sections": [
         {
           "slug": "index",
@@ -15,7 +15,7 @@
     {
       "key": "intro",
       "title": "Better Programming Through OCaml",
-      "titleAr": "Better Programming Through OCaml",
+      "titleAr": "برمجة أفضل باستخدام OCaml",
       "sections": [
         {
           "slug": "index",
@@ -27,7 +27,7 @@
     {
       "key": "basics",
       "title": "The Basics of OCaml",
-      "titleAr": "The Basics of OCaml",
+      "titleAr": "أساسيات OCaml",
       "sections": [
         {
           "slug": "index",
@@ -39,7 +39,7 @@
     {
       "key": "data",
       "title": "Data and Types",
-      "titleAr": "Data and Types",
+      "titleAr": "البيانات والأنواع",
       "sections": [
         {
           "slug": "index",
@@ -51,7 +51,7 @@
     {
       "key": "hop",
       "title": "Higher-Order Programming",
-      "titleAr": "Higher-Order Programming",
+      "titleAr": "البرمجة ذات الرتبة العليا",
       "sections": [
         {
           "slug": "index",
@@ -63,7 +63,7 @@
     {
       "key": "modules",
       "title": "Modular Programming",
-      "titleAr": "Modular Programming",
+      "titleAr": "البرمجة الوحدوية",
       "sections": [
         {
           "slug": "index",
@@ -75,7 +75,7 @@
     {
       "key": "mut",
       "title": "Mutability",
-      "titleAr": "Mutability",
+      "titleAr": "قابلية التغيير",
       "sections": [
         {
           "slug": "index",
@@ -87,7 +87,7 @@
     {
       "key": "conc",
       "title": "Concurrency",
-      "titleAr": "Concurrency",
+      "titleAr": "التزامن",
       "sections": [
         {
           "slug": "index",
@@ -99,7 +99,7 @@
     {
       "key": "correctness",
       "title": "Correctness",
-      "titleAr": "Correctness",
+      "titleAr": "الصحة",
       "sections": [
         {
           "slug": "index",
@@ -111,7 +111,7 @@
     {
       "key": "ds",
       "title": "Data Structures",
-      "titleAr": "Data Structures",
+      "titleAr": "بنى البيانات",
       "sections": [
         {
           "slug": "index",
@@ -123,7 +123,7 @@
     {
       "key": "interp",
       "title": "Interpreters",
-      "titleAr": "Interpreters",
+      "titleAr": "المُفسِّرات",
       "sections": [
         {
           "slug": "index",

@@ -3,7 +3,7 @@
     {
       "key": "basic",
       "title": "Simple SQL Queries",
-      "titleAr": "Simple SQL Queries",
+      "titleAr": "استعلامات SQL بسيطة",
       "sections": [
         {
           "slug": "index",
@@ -15,7 +15,7 @@
     {
       "key": "joins",
       "title": "Joins and Subqueries",
-      "titleAr": "Joins and Subqueries",
+      "titleAr": "الوصلات والاستعلامات الفرعية",
       "sections": [
         {
           "slug": "index",
@@ -27,7 +27,7 @@
     {
       "key": "aggregates",
       "title": "Aggregation",
-      "titleAr": "Aggregation",
+      "titleAr": "التجميع",
       "sections": [
         {
           "slug": "index",
@@ -39,7 +39,7 @@
     {
       "key": "updates",
       "title": "Modifying data",
-      "titleAr": "Modifying data",
+      "titleAr": "تعديل البيانات",
       "sections": [
         {
           "slug": "index",
@@ -51,7 +51,7 @@
     {
       "key": "recursive",
       "title": "Recursive Queries",
-      "titleAr": "Recursive Queries",
+      "titleAr": "الاستعلامات التعاودية",
       "sections": [
         {
           "slug": "index",
@@ -63,7 +63,7 @@
     {
       "key": "date",
       "title": "Working with Timestamps",
-      "titleAr": "Working with Timestamps",
+      "titleAr": "العمل مع الطوابع الزمنية",
       "sections": [
         {
           "slug": "index",
@@ -75,7 +75,7 @@
     {
       "key": "arrays",
       "title": "Arrays",
-      "titleAr": "Arrays",
+      "titleAr": "المصفوفات",
       "sections": [
         {
           "slug": "index",
