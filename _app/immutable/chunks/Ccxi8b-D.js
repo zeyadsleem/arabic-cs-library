@@ -1,0 +1,21 @@
+const e="use-the-index-luke",n="sql-join",i="عملية الوصل",a="index",s="عملية الربط",t=[{depth:2,id:"تدفق-النتائج-الوسيطة",text:"تدفّق النتائج الوسيطة"},{depth:2,id:"المحتويات",text:"المحتويات"}],o=`<pre><code>An SQL query walks into a bar and sees two tables.
+He walks up to them and asks “Can I join you?”
+</code></pre>
+<p>— المصدر: غير معروف</p>
+<p>تحوّل عملية الربط البيانات من نموذج مُطبَّع إلى صيغة غير مُطبَّعة تلائم غرضاً معالجاتياً محدداً. والربط حسّاس بوجه خاص لزمن استجابة البحث على القرص لأنه يجمع شذرات بيانات متفرقة. وتبقى الفهرسة السليمة أفضل حل لتقليل أزمنة الاستجابة. غير أن الفهرس الصحيح يعتمد على أي من خوارزميات الربط الثلاث الشائعة تستخدمه العبارة.</p>
+<h4>إن أعجبك هذا الموضوع، قد يعجبك أيضاً…</h4>
+<p>… أن <a href="https://winand.at/lists">تشترك في <strong>القوائم البريدية</strong></a>، و<a href="https://use-the-index-luke.com/shop">تحصل على <strong>ملصقات مجانية</strong></a>، و<a href="https://sql-performance-explained.com/?utm_source=use-the-index-luke.com&amp;utm_campaign=ch-join&amp;utm_medium=web">تشتري <strong>كتابي</strong></a>، أو <a href="https://winand.at/sql-training/open-online-class">تنضم إلى <strong>دورة تدريبية</strong></a>.</p>
+<p>غير أن هناك أمراً مشتركاً بين جميع خوارزميات الربط: أنها تعالج جدولين فقط في المرة الواحدة. فالاستعلام في SQL الذي يضم جداول أكثر يتطلب خطوات متعددة: بناء مجموعة نتائج وسيطة بربط جدولين أولاً، ثم ربط النتيجة بالجدول التالي، وهكذا.</p>
+<h2 id="تدفق-النتائج-الوسيطة">تدفّق النتائج الوسيطة</h2>
+<p>ومع أن النتائج الوسيطة تشرح الخوارزمية شرحاً جيداً، فهي لا تعني أن قاعدة البيانات يجب أن تجسّدها؛ فذلك يعني تخزين النتيجة الوسيطة للربط الأول قبل بدء الربط التالي. وبدلاً من ذلك، تستخدم قواعد البيانات <a href="https://en.wikipedia.org/wiki/Pipeline_%28computing%29">التدفّق (pipelining)</a> لتقليل استهلاك الذاكرة؛ إذ يُمرَّر كل صف من النتيجة الوسيطة فوراً إلى عملية الربط التالية، ما يتجنّب الحاجة إلى تخزين مجموعة النتائج الوسيطة.</p>
+<p>ومع أن ترتيب الربط لا يؤثر في النتيجة النهائية، فإنه يؤثر في الأداء. ولذلك سيقيّم المُحسِّن جميع تبديلات ترتيب الربط الممكنة ويختار أفضلها. ويعني ذلك أن مجرد تحسين عبارة معقدة قد يصبح مشكلة أداء؛ فكلما زاد عدد الجداول المطلوب ربطها، زادت صيغ خطط التنفيذ المطلوب تقييمها — رياضياً: n! (<a href="https://en.wikipedia.org/wiki/Factorial">نمو مضروب</a>)، وإن لم يكن ذلك مشكلة عند استخدام <a href="/arabic-cs-library/book/use-the-index-luke/sql-where-clause-bind-parameters/index">وسائط الربط</a>.</p>
+<h4>مهم</h4>
+<p>كلما زاد تعقيد العبارة، زادت أهمية <a href="/arabic-cs-library/book/use-the-index-luke/sql-where-clause-bind-parameters/index">وسائط الربط</a>.</p>
+<p>فعدم استخدام وسائط الربط كإعادة ترجمة برنامج في كل مرة.</p>
+<h2 id="المحتويات">المحتويات</h2>
+<ol>
+<li><em><a href="/arabic-cs-library/book/use-the-index-luke/sql-join-nested-loops-join-n1-problem/index">الحلقات المتداخلة</a></em> — عن مشكلة الاستعلامات N+1 في ORM</li>
+<li><em><a href="/arabic-cs-library/book/use-the-index-luke/sql-join-hash-join-partial-objects/index">الربط بالتجزئة</a></em> — يتطلب نهج فهرسة مختلفاً تماماً</li>
+<li><em><a href="/arabic-cs-library/book/use-the-index-luke/sql-join-sort-merge-join/index">ربط الدمج بالترتيب</a></em> ‌— كسحّاب على مجموعتين مرتَّبتين</li>
+</ol>
+`,r={book:e,chapter:n,chapterTitle:i,slug:a,title:s,headings:t,html:o};export{e as book,n as chapter,i as chapterTitle,r as default,t as headings,o as html,a as slug,s as title};

@@ -1,0 +1,112 @@
+const e="use-the-index-luke",s="sql-where-clause-the-equals-operator-concatenated-keys",n="الفهارس المركّبة",a="index",o="المفاتيح المُسلسلة",p=[{depth:2,id:"مسح-كامل-للجدول",text:"مسح كامل للجدول"},{depth:2,id:"الشكل-21-الفهرس-المسلسل",text:"الشكل 2.1 الفهرس المُسلسل"}],c=`<p>رغم أن قاعدة البيانات تُنشئ فهرس المفتاح الأساسي تلقائياً، لا يزال هناك مجال لتحسينات يدوية إذا كان المفتاح يتكوّن من عدة أعمدة. وفي هذه الحالة تُنشئ قاعدة البيانات فهرساً على جميع أعمدة المفتاح الأساسي—وهو ما يسمى فهرساً <em>مُسلسلاً</em> (concatenated index) (ويُعرف أيضاً بالفهرس <em>متعدد الأعمدة</em> أو <em>المركّب</em> أو <em>المدمج</em>). لاحظ أن ترتيب الأعمدة في الفهرس المُسلسل له تأثير كبير في قابليته للاستخدام، لذا يجب اختياره بعناية.</p>
+<p>على سبيل التوضيح، لنفترض حدوث اندماج بين شركتين. تُضاف موظفو الشركة الأخرى إلى جدول <code>EMPLOYEES</code> فيصبح حجمه عشرة أضعاف. وهناك مشكلة واحدة فقط: قيمة <code>EMPLOYEE_ID</code> ليست فريدة عبر الشركتين معاً. فنحتاج إلى توسيع المفتاح الأساسي بمعرّف إضافي—مثل معرّف شركة فرعية. وهكذا يصبح للمفتاح الأساسي الجديد عمودان: <code>EMPLOYEE_ID</code> كما كان، و<code>SUBSIDIARY_ID</code> لإعادة إرساء التفرّد.</p>
+<p>لذا يُعرَّف فهرس المفتاح الأساسي الجديد كما يلي:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">UNIQUE</span> INDEX employees_pk
+    <span class="hljs-keyword">ON</span> employees (employee_id, subsidiary_id)
+</code></pre>
+<p>يجب أن يأخذ الاستعلام عن موظف معين المفتاح الأساسي الكامل في الحسبان—أي يجب استخدام العمود <code>SUBSIDIARY_ID</code> أيضاً:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> first_name, last_name
+  <span class="hljs-keyword">FROM</span> employees
+ <span class="hljs-keyword">WHERE</span> employee_id   <span class="hljs-operator">=</span> <span class="hljs-number">123</span>
+   <span class="hljs-keyword">AND</span> subsidiary_id <span class="hljs-operator">=</span> <span class="hljs-number">30</span>
+</code></pre>
+<p>كلما استخدم استعلام المفتاح الأساسي الكامل، يمكن لقاعدة البيانات استخدام <code>INDEX UNIQUE SCAN</code>—مهما كان عدد أعمدة الفهرس. لكن ماذا يحدث عند استخدام عمود واحد فقط من أعمدة المفتاح، مثلاً عند البحث عن جميع موظفي شركة فرعية؟</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> first_name, last_name
+  <span class="hljs-keyword">FROM</span> employees
+ <span class="hljs-keyword">WHERE</span> subsidiary_id <span class="hljs-operator">=</span> <span class="hljs-number">20</span>
+</code></pre>
+<p>تكشف خطة التنفيذ (execution plan) أن قاعدة البيانات لا تستخدم الفهرس. بل تنفّذ <code>TABLE ACCESS FULL</code>. ونتيجة لذلك تقرأ قاعدة البيانات الجدول بالكامل وتقيّم كل صف مقابل عبارة <code>where</code>. وينمو زمن التنفيذ مع حجم الجدول: فإذا تضاعف الجدول عشرة أضعاف، يستغرق <code>TABLE ACCESS FULL</code> عشرة أضعاف الوقت. وخطر هذه العملية أنها غالباً ما تكون سريعة بما يكفي في بيئة تطوير صغيرة، لكنها تسبب مشكلات أداء خطيرة في بيئة الإنتاج.</p>
+<h2 id="مسح-كامل-للجدول">مسح كامل للجدول</h2>
+<p>قد تكون عملية <code>TABLE ACCESS FULL</code>، المعروفة أيضاً بـ<em>مسح كامل للجدول</em> (full table scan)، أكثر العمليات كفاءة في بعض الحالات على أي حال، خصوصاً عند استرجاع جزء كبير من الجدول.</p>
+<p>ويرجع ذلك جزئياً إلى العبء الإضافي للبحث بالفهرس نفسه، وهو ما لا يحدث في عملية <code>TABLE ACCESS FULL</code>. والسبب الأكبر أن البحث بالفهرس يقرأ كتلة تلو الأخرى؛ إذ لا تعرف قاعدة البيانات أي كتلة تقرأ تالياً حتى تتم معالجة الكتلة الحالية. أما <code>FULL TABLE SCAN</code> فيجب أن يحصل على الجدول كاملاً على أي حال، بحيث يمكن لقاعدة البيانات أن تقرأ أجزاءً أكبر في المرة الواحدة (<em>قراءة متعددة الكتل</em> multi block read). فرغم أن قاعدة البيانات تقرأ بيانات أكثر، فقد تحتاج إلى تنفيذ عمليات قراءة أقل.</p>
+<p>لا تستخدم قاعدة البيانات الفهرس لأنها لا تستطيع استخدام أعمدة فردية من فهرس مُسلسل بشكل اعتباطي. وبنظرة أدق إلى بنية الفهرس يتّضح ذلك.</p>
+<h4>إن أعجبك هذا الموضوع، قد يعجبك أيضاً…</h4>
+<p>… أن <a href="https://winand.at/lists">تشترك في <strong>القوائم البريدية</strong></a>، و<a href="https://use-the-index-luke.com/shop">تحصل على <strong>ملصقات مجانية</strong></a>، و<a href="https://sql-performance-explained.com/?utm_source=use-the-index-luke.com&amp;utm_campaign=sec-concatenated&amp;utm_medium=web">تشتري <strong>كتابي</strong></a>، أو <a href="https://winand.at/sql-training/open-online-class">تنضم إلى <strong>دورة تدريبية</strong></a>.</p>
+<p>الفهرس المُسلسل ليس إلا فهرس شجرة B (B-tree index) كأي فهرس آخر يحفظ البيانات المفهرسة في قائمة مرتبة. وتراعي قاعدة البيانات كل عمود حسب موضعه في تعريف الفهرس لترتيب مدخلات الفهرس. فالعمود الأول هو معيار الترتيب الأساسي، والعمود الثاني يحدّد الترتيب فقط إذا تساوت قيمتا مدخلين في العمود الأول، وهكذا.</p>
+<h4>مهم</h4>
+<p>الفهرس المُسلسل هو <em>فهرس واحد عبر أعمدة متعددة</em>.</p>
+<p>لذا فإن ترتيب فهرس بعمودين يشبه ترتيب دليل هاتف: يُرتَّب أولاً حسب اسم العائلة، ثم حسب الاسم الأول. ويعني ذلك أن فهرساً بعمودين لا يدعم البحث على العمود الثاني وحده؛ فذلك سيكون مثل البحث في دليل هاتف بالاسم الأول.</p>
+<h2 id="الشكل-21-الفهرس-المسلسل">الشكل 2.1 الفهرس المُسلسل</h2>
+<p>يوضّح مقتطف الفهرس في <a href="#fig-concat-key">الشكل 2.1</a> أن مدخلات الشركة الفرعية 20 ليست مخزّنة بجوار بعضها بعضاً. ويتّضح أيضاً أنه لا توجد مدخلات بقيمة <code>SUBSIDIARY_ID = 20</code> في الشجرة، رغم وجودها في عقد الأوراق. لذا فالشجرة عديمة الفائدة لهذا الاستعلام.</p>
+<h4>نصيحة</h4>
+<p>يساعد تصوّر الفهرس في فهم الاستعلامات التي يدعمها. ويمكنك الاستعلام من قاعدة البيانات لاسترجاع المدخلات بترتيب الفهرس (صيغة SQL:2008، انظر <a href="/arabic-cs-library/book/use-the-index-luke/sql-partial-results-top-n-queries/index#overview_top_n">صيغة استعلامات top-n</a> للحلول الخاصة باستخدام <code>LIMIT</code> أو <code>TOP</code> أو <code>ROWNUM</code>):</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">&lt;</span>INDEX <span class="hljs-keyword">COLUMN</span> LIST<span class="hljs-operator">&gt;</span> 
+  <span class="hljs-keyword">FROM</span> <span class="hljs-operator">&lt;</span><span class="hljs-keyword">TABLE</span><span class="hljs-operator">&gt;</span>  
+ <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-operator">&lt;</span>INDEX <span class="hljs-keyword">COLUMN</span> LIST<span class="hljs-operator">&gt;</span>
+ <span class="hljs-keyword">FETCH</span> <span class="hljs-keyword">FIRST</span> <span class="hljs-number">100</span> <span class="hljs-keyword">ROWS</span> <span class="hljs-keyword">ONLY</span>
+</code></pre>
+<p>إذا وضعت تعريف الفهرس واسم الجدول في الاستعلام، فستحصل على عيّنة من الفهرس. اسأل نفسك إن كانت الصفوف المطلوبة متجمّعة في مكان مركزي. وإن لم تكن كذلك، فلا يمكن لشجرة الفهرس المساعدة في العثور على ذلك المكان.</p>
+<p>يمكننا بالطبع إضافة فهرس آخر على <code>SUBSIDIARY_ID</code> لتحسين سرعة الاستعلام. غير أن هناك حلاً أفضل—على الأقل إذا افترضنا أن البحث بـ<code>EMPLOYEE_ID</code> وحده لا معنى له.</p>
+<p>يمكننا الاستفادة من كون العمود الأول في الفهرس صالحاً دائماً للبحث. ومرة أخرى، الأمر كدليل هاتف: لا تحتاج إلى معرفة الاسم الأول للبحث باسم العائلة. والحيلة هي عكس ترتيب أعمدة الفهرس بحيث يصبح <code>SUBSIDIARY_ID</code> في الموضع الأول:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">UNIQUE</span> INDEX EMPLOYEES_PK 
+    <span class="hljs-keyword">ON</span> EMPLOYEES (SUBSIDIARY_ID, EMPLOYEE_ID)
+</code></pre>
+<p>لا يزال العمودان معاً فريدين، لذا يمكن للاستعلامات بالمفتاح الأساسي الكامل أن تستخدم <code>INDEX UNIQUE SCAN</code>، لكن تسلسل مدخلات الفهرس مختلف تماماً. فقد أصبح <code>SUBSIDIARY_ID</code> معيار الترتيب الأساسي. ويعني ذلك أن جميع مدخلات شركة فرعية تأتي متتالية في الفهرس، فيمكن لقاعدة البيانات استخدام شجرة B للعثور على موضعها.</p>
+<h4>مهم</h4>
+<p>أهم اعتبار عند تعريف فهرس مُسلسل هو كيفية اختيار ترتيب الأعمدة بحيث يمكن استخدامه بأكبر قدر ممكن.</p>
+<p>تؤكد خطة التنفيذ أن قاعدة البيانات تستخدم الفهرس «المعكوس». فـ<code>SUBSIDIARY_ID</code> وحده لم يعد فريداً، لذا يجب على قاعدة البيانات تتبّع عقد الأوراق للعثور على جميع المدخلات المطابقة: لذلك تستخدم عملية <code>INDEX RANGE SCAN</code>.</p>
+<p>Db2 (LUW)</p>
+<pre><code>Explain Plan
+-------------------------------------------------------------
+ID | Operation               |                    Rows | Cost
+ 1 | RETURN                  |                         |  128
+ 2 |  FETCH EMPLOYEES        |  1195 of 1195 (100.00%) |  128
+ 3 |   RIDSCN                |  1195 of 1195 (100.00%) |   43
+ 4 |    SORT (UNIQUE)        |  1195 of 1195 (100.00%) |   43
+ 5 |     IXSCAN EMPLOYEES_PK | 1195 of 10000 ( 11.95%) |   43
+
+Predicate Information
+ 2 - SARG (Q1.SUBSIDIARY_ID = +00002.)
+ 5 - START (Q1.SUBSIDIARY_ID = +00002.)
+      STOP (Q1.SUBSIDIARY_ID = +00002.)
+</code></pre>
+<p>تبدو خطة التنفيذ هذه أكثر تعقيداً من خطة التنفيذ التي استخدمت الفهرس سابقاً. غير أن العمليات الأساسية لا تزال موجودة: <code>IXSCAN</code> التي تمثّل مسح نطاق الفهرس (index range scan)، و<code>FETCH</code> للوصول إلى الجدول. وبين هاتين العمليتين توجد عملية <code>SORT</code> وعملية <code>RIDSCN</code> غير متوقعتين: ترتّب عملية <code>SORT</code> المدخلات المجلوبة من الفهرس وفق موضع التخزين الفيزيائي للصفوف في جدول الكومة. ثم تجلب <code>RIDSCAN</code> مسبقاً جميع صفحات قاعدة البيانات المتأثرة (بدمج عدة كتل متجاورة في عملية إدخال/إخراج (I/O) واحدة).</p>
+<p>MySQL</p>
+<pre><code>+----+-----------+------+---------+---------+------+-------+
+| id | table     | type | key     | key_len | rows | Extra |
++----+-----------+------+---------+---------+------+-------+
+|  1 | employees | ref  | PRIMARY | 5       |  123 |       |
++----+-----------+------+---------+---------+------+-------+
+</code></pre>
+<p>نمط الوصول <code>ref</code> في MySQL هو مقابل <code>INDEX RANGE SCAN</code> في قاعدة بيانات Oracle.</p>
+<p>Oracle</p>
+<pre><code>---------------------------------------------------------------
+|Id |Operation                   | Name         | Rows | Cost |
+---------------------------------------------------------------
+| 0 |SELECT STATEMENT            |              |  106 |   75 |
+| 1 | TABLE ACCESS BY INDEX ROWID| EMPLOYEES    |  106 |   75 |
+|*2 |  INDEX RANGE SCAN          | EMPLOYEES_PK |  106 |    2 |
+---------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+   2 - access(&quot;SUBSIDIARY_ID&quot;=20)
+</code></pre>
+<p>PostgreSQL</p>
+<pre><code>                 QUERY PLAN
+----------------------------------------------
+ Bitmap Heap Scan on employees
+ (cost=24.63..1529.17 rows=1080 width=13)
+   Recheck Cond: (subsidiary_id = 2::numeric)
+   -&gt; Bitmap Index Scan on employees_pk
+      (cost=0.00..24.36 rows=1080 width=0)
+      Index Cond: (subsidiary_id = 2::numeric)
+</code></pre>
+<p>تستخدم قاعدة بيانات PostgreSQL عمليتين في هذه الحالة: <code>Bitmap Index Scan</code> ثم <code>Bitmap Heap Scan</code>. وهما تقابلان تقريباً <code>INDEX RANGE SCAN</code> و<code>TABLE ACCESS BY INDEX ROWID</code> في Oracle مع فرق مهم واحد: فهي تجلب أولاً جميع النتائج من الفهرس (<code>Bitmap Index Scan</code>)، ثم ترتّب الصفوف وفق موضع التخزين الفيزيائي للصفوف في جدول الكومة، ثم تجلب جميع الصفوف من الجدول (<code>Bitmap Heap Scan</code>). وتقلّل هذه الطريقة عدد عمليات الإدخال/الإخراج العشوائية على الجدول.</p>
+<p>SQL Server</p>
+<pre><code>|--Nested Loops(Inner Join)
+   |--Index Seek(OBJECT:employees_pk,
+   |               SEEK:subsidiary_id=20
+   |            ORDERED FORWARD)
+   |--RID Lookup(OBJECT:employees,
+                   SEEK:Bmk1000=Bmk1000
+                 LOOKUP ORDERED FORWARD)
+</code></pre>
+<p>بشكل عام، يمكن لقاعدة البيانات استخدام فهرس مُسلسل عند البحث بالأعمدة البادئة (الأكثر يساراً). فالفهرس ذو الأعمدة الثلاثة يمكن استخدامه عند البحث بالعمود الأول، وعند البحث بالعمودين الأولين معاً، وعند البحث باستخدام جميع الأعمدة.</p>
+<p>ورغم أن حل الفهرس المزدوج يحقق أداء <code>select</code> جيداً جداً أيضاً، فإن حل الفهرس الواحد أفضل. فهو لا يوفّر مساحة التخزين فحسب، بل يوفر أيضاً عبء الصيانة للفهرس الثاني. فكلما قلّ عدد فهارس الجدول، تحسّن أداء <code>insert</code> و<code>delete</code> و<code>update</code>.</p>
+<h4>إن أعجبك هذا الموضوع، قد يعجبك أيضاً…</h4>
+<p>… أن <a href="https://winand.at/lists">تشترك في <strong>القوائم البريدية</strong></a>، و<a href="https://use-the-index-luke.com/shop">تحصل على <strong>ملصقات مجانية</strong></a>، و<a href="https://sql-performance-explained.com/?utm_source=use-the-index-luke.com&amp;utm_campaign=sec-concatenated&amp;utm_medium=web">تشتري <strong>كتابي</strong></a>، أو <a href="https://winand.at/sql-training/open-online-class">تنضم إلى <strong>دورة تدريبية</strong></a>.</p>
+<p>لتعريف فهرس أمثل، يجب أن تفهم أكثر من مجرد كيفية عمل الفهارس—يجب أن تعرف أيضاً كيف يستعلم التطبيق عن البيانات. وهذا يعني أن تعرف تركيبات الأعمدة التي تظهر في عبارة <code>where</code>.</p>
+<p>لذا فإن تعريف فهرس أمثل صعب جداً على المستشارين الخارجيين؛ لأنهم لا يملكون نظرة شاملة على مسارات وصول التطبيق. وعادةً ما يستطيع المستشارون النظر في استعلام واحد فقط، فلا يستفيدون من المنفعة الإضافية التي قد يجلبها الفهرس لاستعلامات أخرى. ومديرو قواعد البيانات في وضع مشابه، إذ قد يعرفون مخطط قاعدة البيانات لكن ليست لديهم معرفة عميقة بمسارات الوصول.</p>
+<p>والمكان الوحيد الذي تلتقي فيه المعرفة التقنية بقاعدة البيانات مع المعرفة الوظيفية بمجال العمل هو قسم التطوير. فالمطوّرون لديهم حسّ بالبيانات ويعرفون مسار الوصول، ويمكنهم الفهرسة على نحو سليم لتحقيق أفضل منفعة للتطبيق ككل دون جهد كبير.</p>
+`,d={book:e,chapter:s,chapterTitle:n,slug:a,title:o,headings:p,html:c};export{e as book,s as chapter,n as chapterTitle,d as default,p as headings,c as html,a as slug,o as title};

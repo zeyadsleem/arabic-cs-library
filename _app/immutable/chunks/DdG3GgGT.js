@@ -1,0 +1,42 @@
+const s="use-the-index-luke",e="sql-where-clause-null-index",a="فهرسة NULL",n="index",o="فهرسة `NULL`",c=[],d=`<p>لا تُدرج قاعدة بيانات Oracle الصفوف في الفهرس إذا كانت جميع الأعمدة المفهرسة <code>NULL</code>. ويعني ذلك أن كل فهرس هو <a href="/arabic-cs-library/book/use-the-index-luke/sql-where-clause-partial-and-filtered-indexes/index">فهرس جزئي</a> — أشبه بوجود جملة <code>where</code>:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">CREATE</span> INDEX idx
+          <span class="hljs-keyword">ON</span> tbl (A, B, C, ...)
+       <span class="hljs-keyword">WHERE</span> A <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NOT NULL</span>
+          <span class="hljs-keyword">OR</span> B <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NOT NULL</span>
+          <span class="hljs-keyword">OR</span> C <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NOT NULL</span>
+             ...
+</code></pre>
+<p>تأمّل الفهرس <code>EMP_DOB</code>؛ فله عمود واحد فقط: <code>DATE_OF_BIRTH</code>. والصف الذي لا توجد له قيمة <code>DATE_OF_BIRTH</code> لا يُضاف إلى هذا الفهرس.</p>
+<pre><code class="language-sql"><span class="hljs-keyword">INSERT INTO</span> employees ( subsidiary_id, employee_id
+                      , first_name   , last_name
+                      , phone_number)
+               <span class="hljs-keyword">VALUES</span> ( ?, ?, ?, ?, ? )
+</code></pre>
+<p>لا تضبط عبارة <code>insert</code> قيمة <code>DATE_OF_BIRTH</code>، فتكون قيمتها الافتراضية <code>NULL</code>، ومن ثمّ لا يُضاف السجل إلى فهرس <code>EMP_DOB</code>. ونتيجة لذلك، لا يستطيع الفهرس دعم استعلام عن السجلات التي تحقق <code>DATE_OF_BIRTH</code> <code>IS NULL</code>:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> first_name, last_name
+  <span class="hljs-keyword">FROM</span> employees
+ <span class="hljs-keyword">WHERE</span> date_of_birth <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span>
+</code></pre>
+<p>ومع ذلك، يُدرَج السجل في فهرس مُدمج إذا كان عمود واحد على الأقل غير <code>NULL</code>:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">CREATE</span> INDEX demo_null
+          <span class="hljs-keyword">ON</span> employees (subsidiary_id, date_of_birth)
+</code></pre>
+<p>يُضاف الصف المنشأ أعلاه إلى الفهرس لأن <code>SUBSIDIARY_ID</code> ليس <code>NULL</code>. ويمكن لهذا الفهرس إذن دعم استعلام عن جميع موظفي فرع معيّن لا توجد لهم قيمة <code>DATE_OF_BIRTH</code>:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> first_name, last_name
+  <span class="hljs-keyword">FROM</span> employees
+ <span class="hljs-keyword">WHERE</span> subsidiary_id <span class="hljs-operator">=</span> ?
+   <span class="hljs-keyword">AND</span> date_of_birth <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span>
+</code></pre>
+<p>لاحظ أن الفهرس يغطي جملة <code>where</code> بأكملها؛ فجميع المرشّحات تُستخدم كمُسندات وصول أثناء <code>INDEX RANGE SCAN</code>.</p>
+<h4>إن أعجبك هذا الموضوع، قد يعجبك أيضاً…</h4>
+<p>… أن <a href="https://winand.at/lists">تشترك في <strong>القوائم البريدية</strong></a>، و<a href="https://use-the-index-luke.com/shop">تحصل على <strong>ملصقات مجانية</strong></a>، و<a href="https://sql-performance-explained.com/?utm_source=use-the-index-luke.com&amp;utm_campaign=sec-indexingnull&amp;utm_medium=web">تشتري <strong>كتابي</strong></a>، أو <a href="https://winand.at/sql-training/open-online-class">تنضم إلى <strong>دورة تدريبية</strong></a>.</p>
+<p>ويمكننا توسيع هذا المفهوم للاستعلام الأصلي للعثور على جميع السجلات التي تحقق <code>DATE_OF_BIRTH</code> <code>IS NULL</code>. ولذلك يجب أن يكون العمود <code>DATE_OF_BIRTH</code> أقصى عمود إلى اليسار في الفهرس ليمكن استخدامه كمُسند وصول. ومع أننا لا نحتاج إلى عمود ثانٍ في الفهرس من أجل الاستعلام نفسه، نضيف عموداً آخر لا يمكن أن يكون <code>NULL</code> أبداً لضمان احتواء الفهرس على جميع الصفوف. ويمكننا استخدام أي عمود له قيد <code>NOT NULL</code>، مثل <code>SUBSIDIARY_ID</code>، لهذا الغرض.</p>
+<p>بدلاً من ذلك، يمكننا استخدام تعبير ثابت لا يمكن أن يكون <code>NULL</code> أبداً، ما يضمن أن الفهرس يحتوي جميع الصفوف — حتى إذا كانت <code>DATE_OF_BIRTH</code> هي <code>NULL</code>.</p>
+<pre><code>DROP   INDEX emp_dob
+</code></pre>
+<pre><code class="language-sql"><span class="hljs-keyword">CREATE</span> INDEX emp_dob <span class="hljs-keyword">ON</span> employees (date_of_birth, <span class="hljs-string">&#x27;X&#x27;</span>)
+</code></pre>
+<p>من الناحية التقنية، هذا الفهرس <a href="/arabic-cs-library/book/use-the-index-luke/sql-where-clause-functions-case-insensitive-search/index">فهرس قائم على الدوال</a>. ويدحض هذا المثال أيضاً الخرافة القائلة إن قاعدة بيانات Oracle لا تستطيع فهرسة <code>NULL</code>.</p>
+<h4>نصيحة</h4>
+<p>أضف عموداً لا يمكن أن يكون <code>NULL</code> لفهرسة <code>NULL</code> مثل أي قيمة.</p>
+`,l={book:s,chapter:e,chapterTitle:a,slug:n,title:o,headings:c,html:d};export{s as book,e as chapter,a as chapterTitle,l as default,c as headings,d as html,n as slug,o as title};
