@@ -1,61 +1,61 @@
 ---
-title: "Building Abstractions with Procedures"
-lang: en
+title: "بناء التجريدات بالإجراءات"
+lang: ar
 ---
 
-> The acts of the mind, wherein it exerts its power over simple ideas, are chiefly these three: 1. Combining several simple ideas into one compound one, and thus all complex ideas are made. 2. The second is bringing two ideas, whether simple or complex, together, and setting them by one another so as to take a view of them at once, without uniting them into one, by which it gets all its ideas of relations. 3. The third is separating them from all other ideas that accompany them in their real existence: this is called abstraction, and thus all its general ideas are made. —John Locke, An Essay Concerning Human Understanding (1690)
+> أفعال العقل، حين يبسط سلطانه على الأفكار البسيطة، هي ثلاثةٌ أساسًا: 1. الجمع: تركيب عدّة أفكار بسيطة في فكرةٍ مركّبةٍ واحدة، وبذلك تُصنَع جميع الأفكار المركّبة. 2. الثاني: إحضار فكرتين، بسيطةً كانتا أو مركّبتين، ووضعهما إحداهما إلى جانب الأخرى بحيث يرى العقلُهما معًا بلمحةٍ واحدة، دون أن يوحّدهما في فكرةٍ واحدة، وبذلك يحصل على جميع أفكاره عن العلاقات. 3. الثالث: فصلها عن جميع الأفكار الأخرى التي ترافقها في وجودها الحقيقيّ؛ وهذا ما يُسمّى التجريد، وبذلك تُصنَع جميع أفكاره العامّة. —John Locke, An Essay Concerning Human Understanding (1690)
 
-We are about to study the idea of a *computational process*. Computational processes are abstract beings that inhabit computers. As they evolve, processes manipulate other abstract things called *data*. The evolution of a process is directed by a pattern of rules called a *program*. People create programs to direct processes. In effect, we conjure the spirits of the computer with our spells.
+نحن على وشك دراسة فكرة *العمليّة الحسابيّة (computational process)*. فالعمليّات الحسابيّة كائناتٌ مجرّدةٌ تسكن الحواسيب. وبينما تتطوّر، تُعالج العمليّات كائناتٍ مجرّدةً أخرى تُسمّى *البيانات (data)*. وتطوّر العمليّة يوجّهه نمطٌ من القواعد يُسمّى *البرنامج (program)*. والناس يُنشئون البرامج لتوجيه العمليّات. في الحقيقة، إنّا نستحضر أرواح الحاسوب بتعاويذنا.
 
-A computational process is indeed much like a sorcerer’s idea of a spirit. It cannot be seen or touched. It is not composed of matter at all. However, it is very real. It can perform intellectual work. It can answer questions. It can affect the world by disbursing money at a bank or by controlling a robot arm in a factory. The programs we use to conjure processes are like a sorcerer’s spells. They are carefully composed from symbolic expressions in arcane and esoteric *programming languages* that prescribe the tasks we want our processes to perform.
+والعمليّة الحسابيّة تشبه حقًّا فكرة الساحر عن الرّوح. فلا يمكن رؤيتها أو لمسها، وهي ليست مركّبةً من المادّة إطلاقًا. لكنّها واقعيّةٌ للغاية. فهي قادرة على أداء عملٍ فكريّ. وقادرة على الإجابة عن الأسئلة. وقادرة على التأثير في العالم بإنفاق المال في مصرفٍ أو بالتحكّم في ذراع روبوتٍ في مصنع. والبرامج التي نستخدمها لاستحضار العمليّات تشبه تعاويذ الساحر. وهي مركّبةٌ بعنايةٍ من تعبيراتٍ رمزيّةٍ في *لغات البرمجة (programming languages)* الغامضة والأسرارية التي تُحدّد المهام التي نريد من عمليّاتنا أداءها.
 
-A computational process, in a correctly working computer, executes programs precisely and accurately. Thus, like the sorcerer’s apprentice, novice programmers must learn to understand and to anticipate the consequences of their conjuring. Even small errors (usually called *bugs* or *glitches*) in programs can have complex and unanticipated consequences.
+والعمليّة الحسابيّة، في حاسوبٍ يعمل على نحوٍ صحيح، تُنفّذ البرامج بدقّةٍ وإحكام. وهكذا، وعلى غرار تلميذ الساحر، ينبغي على المبرمجين المبتدئين أن يتعلّموا فهم عواقب استحضارهم وتوقّعها. فحتّى الأخطاء الصغيرة (المسماة عادةً *العلل (bugs)* أو *الخلل (glitches)*) في البرامج يمكن أن تكون لها عواقبُ معقّدةٌ وغير متوقّعة.
 
-Fortunately, learning to program is considerably less dangerous than learning sorcery, because the spirits we deal with are conveniently contained in a secure way. Real-world programming, however, requires care, expertise, and wisdom. A small bug in a computer-aided design program, for example, can lead to the catastrophic collapse of an airplane or a dam or the self-destruction of an industrial robot.
+ومن حسن الحظّ، فإنّ تعلّم البرمجة أقلّ خطرًا بكثيرٍ من تعلّم السحر، لأنّ الأرواح التي نتعامل معها محتجزةٌ بطريقةٍ مريحةٍ في مكانٍ آمن. أمّا البرمجة في العالم الواقعيّ، فهي تتطلّب عنايةً وخبرةً وحكمة. فإنّ خللًا صغيرًا في برنامجٍ للتصميم بمساعدة الحاسوب، مثلًا، يمكن أن يؤدّي إلى انهيارٍ كارثيٍّ لطائرةٍ أو لسدٍّ أو إلى تدمير روبوت صناعيّ لنفسه.
 
-Master software engineers have the ability to organize programs so that they can be reasonably sure that the resulting processes will perform the tasks intended. They can visualize the behavior of their systems in advance. They know how to structure programs so that unanticipated problems do not lead to catastrophic consequences, and when problems do arise, they can *debug* their programs. Well-designed computational systems, like well-designed automobiles or nuclear reactors, are designed in a modular manner, so that the parts can be constructed, replaced, and debugged separately.
+يمتلك مهندسو البرمجيّات المتمكّنون قدرةً على تنظيم البرامج بحيث يمكنهم أن يكونوا على يقينٍ معقولٍ بأنّ العمليّات الناتجة ستؤدّي المهام المقصودة. وهم قادرون على تصوّر سلوك أنظمتهم مسبقًا. ويعرفون كيف يُبنون البرامج حتّى لا يؤدّي ظهور المسائل غير المتوقّعة إلى عواقبَ كارثيّة، وحين تنشأ المسائل فعلًا فإنّهم *يُصحّحون (debug)* برامجهم. فإنّ الأنظمة الحسابيّة المصمّمة تصميمًا حسنًا، كالسيّارات المصمّمة تصميمًا حسنًا أو المفاعلات النوويّة، تُصمَّم على نحوٍ وحدانيّ، بحيث يمكن بناء أجزائها واستبدالها وتصحيحها كلًّا على حدة.
 
-#### Programming in Lisp
+#### البرمجة بلغة Lisp
 
-We need an appropriate language for describing processes, and we will use for this purpose the programming language Lisp. Just as our everyday thoughts are usually expressed in our natural language (such as English, French, or Japanese), and descriptions of quantitative phenomena are expressed with mathematical notations, our procedural thoughts will be expressed in Lisp. Lisp was invented in the late 1950s as a formalism for reasoning about the use of certain kinds of logical expressions, called *recursion equations*, as a model for computation. The language was conceived by John McCarthy and is based on his paper “Recursive Functions of Symbolic Expressions and Their Computation by Machine” ([McCarthy 1960](https://sarabander.github.io/sicp/html/References.xhtml#McCarthy-1960)).
+نحتاج إلى لغةٍ ملائمةٍ لوصف العمليّات، وسنستخدم لهذا الغرض لغة البرمجة Lisp. فكما تُعبَّر أفكارنا اليوميّة عادةً بلغتنا الطبيعيّة (كالإنجليزيّة أو الفرنسيّة أو اليابانيّة)، وكما تُعبَّر أوصاف الظواهر الكمّيّة بالترميزات الرياضيّة، فإنّ أفكارنا الإجرائيّة ستُعبَّر عنها بـLisp. وقد اختُرعت Lisp في أواخر خمسينيّات القرن العشرين كصياغةٍ رسميّةٍ للاستدلال على استخدام أنواعٍ معيّنةٍ من التعبيرات المنطقيّة، المسماة *معادلات التعاود (recursion equations)*، كنموذجٍ للاحتساب. وقد تصوّرها جون مكارثي وهي مستندةٌ إلى ورقته «الدوالّ العودية والتعابير الرمزيّة وحوسبتها بالآلة» ([مكارثي 1960](https://sarabander.github.io/sicp/html/References.xhtml#McCarthy-1960)).
 
-Despite its inception as a mathematical formalism, Lisp is a practical programming language. A Lisp *interpreter* is a machine that carries out processes described in the Lisp language. The first Lisp interpreter was implemented by McCarthy with the help of colleagues and students in the Artificial Intelligence Group of the MIT Research Laboratory of Electronics and in the MIT Computation Center.[^1] Lisp, whose name is an acronym for LISt Processing, was designed to provide symbol-manipulating capabilities for attacking programming problems such as the symbolic differentiation and integration of algebraic expressions. It included for this purpose new data objects known as atoms and lists, which most strikingly set it apart from all other languages of the period.
+رغم نشأتها كصياغةٍ رياضيّة، فإنّ Lisp لغةُ برمجةٍ عمليّة. و*المفسّر (interpreter)* آلةٌ تنفّذ العمليّات الموصوفة بلغة Lisp. وقد نُفّذ أوّل مفسّر Lisp على يد مكارثي بمساعدة زملائه وطلابه في مجموعة الذكاء الاصطناعي في مختبر أبحاث الإلكترونيات وفي مركز الحوسبة، وكلاهما في MIT. واسم Lisp مشتقٌ من عبارة LISt Processing، أي معالجة القوائم، وقد صُمّمت لتوفير قدرات معالجة الرموز لمهاجمة مسائل برمجةٍ كالتفاضل والتكامل الرمزيّين للتعبيرات الجبريّة. وقد أُضيفت لهذا الغرض كائناتُ بياناتٍ جديدة تُعرف بالذرّات والقوائم، وهي التي ميّزتها تمييزًا باهرًا عن جميع لغات ذلك العهد.
 
-Lisp was not the product of a concerted design effort. Instead, it evolved informally in an experimental manner in response to users’ needs and to pragmatic implementation considerations. Lisp’s informal evolution has continued through the years, and the community of Lisp users has traditionally resisted attempts to promulgate any “official” definition of the language. This evolution, together with the flexibility and elegance of the initial conception, has enabled Lisp, which is the second oldest language in widespread use today (only Fortran is older), to continually adapt to encompass the most modern ideas about program design. Thus, Lisp is by now a family of dialects, which, while sharing most of the original features, may differ from one another in significant ways. The dialect of Lisp used in this book is called Scheme.[^2]
+ولم تكن Lisp نتاجَ جهدٍ تصميميٍّ منظّم، بل تطوّرت تطوّرًا غير رسميٍّ وتجريبيًّا استجابةً لاحتياجات المستخدمين ولاعتبارات التنفيذ العمليّة. واستمرّ تطوّر Lisp غير الرسميّ على مرّ السنين، ولمجتمع مستخدمي Lisp مقاومةٌ تقليديّةٌ لمحاولات إصدار أيّ تعريف «رسميّ» للغة. وقد مكّن هذا التطوّر، مع المرونة والأناقة في التصوّر الأوّل، Lisp - وهي ثاني أقدم لغةٍ شائعة الاستخدام اليوم (ولا تزيد عليها في العمر إلّا Fortran) - من التكيّف باستمرارٍ لاستيعاب أحدث الأفكار عن تصميم البرامج. وهكذا، صارت Lisp الآن عائلةً من اللهجات، تتشابه في معظم الخصائص الأصليّة وقد تختلف اختلافًا جوهريًّا في نواحٍ عدّة. ولهجة Lisp المستخدمة في هذا الكتاب تُسمّى Scheme.
 
-Because of its experimental character and its emphasis on symbol manipulation, Lisp was at first very inefficient for numerical computations, at least in comparison with Fortran. Over the years, however, Lisp compilers have been developed that translate programs into machine code that can perform numerical computations reasonably efficiently. And for special applications, Lisp has been used with great effectiveness.[^3] Although Lisp has not yet overcome its old reputation as hopelessly inefficient, Lisp is now used in many applications where efficiency is not the central concern. For example, Lisp has become a language of choice for operating-system shell languages and for extension languages for editors and computer-aided design systems.
+وبسبب طابعها التجريبيّ وتأكيدها على معالجة الرموز، كانت Lisp غير كفؤةٍ على الإطلاق في الحسابات العدديّة في بادئ الأمر، على الأقلّ بالمقارنة مع Fortran. وعلى مرّ السنين، مع ذلك، طُوّرت مُصرّفات Lisp تترجم البرامج إلى شيفرة آليّة قادرة على أداء الحسابات العدديّة بكفاءةٍ معقولة. وللتطبيقات الخاصّة، استُخدمت Lisp بفعّيّةٍ كبيرة. ورغم أنّ Lisp لم تتغلّب بعد على سمعتها القديمة كلغةٍ ميؤوس من كفاءتها، فإنّها تُستخدم اليوم في تطبيقاتٍ كثيرةٍ ليس الهمّ المركزيّ فيها هو الكفاءة. فقد صارت Lisp - مثلًا - لغةً مختارةً لأغلفة نظم التشغيل (shell) ولغات التوسعة للمحرّرات ونظم التصميم بمساعدة الحاسوب.
 
-If Lisp is not a mainstream language, why are we using it as the framework for our discussion of programming? Because the language possesses unique features that make it an excellent medium for studying important programming constructs and data structures and for relating them to the linguistic features that support them. The most significant of these features is the fact that Lisp descriptions of processes, called *procedures*, can themselves be represented and manipulated as Lisp data. The importance of this is that there are powerful program-design techniques that rely on the ability to blur the traditional distinction between “passive” data and “active” processes. As we shall discover, Lisp’s flexibility in handling procedures as data makes it one of the most convenient languages in existence for exploring these techniques. The ability to represent procedures as data also makes Lisp an excellent language for writing programs that must manipulate other programs as data, such as the interpreters and compilers that support computer languages. Above and beyond these considerations, programming in Lisp is great fun.
+فإن لم تكن Lisp لغةً سائدةً، فلماذا نستخدمها إطارًا لمناقشتنا للبرمجة؟ لأنّ اللغة تمتلك خصائص فريدة تجعلها وسطًا ممتازًا لدراسة بنيات البرمجة وبنيات البيانات المهمّة، ولربطها بالخصائص اللغويّة التي تدعمها. وأهمّ هذه الخصائص أنّ أوصاف Lisp للعمليّات، المسماة *الإجراءات (procedures)*، يمكن أن تُُمثَّل وتُعالَجَ بذاتها كبيانات Lisp. وأهمّيّة هذا أنّ هناك تقنيّاتٍ قويّةً لتصميم البرامج تعتمد على القدرة على طمس التمييز التقليديّ بين البيانات «السلبيّة» والعمليّات «النشطة». فكما سنكتشف، فإنّ مرونة Lisp في معاملة الإجراءات كبياناتٍ تجعلها إحدى أكثر اللغات ملاءمةً الموجودة لاستكشاف هذه التقنيّات. والقدرة على تمثيل الإجراءات كبيانات تجعل Lisp أيضًا لغةً ممتازةً لكتابة البرامج التي يجب أن تعالج برامجًا أخرى كبيانات، كالمفسّرات والمُصرّفات التي تدعم لغات الحاسوب. وفوق هذه الاعتبارات كلّها، فإنّ البرمجة بـLisp متعةٌ عظيمة.
 
-### 1.1 The Elements of Programming
+### 1.1 عناصر البرمجة
 
-A powerful programming language is more than just a means for instructing a computer to perform tasks. The language also serves as a framework within which we organize our ideas about processes. Thus, when we describe a language, we should pay particular attention to the means that the language provides for combining simple ideas to form more complex ideas. Every powerful language has three mechanisms for accomplishing this:
+لغة البرمجة القويّة أكثر من مجرّد وسيلةٍ لتكليف الحاسوب بأداء المهام. فإنّ اللغة تخدم أيضًا بوصفها إطارًا نُنظّم داخله أفكارنا عن العمليّات. لذلك، حين نصف لغةً، ينبغي أن نُعير اهتمامًا خاصًّا للوسائل التي توفّرها اللغة لدمج الأفكار البسيطة لتكوين أفكار أكثر تعقيدًا. ولكلّ لغةٍ قويّةٍ ثلاث آليّاتٍ لإنجاز ذلك:
 
-- **primitive expressions**, which represent the simplest entities the language is concerned with,
-- **means of combination**, by which compound elements are built from simpler ones, and
-- **means of abstraction**, by which compound elements can be named and manipulated as units.
+- **التعابير الأوّليّة (primitive expressions)**، التي تمثّل أبسط الكيانات التي تعنى بها اللغة،
+- **وسائل التركيب (means of combination)**، التي تُبنى بها العناصر المركّبة من عناصر أبسط منها، و
+- **وسائل التجريد (means of abstraction)**، التي تُسمّى بها العناصر المركّبة وتُعالَج كوحداتٍ.
 
-In programming, we deal with two kinds of elements: procedures and data. (Later we will discover that they are really not so distinct.) Informally, data is “stuff” that we want to manipulate, and procedures are descriptions of the rules for manipulating the data. Thus, any powerful programming language should be able to describe primitive data and primitive procedures and should have methods for combining and abstracting procedures and data.
+في البرمجة، نتعامل مع نوعين من العناصر: الإجراءات والبيانات. (وسنكتشف لاحقًا أنّها ليست متمايزةً بهذا القدر حقًّا.) فبصورةٍ غير رسميّة، البيانات هي «المادّة» التي نريد معالجتها، والإجراءات هي أوصاف القواعد لمعالجة البيانات. لذلك، ينبغي لأيّ لغة برمجةٍ قويّةٍ أن تكون قادرة على وصف البيانات الأوّليّة والإجراءات الأوّليّة، وأن تكون لها طرائقٌ لتركيب الإجراءات والبيانات ولتجريدهما.
 
-In this chapter we will deal only with simple numerical data so that we can focus on the rules for building procedures.[^4] In later chapters we will see that these same rules allow us to build procedures to manipulate compound data as well.
+في هذا الفصل سنتعامل مع بيانات عدديّة بسيطة فقط، حتّى نتمكّن من التركيز على قواعد بناء الإجراءات.[^4] وفي الفصول اللاحقة سنرى أنّ هذه القواعد ذاتها تسمح لنا ببناء إجراءاتٍ تعالجة البيانات المركّبة كذلك.
 
-#### 1.1.1 Expressions
+#### 1.1.1 التعابير
 
-One easy way to get started at programming is to examine some typical interactions with an interpreter for the Scheme dialect of Lisp. Imagine that you are sitting at a computer terminal. You type an *expression*, and the interpreter responds by displaying the result of its *evaluating* that expression.
+وهناك طريقةٌ سهلةٌ للانطلاق في البرمجة، وهي أن نفحص بعض التفاعلات النموذجيّة مع مفسّرٍ للهجة Scheme من Lisp. فتخيّل أنّك جالسٌ أمام طرفيّة حاسوب. فتكتب *تعبيرًا (expression)*، فيستجيب المفسّر بعرض نتيجة *تقييمه (evaluating)* لذلك التعبير.
 
-One kind of primitive expression you might type is a number. (More precisely, the expression that you type consists of the numerals that represent the number in base 10.) If you present Lisp with a number
-
-```scheme
-486
-```
-
-the interpreter will respond by printing[^5]
+أحد أنواع التعبيرات الأوّليّة التي قد تكتبها هو العدد. (وبأكثر دقّة، التعبير الذي تكتبه يتكوّن من الأرقام التي تمثّل العدد في الأساس 10.) فإن قدّمت لـLisp عددًا
 
 ```scheme
 486
 ```
 
-Expressions representing numbers may be combined with an expression representing a primitive procedure (such as `+` or `*`) to form a compound expression that represents the application of the procedure to those numbers. For example:
+فسيستجيب المفسّر بالطباعة[^5]
+
+```scheme
+486
+```
+
+والتعابير التي تمثّل الأعداد يمكن أن تُدمج بتعبيرٍ يمثّل إجراءً أوّليًّا (كـ`+` أو `*`) لتكوين تعبيرٍ مركّبٍ يمثّل تطبيق الإجراء على تلك الأعداد. على سبيل المثال:
 
 ```scheme
 (+ 137 349)
@@ -74,9 +74,9 @@ Expressions representing numbers may be combined with an expression representing
 12.7
 ```
 
-Expressions such as these, formed by delimiting a list of expressions within parentheses in order to denote procedure application, are called *combinations*. The leftmost element in the list is called the *operator*, and the other elements are called *operands*. The value of a combination is obtained by applying the procedure specified by the operator to the *arguments* that are the values of the operands.
+والتعابير كهذه، المشكّلة بتحديد قائمةٍ من التعابير داخل قوسين للإشارة إلى تطبيق الإجراء، تُسمّى *التركيبات (combinations)*. ويُسمّى العنصر الأيسر في القائمة *المشغّل (operator)*، وتُسمّى العناصر الأخرى *العوامل (operands)*. وقيمة التركيب تُحصَل بتطبيق الإجراء الذي يُحدّده المشغّل على *المعطيات (arguments)* التي هي قيم العوامل.
 
-The convention of placing the operator to the left of the operands is known as *prefix notation*, and it may be somewhat confusing at first because it departs significantly from the customary mathematical convention. Prefix notation has several advantages, however. One of them is that it can accommodate procedures that may take an arbitrary number of arguments, as in the following examples:
+ويُعرف اصطلاح وضع المشغّل إلى يسار العوامل باسم *الترميز البادئ (prefix notation)*، وقد يكون مربكًا بعض الشيء في البداية لأنّه يبتعد ابتعادًا جوهريًّا عن الاصطلاح الرياضيّ المعتاد. غير أنّ الترميز البادئ له عدّة مزايا، منها أنّه يقبل إجراءاتٍ قد تأخذ عددًا اعتباطيًّا من المعطيات، كما في الأمثلة التالية:
 
 ```scheme
 (+ 21 35 12 7)
@@ -86,22 +86,22 @@ The convention of placing the operator to the left of the operands is known as *
 1200
 ```
 
-No ambiguity can arise, because the operator is always the leftmost element and the entire combination is delimited by the parentheses.
+فلا يمكن أن ينشأ التباس، لأنّ المشغّل هو دائمًا العنصر الأيسر، والتركيبَ كلّه محدَّدٌ بالأقواس.
 
-A second advantage of prefix notation is that it extends in a straightforward way to allow combinations to be *nested*, that is, to have combinations whose elements are themselves combinations:
+وميزةٌ ثانية للترميز البادئ هي أنّه يمتدّ امتدادًا مباشرًا ليسمح بأن تكون التركيبات *متداخلة (nested)*، أي أن تكون عناصر التركيب تركيبًا بذاته:
 
 ```scheme
 (+ (* 3 5) (- 10 6))
 19
 ```
 
-There is no limit (in principle) to the depth of such nesting and to the overall complexity of the expressions that the Lisp interpreter can evaluate. It is we humans who get confused by still relatively simple expressions such as
+ولا يوجد حدّ (من حيث المبدأ) لعمق هذا التداخل وللتعقيد الكلّيّ للتعابير التي يقدر مفسّر Lisp على تقييمها. ونحن البشر الذين نضلّل بتعابيرَ ما تزال بسيطةً نسبيًّا مثل
 
 ```scheme
 (+ (* 3 (+ (* 2 4) (+ 3 5))) (+ (- 10 7) 6))
 ```
 
-which the interpreter would readily evaluate to be 57. We can help ourselves by writing such an expression in the form
+والتي سيقيّمها المفسّر دون تردّدٍ فتُعطي 57. ويمكننا أن نساعد أنفسنا بكتابة تعبيرٍ كهذا في الصيغة
 
 ```scheme
 (+ (* 3
@@ -111,21 +111,21 @@ which the interpreter would readily evaluate to be 57. We can help ourselves by 
       6))
 ```
 
-following a formatting convention known as *pretty-printing*, in which each long combination is written so that the operands are aligned vertically. The resulting indentations display clearly the structure of the expression.[^6]
+اتّباعًا لاصطلاح تنسيقٍ يُعرف بـ*الطبع الأنيق (pretty-printing)*، وفيه تُكتب كلّ تركيبةٍ طويلةٍ بحيث تُحاذى العوامل رأسيًّا. فتظهر الإزاحات الناتجة بنية التعبير بيانًا واضحًا.[^6]
 
-Even with complex expressions, the interpreter always operates in the same basic cycle: It reads an expression from the terminal, evaluates the expression, and prints the result. This mode of operation is often expressed by saying that the interpreter runs in a *read-eval-print loop*. Observe in particular that it is not necessary to explicitly instruct the interpreter to print the value of the expression.[^7]
+وحتّى مع التعابير المعقّدة، يعمل المفسّر دائمًا في الدورة الأساسيّة ذاتها: فيقرأ تعبيرًا من الطرفيّة، ويقيّم التعبير، ويطبع النتيجة. وهذا النمط من التشغيل يُعبَّر عنه غالبًا بالقول إنّ المفسّر يعمل في *حلقة القراءة والتقييم والطباعة (read-eval-print loop)*. ولاحِظ على وجه الخصوص أنّه ليس ضروريًّا أن تُعطي المفسّر تعليماتٍ صريحةً بطبع قيمة التعبير.[^7]
 
-#### 1.1.2 Naming and the Environment
+#### 1.1.2 التسمية والبيئة
 
-A critical aspect of a programming language is the means it provides for using names to refer to computational objects. We say that the name identifies a *variable* whose *value* is the object.
+وجانبٌ بالغ الأهمّيّة في لغة البرمجة هو ما توفّره من وسائل لاستخدام الأسماء للإشارة إلى الكائنات الحاسوبيّة. فنحن نقول إنّ الاسم يدلّ على *متغيّر (variable)* *قيمتُهُ (value)* هي الكائن.
 
-In the Scheme dialect of Lisp, we name things with `define`. Typing
+في لهجة Scheme من Lisp، نُسمّي الأشياء بـ`define`. فبكتابة
 
 ```scheme
 (define size 2)
 ```
 
-causes the interpreter to associate the value 2 with the name `size`.[^8] Once the name `size` has been associated with the number 2, we can refer to the value 2 by name:
+فإنّ المفسّر (interpreter) يربط القيمة 2 بالاسم `size`.[^8] وحين يُربط الاسم `size` بالعدد 2، يمكننا أن نشير إلى القيمة 2 بالاسم:
 
 ```scheme
 size
@@ -135,7 +135,7 @@ size
 10
 ```
 
-Here are further examples of the use of `define`:
+وهذه أمثلةٌ إضافيّةٌ على استخدام `define`:
 
 ```scheme
 (define pi 3.14159)
@@ -150,61 +150,61 @@ circumference
 62.8318
 ```
 
-`Define` is our language’s simplest means of abstraction, for it allows us to use simple names to refer to the results of compound operations, such as the `circumference` computed above. In general, computational objects may have very complex structures, and it would be extremely inconvenient to have to remember and repeat their details each time we want to use them. Indeed, complex programs are constructed by building, step by step, computational objects of increasing complexity. The interpreter makes this step-by-step program construction particularly convenient because name-object associations can be created incrementally in successive interactions. This feature encourages the incremental development and testing of programs and is largely responsible for the fact that a Lisp program usually consists of a large number of relatively simple procedures.
+فـ`Define` أبسط وسائل التجريد في لغتنا، إذ يسمح لنا باستخدام أسماءٍ بسيطة للإشارة إلى نتائج عمليّاتٍ مركّبة، كـ`circumference` المحسوبة أعلاه. وبصورةٍ عامّة، قد تكون للكائنات الحاسوبيّة بنى معقّدةٌ جدًّا، وكان من غير الملائم للغاية أن نحتفظ بتفاصيلها ونعيدها في كلّ مرّةٍ نريد استخدامها. فحقًّا، إنّ البرامج المعقّدة تُبنى خطوةً بخطوة، من كائناتٍ حاسوبيّةٍ بتعقيدٍ متزايد. ويجعل المفسّر هذا البناء المتدرّج للبرنامج ملائمًا على وجه الخصوص، لأنّه يمكن إنشاء روابط الاسم-الكائن تدريجيًّا في تفاعلاتٍ متعاقبة. وهذه الميزة تشجّع على التطوير والاختبار التدريجيّين للبرامج، وهي مسؤولةٌ إلى حدٍّ كبيرٍ عن حقيقة أنّ برنامج Lisp يتكوّن عادةً من عددٍ كبيرٍ من الإجراءات البسيطة نسبيًّا.
 
-It should be clear that the possibility of associating values with symbols and later retrieving them means that the interpreter must maintain some sort of memory that keeps track of the name-object pairs. This memory is called the *environment* (more precisely the *global environment*, since we will see later that a computation may involve a number of different environments).[^9]
+وينبغي أن يكون واضحًا أنّ إمكان ربط القيم بالرموز واسترجاعها لاحقًا يعني أنّ المفسّر يجب أن يحتفظ بنوعٍ من الذاكرة التي تتابع أزواج الاسم-الكائن. وهذه الذاكرة تُسمّى *البيئة (environment)* (وبأكثر دقّة *البيئة العامّة (global environment)*، إذ سنرى لاحقًا أنّ الاحتساب قد يشمل عددًا من البيئات المختلفة).[^9]
 
-#### 1.1.3 Evaluating Combinations
+#### 1.1.3 تقييم التركيبات
 
-One of our goals in this chapter is to isolate issues about thinking procedurally. As a case in point, let us consider that, in evaluating combinations, the interpreter is itself following a procedure.
+وأحد أهدافنا في هذا الفصل هو عزل القضايا المتعلّقة بالتفكير الإجرائيّ. وعلى سبيل المثال، لنفترض أنّ المفسّر نفسه يُتْبِع إجراءً عند تقييمه التركيبات.
 
-> To evaluate a combination, do the following: Evaluate the subexpressions of the combination.
-> > Apply the procedure that is the value of the leftmost subexpression (the operator) to the arguments that are the values of the other subexpressions (the operands).
+> ولتقييم تركيبةٍ، افعل ما يلي: قيّم التعابير الجزئيّة للتركيبة.
+> > طبّق الإجراء الذي هو قيمة التعبير الجزئيّ الأيسر (المشغّل) على المعطيات التي هي قيم التعبيرات الجزئيّة الأخرى (العوامل).
 > > 
 
-Even this simple rule illustrates some important points about processes in general. First, observe that the first step dictates that in order to accomplish the evaluation process for a combination we must first perform the evaluation process on each element of the combination. Thus, the evaluation rule is *recursive* in nature; that is, it includes, as one of its steps, the need to invoke the rule itself.[^10]
+حتّى هذه القاعدة البسيطة تُبرز بعض النقاط المهمّة عن العمليّات بصورةٍ عامّة. فأوّلًا، لاحظ أنّ الخطوة الأولى تقضي بأنّه لإنجاز عمليّة تقييم تركيبةٍ ما، يجب أن نؤدّي أوّلًا عمليّة التقييم على كلّ عنصرٍ من عناصر التركيبة. وبذلك، فقاعدة التقييم *تعاوديّة (recursive)* بطبيعتها؛ أي أنّها تتضمّن، كإحدى خطواتها، الحاجة إلى استحضار القاعدة نفسها.[^10]
 
-Notice how succinctly the idea of recursion can be used to express what, in the case of a deeply nested combination, would otherwise be viewed as a rather complicated process. For example, evaluating
+ولاحظ كيف يمكن أن تُستخدم فكرة التعاود باختصارٍ للتعبير عمّا كان سيُنظر إليه، في حالة تركيبةٍ متداخلةٍ بعمق، على أنّه عمليّةٌ معقّدةٌ إلى حدٍّ ما. فمثلًا، تقييم
 
 ```scheme
 (* (+ 2 (* 4 6)) (+ 3 5 7))
 ```
 
-requires that the evaluation rule be applied to four different combinations. We can obtain a picture of this process by representing the combination in the form of a tree, as shown in [Figure 1.1](#Figure-1_002e1). Each combination is represented by a node with branches corresponding to the operator and the operands of the combination stemming from it. The terminal nodes (that is, nodes with no branches stemming from them) represent either operators or numbers. Viewing evaluation in terms of the tree, we can imagine that the values of the operands percolate upward, starting from the terminal nodes and then combining at higher and higher levels. In general, we shall see that recursion is a very powerful technique for dealing with hierarchical, treelike objects. In fact, the “percolate values upward” form of the evaluation rule is an example of a general kind of process known as *tree accumulation*.
+يتطلّب تطبيق قاعدة التقييم على أربع تركيباتٍ مختلفة. ويمكننا الحصول على صورةٍ عن هذه العمليّة بتمثيل التركيبة في شكل شجرة، كما هو موضّح في [الشكل 1.1](#Figure-1_002e1). فكلّ تركيبةٍ تُصوَّر بعقدةٍ لها أفرعٌ تقابل المشغّل وعوامل التركيبة الآتية منها. وتمثّل العُقَد النهائيّة (أي العُقَد التي لا تأتي منها أفرع) إمّا مشغّلاتٍ وإمّا أعداد. وبالنظر إلى التقييم من منظور الشجرة، يمكننا أن نتخيّل أنّ قيم العوامل تتسرّب إلى الأعلى، بدءًا من العُقَد النهائيّة ثم تجتمع عند مستوياتٍ أعلى فأعلى. وبصورةٍ عامّة، سنرى أنّ التعاود تقنيّةٌ بالغة القوّة للتعامل مع الكائنات الهرميّة الشبيهة بالأشجار. وفي الواقع، فإنّ صيغة «تسرّب القيم إلى الأعلى» من قاعدة التقييم مثالٌ على نوعٍ عامّ من العمليّات يُعرف بـ*التراكم الشجريّ (tree accumulation)*.
 
 ![](/images/sicp/c1-building-abstractions-with-procedures-0-Fig1.1g.std.webp)
 
-**Figure 1.1:** Tree representation, showing the value of each subcombination.
+**الشكل 1.1:** تمثيل شجريّ، يُظهر قيمة كلّ تركيبةٍ جزئيّة.
 
-Next, observe that the repeated application of the first step brings us to the point where we need to evaluate, not combinations, but primitive expressions such as numerals, built-in operators, or other names. We take care of the primitive cases by stipulating that
+تاليًا، لاحظ أنّ التطبيق المتكرّر للخطوة الأولى يصل بنا إلى النقطة التي نحتاج فيها إلى تقييم، لا تركيباتٍ، بل تعابيرَ أوّليّةً كالأعداد والمشغّلات المدمجة أو أسماءٍ أخرى. ونتعامل مع الحالات الأوّليّة بالنصّ على أنّ
 
-- the values of numerals are the numbers that they name,
-- the values of built-in operators are the machine instruction sequences that carry out the corresponding operations, and
-- the values of other names are the objects associated with those names in the environment.
+- قيم الأعداد هي الأعداد التي تُسمّيها،
+- قيم المشغّلات المدمجة هي تسلسلات تعليمات الآلة التي تؤدّي العمليّات المقابلة، و
+- قيم الأسماء الأخرى هي الكائنات المرتبطة بتلك الأسماء في البيئة.
 
-We may regard the second rule as a special case of the third one by stipulating that symbols such as `+` and `*` are also included in the global environment, and are associated with the sequences of machine instructions that are their “values.” The key point to notice is the role of the environment in determining the meaning of the symbols in expressions. In an interactive language such as Lisp, it is meaningless to speak of the value of an expression such as `(+ x 1)` without specifying any information about the environment that would provide a meaning for the symbol `x` (or even for the symbol `+`). As we shall see in [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3), the general notion of the environment as providing a context in which evaluation takes place will play an important role in our understanding of program execution.
+ويمكننا اعتبار القاعدة الثانية حالةً خاصّة من الثالثة بالنصّ على أنّ رموزًا مثل `+` و`*` مُدرجةٌ أيضًا في البيئة العامّة، ومرتبطةٌ بتسلسلات تعليمات الآلة التي هي «قيمُها». والنقطة الجوهريّة التي ينبغي ملاحظتها هي دور البيئة في تحديد معنى الرموز في التعابير. ففي لغةٍ تفاعليّةٍ مثل Lisp، لا معنى للكلام عن قيمة تعبيرٍ مثل `(+ x 1)` دون تحديد أيّ معلوماتٍ عن البيئة التي تمنح معنىً للرمز `x` (أو حتّى للرمز `+`). فكما سنرى في [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3)، فإنّ المفهوم العامّ للبيئة بوصفها سياقًا تجري فيه عمليّة التقييم سيؤدّي دورًا مهمًّا في فهمنا لتنفيذ البرنامج.
 
-Notice that the evaluation rule given above does not handle definitions. For instance, evaluating `(define x 3)` does not apply `define` to two arguments, one of which is the value of the symbol `x` and the other of which is 3, since the purpose of the `define` is precisely to associate `x` with a value. (That is, `(define x 3)` is not a combination.)
+ولاحظ أنّ قاعدة التقييم المعطاة أعلاه لا تتعامل مع التعريفات. فمثلًا، تقييم `(define x 3)` لا يطبّق `define` على معطيين، أحدهما قيمة الرمز `x` والآخر هو 3، إذ إنّ غرض `define` هو بالضبط ربط `x` بقيمة. (أي أنّ `(define x 3)` ليس تركيبةً.)
 
-Such exceptions to the general evaluation rule are called *special forms*. `Define` is the only example of a special form that we have seen so far, but we will meet others shortly. Each special form has its own evaluation rule. The various kinds of expressions (each with its associated evaluation rule) constitute the syntax of the programming language. In comparison with most other programming languages, Lisp has a very simple syntax; that is, the evaluation rule for expressions can be described by a simple general rule together with specialized rules for a small number of special forms.[^11]
+وتُسمّى هذه الاستثناءات على قاعدة التقييم العامّة *الصيغ الخاصّة (special forms)*. و`Define` هي المثال الوحيد على صيغةٍ خاصّةٍ رأيناها حتّى الآن، لكنّنا سنقابل أخرى قريبًا. ولكلّ صيغةٍ خاصّةٍ قاعدة تقييمٍ خاصّة بها. وأنواع التعابير المختلفة (كلٌّ مع قاعدة التقييم المرافقة لها) تُشكّل صياغة لغة البرمجة. وبالمقارنة مع معظم لغات البرمجة الأخرى، فإنّ Lisp ذات صياغةٍ بسيطةٍ جدًّا؛ أي أنّ قاعدة تقييم التعابير يمكن وصفها بقاعدة عامّة بسيطة مع قواعد متخصّصة لعددٍ صغيرٍ من الصيغ الخاصّة.[^11]
 
-#### 1.1.4 Compound Procedures
+#### 1.1.4 الإجراءات المركّبة
 
-We have identified in Lisp some of the elements that must appear in any powerful programming language:
+لقد حدّدنا في Lisp بعض العناصر التي يجب أن تظهر في كلّ لغة برمجةٍ قويّة:
 
-- Numbers and arithmetic operations are primitive data and procedures.
-- Nesting of combinations provides a means of combining operations.
-- Definitions that associate names with values provide a limited means of abstraction.
+- الأعداد والعمليّات الحسابيّة بيانات وإجراءات أوّليّة.
+- تداخل التركيبات يُوفّر وسيلةً لتركيب العمليّات.
+- التعريفات التي تربط الأسماء بالقيم تُوفّر وسيلةً محدودةً للتجريد.
 
-Now we will learn about *procedure definitions*, a much more powerful abstraction technique by which a compound operation can be given a name and then referred to as a unit.
+والآن سنتعلّم عن *تعريفات الإجراءات (procedure definitions)*، وهي تقنيّة تجريدٍ أكثر قوّةٍ بكثيرٍ تُعطى بها للعمليّة المركّبة اسمٌ ثم يُشار إليها كوحدةٍ.
 
-We begin by examining how to express the idea of “squaring.” We might say, “To square something, multiply it by itself.” This is expressed in our language as
+نبدأ بفحص كيف نُعبّر عن فكرة «التربيع». فقد نقول: «لكي تُربّع شيئًا، اضربه في نفسه». ويُعبَّر عن هذا في لغتنا كما يلي
 
 ```scheme
 (define (square x) (* x x))
 ```
 
-We can understand this in the following way:
+ويمكننا فهم هذا على النحو التالي:
 
 ```
 (define (square x)    (*       x       x))
@@ -212,17 +212,17 @@ We can understand this in the following way:
  To square something, multiply it by itself.
 ```
 
-We have here a *compound procedure*, which has been given the name `square`. The procedure represents the operation of multiplying something by itself. The thing to be multiplied is given a local name, `x`, which plays the same role that a pronoun plays in natural language. Evaluating the definition creates this compound procedure and associates it with the name `square`.[^12]
+فلدينا هنا *إجراءٌ مركّب (compound procedure)*، وقد أُعطي الاسم `square`. فالإجراء يمثّل عمليّة ضرب شيءٍ في نفسه. وأُعطي الشيء الذي سيُضرب اسمٌ محلّيٌّ، `x`، يلعب الدور نفسه الذي يلعبه الضمير في اللغة الطبيعيّة. وتقييم التعريف يُنشئ هذا الإجراء المركّب ويربطه بالاسم `square`.[^12]
 
-The general form of a procedure definition is
+والصورة العامّة لتعريف الإجراء هي
 
 ```scheme
 (define (⟨name⟩ ⟨formal parameters⟩) ⟨body⟩)
 ```
 
-The `⟨`name`⟩` is a symbol to be associated with the procedure definition in the environment.[^13] The `⟨`formal parameters`⟩` are the names used within the body of the procedure to refer to the corresponding arguments of the procedure. The `⟨`body`⟩` is an expression that will yield the value of the procedure application when the formal parameters are replaced by the actual arguments to which the procedure is applied.[^14] The `⟨`name`⟩` and the `⟨`formal parameters`⟩` are grouped within parentheses, just as they would be in an actual call to the procedure being defined.
+والـ`⟨`الاسم`⟩` رمزٌ يُربط بتعريف الإجراء في البيئة، و`⟨`الوسائط الشكلية`⟩` هي الأسماء المستخدمة داخل `⟨`الجسم`⟩` للإشارة إلى الوسائط المطابقة للإجراء، و`⟨`الجسم`⟩` تعبيرٌ سيُنتج قيمة تطبيق الإجراء حين تُستبدل الوسائط الشكلية بالمعطيات الفعليّة التي يُطبَّق عليها الإجراء. ويُجمَّع `⟨`الاسم`⟩` و`⟨`الوسائط الشكلية`⟩` بين قوسين، تمامًا كما هما في نداءٍ فعليّ للإجراء المعرَّف.
 
-Having defined `square`, we can now use it:
+وبعد تعريف `square`، يمكننا الآن استخدامه:
 
 ```scheme
 (square 21)
@@ -235,13 +235,13 @@ Having defined `square`, we can now use it:
 81
 ```
 
-We can also use `square` as a building block in defining other procedures. For example, $x^{2} + y^{2}$ can be expressed as
+ويمكننا أيضًا استخدام `square` كوحدة بناءٍ في تعريف إجراءاتٍ أخرى. فمثلًا، $x^{2} + y^{2}$ يمكن التعبير عنه بـ
 
 ```scheme
 (+ (square x) (square y))
 ```
 
-We can easily define a procedure `sum-of-squares` that, given any two numbers as arguments, produces the sum of their squares:
+ويمكننا بسهولةٍ تعريف إجراءٍ `sum-of-squares` يُعطي، لأيّ عددين كمعطيات، مجموع مربّعيهما:
 
 ```scheme
 (define (sum-of-squares x y)
@@ -251,7 +251,7 @@ We can easily define a procedure `sum-of-squares` that, given any two numbers as
 25
 ```
 
-Now we can use `sum-of-squares` as a building block in constructing further procedures:
+والآن يمكننا استخدام `sum-of-squares` كوحدة بناءٍ في بناء إجراءاتٍ أخرى:
 
 ```scheme
 (define (f a)
@@ -261,66 +261,66 @@ Now we can use `sum-of-squares` as a building block in constructing further proc
 136
 ```
 
-Compound procedures are used in exactly the same way as primitive procedures. Indeed, one could not tell by looking at the definition of `sum-of-squares` given above whether `square` was built into the interpreter, like `+` and `*`, or defined as a compound procedure.
+والإجراءات المركّبة تُستخدم بالطريقة ذاتها تمامًا كالإجراءات الأوّليّة. فحقًّا، لا يمكن للمرء أن يعرف - بالنظر إلى تعريف `sum-of-squares` المعطى أعلاه - ما إذا كان `square` مدمجًا في المفسّر، مثل `+` و`*`، أو معرَّفًا كإجراءٍ مركّب.
 
-#### 1.1.5 The Substitution Model for Procedure Application
+#### 1.1.5 نموذج الاستبدال لتطبيق الإجراء
 
-To evaluate a combination whose operator names a compound procedure, the interpreter follows much the same process as for combinations whose operators name primitive procedures, which we described in [1.1.3](#g_t1_002e1_002e3). That is, the interpreter evaluates the elements of the combination and applies the procedure (which is the value of the operator of the combination) to the arguments (which are the values of the operands of the combination).
+ولتقييم تركيبةٍ مشغّلها إجراءٌ مركّب، يتبع المفسّر العمليّةَ ذاتها التي يتبعها من أجل التركيبات التي مشغّلاتها إجراءات أوّليّة، والتي وصفناها في [1.1.3](#g_t1_002e1_002e3). أي أنّ المفسّر يقيّم عناصر التركيبة ثم يطبّق الإجراء (وهو قيمة مشغّل التركيبة) على المعطيات (وهي قيم عوامل التركيبة).
 
-We can assume that the mechanism for applying primitive procedures to arguments is built into the interpreter. For compound procedures, the application process is as follows:
+ويمكننا أن نفترض أنّ آليّة تطبيق الإجراءات الأوّليّة على المعطيات مدمجةٌ في المفسّر. وأمّا بالنسبة للإجراءات المركّبة، فعملية التطبيق تكون كما يلي:
 
-> To apply a compound procedure to arguments, evaluate the body of the procedure with each formal parameter replaced by the corresponding argument.
+> ولتطبيق إجراءٍ مركّب على معطياتٍ، قيّم جسم الإجراء باستبدال كلّ وسيطٍ شكليّ بالمعطى المطابق له.
 
-To illustrate this process, let’s evaluate the combination
+ولتوضيح هذه العمليّة، لنُقيّم التركيبة
 
 ```scheme
 (f 5)
 ```
 
-where `f` is the procedure defined in [1.1.4](#g_t1_002e1_002e4). We begin by retrieving the body of `f`:
+حيث `f` هو الإجراء المعرَّف في [1.1.4](#g_t1_002e1_002e4). نبدأ باسترجاع جسم `f`:
 
 ```scheme
 (sum-of-squares (+ a 1) (* a 2))
 ```
 
-Then we replace the formal parameter `a` by the argument 5:
+ثم نستبدل الوسيط الشكليّ `a` بالمعطى 5:
 
 ```scheme
 (sum-of-squares (+ 5 1) (* 5 2))
 ```
 
-Thus the problem reduces to the evaluation of a combination with two operands and an operator `sum-of-squares`. Evaluating this combination involves three subproblems. We must evaluate the operator to get the procedure to be applied, and we must evaluate the operands to get the arguments. Now `(+ 5 1)` produces 6 and `(* 5 2)` produces 10, so we must apply the `sum-of-squares` procedure to 6 and 10. These values are substituted for the formal parameters `x` and `y` in the body of `sum-of-squares`, reducing the expression to
+وبذلك، تنحلّ المسألة إلى تقييم تركيبةٍ ذات عاملين ومشغّلٍ هو `sum-of-squares`. وتقييم هذا التركيب يشمل ثلاث مسائل جزئيّة. فيجب أن نقيّم المشغّل للحصول على الإجراء الذي سيُطبَّق، ويجب أن نقيّم العوامل للحصول على المعطيات. فإنّ `(+ 5 1)` يُنتج 6 و`(* 5 2)` يُنتج 10، فيجب أن نطبّق الإجراء `sum-of-squares` على 6 و10. وهذه القيم تُستبدل بالوسائط الشكلية `x` و`y` في جسم `sum-of-squares`، فتنحلّ التعبير إلى
 
 ```scheme
 (+ (square 6) (square 10))
 ```
 
-If we use the definition of `square`, this reduces to
+فإن استخدمنا تعريف `square`، انحلّ هذا إلى
 
 ```scheme
 (+ (* 6 6) (* 10 10))
 ```
 
-which reduces by multiplication to
+والذي ينحلّ بالضرب إلى
 
 ```scheme
 (+ 36 100)
 ```
 
-and finally to
+وأخيرًا إلى
 
 ```scheme
 136
 ```
 
-The process we have just described is called the *substitution model* for procedure application. It can be taken as a model that determines the “meaning” of procedure application, insofar as the procedures in this chapter are concerned. However, there are two points that should be stressed:
+والعمليّة التي وصفناها للتوّ تُسمّى *نموذج الاستبدال (substitution model)* لتطبيق الإجراءات. ويمكن اعتبارها نموذجًا تحدّد «معنى» تطبيق الإجراء، بالقدر الذي تخصّ فيه الإجراءات الواردة في هذا الفصل. غير أنّ هناك نقطتين ينبغي التشديد عليهما:
 
-- The purpose of the substitution is to help us think about procedure application, not to provide a description of how the interpreter really works. Typical interpreters do not evaluate procedure applications by manipulating the text of a procedure to substitute values for the formal parameters. In practice, the “substitution” is accomplished by using a local environment for the formal parameters. We will discuss this more fully in [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) and [Chapter 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4) when we examine the implementation of an interpreter in detail.
-- Over the course of this book, we will present a sequence of increasingly elaborate models of how interpreters work, culminating with a complete implementation of an interpreter and compiler in [Chapter 5](https://sarabander.github.io/sicp/html/Chapter-5.xhtml#Chapter-5). The substitution model is only the first of these models—a way to get started thinking formally about the evaluation process. In general, when modeling phenomena in science and engineering, we begin with simplified, incomplete models. As we examine things in greater detail, these simple models become inadequate and must be replaced by more refined models. The substitution model is no exception. In particular, when we address in [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) the use of procedures with “mutable data,” we will see that the substitution model breaks down and must be replaced by a more complicated model of procedure application.[^15]
+- والغرض من الاستبدال هو مساعدتنا على التفكير في تطبيق الإجراء، لا توفير وصفٍ لكيفية عمل المفسّر فعليًّا. فالمفسّرات النموذجيّة لا تُقيّم تطبيقات الإجراءات بمعالجة نصّ الإجراء لاستبدال القيم بالوسائط الشكليّة. وفي الممارسة، يُنْجَز «الاستبدال» باستخدام بيئةٍ محلّيّةٍ للوسائط الشكليّة. وسنناقش هذا بتوسّعٍ أكبر في [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) و[الفصل 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4) حين نفحص تنفيذ مفسّرٍ بتفصيلٍ أكبر.
+- وعلى مدى هذا الكتاب، سنُقدّم سلسلةً من النماذج المتعاقبة في تعقيدها لكيفية عمل المفسّرات، تتوّج بتنفيذٍ كاملٍ لمفسّرٍ ومُصرِّفٍ في [الفصل 5](https://sarabander.github.io/sicp/html/Chapter-5.xhtml#Chapter-5). فنموذج الاستبدال هو أوّل هذه النماذج فقط - طريقةٌ للانطلاق في التفكير رسميًّا في عمليّة التقييم. وبصورةٍ عامّة، حين نُنمذج الظواهر في العلم والهندسة، نبدأ بنماذج مبسّطة غير كاملة. وحين نفحص الأشياء بتفصيلٍ أكبر، تصبح هذه النماذج البسيطة غير كافية ويجب استبدالها بنماذج أكثر دقّة. ونموذج الاستبدال ليس استثناءً من ذلك. وعلى وجه الخصوص، حين نتناول في [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) استخدام الإجراءات مع «البيانات القابلة للتغيير»، فسنرى أنّ نموذج الاستبدال يتعطّل ويجب استبداله بنموذجٍ أكثر تعقيدًا لتطبيق الإجراءات.[^15]
 
-#### Applicative order versus normal order
+#### الترتيب التطبيقيّ مقابل الترتيب الاعتياديّ
 
-According to the description of evaluation given in [1.1.3](#g_t1_002e1_002e3), the interpreter first evaluates the operator and operands and then applies the resulting procedure to the resulting arguments. This is not the only way to perform evaluation. An alternative evaluation model would not evaluate the operands until their values were needed. Instead it would first substitute operand expressions for parameters until it obtained an expression involving only primitive operators, and would then perform the evaluation. If we used this method, the evaluation of `(f 5)` would proceed according to the sequence of expansions
+فبحسب وصف التقييم المعطى في [1.1.3](#g_t1_002e1_002e3)، يُقيّم المفسّر المشغّل والعوامل أوّلًا ثم يطبّق الإجراء الناتج على المعطيات الناتجة. وهذه ليست الطريقة الوحيدة لأداء التقييم. فنموذج تقييمٍ بديلٍ لن يقيّم العوامل حتّى تحتاج قيمُها. بل سيستبدل أوّلًا تعبيرات العوامل بالوسائط حتّى يحصل على تعبيرٍ يتضمّن مشغّلاتٍ أوّليّةً فقط، ثم يُجرى التقييم. فإن كنّا قد استخدمنا هذه الطريقة، لسار تقييم `(f 5)` تبعًا لتسلسل التوسّعات
 
 ```scheme
 (sum-of-squares (+ 5 1) (* 5 2))
@@ -332,7 +332,7 @@ According to the description of evaluation given in [1.1.3](#g_t1_002e1_002e3), 
    (* (* 5 2) (* 5 2)))
 ```
 
-followed by the reductions
+تتبعه الاحتسابات (reductions)
 
 ```scheme
 (+ (* 6 6) 
@@ -343,15 +343,15 @@ followed by the reductions
 136
 ```
 
-This gives the same answer as our previous evaluation model, but the process is different. In particular, the evaluations of `(+ 5 1)` and `(* 5 2)` are each performed twice here, corresponding to the reduction of the expression `(* x x)` with `x` replaced respectively by `(+ 5 1)` and `(* 5 2)`.
+وهذا يُعطي الجواب نفسه الذي أعطاه نموذج التقييم السابق، لكنّ العمليّة مختلفة. وعلى وجه الخصوص، فإنّ تقييم `(+ 5 1)` و`(* 5 2)` يُجرى مرّتين هنا، مقابلًا لاختزال التعبير `(* x x)` باستبدال `x` على التوالي بـ`(+ 5 1)` و`(* 5 2)`.
 
-This alternative “fully expand and then reduce” evaluation method is known as *normal-order evaluation*, in contrast to the “evaluate the arguments and then apply” method that the interpreter actually uses, which is called *applicative-order evaluation*. It can be shown that, for procedure applications that can be modeled using substitution (including all the procedures in the first two chapters of this book) and that yield legitimate values, normal-order and applicative-order evaluation produce the same value. (See [Exercise 1.5](#Exercise-1_002e5) for an instance of an “illegitimate” value where normal-order and applicative-order evaluation do not give the same result.)
+وتُعرف طريقة التقييم البديلة هذه - «التوسيع الكامل ثم الاحتساب» - باسم *التقييم بالترتيب الاعتياديّ (normal-order evaluation)*، بخلاف طريقة «تقييم المعطيات ثم التطبيق» التي يستخدمها المفسّر فعلًا، والتي تُسمّى *التقييم بالترتيب التطبيقيّ (applicative-order evaluation)*. ويمكن إثبات أنّ هذين الأسلوبين يُنتجان القيمة نفسها، من أجل تطبيقات الإجراءات التي يمكن نمذجتها باستخدام الاستبدال (بما في ذلك جميع الإجراءات في الفصلين الأولين من هذا الكتاب) والتي تُنتج قيمًا مشروعة. (انظر [التمرين 1.5](#Exercise-1_002e5) لمثالٍ على قيمةٍ «غير مشروعة» لا يُعطي فيها التقييم بالترتيب الاعتياديّ والتقييم بالترتيب التطبيقيّ النتيجة نفسها.)
 
-Lisp uses applicative-order evaluation, partly because of the additional efficiency obtained from avoiding multiple evaluations of expressions such as those illustrated with `(+ 5 1)` and `(* 5 2)` above and, more significantly, because normal-order evaluation becomes much more complicated to deal with when we leave the realm of procedures that can be modeled by substitution. On the other hand, normal-order evaluation can be an extremely valuable tool, and we will investigate some of its implications in [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) and [Chapter 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4).[^16]
+تستخدم Lisp التقييم بالترتيب التطبيقيّ، جزئيًّا بسبب الكفاءة الإضافيّة المتحصّلة من تجنّب التقييم المتكرّر لتعبيراتٍ مثل `(+ 5 1)` و`(* 5 2)` المذكورين أعلاه، والأهمّ من ذلك، لأنّ التقييم بالترتيب الاعتياديّ يصبح أعقدَ بكثيرٍ في التعامل حين نترك عالم الإجراءات التي يمكن نمذجتها بالاستبدال. ومن جهةٍ أخرى، قد يكون التقييم بالترتيب الاعتياديّ أداةً بالغة القيمة، وسنفحص بعض تبعاته في [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) و[الفصل 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4).[^16]
 
-#### 1.1.6 Conditional Expressions and Predicates
+#### 1.1.6 التعابير الشرطيّة والمسندات
 
-The expressive power of the class of procedures that we can define at this point is very limited, because we have no way to make tests and to perform different operations depending on the result of a test. For instance, we cannot define a procedure that computes the absolute value of a number by testing whether the number is positive, negative, or zero and taking different actions in the different cases according to the rule $| x | = { x if x > 0 , 0 if x = 0 , − x if x < 0.$ This construct is called a *case analysis*, and there is a special form in Lisp for notating such a case analysis. It is called `cond` (which stands for “conditional”), and it is used as follows:
+والقوّة التعبيريّة لصنف الإجراءات التي يمكننا تعريفها في هذه المرحلة محدودةٌ جدًّا، لأنّه ليس لدينا طريقةٌ لإجراء الاختبارات ولأداء عمليّاتٍ مختلفة بحسب نتيجة الاختبار. فنحن لا نستطيع، مثلًا، تعريف إجراءٍ يحسب القيمة المطلقة لعددٍ باختبار ما إذا كان العدد موجبًا أو سالبًا أو صفرًا واتّخاذ إجراءاتٍ مختلفة في الحالات المختلفة وفقًا للقاعدة $| x | = { x if x > 0 , 0 if x = 0 , − x if x < 0.$ وهذا البناء يُسمّى *تحليل الحالات (case analysis)*، وهناك صيغةٌ خاصّةٌ في Lisp لترميز تحليل حالاتٍ كهذا. وتُسمّى `cond` (وهو اختصارٌ لـ«conditional»)، وتُستخدم كما يلي:
 
 ```scheme
 (define (abs x)
@@ -360,7 +360,7 @@ The expressive power of the class of procedures that we can define at this point
         ((< x 0) (- x))))
 ```
 
-The general form of a conditional expression is
+الصيغة العامّة للتعبير الشرطيّ هي
 
 ```scheme
 (cond (⟨p₁⟩ ⟨e₁⟩)
@@ -369,19 +369,19 @@ The general form of a conditional expression is
       (⟨pₙ⟩ ⟨eₙ⟩))
 ```
 
-consisting of the symbol `cond` followed by parenthesized pairs of expressions
+وهي تتألّف من الرمز `cond` متبوعًا بأزواجٍ من التعابير محاطةً بأقواس
 
 ```scheme
 (⟨p⟩ ⟨e⟩)
 ```
 
-called *clauses*. The first expression in each pair is a *predicate*—that is, an expression whose value is interpreted as either true or false.[^17]
+تُسمّى *بنودًا* (clauses). أوّل تعبيرٍ في كلّ زوجٍ هو *مُسَيِّم* (predicate) — أيّ تعبيرٌ تُفَسَّر قيمته على أنّها إمّا صحيحة أو خاطئة.[^17]
 
-Conditional expressions are evaluated as follows. The predicate $⟨ p_{1} ⟩$ is evaluated first. If its value is false, then $⟨ p_{2} ⟩$ is evaluated. If $⟨ p_{2} ⟩$ ’s value is also false, then $⟨ p_{3} ⟩$ is evaluated. This process continues until a predicate is found whose value is true, in which case the interpreter returns the value of the corresponding *consequent expression* $⟨ e ⟩$ of the clause as the value of the conditional expression. If none of the $⟨ p ⟩$ ’s is found to be true, the value of the `cond` is undefined.
+تُقيَّم التعابير الشرطيّة على النحو الآتي. يُقيَّم المسيّم $⟨ p_{1} ⟩$ أوّلًا. فإن كانت قيمته خاطئة، قُيِّم $⟨ p_{2} ⟩$. فإن كانت قيمة $⟨ p_{2} ⟩$ خاطئة هي أيضًا، قُيِّم $⟨ p_{3} ⟩$. ويستمرّ هذا الإجراء حتّى يُعثَر على مُسَيِّمٍ قيمته صحيحة، وحينئذٍ يعيد المفسّر قيمة *التعبير الناتج* $⟨ e ⟩$ المقابل في البند، قيمةً للتعبير الشرطيّ. فإن لم يُعثَر على أيّ $⟨ p ⟩$ ذي قيمةٍ صحيحة، كانت قيمة `cond` غير محدّدة.
 
-The word *predicate* is used for procedures that return true or false, as well as for expressions that evaluate to true or false. The absolute-value procedure `abs` makes use of the primitive predicates `>`, `<`, and `=`.[^18] These take two numbers as arguments and test whether the first number is, respectively, greater than, less than, or equal to the second number, returning true or false accordingly.
+تُستخدَم كلمة *مُسَيِّم* للإجراءات التي تعيد قيمة صحيحة أو خاطئة، وكذلك للتعبيرات التي تُقيَّم إلى قيمة صحيحة أو خاطئة. ويستخدم إجراء القيمة المطلقة `abs` المسيّمات الأوّليّة `>` و`<` و`=`.[^18] وهي تأخذ عددين كمعطىين وتختبر ما إذا كان العدد الأوّل، على الترتيب، أكبر من العدد الثاني أو أصغر منه أو مساويًا له، فتعيد القيمة صحيحة أو خاطئة وفقًا لذلك.
 
-Another way to write the absolute-value procedure is
+وهناك طريقة أخرى لكتابة إجراء القيمة المطلقة، وهي
 
 ```scheme
 (define (abs x)
@@ -389,9 +389,9 @@ Another way to write the absolute-value procedure is
         (else x)))
 ```
 
-which could be expressed in English as “If $x$ is less than zero return $− x$ ; otherwise return $x$ .” `Else` is a special symbol that can be used in place of the $⟨ p ⟩$ in the final clause of a `cond`. This causes the `cond` to return as its value the value of the corresponding $⟨ e ⟩$ whenever all previous clauses have been bypassed. In fact, any expression that always evaluates to a true value could be used as the $⟨ p ⟩$ here.
+ويمكن التعبير عنها بالإنجليزيّة قولًا: «إذا كان $x$ أصغر من صفر فأعِد $− x$ ؛ وإلّا فأعِد $x$ .» والرمز `else` رمزٌ خاصّ يمكن استخدامه بدلًا من $⟨ p ⟩$ في البند الأخير من `cond`. وهذا يجعل `cond` يعيد قيمة $⟨ e ⟩$ المقابلة كلّما تمّ تجاوز جميع البنود السابقة. وفي الحقيقة، يمكن استخدام أيّ تعبيرٍ يُقيَّم دائمًا إلى قيمةٍ صحيحة في موضع $⟨ p ⟩$ هنا.
 
-Here is yet another way to write the absolute-value procedure:
+وهذه طريقة أخرى بعد لكتابة إجراء القيمة المطلقة:
 
 ```scheme
 (define (abs x)
@@ -400,43 +400,43 @@ Here is yet another way to write the absolute-value procedure:
       x))
 ```
 
-This uses the special form `if`, a restricted type of conditional that can be used when there are precisely two cases in the case analysis. The general form of an `if` expression is
+تستخدم هذه الصيغة الصيغة الخاصّة `if`، وهو نوعٌ مقيَّد من الشرطيّ يمكن استخدامه حين توجد حالتان بالضبط في تحليل الحالات. والصيغة العامّة لتعبير `if` هي
 
 ```scheme
 (if ⟨predicate⟩ ⟨consequent⟩ ⟨alternative⟩)
 ```
 
-To evaluate an `if` expression, the interpreter starts by evaluating the `⟨`predicate`⟩` part of the expression. If the `⟨`predicate`⟩` evaluates to a true value, the interpreter then evaluates the `⟨`consequent`⟩` and returns its value. Otherwise it evaluates the `⟨`alternative`⟩` and returns its value.[^19]
+ولتقييم تعبير `if`، يبدأ المفسّر بتقييم الجزء `⟨`predicate`⟩` من التعبير. فإن قُيّم `⟨`predicate`⟩` إلى قيمة صحيحة، قيّم المفسّر حينها `⟨`consequent`⟩` وأعاد قيمته. وإلّا قيّم `⟨`alternative`⟩` وأعاد قيمته.[^19]
 
-In addition to primitive predicates such as ``, there are logical composition operations, which enable us to construct compound predicates. The three most frequently used are these:
+وبالإضافة إلى المسيّمات الأوّليّة مثل ``، هناك عمليّات التركيب المنطقيّ التي تتيح لنا بناء مسيّماتٍ مركّبة. وأكثرها استخدامًا هي:
 
-- `(and ⟨e₁⟩ … ⟨eₙ⟩)` The interpreter evaluates the expressions `⟨`e`⟩` one at a time, in left-to-right order. If any `⟨`e`⟩` evaluates to false, the value of the `and` expression is false, and the rest of the `⟨`e`⟩`’s are not evaluated. If all `⟨`e`⟩`’s evaluate to true values, the value of the `and` expression is the value of the last one.
-- `(or ⟨e₁⟩ … ⟨eₙ⟩)` The interpreter evaluates the expressions `⟨`e`⟩` one at a time, in left-to-right order. If any `⟨`e`⟩` evaluates to a true value, that value is returned as the value of the `or` expression, and the rest of the `⟨`e`⟩`’s are not evaluated. If all `⟨`e`⟩`’s evaluate to false, the value of the `or` expression is false.
-- `(not ⟨e⟩)` The value of a `not` expression is true when the expression `⟨`e`⟩` evaluates to false, and false otherwise.
+- `(and ⟨e₁⟩ … ⟨eₙ⟩)` يقيّم المفسّر التعبيرات `⟨`e`⟩` واحدًا واحدًا، من اليسار إلى اليمين. فإن قُيّم أيّ `⟨`e`⟩` إلى القيمة خاطئة، كانت قيمة تعبير `and` خاطئة، ولم تُقيَّم بقيّة `⟨`e`⟩`. فإن قُيّمت جميع `⟨`e`⟩` إلى قيمٍ صحيحة، كانت قيمة تعبير `and` قيمة آخرها.
+- `(or ⟨e₁⟩ … ⟨eₙ⟩)` يقيّم المفسّر التعبيرات `⟨`e`⟩` واحدًا واحدًا، من اليسار إلى اليمين. فإن قُيّم أيّ `⟨`e`⟩` إلى قيمة صحيحة، أُعيدت تلك القيمة قيمةً لتعبير `or`، ولم تُقيَّم بقيّة `⟨`e`⟩`. فإن قُيّمت جميع `⟨`e`⟩` إلى القيمة خاطئة، كانت قيمة تعبير `or` خاطئة.
+- `(not ⟨e⟩)` قيمة تعبير `not` صحيحة عندما يُقيَّم التعبير `⟨`e`⟩` إلى القيمة خاطئة، وخاطئة فيما عدا ذلك.
 
-Notice that `and` and `or` are special forms, not procedures, because the subexpressions are not necessarily all evaluated. `Not` is an ordinary procedure.
+لاحِظ أنّ `and` و`or` صيغتان خاصّتان، لا إجراءان، لأنّ التعابير الفرعيّة لا تُقيَّم كلّها بالضرورة. وأمّا `not` فإجراءٌ اعتياديّ.
 
-As an example of how these are used, the condition that a number $x$ be in the range $5 < x < 10$ may be expressed as
+ومثالٌ على كيفية استخدام هذه العمليّات، يمكن التعبير عن شرط كون العدد $x$ في المدى $5 < x < 10$ بـ
 
 ```scheme
 (and (> x 5) (< x 10))
 ```
 
-As another example, we can define a predicate to test whether one number is greater than or equal to another as
+ومثالٌ آخر، يمكننا تعريف مُسَيِّمٍ لاختبار ما إذا كان عددٌ أكبر من أو يساوي عددًا آخر بـ
 
 ```scheme
 (define (>= x y) 
   (or (> x y) (= x y)))
 ```
 
-or alternatively as
+أو بدلًا من ذلك بـ
 
 ```scheme
 (define (>= x y) 
   (not (< x y)))
 ```
 
-**Exercise 1.1:** Below is a sequence of expressions. What is the result printed by the interpreter in response to each expression? Assume that the sequence is to be evaluated in the order in which it is presented.
+**التمرين 1.1:** فيما يلي تتاليٌ من التعبيرات. فما هي النتيجة التي يطبعها المفسّر استجابةً لكلّ تعبير؟ وافترض أنّ التتالي يُقيَّم بالترتيب الذي قُدّم به.
 
 ```scheme
 10
@@ -461,20 +461,20 @@ or alternatively as
    (+ a 1))
 ```
 
-> **Exercise 1.2:** Translate the following expression into prefix form:
+> **التمرين 1.2:** حوّل التعبير الآتي إلى صيغةٍ سابقة (prefix form):
 > > $\frac{5 + 4 + ( 2 − ( 3 − ( 6 + \frac{4}{5} ) ) )}{3 ( 6 − 2 ) ( 2 − 7 )} .$
 > > 
 
-> **Exercise 1.3:** Define a procedure that takes three numbers as arguments and returns the sum of the squares of the two larger numbers.
+> **التمرين 1.3:** عرّف إجراءً يأخذ ثلاثة أعداد كمعطياتٍ ويعيد مجموع مربّعي العددين الأكبر.
 
-**Exercise 1.4:** Observe that our model of evaluation allows for combinations whose operators are compound expressions. Use this observation to describe the behavior of the following procedure:
+**التمرين 1.4:** لاحِظ أنّ نموذجنا للتقييم يسمح بتركيباتٍ معاملاتها تعابير مركّبة. واستخدم هذه الملاحظة لوصف سلوك الإجراء الآتي:
 
 ```scheme
 (define (a-plus-abs-b a b)
   ((if (> b 0) + -) a b))
 ```
 
-**Exercise 1.5:** Ben Bitdiddle has invented a test to determine whether the interpreter he is faced with is using applicative-order evaluation or normal-order evaluation. He defines the following two procedures:
+**التمرين 1.5:** ابتكر بن بيتدِل اختبارًا لتحديد ما إذا كان المفسّر الذي يواجهه يستخدم التقييم بالترتيب التطبيقيّ أم التقييم بالترتيب الاعتياديّ. وهو يُعرّف الإجراءين الآتيين:
 
 ```scheme
 (define (p) (p))
@@ -485,19 +485,19 @@ or alternatively as
       y))
 ```
 
-Then he evaluates the expression
+ثمّ يُقيّم التعبير
 
 ```scheme
 (test 0 (p))
 ```
 
-What behavior will Ben observe with an interpreter that uses applicative-order evaluation? What behavior will he observe with an interpreter that uses normal-order evaluation? Explain your answer. (Assume that the evaluation rule for the special form `if` is the same whether the interpreter is using normal or applicative order: The predicate expression is evaluated first, and the result determines whether to evaluate the consequent or the alternative expression.)
+فأيّ سلوك سيلاحظه بن مع مفسّر يستخدم التقييم بالترتيب التطبيقيّ؟ وأيّ سلوك سيلاحظه مع مفسّر يستخدم التقييم بالترتيب الاعتياديّ؟ فسّر إجابتك. (وافترض أنّ قاعدة تقييم الصيغة الخاصّة `if` هي ذاتها سواء استخدم المفسّر الترتيب الاعتياديّ أم الترتيب التطبيقيّ: يُقيَّم تعبير المُسَيِّم أوّلًا، والنتيجة تحدّد ما إذا كان سيُقيَّم التعبير الناتج أم التعبير البديل.)
 
-#### 1.1.7 Example: Square Roots by Newton’s Method
+#### 1.1.7 مثال: الجذور التربيعيّة بطريقة نيوتن
 
-Procedures, as introduced above, are much like ordinary mathematical functions. They specify a value that is determined by one or more parameters. But there is an important difference between mathematical functions and computer procedures. Procedures must be effective.
+الإجراءات، كما قُدِّمت أعلاه، أشبه كثيرًا بالدوالّ الرياضيّة الاعتياديّة. فهي تحدّد قيمةً تتحدّد بوسيطٍ واحد أو أكثر. لكن هناك فرقًا مهمًّا بين الدوالّ الرياضيّة وإجراءات الحاسوب. فالإجراءات يجب أن تكون فعّالة.
 
-As a case in point, consider the problem of computing square roots. We can define the square-root function as $\sqrt{x} = the y such that y ≥ 0 and y^{2} = x .$ This describes a perfectly legitimate mathematical function. We could use it to recognize whether one number is the square root of another, or to derive facts about square roots in general. On the other hand, the definition does not describe a procedure. Indeed, it tells us almost nothing about how to actually find the square root of a given number. It will not help matters to rephrase this definition in pseudo-Lisp:
+وبوصفها مثالًا على ذلك، تأمّل مسألة احتساب الجذور التربيعيّة. فيمكننا تعريف دالّة الجذر التربيعيّ بأنّها $\sqrt{x} = the y such that y ≥ 0 and y^{2} = x .$ وهذا يصف دالّةً رياضيّةً مشروعةً تمامًا. فيمكننا استخدامها للتعرّف على ما إذا كان عددٌ هو الجذر التربيعيّ لعددٍ آخر، أو لاستنتاج حقائق عن الجذور التربيعيّة عمومًا. ومن جانبٍ آخر، فإنّ هذا التعريف لا يصف إجراءً. بل إنّه لا يخبرنا بشيءٍ تقريبًا عن كيفيّة إيجاد الجذر التربيعيّ لعددٍ معطًى فعليًّا. ولن يفيد الأمر في شيءٍ إعادة صياغة هذا التعريف بما يشبه Lisp:
 
 ```scheme
 (define (sqrt x)
@@ -505,11 +505,11 @@ As a case in point, consider the problem of computing square roots. We can defin
               (= (square y) x))))
 ```
 
-This only begs the question.
+وهذا لا يفعل سوى إثارة المسألة من جديد.
 
-The contrast between function and procedure is a reflection of the general distinction between describing properties of things and describing how to do things, or, as it is sometimes referred to, the distinction between declarative knowledge and imperative knowledge. In mathematics we are usually concerned with declarative (what is) descriptions, whereas in computer science we are usually concerned with imperative (how to) descriptions.[^20]
+والتناقض بين الدالّة والإجراء انعكاسٌ للتمييز العامّ بين وصف خصائص الأشياء ووصف كيفيّة فعل الأشياء، أو - كما يُشار إليه أحيانًا - التمييز بين المعرفة الإعلانيّة والمعرفة الأمرة. ففي الرياضيّات نعنى عادةً بالأوصاف الإعلانيّة (ما هو)، بينما نعنى في علوم الحاسوب عادةً بالأوصاف الأمرة (كيف).[^20]
 
-How does one compute square roots? The most common way is to use Newton’s method of successive approximations, which says that whenever we have a guess $y$ for the value of the square root of a number $x$ , we can perform a simple manipulation to get a better guess (one closer to the actual square root) by averaging $y$ with $x / y$ .[^21] For example, we can compute the square root of 2 as follows. Suppose our initial guess is 1:
+وكيف يحتسب المرء الجذور التربيعيّة؟ أكثر الطرق شيوعًا هو استخدام طريقة نيوتن في التقريبات المتعاقبة، التي تقول إنّه كلّما كان لدينا تخمينٌ $y$ لقيمة الجذر التربيعيّ لعددٍ $x$ ، فيمكننا إجراء معالجةٍ بسيطة للحصول على تخمينٍ أفضل (أقرب إلى الجذر التربيعيّ الحقيقيّ) بحساب متوسّط $y$ مع $x / y$ .[^21] فعلى سبيل المثال، يمكننا احتساب الجذر التربيعيّ للعدد 2 على النحو الآتي. وليكن تخميننا الأوّل 1:
 
 ```
 Guess     Quotient      Average
@@ -525,9 +525,9 @@ Guess     Quotient      Average
 1.4142    ...           ...
 ```
 
-Continuing this process, we obtain better and better approximations to the square root.
+وبمواصلة هذا الإجراء، نحصل على تقريباتٍ أفضل فأفضل للجذر التربيعيّ.
 
-Now let’s formalize the process in terms of procedures. We start with a value for the radicand (the number whose square root we are trying to compute) and a value for the guess. If the guess is good enough for our purposes, we are done; if not, we must repeat the process with an improved guess. We write this basic strategy as a procedure:
+والآن لنُصغِ الإجراء بمصطلحات الإجراءات. فنبدأ بقيمةٍ للعدد تحت الجذر (العدد الذي نحاول احتساب جذره التربيعيّ) وبقيمةٍ للتخمين. فإن كان التخمين جيّدًا بما يكفي لأغراضنا، فقد انتهينا؛ وإلّا فعلينا تكرار الإجراء بتخمينٍ مُحسَّن. ونكتب هذه الاستراتيجيّة الأساسيّة كإجراء:
 
 ```scheme
 (define (sqrt-iter guess x)
@@ -536,35 +536,35 @@ Now let’s formalize the process in terms of procedures. We start with a value 
       (sqrt-iter (improve guess x) x)))
 ```
 
-A guess is improved by averaging it with the quotient of the radicand and the old guess:
+وقد حُسِّن التخمين بحساب متوسّطه مع حاصل قسمة العدد تحت الجذر على التخمين القديم:
 
 ```scheme
 (define (improve guess x)
   (average guess (/ x guess)))
 ```
 
-where
+حيث
 
 ```scheme
 (define (average x y) 
   (/ (+ x y) 2))
 ```
 
-We also have to say what we mean by “good enough.” The following will do for illustration, but it is not really a very good test. (See [Exercise 1.7](#Exercise-1_002e7).) The idea is to improve the answer until it is close enough so that its square differs from the radicand by less than a predetermined tolerance (here 0.001):[^22]
+وعلينا أيضًا أن نقول ما نعنيه بـ«جيّد بما يكفي». فالصيغة الآتية تفي بالغرض للتوضيح، لكنّها ليست اختبارًا جيّدًا حقًّا. (انظر [التمرين 1.7](#Exercise-1_002e7).) والفكرة هي تحسين الإجابة حتّى تصير قريبةً بالقدر الذي يقلّ فيه مربّعها عن العدد تحت الجذر بأقلّ من تسامحٍ محدّدٍ مسبقًا (هنا 0.001):[^22]
 
 ```scheme
 (define (good-enough? guess x)
   (< (abs (- (square guess) x)) 0.001))
 ```
 
-Finally, we need a way to get started. For instance, we can always guess that the square root of any number is 1:[^23]
+وأخيرًا، نحتاج إلى طريقةٍ للانطلاق. فعلى سبيل المثال، يمكننا دائمًا التخمين بأنّ الجذر التربيعيّ لأيّ عدد هو 1:[^23]
 
 ```scheme
 (define (sqrt x)
   (sqrt-iter 1.0 x))
 ```
 
-If we type these definitions to the interpreter, we can use `sqrt` just as we can use any procedure:
+فإذا أدخلنا هذه التعريفات إلى المفسّر، أمكننا استخدام `sqrt` تمامًا كما نستخدم أيّ إجراء:
 
 ```scheme
 (sqrt 9)
@@ -580,9 +580,9 @@ If we type these definitions to the interpreter, we can use `sqrt` just as we ca
 1000.000369924366
 ```
 
-The `sqrt` program also illustrates that the simple procedural language we have introduced so far is sufficient for writing any purely numerical program that one could write in, say, C or Pascal. This might seem surprising, since we have not included in our language any iterative (looping) constructs that direct the computer to do something over and over again. `Sqrt-iter`, on the other hand, demonstrates how iteration can be accomplished using no special construct other than the ordinary ability to call a procedure.[^24]
+ويُظهر برنامج `sqrt` أيضًا أنّ اللغة الإجرائيّة البسيطة التي قدّمناها حتى الآن تكفي لكتابة أيّ برنامجٍ رقميٍّ خالصٍ يمكن للمرء كتابته بـC أو Pascal مثلًا. وقد يبدو هذا مفاجئًا، إذ لم نُدرج في لغتنا أيّ بنية تكرارية (حلقات) تُوجّه الحاسوب لفعل شيءٍ ما مرارًا وتكرارًا. ومن جانبٍ آخر، يُظهر `sqrt-iter` كيف يمكن تحقيق التكرار دون أيّ بنيةٍ خاصّة سوى القدرة الاعتياديّة على نداء إجراء.[^24]
 
-**Exercise 1.6:** Alyssa P. Hacker doesn’t see why `if` needs to be provided as a special form. “Why can’t I just define it as an ordinary procedure in terms of `cond`?” she asks. Alyssa’s friend Eva Lu Ator claims this can indeed be done, and she defines a new version of `if`:
+**التمرين 1.6:** لا ترى أليسا بي. هاكر لماذا ينبغي توفير `if` كصيغةٍ خاصّة. «فلماذا لا أُنشئها كإجراءٍ اعتياديّ بدلالة `cond`؟» كما تسأل. وتؤكّد صديقتها إيفا لو أتور أنّ ذلك ممكن فعلًا، وهي تُعرّف نسخةً جديدة من `if`:
 
 ```scheme
 (define (new-if predicate 
@@ -592,7 +592,7 @@ The `sqrt` program also illustrates that the simple procedural language we have 
         (else else-clause)))
 ```
 
-Eva demonstrates the program for Alyssa:
+وتُظهر إيفا البرنامج لأليسا:
 
 ```scheme
 (new-if (= 2 3) 0 5)
@@ -602,7 +602,7 @@ Eva demonstrates the program for Alyssa:
 0
 ```
 
-Delighted, Alyssa uses `new-if` to rewrite the square-root program:
+مسرورةً، تستخدم أليسا `new-if` لإعادة كتابة برنامج الجذر التربيعيّ:
 
 ```scheme
 (define (sqrt-iter guess x)
@@ -611,27 +611,27 @@ Delighted, Alyssa uses `new-if` to rewrite the square-root program:
           (sqrt-iter (improve guess x) x)))
 ```
 
-What happens when Alyssa attempts to use this to compute square roots? Explain.
+ماذا يحدث عندما تحاول أليسا استخدام هذا لاحتساب الجذور التربيعيّة؟ فسّر.
 
-> **Exercise 1.7:** The `good-enough?` test used in computing square roots will not be very effective for finding the square roots of very small numbers. Also, in real computers, arithmetic operations are almost always performed with limited precision. This makes our test inadequate for very large numbers. Explain these statements, with examples showing how the test fails for small and large numbers. An alternative strategy for implementing `good-enough?` is to watch how `guess` changes from one iteration to the next and to stop when the change is a very small fraction of the guess. Design a square-root procedure that uses this kind of end test. Does this work better for small and large numbers?
+> **التمرين 1.7:** الاختبار `good-enough?` المستخدم في احتساب الجذور التربيعيّة لن يكون فعّالًا جدًّا في إيجاد جذور الأعداد الصغيرة جدًّا. أيضًا، في الحواسيب الحقيقيّة، تُجرى العمليّات الحسابيّة شبه دائمًا بدقّةٍ محدودة. وهذا يجعل اختبارنا غير كافٍ للأعداد الكبيرة جدًّا. فسّر هذين القولين، مع أمثلة تُظهر كيف يفشل الاختبار للأعداد الصغيرة والكبيرة. والاستراتيجيّة البديلة لتنفيذ `good-enough?` هي مراقبة كيف يتغيّر `guess` من دورة تكرارٍ إلى التالية والتوقّف عندما يكون التغيّر جزءًا صغيرًا جدًّا من التخمين. صمّم إجراءً للجذر التربيعيّ يستخدم هذا النوع من اختبار النهاية. فهل يعمل هذا عملًا أفضل للأعداد الصغيرة والكبيرة؟
 
-> **Exercise 1.8:** Newton’s method for cube roots is based on the fact that if $y$ is an approximation to the cube root of $x$ , then a better approximation is given by the value
+> **التمرين 1.8:** طريقة نيوتن للجذور التكعيبيّة تقوم على حقيقة أنّّه إذا كان $y$ تقريبًا للجذر التكعيبيّ لـ$x$ ، فإنّ تقريبًا أفضل يُعطى بالقيمة
 > > $\frac{x / y^{2} + 2 y}{3} .$
-> > Use this formula to implement a cube-root procedure analogous to the square-root procedure. (In [1.3.4](https://sarabander.github.io/sicp/html/1_002e3.xhtml#g_t1_002e3_002e4) we will see how to implement Newton’s method in general as an abstraction of these square-root and cube-root procedures.)
+> > استخدم هذه الصيغة لتنفيذ إجراءٍ للجذر التكعيبيّ مماثلٍ لإجراء الجذر التربيعيّ. (وفي [1.3.4](https://sarabander.github.io/sicp/html/1_002e3.xhtml#g_t1_002e3_002e4) سنرى كيف نُنفّذ طريقة نيوتن بصورةٍ عامّةٍ بوصفها تجريدًا لإجراء الجذر التربيعيّ وإجراء الجذر التكعيبيّ.)
 
-#### 1.1.8 Procedures as Black-Box Abstractions
+#### 1.1.8 الإجراءات كتجريداتٍ على هيئة صناديق سوداء
 
-`Sqrt` is our first example of a process defined by a set of mutually defined procedures. Notice that the definition of `sqrt-iter` is *recursive*; that is, the procedure is defined in terms of itself. The idea of being able to define a procedure in terms of itself may be disturbing; it may seem unclear how such a “circular” definition could make sense at all, much less specify a well-defined process to be carried out by a computer. This will be addressed more carefully in [1.2](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2). But first let’s consider some other important points illustrated by the `sqrt` example.
+`sqrt` هو أوّل مثالٍ لدينا عن إجراءٍ مُعرَّف بمجموعةٍ من الإجراءات مُعرَّفة بعضها بدلالة بعض. لاحِظ أنّ تعريف `sqrt-iter` *تعاوديّ*؛ أيّ أنّ الإجراء مُعرَّف بدلالة ذاته. وقد تكون فكرة القدرة على تعريف إجراءٍ بدلالة ذاته مقلقة؛ فقد يبدو من غير الواضح كيف يمكن لمثل هذا التعريف «الدائريّ» أن يكون مفهومًا أصلًا، ناهيك عن أن يحدّد إجراءً محدّدًا تحديدًا حسنًا ينفّذه الحاسوب. وسيُناقَش هذا بعنايةٍ أكبر في [1.2](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2). لكن دعنا أوّلًا نأخذ بنظر الاعتبار بعض النقاط المهمّة الأخرى التي يُظهرها مثال `sqrt`.
 
-Observe that the problem of computing square roots breaks up naturally into a number of subproblems: how to tell whether a guess is good enough, how to improve a guess, and so on. Each of these tasks is accomplished by a separate procedure. The entire `sqrt` program can be viewed as a cluster of procedures (shown in [Figure 1.2](#Figure-1_002e2)) that mirrors the decomposition of the problem into subproblems.
+لاحِظ أنّ مسألة احتساب الجذور التربيعيّة تنقسم انقسامًا طبيعيًّا إلى عددٍ من المسائل الفرعيّة: كيف نحدّد ما إذا كان التخمين جيّدًا بما يكفي، وكيف نحسّن تخمين، وهكذا. وتُنجَز كلٌّ من هذه المهامّ بإجراءٍ منفصل. ويمكن النظر إلى برنامج `sqrt` بأكمله بوصفه عنقودًا من الإجراءات (كما هو موضّح في [الشكل 1.2](#Figure-1_002e2)) يعكس تفكيك المسألة إلى مسائلَ فرعيّة.
 
 ![](/images/sicp/c1-building-abstractions-with-procedures-1-Fig1.2.std.webp)
 
-**Figure 1.2:** Procedural decomposition of the `sqrt` program.
+**الشكل 1.2:** التفكيك الإجرائيّ لبرنامج `sqrt`.
 
-The importance of this decomposition strategy is not simply that one is dividing the program into parts. After all, we could take any large program and divide it into parts—the first ten lines, the next ten lines, the next ten lines, and so on. Rather, it is crucial that each procedure accomplishes an identifiable task that can be used as a module in defining other procedures. For example, when we define the `good-enough?` procedure in terms of `square`, we are able to regard the `square` procedure as a “black box.” We are not at that moment concerned with *how* the procedure computes its result, only with the fact that it computes the square. The details of how the square is computed can be suppressed, to be considered at a later time. Indeed, as far as the `good-enough?` procedure is concerned, `square` is not quite a procedure but rather an abstraction of a procedure, a so-called *procedural abstraction*. At this level of abstraction, any procedure that computes the square is equally good.
+وأهمّيّة استراتيجيّة التفكيك هذه ليست في تقسيم البرنامج إلى أجزاءٍ فحسب. ففي النهاية، يمكننا أخذ أيّ برنامجٍ كبيرٍ وتقسيمه إلى أجزاء — الأسطر العشرة الأولى، ثمّ الأسطر العشرة التالية، وهكذا. بل المهمّ هو أنّ كلَّ إجراءٍ ينجز مهمّةً قابلةً للتحديد يمكن استخدامها كوحدةٍ (module) في تعريف إجراءاتٍ أخرى. فعلى سبيل المثال، عندما نُعرّف الإجراء `good-enough?` بدلالة `square`، فإنّنا نستطيع اعتبار إجراء `square` «صندوقًا أسود». فنحن في تلك اللحظة غير معنيّين *بكيفيّة* احتساب الإجراء لنتيجته، بل بحقيقة أنّه يحتسب المربّع فقط. ويمكن حجز تفاصيل كيفيّة احتساب المربّع للنظر فيها في وقتٍ لاحق. وبالفعل، بقدر ما يخصّ الإجراء `good-enough?`، فإنّ `square` ليس إجراءً بالمعنى الدقيق بل هو تجريدٌ لإجراء، ما يُسمّى *تجريدًا إجرائيًّا*. وعلى مستوى التجريد هذا، فإنّ أيّ إجراء يحتسب المربّع جيّدٌ بالقدر ذاته.
 
-Thus, considering only the values they return, the following two procedures for squaring a number should be indistinguishable. Each takes a numerical argument and produces the square of that number as the value.[^25]
+وبالتالي، إذا نظرنا إلى القيم التي تعيدها فحسب، فإنّ الإجراءين الآتيين لتربيع عددٍ يجب أن يكونا غير قابلين للتمييز. فكلٌّ منهما يأخذ معطًى عدديًّا ويُنتج مربّع ذلك العدد قيمةً له.[^25]
 
 ```scheme
 (define (square x) (* x x))
@@ -642,35 +642,35 @@ Thus, considering only the values they return, the following two procedures for 
 (define (double x) (+ x x))
 ```
 
-So a procedure definition should be able to suppress detail. The users of the procedure may not have written the procedure themselves, but may have obtained it from another programmer as a black box. A user should not need to know how the procedure is implemented in order to use it.
+إذن، يجب أن يكون تعريف الإجراء قادرًا على حجب التفاصيل. فقد لا يكون مستخدمو الإجراء هم الذين كتبوه، بل ربّما حصلوا عليه من مبرمجٍ آخر بوصفه صندوقًا أسود. ولا ينبغي أن يحتاج المستخدم إلى معرفة كيفيّة تنفيذ الإجراء لكي يستخدمه.
 
-#### Local names
+#### الأسماء المحليّة
 
-One detail of a procedure’s implementation that should not matter to the user of the procedure is the implementer’s choice of names for the procedure’s formal parameters. Thus, the following procedures should not be distinguishable:
+وأحد تفاصيل تنفيذ الإجراء التي لا ينبغي أن تهمّ مستخدم الإجراء هو اختيار المُنفِّذ لأسماء الوسائط الشكليّة للإجراء. وبالتالي، يجب ألّا يكون الإجراءان الآتيان قابلين للتمييز:
 
 ```scheme
 (define (square x) (* x x))
 (define (square y) (* y y))
 ```
 
-This principle—that the meaning of a procedure should be independent of the parameter names used by its author—seems on the surface to be self-evident, but its consequences are profound. The simplest consequence is that the parameter names of a procedure must be local to the body of the procedure. For example, we used `square` in the definition of `good-enough?` in our square-root procedure:
+وهذا المبدأ — أنّ معنَى الإجراء يجب أن يكون مستقلًّا عن أسماء الوسائط التي استخدمها مؤلّفه — يبدو في ظاهره بديهيًّا، لكنّ نتائجه عميقة. وأبسط نتيجة هي أنّ أسماء وسائط الإجراء يجب أن تكون محليّة لجسم الإجراء. فعلى سبيل المثال، لقد استخدمنا `square` في تعريف `good-enough?` في إجراء الجذر التربيعيّ:
 
 ```scheme
 (define (good-enough? guess x)
   (< (abs (- (square guess) x)) 0.001))
 ```
 
-The intention of the author of `good-enough?` is to determine if the square of the first argument is within a given tolerance of the second argument. We see that the author of `good-enough?` used the name `guess` to refer to the first argument and `x` to refer to the second argument. The argument of `square` is `guess`. If the author of `square` used `x` (as above) to refer to that argument, we see that the `x` in `good-enough?` must be a different `x` than the one in `square`. Running the procedure `square` must not affect the value of `x` that is used by `good-enough?`, because that value of `x` may be needed by `good-enough?` after `square` is done computing.
+وقصد مؤلّف `good-enough?` هو تحديد ما إذا كان مربّع الوسيط الأوّل يقع ضمن تسامحٍ معطى من الوسيط الثاني. ونرى أنّ مؤلّف `good-enough?` استخدم الاسم `guess` للإشارة إلى الوسيط الأوّل والاسم `x` للإشارة إلى الوسيط الثاني. ووسيط `square` هو `guess`. فإن استخدم مؤلّف `square` الاسم `x` (كما أعلاه) للإشارة إلى ذلك الوسيط، نرى أنّ `x` في `good-enough?` يجب أن يكون `x` مغايرًا لذاك الموجود في `square`. فيجب ألّا يؤثّر تشغيل الإجراء `square` في قيمة `x` التي يستخدمها `good-enough?`، لأنّ `good-enough?` قد يحتاج إلى تلك القيمة من `x` بعد أن ينتهي `square` من الاحتساب.
 
-If the parameters were not local to the bodies of their respective procedures, then the parameter `x` in `square` could be confused with the parameter `x` in `good-enough?`, and the behavior of `good-enough?` would depend upon which version of `square` we used. Thus, `square` would not be the black box we desired.
+فلو لم تكن الوسائط محليّة لأجسام إجراءاتها فإنّ الوسيط `x` في `square` يمكن أن يُخَلَط بالوسيط `x` في `good-enough?`، وسيعتمد سلوك `good-enough?` على أيّ نسخة من `square` نستخدمها. وعندها لن يكون `square` الصندوق الأسود الذي أردناه.
 
-A formal parameter of a procedure has a very special role in the procedure definition, in that it doesn’t matter what name the formal parameter has. Such a name is called a *bound variable*, and we say that the procedure definition *binds* its formal parameters. The meaning of a procedure definition is unchanged if a bound variable is consistently renamed throughout the definition.[^26] If a variable is not bound, we say that it is *free*. The set of expressions for which a binding defines a name is called the *scope* of that name. In a procedure definition, the bound variables declared as the formal parameters of the procedure have the body of the procedure as their scope.
+وللوسيط الشكليّ للإجراء دورٌ خاصّ للغاية في تعريف الإجراء، إذ لا يهمّ أيّ اسم يحمله الوسيط الشكليّ. ويُسمّى مثل هذا الاسم *متغيّرًا مُقيَّدًا*، ونقول إنّ تعريف الإجراء *يُقيِّد* وسائطه الشكليّة. ولا يتغيّر معنى تعريف الإجراء إذا أُعيد تسمية متغيّرٍ مُقيَّدٍ تسميةً متّسقةً في جميع أنحاء التعريف.[^26] فإن كان المتغيّر غير مُقيَّد، نقول إنّه *حرّ*. ومجموعة التعابير التي يحدّد الربط اسمًا لها تُسمّى *نطاق* ذلك الاسم. وفي تعريف الإجراء، فإنّ المتغيّرات المُقيَّدة المُعلَنة كوسائط شكليّة للإجراء لها جسم الإجراء نطاقًا.
 
-In the definition of `good-enough?` above, `guess` and `x` are bound variables but ` *capturing* the variable `abs`. It would have changed from free to bound.) The meaning of `good-enough?` is not independent of the names of its free variables, however. It surely depends upon the fact (external to this definition) that the symbol `abs` names a procedure for computing the absolute value of a number. `Good-enough?` will compute a different function if we substitute `cos` for `abs` in its definition.
+في تعريف `good-enough?` أعلاه، فإنّ `guess` و`x` متغيّران مُقيَّدان ولكن ` *capturing* المتغيّر `abs`. لكنّه كان سيتغيّر من حرّ إلى مُقيَّد.) ومع ذلك، فمعنى `good-enough?` ليس مستقلًّا عن أسماء متغيّراته الحرّة. فهو يعتمد حتمًا على الحقيقة (الخارجة عن هذا التعريف) أنّ الرمز `abs` يُسمّي إجراءً لاحتساب القيمة المطلقة لعدد. وسيحسب `good-enough?` دالّةً مختلفة إذا استبدلنا `cos` بـ`abs` في تعريفه.
 
-#### Internal definitions and block structure
+#### التعريفات الداخليّة والبنية الكتليّة
 
-We have one kind of name isolation available to us so far: The formal parameters of a procedure are local to the body of the procedure. The square-root program illustrates another way in which we would like to control the use of names. The existing program consists of separate procedures:
+ولدينا نوعٌ واحد من عزل الأسماء متاحٌ لنا حتى الآن: الوسائط الشكليّة للإجراء محليّة لجسم الإجراء. ويُظهر برنامج الجذر التربيعيّ طريقة أخرى نرغب بها في التحكّم في استخدام الأسماء. فالبرنامج القائم يتألّف من إجراءاتٍ منفصلة:
 
 ```scheme
 (define (sqrt x) 
@@ -688,7 +688,7 @@ We have one kind of name isolation available to us so far: The formal parameters
   (average guess (/ x guess)))
 ```
 
-The problem with this program is that the only procedure that is important to users of `sqrt` is `sqrt`. The other procedures (`sqrt-iter`, `good-enough?`, and `improve`) only clutter up their minds. They may not define any other procedure called `good-enough?` as part of another program to work together with the square-root program, because `sqrt` needs it. The problem is especially severe in the construction of large systems by many separate programmers. For example, in the construction of a large library of numerical procedures, many numerical functions are computed as successive approximations and thus might have procedures named `good-enough?` and `improve` as auxiliary procedures. We would like to localize the subprocedures, hiding them inside `sqrt` so that `sqrt` could coexist with other successive approximations, each having its own private `good-enough?` procedure. To make this possible, we allow a procedure to have internal definitions that are local to that procedure. For example, in the square-root problem we can write
+ومشكلة هذا البرنامج أنّ الإجراء الوحيد المُهمّ لمستخدمي `sqrt` هو `sqrt`. أمّا الإجراءات الأخرى (`sqrt-iter`، و`good-enough?`، و`improve`) فإنّها تُشوّش أذهانهم فحسب. فقد لا يُعرّفون أيّ إجراءٍ آخر اسمه `good-enough?` كجزءٍ من برنامجٍ آخر ليعمل مع برنامج الجذر التربيعيّ، لأنّ `sqrt` يحتاج إليه. والمشكلة بالغة الحدّة بشكلٍ خاصّ في بناء النظمّ الكبيرة بواسطة مبرمجين منفصلين كثيرين. فعلى سبيل المثال، في بناء مكتبةٍ كبيرةٍ من الإجراءات العدديّة، تُحتسب كثير من الدوالّ العدديّة بتقريباتٍ متعاقبة، وبالتالي قد يكون لها إجراءاتٌ مساعدةٌ تُسمّى `good-enough?` و`improve`. ونحن نرغب في توطين الإجراءات الفرعيّة، بإخفائها داخل `sqrt` حتّى يتمكّن `sqrt` من التعايش مع تقريباتٍ متعاقبة أخرى، لكلٍّ منها إجراء `good-enough?` خاصّ بها. ولتمكين هذا، نسمح للإجراء بأن يكون له تعريفات داخليّة محليّة لذلك الإجراء. فعلى سبيل المثال، في مسألة الجذر التربيعيّ يمكننا كتابة
 
 ```scheme
 (define (sqrt x)
@@ -703,7 +703,7 @@ The problem with this program is that the only procedure that is important to us
   (sqrt-iter 1.0 x))
 ```
 
-Such nesting of definitions, called *block structure*, is basically the right solution to the simplest name-packaging problem. But there is a better idea lurking here. In addition to internalizing the definitions of the auxiliary procedures, we can simplify them. Since `x` is bound in the definition of `sqrt`, the procedures `good-enough?`, `improve`, and `sqrt-iter`, which are defined internally to `sqrt`, are in the scope of `x`. Thus, it is not necessary to pass `x` explicitly to each of these procedures. Instead, we allow `x` to be a free variable in the internal definitions, as shown below. Then `x` gets its value from the argument with which the enclosing procedure `sqrt` is called. This discipline is called *lexical scoping*.[^27]
+وهذا التداخل للتعريفات، الذي يُسمّى *البنية الكتليّة* (block structure)، هو في الأساس الحلّ الصحيح لأبسط مسألةٍ في تحزيم الأسماء. لكن هناك فكرة أفضل تختبئ هنا. فبالإضافة إلى إدخال تعريفات الإجراءات المساعدة إلى الداخل، يمكننا تبسيطها. وبما أنّ `x` مُقيَّد في تعريف `sqrt`، فإنّ الإجراءات `good-enough?` و`improve` و`sqrt-iter`، المُعرَّفة داخليًّا في `sqrt`، تقع في نطاق `x`. وبالتالي، فليس من الضروريّ تمرير `x` صراحةً إلى كلٍّ من هذه الإجراءات. وبدلًا من ذلك، نسمح لـ`x` بأن يكون متغيّرًا حرًّا في التعريفات الداخليّة، كما هو موضّح أدناه. وحينها تأخذ `x` قيمتها من المعطى الذي يُنادى به الإجراء المحيط `sqrt`. ويُسمّى هذا النظام *النطاق المعجميّ* (lexical scoping).[^27]
 
 ```scheme
 (define (sqrt x)
@@ -718,21 +718,21 @@ Such nesting of definitions, called *block structure*, is basically the right so
   (sqrt-iter 1.0))
 ```
 
-We will use block structure extensively to help us break up large programs into tractable pieces.[^28] The idea of block structure originated with the programming language Algol 60. It appears in most advanced programming languages and is an important tool for helping to organize the construction of large programs.
+وسنستخدم بنية الكتل على نطاق واسع لمساعدتنا في تقسيم البرامج الكبيرة إلى أجزاء قابلة للمعالجة.[^28] وقد نشأت فكرة بنية الكتل مع لغة البرمجة Algol 60. وهي تظهر في معظم لغات البرمجة المتقدمة، وتُعدّ أداة مهمة للمساعدة في تنظيم بناء البرامج الكبيرة.
 
-### 1.2 Procedures and the Processes They Generate
+### 1.2 الإجراءات والعمليات التي تولّدها
 
-We have now considered the elements of programming: We have used primitive arithmetic operations, we have combined these operations, and we have abstracted these composite operations by defining them as compound procedures. But that is not enough to enable us to say that we know how to program. Our situation is analogous to that of someone who has learned the rules for how the pieces move in chess but knows nothing of typical openings, tactics, or strategy. Like the novice chess player, we don’t yet know the common patterns of usage in the domain. We lack the knowledge of which moves are worth making (which procedures are worth defining). We lack the experience to predict the consequences of making a move (executing a procedure).
+لقد نظرنا حتى الآن في عناصر البرمجة: استخدمنا عمليات حسابية أولية، وركّبنا هذه العمليات، وجرّدنا هذه العمليات المركّبة بتعريفها كإجراءات مركّبة. لكن ذلك لا يكفي لنقول إننا نعرف كيف نبرمج. ووضعنا مماثل لوضع من تعلّم قواعد حركة القطع في الشطرنج لكنه لا يعرف شيئًا عن الافتتاحيات أو التكتيكات أو الاستراتيجية النموذجية. وكما هو حال لاعب الشطرنج المبتدئ، لا نعرف بعد الأنماط الشائعة للاستخدام في هذا المجال. تنقصنا المعرفة بأي النقلات جديرة بأن تُلعب (أي الإجراءات جديرة بأن تُعرَّف). وتنقصنا الخبرة للتنبؤ بعواقب القيام بنقلة (تنفيذ إجراء).
 
-The ability to visualize the consequences of the actions under consideration is crucial to becoming an expert programmer, just as it is in any synthetic, creative activity. In becoming an expert photographer, for example, one must learn how to look at a scene and know how dark each region will appear on a print for each possible choice of exposure and development conditions. Only then can one reason backward, planning framing, lighting, exposure, and development to obtain the desired effects. So it is with programming, where we are planning the course of action to be taken by a process and where we control the process by means of a program. To become experts, we must learn to visualize the processes generated by various types of procedures. Only after we have developed such a skill can we learn to reliably construct programs that exhibit the desired behavior.
+إن القدرة على تصوّر عواقب الأفعال قيد النظر أمر بالغ الأهمية لأن يصبح المرء مبرمجًا خبيرًا، تمامًا كما هو الحال في أي نشاط تركيبي إبداعي. فعند أن يصبح المرء مصوّرًا فوتوغرافيًا خبيرًا، مثلًا، عليه أن يتعلّم كيف ينظر إلى مشهد ويعرف مقدار عتمة كل منطقة عند طباعتها لكل اختيار ممكن لظروف التعريض والتحميض. وعندها فقط يستطيع أن يستدلّ عكسيًا، فيخطّط للتأطير والإضاءة والتعريض والتحميض للحصول على التأثيرات المرغوبة. وكذلك الأمر في البرمجة، حيث نخطّط لمسار الفعل الذي ستسلكه عملية، وحيث نتحكم في العملية عن طريق برنامج. ولكي نصبح خبراء، علينا أن نتعلّم تصوّر العمليات التي تولّدها أنماط مختلفة من الإجراءات. وفقط بعد أن نطوّر مثل هذه المهارة نستطيع أن نتعلّم بناء برامج تُظهر السلوك المرغوب على نحو موثوق.
 
-A procedure is a pattern for the *local evolution* of a computational process. It specifies how each stage of the process is built upon the previous stage. We would like to be able to make statements about the overall, or *global*, behavior of a process whose local evolution has been specified by a procedure. This is very difficult to do in general, but we can at least try to describe some typical patterns of process evolution.
+الإجراء نمط للتطور المحلّي لعملية حسابية. وهو يحدّد كيف يُبنى كل طور من أطوار العملية على الطور السابق. ونودّ أن نتمكن من إصدار عبارات عن السلوك الكلي، أو *الشامل*، لعملية حُدِّد تطورها المحلّي بإجراء. وهذا أمر صعب جدًا عمومًا، لكن يمكننا على الأقل أن نحاول وصف بعض الأنماط النمطية لتطور العملية.
 
-In this section we will examine some common “shapes” for processes generated by simple procedures. We will also investigate the rates at which these processes consume the important computational resources of time and space. The procedures we will consider are very simple. Their role is like that played by test patterns in photography: as oversimplified prototypical patterns, rather than practical examples in their own right.
+في هذا القسم سنفحص بعض «الأشكال» الشائعة للعمليات التي تولّدها إجراءات بسيطة. وسنبحث أيضًا في المعدلات التي تستهلك بها هذه العمليات موارد الحساب المهمة: الزمن والمساحة. والإجراءات التي سننظر فيها بسيطة جدًا. ودورها مثل دور أنماط الاختبار في التصوير الفوتوغرافي: أنماط نماذج مبسَّطة بإفراط، لا أمثلة عملية بحد ذاتها.
 
-#### 1.2.1 Linear Recursion and Iteration
+#### 1.2.1 التعاود الخطي والتكرار
 
-We begin by considering the factorial function, defined by $n ! = n ⋅ ( n − 1 ) ⋅ ( n − 2 ) ⋯ 3 ⋅ 2 ⋅ 1.$ There are many ways to compute factorials. One way is to make use of the observation that $n !$ is equal to $n$ times $( n − 1 ) !$ for any positive integer $n$ : $n ! = n ⋅ [ ( n − 1 ) ⋅ ( n − 2 ) ⋯ 3 ⋅ 2 ⋅ 1 ] = n ⋅ ( n − 1 ) ! .$ Thus, we can compute $n !$ by computing $( n − 1 ) !$ and multiplying the result by $n$ . If we add the stipulation that 1! is equal to 1, this observation translates directly into a procedure:
+نبدأ بالنظر في دالة العاملي، المعرَّفة بـ $n ! = n ⋅ ( n − 1 ) ⋅ ( n − 2 ) ⋯ 3 ⋅ 2 ⋅ 1.$ هناك طرق كثيرة لحساب العوامل. وإحدى الطرق هي الاستفادة من الملاحظة أن $n !$ يساوي $n$ مضروبًا في $( n − 1 ) !$ لأي عدد صحيح موجب $n$ : $n ! = n ⋅ [ ( n − 1 ) ⋅ ( n − 2 ) ⋯ 3 ⋅ 2 ⋅ 1 ] = n ⋅ ( n − 1 ) ! .$ وهكذا، يمكننا حساب $n !$ بحساب $( n − 1 ) !$ وضرب النتيجة في $n$ . وإذا أضفنا الشرط أن 1! يساوي 1، فإن هذه الملاحظة تُترجم مباشرة إلى إجراء:
 
 ```scheme
 (define (factorial n)
@@ -741,22 +741,22 @@ We begin by considering the factorial function, defined by $n ! = n ⋅ ( n − 
       (* n (factorial (- n 1)))))
 ```
 
-We can use the substitution model of [1.1.5](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e5) to watch this procedure in action computing 6!, as shown in [Figure 1.3](#Figure-1_002e3).
+يمكننا استخدام نموذج الاستبدال من [1.1.5](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e5) لمشاهدة هذا الإجراء أثناء عمله في حساب 6!، كما هو مبيَّن في [الشكل 1.3](#Figure-1_002e3).
 
 ![](/images/sicp/c1-building-abstractions-with-procedures-0-Fig1.3d.std.webp)
 
-**Figure 1.3:** A linear recursive process for computing 6!.
+**الشكل 1.3:** عملية تعاودية خطية لحساب 6!.
 
-Now let’s take a different perspective on computing factorials. We could describe a rule for computing $n !$ by specifying that we first multiply 1 by 2, then multiply the result by 3, then by 4, and so on until we reach $n$ . More formally, we maintain a running product, together with a counter that counts from 1 up to $n$ . We can describe the computation by saying that the counter and the product simultaneously change from one step to the next according to the rule
+والآن لنأخذ منظورًا مختلفًا حول حساب العوامل. يمكننا وصف قاعدة لحساب $n !$ بتحديد أننا نضرب 1 في 2 أولًا، ثم نضرب النتيجة في 3، ثم في 4، وهكذا حتى نصل إلى $n$ . وبصورة أكثر رسمية، نحتفظ بجداء جارٍ، إلى جانب عدّاد يعدّ من 1 حتى $n$ . ويمكننا وصف الحساب بالقول إن العدّاد والجداء يتغيران في الوقت نفسه من خطوة إلى التي تليها وفقًا للقاعدة
 
 ```
 product  $←$  counter * product
 counter  $←$  counter + 1
 ```
 
-and stipulating that $n !$ is the value of the product when the counter exceeds $n$ .
+ونشترط أن $n !$ هو قيمة الجداء عندما يتجاوز العدّاد $n$ .
 
-Once again, we can recast our description as a procedure for computing factorials:[^29]
+ومرة أخرى، يمكننا إعادة صياغة وصفنا في صورة إجراء لحساب العوامل:[^29]
 
 ```scheme
 (define (factorial n) 
@@ -770,25 +770,25 @@ Once again, we can recast our description as a procedure for computing factorial
                  max-count)))
 ```
 
-As before, we can use the substitution model to visualize the process of computing 6!, as shown in [Figure 1.4](#Figure-1_002e4).
+وكما في السابق، يمكننا استخدام نموذج الاستبدال لتصوّر عملية حساب 6!، كما هو مبيَّن في [الشكل 1.4](#Figure-1_002e4).
 
 ![](/images/sicp/c1-building-abstractions-with-procedures-1-Fig1.4d.std.webp)
 
-**Figure 1.4:** A linear iterative process for computing 6!.
+**الشكل 1.4:** عملية تكرارية خطية لحساب 6!.
 
-Compare the two processes. From one point of view, they seem hardly different at all. Both compute the same mathematical function on the same domain, and each requires a number of steps proportional to $n$ to compute $n !$ . Indeed, both processes even carry out the same sequence of multiplications, obtaining the same sequence of partial products. On the other hand, when we consider the “shapes” of the two processes, we find that they evolve quite differently.
+قارن بين العمليتين. فمن وجهة نظر ما، يبدوان متشابهين إلى حدّ يعسر معه التمييز بينهما. فكلتاهما تحسب الدالة الرياضية نفسها على المجال نفسه، وكلٌّ منهما تتطلب عددًا من الخطوات يتناسب مع $n$ لحساب $n !$ . بل إن كلتا العمليتين تنفّذان حتى المتتالية نفسها من الضرب، فتحصلان على المتتالية نفسها من الجداءات الجزئية. ومن ناحية أخرى، عندما ننظر في «أشكال» العمليتين، نجد أنهما تتطوران على نحو مختلف تمامًا.
 
-Consider the first process. The substitution model reveals a shape of expansion followed by contraction, indicated by the arrow in [Figure 1.3](#Figure-1_002e3). The expansion occurs as the process builds up a chain of *deferred operations* (in this case, a chain of multiplications). The contraction occurs as the operations are actually performed. This type of process, characterized by a chain of deferred operations, is called a *recursive process*. Carrying out this process requires that the interpreter keep track of the operations to be performed later on. In the computation of $n !$ , the length of the chain of deferred multiplications, and hence the amount of information needed to keep track of it, grows linearly with $n$ (is proportional to $n$ ), just like the number of steps. Such a process is called a *linear recursive process*.
+تأمل العملية الأولى. يكشف نموذج الاستبدال شكلًا من التوسّع يعقبه انقباض، كما يدل عليه السهم في [الشكل 1.3](#Figure-1_002e3). ويحدث التوسّع بينما تبني العملية سلسلة من *العمليات المؤجَّلة* (وهي في هذه الحالة سلسلة من الضرب). ويحدث الانقباض عند تنفيذ العمليات فعليًا. وهذا النوع من العمليات، الذي يتميّز بسلسلة من العمليات المؤجَّلة، يُسمى *عملية تعاودية*. ويتطلب تنفيذ هذه العملية أن يتعقّب المفسّر العمليات التي ستنفَّذ لاحقًا. وفي حساب $n !$ ، ينمو طول سلسلة الضرب المؤجَّل، ومن ثمّ مقدار المعلومات اللازمة لتعقّبها، خطيًا مع $n$ (أي يتناسب مع $n$ )، تمامًا كعدد الخطوات. وتُسمى مثل هذه العملية *عملية تعاودية خطية*.
 
-By contrast, the second process does not grow and shrink. At each step, all we need to keep track of, for any $n$ , are the current values of the variables `product`, `counter`, and `max-count`. We call this an *iterative process*. In general, an iterative process is one whose state can be summarized by a fixed number of *state variables*, together with a fixed rule that describes how the state variables should be updated as the process moves from state to state and an (optional) end test that specifies conditions under which the process should terminate. In computing $n !$ , the number of steps required grows linearly with $n$ . Such a process is called a *linear iterative process*.
+وعلى النقيض، لا تنمو العملية الثانية ولا تتقلّص. وفي كل خطوة، كل ما نحتاج إلى تعقّبه، لأي $n$ ، هو القيم الحالية للمتغيّرات `product` و`counter` و`max-count`. ونسمي هذه *عملية تكرارية*. وعمومًا، العملية التكرارية هي التي يمكن تلخيص حالتها بعدد ثابت من *متغيّرات الحالة*، إلى جانب قاعدة ثابتة تصف كيف ينبغي تحديث متغيّرات الحالة بينما تنتقل العملية من حالة إلى حالة، واختبار انتهاء (اختياري) يحدّد الشروط التي ينبغي أن تنتهي عندها العملية. وفي حساب $n !$ ، ينمو عدد الخطوات المطلوبة خطيًا مع $n$ . وتُسمى مثل هذه العملية *عملية تكرارية خطية*.
 
-The contrast between the two processes can be seen in another way. In the iterative case, the program variables provide a complete description of the state of the process at any point. If we stopped the computation between steps, all we would need to do to resume the computation is to supply the interpreter with the values of the three program variables. Not so with the recursive process. In this case there is some additional “hidden” information, maintained by the interpreter and not contained in the program variables, which indicates “where the process is” in negotiating the chain of deferred operations. The longer the chain, the more information must be maintained.[^30]
+ويمكن رؤية التباين بين العمليتين بطريقة أخرى. في الحالة التكرارية، تقدّم متغيّرات البرنامج وصفًا كاملًا لحالة العملية في أي نقطة. فلو أوقفنا الحساب بين الخطوات، لما احتجنا لاستئناف الحساب سوى تزويد المفسّر بقيم متغيّرات البرنامج الثلاثة. وليس الأمر كذلك مع العملية التعاودية. فهنا توجد بعض المعلومات «الخفيّة» الإضافية، التي يحتفظ بها المفسّر ولا تحتوي عليها متغيّرات البرنامج، والتي تدلّ على «موضع العملية» في أثناء تعاملها مع سلسلة العمليات المؤجَّلة. وكلما طالت السلسلة، وجب الاحتفاظ بمعلومات أكثر.[^30]
 
-In contrasting iteration and recursion, we must be careful not to confuse the notion of a recursive *process* with the notion of a recursive *procedure*. When we describe a procedure as recursive, we are referring to the syntactic fact that the procedure definition refers (either directly or indirectly) to the procedure itself. But when we describe a process as following a pattern that is, say, linearly recursive, we are speaking about how the process evolves, not about the syntax of how a procedure is written. It may seem disturbing that we refer to a recursive procedure such as `fact-iter` as generating an iterative process. However, the process really is iterative: Its state is captured completely by its three state variables, and an interpreter need keep track of only three variables in order to execute the process.
+وعند المقابلة بين التكرار والتعاود، يجب أن نحرص على عدم الخلط بين فكرة *العملية* التعاودية وفكرة *الإجراء* التعاودي. فعندما نصف إجراءً بأنه تعاودي، فإننا نشير إلى الحقيقة النحوية القائلة إن تعريف الإجراء يشير (مباشرةً أو غير مباشرة) إلى الإجراء نفسه. لكن عندما نصف عملية بأنها تتبع نمطًا، لنقل، تعاوديًا خطيًا، فإننا نتحدّث عن كيفية تطور العملية، لا عن النحو الذي كُتب به الإجراء. وقد يبدو مُقلقًا أن نشير إلى إجراء تعاودي مثل `fact-iter` بأنه يولّد عملية تكرارية. غير أن العملية تكرارية فعلًا: فحالتها تُلتقط بالكامل بمتغيّرات حالتها الثلاثة، ولا يحتاج المفسّر إلى تعقّب سوى ثلاثة متغيّرات لتنفيذ العملية.
 
-One reason that the distinction between process and procedure may be confusing is that most implementations of common languages (including Ada, Pascal, and C) are designed in such a way that the interpretation of any recursive procedure consumes an amount of memory that grows with the number of procedure calls, even when the process described is, in principle, iterative. As a consequence, these languages can describe iterative processes only by resorting to special-purpose “looping constructs” such as `do`, `repeat`, `until`, `for`, and `while`. The implementation of Scheme we shall consider in [Chapter 5](https://sarabander.github.io/sicp/html/Chapter-5.xhtml#Chapter-5) does not share this defect. It will execute an iterative process in constant space, even if the iterative process is described by a recursive procedure. An implementation with this property is called *tail-recursive*. With a tail-recursive implementation, iteration can be expressed using the ordinary procedure call mechanism, so that special iteration constructs are useful only as syntactic sugar.[^31]
+إنّ سببًا من أسباب الالتباس في التمييز بين العمليّة والإجراء هو أنّ معظم تنفيذات اللغات الشائعة (بما فيها Ada وPascal وC) مُصمَّمة على نحوٍ يجعل تفسير أيّ إجراءٍ تعاوديّ يستهلك مقدارًا من الذاكرة ينمو بعدد نداءات الإجراء، حتّى عندما تكون العمليّة الموصوفة، من حيث المبدأ، تكراريّة. ونتيجةً لذلك، لا تستطيع هذه اللغات وصف العمليّات التكراريّة إلّا باللجوء إلى «بنى حلقات» ذات أغراض خاصّة مثل `do` و`repeat` و`until` و`for` و`while`. أمّا تنفيذ Scheme الذي سننظر فيه في [الفصل 5](https://sarabander.github.io/sicp/html/Chapter-5.xhtml#Chapter-5) فلا يشاركنا هذا الخلل. فسوف ينفّذ العمليّة التكراريّة في مساحةٍ ثابتة، حتّى إذا كانت العمليّة التكراريّة موصوفةً بإجراءٍ تعاوديّ. ويُسمّى التنفيذ ذو هذه الخاصّيّة *تعاوديًّا ذيليًّا*. وبتنفيذ تعاوديّ ذيليّ، يمكن التعبير عن التكرار باستخدام آليّة نداء الإجراءات المعتادة، بحيث تصير بنى التكرار الخاصّة ذا فائدةٍ كسُكَرٍ نحويّ.[^31]
 
-**Exercise 1.9:** Each of the following two procedures defines a method for adding two positive integers in terms of the procedures `inc`, which increments its argument by 1, and `dec`, which decrements its argument by 1.
+**تمرين 1.9:** يحدّد كلٌّ من الإجراءين التاليين طريقةً لجمع عددين صحيحين موجبين بدلالة الإجراء `inc`، الذي يزيد وسيطه بمقدار 1، والإجراء `dec`، الذي ينقص وسيطه بمقدار 1.
 
 ```scheme
 (define (+ a b)
@@ -802,9 +802,9 @@ One reason that the distinction between process and procedure may be confusing i
       (+ (dec a) (inc b))))
 ```
 
-Using the substitution model, illustrate the process generated by each procedure in evaluating `(+ 4 5)`. Are these processes iterative or recursive?
+باستخدام نموذج الاستبدال، صُوّر العمليّة التي يولّدها كلٌّ من الإجراءين عند تقييم `(+ 4 5)` . فهل هاتان العمليّتان تكراريّتان أم تعاوديّتان؟
 
-**Exercise 1.10:** The following procedure computes a mathematical function called Ackermann’s function.
+**تمرين 1.10:** يحسب الإجراء التالي دالّةً رياضيّةً تُسمّى دالّة Ackermann.
 
 ```scheme
 (define (A x y)
@@ -815,7 +815,7 @@ Using the substitution model, illustrate the process generated by each procedure
                  (A x (- y 1))))))
 ```
 
-What are the values of the following expressions?
+ما قيم التعبيرات التالية؟
 
 ```scheme
 (A 1 10)
@@ -823,7 +823,7 @@ What are the values of the following expressions?
 (A 3 3)
 ```
 
-Consider the following procedures, where `A` is the procedure defined above:
+تأمّل الإجراءات التالية، حيث `A` هو الإجراء المُعرَّف أعلاه:
 
 ```scheme
 (define (f n) (A 0 n))
@@ -832,15 +832,15 @@ Consider the following procedures, where `A` is the procedure defined above:
 (define (k n) (* 5 n n))
 ```
 
-Give concise mathematical definitions for the functions computed by the procedures `f`, `g`, and `h` for positive integer values of $n$ . For example, `(k n)` computes $5 n^{2}$ .
+أعطِ تعريفات رياضيّة موجزة للدوالّ التي تحسبها الإجراءات `f` و`g` و`h` لقيم العدد الصحيح الموجبة $n$ . فعلى سبيل المثال، يحسب `(k n)` القيمة $5 n^{2}$ .
 
-#### 1.2.2 Tree Recursion
+#### 1.2.2 التعاود الشجريّ
 
-Another common pattern of computation is called *tree recursion*. As an example, consider computing the sequence of Fibonacci numbers, in which each number is the sum of the preceding two:
+هناك نمطٌ شائعٌ آخر من الاحتساب يُسمّى *التعاود الشجريّ*. فخذ مثلًا احتساب متتالية أعداد فيبوناتشي، التي يكون فيها كلّ عددٍ مجموع العددين السابقين:
 
-0, 1, 1, 2, 3, 5, 8, 13, 21, ….
+0، 1، 1، 2، 3، 5، 8، 13، 21، ....
 
-In general, the Fibonacci numbers can be defined by the rule $Fib ( n ) = { 0 if n = 0 , 1 if n = 1 , Fib ( n − 1 ) + Fib ( n − 2 ) otherwise .$ We can immediately translate this definition into a recursive procedure for computing Fibonacci numbers:
+وبصورة عامّة، يمكن تعريف أعداد فيبوناتشي بالقاعدة $Fib ( n ) = { 0 if n = 0 , 1 if n = 1 , Fib ( n − 1 ) + Fib ( n − 2 ) otherwise .$ ويمكننا ترجمة هذا التعريف مباشرةً إلى إجراءٍ تعاوديٍّ لاحتساب أعداد فيبوناتشي:
 
 ```scheme
 (define (fib n)
@@ -850,19 +850,19 @@ In general, the Fibonacci numbers can be defined by the rule $Fib ( n ) = { 0 if
                  (fib (- n 2))))))
 ```
 
-Consider the pattern of this computation. To compute `(fib 5)`, we compute `(fib 4)` and `(fib 3)`. To compute `(fib 4)`, we compute `(fib 3)` and `(fib 2)`. In general, the evolved process looks like a tree, as shown in [Figure 1.5](#Figure-1_002e5). Notice that the branches split into two at each level (except at the bottom); this reflects the fact that the `fib` procedure calls itself twice each time it is invoked.
+تأمّل نمط هذا الاحتساب. فلاحتساب `(fib 5)`، نحتسب `(fib 4)` و`(fib 3)`. ولاحتساب `(fib 4)`، نحتسب `(fib 3)` و`(fib 2)`. وبصورة عامّة، تبدو العمليّة المتطوّرة كأنّها شجرة، كما هو مبيَّن في [الشكل 1.5](#Figure-1_002e5). ولاحِظ أنّ الفروع تتشعّب إلى فرعين في كلّ مستوى (إلّا في الأسفل)؛ وهذا يعكس حقيقة أنّ الإجراء `fib` يُنادي نفسه مرّتين في كلّ مرّةٍ يُستدعى فيها.
 
 ![](/images/sicp/c1-building-abstractions-with-procedures-2-Fig1.5d.std.webp)
 
-**Figure 1.5:** The tree-recursive process generated in computing `(fib 5)`.
+**الشكل 1.5:** العمليّة التعاوديّة الشجريّة المتولّدة عند احتساب `(fib 5)`.
 
-This procedure is instructive as a prototypical tree recursion, but it is a terrible way to compute Fibonacci numbers because it does so much redundant computation. Notice in [Figure 1.5](#Figure-1_002e5) that the entire computation of `(fib 3)`—almost half the work—is duplicated. In fact, it is not hard to show that the number of times the procedure will compute `(fib 1)` or `(fib 0)` (the number of leaves in the above tree, in general) is precisely $Fib ( n + 1 )$ . To get an idea of how bad this is, one can show that the value of $Fib ( n )$ grows exponentially with $n$ . More precisely (see [Exercise 1.13](#Exercise-1_002e13)), $Fib ( n )$ is the closest integer to $φ^{n} / \sqrt{5}$ , where $φ = \frac{1 + \sqrt{5}}{2} ≈ 1.6180$ is the *golden ratio*, which satisfies the equation $φ^{2} = φ + 1.$ Thus, the process uses a number of steps that grows exponentially with the input. On the other hand, the space required grows only linearly with the input, because we need keep track only of which nodes are above us in the tree at any point in the computation. In general, the number of steps required by a tree-recursive process will be proportional to the number of nodes in the tree, while the space required will be proportional to the maximum depth of the tree.
+هذا الإجراء تعليميٌّ بوصفه تعاودًا شجريًّا نموذجيًّا، لكنّه طريقةٌ فظيعةٌ لاحتساب أعداد فيبوناتشي لأنّه يؤدي إلى قدرٍ كبيرٍ من الاحتساب المُكرَّر. فلاحِظ في [الشكل 1.5](#Figure-1_002e5) أنّ احتساب `(fib 3)` بكامله - وهو قرابة نصف العمل - مُكرَّر. وفي الحقيقة، ليس من الصعب إظهار أنّ عدد المرّات التي سيحتسب فيها الإجراء `(fib 1)` أو `(fib 0)` (وهو عدد الأوراق في الشجرة أعلاه، بصورة عامّة) هو بالضبط $Fib ( n + 1 )$ . ولمعرفة مدى سُوء هذا الأمر، يمكن إظهار أنّ قيمة $Fib ( n )$ تنمو أسّيًّا مع $n$ . وبشكلٍ أدقّ (انظر [تمرين 1.13](#Exercise-1_002e13))، فإنّ $Fib ( n )$ هو أقرب عددٍ صحيحٍ إلى $φ^{n} / \sqrt{5}$ ، حيث $φ = \frac{1 + \sqrt{5}}{2} ≈ 1.6180$ هي *النسبة الذهبيّة*، التي تحقّق المعادلة $φ^{2} = φ + 1.$ وبالتالي، فإنّ العمليّة تستخدم عددًا من الخطوات ينمو أسّيًّا مع المدخلات. ومن ناحية أخرى، فإنّ المساحة المطلوبة تنمو خطّيًّا فقط مع المدخلات، لأنّنا لا نحتاج إلى تعقّب إلّا العُقد التي تعلونا في الشجرة في أيّ نقطةٍ من الاحتساب. وبصورة عامّة، فإنّ عدد الخطوات التي تتطلّبها العمليّة التعاوديّة الشجريّة سيتناسب مع عدد العُقد في الشجرة، بينما ستتناسب المساحة المطلوبة مع أقصى عمقٍ للشجرة.
 
-We can also formulate an iterative process for computing the Fibonacci numbers. The idea is to use a pair of integers $a$ and $b$ , initialized to $Fib(1) = 1$ and $Fib(0) = 0$ , and to repeatedly apply the simultaneous transformations
+يمكننا أيضًا صياغة عمليّةٍ تكراريّةٍ لاحتساب أعداد فيبوناتشي. والفكرة هي استخدام زوجٍ من الأعداد الصحيحة $a$ و$b$ ، مُهيَّأٍ على $Fib(1) = 1$ و$Fib(0) = 0$ ، وتطبيق التحويلات المتزامنة مرارًا وتكرارًا
 
 $a ← a + b , b ← a .$
 
-It is not hard to show that, after applying this transformation $n$ times, $a$ and $b$ will be equal, respectively, to $Fib ( n + 1 )$ and $Fib ( n )$ . Thus, we can compute Fibonacci numbers iteratively using the procedure
+ليس من الصعب إظهار أنّ، بعد تطبيق هذا التحويل $n$ مرّة، سيصبح $a$ و$b$ مساويين على الترتيب لـ$Fib ( n + 1 )$ و$Fib ( n )$ . وبالتالي، يمكننا احتساب أعداد فيبوناتشي تكرارًا باستخدام الإجراء
 
 ```scheme
 (define (fib n) 
@@ -874,30 +874,30 @@ It is not hard to show that, after applying this transformation $n$ times, $a$ a
       (fib-iter (+ a b) a (- count 1))))
 ```
 
-This second method for computing $Fib ( n )$ is a linear iteration. The difference in number of steps required by the two methods—one linear in $n$ , one growing as fast as $Fib ( n )$ itself—is enormous, even for small inputs.
+هذه الطريقة الثانية لاحتساب $Fib ( n )$ تكرارٌ خطّيّ. والفرق في عدد الخطوات الذي تتطلّبه الطريقتان - إحداهما خطّيّة في $n$ ، والأخرى تنمو بسرعة $Fib ( n )$ نفسها - هائل، حتّى بالنسبة للمدخلات الصغيرة.
 
-One should not conclude from this that tree-recursive processes are useless. When we consider processes that operate on hierarchically structured data rather than numbers, we will find that tree recursion is a natural and powerful tool.[^32] But even in numerical operations, tree-recursive processes can be useful in helping us to understand and design programs. For instance, although the first `fib` procedure is much less efficient than the second one, it is more straightforward, being little more than a translation into Lisp of the definition of the Fibonacci sequence. To formulate the iterative algorithm required noticing that the computation could be recast as an iteration with three state variables.
+لا يجوز أن نستنتج من ذلك أنّ العمليّات التعاوديّة الشجريّة غير مفيدة. فعندما ننظر في العمليّات التي تعمل على بياناتٍ مهيكلةٍ هرميًّا بدلًا من الأعداد، سنجد أنّ التعاود الشجريّ أداةٌ طبيعيّةٌ وقويّة.[^32] ولكن حتّى في العمليّات العدديّة، يمكن أن تكون العمليّات التعاوديّة الشجريّة مفيدةً في مساعدتنا على فهم البرامج وتصميمها. فعلى سبيل المثال، وعلى الرغم من أنّ الإجراء `fib` الأوّل أقلّ كفاءةً بكثيرٍ من الثاني، فإنّه أكثر مباشرةً، إذ ليس سوى ترجمةً إلى Lisp لتعريف متتالية فيبوناتشي. وقد استلزمت صياغة الخوارزميّة التكراريّة ملاحظة أنّ الاحتساب يمكن إعادة صياغته تكرارًا بثلاثة متغيّرات حالة.
 
-#### Example: Counting change
+#### مثال: عدّ طرق إبدال النقود
 
-It takes only a bit of cleverness to come up with the iterative Fibonacci algorithm. In contrast, consider the following problem: How many different ways can we make change of $1.00, given half-dollars, quarters, dimes, nickels, and pennies? More generally, can we write a procedure to compute the number of ways to change any given amount of money?
+لا يتطلّب الأمر إلّا القليل من الذكاء للتوصل إلى الخوارزميّة التكراريّة لأعداد فيبوناتشي. وعلى النقيض من ذلك، تأمّل المسألة التالية: كم طريقةً مختلفةً يمكننا بها إبدال مبلغ $1.00، إذا كانت العملات المتاحة هي أنصاف الدولار والربع دولار والدايمات والنيكلات والبنسات؟ وبصورةٍ أعمّ، فهل يمكننا كتابة إجراءٍ لحساب عدد طرق إبدال أيّ مبلغٍ معطى من النقود؟
 
-This problem has a simple solution as a recursive procedure. Suppose we think of the types of coins available as arranged in some order. Then the following relation holds:
+لهذه المسألة حلٌّ بسيطٌ في صورة إجراءٍ تعاوديّ. فلنفترض أنّنا ننظر إلى أنواع العملات المتاحة كأنّها مرتّبةٌ في ترتيبٍ ما. وعندئذٍ يسري العلاقة التالية:
 
-The number of ways to change amount $a$ using $n$ kinds of coins equals
+يساوي عدد طرق إبدال المبلغ $a$ باستخدام $n$ أنواعٍ من العملات
 
-- the number of ways to change amount $a$ using all but the first kind of coin, plus
-- the number of ways to change amount $a − d$ using all $n$ kinds of coins, where $d$ is the denomination of the first kind of coin.
+- عدد طرق إبدال المبلغ $a$ باستخدام كلّ أنواع العملات عدا النوع الأوّل، زائدًا
+- عدد طرق إبدال المبلغ $a − d$ باستخدام كلّ أنواع العملات $n$ ، حيث $d$ هو فئة النوع الأوّل من العملات.
 
-To see why this is true, observe that the ways to make change can be divided into two groups: those that do not use any of the first kind of coin, and those that do. Therefore, the total number of ways to make change for some amount is equal to the number of ways to make change for the amount without using any of the first kind of coin, plus the number of ways to make change assuming that we do use the first kind of coin. But the latter number is equal to the number of ways to make change for the amount that remains after using a coin of the first kind.
+ولنرَ سبب صحّة ذلك، لاحِظ أنّ طرق إبدال النقود يمكن تقسيمها إلى مجموعتين: تلك التي لا تستخدم أيّ عملةٍ من النوع الأوّل، وتلك التي تستخدمه. وبالتالي، فإنّ العدد الكلّيّ لطرق إبدال مبلغٍ ما يساوي عدد طرق إبدال المبلغ دون استخدام أيّ عملةٍ من النوع الأوّل، زائدًا عدد طرق الإبدال على افتراض أنّنا نستخدم عملةً من النوع الأوّل. وهذا العدد الأخير يساوي عدد طرق إبدال المبلغ المتبقّي بعد استخدام عملةٍ من النوع الأوّل.
 
-Thus, we can recursively reduce the problem of changing a given amount to the problem of changing smaller amounts using fewer kinds of coins. Consider this reduction rule carefully, and convince yourself that we can use it to describe an algorithm if we specify the following degenerate cases:[^33]
+وبالتالي، يمكننا تقليص مسألة إبدال مبلغٍ معطى تقليصًا تعاوديًّا إلى مسألة إبدال مبالغ أصغر باستخدام أنواعٍ أقلّ من العملات. تأمّل قاعدة التقليص هذه بعناية، وأقنع نفسك بأنّنا نستطيع استخدامها لوصف خوارزميّةٍ إذا حدّدنا الحالات المنحطّة التالية:[^33]
 
-- If $a$ is exactly 0, we should count that as 1 way to make change.
-- If $a$ is less than 0, we should count that as 0 ways to make change.
-- If $n$ is 0, we should count that as 0 ways to make change.
+- إذا كان $a$ يساوي 0 بالضبط، فينبغي أن نعدّ ذلك طريقةً واحدةً لإبدال النقود.
+- إذا كان $a$ أقلّ من 0، فينبغي أن نعدّ ذلك صفر طريقةٍ لإبدال النقود.
+- إذا كان $n$ يساوي 0، فينبغي أن نعدّ ذلك صفر طريقةٍ لإبدال النقود.
 
-We can easily translate this description into a recursive procedure:
+يمكننا بسهولةٍ ترجمة هذا الوصف إلى إجراءٍ تعاوديّ:
 
 ```scheme
 (define (count-change amount)
@@ -922,18 +922,18 @@ We can easily translate this description into a recursive procedure:
         ((= kinds-of-coins 5) 50)))
 ```
 
-(The `first-denomination` procedure takes as input the number of kinds of coins available and returns the denomination of the first kind. Here we are thinking of the coins as arranged in order from largest to smallest, but any order would do as well.) We can now answer our original question about changing a dollar:
+(يأخذ الإجراء `first-denomination` مدخلًا عدد أنواع العملات المتاحة ويعيد فئة النوع الأوّل. وهنا نحن ننظر إلى العملات كأنّها مرتّبةٌ من الأكبر إلى الأصغر، ولكن أيّ ترتيبٍ آخر يكفي كذلك.) ويمكننا الآن الإجابة عن سؤالنا الأصليّ حول إبدال الدولار الواحد:
 
 ```scheme
 (count-change 100)
 292
 ```
 
-`Count-change` generates a tree-recursive process with redundancies similar to those in our first implementation of `fib`. (It will take quite a while for that 292 to be computed.) On the other hand, it is not obvious how to design a better algorithm for computing the result, and we leave this problem as a challenge. The observation that a tree-recursive process may be highly inefficient but often easy to specify and understand has led people to propose that one could get the best of both worlds by designing a “smart compiler” that could transform tree-recursive procedures into more efficient procedures that compute the same result.[^34]
+يولّد الإجراء `count-change` عمليّةً تعاوديّةً شجريّةً ذات تكراراتٍ زائدةٍ شبيهةٍ بتلك التي في تنفيذنا الأوّل لـ`fib`. (وسوف يستغرق احتساب ذلك العدد 292 وقتًا طويلًا.) ومن ناحية أخرى، فليس من الواضح كيف نُصمّم خوارزميّةً أفضل لاحتساب النتيجة، ونحن نترك هذه المسألة تحدّيًا. وقد دفعت الملاحظة القائلة إنّ العمليّة التعاوديّة الشجريّة قد تكون غير كفؤةٍ للغاية لكنّها غالبًا ما تكون سهلة التحديد والفهم، الناسَ إلى الاقتراح بأنّ المرء يمكن أن يجمع بين أفضل ما في العالمين بتصميم «مصرِّف ذكيّ» يستطيع تحويل الإجراءات التعاوديّة الشجريّة إلى إجراءاتٍ أكثر كفاءةً تحسب النتيجة ذاتها.[^34]
 
-> **Exercise 1.11:** A function $f$ is defined by the rule that $f ( n ) = n$ if $n < 3$ and $f ( n ) = f ( n − 1 ) + 2 f ( n − 2 ) + 3 f ( n − 3 )$ if $n ≥ 3$ . Write a procedure that computes $f$ by means of a recursive process. Write a procedure that computes $f$ by means of an iterative process.
+> **تمرين 1.11:** دالّةٌ $f$ مُعرَّفةٌ بالقاعدة أنّ $f ( n ) = n$ إذا كان $n < 3$ و$f ( n ) = f ( n − 1 ) + 2 f ( n − 2 ) + 3 f ( n − 3 )$ إذا كان $n ≥ 3$ . اكتب إجراءً يحسب $f$ بواسطة عمليّةٍ تعاوديّة. واكتب إجراءً يحسب $f$ بواسطة عمليّةٍ تكراريّة.
 
-**Exercise 1.12:** The following pattern of numbers is called *Pascal’s triangle*.
+**تمرين 1.12:** يُسمّى نمط الأعداد التالي *مثلّث باسكال*.
 
 ```
          1
@@ -944,25 +944,25 @@ We can easily translate this description into a recursive procedure:
        . . .
 ```
 
-The numbers at the edge of the triangle are all 1, and each number inside the triangle is the sum of the two numbers above it.[^35] Write a procedure that computes elements of Pascal’s triangle by means of a recursive process.
+الأعداد عند حافّة المثلّث كلّها 1، وكلّ عددٍ داخل المثلّث هو مجموع العددين الواقعين فوقه.[^35] واكتب إجراءً يحسب عناصر مثلّث باسكال بواسطة عمليّةٍ تعاوديّة.
 
-> **Exercise 1.13:** Prove that $Fib ( n )$ is the closest integer to $φ^{n} / \sqrt{5}$ , where $φ = ( 1 + \sqrt{5} ) / 2$ . Hint: Let $ψ = ( 1 − \sqrt{5} ) / 2$ . Use induction and the definition of the Fibonacci numbers (see [1.2.2](#g_t1_002e2_002e2)) to prove that $Fib ( n ) = ( φ^{n} − ψ^{n} ) / \sqrt{5}$ .
+> **تمرين 1.13:** أثبت أنّ $Fib ( n )$ هو أقرب عددٍ صحيحٍ إلى $φ^{n} / \sqrt{5}$ ، حيث $φ = ( 1 + \sqrt{5} ) / 2$ . تلميح: ليكن $ψ = ( 1 − \sqrt{5} ) / 2$ . استخدم الاستقراح وتعريف أعداد فيبوناتشي (انظر [1.2.2](#g_t1_002e2_002e2)) لتُثبت أنّ $Fib ( n ) = ( φ^{n} − ψ^{n} ) / \sqrt{5}$ .
 
-#### 1.2.3 Orders of Growth
+#### 1.2.3 رُتب النموّ
 
-The previous examples illustrate that processes can differ considerably in the rates at which they consume computational resources. One convenient way to describe this difference is to use the notion of *order of growth* to obtain a gross measure of the resources required by a process as the inputs become larger.
+توضّح الأمثلة السابقة أنّ العمليّات يمكن أن تختلف اختلافًا كبيرًا في المعدّلات التي تستهلك بها الموارد الاحتسابيّة. وإحدى الطرائق الملائمة لوصف هذا الاختلاف هي استخدام مفهوم *رتبة النموّ* للحصول على قياسٍ إجماليٍّ للموارد التي تتطلّبها العمليّة مع كِبَر المدخلات.
 
-Let $n$ be a parameter that measures the size of the problem, and let $R ( n )$ be the amount of resources the process requires for a problem of size $n$ . In our previous examples we took $n$ to be the number for which a given function is to be computed, but there are other possibilities. For instance, if our goal is to compute an approximation to the square root of a number, we might take $n$ to be the number of digits accuracy required. For matrix multiplication we might take $n$ to be the number of rows in the matrices. In general there are a number of properties of the problem with respect to which it will be desirable to analyze a given process. Similarly, $R ( n )$ might measure the number of internal storage registers used, the number of elementary machine operations performed, and so on. In computers that do only a fixed number of operations at a time, the time required will be proportional to the number of elementary machine operations performed.
+لتكن $n$ مُعاملًا يقيس حجم المسألة، ولتكن $R ( n )$ مقدار الموارد التي تتطلّبها العمليّة لمسألةٍ حجمها $n$ . وفي أمثلتنا السابقة أخذنا $n$ العدد الذي يُحتسب لأجله دالّةٌ معيّنة، ولكن ثمّة إمكانيّاتٍ أخرى. فعلى سبيل المثال، إذا كان هدفنا هو احتساب تقريبٍ للجذر التربيعيّ لعددٍ ما، فقد نأخذ $n$ عدد الأرقام المطلوبة في الدقّة. وفي ضرب المصفوفات قد نأخذ $n$ عدد الصفوف في المصفوفات. وبصورة عامّة، ثمّة عددٍ من خصائص المسألة التي يكون من المرغوب تحليل عمليّةٍ معيّنةٍ بالنسبة إليها. وبالمثل، قد تقيس $R ( n )$ عدد مسجّلات التخزين الداخليّ المستخدمة، وعدد عمليّات الآلة الأوليّة المنفَّذة، وكذلك غير ذلك. وفي الحواسيب التي تؤدّي عددًا ثابتًا من العمليّات في الوقت نفسه، سيكون الزمن المطلوب متناسبًا مع عدد عمليّات الآلة الأوليّة المنفَّذة.
 
-We say that $R ( n )$ has order of growth $Θ ( f ( n ) )$ , written $R ( n ) = Θ ( f ( n ) )$ (pronounced “theta of $f ( n )$ ”), if there are positive constants $k_{1}$ and $k_{2}$ independent of $n$ such that $k_{1} f ( n ) ≤ R ( n ) ≤ k_{2} f ( n )$ for any sufficiently large value of $n$ . (In other words, for large $n$ , the value $R ( n )$ is sandwiched between $k_{1} f ( n )$ and $k_{2} f ( n )$ .)
+نقول إنّ $R ( n )$ ذات رتبة نموّ $Θ ( f ( n ) )$ ، وتُكتب $R ( n ) = Θ ( f ( n ) )$ (وتُنطق «ثيتا التابعة لـ$f ( n )$ »)، إذا وجدت ثابتتان موجبتان $k_{1}$ و$k_{2}$ مستقلّتان عن $n$ بحيث يتحقّق $k_{1} f ( n ) ≤ R ( n ) ≤ k_{2} f ( n )$ لأيّ قيمةٍ كبيرةٍ بما يكفي من $n$ . (وبعبارةٍ أخرى، من أجل $n$ الكبيرة، تكون القيمة $R ( n )$ محصورةً بين $k_{1} f ( n )$ و$k_{2} f ( n )$ .)
 
-For instance, with the linear recursive process for computing factorial described in [1.2.1](#g_t1_002e2_002e1) the number of steps grows proportionally to the input $n$ . Thus, the steps required for this process grows as $Θ ( n )$ . We also saw that the space required grows as $Θ ( n )$ . For the iterative factorial, the number of steps is still $Θ ( n )$ but the space is $Θ ( 1 )$ —that is, constant.[^36] The tree-recursive Fibonacci computation requires $Θ ( φ^{n} )$ steps and space $Θ ( n )$ , where $φ$ is the golden ratio described in [1.2.2](#g_t1_002e2_002e2).
+فعلى سبيل المثال، فإنّ عدد الخطوات في العمليّة التعاوديّة الخطّيّة لاحتساب العامليّات الموصوفة في [1.2.1](#g_t1_002e2_002e1) ينمو تناسبًا مع مدخل $n$ . وبالتالي، فإنّ الخطوات التي تتطلّبها هذه العمليّة تنمو على الصورة $Θ ( n )$ . ورأينا أيضًا أنّ المساحة المطلوبة تنمو على الصورة $Θ ( n )$ . وأمّا في حالة العامليّات التكراريّة، فإنّ عدد الخطوات لا يزال $Θ ( n )$ ولكن المساحة هي $Θ ( 1 )$ - أي ثابتة.[^36] ويتطلّب احتساب فيبوناتشي التعاوديّ الشجريّ $Θ ( φ^{n} )$ خطوةً ومساحة $Θ ( n )$ ، حيث $φ$ هي النسبة الذهبيّة الموصوفة في [1.2.2](#g_t1_002e2_002e2).
 
-Orders of growth provide only a crude description of the behavior of a process. For example, a process requiring $n^{2}$ steps and a process requiring $1000 n^{2}$ steps and a process requiring $3 n^{2} + 10 n + 17$ steps all have $Θ ( n^{2} )$ order of growth. On the other hand, order of growth provides a useful indication of how we may expect the behavior of the process to change as we change the size of the problem. For a $Θ ( n )$ (linear) process, doubling the size will roughly double the amount of resources used. For an exponential process, each increment in problem size will multiply the resource utilization by a constant factor. In the remainder of [1.2](#g_t1_002e2) we will examine two algorithms whose order of growth is logarithmic, so that doubling the problem size increases the resource requirement by a constant amount.
+إنّ رُتب النموّ لا تقدّم سوى وصفٍ خشنٍ لسلوك العمليّة. فعلى سبيل المثال، فإنّ العمليّة التي تتطلّب $n^{2}$ خطوةً، والعمليّة التي تتطلّب $1000 n^{2}$ خطوةً، والعمليّة التي تتطلّب $3 n^{2} + 10 n + 17$ خطوةً، كلّها ذات رتبة نموّ $Θ ( n^{2} )$ . ومن ناحية أخرى، فإنّ رتبة النموّ تقدّم إشارةً مفيدةً حول كيف نتوقّع أن يتغيّر سلوك العمليّة بتغيّرنا حجم المسألة. ففي العمليّة $Θ ( n )$ (الخطّيّة)، سيؤدّي مضاعفة الحجم إلى مضاعفة مقدار الموارد المستخدمة تقريبًا. وفي العمليّة الأسّيّة، ستؤدّي كلّ زيادةٍ في حجم المسألة إلى ضرب استخدام الموارد في عاملٍ ثابت. وفي الجزء المتبقّي من [1.2](#g_t1_002e2) سنفحص خوارزميّتين رتبة نموّهما لوغاريتميّة، بحيث تؤدّي مضاعفة حجم المسألة إلى زيادة متطلّب الموارد بمقدارٍ ثابت.
 
-> **Exercise 1.14:** Draw the tree illustrating the process generated by the `count-change` procedure of [1.2.2](#g_t1_002e2_002e2) in making change for 11 cents. What are the orders of growth of the space and number of steps used by this process as the amount to be changed increases?
+> **تمرين 1.14:** ارسم الشجرة التي توضّح العمليّة التي يولّدها الإجراء `count-change` المذكور في [1.2.2](#g_t1_002e2_002e2) عند إبدال 11 سنتًا. فما رُتب نموّ المساحة وعدد الخطوات التي تستخدمها هذه العمليّة بازدياد المبلغ المطلوب إبداله؟
 
-**Exercise 1.15:** The sine of an angle (specified in radians) can be computed by making use of the approximation $sin ⁡ x ≈ x$ if $x$ is sufficiently small, and the trigonometric identity $sin ⁡ x = 3 sin ⁡ \frac{x}{3} − 4 sin^{3} ⁡ \frac{x}{3}$ to reduce the size of the argument of sin. (For purposes of this exercise an angle is considered “sufficiently small” if its magnitude is not greater than 0.1 radians.) These ideas are incorporated in the following procedures:
+**تمرين 1.15:** يمكن احتساب جيب زاويةٍ (محدَّدةٍ بالراديان) بالاستفادة من التقريب $sin ⁡ x ≈ x$ إذا كان $x$ صغيرًا بما يكفي، ومن المتطابقة المثلّثاتيّة $sin ⁡ x = 3 sin ⁡ \frac{x}{3} − 4 sin^{3} ⁡ \frac{x}{3}$ لتقليص حجم وسيط الجيب. (ولأغراض هذا التمرين، تُعتبر الزاوية «صغيرةً بما يكفي» إذا كان مقدارها لا يزيد على 0.1 راديان.) وهذه الأفكار مُدمجةٌ في الإجراءات التالية:
 
 ```scheme
 (define (cube x) (* x x x))
@@ -973,12 +973,12 @@ Orders of growth provide only a crude description of the behavior of a process. 
        (p (sine (/ angle 3.0)))))
 ```
 
-1. How many times is the procedure `p` applied when `(sine 12.15)` is evaluated?
-2. What is the order of growth in space and number of steps (as a function of $a$ ) used by the process generated by the `sine` procedure when `(sine a)` is evaluated?
+1. كم مرّةً يُطبَّق الإجراء `p` عند تقييم `(sine 12.15)`؟
+2. فما رتبة النموّ في المساحة وعدد الخطوات (كدالّةٍ في $a$ ) التي تستخدمها العمليّة التي يولّدها الإجراء `sine` عند تقييم `(sine a)`؟
 
-#### 1.2.4 Exponentiation
+#### 1.2.4 الأسّ
 
-Consider the problem of computing the exponential of a given number. We would like a procedure that takes as arguments a base $b$ and a positive integer exponent $n$ and computes $b^{n}$ . One way to do this is via the recursive definition $b^{n} = b ⋅ b^{n − 1} , b^{0} = 1 ,$ which translates readily into the procedure
+تأمّل مسألة احتساب أسّ عددٍ معطى. فنحن نريد إجراءً يأخذ وسيطَين أساسًا $b$ وأُسًّا $n$ عددًا صحيحًا موجبًا، ويحسب $b^{n}$ . وإحدى الطرائق لفعل ذلك هي التعريف التعاوديّ $b^{n} = b ⋅ b^{n − 1} , b^{0} = 1 ,$ الذي يترجم بسهولةٍ إلى الإجراء
 
 ```scheme
 (define (expt b n)
@@ -987,7 +987,7 @@ Consider the problem of computing the exponential of a given number. We would li
       (* b (expt b (- n 1)))))
 ```
 
-This is a linear recursive process, which requires $Θ ( n )$ steps and $Θ ( n )$ space. Just as with factorial, we can readily formulate an equivalent linear iteration:
+وهذه عمليّةٌ تعاوديّةٌ خطّيّة، تتطلّب $Θ ( n )$ خطوةً و$Θ ( n )$ مساحة. وتمامًا كما في حالة العامليّات، يمكننا بصياغةٍ سهلةٍ صياغة تكرارٍ خطّيٍّ مكافئ:
 
 ```scheme
 (define (expt b n) 
@@ -1001,9 +1001,9 @@ This is a linear recursive process, which requires $Θ ( n )$ steps and $Θ ( n 
                  (* b product))))
 ```
 
-This version requires $Θ ( n )$ steps and $Θ ( 1 )$ space.
+تتطلّب هذه النسخة $Θ ( n )$ خطوةً و$Θ ( 1 )$ مساحة.
 
-We can compute exponentials in fewer steps by using successive squaring. For instance, rather than computing $b^{8}$ as $b ⋅ ( b ⋅ ( b ⋅ ( b ⋅ ( b ⋅ ( b ⋅ ( b ⋅ b ) ) ) ) ) ) ,$ we can compute it using three multiplications: $b^{2} = b ⋅ b , b^{4} = b^{2} ⋅ b^{2} , b^{8} = b^{4} ⋅ b^{4} .$ This method works fine for exponents that are powers of 2. We can also take advantage of successive squaring in computing exponentials in general if we use the rule $b^{n} = ( b^{n / 2} )^{2} if n is even , b^{n} = b ⋅ b^{n − 1} if n is odd .$ We can express this method as a procedure:
+يمكننا احتساب الأسس بخطواتٍ أقلّ باستخدام التربيع المتكرّر. فعلى سبيل المثال، بدلًا من احتساب $b^{8}$ على الصورة $b ⋅ ( b ⋅ ( b ⋅ ( b ⋅ ( b ⋅ ( b ⋅ ( b ⋅ b ) ) ) ) ) ) ,$ يمكننا احتسابها بثلاث عمليّات ضرب: $b^{2} = b ⋅ b , b^{4} = b^{2} ⋅ b^{2} , b^{8} = b^{4} ⋅ b^{4} .$ وهذه الطريقة تنجح على نحوٍ حسنٍ مع الأسس التي هي قوى للعدد 2. ونستطيع أيضًا الاستفادة من التربيع المتكرّر في احتساب الأسس بصورة عامّة إذا استخدمنا القاعدة $b^{n} = ( b^{n / 2} )^{2} if n is even , b^{n} = b ⋅ b^{n − 1} if n is odd .$ ويمكننا التعبير عن هذه الطريقة في صورة إجراء:
 
 ```scheme
 (define (fast-expt b n)
@@ -1015,20 +1015,20 @@ We can compute exponentials in fewer steps by using successive squaring. For ins
          (* b (fast-expt b (- n 1))))))
 ```
 
-where the predicate to test whether an integer is even is defined in terms of the primitive procedure `remainder` by
+حيث يُعرَّف المسند الذي يختبر كون عددٍ صحيحٍ زوجيًّا بدلالة الإجراء الأوّليّ `remainder` بواسطة
 
 ```scheme
 (define (even? n)
   (= (remainder n 2) 0))
 ```
 
-The process evolved by `fast-expt` grows logarithmically with $n$ in both space and number of steps. To see this, observe that computing $b^{2 n}$ using `fast-expt` requires only one more multiplication than computing $b^{n}$ . The size of the exponent we can compute therefore doubles (approximately) with every new multiplication we are allowed. Thus, the number of multiplications required for an exponent of $n$ grows about as fast as the logarithm of $n$ to the base 2. The process has $Θ ( log ⁡ n )$ growth.[^37]
+تنمو العمليّة التي يتطوّرها الإجراء `fast-expt` لوغاريتميًّا مع $n$ في كلّ من المساحة وعدد الخطوات. ولرؤية ذلك، لاحِظ أنّ احتساب $b^{2 n}$ باستخدام `fast-expt` لا يتطلّب سوى عمليّة ضربٍ إضافيّةٍ واحدةً مقارنةً باحتساب $b^{n}$ . وبالتالي، فإنّ حجم الأُسّ الذي نستطيع احتسابه يتضاعف (تقريبًا) مع كلّ عمليّة ضربٍ جديدةٍ يُتاح لنا أداؤها. وهكذا، فإنّ عدد عمليّات الضرب المطلوبة لأُسٍّ قيمته $n$ ينمو بسرعةٍ تقارب سرعة لوغاريتم $n$ للأساس 2. وللعمليّة نموٌّ من رتبة $Θ ( log ⁡ n )$ .[^37]
 
-The difference between $Θ ( log ⁡ n )$ growth and $Θ ( n )$ growth becomes striking as $n$ becomes large. For example, `fast-expt` for $n$ = 1000 requires only 14 multiplications.[^38] It is also possible to use the idea of successive squaring to devise an iterative algorithm that computes exponentials with a logarithmic number of steps (see [Exercise 1.16](#Exercise-1_002e16)), although, as is often the case with iterative algorithms, this is not written down so straightforwardly as the recursive algorithm.[^39]
+يصبح الفرق بين نموّ $Θ ( log ⁡ n )$ ونموّ $Θ ( n )$ لافتًا مع كِبَر $n$ . فعلى سبيل المثال، يتطلّب `fast-expt` من أجل $n$ = 1000 أربع عشرة عمليّة ضربٍ فقط.[^38] ومن الممكن أيضًا استخدام فكرة التربيع المتكرّر لاستنباط خوارزميّةٍ تكراريّةٍ تحسب الأسس بعددٍ لوغاريتميٍّ من الخطوات (انظر [تمرين 1.16](#Exercise-1_002e16))، على الرغم من أنّ ذلك، كما هو الحال في الغالب مع الخوارزميّات التكراريّة، لا يُكتب على نحوٍ مباشرٍ كالخوارزميّة التعاوديّة.[^39]
 
-> **Exercise 1.16:** Design a procedure that evolves an iterative exponentiation process that uses successive squaring and uses a logarithmic number of steps, as does `fast-expt`. (Hint: Using the observation that $( b^{n / 2} )^{2} = ( b^{2} )^{n / 2}$ , keep, along with the exponent $n$ and the base $b$ , an additional state variable $a$ , and define the state transformation in such a way that the product $a b^{n}$ is unchanged from state to state. At the beginning of the process $a$ is taken to be 1, and the answer is given by the value of $a$ at the end of the process. In general, the technique of defining an *invariant quantity* that remains unchanged from state to state is a powerful way to think about the design of iterative algorithms.)
+> **تمرين 1.16:** صمّم إجراءً يتطوّر فيه أسٌّ بعمليّةٍ تكراريّةٍ تستخدم التربيع المتكرّر وتستخدم عددًا لوغاريتميًّا من الخطوات، كما يفعل `fast-expt` . (تلميح: باستخدام الملاحظة أنّ $( b^{n / 2} )^{2} = ( b^{2} )^{n / 2}$ ، أبقِ، إلى جانب الأُسّ $n$ والأساس $b$ ، متغيّر حالةٍ إضافيًّا $a$ ، وعرّف تحويل الحالة بحيث يبقى الجداء $a b^{n}$ دون تغييرٍ من حالةٍ إلى أخرى. وفي بداية العمليّة يُؤخذ $a$ قيمته 1، وتُعطى الإجابة بقيمة $a$ في نهاية العمليّة. وبصورة عامّة، فإنّ تقنيّة تعريف *مقدارٍ ثابتٍ* يبقى دون تغييرٍ من حالةٍ إلى أخرى طريقةٌ قويّةٌ للتفكير في تصميم الخوارزميّات التكراريّة.)
 
-**Exercise 1.17:** The exponentiation algorithms in this section are based on performing exponentiation by means of repeated multiplication. In a similar way, one can perform integer multiplication by means of repeated addition. The following multiplication procedure (in which it is assumed that our language can only add, not multiply) is analogous to the `expt` procedure:
+**تمرين 1.17:** تستند خوارزميّات الأسّ الواردة في هذا القسم على أداء الأسّ عن طريق الضرب المتكرّر. وبطريقةٍ مشابهة، يمكن أداء ضرب الأعداد الصحيحة عن طريق الجمع المتكرّر. والإجراء الضربي التالي (الذي يُفترض فيه أنّ لغتنا تستطيع الجمع فقط لا الضرب) نظيرٌ للإجراء `expt`:
 
 ```scheme
 (define (* a b)
@@ -1037,11 +1037,11 @@ The difference between $Θ ( log ⁡ n )$ growth and $Θ ( n )$ growth becomes s
       (+ a (* a (- b 1)))))
 ```
 
-This algorithm takes a number of steps that is linear in `b`. Now suppose we include, together with addition, operations `double`, which doubles an integer, and `halve`, which divides an (even) integer by 2. Using these, design a multiplication procedure analogous to `fast-expt` that uses a logarithmic number of steps.
+تتطلّب هذه الخوارزميّة عددًا من الخطوات خطّيًّا في `b`. والآن فلنفترض أنّنا نُدرج، إلى جانب الجمع، عمليّتَي `double` ، التي تضاعف عددًا صحيحًا، و`halve` ، التي تقسم عددًا صحيحًا (زوجيًّا) على 2. وباستخدام هاتين العمليّتين، صمّم إجراءً ضربيًّا نظيرًا لـ`fast-expt` يستخدم عددًا لوغاريتميًّا من الخطوات.
 
-> **Exercise 1.18:** Using the results of [Exercise 1.16](#Exercise-1_002e16) and [Exercise 1.17](#Exercise-1_002e17), devise a procedure that generates an iterative process for multiplying two integers in terms of adding, doubling, and halving and uses a logarithmic number of steps.[^40]
+> **تمرين 1.18:** باستخدام نتيجتَي [تمرين 1.16](#Exercise-1_002e16) و[تمرين 1.17](#Exercise-1_002e17)، استنبط إجراءً يولّد عمليّةً تكراريّةً لضرب عددين صحيحين بدلالة الجمع والمضاعفة والتنصيف، ويستخدم عددًا لوغاريتميًّا من الخطوات.[^40]
 
-**Exercise 1.19:** There is a clever algorithm for computing the Fibonacci numbers in a logarithmic number of steps. Recall the transformation of the state variables $a$ and $b$ in the `fib-iter` process of [1.2.2](#g_t1_002e2_002e2): $a ← a + b$ and $b ← a$ . Call this transformation $T$ , and observe that applying $T$ over and over again $n$ times, starting with 1 and 0, produces the pair $Fib ( n + 1 )$ and $Fib ( n )$ . In other words, the Fibonacci numbers are produced by applying $T^{n}$ , the $n^{th}$ power of the transformation $T$ , starting with the pair (1, 0). Now consider $T$ to be the special case of $p = 0$ and $q = 1$ in a family of transformations $T_{p q}$ , where $T_{p q}$ transforms the pair $( a , b )$ according to $a ← b q + a q + a p$ and $b ← b p + a q$ . Show that if we apply such a transformation $T_{p q}$ twice, the effect is the same as using a single transformation $T_{p^{′} q^{′}}$ of the same form, and compute $p^{′}$ and $q^{′}$ in terms of $p$ and $q$ . This gives us an explicit way to square these transformations, and thus we can compute $T^{n}$ using successive squaring, as in the `fast-expt` procedure. Put this all together to complete the following procedure, which runs in a logarithmic number of steps:[^41]
+**تمرين 1.19:** ثمّة خوارزميّةٌ ذات حيلةٍ لاحتساب أعداد فيبوناتشي بعددٍ لوغاريتميٍّ من الخطوات. تذكّر تحويل متغيّري الحالة $a$ و$b$ في عمليّة `fib-iter` المذكورة في [1.2.2](#g_t1_002e2_002e2): $a ← a + b$ و$b ← a$ . ووسِم هذا التحويل بالرمز $T$ ، ولاحِظ أنّ تطبيق $T$ مرارًا وتكرارًا $n$ مرّةً، بدءًا من 1 و0، يُنتج الزوج $Fib ( n + 1 )$ و$Fib ( n )$ . وبعبارةٍ أخرى، فإنّ أعداد فيبوناتشي تُنتَج بتطبيق $T^{n}$ ، أي الأُسّ $n^{th}$ للتحويل $T$ ، بدءًا بالزوج (1, 0). والآن فكّر في $T$ كأنّه الحالة الخاصّة من $p = 0$ و$q = 1$ في عائلةٍ من التحويلات $T_{p q}$ ، حيث يحوّل $T_{p q}$ الزوج $( a , b )$ وفقًا للقاعدتين $a ← b q + a q + a p$ و$b ← b p + a q$ . وأظهر أنّه إذا طبّقنا تحويلًا من نوع $T_{p q}$ مرّتين، فإنّ الأثر هو نفسُه أثر استخدام تحويلٍ وحيدٍ من الشكل $T_{p^{′} q^{′}}$ ، واحسب $p^{′}$ و$q^{′}$ بدلالة $p$ و$q$ . وهذا يمنحنا طريقةً صريحةً لتربيع هذه التحويلات، وبالتالي نستطيع احتساب $T^{n}$ باستخدام التربيع المتكرّر، كما في الإجراء `fast-expt` . واجمع كلّ هذا معًا لتُكمل الإجراء التالي، الذي يعمل بعددٍ لوغاريتميٍّ من الخطوات:[^41]
 
 ```scheme
 (define (fib n)
@@ -1067,17 +1067,17 @@ This algorithm takes a number of steps that is linear in `b`. Now suppose we inc
                    (- count 1)))))
 ```
 
-#### 1.2.5 Greatest Common Divisors
+#### 1.2.5 القواسم المشتركة الكبرى
 
-The greatest common divisor (GCD) of two integers $a$ and $b$ is defined to be the largest integer that divides both $a$ and $b$ with no remainder. For example, the GCD of 16 and 28 is 4. In [Chapter 2](https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2), when we investigate how to implement rational-number arithmetic, we will need to be able to compute GCDs in order to reduce rational numbers to lowest terms. (To reduce a rational number to lowest terms, we must divide both the numerator and the denominator by their GCD. For example, 16/28 reduces to 4/7.) One way to find the GCD of two integers is to factor them and search for common factors, but there is a famous algorithm that is much more efficient.
+القاسم المشترك الأكبر (GCD) لعددين صحيحين $a$ و$b$ يُعرَّف بأنه أكبر عددٍ صحيحٍ يقسم كلاً من $a$ و$b$ دون باقٍ. فعلى سبيل المثال، فإنّ القاسم المشترك الأكبر للعددين 16 و28 هو 4. وفي [الفصل 2](https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2)، عندما نبحث في كيفيّة تنفيذ الحساب على الأعداد الكسريّة، سنحتاج إلى القدرة على احتساب القواسم المشتركة الكبرى بغرض اختزال الأعداد الكسريّة إلى أبسط صورة. (ولاختزال عددٍ كسريٍّ إلى أبسط صورة، ينبغي أن نقسم كلًّا من البسط والمقام على قاسمهما المشترك الأكبر. فعلى سبيل المثال، فإنّ 16/28 يُختزل إلى 4/7.) وإحدى طرائق إيجاد القاسم المشترك الأكبر لعددين صحيحين هي تحليل كلٍّ منهما إلى عوامل والبحث عن عوامل مشتركة، ولكن ثمّة خوارزميّة مشهورة أكفأُ من ذلك بكثير.
 
-The idea of the algorithm is based on the observation that, if $r$ is the remainder when $a$ is divided by $b$ , then the common divisors of $a$ and $b$ are precisely the same as the common divisors of $b$ and $r$ . Thus, we can use the equation
+تقوم فكرة الخوارزميّة على الملاحظة أنّهُ، إذا كان $r$ هو الباقي عند قسمة $a$ على $b$ ، فإنّ القواسم المشتركة للعددين $a$ و$b$ هي بالضبط القواسم المشتركة نفسها للعددين $b$ و$r$ . وبالتالي، فيمكننا استخدام المعادلة
 
 ```
 GCD(a,b) = GCD(b,r)
 ```
 
-to successively reduce the problem of computing a GCD to the problem of computing the GCD of smaller and smaller pairs of integers. For example,
+لاختزال مسألة احتساب GCD إلى مسألة احتساب GCD لأزواجٍ من الأعداد الصحيحة أصغرَ فأصغر اختزالًا متتاليًّا. فعلى سبيل المثال،
 
 ```
 GCD(206,40) = GCD(40,6)
@@ -1086,9 +1086,9 @@ GCD(206,40) = GCD(40,6)
             = GCD(2,0) = 2
 ```
 
-reduces GCD(206, 40) to GCD(2, 0), which is 2. It is possible to show that starting with any two positive integers and performing repeated reductions will always eventually produce a pair where the second number is 0. Then the GCD is the other number in the pair. This method for computing the GCD is known as *Euclid’s Algorithm*.[^42]
+يُختزل GCD(206, 40) إلى GCD(2, 0)، وهو 2. ويمكن إظهار أنّ الانطلاق بأيّ عددين صحيحين موجبين وأداء اختزالاتٍ متكرّرة سيُنتج دائمًا في النهاية زوجًا ثاني عدديه هو 0. وحينئذٍ يكون GCD هو العدد الآخر في الزوج. وتُعرَف هذه الطريقة في احتساب GCD بـ*خوارزميّة إقليدس*.[^42]
 
-It is easy to express Euclid’s Algorithm as a procedure:
+من السهل التعبير عن خوارزميّة إقليدس في صورة إجراء:
 
 ```scheme
 (define (gcd a b)
@@ -1097,23 +1097,23 @@ It is easy to express Euclid’s Algorithm as a procedure:
       (gcd b (remainder a b))))
 ```
 
-This generates an iterative process, whose number of steps grows as the logarithm of the numbers involved.
+يولّد هذا عمليّةً تكراريّةً، ويتناسب عدد خطواتها مع لوغاريتم الأعداد الداخلة فيه.
 
-The fact that the number of steps required by Euclid’s Algorithm has logarithmic growth bears an interesting relation to the Fibonacci numbers:
+إنّ كون عدد الخطوات التي تتطلّبها خوارزميّة إقليدس ينمو نموًّا لوغاريتميًّا يحمل علاقةً مثيرةً للاهتمام بأعداد فيبوناتشي:
 
-> **Lamé’s Theorem:** If Euclid’s Algorithm requires $k$ steps to compute the GCD of some pair, then the smaller number in the pair must be greater than or equal to the $k^{th}$ Fibonacci number.[^43]
+> **مبرهنة لامي:** إذا تطلّبت خوارزميّة إقليدس $k$ خطواتٍ لاحتساب GCD زوجٍ ما، فإنّ العدد الأصغر في الزوج لا بدّ أن يكون أكبر من أو مساويًا للعدد الفيبوناتشيّ $k^{th}$ .[^43]
 
-We can use this theorem to get an order-of-growth estimate for Euclid’s Algorithm. Let $n$ be the smaller of the two inputs to the procedure. If the process takes $k$ steps, then we must have $n ≥ Fib ( k ) ≈ φ^{k} / \sqrt{5}$ . Therefore the number of steps $k$ grows as the logarithm (to the base $φ$ ) of $n$ . Hence, the order of growth is $Θ ( log ⁡ n )$ .
+يمكننا استخدام هذه المبرهنة للحصول على تصوّرٍ لرتبة نموّ خوارميّة إقليدس. فليكن $n$ هو الأصغر من مدخلَي الإجراء. فإن استغرقت العمليّة $k$ خطواتٍ، فإنّه لا بدّ أنّ $n ≥ Fib ( k ) ≈ φ^{k} / \sqrt{5}$ . وبالتالي، فإنّ عدد الخطوات $k$ ينمو بسرعةٍ تناسب سرعة لوغاريتم $n$ للأساس $φ$ . ومن ثمّ، فإنّ رتبة النموّ هي $Θ ( log ⁡ n )$ .
 
-> **Exercise 1.20:** The process that a procedure generates is of course dependent on the rules used by the interpreter. As an example, consider the iterative `gcd` procedure given above. Suppose we were to interpret this procedure using normal-order evaluation, as discussed in [1.1.5](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e5). (The normal-order-evaluation rule for `if` is described in [Exercise 1.5](https://sarabander.github.io/sicp/html/1_002e1.xhtml#Exercise-1_002e5).) Using the substitution method (for normal order), illustrate the process generated in evaluating `(gcd 206 40)` and indicate the `remainder` operations that are actually performed. How many `remainder` operations are actually performed in the normal-order evaluation of `(gcd 206 40)`? In the applicative-order evaluation?
+> **تمرين 1.20:** إنّ العمليّة التي يولّدها إجراءٌ ما تابعةٌ بطبيعة الحال لقواعد التي يستخدمها المفسّر. فكمثالٍ على ذلك، تأمّل إجراء `gcd` التكراريّ المعطى أعلاه. فلنفترض أنّنا كنّا سنفسّر هذا الإجراء باستخدام التقييم بالترتيب الاعتياديّ، كما نُوقش في [1.1.5](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e5). (وقاعدة التقييم بالترتيب الاعتياديّ من أجل `if` موصوفةٌ في [التمرين 1.5](https://sarabander.github.io/sicp/html/1_002e1.xhtml#Exercise-1_002e5).) وباستخدام نموذج الاستبدال (للترتيب الاعتياديّ)، صُوّر العمليّة المتولّدة عند تقييم `(gcd 206 40)` وأشِر إلى عمليّات `remainder` التي تُؤدّى فعلًا. فكم عمليّة `remainder` تُؤدّى فعلًا في التقييم بالترتيب الاعتياديّ لـ`(gcd 206 40)`؟ وفي التقييم بالترتيب التطبيقيّ؟
 
-#### 1.2.6 Example: Testing for Primality
+#### 1.2.6 مثال: اختبار الأوّليّة
 
-This section describes two methods for checking the primality of an integer $n$ , one with order of growth $Θ ( \sqrt{n} )$ , and a “probabilistic” algorithm with order of growth $Θ ( log ⁡ n )$ . The exercises at the end of this section suggest programming projects based on these algorithms.
+يصف هذا القسم طريقتين للتحقّق من أوّليّة عددٍ صحيحٍ $n$ ، إحداهما برتبة نموّ $Θ ( \sqrt{n} )$ ، وأخرى «احتماليّة» برتبة نموّ $Θ ( log ⁡ n )$ . وتقترح التمارين في نهاية هذا القسم مشاريع برمجيّةً تقوم على هذه الخوارميّات.
 
-#### Searching for divisors
+#### البحث عن القواسم
 
-Since ancient times, mathematicians have been fascinated by problems concerning prime numbers, and many people have worked on the problem of determining ways to test if numbers are prime. One way to test if a number is prime is to find the number’s divisors. The following program finds the smallest integral divisor (greater than 1) of a given number $n$ . It does this in a straightforward way, by testing $n$ for divisibility by successive integers starting with 2.
+منذ القديم، أثار الرياضيّون إعجابهم مسائل تتعلّق بالأعداد الأوّليّة، وعمل كثيرٌ من الناس على مسألة تحديد طرائق لاختبار ما إذا كانت الأعداد أوّليّة. وإحدى طرائق اختبار أوّليّة عددٍ ما هي إيجاد قواسم ذلك العدد. والبرنامج التالي يجد أصغر قاسمٍ صحيحٍ (أكبر من 1) لعددٍ معطى $n$ . وهو يفعل ذلك على نحوٍ مباشر، باختبار قابلية قسمة $n$ على أعدادٍ صحيحةٍ متتاليةٍ بدءًا من 2.
 
 ```scheme
 (define (smallest-divisor n)
@@ -1132,26 +1132,26 @@ Since ancient times, mathematicians have been fascinated by problems concerning 
   (= (remainder b a) 0))
 ```
 
-We can test whether a number is prime as follows: $n$ is prime if and only if $n$ is its own smallest divisor.
+يمكننا اختبار ما إذا كان عددٌ ما أوّليًّا على النحو التالي: $n$ عددٌ أوّليّ إذا وفقط إذا كان $n$ هو أصغر قاسمٍ له.
 
 ```scheme
 (define (prime? n)
   (= n (smallest-divisor n)))
 ```
 
-The end test for `find-divisor` is based on the fact that if $n$ is not prime it must have a divisor less than or equal to $\sqrt{n}$ .[^44] This means that the algorithm need only test divisors between 1 and $\sqrt{n}$ . Consequently, the number of steps required to identify $n$ as prime will have order of growth $Θ ( \sqrt{n} )$ .
+إنّ اختبار الانتهاء في `find-divisor` يقوم على حقيقة أنّهُ إذا لم يكن $n$ أوّليًّا فإنّه لا بدّ أن يكون له قاسمٌ أصغر من أو مساوٍ لـ$\sqrt{n}$ .[^44] وهذا يعني أنّ الخوارزميّة لا تحتاج إلى اختبار إلّا القواسم بين 1 و$\sqrt{n}$ . ونتيجةً لذلك، فإنّ عدد الخطوات اللازم لتحديد أنّ $n$ أوّليّ ستكون له رتبة نموّ $Θ ( \sqrt{n} )$ .
 
-#### The Fermat test
+#### اختبار فيرما
 
-The $Θ ( log ⁡ n )$ primality test is based on a result from number theory known as Fermat’s Little Theorem.[^45]
+إنّ اختبار الأوّليّة ذا الرتبة $Θ ( log ⁡ n )$ يقوم على نتيجةٍ من نظريّة الأعداد تُعرَف بالمبرهنة الصغرى لفيرما.[^45]
 
-> **Fermat’s Little Theorem:** If $n$ is a prime number and $a$ is any positive integer less than $n$ , then $a$ raised to the $n^{th}$ power is congruent to $a$ modulo $n$ .
+> **المبرهنة الصغرى لفيرما:** إذا كان $n$ عددًا أوّليًّا وكان $a$ أيّ عددٍ صحيحٍ موجبٍ أصغر من $n$ ، فإنّ رفع $a$ إلى القوّة $n^{th}$ يُنتج عددًا مطابقًا لـ$a$ بقياس $n$ .
 
-(Two numbers are said to be *congruent modulo* $n$ if they both have the same remainder when divided by $n$ . The remainder of a number $a$ when divided by $n$ is also referred to as the *remainder of* $a$ *modulo* $n$ , or simply as $a$ *modulo* $n$ .)
+((ويُقال عن عددين إنّهما *مطابقان بقياس* $n$ إذا كان لهما الباقي نفسه عند قسمتهما على $n$ . ويُشار أيضًا إلى باقي عددٍ $a$ عند قسمته على $n$ بـ*باقي* $a$ *بقياس* $n$ ، أو ببساطةٍ بـ$a$ *بقياس* $n$ .))
 
-If $n$ is not prime, then, in general, most of the numbers $a < n$ will not satisfy the above relation. This leads to the following algorithm for testing primality: Given a number $n$ , pick a random number $a < n$ and compute the remainder of $a^{n}$ modulo $n$ . If the result is not equal to $a$ , then $n$ is certainly not prime. If it is $a$ , then chances are good that $n$ is prime. Now pick another random number $a$ and test it with the same method. If it also satisfies the equation, then we can be even more confident that $n$ is prime. By trying more and more values of $a$ , we can increase our confidence in the result. This algorithm is known as the Fermat test.
+فإذا لم يكن $n$ أوّليًّا، فإنّ معظم الأعداد $a < n$ عمومًا لن تحقّق العلاقةَ أعلاه. وهذا يؤدّي إلى الخوارزميّة التالية لاختبار الأوّليّة: بُعطى عددٍ $n$ ، انتقِ عددًا عشوائيًّا $a < n$ واحتسب باقي $a^{n}$ بقياس $n$ . فإن لم تكن النتيجة مساويةً لـ$a$ ، فإنّ $n$ ليس أوّليًّا بيقين. وإذا كانت هي $a$ ، فإنّ الاحتمالات تُرجّح أنّ $n$ أوّليّ. والآن انتقِ عددًا عشوائيًّا آخر $a$ واختبره بالطريقة ذاتها. فإن حقّق المعادلة كذلك، أمكننا الاطمئنان أكثر إلى أنّ $n$ أوّليّ. وبمحاولة قيمٍ أكثر فأكثر من $a$ ، يمكننا أن نزيد اطمئناننا إلى النتيجة. وتُعرَف هذه الخوارزميّة باختبار فيرما.
 
-To implement the Fermat test, we need a procedure that computes the exponential of a number modulo another number:
+ولتنفيذ اختبار فيرما، نحتاج إلى إجراءٍ يحتسب أُسّ عددٍ بقياس عددٍ آخر:
 
 ```scheme
 (define (expmod base exp m)
@@ -1166,9 +1166,9 @@ To implement the Fermat test, we need a procedure that computes the exponential 
           m))))
 ```
 
-This is very similar to the `fast-expt` procedure of [1.2.4](#g_t1_002e2_002e4). It uses successive squaring, so that the number of steps grows logarithmically with the exponent.[^46]
+هذا يشبه إلى حدٍّ بعيد إجراء `fast-expt` في [1.2.4](#g_t1_002e2_002e4). فهو يستخدم التربيع المتتالي، بحيث ينمو عدد الخطوات نموًّا لوغاريتميًّا مع الأُسّ.[^46]
 
-The Fermat test is performed by choosing at random a number $a$ between 1 and $n − 1$ inclusive and checking whether the remainder modulo $n$ of the $n^{th}$ power of $a$ is equal to $a$ . The random number $a$ is chosen using the procedure `random`, which we assume is included as a primitive in Scheme. `Random` returns a nonnegative integer less than its integer input. Hence, to obtain a random number between 1 and $n − 1$ , we call `random` with an input of $n − 1$ and add 1 to the result:
+ويُؤدّى اختبار فيرما بانتقاء عشوائيٍّ عددٍ $a$ بين 1 و$n − 1$ ضِمنًا، والتحقّق من كون باقي القوّة $n^{th}$ للعدد $a$ بقياس $n$ مساويًا لـ$a$ . ويُنتقى العدد العشوائيّ $a$ باستخدام الإجراء `random`، الذي نفترض أنّه مُضمَّنٌ كأوّليّةٍ في Scheme. ويُعيد `random` عددًا صحيحًا غير سالب أصغرَ من مُدخله الصحيح. وبالتالي، فلكي نحصل على عددٍ عشوائيٍّ بين 1 و$n − 1$ ، ننادي `random` بمُدخلٍ قيمته $n − 1$ ونضيف 1 إلى النتيجة:
 
 ```scheme
 (define (fermat-test n)
@@ -1177,7 +1177,7 @@ The Fermat test is performed by choosing at random a number $a$ between 1 and $n
   (try-it (+ 1 (random (- n 1)))))
 ```
 
-The following procedure runs the test a given number of times, as specified by a parameter. Its value is true if the test succeeds every time, and false otherwise.
+الإجراء التالي يؤدّي الاختبار عددًا معطى من المرّات، كما يحدّده وسيطٌ له. وقيمتُه صحيحة إذا نجح الاختبار في كلّ مرّة، وخاطئة إلّا ذلك.
 
 ```scheme
 (define (fast-prime? n times)
@@ -1187,19 +1187,19 @@ The following procedure runs the test a given number of times, as specified by a
         (else false)))
 ```
 
-#### Probabilistic methods
+#### الطرائق الاحتماليّة
 
-The Fermat test differs in character from most familiar algorithms, in which one computes an answer that is guaranteed to be correct. Here, the answer obtained is only probably correct. More precisely, if $n$ ever fails the Fermat test, we can be certain that $n$ is not prime. But the fact that $n$ passes the test, while an extremely strong indication, is still not a guarantee that $n$ is prime. What we would like to say is that for any number $n$ , if we perform the test enough times and find that $n$ always passes the test, then the probability of error in our primality test can be made as small as we like.
+يختلف اختبار فيرما في طابعه عن معظم الخوارزميات المألوفة، التي يُحتسب فيها جوابٌ مضمونٌ صحّتُهُ. فأمّا هنا، فالجواب المحصَل عليه صحيحٌ على الأرجح فقط. وبأدقّ من ذلك، فإنّه إذا أخفق $n$ في اختبار فيرما مرّةً ما، فيمكننا أن نتيقّن أنّ $n$ ليس أوّليًّا. ولكن حقيقة نجاح $n$ في الاختبار، مع كونها دلالةً قويّةً للغاية، لا تزال ليست ضمانًا بأنّ $n$ أوّليّ. وما نحبّ أن نقوله هو أنّه من أجل أيّ عددٍ $n$ ، إذا أدّينا الاختبار عددًا كافيًا من المرّات ووجدنا أنّ $n$ ينجح فيه دائمًا، فإنّ احتمال الخطأ في اختبارنا للأوّليّة يمكن أن يُجعَل صغيرًا كما نشاء.
 
-Unfortunately, this assertion is not quite correct. There do exist numbers that fool the Fermat test: numbers $n$ that are not prime and yet have the property that $a^{n}$ is congruent to $a$ modulo $n$ for all integers $a < n$ . Such numbers are extremely rare, so the Fermat test is quite reliable in practice.[^47]
+للأسف، هذا الادّعاء ليس صحيحًا تمامًا. فثمّة أعدادٌ تُخدع اختبار فيرما فعلًا: أعدادٌ $n$ غير أوّليّة ومع ذلك تحمل الخاصيّة أنّ $a^{n}$ مطابقٌ لـ$a$ بقياس $n$ لجميع الأعداد الصحيحة $a < n$ . وهذه الأعداد نادرةٌ للغاية، لذا فإنّ اختبار فيرما موثوقٌ إلى حدٍّ كبيرٍ في الممارسة.[^47]
 
-There are variations of the Fermat test that cannot be fooled. In these tests, as with the Fermat method, one tests the primality of an integer $n$ by choosing a random integer $a < n$ and checking some condition that depends upon $n$ and $a$ . (See [Exercise 1.28](#Exercise-1_002e28) for an example of such a test.) On the other hand, in contrast to the Fermat test, one can prove that, for any $n$ , the condition does not hold for most of the integers $a < n$ unless $n$ is prime. Thus, if $n$ passes the test for some random choice of $a$ , the chances are better than even that $n$ is prime. If $n$ passes the test for two random choices of $a$ , the chances are better than 3 out of 4 that $n$ is prime. By running the test with more and more randomly chosen values of $a$ we can make the probability of error as small as we like.
+ثمّة تنويعاتٌ من اختبار فيرما لا يمكن خداعها. وفي هذه الاختبارات، كما في طريقة فيرما، يُختبر كون عددٍ صحيحٍ $n$ أوّليًّا بانتقاء عددٍ صحيحٍ عشوائيٍّ $a < n$ والتحقّق من شرطٍ ما يعتمد على $n$ و$a$ . (انظر [التمرين 1.28](#Exercise-1_002e28) لمثالٍ على اختبارٍ كهذا.) ومن ناحية أخرى، وعلى خلاف اختبار فيرما، يمكن للمرء أن يُثبت أنّه، من أجل أيّ $n$ ، فإنّ الشرط لا يتحقّق لمعظم الأعداد الصحيحة $a < n$ إلّا إذا كان $n$ أوّليًّا. وبالتالي، فإنّه إذا نجح $n$ في الاختبار من أجل اختيارٍ عشوائيٍّ ما لـ$a$ ، فإنّ الاحتمالات تُرجّح أنّ $n$ أوّليّ. وإذا نجح $n$ في الاختبار من أجل اختيارين عشوائيَّين لـ$a$ ، فإنّ الاحتمالات تُرجّح أنّ $n$ أوّليّ بثلاثة أرباعٍ أو تزيد. وبأداء الاختبار بقيمٍ منتقاةٍ عشوائيًّا أكثر فأكثر من $a$ يمكننا أن نجعل احتمال الخطأ صغيرًا كما نشاء.
 
-The existence of tests for which one can prove that the chance of error becomes arbitrarily small has sparked interest in algorithms of this type, which have come to be known as *probabilistic algorithms*. There is a great deal of research activity in this area, and probabilistic algorithms have been fruitfully applied to many fields.[^48]
+إنّ وجود اختباراتٍ يمكن للمرء أن يُثبت أنّ احتمال الخطأ فيها يصير صغيرًا بغير حدّ، قد أثار اهتمامًا بخوارزميات من هذا النوع، التي صارت تُعرَف بـ*الخوارزميات الاحتماليّة*. وثمّة نشاطٌ بحثيٌّ كبيرٌ في هذا المجال، وقد طُبِّقت الخوارزميات الاحتماليّة بإثمارٍ في حقولٍ كثيرة.[^48]
 
-> **Exercise 1.21:** Use the `smallest-divisor` procedure to find the smallest divisor of each of the following numbers: 199, 1999, 19999.
+> **تمرين 1.21:** استخدم إجراء `smallest-divisor` لإيجاد أصغر قاسمٍ لكلّ عددٍ من الأعداد التالية: 199، و1999، و19999.
 
-**Exercise 1.22:** Most Lisp implementations include a primitive called `runtime` that returns an integer that specifies the amount of time the system has been running (measured, for example, in microseconds). The following `timed-prime-test` procedure, when called with an integer $n$ , prints $n$ and checks to see if $n$ is prime. If $n$ is prime, the procedure prints three asterisks followed by the amount of time used in performing the test.
+**تمرين 1.22:** تتضمّن معظم تنفيذات Lisp أوّليّةً تُسمّى `runtime` تُعيد عددًا صحيحًا يُحدّد مقدار الزمن الذي كان النظام يعمل فيه (مقيسًا، مثلًا، بالميكروثواني). وإجراء `timed-prime-test` التالي، عند مناداته بعددٍ صحيحٍ $n$ ، يطبع $n$ ويفحص ما إذا كان $n$ أوّليًّا. فإن كان $n$ أوّليًّا، يطبع الإجراء ثلاث نجماتٍ متبوعةً بمقدار الزمن المستخدم في أداء الاختبار.
 
 ```scheme
 (define (timed-prime-test n)
@@ -1221,22 +1221,22 @@ The existence of tests for which one can prove that the chance of error becomes 
   (display elapsed-time))
 ```
 
-Using this procedure, write a procedure `search-for-primes` that checks the primality of consecutive odd integers in a specified range. Use your procedure to find the three smallest primes larger than 1000; larger than 10,000; larger than 100,000; larger than 1,000,000. Note the time needed to test each prime. Since the testing algorithm has order of growth of $Θ ( \sqrt{n} )$ , you should expect that testing for primes around 10,000 should take about $\sqrt{10}$ times as long as testing for primes around 1000. Do your timing data bear this out? How well do the data for 100,000 and 1,000,000 support the $Θ ( \sqrt{n} )$ prediction? Is your result compatible with the notion that programs on your machine run in time proportional to the number of steps required for the computation?
+وباستخدام هذا الإجراء، اكتب إجراءً `search-for-primes` يفحص أوّليّة أعدادٍ صحيحةٍ فرديّةٍ متتاليةٍ في مدىً محدّد. واستخدم إجراءك لإيجاد أصغر ثلاثة أعدادٍ أوّليّةٍ أكبر من 1000؛ وأكبر من 10.000؛ وأكبر من 100.000؛ وأكبر من 1.000.000. ولاحِظ الزمن اللازم لاختبار كلّ عددٍ أوّليّ. وبما أنّ خوارزميّة الاختبار لها رتبة نموّ $Θ ( \sqrt{n} )$ ، فينبغي أن تتوقّع أنّ اختبار الأعداد الأوّليّة حول 10.000 ينبغي أن يستغرق نحو $\sqrt{10}$ أضعاف ما يستغرقه اختبار الأعداد الأوّليّة حول 1000. فهل تؤكّد بيانات التوقيت التي حصلتَها ذلك؟ وإلى أيّ مدى تؤكّد بيانات 100.000 و1.000.000 تنبّؤ $Θ ( \sqrt{n} )$ ؟ وهل نتيجتك متوافقةٌ مع الفكرة القائلة إنّ البرامج على حاسوبك تعمل في زمنٍ يتناسب مع عدد الخطوات التي يتطلّبها الاحتساب؟
 
-> **Exercise 1.23:** The `smallest-divisor` procedure shown at the start of this section does lots of needless testing: After it checks to see if the number is divisible by 2 there is no point in checking to see if it is divisible by any larger even numbers. This suggests that the values used for `test-divisor` should not be 2, 3, 4, 5, 6, …, but rather 2, 3, 5, 7, 9, …. To implement this change, define a procedure `next` that returns 3 if its input is equal to 2 and otherwise returns its input plus 2. Modify the `smallest-divisor` procedure to use `(next test-divisor)` instead of `(+ test-divisor 1)`. With `timed-prime-test` incorporating this modified version of `smallest-divisor`, run the test for each of the 12 primes found in [Exercise 1.22](#Exercise-1_002e22). Since this modification halves the number of test steps, you should expect it to run about twice as fast. Is this expectation confirmed? If not, what is the observed ratio of the speeds of the two algorithms, and how do you explain the fact that it is different from 2?
+> **تمرين 1.23:** إنّ إجراء `smallest-divisor` المبيَّن في بداية هذا القسم يؤدّي كثيرًا من الاختبارات غير الضروريّة: فبعد أن يتحقّق من قابلية العدد للقسمة على 2، لا فائدة من التحقّق من قابلية العدد للقسمة على أيّ عددٍ زوجيٍّ أكبر منه. وهذا يُشير إلى أنّ القيم التي تُستخدم لـ`test-divisor` ينبغي ألّا تكون 2، و3، و4، و5، و6، و…، بل 2، و3، و5، و7، و9، و…. ولتنفيذ هذا التغيير، عرّف إجراءً `next` يُعيد 3 إذا كان مُدخله مساويًا لـ2 ويُعيد مُدخله زائد 2 وإلّا. وعَدّل إجراء `smallest-divisor` ليستخدم `(next test-divisor)` بدلًا من `(+ test-divisor 1)` . ومع إدخال هذه النسخة المعدّلة من `smallest-divisor` في `timed-prime-test` ، أدِّ الاختبار لكلّ عددٍ من الأعداد الـ 12 الأوّليّة التي وُجِدت في [التمرين 1.22](#Exercise-1_002e22) . وبما أنّ هذا التعديل يُنصّف عدد خطوات الاختبار، فينبغي أن تتوقّع أن يعمل أسرع بنحو مرّتين. فهل يتأكّد هذا التوقّع؟ فإن لم يكن كذلك، فما النسبة المرصودة لسرعتَي الخوارزميّتين، وكيف تُفسّر حقيقة أنّها مختلفة عن 2؟
 
-> **Exercise 1.24:** Modify the `timed-prime-test` procedure of [Exercise 1.22](#Exercise-1_002e22) to use `fast-prime?` (the Fermat method), and test each of the 12 primes you found in that exercise. Since the Fermat test has $Θ ( log ⁡ n )$ growth, how would you expect the time to test primes near 1,000,000 to compare with the time needed to test primes near 1000? Do your data bear this out? Can you explain any discrepancy you find?
+> **تمرين 1.24:** عَدّل إجراء `timed-prime-test` من [التمرين 1.22](#Exercise-1_002e22) ليستخدم `fast-prime?` (طريقة فيرما)، واختبر كلّ عددٍ من الأعداد الـ 12 الأوّليّة التي وجدتَها في ذلك التمرين. وبما أنّ اختبار فيرما له نموّ $Θ ( log ⁡ n )$ ، فكيف تتوقّع أن يُقارن زمن اختبار الأعداد الأوّليّة قرب 1.000.000 بالزمن اللازم لاختبار الأعداد الأوّليّة قرب 1000؟ فهل تؤكّد بياناتك ذلك؟ وهل يمكنك تفسير أيّ تباينٍ تجده؟
 
-**Exercise 1.25:** Alyssa P. Hacker complains that we went to a lot of extra work in writing `expmod`. After all, she says, since we already know how to compute exponentials, we could have simply written
+**تمرين 1.25:** تشكو أليسا بي. هاكر من أنّنا بذلنا جهدًا إضافيًّا كثيرًا في كتابة `expmod` . فهي تقول، في النهاية، بما أنّنا نعرف سلفًا كيف نحتسب الأسّات، كان بوسعنا أن نكتب ببساطةٍ
 
 ```scheme
 (define (expmod base exp m)
   (remainder (fast-expt base exp) m))
 ```
 
-Is she correct? Would this procedure serve as well for our fast prime tester? Explain.
+أفهي محقّة؟ أوسيخدم هذا الإجراء مُختبِرَ الأعداد الأوّليّة السريع لدينا خدمةً حسنةً بالقدر نفسه؟ فسّر.
 
-**Exercise 1.26:** Louis Reasoner is having great difficulty doing [Exercise 1.24](#Exercise-1_002e24). His `fast-prime?` test seems to run more slowly than his `prime?` test. Louis calls his friend Eva Lu Ator over to help. When they examine Louis’s code, they find that he has rewritten the `expmod` procedure to use an explicit multiplication, rather than calling `square`:
+**تمرين 1.26:** يجد لويس ريزنر صعوبةً كبيرةً في أداء [التمرين 1.24](#Exercise-1_002e24) . فيبدو أنّ اختباره `fast-prime?` يعمل أبطأ من اختباره `prime?` . فيستدعي لويس صديقته إيفا لو أتور لتساعده. وعندما يفحصان شيفرة لويس، يجدان أنّه قد أعاد كتابة إجراء `expmod` ليستخدم ضربًا صريحًا، بدلًا من مناداة `square` :
 
 ```scheme
 (define (expmod base exp m)
@@ -1253,21 +1253,21 @@ Is she correct? Would this procedure serve as well for our fast prime tester? Ex
           m))))
 ```
 
-“I don’t see what difference that could make,” says Louis. “I do.” says Eva. “By writing the procedure like that, you have transformed the $Θ ( log ⁡ n )$ process into a $Θ ( n )$ process.” Explain.
+«لا أرى أيّ فرقٍ يمكن أن يُحدِثه ذلك»، يقول لويس. «وأنا أرى»، تقول إيفا. «بكتابتك الإجراء على ذلك النحو، فإنّك قد حوّلت العمليّة $Θ ( log ⁡ n )$ إلى عمليّة $Θ ( n )$ .» فسّر.
 
-> **Exercise 1.27:** Demonstrate that the Carmichael numbers listed in [Footnote 47](#Footnote-47) really do fool the Fermat test. That is, write a procedure that takes an integer $n$ and tests whether $a^{n}$ is congruent to $a$ modulo $n$ for every $a < n$ , and try your procedure on the given Carmichael numbers.
+> **تمرين 1.27:** أظهِر أنّ أعداد كارميكل المسرودة في [الحاشية 47](#Footnote-47) تُخدع اختبار فيرما فعلًا. أي اكتب إجراءً يأخذ عددًا صحيحًا $n$ ويختبر ما إذا كان $a^{n}$ مطابقًا لـ$a$ بقياس $n$ لكلّ $a < n$ ، وجرّب إجراءك على أعداد كارميكل المعطاة.
 
-> **Exercise 1.28:** One variant of the Fermat test that cannot be fooled is called the *Miller-Rabin test* ([Miller 1976](https://sarabander.github.io/sicp/html/References.xhtml#Miller-1976); [Rabin 1980](https://sarabander.github.io/sicp/html/References.xhtml#Rabin-1980)). This starts from an alternate form of Fermat’s Little Theorem, which states that if $n$ is a prime number and $a$ is any positive integer less than $n$ , then $a$ raised to the $( n − 1 )$ -st power is congruent to 1 modulo $n$ . To test the primality of a number $n$ by the Miller-Rabin test, we pick a random number $a < n$ and raise $a$ to the $( n − 1 )$ -st power modulo $n$ using the `expmod` procedure. However, whenever we perform the squaring step in `expmod`, we check to see if we have discovered a “nontrivial square root of 1 modulo $n$ ,” that is, a number not equal to 1 or $n − 1$ whose square is equal to 1 modulo $n$ . It is possible to prove that if such a nontrivial square root of 1 exists, then $n$ is not prime. It is also possible to prove that if $n$ is an odd number that is not prime, then, for at least half the numbers $a < n$ , computing $a^{n − 1}$ in this way will reveal a nontrivial square root of 1 modulo $n$ . (This is why the Miller-Rabin test cannot be fooled.) Modify the `expmod` procedure to signal if it discovers a nontrivial square root of 1, and use this to implement the Miller-Rabin test with a procedure analogous to `fermat-test`. Check your procedure by testing various known primes and non-primes. Hint: One convenient way to make `expmod` signal is to have it return 0.
+> **تمرين 1.28:** إحدى تنويعات اختبار فيرما التي لا يمكن خداعها تُسمّى *اختبار ميلر-رابين* ([Miller 1976](https://sarabander.github.io/sicp/html/References.xhtml#Miller-1976); [Rabin 1980](https://sarabander.github.io/sicp/html/References.xhtml#Rabin-1980)). وهذا يبدأ من صورةٍ بديلةٍ للمبرهنة الصغرى لفيرما، التي تنصّ على أنّه إذا كان $n$ عددًا أوّليًّا وكان $a$ أيّ عددٍ صحيحٍ موجبٍ أصغر من $n$ ، فإنّ رفع $a$ إلى القوّة $( n − 1 )$ -st يُنتج عددًا مطابقًا لـ1 بقياس $n$ . ولاكتشاف أوّليّة عددٍ $n$ باختبار ميلر-رابين، ننتقي عددًا عشوائيًّا $a < n$ ونرفع $a$ إلى القوّة $( n − 1 )$ -st بقياس $n$ باستخدام إجراء `expmod` . ولكن كلّما أدّينا خطوة التربيع في `expmod` ، نتحقّق مما إذا كنّا قد كشفنا عن «جذرٍ تربيعيٍّ غير تافهٍ للعدد 1 بقياس $n$ »، أي عددٍ لا يساوي 1 أو $n − 1$ ومربّعه يساوي 1 بقياس $n$ . ويمكن إثبات أنّه إذا وُجِد جذرٌ تربيعيٌّ غير تافهٍ للعدد 1، فإنّ $n$ ليس أوّليًّا. ويمكن كذلك إثبات أنّه إذا كان $n$ عددًا فرديًّا غير أوّليّ، فإنّ احتساب $a^{n − 1}$ بهذه الطريقة سيكشف عن جذرٍ تربيعيٍّ غير تافهٍ للعدد 1 بقياس $n$ من أجل نصف أعداد $a < n$ على الأقلّ. (وهذا هو السبب في أنّ اختبار ميلر-رابين لا يمكن خداعه.) وعَدّل إجراء `expmod` ليُشير إذا كشف عن جذرٍ تربيعيٍّ غير تافهٍ للعدد 1، واستخدم هذا لتنفيذ اختبار ميلر-رابين بإجراءٍ نظيرٍ لـ`fermat-test` . وتحقّق من إجراءك باختبار أعدادٍ أوّليّةٍ وغير أوّليّةٍ معروفةٍ مختلفة. تلميح: إحدى الطرائق الملائمة لجعل `expmod` يُشير هي أن يُعيد 0.
 
-### 1.3 Formulating Abstractions with Higher-Order Procedures
+### 1.3 صياغة التجريدات بإجراءات عليا الرتبة
 
-We have seen that procedures are, in effect, abstractions that describe compound operations on numbers independent of the particular numbers. For example, when we
+لقد رأينا أنّ الإجراءات هي في الحقيقة تجريداتٌ تصف عمليّاتٍ مركّبةً على الأعداد، مستقلّةً عن الأعداد المعنيّة بعينها. فعلى سبيل المثال، عندما نكتب
 
 ```scheme
 (define (cube x) (* x x x))
 ```
 
-we are not talking about the cube of a particular number, but rather about a method for obtaining the cube of any number. Of course we could get along without ever defining this procedure, by always writing expressions such as
+فإنّنا لا نتحدّث عن مكعّب عددٍ معيّن، بل عن طريقةٍ للحصول على مكعّب أيّ عدد. وبالطبع كان بوسعنا أن نستغني عن تعريف هذا الإجراء تمامًا، بكتابة تعابيرَ مثل
 
 ```scheme
 (* 3 3 3)
@@ -1275,13 +1275,13 @@ we are not talking about the cube of a particular number, but rather about a met
 (* y y y)
 ```
 
-and never mentioning `cube` explicitly. This would place us at a serious disadvantage, forcing us to work always at the level of the particular operations that happen to be primitives in the language (multiplication, in this case) rather than in terms of higher-level operations. Our programs would be able to compute cubes, but our language would lack the ability to express the concept of cubing. One of the things we should demand from a powerful programming language is the ability to build abstractions by assigning names to common patterns and then to work in terms of the abstractions directly. Procedures provide this ability. This is why all but the most primitive programming languages include mechanisms for defining procedures.
+وبلا ذكرٍ صريحٍ لـ`cube` . وهذا من شأنه أن يضعنا في موقفٍ ضعيفٍ للغاية، إذ يُجبِرنا على العمل دائمًا على مستوى العمليّات المعنيّة بعينها التي يتّفق أنّها أوّليّةٌ في اللغة (الضرب، في هذه الحالة) بدلًا من العمل بدلالة عمليّاتٍ ذات مستوى أعلى. فبرامجنا كانت ستكون قادرةً على احتساب المكعّبات، ولكن لغتنا كانت ستفتقر إلى القدرة على التعبير عن مفهوم التكعيب. وأحد الأشياء التي ينبغي أن نطالب بها من لغةٍ برمجيّةٍ قويّةٍ هو القدرة على بناء التجريدات بتسمية الأنماط الشائعة ثمّ العمل بدلالة التجريدات مباشرةً. والإجراءات تُوفّر هذه القدرة. ولهذا السبب فإنّ جميع لغات البرمجة، إلّا الأكثر أوّليّةً منها، تتضمّن آليّاتٍ لتعريف الإجراءات.
 
-Yet even in numerical processing we will be severely limited in our ability to create abstractions if we are restricted to procedures whose parameters must be numbers. Often the same programming pattern will be used with a number of different procedures. To express such patterns as concepts, we will need to construct procedures that can accept procedures as arguments or return procedures as values. Procedures that manipulate procedures are called *higher-order procedures*. This section shows how higher-order procedures can serve as powerful abstraction mechanisms, vastly increasing the expressive power of our language.
+حتّى في المعالجة العدديّة، ستكون قدرتنا على إبداع التجريدات محدودةً بشدّةٍ إذا كنّا مقيّدين بإجراءاتٍ ينبغي أن تكون وسائطها أعدادًا. فكثيرًا ما يُستخدم النمط البرمجيّ ذاته مع عددٍ من الإجراءات المختلفة. ولكي نعبّر عن أنماطٍ كهذه كمفاهيم، سنحتاج إلى بناء إجراءاتٍ تستطيع أن تقبل الإجراءات كوسائط أو أن تُعيد الإجراءات كقيم. والإجراءات التي تُعالج الإجراءات تُسمّى *إجراءات عليا الرتبة*. ويُظهر هذا القسم كيف يمكن أن تكون الإجراءات عليا الرتبة آليّات تجريدٍ قويّة، تزيد القوّة التعبيريّة للغتنا زيادةً هائلة.
 
-#### 1.3.1 Procedures as Arguments
+#### 1.3.1 الإجراءات كوسائط
 
-Consider the following three procedures. The first computes the sum of the integers from `a` through `b`:
+تأمّل الإجراءات الثلاثة التالية. يحسب الأوّل مجموع الأعداد الصحيحة من `a` إلى `b` :
 
 ```scheme
 (define (sum-integers a b)
@@ -1290,7 +1290,7 @@ Consider the following three procedures. The first computes the sum of the integ
       (+ a (sum-integers (+ a 1) b))))
 ```
 
-The second computes the sum of the cubes of the integers in the given range:
+ويحسب الثاني مجموع مكعّبات الأعداد الصحيحة في المدى المعطى:
 
 ```scheme
 (define (sum-cubes a b)
@@ -1300,7 +1300,7 @@ The second computes the sum of the cubes of the integers in the given range:
          (sum-cubes (+ a 1) b))))
 ```
 
-The third computes the sum of a sequence of terms in the series $\frac{1}{1 ⋅ 3} + \frac{1}{5 ⋅ 7} + \frac{1}{9 ⋅ 11} + … ,$ which converges to $π / 8$ (very slowly):[^49]
+ويحسب الثالث مجموع متتاليةٍ من الحدود في المتسلسلة $\frac{1}{1 ⋅ 3} + \frac{1}{5 ⋅ 7} + \frac{1}{9 ⋅ 11} + … ,$ التي تتقارب إلى $π / 8$ (ببطءٍ شديد):[^49]
 
 ```scheme
 (define (pi-sum a b)
@@ -1310,7 +1310,7 @@ The third computes the sum of a sequence of terms in the series $\frac{1}{1 ⋅ 
          (pi-sum (+ a 4) b))))
 ```
 
-These three procedures clearly share a common underlying pattern. They are for the most part identical, differing only in the name of the procedure, the function of `a` used to compute the term to be added, and the function that provides the next value of `a`. We could generate each of the procedures by filling in slots in the same template:
+من الواضح أنّ هذه الإجراءات الثلاثة تتشارك نمطًا كامنًا مشتركًا. فهي متطابقةٌ في معظمها، ولا تختلف إلّا في اسم الإجراء، وفي دالّة `a` المستخدمة لاحتساب الحدّ المُراد إضافته، وفي الدالّة التي تُوفّر القيمة التالية لـ`a` . وكان بوسعنا أن نُولّد كلًّا من الإجراءات بسدّ خاناتٍ في القالب ذاته:
 
 ```scheme
 (define (⟨name⟩ a b)
@@ -1320,9 +1320,9 @@ These three procedures clearly share a common underlying pattern. They are for t
          (⟨name⟩ (⟨next⟩ a) b))))
 ```
 
-The presence of such a common pattern is strong evidence that there is a useful abstraction waiting to be brought to the surface. Indeed, mathematicians long ago identified the abstraction of *summation of a series* and invented “sigma notation,” for example $∑ n = a b f ( n ) = f ( a ) + ⋯ + f ( b ) ,$ to express this concept. The power of sigma notation is that it allows mathematicians to deal with the concept of summation itself rather than only with particular sums—for example, to formulate general results about sums that are independent of the particular series being summed.
+إنّ وجود نمطٍ مشتركٍ كهذا دليلٌ قويٌّ على أنّ ثمّة تجريدًا مفيدًا ينتظر أن يُستخرج إلى السطح. ففي الحقيقة، حدّد الرياضيّون منذ زمنٍ بعيد تجريد *جمع متسلسلة* واخترعوا «صيغة سيجما»، على سبيل المثال $∑ n = a b f ( n ) = f ( a ) + ⋯ + f ( b ) ,$ للتعبير عن هذا المفهوم. وقوّة صيغة سيجما هي أنّها تسمح للرياضيّين بالتعامل مع مفهوم الجمع ذاته بدلًا من التعامل مع مجاميعَ معيّنةٍ فقط - على سبيل المثال، بصياغة نتائجَ عامّةٍ عن المجاميع مستقلّةً عن المتسلسلة المعنيّة بعينها التي تُجمع.
 
-Similarly, as program designers, we would like our language to be powerful enough so that we can write a procedure that expresses the concept of summation itself rather than only procedures that compute particular sums. We can do so readily in our procedural language by taking the common template shown above and transforming the “slots” into formal parameters:
+وبالمثل، وبوصفنا مصمّمي برامج، نحبّ أن تكون لغتنا قويّةً بالقدر الذي يمكّننا من كتابة إجراءٍ يُعبّر عن مفهوم الجمع ذاته بدلًا من إجراءاتٍ تحسب مجاميعَ معيّنةٍ فقط. ويمكننا فعل ذلك بسهولةٍ في لغتنا الإجرائيّة بأخذ القالب المشترك المبيَّن أعلاه وتحويل «الخانات» إلى وسائط شكلّيّة:
 
 ```scheme
 (define (sum term a next b)
@@ -1332,7 +1332,7 @@ Similarly, as program designers, we would like our language to be powerful enoug
          (sum term (next a) next b))))
 ```
 
-Notice that `sum` takes as its arguments the lower and upper bounds `a` and `b` together with the procedures `term` and `next`. We can use `sum` just as we would any procedure. For example, we can use it (along with a procedure `inc` that increments its argument by 1) to define `sum-cubes`:
+لاحِظ أنّ `sum` يأخذ كوسائطه الحدّين الأدنى والأعلى `a` و`b` إلى جانب الإجراءين `term` و`next` . وبوسعنا أن نستخدم `sum` تمامًا كما نستخدم أيّ إجراء. فعلى سبيل المثال، يمكننا استخدامه (مع إجراءٍ `inc` يزيد وسيطه بمقدار 1) لتعريف `sum-cubes` :
 
 ```scheme
 (define (inc n) (+ n 1))
@@ -1341,14 +1341,14 @@ Notice that `sum` takes as its arguments the lower and upper bounds `a` and `b` 
   (sum cube a inc b))
 ```
 
-Using this, we can compute the sum of the cubes of the integers from 1 to 10:
+وباستخدام هذا، يمكننا احتساب مجموع مكعّبات الأعداد الصحيحة من 1 إلى 10:
 
 ```scheme
 (sum-cubes 1 10)
 3025
 ```
 
-With the aid of an identity procedure to compute the term, we can define `sum-integers` in terms of `sum`:
+وبمساعدة إجراءٍ الهويّة لاحتساب الحدّ، يمكننا تعريف `sum-integers` بدلالة `sum` :
 
 ```scheme
 (define (identity x) x)
@@ -1357,14 +1357,14 @@ With the aid of an identity procedure to compute the term, we can define `sum-in
   (sum identity a inc b))
 ```
 
-Then we can add up the integers from 1 to 10:
+ومن ثمّ يمكننا جمع الأعداد الصحيحة من 1 إلى 10:
 
 ```scheme
 (sum-integers 1 10)
 55
 ```
 
-We can also define `pi-sum` in the same way:[^50]
+ويمكننا كذلك تعريف `pi-sum` بالطريقة ذاتها:[^50]
 
 ```scheme
 (define (pi-sum a b)
@@ -1375,14 +1375,14 @@ We can also define `pi-sum` in the same way:[^50]
   (sum pi-term a pi-next b))
 ```
 
-Using these procedures, we can compute an approximation to $π$ :
+وباستخدام هذه الإجراءات، يمكننا احتساب تقريبٍ للعدد $π$ :
 
 ```scheme
 (* 8 (pi-sum 1 1000))
 3.139592655589783
 ```
 
-Once we have `sum`, we can use it as a building block in formulating further concepts. For instance, the definite integral of a function $f$ between the limits $a$ and $b$ can be approximated numerically using the formula $∫_{a}^{b} f = [ f ( a + \frac{d x}{2} ) + f ( a + d x + \frac{d x}{2} ) + f ( a + 2 d x + \frac{d x}{2} ) + … ] d x$ for small values of $d x$ . We can express this directly as a procedure:
+وبمجرّد أن يصير لدينا `sum` ، يمكننا استخدامه لبنةً في صياغة مفاهيمَ لاحقة. فعلى سبيل المثال، يمكن تقريب التكامل المحدّد لدالّةٍ $f$ بين الحدّين $a$ و$b$ عدديًّا باستخدام الصيغة $∫_{a}^{b} f = [ f ( a + \frac{d x}{2} ) + f ( a + d x + \frac{d x}{2} ) + f ( a + 2 d x + \frac{d x}{2} ) + … ] d x$ من أجل قيمٍ صغيرةٍ من $d x$ . ويمكننا التعبير عن هذا مباشرةً في صورة إجراء:
 
 ```scheme
 (define (integral f a b dx)
@@ -1397,13 +1397,13 @@ Once we have `sum`, we can use it as a building block in formulating further con
 .249999875000001
 ```
 
-(The exact value of the integral of `cube` between 0 and 1 is 1/4.)
+(والقيمة المضبوطة لتكامل `cube` بين 0 و1 هي 1/4.)
 
-> **Exercise 1.29:** Simpson’s Rule is a more accurate method of numerical integration than the method illustrated above. Using Simpson’s Rule, the integral of a function $f$ between $a$ and $b$ is approximated as
+> **تمرين 1.29:** إنّ قاعدة سيمبسون طريقةٌ للتكامل العدديّ أدقّ من الطريقة الموضّحة أعلاه. وباستخدام قاعدة سيمبسون، يُقارَب تكامل دالّةٍ $f$ بين $a$ و$b$ على الصورة
 > > $\frac{h}{3} ( y_{0} + 4 y_{1} + 2 y_{2} + 4 y_{3} + 2 y_{4} + ⋯ + 2 y_{n − 2} + 4 y_{n − 1} + y_{n} ) ,$
-> > where $h = ( b − a ) / n$ , for some even integer $n$ , and $y_{k} = f ( a + k h )$ . (Increasing $n$ increases the accuracy of the approximation.) Define a procedure that takes as arguments $f$ , $a$ , $b$ , and $n$ and returns the value of the integral, computed using Simpson’s Rule. Use your procedure to integrate `cube` between 0 and 1 (with $n = 100$ and $n = 1000$ ), and compare the results to those of the `integral` procedure shown above.
+> > حيث $h = ( b − a ) / n$ ، من أجل عددٍ صحيحٍ زوجيٍّ ما $n$ ، و$y_{k} = f ( a + k h )$ . (فزيادة $n$ تزيد دقّة التقريب.) عرّف إجراءً يأخذ $f$ و$a$ و$b$ و$n$ كوسائط ويُعيد قيمة التكامل، محتسبةً باستخدام قاعدة سيمبسون. واستخدم إجراءك لتكامل `cube` بين 0 و1 (مع $n = 100$ و$n = 1000$ )، وقارن النتائج بتلك التي يعطيها إجراء `integral` المبيَّن أعلاه.
 
-**Exercise 1.30:** The `sum` procedure above generates a linear recursion. The procedure can be rewritten so that the sum is performed iteratively. Show how to do this by filling in the missing expressions in the following definition:
+**تمرين 1.30:** إنّ إجراء `sum` أعلاه يُولّد تعاودًا خطّيًّا. ويمكن إعادة كتابة الإجراء بحيث يُؤدّى الجمع تكرارًا. وأظهِر كيف يمكن فعل ذلك بسدّ التعابير الناقصة في التعريف التالي:
 
 ```scheme
 (define (sum term a next b)
@@ -1414,43 +1414,43 @@ Once we have `sum`, we can use it as a building block in formulating further con
   (iter ⟨??⟩ ⟨??⟩))
 ```
 
-> **Exercise 1.31:** The `sum` procedure is only the simplest of a vast number of similar abstractions that can be captured as higher-order procedures.[^51] Write an analogous procedure called `product` that returns the product of the values of a function at points over a given range. Show how to define `factorial` in terms of `product`. Also use `product` to compute approximations to $π$ using the formula[^52]
+> **تمرين 1.31:** إنّ إجراء `sum` ليس سوى أبسط عددٍ هائلٍ من التجريدات المشابهة التي يمكن التعبير عنها كإجراءاتٍ عليا الرتبة.[^51] اكتب إجراءً نظيرًا يُسمّى `product` يُعيد حاصل ضرب قيم دالّةٍ عند نقاطٍ في مدىً معطى. وأظهِر كيف تُعرَّف `factorial` بدلالة `product` . واستخدم `product` كذلك لاحتساب تقريباتٍ للعدد $π$ باستخدام الصيغة[^52]
 > > $\frac{π}{4} = \frac{2 ⋅ 4 ⋅ 4 ⋅ 6 ⋅ 6 ⋅ 8 ⋅ ⋯}{3 ⋅ 3 ⋅ 5 ⋅ 5 ⋅ 7 ⋅ 7 ⋅ ⋯} .$
-> > If your `product` procedure generates a recursive process, write one that generates an iterative process. If it generates an iterative process, write one that generates a recursive process.
+> > فإن كان إجراء `product` لديك يُولّد عمليّةً تعاوديّةً، فاكتب واحدًا يُولّد عمليّةً تكراريّةً. وإن كان يُولّد عمليّةً تكراريّةً، فاكتب واحدًا يُولّد عمليّةً تعاوديّةً.
 > > 
 
-**Exercise 1.32:**
+**تمرين 1.32:**
 
-Show that `sum` and `product` ([Exercise 1.31](#Exercise-1_002e31)) are both special cases of a still more general notion called `accumulate` that combines a collection of terms, using some general accumulation function:
+أظهِر أنّ `sum` و`product` ([التمرين 1.31](#Exercise-1_002e31)) كلاهما حالتان خاصّتان من مفهومٍ أعمّ يُسمّى `accumulate` يجمع مجموعةً من الحدود، باستخدام دالّة تجميعٍ عامّةٍ ما:
 
 ```scheme
 (accumulate 
  combiner null-value term a next b)
 ```
 
-`Accumulate` takes as arguments the same term and range specifications as `sum` and `product`, together with a `combiner` procedure (of two arguments) that specifies how the current term is to be combined with the accumulation of the preceding terms and a `null-value` that specifies what base value to use when the terms run out. Write `accumulate` and show how `sum` and `product` can both be defined as simple calls to `accumulate`.
+يأخذ `Accumulate` كوسائطَ مواصفاتِ الحدّ والمدى نفسها التي يأخذها `sum` و `product`، إلى جانب إجراء `combiner` (ذي وسيطين) يُحدِّد كيف يُدمَج الحدّ الحاليّ في تراكم الحدود السابقة، وقيمة `null-value` تُحدِّد ما القيمة الأساسيّة الواجب استخدامها عند نفاد الحدود. اكتب `accumulate`، وبيّن كيف يمكن تعريف كلٍّ من `sum` و `product` بوصفه نداءً بسيطًا لـ `accumulate`.
 
-If your `accumulate` procedure generates a recursive process, write one that generates an iterative process. If it generates an iterative process, write one that generates a recursive process.
+إذا ولّد إجراؤك `accumulate` عمليّةً تعاوديّةً، فاكتب إجراءً يولّد عمليّةً تكراريّةً. وإذا ولّد عمليّةً تكراريّةً، فاكتب إجراءً يولّد عمليّةً تعاوديّةً.
 
-> **Exercise 1.33:** You can obtain an even more general version of `accumulate` ([Exercise 1.32](#Exercise-1_002e32)) by introducing the notion of a *filter* on the terms to be combined. That is, combine only those terms derived from values in the range that satisfy a specified condition. The resulting `filtered-accumulate` abstraction takes the same arguments as accumulate, together with an additional predicate of one argument that specifies the filter. Write `filtered-accumulate` as a procedure. Show how to express the following using `filtered-accumulate`: the sum of the squares of the prime numbers in the interval $a$ to $b$ (assuming that you have a `prime?` predicate already written)
-> > the product of all the positive integers less than $n$ that are relatively prime to $n$ (i.e., all positive integers $i < n$ such that $GCD ( i , n ) = 1$ ).
+> **تمرين 1.33:** يمكنك الحصول على نسخةٍ أعمّ من `accumulate` ([التمرين 1.32](#Exercise-1_002e32)) بإدخال فكرة *مرشّح* على الحدود المراد دمجها. أي لا تُدمَج إلّا تلك الحدود المشتقّة من قيمٍ في المدى تحقّق شرطًا محدّدًا. ويأخذ التجريد الناتج `filtered-accumulate` الوسائط نفسها التي يأخذها `accumulate`، مع مسيّمٍ (predicate) إضافيّ من وسيطٍ واحد يحدّد المرشّح. اكتب `filtered-accumulate` كإجراء. وبيّن كيف تُعبِّر عمّا يلي باستخدام `filtered-accumulate`: مجموع مربّعات الأعداد الأوّليّة في الفترة من $a$ إلى $b$ (بافتراض أنّ لديك مسيّم `prime?` مكتوبًا سلفًا)
+> > حاصل ضرب جميع الأعداد الصحيحة الموجبة الأصغر من $n$ والأوليّة نسبيًّا لـ $n$ (أي جميع الأعداد الصحيحة الموجبة $i < n$ التي تحقّق $GCD ( i , n ) = 1$ ).
 > > 
 
-#### 1.3.2 Constructing Procedures Using `Lambda`
+#### 1.3.2 إنشاء الإجراءات باستخدام `Lambda`
 
-In using `sum` as in [1.3.1](#g_t1_002e3_002e1), it seems terribly awkward to have to define trivial procedures such as `pi-term` and `pi-next` just so we can use them as arguments to our higher-order procedure. Rather than define `pi-next` and `pi-term`, it would be more convenient to have a way to directly specify “the procedure that returns its input incremented by 4” and “the procedure that returns the reciprocal of its input times its input plus 2.” We can do this by introducing the special form `lambda`, which creates procedures. Using `lambda` we can describe what we want as
+عند استخدام `sum` كما في [1.3.1](#g_t1_002e3_002e1)، يبدو من الأخرق للغاية أن نضطرّ إلى تعريف إجراءاتٍ تافهةٍ مثل `pi-term` و `pi-next` لمجرّد أن نستخدمها كوسائط لإجرائنا عالي الرتبة. وبدلًا من تعريف `pi-next` و `pi-term`، سيكون من الأنسب أن تتاح لنا طريقةٌ لتحديد «الإجراء الذي يُعيد مُدخله مزيدًا بمقدار 4» و«الإجراء الذي يُعيد مقلوب مُدخله مضروبًا في مُدخله زائد 2» مباشرةً. ويمكننا فعل ذلك بإدخال الصيغة الخاصّة `lambda`، التي تُنشئ الإجراءات. وباستخدام `lambda` يمكننا وصف ما نريد كما يلي
 
 ```scheme
 (lambda (x) (+ x 4))
 ```
 
-and
+و
 
 ```scheme
 (lambda (x) (/ 1.0 (* x (+ x 2))))
 ```
 
-Then our `pi-sum` procedure can be expressed without defining any auxiliary procedures as
+ومن ثَمّ يمكن التعبير عن إجرائنا `pi-sum` من دون تعريف أيّ إجراءاتٍ مساعدةٍ كما يلي
 
 ```scheme
 (define (pi-sum a b)
@@ -1460,7 +1460,7 @@ Then our `pi-sum` procedure can be expressed without defining any auxiliary proc
        b))
 ```
 
-Again using `lambda`, we can write the `integral` procedure without having to define the auxiliary procedure `add-dx`:
+وباستخدام `lambda` مجددًا، يمكننا كتابة الإجراء `integral` من دون الحاجة إلى تعريف الإجراء المساعد `add-dx`:
 
 ```scheme
 (define (integral f a b dx)
@@ -1470,25 +1470,25 @@ Again using `lambda`, we can write the `integral` procedure without having to de
      dx))
 ```
 
-In general, `lambda` is used to create procedures in the same way as `define`, except that no name is specified for the procedure:
+وعمومًا، يُستخدم `lambda` لإنشاء الإجراءات بالطريقة نفسها التي يُستخدم بها `define`، إلّا أنّه لا يُحدَّد اسمٌ للإجراء:
 
 ```scheme
 (lambda (⟨formal-parameters⟩) ⟨body⟩)
 ```
 
-The resulting procedure is just as much a procedure as one that is created using `define`. The only difference is that it has not been associated with any name in the environment. In fact,
+والإجراء الناتج هو إجراءٌ بالقدر الذي يكون به الإجراء المُنشأ باستخدام `define`. والفرق الوحيد أنّه لم يُقرَن بأيّ اسمٍ في البيئة. بل إنّ
 
 ```scheme
 (define (plus4 x) (+ x 4))
 ```
 
-is equivalent to
+يكافئ
 
 ```scheme
 (define plus4 (lambda (x) (+ x 4)))
 ```
 
-We can read a `lambda` expression as follows:
+يمكننا قراءة تعبير `lambda` كما يلي:
 
 ```
 (lambda                     (x)     (+   x     4))
@@ -1496,18 +1496,18 @@ We can read a `lambda` expression as follows:
 the procedure of an argument x that adds x and 4
 ```
 
-Like any expression that has a procedure as its value, a `lambda` expression can be used as the operator in a combination such as
+وكأيّ تعبيرٍ تكون قيمته إجراءً، يمكن استخدام تعبير `lambda` كمعاملٍ في تركيبٍ مثل
 
 ```scheme
 ((lambda (x y z) (+ x y (square z))) 1 2 3)
 12
 ```
 
-or, more generally, in any context where we would normally use a procedure name.[^53]
+أو، بشكلٍ أعمّ، في أيّ سياقٍ نستخدم فيه عادةً اسم إجراء.[^53]
 
-#### Using `let` to create local variables
+#### استخدام `let` لإنشاء متغيّرات محلّيّة
 
-Another use of `lambda` is in creating local variables. We often need local variables in our procedures other than those that have been bound as formal parameters. For example, suppose we wish to compute the function $f ( x , y ) = x ( 1 + x y )^{2} + y ( 1 − y ) + ( 1 + x y ) ( 1 − y ) ,$ which we could also express as $a = 1 + x y , ( x , y ) b = 1 − y , f ( x , y ) = x a^{2} + y b + a b .$ In writing a procedure to compute $f$ , we would like to include as local variables not only $x$ and $y$ but also the names of intermediate quantities like $a$ and $b$ . One way to accomplish this is to use an auxiliary procedure to bind the local variables:
+وثمة استخدام آخر لـ `lambda` في إنشاء المتغيّرات المحليّة. فغالبًا ما نحتاج في إجراءاتنا إلى متغيّراتٍ محلّيّةٍ غير تلك المقيّدة كوسائط صوريّة. فمثلًا، افترض أنّنا نريد حساب الدالّة $f ( x , y ) = x ( 1 + x y )^{2} + y ( 1 − y ) + ( 1 + x y ) ( 1 − y ) ,$ التي يمكننا التعبير عنها أيضًا بصيغة $a = 1 + x y , ( x , y ) b = 1 − y , f ( x , y ) = x a^{2} + y b + a b .$ وعند كتابة إجراءٍ لحساب $f$، نودّ أن نُضمّن متغيّراتٍ محلّيّةٍ لا تقتصر على $x$ و $y$ بل تشمل أيضًا أسماء الكميّات الوسيطة مثل $a$ و $b$ . ومن طرق تحقيق ذلك استخدام إجراءٍ مساعدٍ لربط المتغيّرات المحليّة:
 
 ```scheme
 (define (f x y)
@@ -1519,7 +1519,7 @@ Another use of `lambda` is in creating local variables. We often need local vari
             (- 1 y)))
 ```
 
-Of course, we could use a `lambda` expression to specify an anonymous procedure for binding our local variables. The body of `f` then becomes a single call to that procedure:
+وبالطبع، يمكننا استخدام تعبير `lambda` لتحديد إجراءٍ مجهولٍ لربط متغيّراتنا المحليّة. ويصبح متن `f` من ثَمّ نداءً واحدًا لذلك الإجراء:
 
 ```scheme
 (define (f x y)
@@ -1531,7 +1531,7 @@ Of course, we could use a `lambda` expression to specify an anonymous procedure 
    (- 1 y)))
 ```
 
-This construct is so useful that there is a special form called `let` to make its use more convenient. Using `let`, the `f` procedure could be written as
+وهذا البناء مفيدٌ إلى حدّ أنّ ثمّة صيغةً خاصّةً تُدعى `let` لتيسير استخدامه. وباستخدام `let`، يمكن كتابة إجراء `f` كما يلي
 
 ```scheme
 (define (f x y)
@@ -1542,7 +1542,7 @@ This construct is so useful that there is a special form called `let` to make it
        (* a b))))
 ```
 
-The general form of a `let` expression is
+والصيغة العامّة لتعبير `let` هي
 
 ```scheme
 (let ((⟨var₁⟩ ⟨exp₁⟩)
@@ -1552,7 +1552,7 @@ The general form of a `let` expression is
   ⟨body⟩)
 ```
 
-which can be thought of as saying
+ويمكن النظر إلى ذلك على أنّه يقول
 
 ```javascript
 let ⟨var₁⟩ have the value ⟨exp₁⟩ and
@@ -1562,7 +1562,7 @@ let ⟨var₁⟩ have the value ⟨exp₁⟩ and
   in ⟨body⟩
 ```
 
-The first part of the `let` expression is a list of name-expression pairs. When the `let` is evaluated, each name is associated with the value of the corresponding expression. The body of the `let` is evaluated with these names bound as local variables. The way this happens is that the `let` expression is interpreted as an alternate syntax for
+الجزء الأوّل من تعبير `let` قائمةٌ من أزواج الاسم-التعبير. وحين يُقيَّم `let`، يُربط كلّ اسمٍ بقيمة التعبير المقابل. ويُقيَّم متن `let` وهذه الأسماء مقيّدةً متغيّراتٍ محلّيّةً. والطريقة التي يحدث بها ذلك هي أنّ تعبير `let` يُفسَّر باعتباره صياغةً بديلةً لِـ
 
 ```scheme
 ((lambda (⟨var₁⟩ … ⟨varₙ⟩)
@@ -1572,11 +1572,11 @@ The first part of the `let` expression is a list of name-expression pairs. When 
  ⟨expₙ⟩)
 ```
 
-No new mechanism is required in the interpreter in order to provide local variables. A `let` expression is simply syntactic sugar for the underlying `lambda` application.
+ولا يلزم أيّ آليّةٍ جديدةٍ في المفسّر لتوفير المتغيّرات المحليّة. وتعبير `let` ما هو إلّا سكرٌ صياغيّ لتطبيق `lambda` الكامن.
 
-We can see from this equivalence that the scope of a variable specified by a `let` expression is the body of the `let`. This implies that:
+ويمكننا أن نرى من هذه المكافأة أنّ نطاق متغيّرٍ يحدّده تعبير `let` هو متن `let`. وهذا يعني أنّ:
 
-`Let` allows one to bind variables as locally as possible to where they are to be used. For example, if the value of `x` is 5, the value of the expression
+`Let` يسمح بربط المتغيّرات في أقرب موضعٍ ممكنٍ من الموضع الذي ستُستخدم فيه. فمثلًا، إذا كانت قيمة `x` هي 5، فإنّ قيمة التعبير
 
 ```scheme
 (+ (let ((x 3))
@@ -1584,9 +1584,9 @@ We can see from this equivalence that the scope of a variable specified by a `le
    x)
 ```
 
-is 38. Here, the `x` in the body of the `let` is 3, so the value of the `let` expression is 33. On the other hand, the `x` that is the second argument to the outermost `+` is still 5.
+هي 38. فهنا، الـ `x` في متن `let` هو 3، ومن ثَمّ قيمة تعبير `let` هي 33. ومن جانبٍ آخر، فإنّ الـ `x` الذي هو الوسيط الثاني للـ `+` الخارجيّ ما زال 5.
 
-The variables’ values are computed outside the `let`. This matters when the expressions that provide the values for the local variables depend upon variables having the same names as the local variables themselves. For example, if the value of `x` is 2, the expression
+وتُحسب قيم المتغيّرات خارج `let`. وهذا يهمّ عندما تتوقّف التعبيرات التي تُوفّر قيم المتغيّرات المحليّة على متغيّراتٍ تحمل الأسماء نفسها التي تحملها المتغيّرات المحليّة نفسها. فمثلًا، إذا كانت قيمة `x` هي 2، فإنّ التعبير
 
 ```scheme
 (let ((x 3)
@@ -1594,9 +1594,9 @@ The variables’ values are computed outside the `let`. This matters when the ex
   (* x y))
 ```
 
-will have the value 12 because, inside the body of the `let`, `x` will be 3 and `y` will be 4 (which is the outer `x` plus 2).
+ستكون قيمته 12 لأنّ `x` سيكون 3 و `y` سيكون 4 داخل متن `let` (أي الـ `x` الخارجيّ زائد 2).
 
-Sometimes we can use internal definitions to get the same effect as with `let`. For example, we could have defined the procedure `f` above as
+وأحيانًا يمكننا استخدام تعريفاتٍ داخليّةٍ للحصول على الأثر نفسه الذي نحصل عليه مع `let`. فمثلًا، كان يمكننا تعريف الإجراء `f` أعلاه كما يلي
 
 ```scheme
 (define (f x y)
@@ -1608,15 +1608,15 @@ Sometimes we can use internal definitions to get the same effect as with `let`. 
      (* a b)))
 ```
 
-We prefer, however, to use `let` in situations like this and to use internal `define` only for internal procedures.[^54]
+أمّا نحن فنفضّل استخدام `let` في مواضع مثل هذه، واستخدام `define` الداخليّ للإجراءات الداخليّة فقط.[^54]
 
-**Exercise 1.34:** Suppose we define the procedure
+**التمرين 1.34:** لنفترض أنّنا نُعرّف الإجراء
 
 ```scheme
 (define (f g) (g 2))
 ```
 
-Then we have
+عندها يكون لدينا
 
 ```scheme
 (f square)
@@ -1626,15 +1626,15 @@ Then we have
 6
 ```
 
-What happens if we (perversely) ask the interpreter to evaluate the combination `(f f)`? Explain.
+ماذا يحدث إذا طلبنا (بمنطقٍ معكوس) من المفسّر تقييم التركيب `(f f)`؟ فسّر.
 
-#### 1.3.3 Procedures as General Methods
+#### 1.3.3 الإجراءات بوصفها طرقًا عامّة
 
-We introduced compound procedures in [1.1.4](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e4) as a mechanism for abstracting patterns of numerical operations so as to make them independent of the particular numbers involved. With higher-order procedures, such as the `integral` procedure of [1.3.1](#g_t1_002e3_002e1), we began to see a more powerful kind of abstraction: procedures used to express general methods of computation, independent of the particular functions involved. In this section we discuss two more elaborate examples—general methods for finding zeros and fixed points of functions—and show how these methods can be expressed directly as procedures.
+قدّمنا الإجراءات المركّبة في [1.1.4](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e4) كآليّةٍ لتجريد أنماط العمليّات العدديّة بحيث تصير مستقلّةً عن الأعداد المعنيّة بعينها. ومع الإجراءات عالية الرتبة، مثل إجراء `integral` في [1.3.1](#g_t1_002e3_002e1)، بدأنا نرى نوعًا أقوى من التجريد: إجراءاتٌ تُستخدم للتعبير عن طرقٍ عامّةٍ للاحتساب، مستقلّةً عن الدوالّ المعنيّة بعينها. وفي هذا القسم نناقش مثالَين أكثر تفصيلاً—طرائق عامّة لإيجاد أصفار الدوالّ ونقاطها الثابتة—ونُظهر كيف يمكن التعبير عن هذه الطرق مباشرةً كإجراءات.
 
-#### Finding roots of equations by the half-interval method
+#### إيجاد جذور المعادلات بطريقة نصف الفترة
 
-The *half-interval method* is a simple but powerful technique for finding roots of an equation $f ( x ) = 0$ , where $f$ is a continuous function. The idea is that, if we are given points $a$ and $b$ such that $f ( a ) < 0 < f ( b )$ , then $f$ must have at least one zero between $a$ and $b$ . To locate a zero, let $x$ be the average of $a$ and $b$ , and compute $f ( x )$ . If $f ( x ) > 0$ , then $f$ must have a zero between $a$ and $x$ . If $f ( x ) < 0$ , then $f$ must have a zero between $x$ and $b$ . Continuing in this way, we can identify smaller and smaller intervals on which $f$ must have a zero. When we reach a point where the interval is small enough, the process stops. Since the interval of uncertainty is reduced by half at each step of the process, the number of steps required grows as $Θ ( log ⁡ ( L / T ) )$ , where $L$ is the length of the original interval and $T$ is the error tolerance (that is, the size of the interval we will consider “small enough”). Here is a procedure that implements this strategy:
+*طريقة نصف الفترة* (half-interval method) تقنيّةٌ بسيطةٌ لكنّها قويّة لإيجاد جذور معادلةٍ $f ( x ) = 0$ ، حيث $f$ دالّةٌ متّصلة. والفكرة هي أنّنا، إذا أُعطينا نقطتَين $a$ و $b$ بحيث $f ( a ) < 0 < f ( b )$ ، فإنّ $f$ لا بدّ أن يكون لها صفرٌ واحدٌ على الأقلّ بين $a$ و $b$ . ولتحديد موضع صفر، فلنجعل $x$ متوسّط $a$ و $b$ ، ولنحسب $f ( x )$ . فإن كان $f ( x ) > 0$ ، فإنّ $f$ لا بدّ أن يكون لها صفرٌ بين $a$ و $x$ . وإن كان $f ( x ) < 0$ ، فإنّ $f$ لا بدّ أن يكون لها صفرٌ بين $x$ و $b$ . وبمواصلة ذلك على هذا النحو، يمكننا تحديد فتراتٍ أصغرَ فأصغرَ تكون $f$ ملزمةً بصفرٍ عليها. وحين نبلغ موضعًا تكون الفترة فيه صغيرةً بما يكفي، تتوقّف العمليّة. وبما أنّ فترة عدم التيقُّن تُنصَّف في كلّ خطوةٍ من العمليّة، فإنّ عدد الخطوات المطلوبة ينمو وفقًا لـ $Θ ( log ⁡ ( L / T ) )$ ، حيث $L$ هو طول الفترة الأصليّة و $T$ هي سماحيّة الخطأ (أي حجم الفترة التي سنعتبرها «صغيرةً بما يكفي»). وفيما يلي إجراءٌ ينفّذ هذه الاستراتيجيّة:
 
 ```scheme
 (define (search f neg-point pos-point)
@@ -1651,16 +1651,16 @@ The *half-interval method* is a simple but powerful technique for finding roots 
            (else midpoint))))))
 ```
 
-We assume that we are initially given the function $f$ together with points at which its values are negative and positive. We first compute the midpoint of the two given points. Next we check to see if the given interval is small enough, and if so we simply return the midpoint as our answer. Otherwise, we compute as a test value the value of $f$ at the midpoint. If the test value is positive, then we continue the process with a new interval running from the original negative point to the midpoint. If the test value is negative, we continue with the interval from the midpoint to the positive point. Finally, there is the possibility that the test value is 0, in which case the midpoint is itself the root we are searching for.
+ونحن نفترض أنّنا أُعطينا في البدء الدالّة $f$ مع نقطتَين، قيمة الأولى منهما سالبة وقيمة الثانية موجبة. ونحسب أوّلًا نقطة منتصف النقطتين المعطاتين. ثمّ نتحقّق لمعرفة ما إذا كانت الفترة المعطاة صغيرةً بما يكفي، فإن كانت كذلك أعَدنا ببساطةٍ نقطة المنتصف جوابًا. وإلّا، نحسب قيمة $f$ عند نقطة المنتصف قيمةً اختباريّة. فإن كانت القيمة الاختباريّة موجبة، نواصل العمليّة بفترةٍ جديدةٍ تمتدّ من النقطة السالبة الأصليّة إلى نقطة المنتصف. وإن كانت القيمة الاختباريّة سالبة، نواصل بالفترة الممتدّة من نقطة المنتصف إلى النقطة الموجبة. وأخيرًا، ثمّة احتمالٌ أن تكون القيمة الاختباريّة مساويةً لـ 0، وفي هذه الحالة تكون نقطة المنتصف هي نفسها الجذر الذي نبحث عنه.
 
-To test whether the endpoints are “close enough” we can use a procedure similar to the one used in [1.1.7](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e7) for computing square roots:[^55]
+ولاختبار ما إذا كانت الطرفيّتين «قريبتَين بما يكفي» يمكننا استخدام إجراءٍ مشابهٍ للإجراء المستخدم في [1.1.7](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e7) لحساب الجذور التربيعيّة:[^55]
 
 ```scheme
 (define (close-enough? x y) 
   (< (abs (- x y)) 0.001))
 ```
 
-`Search` is awkward to use directly, because we can accidentally give it points at which $f$ ’s values do not have the required sign, in which case we get a wrong answer. Instead we will use `search` via the following procedure, which checks to see which of the endpoints has a negative function value and which has a positive value, and calls the `search` procedure accordingly. If the function has the same sign on the two given points, the half-interval method cannot be used, in which case the procedure signals an error.[^56]
+إنّ `search` غير مريحٍ للاستعمال المباشر، لأنّنا قد نُعطيه من غير قصدٍ نقاطًا لا تكون قيم $f$ عندها ذات الإشارة المطلوبة، وفي هذه الحالة نحصل على جوابٍ خاطئ. وبدلًا من ذلك سنستخدم `search` بواسطة الإجراء التالي، الذي يتحقّق لمعرفة أيّ الطرفيّتين قيمتها الدالّيّة سالبة وأيّهما قيمتها موجبة، ويستدعي الإجراء `search` وفقًا لذلك. فإن كانت الدالّة تحمل الإشارة نفسها على النقطتين المعطاتين، فلا يمكن استخدام طريقة نصف الفترة، وفي هذه الحالة يُشير الإجراء إلى وقوع خطأ.[^56]
 
 ```scheme
 (define (half-interval-method f a b)
@@ -1677,14 +1677,14 @@ To test whether the endpoints are “close enough” we can use a procedure simi
                    opposite sign" a b)))))
 ```
 
-The following example uses the half-interval method to approximate $π$ as the root between 2 and 4 of $sin ⁡ x = 0$ :
+ويستخدم المثال التاليّ طريقة نصف الفترة لتقريب $π$ بوصفه الجذر بين 2 و 4 للمعادلة $sin ⁡ x = 0$ :
 
 ```scheme
 (half-interval-method sin 2.0 4.0)
 3.14111328125
 ```
 
-Here is another example, using the half-interval method to search for a root of the equation $x^{3} − 2 x − 3 = 0$ between 1 and 2:
+وهذا مثالٌ آخر، يستخدم طريقة نصف الفترة للبحث عن جذرٍ للمعادلة $x^{3} − 2 x − 3 = 0$ بين 1 و 2:
 
 ```scheme
 (half-interval-method 
@@ -1694,9 +1694,9 @@ Here is another example, using the half-interval method to search for a root of 
 1.89306640625
 ```
 
-#### Finding fixed points of functions
+#### إيجاد النقاط الثابتة للدوالّ
 
-A number $x$ is called a *fixed point* of a function $f$ if $x$ satisfies the equation $f ( x ) = x$ . For some functions $f$ we can locate a fixed point by beginning with an initial guess and applying $f$ repeatedly, $f ( x ) , f ( f ( x ) ) , f ( f ( f ( x ) ) ) , … ,$ until the value does not change very much. Using this idea, we can devise a procedure `fixed-point` that takes as inputs a function and an initial guess and produces an approximation to a fixed point of the function. We apply the function repeatedly until we find two successive values whose difference is less than some prescribed tolerance:
+يُسمّى العدد $x$ *نقطةً ثابتة* (fixed point) لدالّةٍ $f$ إذا حقّق $x$ المعادلة $f ( x ) = x$ . وبالنسبة لبعض الدوالّ $f$ يمكننا تحديد نقطةٍ ثابتةٍ بالبدء بتخمينٍ أوّليّ وتطبيق $f$ مرارًا وتكرارًا، $f ( x ) , f ( f ( x ) ) , f ( f ( f ( x ) ) ) , … ,$ إلى أن لا تتغيّر القيمة تغيّرًا كبيرًا. وباستخدام هذه الفكرة، يمكننا ابتكار إجراءٍ `fixed-point` يأخذ دالّةً وتخمينًا أوّليًّا بوصفهما مُدخلين، ويُنتج تقريبًا لنقطةٍ ثابتةٍ للدالّة. ونطبّق الدالّة مرارًا حتّى نجد قيمتين متتاليتين يكون فرقهما أقلّ من سماحيّةٍ محدّدةٍ سلفًا:
 
 ```scheme
 (define tolerance 0.00001)
@@ -1713,14 +1713,14 @@ A number $x$ is called a *fixed point* of a function $f$ if $x$ satisfies the eq
   (try first-guess))
 ```
 
-For example, we can use this method to approximate the fixed point of the cosine function, starting with 1 as an initial approximation:[^57]
+فمثلًا، يمكننا استخدام هذه الطريقة لتقريب النقطة الثابتة لدالّة جيب التمام، بالبدء بالعدد 1 كتقريبٍ أوّليّ:[^57]
 
 ```scheme
 (fixed-point cos 1.0)
 .7390822985224023
 ```
 
-Similarly, we can find a solution to the equation $y = sin ⁡ y + cos ⁡ y$ :
+وعلى نحو مماثل، يمكننا إيجاد حلٍّ للمعادلة $y = sin ⁡ y + cos ⁡ y$ :
 
 ```scheme
 (fixed-point (lambda (y) (+ (sin y) (cos y)))
@@ -1728,7 +1728,7 @@ Similarly, we can find a solution to the equation $y = sin ⁡ y + cos ⁡ y$ :
 1.2587315962971173
 ```
 
-The fixed-point process is reminiscent of the process we used for finding square roots in [1.1.7](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e7). Both are based on the idea of repeatedly improving a guess until the result satisfies some criterion. In fact, we can readily formulate the square-root computation as a fixed-point search. Computing the square root of some number $x$ requires finding a $y$ such that $y^{2} = x$ . Putting this equation into the equivalent form $y = x / y$ , we recognize that we are looking for a fixed point of the function[^58] $y ↦ x / y$ , and we can therefore try to compute square roots as
+تُذكّرنا عمليّة النقطة الثابتة بالعمليّة التي استخدمناها لإيجاد الجذور التربيعيّة في [1.1.7](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e7). فكلتاهما تقومان على فكرة تحسين تخمينٍ مرارًا وتكرارًا حتّى تحقّق النتيجة معيارًا ما. بل إنّه يمكننا بسهولةٍ صياغة احتساب الجذر التربيعيّ بوصفه بحثًا عن نقطةٍ ثابتة. فاحتساب الجذر التربيعيّ لعددٍ ما $x$ يقتضي إيجاد $y$ بحيث $y^{2} = x$ . وبوضع هذه المعادلة في الصورة المكافئة $y = x / y$ ، ندرك أنّنا نبحث عن نقطةٍ ثابتةٍ للدالّة[^58] $y ↦ x / y$ ، ومن ثَمّ يمكننا محاولة احتساب الجذور التربيعيّة كما يلي
 
 ```scheme
 (define (sqrt x)
@@ -1736,9 +1736,9 @@ The fixed-point process is reminiscent of the process we used for finding square
                1.0))
 ```
 
-Unfortunately, this fixed-point search does not converge. Consider an initial guess $y_{1}$ . The next guess is $y_{2} = x / y_{1}$ and the next guess is $y_{3} = x / y_{2} = x / ( x / y_{1} ) = y_{1}$ . This results in an infinite loop in which the two guesses $y_{1}$ and $y_{2}$ repeat over and over, oscillating about the answer.
+وللأسف، فإنّ بحث النقطة الثابتة هذا لا يتقارب. فلننظر في تخمينٍ أوّليّ $y_{1}$ . فإنّ التخمين التالي هو $y_{2} = x / y_{1}$ والتخمين الذي يليه هو $y_{3} = x / y_{2} = x / ( x / y_{1} ) = y_{1}$ . وينجم عن ذلك حلقةٌ لا نهائيّةٌ يكرّر فيها التخمينَان $y_{1}$ و $y_{2}$ نفسيهما مرارًا وتكرارًا، متأرجحَين حول الجواب.
 
-One way to control such oscillations is to prevent the guesses from changing so much. Since the answer is always between our guess $y$ and $x / y$ , we can make a new guess that is not as far from $y$ as $x / y$ by averaging $y$ with $x / y$ , so that the next guess after $y$ is $\frac{1}{2} ( y + x / y )$ instead of $x / y$ . The process of making such a sequence of guesses is simply the process of looking for a fixed point of $y ↦ \frac{1}{2} ( y + x / y )$ :
+ومن طرق ضبط مثل هذه التأرجحات منع التخمينات من التغيّر بهذا القدر. وبما أنّ الجواب دائمًا ما يكون بين تخميننا $y$ و $x / y$ ، فيمكننا عمل تخمينٍ جديدٍ لا يبعد عن $y$ بمقدار ما يبعد $x / y$ ، بحساب متوسّط $y$ مع $x / y$ ، بحيث يكون التخمين التالي بعد $y$ هو $\frac{1}{2} ( y + x / y )$ بدلًا من $x / y$ . وعمليّة إجراء متتاليةٍ من التخمينات كهذه ما هي إلّا عمليّة البحث عن نقطةٍ ثابتةٍ لِـ $y ↦ \frac{1}{2} ( y + x / y )$ :
 
 ```scheme
 (define (sqrt x)
@@ -1747,17 +1747,17 @@ One way to control such oscillations is to prevent the guesses from changing so 
    1.0))
 ```
 
-(Note that $y = \frac{1}{2} ( y + x / y )$ is a simple transformation of the equation $y = x / y ;$ to derive it, add $y$ to both sides of the equation and divide by 2.)
+(لاحِظ أنّ $y = \frac{1}{2} ( y + x / y )$ تحويلٌ بسيط للمعادلة $y = x / y ;$ ولكي نستنبطها، أضِف $y$ إلى طرفَي المعادلة ثمّ اقسم على 2.)
 
-With this modification, the square-root procedure works. In fact, if we unravel the definitions, we can see that the sequence of approximations to the square root generated here is precisely the same as the one generated by our original square-root procedure of [1.1.7](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e7). This approach of averaging successive approximations to a solution, a technique that we call *average damping*, often aids the convergence of fixed-point searches.
+وبهذا التعديل، يعمل إجراء الجذر التربيعيّ. بل إنّه، إذا فكّكنا التعريفات، يمكننا أن نرى أنّ متتالية التقريبات للجذر التربيعيّ المتولّدة هنا هي نفسها تمامًا المتولّدة عن إجراء الجذر التربيعيّ الأصليّ لدينا في [1.1.7](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e7). وهذا النهج القائم على حساب متوسّط تقريباتٍ متتاليةٍ لحلٍّ، وهو تقنيّةٌ نسمّيها *التخميد المتوسط* (average damping)، كثيرًا ما يساعد على تقارب عمليات البحث عن نقطةٍ ثابتة.
 
-> **Exercise 1.35:** Show that the golden ratio $φ$ ([1.2.2](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e2)) is a fixed point of the transformation $x ↦ 1 + 1 / x$ , and use this fact to compute $φ$ by means of the `fixed-point` procedure.
+> **التمرين 1.35:** بيّن أنّ النسبة الذهبيّة $φ$ ([1.2.2](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e2)) نقطةٌ ثابتةٌ للتحويل $x ↦ 1 + 1 / x$ ، واستخدم هذه الحقيقة لحساب $φ$ بواسطة الإجراء `fixed-point`.
 
-> **Exercise 1.36:** Modify `fixed-point` so that it prints the sequence of approximations it generates, using the `newline` and `display` primitives shown in [Exercise 1.22](https://sarabander.github.io/sicp/html/1_002e2.xhtml#Exercise-1_002e22). Then find a solution to $x^{x} = 1000$ by finding a fixed point of $x ↦ log ⁡ ( 1000 ) / log ⁡ ( x )$ . (Use Scheme’s primitive `log` procedure, which computes natural logarithms.) Compare the number of steps this takes with and without average damping. (Note that you cannot start `fixed-point` with a guess of 1, as this would cause division by $log ⁡ ( 1 ) = 0$ .)
+> **التمرين 1.36:** عدّل `fixed-point` بحيث يطبع متتالية التقريبات التي يولّدها، باستخدام الأوّليّتين `newline` و`display` الموضّحتين في [التمرين 1.22](https://sarabander.github.io/sicp/html/1_002e2.xhtml#Exercise-1_002e22). ثمّ جد حلًّا للمعادلة $x^{x} = 1000$ بإيجاد نقطةٍ ثابتةٍ للدالّة $x ↦ log ⁡ ( 1000 ) / log ⁡ ( x )$ . (استخدم إجراء `log` الأوليّ في Scheme، الذي يحسب اللوغاريتمات الطبيعيّة.) وقارن عدد الخطوات التي يستغرقها هذا مع التخميد المتوسط وبدونه. (لاحِظ أنّك لا يمكنك بدء `fixed-point` بتخمينٍ قيمته 1، لأنّ ذلك سيتسبّب في القسمة على $log ⁡ ( 1 ) = 0$ .)
 
-**Exercise 1.37:**
+**التمرين 1.37:**
 
-An infinite *continued fraction* is an expression of the form $f = \frac{N_{1}}{D_{1} + \frac{N_{2}}{D_{2} + \frac{N_{3}}{D_{3} + …}}} .$ As an example, one can show that the infinite continued fraction expansion with the $N_{i}$ and the $D_{i}$ all equal to 1 produces $1 / φ$ , where $φ$ is the golden ratio (described in [1.2.2](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e2)). One way to approximate an infinite continued fraction is to truncate the expansion after a given number of terms. Such a truncation—a so-called finite continued fraction **k*-term finite continued fraction*—has the form $\frac{N_{1}}{D_{1} + \frac{N_{2}}{⋱ + \frac{N_{k}}{D_{k}}}} .$ Suppose that `n` and `d` are procedures of one argument (the term index $i$ ) that return the $N_{i}$ and $D_{i}$ of the terms of the continued fraction. Define a procedure `cont-frac` such that evaluating `(cont-frac n d k)` computes the value of the $k$ -term finite continued fraction. Check your procedure by approximating $1 / φ$ using
+والكسر المستمرّ *اللانهائيّ* (continued fraction) تعبيرٌ من الشكل $f = \frac{N_{1}}{D_{1} + \frac{N_{2}}{D_{2} + \frac{N_{3}}{D_{3} + …}}} .$ وكمثالٍ على ذلك، يمكن البرهان على أنّ مفكوك الكسر المستمرّ اللانهائيّ الذي تكون فيه جميع $N_{i}$ و $D_{i}$ مساويةً لـ 1 يُنتج $1 / φ$ ، حيث $φ$ هي النسبة الذهبيّة (الموصوفة في [1.2.2](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e2)). ومن طرق تقريب كسرٍ مستمرٍّ لانهائيّ اقتطاع المفكوك بعد عددٍ معطىً من الحدود. ومثل هذا الاقتطاع—وهو ما يُسمّى كسرًا مستمرًّا منتهيًا **k*-حد كسر مستمر منتهٍ*—له الشكل $\frac{N_{1}}{D_{1} + \frac{N_{2}}{⋱ + \frac{N_{k}}{D_{k}}}} .$ ولنفترض أنّ `n` و `d` إجراءان من وسيطٍ واحد (فهرس الحدّ $i$ ) يُعيدان $N_{i}$ و $D_{i}$ لحدود الكسر المستمرّ. عرّف إجراءً `cont-frac` بحيث يحسب تقييم `(cont-frac n d k)` قيمة الكسر المستمرّ المنتهي من $k$ حدّ. وتحقّق من إجرائك بتقريب $1 / φ$ باستخدام
 
 ```scheme
 (cont-frac (lambda (i) 1.0)
@@ -1765,23 +1765,23 @@ An infinite *continued fraction* is an expression of the form $f = \frac{N_{1}}{
            k)
 ```
 
-for successive values of `k`. How large must you make `k` in order to get an approximation that is accurate to 4 decimal places?
+لقيمٍ متتاليةٍ من `k`. فما أكبر مقدارٍ يلزم أن تجعله لـ `k` كي تحصل على تقريبٍ دقيقٍ إلى 4 منازل عشريّة؟
 
-If your `cont-frac` procedure generates a recursive process, write one that generates an iterative process. If it generates an iterative process, write one that generates a recursive process.
+إذا ولّد إجراؤك `cont-frac` عمليّةً تعاوديّةً، فاكتب إجراءً يولّد عمليّةً تكراريّةً. وإذا ولّد عمليّةً تكراريّةً، فاكتب إجراءً يولّد عمليّةً تعاوديّةً.
 
-> **Exercise 1.38:** In 1737, the Swiss mathematician Leonhard Euler published a memoir De Fractionibus Continuis, which included a continued fraction expansion for $e − 2$ , where $e$ is the base of the natural logarithms. In this fraction, the $N_{i}$ are all 1, and the $D_{i}$ are successively 1, 2, 1, 1, 4, 1, 1, 6, 1, 1, 8, …. Write a program that uses your `cont-frac` procedure from [Exercise 1.37](#Exercise-1_002e37) to approximate $e$ , based on Euler’s expansion.
+> **التمرين 1.38:** في عام 1737، نشر الرياضياتيّ السويسريّ لونهارد أويلر مذكّرةً بعنوان De Fractionibus Continuis، تضمّنت مفكوكًا لكسرٍ مستمرٍّ من أجل $e − 2$ ، حيث $e$ هو أساس اللوغاريتمات الطبيعيّة. وفي هذا الكسر، جميع $N_{i}$ تساوي 1، و $D_{i}$ تأتي على التوالي 1، 2، 1، 1، 4، 1، 1، 6، 1، 1، 8، …. اكتب برنامجًا يستخدم إجراءك `cont-frac` من [التمرين 1.37](#Exercise-1_002e37) لتقريب $e$ ، استنادًا إلى مفكوك أويلر.
 
-> **Exercise 1.39:** A continued fraction representation of the tangent function was published in 1770 by the German mathematician J.H. Lambert:
+> **التمرين 1.39:** نشر الرياضياتيّ الألمانيّ ج. هـ. لامبرت، عام 1770، تمثيلًا لدالّة الظلّ بكسرٍ مستمرٍّ:
 > > $tan ⁡ x = \frac{x}{1 − \frac{x^{2}}{3 − \frac{x^{2}}{5 − …}}} ,$
-> > where $x$ is in radians. Define a procedure `(tan-cf x k)` that computes an approximation to the tangent function based on Lambert’s formula. `k` specifies the number of terms to compute, as in [Exercise 1.37](#Exercise-1_002e37).
+> > حيث $x$ بالراديان. عرّف إجراءً `(tan-cf x k)` يحسب تقريبًا لدالّة الظلّ استنادًا إلى صيغة لامبرت. ويحدّد `k` عدد الحدود المراد حسابها، كما في [التمرين 1.37](#Exercise-1_002e37).
 
-#### 1.3.4 Procedures as Returned Values
+#### 1.3.4 الإجراءات كقيمٍ مُعادة
 
-The above examples demonstrate how the ability to pass procedures as arguments significantly enhances the expressive power of our programming language. We can achieve even more expressive power by creating procedures whose returned values are themselves procedures.
+وتُبيّن الأمثلة أعلاه كيف تعزّز القدرة على تمرير الإجراءات بوصفها وسائط قوّة التعبير في لغة البرمجة لدينا تعزيزًا كبيرًا. ويمكننا تحقيق قوّة تعبيرٍ أكبر بإنشاء إجراءاتٍ تكون قيمها المُعادة إجراءاتٍ بذاتها.
 
-We can illustrate this idea by looking again at the fixed-point example described at the end of [1.3.3](#g_t1_002e3_002e3). We formulated a new version of the square-root procedure as a fixed-point search, starting with the observation that $\sqrt{x}$ is a fixed-point of the function $y ↦ x / y$ . Then we used average damping to make the approximations converge. Average damping is a useful general technique in itself. Namely, given a function $f$ , we consider the function whose value at $x$ is equal to the average of $x$ and $f ( x )$ .
+يمكننا توضيح هذه الفكرة بالنظر مرّةً أخرى إلى مثال النقطة الثابتة الموصوف في نهاية [1.3.3](#g_t1_002e3_002e3). فقد صُغنا نسخةً جديدةً من إجراء الجذر التربيعيّ بوصفها بحثًا عن نقطةٍ ثابتة، بدءًا من ملاحظة أنّ $\sqrt{x}$ نقطةٌ ثابتةٌ للدالّة $y ↦ x / y$ . ثمّ استخدمنا التخميد المتوسط لجعل التقريبات تتقارب. والتخميد المتوسط تقنيّةٌ عامّةٌ مفيدةٌ بحدّ ذاتها. وهي، على وجه التحديد، أنّه بمعلوبيّة دالّةٍ $f$ ، ننظر إلى الدالّة التي تساوي قيمتها عند $x$ متوسّط $x$ و $f ( x )$ .
 
-We can express the idea of average damping by means of the following procedure:
+ويمكننا التعبير عن فكرة التخميد المتوسط بواسطة الإجراء التالي:
 
 ```scheme
 (define (average-damp f)
@@ -1789,14 +1789,14 @@ We can express the idea of average damping by means of the following procedure:
     (average x (f x))))
 ```
 
-`Average-damp` is a procedure that takes as its argument a procedure `f` and returns as its value a procedure (produced by the `lambda`) that, when applied to a number `x`, produces the average of `x` and `(f x)`. For example, applying `average-damp` to the `square` procedure produces a procedure whose value at some number $x$ is the average of $x$ and $x^{2}$ . Applying this resulting procedure to 10 returns the average of 10 and 100, or 55:[^59]
+`Average-damp` هو إجراءٌ يأخذ إجراءً هو `f` وسيطًا له، ويعيد قيمةً هي إجراء (ينتجه `lambda`) ينتج - حين يُطبَّق على عدد `x` - متوسط `x` و`(f x)`. فمثلًا، تطبيق `average-damp` على الإجراء `square` ينتج إجراءً قيمته عند عددٍ ما $x$ هي متوسط $x$ و$x^{2}$ . وتطبيق هذا الإجراء الناتج على 10 يعيد متوسط 10 و100، أي 55:[^59]
 
 ```scheme
 ((average-damp square) 10)
 55
 ```
 
-Using `average-damp`, we can reformulate the square-root procedure as follows:
+وباستخدام `average-damp`، يمكننا إعادة صياغة إجراء الجذر التربيعيّ على النحو التالي:
 
 ```scheme
 (define (sqrt x)
@@ -1806,7 +1806,7 @@ Using `average-damp`, we can reformulate the square-root procedure as follows:
    1.0))
 ```
 
-Notice how this formulation makes explicit the three ideas in the method: fixed-point search, average damping, and the function $y ↦ x / y$ . It is instructive to compare this formulation of the square-root method with the original version given in [1.1.7](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e7). Bear in mind that these procedures express the same process, and notice how much clearer the idea becomes when we express the process in terms of these abstractions. In general, there are many ways to formulate a process as a procedure. Experienced programmers know how to choose procedural formulations that are particularly perspicuous, and where useful elements of the process are exposed as separate entities that can be reused in other applications. As a simple example of reuse, notice that the cube root of $x$ is a fixed point of the function $y ↦ x / y^{2}$ , so we can immediately generalize our square-root procedure to one that extracts cube roots:[^60]
+لاحِظ كيف تُضفي هذه الصياغة وضوحًا صريحًا على الأفكار الثلاثة في الطريقة: البحث عن النقطة الثابتة، والتخميد المتوسط (average damping)، والدالّة $y ↦ x / y$ . ومن المفيد مقارنة هذه الصياغة لطريقة الجذر التربيعيّ بالنسخة الأصليّة المعطاة في [1.1.7](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e7). وخُذ في الحسبان أنّ هذه الإجراءات تعبّر عن العمليّة ذاتها، ولاحِظ كم يصير الفكر أوضح حين نعبّر عن العمليّة بدلالة هذه التجريدات. وبصورة عامّة، ثمّة طرائق كثيرة لصياغة عمليّةٍ في صورة إجراء. ويعرف المبرمجون الخبراء كيف ينتخبون الصياغ الإجرائيّة البديعةَ بشكلٍ خاصّ، وحيث تُكشَف العناصر المفيدة من العمليّة ككياناتٍ منفصلةٍ يمكن إعادة استخدامها في تطبيقات أخرى. وبوصفه مثالًا بسيطًا على إعادة الاستخدام، لاحِظ أنّ الجذر التكعيبيّ لـ$x$ نقطةٌ ثابتة للدالّة $y ↦ x / y^{2}$ ، فيمكننا تعميم إجراء الجذر التربيعيّ تعميمًا فوريًّا إلى إجراءٍ يستخرج الجذور التكعيبيّة:[^60]
 
 ```scheme
 (define (cube-root x)
@@ -1817,13 +1817,13 @@ Notice how this formulation makes explicit the three ideas in the method: fixed-
    1.0))
 ```
 
-#### Newton’s method
+#### طريقة نيوتن
 
-When we first introduced the square-root procedure, in [1.1.7](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e7), we mentioned that this was a special case of *Newton’s method*. If $x ↦ g ( x )$ is a differentiable function, then a solution of the equation $g ( x ) = 0$ is a fixed point of the function $x ↦ f ( x )$ where $f ( x ) = x − \frac{g ( x )}{D g ( x )}$ and $D g ( x )$ is the derivative of $g$ evaluated at $x$ . Newton’s method is the use of the fixed-point method we saw above to approximate a solution of the equation by finding a fixed point of the function $f$ .[^61]
+حين قدّمنا أوّل مرّة إجراء الجذر التربيعيّ، في [1.1.7](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e7)، ذكرنا أنّه كان حالةً خاصّةً من *طريقة نيوتن*. فإذا كانت $x ↦ g ( x )$ دالّةً قابلةً للاشتقاق، فإنّ حلّ المعادلة $g ( x ) = 0$ نقطةٌ ثابتة للدالّة $x ↦ f ( x )$ حيث $f ( x ) = x − \frac{g ( x )}{D g ( x )}$ وأنّ $D g ( x )$ هي مشتقّة $g$ مُقيَّمةً عند $x$ . وطريقة نيوتن هي استخدام طريقة النقطة الثابتة التي رأيناها أعلاه لتقريب حلّ المعادلة بإيجاد نقطةٍ ثابتةٍ للدالّة $f$ .[^61]
 
-For many functions $g$ and for sufficiently good initial guesses for $x$ , Newton’s method converges very rapidly to a solution of $g ( x ) = 0$ .[^62]
+فلكثيرٍ من الدوالّ $g$ ، ومع تقديراتٍ أوّليّةٍ جيّدةٍ بما يكفي لـ$x$ ، تتقارب طريقة نيوتن بسرعةٍ فائقةٍ نحو حلٍّ للمعادلة $g ( x ) = 0$ .[^62]
 
-In order to implement Newton’s method as a procedure, we must first express the idea of derivative. Note that “derivative,” like average damping, is something that transforms a function into another function. For instance, the derivative of the function $x ↦ x^{3}$ is the function $x ↦ 3 x^{2}$ . In general, if $g$ is a function and $d x$ is a small number, then the derivative $D g$ of $g$ is the function whose value at any number $x$ is given (in the limit of small $d x$ ) by $D g ( x ) = \frac{g ( x + d x ) − g ( x )}{d x} .$ Thus, we can express the idea of derivative (taking $d x$ to be, say, 0.00001) as the procedure
+لكي نُنفِّذ طريقة نيوتن كإجراء، لا بدّ أن نعبّر أوّلًا عن فكرة المشتقّة. ولاحِظ أنّ «المشتقّة» - شأنها شأن التخميد المتوسط - شيءٌ يحوّل دالّةً إلى دالّةٍ أخرى. فمثلًا، مشتقّة الدالّة $x ↦ x^{3}$ هي الدالّة $x ↦ 3 x^{2}$ . وبصورة عامّة، إذا كانت $g$ دالّةً وكان $d x$ عددًا صغيرًا، فإنّ المشتقّة $D g$ للدالّة $g$ هي الدالّة التي قيمتها عند أيّ عدد $x$ تُعطى (في حدّ $d x$ الصغير) بالعلاقة $D g ( x ) = \frac{g ( x + d x ) − g ( x )}{d x} .$ وعلى هذا، يمكننا التعبير عن فكرة المشتقّة (بأخذ $d x$ مساويًا، مثلًا، 0.00001) بالإجراء
 
 ```scheme
 (define (deriv g)
@@ -1832,13 +1832,13 @@ In order to implement Newton’s method as a procedure, we must first express th
        dx)))
 ```
 
-along with the definition
+مع التعريف
 
 ```scheme
 (define dx 0.00001)
 ```
 
-Like `average-damp`, `deriv` is a procedure that takes a procedure as argument and returns a procedure as value. For example, to approximate the derivative of $x ↦ x^{3}$ at 5 (whose exact value is 75) we can evaluate
+شأنها شأن `average-damp`، فإنّ `deriv` إجراءٌ يأخذ إجراءً وسيطًا ويعيد إجراءً قيمةً. فمثلًا، لتقريب مشتقّة $x ↦ x^{3}$ عند 5 (وقيمتها المضبوطة 75) يمكننا أن نقوّم
 
 ```scheme
 (define (cube x) (* x x x))
@@ -1847,7 +1847,7 @@ Like `average-damp`, `deriv` is a procedure that takes a procedure as argument a
 75.00014999664018
 ```
 
-With the aid of `deriv`, we can express Newton’s method as a fixed-point process:
+وبمعونة `deriv`، يمكننا التعبير عن طريقة نيوتن كعمليّة نقطةٍ ثابتة:
 
 ```scheme
 (define (newton-transform g)
@@ -1860,9 +1860,9 @@ With the aid of `deriv`, we can express Newton’s method as a fixed-point proce
                guess))
 ```
 
-The `newton-transform` procedure expresses the formula at the beginning of this section, and `newtons-method` is readily defined in terms of this. It takes as arguments a procedure that computes the function for which we want to find a zero, together with an initial guess. For instance, to find the square root of $x$ , we can use Newton’s method to find a zero of the function $y ↦ y^{2} − x$ starting with an initial guess of 1.[^63]
+إنّ الإجراء `newton-transform` يعبّر عن الصيغة الواردة في بداية هذا القسم، أمّا `newtons-method` فمُعرَّفٌ بسهولةٍ بدلالة ذلك. وهو يأخذ وسيطَين: إجراءً يحسب الدالّة التي نريد إيجاد صفرٍ لها، مع تقديرٍ أوّليّ. فمثلًا، لإيجاد الجذر التربيعيّ لـ$x$ ، يمكننا استخدام طريقة نيوتن لإيجاد صفرٍ للدالّة $y ↦ y^{2} − x$ بالانطلاق من تقديرٍ أوّليٍّ قيمته 1.[^63]
 
-This provides yet another form of the square-root procedure:
+وهذا يوفّر صورةً أخرى لإجراء الجذر التربيعيّ:
 
 ```scheme
 (define (sqrt x)
@@ -1872,9 +1872,9 @@ This provides yet another form of the square-root procedure:
    1.0))
 ```
 
-#### Abstractions and first-class procedures
+#### التجريدات والإجراءات من الرتبة الأولى
 
-We’ve seen two ways to express the square-root computation as an instance of a more general method, once as a fixed-point search and once using Newton’s method. Since Newton’s method was itself expressed as a fixed-point process, we actually saw two ways to compute square roots as fixed points. Each method begins with a function and finds a fixed point of some transformation of the function. We can express this general idea itself as a procedure:
+لقد رأينا طريقتين للتعبير عن احتساب الجذر التربيعيّ بوصفه حالةً من طريقةٍ أكثر عموميّة: مرّةً كبحثٍ عن نقطةٍ ثابتة، ومرّةً باستخدام طريقة نيوتن. وبما أنّ طريقة نيوتن عُبِّر عنها هي نفسها كعمليّة نقطةٍ ثابتة، فإنّنا رأينا في الواقع طريقتين لاحتساب الجذور التربيعيّة كنقاطٍ ثابتة. فكلّ طريقةٍ تبدأ بدالّةٍ وتجد نقطةً ثابتةً لتحويلٍ ما من الدالّة. ويمكننا التعبير عن هذه الفكرة العامّة نفسها كإجراء:
 
 ```scheme
 (define (fixed-point-of-transform 
@@ -1882,9 +1882,9 @@ We’ve seen two ways to express the square-root computation as an instance of a
   (fixed-point (transform g) guess))
 ```
 
-This very general procedure takes as its arguments a procedure `g` that computes some function, a procedure that transforms `g`, and an initial guess. The returned result is a fixed point of the transformed function.
+يأخذ هذا الإجراء بالغ العموميّة ثلاثة وسائط: إجراءً هو `g` يحسب دالّةً ما، وإجراءً يحوّل `g`، وتقديرًا أوّليًّا. والنتيجة المعادة هي نقطةٌ ثابتة للدالّة المحوَّلة.
 
-Using this abstraction, we can recast the first square-root computation from this section (where we look for a fixed point of the average-damped version of $y ↦ x / y$ ) as an instance of this general method:
+وباستخدام هذا التجريد، يمكننا إعادة صياغة احتساب الجذر التربيعيّ الأوّل من هذا القسم (حيث نبحث عن نقطةٍ ثابتةٍ للنسخة المُخمَّدة متوسطيًّا من $y ↦ x / y$ ) بوصفه حالةً من هذه الطريقة العامّة:
 
 ```scheme
 (define (sqrt x)
@@ -1894,7 +1894,7 @@ Using this abstraction, we can recast the first square-root computation from thi
    1.0))
 ```
 
-Similarly, we can express the second square-root computation from this section (an instance of Newton’s method that finds a fixed point of the Newton transform of $y ↦ y^{2} − x$ ) as
+وعلى نحو مماثل، يمكننا التعبير عن احتساب الجذر التربيعيّ الثاني من هذا القسم (وهي حالةٌ من طريقة نيوتن تجد نقطةً ثابتةً للتحويل النيوتونيّ من $y ↦ y^{2} − x$ ) على الصورة
 
 ```scheme
 (define (sqrt x)
@@ -1904,183 +1904,183 @@ Similarly, we can express the second square-root computation from this section (
    1.0))
 ```
 
-We began section [1.3](#g_t1_002e3) with the observation that compound procedures are a crucial abstraction mechanism, because they permit us to express general methods of computing as explicit elements in our programming language. Now we’ve seen how higher-order procedures permit us to manipulate these general methods to create further abstractions.
+بدأنا القسم [1.3](#g_t1_002e3) بملاحظةٍ مفادها أنّ الإجراءات المركّبة آليّة تجريدٍ حاسمة، لأنّها تسمح لنا بالتعبير عن طرائق عامّة للاحتساب كعناصر صريحةٍ في لغة البرمجة لدينا. أمّا الآن فقد رأينا كيف تسمح لنا الإجراءات من الرتبة العليا بالتحكّم في هذه الطرائق العامّة لإبداع تجريداتٍ إضافيّة.
 
-As programmers, we should be alert to opportunities to identify the underlying abstractions in our programs and to build upon them and generalize them to create more powerful abstractions. This is not to say that one should always write programs in the most abstract way possible; expert programmers know how to choose the level of abstraction appropriate to their task. But it is important to be able to think in terms of these abstractions, so that we can be ready to apply them in new contexts. The significance of higher-order procedures is that they enable us to represent these abstractions explicitly as elements in our programming language, so that they can be handled just like other computational elements.
+وبوصفنا مبرمجين، ينبغي أن نكون متيقّظين للفرص التي تُتيح لنا تمييز التجريدات الكامنة في برامجنا، والبناء عليها، وتعميمها، لإبداع تجريداتٍ أكثر قوّة. وهذا لا يعني وجوب كتابة البرامج دائمًا بأكثر الطرق تجريدًا؛ فالمبرمجون الخبراء يعرفون كيف ينتخبون مستوى التجريد الملائم لمهمّتهم. ولكن المهمّ هو القدرة على التفكير بدلالة هذه التجريدات، حتّى نكون على استعدادٍ لتطبيقها في سياقاتٍ جديدة. وأهمّيّة الإجراءات من الرتبة العليا أنّها تُمكّننا من تمثيل هذه التجريدات تمثيلًا صريحًا كعناصر في لغة البرمجة لدينا، فيمكن التعامل معها تمامًا مثل غيرها من العناصر الاحتسابيّة.
 
-In general, programming languages impose restrictions on the ways in which computational elements can be manipulated. Elements with the fewest restrictions are said to have *first-class* status. Some of the “rights and privileges” of first-class elements are:[^64]
+وبصورة عامّة، تفرض لغات البرمجة قيودًا على الطرق التي يمكن بالتحكّم في العناصر الاحتسابيّة فيها. ويُقال إنّ العناصر الأقلّ خضوعًا للقيود تتمتّع بمكانة *من الرتبة الأولى* (first-class). ومن «الحقوق والامتيازات» التي تتمتّع بها العناصر من الرتبة الأولى:[^64]
 
-- They may be named by variables.
-- They may be passed as arguments to procedures.
-- They may be returned as the results of procedures.
-- They may be included in data structures.[^65]
+- يجوز أن تُسمّى بواسطة متغيّرات.
+- يجوز أن تُمرَّر كمعطياتٍ إلى الإجراءات.
+- يجوز أن تُعاد كنتائج للإجراءات.
+- يجوز أن تُضمَّن في بنيات البيانات.[^65]
 
-Lisp, unlike other common programming languages, awards procedures full first-class status. This poses challenges for efficient implementation, but the resulting gain in expressive power is enormous.[^66]
+إنّ Lisp - بخلاف لغات البرمجة الشائعة الأخرى - يمنح الإجراءات مكانة الرتبة الأولى الكاملة. وهذا يطرح تحدّياتٍ في التنفيذ الكفء، ولكن المكسب الناتج في القوّة التعبيريّة هائل.[^66]
 
-**Exercise 1.40:** Define a procedure `cubic` that can be used together with the `newtons-method` procedure in expressions of the form
+**تمرين 1.40:** عرّف إجراءً هو `cubic` يمكن استخدامه مع الإجراء `newtons-method` في تعبيراتٍ على الصورة
 
 ```scheme
 (newtons-method (cubic a b c) 1)
 ```
 
-to approximate zeros of the cubic $x^{3} + a x^{2} + b x + c$ .
+لتقريب أصفار الدالّة التكعيبيّة $x^{3} + a x^{2} + b x + c$ .
 
-**Exercise 1.41:** Define a procedure `double` that takes a procedure of one argument as argument and returns a procedure that applies the original procedure twice. For example, if `inc` is a procedure that adds 1 to its argument, then `(double inc)` should be a procedure that adds 2. What value is returned by
+**تمرين 1.41:** عرّف إجراءً هو `double` يأخذ إجراءً ذا وسيطٍ واحدٍ كوسيطٍ له ويعيد إجراءً يطبّق الإجراء الأصليّ مرّتين. فمثلًا، إذا كان `inc` إجراءً يضيف 1 إلى وسيطه، فإنّ `(double inc)` ينبغي أن يكون إجراءً يضيف 2. فما القيمة التي تعيدها
 
 ```scheme
 (((double (double double)) inc) 5)
 ```
 
-**Exercise 1.42:** Let $f$ and $g$ be two one-argument functions. The *composition* $f$ after $g$ is defined to be the function $x ↦ f ( g ( x ) )$ . Define a procedure `compose` that implements composition. For example, if `inc` is a procedure that adds 1 to its argument,
+**تمرين 1.42:** لتكن $f$ و$g$ دالّتين أحاديّتي الوسيط. ويُعرَّف *التركيب* $f$ بعد $g$ بوصفه الدالّة $x ↦ f ( g ( x ) )$ . عرّف إجراءً هو `compose` يُنفِّذ التركيب. فمثلًا، إذا كان `inc` إجراءً يضيف 1 إلى وسيطه،
 
 ```scheme
 ((compose square inc) 6)
 49
 ```
 
-**Exercise 1.43:** If $f$ is a numerical function and $n$ is a positive integer, then we can form the $n^{th}$ repeated application of $f$ , which is defined to be the function whose value at $x$ is $f ( f ( … ( f ( x ) ) … ) )$ . For example, if $f$ is the function $x ↦ x + 1$ , then the $n^{th}$ repeated application of $f$ is the function $x ↦ x + n$ . If $f$ is the operation of squaring a number, then the $n^{th}$ repeated application of $f$ is the function that raises its argument to the $2^{n} -th$ power. Write a procedure that takes as inputs a procedure that computes $f$ and a positive integer $n$ and returns the procedure that computes the $n^{th}$ repeated application of $f$ . Your procedure should be able to be used as follows:
+**تمرين 1.43:** إذا كانت $f$ دالّةً عدديّةً وكان $n$ عددًا صحيحًا موجبًا، فبوسعنا تكوين التطبيق المكرّر للمقدار $n^{th}$ للدالّة $f$ ، وهو مُعرَّفٌ بوصفه الدالّة التي قيمتها عند $x$ هي $f ( f ( … ( f ( x ) ) … ) )$ . فمثلًا، إذا كانت $f$ هي الدالّة $x ↦ x + 1$ ، فإنّ التطبيق المكرّر للمقدار $n^{th}$ للدالّة $f$ هو الدالّة $x ↦ x + n$ . وإذا كانت $f$ هي عمليّة تربيع عدد، فإنّ التطبيق المكرّر للمقدار $n^{th}$ للدالّة $f$ هو الدالّة التي ترفع وسيطها إلى القوّة $2^{n} -th$ . اكتب إجراءً يأخذ مُدخلَين: إجراءً يحسب $f$ وعددًا صحيحًا موجبًا $n$ ، ويعيد الإجراء الذي يحسب التطبيق المكرّر للمقدار $n^{th}$ للدالّة $f$ . وينبغي أن يكون إجراءك صالحًا للاستخدام على النحو التالي:
 
 ```scheme
 ((repeated square 2) 5)
 625
 ```
 
-Hint: You may find it convenient to use `compose` from [Exercise 1.42](#Exercise-1_002e42).
+تلميح: قد تجد ملاءمةً في استخدام `compose` من [التمرين 1.42](#Exercise-1_002e42).
 
-> **Exercise 1.44:** The idea of *smoothing* a function is an important concept in signal processing. If $f$ is a function and $d x$ is some small number, then the smoothed version of $f$ is the function whose value at a point $x$ is the average of $f ( x − d x )$ , $f ( x )$ , and $f ( x + d x )$ . Write a procedure `smooth` that takes as input a procedure that computes $f$ and returns a procedure that computes the smoothed $f$ . It is sometimes valuable to repeatedly smooth a function (that is, smooth the smoothed function, and so on) to obtain the **n*-fold smoothed function*. Show how to generate the *n*-fold smoothed function of any given function using `smooth` and `repeated` from [Exercise 1.43](#Exercise-1_002e43).
+> **تمرين 1.44:** إنّ فكرة *تنعيم* دالّةٍ مفهومٌ مهمّ في معالجة الإشارة. إذا كانت $f$ دالّةً وكان $d x$ عددًا صغيرًا ما، فإنّ النسخة المُنعَّمة من $f$ هي الدالّة التي قيمتها عند نقطةٍ $x$ هي متوسط $f ( x − d x )$ ، و$f ( x )$ ، و$f ( x + d x )$ . اكتب إجراءً هو `smooth` يأخذ مُدخلًا إجراءً يحسب $f$ ويعيد إجراءً يحسب $f$ المُنعَّمة. ومن المفيد أحيانًا تنعيم دالّةٍ تكرارًا (أي تنعيم الدالّة المُنعَّمة، وهلمّ جرًّا) للحصول على الدالّة المُنعَّمة **n*-ضعف. وبيّن كيف تُولَّد الدالّة المُنعَّمة *n*-ضعف أيّ دالّةٍ معطاة باستخدام `smooth` و`repeated` من [التمرين 1.43](#Exercise-1_002e43).
 
-> **Exercise 1.45:** We saw in [1.3.3](#g_t1_002e3_002e3) that attempting to compute square roots by naively finding a fixed point of $y ↦ x / y$ does not converge, and that this can be fixed by average damping. The same method works for finding cube roots as fixed points of the average-damped $y ↦ x / y^{2}$ . Unfortunately, the process does not work for fourth roots—a single average damp is not enough to make a fixed-point search for $y ↦ x / y^{3}$ converge. On the other hand, if we average damp twice (i.e., use the average damp of the average damp of $y ↦ x / y^{3}$ ) the fixed-point search does converge. Do some experiments to determine how many average damps are required to compute $n^{th}$ roots as a fixed-point search based upon repeated average damping of $y ↦ x / y^{n − 1}$ . Use this to implement a simple procedure for computing $n^{th}$ roots using `fixed-point`, `average-damp`, and the `repeated` procedure of [Exercise 1.43](#Exercise-1_002e43). Assume that any arithmetic operations you need are available as primitives.
+> **تمرين 1.45:** رأينا في [1.3.3](#g_t1_002e3_002e3) أنّ محاولة احتساب الجذور التربيعيّة بإيجاد نقطةٍ ثابتةٍ لـ$y ↦ x / y$ إيجادًا ساذجًا لا تتقارب، وأنّ هذا يمكن تداركه بالتخميد المتوسط. والطريقة ذاتها تصلح لإيجاد الجذور التكعيبيّة كنقاطٍ ثابتةٍ للدالّة $y ↦ x / y^{2}$ المُخمَّدة متوسطيًّا. ولكن للأسف، لا تصلح العمليّة للجذور الرباعيّة—فإنّ التخميد المتوسط الواحد غير كافٍ لجعل بحث النقطة الثابتة عن $y ↦ x / y^{3}$ يتقارب. ومن ناحية أخرى، إذا خمّدنا متوسطيًّا مرّتين (أي إذا استخدمنا التخميد المتوسط للتخميد المتوسط لـ$y ↦ x / y^{3}$ ) فإنّ بحث النقطة الثابتة يتقارب فعلًا. فأجرِ بعض التجارب لتحديد كم تخميدًا متوسطيًّا يلزم لاحتساب جذور المقدار $n^{th}$ كبحثٍ عن نقطةٍ ثابتةٍ قائمٍ على التخميد المتوسط المتكرّر لـ$y ↦ x / y^{n − 1}$ . واستخدم هذا لتنفيذ إجراءٍ بسيطٍ لاحتساب جذور المقدار $n^{th}$ باستخدام `fixed-point` و`average-damp` وإجراء `repeated` من [التمرين 1.43](#Exercise-1_002e43). وافترض أنّ أيّ عمليّات حسابيّةٍ تحتاجها متاحةٌ كأوّليّات.
 
-> **Exercise 1.46:** Several of the numerical methods described in this chapter are instances of an extremely general computational strategy known as *iterative improvement*. Iterative improvement says that, to compute something, we start with an initial guess for the answer, test if the guess is good enough, and otherwise improve the guess and continue the process using the improved guess as the new guess. Write a procedure `iterative-improve` that takes two procedures as arguments: a method for telling whether a guess is good enough and a method for improving a guess. `Iterative-improve` should return as its value a procedure that takes a guess as argument and keeps improving the guess until it is good enough. Rewrite the `sqrt` procedure of [1.1.7](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e7) and the `fixed-point` procedure of [1.3.3](#g_t1_002e3_002e3) in terms of `iterative-improve`.
+> **تمرين 1.46:** إنّ جملةً من الطرائق العدديّة الموصوفة في هذا الفصل هي حالاتٌ من استراتيجيّة احتسابيّةٍ بالغة العموميّة تُعرف بـ*التحسين التكراريّ* (iterative improvement). ويقول التحسين التكراريّ إنّه لكي نحسب شيئًا، نبدأ بتقديرٍ أوّليّ للجواب، ونختبر ما إذا كان التقدير جيّدًا بما يكفي، وإلّا نحسّن التقدير ونواصل العمليّة باستخدام التقدير المُحسَّن تقديرًا جديدًا. اكتب إجراءً هو `iterative-improve` يأخذ إجراءَين كوسيطَين: طريقةً للحكم بما إذا كان تقديرٌ ما جيّدًا بما يكفي، وطريقةً لتحسين التقدير. وينبغي أن يعيد `Iterative-improve` قيمةً هي إجراءٌ يأخذ تقديرًا كوسيطٍ له ويواصل تحسين التقدير حتّى يصير جيّدًا بما يكفي. وأعِد كتابة إجراء `sqrt` من [1.1.7](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e7) وإجراء `fixed-point` من [1.3.3](#g_t1_002e3_002e3) بدلالة `iterative-improve`.
 
-[^1]: The Lisp 1 Programmer’s Manual appeared in 1960 and the Lisp 1.5 Programmer’s Manual ([McCarthy et al. 1965](https://sarabander.github.io/sicp/html/References.xhtml#McCarthy-et-al_002e-1965)) was published in 1962. The early history of Lisp is described in [McCarthy 1978](https://sarabander.github.io/sicp/html/References.xhtml#McCarthy-1978).
+[^1]: ظهر «Lisp 1 Programmer’s Manual» في عام 1960، ونُشر «Lisp 1.5 Programmer’s Manual» ([McCarthy et al. 1965](https://sarabander.github.io/sicp/html/References.xhtml#McCarthy-et-al_002e-1965)) في عام 1962. ويوصف تاريخ Lisp المبكّر في [McCarthy 1978](https://sarabander.github.io/sicp/html/References.xhtml#McCarthy-1978).
 
-[^2]: The two dialects in which most major Lisp programs of the 1970s were written are MacLisp ([Moon 1978](https://sarabander.github.io/sicp/html/References.xhtml#Moon-1978); [Pitman 1983](https://sarabander.github.io/sicp/html/References.xhtml#Pitman-1983)), developed at the MIT Project MAC, and Interlisp ([Teitelman 1974](https://sarabander.github.io/sicp/html/References.xhtml#Teitelman-1974)), developed at Bolt Beranek and Newman Inc. and the Xerox Palo Alto Research Center. Portable Standard Lisp ([Hearn 1969](https://sarabander.github.io/sicp/html/References.xhtml#Hearn-1969); [Griss 1981](https://sarabander.github.io/sicp/html/References.xhtml#Griss-1981)) was a Lisp dialect designed to be easily portable between different machines. MacLisp spawned a number of subdialects, such as Franz Lisp, which was developed at the University of California at Berkeley, and Zetalisp ([Moon and Weinreb 1981](https://sarabander.github.io/sicp/html/References.xhtml#Moon-and-Weinreb-1981)), which was based on a special-purpose processor designed at the MIT Artificial Intelligence Laboratory to run Lisp very efficiently. The Lisp dialect used in this book, called Scheme ([Steele and Sussman 1975](https://sarabander.github.io/sicp/html/References.xhtml#Steele-and-Sussman-1975)), was invented in 1975 by Guy Lewis Steele Jr. and Gerald Jay Sussman of the MIT Artificial Intelligence Laboratory and later reimplemented for instructional use at MIT. Scheme became an IEEE standard in 1990 ([IEEE 1990](https://sarabander.github.io/sicp/html/References.xhtml#IEEE-1990)). The Common Lisp dialect ([Steele 1982](https://sarabander.github.io/sicp/html/References.xhtml#Steele-1982), [Steele 1990](https://sarabander.github.io/sicp/html/References.xhtml#Steele-1990)) was developed by the Lisp community to combine features from the earlier Lisp dialects to make an industrial standard for Lisp. Common Lisp became an ANSI standard in 1994 ([ANSI 1994](https://sarabander.github.io/sicp/html/References.xhtml#ANSI-1994)).
+[^2]: اللهجتان اللتان كُتبت بهما معظم برامج Lisp الكبرى في سبعيّات القرن الماضي هما MacLisp ([Moon 1978](https://sarabander.github.io/sicp/html/References.xhtml#Moon-1978); [Pitman 1983](https://sarabander.github.io/sicp/html/References.xhtml#Pitman-1983))، وهي مُطوَّرة في MIT Project MAC، وInterlisp ([Teitelman 1974](https://sarabander.github.io/sicp/html/References.xhtml#Teitelman-1974))، وهي مُطوَّرة في Bolt Beranek and Newman Inc. وفي Xerox Palo Alto Research Center. وكانت Portable Standard Lisp ([Hearn 1969](https://sarabander.github.io/sicp/html/References.xhtml#Hearn-1969); [Griss 1981](https://sarabander.github.io/sicp/html/References.xhtml#Griss-1981)) لهجة Lisp صُمّمت لتكون سهلة النقل بين الآلات المختلفة. وقد أنجبت MacLisp عددًا من اللهجات الفرعيّة، مثل Franz Lisp، وهي مُطوَّرة في University of California at Berkeley، وZetalisp ([Moon and Weinreb 1981](https://sarabander.github.io/sicp/html/References.xhtml#Moon-and-Weinreb-1981))، وهي قائمة على معالجٍ خاصّ الغرض صُمّم في MIT Artificial Intelligence Laboratory لتشغيل Lisp بكفاءةٍ عاليةٍ جدًّا. ولهجة Lisp المستخدمة في هذا الكتاب، والمسماة Scheme ([Steele and Sussman 1975](https://sarabander.github.io/sicp/html/References.xhtml#Steele-and-Sussman-1975))، قد اُخترعت في عام 1975 على يد Guy Lewis Steele Jr. وGerald Jay Sussman من MIT Artificial Intelligence Laboratory، ثمّ أُعيد تنفيذها للاستخدام التعليميّ في MIT لاحقًا. وصارت Scheme معيارًا من IEEE في عام 1990 ([IEEE 1990](https://sarabander.github.io/sicp/html/References.xhtml#IEEE-1990)). وقد طُوِّرت لهجة Common Lisp ([Steele 1982](https://sarabander.github.io/sicp/html/References.xhtml#Steele-1982)، [Steele 1990](https://sarabander.github.io/sicp/html/References.xhtml#Steele-1990)) من قِبل مجتمع Lisp لتجمع ميزات لهجات Lisp السابقة بغية جعلها معيارًا صناعيًّا لـLisp. وصارت Common Lisp معيارًا من ANSI في عام 1994 ([ANSI 1994](https://sarabander.github.io/sicp/html/References.xhtml#ANSI-1994)).
 
-[^3]: One such special application was a breakthrough computation of scientific importance—an integration of the motion of the Solar System that extended previous results by nearly two orders of magnitude, and demonstrated that the dynamics of the Solar System is chaotic. This computation was made possible by new integration algorithms, a special-purpose compiler, and a special-purpose computer all implemented with the aid of software tools written in Lisp ([Abelson et al. 1992](https://sarabander.github.io/sicp/html/References.xhtml#Abelson-et-al_002e-1992); [Sussman and Wisdom 1992](https://sarabander.github.io/sicp/html/References.xhtml#Sussman-and-Wisdom-1992)).
+[^3]: كان أحد هذه التطبيقات الخاصّة احتسابًا مُهمًّا علميًّا مُخترِقًا—وهو تكاملٌ لحركة النظام الشمسيّ مدّد النتائج السابقة بنحو رتبتي مقدار، وأظهر أنّ ديناميكا النظام الشمسيّ فوضويّة. وقد أُتيح هذا الاحتساب بفضل خوارزميّات تكاملٍ جديدة، ومصرِّفٍ خاصّ الغرض، وحاسوبٍ خاصّ الغرض، جميعها مُنفَّذة بمعونة أدوات برمجيّةٍ كُتبت بـLisp ([Abelson et al. 1992](https://sarabander.github.io/sicp/html/References.xhtml#Abelson-et-al_002e-1992); [Sussman and Wisdom 1992](https://sarabander.github.io/sicp/html/References.xhtml#Sussman-and-Wisdom-1992)).
 
-[^4]: The characterization of numbers as “simple data” is a barefaced bluff. In fact, the treatment of numbers is one of the trickiest and most confusing aspects of any programming language. Some typical issues involved are these: Some computer systems distinguish *integers*, such as 2, from *real numbers*, such as 2.71. Is the real number 2.00 different from the integer 2? Are the arithmetic operations used for integers the same as the operations used for real numbers? Does 6 divided by 2 produce 3, or 3.0? How large a number can we represent? How many decimal places of accuracy can we represent? Is the range of integers the same as the range of real numbers? Above and beyond these questions, of course, lies a collection of issues concerning roundoff and truncation errors—the entire science of numerical analysis. Since our focus in this book is on large-scale program design rather than on numerical techniques, we are going to ignore these problems. The numerical examples in this chapter will exhibit the usual roundoff behavior that one observes when using arithmetic operations that preserve a limited number of decimal places of accuracy in noninteger operations.
+[^4]: إنّ توصيف الأعداد بأنّها «بيانات بسيطة» مُبالغةٌ صارخة. فالواقع، إنّ معاملة الأعداد هي واحدة من أعقد القضايا إرباكًا في أيّ لغة برمجة. ومن القضايا النمطيّة المُتورّطة في ذلك ما يلي: تتميّز بعض أنظمة الحاسوب بين *الأعداد الصحيحة*، مثل 2، و*الأعداد الحقيقيّة*، مثل 2.71. فهل العدد الحقيقيّ 2.00 يختلف عن العدد الصحيح 2؟ وهل العمليّات الحسابيّة المستخدمة للأعداد الصحيحة هي ذاتها المستخدمة للأعداد الحقيقيّة؟ وهل يُنتج قسمةُ 6 على 2 العددَ 3، أم 3.0؟ فما أكبر عددٍ يمكننا تمثيله؟ وكم منزلةً عشريّةً من الدقّة يمكننا تمثيلها؟ فهل مدى الأعداد الصحيحة هو ذاته مدى الأعداد الحقيقيّة؟ وفوق هذه الأسئلة كلّها، يقع بالطبع مجموعةٌ من القضايا المتعلّقة بأخطاء التقريب والاقتطاع—وهو علم التحليل العدديّ برمّته. وبما أنّ تركيزنا في هذا الكتاب ينصرف إلى تصميم البرامج واسعة النطاق بدلًا من التقنيّات العدديّة، فإنّنا سنتجاهل هذه المشكلات. والأمثلة العدديّة في هذا الفصل ستبدي السلوك التقريبيّ المعتاد الذي يُلاحَظ عند استخدام عمليّات حسابيّةٍ تحافظ على عددٍ محدودٍ من المنازل العشريّة للدقّة في العمليّات غير الصحيحة.
 
-[^5]: Throughout this book, when we wish to emphasize the distinction between the input typed by the user and the response printed by the interpreter, we will show the latter in slanted characters.
+[^5]: وعلى امتداد هذا الكتاب، حين نرغب في إبراز التمييز بين المُدخَل الذي يطبعه المستخدم والاستجابة التي يطبعها المفسّر، فإنّنا سنُظهر الأخيرة بحروفٍ مائلة.
 
-[^6]: Lisp systems typically provide features to aid the user in formatting expressions. Two especially useful features are one that automatically indents to the proper pretty-print position whenever a new line is started and one that highlights the matching left parenthesis whenever a right parenthesis is typed.
+[^6]: تُوفّر أنظمة Lisp عادةً ميزاتٍ لمساعدة المستخدم على تنسيق التعابير. وأكثر الميزتَين نفعةً هما واحدةٌ تُزحزح تلقائيًّا إلى موضع الطباعة الجميلة الصحيح كلّما بُدِئ سطرٌ جديد، وأخرى تُبرز القوس الأيسر المطابق كلّما طُبع قوسٌ أيمن.
 
-[^7]: Lisp obeys the convention that every expression has a value. This convention, together with the old reputation of Lisp as an inefficient language, is the source of the quip by Alan Perlis (paraphrasing Oscar Wilde) that “Lisp programmers know the value of everything but the cost of nothing.”
+[^7]: تتّبع Lisp الاصطلاح القائل إنّ لكلّ تعبيرٍ قيمة. وهذا الاصطلاح، إلى جانب السمعة القديمة لـLisp بوصفها لغةً غير كفء، هو مصدر العبارة الساخرة لآلان بيرليس (بمعارضةٍ لأوسكار وايلد) بأنّ «مبرمجي Lisp يعرفون قيمة كلّ شيءٍ ولكنّهم لا يعرفون ثمن لا شيء».
 
-[^8]: In this book, we do not show the interpreter’s response to evaluating definitions, since this is highly implementation-dependent.
+[^8]: في هذا الكتاب، لا نُظهر استجابة المفسّر لتقييم التعريفات، لأنّ ذلك يعتمد بدرجةٍ كبيرةٍ على التنفيذ.
 
-[^9]: [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) will show that this notion of environment is crucial, both for understanding how the interpreter works and for implementing interpreters.
+[^9]: سيُظهر [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) أنّ مفهوم البيئة هذا حاسم، سواءً لفهم كيفيّة عمل المفسّر أم لتنفيذ المفسّرات.
 
-[^10]: It may seem strange that the evaluation rule says, as part of the first step, that we should evaluate the leftmost element of a combination, since at this point that can only be an operator such as `+` or `*` representing a built-in primitive procedure such as addition or multiplication. We will see later that it is useful to be able to work with combinations whose operators are themselves compound expressions.
+[^10]: قد يبدو غريبًا أنّ قاعدة التقييم تقول، كجزءٍ من الخطوة الأولى، إنّه ينبغي تقييم العنصر الأيسر في التركيب، إذ إنّ ذلك لا يمكن أن يكون عند هذه النقطة إلّا عاملًا مثل `+` أو `*` يمثّل إجراءً أوّيًّا مبنيًّا كالجمع أو الضرب. وسنرى لاحقًا أنّ من المفيد القدرة على التعامل مع تركيباتٍ تكون عواملها هي ذاتها تعبيراتٍ مركّبة.
 
-[^11]: Special syntactic forms that are simply convenient alternative surface structures for things that can be written in more uniform ways are sometimes called *syntactic sugar*, to use a phrase coined by Peter Landin. In comparison with users of other languages, Lisp programmers, as a rule, are less concerned with matters of syntax. (By contrast, examine any Pascal manual and notice how much of it is devoted to descriptions of syntax.) This disdain for syntax is due partly to the flexibility of Lisp, which makes it easy to change surface syntax, and partly to the observation that many “convenient” syntactic constructs, which make the language less uniform, end up causing more trouble than they are worth when programs become large and complex. In the words of Alan Perlis, “Syntactic sugar causes cancer of the semicolon.”
+[^11]: الصيغ النحويّة الخاصّة التي هي مجرّد بنيات سطحيّة بديلةٍ مناسبةٍ لأشياء يمكن كتابتها بطرائق أكثر انتظامًا تُسمّى أحيانًا *سكّرًا نحويًّا* (syntactic sugar)، بمعارضة العبارة التي اشتقّها بيتر لاندين. وبمقارنة مستخدمي اللغات الأخرى، فإنّ مبرمجي Lisp - كقاعدةٍ عامّة - أقلّ اهتمامًا بشؤون النحو. (وعلى النقيض، افحص أيّ دليلٍ لـPascal ولاحِظ كم منه مخصّصٍ لأوصاف النحو.) وهذا الاحتقار للنحو يرجع جزئيًّا إلى مرونة Lisp، التي تُسهّل تغيير النحو السطحيّ، وجزئيًّا إلى الملاحظة أنّ كثيرًا من البنى النحويّة «المناسبة»، التي تجعل اللغة أقلّ انتظامًا، تنتهي إلى التسبّب في متاعبَ أكثرَ ممّا تستحقّ حين تصير البرامج كبيرة ومعقّدة. وبكلام آلان بيرليس، «السكّر النحويّ يُسبّب سرطان الفاصلة المنقوطة».
 
-[^12]: Observe that there are two different operations being combined here: we are creating the procedure, and we are giving it the name `square`. It is possible, indeed important, to be able to separate these two notions—to create procedures without naming them, and to give names to procedures that have already been created. We will see how to do this in [1.3.2](https://sarabander.github.io/sicp/html/1_002e3.xhtml#g_t1_002e3_002e2).
+[^12]: لاحِظ أنّ ثمّة عمليّتين مختلفتين تُجمعان هنا: نحن نُنشيء الإجراء، ونحن نُسمّيه `square`. فمن الممكن - والمهمّ فعلًا - القدرة على فصل المفهومين: إنشاء الإجراءات دون تسميتها، وإعطاء أسماءٍ لإجراءاتٍ أُنشئت سلفًا. وسنرى كيف نفعل ذلك في [1.3.2](https://sarabander.github.io/sicp/html/1_002e3.xhtml#g_t1_002e3_002e2).
 
-[^13]: Throughout this book, we will describe the general syntax of expressions by using italic symbols delimited by angle brackets—e.g., `⟨`name`⟩`—to denote the “slots” in the expression to be filled in when such an expression is actually used.
+[^13]: وعلى امتداد هذا الكتاب، سنصف النحو العامّ للتعابير باستخدام رموزٍ مائلةٍ محاطة بأقواس زاوية—مثل `⟨`name`⟩`—للدلالة على «الفراغات» التي تُملأ في التعبير حين يُستخدم ذلك التعبير فعلًا.
 
-[^14]: More generally, the body of the procedure can be a sequence of expressions. In this case, the interpreter evaluates each expression in the sequence in turn and returns the value of the final expression as the value of the procedure application.
+[^14]: وبصورة أعمّ، يمكن أن يكون جسم الإجراء تسلسلًا من التعابير. وفي هذه الحالة، يُقيّم المفسّر كلّ تعبيرٍ في التسلسل بدوره ويعيد قيمة التعبير الأخير قيمةً للإجراء المُطبَّق.
 
-[^15]: Despite the simplicity of the substitution idea, it turns out to be surprisingly complicated to give a rigorous mathematical definition of the substitution process. The problem arises from the possibility of confusion between the names used for the formal parameters of a procedure and the (possibly identical) names used in the expressions to which the procedure may be applied. Indeed, there is a long history of erroneous definitions of *substitution* in the literature of logic and programming semantics. See [Stoy 1977](https://sarabander.github.io/sicp/html/References.xhtml#Stoy-1977) for a careful discussion of substitution.
+[^15]: وعلى رغم بساطة فكرة الإحلال، فإنّها تتبيّن أعقدَ ممّا يُتصوّر إعطاءً لتعريفٍ رياضيّ دقيق لعمليّة الإحلال. وتنشأ المشكلة من إمكان الالتباس بين الأسماء المستخدمة لوسائط الإجراء الشكليّة وبين الأسماء (وقد تكون متطابقةً) المستخدمة في التعابير التي يُطبَّق عليها الإجراء. والحقّ إنّ ثمّة تاريخًا طويلًا من التعريفات الخاطئة لـ*الإحلال* في أدبيّات المنطق ودلالات البرمجة. انظر [Stoy 1977](https://sarabander.github.io/sicp/html/References.xhtml#Stoy-1977) لمناقشةٍ وافيةٍ للإحلال.
 
-[^16]: In [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) we will introduce *stream processing*, which is a way of handling apparently “infinite” data structures by incorporating a limited form of normal-order evaluation. In [4.2](https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2) we will modify the Scheme interpreter to produce a normal-order variant of Scheme.
+[^16]: سنُقدّم في [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) *معالجة المجاري* (stream processing)، وهي طريقةٌ للتعامل مع بنيات بياناتٍ «لا نهائيّة» ظاهريًّا بإدخال شكلٍ محدودٍ من التقييم بالترتيب الاعتياديّ. وسنُعدّل في [4.2](https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2) مفسّر Scheme لإنتاج صيغةٍ من Scheme ذات ترتيبٍ اعتياديٍّ.
 
-[^17]: “Interpreted as either true or false” means this: In Scheme, there are two distinguished values that are denoted by the constants `#t` and `#f`. When the interpreter checks a predicate’s value, it interprets `#f` as false. Any other value is treated as true. (Thus, providing `#t` is logically unnecessary, but it is convenient.) In this book we will use names `true` and `false`, which are associated with the values `#t` and `#f` respectively.
+[^17]: إنّ «تُفسَّر بأنّها إمّا صادقة أو كاذبة» يعني ما يلي: في Scheme، ثمّة قيمتان مميّزتان يُشار إليهما بالثابتتين `#t` و`#f`. وحين يتحقّق المفسّر من قيمة مُقوِّمٍ، فإنّه يُفسّر `#f` بالكذب. وأيّ قيمةٍ أخرى تُعامَل معاملة الصدق. (وعليه، فإنّ إعطاء `#t` غير لازمٍ منطقيًّا، ولكنّه مريح.) وفي هذا الكتاب سنستخدم الاسمين `true` و`false`، اللذين يُربطان بالقيمتين `#t` و`#f` على الترتيب.
 
-[^18]: `Abs` also uses the “minus” operator `-`, which, when used with a single operand, as in `(- x)`, indicates negation.
+[^18]: يستخدم `Abs` أيضًا العامل «السالب» `-`، الذي - إذا استُخدم بمعاملٍ واحدٍ، كما في `(- x)` - يدلّ على النفي.
 
-[^19]: A minor difference between `if` and `cond` is that the `⟨`e`⟩` part of each `cond` clause may be a sequence of expressions. If the corresponding `⟨`p`⟩` is found to be true, the expressions `⟨`e`⟩` are evaluated in sequence and the value of the final expression in the sequence is returned as the value of the `cond`. In an `if` expression, however, the `⟨`consequent`⟩` and `⟨`alternative`⟩` must be single expressions.
+[^19]: وأحد الفروق الطفيفة بين `if` و`cond` هو أنّ جزء `⟨`e`⟩` من كلّ بندٍ في `cond` قد يكون تسلسلًا من التعابير. فإذا وُجد أنّ `⟨`p`⟩` المقابل صادقة، فإنّ التعابير `⟨`e`⟩` تُقيَّم بالتتابع، وتُعاد قيمة التعبير الأخير في التسلسل قيمةً للبند `cond`. أمّا في تعبير `if`، فإنّ `⟨`consequent`⟩` و`⟨`alternative`⟩` يجب أن يكونا تعبيرَين منفردَين.
 
-[^20]: Declarative and imperative descriptions are intimately related, as indeed are mathematics and computer science. For instance, to say that the answer produced by a program is “correct” is to make a declarative statement about the program. There is a large amount of research aimed at establishing techniques for proving that programs are correct, and much of the technical difficulty of this subject has to do with negotiating the transition between imperative statements (from which programs are constructed) and declarative statements (which can be used to deduce things). In a related vein, an important current area in programming-language design is the exploration of so-called very high-level languages, in which one actually programs in terms of declarative statements. The idea is to make interpreters sophisticated enough so that, given “what is” knowledge specified by the programmer, they can generate “how to” knowledge automatically. This cannot be done in general, but there are important areas where progress has been made. We shall revisit this idea in [Chapter 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4).
+[^20]: إنّ الوصفين التصريحيّ والإمريّ مترابطان ترابطًا وثيقًا، كما الرياضيّات وعلوم الحاسوب. فمثلًا، القول إنّ الجواب الذي يُنتجه برنامجٌ ما «صحيح» هو إفادةٌ تصريحيّةٌ عن البرنامج. وثمّة مقدارٌ كبيرٌ من البحث الرامي إلى إرساء تقنيّاتٍ لإثبات صحّة البرامج، ومعظم الصعوبة التقنيّة في هذا الموضوع تتعلّق بالتفاوض على الانتقال بين الإفادات الإمريّة (التي تُبنى منها البرامج) والإفادات التصريحيّة (التي يمكن استنتاج أمورٍ بها). وفي السياق ذاته، فإنّ مجالًا مهمًّا حاليًّا في تصميم لغات البرمجة هو استكشاف ما يُسمّى «لغات عالية المستوى جدًّا» (very high-level languages)، التي يبرمج فيها المرء فعلًا بدلالة الإفادات التصريحيّة. والفكرة هي جعل المفسّرات متطوّرةً بالقدر الكافي بحيث إنّه - إذا ما حدّد المبرمج معرفةَ «ما هو» - أمكنها توليد معرفة «كيف» تلقائيًّا. ولا يمكن فعل ذلك بصورة عامّة، ولكن ثمّة مجالاتٍ مهمّةٍ أُحرز فيها تقدّم. وسنعود إلى هذه الفكرة في [الفصل 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4).
 
-[^21]: This square-root algorithm is actually a special case of Newton’s method, which is a general technique for finding roots of equations. The square-root algorithm itself was developed by Heron of Alexandria in the first century A.D. We will see how to express the general Newton’s method as a Lisp procedure in [1.3.4](https://sarabander.github.io/sicp/html/1_002e3.xhtml#g_t1_002e3_002e4).
+[^21]: إنّ خوارزميّة الجذر التربيعيّ هذه هي في الحقيقة حالةٌ خاصّة من طريقة نيوتن، وهي تقنيّة عامّة لإيجاد جذور المعادلات. وقد طُوِّرت خوارزميّة الجذر التربيعيّ ذاتها على يد هيرون الإسكندريّ في القرن الأوّل الميلاديّ. وسنرى كيف نُعبّر عن طريقة نيوتن العامّة كإجراءٍ في Lisp في [1.3.4](https://sarabander.github.io/sicp/html/1_002e3.xhtml#g_t1_002e3_002e4).
 
-[^22]: We will usually give predicates names ending with question marks, to help us remember that they are predicates. This is just a stylistic convention. As far as the interpreter is concerned, the question mark is just an ordinary character.
+[^22]: سنُعطي المُقوِّمات عادةً أسماءً تنتهي بعلامة استفهام، لتُعيننا على تذكّر أنّها مُقوِّمات. وهذا مجرّد اصطلاحٍ أسلوبيّ. فأمّا المفسّر فلا يعني علامة الاستفهام سوى حرفٍ عاديّ.
 
-[^23]: Observe that we express our initial guess as 1.0 rather than 1. This would not make any difference in many Lisp implementations. MIT Scheme, however, distinguishes between exact integers and decimal values, and dividing two integers produces a rational number rather than a decimal. For example, dividing 10 by 6 yields 5/3, while dividing 10.0 by 6.0 yields 1.6666666666666667. (We will learn how to implement arithmetic on rational numbers in [2.1.1](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e1).) If we start with an initial guess of 1 in our square-root program, and $undefined$ is an exact integer, all subsequent values produced in the square-root computation will be rational numbers rather than decimals. Mixed operations on rational numbers and decimals always yield decimals, so starting with an initial guess of 1.0 forces all subsequent values to be decimals.
+[^23]: لاحِظ أنّنا نُعبّر عن تقديرنا الأوّليّ بالعدد 1.0 بدلًا من 1. ولن يُحدِث ذلك فرقًا في كثيرٍ من تنفيذات Lisp. إلّا أنّ MIT Scheme تميّز بين الأعداد الصحيحة المضبوطة والقيم العشريّة، وقسمة عددين صحيحين تُنتج عددًا كسريًّا بدلًا من عددٍ عشريّ. فمثلًا، قسمة 10 على 6 تُنتج 5/3، بينما قسمة 10.0 على 6.0 تُنتج 1.6666666666666667. (وسنتعلّم كيف نُنفّذ الحساب على الأعداد الكسريّة في [2.1.1](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e1).) فإذا بدأنا بتقديرٍ أوّليٍّ قيمته 1 في برنامج الجذر التربيعيّ، وكان $undefined$ عددًا صحيحًا مضبوطًا، فإنّ جميع القيم التالية التي يُنتجها احتساب الجذر التربيعيّ ستكون أعدادًا كسريّةً بدلًا من الأعداد العشريّة. والعمليّات المختلطة على الأعداد الكسريّة والعشريّة تُنتج دائمًا أعدادًا عشريّة، وعلى هذا فإنّ الانطلاق بتقديرٍ أوّليٍّ قيمته 1.0 يُجبِر جميع القيم التالية على أن تكون عشريّة.
 
-[^24]: Readers who are worried about the efficiency issues involved in using procedure calls to implement iteration should note the remarks on “tail recursion” in [1.2.1](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e1).
+[^24]: أمّا القارئون الذين يقلقهم مسائل الكفاءة المُتورّطة في استخدام نداءات الإجراءات لتنفيذ التكرار فينبغي لهم أن يلاحظوا الملاحظات المتعلّقة بـ«التعاود الذيليّ» في [1.2.1](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e1).
 
-[^25]: It is not even clear which of these procedures is a more efficient implementation. This depends upon the hardware available. There are machines for which the “obvious” implementation is the less efficient one. Consider a machine that has extensive tables of logarithms and antilogarithms stored in a very efficient manner.
+[^25]: ليس واضحًا حتّى أيّ هذين الإجراءَين هو التنفيذ الأكفء. وهذا يعتمد على العتاد المتاح. فثمّة آلاتٌ يكون فيها التنفيذ «البديهيّ» هو الأقلّ كفاءة. فتأمّل آلةً تحتوي جداولَ واسعةً للوغاريتمات والمُعاكسات مخزَّنةً بأسلوبٍ بالغ الكفاءة.
 
-[^26]: The concept of consistent renaming is actually subtle and difficult to define formally. Famous logicians have made embarrassing errors here.
+[^26]: إنّ مفهوم إعادة التسمية المُتّسقة مفهومٌ دقيقٌ في الواقع ويصعب تعريفه رسميًّا. وقد اقترف منطقيّون مشهورون أخطاءً مُحرجةً هنا.
 
-[^27]: Lexical scoping dictates that free variables in a procedure are taken to refer to bindings made by enclosing procedure definitions; that is, they are looked up in the environment in which the procedure was defined. We will see how this works in detail in chapter 3 when we study environments and the detailed behavior of the interpreter.
+[^27]: يقتضي النطاق المعجميّ أنّ المتغيّرات الحرّة في إجراءٍ يُفترض أنّها تُشير إلى روابطَ أُنشئت بتعريفات الإجراءات المُحاطة؛ أي أنّه يُبحث عنها في البيئة التي عُرِّف الإجراء فيها. وسنرى كيف يعمل ذلك بالتفصيل في الفصل 3 حين ندرس البيئات والسلوك التفصيليّ للمفسّر.
 
-[^28]: Embedded definitions must come first in a procedure body. The management is not responsible for the consequences of running programs that intertwine definition and use.
+[^28]: يجب أن تأتي التعريفات المُضمَّنة أوّلًا في جسم الإجراء. والإدارة غير مسؤولة عن عواقب تشغيل برامجَ تُشابك بين التعريف والاستخدام.
 
-[^29]: In a real program we would probably use the block structure introduced in the last section to hide the definition of `fact-iter`: ```scheme (define (factorial n) (define (iter product counter) (if (> counter n) product (iter (* counter product) (+ counter 1)))) (iter 1 1)) ```
+[^29]: في برنامجٍ حقيقيّ، نستخدم على الأرجح بنية الكتل المقدَّمة في القسم الأخير لإخفاء تعريف `fact-iter`: ```scheme (define (factorial n) (define (iter product counter) (if (> counter n) product (iter (* counter product) (+ counter 1)))) (iter 1 1)) ```
 
-[^30]: When we discuss the implementation of procedures on register machines in [Chapter 5](https://sarabander.github.io/sicp/html/Chapter-5.xhtml#Chapter-5), we will see that any iterative process can be realized “in hardware” as a machine that has a fixed set of registers and no auxiliary memory. In contrast, realizing a recursive process requires a machine that uses an auxiliary data structure known as a *stack*.
+[^30]: حين نناقش تنفيذ الإجراءات على آلات المسجّلات في [الفصل 5](https://sarabander.github.io/sicp/html/Chapter-5.xhtml#Chapter-5)، سنرى أنّ أيّ عمليّة تكراريّة يمكن تحقيقها «عتاديًّا» كآلةٍ لها مجموعة ثابتة من المسجّلات وبلا ذاكرة مساعدة. أمّا تحقيق عمليّة تعاوديّة فيتطلّب آلةً تستخدم بنية بيانات مساعدةً تُعرف بـ*مكدس* (stack).
 
-[^31]: Tail recursion has long been known as a compiler optimization trick. A coherent semantic basis for tail recursion was provided by Carl [Hewitt (1977)](https://sarabander.github.io/sicp/html/References.xhtml#Hewitt-_00281977_0029), who explained it in terms of the “message-passing” model of computation that we shall discuss in [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3). Inspired by this, Gerald Jay Sussman and Guy Lewis Steele Jr. (see [Steele and Sussman 1975](https://sarabander.github.io/sicp/html/References.xhtml#Steele-and-Sussman-1975)) constructed a tail-recursive interpreter for Scheme. Steele later showed how tail recursion is a consequence of the natural way to compile procedure calls ([Steele 1977](https://sarabander.github.io/sicp/html/References.xhtml#Steele-1977)). The IEEE standard for Scheme requires that Scheme implementations be tail-recursive.
+[^31]: لُقّبت التعاوبة الذيليّة منذ زمنٍ بعيد بخُدعة تحسينٍ في المصرّفات. وقد أرسى كارل [Hewitt (1977)](https://sarabander.github.io/sicp/html/References.xhtml#Hewitt-_00281977_0029) أساسًا دلاليًّا متماسكًا للتعاوبة الذيليّة، إذ فسّرها بدلالة نموذج «تمرير الرسائل» للاحتساب الذي سنناقشه في [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3). واستلهامًا من ذلك، بنى جيرالد جاي سوسمان وغاي لويس ستيل الابن (انظر [Steele and Sussman 1975](https://sarabander.github.io/sicp/html/References.xhtml#Steele-and-Sussman-1975)) مفسّرًا ذا تعاوبةٍ ذيليّةٍ لـScheme. وأبان ستيل لاحقًا كيف أنّ التعاوبة الذيليّة نتيجةٌ للطريق الطبيعيّ لتصريف نداءات الإجراءات ([Steele 1977](https://sarabander.github.io/sicp/html/References.xhtml#Steele-1977)). ويقتضي معيار IEEE لـScheme أن تكون تنفيذات Scheme ذات تعاوبةٍ ذيليّة.
 
-[^32]: An example of this was hinted at in [1.1.3](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e3). The interpreter itself evaluates expressions using a tree-recursive process.
+[^32]: أُشيرَ إلى مثالٍ من هذا في [1.1.3](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e3). والمفسّر نفسه يُقيّم التعابير باستخدام عمليّةٍ ذات تعاوبةٍ شجريّة.
 
-[^33]: For example, work through in detail how the reduction rule applies to the problem of making change for 10 cents using pennies and nickels.
+[^33]: فمثلًا، اشرح بالتفصيل كيف تُطبَّق قاعدة الاختزال على مشكلة إيجاد باقي عملةٍ معدنيّةٍ بقيمة 10 سنتات باستخدام البنسات (pennies) والنيكل (nickels).
 
-[^34]: One approach to coping with redundant computations is to arrange matters so that we automatically construct a table of values as they are computed. Each time we are asked to apply the procedure to some argument, we first look to see if the value is already stored in the table, in which case we avoid performing the redundant computation. This strategy, known as *tabulation* or *memoization*, can be implemented in a straightforward way. Tabulation can sometimes be used to transform processes that require an exponential number of steps (such as `count-change`) into processes whose space and time requirements grow linearly with the input. See [Exercise 3.27](https://sarabander.github.io/sicp/html/3_002e3.xhtml#Exercise-3_002e27).
+[^34]: إحدى المقاربات لمواجهة الاحتسابات الزائدة هي ترتيب الأمور بحيث نُبنّي تلقائيًّا جدولَ قيمٍ عند احتسابها. فكلّما طُلب منّا تطبيق الإجراء على معطىً ما، ننظر أوّلًا لمعرفة ما إذا كانت القيمة مخزَّنةً في الجدول سلفًا، وفي هذه الحالة نتفادى أداء الاحتساب الزائد. وهذه الاستراتيجيّة، المعروفة بـ*الجدولة* أو *حفظ النتائج* (memoization)، يمكن تنفيذها بأسلوبٍ مباشر. ويمكن للجدولة أن تُستخدم أحيانًا لتحويل عمليّاتٍ تتطلّب عددًا أسّيًّا من الخطوات (مثل `count-change`) إلى عمليّاتٍ تنمو متطلّباتها المكانيّة والزمنيّة خطيًّا مع المُدخَل. انظر [التمرين 3.27](https://sarabander.github.io/sicp/html/3_002e3.xhtml#Exercise-3_002e27).
 
-[^35]: The elements of Pascal’s triangle are called the *binomial coefficients*, because the $undefined$ row consists of the coefficients of the terms in the expansion of $undefined$ . This pattern for computing the coefficients appeared in Blaise Pascal’s 1653 seminal work on probability theory, Traité du triangle arithmétique. According to [Knuth (1973)](https://sarabander.github.io/sicp/html/References.xhtml#Knuth-_00281973_0029), the same pattern appears in the Szu-yuen Yü-chien (“The Precious Mirror of the Four Elements”), published by the Chinese mathematician Chu Shih-chieh in 1303, in the works of the twelfth-century Persian poet and mathematician Omar Khayyam, and in the works of the twelfth-century Hindu mathematician Bháscara Áchárya.
+[^35]: إنّ عناصر مثلّث باسكال تُسمّى *المُعامِلات ذات الحدّين*، لأنّ الصفّ $undefined$ يتألّف من مُعامِلات الحدود في التوسيع $undefined$ . وقد ظهر هذا النمط لاحتساب المُعامِلات في العمل الأساسيّ الذي أنجزه بليز باسكال في نظريّة الاحتمالات عام 1653، وهو بعنوان Traité du triangle arithmétique. وطبقًا لـ[Knuth (1973)](https://sarabander.github.io/sicp/html/References.xhtml#Knuth-_00281973_0029)، فإنّ النمط ذاته يظهر في Szu-yuen Yü-chien («المرآة الثمينة للعناصر الأربعة»)، الذي نشره الرياضيّ الصينيّ تشو شيه-تشيه عام 1303، وفي أعمال الشاعر والرياضيّ الفارسيّ عمر الخيّام في القرن الثاني عشر، وفي أعمال الرياضيّ الهنديّ بهاسكارا أشاريا في القرن الثاني عشر.
 
-[^36]: These statements mask a great deal of oversimplification. For instance, if we count process steps as “machine operations” we are making the assumption that the number of machine operations needed to perform, say, a multiplication is independent of the size of the numbers to be multiplied, which is false if the numbers are sufficiently large. Similar remarks hold for the estimates of space. Like the design and description of a process, the analysis of a process can be carried out at various levels of abstraction.
+[^36]: إنّ هذه الإفادات تُخفي مقدارًا كبيرًا من التبسيط المُفرِط. فمثلًا، إذا عُدّنا خطوات العمليّة «عمليّات آليّة» فإنّنا نُقدّر أنّ عدد العمليّات الآليّة اللازمة لأداء ضربٍ - مثلًا - مستقلّ عن مقادير الأعداد المُراد ضربها، وهو زائفٌ إذا كانت الأعداد كبيرةً بالقدر الكافي. وتنطبق ملاحظاتٌ مماثلةٌ على تقديرات المكان. وشأن تصميم عمليّةٍ ووصفها، فإنّ تحليل العمليّة يمكن استقصاؤه على مستوياتٍ مختلفةٍ من التجريد.
 
-[^37]: More precisely, the number of multiplications required is equal to 1 less than the log base 2 of $undefined$ plus the number of ones in the binary representation of $undefined$ . This total is always less than twice the log base 2 of $undefined$ . The arbitrary constants $undefined$ and $undefined$ in the definition of order notation imply that, for a logarithmic process, the base to which logarithms are taken does not matter, so all such processes are described as $undefined$ .
+[^37]: وبدقّةٍ أكثر، فإنّ عدد الضروب المطلوب يساوي ما يقلّ بواحد عن اللوغاريتم للأساس 2 للقيمة $undefined$ مضافًا إليه عدد الآحاد في التمثيل الثنائيّ لـ$undefined$ . وهذا المجموع أقلّ دائمًا من ضعف اللوغاريتم للأساس 2 لـ$undefined$ . وإنّ الثابتين الاعتباطيّين $undefined$ و$undefined$ في تعريف صياغة الرتبة يعنيان أنّ العمليّة اللوغاريتميّة لا يهمّ الأساس الذي تُجرى عليه اللوغاريتمات، وعلى هذا فجميع هذه العمليّات توصف بأنّها $undefined$ .
 
-[^38]: You may wonder why anyone would care about raising numbers to the 1000th power. See [1.2.6](#g_t1_002e2_002e6).
+[^38]: ولعلك تتساءل لماذا يهتمّ أحدٌ برفع الأعداد إلى القوّة الألف. انظر [1.2.6](#g_t1_002e2_002e6).
 
-[^39]: This iterative algorithm is ancient. It appears in the Chandah-sutra by Áchárya Pingala, written before 200 B.C. See [Knuth 1981](https://sarabander.github.io/sicp/html/References.xhtml#Knuth-1981), section 4.6.3, for a full discussion and analysis of this and other methods of exponentiation.
+[^39]: وهذه الخوارزميّة التكراريّة قديمة. وهي تظهر في Chandah-sutra للمؤلّف أشاريا بينغالا، المكتوب قبل عام 200 ق.م. انظر [Knuth 1981](https://sarabander.github.io/sicp/html/References.xhtml#Knuth-1981)، القسم 4.6.3، لمناقشةٍ وافيةٍ لهذه الطريقة وغيرها من طرق الأسّ.
 
-[^40]: This algorithm, which is sometimes known as the “Russian peasant method” of multiplication, is ancient. Examples of its use are found in the Rhind Papyrus, one of the two oldest mathematical documents in existence, written about 1700 B.C. (and copied from an even older document) by an Egyptian scribe named A’h-mose.
+[^40]: وهذه الخوارزميّة، التي تُعرف أحيانًا بـ«طريقة الفلاح الروسيّ» (Russian peasant method) في الضرب، قديمة. وأمثلة استخدامها موجودة في بردية ريند، وهي إحدى الوثيقتين الرياضيّتين الأقدم وجودًا، المكتوبة نحو عام 1700 ق.م. (والمنسوخة من وثيقةٍ أقدم منها) على يد كاتبٍ مصريّ يُدعى أحموسي.
 
-[^41]: This exercise was suggested to us by Joe Stoy, based on an example in [Kaldewaij 1990](https://sarabander.github.io/sicp/html/References.xhtml#Kaldewaij-1990).
+[^41]: لقد اقترح علينا هذا التمرين جو ستوي، بناءً على مثالٍ في [Kaldewaij 1990](https://sarabander.github.io/sicp/html/References.xhtml#Kaldewaij-1990).
 
-[^42]: Euclid’s Algorithm is so called because it appears in Euclid’s Elements (Book 7, ca. 300 B.C.). According to [Knuth (1973)](https://sarabander.github.io/sicp/html/References.xhtml#Knuth-_00281973_0029), it can be considered the oldest known nontrivial algorithm. The ancient Egyptian method of multiplication ([Exercise 1.18](#Exercise-1_002e18)) is surely older, but, as Knuth explains, Euclid’s algorithm is the oldest known to have been presented as a general algorithm, rather than as a set of illustrative examples.
+[^42]: إنّ خوارزميّة إقليدس تُسمّى كذلك لأنّها تظهر في «العناصر» لإقليدس (الكتاب 7، نحو عام 300 ق.م.). وطبقًا لـ[Knuth (1973)](https://sarabander.github.io/sicp/html/References.xhtml#Knuth-_00281973_0029)، فإنّه يمكن اعتبارها أقدم خوارزميّة غير تافهةٍ معروفة. وإنّ طريقة الضرب المصريّة القديمة ([التمرين 1.18](#Exercise-1_002e18)) لأقدم منها بلا شكّ، ولكنّ Knuth يفسّر أنّ خوارزميّة إقليدس هي الأقدم التي قُدّمت كخوارزميّةٍ عامّة، لا كمجموعةٍ من الأمثلة التوضيحيّة.
 
-[^43]: This theorem was proved in 1845 by Gabriel Lamé, a French mathematician and engineer known chiefly for his contributions to mathematical physics. To prove the theorem, we consider pairs $undefined$ , where $undefined$ , for which Euclid’s Algorithm terminates in $undefined$ steps. The proof is based on the claim that, if $undefined$ are three successive pairs in the reduction process, then we must have $undefined$ . To verify the claim, consider that a reduction step is defined by applying the transformation $undefined$ , $undefined$ remainder of $undefined$ divided by $undefined$ . The second equation means that $undefined$ for some positive integer $undefined$ . And since $undefined$ must be at least 1 we have $undefined$ . But in the previous reduction step we have $undefined$ . Therefore, $undefined$ . This verifies the claim. Now we can prove the theorem by induction on $undefined$ , the number of steps that the algorithm requires to terminate. The result is true for $undefined$ , since this merely requires that $undefined$ be at least as large as $undefined$ . Now, assume that the result is true for all integers less than or equal to $undefined$ and establish the result for $undefined$ . Let $undefined$ be successive pairs in the reduction process. By our induction hypotheses, we have $undefined$ and $undefined$ . Thus, applying the claim we just proved together with the definition of the Fibonacci numbers gives $undefined$ , which completes the proof of Lamé’s Theorem.
+[^43]: أُثبتت هذه المبرهنة في عام 1845 على يد غابرييل لامي، وهو رياضيّ ومهندس فرنسيّ يُعرف أساسًا بمساهماته في الفيزياء الرياضيّة. ولإثبات المبرهنة، نُنظر في أزواج $undefined$ ، حيث $undefined$ ، والتي تنتهي عندها خوارزميّة إقليدس في $undefined$ خطوات. ويقوم البرهان على الادّعاء بأنّه، إذا كانت $undefined$ ثلاثة أزواج متتاليةٍ في عمليّة الاختزال، فإنّه لا بدّ أنّ $undefined$ . وللتحقّق من الادّعاء، اعتبر أنّ خطوة الاختزال تُعرَّف بتطبيق التحويل $undefined$ ، حيث $undefined$ باقي قسمة $undefined$ على $undefined$ . والمعادلة الثانية تعني أنّ $undefined$ لعددٍ صحيحٍ موجبٍ ما هو $undefined$ . وبما أنّ $undefined$ لا بدّ أن تكون 1 على الأقلّ فإنّ $undefined$ . ولكن في خطوة الاختزال السابقة لدينا $undefined$ . وعلى ذلك فإنّ $undefined$ . وهذا يتحقّق من الادّعاء. والآن يمكننا إثبات المبرهنة بالاستقراء على $undefined$ ، عدد الخطوات التي تتطلّبها الخوارزميّة حتّى تنتهي. والنتيجة صحيحة من أجل $undefined$ ، إذ إنّ هذا لا يتطلّب إلّا أن تكون $undefined$ بالغةً في الكبر بمقدار $undefined$ على الأقلّ. والآن، افترض أنّ النتيجة صحيحة لجميع الأعداد الصحيحة الأصغر من $undefined$ أو المساوية لها، وأثبت النتيجة من أجل $undefined$ . ولتكن $undefined$ أزواجًا متتاليةً في عمليّة الاختزال. فبفرضيّات الاستقراء لدينا، نتوصّل إلى $undefined$ و$undefined$ . وعلى هذا، فإنّ تطبيق الادّعاء الذي أثبتناه للتوّ مع تعريف أعداد فيبوناتشي يُعطينا $undefined$ ، وهو ما يُكمل برهان مبرهنة لامي.
 
-[^44]: If $undefined$ is a divisor of $undefined$ , then so is $undefined$ . But $undefined$ and $undefined$ cannot both be greater than $undefined$ .
+[^44]: إذا كان $undefined$ قاسمًا لـ$undefined$ ، فإنّ $undefined$ كذلك. ولكنّ $undefined$ و$undefined$ لا يمكن أن يكونا كلَيْهما أكبرَين من $undefined$ .
 
-[^45]: Pierre de Fermat (1601-1665) is considered to be the founder of modern number theory. He obtained many important number-theoretic results, but he usually announced just the results, without providing his proofs. Fermat’s Little Theorem was stated in a letter he wrote in 1640. The first published proof was given by Euler in 1736 (and an earlier, identical proof was discovered in the unpublished manuscripts of Leibniz). The most famous of Fermat’s results—known as Fermat’s Last Theorem—was jotted down in 1637 in his copy of the book Arithmetic (by the third-century Greek mathematician Diophantus) with the remark “I have discovered a truly remarkable proof, but this margin is too small to contain it.” Finding a proof of Fermat’s Last Theorem became one of the most famous challenges in number theory. A complete solution was finally given in 1995 by Andrew Wiles of Princeton University.
+[^45]: يُعتبر بيير دي فيرما (1601-1665) مُؤسّس نظريّة الأعداد الحديثة. وقد حصل على العديد من النتائج المهمّة في نظريّة الأعداد، ولكنّه كان يُعلن النتائج وحدها عادةً دون تقديم براهينها. وقد ذُكرت المبرهنة الصغرى لفيرما في رسالةٍ كتبها عام 1640. وأوّل برهانٍ منشورٍ أعطاه أويلر عام 1736 (وقد اكتُشف برهانٌ أوّليّ مطابقٌ في مخطوطات لايبنيز غير المنشورة). وأشهر نتائج فيرما - والمعروفة بمبرهنة فيرما الأخيرة - حُفِظت في عام 1637 في نسخته من كتاب «الحساب» (للرياضيّ اليونانيّ ديوفانتس في القرن الثالث) مع الملاحظة التالية: «لقد اكتشفتُ برهانًا رائعًا حقًّا، ولكنّ هذا الهامش ضيّقٌ جدًّا بحيث لا يتّسع له». وصار إيجاد برهانٍ لمبرهنة فيرما الأخيرة أحد أشهر التحدّيات في نظريّة الأعداد. وقد أُعطيت حلولٌ كاملةٌ أخيرًا عام 1995 على يد أندرو وايلز من جامعة برينستون.
 
-[^46]: The reduction steps in the cases where the exponent $undefined$ is greater than 1 are based on the fact that, for any integers $undefined$ , $undefined$ , and $undefined$ , we can find the remainder of $undefined$ times $undefined$ modulo $undefined$ by computing separately the remainders of $undefined$ modulo $undefined$ and $undefined$ modulo $undefined$ , multiplying these, and then taking the remainder of the result modulo $undefined$ . For instance, in the case where $undefined$ is even, we compute the remainder of $undefined$ modulo $undefined$ , square this, and take the remainder modulo $undefined$ . This technique is useful because it means we can perform our computation without ever having to deal with numbers much larger than $undefined$ . (Compare [Exercise 1.25](#Exercise-1_002e25).)
+[^46]: إنّ خطوات الاختزال في الحالات التي يكون فيها الأسّ $undefined$ أكبر من 1 تقوم على الحقيقة التي مفادها أنّنا - من أجل أيّ أعدادٍ صحيحةٍ $undefined$ و$undefined$ و$undefined$ - نستطيع إيجاد باقي $undefined$ ضرب $undefined$ بقياس $undefined$ باحتساب باقي $undefined$ بقياس $undefined$ وباقي $undefined$ بقياس $undefined$ على حدة، وضرب هذين، ثمّ أخذ باقي النتيجة بقياس $undefined$ . فمثلًا، في الحالة التي يكون فيها $undefined$ زوجيًّا، نحسب باقي $undefined$ بقياس $undefined$ ، ونربّع ذلك، ونأخذ باقيه بقياس $undefined$ . وهذه التقنيّة مفيدةٌ لأنّها تعني أنّنا نستطيع أداء احتسابنا دون الاضطرار أبدًا إلى التعامل مع أعدادٍ أكبر بكثيرٍ من $undefined$ . (قارن [التمرين 1.25](#Exercise-1_002e25).)
 
-[^47]: Numbers that fool the Fermat test are called *Carmichael numbers*, and little is known about them other than that they are extremely rare. There are 255 Carmichael numbers below 100,000,000. The smallest few are 561, 1105, 1729, 2465, 2821, and 6601. In testing primality of very large numbers chosen at random, the chance of stumbling upon a value that fools the Fermat test is less than the chance that cosmic radiation will cause the computer to make an error in carrying out a “correct” algorithm. Considering an algorithm to be inadequate for the first reason but not for the second illustrates the difference between mathematics and engineering.
+[^47]: إنّ الأعداد التي تخدع اختبار فيرما تُسمّى *أعداد كارميكل* (Carmichael numbers)، ولا يُعرف عنها إلّا القليل، غير أنّها نادرةً للغاية. فثمّة 255 عددًا من أعداد كارميكل تحت 100.000.000. وأصغرها القليل هي 561، و1105، و1729، و2465، و2821، و6601. وعند اختبار أوّليّة أعدادٍ كبيرةٍ جدًّا منتقاةٍ عشوائيًّا، فإنّ احتمال الوقوع في قيمةٍ تخدع اختبار فيرما أقلّ من احتمال أن تُسبِّب الأشعّة الكونيّة خطأً في أداء الحاسوب لخوارزميّةٍ «صحيحة». واعتبار خوارزميّةٍ غير ملائمةٍ للسبب الأوّل دون الثاني يُظهر الفرق بين الرياضيّات والهندسة.
 
-[^48]: One of the most striking applications of probabilistic prime testing has been to the field of cryptography. Although it is now computationally infeasible to factor an arbitrary 200-digit number, the primality of such a number can be checked in a few seconds with the Fermat test. This fact forms the basis of a technique for constructing “unbreakable codes” suggested by [Rivest et al. (1977)](https://sarabander.github.io/sicp/html/References.xhtml#Rivest-et-al_002e-_00281977_0029). The resulting *RSA algorithm* has become a widely used technique for enhancing the security of electronic communications. Because of this and related developments, the study of prime numbers, once considered the epitome of a topic in “pure” mathematics to be studied only for its own sake, now turns out to have important practical applications to cryptography, electronic funds transfer, and information retrieval.
+[^48]: إنّ أحد أبرز تطبيقات اختبار الأوّليّة الاحتماليّ كان في مجال التشفير. فعلى الرغم من أنّ تحليل عددٍ اعتباريٍّ مكوّنٍ من 200 رقمٍ إلى عوامل أوّليّة قد صار غير ممكنٍ احتسابيًّا، فإنّه يمكن التحقّق من أوّليّة عددٍ كهذا في بضع ثوانٍ باستخدام اختبار فيرما. وهذه الحقيقة تُشكّل أساس تقنيّةٍ لبناء «شيفراتٍ غير قابلةٍ للكسر» اقترحها [Rivest et al. (1977)](https://sarabander.github.io/sicp/html/References.xhtml#Rivest-et-al_002e-_00281977_0029). وقد صارت *خوارزميّة RSA* تقنيّةً واسعة الاستخدام لتعزيز أمن الاتّصالات الإلكترونيّة. وبسبب هذا التطوّر وما اتّصل به، فإنّ دراسة الأعداد الأوّليّة - التي كانت تُعتبر يومًا مثال الموضوع في الرياضيّات «النظريّة» التي تُدرس من أجل ذاتها فقط - تتبيّن الآن ذات تطبيقاتٍ عمليّةٍ مهمّةٍ في التشفير، وتحويل الأموال الإلكترونيّ، واسترجاع المعلومات.
 
-[^49]: This series, usually written in the equivalent form $undefined$ , is due to Leibniz. We’ll see how to use this as the basis for some fancy numerical tricks in [3.5.3](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e3).
+[^49]: هذه المتسلسلة، التي تُكتب عادةً في الصيغة المكافئة $undefined$ ، ترجع إلى لايبنيز. وسنرى كيف نستخدم ذلك أساسًا لبعض الحِيَل العدديّة الأنيقة في [3.5.3](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e3).
 
-[^50]: Notice that we have used block structure ([1.1.8](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e8)) to embed the definitions of `pi-next` and `pi-term` within `pi-sum`, since these procedures are unlikely to be useful for any other purpose. We will see how to get rid of them altogether in [1.3.2](#g_t1_002e3_002e2).
+[^50]: لاحِظ أنّنا استخدمنا بنية الكتل ([1.1.8](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e8)) لتضمين تعريفَي `pi-next` و`pi-term` داخل `pi-sum`، إذ إنّه من غير المرجّح أن تكون هذه الإجراءات مفيدةً لأيّ غرضٍ آخر. وسنرى كيف نستغني عنها كلّيًّا في [1.3.2](#g_t1_002e3_002e2).
 
-[^51]: The intent of [Exercise 1.31](#Exercise-1_002e31) through [Exercise 1.33](#Exercise-1_002e33) is to demonstrate the expressive power that is attained by using an appropriate abstraction to consolidate many seemingly disparate operations. However, though accumulation and filtering are elegant ideas, our hands are somewhat tied in using them at this point since we do not yet have data structures to provide suitable means of combination for these abstractions. We will return to these ideas in [2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3) when we show how to use *sequences* as interfaces for combining filters and accumulators to build even more powerful abstractions. We will see there how these methods really come into their own as a powerful and elegant approach to designing programs.
+[^51]: إنّ المقصد من [التمرين 1.31](#Exercise-1_002e31) إلى [التمرين 1.33](#Exercise-1_002e33) هو إظهار القوّة التعبيريّة التي تُدرَك باستخدام تجريدٍ ملائمٍ لتوحيد كثيرٍ من العمليّات التي يبدو بينها تباعد. ولكن، وعلى رغم أنّ التجميع والترشيح فكرتان أنيقتان، فإنّ أيدينا مقيَّدةٌ نوعًا ما في استخدامهما في هذه المرحلة، إذ ليس لدينا بعدُ بنيات بياناتٍ لتوفير وسائل تجميعٍ ملائمةٍ لهذين التجريدين. وسنعود إلى هذه الأفكار في [2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3) حين نُظهر كيف نستخدم *التسلسلات* كواجهاتٍ لتجميع المرشّحات والمُجمِّعات لبناء تجريداتٍ أكثر قوّةً. وسنرى هناك كيف تتبلور هذه الطرائق فعلًا كمقاربةٍ قويّةٍ وأنيقةٍ لتصميم البرامج.
 
-[^52]: This formula was discovered by the seventeenth-century English mathematician John Wallis.
+[^52]: اكتشف هذه الصيغة الرياضيّ الإنجليزيّ جون واليس في القرن السابع عشر.
 
-[^53]: It would be clearer and less intimidating to people learning Lisp if a name more obvious than `lambda`, such as `make-procedure`, were used. But the convention is firmly entrenched. The notation is adopted from the λ-calculus, a mathematical formalism introduced by the mathematical logician Alonzo [Church (1941)](https://sarabander.github.io/sicp/html/References.xhtml#Church-_00281941_0029). Church developed the λ-calculus to provide a rigorous foundation for studying the notions of function and function application. The λ-calculus has become a basic tool for mathematical investigations of the semantics of programming languages.
+[^53]: سيكون الأمر أوضح وأقلّ إرهابًا للناس الذين يتعلّمون Lisp لو استُخدم اسمٌ أوضح من `lambda`، مثل `make-procedure`. ولكن الاصطلاح راسخٌ رسوخًا متينًا. وقد أُخذت الترميز من حساب اللامدا (λ-calculus)، وهو صياغةٌ رياضيّةٌ أدخلها عالم المنطق الرياضيّ ألونزو [Church (1941)](https://sarabander.github.io/sicp/html/References.xhtml#Church-_00281941_0029). وقد طوّر Church حساب اللامدا ليُوفّر أساسًا دقيقًا لدراسة مفهومَي الدالّة وتطبيق الدالّة. وقد صار حساب اللامدا أداةً أساسيّةً في البحوث الرياضيّة حول دلالات لغات البرمجة.
 
-[^54]: Understanding internal definitions well enough to be sure a program means what we intend it to mean requires a more elaborate model of the evaluation process than we have presented in this chapter. The subtleties do not arise with internal definitions of procedures, however. We will return to this issue in [4.1.6](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e6), after we learn more about evaluation.
+[^54]: إنّ فهم التعريفات الداخليّة فهمًا حسنًا بما يكفي لأن نكون على يقينٍ من أنّ برنامجًا يعني ما نُنشده له أن يعني، يقتضي نموذجًا أكثر تفصيلًا لعمليّة التقييم ممّا قدّمناه في هذا الفصل. غير أنّ هذه الفروق الدقيقة لا تنشأ مع التعريفات الداخليّة للإجراءات. وسنعود إلى هذه القضيّة في [4.1.6](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e6)، بعد أن نتعلّم المزيد عن التقييم.
 
-[^55]: We have used 0.001 as a representative “small” number to indicate a tolerance for the acceptable error in a calculation. The appropriate tolerance for a real calculation depends upon the problem to be solved and the limitations of the computer and the algorithm. This is often a very subtle consideration, requiring help from a numerical analyst or some other kind of magician.
+[^55]: استخدمنا 0.001 عددًا «صغيرًا» نموذجيًّا للإشارة إلى تفاوتٍ للخطأ المقبول في عملية حسابية. والتفاوت الملائم لعملية حسابية حقيقية يعتمد على المشكلة المطلوب حلّها وعلى حدود الحاسوب والخوارزمية. وهذا غالبًا اعتبارٌ دقيقٌ للغاية، يقتضي مساعدةً من محلّل عدديّ أو نوعٍ آخر من السَحَرة.
 
-[^56]: This can be accomplished using `error`, which takes as arguments a number of items that are printed as error messages.
+[^56]: يمكن عمل ذلك باستخدام `error`، التي تأخذ كوسائط عددًا من العناصر التي تُطبع كرسائل خطأ.
 
-[^57]: Try this during a boring lecture: Set your calculator to radians mode and then repeatedly press the `cos` button until you obtain the fixed point.
+[^57]: جرّب هذا في أثناء محاضرةٍ مملة: اضبط حاسبتك على وضع الراديانات، ثمّ اضغط زرّ `cos` تكرارًا حتّى تحصل على النقطة الثابتة.
 
-[^58]: $undefined$ (pronounced “maps to”) is the mathematician’s way of writing `lambda`. $undefined$ means `(lambda (y) (/ x y))`, that is, the function whose value at $undefined$ is $undefined$ .
+[^58]: $undefined$ (يُنطق «يُقابل») هو طريق الرياضيّ في كتابة `lambda`. و$undefined$ يعني `(lambda (y) (/ x y))`، أي الدالّة التي قيمتها عند $undefined$ هي $undefined$ .
 
-[^59]: Observe that this is a combination whose operator is itself a combination. [Exercise 1.4](https://sarabander.github.io/sicp/html/1_002e1.xhtml#Exercise-1_002e4) already demonstrated the ability to form such combinations, but that was only a toy example. Here we begin to see the real need for such combinations—when applying a procedure that is obtained as the value returned by a higher-order procedure.
+[^59]: لاحِظ أنّ هذا تركيبٌ عامله هو نفسه تركيب. وقد أبان [التمرين 1.4](https://sarabander.github.io/sicp/html/1_002e1.xhtml#Exercise-1_002e4) من قبل القدرة على تكوين تركيباتٍ كهذه، ولكن ذلك لم يكن إلّا مثالًا لعبة. وهنا نبدأ في رؤية الحاجة الحقيقيّة إلى مثل هذه التركيبات - عند تطبيق إجراءٍ يُحصَل عليه قيمةً معادةً من إجراءٍ من الرتبة العليا.
 
-[^60]: See [Exercise 1.45](#Exercise-1_002e45) for a further generalization.
+[^60]: انظر [التمرين 1.45](#Exercise-1_002e45) لتعميمٍ إضافيّ.
 
-[^61]: Elementary calculus books usually describe Newton’s method in terms of the sequence of approximations $undefined$ . Having language for talking about processes and using the idea of fixed points simplifies the description of the method.
+[^61]: تُصفّ طريقة نيوتن في كتب الحساب الأساسيّة عادةً بدلالة تسلسل التقريبات $undefined$ . وإنّ امتلاك لغةٍ للحديث عن العمليّات واستخدام فكرة النقاط الثابتة يُبسّط وصف الطريقة.
 
-[^62]: Newton’s method does not always converge to an answer, but it can be shown that in favorable cases each iteration doubles the number-of-digits accuracy of the approximation to the solution. In such cases, Newton’s method will converge much more rapidly than the half-interval method.
+[^62]: إنّ طريقة نيوتن لا تتقارب دائمًا نحو جواب، ولكن يمكن إظهار أنّ الحالات المواتية يُضاعِف كلّ تكرارٍ فيها عدد الأرقام الدقيقة في التقريب نحو الحلّ. وفي هذه الحالات، ستتقارب طريقة نيوتن تقاربًا أسرع بكثيرٍ من طريقة نصف الفترة.
 
-[^63]: For finding square roots, Newton’s method converges rapidly to the correct solution from any starting point.
+[^63]: فمن أجل إيجاد الجذور التربيعيّة، تتقارب طريقة نيوتن بسرعةٍ نحو الحلّ الصحيح انطلاقًا من أيّ نقطة بداية.
 
-[^64]: The notion of first-class status of programming-language elements is due to the British computer scientist Christopher Strachey (1916-1975).
+[^64]: إنّ مفهوم مكانة الرتبة الأولى لعناصر لغة البرمجة يرجع إلى عالم الحاسوب البريطانيّ كريستوفر ستراشي (1916-1975).
 
-[^65]: We’ll see examples of this after we introduce data structures in [Chapter 2](https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2).
+[^65]: سنرى أمثلةً على ذلك بعد أن نُقدّم بنيات البيانات في [الفصل 2](https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2).
 
-[^66]: The major implementation cost of first-class procedures is that allowing procedures to be returned as values requires reserving storage for a procedure’s free variables even while the procedure is not executing. In the Scheme implementation we will study in [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1), these variables are stored in the procedure’s environment.
+[^66]: إنّ كلفة التنفيذ الرئيسة للإجراءات من الرتبة الأولى هي أنّ السّماح بإعادة الإجراءات كقيمٍ يقتضي حجز تخزينٍ للمتغيّرات الحرّة في إجراءٍ حتّى أثناء عدم تنفيذه للإجراء. وفي تنفيذ Scheme الذي سنهتمّ به في [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1)، تُخزَّن هذه المتغيّرات في بيئة الإجراء.
