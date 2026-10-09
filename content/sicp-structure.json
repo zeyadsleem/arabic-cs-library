@@ -1,0 +1,81 @@
+{
+  "chapters": [
+    {
+      "key": "c0-frontmatter",
+      "title": "Frontmatter",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Frontmatter",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "c1-building-abstractions-with-procedures",
+      "title": "Building Abstractions with Procedures",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Building Abstractions with Procedures",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "c2-building-abstractions-with-data",
+      "title": "Building Abstractions with Data",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Building Abstractions with Data",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "c3-modularity-objects-and-state",
+      "title": "Modularity, Objects, and State",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Modularity, Objects, and State",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "c4-metalinguistic-abstraction",
+      "title": "Metalinguistic Abstraction",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Metalinguistic Abstraction",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "c5-computing-with-register-machines",
+      "title": "Computing with Register Machines",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Computing with Register Machines",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "c6-backmatter",
+      "title": "Backmatter",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Backmatter",
+          "order": 6
+        }
+      ]
+    }
+  ]
+}
