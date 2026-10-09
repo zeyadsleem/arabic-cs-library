@@ -25,7 +25,7 @@ vendors~emoji-picker.bundle.js   171 KiB       2    [emitted]    vendors~emoji-p
 
 في وحدة التحكم، يمكنك أن ترى أن `EmojiPicker` لا يُنفَّذ إلا عندما نقوم بإظهار `EmojiPicker`!
 
-JavaScript iconChatInput.js
+`ChatInput.js`
 
 ```javascript
 import React, { Suspense, lazy } from "react";
@@ -72,7 +72,7 @@ export default ChatInput;
 
 لا يدعم التصيير على جانب الخادم (server-side rendering) خاصية React Suspense (بعد). البديل الجيد لـ React Suspense هو مكتبة [`loadable-components`](https://loadable-components.com/docs/getting-started/)، التي يمكن استخدامها في تطبيقات SSR.
 
-JavaScript iconChatInput.js
+`ChatInput.js`
 
 ```javascript
 import React from "react";
@@ -107,7 +107,7 @@ export default ChatInput;
 
 ورغم أن المكوّنات القابلة للتحميل بديل رائع لـ React Suspense في تطبيقات SSR، فإنها مفيدة أيضًا في تطبيقات CSR من أجل تعليق استيراد الوحدات.
 
-JavaScript iconChatInput.js
+`ChatInput.js`
 
 ```javascript
 import React from "react";

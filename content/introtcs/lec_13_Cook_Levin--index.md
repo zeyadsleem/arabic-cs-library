@@ -48,7 +48,7 @@ source: https://introtcs.org/
 :::
 
 
-![Overview of the results of this chapter. We define $\mathbf{NP}$ to contain all decision problems for which a solution can be efficiently _verified_. The main result of this chapter is the  _Cook Levin Theorem_ ([cook-levin-thm](#cook-levin-thm){.ref}) which states that $3SAT$ has a polynomial-time algorithm if and only if _every_ problem in $\mathbf{NP}$ has a polynomial-time algorithm. Another way to state this theorem is that $3SAT$ is _$\mathbf{NP}$ complete_. We will prove the Cook-Levin theorem by defining the two intermediate  problems $NANDSAT$ and $3NAND$, proving that $NANDSAT$ is $\mathbf{NP}$ complete, and then proving that $NANDSAT \leq_p 3NAND \leq_p 3SAT$.](/images/introtcs/original-cooklevin_overview.webp){#cooklevin_overviewfig }
+![نظرة عامة على نتائج هذا الفصل. نُعرِّف $\mathbf{NP}$ بأنها تحتوي كلّ مسائل القرار التي يمكن التحقّق من حلّها بكفاءة. ونتيجة هذا الفصل الرئيسية هي _مبرهنة كوك-لفين_ ([cook-levin-thm](#cook-levin-thm){.ref}) التي تنصّ على أنّ $3SAT$ لديها خوارزميةٌ متعدّد الحدود إذاً وفقط إذاً كان لكلّ مشكلةٍ في $\mathbf{NP}$ خوارزميةٌ متعدّد الحدود. ويمكن صياغة هذه المبرهنة أيضًا بأنّ $3SAT$ _مكتملةٌ بالنسبة إلى $\mathbf{NP}$_. سنُثبت مبرهنة كوك-لفين بتعريف المسألتين الوسيطيتين $NANDSAT$ و$3NAND$، وإثبات أنّ $NANDSAT$ مكتملة $\mathbf{NP}$، ثمّ إثبات أنّ $NANDSAT \leq_p 3NAND \leq_p 3SAT$.](/images/introtcs/original-cooklevin_overview.webp){#cooklevin_overviewfig }
 
 
 ## صنف $\mathbf{NP}$
@@ -390,7 +390,7 @@ __برهان الادّعاء:__ يمكننا ذلك بإضافة بضعة أس�
 :::
 
 
-![Given an $T$-line NAND-CIRC program $Q$ that has $n+m$ inputs and some $x^*\in \{0,1\}^n$, we can transform $Q$ into a $T+3$ line NAND-CIRC program $Q'$ that computes the map $w \mapsto Q(x^*w)$ for $w\in \{0,1\}^m$ by simply adding code to compute the `zero` and `one` constants,  replacing all references to `X[`$i$`]` with either `zero` or `one` depending on the value of $x^*_i$, and then replacing the remaining references to `X[`$j$`]` with `X[`$j-n$`]`. Above is Python code that implements this transformation, as well as an example of its execution on a simple program.](/images/introtcs/original-hardwiring.webp){#hardwiringfig }
+![بإعطائنا برنامج NAND-CIRC من $T$ خطوةً $Q$ له $n+m$ مدخلًا وبعض $x^*\in \{0,1\}^n$، يمكننا تحويل $Q$ إلى برنامج NAND-CIRC من $T+3$ خطوةً $Q'$ يحسب التطبيق $w \mapsto Q(x^*w)$ لـ$w\in \{0,1\}^m$ بإضافة شيفرةٍ لحساب الثوابت `zero` و`one` فحسب، ثمّ استبدال كلّ الإشارات إلى `X[`$i$`]` بـ`zero` أو `one` بحسب قيمة $x^*_i$، ثمّ استبدال الإشارات المتبقّية إلى `X[`$j$`]` بـ`X[`$j-n$`]`. وفي الأعلى شيفرة بايثون تنفّذ هذا التحوّل، مع مثالٍ على تنفيذه على برنامجٍ بسيط.](/images/introtcs/original-hardwiring.webp){#hardwiringfig }
 
 
 
@@ -462,7 +462,7 @@ __الجزء الثاني: التسليمية.__ لنفترض أنّ هناك $z
 
 
 
-![A $3NAND$ instance that is obtained by taking a NAND-TM program for computing the $AND$ function, unrolling it to obtain a $NANDSAT$ instance, and then composing it with the reduction of [threenand-thm](#threenand-thm){.ref}.](/images/introtcs/original-threenandresultreduction.webp){#resultreduction .margin  }
+![مُدخل $3NAND$ ناتجٌ عن أخذ برنامج NAND-TM لحساب الدالة $AND$، وتفريعة للحصول على مُدخل $NANDSAT$، ثمّ تركيبه مع اختزال [threenand-thm](#threenand-thm){.ref}.](/images/introtcs/original-threenandresultreduction.webp){#resultreduction .margin  }
 
 
 ## من $3NAND$ إلى $3SAT$
@@ -480,7 +480,7 @@ __الجزء الثاني: التسليمية.__ لنفترض أنّ هناك $z
 > ### { .pause }
 إنّ من التمارين الجيدة لك أن تحاول إيجاد صيغة 3CNF $\xi$ على ثلاثة متغيّرات $a,b,c$ بحيث يكون $\xi(a,b,c)$ صادقًا إذا وفقط إذا كان $a = NAND(b,c)$. وعندما تفعل ذلك، حاول أن ترى لماذا يستلزم هذا اختزالًا من $3NAND$ إلى $3SAT$، ومن ثمّ يُكمل برهان [threenand-sat-thm](#threenand-sat-thm){.ref}
 
-![Code and example output for the reduction given in [threenand-sat-thm](#threenand-sat-thm){.ref} of $3NAND$ to $3SAT$.](/images/introtcs/original-3nandto3sat.webp){#threenandtothreesat   }
+![شيفرة ومثالٌ على مخرجات الاختزال المُعطى في [threenand-sat-thm](#threenand-sat-thm){.ref} من $3NAND$ إلى $3SAT$.](/images/introtcs/original-3nandto3sat.webp){#threenandtothreesat   }
 
 
 ::: {.proof data-ref="threenand-sat-thm"}

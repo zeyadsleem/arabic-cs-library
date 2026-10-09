@@ -379,8 +379,7 @@ __مكوّنات ذات حجم غير محدود:__ الكميات التالي�
 
 * عدد الخطوات التي تتّخذها الآلة الذاتية المحدودة الحتمية يمكن أن ينمو مع طول المدخل. بالفعل، تجري الآلة مرورًا واحدًا على المدخل، ولذلك تتّخذ بالضبط $|x|$ خطوة على مدخل $x\in \{0,1\}^*$.
 
-![Execution of the DFA of [dfazeroonefig](#dfazeroonefig){.ref}. The number of states and the transition function size are bounded, but the input can be arbitrarily long.
-If the DFA is at state $s$ and observes the value $\sigma$ then it moves to the state $T(s,\sigma)$. At the end of the execution the DFA accepts iff the final state is in $\mathcal{S}$.](/images/introtcs/original-DFA010execution.webp){#DFAzerooneexecfig}
+![تنفيذ الآلة الذاتية المحدودة الحتمية في [dfazeroonefig](#dfazeroonefig){.ref}. عدد الحالات وحجم دالة الانتقال محدودان، لكن قد يكون المدخل بأيّ طول. وإذا كانت الآلة الذاتية المحدودة الحتمية في الحالة $s$ وراقبت القيمة $\sigma$ فتنتقل إلى الحالة $T(s,\sigma)$. وفي نهاية التنفيذ تقبل الآلة إذا توفّرت الحالة النهائية في $\mathcal{S}$ وحسب.](/images/introtcs/original-DFA010execution.webp){#DFAzerooneexecfig}
 
 
 ### الدوال القابلة للحساب بآلة ذاتية محدودة حتمية
@@ -805,7 +804,7 @@ $\Phi_{e'}(x_0 \cdots x_{i-1}) = \Phi_{e''}(x_0 \cdots x_i)$.
 
 ![/images/introtcs/lec_05_infinite-5.webp](/images/introtcs/original-automaton.webp){#automatonregfig .margin }
 
-![Given a DFA of $C$ states, for every $v,w \in [C]$ and number $t\in \{0,\ldots,C\}$ we define the function $F^t_{v,w}:\{0,1\}^* \rightarrow \{0,1\}$ to output one on input $x\in \{0,1\}^*$ if and only if when the DFA is initialized in the state $v$ and is given the input $x$,  it will reach the state $w$ while going only through the intermediate states $\{0,\ldots,t-1\}$.](/images/introtcs/original-dfatoreg1.webp){#dfatoregonefig .margin}
+![بإعطائنا آلةً ذاتيةً محدودةً حتميةً بحالة $C$، نُعرِّف لكلّ $v,w \in [C]$ وعدد $t\in \{0,\ldots,C\}$ الدالة $F^t_{v,w}:\{0,1\}^* \rightarrow \{0,1\}$ التي تُخرج واحدًا على المدخل $x\in \{0,1\}^*$ إذاً وفقط إذاً، حين تُشغَّل الآلة من الحالة $v$ وتُعطى المدخل $x$، بلغت الحالة $w$ وهي لا تمرّ إلاّ بالحالات الوسيطة $\{0,\ldots,t-1\}$.](/images/introtcs/original-dfatoreg1.webp){#dfatoregonefig .margin}
 
 
 ::: {.proof data-ref="dfaregequivthm"}
@@ -854,7 +853,7 @@ $$R_{v,w}^t \;|\; R_{v,t}^t(R_{t,t}^t)^* R_{t,w}^t\;.$$
 
 
 
-![If we have regular expressions $R_{v',w'}^{t}$ corresponding to $F_{v',w'}^{t}$ for every $v',w' \in [C]$, we can obtain a regular expression $R_{v,w}^{t+1}$ corresponding to $F_{v,w}^{t+1}$. The key observation is that a path from $v$ to $w$ using $\{0,\ldots, t \}$ either does not touch $t$ at all, in which case it is captured by the expression $R_{v,w}^{t}$, or it goes from $v$ to $t$, comes back to $t$  zero or more times, and then goes from $t$ to $w$, in which case it is captured by the expression $R_{v,t}^{t}(R_{t,t}^{t})^* R_{t,w}^t$.](/images/introtcs/original-dfatoreginduction.webp){#dfatoreginductivefig}
+![إن كانت لدينا تعبيراتٌ منتظمة $R_{v',w'}^{t}$ تقابل $F_{v',w'}^{t}$ لكلّ $v',w' \in [C]$، فيمكننا الحصول على تعبيرٍ منتظم $R_{v,w}^{t+1}$ يقابل $F_{v,w}^{t+1}$. والملاحظة الجوهرية أنّ المسار من $v$ إلى $w$ المستعمل لـ$\{0,\ldots, t \}$ إمّا أن لا يلمس $t$ إطلاقًا (وفي هذه الحالة يُلتقط بالتعبير $R_{v,w}^{t}$)، وإمّا أن يذهب من $v$ إلى $t$، ثمّ يعود إلى $t$ صفرًا أو أكثر من المرّات، ثمّ يذهب من $t$ إلى $w$ (وفي هذه الحالة يُلتقط بالتعبير $R_{v,t}^{t}(R_{t,t}^{t})^* R_{t,w}^t$).](/images/introtcs/original-dfatoreginduction.webp){#dfatoreginductivefig}
 
 ### خصائص الإغلاق للتعبيرات النمطية
 

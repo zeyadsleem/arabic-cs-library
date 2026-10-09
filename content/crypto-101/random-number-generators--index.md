@@ -235,7 +235,7 @@ NIST صدر في السنة نفسها التي صدر فيها `Dual_EC_DRBG`،
 وسنوضّح ذلك بيانيًّا، اعتمادًا على رسم مبنيّ على عمل Shumow وFerguson، وهما
 مشفّران أبرزا بعضًا من المسائل الكبرى في هذه الخوارزمية:
 
-![center](/images/crypto-101/random-number-generators-fig-0-Diagram.svg)
+![مخطّط خوارزمية Dual_EC_DRBG](/images/crypto-101/random-number-generators-fig-0-Diagram.svg)
 
 وفي الخوارزمية كلّها، تكون `\phi` دالة تأخذ نقطةً على المنحنية وتحولها إلى عدد
 صحيح. وتحتاج الخوارزمية إلى نقطتين معطاتين على المنحنية: `P` و`Q`. وهما

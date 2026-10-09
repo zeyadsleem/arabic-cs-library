@@ -70,7 +70,7 @@ obj[prop] = value;
 
 ممتاز! لنرَ ما يحدث عندما نحاول تعديل خاصية أو استرجاعها.
 
-JavaScript iconindex.js
+`index.js`
 
 ```javascript
 const person = {
@@ -148,7 +148,7 @@ obj[prop] = value;
 
 لنرَ ما يحدث عندما نحاول تمرير قيم خاطئة!
 
-JavaScript iconindex.js
+`index.js`
 
 ```javascript
 const person = {
@@ -217,7 +217,7 @@ Reflect.set(obj, prop, value);
 
 ممتاز! يمكننا الوصول إلى الخصائص على الكائن الهدف وتعديلها بسهولة باستخدام كائن `Reflect`.
 
-JavaScript iconindex.js
+`index.js`
 
 ```javascript
 const person = {

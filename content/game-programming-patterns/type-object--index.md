@@ -107,11 +107,11 @@ source: https://gameprogrammingpatterns.com/
 
 <span name="inherits-arrow"></span>
 
-<img src="/images/game-programming-patterns/type-object-1.webp" alt="A Monster base class with derived classes for Dragon, Troll, etc." />
+<img src="/images/game-programming-patterns/type-object-1.webp" alt="فئة أساسية Monster بها فئات مشتقّة لـ Dragon وTroll وغيرها." />
 
 <aside name="inherits-arrow">
 
-هنا، تعني <img src="/images/game-programming-patterns/type-object-2.webp" class="arrow" alt="A UML arrow representing inheritance." /> السهم «يرث
+هنا، تعني <img src="/images/game-programming-patterns/type-object-2.webp" class="arrow" alt="سهم UML يمثّل الوراثة." /> السهم «يرث
 من».
 
 </aside>
@@ -126,11 +126,11 @@ source: https://gameprogrammingpatterns.com/
 
 <span name="references-arrow"></span>
 
-<img src="/images/game-programming-patterns/type-object-3.webp" alt="A Monster object has a reference to a Breed object." />
+<img src="/images/game-programming-patterns/type-object-3.webp" alt="كائن Monster يحوي مرجعًا إلى كائن Breed." />
 
 <aside name="references-arrow">
 
-هنا، تعني <img src="/images/game-programming-patterns/type-object-4.webp" class="arrow" alt="A UML arrow for an object reference." /> السهم «يُشار
+هنا، تعني <img src="/images/game-programming-patterns/type-object-4.webp" class="arrow" alt="سهم UML لمرجع كائن." /> السهم «يُشار
 إليه».
 
 </aside>

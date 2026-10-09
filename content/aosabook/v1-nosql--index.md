@@ -1,5 +1,5 @@
 ---
-title: "The NoSQL Ecosystem"
+title: "منظومة NoSQL"
 lang: ar
 source: https://aosabook.org/en/v1/nosql.html
 ---

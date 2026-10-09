@@ -4,7 +4,7 @@ lang: ar
 source: https://mystery.knightlab.com/
 ---
 
-![A decorative illustration of a detective looking at an evidence board.](https://mystery.knightlab.com/images/sql-mystery/index-0-174092-clue-illustration.webp){#intro}
+![رسم توضيحي لمحقّق ينظر إلى لوح أدلة.](https://mystery.knightlab.com/images/sql-mystery/index-0-174092-clue-illustration.webp){#intro}
 
 وقعت جريمة قتل في مدينة SQL! صُمّم لغز جريمة SQL ليكون في الوقت نفسه درسًا ذاتيًا لتعلّم مفاهيم SQL وأوامرها، ولعبة ممتعة لمستخدمي SQL المخضرمين لحلّ جريمة مثيرة.
 

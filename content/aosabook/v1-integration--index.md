@@ -1,5 +1,5 @@
 ---
-title: "Continuous Integration"
+title: "التكامل المستمرّ"
 lang: ar
 source: https://aosabook.org/en/v1/integration.html
 ---

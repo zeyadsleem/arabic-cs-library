@@ -231,7 +231,7 @@ return (
 
 ممتاز! لقد أنشأنا للتو مكوّن `FlyOut` كاملًا من دون إضافة أي حالة (state) في `FlyOutMenu` نفسه!
 
-JavaScript iconindex.jsJavaScript iconFlyOut.jsJavaScript iconFlyoutMenu.jsJavaScript iconImages.js
+`index.js` · `FlyOut.js` · `FlyoutMenu.js` · `Images.js`
 
 ```javascript
 import React from "react";
@@ -283,7 +283,7 @@ React.cloneElement(child, { open, toggle })
 
 يتم استنساخ جميع المكوّنات الفرعية، ويُمرَّر إليها قيمتا `open` و`toggle`. وبدلًا من الحاجة إلى استخدام واجهة Context API كما في المثال السابق، أصبح بإمكاننا الوصول إلى هاتين القيمتين عبر `props`.
 
-JavaScript iconindex.jsJavaScript iconFlyOut.jsJavaScript iconFlyoutMenu.jsJavaScript iconImages.js
+`index.js` · `FlyOut.js` · `FlyoutMenu.js` · `Images.js`
 
 ```javascript
 import React from "react";

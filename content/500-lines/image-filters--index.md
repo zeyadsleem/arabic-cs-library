@@ -33,7 +33,7 @@ Sunflower](http://www.catehuston.com/applets/Sunflower/index.html). إنه أك�
 طويلًا (بضع ثوانٍ لكل صورة)، واحتجت مئات الصور لأصنع
 شيئًا رائعًا (sunflower).
 
-![Sunflower layout](/images/500-lines/image-filters-0-sunflower.webp)
+![تخطيط عباد الشمس](/images/500-lines/image-filters-0-sunflower.webp)
 
 قد تظن أن هذا محبط، لكن حين وصلت إلى هذه النقطة كنت قد تعلمت
 الكثير من الأمور التي لم تأتني من قبل — عن فضاءات
@@ -140,9 +140,9 @@ Java.
 المكبَّرة الملتُقطة في MoMA في نيويورك. أما pixelanimals فهو
 الصورة نفسها مكبَّرة، لكن بـ 24 × 32 بكسلًا فقط.
 
-![Blow-up animals at MoMA NY](/images/500-lines/image-filters-1-animals.webp)
+![حيوانات منفوخة في متحف MoMA في نيويورك](/images/500-lines/image-filters-1-animals.webp)
 
-![Blow-up animals, blown up](/images/500-lines/image-filters-2-pixelanimals.webp)
+![حيوانات منفوخة، مكبَّرة](/images/500-lines/image-filters-2-pixelanimals.webp)
 
 انظر كيف تبدو ضبابية إلى هذا الحد؟ إننا نسمّي ذلك
 _التنقيطَ_ (_pixelation_)، أي أن الصورة أكبر من عدد البكسلات التي
@@ -183,7 +183,7 @@ FFF5B7
 - إعادة تعيين الصورة.
 - حفظ الصورة التي صنعناها.
 
-![The App](/images/500-lines/image-filters-3-app.webp)
+![التطبيق](/images/500-lines/image-filters-3-app.webp)
 
 تجعل Processing إنشاء تطبيق
 صغير ومعالجة الصور أمرًا بسيطًا؛
@@ -279,13 +279,13 @@ public void draw() {
 \rowcolors{2}{TableOdd}{TableEven}
 \begin{tabular}{ll}
 \hline
-pixels[] & Array containing the color of every pixel in the image \\
-width & Image width in pixels \\
-height & Image height in pixels \\
+pixels[] & مصفوفة تحتوي على لون كل بكسل في الصورة \\
+width & عرض الصورة بالبكسلات \\
+height & ارتفاع الصورة بالبكسلات \\
 \hline
 \end{tabular}
 }
-\caption{PImage fields}
+\caption{حقول PImage}
 \label{500l.imagefilters.pimagefields}
 \end{table}
 </latex>
@@ -325,16 +325,16 @@ height & Image height in pixels \\
 \rowcolors{2}{TableOdd}{TableEven}
 \begin{tabular}{ll}
 \hline
-loadPixels & Loads the pixel data for the image into its `pixels[]` array \\
-updatePixels & Updates the image with the data in its `pixels[]` array \\
-resize & Changes the size of an image to a new width and height \\
-get & Reads the color of any pixel or grabs a rectangle of pixels \\
-set & Writes a color to any pixel or writes an image into another \\
-save & Saves the image to a TIFF, TARGA, PNG, or JPEG file \\
+loadPixels & يُحمّل بيانات بكسلات الصورة في مصفوفة `pixels[]` الخاصة بها \\
+updatePixels & يحدّث الصورة بالبيانات الموجودة في مصفوفة `pixels[]` \\
+resize & يغيّر حجم الصورة إلى عرض وارتفاع جديدين \\
+get & يقرأ لون أي بكسل أو يلتقط مستطيلًا من البكسلات \\
+set & يكتب لونًا في أي بكسل أو يكتب صورة في أخرى \\
+save & يحفظ الصورة في ملف بصيغة TIFF أو TARGA أو PNG أو JPEG \\
 \hline
 \end{tabular}
 }
-\caption{PImage methods}
+\caption{دوال PImage}
 \label{500l.imagefilters.pimagemethods}
 \end{table}
 </latex>
@@ -466,13 +466,13 @@ frankfurt (التُقطت في رحلة ربيعية إلى فرانكفورت)
 التي تخيلناها في وقت سابق؟) لاحظ كم تصير الشجرة أكثر خضرة
 عند تطبيق المرشِّح الأحمر.
 
-![Four (Simulated) Seasons in Frankfurt](/images/500-lines/image-filters-4-frankfurt.webp)
+![فصول أربعة (محاكاة) في فرانكفورت](/images/500-lines/image-filters-4-frankfurt.webp)
 
 <latex>
-By applying different RGB filters to an image we can make it almost seem like
-the seasons are different depending which colors are filtered out 
-and which are emphasized. (Remember the four-seasons paintings
-we imagined earlier?) 
+عند تطبيق مرشِّحات RGB مختلفة على صورة، يمكننا أن نجعل الأمر يكاد يبدو
+وكأن الفصول مختلفة بحسب الألوان التي تُصفّى 
+والتي يُبرَز عليها. (أتذكر لوحات الفصول الأربعة
+التي تخيّلناها في وقت سابق؟) 
 </latex>
 
 كيف نفعل ذلك؟
@@ -534,7 +534,7 @@ we imagined earlier?)
 \hline
 \end{tabular}
 }
-\caption{Pixel indices for a 4x4 image}
+\caption{فهارس البكسلات في صورة 4×4}
 \label{500l.imagefilters.pixelindices}
 \end{table}
 </latex>
@@ -640,11 +640,11 @@ for(int px in pixels) {
 في النهاية يمكننا طباعة درجة اللون هذه على الشاشة، أو عرضها بجوار
 الصورة (hueranges).
 
-![Dominant hue versus size of range (number of buckets) used](/images/500-lines/image-filters-5-hueranges.webp)
+![درجة اللون الغالبة مقابل حجم المجال (عدد الدلاء) المستخدم](/images/500-lines/image-filters-5-hueranges.webp)
 
 <latex>
-At the end we can print this hue to the screen, or display it next to the
-picture. 
+في النهاية يمكننا طباعة درجة اللون هذه على الشاشة، أو عرضها بجوار
+الصورة. 
 </latex>
 
 بمجرد أن استخرجنا درجة اللون «الغالبة»، يمكننا أن نختار إما إظهارها أو
@@ -655,14 +655,14 @@ picture.
 باستخدام مدى 240، وبدرجات تسامح متفاوتة. أما التسامح فهو
 المقدار على جانبي درجة اللون الأكثر شيوعًا الذي يُجمَّع معًا.
 
-![Showing dominant hue](/images/500-lines/image-filters-6-showdominant.webp)
+![إظهار درجة اللون الغالبة](/images/500-lines/image-filters-6-showdominant.webp)
 
 <latex>
-Once we've extracted the "dominant" hue, we can choose to either show or hide
-it in the image. We can show the dominant hue with varying tolerance (ranges
-around it that we will accept). Pixels that don't fall into this range can be
-changed to grayscale by setting the value based on the brightness.
-Alternatively, we can hide the dominant hue by setting the color for pixels with that hue to greyscale, and leaving other pixels as they are. 
+بمجرد أن استخرجنا درجة اللون «الغالبة»، يمكننا أن نختار إما إظهارها أو
+إخفاءها في الصورة. ويمكننا إظهار درجة اللون الغالبة بدرجات تسامح متفاوتة (مجالات
+حولها نقبلها). ويمكن تغيير البكسلات التي لا تقع في هذا المجال إلى
+تدرّج رمادي عبر ضبط القيمة بناءً على السطوع.
+وبدلًا من ذلك، يمكننا إخفاء درجة اللون الغالبة عبر ضبط لون البكسلات ذات درجة اللون تلك إلى تدرّج رمادي، وترك البكسلات الأخرى كما هي. 
 </latex>
 
 وبدلًا من ذلك، يمكننا إخفاء درجة اللون الغالبة. في
@@ -670,7 +670,7 @@ hidedominant، تكون الصور جنبًا إلى جنب:
 الأصل في الوسط، وعلى اليسار تُعرض درجة اللون الغالبة (اللون البني الفاتح
 للطريق)، وعلى اليمين تُخفى درجة اللون الغالبة (مدى 320، تسامح 20).
 
-![Hiding dominant hue](/images/500-lines/image-filters-7-hidedominant.webp)
+![إخفاء درجة اللون الغالبة](/images/500-lines/image-filters-7-hidedominant.webp)
 
 تتطلب كل صورة مرورًا مزدوجًا (النظر في كل بكسل مرتين)، لذا فإن الصور
 ذات العدد الكبير من البكسلات قد تستغرق وقتًا ملحوظًا.
@@ -773,7 +773,7 @@ Processing) ويتولى التخطيط وتفاعل المستخدم وما إ�
 معالجة الصور والترشيح، و`PixelColorHelper.java`
 يُجَرِّد دوال `PApplet` النهائية الخاصة بألوان البكسلات من أجل قابلية الاختبار.
 
-![Architecture diagram](/images/500-lines/image-filters-8-architecture.webp)
+![مخطّط معماري](/images/500-lines/image-filters-8-architecture.webp)
 
 ### أصناف الغلاف والاختبارات
 كما ذُكر بإيجاز أعلاه، هناك صنفا غلاف (`IFAImage` و

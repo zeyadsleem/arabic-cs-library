@@ -106,7 +106,7 @@ if condition) print("looks weird");
 
 <span name="legend"></span>
 
-<img src="/images/crafting-interpreters/jumping-back-and-forth-1.webp" alt="Flowchart of the compiled bytecode of an if statement." />
+<img src="/images/crafting-interpreters/jumping-back-and-forth-1.webp" alt="مخطط انسيابي لشيفرة البايت المُصرَّفة لعبارة if." />
 
 لكنّ لدينا مشكلة. حين نكتب مُعامل تعليمة `OP_JUMP_IF_FALSE`، كيف نعرف كم يجب أن نقفز؟
 فنحن لم نترجم فرع then بعد، لذا لا نعرف كم من شيفرة البايت يحتوي.
@@ -117,7 +117,7 @@ if condition) print("looks weird");
 بالإزاحة الحقيقية الآن بعد أن صرنا قادرين على حسابها. شيءٌ كخياطة رقعة على نسيج الشيفرة
 المُصرَّفة القائم.
 
-<img src="/images/crafting-interpreters/jumping-back-and-forth-2.webp" alt="A patch containing a number being sewn onto a sheet of bytecode." />
+<img src="/images/crafting-interpreters/jumping-back-and-forth-2.webp" alt="رقعة تحوي رقماً تُخاط على ورقة شيفرة بايت." />
 
 نرمّز هذه الخدعة في دالتَي مساعِدة.
 
@@ -205,13 +205,13 @@ case OP_JUMP_IF_FALSE: {
 حين يكون الشرط خاطئًا، سنقفز فوق فرع then. وإن وُجد فرع else، فإنّ `ip` ستهبط مباشرةً في
 بداية شيفرته. لكنّ ذلك لا يكفي. وإليك التدفّق الذي يؤدي إلى:
 
-<img src="/images/crafting-interpreters/jumping-back-and-forth-3.webp" alt="Flowchart of the compiled bytecode with the then branch incorrectly falling through to the else branch." />
+<img src="/images/crafting-interpreters/jumping-back-and-forth-3.webp" alt="مخطط انسيابي لشيفرة البايت المُصرَّفة حيث يمرّ فرع then سهواً إلى فرع else." />
 
 إن كان الشرط صحيحًا، فإنّنا ننفّذ فرع then كما نريد. لكن بعد ذلك، يستمر التنفيذ مباشرةً إلى
 داخل فرع else. أوه! وحين يكون الشرط صحيحًا، وبعد أن ننفّذ فرع then، نحتاج إلى القفز فوق فرع
 else. وبهذه الطريقة، في كلتا الحالتين، ننفّذ فرعًا واحدًا فقط، هكذا:
 
-<img src="/images/crafting-interpreters/jumping-back-and-forth-4.webp" alt="Flowchart of the compiled bytecode for an if with an else clause." />
+<img src="/images/crafting-interpreters/jumping-back-and-forth-4.webp" alt="مخطط انسيابي لشيفرة البايت المُصرَّفة لعبارة if ذات فرع else." />
 
 لتنفيذ ذلك، نحتاج إلى قفزة أخرى من نهاية فرع then.
 
@@ -255,7 +255,7 @@ else. وبهذه الطريقة، في كلتا الحالتين، ننفّذ ف
 
 والتدفّق الصحيح الكامل يبدو هكذا:
 
-<img src="/images/crafting-interpreters/jumping-back-and-forth-5.webp" alt="Flowchart of the compiled bytecode including necessary pop instructions." />
+<img src="/images/crafting-interpreters/jumping-back-and-forth-5.webp" alt="مخطط انسيابي لشيفرة البايت المُصرَّفة متضمّناً تعليمات pop الضرورية." />
 
 إن تتبّعت المسار، يمكنك أن ترى أنّه ينفّذ دائمًا فرعًا واحدًا ويضمن أُسقوط الشرط أولًا. ولم
 يبقَ سوى بعض دعم المفكّك.
@@ -300,7 +300,7 @@ else. وبهذه الطريقة، في كلتا الحالتين، ننفّذ ف
 
 أربعة أسطر الشيفرة هناك تنتج ذلك بالضبط. يبدو التدفّق هكذا:
 
-<img src="/images/crafting-interpreters/jumping-back-and-forth-6.webp" alt="Flowchart of the compiled bytecode of an 'and' expression." />
+<img src="/images/crafting-interpreters/jumping-back-and-forth-6.webp" alt="مخطط انسيابي لشيفرة البايت المُصرَّفة لتعبير and." />
 
 الآن ترى لماذا <span name="instr">يُبقي</span> `OP_JUMP_IF_FALSE` القيمة على المكدّس. فحين
 تكون قيمة الجهة اليسرى من `and` خاطئة، تبقى تلك القيمة لتصبح نتيجة التعبير كاملًا.
@@ -333,7 +333,7 @@ else. وبهذه الطريقة، في كلتا الحالتين، ننفّذ ف
 قفزة غير مشروطة فوق شيفرة المُعامل الأيمن. وهذه الرقصة الصغيرة تُنجز فعليًا قفزة حين تكون
 القيمة صحيحة. يبدو التدفّق هكذا:
 
-<img src="/images/crafting-interpreters/jumping-back-and-forth-7.webp" alt="Flowchart of the compiled bytecode of a logical or expression." />
+<img src="/images/crafting-interpreters/jumping-back-and-forth-7.webp" alt="مخطط انسيابي لشيفرة البايت المُصرَّفة لتعبير or المنطقي." />
 
 إن كنت صادقًا معك، فهذه ليست أفضل طريقة للقيام بذلك. فهناك تعليمات أكثر توجيهًا وحِمل
 زائد أكثر. ولا يوجد سبب جيّد لماذا ينبغي أن يكون `or` أبطأ من `and`. لكنّ من الممتع أن ترى
@@ -411,7 +411,7 @@ else. وبهذه الطريقة، في كلتا الحالتين، ننفّذ ف
 تلك هي عبارة `while`. وهي تحوي قفزتين -- قفزة أمامية مشروطة للخروج من الحلقة حين لا يتحقّق
 الشرط، وقفزة حلقة غير مشروطة إلى الخلف بعد أن نفّذنا الجسم. يبدو التدفّق هكذا:
 
-<img src="/images/crafting-interpreters/jumping-back-and-forth-8.webp" alt="Flowchart of the compiled bytecode of a while statement." />
+<img src="/images/crafting-interpreters/jumping-back-and-forth-8.webp" alt="مخطط انسيابي لشيفرة البايت المُصرَّفة لعبارة while." />
 
 ## عبارات for
 
@@ -531,7 +531,7 @@ C، أليس كذلك؟ وإليك الشيفرة:
 
 إنّه ملتوٍّ، لكن كل شيء يعمل في النهاية. حلقة كاملة بجميع بنودها تُترجم إلى تدفّق كهذا:
 
-<img src="/images/crafting-interpreters/jumping-back-and-forth-9.webp" alt="Flowchart of the compiled bytecode of a for statement." />
+<img src="/images/crafting-interpreters/jumping-back-and-forth-9.webp" alt="مخطط انسيابي لشيفرة البايت المُصرَّفة لعبارة for." />
 
 وكما عند تنفيذ حلقات `for` في jlox، لم نضطر إلى لمس وقت التشغيل. فكل ذلك يُترجم إلى عمليات
 تدفّق تحكّم أوّلية تدعمها الآلة الافتراضية بالفعل. وفي هذا الفصل، أخذنا قفزة <span

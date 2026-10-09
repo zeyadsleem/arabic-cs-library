@@ -422,7 +422,7 @@ for (int i = 0; i < serRefs.length; i ++)
 3. `http://lti-civil.org/`
 4. ما زالت لدينا في الواقع كخيار غير افتراضي.
 
-[^1]: To refer directly to the source as you read, download it from `http://jitsi.org/source`. If you are using Eclipse or NetBeans, you can go to `http://jitsi.org/eclipse` or `http://jitsi.org/netbeans` for instructions on how configure them.
+[^1]: للإشارة إلى المصدر وأنت تقرأ، نزِّله من `http://jitsi.org/source`. وإذا كنت تستخدم Eclipse أو NetBeans، فيمكنك الانتقال إلى `http://jitsi.org/eclipse` أو `http://jitsi.org/netbeans` للحصول على إرشادات كيفية ضبطهما.
 [^2]: `http://portaudio.com/`
 [^3]: `http://lti-civil.org/`
-[^4]: Actually we still have it as a non-default option.
+[^4]: ما زالت لدينا في الواقع كخيار غير افتراضي.

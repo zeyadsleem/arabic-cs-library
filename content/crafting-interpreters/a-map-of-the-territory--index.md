@@ -66,7 +66,7 @@ COBOL الذي كتبته العقيلة غريس هوبار وصولاً إلى
 إلى صور أدنى مستوى تِباعاً، لنقترب أكثر فأكثر ممّا نعرف كيف
 نجعل المعالج ينفّذه فعلاً.
 
-<img src="/images/crafting-interpreters/a-map-of-the-territory-1.webp" alt="The branching paths a language may take over the mountain." class="wide" />
+<img src="/images/crafting-interpreters/a-map-of-the-territory-1.webp" alt="المسارات المتفرّعة التي قد تأخذها لغة عبر الجبل." class="wide" />
 
 لنمرّ على كلّ تلك الممرّات والمعالم. تبدأ رحلتنا على اليسار
 بالنصّ المجرّد لشيفرة المستخدم المصدرية:
@@ -122,7 +122,7 @@ COBOL الذي كتبته العقيلة غريس هوبار وصولاً إلى
 **الأشجار المجرّدة** (ASTs)، أو غالباً مجرّد **الأشجار**
 (trees).
 
-<img src="/images/crafting-interpreters/a-map-of-the-territory-4.webp" alt="An abstract syntax tree." />
+<img src="/images/crafting-interpreters/a-map-of-the-territory-4.webp" alt="شجرة تركيب مجرّدة." />
 
 للتحليل النحوي تاريخٌ طويلٌ وغنيّ في علوم الحاسوب، وهو مرتبط
 بإحكام بمجتمع الذكاء الاصطناعي. فالخبرات العديدة المستعملة اليوم
@@ -619,7 +619,7 @@ JS، أو من شيفرة بايتٍ مستقلّة عن المنصّة في ح�
 
 <span name="veg"></span>
 
-<img src="/images/crafting-interpreters/a-map-of-the-territory-5.webp" alt="A Venn diagram of edible plants" />
+<img src="/images/crafting-interpreters/a-map-of-the-territory-5.webp" alt="مخطط فينّي للنباتات الصالحة للأكل" />
 
 <aside name="veg">
 
@@ -688,7 +688,7 @@ JS، أو من شيفرة بايتٍ مستقلّة عن المنصّة في ح�
 
 </aside>
 
-<img src="/images/crafting-interpreters/a-map-of-the-territory-6.webp" alt="A Venn diagram of compilers and interpreters" />
+<img src="/images/crafting-interpreters/a-map-of-the-territory-6.webp" alt="مخطط فينّي للمُجمِّعات والمُفسِّرات" />
 
 وتقع المنطقة المتداخلة في الوسط هناك أيضاً حيث يقيم مفسّرنا
 الثاني، لأنّه يصرّف داخلياً إلى شيفرة بايت. فبينما يكون هذا

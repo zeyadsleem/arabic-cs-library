@@ -89,7 +89,7 @@ name="formal">صورة رسمية</span> في الصياغة والدلالة ه
 لمنطقٍ معيّن. فكّر في لغات برمجة نصوص التطبيقات، ومحرّكات
 القوالب، وصيغ الترميز، وملفات الإعداد.
 
-<span name="little"></span><img src="/images/crafting-interpreters/introduction-1.webp" alt="A random selection of little languages." />
+<span name="little"></span><img src="/images/crafting-interpreters/introduction-1.webp" alt="تشكيلة عشوائية من اللغات الصغيرة." />
 
 <aside name="little">
 
@@ -218,7 +218,7 @@ Yacc أداة تأخذ ملفّ قواعد وتُنتج ملفّ مصدر لمص
 لاحقاً هي [Bison][]، سُمّيت سخريةً من نطق كلمة Yacc الذي يشبه
 نطق "yak".
 
-<img src="/images/crafting-interpreters/introduction-2.webp" alt="A yak." />
+<img src="/images/crafting-interpreters/introduction-2.webp" alt="خروف ياك." />
 
 [bison]: https://en.wikipedia.org/wiki/GNU_bison
 
@@ -417,7 +417,7 @@ name="benchmark">محدَّد بدقّة</span>. ويبدو
 الآخر. وتُسمّى هذه **التمهيد** (bootstrapping)، من صورة
 «شِدَّ نفسك من حبال إقلاعك».
 
-<img src="/images/crafting-interpreters/introduction-3.webp" alt="Fact: This is the primary mode of transportation of the American cowboy." />
+<img src="/images/crafting-interpreters/introduction-3.webp" alt="حقيقة: هذه الوسيلة الأساسية لتنقّل راعي البقر الأمريكي." />
 
 </aside>
 

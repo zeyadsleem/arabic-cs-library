@@ -196,7 +196,7 @@ $$
 
 
 
-![Left: Python code implementing the reduction of $3SAT$ to $01EQ$. Right: Example output of the reduction. Code is in our [repository](https://github.com/boazbk/tcscode).](/images/introtcs/original-3sat2zoeqreduction.webp){ #threesat2zoeqreductionfig }
+![يسارًا: شيفرة بايثون تنفّذ الاختزال من $3SAT$ إلى $01EQ$. يمينًا: مثالٌ على مخرجات الاختزال. الشيفرة موجودة في [مستودعنا](https://github.com/boazbk/tcscode).](/images/introtcs/original-3sat2zoeqreduction.webp){ #threesat2zoeqreductionfig }
 
 
 ::: {.proof data-ref="tsattozoeqthm"}
@@ -692,7 +692,7 @@ $ISET \leq_p MAXCUT$
 > ### {.proofidea data-ref="isettomaxcut"}
 سنُسند رسمًا بيانيًا $G$ إلى رسم بياني $H$ بحيث تتحوّل مجموعة مستقلّة كبيرة في $G$ إلى تقسيم يقطع حواف كثيرة في $H$. ويمكننا أن نفكّر في قطع في $H$ على أنّه تلوين لكل رأس إمّا «أزرق» أو «أحمر». وسنضيف رأس «مصدر» خاصًّا $s^*$، ونصله بكل الرؤوس الأخرى، ونفترض دون خسارة أنّه ملوَّن بالأزرق. وبذلك، كلّما لوّنّا رؤوسًا أكثر بالأحمر، قطعنا حواف أكثر من $s^*$. والآن، لكل حافة $u,v$ في الرسم البياني الأصلي $G$ سنضيف «آلية» (_gadget_) خاصّة، أي رسمًا بيانيًا فرعيًا صغيرًا يتضمّن $u$ و $v$ والمصدر $s^*$ ورأسين إضافيّين. ونصمّم الآلية بحيث إذا لم تكن الرؤوس الحمراء مجموعة مستقلّة في $G$ فإنّ القطع المقابل في $H$ يكون «مُعاقَبًا» بالمعنى أنّه لن يقطع حواف كثيرة. وبعد أن نضع لأنفسنا هذا الهدف، ليس من الصعب إيجاد آلية تحقّقه — انظر البرهان أدناه. وإلى ذلك، فإنّ __التقنية المستفادة__ (_takeaway technique_) هي استعمال آلية (وهذه المرّة أكثر دقّة قليلًا).
 
-![In the reduction of $ISET$ to $MAXCUT$ we map an $n$-vertex $m$-edge graph $G$ into the $n+2m+1$ vertex and $n+5m$ edge graph $H$ as follows. The graph $H$ contains a special "source" vertex $s^*$,$n$ vertices $v_0,\ldots,v_{n-1}$, and $2m$ vertices $e_0^0,e_0^1,\ldots,e_{m-1}^0,e_{m-1}^1$ with each pair corresponding to an edge of $G$. We put an edge between $s^*$ and $v_i$ for every $i\in [n]$, and if the $t$-th edge of $G$ was $(v_i,v_j)$ then we add the five edges $(s^*,e_t^0),(s^*,e_t^1),(v_i,e_t^0),(v_j,e_t^1),(e_t^0,e_t^1)$. The intent is that if we cut at most one of $v_i,v_j$ from $s^*$ then we'll be able to cut $4$ out of these five edges, while if we cut both $v_i$ and $v_j$ from $s^*$ then we'll be able to cut at most three of them.](/images/introtcs/original-iset2maxcutoverview.webp){#iset2maxcutoverviewfig}
+![في اختزال $ISET$ إلى $MAXCUT$ نُطابق رسمًا بيانيًّا $G$ ذا $n$ رأسًا و$m$ حافةً إلى الرسم البياني $H$ ذا $n+2m+1$ رأسًا و$n+5m$ حافةً على النحو التالي. يحوي الرسم $H$ رأس «مصدر» خاصًّا $s^*$، و$n$ رؤوس $v_0,\ldots,v_{n-1}$، و$2m$ رأسًا $e_0^0,e_0^1,\ldots,e_{m-1}^0,e_{m-1}^1$ يقابل كلّ زوجٍ منهم حافةً من $G$. ونضع حافةً بين $s^*$ و$v_i$ لكلّ $i\in [n]$، وإذا كانت الحافة رقم $t$ في $G$ هي $(v_i,v_j)$ أضفنا الحواف الخمس $(s^*,e_t^0),(s^*,e_t^1),(v_i,e_t^0),(v_j,e_t^1),(e_t^0,e_t^1)$. والمقصود أنّنا إن قطعنا $v_i$ أو $v_j$ على الأكثر عن $s^*$ استطعنا قطع $4$ من هذه الحواف الخمس، بينما إن قطعنا $v_i$ و$v_j$ كليهما عن $s^*$ استطعنا قطع ثلاثةٍ منها على الأكثر.](/images/introtcs/original-iset2maxcutoverview.webp){#iset2maxcutoverviewfig}
 
 ::: {.proof data-ref="isettomaxcut"}
 سنحوّل رسمًا بيانيًا $G$ من $n$ رأسًا و $m$ حافة إلى رسم بياني $H$ من $n+1+2m$ رأسًا و $n+5m$ حافة على النحو التالي (انظر أيضًا [iset2maxcutoverviewfig](#iset2maxcutoverviewfig){.ref}).
@@ -710,10 +710,10 @@ __القسم الثاني: السلامة.__ لنفترض أنّ $S$ قطع في
 :::
 
 
-![In the reduction of independent set to max cut, for every $t\in [m]$, we have a "gadget" corresponding to the $t$-th edge $e= \{ v_i,v_j\}$ in the original graph. If we think of the side of the cut containing the special source vertex $s^*$ as "white" and the other side as "blue", then the leftmost and center figures show that if $v_i$ and $v_j$ are not both blue then we can cut four edges from the gadget. In contrast, by enumerating all possibilities one can verify that if both $u$ and $v$ are blue, then no matter how we color the intermediate vertices $e_t^0,e_t^1$, we will cut at most three edges from the gadget. The figure above contains only the gadget edges and ignores the edges connecting $s^*$ to the vertices $v_0,\ldots,v_{n-1}$.](/images/introtcs/original-iset2maxcutgadgetanalysis.webp){#ISETtoMAXCUTfig .margin  }
+![في اختزال المجموعة المستقلّة إلى أقصى قطع، لكلّ $t\in [m]$ لدينا «آلية» (_gadget_) تقابل الحافة رقم $t$ أيّ $e= \{ v_i,v_j\}$ في الرسم البياني الأصلي. وإذا اعتبرنا جانب القطع الذي يحوي رأس المصدر الخاصّ $s^*$ «أبيض» والجانب الآخر «أزرق»، فيُظهر الشكلان الأيسر والأوسط أنّ $v_i$ و$v_j$ إن لم يكونا أزرقَين معًا فيمكننا قطع أربع حوافٍ من الآلية. وعلى العكس، بسرد كلّ الاحتمالات يمكن التحقّق من أنّ $u$ و$v$ إن كانا أزرقَين معًا، فمهما لوّنّا الرؤوس الوسيطة $e_t^0,e_t^1$، سنقطع ثلاثة حوافٍ من الآلية على الأكثر. ويحوي الشكل أعلاه حوافّ الآلية فحسب، ويتجاهل الحواف التي تصل $s^*$ بالرؤوس $v_0,\ldots,v_{n-1}$.](/images/introtcs/original-iset2maxcutgadgetanalysis.webp){#ISETtoMAXCUTfig .margin  }
 
 
-![The reduction of independent set to max cut. On the right-hand side is Python code implementing the reduction. On the left-hand side is an example output of the reduction where we apply it to the independent set instance that is obtained by running the reduction of [isetnpc](#isetnpc){.ref} on the 3CNF formula $(x_0 \vee \overline{x}_3 \vee x_2) \wedge (\overline{x}_0 \vee x_1 \vee \overline{x}_2) \wedge (\overline{x}_1 \vee x_2 \vee x_3)$.](/images/introtcs/original-is2maxcut.webp){#isettomaxcutcodefig   }
+![اختزال المجموعة المستقلّة إلى أقصى قطع. على الجانب الأيمن شيفرة بايثون تنفّذ الاختزال. وعلى الجانب الأيسر مثالٌ على مخرجات الاختزال حين نطبّقه على مُدخل المجموعة المستقلّة الناتج عن تشغيل اختزال [isetnpc](#isetnpc){.ref} على صيغة 3CNF $(x_0 \vee \overline{x}_3 \vee x_2) \wedge (\overline{x}_0 \vee x_1 \vee \overline{x}_2) \wedge (\overline{x}_1 \vee x_2 \vee x_3)$.](/images/introtcs/original-is2maxcut.webp){#isettomaxcutcodefig   }
 
 ## اختزال 3SAT إلى أطول مسار
 

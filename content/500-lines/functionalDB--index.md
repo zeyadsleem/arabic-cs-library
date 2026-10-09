@@ -43,7 +43,7 @@ _يوآف روبين مهندس برمجيات أول في مايكروسوفت�
 * الأسهم المتصلة تدل على تغيّر في الرمز بين الطبقات
 * الأسهم المتقطعة علاقات اعتباطية محلّية بين القطع الأثرية (مثلًا من «E» إلى «A»).
 
-![The Excavation Site](/images/500-lines/functionalDB-0-image_0.webp)
+![موقع التنقيب](/images/500-lines/functionalDB-0-image_0.webp)
 
 ولو ترجمنا لغة عالم الآثار إلى مصطلحات يستخدمها مصمّم قواعد البيانات لَما استعملها:
 
@@ -171,7 +171,7 @@ _يوآف روبين مهندس برمجيات أول في مايكروسوفت�
 
 ويُسمى هذا الفهرس EAVT، لأن الخريطة في المستوى الأعلى تحمل معرّفات الكيانات (Entity IDs)، والمستوى الثاني يحمل أسماء الخصائص (Attribute names)، والأوراق تحمل القيم (Values). أما حرف «T» فيأتي من أن كل طبقة في قاعدة البيانات لها فهارسها الخاصة، لذا فإن الفهرس نفسه ذو صلة بزمن محدد (Time).
 
-![EAVT](/images/500-lines/functionalDB-1-image_1.webp)
+![فهرس EAVT](/images/500-lines/functionalDB-1-image_1.webp)
 
 ويُظهر avet فهرسًا سيُسمى AVET لأن:
 
@@ -179,7 +179,7 @@ _يوآف روبين مهندس برمجيات أول في مايكروسوفت�
 * خريطة المستوى الثاني تحمل القيم (للخصائص).
 * مجموعة المستوى الثالث تحمل معرّفات الكيانات (للكيانات التي خاصيتها في المستوى الأول).
 
-![AVET](/images/500-lines/functionalDB-2-image_2.webp)
+![فهرس AVET](/images/500-lines/functionalDB-2-image_2.webp)
 
 تُنفَّذ فهارسنا على هيئة خريطة من خرائط، حيث مفاتيح الخريطة الجذرية تؤدّي دور المستوى الأول، ويشير كل مفتاح من هذه المفاتيح إلى خريطة مفاتيحها تؤدّي دور المستوى الثاني للفهرس، بينما القيم هي المستوى الثالث. وكل عنصر في المستوى الثالث مجموعة (set) تحمل أوراق الفهرس.
 
@@ -287,8 +287,8 @@ _يوآف روبين مهندس برمجيات أول في مايكروسوفت�
 \rowcolors{2}{TableOdd}{TableEven}
 \begin{tabular}{ll}
 \hline
-\textbf{EAVT index}
-& \textbf{AVET index}
+\textbf{فهرس EAVT}
+& \textbf{فهرس AVET}
 \\
 \hline
 JC $\Rightarrow$ \{lives-in $\Rightarrow$ \{Rome\}\} & lives-in $\Rightarrow$ \{Rome $\Rightarrow$ \{JC, B\}\}, \{Egypt $\Rightarrow$ \{Cleo\}\} \\
@@ -297,8 +297,8 @@ Cleo $\Rightarrow$ \{lives-in $\Rightarrow$ \{Egypt\}\} & \\
 Rome $\Rightarrow$ \{river $\Rightarrow$ \{Tiber\}\}  & \\ 
 Egypt $\Rightarrow$ \{river $\Rightarrow$ \{Nile\}\}  & \\
 \hline
-\textbf{VEAT index}
-& \textbf{VAET index}
+\textbf{فهرس VEAT}
+& \textbf{فهرس VAET}
 \\
 \hline
 Rome $\Rightarrow$ \{JC $\Rightarrow$ \{lives-in\}\}, \{B $\Rightarrow$ \{lives-in\}\} & Rome $\Rightarrow$ \{lives-in $\Rightarrow$ \{JC, B\}\} \\
@@ -308,7 +308,7 @@ Nile $\Rightarrow$ \{Egypt $\Rightarrow$ \{river\}\}                            
 \hline
 \end{tabular}
 }
-\caption{Indexes}
+\caption{الفهارس}
 \label{500l.functionaldb.indextable}
 \end{table}
 </latex>
@@ -793,17 +793,17 @@ transact →  _transact → swap! → transact-on-db
 \rowcolors{2}{TableOdd}{TableEven}
 \begin{tabular}{lll}
 \hline
-\textbf{Name} & \textbf{Meaning} & \textbf{Example} \\
+\textbf{الاسم} & \textbf{المعنى} & \textbf{مثال} \\
 \hline
-Constant & Is the value of the datom item equal to the constant? & \verb|:likes| \\
-Variable & Bind the value of the datom item to the variable and return true. & \verb|?e| \\
-Don't-care & Always returns true. & \verb|_| \\
-Unary operator & \begin{tabular}{@{}l@{}} Unary operation that takes a variable as its operand. \\ Bind the datom's item's value to the variable (unless it's an \verb|_|). \\  Replace the variable with the value of the item in the datom. \\ Return the application of the operation. \end{tabular} & \verb|(bday-mo? _)| \\
-Binary operator & \begin{tabular}{@{}l@{}} A binary operation that requires a variable as an operand. \\ Bind the datom's item's value to the variable (unless it's an \verb|_|). \\ Replace the variable with the value of the item in the datom. \\ Return the result of the operation. \end{tabular} & \verb|(&gt; ?age 20)| \\
+ثابت & هل قيمة العنصر في الـdatom مساوية للثابت؟ & \verb|:likes| \\
+متغير & اربط قيمة العنصر في الـdatom بالمتغير وأعد true. & \verb|?e| \\
+لا يهم & يُعيد true دائمًا. & \verb|_| \\
+عامل أحادي & \begin{tabular}{@{}l@{}} عملية أحادية تأخذ متغيرًا كoperand لها. \\ اربط قيمة عنصر الـdatom بالمتغير (ما لم يكن \verb|_|). \\  استبدل المتغير بقيمة العنصر في الـdatom. \\ أعد نتيجة تطبيق العملية. \end{tabular} & \verb|(bday-mo? _)| \\
+عامل ثنائي & \begin{tabular}{@{}l@{}} عملية ثنائية يجب أن يكون أحد operands لها متغيرًا. \\ اربط قيمة عنصر الـdatom بالمتغير (ما لم يكن \verb|_|). \\ استبدل المتغير بقيمة العنصر في الـdatom. \\ أعد نتيجة العملية. \end{tabular} & \verb|(&gt; ?age 20)| \\
 \hline
 \end{tabular}
 }
-\caption{Predicates}
+\caption{المسندات}
 \label{500l.functionaldb.predicates}
 \end{table}
 </latex>
@@ -934,7 +934,7 @@ Binary operator & \begin{tabular}{@{}l@{}} A binary operation that requires a va
 \rowcolors{2}{TableOdd}{TableEven}
 \begin{tabular}{lll}
 \hline
-\textbf{Query Clause} & \textbf{Predicate Clause} & \textbf{Meta Clause} \\
+\textbf{جملة الاستعلام} & \textbf{جملة المسند} & \textbf{جملة البيانات الوصفية} \\
 \hline
 \verb|[?e  :likes "pizza"]| & \verb|[#(= % %)  #(= % :likes)  #(= % "pizza")]| & \verb|["?e" nil nil]| \\
 \verb|[?e  :name  ?nm]| & \verb|[#(= % %)  #(= % :name) #(= % %)]| & \verb|["?e" nil "?nm"]| \\
@@ -943,7 +943,7 @@ Binary operator & \begin{tabular}{@{}l@{}} A binary operation that requires a va
 \hline
 \end{tabular}
 }
-\caption{Clauses}
+\caption{الجمل}
 \label{500l.functionaldb.clauses}
 \end{table}
 </latex>
@@ -979,15 +979,15 @@ Binary operator & \begin{tabular}{@{}l@{}} A binary operation that requires a va
 \rowcolors{2}{TableOdd}{TableEven}
 \begin{tabular}{ll}
 \hline
-\textbf{Joining variable operates on} & \textbf{Index to use} \\
+\textbf{متغير الدمج يعمل على} & \textbf{الفهرس الذي يُستخدم} \\
 \hline
-Entity IDs & AVET \\
-Attribute names & VEAT \\
-Attribute values & EAVT \\
+معرّفات الكيانات & AVET \\
+أسماء الخصائص & VEAT \\
+قيم الخصائص & EAVT \\
 \hline
 \end{tabular}
 }
-\caption{Index Selection}
+\caption{اختيار الفهرس}
 \label{500l.functionaldb.indexselection}
 \end{table}
 </latex>
@@ -1087,7 +1087,7 @@ Attribute values & EAVT \\
 \rowcolors{2}{TableOdd}{TableEven}
 \begin{tabular}{lll}
 \hline
-\textbf{Entity ID} & \textbf{Attribute Name} & \textbf{Attribute Value} \\
+\textbf{معرّف الكيان} & \textbf{اسم الخاصية} & \textbf{قيمة الخاصية} \\
 \hline
 1 & \begin{tabular}{@{}l@{}} \verb|:name| \\ \verb|:likes| \\ \verb|:speak| \\ \verb|:bday| \end{tabular} & \begin{tabular}{@{}l@{}} USA \\ Pizza \\ English \\ July 4, 1776 \end{tabular} \\
 2 & \begin{tabular}{@{}l@{}} \verb|:name| \\ \verb|:likes| \\ \verb|:speak| \\ \verb|:bday| \end{tabular} & \begin{tabular}{@{}l@{}} France \\ Red wine \\ French \\ July 14, 1789 \end{tabular} \\
@@ -1095,7 +1095,7 @@ Attribute values & EAVT \\
 \hline
 \end{tabular}
 }
-\caption{Example entities}
+\caption{كيانات نموذجية}
 \label{500l.functionaldb.exampleentities}
 \end{table}
 </latex>
@@ -1173,7 +1173,7 @@ Attribute values & EAVT \\
 \rowcolors{2}{TableOdd}{TableEven}
 \begin{tabular}{ll}
 \hline
-\textbf{Result Clause} & \textbf{Result Meta} \\
+\textbf{جملة النتيجة} & \textbf{بيانات النتيجة الوصفية} \\
 \hline
 \verb|[:likes Pizza #{1}]| & \verb|["?e" nil nil]| \\
 \verb|[:name USA #{1}]| & \verb|["?e" nil "?nm"]| \\
@@ -1186,7 +1186,7 @@ Attribute values & EAVT \\
 \hline
 \end{tabular}
 }
-\caption{Query results}
+\caption{نتائج الاستعلام}
 \label{500l.functionaldb.queryresults}
 \end{table}
 </latex>
@@ -1241,7 +1241,7 @@ Attribute values & EAVT \\
 \rowcolors{2}{TableOdd}{TableEven}
 \begin{tabular}{ll}
 \hline
-\textbf{Result Clause} & \textbf{Result Meta} \\
+\textbf{جملة النتيجة} & \textbf{بيانات النتيجة الوصفية} \\
 \hline
 \verb|[:likes Pizza #{1}]| & \verb|["?e" nil nil]| \\
 \verb|[:name USA #{1}]| & \verb|["?e" nil "?nm"]| \\ 
@@ -1250,7 +1250,7 @@ Attribute values & EAVT \\
 \hline
 \end{tabular}
 }
-\caption{Filtered query results}
+\caption{نتائج الاستعلام المُصفّاة}
 \label{500l.functionaldb.filteredqueryresults}
 \end{table}
 </latex>

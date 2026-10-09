@@ -72,7 +72,7 @@ source: https://gameprogrammingpatterns.com/
 الأزرار، وأحداث لوحة المفاتيح، ونقرات الفأرة، وما شابه. وهو يأخذ كل إدخال ويترجمه
 إلى فعل ذي معنى في اللعبة:
 
-<img src="/images/game-programming-patterns/command-1.webp" alt="A controller, with A mapped to swapWeapon(), B mapped to lurch(), X mapped to jump(), and Y mapped to fireGun()." />
+<img src="/images/game-programming-patterns/command-1.webp" alt="ذراع تحكّم، فيه A مرتبط بـ swapWeapon()، وB مرتبط بـ lurch()، وX مرتبط بـ jump()، وY مرتبط بـ fireGun()." />
 
 ويبدو التنفيذ البسيط جداً هكذا:
 
@@ -135,7 +135,7 @@ href="/book/game-programming-patterns/game-loop/index">حلقة اللعبة (Ga
 
 حيث كان كل إدخال يستدعي دالة مباشرة، صارت الآن هناك طبقة من التوجيه:
 
-<img src="/images/game-programming-patterns/command-2.webp" alt="A controller, with each button mapped to a corresponding 'button_' variable which in turn is mapped to a function." />
+<img src="/images/game-programming-patterns/command-2.webp" alt="ذراع تحكّم، كل زر فيه مرتبط بمتغيّر «button_» مقابل، يرتبط هذا المتغيّر بدوره بدالة." />
 
 هذه هي خلاصة نمط الأمر. فإذا رأيتَ فائدته بسهولة، فاعتبر بقية هذا الفصل مكافأة.
 
@@ -198,7 +198,7 @@ class="pattern">طابور الأحداث (Event Queue)</a>.
 
 <span name="stream"></span>
 
-<img src="/images/game-programming-patterns/command-3.webp" alt="A pipe connecting AI to Actor." />
+<img src="/images/game-programming-patterns/command-3.webp" alt="أنبوب يربط AI بـ Actor." />
 
 <aside name="stream">
 
@@ -315,7 +315,7 @@ Control-Z، نستدعي دالة `undo()` لذلك الأمر.
 
 وحين ينفّذ اللاعب أمراً، نضيفه إلى القائمة ونجعل «الحالي» يشير إليه.
 
-<img src="/images/game-programming-patterns/command-4.webp" alt="A stack of commands from older to newer. A 'current' arrow points to one command, an 'undo' arrow points to the previous one, and 'redo' points to the next." />
+<img src="/images/game-programming-patterns/command-4.webp" alt="رزمة أوامر مرتبة من الأقدم إلى الأحدث. سهم «current» يشير إلى أمر ما، وسهم «undo» يشير إلى الأمر السابق له، وسهم «redo» يشير إلى الأمر التالي." />
 
 وحين يختار اللاعب «تراجع»، نتراجع عن الأمر الحالي ونحرّك المؤشّر الحالي إلى الخلف.
 وحين يختار <span name="replay">«إعادة»</span>، نُقدّم المؤشّر ثم ننفّذ ذلك الأمر.

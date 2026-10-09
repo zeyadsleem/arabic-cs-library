@@ -28,7 +28,7 @@ source: https://www.patterns.dev/react/server-side-rendering/
 
 إليك خادم Express بسيطًا يعرض صفحة تفاصيل منتج:
 
-JavaScript iconserver.jsxJavaScript iconclient.jsxJavaScript iconProductPage.jsx
+`server.jsx` · `client.jsx` · `ProductPage.jsx`
 
 ```javascript
 import express from "express";

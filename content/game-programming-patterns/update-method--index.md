@@ -253,7 +253,7 @@ name="simultaneously">في وقت واحد</span>.
 هذه الحلقة البسيطة تزيد فهرس الكائن الجاري تحديثه في كل تكرار. ويبيّن الجانب
 الأيسر من الرسم أدناه كيف تبدو المصفوفة بينما نحدّث البطلة:
 
-<img src="/images/game-programming-patterns/update-method-1.webp" alt="A list of entities during a removal. A pointer points to the second entity, Heroine. After the Foul Beast above it is removed, the pointer moves down while the Heroine moves up." />
+<img src="/images/game-programming-patterns/update-method-1.webp" alt="قائمة كائنات أثناء عملية إزالة. مؤشر يشير إلى الكائن الثاني Heroine. بعد إزالة Foul Beast الذي فوقها يتحرك المؤشر للأسفل بينما تتحرك Heroine للأعلى." />
 
 وبما أننا نحدّثها، فإن `i` يساوي 1. وهي تقتل الوحش الشرير فيُزال من المصفوفة.
 ترتفع البطلة إلى 0، ويرتفع الفلاح البائس إلى 1. وبعد تحديث البطلة، يُزاد `i` إلى
@@ -396,7 +396,7 @@ name="chapter">هذا الفصل</span> ليس عن المكوّنات. إنه �
 
 <span name="uml"></span>
 
-<img src="/images/game-programming-patterns/update-method-2.webp" alt="A UML diagram. World has a collection of Entities, each of which has an update() method. Skeleton and Statue both inherit from Entity." />
+<img src="/images/game-programming-patterns/update-method-2.webp" alt="مخطط UML. يحوي World مجموعة من Entities، لكل منها طريقة update(). يرث Skeleton وStatue معًا من Entity." />
 
 <aside name="uml">
 

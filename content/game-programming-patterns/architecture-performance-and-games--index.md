@@ -112,7 +112,7 @@ source: https://gameprogrammingpatterns.com/
 
 <span name="life-cycle"></span>
 
-<img src="/images/game-programming-patterns/architecture-performance-and-games-1.webp" alt="Get problem &rarr; Learn code &rarr; Code solution &rarr; Clean up &rarr; and back around to the beginning." />
+<img src="/images/game-programming-patterns/architecture-performance-and-games-1.webp" alt="احصل على المشكلة &rarr; تعلَّم الشفرة &rarr; اكتب الحل &rarr; نظِّف الكود &rarr; ثم عُد إلى البداية." />
 
 <aside name="life-cycle">
 

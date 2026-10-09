@@ -32,7 +32,7 @@ _(هذا الفصل متاح أيضًا [بالصينية التقليدية](ht
 
 الآن لنفتح [ورقة حسابنا](http://audreyt.github.io/500lines/spreadsheet/) في متصفّح (initial):
 
-![Initial Screen](/images/500-lines/spreadsheet-0-01_initial.webp)
+![الشاشة الأولية](/images/500-lines/spreadsheet-0-01_initial.webp)
 
 ### المفاهيم الأساسية
 
@@ -45,15 +45,15 @@ _(هذا الفصل متاح أيضًا [بالصينية التقليدية](ht
 
 انقر على "3920" لوضع _التركيز_ (_focus_) على **E1**، ما يكشف صيغتها في _مربّع إدخال_ (_input box_) (inputbox).
 
-![Input Box](/images/500-lines/spreadsheet-1-02_input.webp)
+![مربع الإدخال](/images/500-lines/spreadsheet-1-02_input.webp)
 
 الآن لنضع التركيز على **A1** و_نغيّر_ (_change_) محتواها إلى "1"، ممّا يجعل **E1** تُعيد الحساب (_recalculate_) لقيمتها فتصير "2047" (changed).
 
-![Changed Content](/images/500-lines/spreadsheet-2-03_changed.webp)
+![محتوى مُغيَّر](/images/500-lines/spreadsheet-2-03_changed.webp)
 
 اضغط **ENTER** لوضع التركيز على **A2** وتغيير محتواها إلى `=Date()`، ثم اضغط **TAB**، وغيّر محتوى **B2** إلى `=alert()`، ثم اضغط **TAB** مرّة أخرى لوضع التركيز على `C2` (error).
 
-![Formula Error](/images/500-lines/spreadsheet-3-04_error.webp)
+![خطأ في الصيغة](/images/500-lines/spreadsheet-3-04_error.webp)
 
 وهذا يُظهر أن الصيغة قد تحسب إلى رقم ("2047" في **E1**)، أو إلى نصّ (الوقت الحالي في **A2**، محاذًى إلى اليسار)، أو إلى _خطأ_ (_error_) (حروف حمراء في **B2**، محاذاةً إلى الوسط).
 
@@ -70,13 +70,13 @@ _(هذا الفصل متاح أيضًا [بالصينية التقليدية](ht
 * الضغط على زر إعادة التعيين لا يُحدث أيّ أثر.
 * الضغط على **TAB** أو النقر في سطر المحتوى الأوّل ما زال يكشف مربّع إدخال قابلًا للتحرير.
 
-![With JavaScript Disabled](/images/500-lines/spreadsheet-4-05_nojs.webp)
+![مع تعطيل JavaScript](/images/500-lines/spreadsheet-4-05_nojs.webp)
 
 حين نعطّل التفاعلات الديناميكية (JS)، تبقى بنية المحتوى (HTML) وأنماط العرض (_style_) الخاصّة بـ CSS سارية. فإذا كان موقع ما مفيدًا مع تعطيل JS وCSS معًا، نقول إنّه يلتزم بمبدأ _التحسين التدريجي_ (_progressive enhancement_)، ممّا يجعل محتواه في متناول أوسع جمهور ممكن.
 
 ولأنّ ورقة حسابنا تطبيق ويب بلا شيفرة من جهة الخادم، فلا بدّ من الاعتماد على JS لتوفير المنطق المطلوب. لكنّه يعمل فعلًا حين لا يكون CSS مدعومًا بالكامل، كما في قارئات الشاشة والمتصفّحات في وضع النصّ.
 
-![With CSS Disabled](/images/500-lines/spreadsheet-5-06_nocss.webp)
+![مع تعطيل CSS](/images/500-lines/spreadsheet-5-06_nocss.webp)
 
 وكما يبيّن nocss، فإنّنا إن فعّلنا JS في المتصفّح وعطّلنا CSS بدلًا منه، تكون الآثار كالتالي:
 
@@ -88,7 +88,7 @@ _(هذا الفصل متاح أيضًا [بالصينية التقليدية](ht
 
 يبيّن architecture الروابط بين مكوّنات HTML وJS. وكي نفهم المخطّط، سنمرّ على ملفات الشيفرة المصدرية الأربعة، بالترتيب نفسه الذي يحمّل بها المتصفّح.
 
-![Architecture Diagram](/images/500-lines/spreadsheet-6-00_architecture.webp)
+![مخطّط معماري](/images/500-lines/spreadsheet-6-00_architecture.webp)
 
 * **index.html**: 19 سطرًا
 * **main.js**: 38 سطرًا (باستثناء التعليقات والأسطر الفارغة)
@@ -208,7 +208,7 @@ _(هذا الفصل متاح أيضًا [بالصينية التقليدية](ht
 
 ويبيّن المخطّط الانسيابي في flowchart التفاعل بين المتحكّم والعامل بمزيد من التفصيل:
 
-![Controller-Worker Flowchart](/images/500-lines/spreadsheet-7-00_flowchart.webp)
+![مخطّط انسيابي للمتحكّم والعامل](/images/500-lines/spreadsheet-7-00_flowchart.webp)
 
 الآن لنمرّ على الشيفرة. في السطر الأوّل، نطلب `$scope` من AngularJS‏:
 

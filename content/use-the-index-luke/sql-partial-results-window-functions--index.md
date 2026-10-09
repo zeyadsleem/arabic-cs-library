@@ -145,4 +145,4 @@ PostgreSQL: [دوال النوافذ](https://www.postgresql.org/docs/current/tu
 
 SQL Server: [جملة OVER في SQL Server](https://learn.microsoft.com/en-us/sql/t-sql/queries/select-over-clause-transact-sql?view=sql-server-ver16)
 
-[^0]: MySQL supports window functions since version 8.0, MariaDB since 10.2.
+[^0]: تدعم MySQL دوال النوافذ منذ الإصدار 8.0، وتدعمها MariaDB منذ 10.2.

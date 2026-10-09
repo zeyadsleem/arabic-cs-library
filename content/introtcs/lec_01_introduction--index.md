@@ -167,7 +167,7 @@ $$
 ![/images/introtcs/lec_01_introduction-2.webp](/images/introtcs/original-karatsubatwodigit.webp){#karatsubafig .margin  }
 
 
-![Running time of Karatsuba's algorithm vs. the grade-school algorithm. (Python implementation available [online](https://goo.gl/zwzpYe).) Note the existence of a "cutoff" length, where for sufficiently large inputs Karatsuba becomes more efficient than the grade-school algorithm. The precise cutoff location varies by implementation and platform details, but will always occur eventually.](/images/introtcs/original-karastubavsgschoolv2.webp){#karatsubaruntimefig .margin  }
+![زمن تشغيل خوارزمية كاراتسابا (Karatsuba) مقابل خوارزمية المدرسة الابتدائية. (تتوفر تنفيذات بايثون [على الإنترنت](https://goo.gl/zwzpYe).) لاحِث وجود طولٍ «عتبة» (cutoff)، بحيث يصبح كاراتسابا أكثر كفاءةً من خوارزمية المدرسة الابتدائية حين يكبر المدخل بما يكفي. وتختلف موضع العتبة الدقيق بحسب تفاصيل التنفيذ والمنصّة، لكنّه سيحدث لاحقًا على أيّ حال.](/images/introtcs/original-karastubavsgschoolv2.webp){#karatsubaruntimefig .margin  }
 
 
 

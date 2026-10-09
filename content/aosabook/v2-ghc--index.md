@@ -1,5 +1,5 @@
 ---
-title: "The Glasgow Haskell Compiler"
+title: "مُصرِّف غلاسكو لهاسكل"
 lang: ar
 source: https://aosabook.org/en/v2/ghc.html
 ---

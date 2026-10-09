@@ -410,7 +410,7 @@ index_path      | base/16384/16412
 
 يوضّح الشكل 1.5 العلاقة بين الجدول الرئيسي *tbl_toast* وجدول TOAST *pg_toast_16406*.
 
-![A single TOAST pointer logically references multiple chunk rows (chunk_seq 0 to 5) as a unified ‘data’ item.](/images/postgres-internals/pgsql01-fig-1-05.webp)
+![يشير مؤشّر TOAST واحد منطقيًا إلى عدة صفوف مقاطع (chunk_seq من 0 إلى 5) بوصفها عنصر «data» موحّدًا.](/images/postgres-internals/pgsql01-fig-1-05.webp)
 
 #### الشكل 1.5: التعيين البنيوي بين الجدول الرئيسي وجدول TOAST المرتبط به.
 

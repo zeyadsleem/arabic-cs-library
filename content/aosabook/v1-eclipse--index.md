@@ -501,4 +501,4 @@ statusLine.setMessage(msg);
 
 [^1]: `http://www.eclipse.org`
 [^2]: `http://www.eclipse.org/equinox`
-[^3]: For example: `http://help.eclipse.org`.
+[^3]: على سبيل المثال: `http://help.eclipse.org`.

@@ -1,5 +1,5 @@
 ---
-title: "10. Heaps"
+title: "10. الأكوام"
 lang: ar
 source: https://opendatastructures.org/ods-java/10_Heaps.html
 ---
@@ -91,7 +91,7 @@ source: https://opendatastructures.org/ods-java/10_Heaps.html
     }
 ```
 
-**الشكل 10.3:** إزالة أصغر قيمة، وهي 4، من BinaryHeap. ![\includegraphics[height=.25\textheight ]{figs/heap-remove-1}](/images/open-data-structures/10_1_BinaryHeap_Implicit_Bi-img3867.png.webp) ![\includegraphics[height=.25\textheight ]{figs/heap-remove-2}](/images/open-data-structures/10_1_BinaryHeap_Implicit_Bi-img3868.png.webp) ![\includegraphics[height=.25\textheight ]{figs/heap-remove-3}](/images/open-data-structures/10_1_BinaryHeap_Implicit_Bi-img3869.png.webp) ![\includegraphics[height=.25\textheight ]{figs/heap-remove-4}](/images/open-data-structures/10_1_BinaryHeap_Implicit_Bi-img3870.png.webp) ومثل سائر البنى المعتمدة على المصفوفات، سنتجاهل الزمن الذي يُنفق في استدعاءات $ \mathtt{resize()}$ ، إذ يمكن تبريره بحجّة التطفئة (amortization) الواردة في الملمة 2.1. ويفترق زمنا تشغيل $ \mathtt{add(x)}$ و $ \mathtt{remove()}$ على ارتفاع الشجرة الثنائية (الضمنية). ومن حسن الحظ أنّ هذه شجرة ثنائية كاملة؛ فكل مستوى سوى الأخير فيه أكبر عدد ممكن من العقد. وعليه، إذا كان ارتفاع هذه الشجرة $ h$ ، فإنّ فيها ما لا يقلّ عن $ 2^h$ عقدة. وبعبارة أخرى
+**الشكل 10.3:** إزالة أصغر قيمة، وهي 4، من BinaryHeap. ![ ](/images/open-data-structures/10_1_BinaryHeap_Implicit_Bi-img3868.png.webp) ![ ](/images/open-data-structures/10_1_BinaryHeap_Implicit_Bi-img3870.png.webp) ومثل سائر البنى المعتمدة على المصفوفات، سنتجاهل الزمن الذي يُنفق في استدعاءات $ \mathtt{resize()}$ ، إذ يمكن تبريره بحجّة التطفئة (amortization) الواردة في الملمة 2.1. ويفترق زمنا تشغيل $ \mathtt{add(x)}$ و $ \mathtt{remove()}$ على ارتفاع الشجرة الثنائية (الضمنية). ومن حسن الحظ أنّ هذه شجرة ثنائية كاملة؛ فكل مستوى سوى الأخير فيه أكبر عدد ممكن من العقد. وعليه، إذا كان ارتفاع هذه الشجرة $ h$ ، فإنّ فيها ما لا يقلّ عن $ 2^h$ عقدة. وبعبارة أخرى
 
 $$
 \displaystyle \ensuremath{\mathtt{n}} \ge 2^h \enspace .
@@ -187,7 +187,7 @@ $$
 
 *البرهان*. [البرهان بالمعلوماتية للملمة 10.1] وليدلّ $ d_i$ على عمق العقدة الخارجية رقم $ i$ ، ولنتذكّر أنّ الشجرة الثنائية التي فيها $ \mathtt{n}$ عقدةً تضمّ $ \mathtt{n+1}$ عقدةً خارجية. واحتمال أن يبلغ المسير العشوائي العقدة الخارجية رقم $ i$ هو بالضبط $ p_i=1/2^{d_i}$ ، ومن ثمّ يُعطى الطول المتوقَّع للمسير العشوائي بالمعادلة
 
-![$\displaystyle H=\sum_{i=0}^{\ensuremath{\mathtt{n}}} p_id_i =\sum_{i=0}^{\ensu... ...og\left(2^{d_i}\right) = \sum_{i=0}^{\ensuremath{\mathtt{n}}}p_i\log({1/p_i}) $](/images/open-data-structures/10_2_MeldableHeap_Randomize-img3975.png.webp)
+![ ](/images/open-data-structures/10_2_MeldableHeap_Randomize-img3975.png.webp)
 
 أمّا الطرف الأيمن من هذه المعادلة فيُعرف بسهولة على أنّه إنتروبيا (entropy) لتوزيعٍ احتمالي على $ \ensuremath{\mathtt{n}}+1$ عنصرًا. ومن الحقائق الأساسية حول إنتروبيا توزيعٍ على $ \ensuremath{\mathtt{n}}+1$ عنصرًا أنّها لا تتجاوز $ \log(\ensuremath{\mathtt{n}}+1)$ ، ممّا يُثبت الملمة. $\qedsymbol$
 

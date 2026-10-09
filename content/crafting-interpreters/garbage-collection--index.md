@@ -35,7 +35,7 @@ name="recycle">النفايات (collector)</span>**.
 لإعادة استخدامها في بيانات جديدة. لكن اللغات المُدارة أقدم من يوم الأرض، لذا التقط المخترعون
 التشبيه الذي يعرفونه.
 
-<img src="/images/crafting-interpreters/garbage-collection-1.webp" class="above" alt="A recycle bin full of bits." />
+<img src="/images/crafting-interpreters/garbage-collection-1.webp" class="above" alt="سلة إعادة تدوير مليئة بالبتّات." />
 
 </aside>
 
@@ -128,14 +128,14 @@ fun makeClosure() {
 البرنامج، فإنّه سيستدعي الإغلاق، الذي سيطبع بدوره `"data"`. لذا يحتاج الجامع إلى ألّا *يحرّر* تلك
 السلسلة. لكن إليك كيف يبدو المكدّس حين نوقف البرنامج:
 
-<img src="/images/crafting-interpreters/garbage-collection-2.webp" alt="The stack, containing only the script and closure." />
+<img src="/images/crafting-interpreters/garbage-collection-2.webp" alt="المكدّس، لا يحوي سوى السكربت والإغلاق." />
 
 سلسلة `"data"` ليست في أيّ موضع عليه. فقد رُفعت بالفعل من المكدّس ونُقلت إلى القيمة العليا المُغلَقة
 التي يستخدمها الإغلاق. والإغلاق نفسه موجود على المكدّس. لكن للوصول إلى السلسلة، نحتاج إلى التتبّع عبر
 الإغلاق ومصفوفة قيمه العليا. وبما أنّه *من الممكن* لبرنامج المستخدم أن يفعل ذلك، فإنّ كل هذه
 الكائنات التي يمكن الوصول إليها بشكل غير مباشر تُعدّ كذلك قابلة للوصول.
 
-<img src="/images/crafting-interpreters/garbage-collection-3.webp" class="wide" alt="All of the referenced objects from the closure, and the path to the 'data' string from the stack." />
+<img src="/images/crafting-interpreters/garbage-collection-3.webp" class="wide" alt="كل الكائنات المشار إليها من الإغلاق، والمسار إلى سلسلة data من المكدّس." />
 
 يعطينا هذا تعريفًا استقرائيًّا لإمكانية الوصول:
 
@@ -196,7 +196,7 @@ name="procrastination">في النهاية</span> استقرّ على جمع ا�
 
 يبدو الأمر شيءًا كهذا:
 
-<img src="/images/crafting-interpreters/garbage-collection-4.webp" class="wide" alt="Starting from a graph of objects, first the reachable ones are marked, the remaining are swept, and then only the reachable remain." />
+<img src="/images/crafting-interpreters/garbage-collection-4.webp" class="wide" alt="انطلاقاً من رسم كائنات، تُعلَّم أولاً الكائنات القابلة للوصول، ثمّ تُكنَس الباقية، فلا تبقى إلا القابلة للوصول." />
 
 <aside name="trace">
 
@@ -449,17 +449,17 @@ CallFrames. ويحتوي كل CallFrame على مؤشّر إلى الإغلاق 
 
 </aside>
 
-*   **<img src="/images/crafting-interpreters/garbage-collection-5.webp" alt="A white circle."
+*   **<img src="/images/crafting-interpreters/garbage-collection-5.webp" alt="دائرة بيضاء."
     class="dot" /> الأبيض:** في بداية جمع النفايات، كل الكائنات بيضاء. وهذا اللون يعني أنّنا لم نصل إلى
     الكائن أو نعالجه إطلاقًا.
 
-*   **<img src="/images/crafting-interpreters/garbage-collection-6.webp" alt="A gray circle."
+*   **<img src="/images/crafting-interpreters/garbage-collection-6.webp" alt="دائرة رمادية."
     class="dot" /> الرمادي:** أثناء التحديد، حين نصل إلى كائنٍ لأول مرّة، فإنّنا نُغمّقه فيصبح رماديًّا.
     وهذا اللون يعني أنّنا نعرف أنّ الكائن نفسه قابل للوصول ولا ينبغي جمعه. لكنّنا لم نعبُر *عبره*
     بعد لنرى ما هي الكائنات *الأخرى* التي يشير إليها. وبعبارات خوارزميات الرسوم البيانية، هذه هي
     *قائمة العمل* (worklist) -- مجموعة الكائنات التي نعرف عنها لكن لم نعالجها بعد.
 
-*   **<img src="/images/crafting-interpreters/garbage-collection-7.webp" alt="A black circle."
+*   **<img src="/images/crafting-interpreters/garbage-collection-7.webp" alt="دائرة سوداء."
     class="dot" /> الأسود:** حين نأخذ كائنًا رماديًّا ونحدّد كلّ الكائنات التي يشير إليها، فإنّنا
     نُحوّل عندئذٍ الكائن الرمادي إلى أسود. وهذا اللون يعني أنّ مرحلة التحديد انتهت من معالجة ذلك
     الكائن.
@@ -482,7 +482,7 @@ CallFrames. ويحتوي كل CallFrame على مؤشّر إلى الإغلاق 
 الكامل هو جبهة موجية رمادية تعبر عبر الرسم البياني، تاركةً خلفها حقلًا من الكائنات السوداء القابلة
 للوصول. أما الكائنات غير القابلة للوصول فلا تمسّها الجبهة الموجية وتبقى بيضاء.
 
-<img src="/images/crafting-interpreters/garbage-collection-8.webp" class="wide" alt="A gray wavefront working through a graph of nodes." />
+<img src="/images/crafting-interpreters/garbage-collection-8.webp" class="wide" alt="جبهة رمادية تجتاح رسم عُقد." />
 
 في <span name="invariant">النهاية (end)</span>، يبقى لديك بحر من الكائنات السوداء التي تم الوصول إليها،
 منثرًا بجزر من الكائنات البيضاء التي يمكن كنسها وتحريرها. وبمجرد تحرير الكائنات غير القابلة للوصول،
@@ -640,7 +640,7 @@ CallFrames. ويحتوي كل CallFrame على مؤشّر إلى الإغلاق 
 لديها. وإذا كان الكائن محدَّدًا (أسود)، فإنّنا نتركه وشأنه ونتجاوزه. وإذا كان غير محدَّد (أبيض)، فإنّنا
 نفصله من القائمة ونحرّره باستخدام دالة `freeObject()` التي كتبناها من قبل.
 
-<img src="/images/crafting-interpreters/garbage-collection-9.webp" alt="A recycle bin full of bits." />
+<img src="/images/crafting-interpreters/garbage-collection-9.webp" alt="سلة إعادة تدوير مليئة بالبتّات." />
 
 معظم الشيفرة الأخرى هنا تتناول حقيقة أنّ إزالة عقدة من قائمة مرتبطة في اتجاه واحد أمر مربك. علينا أن
 نتذكّر العقدة السابقة باستمرار كي نفصل مؤشّرها التالي، وعلينا أن نتعامل مع الحالة الحديّة التي نحرّر فيها العقدة الأولى. لكن، عدا ذلك، الأمر بسيط إلى حدٍّ ما -- احذف كل عقدة في قائمة مرتبطة لا يوجد فيها
@@ -774,7 +774,7 @@ CallFrames. ويحتوي كل CallFrame على مؤشّر إلى الإغلاق 
 
 <span name="latency"></span>
 
-<img src="/images/crafting-interpreters/garbage-collection-10.webp" alt="A bar representing execution time with slices for running user code and running the GC. The largest GC slice is latency. The size of all of the user code slices is throughput." />
+<img src="/images/crafting-interpreters/garbage-collection-10.webp" alt="عمود يمثّل زمن التنفيذ مقسَّم إلى قطاعات لتشغيل شيفرة المستخدم وتشغيل الجامع. أكبر قطاع في الجامع هو الكمون، ومجموع قطاعات شيفرة المستخدم هو الإنتاجية." />
 
 <aside name="latency">
 
@@ -802,7 +802,7 @@ CallFrames. ويحتوي كل CallFrame على مؤشّر إلى الإغلاق 
 لكنّ التنسيق مطلوب. فأنت لا تريد لغسّال أوانٍ أن يخطف وعاءً من يد خبّاز! وهذا التنسيق يضيف حملًا
 وقدرًا كبيرًا من التعقيد. فالأجهزة المتزامنة سريعة، لكنّ تنفيذها على نحو صحيح تحدٍّ.
 
-<img src="/images/crafting-interpreters/garbage-collection-11.webp" class="above" alt="Un baguette." />
+<img src="/images/crafting-interpreters/garbage-collection-11.webp" class="above" alt="رغيف باغيت." />
 
 </aside>
 

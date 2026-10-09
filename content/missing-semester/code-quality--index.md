@@ -70,7 +70,7 @@ semgrep -l python -e "subprocess.Popen(..., shell=True, ...)"
 
 غالبًا ما تتضمن المستودعات [شارات الحالة](https://docs.github.com/en/actions/how-tos/monitor-workflows/add-a-status-badge) (status badges) في README الخاص بها، تعرض حالة CI وغيرها من المعلومات مثل تغطية الكود. على سبيل المثال، أدناه حالة البناء الحالية لموقع Missing Semester.
 
-[![Build Status](https://github.com/missing-semester/missing-semester/actions/workflows/build.yml/badge.svg)](https://github.com/missing-semester/missing-semester/actions/workflows/build.yml) [![Links Status](https://github.com/missing-semester/missing-semester/actions/workflows/links.yml/badge.svg)](https://github.com/missing-semester/missing-semester/actions/workflows/links.yml)
+[![حالة البناء](https://github.com/missing-semester/missing-semester/actions/workflows/build.yml/badge.svg)](https://github.com/missing-semester/missing-semester/actions/workflows/build.yml) [![حالة الروابط](https://github.com/missing-semester/missing-semester/actions/workflows/links.yml/badge.svg)](https://github.com/missing-semester/missing-semester/actions/workflows/links.yml)
 
 > [مدقّق الروابط](https://github.com/missing-semester/missing-semester/blob/master/.github/workflows/links.yml) الخاص بنا، والذي يستخدم إجراء GitHub [proof-html](https://github.com/anishathalye/proof-html)، يفشل غالبًا، عادةً بسبب مشكلاتٍ في مواقع الويب من جهاتٍ ثالثة. ومع ذلك، فقد ساعدنا في التقاط وإصلاح العديد من الروابط المعطلة (أحيانًا بسبب أخطاءٍ إملائية، وفي أغلب الأحيان بسبب نقل مواقع ويبٍ لمحتواها دون إضافة توجيهات (redirects) أو اختفاء مواقع ويب).
 

@@ -86,13 +86,13 @@ class="gof-pattern">المُفسِّر (Interpreter)</a>.
 ثم تأخذ كل قطعة من ذلك التعبير، كل قاعدة في قواعد اللغة، وتحولها إلى *كائن*. فالأعداد
 الحرفية ستكون كائنات:
 
-<img src="/images/game-programming-patterns/bytecode-1.webp" alt="A series of number literal objects." />
+<img src="/images/game-programming-patterns/bytecode-1.webp" alt="سلسلة من كائنات الثوابت الرقمية." />
 
 في الأساس، هي أغلفة صغيرة حول القيمة الخام. وسيكون المعامِلات كائنات أيضاً، وستحمل
 مراجع إلى معاملاتها. وإذا أخذت الأقواس والأسبقية في الحسبان، فإن ذلك التعبير <span
 name="magic">كسحرٍ</span> يتحوّل إلى شجرة صغيرة من الكائنات هكذا:
 
-<img src="/images/game-programming-patterns/bytecode-2.webp" alt="A syntax tree. The number literals are connected by operator objects." />
+<img src="/images/game-programming-patterns/bytecode-2.webp" alt="شجرة صياغة. الثوابت الرقمية متّصلة بكائنات العوامل." />
 
 <aside name="magic">
 
@@ -379,7 +379,7 @@ name="assembly">لغة تجميع</span> (assembly language) — حتى لو ك�
 الأوّليات المختلفة، لذا فإن نطاق قيم `enum` يتّسع بسهولة في بايت واحد. وهذا يعني أن
 شيفرة التعويذ ليست سوى قائمة من <span name="byte">بايتات</span> (bytes) — أي «شيفرة البايت».
 
-<img src="/images/game-programming-patterns/bytecode-3.webp" alt="A sequence of bytecode instructions: 0x00 HEALTH, 0x03 SOUND, 0x004 PARTICLES, ..." />
+<img src="/images/game-programming-patterns/bytecode-3.webp" alt="تسلسل من تعليمات الشفرة البينية: 0x00 HEALTH، 0x03 SOUND، 0x004 PARTICLES، ..." />
 
 <aside name="byte">
 
@@ -465,23 +465,23 @@ name="stack-machine">بمكدّس</span>.
 
 </aside>
 
-<img src="/images/game-programming-patterns/bytecode-4.webp" alt="Binary encoding of a literal instruction: 0x05 (LITERAL) followed by 123 (the value)." />
+<img src="/images/game-programming-patterns/bytecode-4.webp" alt="تمثيل ثنائي لتعليمية حرفية واحدة: 0x05 (LITERAL) يليها 123 (القيمة)." />
 
 تقرأ <span name="single">البايت</span> التالي في تدفّق شيفرة البايت *كعدد* وتدفعه إلى
 المكدّس.
 لننصّل بعض هذه التعليمات معاً ونراقب المُفسّر ينفّذها لتكتشف إحساس كيفية عمل المكدّس.
 نبدأ بمكدّس فارغ والمُفسّر يشير إلى أول تعليمة:
 
-<img src="/images/game-programming-patterns/bytecode-5.webp" alt="Executing a bytecode sequence. The execution pointer points to the first literal instruction and the stack is empty." />
+<img src="/images/game-programming-patterns/bytecode-5.webp" alt="تنفيذ تسلسل من الشفرة البينية. مؤشر التنفيذ يشير إلى التعليمة الحرفية الأولى والكدس فارغ." />
 
 أولاً، ينفّذ أول `INST_LITERAL`. يقرأ البايت التالي من شيفرة البايت (`0`) ويدفعه إلى
 المكدّس:
 
-<img src="/images/game-programming-patterns/bytecode-6.webp" alt="The next step. The literal 0 has been pushed onto the stack and the execution pointer is on the next literal." />
+<img src="/images/game-programming-patterns/bytecode-6.webp" alt="الخطوة التالية. دُفِعت القيمة الحرفية 0 إلى الكدس وأصبح مؤشر التنفيذ عند الحرفية التالية." />
 
 ثم ينفّذ `INST_LITERAL` الثانية. يقرأ `10` ويدفعه:
 
-<img src="/images/game-programming-patterns/bytecode-7.webp" alt="The next step. Now 10 has been pushed onto the stack and the execution pointer is at the Health instruction." />
+<img src="/images/game-programming-patterns/bytecode-7.webp" alt="الخطوة التالية. دُفِعت القيمة 10 إلى الكدس ووصل مؤشر التنفيذ إلى تعليمة Health." />
 
 وأخيراً، ينفّذ `INST_SET_HEALTH`. يسحب `10` ويخزّنها في `amount`، ثم يسحب `0`
 ويخزّنها في `wizard`. ثم يستدعي `setHealth()` بتلك المعاملات.
@@ -646,7 +646,7 @@ niques,_and_Tools).
 
 <span name="text"></span>
 
-<img src="/images/game-programming-patterns/bytecode-8.webp" alt="A mock-up of a little tree-based UI for authoring behavior." />
+<img src="/images/game-programming-patterns/bytecode-8.webp" alt="نموذج أولي لواجهة صغيرة قائمة على الشجرة لتأليف السلوكيات." />
 
 <aside name="text">
 

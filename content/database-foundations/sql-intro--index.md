@@ -24,7 +24,7 @@ source: https://df.webontwerp.ucll.be/EN/SQL_intro/
 
 انظر إلى أحد المقررات، مثل "Front-End Development":
 
-![ECTS sheet of the course front-end development academic year 2023-2024](https://df.webontwerp.ucll.be/images/database-foundations/sql-intro-0-ECTS_EN.webp)
+![ورقة ECTS لمقرر تطوير الواجهة الأمامية للعام الأكاديمي 2023-2024](https://df.webontwerp.ucll.be/images/database-foundations/sql-intro-0-ECTS_EN.webp)
 
 وما المعلومات التي تجدها هنا؟ من الواضح أننا نقتصر في هذا المثال التمهيدي على الأساسيات إلى حد بعيد.
 
@@ -205,7 +205,7 @@ FROM u0012047.course;
 
 ويردّ الخادم بالعبارة التالية:
 
-![Result after one insert statement](https://df.webontwerp.ucll.be/images/database-foundations/sql-intro-1-eersteInsert.webp)
+![النتيجة بعد عبارة INSERT واحدة](https://df.webontwerp.ucll.be/images/database-foundations/sql-intro-1-eersteInsert.webp)
 
 لاحظ أن حقل "end_date" له القيمة `NULL`. وهذا يعني أنه *لا توجد قيمة* لهذا الحقل.
 
@@ -244,7 +244,7 @@ SELECT name, credits
 FROM sql_intro_en.course;
 ```
 
-![Only the columns name and credits are shown](https://df.webontwerp.ucll.be/images/database-foundations/sql-intro-3-naamSP.webp)
+![يُعرض العمودان name وcredits فقط](https://df.webontwerp.ucll.be/images/database-foundations/sql-intro-3-naamSP.webp)
 
 بعد التأمل، لا أظن أن ترويسة العمود في النظرة العامة أعلاه مناسبة. فبدلًا من "name" في ترويسة العمود، أفضّل وضع "name course". ويمكن فعل ذلك بالاستعلام التالي باستخدام `AS`:
 
@@ -267,7 +267,7 @@ WHERE coordinator = 'u0012047';
 
 يُعرض صفان:
 
-![I am or was coordinator of two courses](https://df.webontwerp.ucll.be/images/database-foundations/sql-intro-4-mijnOPOs.webp) لاحظ استخدام علامات الاقتباس *المفردة* في السلاسل. علاوة على ذلك، معامل المقارنة في SQL حساس لحالة الأحرف. فالاستعلام نفسه مع `WHERE coordinator = ‘U0012047’` لن يعيد صفًا واحدًا لأن جميع أرقام الموظفين أُدخلت بحروف صغيرة.
+![أنا منسّق لمقررَين حاليًا أو سابقًا](https://df.webontwerp.ucll.be/images/database-foundations/sql-intro-4-mijnOPOs.webp) لاحظ استخدام علامات الاقتباس *المفردة* في السلاسل. علاوة على ذلك، معامل المقارنة في SQL حساس لحالة الأحرف. فالاستعلام نفسه مع `WHERE coordinator = ‘U0012047’` لن يعيد صفًا واحدًا لأن جميع أرقام الموظفين أُدخلت بحروف صغيرة.
 
 ### المعاملات المنطقية
 
@@ -334,7 +334,7 @@ WHERE code = 'MBI01H';
 
 وإذا نجحت عمليتك، يمكنك عرض النتيجة بـ `SELECT` عادي.
 
-![New coordinator for the course MBI01H](https://df.webontwerp.ucll.be/images/database-foundations/sql-intro-5-updateJohan.webp)
+![منسّق جديد لمقرر MBI01H](https://df.webontwerp.ucll.be/images/database-foundations/sql-intro-5-updateJohan.webp)
 
 بالنسبة إلى جميع المقررات الجارية المدرَّسة في الفصل الثالث، غيّر الفصل إلى 4.
 
@@ -380,7 +380,7 @@ FROM sql_intro_en.course
 ORDER BY name DESC;  -- alternative: ORDER BY 1 DESC
 ```
 
-![Sort from Z to A](https://df.webontwerp.ucll.be/images/database-foundations/sql-intro-6-alfabetischDESC.webp)
+![الترتيب من Z إلى A](https://df.webontwerp.ucll.be/images/database-foundations/sql-intro-6-alfabetischDESC.webp)
 
 ويمكنك أيضًا الترتيب حسب عدة أعمدة بوضع فاصلة بين أسماء الأعمدة (أو أرقامها) بعد `ORDER BY`. اكتب الاستعلام الذي يعرض القائمة الكاملة (جميع الأعمدة) مرتبة حسب عدد النقاط من الصغير إلى الكبير ثم (داخل عدد النقاط نفسه) حسب الفصل الدراسي المتناقص.
 
@@ -398,7 +398,7 @@ ORDER BY credits ASC, semester DESC;   -- alternative: ORDER BY 2, 7 DESC
 
 وغني عن القول إن هذه عملية عليك التفكير فيها بعناية. فما يذهب لا يعود!
 
-![comic](https://df.webontwerp.ucll.be/images/database-foundations/sql-intro-7-exploits_of_a_mom.webp)
+![قصة مصورة](https://df.webontwerp.ucll.be/images/database-foundations/sql-intro-7-exploits_of_a_mom.webp)
 
 تحذف جدولًا بأمر `DROP`.
 

@@ -34,7 +34,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "The Architecture of Open Source Applications (Volume 1)The Bourne-Again Shell",
+          "title": "صدفة بورن-أغين",
           "order": 2
         }
       ]
@@ -99,7 +99,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "The Architecture of Open Source Applications (Volume 1)The Hadoop Distributed File System",
+          "title": "نظام الملفات الموزّع Hadoop",
           "order": 8
         }
       ]
@@ -112,7 +112,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "The Architecture of Open Source Applications (Volume 1)Continuous Integration",
+          "title": "التكامل المستمرّ",
           "order": 9
         }
       ]
@@ -125,7 +125,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "The Architecture of Open Source Applications (Volume 1)Introduction",
+          "title": "مقدّمة",
           "order": 10
         }
       ]
@@ -177,7 +177,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "The Architecture of Open Source Applications (Volume 1)The NoSQL Ecosystem",
+          "title": "منظومة NoSQL",
           "order": 14
         }
       ]
@@ -190,7 +190,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "The Architecture of Open Source Applications (Volume 1)Python Packaging",
+          "title": "تحزيم حزم بايثون",
           "order": 15
         }
       ]
@@ -346,7 +346,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "The Architecture of Open Source Applications (Volume 2)Scalable Web Architecture and Distributed Systems",
+          "title": "بنية الويب القابلة للتوسّع والأنظمة الموزّعة",
           "order": 28
         }
       ]
@@ -359,7 +359,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "The Architecture of Open Source Applications (Volume 2)Firefox Release Engineering",
+          "title": "هندسة إصدارات فَيرفُكس",
           "order": 29
         }
       ]
@@ -398,7 +398,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "The Architecture of Open Source Applications (Volume 2)The Glasgow Haskell Compiler",
+          "title": "مُصرِّف غلاسكو لهاسكل",
           "order": 32
         }
       ]
@@ -437,7 +437,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "The Architecture of Open Source Applications (Volume 2)Introduction",
+          "title": "مقدّمة",
           "order": 35
         }
       ]
@@ -450,7 +450,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "The Architecture of Open Source Applications (Volume 2)The Dynamic Language Runtime and the Iron Languages",
+          "title": "بيئة تشغيل اللغات الديناميكية ولغات Iron",
           "order": 36
         }
       ]
@@ -645,7 +645,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "The Architecture of Open Source Applications (Volume 2)The Yocto Project",
+          "title": "مشروع Yocto",
           "order": 51
         }
       ]

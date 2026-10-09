@@ -297,7 +297,7 @@ errorComponent: Error,
 
 ومع كل التغييرات التي أجريناها، يمكن رؤية تطبيقنا على النحو التالي.
 
-JavaScript iconAsyncModal.js
+`AsyncModal.js`
 
 ```javascript
 import { defineAsyncComponent } from "vue";

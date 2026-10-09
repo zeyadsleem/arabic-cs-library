@@ -221,4 +221,4 @@ SQL Server
 
 هل يمكنك التفكير في مثال ذي معنى؟
 
-[^0]: Before SQL Server 2016: 16 columns and 900 bytes.
+[^0]: قبل SQL Server 2016: 16 عمودًا و900 بايت.

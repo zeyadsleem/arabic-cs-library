@@ -45,7 +45,7 @@ source: https://gameprogrammingpatterns.com/
 
 <span name="heap"></span>
 
-<img src="/images/game-programming-patterns/object-pool-1.webp" alt="A series of memory operations leading to fragmentation." />
+<img src="/images/game-programming-patterns/object-pool-1.webp" alt="سلسلة من عمليات الذاكرة تؤدي إلى التجزئة." />
 
 <aside name="heap">
 

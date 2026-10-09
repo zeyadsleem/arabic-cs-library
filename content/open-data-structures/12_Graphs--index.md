@@ -1,5 +1,5 @@
 ---
-title: "12. Graphs"
+title: "12. الرسوم البيانية"
 lang: ar
 source: https://opendatastructures.org/ods-java/12_Graphs.html
 ---
@@ -35,7 +35,7 @@ source: https://opendatastructures.org/ods-java/12_Graphs.html
 
 يُعرَّف مدخل المصفوفة $ \mathtt{a[i][j]}$ على أنه
 
-![$\displaystyle \ensuremath{\mathtt{a[i][j]}}= \begin{cases} \ensuremath{\math... ...(i,j)}}\in E$} \\ \ensuremath{\mathtt{false}} & \text{otherwise} \end{cases}$](/images/open-data-structures/12_1_AdjacencyMatrix_Repres-img4534.png.webp)
+![ ](/images/open-data-structures/12_1_AdjacencyMatrix_Repres-img4534.png.webp)
 
 تُعرض مصفوفة التجاور للرسم البياني في الشكل 12.1 في الشكل 12.2. وفي هذا التمثيل، لا تتضمّن العمليات $ \mathtt{addEdge(i,j)}$ و $ \mathtt{removeEdge(i,j)}$ و $ \mathtt{hasEdge(i,j)}$ سوى تعيين مدخل المصفوفة $ \mathtt{a[i][j]}$ أو قراءته:
 
@@ -53,7 +53,7 @@ source: https://opendatastructures.org/ods-java/12_Graphs.html
 
 من الواضح أنّ هذه العمليات تستغرق زمنًا ثابتًا لكل عملية.
 
-| ![\includegraphics[scale=0.90909]{figs/graph}](/images/open-data-structures/12_1_AdjacencyMatrix_Repres-img4539.png.webp) | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |
+| ![ ](/images/open-data-structures/12_1_AdjacencyMatrix_Repres-img4539.png.webp) | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 0 | 0 | 1 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | 1 | 1 | 0 | 1 | 0 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 |
@@ -91,7 +91,7 @@ source: https://opendatastructures.org/ods-java/12_Graphs.html
 
 ورغم متطلّباتها المرتفعة للذاكرة وأدائها السيّئ في العمليتين $ \mathtt{inEdges(i)}$ و $ \mathtt{outEdges(i)}$، لا يزال AdjacencyMatrix مفيدًا لبعض التطبيقات. وبخاصة، عندما يكون الرسم البياني $ G$ كثيفًا (dense)، أي عندما يحتوي على ما يقارب $ \ensuremath{\mathtt{n}}^2$ ضلعًا، يكون استهلاك ذاكرةٍ مقداره $ \ensuremath{\mathtt{n}}^2$ مقبولًا. كما تُستعمل بنية بيانات AdjacencyMatrix على نطاقٍ واسع، لأنّ العمليات الجبرية على المصفوفة $ \mathtt{a}$ يمكن استعمالها لحساب خصائص الرسم البياني $ G$ بكفاءة. وهذا موضوع مقررٍ في الخوارزميات، لكنّنا نُشِر هنا إلى إحدى هذه الخصائص: إذا تعاملنا مع مداخل $ \mathtt{a}$ بوصفها أعدادًا صحيحة (القيمة 1 مقابل $ \mathtt{true}$ والقيمة 0 مقابل $ \mathtt{false}$ ) وضربنا $ \mathtt{a}$ في نفسها باستعمال ضرب المصفوفات، فإنّنا نحصل على المصفوفة $ \ensuremath{\mathtt{a}}^2$ . تذكّر، من تعريف ضرب المصفوفات، أنّ
 
-![$\displaystyle \ensuremath{\mathtt{a^2[i][j]}} = \sum_{k=0}^{\ensuremath{\mathtt... ...1} \ensuremath{\mathtt{a[i][k]}}\cdot \ensuremath{\mathtt{a[k][j]}} \enspace . $](/images/open-data-structures/12_1_AdjacencyMatrix_Repres-img4573.png.webp)
+![ ](/images/open-data-structures/12_1_AdjacencyMatrix_Repres-img4573.png.webp)
 
 إذا فسّرنا هذا المجموع في ضوء الرسم البياني $ G$، فإنّ هذه الصيغة تعدّ عدد الرؤوس، $ \ensuremath{\mathtt{k}}$، التي يحتوي $ G$ على الضلعين $ \mathtt{(i,k)}$ و $ \mathtt{(k,j)}$ معًا. أي إنّها تعدّ عدد المسارات من $ \ensuremath{\mathtt{i}}$ إلى $ \ensuremath{\mathtt{j}}$ (عبر رؤوسٍ وسيطة، $ \ensuremath{\mathtt{k}}$ ) التي طولها يساوي اثنين بالضبط. وهذه الملاحظة هي أساس خوارزميةٍ تحسب المسارات الأقصر (shortest paths) بين كلّ زوجٍ من الرؤوس في $ G$ باستعمال ضربات مصفوفاتٍ لا تتجاوز $ O(\log \ensuremath{\mathtt{n}})$ . [opendatastructures.org](http://opendatastructures.org/)
 
@@ -112,7 +112,7 @@ source: https://opendatastructures.org/ods-java/12_Graphs.html
 
 (يُعرض مثالٌ في الشكل 12.3.) وفي هذا التنفيذ بعينه، نمثّل كلّ قائمة في $ \mathtt{adj}$ في صورة ArrayStack، لأنّنا نرغب في الوصول بحسب الموضع بزمنٍ ثابت. والخيارات الأخرى ممكنة أيضًا. وبخاصة، كان يمكن أن ننفّذ $ \mathtt{adj}$ بوصفه DLList.
 
-| ![\includegraphics[scale=0.90909]{figs/graph}](/images/open-data-structures/12_2_AdjacencyLists_Graph_a-img4592.png.webp) 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |  |
+| ![ ](/images/open-data-structures/12_2_AdjacencyLists_Graph_a-img4592.png.webp) 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |  |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | 0 | 1 | 2 | 0 | 1 | 5 | 6 | 4 | 8 | 9 | 10 |  |
 | 4 | 2 | 3 | 7 | 5 | 2 | 2 | 3 | 9 | 5 | 6 | 7 |  |
@@ -214,7 +214,7 @@ source: https://opendatastructures.org/ods-java/12_Graphs.html
 
 يُعرض في الشكل 12.4 مثالٌ على تشغيل $ \mathtt{bfs(g,0)}$ على الرسم البياني في الشكل 12.1. وتختلف عمليات التنفيذ بحسب ترتيب قوائم التجاور؛ إذ يستعمل الشكل 12.4 قوائم التجاور الواردة في الشكل 12.3.
 
-**الشكل 12.4:** مثالٌ على البحث بالعرض أوّلًا انطلاقًا من العقدة 0. العقدُ موسومةٌ بترتيب إضافتها إلى $ \mathtt{q}$ . والأضلاع التي أدّت إلى إضافة العُقد إلى $ \mathtt{q}$ مرسومةٌ بالأسود، أمّا بقية الأضلاع فمرسومةٌ بالرمادي. ![\includegraphics[scale=0.90909]{figs/graph-bfs}](/images/open-data-structures/12_3_Graph_Traversal-img4647.png.webp) وتحليل زمن تشغيل الإجراء $ \mathtt{bfs(g,i)}$ مباشر إلى حدٍّ كبير. ويضمن استعمال مصفوفة $ \mathtt{seen}$ ألّا يُضاف أيّ رأس إلى $ \mathtt{q}$ أكثر من مرّة. وتستغرق إضافة كلّ رأس إلى $ \mathtt{q}$ (وحذفه لاحقًا) زمنًا ثابتًا لكلّ رأس، أي $ O(\ensuremath{\mathtt{n}})$ زمنًا في المجموع. وبما أنّ الحلقة الداخلية تعالج كلّ رأسٍ مرّةً واحدة على الأكثر، تُعالَج كلّ قائمة تجاورٍ مرّةً واحدة على الأكثر، ومن ثمّ تُعالَج كلّ ضلعٍ من أضلاع $ G$ مرّةً واحدة على الأكثر. وهذه المعالجة، التي تجري في الحلقة الداخلية، تستغرق زمنًا ثابتًا في كلّ دورة، أي $ O(\ensuremath{\mathtt{m}})$ زمنًا في المجموع. ولذلك تعمل الخوارزميةُ كاملةً في $ O(\ensuremath{\mathtt{n}}+\ensuremath{\mathtt{m}})$ زمن. وتلخّص المبرهنة التالية أداء خوارزمية $ \mathtt{bfs(g,r)}$ . **المبرهنة 12.3** *إذا قُدِّم لها كمدخل رسمٌ بياني (Graph)، $ \mathtt{g}$، منفَّذ ببنية بيانات AdjacencyLists، فإنّ خوارزمية $ \mathtt{bfs(g,r)}$ تعمل في $ O(\ensuremath{\mathtt{n}}+\ensuremath{\mathtt{m}})$ زمن.*
+**الشكل 12.4:** مثالٌ على البحث بالعرض أوّلًا انطلاقًا من العقدة 0. العقدُ موسومةٌ بترتيب إضافتها إلى $ \mathtt{q}$ . والأضلاع التي أدّت إلى إضافة العُقد إلى $ \mathtt{q}$ مرسومةٌ بالأسود، أمّا بقية الأضلاع فمرسومةٌ بالرمادي. ![ ](/images/open-data-structures/12_3_Graph_Traversal-img4647.png.webp) وتحليل زمن تشغيل الإجراء $ \mathtt{bfs(g,i)}$ مباشر إلى حدٍّ كبير. ويضمن استعمال مصفوفة $ \mathtt{seen}$ ألّا يُضاف أيّ رأس إلى $ \mathtt{q}$ أكثر من مرّة. وتستغرق إضافة كلّ رأس إلى $ \mathtt{q}$ (وحذفه لاحقًا) زمنًا ثابتًا لكلّ رأس، أي $ O(\ensuremath{\mathtt{n}})$ زمنًا في المجموع. وبما أنّ الحلقة الداخلية تعالج كلّ رأسٍ مرّةً واحدة على الأكثر، تُعالَج كلّ قائمة تجاورٍ مرّةً واحدة على الأكثر، ومن ثمّ تُعالَج كلّ ضلعٍ من أضلاع $ G$ مرّةً واحدة على الأكثر. وهذه المعالجة، التي تجري في الحلقة الداخلية، تستغرق زمنًا ثابتًا في كلّ دورة، أي $ O(\ensuremath{\mathtt{m}})$ زمنًا في المجموع. ولذلك تعمل الخوارزميةُ كاملةً في $ O(\ensuremath{\mathtt{n}}+\ensuremath{\mathtt{m}})$ زمن. وتلخّص المبرهنة التالية أداء خوارزمية $ \mathtt{bfs(g,r)}$ . **المبرهنة 12.3** *إذا قُدِّم لها كمدخل رسمٌ بياني (Graph)، $ \mathtt{g}$، منفَّذ ببنية بيانات AdjacencyLists، فإنّ خوارزمية $ \mathtt{bfs(g,r)}$ تعمل في $ O(\ensuremath{\mathtt{n}}+\ensuremath{\mathtt{m}})$ زمن.*
 
 للاجتياز بالعرض أوّلًا بعض الخصائص شديدة التخصّص. فاستدعاء $ \mathtt{bfs(g,r)}$ سيؤدي في نهاية المطاف إلى إدخال (وفي نهاية المطاف إخراج) كلّ رأس $ \mathtt{j}$ يوجد مسارٌ موجَّه من $ \mathtt{r}$ إلى $ \mathtt{j}$ . وفوق ذلك، تدخل الرؤوس الواقعة على مسافة 0 من $ \mathtt{r}$ (أي $ \mathtt{r}$ نفسه) في $ \mathtt{q}$ قبل الرؤوس الواقعة على مسافة 1، وهذه تدخل في $ \mathtt{q}$ قبل الرؤوس الواقعة على مسافة 2، وهكذا. ولذلك تزور الدالة $ \mathtt{bfs(g,r)}$ الرؤوس بحسب تصاعد المسافة عن $ \mathtt{r}$، أمّا الرؤوس التي لا يمكن الوصول إليها من $ \mathtt{r}$ فلا تُزار البتّة. ومن هنا فإنّ أحد أكثر تطبيقات خوارزمية البحث بالعرض أوّلًا نفعًا هو حساب المسارات الأقصر. ولحساب المسار الأقصر من $ \mathtt{r}$ إلى كلّ رأسٍ آخر، نستعمل صيغةً معدَّلة من $ \mathtt{bfs(g,r)}$ تستعمل مصفوفةً مساعدة، $ \mathtt{p}$، طولها $ \mathtt{n}$ . وحين يُضاف رأسٌ جديد، $ \mathtt{j}$، إلى $ \mathtt{q}$، نضبط $ \mathtt{p[j]=i}$ . وبهذه الطريقة، تصبح $ \mathtt{p[j]}$ هي العقدة ما قبل الأخيرة في مسارٍ أقصر من $ \mathtt{r}$ إلى $ \mathtt{j}$ . وبتكرار ذلك بأخذ $ \mathtt{p[p[j]}$ و $ \mathtt{p[p[p[j]]]}$ وهكذا، يمكننا إعادة بناء (انعكاس) مسارٍ أقصر من $ \mathtt{r}$ إلى $ \mathtt{j}$ .
 
@@ -273,7 +273,7 @@ source: https://opendatastructures.org/ods-java/12_Graphs.html
 
 يبدو أنّ البحث بالعرض أوّلًا قد اُكتشف بصورةٍ مستقلّة على يد Moore [52] وLee [49] في سياقَي استكشاف المتاهات وتوجيه الدوائر الإلكترونية على التوالي. وقد قدّم Hopcroft وTarjan [40] تمثيلات قوائم التجاور للرسوم البيانية بوصفها بديلًا عن تمثيل مصفوفة التجاور (الذي كان أكثر شيوعًا آنذاك). وقد لعب هذا التمثيل، وكذلك البحث بالعمق أوّلًا، دورًا رئيسيًّا في خوارزمية Hopcroft-Tarjan الشهيرة لاختبار المستوية (planarity)، التي تستطيع تحديد، في $ O(\ensuremath{\mathtt{n}})$ زمن، ما إذا كان رسمٌ بياني يمكن رسمه في المستوَى، بحيث لا يتقاطع أيّ زوجٍ من الأضلاع [41]. وفي التمارين التالية، يكون الرسم البياني غير الموجَّه (undirected) رسمًا يكون فيه، لكلّ $ \mathtt{i}$ و $ \mathtt{j}$، الضلع $ (\ensuremath{\mathtt{i}},\ensuremath{\mathtt{j}})$ حاضرًا إذا وفقط إذا كان الضلع $ (\ensuremath{\mathtt{j}},\ensuremath{\mathtt{i}})$ حاضرًا. **التمرين 12.1** ارسم تمثيل قائمة التجاور وتمثيل مصفوفة التجاور للرسم البياني في الشكل 12.7.
 
-**الشكل 12.7:** مثالٌ على رسمٍ بياني. ![\includegraphics[scale=0.90909]{figs/graph-example2}](/images/open-data-structures/12_4_Discussion_Exercises-img4780.png.webp) **التمرين 12.2** تمثيل مصفوفة الورودية (incidence matrix) لرسمٍ بياني، $ G$، هو مصفوفة أبعادها $ \ensuremath{\mathtt{n}}\times\ensuremath{\mathtt{m}}$، $ A$، حيث
+**الشكل 12.7:** مثالٌ على رسمٍ بياني. ![ ](/images/open-data-structures/12_4_Discussion_Exercises-img4780.png.webp) **التمرين 12.2** تمثيل مصفوفة الورودية (incidence matrix) لرسمٍ بياني، $ G$، هو مصفوفة أبعادها $ \ensuremath{\mathtt{n}}\times\ensuremath{\mathtt{m}}$، $ A$، حيث
 
 $$
 \displaystyle A_{i,j} = \begin{cases} -1 & \text{if vertex $i$\ the source of ... ...if vertex $i$\ the target of edge $j$} \\ 0 & \text{otherwise.} \end{cases}

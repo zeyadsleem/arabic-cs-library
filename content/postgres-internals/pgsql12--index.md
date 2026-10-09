@@ -1686,7 +1686,7 @@ base/pgsql_tmp/pgsql_tmp2212.0.fileset/16403-767.changes
 
 يوضّح المثال التالي كيفية إدارة معرّفات LSN عندما ينفّذ الناشر أمر INSERT (انظر الشكل 12.31).
 
-![While this figure illustrates the origin_id and origin_lsn within the COMMIT WAL record written by the subscriber, the precise structure is as follows: In the COMMIT (or ABORT) WAL record, the origin_id is included in the header portion, whereas the origin_commit_lsn (or origin_abort_lsn) and origin_commit_timestamp (or origin_abort_timestamp) are appended to the extended section.](/images/postgres-internals/pgsql12-fig-12-31.webp)
+![مع أن هذا الشكل يوضّح origin_id وorigin_lsn داخل سجل WAL الخاص بالالتزام المكتوب بواسطة المشترك، فإن البنية الدقيقة كما يلي: في سجل WAL الخاص بالالتزام (أو الإلغاء)، يُضمَّن origin_id في جزء الترويسة، بينما يُلحق origin_commit_lsn (أو origin_abort_lsn) وorigin_commit_timestamp (أو origin_abort_timestamp) بالقسم الموسَّع.](/images/postgres-internals/pgsql12-fig-12-31.webp)
 
 #### الشكل 12.31. تدفق ربط LSN خلال معاملة عادية.
 

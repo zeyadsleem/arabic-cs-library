@@ -210,4 +210,4 @@ S.EndStatic();
 
 1. الاستثناء الوحيد لذلك هو لغة Nyquist القائمة على Lisp، وهي مدمجة في Audacity منذ أيامه الأولى. ونودّ جعلها وحدة منفصلة مرفقة مع Audacity، لكننا لم نتّسع الوقت بعد لإجراء هذا التغيير.
 
-[^1]: The one exception to this is the Lisp-based Nyquist language which has been built into Audacity from very early days. We would like to make it a separate module, bundled with Audacity, but we have not yet had the time to make that change.
+[^1]: الاستثناء الوحيد لذلك هو لغة Nyquist القائمة على Lisp، وهي مدمجة في Audacity منذ أيامه الأولى. ونودّ جعلها وحدة منفصلة مرفقة مع Audacity، لكننا لم نتّسع الوقت بعد لإجراء هذا التغيير.

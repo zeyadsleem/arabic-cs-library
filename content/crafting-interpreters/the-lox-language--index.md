@@ -816,7 +816,7 @@ name="closure">**إغلاقات**</span> (closures). وفي هذه الأيام�
 
 </aside>
 
-<img src="/images/crafting-interpreters/the-lox-language-1.webp" alt="How fields and methods are looked up on classes and instances" />
+<img src="/images/crafting-interpreters/the-lox-language-1.webp" alt="كيف تُبحث الحقول والدوال في الأصناف والنسخ" />
 
 أمّا اللّغات القائمة على النماذج الأوّلية <span
 name="blurry">تدمج</span> هذين المفهومين. فلا توجد سوى
@@ -836,7 +836,7 @@ JavaScript [يدفعك إلى Andromeda][js new] إلى تحديد أشياء ش
 
 </aside>
 
-<img src="/images/crafting-interpreters/the-lox-language-2.webp" alt="How fields and methods are looked up in a prototypal system" />
+<img src="/images/crafting-interpreters/the-lox-language-2.webp" alt="كيف تُبحث الحقول والدوال في نظام قائم على النموذج الأوّلي" />
 
 وهذا يعني أنّ اللّغات القائمة على النماذج الأوّلية أكثر
 أساسيةً من الأصناف في بعض الجوانب. فهي ممتعةٌ حقّاً في التنفيذ

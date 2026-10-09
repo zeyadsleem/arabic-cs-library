@@ -520,7 +520,7 @@ testdb=# VACUUM tbl;
 
 يستخدم الأمر REPACK (VACUUM FULL) استراتيجية بسيطة تُعيد إنشاء ملف جدول فيزيائي جديد تحت قفل حصري. ويوضّح الشكل 6.11 مخطط هذا الأمر.
 
-![To simplify, index files are omitted.](/images/postgres-internals/pgsql06-fig-6-11.webp)
+![للتبسيط، تُحذف ملفات الفهرس.](/images/postgres-internals/pgsql06-fig-6-11.webp)
 
 #### الشكل 6.11. مخطط معالجة REPACK (VACUUM FULL).
 
@@ -607,7 +607,7 @@ Indexes:
 
 يوضّح الشكل 6.12 عملية REPACK CONCURRENTLY تصورية من مرحلتين (أما التنفيذ الفعلي فيتكوّن من ثلاث مراحل، كما هو موضّح في القسم التالي).
 
-![To simplify, the old index file is omitted.](/images/postgres-internals/pgsql06-fig-6-12.webp)
+![للتبسيط، يُحذف ملف الفهرس القديم.](/images/postgres-internals/pgsql06-fig-6-12.webp)
 
 #### الشكل 6.12. نظرة عامة على REPACK CONCURRENTLY.
 
@@ -638,7 +638,7 @@ Indexes:
 
 وكما هو موضّح في الشكل 6.13، يطبّق التنفيذ التغييرات مرتين لتقليل حالات التعطّل التشغيلي الناتجة عن قفل AccessExclusiveLock.
 
-![To simplify, the old index file is omitted.](/images/postgres-internals/pgsql06-fig-6-13.webp)
+![للتبسيط، يُحذف ملف الفهرس القديم.](/images/postgres-internals/pgsql06-fig-6-13.webp)
 
 #### الشكل 6.13. المراحل الثلاث لـ REPACK CONCURRENTLY.
 

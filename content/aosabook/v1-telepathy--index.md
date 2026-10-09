@@ -412,7 +412,7 @@ Telepathy مثال ممتاز على كيفية بناء واجهة برمجية
 3. من هنا فصاعدًا، ستُختصر التعبارتان `/org/freedesktop/Telepathy/` و`org.freedesktop.Telepathy` إلى `ofdT` اختصارًا للطول.
 4. مثلًا، بروتوكول الرسائل والحضور القابل للتوسّع (XMPP).
 
-[^1]: `http://telepathy.freedesktop.org/`, or see the developers' manual at `http://telepathy.freedesktop.org/doc/book/`
+[^1]: `http://telepathy.freedesktop.org/`، أو انظر دليل المطوّرين في `http://telepathy.freedesktop.org/doc/book/`
 [^2]: `http://telepathy.freedesktop.org/spec/`
-[^3]: From here on, `/org/freedesktop/Telepathy/` and `org.freedesktop.Telepathy` will be abbreviated to `ofdT` to save space.
-[^4]: E.g., the Extensible Messaging and Presence Protocol (XMPP).
+[^3]: من هنا فصاعدًا، ستُختصر التعبارتان `/org/freedesktop/Telepathy/` و`org.freedesktop.Telepathy` إلى `ofdT` اختصارًا للطول.
+[^4]: مثلًا، بروتوكول الرسائل والحضور القابل للتوسّع (XMPP).

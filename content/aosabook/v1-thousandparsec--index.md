@@ -329,5 +329,5 @@ Thousand Parsec ليست مجرد لعبة فيديو: إنها إطار عمل 
 1. من الأمثلة التجارية الممتازة لإلهام Thousand Parsec: *VGA Planets* و*Stars!*، وكذلك سلسلة *Master of Orion* و*Galactic Civilizations* و*Space Empires*. أما القرّاء غير الملمّين بهذه العناوين، فسلسلة *Civilization* مثال شائع على أسلوب اللعب نفسه، وإن كان في سياق مختلف. وهناك أيضًا عدد من ألعاب 4X الآنية، مثل *Imperium Galactica* و*Sins of a Solar Empire*.
 2. في الواقع، العكس هو الصحيح: اشتُقّت الرسائل واللوحات من الأوامر في الإصدار الثاني من البروتوكول.
 
-[^1]: Some excellent commercial examples of Thousand Parsec's inspiration include *VGA Planets* and *Stars!*, as well as the *Master of Orion*, *Galactic Civilizations*, and *Space Empires* series. For readers unfamiliar with these titles, the *Civilization* series is a popular example of the same gameplay style, albeit in a different setting. A number of real-time 4X games also exist, such as *Imperium Galactica* and *Sins of a Solar Empire*.
-[^2]: Actually, it's the other way around: messages and boards were derived from orders in the second version of the protocol.
+[^1]: من الأمثلة التجارية الممتازة لإلهام Thousand Parsec: *VGA Planets* و*Stars!*، وكذلك سلسلة *Master of Orion* و*Galactic Civilizations* و*Space Empires*. أما القرّاء غير الملمّين بهذه العناوين، فسلسلة *Civilization* مثال شائع على أسلوب اللعب نفسه، وإن كان في سياق مختلف. وهناك أيضًا عدد من ألعاب 4X الآنية، مثل *Imperium Galactica* و*Sins of a Solar Empire*.
+[^2]: في الواقع، العكس هو الصحيح: اشتُقّت الرسائل واللوحات من الأوامر في الإصدار الثاني من البروتوكول.

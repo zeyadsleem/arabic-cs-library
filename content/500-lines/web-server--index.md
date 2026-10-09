@@ -22,11 +22,11 @@ _ـ[Greg Wilson](https://twitter.com/gvwilson) هو مؤسّس Software Carpentr
 
 تصف بروتوكول نقل النصوص التشعبية (Hypertext Transfer Protocol، HTTP) إحدى الطرق التي يمكن بها للبرامج تبادل البيانات فوق IP. وHTTP بسيط عن قصد: يرسل العميل طلبًا يحدّد ما يريده عبر اتصال مقبس، ويردّ الخادم ببعض البيانات (cycle.) وقد تُنسخ البيانات من ملف على القرص، أو تُولَّد ديناميكيًّا بواسطة برنامج، أو تكون مزيجًا من الأمرَين.
 
-![The HTTP Cycle](/images/500-lines/web-server-0-http_cycle.webp)
+![دورة HTTP](/images/500-lines/web-server-0-http_cycle.webp)
 
 وأهمّ ما في طلب HTTP هو أنّه مجرّد نصّ: فيمكن لأيّ برنامج أن ينشئ طلبًا أو يحلّله. لكنّ ذلك النصّ، كي يُفهَم، يجب أن يحتوي على الأجزاء المبيَّنة في request.
 
-![An HTTP Request](/images/500-lines/web-server-1-http_request.webp)
+![طلب HTTP](/images/500-lines/web-server-1-http_request.webp)
 
 ودالة HTTP (method) هي دائمًا تقريبًا إمّا "GET" (لجلب معلومات) أو "POST" (لإرسال بيانات نموذج أو رفع ملفات). ويحدّد URL ما يريده العميل؛ وهو غالبًا مسار إلى ملف على القرص، مثل `/research/experiments.html`، لكن (وهذا هو الجزء المهمّ) من شأن الخادم وحده أن يقرّر تمامًا ما الذي يفعله به. أمّا إصدار HTTP فهو عادةً "HTTP/1.0" أو "HTTP/1.1"؛ والفروق بين الاثنين لا تهمّنا.
 
@@ -46,7 +46,7 @@ If-Modified-Since: 16-May-2005
 
 وتُنسَّق استجابات HTTP على نحو طلبات HTTP نفسه (response):
 
-![An HTTP Response](/images/500-lines/web-server-2-http_response.webp)
+![استجابة HTTP](/images/500-lines/web-server-2-http_response.webp)
 
 للإصدار والترويسات والجسم الصيغة والدلالة نفسها. أمّا رمز الحالة (status code) فهو عدد يدلّ على ما حدث حين عولج الطلب: 200 يعني "كل شيء على ما يرام"، و404 يعني "غير موجود"، ورموز أخرى لها معانٍ أخرى. وتُعيد عبارة الحالة (status phrase) تلك المعلومة في عبارة مقروءة للبشر مثل "OK" أو "غير موجود".
 

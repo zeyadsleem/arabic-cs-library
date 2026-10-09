@@ -284,7 +284,7 @@ static Entry* findEntry(Entry* entries, int capacity,
 البتات** (bit masking). لنقل إنّنا نريد حساب 229 mod 64. الجواب 37، وهو ليس واضحًا على نحو
 خاصّ في النظام العشري، لكنّه أوضح حين ننظر إلى تلك الأعداد في النظام الثنائي:
 
-<img src="/images/crafting-interpreters/optimization-1.webp" alt="The bit patterns resulting from 229 % 64 = 37 and 229 &amp; 63 = 37." />
+<img src="/images/crafting-interpreters/optimization-1.webp" alt="أنماط البتّات الناتجة عن 229 % 64 = 37 و229 &amp; 63 = 37." />
 
 على الجانب الأيسر من الرسم، لاحظ كيف أنّ النتيجة (37) هي ببساطة المقسوم (229) وقد قُصّت منه أعلى
 بتّين؟ هذان البتّان الأعلى هما البتّان عند بت القاسمة الواحدة أو إلى يسارها.
@@ -332,7 +332,7 @@ class="small-caps">AND</span> معه على واحد من تلك القوة. و�
 من 10,000 استدعاء يستطيع إنجازها في عشر ثوانٍ. والمزيد من الدفعات يعني أداءً أسرع. على جهازي باستخدام
 الشيفرة غير المُحسَّنة، يتجاوز المقياس 3,192 دفعة. وبعد هذا التحسين، يقفز الرقم إلى 6,249.
 
-<img src="/images/crafting-interpreters/optimization-2.webp" alt="Bar chart comparing the performance before and after the optimization." />
+<img src="/images/crafting-interpreters/optimization-2.webp" alt="مخطط أعمدة يقارن الأداء قبل التحسين وبعده." />
 
 ذلك يكاد بالضبط ضعف كمّ العمل في الوقت نفسه. جعلنا الآلة الافتراضية أسرع مرّتين (مع التحفّظ المعتاد:
 على هذا المقياس). وهذه مكسب هائل حين يأتي الأمر إلى التحسين. فعادةً تشعر بالارتياح إن استطعت
@@ -393,7 +393,7 @@ Gudeman لعام 1993 بعنوان "Representing Type Information in Dynamically
 وأكبر حقول الاتّحاد هي مؤشّر Obj وdouble، وكلاهما 8 بايتات. ولإبقاء حقل الاتّحاد محاذيًا لحدّ
 8 بايتات، يضيف المصرّف حشوًا بعد الوسم أيضًا:
 
-<img src="/images/crafting-interpreters/optimization-3.webp" alt="Byte layout of the 16-byte tagged union Value." />
+<img src="/images/crafting-interpreters/optimization-3.webp" alt="تخطيط بايتات الوحدة الموسومة (union) Value البالغة 16 بايتاً." />
 
 ذلك كبير إلى حدٍّ ما. فلو استطعنا تقليصه، لأمكن للآلة الافتراضية حزم قيم أكثر في المقدار نفسه من
 الذاكرة. ومعظم الحواسيب لديها ذاكرة عشوائية وفيرة اليوم، لذا فإنّ توفير الذاكرة المباشر ليس
@@ -432,7 +432,7 @@ Gudeman لعام 1993 بعنوان "Representing Type Information in Dynamically
 
 </aside>
 
-<img src="/images/crafting-interpreters/optimization-4.webp" alt="Bit representation of an IEEE 754 double." />
+<img src="/images/crafting-interpreters/optimization-4.webp" alt="التمثيل البتّي لعدد عشري ذي الدقة المزدوجة (IEEE 754)." />
 
 *   بدءًا من اليمين، البتّات الخمسة والخمسون الأولى هي بتات **الكسر** أو **المانتيسا** أو
     **الخانات المعنوية**. وهي تمثّل الخانات المهمة من الرقم، كعدد صحيح ثنائي.
@@ -479,7 +479,7 @@ Gudeman لعام 1993 بعنوان "Representing Type Information in Dynamically
 بـ Intel، فيتبقّى لنا 51 بتّة. ويمكن أن تكون تلك البتّات المتبقّية أيّ شيء. ونحن نتكلّم عن
 2,251,799,813,685,248 نمط بتّات فريد من NaN الهادئة.
 
-<img src="/images/crafting-interpreters/optimization-5.webp" alt="The bits in a double that make it a quiet NaN." />
+<img src="/images/crafting-interpreters/optimization-5.webp" alt="البتّات في double التي تجعلها quiet NaN." />
 
 وهذا يعني أنّ double من 64 بتًّا فيه متّسع كافٍ لتخزين كلّ قيم الأعداد العشرية المتحركة المختلفة، و
 *أيضًا* فيه متّسع لـ 51 بتّة إضافية من البيانات يمكننا استخدامها كيفما نشاء. وهذا متّسع وافٍ
@@ -655,7 +655,7 @@ NaN من نوع آخر في Lox. وإلا، فإنّها في الواقع عد�
 
 كان من الجميل لو دعمت C القيم الثنائية. لكن إن حوّلتَ، فسترى أنّ القيمة نفسها:
 
-<img src="/images/crafting-interpreters/optimization-6.webp" alt="The quiet NaN bits." />
+<img src="/images/crafting-interpreters/optimization-6.webp" alt="بتّات quiet NaN." />
 
 وهذا هو بالضبط كلّ بتّات الأس، مضافًا إليها بتّة quiet NaN، مضافًا إليها بتّة إضافية لتفادي قيمة
 Intel تلك.
@@ -675,7 +675,7 @@ Intel تلك.
 وتمثيلنا لـ `nil` هو إذن كلّ البتّات المطلوبة لتعريف تمثيل quiet NaN لدينا إلى جانب بتّات وسم النوع
 `nil`:
 
-<img src="/images/crafting-interpreters/optimization-7.webp" alt="The bit representation of the nil value." />
+<img src="/images/crafting-interpreters/optimization-7.webp" alt="التمثيل البتّي لقيمة nil." />
 
 وفي الشيفرة، نتحقّق من البتّات هكذا:
 
@@ -697,7 +697,7 @@ Intel تلك.
 
 وتبدو البتّات هكذا:
 
-<img src="/images/crafting-interpreters/optimization-8.webp" alt="The bit representation of the true and false values." />
+<img src="/images/crafting-interpreters/optimization-8.webp" alt="التمثيل البتّي لقيمتَي true وfalse." />
 
 ولتحويل bool في C إلى قيمة منطقية في Lox، فإنّنا نعتمد على قيمتي وحيدتَي هاتين والمُعامل الشرطي
 القديم الطرّاز.
@@ -763,7 +763,7 @@ Intel تلك.
 
 إذا كانت بتّة الإشارة مضبوطة، فإنّ البتّات الدنيا المتبقّية تخزّن المؤشّر إلى Obj:
 
-<img src="/images/crafting-interpreters/optimization-9.webp" alt="Bit representation of an Obj* stored in a Value." />
+<img src="/images/crafting-interpreters/optimization-9.webp" alt="التمثيل البتّي لمؤشّر Obj* مخزَّن في Value." />
 
 ولتحويل مؤشّر Obj خام إلى Value، نأخذ المؤشّر ونضبط كلّ بتّات quiet NaN وبتّة الإشارة.
 

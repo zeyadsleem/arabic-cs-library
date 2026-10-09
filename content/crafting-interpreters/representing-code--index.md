@@ -54,7 +54,7 @@ source: https://craftinginterpreters.com/
 
 <span name="tree-steps"></span>
 
-<img src="/images/crafting-interpreters/representing-code-1.webp" alt="Evaluating the tree from the bottom up." />
+<img src="/images/crafting-interpreters/representing-code-1.webp" alt="تقييم الشجرة من الأسفل إلى الأعلى." />
 
 <aside name="tree-steps">
 
@@ -721,7 +721,7 @@ if (expr instanceof Expr.Binary) {
 الأنواع، وحفنةٌ من العمليات عالية المستوى مثل "interpret". ولكلّ زوج
 من نوعٍ وعملية، نحتاج إلى تنفيذٍ محدّد. تخيّل جدولاً:
 
-<img src="/images/crafting-interpreters/representing-code-3.webp" alt="A table where rows are labeled with expression classes, and columns are function names." />
+<img src="/images/crafting-interpreters/representing-code-3.webp" alt="جدول تُسمَّى صفوفه بأصناف التعبيرات وأعمدته بأسماء الدوال." />
 
 الصفوف أنواع، والأعمدة عمليات. وتمثّل كلّ خانة قطعةَ الشيفرة
 الفريدة التي تنفّذ تلك العملية على ذلك النوع.
@@ -731,7 +731,7 @@ if (expr instanceof Expr.Binary) {
 تفعلها بنوعٍ ما يُرجَّح أن تكون مرتبطة ببعضها، واللّغة تجعل
 واللّغة تجعل من السهل تحديدها معاً كطُرق داخل الصنف نفسه.
 
-<img src="/images/crafting-interpreters/representing-code-4.webp" alt="The table split into rows for each class." />
+<img src="/images/crafting-interpreters/representing-code-4.webp" alt="الجدول مقسَّم إلى صفوف لكلّ صنف." />
 
 وهذا يجعل توسيع الجدول بإضافة صفوفٍ جديدة سهلاً. عرّف صنفاً جديداً
 فقط. لا شيفرةٍ قائمة تحتاج اللمس. لكنّ تخيّل ما لو أردت إضافة
@@ -762,7 +762,7 @@ Swift تشبهه كثيراً.
 وهذا يجعل إضافة عملياتٍ جديدة أمراً تافهاً -- عرّف دالةً أخرى
 يطابق الأنماط على كلّ الأنواع.
 
-<img src="/images/crafting-interpreters/representing-code-5.webp" alt="The table split into columns for each function." />
+<img src="/images/crafting-interpreters/representing-code-5.webp" alt="الجدول مقسَّم إلى أعمدة لكلّ دالة." />
 
 لكنّ العكس صحيح: إضافة نوعٍ جديد صعبة. عليك العودة وإضافة حالة
 جديدة إلى كلّ مطابقة أنماط في كلّ الدوالّ القائمة.
@@ -885,7 +885,7 @@ name="beignet">كرواصون</span> وكرولات.
 صنف *الزائر*. في الجدول، كلّ صنف حلوى هو صفٌّ، لكن إن نظرت إلى
 كلّ طرائق زائرٍ واحد فإنّها تشكّل *عموداً*.
 
-<img src="/images/crafting-interpreters/representing-code-6.webp" alt="Now all of the cells for one operation are part of the same class, the visitor." />
+<img src="/images/crafting-interpreters/representing-code-6.webp" alt="الآن صارت كلّ خلايا العملية الواحدة جزءاً من الصنف نفسه: الزائر." />
 
 أضفنا طريقة `accept()` واحدةً إلى كلّ صنف، ويمكننا استعمالها مع
 عددٍ غير محدود من الزوّار دون أن نلمس أصناف الحلوى مرّةً أخرى.
@@ -965,7 +965,7 @@ printing) حين يكون الهدف إنتاج سلسلة نصّية صالحة
 
 معطًى شجرة صياغةٍ مثل:
 
-<img src="/images/crafting-interpreters/representing-code-7.webp" alt="An example syntax tree." />
+<img src="/images/crafting-interpreters/representing-code-7.webp" alt="شجرة تركيب مثال." />
 
 فإنّها تُنتج:
 

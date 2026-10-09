@@ -89,7 +89,7 @@ const { buttonText } = defineProps(["numbers"]);
 
 يمرّر المكوّن `ParentComponent` مصفوفة `numbers` كخصائص (props) تحمل الاسم نفسه إلى `ChildComponent`. و`ChildComponent` يربط ببساطة قيمة `numbers` على قالبه.
 
-JavaScript iconParentComponent.vue
+`ParentComponent.vue`
 
 ```javascript
 <template>
@@ -176,7 +176,7 @@ const numbers = ref([1, 2, 3]);
 
 وفي `ParentComponent`، يُحدَّد مستمع للحدث المخصّص يُشار إليه بـ `@number-added` في الموضع الذي يُعرض فيه المكوّن الفرعي. وعندما يُصدر هذا الحدث في المكوّن الفرعي، فإنه يدفع قيمة `number` القادمة من الحدث إلى مصفوفة `numbers` الخاصة بـ `ParentComponent`.
 
-JavaScript iconParentComponent.vue
+`ParentComponent.vue`
 
 ```javascript
 <template>
@@ -284,7 +284,7 @@ const numberInput = ref(0);
 
 تتلقّى طريقة المخزن الحمولة وتُعدّل مباشرةً مصفوفة `store.numbers`. وبفضل تفاعلية Vue، فكلما تغيّرت مصفوفة `numbers` في حالة المخزن، فإن الـ DOM ذي الصلة الذي يعتمد على هذه القيمة (قالب المكوّن `NumberDisplay`) *يُحدَّث تلقائيًا*.
 
-JavaScript iconstore.js
+`store.js`
 
 ```javascript
 import { reactive } from "vue";
@@ -413,7 +413,7 @@ const numberInput = ref(0);
 
 مع هذه التغييرات، سيتصرّف تطبيقنا تمامًا كما كان من قبل.
 
-JavaScript iconstore.js
+`store.js`
 
 ```javascript
 import { defineStore } from "pinia";

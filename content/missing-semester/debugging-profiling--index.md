@@ -322,7 +322,7 @@ $ perf stat ./slow_program
 
 يعرض رسم اللهب تسلسلًا هرميًا لاستدعاءات الدوال على المحور Y والوقت المستغرق متناسبًا مع المحور X. وهي تفاعلية — يمكنك النقر للتكبير على أجزاءٍ محددةٍ من البرنامج.
 
-[![FlameGraph](https://www.brendangregg.com/FlameGraphs/cpu-bash-flamegraph.svg)](https://www.brendangregg.com/FlameGraphs/cpu-bash-flamegraph.svg)
+[![رسم لهب](https://www.brendangregg.com/FlameGraphs/cpu-bash-flamegraph.svg)](https://www.brendangregg.com/FlameGraphs/cpu-bash-flamegraph.svg)
 
 لتوليد رسم لهبٍ من بيانات `perf`:
 

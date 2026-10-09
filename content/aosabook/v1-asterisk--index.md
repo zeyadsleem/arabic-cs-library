@@ -272,4 +272,4 @@ exten => 1234,1,Dial(SIP/bob)
 2. DTMF اختصار لعبارة Dual-Tone Multi-Frequency. وهي النغمة التي تُرسَل في صوت مكالمة هاتفية عندما يضغط أحدهم على مفتاح في هاتفه.
 
 [^1]: `http://www.asterisk.org/`
-[^2]: DTMF stands for Dual-Tone Multi-Frequency. This is the tone that is sent in the audio of a phone call when someone presses a key on their telephone.
+[^2]: DTMF اختصار لعبارة Dual-Tone Multi-Frequency. وهي النغمة التي تُرسَل في صوت مكالمة هاتفية عندما يضغط أحدهم على مفتاح في هاتفه.

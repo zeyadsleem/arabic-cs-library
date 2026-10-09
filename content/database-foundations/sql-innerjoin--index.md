@@ -14,7 +14,7 @@ source: https://df.webontwerp.ucll.be/EN/SQL_innerjoin/
 
 سنستخدم مثالًا بسيطًا لشرح المبدأ. افترض أنك تريد قائمة بعناوين بريد جميع منسّقي المقررات كما في الشكل أدناه. وبعد [الفصل السابق](/book/database-foundations/sql-eenopveel/index) ينبغي أن يكون لديك جدولان مترابطان في مخططك الخاص: "lecturer" و"course".
 
-![All mailaddresses of all coordinators of all courses](https://df.webontwerp.ucll.be/images/database-foundations/sql-innerjoin-0-join_vb1.webp)
+![جميع عناوين البريد لكل منسّقي جميع المقررات](https://df.webontwerp.ucll.be/images/database-foundations/sql-innerjoin-0-join_vb1.webp)
 
 والآن اعمل على المثال التالي بتجربة شيفرة جميع الخطوات في مخططك الخاص. ولا تنسَ تحديد اسم مخططك لكل جدول، أو اضبط `search_path` بشكل صحيح. وفي أمثلة الشيفرة أدناه اخترنا الحل الأخير.
 

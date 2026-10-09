@@ -1,5 +1,5 @@
 ---
-title: "2. Array-Based Lists"
+title: "2. القوائم المعتمدة على المصفوفات"
 lang: ar
 source: https://opendatastructures.org/ods-java/2_Array_Based_Lists.html
 ---
@@ -198,7 +198,7 @@ $$
 
 بشكل أعمَّ، لعدد صحيح $ a$ و عدد صحيح موجب $ m$ ، يكون $ a \bmod m$ هو العدد الصحيح الوحدي $ r\in\{0,\ldots,m-1\}$ الذي يحقِّق $ a = r + km$ لأجل عدد صحيح ما $ k$ . وبعبارة أقل رسمية، فإن القيمة $ r$ هي الباقي الذي نحصل عليه عند قسمة $ a$ على $ m$ . وفي كثير من لغات البرمجة، ومنها Java، يُمثَّل معامل $ \bmod$ بالرمز $ \mathtt{\text{\ttfamily\%}}$ symbol.2.2. ويكون الحساب ثنائي الباقي مفيدًا لمحاكاة مصفوفة لا نهائية، لأنَّ $ \ensuremath{\mathtt{i}}\bmod \ensuremath{\mathtt{a.length}}$ يعطي دائمًا قيمة في المجال $ 0,\ldots,\ensuremath{\mathtt{a.length-1}}$ . وباستخدام الحساب ثنائي الباقي يمكننا تخزين عناصر الطابور في مواضع المصفوفة
 
-![$\displaystyle \ensuremath{\mathtt{a[j\text{\ttfamily\%}a.length]}},\ensuremath{... ...}},\ldots,\ensuremath{\mathtt{a[(j+n-1)\text{\ttfamily\%}a.length]}} \enspace. $](/images/open-data-structures/2_3_ArrayQueue_Array_Based_-img652.png.webp)
+![ ](/images/open-data-structures/2_3_ArrayQueue_Array_Based_-img652.png.webp)
 
 يعامل هذا الأمر المصفوفة $ \mathtt{a}$ بوصفها مصفوفة دائرية (circular array) تُلفّ فيها فهارس المصفوفة الأكبر من $ \ensuremath{\mathtt{a.length}}-1$ «تدور حول نفسها» إلى بداية المصفوفة. ولم يتبقَّ سوى مراعاة ألّا يتجاوز عدد عناصر ArrayQueue حجم $ \mathtt{a}$ .
 
@@ -234,7 +234,7 @@ $$
 
 أخيرًا، إنَّ عملية $ \mathtt{resize()}$ شديدة الشبه بعملية $ \mathtt{resize()}$ في ArrayStack. فهي تخصِّص مصفوفة جديدة $ \mathtt{b}$ حجمها $ 2\ensuremath{\mathtt{n}}$ وتنسخ
 
-![$\displaystyle \ensuremath{\mathtt{a[j]}},\ensuremath{\mathtt{a[(j+1)\text{\ttfa... ...}a.length]}},\ldots,\ensuremath{\mathtt{a[(j+n-1)\text{\ttfamily\%}a.length]}} $](/images/open-data-structures/2_3_ArrayQueue_Array_Based_-img682.png.webp)
+![ ](/images/open-data-structures/2_3_ArrayQueue_Array_Based_-img682.png.webp)
 
 إلى
 
@@ -392,7 +392,7 @@ $$
 
 ولاحظ أنَّ الحالة الأولى (2.1) تحدث عندما يكون $ \ensuremath{\mathtt{i}}<\ensuremath{\mathtt{n}}/4$ . وتحدث الحالة الثانية (2.2) عندما يكون $ \ensuremath{\mathtt{i}}\ge 3\ensuremath{\mathtt{n}}/4$ . وعندما يكون $ \ensuremath{\mathtt{n}}/4\le\ensuremath{\mathtt{i}}<3\ensuremath{\mathtt{n}}/4$ ، لا يمكننا الجزم ما إذا كانت العملية تؤثِّر في $ \mathtt{front}$ أم في $ \mathtt{back}$ ، لكن في كلتا الحالتين تستغرق العملية $ O(\ensuremath{\mathtt{n}})=O(\ensuremath{\mathtt{i}})=O(\ensuremath{\mathtt{n}}-\ensuremath{\mathtt{i}})$ من الوقت، لأنَّ $ \ensuremath{\mathtt{i}}\ge \ensuremath{\mathtt{n}}/4$ و $ \ensuremath{\mathtt{n}}-\ensuremath{\mathtt{i}}> \ensuremath{\mathtt{n}}/4$ . وتلخيصًا للموقف، لدينا
 
-زمن تنفيذ ![$\displaystyle \ensuremath{\mathtt{add(i,x)}} \le \left\{\begin{array}{ll} O(... ... $\ensuremath{\mathtt{i}} \ge 3\ensuremath{\mathtt{n}}/4$} \end{array}\right. $](/images/open-data-structures/2_5_DualArrayDeque_Building-img793.png.webp)
+زمن تنفيذ ![ ](/images/open-data-structures/2_5_DualArrayDeque_Building-img793.png.webp)
 
 وعليه، فإن زمن تنفيذ $ \mathtt{add(i,x)}$ ، إذا تجاهلنا تكلفة الاستدعاء إلى $ \mathtt{balance()}$ ، هو $ O(1+\min\{\ensuremath{\mathtt{i}}, \ensuremath{\mathtt{n}}-\ensuremath{\mathtt{i}}\})$ . وتُشبه عملية $ \mathtt{remove(i)}$ وتحليلُها عملية $ \mathtt{add(i,x)}$ وتحليلَها.
 
@@ -483,7 +483,7 @@ $$
     int n;
 ```
 
-**الشكل 2.6:** عدد المربعات البيضاء يساوي $ 1+2+3+\cdots+\ensuremath{\mathtt{r}}$ . وعدد المربعات المظلَّلة هو نفسه. ويشكِّل المربعات البيضاء والمظلَّلة معًا مستطيلًا يتكوَّن من $ \ensuremath{\mathtt{r}}(\ensuremath{\mathtt{r}}+1)$ مربعًا. ![\includegraphics[scale=0.90909]{figs/gauss}](/images/open-data-structures/2_6_RootishArrayStack_Space-img896.png.webp) وكما قد نتوقَّع، تُرتَّب عناصر القائمة بالترتيب داخل الكتل. فعنصر القائمة ذو الفهرس 0 مُخزَّن في الكتلة 0، وعناصر القائمة ذات الفهارس 1 و2 مُخزَّنة في الكتلة 1، وعناصر القائمة ذات الفهارس 3 و4 و5 مُخزَّنة في الكتلة 2، وهكذا. المشكلة الرئيسية التي علينا معالجتها هي، عند معرفة الفهرس $ \ensuremath{\mathtt{i}}$ ، تحديد الكتلة التي تحتوي $ \mathtt{i}$ وكذلك الفهرس المقابل لـ $ \mathtt{i}$ داخل تلك الكتلة. ويتبيَّن أنَّ تحديد فهرس $ \mathtt{i}$ داخل كتلته أمرٌ سهل. فإذا كان الفهرس $ \mathtt{i}$ في الكتلة $ \mathtt{b}$ ، فإنَّ عدد العناصر في الكتل $ 0,\ldots,\ensuremath{\mathtt{b}}-1$ هو $ \ensuremath{\mathtt{b}}(\ensuremath{\mathtt{b}}+1)/2$ . وعليه، فإنَّ $ \mathtt{i}$ مُخزَّن في الموضع
+**الشكل 2.6:** عدد المربعات البيضاء يساوي $ 1+2+3+\cdots+\ensuremath{\mathtt{r}}$ . وعدد المربعات المظلَّلة هو نفسه. ويشكِّل المربعات البيضاء والمظلَّلة معًا مستطيلًا يتكوَّن من $ \ensuremath{\mathtt{r}}(\ensuremath{\mathtt{r}}+1)$ مربعًا. ![ ](/images/open-data-structures/2_6_RootishArrayStack_Space-img896.png.webp) وكما قد نتوقَّع، تُرتَّب عناصر القائمة بالترتيب داخل الكتل. فعنصر القائمة ذو الفهرس 0 مُخزَّن في الكتلة 0، وعناصر القائمة ذات الفهارس 1 و2 مُخزَّنة في الكتلة 1، وعناصر القائمة ذات الفهارس 3 و4 و5 مُخزَّنة في الكتلة 2، وهكذا. المشكلة الرئيسية التي علينا معالجتها هي، عند معرفة الفهرس $ \ensuremath{\mathtt{i}}$ ، تحديد الكتلة التي تحتوي $ \mathtt{i}$ وكذلك الفهرس المقابل لـ $ \mathtt{i}$ داخل تلك الكتلة. ويتبيَّن أنَّ تحديد فهرس $ \mathtt{i}$ داخل كتلته أمرٌ سهل. فإذا كان الفهرس $ \mathtt{i}$ في الكتلة $ \mathtt{b}$ ، فإنَّ عدد العناصر في الكتل $ 0,\ldots,\ensuremath{\mathtt{b}}-1$ هو $ \ensuremath{\mathtt{b}}(\ensuremath{\mathtt{b}}+1)/2$ . وعليه، فإنَّ $ \mathtt{i}$ مُخزَّن في الموضع
 
 $$
 \displaystyle \ensuremath{\mathtt{j}} = \ensuremath{\mathtt{i}} - \ensuremath{\mathtt{b}}(\ensuremath{\mathtt{b}}+1)/2
@@ -645,7 +645,7 @@ $$
 
 غير أنَّه يتبيَّن أنَّ مصفوفة واحدة من $ \mathtt{sqrttab}$ تكفي؛ فنحن لا نحتاج سوى مصفوفة $ \mathtt{sqrttab}$ واحدة للقيمة $ \ensuremath{\mathtt{r}}=\lfloor\log \ensuremath{\mathtt{n}}\rfloor$ . وأي قيمة $ \mathtt{x}$ بحيث $ \log\ensuremath{\mathtt{x}}=\ensuremath{\mathtt{r'}}<\ensuremath{\mathtt{r}}$ يمكن «ترقيتها» بضرب $ \mathtt{x}$ في $ 2^{\ensuremath{\mathtt{r}}-\ensuremath{\mathtt{r'}}}$ واستخدام المعادلة
 
-![$\displaystyle \sqrt{2^{\ensuremath{\mathtt{r}}-\ensuremath{\mathtt{r'}}}x} = 2^... ...thtt{r}}-\ensuremath{\mathtt{r}}')/2}\sqrt{\ensuremath{\mathtt{x}}} \enspace . $](/images/open-data-structures/2_6_RootishArrayStack_Space-img1071.png.webp)
+![ ](/images/open-data-structures/2_6_RootishArrayStack_Space-img1071.png.webp)
 
 إنَّ الكمية $ 2^{\ensuremath{\mathtt{r}}-\ensuremath{\mathtt{r}}'}x$ تقع في المجال $ \{2^{\ensuremath{\mathtt{r}}},\ldots,2^{\ensuremath{\mathtt{r}}+1}-1\}$ ، لذا يمكننا البحث عن جذرها التربيعي في $ \mathtt{sqrttab}$ . ويَنفِّذ الشيفرة التالية هذه الفكرة لحساب $ \lfloor\sqrt{\ensuremath{\mathtt{x}}}\rfloor$ لكل الأعداد الصحيحة غير السالبة $ \mathtt{x}$ في المجال $ \{0,\ldots,2^{30}-1\}$ باستخدام مصفوفة $ \mathtt{sqrttab}$ بحجم $ 2^{16}$ .
 
@@ -702,7 +702,7 @@ $$
 
 **التمرين 2.4** صمِّم ونفِّذ Treque (طابورًا ثلاثي الأطراف). وهذا تنفيذ للقائمة (List) تعمل فيه $ \mathtt{get(i)}$ و$ \mathtt{set(i,x)}$ بزمن ثابت وتعمل $ \mathtt{add(i,x)}$ و$ \mathtt{remove(i)}$ في زمن
 
-![$\displaystyle O(1+\min\{\ensuremath{\mathtt{i}}, \ensuremath{\mathtt{n}}-\ensur... ...}}, \vert\ensuremath{\mathtt{n}}/2-\ensuremath{\mathtt{i}}\vert\}) \enspace . $](/images/open-data-structures/2_7_Discussion_Exercises-img1138.png.webp)
+![ ](/images/open-data-structures/2_7_Discussion_Exercises-img1138.png.webp)
 
 بعبارة أخرى، تكون التعديلات سريعة إذا كانت قريبة من أيٍّ من الطرفين أو قريبة من منتصف القائمة.
 

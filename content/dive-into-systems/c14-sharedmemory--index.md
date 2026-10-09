@@ -75,7 +75,7 @@ L3 cache:              8192K
 
 ويوضح [الشكل 1](#FigConcurrency1) كيف يمكن لخمس عمليات نموذجية أن تنفّذ على معالج أحادي النواة.
 
-![concurrency example with 5 processes](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-concurrency_1.webp){#FigConcurrency1} Figure 1. An execution time sequence for five processes as they share a single CPU core
+![مثال على التزامن مع خمس عمليات](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-concurrency_1.webp){#FigConcurrency1} الشكل 1. تسلسل زمني للتنفيذ لخمس عمليات بينما تتشارك نواة معالجة مركزية واحدة
 
 المحور الأفقي هو الزمن، وتستغرق كل شريحة زمنية وحدة زمن واحدة. ويمثّل المربع وقت استخدام العملية للمعالج أحادي النواة. لنفترض أن كل عملية تنفّذ شريحة زمنية كاملة قبل حدوث تبديل السياق. فعملية 1 تستخدم المعالج خلال الخطوتين الزمنيتين T1 وT3.
 
@@ -87,7 +87,7 @@ L3 cache:              8192K
 
 وتتيح وحدة المعالجة المركزية متعددة الأنوية لنظام التشغيل جدولة عملية مختلفة لكل نواة متاحة، ما يتيح للعمليات التنفيذ *في الوقت نفسه*. ويُشار إلى التنفيذ المتزامن لتعليمات من عمليات تعمل على أنوية متعددة بـ**التنفيذ المتوازي** (parallel execution). ويعرض [الشكل 2](#FigConcurrency2) كيف يمكن لعملياتنا المثال أن تنفّذ على نظام ثنائي الأنوية.
 
-![parallel example with 2 cores](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-1-concurrency_2.webp){#FigConcurrency2} Figure 2. An execution time sequence for five processes, extended to include two CPU cores (one in dark blue, the other in light green).
+![مثال على التوازي مع نواتين](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-1-concurrency_2.webp){#FigConcurrency2} الشكل 2. تسلسل زمني للتنفيذ لخمس عمليات، ممتد ليشمل نواتَي معالجة مركزية (إحداهما باللون الأزرق الداكن والأخرى بالأخضر الفاتح).
 
 في هذا المثال، تُلوَّن نواتا المعالج بلونين مختلفين. لنفترض أن ترتيب تنفيذ العمليات هو مرة أخرى P1، P2، P1، P2، P4، P2، P3، P4، P5، P3، P5. ويتيح وجود أنوية متعددة لبعض العمليات التنفيذ *مبكرًا*. فمثلًا، خلال الوحدة الزمنية T1، تنفّذ النواة الأولى العملية 1 بينما تنفّذ النواة الثانية العملية 2. وعند الزمن T2، تنفّذ النواة الأولى العملية 2 بينما تنفّذ الثانية العملية 1. وبذلك تكمل العملية 1 تنفيذها بعد الزمن T2، بينما تكمل العملية 2 تنفيذها عند الزمن T3.
 
@@ -97,7 +97,7 @@ L3 cache:              8192K
 
 من طرق تسريع تنفيذ عملية واحدة تفكيكها إلى تدفقات تنفيذ مستقلة خفيفة تُسمى **الخيوط** (threads). ويعرض [الشكل 3](#FigProcess) كيف يتغير فضاء العنوان الافتراضي للعملية عندما تصبح متعددة الخيوط بخيطين. ومع أن لكل خيط تخصيصه الخاص لمساحة مكدّس النداء، فإن جميع الخيوط *تتشارك* بيانات البرنامج وتعليماته والكومة المخصصة للعملية متعددة الخيوط.
 
-![multithread process with 2 threads](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-2-multithread-vas.webp){#FigProcess} Figure 3. Comparing the virtual address space of a single-threaded and a multithreaded process with two threads
+![عملية بخيطين](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-2-multithread-vas.webp){#FigProcess} الشكل 3. مقارنة فضاء العنوان الافتراضي لعملية أحادية الخيط وعملية متعددة الخيوط بخيطين
 
 ويجدول نظام التشغيل الخيوط بالطريقة نفسها التي يجدول بها العمليات. وعلى معالج متعدد الأنوية، يستطيع نظام التشغيل تسريع تنفيذ برنامج متعدد الخيوط بجدولة خيوطه المختلفة للعمل على أنوية منفصلة. ويساوي الحد الأقصى لعدد الخيوط التي يمكن أن تنفّذ على التوازي عدد الأنوية الفيزيائية في النظام. وإذا تجاوز عدد الخيوط عدد الأنوية الفيزيائية، وجب على الخيوط الباقية انتظار دورها للتنفيذ (على غرار طريقة تنفيذ العمليات على نواة واحدة).
 
@@ -126,15 +126,15 @@ void scalar_multiply(int * array, long length, int s) {
 
 ويعرض [الشكل 4](#singleCPU) ما يحدث عند تشغيل أربعة خيوط على نواة واحدة. وكما سبق، يُترك ترتيب التنفيذ لنظام التشغيل. وفي هذا السيناريو، افترض أن ترتيب تنفيذ الخيوط هو الخيط 1، الخيط 3، الخيط 2، الخيط 4. وعلى معالج أحادي النواة (تمثله المربعات)، ينفّذ كل خيط تتابعيًا. وبذلك، ستستغرق العملية متعددة الخيوط العاملة على نواة واحدة 60 ثانية أيضًا (وربما أطول قليلًا بسبب كلفة إنشاء الخيوط).
 
-![multithreaded process on one core](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-3-single-core-thread.webp){#singleCPU} Figure 4. Running four threads on a single-core CPU
+![عملية متعددة الخيوط على نواة واحدة](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-3-single-core-thread.webp){#singleCPU} الشكل 4. تشغيل أربعة خيوط على معالج أحادي النواة
 
 والآن لنفترض أننا نشغّل عمليتنا متعددة الخيوط على نظام ثنائي الأنوية. ويعرض [الشكل 5](#doubleCPU) النتيجة. ومرة أخرى، افترض *t* = 4 خيوط، وأن ترتيب تنفيذ الخيوط هو الخيط 1، الخيط 3، الخيط 2، الخيط 4. ونواتانا تمثلهما مربعات مظللة. ولأن النظام ثنائي الأنوية، ينفّذ الخيطان 1 و3 على التوازي خلال الخطوة الزمنية T1. ثم ينفّذ الخيطان 2 و4 على التوازي خلال الخطوة الزمنية T2. وبذلك، صارت العملية متعددة الخيوط التي كانت تستغرق 60 ثانية تعمل في 30 ثانية.
 
-![multithreaded process on two cores](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-4-dual-core-thread.webp){#doubleCPU} Figure 5. Running four threads on a dual-core CPU
+![عملية متعددة الخيوط على نواتين](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-4-dual-core-thread.webp){#doubleCPU} الشكل 5. تشغيل أربعة خيوط على معالج ثنائي النواة
 
 وأخيرًا، لنفترض أن العملية متعددة الخيوط (*t* = 4) تُشغَّل على معالج رباعي الأنوية. ويعرض [الشكل 6](#quadCPU) أحد تسلسلات التنفيذ هذه. وتظلَّل كل نواة من الأنوية الأربع في [الشكل 6](#quadCPU) بلون مختلف. وعلى النظام رباعي الأنوية، ينفّذ كل خيط على التوازي خلال الشريحة الزمنية T1. وبذلك، على معالج رباعي الأنوية، صارت العملية متعددة الخيوط التي كانت تستغرق 60 ثانية تعمل في 15 ثانية.
 
-![multithreaded process on four cores](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-5-quad-core-thread.webp){#quadCPU} Figure 6. Running four threads on a quad-core CPU
+![عملية متعددة الخيوط على أربع نوى](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-5-quad-core-thread.webp){#quadCPU} الشكل 6. تشغيل أربعة خيوط على معالج رباعي النواة
 
 وبصفة عامة، إذا طابق عدد الخيوط عدد الأنوية (*c*) وجدول نظام التشغيل كل خيط للعمل على نواة منفصلة على التوازي، فمن المفترض أن تعمل العملية متعددة الخيوط في نحو 1/*c* من الزمن. وهذا التسريع الخطي مثالي، لكنه لا يُلاحظ كثيرًا في الواقع العملي. فمثلًا، إذا كانت هناك عمليات أخرى كثيرة (أو عمليات متعددة الخيوط) تنتظر استخدام المعالج، فستتنافس كلها على العدد المحدود من الأنوية، ما يؤدي إلى **تنازع الموارد** (resource contention) بين العمليات. وإذا تجاوز عدد الخيوط المحددة عدد أنوية المعالج، وجب على كل خيط انتظار دوره للعمل. وسنستكشف عوامل أخرى كثيرًا ما تمنع التسريع الخطي [لاحقًا في هذا الفصل](https://diveintosystems.org/book/C14-SharedMemory/performance.html#_measuring_the_performance_of_parallel_programs).
 
@@ -1085,7 +1085,7 @@ void *Transfer(void *args){
 
 وفي مسار التنفيذ المميز في [الشكل 1](#deadlockFig)، ينفّذ الخيطان بالتزامن الدالة `Transfer`. فيحوز الخيط 0 قفل `acctA` بينما يحوز الخيط 1 قفل `acctB`. والآن فكّر في ما يحدث. لمواصلة التنفيذ، يحتاج الخيط 0 إلى حيازة قفل `acctB` الذي يحوزه الخيط 1. وبالمثل، يحتاج الخيط 1 إلى حيازة قفل `acctA` لمواصلة التنفيذ، وهو محجوز للخيط 0. ولأن كلا الخيطين محجوبان على الآخر، فهما في تجمّد.
 
-![Two threads deadlocked with each other](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-deadlock.webp){#deadlockFig} Figure 1. An example of deadlock
+![خيطان مجمّدان أحدهما بالآخر](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-deadlock.webp){#deadlockFig} الشكل 1. مثال على التجمّد
 
 ومع أن نظام التشغيل يوفّر بعض الحماية من التجمّد، ينبغي للمبرمجين الانتباه إلى كتابة شيفرة تزيد احتمال التجمّد. فمثلًا، كان يمكن تجنّب السيناريو السابق بإعادة ترتيب الأقفال بحيث يحيط كل زوج قفل/فتح قفل بعبارة تحديث الرصيد المرتبطة به فقط:
 
@@ -1360,7 +1360,7 @@ void *threadEx_v2(void *args){
 
 ويعبَّر عن تسريع البرنامج على *c* من الأنوية بالمعادلة:
 
-![speedup](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-speedup.webp)
+![التسريع](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-speedup.webp)
 
 إذا استغرق برنامج تتابعي 60 ثانية للتنفيذ، بينما تستغرق نسخته المتوازية 30 ثانية على نواتين، فالتسريع المقابل هو 2. وبالمثل، إذا استغرق ذلك البرنامج 15 ثانية على أربع أنوية، فالتسريع 4. وفي سيناريو مثالي، يكون تسريع برنامج يعمل على *n* من الأنوية بـ*n* من الخيوط الإجمالية مساويًا *n*.
 
@@ -1372,7 +1372,7 @@ void *threadEx_v2(void *args){
 
 ولقياس التسريع لكل نواة، استخدم الكفاءة:
 
-![efficiency](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-1-efficiency.webp)
+![الكفاءة](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-1-efficiency.webp)
 
 تتفاوت الكفاءة عادةً من 0 إلى 1. وتدل كفاءة 1 على أن الأنوية تُستخدم استخدامًا مثاليًا. وإذا كانت الكفاءة قريبة من 0، فللتوازي فائدة ضئيلة أو معدومة، إذ لا تحسّن الأنوية الإضافية الأداء. وإذا كانت الكفاءة أكبر من 1، فهي تدل على تسريع فوق خطي.
 
@@ -1419,7 +1419,7 @@ Time for Step 1 is 0.107649 s
 
 وعندما ينفّذ البرنامج على *c* من الأنوية، ما زال الجزء التتابعي من الشيفرة يستغرق زمن *S* × T1 للعمل (مع بقاء جميع الشروط الأخرى على حالها)، لكن الجزء القابل للتوازي يمكن تقسيمه على *c* من الأنوية. وبذلك يكون التحسن الأقصى للمعالج المتوازي بـ*c* من الأنوية لتنفيذ المهمة نفسها هو:
 
-![amdahl](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-2-amdahl.webp)
+![معادلة قانون Amdahl](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-2-amdahl.webp)
 
 وكلما زاد *c*، صار زمن التنفيذ على المعالج المتوازي مسيطرًا عليه بالجزء التتابعي من البرنامج.
 
@@ -1436,7 +1436,7 @@ Time for Step 1 is 0.107649 s
 
 وثمة طريقة أكثر رسمية للنظر إلى ذلك تتطلب إدماج حساب Amdahl لـ T*c* في معادلة التسريع:
 
-![amdahl speed](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-3-amdahl_speed.webp)
+![تسريع قانون Amdahl](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-3-amdahl_speed.webp)
 
 ويُظهر أخذ نهاية هذه المعادلة أنه كلما اقترب عدد الأنوية (*c*) من اللانهاية، اقترب التسريع من 1/*S*. وفي المثال المعروض في [الجدول 2](#TabAmdahl)، يقترب التسريع من 1/0.1، أي 10.
 
@@ -1450,7 +1450,7 @@ Time for Step 1 is 0.107649 s
 
 #### المراجع {#_references}
 
-1. Gene Amdahl. "Validity of the single processor approach to achieving large scale computing capabilities" *Proceedings of the April 18-20, 1967, Spring Joint Computer Conference*. pp. 483—​485. ACM. 1967.
+1. جين أمهدال. «Validity of the single processor approach to achieving large scale computing capabilities»، *Proceedings of the April 18-20, 1967, Spring Joint Computer Conference*. ص. 483—485. ACM. 1967.
 
 #### قانون Gustafson-Barsis {#_gustafson_barsis_law}
 
@@ -1464,7 +1464,7 @@ Time for Step 1 is 0.107649 s
 
 وعندما يعمل البرنامج نفسه على نواة واحدة فقط، ما زال الجزء التتابعي من الشيفرة يستغرق *S* x T*c* (بافتراض بقاء جميع الشروط الأخرى على حالها). لكن الجزء القابل للتوازي (الذي كان مقسومًا على *c* من الأنوية) يجب الآن أن تنفّذه نواة واحدة فقط ليعمل تتابعيًا، فيستغرق زمن *P* × T*c* × *c*. وبعبارة أخرى، سيستغرق المكوّن المتوازي *c* ضعف المدة على نظام أحادي النواة. ويترتب على ذلك أن التسريع المعياري سيكون:
 
-![sspeedup](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-sspeedup.webp)
+![التسريع المعياري](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-sspeedup.webp)
 
 وهذا يدل على أن التسريع المعياري يزداد خطيًا مع عدد وحدات الحساب.
 
@@ -1502,8 +1502,8 @@ Time for Step 1 is 0.107649 s
 
 #### المراجع {#_references}
 
-1. John Gustafson. "Reevaluating Amdahl’s law". *Communications of the ACM* 31(5), pp. 532—​533. ACM. 1988.
-2. Caroline Connor. "Movers and Shakers in HPC: John Gustafson" *HPC Wire*. [http://www.hpcwire.com/hpcwire/2010-10-20/movers_and_shakers_in_hpc_john_gustafson.html](http://www.hpcwire.com/hpcwire/2010-10-20/movers_and_shakers_in_hpc_john_gustafson.html)
+1. جون غوستافسون. «Reevaluating Amdahl’s law». *Communications of the ACM* 31(5)، ص. 532—533. ACM. 1988.
+2. كارولين كونور. «Movers and Shakers in HPC: John Gustafson». *HPC Wire*. [http://www.hpcwire.com/hpcwire/2010-10-20/movers_and_shakers_in_hpc_john_gustafson.html](http://www.hpcwire.com/hpcwire/2010-10-20/movers_and_shakers_in_hpc_john_gustafson.html)
 
 قد يكون لذاكرات التخزين المؤقت في الأنظمة متعددة الأنوية آثار عميقة في أداء برنامج متعدد الخيوط. لكن أولًا، لنراجع سريعًا بعض [المفاهيم الأساسية المرتبطة بتصميم الذاكرة المؤقتة](https://diveintosystems.org/book/C11-MemHierarchy/caching.html#_cpu_caches):
 
@@ -1518,7 +1518,7 @@ Time for Step 1 is 0.107649 s
 
 [تذكّر](https://diveintosystems.org/book/C11-MemHierarchy/coherency.html#_looking_ahead_caching_on_multicore_processors) أنه في معماريات الذاكرة المشتركة يمكن أن تملك كل نواة ذاكرتها المؤقتة الخاصة، ويمكن أن تتشارك أنوية متعددة ذاكرة مؤقتة مشتركة. ويعرض [الشكل 1](#FigMulticoreCache) مثالًا على وحدة معالجة مركزية ثنائية الأنوية. ومع أن كل نواة تملك ذاكرتها المؤقتة L1 المحلية، فإن الأنوية تتشارك ذاكرة L2 مؤقتة مشتركة.
 
-![dual core processor with separate L1 caches and shared L2 cache](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-multicore-cache.webp){#FigMulticoreCache} Figure 1. An example dual-core CPU with separate L1 caches and a shared L2 cache
+![معالج ثنائي النواة بذاكرتين مؤقتيتين L1 منفصلتين وذاكرة مؤقتة L2 مشتركة](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-0-multicore-cache.webp){#FigMulticoreCache} الشكل 1. مثال على معالج ثنائي الأنوية بذاكرتين مؤقتيتين L1 منفصلتين وذاكرة مؤقتة L2 مشتركة
 
 قد تنفّذ خيوط متعددة في ملف تنفيذي واحد دوال منفصلة. ومن دون استراتيجية [**تماسك الذاكرة المؤقتة**](https://diveintosystems.org/book/C11-MemHierarchy/coherency.html#_cache_coherency) تضمن أن كل ذاكرة مؤقتة تحافظ على رؤية متسقة للذاكرة المشتركة، يمكن تحديث المتغيرات المشتركة تحديثًا غير متسق. وكمثال، فكّر في المعالج ثنائي الأنوية في [الشكل 1](#FigMulticoreCache)، حيث تكون كل نواة مشغولة بتنفيذ خيوط منفصلة بالتزامن. وللخيط المسند إلى النواة 0 متغير محلي `x`، وللخيط المنفّذ على النواة 1 متغير محلي `y`، ولكلا الخيطين وصول مشترك إلى متغير عام `g`. ويعرض [الجدول 1](#TabCache) مسارًا ممكنًا للتنفيذ.
 
@@ -1530,7 +1530,7 @@ Time for Step 1 is 0.107649 s
 
 لنفترض أن القيمة الأولية لـ `g` هي 10، والقيمتين الأوليتين لـ `x` و`y` كلتاهما 0. ما القيمة النهائية لـ `y` في نهاية هذا التسلسل من العمليات؟ من دون تماسك الذاكرة المؤقتة، يصعب جدًا الإجابة عن هذا السؤال، بما أن هناك ثلاث قيم مخزَّنة لـ `g` على الأقل: واحدة في ذاكرة L1 المؤقتة للنواة 0، وواحدة في ذاكرة L1 المؤقتة للنواة 1، ونسخة منفصلة من `g` مخزَّنة في ذاكرة L2 المشتركة.
 
-![A problematic update to the caches](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-1-mc-cache-example.webp){#FigMCCacheExample} Figure 2. A problematic update to caches that do not employ cache coherency
+![تحديث مشكلل للذاكرات المؤقتة](https://diveintosystems.org/images/dive-into-systems/c14-sharedmemory-1-mc-cache-example.webp){#FigMCCacheExample} الشكل 2. تحديث مشكلل للذاكرات المؤقتة التي لا تستخدم تماسك الذاكرة المؤقتة
 
 ويعرض [الشكل 2](#FigMCCacheExample) نتيجة خاطئة ممكنة بعد اكتمال تسلسل العمليات في [الجدول 1](#TabCache). لنفترض أن ذاكرات L1 المؤقتة تنفّذ سياسة الكتابة المرتجعة. فعندما يكتب الخيط المنفّذ على النواة 0 القيمة 5 في `g`، لا يحدّث إلا قيمة `g` في ذاكرة L1 المؤقتة للنواة 0. وتبقى قيمة `g` في ذاكرة L1 المؤقتة للنواة 1 مساوية 10، وكذلك النسخة في ذاكرة L2 المشتركة. وحتى لو نُفّذت سياسة الكتابة المباشرة، فلا ضمان أن تُحدَّث نسخة `g` المخزَّنة في ذاكرة L1 المؤقتة للنواة 1! وفي هذه الحالة، ستكون القيمة النهائية لـ `y` هي `60`.
 
@@ -1741,9 +1741,9 @@ int main( int argc, char **argv ) {
 }
 ```
 
-The `countElemsStr` function uses the `strtok` function (as examined in our [discussion on strings](https://diveintosystems.org/book/C2-C_depth/strings.html#_strtok_strtok_r)) to parse each digit (stored in `token`) in the string, before converting it to an integer and making the associated updates in the `counts` array.
+الدالة `countElemsStr` تستخدم الدالة `strtok` (كما نظرنا في [نقاشنا عن السلاسل](https://diveintosystems.org/book/C2-C_depth/strings.html#_strtok_strtok_r)) لتحليل كل رقم (المخزَّن في `token`) في السلسلة، قبل تحويله إلى عدد صحيح وإجراء التحديثات المرتبطة به في مصفوفة `counts`.
 
-Compiling and running this program on 100,000 elements yields the following output:
+يُنتج تصريف وتشغيل هذا البرنامج على 100,000 عنصر المخرجات التالية:
 
 ```bash
 $ gcc -o countElemsStr countElemsStr.c
@@ -1753,7 +1753,7 @@ contents of counts array:
 9963 9975 9953 10121 10058 10017 10053 9905 9915 10040
 ```
 
-Now, let’s take a look at a multithreaded version of `countElemsStr` (full source of the program viewable [here](https://diveintosystems.org/book/C14-SharedMemory/_attachments/countElemsStr_p.c)):
+والآن، لننظر إلى نسخة متعددة الخيوط من `countElemsStr` (المصدر الكامل للبرنامج متاح [هنا](https://diveintosystems.org/book/C14-SharedMemory/_attachments/countElemsStr_p.c)):
 
 ```c
 /* parallel version of countElemsStr (First cut):
@@ -1791,9 +1791,9 @@ void *countElemsStr(void *args) {
 }
 ```
 
-In this version of the program, each thread processes a separate section of the string referenced by `input_str`. The `local_counts` array ensures that the bulk of the write operations occur to local storage. A mutex is employed to ensure that no two threads write to the shared variable `counts`.
+في هذه النسخة من البرنامج، تعالج كل خيط قسمًا منفصلًا من السلسلة المرجَّة بـ`input_str`. تضمن مصفوفة `local_counts` أن تقع معظم عمليات الكتابة على التخزين المحلي. ويُستخدم قفل التبادل المتبادل لضمان عدم كتابة خيطين اثنين إلى المتغير المشترك `counts`.
 
-However, compiling and running this program yields the following results:
+ومع ذلك، يُنتج تصريف وتشغيل هذا البرنامج النتائج التالية:
 
 ```bash
 $ gcc -o countElemsStr_p countElemsStr_p.c -pthread
@@ -1811,9 +1811,9 @@ contents of counts array:
 5038 4988 4985 5042 5056 5013 5025 5035 4968 5065
 ```
 
-Even though mutex locks are used around accesses to the `counts` array, the results from separate runs are radically different. This issue arises because the `countsElemsStr` function is not thread safe, because the string library function `strtok` is *not thread safe*! Visiting the [OpenGroup](http://pubs.opengroup.org/onlinepubs/009695399/functions/xsh_chap02_09.html) website confirms that `strtok` is on the list of thread-unsafe functions.
+على الرغم من استخدام أقفال قفل التبادل المتبادل حول الوصولات إلى مصفوفة `counts`، فإن نتائج التشغيلات المنفصلة تختلف جذريًا. ينشأ هذا الأمر لأن الدالة `countsElemsStr` ليست آمنة للخيوط، لأن دالة مكتبة السلاسل `strtok` *ليست آمنة للخيوط*! يؤكد زيارة موقع [OpenGroup](http://pubs.opengroup.org/onlinepubs/009695399/functions/xsh_chap02_09.html) أن `strtok` مدرجة في قائمة الدوال غير الآمنة للخيوط.
 
-To fix this issue, it suffices to replace `strtok` with its thread-safe alternative, `strtok_r`. In the latter function, a pointer is used as the last parameter to help the thread keep track of where in the string it is parsing. Here is the fixed function with `strtok_r` (full source code here ([countsElemsStr_p_v2.c](https://diveintosystems.org/book/C14-SharedMemory/_attachments/countElemsStr_p_v2.c)):
+ولإصلاح هذا الأمر، يكفي استبدال `strtok` بالبديل الآمن للخيوط `strtok_r`. وفي الدالة الأخيرة، يُستخدم مؤشر معامل أخير لمساعدة الخيط على تتبّع موقعه في السلسلة أثناء تحليلها. وإليك الدالة المصحَّحة بـ`strtok_r` (المصدر الكامل هنا ([countsElemsStr_p_v2.c](https://diveintosystems.org/book/C14-SharedMemory/_attachments/countElemsStr_p_v2.c)):
 
 ```c
 /* parallel version of countElemsStr (First cut):
@@ -1850,7 +1850,7 @@ void* countElemsStr(void* args) {
 }
 ```
 
-The only change in this version of the code is the declaration of the character pointer `saveptr` and replacing all instances of `strtok` with `strtok_r`. Rerunning the code with these changes yields the following output:
+التغيير الوحيد في هذه النسخة من الشيفرة هو إعلان مؤشر الأحرف `saveptr` واستبدال جميع حالات `strtok` بـ`strtok_r`. يُنتج إعادة تشغيل الشيفرة بهذه التغييرات المخرجات التالية:
 
 ```bash
 $ gcc -o countElemsStr_p_v2 countElemsStr_p_v2.c -pthread
@@ -1868,66 +1868,66 @@ contents of counts array:
 9963 9975 9953 10121 10058 10017 10053 9905 9915 10040
 ```
 
-Now the program produces the same result for every run. The use of `saveptr` in conjunction with `strtok_r` ensures that each thread can independently track their location when parsing the string.
+الآن يُنتج البرنامج النتيجة نفسها في كل تشغيل. تضمن استخدام `saveptr` بالاشتراك مع `strtok_r` أن يكون كل خيط قادرًا على تتبّع موقعه باستقلالية أثناء تحليل السلسلة.
 
-The takeaway from this section is that one should always check [the list of thread-unsafe functions in C](http://pubs.opengroup.org/onlinepubs/009695399/functions/xsh_chap02_09.html) when writing multithreaded applications. Doing so can save the programmer a lot of heartache and frustration when writing and debugging threaded applications.
+الفكرة الأساسية من هذا القسم هي أنه ينبغي دائمًا الاطلاع على [قائمة الدوال غير الآمنة للخيوط في C](http://pubs.opengroup.org/onlinepubs/009695399/functions/xsh_chap02_09.html) عند كتابة تطبيقات متعددة الخيوط. فهذا يمكن أن يوفّر على المبرمج كثيرًا من الألم والإحباط عند كتابة تطبيقات الخيوط وتصحيح أخطائها.
 
-Thus far, we have presented shared memory programming using POSIX threads. Although Pthreads are great for simple applications, they become increasingly difficult to use as programs themselves become more complex. POSIX threads are an example of **explicit parallel programming** of threads, requiring a programmer to specify exactly what each thread is required to do and when each thread should start and stop.
+حتى الآن، قدّمنا البرمجة بالذاكرة المشتركة باستخدام خيوط POSIX. ومع أن Pthreads ممتازة للتطبيقات البسيطة، إلا أنها تصبح صعبة الاستخدام بشكل متزايد كلما أصبحت البرامج نفسها أكثر تعقيدًا. وتمثل خيوط POSIX مثالًا على **البرمجة التوازية الصريحة** للخيوط، إذ تلزم المبرمج بتحديد بدقة ما يجب أن ينفّذه كل خيط ومتى يبدأ كل خيط ومتى يتوقف.
 
-With Pthreads, it can also be challenging to *incrementally* add parallelism to an existing sequential program. That is, one must often rewrite the program entirely to use threads, which is often not desirable when attempting to parallelize a large, existing codebase.
+مع Pthreads، قد يكون من الصعب أيضًا إضافة التوازي *تدريجيًا* إلى برنامج تتابعي موجود. أي أنه يلزم إعادة كتابة البرنامج بالكامل غالبًا لاستخدام الخيوط، وهو ما ليس مرغوبًا غالبًا عند محاولة موازاة قاعدة شيفرة كبيرة موجودة.
 
-The Open Multiprocessing (OpenMP) library implements an *implicit* alternative to Pthreads. OpenMP is built into GCC and other popular compilers such as LLVM and Clang, and can be used with the C, C++, and Fortran programming languages. A key advantage of OpenMP is that it enables programmers to parallelize components of existing, sequential C code by adding **pragmas** (special compiler directives) to parts of the code. Pragmas specific to OpenMP begin with `#pragma omp`.
+تنفّذ مكتبة Open Multiprocessing (OpenMP) بديلًا *ضمنيًا* لـPthreads. وOpenMP مدمجة في GCC وغيرها من المترجمات الشائعة مثل LLVM وClang، ويمكن استخدامها مع لغات البرمجة C وC++ وFortran. ومن ميزة أساسية لـOpenMP أنها تمكن المبرمجين من موازاة مكوّنات شيفرة C موجودة وتتابعة بإضافة **توجيهات** (pragmas) (وهي توجيهات مترجم خاصة) إلى أجزاء من الشيفرة. وتبدأ التوجيهات الخاصة بـOpenMP بـ`#pragma omp`.
 
-Detailed coverage of OpenMP is outside the scope of this book, but we cover some common pragmas, and show how several can be used in the context of some sample applications.
+التغطية التفصيلية لـOpenMP خارج نطاق هذا الكتاب، لكننا نغطي بعض التوجيهات الشائعة، ونُظهر كيف يمكن استخدام عدة منها في سياق بعض التطبيقات النموذجية.
 
-### 14.7.1. Common Pragmas {#_common_pragmas}
+### 14.7.1. التوجيهات الشائعة (pragmas) {#_common_pragmas}
 
-Here are some of the most commonly used pragmas in OpenMP programs:
+وإليكم بعض التوجيهات الأكثر استخدامًا في برامج OpenMP:
 
 `#pragma omp parallel`
 
-This pragma creates a team of threads and has each thread run the code in its scope (usually a function call) on each thread. An invocation of this pragma is usually equivalent to an invocation of the `pthread_create` and `pthread_join` function pairing [discussed in our original discussion on Pthreads](https://diveintosystems.org/book/C14-SharedMemory/posix.html#_creating_and_joining_threads). The pragma may have a number of clauses, including the following:
+ينشئ هذا التوجيه فريقًا من الخيوط ويُكلِّف كل خيط بتشغيل شيفرة نطاقه (وهي عادة نداء دالة) على كل خيط. ونداء هذا التوجيه يعادل عادةً نداء زوج الدالتين `pthread_create` و`pthread_join` [الذي ناقشناه في مناقشتنا الأصلية لـPthreads](https://diveintosystems.org/book/C14-SharedMemory/posix.html#_creating_and_joining_threads). وقد يحتوي التوجيه على عدد من العبارات (clauses)، بما في ذلك ما يلي:
 
-- `num_threads` specifies the number of threads to create.
-- `private` is a list of variables that should be private (or local) to each thread. Variables that should be private to a thread can also be declared within the scope of the pragma (see below for an example). Each thread gets its own copy of each variable.
-- `shared` is a listing of variables that should be shared amongst the threads. There is one copy of the variable that is shared amongst all threads.
-- `default` indicates whether the determination of which variables should be shared is left up to the compiler. In most cases, we want to use `default(none)` and specify explicitly which variables should be shared, and which should be private.
+- `num_threads` يحدد عدد الخيوط المراد إنشاؤها.
+- `private` قائمة من المتغيرات التي ينبغي أن تكون خاصة (أو محلية) بكل خيط. ويمكن أيضًا إعلان المتغيرات التي ينبغي أن تكون خاصة بخيط داخل نطاق التوجيه (انظر أدناه لمثال). ويحصل كل خيط على نسخته الخاصة من كل متغير.
+- `shared` قائمة بالمتغيرات التي ينبغي أن تتشاركها الخيوط. فتوجد نسخة واحدة من المتغير تتشاركها جميع الخيوط.
+- `default` يشير إلى ما إذا كان تحديد المتغيرات التي ينبغي أن تكون مشتركة متروكًا للمترجم. وفي معظم الحالات، نريد استخدام `default(none)` وتحديد صراحةً أي المتغيرات ينبغي أن تكون مشتركة وأيّها ينبغي أن يكون خاصًا.
 
 `#pragma omp for`
 
-Specifies that each thread execute a subset of iterations of a `for` loop. Although the scheduling of the loops is up to the system, the default is usually the "chunking" method first discussed in the [scalar multiplication example](https://diveintosystems.org/book/C14-SharedMemory/posix.html#_revisiting_scalar_multiplication). This is a *static* form of scheduling: each thread gets an assigned chunk, and then processes the iterations in its chunk. However, OpenMP also makes *dynamic* scheduling easy. In dynamic scheduling, each thread gets a number of iterations, and requests a new set upon completing processing their iteration. The scheduling policy can be set using the following clause:
+يحدد أن ينفّذ كل خيط مجموعة جزئية من تكرارات حلقة `for`. ومع أن جدولة الحلقات متروكة للنظام، فالافتراض عادةً هو طريقة «التقطيع» (chunking) التي ناقشناها أولًا في [مثال الضرب القياسي](https://diveintosystems.org/book/C14-SharedMemory/posix.html#_revisiting_scalar_multiplication). وهذا شكل *ثابت* من الجدولة: يحصل كل خيط على كتلة مُسندة إليه، ثم يعالج التكرارات في كتلته. غير أن OpenMP يجعل الجدولة *الديناميكية* أيضًا سهلة. وفي الجدولة الديناميكية، يحصل كل خيط على عدد من التكرارات، ويطلب مجموعة جديدة عند إتمام معالجة تكراراته. ويمكن ضبط سياسة الجدولة باستخدام العبارة التالية:
 
-- `schedule(dynamic)`: specifies that a *dynamic* form of scheduling should be used. While this is advantageous in some cases, the static (default) form of scheduling is usually faster.
+- `schedule(dynamic)`: يحدد أنه ينبغي استخدام شكل *ديناميكي* من الجدولة. ومع أن هذا مفيد في بعض الحالات، فإن الشكل الثابت (الافتراضي) من الجدولة عادةً أسرع.
 
 `#pragma omp parallel for`
 
-This pragma is a combination of the `omp parallel` and the `omp for` pragmas. Unlike the `omp for` pragma, the `omp parallel for` pragma also generates a team of threads before assigning each thread a set of iterations of the loop.
+هذا التوجيه مزيج من التوجيهين `omp parallel` و`omp for`. وعلى عكس التوجيه `omp for`، يُنشئ التوجيه `omp parallel for` فريقًا من الخيوط أيضًا قبل إسناد مجموعة من تكرارات الحلقة إلى كل خيط.
 
 `#pragma omp critical`
 
-This pragma is used to specify that the code under its scope should be treated as a *critical section* — that is, only one thread should execute the section of code at a time to ensure correct behavior.
+يُستخدم هذا التوجيه لتحديد أن ينبغي التعامل مع شيفرة نطاقه كـ*قسم حرج* — أي أنه ينبغي لخيط واحد فقط أن ينفّذ قسم الشيفرة في وقت واحد لضمان سلوك صحيح.
 
-There are also several *functions* that a thread can access that are often useful for execution. For example:
+وهناك أيضًا عدة *دوال* يستطيع الخيط الوصول إليها تفيد كثيرًا أثناء التنفيذ. فمثلًا:
 
 `omp_get_num_threads`
 
-returns the number of threads in the current team that is being executed.
+تُعيد عدد الخيوط في الفريق الحالي قيد التنفيذ.
 
 `omp_set_num_threads`
 
-sets the number of threads that a team should have.
+تضبط عدد الخيوط الذي ينبغي أن يمتلكه فريق.
 
 `omp_get_thread_num`
 
-returns the identifier of the calling thread.
+تُعيد معرّف الخيط النداء.
 
-**Warning — The `omp parallel for` directive works only with for loops!**
+**تحذير — التوجيه `omp parallel for` يعمل مع حلقات for فقط!**
 
-> Keep in mind that the `omp parallel for` pragma works *only* with `for` loops. Other types of loops, such as `while` loops and `do`-`while` loops, are not supported.
+> تذكّر أن التوجيه `omp parallel for` يعمل *فقط* مع حلقات `for`. ولا تُدعم أنواع حلقات أخرى، مثل حلقات `while` وحلقات `do`-`while`.
 
-### 14.7.2. Hello Threading: OpenMP flavored {#_hello_threading_openmp_flavored}
+### 14.7.2. مرحّبا بالتعدد الخيطي: بأسلوب OpenMP {#_hello_threading_openmp_flavored}
 
-Let’s revisit our "Hello World" ([hellothreads.c](https://diveintosystems.org/book/C14-SharedMemory/_attachments/hellothreads.c)) program, now using OpenMP instead of Pthreads:
+لنعد إلى برنامج «Hello World» ([hellothreads.c](https://diveintosystems.org/book/C14-SharedMemory/_attachments/hellothreads.c))، هذه المرة باستخدام OpenMP بدلًا من Pthreads:
 
 ```c
 #include <stdio.h>
@@ -1957,13 +1957,13 @@ int main( int argc, char** argv ) {
 }
 ```
 
-Note that the OpenMP program is *much* shorter than the Pthreads version. To access the OpenMP library functions, we include the header file `omp.h`. The `omp parallel num_threads(nthreads)` pragma in `main` creates a set of threads, where each thread calls the `HelloWorld` function. The clause `num_threads(nthreads)` specifies that a total of `nthreads` should be generated. The pragma also joins each created thread back to a single-threaded process. In other words, all the low-level work of creating and joining threads is *abstracted* away from the programmer and is accomplished with the inclusion of just one pragma. For this reason, OpenMP is considered an **implicit threading** library.
+لاحظ أن برنامج OpenMP *أقصر بكثير* من نسخة Pthreads. وللوصول إلى دوال مكتبة OpenMP، نُضمّن ملف الترويسة `omp.h`. ينشئ التوجيه `omp parallel num_threads(nthreads)` في `main` مجموعة من الخيوط، ينادي كل خيط منها الدالة `HelloWorld`. وتحدد العبارة `num_threads(nthreads)` إجمالي عدد الخيوط المراد توليدها. كما يضمّ التوجيه كل خيط مُنشأ عائدًا إلى عملية أحادية الخيط. وبعبارة أخرى، تُجسَّد جميع أعمال المستوى المنخفض لإنشاء الخيوط وضمّها بعيدًا عن المبرمج وتُنجَّز بتضمين توجيه واحد فقط. ولهذا السبب تُعدّ OpenMP مكتبة **تعدد خيوط ضمني**.
 
-OpenMP also abstracts away the need to explicitly manage thread IDs. In the context of `HelloWorld`, the `omp_get_thread_num` function extracts the unique ID associated with the thread that is running it.
+كما تجسّد OpenMP الحاجة إلى إدارة معرّفات الخيوط صراحةً. وفي سياق `HelloWorld`، تستخرج الدالة `omp_get_thread_num` المعرّف الفريد المرتبط بالخيط الذي ينفّذها.
 
-#### Compiling the code {#_compiling_the_code}
+#### تصريف الشيفرة {#_compiling_the_code}
 
-Let’s compile and run this program by passing the `-fopenmp` flag to the compiler, which signals that we’re compiling with OpenMP:
+لنصريف وتشغيل هذا البرنامج، نمرّر الخيار `-fopenmp` إلى المصرّف، ما يشير إلى أننا نصرّف باستخدام OpenMP:
 
 ```bash
 $ gcc -o hello_mp hello_mp.c -fopenmp
@@ -1975,7 +1975,7 @@ Hello world! I am thread 0
 Hello world! I am thread 1
 ```
 
-Since the execution of threads can change with subsequent runs, rerunning this program results in a different sequence of messages:
+وبما أن تنفيذ الخيوط قد يتغير في التشغيلات اللاحقة، تُنتج إعادة تشغيل هذا البرنامج تسلسلًا مختلفًا من الرسائل:
 
 ```bash
 $ ./hello_mp 4
@@ -1985,11 +1985,11 @@ Hello world! I am thread 1
 Hello world! I am thread 0
 ```
 
-This behavior is consistent with our [example with Pthreads](https://diveintosystems.org/book/C14-SharedMemory/posix.html#_hello_threading_writing_your_first_multithreaded_program).
+هذا السلوك متسق مع [مثالنا مع Pthreads](https://diveintosystems.org/book/C14-SharedMemory/posix.html#_hello_threading_writing_your_first_multithreaded_program).
 
-### 14.7.3. A More Complex Example: CountSort in OpenMP {#_a_more_complex_example_countsort_in_openmp}
+### 14.7.3. مثال أعقد: CountSort في OpenMP {#_a_more_complex_example_countsort_in_openmp}
 
-A powerful advantage of OpenMP is that it enables programmers to incrementally parallelize their code. To see this in action, let’s parallelize the more complex CountSort algorithm discussed earlier in this chapter (the serial code is located here: [countSort.c](https://diveintosystems.org/book/C14-SharedMemory/_attachments/countSort.c)). Recall that this algorithm sorts arrays containing a small range of values. The main function of the serial program looks like the following:
+من مزايا OpenMP القوية أنها تمكن المبرمجين من موازاة شيفرتهم تدريجيًا. ولرؤية ذلك عمليًا، لنوازِ خوارزمية CountSort الأعقد التي ناقشناها سابقًا في هذا الفصل (الشيفرة التتابعية موجودة هنا: [countSort.c](https://diveintosystems.org/book/C14-SharedMemory/_attachments/countSort.c)). وتذكّر أن هذه الخوارزمية ترتيب مصفوفات تحتوي مجالًا صغيرًا من القيم. ويبدو الدالة الرئيسية للبرنامج التتابعي كالتالي:
 
 ```c
 int main( int argc, char **argv ) {
@@ -2012,13 +2012,13 @@ int main( int argc, char **argv ) {
 }
 ```
 
-The `main` function, after doing some command line parsing and generating a random array, calls the `countsElems` function followed by the `writeArray` function.
+تنادي الدالة `main`، بعد إجراء بعض تحليل سطر الأوامر وتوليد مصفوفة عشوائية، الدالة `countsElems` يليها نداء الدالة `writeArray`.
 
-#### Parallelizing CountElems Using OpenMP {#_parallelizing_countelems_using_openmp}
+#### موازاة CountElems باستخدام OpenMP {#_parallelizing_countelems_using_openmp}
 
-There are several ways to parallelize the preceding program. One way (shown in the example that follows) uses the `omp parallel` pragma in the context of the `countElems` and `writeArray` functions. As a result, no changes need to be made to the `main` function. A full version of the program is available at: [countSort_mp.c](https://diveintosystems.org/book/C14-SharedMemory/_attachments/countSort_mp.c).
+هناك عدة طرق لموازاة البرنامج أعلاه. إحدى الطريقتين (المعروضة في المثال التالي) تستخدم التوجيه `omp parallel` في سياق الدالتين `countElems` و`writeArray`. ونتيجة لذلك، لا حاجة إلى إجراء أي تغييرات على الدالة `main`. ونسخة البرنامج الكاملة متاحة هنا: [countSort_mp.c](https://diveintosystems.org/book/C14-SharedMemory/_attachments/countSort_mp.c).
 
-First, let’s examine how to parallelize the `countElems` function using OpenMP:
+أولًا، لنفحص كيفية موازاة الدالة `countElems` باستخدام OpenMP:
 
 ```c
 void countElems(int *counts, int *array, long length) {
@@ -2042,13 +2042,13 @@ void countElems(int *counts, int *array, long length) {
 }
 ```
 
-In this version of the code, three pragmas are employed:
+في هذه النسخة من الشيفرة، تُستخدم ثلاثة توجيهات:
 
-- The `#pragma omp parallel` pragma indicates that a team of threads should be created. The `omp_set_num_threads(nthreads)` line in `main` sets the default size of the thread team to be `nthreads`. If the `omp_set_num_threads` function is not used, then the number of threads assigned will equal the number of cores in the system. As a reminder, the `omp parallel` pragma implicitly creates threads at the beginning of the block and joins them at the end of the block. Braces (`{}`) are used to specify scope. The `shared` clause declares that the variables `counts`, `array`, and `length` are shared (global) among all the threads. Thus, the variables `val`, `i`, and `local[MAX]` are declared *locally* in each thread.
-- The next pragma is `#pragma omp for`, which parallelizes the `for` loop, splitting the number of iterations among the number of threads. OpenMP calculates how best to split up the iterations of the loop. As previously mentioned, the default strategy is usually a chunking method, wherein each thread gets roughly the same number of iterations to compute. Thus, each thread reads a component of the shared array `array`, and accumulates its counts in its local array `local`.
-- The `#pragma omp critical` pragma indicates that the code in the scope of the critical section should be executed by exactly one thread at a time. This is equivalent to the mutex that was employed in the Pthreads version of this program. Here, each thread increments the shared `counts` array one at a time.
+- يشير التوجيه `#pragma omp parallel` إلى أنه ينبغي إنشاء فريق من الخيوط. يضبط السطر `omp_set_num_threads(nthreads)` في `main` الحجم الافتراضي لفريق الخيوط ليكون `nthreads`. وإذا لم تُستخدم الدالة `omp_set_num_threads`، فسيساوي عدد الخيوط المُسندة عدد الأنوية في النظام. وللتذكير، يُنشئ التوجيه `omp parallel` الخيوط ضمنيًا في بداية الكتلة ويضمّها في نهاية الكتلة. وتُستخدم الأقواس (`{}`) لتحديد النطاق. وتنشيء العبارة `shared` المتغيرات `counts` و`array` و`length` مشتركة (عالمية) بين جميع الخيوط. وبذلك، تُعلن المتغيرات `val` و`i` و`local[MAX]` *محلية* في كل خيط.
+- التوجيه التالي هو `#pragma omp for`، الذي يوازي حلقة `for` بتقسيم عدد التكرارات على عدد الخيوط. تحسب OpenMP كيف تُقسَّم تكرارات الحلقة بأفضل طريقة. وكما ذُكر سابقًا، تكون الاستراتيجية الافتراضية عادةً طريقة التقطيع، حيث يحصل كل خيط على عدد متساوٍ تقريبًا من التكرارات لحسابها. وبذلك، يقرأ كل خيط مكوّنًا من المصفوفة المشتركة `array` ويُراكم عدّاداته في مصفوفته المحلية `local`.
+- يشير التوجيه `#pragma omp critical` إلى أنه ينبغي لخيط واحد بالضبط أن ينفّذ شيفرة نطاق القسم الحرج في وقت واحد. وهذا يعادل قفل التبادل المتبادل الذي استُخدم في نسخة Pthreads من هذا البرنامج. وهنا، يزيد كل خيط من مصفوفة `counts` المشتركة واحدًا تلو الآخر.
 
-Let’s get a sense of the performance of this function by running it with 100 million elements:
+لنحصل على فكرة عن أداء هذه الدالة بتشغيلها على 100 مليون عنصر:
 
 ```bash
 $ ./countElems_mp 100000000 1
@@ -2061,11 +2061,11 @@ $ ./countElems_mp 100000000 4
 Run Time for Phase 1 is 0.068749
 ```
 
-This is excellent performance, with our function getting a speedup of 2 on two threads, and a speedup of 3.63 on four threads. We get even better performance than the Pthreads implementation!
+هذا أداء ممتاز، إذ حققت دالتنا تسريعًا قدره 2 بخيطين، وتسريعًا قدره 3.63 بأربعة خيوط. بل نحصل على أداء أفضل حتى من تنفيذ Pthreads!
 
-#### The `writeArray` Function in OpenMP {#_the_writearray_function_in_openmp}
+#### الدالة `writeArray` في OpenMP {#_the_writearray_function_in_openmp}
 
-Parallelizing the `writeArray` function is *much* harder. The following code shows one possible solution:
+موازاة الدالة `writeArray` *أصعب بكثير*. وتُظهر الشيفرة التالية حلًا واحدًا ممكنًا:
 
 ```c
 void writeArray(int *counts, int *array) {
@@ -2089,62 +2089,62 @@ void writeArray(int *counts, int *array) {
 }
 ```
 
-Prior to parallelizing, we made a change to this function, because [the old version](https://diveintosystems.org/book/C14-SharedMemory/_attachments/countSort.c) of `writeArray` caused `j` to have a dependency on the previous iterations of the loop. In this version, each thread calculates its unique `start` value based on the sum of all the previous elements in `counts`.
+قبل الموازاة، أجرينا تغييرًا على هذه الدالة، لأن [النسخة القديمة](https://diveintosystems.org/book/C14-SharedMemory/_attachments/countSort.c) من `writeArray` جعلت `j` تعتمد على التكرارات السابقة للحلقة. وفي هذه النسخة، يحسب كل خيط قيمة `start` الفريدة له بناءً على مجموع جميع العناصر السابقة في `counts`.
 
-When this dependency is removed, the parallelization is pretty straightforward. The `#pragma omp parallel for` pragma generates a team of threads and parallelizes the `for` loop by assigning each thread a subset of the iterations of the loop. As a reminder, this pragma is a combination of the `omp parallel` and the `omp for` pragmas (which were used in the parallelization of `countElems`).
+وعند إزالة هذه التبعية، تصبح الموازاة بسيطة إلى حد كبير. يُنشئ التوجيه `#pragma omp parallel for` فريقًا من الخيوط ويوازي حلقة `for` بإسناد مجموعة جزئية من تكرارات الحلقة إلى كل خيط. وللتذكير، هذا التوجيه مزيج من التوجيهين `omp parallel` و`omp for` (الذين استُخدما في موازاة `countElems`).
 
-A chunking approach to scheduling threads (as shown in the earlier `countElems` function) is not appropriate here, because it is possible that each element in `counts` has a radically different frequency. Therefore, the threads will not have equal work, resulting in some threads being assigned more work than others. Therefore, the `schedule(dynamic)` clause is employed, so that each thread completes the iteration it is assigned before requesting a new iteration from the thread manager.
+لا تلائم طريقة التقطيع لجدولة الخيوط (كما في الدالة `countElems` أعلاه) هنا، لأن من المحتمل أن يكون لكل عنصر في `counts` تكرار جذريًا مختلف. وبذلك لن يتساوى حجم عمل الخيوط، ما يؤدي إلى إسناد عمل أكثر إلى بعض الخيوط من غيرها. ولذلك تُستخدم العبارة `schedule(dynamic)`، بحيث يُكمل كل خيط التكرار المُسند إليه قبل أن يطلب تكرارًا جديدًا من مدير الخيوط.
 
-Since each thread is writing to distinct array locations, mutual exclusion is not needed for this function.
+وبما أن كل خيط يكتب إلى مواقع مصفوفة متمايزة، فلا حاجة للاستبعاد المتبادل في هذه الدالة.
 
-Notice how much cleaner the OpenMP code is than the POSIX thread implementation. The code is very readable, and required very little modification. This is one of the powers of **abstraction**, in which the implementation details are hidden from the programmer.
+لاحظ كيف أن شيفرة OpenMP أنظف بكثير من تنفيذ خيوط POSIX. فالشيفرة مقروءة جدًا واحتاجت إلى تعديلات قليلة جدًا. وهذا أحد قوى **التجريد**، حيث تُخفى تفاصيل التنفيذ عن المبرمج.
 
-However, a necessary trade-off for abstraction is control. The programmer assumes that the compiler is "smart" enough to take care of the particulars of parallelization and thus has an easier time parallelizing their application. However, the programmer no longer makes detailed decisions about the particulars of that parallelization. Without a clear idea of how OpenMP pragmas execute under the hood, it can be difficult to debug an OpenMP application or know which pragma is the most appropriate to use at a given time.
+غير أن التنازل اللازم عن التجريد هو التحكم. يفترض المبرمج أن المترجم «ذكي» بما يكفي للعناية بتفاصيل الموازاة، وبذلك يكون أسهل في موازاة تطبيقه. غير أن المبرمج لم يعد يتخذ قرارات مفصلة عن تفاصيل تلك الموازاة. وبدون فكرة واضحة حول كيفية تنفيذ توجيهات OpenMP في الخلفية، قد يكون من الصعب تصحيح أخطاء تطبيق OpenMP أو معرفة التوجيه الأنسب لاستخدامه في وقت معين.
 
-### 14.7.4. Learning More about OpenMP {#_learning_more_about_openmp}
+### 14.7.4. معرفة المزيد عن OpenMP {#_learning_more_about_openmp}
 
-A deeper discussion of OpenMP is beyond the scope of this book, but there are useful free resources1,2 for learning OpenMP.
+مناقشة أعمق لـOpenMP تتجاوز نطاق هذا الكتاب، لكن توجد موارد مجانية مفيدة1,2 لتعلم OpenMP.
 
-### References:
+### المراجع:
 
-1. Blaise Barney. "OpenMP". [https://hpc.llnl.gov/tuts/openMP/](https://hpc.llnl.gov/tuts/openMP/)
-2. Richard Brown and Libby Shoop. "Multicore Programming with OpenMP". *CSinParallel: Parallel Computing in the Computer Science curriculum*. [http://selkie.macalester.edu/csinparallel/modules/MulticoreProgramming/build/html/index.html](http://selkie.macalester.edu/csinparallel/modules/MulticoreProgramming/build/html/index.html)
+1. بلايس بارني. «OpenMP». [https://hpc.llnl.gov/tuts/openMP/](https://hpc.llnl.gov/tuts/openMP/)
+2. ريتشارد براون وليبي شوب. «Multicore Programming with OpenMP». *CSinParallel: Parallel Computing in the Computer Science curriculum*. [http://selkie.macalester.edu/csinparallel/modules/MulticoreProgramming/build/html/index.html](http://selkie.macalester.edu/csinparallel/modules/MulticoreProgramming/build/html/index.html)
 
-This chapter provided an overview of multicore processors and how to program them. Specifically, we cover the POSIX threads (or Pthreads) library and how to use it to create correct multithreaded programs that speed up a single-threaded program’s performance. Libraries like POSIX and OpenMP utilize the **shared memory** model of communication, as threads share data in a common memory space.
+قدّم هذا الفصل نظرة عامة على المعالجات متعددة الأنوية وكيفية البرمجة لها. وتحديدًا، غطينا مكتبة خيوط POSIX (أو Pthreads) وكيفية استخدامها لإنشاء برامج صحيحة متعددة الخيوط تسرّع أداء برنامج أحادي الخيط. وتستخدم مكتبات مثل POSIX وOpenMP نموذج الاتصال بال**ذاكرة المشتركة**، إذ تتشارك الخيوط بيانات في مساحة ذاكرة مشتركة.
 
-### Key Takeaways
+### النقاط الرئيسية
 
-Threads are the fundamental unit of concurrent programs
+الخيوط هي الوحدة الأساسية للبرامج المتزامنة
 
-To parallelize a serial program, programmers utilize lightweight constructs known as **threads**. For a particular multithreaded process, each thread has its own allocation of stack memory, but shares the program data, heap and instructions of the process. Like processes, threads run **nondeterministically** on the CPU (i.e., the order of execution changes between runs, and which thread is assigned to which core is left up to the operating system).
+لموازاة برنامج تتابعي، يستخدم المبرمجون بنى خفيفة تُسمى **الخيوط** (threads). ففي عملية متعددة خيوط بعينها، لكل خيط تخصيصه الخاص لمساحة مكدّس الذاكرة، لكنه يتشارك بيانات البرنامج وكومة تعليمات العملية. ووكما في العمليات، تعمل الخيوط على المعالج **بشكل عشوائي غير حتمي** (أي أن ترتيب التنفيذ يتغير بين التشغيلات، وأن إسناد كل خيط إلى أي نواة متروك لنظام التشغيل).
 
-Synchronization constructs ensure that programs work correctly
+بنى التزامن تضمن عمل البرامج بشكل صحيح
 
-A consequence of shared memory is that threads can accidentally overwrite data residing in shared memory. A **race condition** can occur whenever two operations incorrectly update a shared value. When that shared value is data, a special type of race condition called a **data race** can arise. Synchronization constructs (mutexes, semaphores, etc.) help to guarantee program correctness by ensuring that threads execute one at a time when updating shared variables.
+من نتائج الذاكرة المشتركة أن تستطيع الخيوط الكتابة فوق البيانات الموجودة في الذاكرة المشتركة عن غير قصد. ويمكن أن تحدث **حالة سباق** (race condition) كلما حدّثت عمليتان قيمة مشتركة بشكل غير صحيح. وعندما تكون القيمة المشتركة بيانات، قد تنشأ حالة سباق خاصة تُسمى **سباق بيانات** (data race). وتساعد بنى التزامن (القفل المتبادل والسيمافورات وغيرها) على ضمان صحة البرنامج بضمان تنفيذ الخيوط واحدًا تلو الآخر عند تحديث المتغيرات المشتركة.
 
-Be mindful when using synchronization constructs
+انتبه عند استخدام بنى التزامن
 
-Synchronization inherently introduces points of serial computation in an otherwise parallel program. It is therefore important to be aware of *how* one uses synchronization concepts. The set of operations that must run atomically is referred to as a **critical section**. If a critical section is too big, the threads will execute serially, yielding no improvement in runtime. Use synchronization constructs sloppily, and situations like **deadlock** may inadvertently arise. A good strategy is to have threads employ local variables as much as possible and update shared variables only when necessary.
+يُحدث التزامن بطبعه نقاطًا من الحساب التتابعي في برنامج خلاف ذلك متوازي. ومن المهم لذلك أن يكون المرء مدركًا *لكيفية* استخدام مفاهيم التزامن. ويُشار إلى مجموعة العمليات التي يجب أن تنفَّذ ذريةً بـ**القسم الحرج** (critical section). وإذا كان القسم الحرج كبيرًا جدًا، ستتنفّذ الخيوط تتابعيًا دون أي تحسن في زمن التشغيل. واستخدام بنى التزامن بطريقة رعوية قد يؤدي إلى مواقف مثل **التجمّد** عن غير قصد. واستراتيجية جيدة أن تستخدم الخيوط المتغيرات المحلية قدر الإمكان ولا تحدّث المتغيرات المشتركة إلا عند الضرورة.
 
-Not all components of a program are parallelizable
+ليس كل مكوّنات البرنامج قابلة للموازاة
 
-Some programs necessarily have large serial components that can hinder a multithreaded program’s performance on multiple cores (e.g., **Amdahl’s Law**). Even when a high percentage of a program is parallelizable, speedup is rarely linear. Readers are also encouraged to look at other metrics such as efficiency and scalability when ascertaining the performance of their programs.
+بعض البرامج بالضرورة تحتوي مكوّنات تتابعة كبيرة يمكن أن تعيق أداء برنامج متعدد الخيوط على أنوية متعددة (مثلًا، **قانون Amdahl**). وحتى عندما تكون نسبة كبيرة من البرنامج قابلة للتوازي، نادرًا ما يكون التسريع خطيًا. ويشجَّع القراء أيضًا على النظر إلى مقاييس أخرى مثل الكفاءة وقابلية التوسع عند تقييم أداء برامجهم.
 
-### Further Reading
+### قراءات إضافية
 
-This chapter is meant to give a taste of concurrency topics with threads; it is by no means exhaustive. To learn more about programming with POSIX threads and OpenMP, check out the excellent tutorials on [Pthreads](https://hpc-tutorials.llnl.gov/posix/) and [OpenMP](https://hpc.llnl.gov/tuts/openMP/) by Blaise Barney from Lawrence Livermore National Labs. For automated tools for debugging parallel programs, readers are encouraged to check out the [Helgrind](https://valgrind.org/docs/manual/hg-manual.html) and [DRD](https://valgrind.org/docs/manual/drd-manual.html) Valgrind tools.
+يهدف هذا الفصل إلى منح القارئ نموذجًا أوليًا لمواضيع التزامن بالخيوط؛ وليس هو شاملًا بأي حال. ولمعرفة المزيد عن البرمجة بخيوط POSIX وOpenMP، راجع الدروس الممتازة عن [Pthreads](https://hpc-tutorials.llnl.gov/posix/) و[OpenMP](https://hpc.llnl.gov/tuts/openMP/) من Blaise Barney في مختبرات لورنس ليفرمور الوطنية. أما بالنسبة للأدوات الآلية لتصحيح أخطاء البرامج المتوازية، فيُشجَّع القراء على تجربة أداتي Valgrind وهما [Helgrind](https://valgrind.org/docs/manual/hg-manual.html) و[DRD](https://valgrind.org/docs/manual/drd-manual.html).
 
-In the [final chapter](https://diveintosystems.org/book/C15-Parallel/index.html#_looking_ahead_other_parallel_systems_and_parallel_programming_models) of the book, we give a high-level overview of other common parallel architectures and how to program them. [Read on to learn more](https://diveintosystems.org/book/C15-Parallel/index.html#_looking_ahead_other_parallel_systems_and_parallel_programming_models).
+وفي [الفصل الأخير](https://diveintosystems.org/book/C15-Parallel/index.html#_looking_ahead_other_parallel_systems_and_parallel_programming_models) من الكتاب، نعطي نظرة عامة عالية المستوى على معماريات توازية شائعة أخرى وكيفية البرمجة لها. [تابع القراءة لمعرفة المزيد](https://diveintosystems.org/book/C15-Parallel/index.html#_looking_ahead_other_parallel_systems_and_parallel_programming_models).
 
-- [Chapter 14 Exercises](https://diveintosystems.org/exercises/dive-into-systems-exercises-17.html) (in progress)
+- [تمارين الفصل 14](https://diveintosystems.org/exercises/dive-into-systems-exercises-17.html) (قيد الإعداد)
 
-### Additional Exercises
+### تمارين إضافية
 
-1. Implement the entirety of the scalar_multiply program. Time your code using the `gettimeofday()` function and 100 millions elements. How does the time of the program vary as you increase the number of threads? What if you increase the number of elements to 1 billion? 2 billion?
-2. Improve the original `scalar multiply` threaded function by placing all the arguments into a `struct` and passing it through main. Time the performance of this version of the code. Is there any difference? [(solution)](https://diveintosystems.org/book/C14-SharedMemory/_attachments/scalar2.c)
-3. Improve the `scalar_multiply` threaded function by implementing a better load balancing procedure. In other words, implement the load balancing procedure in the note above.
-4. Using what you have learned, try implementing a program that performs matrix vector multiplication. In matrix vector multiplication, each row in the matrix is multiplied by some vector of elements.
-5. Implement a parallel version of the Step 2 of the CountSort algorithm. Time your performance.
-6. Try combining Step 1 and Step 2 of the CountSort program into a single program. To do this, you will need to add another cycle of `pthread_create()` and `pthread_join()` to your program.
-7. Time the total performance of the new CountSort program.
-8. OpenMP: The `writeElems()` function makes the assumption that the user only inputs a number of threads less that `MAX`. Is there a way to rewrite this code so that it will work, regardless of the number of threads?
+1. نفّذ برنامج scalar_multiply بالكامل. قِس زمن شيفرتك باستخدام الدالة `gettimeofday()` و100 مليون عنصر. كيف يتغير الزمن كلما زددت عدد الخيوط؟ وماذا لو زددت عدد العناصر إلى مليار؟ 2 مليار؟
+2. حسّن دالة الخيط الأصلية `scalar multiply` بوضع جميع المعاملات في `struct` وتمريرها عبر main. قِس أداء هذه النسخة من الشيفرة. هل ثمة فرق؟ [(الحل)](https://diveintosystems.org/book/C14-SharedMemory/_attachments/scalar2.c)
+3. حسّن دالة الخيط `scalar_multiply` بتنفيذ إجراء أفضل لتوزيع الحِمل. وبعبارة أخرى، نفّذ إجراء توزيع الحِمل المذكور في الملاحظة أعلاه.
+4. باستخدام ما تعلمته، حاول تنفيذ برنامج يُجري ضرب مصفوفة في متجه. وفي ضرب المصفوفة في المتجه، يُضرب كل صف في المصفوفة في متجه معين من العناصر.
+5. نفّذ نسخة متوازية من الخطوة 2 من خوارزمية CountSort. قِس أداءك.
+6. حاول دمج الخطوة 1 والخطوة 2 من برنامج CountSort في برنامج واحد. ولفعل ذلك، ستحتاج إلى إضافة دورة أخرى من `pthread_create()` و`pthread_join()` إلى برنامجك.
+7. قِس الأداء الكلي لبرنامج CountSort الجديد.
+8. OpenMP: تفترض الدالة `writeElems()` أن المستخدم يدخل عددًا من الخيوط أقل من `MAX`. هل من طريقة لإعادة كتابة هذه الشيفرة بحيث تعمل بصرف النظر عن عدد الخيوط؟

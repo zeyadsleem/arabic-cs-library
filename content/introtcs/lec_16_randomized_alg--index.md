@@ -21,11 +21,11 @@ source: https://introtcs.org/
 كانت مكوّنات العتاد عرضةً لسلوكٍ غير حتمي (non-deterministic) لأسبابٍ عديدة، سواء كان ذلك فرطَ سخونة أنابيب التفريغ (vacuum tubes) أو حشراتٍ مادية فعلية (physical bugs) تسبّب قصرًا في الدارات (انظر [bugfig](#bugfig){.ref}).
 وهذا ما دفع جون فون نيومان (John von Neumann)، أحد رواد الحوسبة الأوائل، إلى كتابة ورقةٍ عن كيفية _تصحيح أخطاء_ (error correct) الحساب، مقدّمًا فيها مفهومَ _التكرار الاحتياطي_ (_redundancy_).
 
-![A 1947 entry in the [log book](http://americanhistory.si.edu/collections/search/object/nmah_334663) of the Harvard MARK II computer containing an actual bug that caused a hardware malfunction. By Courtesy of the Naval Surface Warfare Center.](/images/introtcs/original-bug.webp){#bugfig .margin  }
+![إدخالٌ سنة 1947 في [دفتر السجلّات](http://americanhistory.si.edu/collections/search/object/nmah_334663) لحاسوب Harvard MARK II يحوي علّةً (bug) حقيقية تسبّبت في عطلٍ في العتاد. بإذن من مركز سطح الحرب البحري (Naval Surface Warfare Center).](/images/introtcs/original-bug.webp){#bugfig .margin  }
 
 ولذلك فإنّ من المدهش حقًّا أنّ العشوائية لم تبدُ عقبةً فحسب بل صحّت _موردًا_ (_resource`) للحساب، إذ مكّنتنا من إنجاز مهامٍ بكفاءةٍ أعلى بكثير ممّا كان معروفًا من قبل.
 ومن أولى تطبيقاتها كان جون فون نيومان نفسه.
-وحين كان طريح الفراش يلعب ورقَ اللعب، لاحظ ستان أولام (Stan Ulam) أنّ حساب إحصاءات نظامٍ ما يمكن إنجازه ب 훨씬 أكبرَ سرعةً عبر تشغيل عدة محاكاةً عشوائية.
+وحين كان طريح الفراش يلعب ورقَ اللعب، لاحظ ستان أولام (Stan Ulam) أنّ حساب إحصاءات نظامٍ ما يمكن إنجازه بكثير أكبرَ سرعةً عبر تشغيل عدة محاكاةً عشوائية.
 وقد ذكر هذه الفكرة لفون نيومان الذي انبسط لها كثيرًا؛ فقد تبيّن أنّها كانت حاسمةً في حسابات نقل النيوترونات (neutron transport) التي كانت لازمةً لتطوير القنبلة الذرية ثمّ لاحقًا القنبلة الهيدروجينية.
 ولأنّ هذا المشروع كان مصنّفًا بدرجةٍ عالية، اخترع أولام وفون نيومان ومتعاونوهما الاسمَ الرمزيّ «مونت كارلو» (Monte Carlo) لهذا الأسلوب (مستوهِمينَ بالكازينوهات الشهيرة التي كان خالُ أولام يراهن فيها).
 ورسخ هذا الاسم، وما زالت الخوارزميات العشوائية تُعرف إلى اليوم باسم خوارزميات مونت كارلو.^[تذكر بعض النصوص أيضًا «خوارزميات لاس فيغاس» (Las Vegas algorithms) التي تُعيد دائمًا الإجابة الصحيحة، لكنّ زمن تنفيذها متعدّدُ الحدود في المتوسط فقط. ولأنّ اصطلاح «مونت كارلو» في مقابل «لاس فيغاس» مُربك، فلن نستخدم هذين المصطلحين بعد الآن، وسنتحدّث ببساطةٍ عن الخوارزميات العشوائية.]
@@ -288,7 +288,7 @@ __برهانُ المُدّعى II:__ لنفكّر في الدالة $FLIP:\{0,1
 ولأنّ كلَّ تكرارٍ من تكرارات الحلقة الخارجية منفردًا ينجح باحتمالٍ لا يقلّ عن $\tfrac{1}{2} \cdot \sqrt{3}^{-n}$، فإنّ احتمالَ ألّا ننجح في التكرارات $T=100 \sqrt{3}^{n}$ مرّةً هو على الأكثر $(1-\tfrac{1}{2\sqrt{3}^{n}})^{100\cdot \sqrt{3}^n} \leq (1/e)^{50}$.
 :::
 
-![For every $x^* \in \{0,1\}^n$, we can sort all strings in $\{0,1\}^n$ according to their distance from $x^*$ (top to bottom in the above figure), where we let $A = \{ x\in \{0,1\}^n \;|\; dist(x,x^* \leq n/2 \}$ be the "top half" of strings. If we define $FLIP:\{0,1\}^n \rightarrow \{0,1\}$ to be the map that "flips" the bits of a given string $x$ then it maps every $x\in \overline{A}$ to an output $FLIP(x)\in A$ in a one-to-one way, and so it demonstrates that $|\overline{A}| \leq |A|$ which implies that $\Pr[A] \geq \Pr[\overline{A}]$ and hence $\Pr[A] \geq 1/2$.](/images/introtcs/original-flipaanalysis.webp){#flipaanalysisfig .margin  }
+![لكلّ $x^* \in \{0,1\}^n$، يمكننا فرز كلّ النصوص في $\{0,1\}^n$ بحسب بعدها عن $x^*$ (من الأعلى إلى الأسفل في الشكل أعلاه)، حيث نجعل $A = \{ x\in \{0,1\}^n \;|\; dist(x,x^* \leq n/2 \}$ هي «النصف العلوي» من النصوص. وإذا عرَّفنا $FLIP:\{0,1\}^n \rightarrow \{0,1\}$ بوصفها التطبيق الذي «يقلب» بتات النصّ المُعطى $x$ فإنّها تُطابق كلّ $x\in \overline{A}$ بمخرج $FLIP(x)\in A$ تطبيقًا واحدًا-لواحد، وممّا يُظهر أنّ $|\overline{A}| \leq |A|$ وهو ما يستلزم أنّ $\Pr[A] \geq \Pr[\overline{A}]$ وبالتالي $\Pr[A] \geq 1/2$.](/images/introtcs/original-flipaanalysis.webp){#flipaanalysisfig .margin  }
 
 ## المطابقةُ الثنائية
 

@@ -5,7 +5,7 @@ source: https://www.patterns.dev/vanilla/route-based/
 ---
 نستطيع طلب الموارد التي لا تلزم إلا لمسارات (routes) محددة، وذلك بإضافة *التقسيم حسب المسار* (route-based splitting). ومن خلال الجمع بين **React Suspense** أو `loadable-components` مع مكتبات مثل `react-router`، يمكننا تحميل المكوّنات ديناميكيًا (dynamic import) بناءً على المسار الحالي.
 
-JavaScript iconindex.js
+`index.js`
 
 ```javascript
 import React, { lazy, Suspense } from "react";

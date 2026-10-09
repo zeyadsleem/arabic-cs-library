@@ -252,7 +252,7 @@ FROM course;
 
 المقررات التي ليس لها تاريخ انتهاء تُسمّى مقررات 'new' في مقابل المقررات 'old' التي لم تعد تُدرَّس ولها تاريخ انتهاء في جدولنا. اكتب الاستعلام الذي يولّد نتيجة الشكل أدناه. هل نحتاج إلى قول المزيد؟ لاحظ ترويسات الأعمدة...
 
-![new column with the text old or new](https://df.webontwerp.ucll.be/images/database-foundations/sql-select-3-oudnieuw.webp)
+![عمود جديد يحوي النص old أو new](https://df.webontwerp.ucll.be/images/database-foundations/sql-select-3-oudnieuw.webp)
 
 #### الحل
 
@@ -306,7 +306,7 @@ FROM course;
 
 وفي الوقت الحالي، نقتصر على نوع البيانات `date`. ويقدّم [التوثيق](https://www.postgresql.org/docs/current/functions-datetime.html) نظرة عامة على دوال `date/time` التي توفّرها PostgreSQL.
 
-### Extract … from
+### استخراج … من
 
 يحتوي التاريخ على السنة والشهر واليوم. ويضم الوقت إضافة إلى ذلك الساعات والدقائق والثواني... وبالدالة [`EXTRACT`](https://www.postgresql.org/docs/current/functions-datetime.html#FUNCTIONS-DATETIME-EXTRACT) يمكنك استخراج جزء من تاريخ (أو وقت). ومثال صغير من قائمة المقررات لتوضيح ذلك:
 

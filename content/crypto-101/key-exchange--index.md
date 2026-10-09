@@ -57,23 +57,23 @@ source: https://www.crypto101.io/
 تبليغه. وبعد هذه الخطوة، تتوفّر لدى Alice وBob وإيف المعلومات نفسها: وهي اللون
 الأساسي.
 
-![center](/images/crypto-101/key-exchange-fig-0-alice-bob-eve.svg)
+![اختيار كلّ من Alice وBob للونه العشوائيّ](/images/crypto-101/key-exchange-fig-0-alice-bob-eve.svg)
 
 يختار كلٌّ من Alice وBob لونًا عشوائيًّا، ثمّ يمزجه مع اللون الأساسي.
 
-![center](/images/crypto-101/key-exchange-fig-1-alice-bob-secret.svg)
+![معرفة كلّ من Alice وBob للونه السرّي](/images/crypto-101/key-exchange-fig-1-alice-bob-secret.svg)
 
 في نهاية هذه الخطوة، يعرف كلٌّ من Alice وBob لونَه السرّي الخاص به، والمزيج بين
 اللون السرّي واللون الأساسي، واللون الأساسي نفسه. ويعرف الجميع، بما فيهم إيف،
 اللون الأساسي.
 
-![center](/images/crypto-101/key-exchange-fig-2-alice-bob-eve-secret.svg)
+![إرسال الألوان المزجّجة عبر الشبكة](/images/crypto-101/key-exchange-fig-2-alice-bob-eve-secret.svg)
 
 ثمّ يرسل كلٌّ من Alice وBob ألوانَه المزججة عبر الشبكة. فترى إيف كلا اللونين
 المزججين، لكنّها لا تستطيع أن تكتشف ما هو اللون *السرّي* لأيٍّ من Alice وBob.
 وبرغم أنّها تعرف اللون الأساسي، فإنّها لا تستطيع «فكّ المزج» عن الألوان المرسلة
 عبر الشبكة.
-![center](/images/crypto-101/key-exchange-fig-3-mixed-secret.svg)
+![مزج الألوان المرسلة عبر الشبكة](/images/crypto-101/key-exchange-fig-3-mixed-secret.svg)
 
 قد يبدو هذا عمليّة سهلة عند الاكتفاء بتقريبات بالأبيض والأسود لمزج الألوان،
 لكنّ تذكّر أنّ هذا إمّا فشلٌ في الرسم التوضيحي: إذ كان افتراضنا أنّ هذه
@@ -82,12 +82,12 @@ source: https://www.crypto101.io/
 المزججة الخاصة، وألوان كلٍّ منهما المزججة. أمّا إيف فتعرف اللون الأساسي وكلا
 اللونين المزججين.
 
-![center](/images/crypto-101/key-exchange-fig-4-alice-bob-eve-mixed.svg)
+![استلام اللون المزجّج للآخر](/images/crypto-101/key-exchange-fig-4-alice-bob-eve-mixed.svg)
 
 وبعد أن يستلم كلٌّ من Alice وBob اللون المزجج للآخر، يضيف إليه لونه السرّي الخاص.
 وبما أنّ ترتيب المزج لا يهمّ، فسينتهي كلاهما إلى السرّ نفسه.
 
-![center](/images/crypto-101/key-exchange-fig-5-alice-bob-shared-mixed.svg)
+![السرّ المشترك النهائيّ بين Alice وBob](/images/crypto-101/key-exchange-fig-5-alice-bob-shared-mixed.svg)
 
 لا تستطيع إيف إجراء ذلك الحساب. فبإمكانها أن تُتمّ الحساب بأحد اللونين السرّيَّين،
 لأنّها تملك كلا اللونين المزججين، لكنّها لا تملك أيًّا من ذاك اللونين السرّيَّين.
@@ -205,7 +205,7 @@ $$
 (Mallory) — في الوسط بين Alice وBob، فبإمكانه أن ينفّذ بروتوكول ديفي-هيلمان مرّتين:
 مرّة مع Alice حيث تتظاهر مورّي بأنّها Bob، ومرّة مع Bob حيث تتظاهر مورّي بأنّها Alice.
 
-![center](/images/crypto-101/key-exchange-fig-6-MITM.svg)
+![هجوم الوسيط في المنتصف](/images/crypto-101/key-exchange-fig-6-MITM.svg)
 
 هناك سرّان مشتركان هنا: أحدهما بين Alice ومورّي، والآخر بين مورّي وBob. ويستطيع
 المهاجم (مورّي) ببساطة أن يأخذ جميع الرسائل التي يتلقّاها من شخص ويرسلها إلى

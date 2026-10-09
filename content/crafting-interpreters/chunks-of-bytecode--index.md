@@ -93,7 +93,7 @@ print after - before;
 
 </aside>
 
-<img src="/images/crafting-interpreters/chunks-of-bytecode-1.webp" alt="The tree of Java objects created to represent '1 + 2'." />
+<img src="/images/crafting-interpreters/chunks-of-bytecode-1.webp" alt="شجرة كائنات Java التي أُنشئت لتمثيل «1 + 2»." />
 
 كل مؤشّر من تلك يضيف 32 أو 64 بتًّا إضافية من الحِمل الزائد إلى الكائن. والأسوأ، أنّ
 نثر بياناتنا عبر الكومة في شبكة متّصلة ترابطًا ضعيفًا يضرّ بـ<span
@@ -233,7 +233,7 @@ Wirth. قد تظنّ أنّ PDP-11 يعمل بتردد 15MHz لا يحتمل ا�
 Python وRuby وLua وOCaml وErlang وغيرها. وفي جوانب كثيرة، سيتوازى تصميم آلتنا الافتراضية
 مع بنية مفسّرنا السابق:
 
-<img src="/images/crafting-interpreters/chunks-of-bytecode-2.webp" alt="Phases of the two implementations. jlox is Parser to Syntax Trees to Interpreter. clox is Compiler to Bytecode to Virtual Machine." />
+<img src="/images/crafting-interpreters/chunks-of-bytecode-2.webp" alt="مراحل التنفيذتين: يمرّ jlox من المحلِّل إلى شجرات التركيب ثمّ إلى المُفسِّر، ويمضي clox من المصرّف إلى شيفرة البايت ثمّ إلى الآلة الافتراضية." />
 
 بالطبع، لن ننفّذ المراحل بالترتيب الصارم. تماماً كما في مفسّرنا السابق، سنتنقّل ذهابًا
 وإيابًا، ونبني التنفيذ ميزة لغة واحدة في كل مرّة. في هذا الفصل، سنضع هيكل التطبيق في مكانه
@@ -313,11 +313,11 @@ Python وRuby وLua وOCaml وErlang وغيرها. وفي جوانب كثيرة�
 حين نضيف عنصرًا، إن كان العدّ أقلّ من السعة، فهناك مساحة متاحة بالفعل في المصفوفة. نخزّن
 العنصر الجديد هناك مباشرةً ونرفع العدّ.
 
-<img src="/images/crafting-interpreters/chunks-of-bytecode-3.webp" alt="Storing an element in an array that has enough capacity." />
+<img src="/images/crafting-interpreters/chunks-of-bytecode-3.webp" alt="تخزين عنصر في مصفوفة تملك سعة كافية." />
 
 إن لم تكن لدينا سعة فائضة، فإنّ العملية أعقد قليلًا.
 
-<img src="/images/crafting-interpreters/chunks-of-bytecode-4.webp" alt="Growing the dynamic array before storing an element." class="wide" />
+<img src="/images/crafting-interpreters/chunks-of-bytecode-4.webp" alt="تكبير المصفوفة الديناميكية قبل تخزين عنصر." class="wide" />
 
 1.  <span name="amortized">نُخصّص</span> مصفوفة جديدة بسعة أكبر.
 2.  ننسخ العناصر القائمة من المصفوفة القديمة إلى الجديدة.
@@ -754,7 +754,7 @@ print 2;
 name="operand">**مُعاملات**</span>. وتُخزَّن هذه كبيانات ثنائية مباشرةً بعد رمز التشغيل في
 تدفّق التعليمات، وتتيح لنا تخصيص ما تفعله التعليمة.
 
-<img src="/images/crafting-interpreters/chunks-of-bytecode-5.webp" alt="OP_CONSTANT is a byte for the opcode followed by a byte for the constant index." />
+<img src="/images/crafting-interpreters/chunks-of-bytecode-5.webp" alt="OP_CONSTANT عبارة عن بايت للأوبيت يليه بايت لفهرس الثابت." />
 
 يحدّد كل رمز تشغيل كم بايتًا من مُعاملاته وما الذي تعنيه. فمثلًا، قد تكون عملية بسيطة مثل
 "الإرجاع" بلا مُعاملات، بينما تحتاج تعليمة "تحميل متغيّر محلّي" إلى مُعامل يحدّد أيّ متغيّر

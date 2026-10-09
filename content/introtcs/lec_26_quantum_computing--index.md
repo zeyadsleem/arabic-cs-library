@@ -640,7 +640,7 @@ _النوتات الموسيقية_ تعطي نوعًا من الدوالّ ال
 ومن ثمّ، حين نسمع الصوت المقابل لوترٍ ما، فإنّ شعيرات أذُنينا تفصله في الواقع إلى مكوّناته الموافقة لكلّ تردّد.
 
 
-![Left: The air-pressure when playing a "C Major" chord as a function of time. Right: The coefficients of the Fourier transform of the same function, we can see that it is the sum of three freuencies corresponding to the C, E and G notes (261.63, 329.63 and 392 Hertz respectively). Credit: Bjarke Mønsted's [Quora answer](https://www.quora.com/What-is-the-meaning-of-frequency-domain). ](/images/introtcs/original-timefreq.webp){#timefreqfig .margin width=300px height=300px}
+![يسارًا: ضغط الهواء عند ضبط كورد «دو الكبير» (C Major) بوصفه دالةً للزمن. يمينًا: معاملات تحويل فوريه للدالة نفسها؛ فنرى أنّها مجموع ثلاث تردداتٍ تقابل نوتيَي C وE وG (261.63 و329.63 و392 هرتز على التوالي). الإسناد: إجابة [Bjarke Mønsted](https://www.quora.com/What-is-the-meaning-of-frequency-domain) على Quora.](/images/introtcs/original-timefreq.webp){#timefreqfig .margin width=300px height=300px}
 
 يتبيّن أنّ (في جوهرها) _كلّ_ دالّةٍ دوريّة $f:\R \rightarrow \R$ يمكن تفكيكها إلى مجموع دوالّ _موجيّة_ بسيطة (أي دوالّ من الشكل $x \mapsto \sin(\theta x)$ أو $x \mapsto \cos(\theta x)$).
 ويُعرف هذا بـ[تحويل فورييه](https://en.wikipedia.org/wiki/Fourier_transform) (انظر [qfourierfig](#qfourierfig){.ref}).

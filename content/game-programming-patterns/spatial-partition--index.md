@@ -57,7 +57,7 @@ source: https://gameprogrammingpatterns.com/
 قريبة من موقع ما، علينا تمرير على المصفوفة كاملة. والآن، تخيّل أننا نبسّط لعبتنا قليلاً.
 فبدلاً من ميدان *معركة* ثنائي الأبعاد، تخيّل أنه خط *معركة* أحادي البعد.
 
-<img src="/images/game-programming-patterns/spatial-partition-1.webp" alt="A number line with Units positioned at different coordinates on it." />
+<img src="/images/game-programming-patterns/spatial-partition-1.webp" alt="خط أعداد توجد عليه وحدات (Units) بإحداثيات مختلفة." />
 
 في تلك الحالة، يمكننا تيسير الأمور على أنفسنا بأن *نرتّب* (sort) مصفوفة الوحدات حسب
 مواضعها على خط المعركة. وبمجرد أن نفعل ذلك، يمكننا استخدام شيء <span name="array">مثل</span>
@@ -135,7 +135,7 @@ name="variations">التنويعات</span> موثّقة جيداً. فالأك�
 كانت ورقة رسم بياني. بدلاً من تخزين وحداتنا في مصفوفة واحدة، نضعها في خلايا هذه الشبكة.
 وتخزّن كل خانة قائمة الوحدات التي تقع مواضعها ضمن حدود تلك الخانة.
 
-<img src="/images/game-programming-patterns/spatial-partition-2.webp" alt="A grid with Units occupying different cells. Some cells have multiple Units." />
+<img src="/images/game-programming-patterns/spatial-partition-2.webp" alt="شبكة تشغل فيها وحدات (Units) خلايا مختلفة. بعض الخلايا تحوي عدة وحدات." />
 
 وحين نتعامل مع القتال، لا نأخذ في الحسبان إلا الوحدات الواقعة في الخانة نفسها. فبدلاً من مقارنة
 كل وحدة في اللعبة بكل وحدة أخرى، فقد *قسّمنا* ميدان المعركة إلى مجموعة من ميادين
@@ -163,7 +163,7 @@ name="variations">التنويعات</span> موثّقة جيداً. فالأك�
 يتيح لنا هذا تنظيم الوحدات في [قائمة مترابطة
 ثنائية](http://en.wikipedia.org/wiki/Doubly_linked_list) بدلاً من مصفوفة.
 
-<img src="/images/game-programming-patterns/spatial-partition-3.webp" alt="A Cell pointing to a a doubly linked list of Units." />
+<img src="/images/game-programming-patterns/spatial-partition-3.webp" alt="خلية تشير إلى قائمة موصولة ذهابًا وإيابًا من الوحدات (Units)." />
 
 كل خانة في الشبكة تشير إلى أول وحدة في قائمة الوحدات الواقعة داخل تلك الخانة، ولكل وحدة
 مؤشرات إلى الوحدات التي قبلها وبعدها في القائمة. وسنرى السبب قريباً.
@@ -280,7 +280,7 @@ Enough لكتابة القوائم المترابطة من الصفر.
 وحين يدخل المدى في الحسبان، هناك حالة حافّة نحتاج إلى مراعاتها: فالوحدات في خلايا
 مختلفة قد تكون قريبة بما يكفي للتفاعل.
 
-<img src="/images/game-programming-patterns/spatial-partition-4.webp" alt="Two Units in adjacent Cells are close enough to interact." />
+<img src="/images/game-programming-patterns/spatial-partition-4.webp" alt="وحدتان في خليتين متجاورتين على بُعد كافٍ للتفاعل." />
 
 هنا، تقع B ضمن نطاق هجوم A رغم أن مركزيهما في خلايا مختلفة. وللتعامل مع هذا، سنحتاج
 إلى مقارنة الوحدات ليس في الخانة نفسها فحسب، بل في الخلايا المجاورة أيضاً. ولتنفيذ ذلك،
@@ -306,7 +306,7 @@ name="neighbor">أربع</span> من الخلايا الثماني المجاو�
 
 الخانة التي فيها الوحدة هي `U`، والخلايا المجاورة التي ينظر إليها هي `X`.
 
-<img src="/images/game-programming-patterns/spatial-partition-5.webp" width="240" alt="The set of neighbors for a Cell with the four being considered highlighted." />
+<img src="/images/game-programming-patterns/spatial-partition-5.webp" width="240" alt="مجموعة جيران الخلية، مع تمييز الأربع التي تُؤخذ بعين الاعتبار." />
 
 </aside>
 
@@ -458,7 +458,7 @@ name="neighbor">أربع</span> من الخلايا الثماني المجاو�
 
     يمكنك رؤية التقسيم وهو يعمل إذا قرأت من اليسار إلى اليمين هنا:
 
-    <img src="/images/game-programming-patterns/spatial-partition-6.webp" alt="A quadtree." />
+    <img src="/images/game-programming-patterns/spatial-partition-6.webp" alt="شجرة رباعية (quadtree)." />
 
      *  *يمكن إضافة الكائنات تدريجياً.* فإضافة كائن جديد تعني العثور على المربّع
         المناسب وإضافته. فإذا رفع ذلك عدد الكائنات في ذلك المربّع فوق الحدّ الأقصى،

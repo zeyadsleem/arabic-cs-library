@@ -10,7 +10,7 @@ source: https://diveintosystems.org/book/C15-Parallel/index.html
 
 يُستخدم **تصنيف فلين** (Flynn's taxonomy) عادةً لوصف منظومة معماريات الحوسبة الحديثة ([الشكل 1](#Flynn)).
 
-![Flynn’s Taxonomy consists of two independent axes](https://diveintosystems.org/images/dive-into-systems/c15-parallel-0-flynn.webp){#Flynn} الشكل 1. يصنّف تصنيف فلين الطرق التي يطبّق بها المعالج التعليمات.
+![يتكوّن تصنيف فلين من محورين مستقلَّين](https://diveintosystems.org/images/dive-into-systems/c15-parallel-0-flynn.webp){#Flynn} الشكل 1. يصنّف تصنيف فلين الطرق التي يطبّق بها المعالج التعليمات.
 
 يشير المحور الأفقي إلى تدفق البيانات، بينما يشير المحور الرأسي إلى تدفق التعليمات. و**التدفق** (stream) في هذا السياق هو سيل من البيانات أو التعليمات. ويُصدر **التدفق الواحد** عنصرًا واحدًا في وحدة الزمن، شأنه شأن الصف. وفي المقابل، تُصدر **التدفقات المتعددة** عادةً عناصر كثيرة في وحدة الزمن (فكّر في صفوف متعددة). وهكذا، يُصدر تدفق التعليمات الواحد (SI) تعليمة واحدة في وحدة الزمن، بينما يُصدر تدفق التعليمات المتعدد (MI) تعليمات كثيرة في وحدة الزمن. وبالمثل، يُصدر تدفق البيانات الواحد (SD) عنصر بيانات واحد في وحدة الزمن، بينما يُصدر تدفق البيانات المتعدد (MD) عناصر بيانات كثيرة في وحدة الزمن.
 
@@ -53,7 +53,7 @@ source: https://diveintosystems.org/book/C15-Parallel/index.html
 
 يعرض [الشكل 1](#Figgpuarch) معمارية GPU مبسّطة تتضمّن عرضًا تفصيليًا لإحدى وحدات SM فيها. ويتكوّن كل SM من عدة أنوية SP، ومُجدوِل حُزم، ووحدة تحكم في التنفيذ، وذاكرة مؤقتة L1، وفضاء ذاكرة مشتركة.
 
-![Example GPU architecture with showing multiple SM units with32 SP cores.](https://diveintosystems.org/images/dive-into-systems/c15-parallel-0-gpugpu.webp){#Figgpuarch} الشكل 1. مثال على معمارية GPU مبسّطة بـ2,048 نواة. يوضّح هذا تقسيم GPU إلى 64 وحدة SM، وتفاصيل وحدة SM واحدة تتكوّن من 32 نواة SP. ويجدول مُجدوِل الحُزم في SM حُزم الخيوط على أنوية SP الخاصة به. وتنفّذ حزمة من الخيوط بتزامن الخطى على أنوية SP.
+![مثال على معمارية GPU يُظهر عدة وحدات SM لكل منها 32 نواة SP.](https://diveintosystems.org/images/dive-into-systems/c15-parallel-0-gpugpu.webp){#Figgpuarch} الشكل 1. مثال على معمارية GPU مبسّطة بـ2,048 نواة. يوضّح هذا تقسيم GPU إلى 64 وحدة SM، وتفاصيل وحدة SM واحدة تتكوّن من 32 نواة SP. ويجدول مُجدوِل الحُزم في SM حُزم الخيوط على أنوية SP الخاصة به. وتنفّذ حزمة من الخيوط بتزامن الخطى على أنوية SP.
 
 ### 15.1.3. حوسبة GPGPU {#_gpgpu_computing}
 
@@ -103,7 +103,7 @@ ret = do_something<<<gridDim,blockDim>>>(dev_array, 100);
 
 يعرض [الشكل 2](#Figcuda) مثالًا على ترتيب ثنائي الأبعاد لكتل الخيوط. وفي هذا المثال، الشبكة مصفوفة 3 × 2 من الكتل، وكل كتلة مصفوفة 4 × 3 من الخيوط.
 
-![An grid of 2D blocks, each block contains a 2D set of threads.](https://diveintosystems.org/images/dive-into-systems/c15-parallel-1-gridblockthr.webp){#Figcuda} الشكل 2. نموذج خيوط CUDA. شبكة من كتل الخيوط. يمكن تنظيم الكتل والخيوط في تخطيطات أحادية أو ثنائية أو ثلاثية الأبعاد. ويعرض هذا المثال شبكة من كتل ثنائية الأبعاد، 3 × 2 كتلة في الشبكة، ولكل كتلة مجموعة ثنائية الأبعاد من الخيوط، 4 × 3 خيطًا في الكتلة).
+![شبكة من كتل ثنائية الأبعاد، تحتوي كل كتلة على مجموعة ثنائية الأبعاد من الخيوط.](https://diveintosystems.org/images/dive-into-systems/c15-parallel-1-gridblockthr.webp){#Figcuda} الشكل 2. نموذج خيوط CUDA. شبكة من كتل الخيوط. يمكن تنظيم الكتل والخيوط في تخطيطات أحادية أو ثنائية أو ثلاثية الأبعاد. ويعرض هذا المثال شبكة من كتل ثنائية الأبعاد، 3 × 2 كتلة في الشبكة، ولكل كتلة مجموعة ثنائية الأبعاد من الخيوط، 4 × 3 خيطًا في الكتلة).
 
 يُعطى موضع الخيط في هذا التخطيط بالإحداثي (*x*،*y*) في الكتلة الحاوية له (`threadId.x` و`threadId.y`) وبالإحداثي (*x*،*y*) لكتلته في الشبكة (`blockIdx.x` و`blockIdx.y`). لاحظ أن إحداثيات الكتل والخيوط قائمة على (*x*،*y*)، حيث يكون المحور x أفقيًا والمحور y رأسيًا. والعنصر (0,0) في أعلى اليسار. وتملك نواة CUDA أيضًا متغيرات معرّفة لأبعاد الكتلة (`blockDim.x` و`blockDim.y`). وبالتالي، لأي خيط ينفّذ النواة، يمكن تحديد موضعه (صف، عمود) في المصفوفة ثنائية الأبعاد من الخيوط داخل المصفوفة ثنائية الأبعاد من الكتل منطقيًا كما يلي:
 
@@ -243,7 +243,7 @@ __global__ void scalar_multiply(int *array, int scalar) {
 
 وفي الطرف الآخر من الطيف، قد يعمل تطبيق موزّع على مجموعة متراخية الترابط (أقل تكاملًا) من حواسيب مستقلة تمامًا (*عقد*) متصلة بتقنية شبكة محلية تقليدية (LAN) مثل Ethernet. وتُعرف هذه المجموعة من العقد بـعنقود **المنتجات الجاهزة التجارية** (commodity off-the-shelf, COTS). وتستخدم عناقيد COTS عادةً **معمارية لا شيء مشترك** (shared-nothing architecture) التي تحتوي فيها كل عقدة على مجموعة عتاد الحساب الخاصة بها (معالجات CPU ووحدات GPU وذاكرة وتخزين). ويوضّح [الشكل 1](#FigSharedNothing) نظامًا موزّعًا لا شيء مشترك يتكوّن من حاسوبين بذاكرة مشتركة.
 
-![Two computer block diagrams, each with a four-core CPU connected to a private memory and I/O controller. The I/O controller connects to a network interface, which connects the two nodes via unspecified network infrastructure (e.g., Ethernet, InfiniBand, Fibre Channel).](https://diveintosystems.org/images/dive-into-systems/c15-parallel-0-SharedNothing.webp){#FigSharedNothing} الشكل 1. المكوّنات الرئيسية لمعمارية ذاكرة موزّعة لا شيء مشترك مبنية من عقدتي حساب
+![مخططان بالكتل لحاسوبين، لكل منهما معالج ذو أربع نوى متصل بذاكرة خاصة ووحدة تحكّم إدخال/إخراج. وترتبط وحدة تحكّم الإدخال/الإخراج بواجهة شبكة تربط العقدتين عبر بنية شبكة غير محدّدة (مثل Ethernet أو InfiniBand أو Fibre Channel).](https://diveintosystems.org/images/dive-into-systems/c15-parallel-0-SharedNothing.webp){#FigSharedNothing} الشكل 1. المكوّنات الرئيسية لمعمارية ذاكرة موزّعة لا شيء مشترك مبنية من عقدتي حساب
 
 ### 15.2.1. نماذج المعالجة المتوازية والموزّعة {#_parallel_and_distributed_processing_models}
 
@@ -415,7 +415,7 @@ local_size = array_size / process_count;
 
 الآن بعد أن تعرف كل عملية القيمة القياسية وعدد القيم المسؤولة عن ضربها، يجب على الرئيس تقسيم المصفوفة إلى أجزاء وتوزيعها على العمال. لاحظ أن الرئيس (الرتبة 0) يشارك أيضًا كعامل في هذا التطبيق. فمثلًا، مع مصفوفة من 40 عنصرًا وثماني عمليات (الرتب 0-7)، ينبغي أن يحتفظ الرئيس بعناصر المصفوفة 0-4 لنفسه (الرتبة 0)، ويرسل العناصر 5-9 إلى الرتبة 1، والعناصر 10-14 إلى الرتبة 2، وهكذا. ويعرض [الشكل 2](#FigArrayDivision) كيفية تخصيص الرئيس أجزاء المصفوفة لكل عملية MPI.
 
-![Each chunk of five array elements is distributed to the next process. For example, elements 0-4 are assigned to rank 0, elements 5-9 are assigned to rank 1, elements 10-14 are assigned to rank 2, and the patter continues until elements 35-39 are assigned to rank 7.](https://diveintosystems.org/images/dive-into-systems/c15-parallel-1-ArrayDivision.webp){#FigArrayDivision} الشكل 2. توزيع مصفوفة من 40 عنصرًا على ثماني عمليات MPI (الرتب 0-7)
+![يُوزَّع كل كتلة من خمسة عناصر من المصفوفة على العملية التالية. فمثلاً تُسند العناصر 0-4 إلى الرتبة 0، والعناصر 5-9 إلى الرتبة 1، والعناصر 10-14 إلى الرتبة 2، ويستمر النمط حتى تُسند العناصر 35-39 إلى الرتبة 7.](https://diveintosystems.org/images/dive-into-systems/c15-parallel-1-ArrayDivision.webp){#FigArrayDivision} الشكل 2. توزيع مصفوفة من 40 عنصرًا على ثماني عمليات MPI (الرتب 0-7)
 
 يتضمن أحد خيارات توزيع أجزاء المصفوفة على كل عامل الجمع بين استدعاءات `[MPI_Send](https://www.open-mpi.org/doc/v4.0/man3/MPI_Send.3.php)` عند الرئيس واستدعاء `[MPI_Recv](https://www.open-mpi.org/doc/v4.0/man3/MPI_Recv.3.php)` عند كل عامل:
 
@@ -657,7 +657,7 @@ MPI كبيرة ومعقّدة، وهذا القسم لا يكاد يلامس ا�
 
 يبرز [الشكل 1](#BDEC) الفروق الرئيسية في البرمجيات التي يستخدمها مجتمعا HDA وHPC. لاحظ أن كلا المجتمعين يستخدم عتاد عناقيد متشابهًا يتبع نموذج [الذاكرة الموزّعة](https://diveintosystems.org/book/C15-Parallel/distrmem.html#_distributed_memory_systems_message_passing_and_mpi)، حيث تحتوي كل عقدة حساب عادةً على معالج [متعدد الأنوية](https://diveintosystems.org/book/C14-SharedMemory/index.html#_leveraging_shared_memory_in_the_multicore_era) واحد أو أكثر، وغالبًا على [GPU](https://diveintosystems.org/book/C15-Parallel/gpu.html#_GPUs). ويضمّ عتاد العنقود عادةً **نظام ملفات موزّعًا** يتيح للمستخدمين والتطبيقات وصولًا مشتركًا إلى الملفات المقيمة محليًا على عقد متعددة في العنقود.
 
-![High-end Data Analysis (HDA) vs High Performance Computing (HPC).](https://diveintosystems.org/images/dive-into-systems/c15-parallel-0-NewHPCHDAFigure.webp){#BDEC} الشكل 1. مقارنة بين أطر HDA وHPC. استنادًا إلى شكل من إعداد Jack Dongarra وDaniel Reed.8
+![تحليل البيانات الراقية (HDA) مقابل الحوسبة عالية الأداء (HPC).](https://diveintosystems.org/images/dive-into-systems/c15-parallel-0-NewHPCHDAFigure.webp){#BDEC} الشكل 1. مقارنة بين أطر HDA وHPC. استنادًا إلى شكل من إعداد Jack Dongarra وDaniel Reed.8
 
 وخلافًا للحواسيب الفائقة، المصمّمة والمحسَّنة عادةً لاستخدام HPC، يعتمد مجتمع HDA على **مراكز البيانات**، التي تتكوّن من مجموعة كبيرة من عقد الحساب عامة الغرض المتصلة عادةً معًا عبر Ethernet. وعلى المستوى البرمجي، تستخدم مراكز البيانات عادةً أجهزة ظاهرية وقواعد بيانات موزّعة كبيرة وأطر عمل تمكّن من تحليل بيانات الإنترنت بمعدل إنتاجية عالٍ. ويشير مصطلح **السحابة** (cloud) إلى مكوّنات تخزين البيانات وقدرة الحوسبة في مراكز بيانات HDA.
 
@@ -800,7 +800,7 @@ void reduce(char *key, struct Iterator values) {
 
 وللتبسيط، نوضّح في [الشكل 2](#MapReduceFig) كيف يوازي MapReduce الأسطر الأولى من أغنية "Code Monkey" الشهيرة لجوناثان كولتون: *code monkey get up get coffee, code monkey go to job*.
 
-![Parallelization of the opening lines of the song Code Monkey using the MapReduce framework](https://diveintosystems.org/images/dive-into-systems/c15-parallel-1-mapreduceEx.webp){#MapReduceFig} الشكل 2. توازي الأسطر الأولى من أغنية "Code Monkey" باستخدام إطار MapReduce
+![موازاة الأسطر الأولى من أغنية Code Monkey باستخدام إطار MapReduce](https://diveintosystems.org/images/dive-into-systems/c15-parallel-1-mapreduceEx.webp){#MapReduceFig} الشكل 2. توازي الأسطر الأولى من أغنية "Code Monkey" باستخدام إطار MapReduce
 
 يعطي [الشكل 2](#MapReduceFig) نظرة عامة على هذه العملية. وقبل التنفيذ، تقسم عقدة الرئيس المدخل أولًا إلى *M* جزءًا، حيث يقابل *M* عدد مهام map. وفي [الشكل 2](#MapReduceFig)، *M* = 3، ويُقسَّم ملف الإدخال (`coulton.txt`) إلى ثلاثة أجزاء. وأثناء مرحلة map، توزّع عقدة الرئيس مهام map على عقدة عاملة واحدة أو أكثر، وتنفّذ كل مهمة map باستقلالية وبالتوازي. فمثلًا، تحلّل مهمة map الأولى المقتطف *code monkey get up* إلى كلمات منفصلة وتُصدر أزواج (*مفتاح*،*قيمة*) الأربعة التالية: (`code`,`1`) و(`monkey`,`1`) و(`get`,`1`) و(`up`,`1`). ثم تُصدر كل مهمة map قيمها الوسيطة إلى نظام ملفات موزّع يشغل قدرًا معيّنًا من التخزين على كل عقدة.
 

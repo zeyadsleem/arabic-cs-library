@@ -129,4 +129,4 @@ J. Saltzer, D. Reed, and D. Clark. [End-to-End Arguments in System Design](https
 
 J. Saltzer and M. Schroeder. [The Protection of Information in Computer Systems](http://web.mit.edu/Saltzer/www/publications/protection/index.html). In Proceedings of the IEEE, 1975.
 
-[^1]: While strictly adhering to the principle of least common mechanism, Library OSes are not widely adopted in practice, illustrating that security is only one of many system requirements taken into consideration.
+[^1]: ورغم الالتزام الصارم بمبدأ أقلّ آليّة مشتركة (least common mechanism)، لم تُعتمد أنظمة التشغيل المكتبية (Library OSes) على نطاقٍ واسع في الممارسة، ممّا يدلّ على أنّ الأمن ليس سوى أحد متطلّباتٍ عديدةٍ تؤخذ في الحسبان.

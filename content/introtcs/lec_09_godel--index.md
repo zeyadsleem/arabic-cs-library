@@ -39,7 +39,7 @@ source: https://introtcs.org/
 :::
 
 
-![Outline of the results of this chapter. One version of Gödel's Incompleteness Theorem is an immediate consequence of the uncomputability of the Halting problem. To obtain the theorem as originally stated (for statements about the integers) we first prove that the $QMS$ problem of determining truth of quantified statements involving both integers and strings is uncomputable. We do so using the notion of _Turing Machine configurations_ but there are alternative approaches to do so as well, see [alternativeproofs](#alternativeproofs){.ref}.](/images/introtcs/original-godelstructure.webp){#godelstructurefig }
+![مخطّطٌ لنتائج هذا الفصل. إحدى صيغ مبرهنة عدم اكتمال غودل (Gödel's Incompleteness Theorem) نتيجةٌ مباشرةٌ لعدم قابلية حساب مسألة التوقّف. وللحصول على المبرهنة كما صُغِيت أوّلًا (فيما يخصّ الجمل حول الأعداد الصحيحة) نُثبت أوّلًا أنّ مسألة $QMS$ — أي تحديد صحة الجمل المُكمَّلة التي تجمع بين الأعداد الصحيحة والنصوص — غير قابلة للحساب. ونفعل ذلك باستعمال مفهوم _تكوينات آلات تورينج_، لكنّ هناك مناهجَ بديلةً لذلك أيضًا، انظر [alternativeproofs](#alternativeproofs){.ref}.](/images/introtcs/original-godelstructure.webp){#godelstructurefig }
 
 
 
@@ -305,9 +305,7 @@ _أو_
 وتُعدّ طريقة [نزول التدرّج](https://en.wikipedia.org/wiki/Gradient_descent) هي الأداة الأساسية التي تُدير كثيرًا من أدوات التعلّم الآلي التي أحدثت ثورة في علوم الحاسوب على مدى السنوات الماضية.
 
 
-![Diophantine equations such as finding a positive integer solution to
-the equation $a(a+b)(a+c)+b(b+a)(b+c)+c(c+a)(c+b)=4(a+b)(a+c)(b+c)$ (depicted more compactly and whimsically above) can be surprisingly difficult.
-There are many equations for which we do not know if they have a solution, and there is no algorithm to solve them in general. The smallest solution for this equation has $80$ digits! See this [Quora post](https://www.quora.com/How-do-you-find-the-positive-integer-solutions-to-frac-x-y+z-+-frac-y-z+x-+-frac-z-x+y-4) for more information, including the credits for this image.](/images/introtcs/original-elliptic_curve.webp){#ellipticcurvefig .margin }
+![معادلات دوفانتي (Diophantine equations) مثل إيجاد حلٍّ صحيحٍ موجَب للمعادلة $a(a+b)(a+c)+b(b+a)(b+c)+c(c+a)(c+b)=4(a+b)(a+c)(b+c)$ (المُصوَّرة بأسلوبٍ أكثر اختصارًا ومرحًا في الأعلى) قد تكون صعبةً بشكلٍ مدهش. هناك معادلاتٌ كثيرةٌ لا نعرف إن كان لها حلّ، ولا توجد خوارزمية لحلّها بشكلٍ عامّ. وأصغر حلٍّ لهذه المعادلة يحوي $80$ رقمًا! انظر هذا [السؤال على Quora](https://www.quora.com/How-do-you-find-the-positive-integer-solutions-to-frac-x-y+z-+-frac-y-z+x-+-frac-z-x+y-4) لمزيدٍ من المعلومات، بما في ذلك إسناد هذه الصورة.](/images/introtcs/original-elliptic_curve.webp){#ellipticcurvefig .margin }
 
 لكن هناك بعض المعادلات التي لا نعرف ببساطة كيف نحُلّها _بأي وسيلة_.
 مثلًا، استغرق الأمر أكثر من 200 سنة حتى نجح الناس في إثبات أن المعادلة $a^{11} + b^{11} = c^{11}$ لا حلّ لها في الأعداد الصحيحة.^[هذه حالة خاصة مما يُعرف بـ«نظرية فيرما الأخيرة» التي تنص على أن $a^n + b^n = c^n$ لا حلّ لها في الأعداد الصحيحة من أجل $n>2$. وقد افترضها بيير دو فيرما سنة 1637، لكن لم يثبتها أندرو وايلز إلا في سنة 1991. أما الحالة $n=11$ (مع كل ما يُسمى «أسّات الأعداد الأولية المنتظمة») فقد أثبتها كومر سنة 1850.]
@@ -528,8 +526,7 @@ $$
 برهن أن لكل دالة غير قابلة للحساب $F:\{0,1\}^* \rightarrow \{0,1\}$ ولكل نظام برهنة بديهي سليم $S$ (الذي يتميّز بعدد منتهٍ من البديهيات وقواعد الاستنتاج)، يوجد مدخل $x$ لا يستطيع عنده نظام البرهنة $S$ إثبات أن $F(x)=0$ ولا أن $F(x) \neq 0$.
 
 
-![In the _puzzle problem_, the input can be thought of as a finite collection $\Sigma$ of _types of puzzle pieces_ and the goal is to find out whether or not find a way to arrange pieces from these types in a rectangle. Formally, we model the input as a pair of functions $match_{\leftrightarrow},match_{\updownarrow}:\Sigma^2 \rightarrow \{0,1\}$ that such that 
-$match_{\leftrightarrow}(left,right)=1$ (respectively $match_{\updownarrow}(up,down)=1$ ) if the pair of pieces are compatible when placed  in their respective positions. We assume $\Sigma$ contains a special symbol $\varnothing$ corresponding to having no piece, and an arrangement of puzzle pieces by an $(m-2)\times(n-2)$ rectangle is modeled by a string $x\in \Sigma^{m\cdot n}$ whose ``outer coordinates'' are $\emptyset$ and such that for every $i \in [n-1],j \in [m-1]$, $match_{\updownarrow}(x_{i,j},x_{i+1,j})=1$ and $match_{\leftrightarrow}(x_{i,j},x_{i,j+1})=1$.](/images/introtcs/original-puzzleprob.webp){#puzzleprobfig  .margin }
+![في _مشكلة الألغاز_ (puzzle problem)، يمكن اعتبار المدخل مجموعةً محدودة $\Sigma$ من _أنواع قطع الألغاز_، والهدف هو معرفة ما إذا كان بالإمكان ترتيب قطعٍ من هذه الأنواع في مستطيل. ونُنمذج المدخل رسميًا كزوجٍ من الدالتين $match_{\leftrightarrow},match_{\updownarrow}:\Sigma^2 \rightarrow \{0,1\}$ بحيث $match_{\leftrightarrow}(left,right)=1$ (وما يكافئه $match_{\updownarrow}(up,down)=1$ ) إذا كانت القطعتان متوافقين حين تُوضَعان في موضعيهما المحدَّدين. ونفترض أنّ $\Sigma$ تحوي رمزًا خاصًّا $\varnothing$ يقابل غياب القطعة، ويُنمذج ترتيب قطع الألغاز في مستطيل $(m-2)\times(n-2)$ بنصٍّ $x\in \Sigma^{m\cdot n}$ تكون فيه «الإحداثيات الخارجية» $\emptyset$، ويتحقّق أنّ لكلّ $i \in [n-1],j \in [m-1]$ تحقّق $match_{\updownarrow}(x_{i,j},x_{i+1,j})=1$ و$match_{\leftrightarrow}(x_{i,j},x_{i,j+1})=1$.](/images/introtcs/original-puzzleprob.webp){#puzzleprobfig  .margin }
 
 
 

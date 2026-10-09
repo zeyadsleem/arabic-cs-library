@@ -178,7 +178,7 @@ class Brunch {
 بالإعطاء على ذلك، فهاهو ما يولّده المُصرِّف وكيف تؤثّر تلك التعليمات في المكدّس في
 الزمن التشغيل:
 
-<img src="/images/crafting-interpreters/methods-and-initializers-1.webp" alt="The series of bytecode instructions for a class declaration with two methods." />
+<img src="/images/crafting-interpreters/methods-and-initializers-1.webp" alt="سلسلة تعليمات شيفرة البايت لإعلان صنف يتضمّن دالتين." />
 
 لم يبقَ أمامنا سوى تنفيذ الجزء الزمني لتلك التعليمة الجديدة `OP_METHOD`.
 
@@ -327,7 +327,7 @@ method(); // ?
 ^code new-bound-method
 
 دالةٌ تشبه المُنشئ (constructor) تكتفي بتخزين الإغلاق والمستقبِل المعطَيين. وعندما
-لا تعود الدالة المربوطة محلّ 필요، نحرّرها.
+لا تعود الدالة المربوطة محلّ ضروري، نحرّرها.
 
 ^code free-bound-method (1 before, 1 after)
 
@@ -358,7 +358,7 @@ method(); // ?
 
 <aside name="party">
 
-<img src="/images/crafting-interpreters/methods-and-initializers-2.webp" alt="A party hat." />
+<img src="/images/crafting-interpreters/methods-and-initializers-2.webp" alt="قبعة حفل." />
 
 </aside>
 
@@ -413,14 +413,14 @@ var eggs = brunch.eggs;
 وها ما يحدث عندما تنفّذ الآلة الافتراضية استدعاء `bindMethod()` مقابل تعبير
 `brunch.eggs`:
 
-<img src="/images/crafting-interpreters/methods-and-initializers-3.webp" alt="The stack changes caused by bindMethod()." />
+<img src="/images/crafting-interpreters/methods-and-initializers-3.webp" alt="تغيّرات المكدّس الناتجة عن bindMethod()." />
 
 هذه كميّة كبيرة من الآلات تحت الغطاء، لكن من منظور المستخدم، كلّ ما يحصل عليه هو
 دالة يستطيع استدعاؤها.
 
 ### استدعاء الدوال
 
-يستطيع المستخدمون 선언 الدوال على الأصناف، والوصول إليها على النسخ، والحصول على
+يستطيع المستخدمون تعريف الدوال على الأصناف، والوصول إليها على النسخ، والحصول على
 دوال مربوطة على المكدّس. لكنّهم ببساطة لا يستطيعون <span name="do">*فعل*</span>
 شيء مفيد بتلك كائنات الدوال المربوطة. فالعملية الناقصة هي استدعاؤها. والاستدعاءات
 مُنفَّذة في `callValue()`، لذا نضيف حالة هناك لنوع الكائن الجديد.
@@ -553,7 +553,7 @@ scone.topping("berries", "cream");
 
 نحسب خانة تخزين المستقبِل على النحو التالي:
 
-<img src="/images/crafting-interpreters/methods-and-initializers-4.webp" alt="Skipping over the argument stack slots to find the slot containing the closure." />
+<img src="/images/crafting-interpreters/methods-and-initializers-4.webp" alt="التخطّي فوق خانات المكدّس المخصّصة للمُمعاملات للعثور على الخانة التي تحوي الإغلاق." />
 
 يتخطّى `-argCount` المُعاملات، ويصحّح `- 1` الأمر بحيث إنّ `stackTop` يشير إلى ما
 *بعد* خانة المكدّس المستخدمة الأخيرة مباشرةً.
@@ -690,7 +690,7 @@ Brunch("eggs", "coffee");
 
 عندما تنفّذ الآلة الافتراضية الاستدعاء لـ `Brunch()`، يحدث ما يلي:
 
-<img src="/images/crafting-interpreters/methods-and-initializers-5.webp" alt="The aligned stack windows for the Brunch() call and the corresponding init() method it forwards to." />
+<img src="/images/crafting-interpreters/methods-and-initializers-5.webp" alt="نوافذ المكدّس المصفوفة لاستدعاء Brunch() والدالة init() المقابلة التي يُحيل إليها." />
 
 أيّ مُعاملات مُمرَّرة إلى الصنف حين استدعناه ما زالت على المكدّس فوق النسخة. والـ
 CallFrame الجديد لدالة `init()` يتشارك تلك النافذة من المكدّس، لذا تُمرَّر تلك
@@ -950,7 +950,7 @@ name="juggle">لعب</span> أيّ شيء على المكدّس. فالمستق�
 
 </aside>
 
-<img src="/images/crafting-interpreters/methods-and-initializers-6.webp" alt="Bar chart comparing the two benchmark results." />
+<img src="/images/crafting-interpreters/methods-and-initializers-6.webp" alt="مخطط أعمدة يقارن نتيجتي القياس المرجعي." />
 
 ### استدعاء الحقول
 

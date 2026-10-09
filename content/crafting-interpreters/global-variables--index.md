@@ -193,7 +193,7 @@ effect) يصف كيف تعدّل التعليمة المكدّس. فمثلًا،
 
 المكدّس أقصر بعنصر واحد بعد `OP_ADD`، لذا أثرها ‎-1‎:
 
-<img src="/images/crafting-interpreters/global-variables-1.webp" alt="The stack effect of an OP_ADD instruction." />
+<img src="/images/crafting-interpreters/global-variables-1.webp" alt="أثر تعليمة OP_ADD على المكدّس." />
 
 </aside>
 
@@ -521,7 +521,7 @@ menu.brunch(sunday).beverage = "mimosa";
 
 لكنّ المشكلة ليست بالوخامة التي قد تبدو. انظر إلى كيفية رؤية المحلّل لذلك المثال:
 
-<img src="/images/crafting-interpreters/global-variables-2.webp" alt="The 'menu.brunch(sunday).beverage = &quot;mimosa&quot;' statement, showing that 'menu.brunch(sunday)' is an expression." />
+<img src="/images/crafting-interpreters/global-variables-2.webp" alt="عبارة «menu.brunch(sunday).beverage = &quot;mimosa&quot;»، تُظهر أنّ «menu.brunch(sunday)» تعبير." />
 
 رغم أنّ جزء `.beverage` يجب ألّا يُترجم كتعبير قراءة، فإنّ كل ما إلى يسار `.` تعبيرٌ ذو دلالات
 تعبيرية عادية. ويمكن ترجمة `menu.brunch(sunday)` وتنفيذه كما هي العادة.
@@ -580,7 +580,7 @@ a * b = c + d;
 
 وفقًا لقواعد Lox، فإنّ `=` له أدنى أسبقية، لذا ينبغي أن يُحلَّل هذا تقريبًا هكذا:
 
-<img src="/images/crafting-interpreters/global-variables-3.webp" alt="The expected parse, like '(a * b) = (c + d)'." />
+<img src="/images/crafting-interpreters/global-variables-3.webp" alt="التحليل المتوقّع، مثل «(a * b) = (c + d)»." />
 
 من البديهي أنّ `a * b` ليس هدف إسناد <span name="do">صالحًا</span>، لذا ينبغي أن يكون هذا خطأ
 صياغة. لكن إليك ما يفعله محلّلنا:
@@ -603,7 +603,7 @@ a * b = c + d;
 
 بعبارة أخرى، يرى المحلّل الشيفرة أعلاه هكذا:
 
-<img src="/images/crafting-interpreters/global-variables-4.webp" alt="The actual parse, like 'a * (b = c + d)'." />
+<img src="/images/crafting-interpreters/global-variables-4.webp" alt="التحليل الفعلي، مثل «a * (b = c + d)»." />
 
 لقد أفسدنا معالجة الأسبقية لأنّ `variable()` لا تأخذ في الحسبان أسبقية التعبير المحيط الذي يحتوي
 المتغيّر. فإن وقع المتغيّر صدفةً على يمين معامل وسطي، أو كمُعامل لمعامل أحادي، فإنّ ذلك التعبير

@@ -23,7 +23,7 @@ source: https://gameprogrammingpatterns.com/
 
 <span name="legend"></span>
 
-<img src="/images/game-programming-patterns/data-locality-1.webp" alt="A chart showing processor and RAM speed from 1980 to 2010. Processor speed increases quickly, but RAM speed lags behind." />
+<img src="/images/game-programming-patterns/data-locality-1.webp" alt="رسم بياني يعرض سرعة المعالج وذاكرة RAM من عام 1980 إلى 2010. ترتفع سرعة المعالج بسرعة، بينما تتخلف سرعة RAM خلفها." />
 
 <aside name="legend">
 
@@ -150,7 +150,7 @@ Architecture: A Quantitative Approach) لجون إل. هنيسي وديفيد أ
 كاملة من الذاكرة المتّصلة -- عادةً نحو 64 إلى 128 بايت -- وتضعها في الذاكرة المؤقتة.
 وتُسمّى هذه الكتلة الصغيرة من الذاكرة *سطر ذاكرة مؤقتة* (cache line).
 
-<img src="/images/game-programming-patterns/data-locality-2.webp" alt="A cache line showing the one byte requested along with the adjacent bytes that also get loaded into the cache." />
+<img src="/images/game-programming-patterns/data-locality-2.webp" alt="سطر ذاكرة مؤقتة (cache line) يعرض البايت المطلوب إلى جانب البايتات المجاورة التي تُحمَّل هي أيضًا إلى الذاكرة المؤقتة." />
 
 إذا كان <span name="pallet">البايت التالي</span> الذي تحتاجه موجوداً في تلك
 القطعة، فإن المعالج يقرأه مباشرةً من الذاكرة المؤقتة، وهي *أسرع بكثير* من إصابة
@@ -235,7 +235,7 @@ name="line">سطر الذاكرة المؤقتة، كنت أسرع</span>. وا�
 بمعنى آخر، إذا كانت شيفرتك تعالج `Thing` ثم `Another` ثم `Also`، فيجب أن تكون
 مرتّبة في الذاكرة هكذا:
 
-<img src="/images/game-programming-patterns/data-locality-3.webp" alt="Thing, Another, and Also laid out directly next to each other in order in memory." />
+<img src="/images/game-programming-patterns/data-locality-3.webp" alt="Thing وAnother وAlso مصفوفة مباشرةً بجوار بعضها بالترتيب في الذاكرة." />
 
 لاحظ أن هذه ليست *مؤشرات* إلى `Thing` و`Another` و`Also`. بل هي البيانات الفعلية
 لها، في مواضعها، مرصوفة واحداً تلو الآخر. وحالما يقرأ المعالج `Thing`، فسيبدأ بالحصول
@@ -366,7 +366,7 @@ name="virtual">مؤشرات أو مراجع</span>. لكن المرور عبر �
 
 <span name="lines"></span>
 
-<img src="/images/game-programming-patterns/data-locality-4.webp" alt="A tangled mess of objects strewn randomly through memory with pointers wiring them all together." />
+<img src="/images/game-programming-patterns/data-locality-4.webp" alt="كتلة فوضوية متشابكة من الكائنات موزّعة عشوائيًا في الذاكرة تربطها المؤشرات جميعًا ببعضها." />
 
 <aside name="lines">
 
@@ -424,7 +424,7 @@ name="virtual">مؤشرات أو مراجع</span>. لكن المرور عبر �
 لقد تخلّصنا من كل تلك مطاردة المؤشرات. وبدلاً من القفز هنا وهناك في الذاكرة، نقوم بزحف
 مستقيم عبر ثلاث مصفوفات متّصلة.
 
-<img src="/images/game-programming-patterns/data-locality-5.webp" alt="An array for each of three different kinds of components. Each array neatly packs its components together." />
+<img src="/images/game-programming-patterns/data-locality-5.webp" alt="مصفوفة لكل نوع من أنواع المكوّنات الثلاثة. كل مصفوفة تحزم مكوّناتها بترتيب دقيق." />
 
 هذا يضخّ تدفّقاً ثابتاً من البايتات مباشرةً في فم المعالج الجائع. وفي اختباراتي، جعل هذا
 التغيير حلقة التحديث *خمسين ضعفاً* أسرع من النسخة السابقة.

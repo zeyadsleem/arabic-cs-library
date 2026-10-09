@@ -3,7 +3,7 @@ title: دوال التركيب
 lang: ar
 source: https://www.patterns.dev/vue/composables/
 ---
-## Options API
+## واجهة الخيارات (Options API)
 
 قبل تقديم Composition API في Vue، كان المطوّرون يعتمدون على **Options API** لتنظيم منطق المكوّنات، والذي يشمل البيانات التفاعلية (reactive data)، ودورات الحياة، والخصائص المحسوبة (computed properties)، وغيرها. سمحت Options API بتعريف هذه الجوانب ضمن خيارات محدّدة، كما هو موضح في المثال أدناه:
 
@@ -162,7 +162,7 @@ Width,
 - خطّاف دورة الحياة `beforeUnmount()` يُستخدم لتنفيذ الشيفرة قبل أن يُزال المكوّن ويُدمَّر. وهنا يزيل مستمع الحدث الخاص بتغيير الحجم.
 - يحتوي الكائن `methods` على دوال المكوّن. وهو يعرّف الدوال `increment()` و`decrement()` و`handleResize()` التي تتلاعب بخصائص البيانات `count` و`width` استنادًا إلى أحداث أو إجراءات معيّنة.
 
-JavaScript iconApp.vue
+`App.vue`
 
 ```javascript
 <template>
@@ -229,7 +229,7 @@ JavaScript iconApp.vue
 
 لمعالجة هذه التحديات، قدّم فريق Vue واجهة Composition API في Vue v3.
 
-## Composition API
+## واجهة التركيب (Composition API)
 
 يمكن النظر إلى Composition API على أنها **واجهة برمجية توفّر دوال مستقلة تمثّل القدرات الأساسية لـ Vue**. وتُستخدم هذه الدوال أساسًا داخل خيار `setup()` واحد يعمل كنقطة دخول لاستخدام Composition API.
 
@@ -360,7 +360,7 @@ Width,
 - نستخدم دالة دورة الحياة `onMounted()` لاستدعاء الدالة المخصّصة `handleResize()` وإضافة مستمع لحدث تغيير الحجم عند تركيب المكوّن. وبالمثل، نستخدم دالة دورة الحياة `onBeforeUnmount()` لإزالة مستمع حدث تغيير الحجم قبل إزالة المكوّن.
 - تُعاد بعدها المتغيّرات التفاعلية والدوال المعرَّفة في الدالة `setup()`، مما يجعلها متاحة في قالب المكوّن.
 
-JavaScript iconApp.vue
+`App.vue`
 
 ```javascript
 <template>
@@ -568,7 +568,7 @@ width,
 
 مع هذه التغييرات، سيعمل تطبيقنا كما كان عليه من قبل، لكن ضمن إعداد أكثر قابلية للتركيب.
 
-JavaScript iconApp.vue
+`App.vue`
 
 ```javascript
 <template>

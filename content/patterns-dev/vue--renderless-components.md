@@ -375,7 +375,7 @@ import ToggleComponent from "./components/ToggleComponent";
 
 بعد حفظ هذه التغييرات، سيُعرض لنا عناصر التبديل الثلاثة التي تبدو مختلفة لكنها تشترك في المنطق الأساسي نفسه.
 
-JavaScript iconToggleComponent.vue
+`ToggleComponent.vue`
 
 ```javascript
 <template>

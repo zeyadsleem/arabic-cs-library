@@ -121,7 +121,7 @@ source: https://gameprogrammingpatterns.com/
 الآن، لنفكّر كيف كان سنضع تسلسل وراثة لتلك الأصناف لو لم نستخدم المكوّنات. قد يبدو
 المحاولة الأولى كالتالي:
 
-<img src="/images/game-programming-patterns/component-1.webp" alt="A class diagram. Zone has collision code and inherits from GameObject. Decoration also inherits from GameObject and has rendering code. Prop inherits from Zone but then has redundant rendering code." />
+<img src="/images/game-programming-patterns/component-1.webp" alt="مخطط فئات. تحتوي Zone على كود التصادم ويرث من GameObject. ترث Decoration من GameObject أيضًا وتحتوي على كود العرض. يرث Prop من Zone لكنه يكرّر كود العرض." />
 
 لدينا صنف أساس `GameObject` يضمّ أموراً مشتركة مثل الموضع والاتجاه. ويرث `Zone` منه
 ويضيف كشف الاصطدام. وعلى حدٍّ سواء، يرث `Decoration` من `GameObject` ويضيف العرض.

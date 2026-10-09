@@ -91,7 +91,7 @@ source: https://introtcs.org/
 
 ![/images/introtcs/lec_19_cryptography-3.webp](/images/introtcs/original-confederate_cipher_disk.webp){#tmplabelfig1 .margin}
 
-![Confederate encryption of the message  "Gen'l Pemberton: You can expect no help from this side of the river. Let Gen'l Johnston know, if possible, when you can attack the same point on the enemy's lines. Inform me also and I will endeavor to make a diversion. I have sent some caps. I subjoin a despatch from General Johnston."](/images/introtcs/original-confederate_message.webp ){#tmplabelfig2 .margin}
+![تشفيرٌ كونفدرالي للرسالة: «الجنرال بمبرتون: لا ترجّع نصرًا من هذا الجانب من النهر. أبلغ الجنرال جونستون، إن أمكن، متى تستطيع الهجوم على النقطة نفسها في خطوط العدو. أخبرني أيضًا وسأسعى إلى تشتيت الانتباه. لقد أرسلت بعض الطواقم. أرفق إليك رسالةً من الجنرال جونستون».](/images/introtcs/original-confederate_message.webp ){#tmplabelfig2 .margin}
 
 
 كانت شيفرة _إنجما_ (_Enigma_) شيفرةً ميكانيكية (تبدو كآلة كاتبة، انظر [enigmafig](#enigmafig){.ref}) حيث يُحوَّل كل حرفٍ يُكتب إلى حرفٍ مختلف بحسب المفتاح (المعقّد إلى حدٍّ ما) والحالة الراهنة

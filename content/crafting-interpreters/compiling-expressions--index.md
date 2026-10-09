@@ -13,7 +13,7 @@ source: https://craftinginterpreters.com/
 التنفيذ في آلتنا الافتراضية. وبمجرد وضعه في مكانه، نستطيع أن نوصّل شيفرة المستخدم
 الأصلية من المسح الضوئي وصولًا إلى تنفيذها.
 
-<img src="/images/crafting-interpreters/compiling-expressions-1.webp" alt="Lowering the 'compiler' section of pipe between 'scanner' and 'VM'." />
+<img src="/images/crafting-interpreters/compiling-expressions-1.webp" alt="إنزال قسم «compiler» من الأنبوب بين «scanner» و«VM»." />
 
 ثانيًا، سنحصل على كتابة *مصرّف* حقيقي، صادق تمامًا. فهو يحلّل شيفرة المصدر ويُخرج
 سلسلة منخفضة المستوى من التعليمات الثنائية. صحيح، إنّه <span name="wirth">شيفرة
@@ -131,7 +131,7 @@ name="lox">مناسبة تمامًا</span> لذلك.
 ليس أنّ هذا ينبغي أن يكون مفاجأة كبيرة. فاللغة صمّمتها خصيصًا لهذا الكتاب على أيّ
 حال.
 
-<img src="/images/crafting-interpreters/compiling-expressions-2.webp" alt="Peering through a keyhole at 'var x;'" />
+<img src="/images/crafting-interpreters/compiling-expressions-2.webp" alt="الاطّلاع من ثقب المفتاح على «var x;»" />
 
 </aside>
 
@@ -295,7 +295,7 @@ name="setjmp">استثناءات</span> في C. وبدلًا من ذلك، سن�
 جمّعنا دوالّ التحليل وتوليد الشيفرة الخاصة بنا. والقطعة الناقصة هي الشيفرة في الوسط
 التي تربط تلك معًا.
 
-<img src="/images/crafting-interpreters/compiling-expressions-3.webp" alt="Parsing functions on the left, bytecode emitting functions on the right. What goes in the middle?" />
+<img src="/images/crafting-interpreters/compiling-expressions-3.webp" alt="دوالّ التحليل على اليسار، ودوالّ توليد شيفرة البايت على اليمين. فما الذي يوضع في المنتصف؟" />
 
 الخطوة الوحيدة المتبقية في `compile()` التي علينا تنفيذها هي هذه الدالة:
 
@@ -551,7 +551,7 @@ name="useful">متداخلة</span> مثل `!!doubleNegative`. وبما أنّ �
 وتدفع النتيجة.
 
 الشيفرة التي غالبًا ما لفتت انتباهك هنا هي سطر `getRule()` ذاك. حين نحلّل المُعامل
-الأيمن، ن 다시 نحتاج إلى معالجة الأسبقية. خذ تعبيرًا كهذا:
+الأيمن، نحتاج إلى معالجة الأسبقية. خذ تعبيرًا كهذا:
 
 ```lox
 2 * 3 + 4
@@ -734,14 +734,14 @@ a = (b = (c = d))
 
 <span name="connections"></span>
 
-<img src="/images/crafting-interpreters/compiling-expressions-4.webp" alt="The various parsing
-functions and how they call each other." />
+<img src="/images/crafting-interpreters/compiling-expressions-4.webp" alt="دوالّ التحليل المختلفة
+وكيف تستدعي بعضها بعضاً." />
 
 <aside name="connections">
 
-السهم <img src="/images/crafting-interpreters/compiling-expressions-5.webp" alt="A solid arrow." class="arrow" />
-يربط دالة بدالة أخرى تستدعيها مباشرةً. والسهم <img src="/images/crafting-interpreters/compiling-expressions-6.webp" alt="An open
-arrow." class="arrow" /> يُظهر مؤشّرات الجدول إلى دوالّ التحليل.
+السهم <img src="/images/crafting-interpreters/compiling-expressions-5.webp" alt="سهم مصمت." class="arrow" />
+يربط دالة بدالة أخرى تستدعيها مباشرةً. والسهم <img src="/images/crafting-interpreters/compiling-expressions-6.webp" alt="سهم
+مجوّف." class="arrow" /> يُظهر مؤشّرات الجدول إلى دوالّ التحليل.
 
 </aside>
 

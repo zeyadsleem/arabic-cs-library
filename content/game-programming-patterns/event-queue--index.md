@@ -62,7 +62,7 @@ source: https://gameprogrammingpatterns.com/
 نظام التشغيل بين لحظة إبلاغ سائق الجهاز عنه ولحظة استدعاء تطبيقك لـ
 `getNextEvent()`. ذلك المكان هو *طابور* (queue).
 
-<img src="/images/game-programming-patterns/event-queue-1.webp" alt="An event queue. The operating system enqueues Shift, Down, Up, and Click events, and the getNextEvent() function dequeues them." />
+<img src="/images/game-programming-patterns/event-queue-1.webp" alt="طابور أحداث. نظام التشغيل يضع فيه أحداث Shift وDown وUp وClick، والدالة getNextEvent() تسحبها منه." />
 
 حين يأتي إدخال المستخدم، يضيفه نظام التشغيل إلى طابور من الأحداث غير المعالَجة.
 وحين تستدعي `getNextEvent()`، فإنها تسحب أقدم حدث من الطابور وتسلمه إلى تطبيقك.
@@ -111,7 +111,7 @@ href="/book/game-programming-patterns/game-loop/index" class="pattern">حلقة 
 
 </aside>
 
-<img src="/images/game-programming-patterns/event-queue-2.webp" alt="A central event queue is read from and written to by the Combat and Tutorial code." />
+<img src="/images/game-programming-patterns/event-queue-2.webp" alt="طابور أحداث مركزي تقرأ منه وتكتب إليه شيفرتا Combat وTutorial." />
 
 فكّرت في استخدام هذا كمثال لبقية الفصل، لكنني لست مؤيّداً عموماً للأنظمة العامة
 الكبيرة. فطوابير الأحداث لا يلزم أن تكون للتواصل عبر محرّك الألعاب بأكمله. إذ يمكن
@@ -400,7 +400,7 @@ buffer). فهو يحافظ على كل ما هو رائع في المصفوفا�
 بما أن `playSound()` تُلحق طلبات جديدة في نهاية المصفوفة، فيبدأ الرأس عند العنصر
 صفر وينمو الذيل إلى اليمين.
 
-<img src="/images/game-programming-patterns/event-queue-3.webp" alt="An array of events. The head points to the first element, and the tail grows to the right." />
+<img src="/images/game-programming-patterns/event-queue-3.webp" alt="مصفوفة من الأحداث. الرأس يشير إلى العنصر الأول، والذيل يتمدد نحو اليمين." />
 
 لنكتب ذلك. أولاً، سنعدّل حقولنا قليلاً كي نجعل هذين المؤشّرَين واضحين في الصنف:
 
@@ -436,13 +436,13 @@ buffer). فهو يحافظ على كل ما هو رائع في المصفوفا�
 
 </aside>
 
-<img src="/images/game-programming-patterns/event-queue-4.webp" alt="The same array as before but now the head is moving towards the right, leaving available cells on the left." />
+<img src="/images/game-programming-patterns/event-queue-4.webp" alt="المصفوفة نفسها لكن الرأس يتحرك الآن نحو اليمين تاركًا خلايا متاحة على اليسار." />
 
 لاحظ أن الذيل يزحف إلى الأمام، وكذلك *الرأس*. أي أن لدينا عناصر مصفوفة في *بداية*
 المصفوفة لم تعد مستخدَمة. إذاً ما نفعله هو أن نلتفّ بالذيل عائداً إلى بداية المصفوفة
 حين يخرج من نهايتها. لهذا تُسمّى *حلقياً* -- فهي تتصرّف كمصفوفة دائرية من الخلايا.
 
-<img src="/images/game-programming-patterns/event-queue-5.webp" alt="The array wraps around and now the head can circle back to the beginning." />
+<img src="/images/game-programming-patterns/event-queue-5.webp" alt="تلتفّ المصفوفة حول نهايتها ويستطيع الرأس الآن أن يعود إلى البداية." />
 
 تنفيذ ذلك سهل إلى حدٍّ لافت. فحين نُدرج عنصراً، لا نلزم سوى جعل الذيل يلتفّ إلى بداية
 المصفوفة حين يبلغ نهايتها:

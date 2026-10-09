@@ -26,7 +26,7 @@ source: https://df.webontwerp.ucll.be/EN/model_vraag_naar_data/
 
 وفي الوقت نفسه، يحرص المهندس المعماري، بحكم خبرته التقنية، على مراعاة عدد من *المبادئ الأساسية والممارسات الجيدة* أثناء تصميم منزلك. ونتيجة لتشاوركما، يرسم المهندس مخططًا أوليًا للطابق.
 
-![Example of a floorplan](https://df.webontwerp.ucll.be/images/database-foundations/model-vraag-naar-data-0-floorplan.webp)
+![مثال على مخطط أرضي](https://df.webontwerp.ucll.be/images/database-foundations/model-vraag-naar-data-0-floorplan.webp)
 
 ويُ*ناقش* هذا المخطط معك للتأكد من أن تفسير المهندس يطابق توقعاتك. وفي مراحل لاحقة، سيضع المهندس نسخًا أكثر تفصيلًا من هذا المخطط حتى يعرف المقاولون والكهربائيون والسباكون... كيف ينبغي أن يُبنى منزلك. ويُحفظ هذا المخطط التفصيلي جيدًا للحصول على نظرة عامة على مواقع عناصر إنشائية معينة (أنابيب المياه والكهرباء وعوارض الدعم...).
 
@@ -62,7 +62,7 @@ source: https://df.webontwerp.ucll.be/EN/model_vraag_naar_data/
 
 وفي عمليتنا نميّز ثلاثة أنواع (طبقات) من نماذج البيانات: المفاهيمي والمنطقي والفيزيائي.
 
-![layers of data models](https://df.webontwerp.ucll.be/images/database-foundations/model-vraag-naar-data-1-EN-datamodel-lagen.webp)
+![طبقات نماذج البيانات](https://df.webontwerp.ucll.be/images/database-foundations/model-vraag-naar-data-1-EN-datamodel-lagen.webp)
 
 ### نموذج البيانات المفاهيمي
 
@@ -84,7 +84,7 @@ source: https://df.webontwerp.ucll.be/EN/model_vraag_naar_data/
 
 ويحكي نموذج البيانات المفاهيمي المعروض أدناه القصة التالية: "طالب (ببعض البيانات مثل رقم r كمعرّف وما إلى ذلك) يدرس مقررًا واحدًا على الأقل، بينما يمكن أن يدرس هذا المقرر (الرمز، وعدد نقاط الدراسة SP وما إلى ذلك) عدة طلاب. ومن الممكن أيضًا أن يوجد مقرر لا يختاره أي طالب.". ويمكن أيضًا للأشخاص غير التقنيين قراءة هذا الرسم، وبالتالي يمكن أن يكون أساسًا لمحادثة.
 
-![Conceptual model for student taking a course](https://df.webontwerp.ucll.be/images/database-foundations/model-vraag-naar-data-2-EN-studentOPOconceptueel.webp)
+![نموذج مفاهيمي لطالب يدرس مقررًا](https://df.webontwerp.ucll.be/images/database-foundations/model-vraag-naar-data-2-EN-studentOPOconceptueel.webp)
 
 [سنعود لاحقًا إلى مزيد من التفاصيل حول نموذج البيانات المفاهيمي وكيفية إنشائه.](/book/database-foundations/model-conceptueel/index)
 
@@ -100,7 +100,7 @@ source: https://df.webontwerp.ucll.be/EN/model_vraag_naar_data/
 
 وفي الشكل التالي تجد ترجمة النموذج المفاهيمي إلى نموذج منطقي. وقد اختير نموذج بيانات علائقي. وهو تقني بالفعل أكثر بكثير (ثلاثة جداول، ومفتاح أساسي وأجنبي... انظر لاحقًا)، لكنه لا يزال يترك بعض التفاصيل لأن نظام إدارة قواعد البيانات المحدد الذي سيُستخدم لم يُختر بعد.
 
-![Logical model for student taking a course](https://df.webontwerp.ucll.be/images/database-foundations/model-vraag-naar-data-3-EN-studentOPOlogisch.webp)
+![نموذج منطقي لطالب يدرس مقررًا](https://df.webontwerp.ucll.be/images/database-foundations/model-vraag-naar-data-3-EN-studentOPOlogisch.webp)
 
 وتُعرَّف لنماذج البيانات العلائقية أيضًا *صيغ*؛ نسميها *الصيغ الطبيعية (normal forms)*. وهناك مستويات مختلفة من الصيغ الطبيعية. وتتكوّن كل صيغة طبيعية من عدد من المعايير التقنية. ويفرض كل مستوى معايير إضافية. ونموذج البيانات الذي يستوفي معايير صيغة طبيعية يفي بتلك الصيغة الطبيعية. وقد وُضعت المعايير لمنع أخطاء محتملة في استخدام قاعدة البيانات. وهكذا، بالإشارة إلى أن نموذج بيانات يتبع صيغة طبيعية معينة، فإنك تضمن احترام قواعد معينة داخل نموذج البيانات. وسنعود إلى ذلك لاحقًا.
 
@@ -118,6 +118,6 @@ source: https://df.webontwerp.ucll.be/EN/model_vraag_naar_data/
 
 ويترجم الشكل الأخير نموذج البيانات العلائقي (المنطقي) السابق إلى نموذج بيانات فيزيائي خاص بـ PostgreSQL. ويتضمن الرسم الآن تفاصيل ملموسة كثيرة، مثل أنواع البيانات (`char(8)` و`smallint`...). وبالمناسبة، أُنشئ بأداة أخرى (DBSchema، انظر لاحقًا).
 
-![Physical model for student taking a course](https://df.webontwerp.ucll.be/images/database-foundations/model-vraag-naar-data-4-EN-studentOPOfysiek.webp)
+![نموذج فيزيائي لطالب يدرس مقررًا](https://df.webontwerp.ucll.be/images/database-foundations/model-vraag-naar-data-4-EN-studentOPOfysiek.webp)
 
 [سنعود إلى نموذج البيانات الفيزيائي في فصل لاحق.](/book/database-foundations/model-fysiek/index)

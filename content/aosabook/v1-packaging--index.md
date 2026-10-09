@@ -1,5 +1,5 @@
 ---
-title: "Python Packaging"
+title: "تحزيم حزم بايثون"
 lang: ar
 source: https://aosabook.org/en/v1/packaging.html
 ---
@@ -395,7 +395,7 @@ N.N[.N]+[{a|b|c|rc}N[.N]+][.postN][.devN]
 واتّفق هذا المخطّط مع PEP 386 الذي يعرّف ترتيبًا صارمًا:
 
 - alpha < beta < rc < final
-- dev < non-dev < post, where non-dev can be a alpha, beta, rc or final
+- dev < non-dev < post، حيث يمكن أن يكون non-dev إصدار alpha أو beta أو rc أو final
 
 وهذا مثالٌ كامل على الترتيب:
 
@@ -702,7 +702,7 @@ resources =
 3. أي RFC 3280 SubjectPublicKeyInfo، مع الخوارزمية 1.3.14.3.2.12.
 4. أي بصيغة RFC 3279 Dsa-Sig-Value، التي تنشئها الخوارزمية 1.2.840.10040.4.3.
 
-[^1]: The Python Enhancement Proposals, or PEPs, that we refer to are summarized at the end of this chapter
-[^2]: Formerly known as the CheeseShop.
-[^3]: I.e., RFC 3280 SubjectPublicKeyInfo, with the algorithm 1.3.14.3.2.12.
-[^4]: I.e., as a RFC 3279 Dsa-Sig-Value, created by algorithm 1.2.840.10040.4.3.
+[^1]: مقترحاتُ تحسين بايثون (Python Enhancement Proposals) أو PEPs التي نشيرُ إليها مُلخَّصةٌ في نهاية هذا الفصل
+[^2]: كان سابقًا يُعرف باسم CheeseShop.
+[^3]: أي RFC 3280 SubjectPublicKeyInfo، مع الخوارزمية 1.3.14.3.2.12.
+[^4]: أي بصيغة RFC 3279 Dsa-Sig-Value، التي تنشئها الخوارزمية 1.2.840.10040.4.3.

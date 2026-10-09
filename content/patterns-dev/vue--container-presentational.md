@@ -97,7 +97,7 @@ dogs.value = message;
 
 ولباختصار، هذا هو نمط الحاوية/العرضية. وعند التكامل مع حلول إدارة الحالة مثل [Pinia](https://pinia.vuejs.org/)، يمكن الاستفادة من المكوّنات الحاوية للتفاعل مباشرةً مع المخزن (store)، بجلب الحالة أو تعديلها حسب الحاجة. ويتيح ذلك أن تظل المكوّنات العرضية نقية (pure) وغير واعية بمنطق التطبيق الأوسع، فلا تركز إلا على عرض واجهة المستخدم بناءً على الخصائص التي تتلقّاها.
 
-JavaScript iconDogImagesContainer.vue
+`DogImagesContainer.vue`
 
 ```javascript
 <template>
@@ -181,7 +181,7 @@ const { dogs } = useDogImages();
 
 ومع كل التغييرات التي أجريناها، يمكن تلخيص تطبيقنا على النحو التالي.
 
-JavaScript iconuseDogImages.js
+`useDogImages.js`
 
 ```javascript
 import { ref, onMounted } from &#x27;vue&#x27;;

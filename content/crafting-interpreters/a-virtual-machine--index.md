@@ -319,8 +319,8 @@ print echo(echo(1) + echo(2)) + echo(echo(4) + echo(5));
 
 إليك شجرة الصياغة لعبارة `print`:
 
-<img src="/images/crafting-interpreters/a-virtual-machine-1.webp" alt="The AST for the example
-statement, with numbers marking the order that the nodes are evaluated." />
+<img src="/images/crafting-interpreters/a-virtual-machine-1.webp" alt="شجرة الصياغة للمثال،
+مع أرقام تحدّد ترتيب تقييم العُقد." />
 
 مع التقييم من اليسار إلى اليمين، وطريقة تداخل التعبيرات، يجب على أيّ تنفيذ صحيح
 لـ Lox أن *يطبع* هذه الأرقام بهذا الترتيب:
@@ -359,8 +359,8 @@ Java فريدًا لكل عقدة يجري تقييمها، فيمكن أن نم
 
 لنجرّب تمرينًا غريبًا. سنمشي على تنفيذ البرنامج أعلاه خطوةً خطوة:
 
-<img src="/images/crafting-interpreters/a-virtual-machine-2.webp" alt="The series of instructions with
-bars showing which numbers need to be preserved across which instructions." />
+<img src="/images/crafting-interpreters/a-virtual-machine-2.webp" alt="سلسلة من التعليمات مع
+أشرطة تُظهر الأرقام التي يجب حفظها عبر أيّ من التعليمات." />
 
 على اليسار خطوات الشيفرة. وعلى اليمين القيم التي نتتبّعها. يمثّل كل شريط رقمًا.
 يبدأ حين تُنتَج القيمة أول مرة -- إمّا ثابتًا وإمّا نتيجة جمع. ويتبّع طول الشريط
@@ -374,8 +374,8 @@ bars showing which numbers need to be preserved across which instructions." />
 أن يُستهلك رقم، نسمح بإعادة استخدام عموده لقيمة لاحقة أخرى. بمعنى آخر، نأخذ كل
 تلك الفجوات في الأعلى ونملؤها، بدفع الأرقام من اليمين:
 
-<img src="/images/crafting-interpreters/a-virtual-machine-3.webp" alt="Like the previous
-diagram, but with number bars pushed to the left, forming a stack." />
+<img src="/images/crafting-interpreters/a-virtual-machine-3.webp" alt="كالرسم
+السابق، لكنّ الأشرطة الرقمية مدفوعة إلى اليسار مكوّنةً مكدّساً." />
 
 هناك أشياء مثيرة تحدث هنا. حين نزيح كل شيء إلى اليسار، يبقى كل رقم في عمود واحد
 طوال حياته. كما لا تتبقّى أيّ فجوات. بمعنى آخر، متى ظهر رقم أبكر من آخر، فسيعيش
@@ -386,7 +386,7 @@ diagram, but with number bars pushed to the left, forming a stack." />
 
 وهذا أيضًا مكدّس:
 
-<img src="/images/crafting-interpreters/a-virtual-machine-4.webp" alt="A stack... of pancakes." />
+<img src="/images/crafting-interpreters/a-virtual-machine-4.webp" alt="مكدّس... من الفطائر." />
 
 </aside>
 
@@ -444,19 +444,19 @@ diagram, but with number bars pushed to the left, forming a stack." />
 حروف كلمة "crepe" -- فطورتي الصباحية المفضّلة القابلة للتكديس -- على المكدّس
 بالترتيب، بدت مصفوفة C الناتجة هكذا:
 
-<img src="/images/crafting-interpreters/a-virtual-machine-5.webp" alt="An array containing the
-letters in 'crepe' in order starting at element 0." />
+<img src="/images/crafting-interpreters/a-virtual-machine-5.webp" alt="مصفوفة تحوي حروف
+كلمة crepe بالترتيب ابتداءً من العنصر 0." />
 
 بما أنّ المكدّس ينمو ويتراجع مع دفع القيم وإسقاطها، فنحن نتاجع مكان أعلى المكدّس في
 المصفوفة. وكما في `ip`، نستخدم مؤشّرًا مباشرًا بدلًا من فهرس عدد صحيح لأنّ فكّ
 المؤشّر أسرع من حساب الإزاحة من الفهرس في كل مرّة نحتاج فيها إليها.
 
 يشير المؤشّر إلى عنصر المصفوفة الواقع *خلف* العنصر الذي يحتوي على القيمة العليا في
-المكدّس. يبدو ذلك غريبًا قليلًا، لكن كل تنفيذ تقريبًا يفعل هذا. 이는 يعني أننا
+المكدّس. يبدو ذلك غريبًا قليلًا، لكن كل تنفيذ تقريبًا يفعل هذا. وهذا يعني أننا
 نستطيع الإشارة إلى أنّ المكدّس فارغ بأن يشير إلى العنصر صفر في المصفوفة.
 
-<img src="/images/crafting-interpreters/a-virtual-machine-6.webp" alt="An empty array with
-stackTop pointing at the first element." />
+<img src="/images/crafting-interpreters/a-virtual-machine-6.webp" alt="مصفوفة فارغة يشير فيها
+stackTop إلى العنصر الأول." />
 
 إن كان مؤشّرنا يشير إلى العنصر العلوي، فإنّ المكدّس الفارغ سيحتاج أن يشير إلى العنصر
 ‎-1‎. وهذا <span name="defined">غير معرَّف</span> في C. وكما ندفع القيم على المكدّس...
@@ -469,13 +469,13 @@ stackTop pointing at the first element." />
 
 </aside>
 
-<img src="/images/crafting-interpreters/a-virtual-machine-7.webp" alt="An array with 'c' at element
-zero." />
+<img src="/images/crafting-interpreters/a-virtual-machine-7.webp" alt="مصفوفة فيها الحرف c في
+العنصر الصفر." />
 
 ...يشير `stackTop` دائمًا إلى ما بعد آخر عنصر بقليل.
 
-<img src="/images/crafting-interpreters/a-virtual-machine-8.webp" alt="An array with 'c', 'r',
-'e', 'p', and 'e' in the first five elements." />
+<img src="/images/crafting-interpreters/a-virtual-machine-8.webp" alt="مصفوفة فيها الحروف c وr
+وe وp وe في أول خمسة عناصر." />
 
 أتذكّرها هكذا: يشير `stackTop` إلى المكان الذي ستذهب إليه القيمة التالية التي
 ستُدفع. وأقصى عدد قيم يمكننا تخزينها على المكدّس (على الأقلّ الآن) هو:
@@ -689,9 +689,9 @@ else
 
 مثلًا، إن ترجمنا `3 - 1`، فإنّ تدفّق البيانات بين التعليمات يبدو هكذا:
 
-<img src="/images/crafting-interpreters/a-virtual-machine-9.webp" alt="A sequence of instructions
-with the stack for each showing how pushing and then popping values reverses
-their order." />
+<img src="/images/crafting-interpreters/a-virtual-machine-9.webp" alt="سلسلة من التعليمات
+ومكدّس لكلٍّ منها يُظهر كيف يقلب الدفع ثمّ السحب ترتيب
+القيم." />
 
 وكما فعلنا مع الماكروهات الأخرى داخل `run()`، فإنّنا ننظّف خلفنا في نهاية الدالة.
 
@@ -706,8 +706,8 @@ their order." />
 
 لنُجرّب بعض تعليماتنا الجديدة على أرض الواقع بتقييم تعبير أكبر:
 
-<img src="/images/crafting-interpreters/a-virtual-machine-10.webp" alt="The expression being
-evaluated: -((1.2 + 3.4) / 5.6)" />
+<img src="/images/crafting-interpreters/a-virtual-machine-10.webp" alt="التعبير قيد
+التقييم: -((1.2 + 3.4) / 5.6)" />
 
 مبنيًا على قطعتنا المثال القائمة، إليك التعليمات الإضافية التي نحتاج إليها لتُترجَم تلك الشجرة يدويًا
 إلى شيفرة بايت.

@@ -37,7 +37,7 @@ P = D(k, C)
 
 أو، بصريًّا، على شكل كتل:
 
-![center](/images/crypto-101/block-ciphers-fig-0-BlockCipher.svg)
+![تمثيل بصريّ لشيفرة الكتل](/images/crypto-101/block-ciphers-fig-0-BlockCipher.svg)
 
 شيفرة الكتل مثال على نظام تشفير بالمفتاح المتماثل (`symmetric-key encryption`)،
 المعروف أيضًا بنظام تشفير بالمفتاح السرّي (`secret-key encryption`). إذ يُستعمل
@@ -56,7 +56,7 @@ P = D(k, C)
 فإنّنا نمثّل الكتل بذلك الرقم. وتوضّح `fig-BlockCipherBlocks` الكتل التي تعمل
 عليها الشيفرة.
 
-![center](/images/crypto-101/block-ciphers-fig-1-AllNodes.svg){#fig-BlockCipherBlocks}
+![العقد الست عشرة التي تعمل عليها شيفرة الكتل](/images/crypto-101/block-ciphers-fig-1-AllNodes.svg){#fig-BlockCipherBlocks}
 
    العقد الستّة عشرة كلّها التي تعمل عليها شيفرة الكتل. ويُشار إلى كلّ عقدة برقم ست
    عشري.
@@ -65,7 +65,7 @@ P = D(k, C)
 ونوضّح تلك العلاقة بسهم. فذيل السهم يحمل الكتلة قبل تشفيرها بـ`E` تحت المفتاح
 `k`، أمّا رأس السهم فيُسقَط على الكتلة المشفَّرة.
 
-![center](/images/crypto-101/block-ciphers-fig-2-Encryption.svg){#fig-BlockCipherEncryption}
+![تبديل التشفير تحت مفتاح معيّن](/images/crypto-101/block-ciphers-fig-2-Encryption.svg){#fig-BlockCipherEncryption}
 
    تبديل تشفير تنتجه شيفرة الكتل تحت مفتاح معيّن `k`.
 
@@ -78,7 +78,7 @@ P = D(k, C)
 (inverse permutation). وفي `fig-BlockCipherDecryption` نحصل على الرسم نفسه. والفرق
 بين الرسمين أنّ رؤوس الأسهم كلّها تشير في الاتجاه المعاكس.
 
-![center](/images/crypto-101/block-ciphers-fig-3-Decryption.svg){#fig-BlockCipherDecryption}
+![تبديل فكّ التشفير تحت المفتاح نفسه](/images/crypto-101/block-ciphers-fig-3-Decryption.svg){#fig-BlockCipherDecryption}
 
    تبديل فكّ التشفير الذي تنتجه شيفرة الكتل تحت المفتاح نفسه `k`. وهو معكوس تبديل
    التشفير، إذ إنّ رؤوس الأسهم كلّها انقلبت.
@@ -86,7 +86,7 @@ P = D(k, C)
 يحدّد المفتاح أيّ الكتل تُسقَط على أيّ الكتل. ويؤدي مفتاح مختلف إلى مجموعة أسهم
 مختلفة، كما ترى في `fig-BlockCipherEncryptionDifferentKey`.
 
-![center](/images/crypto-101/block-ciphers-fig-4-Encryption2.svg){#fig-BlockCipherEncryptionDifferentKey}
+![تبديل التشفير تحت مفتاح مختلف](/images/crypto-101/block-ciphers-fig-4-Encryption2.svg){#fig-BlockCipherEncryptionDifferentKey}
 
    تبديل تشفير تنتجه شيفرة الكتل تحت مفتاح مختلف.
 
@@ -167,7 +167,7 @@ FIPS، قُيّدت معاملاتها بحجم كتلة قدره 128 بتًّا
 وهجمات على الشيفرات الحالية.
 ### نظرة أقرب إلى Rijndael
 
-advanced
+متقدّم
 
 تتألف AES من عدّة خطوات مستقلّة. فعلى المستوى العامّ، AES هي
 `substitution-permutation network` أي شبكة استبدال وتبديل.
@@ -198,7 +198,7 @@ advanced
 يحوّلها صندوق الاستبدال إلى `x` نفسه، أو إلى `x` مع قلب كلّ بتّاتها. ويجعل هذا
 الشيفرة مقاومة للتحليل التشفيري الخطّي، بخلاف خوارزمية DES الأسبق، التي سبّبت
 صندوق استبدالها الخامس مشكلات أمنية خطيرة.
-![center](/images/crypto-101/block-ciphers-fig-5-SubBytes.svg)
+![خطوة استبدال البتّات (SubBytes)](/images/crypto-101/block-ciphers-fig-5-SubBytes.svg)
 
 ولصالح DES، كانت الهجمات الخطّية غير معروفة علنًا وقت تصميمه.
 إزاحة الصفوف (ShiftRows)
@@ -207,7 +207,7 @@ advanced
 بعد تطبيق خطوة استبدال البتّات على البايتات الستّة عشر للكتلة، تُزيح AES الصفوف في
 المصفوفة `4 \times 4`:
 
-![center](/images/crypto-101/block-ciphers-fig-6-ShiftRows.svg)
+![خطوة إزاحة الصفوف (ShiftRows)](/images/crypto-101/block-ciphers-fig-6-ShiftRows.svg)
 
 مزج الأعمدة (MixColumns)
 '''''''''''''''
@@ -216,7 +216,7 @@ advanced
 
 تمثّل خطوتا إزاحة الصفوف ومزج الأعمدة خصائص الانتشار (diffusion) في AES.
 
-![center](/images/crypto-101/block-ciphers-fig-7-MixColumns.svg)
+![خطوة مزج الأعمدة (MixColumns)](/images/crypto-101/block-ciphers-fig-7-MixColumns.svg)
 
 إضافة مفتاح الجولة (AddRoundKey)
 '''''''''''''''
@@ -224,7 +224,7 @@ advanced
 وكما يوحي الاسم، تضيف خطوة إضافة مفتاح الجولة البايتات من مفتاح الجولة الذي ينتجه
 جدول المفاتيح إلى حالة الشيفرة.
 
-![center](/images/crypto-101/block-ciphers-fig-8-AddRoundKey.svg)
+![خطوة إضافة مفتاح الجولة (AddRoundKey)](/images/crypto-101/block-ciphers-fig-8-AddRoundKey.svg)
 
 #### DES و3DES
 

@@ -898,7 +898,7 @@ ERROR:couldn't serialize access due to concurrent update
 
 يجمع PostgreSQL أقفال SIREAD لتقليل المساحة في الذاكرة. فإذا أُنشئت أقفال SIREAD لجميع الصفوف داخل صفحة واحدة، دُمجت في قفل SIREAD واحد على مستوى الصفحة، وحُرّرت الأقفال الفردية على مستوى الصف (راجع الشكل 5.13). وينطبق المنطق نفسه عندما تُقرأ جميع صفحات علاقة ما.
 
-![Transaction Tx reads tuple_1 and tuple_2 in Page_1, creating two tuple-level SIREAD locks. When Tx subsequently reads tuple_3, completing the scan of Page_1, PostgreSQL replaces the individual tuple-level locks with a single page-level SIREAD lock.](/images/postgres-internals/pgsql05-fig-5-13.webp)
+![تقرأ المعاملة Tx الصفّين tuple_1 وtuple_2 في الصفحة Page_1، فتنشئ قفلَي SIREAD على مستوى الصف. وعندما تقرأ Tx بعد ذلك الصف tuple_3، مكملةً مسح الصفحة Page_1، يستبدل PostgreSQL القفلين الفرديين على مستوى الصف بقفل SIREAD واحد على مستوى الصفحة.](/images/postgres-internals/pgsql05-fig-5-13.webp)
 
 #### الشكل 5.13. مثال على تجميع أقفال SIREAD.
 

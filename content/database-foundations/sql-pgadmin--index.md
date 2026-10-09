@@ -14,7 +14,7 @@ source: https://df.webontwerp.ucll.be/EN/SQL_pgadmin/
 
 ويوضح الشكل أدناه كيف لا يتفاعل العميل مباشرة أبدًا مع البيانات نفسها، بل يتفاعل دائمًا عبر خادم قاعدة بيانات ([شكل المصدر](https://medium.datadriveninvestor.com/artificial-intelligence-series-part-5-data-analysis-using-sql-7e61bee24b85)).
 
-![client-server at databases, source: https://medium.datadriveninvestor.com/artificial-intelligence-series-part-5-data-analysis-using-sql-7e61bee24b85](https://df.webontwerp.ucll.be/images/database-foundations/sql-pgadmin-0-rdbms.webp)
+![العلاقة بين العميل والخادم في قواعد البيانات، المصدر: https://medium.datadriveninvestor.com/artificial-intelligence-series-part-5-data-analysis-using-sql-7e61bee24b85](https://df.webontwerp.ucll.be/images/database-foundations/sql-pgadmin-0-rdbms.webp)
 
 ## تثبيت pgAdmin
 

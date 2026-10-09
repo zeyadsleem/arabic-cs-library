@@ -332,10 +332,10 @@ $$
 
 يصبح الأمر أكثر تعقيدًا عندما نضيف إلى داخل القائمة باستخدام $ \mathtt{add(i,x)}$ . فنحن أولًا نحدّد موقع $ \mathtt{i}$ للحصول على العقدة $ \mathtt{u}$ التي تحتوي كتلتها على عنصر القائمة ذي الفهرس $ \mathtt{i}$ . والمشكلة أننا نريد إدراج $ \mathtt{x}$ في كتلة $ \mathtt{u}$ ، لكن علينا الاستعداد لحالة تكون فيها كتلة $ \mathtt{u}$ تحتوي بالفعل على $ \ensuremath{\mathtt{b}}+1$ عنصرًا، بحيث تكون ممتلئة ولا يوجد متّسع لها لـ $ \mathtt{x}$ . لنرمز بـ $ \ensuremath{\mathtt{u}}_0,\ensuremath{\mathtt{u}}_1,\ensuremath{\mathtt{u}}_2,\ldots$ إلى $ \mathtt{u}$ و$ \mathtt{u.next}$ و$ \mathtt{u.next.next}$ وهكذا. ونستكشف $ \ensuremath{\mathtt{u}}_0,\ensuremath{\mathtt{u}}_1,\ensuremath{\mathtt{u}}_2,\ldots$ بحثًا عن عقدة تستطيع توفير مساحة لـ $ \mathtt{x}$ . ويمكن أن تحدث ثلاث حالات أثناء استكشافنا للمساحة (انظر الشكل 3.4):
 
-|  | ![\includegraphics[width=\textwidth ]{figs/selist-add-a}](/images/open-data-structures/3_3_SEList_Space_Efficient_-img1345.png.webp) |  |
+|  | ![ ](/images/open-data-structures/3_3_SEList_Space_Efficient_-img1345.png.webp) |  |
 | --- | --- | --- |
-|  | ![\includegraphics[width=\textwidth ]{figs/selist-add-b}](/images/open-data-structures/3_3_SEList_Space_Efficient_-img1346.png.webp) |  |
-|  | ![\includegraphics[width=\textwidth ]{figs/selist-add-c}](/images/open-data-structures/3_3_SEList_Space_Efficient_-img1347.png.webp) |  |
+|  | ![ ](/images/open-data-structures/3_3_SEList_Space_Efficient_-img1346.png.webp) |  |
+|  | ![ ](/images/open-data-structures/3_3_SEList_Space_Efficient_-img1347.png.webp) |  |
 
 1. نجد بسرعة (في $ r+1\le \ensuremath{\mathtt{b}}$ خطوة) عقدة $ \ensuremath{\mathtt{u}}_r$ كتلتها ليست ممتلئة. في هذه الحالة، نُجري $ r$ إزاحة لعنصر من كتلة إلى التي تليها، بحيث تصبح المساحة الحرة في $ \ensuremath{\mathtt{u}}_r$ مساحة حرة في $ \ensuremath{\mathtt{u}}_0$ . يمكننا بعدها إدراج $ \mathtt{x}$ في كتلة $ \ensuremath{\mathtt{u}}_0$ .
 2. نتجاوز بسرعة (في $ r+1\le \ensuremath{\mathtt{b}}$ خطوة) نهاية قائمة الكتل. في هذه الحالة، نضيف كتلة فارغة جديدة إلى نهاية قائمة الكتل ونتصرّف كما في الحالة الأولى.
@@ -377,10 +377,10 @@ $$
 
 حذف عنصر من SEList شبيه بإضافة عنصر. فنحن أولًا نحدّد موقع العقدة $ \mathtt{u}$ التي تحتوي على العنصر ذي الفهرس $ \mathtt{i}$ . والآن علينا الاستعداد للحالة التي لا يمكننا فيها حذف عنصر من $ \mathtt{u}$ دون أن تصبح كتلة $ \mathtt{u}$ أصغر من $ \ensuremath{\mathtt{b}}-1$ . ومرة أخرى، لنرمز بـ $ \ensuremath{\mathtt{u}}_0,\ensuremath{\mathtt{u}}_1,\ensuremath{\mathtt{u}}_2,\ldots$ إلى $ \mathtt{u}$ و$ \mathtt{u.next}$ و$ \mathtt{u.next.next}$ وهكذا. ونفحص $ \ensuremath{\mathtt{u}}_0,\ensuremath{\mathtt{u}}_1,\ensuremath{\mathtt{u}}_2,\ldots$ بالترتيب بحثًا عن عقدة نستطيع أن نستعير منها عنصرًا لجعل حجم كتلة $ \ensuremath{\mathtt{u}}_0$ على الأقل $ \ensuremath{\mathtt{b}}-1$ . وهناك ثلاث حالات يجب اعتبارها (انظر الشكل 3.5):
 
-| ![\includegraphics[scale=0.90909]{figs/selist-remove-a}](/images/open-data-structures/3_3_SEList_Space_Efficient_-img1390.png.webp) |
+| ![ ](/images/open-data-structures/3_3_SEList_Space_Efficient_-img1390.png.webp) |
 | --- |
-| ![\includegraphics[scale=0.90909]{figs/selist-remove-b}](/images/open-data-structures/3_3_SEList_Space_Efficient_-img1391.png.webp) |
-| ![\includegraphics[scale=0.90909]{figs/selist-remove-c}](/images/open-data-structures/3_3_SEList_Space_Efficient_-img1392.png.webp) |
+| ![ ](/images/open-data-structures/3_3_SEList_Space_Efficient_-img1391.png.webp) |
+| ![ ](/images/open-data-structures/3_3_SEList_Space_Efficient_-img1392.png.webp) |
 
 1. نجد بسرعة (في $ r+1\le \ensuremath{\mathtt{b}}$ خطوة) عقدة كتلتها تحتوي على أكثر من $ \ensuremath{\mathtt{b}}-1$ عنصرًا. في هذه الحالة، نُجري $ r$ إزاحة لعنصر من كتلة إلى السابقة لها، بحيث يصبح العنصر الزائد في $ \ensuremath{\mathtt{u}}_r$ عنصرًا زائدًا في $ \ensuremath{\mathtt{u}}_0$ . يمكننا بعدها حذف العنصر المناسب من كتلة $ \ensuremath{\mathtt{u}}_0$ .
 2. نتجاوز بسرعة (في $ r+1\le \ensuremath{\mathtt{b}}$ خطوة) نهاية قائمة الكتل. في هذه الحالة، تكون $ \ensuremath{\mathtt{u}}_r$ هي الكتلة الأخيرة، ولا حاجة لأن تحتوي كتلة $ \ensuremath{\mathtt{u}}_r$ على $ \ensuremath{\mathtt{b}}-1$ عنصرًا على الأقل. ولذلك نتصرّف كما سبق، مستعيرين عنصرًا من $ \ensuremath{\mathtt{u}}_r$ ليكون عنصرًا زائدًا في $ \ensuremath{\mathtt{u}}_0$ . وإذا أدّى هذا إلى أن تصبح كتلة $ \ensuremath{\mathtt{u}}_r$ فارغة، فإننا نحذفها.

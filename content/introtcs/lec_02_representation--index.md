@@ -108,7 +108,7 @@ source: https://introtcs.org/
 وتُعطى أمثلة أخرى في الجدول أدناه.
 
 
-![Representing each one the digits $0,1,2,\ldots,9$ as a $12\times 8$ bitmap image, which can be thought of as a string in $\{0,1\}^{96}$. Using this scheme we can represent a natural number $x$ of $n$ decimal digits as a string in $\{0,1\}^{96n}$. Image taken from [blog post of A. C. Andersen](http://blog.andersen.im/2010/12/autonomous-neural-development-and-pruning/).](/images/introtcs/original-digitsbitmap.webp){#bitmapdigitsfig .margin  }
+![تمثيل كلّ رقمٍ من الأرقام $0,1,2,\ldots,9$ بصورةٍ نقطية (bitmap) بقياس $12\times 8$، ويمكن اعتبارها نصًّا في $\{0,1\}^{96}$. وبهذه المخطّطة نمثّل عددًا طبيعيًّا $x$ من $n$ خانةٍ عشرية كنصٍّ في $\{0,1\}^{96n}$. الصورة مأخوذة من [تدوينة A. C. Andersen](http://blog.andersen.im/2010/12/autonomous-neural-development-and-pruning/).](/images/introtcs/original-digitsbitmap.webp){#bitmapdigitsfig .margin  }
 
 
 
@@ -422,7 +422,7 @@ $C(0),C(1),C(2),\ldots$.
 وعليه، في ظلّ هذا الافتراض، ولأنّ تركيب دالتين واحد-لواحد يعطي دالةً واحد-لواحد (انظر [onetoonecompex](#onetoonecompex){.ref})، فإنّ الدالة $FtS:\{0,1\}^\infty \rightarrow \{0,1\}^*$ المعرَّفة بـ$FtS(f)=RtS(FtR(f))$ ستكون واحد-لواحدة، وهذا يناقض [sequencestostrings](#sequencestostrings){.ref}.
 انظر [proofofcantorfig](#proofofcantorfig){.ref} لرسمٍ توضيحيٍّ لهذه الحجة.
 
-![We prove [cantorthm](#cantorthm){.ref} by combining [sequencestostrings](#sequencestostrings){.ref} and [sequencestoreals](#sequencestoreals){.ref}.  [sequencestoreals](#sequencestoreals){.ref}, which uses standard calculus tools, shows the existence of a one-to-one map $FtR$ from the set $\{0,1\}^\infty$ to the real numbers. So, if a hypothetical one-to-one map $RtS:\R \rightarrow \{0,1\}^*$ existed, then we could compose them to get a one-to-one map $FtS:\{0,1\}^\infty \rightarrow \{0,1\}^*$. Yet this contradicts [sequencestostrings](#sequencestostrings){.ref}- the heart of the proof- which rules out the existence of such a map.](/images/introtcs/original-proofofcantor.webp){#proofofcantorfig }
+![نُثبت [cantorthm](#cantorthm){.ref} بجمع [sequencestostrings](#sequencestostrings){.ref} و[sequencestoreals](#sequencestoreals){.ref}. وتُظهر [sequencestoreals](#sequencestoreals){.ref}، التي تستعمل أدوات التفاضل والتكامل القياسية، وجود تطبيقٍ واحد-لواحد $FtR$ من المجموعة $\{0,1\}^\infty$ إلى الأعداد الحقيقية. ولو وُجد تطبيقٌ واحد-لواحد افتراضي $RtS:\R \rightarrow \{0,1\}^*$، لجمَعنا بينهما للحصول على تطبيقٍ واحد-لواحد $FtS:\{0,1\}^\infty \rightarrow \{0,1\}^*$. لكنّ هذا يتعارض مع [sequencestostrings](#sequencestostrings){.ref} — أيّ قلب البرهان — التي تُستبعد وجود مثل هذا التطبيق.](/images/introtcs/original-proofofcantor.webp){#proofofcantorfig }
 
 ولا يبقى سوى إثبات المُبرهَنين.
 ونبدأ بإثبات [sequencestostrings](#sequencestostrings){.ref}، وهو في الحقيقة جوهرُ [cantorthm](#cantorthm){.ref}.

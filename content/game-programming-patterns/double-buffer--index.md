@@ -92,7 +92,7 @@ source: https://gameprogrammingpatterns.com/
 
 <span name="tearing"></span>
 
-<img src="/images/game-programming-patterns/double-buffer-1.webp" alt="A series of images of an in-progress frame being rendered. A pointer writes pixels while another reads them. The reader outpaces the writer until it starts reading pixels that haven't been rendered yet." />
+<img src="/images/game-programming-patterns/double-buffer-1.webp" alt="سلسلة صور لإطار قيد الرسم. مؤشر يكتب البكسلات بينما يقرأها مؤشر آخر. يسبق القارئ الكاتب حتى يبدأ بقراءة بكسلات لم تُرسم بعد." />
 
 <aside name="tearing">
 
@@ -243,7 +243,7 @@ B المظلماً. وعندما تنتهي شيفرة العرض لدينا م�
 
 على وجه التحديد، يرسم هذا التحفة الفنية:
 
-<img src="/images/game-programming-patterns/double-buffer-2.webp" width="240" alt="A pixellated smiley face." />
+<img src="/images/game-programming-patterns/double-buffer-2.webp" width="240" alt="وجه مبتسم مُبكسل." />
 
 </aside>
 
@@ -335,7 +335,7 @@ Method)</a>.
 يكون المسرح الناتج معدّاً كما يوضّح الصورة التالية. تُظهر الأسهم إلى من يواجه كل
 ممثل، والأرقام تُظهر فهرسهم في مصفوفة المسرح.
 
-<img src="/images/game-programming-patterns/double-buffer-3.webp" alt="Boxes for Harry, Baldy, and Chump, in that order. Harry has an arrow pointing to Baldy, who has an arrow pointing to Chump, who has an arrow pointing back to Harry." />
+<img src="/images/game-programming-patterns/double-buffer-3.webp" alt="مربّعات لـ Harry ثم Baldy ثم Chump بترتيبها. سهم من Harry يشير إلى Baldy، وسهم من Baldy يشير إلى Chump، وسهم من Chump يعود إلى Harry." />
 
 سنصفع هاري لبدء الأمور، ونرى ما يحدث عندما نبدأ المعالجة:
 
@@ -356,7 +356,7 @@ Method)</a>.
 قليلاً، ولنفترض أننا نعيد ترتيب المهرجين داخل مصفوفة المسرح لكن نتركهم يواجهون
 بعضهم بالطريقة نفسها.
 
-<img src="/images/game-programming-patterns/double-buffer-4.webp" alt="The same boxes as before with the same arrows, but now they are ordered Chump, Baldy, Harry." />
+<img src="/images/game-programming-patterns/double-buffer-4.webp" alt="المربّعات نفسها والسهام نفسها، لكن ترتيبها الآن Chump ثم Baldy ثم Harry." />
 
 سنترك بقية إعداد المسرح كما هو، لكننا سنستبدل الجزء من الشيفرة الذي يضيف الممثلين
 إلى المسرح بما يلي:

@@ -248,7 +248,7 @@ HMAC هو معيار لإنتاج MAC باستخدام دالة تجزئة تش�
 وأكبر فرق بين HMAC وبين بادئة-MAC أو تنويعاتها هو أنّ الرسالة تمرّ عبر دالة التجزئة
 مرّتين، وتُدمج مع المفتاح قبل كلّ مرّة. وعلى نحو بصريّ يبدو HMAC هكذا:
 
-![center](/images/crypto-101/message-authentication-codes-fig-0-HMAC.svg)
+![بناء HMAC](/images/crypto-101/message-authentication-codes-fig-0-HMAC.svg)
 
 ولعلّ الشيء المفاجئ الوحيد هنا هما الثابتان `p_{inner}` (الحشو الداخلي، أي مقدار طول
 كتلة واحدة من دالة التجزئة من بايتات `0x36`) و`p_{outer}` (الحشو الخارجي، أي مقدار
@@ -444,18 +444,18 @@ AEAD ميزة في بعض أوضاع التشفير المصادَق. وتُسم
 الوصفية إلى المحتوى المشفَّر، بحيث تُصادق على المحتوى المشفَّر مع البيانات
 الوصفية معًا، لا على القطعتين كلٌّ على حدة:
 
-![center](/images/crypto-101/message-authentication-codes-fig-1-AEAD.svg)
+![إضافة البيانات الوصفية في أوضاع AEAD](/images/crypto-101/message-authentication-codes-fig-1-AEAD.svg)
 
 #### وضع OCB
 
-advanced
+متقدّم
 
 وعادةً ما سترغب في استعمال نظام تشفير أعلى مستوى بكثير، مثل OpenPGP أو NaCl أو TLS.
 
 `وضع OCB` (`OCB mode`) هو `وضع AEAD` (AEAD mode) من أوضاع التشغيل. وهو إحدى أقدم
 `أوضاع AEAD` (AEAD modes) التي تطوّرت.
 
-![center](/images/crypto-101/message-authentication-codes-fig-2-Encryption.svg)
+![تشفير وضع OCB](/images/crypto-101/message-authentication-codes-fig-2-Encryption.svg)
 
 وكما ترى، يبدو معظم هذا النظام مشابهًا إلى حدٍّ كبير لـ`وضع ECB` (`ECB mode`). واسم
 OCB مشابه أيضًا لـ«الكتاب الإلكتروني الشيفري» (electronic codebook). لكنّ OCB لا
@@ -467,7 +467,7 @@ OCB مشابه أيضًا لـ«الكتاب الإلكتروني الشيفري
 بذاته) للنصّ الصريح. وهناك أيضًا وسم منفصل آخر هو `t_a`، الذي يصادق على بيانات AEAD
 الوصفية. ويُحسب وسم البيانات الوصفية `t_a` على النحو التالي:
 
-![center](/images/crypto-101/message-authentication-codes-fig-3-Auth.svg)
+![حساب وسم المصادقة t_a](/images/crypto-101/message-authentication-codes-fig-3-Auth.svg)
 
 ولهذا التصميم عدد من الخصائص المثيرة. فمثلًا، هو سريع جدًّا: إذ لا يحتاج إلّا نحو
 عملية واحدة لشيفرة الكتل لكلّ كتلة مشفَّرة أو كتلة بيانات وصفية، إضافةً إلى عملية
@@ -489,7 +489,7 @@ OCB مشابه أيضًا لـ«الكتاب الإلكتروني الشيفري
 
 #### وضع GCM
 
-advanced
+متقدّم
 
 وعادةً ما سترغب في استعمال نظام تشفير أعلى مستوى بكثير، مثل OpenPGP أو NaCl أو TLS.
 

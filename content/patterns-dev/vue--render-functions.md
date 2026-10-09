@@ -299,7 +299,7 @@ import RenderComponent from "./components/RenderComponent.vue";
 
 يا إلهي. إذا كنت تشعر بالارتباك هنا، فلا داعي للقلق. فرغم أن دوال العرض تمنحنا قوة أكبر في تخصيص ترميز مكوّناتنا كما نرغب، فإن استخدام القوالب القياسية يكون عادةً *أسهل بكثير* في الغالبية العظمى من الوقت. ولا يُلجأ إلى دوال العرض إلا في الحالات الفريدة التي تتطلّب عرضًا ديناميكيًا معقّدًا أو تخصيصًا.
 
-JavaScript iconRenderComponent.vue
+`RenderComponent.vue`
 
 ```javascript
 <template>
@@ -369,7 +369,7 @@ const render = (
 
 مع JSX، لا تبدو دالة العرض صعبة البتّة! ومن المهمّ أن ندرك أن JSX هو أداة تطوير تحتاج دائمًا إلى أن تُترجم (transpile) بمساعدة حزمة Babel (مثل [babel-plugin-jsx](https://github.com/vuejs/babel-plugin-jsx)) إلى JavaScript قياسية. ويمتلك كلٌّ من [create-vue](https://github.com/vuejs/create-vue) و[Vue CLI](https://cli.vuejs.org/) خيارات لتوليد مشاريع ذات دعم JSX مُهيّأ مسبقًا.
 
-JavaScript iconRenderComponent.vue
+`RenderComponent.vue`
 
 ```javascript
 <template>
@@ -465,7 +465,7 @@ export default RenderComponent;
 
 مع هذا الإعداد للمكوّن الوظيفي، سيعرض مكوّننا نفس العبارة “Hello World!” في واجهة المستخدم.
 
-JavaScript iconRenderComponent.vue
+`RenderComponent.vue`
 
 ```javascript
 function RenderComponent(props) {

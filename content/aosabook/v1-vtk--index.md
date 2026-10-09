@@ -336,5 +336,5 @@ VTK حزمة أدوات برمجية ضخمة. ويتكوّن النظام حا�
 3. `http://www.midasjournal.org/?journal=35`
 
 [^1]: `http://en.wikipedia.org/wiki/Opaque_pointer`.
-[^2]: See the latest VTK code analysis at `http://www.ohloh.net/p/vtk/analyses/latest`.
+[^2]: راجع أحدث تحليل لشيفرة VTK على `http://www.ohloh.net/p/vtk/analyses/latest`.
 [^3]: `http://www.midasjournal.org/?journal=35`

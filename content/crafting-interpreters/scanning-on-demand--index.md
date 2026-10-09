@@ -21,7 +21,7 @@ source: https://craftinginterpreters.com/
 [vm]: /book/crafting-interpreters/a-virtual-machine/index
 [next chapter]: /book/crafting-interpreters/compiling-expressions/index
 
-<img src="/images/crafting-interpreters/scanning-on-demand-1.webp" alt="Source code &rarr; scanner &rarr; tokens &rarr; compiler &rarr; bytecode chunk &rarr; VM." />
+<img src="/images/crafting-interpreters/scanning-on-demand-1.webp" alt="الشيفرة المصدرية &rarr; الماسح &rarr; الرموز &rarr; المصرّف &rarr; قطعة شيفرة البايت &rarr; الآلة الافتراضية." />
 
 سأعترف بأنّ هذا ليس أكثر الفصول إثارةً في الكتاب. فمع وجود
 تنفيذين لنفس اللّغة، لا بدّ من بعض التكرار. لكنّني تسلّلت
@@ -205,7 +205,7 @@ Java، فإنّ الإخفاقات تُطلَق كاستثناءات وتفكّ 
 
 <span name="fields"></span>
 
-<img src="/images/crafting-interpreters/scanning-on-demand-2.webp" alt="The start and current fields pointing at 'print bacon;'. Start points at 'b' and current points at 'o'." />
+<img src="/images/crafting-interpreters/scanning-on-demand-2.webp" alt="الحقلان start وcurrent يشييران إلى print bacon;. يشير start إلى الحرف b ويشير current إلى الحرف o." />
 
 <aside name="fields">
 
@@ -389,7 +389,7 @@ print 1 + 2;
 هذا الجزء من الفصل جافٌّ إلى حدٍّ كبير، لذا إليك صورةَ
 من السمندر المائي (axolotl).
 
-<img src="/images/crafting-interpreters/scanning-on-demand-3.webp" alt="A drawing of an axolotl." />
+<img src="/images/crafting-interpreters/scanning-on-demand-3.webp" alt="رسم للسمندر المائي." />
 
 </aside>
 
@@ -626,7 +626,7 @@ print 1 + 2;
 
 <span name="down"></span>
 
-<img src="/images/crafting-interpreters/scanning-on-demand-4.webp" alt="A trie that contains all of Lox's keywords." />
+<img src="/images/crafting-interpreters/scanning-on-demand-4.webp" alt="شجرة trie تحتوي على كلّ الكلمات المفتاحية في Lox." />
 
 <aside name="down">
 
@@ -697,7 +697,7 @@ DFA في التحليل المعجمي، فإنّ كلّ انتقالٍ هو م�
 
 <span name="railroad"></span>
 
-<img src="/images/crafting-interpreters/scanning-on-demand-5.webp" alt="A syntax diagram that recognizes integer and floating point literals." />
+<img src="/images/crafting-interpreters/scanning-on-demand-5.webp" alt="مخطط نحوي يتعرّف على الثوابت الصحيحة وثوابت الفاصلة العائمة." />
 
 <aside name="railroad">
 

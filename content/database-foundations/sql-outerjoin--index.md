@@ -181,7 +181,7 @@ ORDER BY 3;
 
 تلميح 3: إذا كنت لا تزال عالقًا، فحاول تصوّر ما تحاول فعله: ارسم جدولًا بـ "last_name" و"first_name" و"lecturer_id"، واملأ بعض القيم. ثم ارسم جدولًا بـ "coordinator" و"credits" يحتوي المقررات ذات 6 نقاط. فأي السجلات ستندمج إذا دمجت الجدولين؟ وأيّها لن يندمج؟ حاول تنفيذ تلك الخطوة في SQL.
 
-![Hint to outer join exercise](https://df.webontwerp.ucll.be/images/database-foundations/sql-outerjoin-4-outerjoin_hint.webp)
+![تلميح لتمرين الربط الخارجي (outer join)](https://df.webontwerp.ucll.be/images/database-foundations/sql-outerjoin-4-outerjoin_hint.webp)
 
 الحل:
 

@@ -1,5 +1,5 @@
 ---
-title: "The Yocto Project"
+title: "مشروع Yocto"
 lang: ar
 source: https://aosabook.org/en/v2/yocto.html
 ---

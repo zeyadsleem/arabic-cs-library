@@ -88,7 +88,7 @@ Margo Seltzer و Keith Bostic
 |  |  |  |  |  |
 | الواجهات البرمجية المستخدمة من قبل طرق الوصول |  |  |  |  |
 |  |  |  |  |  |
-| 4. Into Lock | 5. Into Mpool | 6. Into Log | 7. Into Dbreg |  |
+| 4. إلى Lock | 5. إلى Mpool | 6. إلى Log | 7. إلى Dbreg |  |
 | __lock_downgrade | __memp_nameop | __log_print_record | __dbreg_setup |  |
 | __lock_vec | __memp_fget |  | __dbreg_net_id |  |
 | __lock_get | __memp_fput |  | __dbreg_revoke |  |
@@ -101,7 +101,7 @@ Margo Seltzer و Keith Bostic
 |  |  |  |  |  |
 | واجهات التعافي البرمجية |  |  |  |  |
 |  |  |  |  |  |
-| 8. Into Lock | 9. Into Mpool | 10. Into Log | 11. Into Dbreg | 12. Into Txn |
+| 8. إلى Lock | 9. إلى Mpool | 10. إلى Log | 11. إلى Dbreg | 12. إلى Txn |
 | __lock_getlocker | __memp_fget | __log_compare | __dbreg_close_files | __txn_getckp |
 | __lock_get_list | __memp_fput | __log_open | __dbreg_mark_restored | __txn_checkpoint |
 |  | __memp_fset | __log_earliest | __dbreg_init_recover | __txn_reset |
@@ -111,21 +111,21 @@ Margo Seltzer و Keith Bostic
 |  |  |  |  |  |
 | الواجهات البرمجية المستخدمة من قبل وحدة المعاملات |  |  |  |  |
 |  |  |  |  |  |
-| 13. Into Lock | 14. Into Mpool | 15. Into Log | 16. Into Dbreg |  |
+| 13. إلى Lock | 14. إلى Mpool | 15. إلى Log | 16. إلى Dbreg |  |
 | __lock_vec | __memp_sync | __log_cursor | __dbreg_invalidate_files |  |
 | __lock_downgrade | __memp_nameop | __log_current_lsn | __dbreg_close_files |  |
 |  |  |  | __dbreg_log_files |  |
 |  |  |  |  |  |
 | واجهة برمجية إلى نظام النسخ الاحتياطي |  |  |  |  |
 |  |  |  |  |  |
-|  |  | 17. From Log |  | 18. From Txn |
+|  |  | 17. من Log |  | 18. من Txn |
 |  |  | __rep_send_message |  | __rep_lease_check |
 |  |  | __rep_bulk_message |  | __rep_txn_applied |
 |  |  |  |  | __rep_send_message |
 |  |  |  |  |  |
 | واجهة برمجية من نظام النسخ الاحتياطي |  |  |  |  |
 |  |  |  |  |  |
-| 19. Into Lock | 20. Into Mpool | 21. Into Log | 22. Into Dbreg | 23. Into Txn |
+| 19. إلى Lock | 20. إلى Mpool | 21. إلى Log | 22. إلى Dbreg | 23. إلى Txn |
 | __lock_vec | __memp_fclose | __log_get_stable_lsn | __dbreg_mark_restored | __txn_recycle_id |
 | __lock_get | __memp_fget | __log_cursor | __dbreg_invalidate_files | __txn_begin |
 | __lock_id | __memp_fput | __log_newfile | __dbreg_close_files | __txn_recover |
@@ -381,4 +381,4 @@ while (cur_lsn > ckp_lsn) {
 
 1. لاحظ أننا نحتاج فقط إلى الرجوع إلى LSN نقطة الفحص، لا إلى سجل نقطة الفحص السابقة له.
 
-[^1]: Note that we only need to go backwards to the checkpoint LSN, not the checkpoint record preceding it.
+[^1]: لاحظ أننا نحتاج فقط إلى الرجوع إلى LSN نقطة الفحص، لا إلى سجل نقطة الفحص السابقة له.

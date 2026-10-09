@@ -112,7 +112,7 @@ $ less output
 
 السجلات الثمانية الأولى (`%rax` و`%rbx` و`%rcx` و`%rdx` و`%rdi` و`%rsi` و`%rsp` و`%rbp`) هي امتدادات ذات 64 بت لسجلات 32 بت في x86، ولها آلية مشتركة للوصول إلى بتاتها الـ32 السفلى وبتاتها الـ16 السفلى وبايتها الأقل أهمية. وللوصول إلى البتات الـ32 السفلى من السجلات الثمانية الأولى، ما عليك سوى استبدال حرف `r` في اسم السجل بحرف `e`. وهكذا، فإن السجل المقابل للبتات الـ32 السفلى من السجل `%rax` هو السجل `%eax`. وللوصول إلى البتات الـ16 السفلى من كل سجل من هذه السجلات الثمانية، أشر إلى الحرفين الأخيرين من اسم السجل. لذا، فإن آلية الوصول إلى البايتين السفليين من السجل `%rax` هي `%ax`.
 
-![Register %rax’s names for accessing a subset of the register’s bits. %eax refers to its lower 32 bits, %ax refers to its lower 16 bits, %al refers to the low-order byte (bits 0-7), and %ah refers to the second byte (bits 8-15).](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-register.webp){#Register} الشكل 1. الأسماء التي تشير إلى مجموعات فرعية من بتات السجل %rax.
+![أسماء السجل %rax للوصول إلى أجزاء فرعية من بتات السجل. يشير %eax إلى البتات الأدنى الـ32 منه، ويشير %ax إلى البتات الأدنى الـ16 منه، ويشير %al إلى البايت الأدنى (البتات 0-7)، ويشير %ah إلى البايت الثاني (البتات 8-15).](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-register.webp){#Register} الشكل 1. الأسماء التي تشير إلى مجموعات فرعية من بتات السجل %rax.
 
 توفّر بنية ISA آلية منفصلة للوصول إلى المكوّنات ذات الثماني بتات داخل البتات الـ16 السفلى من السجلات الأربعة الأولى المذكورة. ويوضّح [الشكل 1](#Register) آليات الوصول للسجل `%rax`. ويمكن الوصول إلى البايتين *العلوي* و*السفلي* داخل البتات الـ16 السفلى من السجلات الأربعة الأولى المذكورة بأخذ الحرفين الأخيرين من اسم السجل واستبدال الحرف الأخير إما بحرف `h` (لـ*الأعلى*) أو بحرف `l` (لـ*الأدنى*) حسب البايت المطلوب. فمثلًا، يشير `%al` إلى البتات الثماني السفلى من السجل `%ax`، بينما يشير `%ah` إلى البتات الثماني العليا من السجل `%ax`. وتُستخدم هذه السجلات ذات الثماني بتات عادةً لتخزين قيم بايت واحد لعمليات معينة، مثل الإزاحات على مستوى البتات (فلا يمكن إزاحة سجل 32-بت أكثر من 32 موضعًا، والعدد 32 لا يحتاج إلا إلى بايت واحد للتخزين).
 
@@ -215,7 +215,7 @@ add    $0x2,%eax
 
 تشكّل التعليمات الثلاث المعروضة في [الجدول 1](#Basic) أيضًا اللبنات الأساسية للتعليمات التي تحافظ على تنظيم مكدّس البرنامج (أي **مكدّس الاستدعاء**). وتذكّر أن السجلين `%rbp` و`%rsp` يشيران إلى مؤشّر *الإطار* ومؤشّر *المكدّس* على الترتيب، ويحتفظ بهما المترجم لإدارة مكدّس الاستدعاء. وتذكّر من مناقشتنا السابقة لـ[ذاكرة البرنامج](https://diveintosystems.org/book/C2-C_depth/scope_memory.html#_parts_of_program_memory_and_scope) أن مكدّس الاستدعاء يخزّن عادةً المتغيرات المحلية والمعاملات ويساعد البرنامج على تتبع تنفيذه (انظر [الشكل 1](#ProgramMemory)). وفي أنظمة x86-64، ينمو مكدّس التنفيذ نحو العناوين *الأدنى*. وكما في جميع بنى بيانات المكدّس، تحدث العمليات عند "قمة" المكدّس.
 
-![The parts of a program’s address space.](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-memparts.webp) الشكل 1. أجزاء فضاء عنونة البرنامج
+![أجزاء فضاء عنونة البرنامج.](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-memparts.webp) الشكل 1. أجزاء فضاء عنونة البرنامج
 
 توفّر بنية x86-64 تعليمتين ([الجدول 2](#Stack)) لتبسيط إدارة مكدّس الاستدعاء.
 
@@ -277,7 +277,7 @@ int adder2(int a) {
 
 يوضّح [الشكل 2](#InitialStep) حالة نموذجية لمكدّس الاستدعاء والسجلات قبل تنفيذ الدالة `adder2`.
 
-![frame1](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-1-ex1_1.webp){#InitialStep} الشكل 2. مكدّس التنفيذ قبل التنفيذ
+![الحالة 1 لمكدّس التنفيذ](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-1-ex1_1.webp){#InitialStep} الشكل 2. مكدّس التنفيذ قبل التنفيذ
 
 لاحظ أن المكدّس ينمو نحو العناوين *الأدنى*. ويحتوي السجل `%eax` على قيمة غير ذات معنى. ويُخزَّن المعامل الوحيد للدالة `adder2` (`a`) في السجل `%rdi` حسب الاصطلاح. وبما أن `a` من نوع `int`، فإنه يُخزَّن في سجل المكوّن `%edi`، كما هو معروض في [الشكل 2](#InitialStep). وبالمثل، بما أن الدالة `adder2` تعيد قيمة من نوع `int`، يُستخدم سجل المكوّن `%eax` لقيمة الإرجاع بدلًا من `%rax`.
 
@@ -285,7 +285,7 @@ int adder2(int a) {
 
 انتبه جيدًا إلى القيم الأولية للسجلين `%rsp` و`%rbp`: فهما 0xd28 و0xd40 على الترتيب. ويشير السهم الأحمر (في أعلى اليسار) في الأشكال التالية بصريًا إلى التعليمة قيد التنفيذ. ويعرض السجل `%rip` (أو مؤشّر التعليمات) التعليمة التالية المراد تنفيذها. في البداية، يحتوي `%rip` على العنوان 0x526، الذي يقابل التعليمة الأولى في الدالة `adder2`.
 
-![frame2](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-2-ex1_2.webp)
+![الحالة 2 لمكدّس التنفيذ](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-2-ex1_2.webp)
 
 تضع التعليمة الأولى (`push %rbp`) نسخة من القيمة الموجودة في `%rbp` (أو 0xd40) على قمة المكدّس. وبعد تنفيذها، يتقدم السجل `%rip` إلى عنوان التعليمة التالية المراد تنفيذها (0x527). وتُنقص تعليمة `push` مؤشّر المكدّس بمقدار 8 ("فتنمي" المكدّس بمقدار 8 بايتات)، ما ينتج قيمة جديدة لـ`%rsp` هي 0xd20. وتذكّر أن التعليمة `push %rbp` تكافئ:
 
@@ -296,24 +296,24 @@ mov %rbp, (%rsp)
 
 وبعبارة أخرى، اطرح 8 من مؤشّر المكدّس وضع نسخة من محتويات `%rbp` في الموقع الذي يشير إليه مؤشّر المكدّس بعد إلغاء الإشارة، `(%rsp)`.
 
-![frame3](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-3-ex1_3.webp)
+![الحالة 3 لمكدّس التنفيذ](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-3-ex1_3.webp)
 تذكّر أن بنية التعليمة `mov` هي `mov S,D`، حيث S هو الموقع المصدر، وD هو الهدف. وهكذا، تحدّث التعليمة التالية (`mov %rsp, %rbp`) قيمة `%rbp` إلى 0xd20. ويتقدم السجل `%rip` إلى عنوان التعليمة التالية المراد تنفيذها، أي 0x52a.
 
-![frame4](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-4-ex1_4.webp)
+![الحالة 4 لمكدّس التنفيذ](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-4-ex1_4.webp)
 
 بعد ذلك، تُنفَّذ التعليمة `mov %edi, -0x4(%rbp)`. وهذه أعقد قليلًا من تعليمة `mov` السابقة. لنحلّلها قطعة قطعة. أولًا، تذكّر أن المعامل الأول لأي دالة يُخزَّن في السجل `%rdi`. وبما أن `a` من نوع `int`، يخزّن المترجم المعامل الأول في سجل المكوّن `%edi`. بعد ذلك، يُترجم المعامل `-0x4(%rbp)` إلى M[`%rbp` - 0x4]. وبما أن `%rbp` يحتوي على القيمة 0xd20، فإن طرح 4 منه يعطي 0xd1c. ولذلك، تنسخ التعليمة `mov` قيمة السجل `%edi` (أو 0x28) إلى الموقع 0xd1c على المكدّس. ويتقدم مؤشّر التعليمات إلى العنوان 0x52d، وهو العنوان التالي المراد تنفيذه.
 
 لاحظ أن تخزين القيمة 0x28 لا يؤثر على مؤشّر المكدّس (`%rsp`). ولذلك، وفيما يخص البرنامج، فإن "قمة" هذا المكدّس لا تزال عند العنوان 0xd20.
 
-![frame5](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-5-ex1_5.webp)
+![الحالة 5 لمكدّس التنفيذ](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-5-ex1_5.webp)
 
 تنسخ التعليمة `mov` التالية (`mov -0x4(%rbp), %eax`) القيمة الموجودة في موقع المكدّس 0xd1c (أي M[`%rbp` - 0x4] أو 0x28) وتخزّنها في السجل `%eax`. ويتقدم السجل `%rip` إلى التعليمة التالية المراد تنفيذها، أي 0x530.
 
-![frame6](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-6-ex1_6.webp)
+![الحالة 6 لمكدّس التنفيذ](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-6-ex1_6.webp)
 
 بعد ذلك، تُنفَّذ التعليمة `add $0x2, %eax`. وتذكّر أن التعليمة `add` لها الصيغة `add S,D` وتضع المقدار S + D في الهدف D. لذا، تضيف `add $0x2, %eax` القيمة الثابتة 0x2 إلى القيمة المخزّنة في `%eax` (أو 0x28)، فتنتج القيمة `0x2A` التي تُخزَّن في السجل `%eax`. ويتقدم السجل `%rip` ليشير إلى التعليمة التالية المراد تنفيذها، أي 0x533.
 
-![frame7](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-7-ex1_7.webp)
+![الحالة 7 لمكدّس التنفيذ](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-7-ex1_7.webp)
 
 التعليمة التالية التي تُنفَّذ هي `pop %rbp`. وتسحب هذه التعليمة القيمة من قمة مكدّس الاستدعاء وتضعها في سجل الهدف `%rbp`. وتذكّر أن هذه التعليمة تكافئ تسلسل التعليمتين التاليتين:
 
@@ -1083,7 +1083,7 @@ int sumUp(int n){
 
 يعرض [الشكل 1](#StackFrame) إطاري المكدّس للدالة `main` ودالة تستدعيها اسمها `fname`. وسنشير إلى الدالة `main` باسم الدالة *المستدعية* (caller) وإلى `fname` باسم الدالة *المستدعاة* (callee).
 
-![an illustration of stack frames](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-stackFrame.webp){#StackFrame} الشكل 1. إدارة إطار المكدّس
+![رسم توضيحي لإطارات المكدّس](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-stackFrame.webp){#StackFrame} الشكل 1. إدارة إطار المكدّس
 
 في [الشكل 1](#StackFrame)، ينتمي الإطار النشط الحالي إلى الدالة المستدعاة (`fname`). وتُستخدم الذاكرة بين مؤشّر المكدّس ومؤشّر الإطار للمتغيرات المحلية. ويتحرك مؤشّر المكدّس عند دفع القيم المحلية إلى المكدّس وسحبها منه. وفي المقابل، يبقى مؤشّر الإطار ثابتًا نسبيًا، ويشير إلى بداية (قاعدة) إطار المكدّس الحالي. ونتيجة لذلك، تشير المترجمات مثل GCC عادةً إلى القيم الموجودة على المكدّس نسبةً إلى مؤشّر الإطار. وفي [الشكل 1](#StackFrame)، يُحَدّ الإطار النشط من الأسفل بمؤشّر قاعدة الدالة `fname`، وهو عنوان المكدّس 0x418. والقيمة المخزّنة في العنوان 0x418 هي قيمة `%rbp` "المحفوظة" (0x42c)، وهي نفسها عنوان يشير إلى قاعدة إطار التنشيط للدالة `main`. ويحدّ **عنوان الإرجاع** الجزء العلوي من إطار التنشيط للدالة `main`، وهو يشير إلى المكان الذي يستأنف فيه تنفيذ البرنامج في الدالة `main` عند انتهاء تنفيذ الدالة المستدعاة `fname`.
 
@@ -1091,7 +1091,7 @@ int sumUp(int n){
 
 > تذكّر أن منطقة مكدّس الاستدعاء (ذاكرة المكدّس) في البرنامج مختلفة عن منطقة الشيفرة (ذاكرة مقطع الشيفرة). فبينما يشير `%rbp` و`%rsp` إلى عناوين في ذاكرة المكدّس، يشير `%rip` إلى عنوان في ذاكرة مقطع *الشيفرة*. وبعبارة أخرى، عنوان الإرجاع عنوان في ذاكرة مقطع الشيفرة، لا في ذاكرة المكدّس:
 >
-> ![The parts of a program’s address space.](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-1-memparts.webp) الشكل 2. أجزاء فضاء عنونة البرنامج
+> ![أجزاء فضاء عنونة البرنامج.](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-1-memparts.webp) الشكل 2. أجزاء فضاء عنونة البرنامج
 
 يحتوي [الجدول 1](#FunctionManagement) على عدة تعليمات إضافية يستخدمها المترجم لإدارة الدوال الأساسية.
 
@@ -1225,51 +1225,51 @@ int main(void) {
 
 يعرض [الشكل 3](#initialMain) مكدّس التنفيذ مباشرة قبل تنفيذ الدالة `main`.
 
-![slide1](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-2-Slide1.webp){#initialMain} الشكل 3. الحالة الأولية لسجلات وحدة المعالجة المركزية ومكدّس الاستدعاء قبل تنفيذ الدالة main
+![الشريحة 1](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-2-Slide1.webp){#initialMain} الشكل 3. الحالة الأولية لسجلات وحدة المعالجة المركزية ومكدّس الاستدعاء قبل تنفيذ الدالة main
 
 تذكّر أن المكدّس ينمو نحو العناوين الأدنى. وفي هذا المثال، يكون `%rbp` في البداية عند عنوان المكدّس 0x830، و`%rsp` في البداية عند عنوان المكدّس 0xd48. وكلا القيمتين مختلقتان لهذا المثال.
 
 وبما أن الدوال المعروضة في المثال السابق تستخدم بيانات صحيحة، نُبرز سجلي المكوّن `%eax` و`%edi`، اللذين يحتويان في البداية على قيم غير ذات معنى. ويشير السهم الأحمر (في أعلى اليسار) إلى التعليمة قيد التنفيذ. في البداية، يحتوي `%rip` على العنوان 0x542، وهو عنوان ذاكرة البرنامج للسطر الأول في الدالة `main`.
 
-![slide2](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-3-Slide2.webp)
+![الشريحة 2](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-3-Slide2.webp)
 
 تحفظ التعليمة الأولى القيمة الحالية لـ`%rbp` بدفع 0x830 إلى المكدّس. وبما أن المكدّس ينمو نحو العناوين الأدنى، يُحدَّث مؤشّر المكدّس `%rsp` إلى 0xd40، وهو أقل من 0xd48 بمقدار 8 بايتات. ويتقدم `%rip` إلى التعليمة التالية في التسلسل.
 
-![slide3](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-4-Slide3.webp)
+![الشريحة 3](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-4-Slide3.webp)
 
 تحدّث التعليمة التالية (`mov %rsp, %rbp`) قيمة `%rbp` لتصبح مساوية لـ`%rsp`. ويشير مؤشّر الإطار (`%rbp`) الآن إلى بداية إطار المكدّس للدالة `main`. ويتقدم `%rip` إلى التعليمة التالية في التسلسل.
 
-![slide4](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-5-Slide4.webp)
+![الشريحة 4](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-5-Slide4.webp)
 
 تطرح التعليمة `sub` القيمة 0x10 من عنوان مؤشّر المكدّس، ما يجعل المكدّس "ينمو" فعليًا بمقدار 16 بايت، وهو ما نمثّله بإظهار موقعين بحجم 8 بايتات على المكدّس. وبالتالي يصبح للسجل `%rsp` القيمة الجديدة 0xd30. ويتقدم `%rip` إلى التعليمة التالية في التسلسل.
 
-![slide5](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-6-Slide5.webp)
+![الشريحة 5](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-6-Slide5.webp)
 
 تدفع التعليمة `callq ` القيمة الموجودة داخل السجل `%rip` (التي تدل على عنوان التعليمة *التالية* المراد تنفيذها) إلى المكدّس. وبما أن عنوان التعليمة التالية بعد `callq ` هو 0x55f، تُدفع هذه القيمة إلى المكدّس كعنوان الإرجاع. وتذكّر أن عنوان الإرجاع يشير إلى عنوان البرنامج الذي ينبغي أن يستأنف عنده التنفيذ عند عودة تنفيذ البرنامج إلى `main`.
 
 بعد ذلك، تنقل التعليمة `callq` عنوان الدالة `assign` (0x526) إلى السجل `%rip`، ما يدل على أنه ينبغي أن يستمر تنفيذ البرنامج في الدالة المستدعاة `assign` لا في التعليمة التالية في `main`.
 
-![slide6](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-7-Slide6.webp)
+![الشريحة 6](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-7-Slide6.webp)
 
 التعليمتان الأولى والثانية اللتان تُنفَّذان في الدالة `assign` هما الإجراءات الروتينية المعتادة التي تنفّذها كل دالة. فالتعليمة الأولى تدفع القيمة المخزّنة في `%rbp` (عنوان الذاكرة 0xd40) إلى المكدّس. وتذكّر أن هذا العنوان يشير إلى بداية إطار المكدّس للدالة `main`. ويتقدم `%rip` إلى التعليمة الثانية في `assign`.
 
-![slide7](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-8-Slide7.webp)
+![الشريحة 7](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-8-Slide7.webp)
 
 تحدّث التعليمة التالية (`mov %rsp, %rbp`) `%rbp` ليشير إلى قمة المكدّس، معلنةً بداية إطار المكدّس للدالة `assign`. ويتقدم مؤشّر التعليمات (`%rip`) إلى التعليمة التالية في الدالة `assign`.
 
-![slide8](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-9-Slide8.webp)
+![الشريحة 8](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-9-Slide8.webp)
 
 تنقل التعليمة `mov` عند العنوان 0x52a القيمة `$0x28` (أو 40) إلى المكدّس عند العنوان `-0x4(%rbp)`، أي أربعة بايتات فوق مؤشّر الإطار. وتذكّر أن مؤشّر الإطار يُستخدم عادةً للإشارة إلى المواقع على المكدّس. غير أن ضع في اعتبارك أن هذه العملية لا تغيّر قيمة `%rsp` — فلا يزال مؤشّر المكدّس يشير إلى العنوان 0xd20. ويتقدم السجل `%rip` إلى التعليمة التالية في الدالة `assign`.
 
-![slide9](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-10-Slide9.webp)
+![الشريحة 9](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-10-Slide9.webp)
 
 تضع التعليمة `mov` عند العنوان 0x531 القيمة `$0x28` في السجل `%eax`، الذي يحمل قيمة إرجاع الدالة. ويتقدم `%rip` إلى التعليمة `pop` في الدالة `assign`.
 
-![slide10](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-11-Slide10.webp)
+![الشريحة 10](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-11-Slide10.webp)
 
 في هذه المرحلة، تكون الدالة `assign` قد أكملت تنفيذها تقريبًا. والتعليمة التالية التي تُنفَّذ هي `pop %rbp`، التي تعيد `%rbp` إلى قيمته السابقة، أي 0xd40. وبما أن التعليمة `pop` تعدّل مؤشّر المكدّس، يُحدَّث `%rsp` إلى 0xd28.
 
-![slide11](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-12-Slide11.webp)
+![الشريحة 11](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-12-Slide11.webp)
 
 التعليمة الأخيرة في `assign` هي التعليمة `retq`. وعندما تُنفَّذ `retq`، يُسحب عنوان الإرجاع من المكدّس إلى السجل `%rip`. وفي مثالنا، يتقدم `%rip` الآن ليشير إلى التعليمة `callq` في `main` عند العنوان 0x55f.
 
@@ -1278,23 +1278,23 @@ int main(void) {
 - أُعيد مؤشّر المكدّس ومؤشّر الإطار إلى قيمتيهما قبل استدعاء `assign`، ما يعكس أن إطار المكدّس للدالة `main` هو الإطار النشط مرة أخرى.
 - القيم القديمة على المكدّس من إطار المكدّس النشط السابق *لا* تُزال. فهي لا تزال موجودة على مكدّس الاستدعاء.
 
-![slide12](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-13-Slide12.webp)
+![الشريحة 12](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-13-Slide12.webp)
 
 بالعودة إلى `main`، *يستبدل* استدعاء `adder` عنوان الإرجاع القديم على المكدّس بعنوان إرجاع جديد (0x554). ويشير عنوان الإرجاع هذا إلى التعليمة التالية المراد تنفيذها بعد عودة `adder`، أي `mov %eax, -0x4(%rbp)`. ويتحدّث السجل `%rip` ليشير إلى التعليمة الأولى المراد تنفيذها في `adder`، وهي عند العنوان 0x536.
 
-![slide13](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-14-Slide13.webp)
+![الشريحة 13](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-14-Slide13.webp)
 
 تحفظ التعليمة الأولى في الدالة `adder` مؤشّر إطار المستدعي (`%rbp` الخاص بـ`main`) على المكدّس.
 
-![slide14](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-15-Slide14.webp)
+![الشريحة 14](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-15-Slide14.webp)
 
 تحدّث التعليمة التالية `%rbp` بالقيمة الحالية لـ`%rsp`، أي العنوان 0xd20. ومعًا، تؤسّس التعليمتان الأخيرتان بداية إطار المكدّس للدالة `adder`.
 
-![slide15](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-16-Slide15.webp)
+![الشريحة 15](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-16-Slide15.webp)
 
 انتبه جيدًا للتعليمة التالية التي تُنفَّذ. تذكّر أن `$0x28` وُضعت على المكدّس أثناء استدعاء `assign`. والتعليمة `mov $-0x4(%rbp), %eax` تنقل قيمة *قديمة* موجودة على المكدّس إلى السجل `%eax`! وما كان ذلك ليحدث لو أن المبرمج هيّأ المتغير `a` في الدالة `adder`.
 
-![slide16](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-17-Slide16.webp)
+![الشريحة 16](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-17-Slide16.webp)
 
 تضيف التعليمة `add` عند العنوان 0x53d القيمة 2 إلى السجل `%eax`. وتذكّر أنه عند إرجاع عدد صحيح ذي 32 بت، تستخدم x86-64 سجل المكوّن `%eax` بدلًا من `%rax`. وتمثّل التعليمتان الأخيرتان معًا الشيفرة التالية في `adder`:
 
@@ -1303,31 +1303,31 @@ int a;
 return a + 2;
 ```
 
-![slide20](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-18-Slide17.webp)
+![الشريحة 20](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-18-Slide17.webp)
 
 بعد تنفيذ `pop`، يشير مؤشّر الإطار مرة أخرى إلى بداية إطار المكدّس للدالة `main`، أي العنوان 0xd40. ويحتوي مؤشّر المكدّس الآن على العنوان 0xd28.
 
-![slide18](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-19-Slide18.webp)
+![الشريحة 18](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-19-Slide18.webp)
 
 يؤدي تنفيذ `retq` إلى سحب عنوان الإرجاع من المكدّس، ما يعيد مؤشّر التعليمات إلى 0x554، أي عنوان التعليمة التالية المراد تنفيذها في `main`. والعنوان الموجود في `%rsp` هو الآن 0xd30.
 
-![slide19](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-20-Slide19.webp)
+![الشريحة 19](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-20-Slide19.webp)
 
 بالعودة إلى `main`، تضع التعليمة `mov %eax, -0x4(%rbp)` القيمة الموجودة في `%eax` في موقع يبعد أربعة بايتات فوق `%rbp`، أي عند العنوان 0xd3c. وتعيدها التعليمة التالية إلى السجل `%eax`.
 
-![slide21](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-21-Slide21.webp)
+![الشريحة 21](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-21-Slide21.webp)
 
 وبالتقدم قليلًا، تنسخ التعليمة `mov` عند العنوان 0x55a القيمة الموجودة في `%eax` (أو 0x2A) إلى السجل `%esi`، وهو سجل المكوّن ذو 32 بت المرتبط بـ`%rsi` ويخزّن عادةً المعامل الثاني للدالة.
 
-![slide22](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-22-Slide22.webp)
+![الشريحة 22](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-22-Slide22.webp)
 
 تنسخ التعليمة التالية (`mov $0x400604, %edi`) قيمة ثابتة (عنوان في ذاكرة مقطع الشيفرة) إلى السجل `%edi`. وتذكّر أن السجل `%edi` هو سجل المكوّن ذو 32 بت للسجل `%rdi`، الذي يخزّن عادةً المعامل الأول للدالة. وعنوان ذاكرة مقطع الشيفرة 0x400604 هو العنوان الأساسي للسلسلة `"x is %d\n"`.
 
-![slide23](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-23-Slide23.webp)
+![الشريحة 23](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-23-Slide23.webp)
 
 تعيد التعليمة التالية ضبط السجل `%eax` بالقيمة 0. ويتقدم مؤشّر التعليمات إلى استدعاء الدالة `printf` (المشار إليه بالوسم ``).
 
-![slide24](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-24-Slide24.webp)
+![الشريحة 24](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-24-Slide24.webp)
 
 تستدعي التعليمة التالية الدالة `printf`. ومن أجل الإيجاز، لن نتتبع الدالة `printf`، التي تعدّ جزءًا من `stdio.h`. غير أننا نعرف من صفحة الدليل (`man -s3 printf`) أن لـ`printf` الصيغة التالية:
 
@@ -1352,11 +1352,11 @@ printf("x is %d\n", x);
 
 وبعد استدعاء `printf`، تُخرج القيمة 0x2A إلى المستخدم بصيغة عدد صحيح. وهكذا، تُطبع القيمة 42 على الشاشة!
 
-![slide25](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-25-Slide25.webp)
+![الشريحة 25](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-25-Slide25.webp)
 
 بعد استدعاء `printf`، تنظّف التعليمات القليلة الأخيرة المكدّس وتهيّئ خروجًا نظيفًا من الدالة `main`. أولًا، تضمن التعليمة `mov` عند العنوان 0x56b وجود 0 في سجل الإرجاع (لأن آخر ما تفعله `main` هو إرجاع 0).
 
-![slide26](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-26-Slide26.webp)
+![الشريحة 26](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-26-Slide26.webp)
 
 تهيّئ التعليمة `leaveq` المكدّس للعودة من استدعاء الدالة. وتذكّر أن `leaveq` مماثلة للزوج التالي من التعليمات:
 
@@ -1469,7 +1469,7 @@ int sumr(int n) {
 
 كتبيين، نشجّعك على رسم المكدّس ورؤية كيفية تغيّر القيم. ويوضّح الرسم المتحرك أدناه كيفية تحديث المكدّس عند تشغيل هذه الدالة بالقيمة 3.
 
-![recursion](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-recursion.webp)
+![الاستدعاء الذاتي](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-recursion.webp)
 
 تذكّر أن [المصفوفات](https://diveintosystems.org/book/C1-C_intro/arrays_strings.html#_introduction_to_arrays) مجموعات مرتّبة من عناصر بيانات من النوع نفسه مخزّنة بشكل متجاور في الذاكرة. ويكون الشكل العام لـ[المصفوفات أحادية البعد](https://diveintosystems.org/book/C2-C_depth/arrays.html#_single_dimensional_arrays) المخصّصة تخصيصًا ساكنًا `Type arr[N]` حيث `Type` هو نوع البيانات، و`arr` هو المعرّف المرتبط بالمصفوفة، و`N` هو عدد عناصر البيانات. وتخصيص مصفوفة تخصيصًا ساكنًا بالشكل `Type arr[N]` أو ديناميكيًا بالشكل `arr = malloc(N * sizeof(Type))` يحجز *N* × sizeof(*Type*) بايت إجمالًا من الذاكرة.
 
@@ -1492,7 +1492,7 @@ int sumr(int n) {
 
 وكمثال، تأمّل مصفوفة نموذجية (`array`) فيها 10 عناصر صحيحة ([الشكل 1](#FigArray6)):
 
-![Each integer in the array requires four bytes.](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-arrayFig.webp){#FigArray6} الشكل 1. تخطيط مصفوفة من 10 أعداد صحيحة في الذاكرة. يمثّل كل صندوق مُعلَّم بـxi أربعة بايتات.
+![يحتاج كل عدد صحيح في المصفوفة إلى أربعة بايتات.](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-arrayFig.webp){#FigArray6} الشكل 1. تخطيط مصفوفة من 10 أعداد صحيحة في الذاكرة. يمثّل كل صندوق مُعلَّم بـxi أربعة بايتات.
 
 لاحظ أنه بما أن `array` مصفوفة أعداد صحيحة، فإن كل عنصر يشغل أربعة بايتات بالضبط. وهكذا، تستهلك مصفوفة صحيحة من 10 عناصر 40 بايتًا من الذاكرة المتجاورة.
 
@@ -1574,11 +1574,11 @@ for (i = 0; i < 4; i++) {
 
 في حالة المصفوفة المخصّصة ديناميكيًا، تحتوي المصفوفة الرئيسية على مصفوفة متجاورة من مؤشرات `int`. ويشير كل مؤشر صحيح إلى مصفوفة مختلفة في الذاكرة. ويوضّح [الشكل 1](#Matrices6) كيف نتصور عادةً كلًّا من هاتين المصفوفتين.
 
-![matrices](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-matrices.webp){#Matrices6} الشكل 1. توضيح لمصفوفة مخصّصة ساكنًا (M1) ومصفوفة مخصّصة ديناميكيًا (M2) بحجم 3×4
+![المصفوفات](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-matrices.webp){#Matrices6} الشكل 1. توضيح لمصفوفة مخصّصة ساكنًا (M1) ومصفوفة مخصّصة ديناميكيًا (M2) بحجم 3×4
 
 في كلا تعريفي المصفوفة، يمكن الوصول إلى العنصر (*i*،*j*) باستخدام صيغة الفهرسة المزدوجة `M[i][j]`، حيث `M` هي إما `M1` وإما `M2`. غير أن هاتين المصفوفتين منظّمتان بشكل مختلف في الذاكرة. ومع أن كلتيهما تخزّن العناصر في مصفوفتها الأساسية بشكل متجاور في الذاكرة، فإن مصفوفتنا المخصّصة ساكنًا تخزّن أيضًا جميع الصفوف بشكل متجاور في الذاكرة، كما هو معروض في [الشكل 2](#Matrices7).
 
-![matrixArray](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-1-matrixArray.webp){#Matrices7} الشكل 2. تخطيط ذاكرة المصفوفة M1 بترتيب الصفوف أولًا (row-major)
+![تخطيط ذاكرة المصفوفة M1](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-1-matrixArray.webp){#Matrices7} الشكل 2. تخطيط ذاكرة المصفوفة M1 بترتيب الصفوف أولًا (row-major)
 
 وهذا الترتيب المتجاور غير مضمون في `M2`. و[تذكّر أن](https://diveintosystems.org/book/C2-C_depth/arrays.html#_two_dimensional_array_memory_layout) تخصيص مصفوفة *n* × *m* بشكل متجاور على الكومة يتطلب استخدام استدعاء واحد لـ`malloc` يحجز *n* × *m* عنصرًا:
 
@@ -1682,7 +1682,7 @@ Dump of assembler code for function sumMat:
 
 لننظر كيف يُوصَل إلى العنصر (1،2) في [الشكل 2](#Matrices7). وللراحة، أُعيد إنتاج الشكل أدناه:
 
-![matrixArray](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-2-matrixArray.webp) الشكل 3. تخطيط ذاكرة المصفوفة M1 بترتيب الصفوف أولًا
+![تخطيط ذاكرة المصفوفة M1](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-2-matrixArray.webp) الشكل 3. تخطيط ذاكرة المصفوفة M1 بترتيب الصفوف أولًا
 
 يقع العنصر (1،2) عند العنوان `M1 + 1*COLS + 2`. وبما أن `COLS` = 3، يقابل العنصر (1،2) الصيغة `M1+5`. وللوصول إلى العنصر في هذا الموقع، يجب على المترجم ضرب 5 في حجم نوع البيانات `int` (أربعة بايتات)، فينتج الإزاحة `M1+20`، التي تقابل البايت x20 في الشكل. وإلغاء الإشارة عند هذا الموقع يعطي العنصر 5، وهو بالفعل العنصر (1،2) في المصفوفة.
 
@@ -1690,7 +1690,7 @@ Dump of assembler code for function sumMat:
 
 تطبيق المصفوفة غير المتجاورة أعقد قليلًا. ويوضّح [الشكل 4](#DynamicMatrix6) كيف قد يكون `M2` مرتّبًا في الذاكرة.
 
-![matrixDynamic](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-3-dynamicMatrixLayout.webp){#DynamicMatrix6} الشكل 4. تخطيط المصفوفة M2 غير المتجاور في الذاكرة
+![تخطيط المصفوفة M2 غير المتجاور](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-3-dynamicMatrixLayout.webp){#DynamicMatrix6} الشكل 4. تخطيط المصفوفة M2 غير المتجاور في الذاكرة
 
 لاحظ أن مصفوفة المؤشرات متجاورة، وأن كل مصفوفة يشير إليها عنصر من `M2` (مثل `M2[i]`) متجاورة. غير أن المصفوفات الفردية غير متجاورة مع بعضها. وبما أن `M2` مصفوفة مؤشرات، يشغل كل عنصر من `M2` ثمانية بايتات من المساحة. وفي المقابل، بما أن `M2[i]` مصفوفة `int`، يبعد كل عنصر من `M2[i]` أربعة بايتات.
 
@@ -1780,7 +1780,7 @@ Dump of assembler code for function sumMatrix:
 
 لنعد إلى [الشكل 4](#DynamicMatrix6) وننظر في مثال للوصول إلى M2[1][2]. وللراحة، نعيد إنتاج الشكل أدناه:
 
-![matrixDynamic](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-4-dynamicMatrixLayout.webp) الشكل 5. تخطيط المصفوفة M2 غير المتجاور في الذاكرة
+![تخطيط المصفوفة M2 غير المتجاور](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-4-dynamicMatrixLayout.webp) الشكل 5. تخطيط المصفوفة M2 غير المتجاور في الذاكرة
 
 لاحظ أن `M2` تبدأ عند موقع الذاكرة x0. يحسب المترجم أولًا عنوان `M2[1]` بضرب 1 في 8 (`sizeof(int *)`) وإضافته إلى عنوان `M2` (x0)، فينتج العنوان الجديد x8. وإلغاء الإشارة عند هذا العنوان يعطي العنوان المرتبط بـ`M2[1]`، أي x36. ثم يضرب المترجم الفهرس 2 في 4 (`sizeof(int)`)، ويضيف النتيجة (8) إلى x36، فينتج العنوان النهائي x44. ويُلغي المترجم الإشارة عند العنوان x44، فيحصل على القيمة 5. وبالفعل، فإن العنصر في [الشكل 4](#DynamicMatrix6) الذي يقابل `M2[1][2]` قيمته 5.
 
@@ -1801,7 +1801,7 @@ struct studentT student;
 
 يعرض [الشكل 1](#structArray6) كيفية ترتيب `student` في الذاكرة. ويشير كل xi إلى عنوان حقل معيّن.
 
-![structArray](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-structArray.webp){#structArray6} الشكل 1. تخطيط الذاكرة للبنية studentT
+![تخطيط ذاكرة البنية](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-structArray.webp){#structArray6} الشكل 1. تخطيط الذاكرة للبنية studentT
 
 تُخزَّن الحقول بشكل متجاور واحدًا بجانب الآخر في الذاكرة بالترتيب الذي عُرِّفت به. وفي [الشكل 1](#structArray6)، يُخصَّص الحقل `age` في موقع الذاكرة الذي يلي حقل `name` مباشرة (عند الإزاحة x64 بالبايت)، ويليه الحقلان `grad_yr` (الإزاحة x68) و`gpa` (الإزاحة x72). ويتيح هذا التنظيم وصولًا موفّرًا للذاكرة إلى الحقول.
 
@@ -1907,11 +1907,11 @@ struct studentTM student2;
 
 عُدّل حجم الحقل `name` ليصبح 63 بايت بدلًا من 64 الأصلية. تأمّل كيف يؤثر ذلك في طريقة ترتيب البنية `struct` في الذاكرة. وقد يغريك تصورها كما في [الشكل 2](#wrongLayout).
 
-![struct2wrong](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-1-struct2wrong.webp){#wrongLayout} الشكل 2. تخطيط ذاكرة غير صحيح للبنية المحدَّثة studentTM. لاحظ أن حقل "name" في البنية تقلّص من 64 إلى 63 بايت.
+![تخطيط ذاكرة غير صحيح للبنية المحدَّثة](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-1-struct2wrong.webp){#wrongLayout} الشكل 2. تخطيط ذاكرة غير صحيح للبنية المحدَّثة studentTM. لاحظ أن حقل "name" في البنية تقلّص من 64 إلى 63 بايت.
 
 في هذا التصوير، يقع الحقل `age` في البايت الذي يلي حقل `name` مباشرة. لكن هذا غير صحيح. ويعرض [الشكل 3](#correctLayout) التخطيط الفعلي في الذاكرة.
 
-![struct2right](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-2-struct2right.webp){#correctLayout} الشكل 3. تخطيط الذاكرة الصحيح للبنية المحدَّثة studentTM. أضاف المترجم البايت x63 لتلبية قيود محاذاة الذاكرة، لكنه لا يقابل أيًّا من الحقول.
+![تخطيط ذاكرة صحيح للبنية المحدَّثة](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-2-struct2right.webp){#correctLayout} الشكل 3. تخطيط الذاكرة الصحيح للبنية المحدَّثة studentTM. أضاف المترجم البايت x63 لتلبية قيود محاذاة الذاكرة، لكنه لا يقابل أيًّا من الحقول.
 
 تتطلب سياسة المحاذاة في x64 أن تقع أنواع البيانات ذات البايتين (مثل `short`) عند عنوان محاذى لبايتين، وأن تقع أنواع البيانات ذات الأربعة بايتات (مثل `int` و`float` و`unsigned`) عند عناوين محاذاة لأربعة بايتات، بينما تقع أنواع البيانات الأكبر (`long` و`double` وبيانات المؤشرات) عند عناوين محاذاة لثمانية بايتات. وبالنسبة للبنية `struct`، يضيف المترجم بايتات فارغة كـ**حشو** (padding) بين الحقول لضمان أن كل حقل يلبّي متطلبات محاذاته. فمثلًا، في البنية `struct` المعرّفة في [الشكل 3](#correctLayout)، يضيف المترجم بايت حشو عند البايت x63 لضمان أن يبدأ الحقل `age` عند عنوان من مضاعفات أربعة. ويمكن قراءة القيم المحاذاة بشكل صحيح في الذاكرة أو كتابتها في عملية واحدة، ما يتيح كفاءة أكبر.
 
@@ -2032,13 +2032,13 @@ int main(void) {
 
 يعرض [الشكل 1](#beforescan) المكدّس مباشرة قبل استدعاء `scanf`.
 
-![before](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-beforeScanf.webp){#beforescan} الشكل 1. مكدّس الاستدعاء مباشرة قبل استدعاء scanf
+![مكدّس الاستدعاء قبل استدعاء scanf](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-0-beforeScanf.webp){#beforescan} الشكل 1. مكدّس الاستدعاء مباشرة قبل استدعاء scanf
 
 قبل استدعاء `scanf`، يُحمَّل الوسيطان الأولان لـ`scanf` مسبقًا في السجلين `%edi` و`%rsi` على الترتيب. وتنشئ التعليمة `lea` عند الموقع `` المرجع للمصفوفة `buf`.
 
 الآن، لنفترض أن المستخدم أدخل `1234567890` عند المطالبة. ويوضّح [الشكل 2](#afterScanf) شكل المكدّس مباشرة بعد اكتمال استدعاء `scanf`.
 
-![after](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-1-afterScanf.webp){#afterScanf} الشكل 2. مكدّس الاستدعاء مباشرة بعد استدعاء scanf مع الإدخال 1234567890
+![مكدّس الاستدعاء بعد استدعاء scanf](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-1-afterScanf.webp){#afterScanf} الشكل 2. مكدّس الاستدعاء مباشرة بعد استدعاء scanf مع الإدخال 1234567890
 
 تذكّر أن القيم السداسية العشرية لترميزات ASCII للأرقام من 0 إلى 9 هي من 0x30 إلى 0x39، وأن كل موقع في ذاكرة المكدّس طوله ثمانية بايتات. ويبعد مؤشّر الإطار 32 بايت عن مؤشّر المكدّس. ويمكن للقراء المتتبعين تأكيد قيمة `%rbp` باستخدام GDB لطباعة قيمته (`p $rbp`). وفي المثال المعروض، قيمة `%rbp` هي 0x7fffffffdd10. ويتيح الأمر التالي للقارئ فحص 48 بايت (بالنظام السداسي العشري) أسفل السجل `%rsp`:
 
@@ -2103,7 +2103,7 @@ $ echo $?
 
 مثير للاهتمام! الآن ينهار البرنامج بخطأ تجزئة، برمز إرجاع 139. ويعرض [الشكل 3](#afterScanf2) شكل مكدّس الاستدعاء للدالة `main` مباشرة بعد استدعاء `scanf` بهذا الإدخال الجديد.
 
-![after2](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-2-afterScanf2.webp){#afterScanf2} الشكل 3. مكدّس الاستدعاء مباشرة بعد استدعاء scanf مع الإدخال 1234567890123456789012345678901234567890123
+![مكدّس الاستدعاء بعد استدعاء scanf مع الإدخال الطويل](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-2-afterScanf2.webp){#afterScanf2} الشكل 3. مكدّس الاستدعاء مباشرة بعد استدعاء scanf مع الإدخال 1234567890123456789012345678901234567890123
 
 السلسلة المُدخَلة طويلة جدًا لدرجة أنها لم تستبدل القيم المخزّنة عند 0xd08 و0xd10 فحسب، بل تجاوزتهما إلى عنوان الإرجاع أسفل إطار المكدّس للدالة `main`. وتذكّر أنه عند عودة دالة، يحاول البرنامج استئناف التنفيذ عند العنوان المحدّد بعنوان الإرجاع. وفي هذا المثال، يحاول البرنامج استئناف التنفيذ عند العنوان 0xf7ff00333231 بعد الخروج من `main`، وهو عنوان لا يبدو أنه موجود. لذا ينهار البرنامج بخطأ تجزئة.
 
@@ -2151,7 +2151,7 @@ End of assembler dump.
 
 لاحظ أن `endGame` تبدأ عند العنوان 0x00000000004006da. ويوضّح [الشكل 4](#finalExploit) استغلالًا نموذجيًا يجبر `secret` على تشغيل الدالة `endGame`.
 
-![exploit](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-3-finalExploit.webp){#finalExploit} الشكل 4. سلسلة نموذجية يمكن أن تجبر secret على تنفيذ الدالة endGame
+![سلسلة نموذجية للاستغلال](https://diveintosystems.org/images/dive-into-systems/c7-x86-64-3-finalExploit.webp){#finalExploit} الشكل 4. سلسلة نموذجية يمكن أن تجبر secret على تنفيذ الدالة endGame
 
 في جوهر الأمر، هناك 40 بايت من القيم غير ذات المعنى تليها عنوان الإرجاع. ومرة أخرى، بما أن x86-64 نظام [little-endian](https://diveintosystems.org/book/C4-Binary/byte_order.html#_integer_byte_order)، تظهر بايتات عنوان الإرجاع بترتيب معكوس.
 

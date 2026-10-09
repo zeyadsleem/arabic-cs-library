@@ -106,7 +106,7 @@ class="gof-pattern">نمط الحالة (State)</a>، لكنني لا أستطي
 منخفضة، وغاطسة. وعندما تستطيع الاستجابة لضغطة زر في إحدى تلك الحالات، ترسم سهماً
 من ذلك الصندوق، وتُسمّيه باسم الزر، وتربطه بالحالة التي تنتقل إليها.
 
-<img src="/images/game-programming-patterns/state-1.webp" alt="A flowchart containing boxes for Standing, Jumping, Diving, and Ducking. Arrows for button presses and releases connect some of the boxes." />
+<img src="/images/game-programming-patterns/state-1.webp" alt="مخطط تدفّق يحوي مربّعات لـ Standing وJumping وDiving وDucking. أسهم ضغط الأزرار وإفلاتها تربط بعض المربّعات." />
 
 مبروك، لقد أنشأت للتو *آلة حالات منتهية*. لقد جاءت هذه من فرع في علوم الحاسوب
 يسمى *نظرية الأوتوماتا* (automata theory)، وعائلة هياكل البيانات فيها تضمّ
@@ -578,7 +578,7 @@ name="turing">مقيّدة</span> جداً عليها. فكل ما لديك هو
  2. يمكنك *سحب* (pop) الحالة الموجودة في القمة من المكدّس. فتُستبعد تلك الحالة،
      وتصبح الحالة التي تحتها هي الحالة الحالية الجديدة.
 
-<img src="/images/game-programming-patterns/state-2.webp" alt="The stack for a pushdown automaton. First it just contains a Standing state. A Firing state is pushed on top, then popped back off when done." />
+<img src="/images/game-programming-patterns/state-2.webp" alt="كدس آلة الدفع (pushdown automaton). في البداية يحوي حالة Standing فقط. تُدفع فوقها حالة Firing ثم تُستخرج منها عند الانتهاء." />
 
 هذا هو بالضبط ما نحتاجه لإطلاق النار. فنحن ننشئ حالة إطلاق نار *واحدة*. وحين
 يُضغط زر الإطلاق أثناء وجودنا في أي حالة أخرى، فإننا *ندفع* حالة إطلاق النار إلى

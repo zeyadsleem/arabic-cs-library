@@ -71,7 +71,7 @@ source: https://introtcs.org/
 بمعنى آخر، إذا توقّفت الآلة $M$ عند $x$ وأخرجت قيمة $y\in \{0,1\}^*$ فإن $U(M,x)=y$، وإذا لم تتوقّف $M$ عند $x$ (أي $M(x)=\bot$) فإن $U(M,x)=\bot$.
 :::
 
-![A _Universal Turing Machine_ is a single Turing Machine $U$ that can evaluate, given input the (description as a string of) arbitrary Turing machine $M$ and input $x$, the output of $M$ on $x$. In contrast to the universal circuit depicted in [universalcircfig](#universalcircfig){.ref},  the machine $M$ can be much more complex (e.g., more states or tape alphabet symbols) than $U$. ](/images/introtcs/original-universaltm.webp){#universaltmfig .margin  }
+![_الآلة التورينجية الكامنة_ (Universal Turing Machine) هي آلة تورينج واحدة $U$ تُقيّم، عند إعطائها وصف آلة تورينج اعتباطية $M$ (كنصٍّ) ومدخلًا $x$، مخرج $M$ على $x$. وبالمقابل للدائرة الكامنة المُصوَّرة في [universalcircfig](#universalcircfig){.ref}، قد تكون الآلة $M$ أعقد بكثير (مثلًا: حالاتٌ أكثر أو رموزُ حقل رموز شريطٍ أكثر) من $U$.](/images/introtcs/original-universaltm.webp){#universaltmfig .margin  }
 
 
 ::: { .bigidea #universaltmidea}
@@ -189,7 +189,7 @@ def EVAL(δ,x):
 
 
 
-![__a)__ A particularly elegant example of a "meta-circular evaluator" comes from John McCarthy's 1960 paper, where he defined the Lisp programming language and gave a Lisp function that evaluates an arbitrary Lisp program (see above). Lisp was not initially intended as a practical programming language and this example was merely meant as an illustration that the Lisp universal function is more elegant than the universal Turing machine. It was McCarthy's graduate student Steve Russell who suggested that it can be implemented. As McCarthy later recalled, _"I said to him, ho, ho, you're confusing theory with practice, this eval is intended for reading, not for computing. But he went ahead and did it. That is, he compiled the eval in my paper into IBM 704 machine code, fixing a bug, and then advertised this as a Lisp interpreter, which it certainly was"._ __b)__ A self-replicating C program from the classic essay of Thompson  [@thompson1984reflections].](/images/introtcs/original-lispandselfreplicatingprograms.webp){#lispinterpreterfig   }
+![__أ)__ مثالٌ أنيق بخاصّة على «المُقيِّم فائق الدائرية» (meta-circular evaluator) يأتي من ورقة جون ماكارثي سنة 1960، حيث عرَّف لغة برمجة Lisp وعرض دالةً Lisp تُقيّم برنامج Lisp اعتباطيًا (انظر ما سبق). ولم تكن Lisp مُنوَّطة في الأصل كلغة برمجة عملية، وكان هذا المثال يعني مجرّد إيضاحٍ لكون الدالة الكامنة في Lisp أنيق من الآلة التورينجية الكامنة. وكان طالب الدراسات العليا لدى ماكارثي، ستيفن راسل، هو من اقترح أنّها قابلة للتنفيذ. وكما استذكر ماكارثي لاحقًا: _«قلت له: هيهات، أنت تخلط بين النظرية والتطبيق؛ هذه الدالة eval مُنوَّطة للقراءة لا للحساب. لكنّه مضى ونفّذها. أيّ أنّه ترجم eval في ورقتي إلى شيفرة آلة IBM 704، مُصلحًا علّة، ثمّ أعلنها مُفسِّر Lisp، وهي كذلك بالفعل»._ __ب)__ برنامج C ذاتي التكرار من المقالة الكلاسيكية لطومسون [@thompson1984reflections].](/images/introtcs/original-lispandselfreplicatingprograms.webp){#lispinterpreterfig   }
 
 
 هناك أكثر من آلة تورينج واحدة $U$ تستوفي شروط [universaltmthm](#universaltmthm){.ref}، لكن وجود آلة واحدة فقط من هذا النوع يكوّن بالفعل أمرًا أساسيًا إلى حد بعيد، لنظرية علوم الحاسوب وتطبيقاتها العملية.
@@ -393,7 +393,7 @@ while True:
 
 وبما أن حدس غولدباخ مفتوح منذ عام 1742، فإن من غير الواضح أن للبشر أي قدرة سحرية على القول ما إذا كان هذا البرنامج (أو برامج مشابهة له) سيتوقّف أم لا.
 
-![[SMBC](http://smbc-comics.com/comic/halting)'s take on solving the Halting problem.](/images/introtcs/original-smbchalting.webp){#xkcdhaltingfig .margin  }
+![عرض [SMBC](http://smbc-comics.com/comic/halting) الساخر لمسألة التوقّف.](/images/introtcs/original-smbchalting.webp){#xkcdhaltingfig .margin  }
 
 
 ### برهان مباشر لعدم قابلية حساب $HALT$ (اختياري) { #haltalternativesec }
@@ -523,7 +523,7 @@ $HALTONZERO$ غير قابلة للحساب.
 فعل ذلك طريقة ممتازة لاكتساب بعض الاطمئنان الأولي تجاه فكرة البراهين بالاختزال، وهي تقنية سنستعملها مرارًا وتكرارًا في هذا الكتاب.
 كما يمكنك أيضًا أن ترى [haltonzeropythonfig](#haltonzeropythonfig){.ref} و[دفتر Colab](https://colab.research.google.com/drive/1PZQCNLO1YqQXOkBxfgtEjCeisxnhAEhH?usp=sharing) التالي لتنفيذ Python لهذا الاختزال.
 
-![To prove [haltonzero-thm](#haltonzero-thm){.ref}, we show that $HALTONZERO$ is uncomputable by giving a _reduction_ from the task of computing $HALT$ to the task of computing $HALTONZERO$. This shows that if there was a hypothetical algorithm $A$ computing $HALTONZERO$, then there would be an algorithm $B$ computing $HALT$, contradicting [halt-thm](#halt-thm){.ref}. Since neither $A$ nor $B$ actually exists, this is an example of an implication of the form "if pigs could whistle then horses could fly".](/images/introtcs/original-haltonzerored.webp){#haltonzerofig  .figure  }
+![لِإثبات [haltonzero-thm](#haltonzero-thm){.ref}، نُظهر أنّ $HALTONZERO$ غير قابلة للحساب عبر إعطاء اختزال (reduction) من مهمة حساب $HALT$ إلى مهمة حساب $HALTONZERO$. وهذا يُظهر أنّه لو وُجد خوارزمية افتراضية $A$ تحسب $HALTONZERO$، لَوُجد خوارزمية $B$ تحسب $HALT$، وهو ما يتعارض مع [halt-thm](#halt-thm){.ref}. وبما أنّ أيًّا من $A$ و$B$ غير موجودين فعليًا، فهذا مثالٌ على استلزامٍ من النمط «لو أمكن للخنازير أن تزقزق لَأمكن للخيول أن تطير».](/images/introtcs/original-haltonzerored.webp){#haltonzerofig  .figure  }
 
 :::  {.proof #proofofhaltonzero data-ref="haltonzero-thm"}
 البرهان يكون بالاختزال من $HALT$، انظر [haltonzerofig](#haltonzerofig){.ref}. وسنفرض، طلبًا للتناقض، أن $HALTONZERO$ قابلة للحساب بخوارزمية ما $A$، ونستعمل هذه الخوارزمية الافتراضية $A$ لإنشاء خوارزمية $B$ تحسب $HALT$، فنحصل على تناقض مع [halt-thm](#halt-thm){.ref}.
@@ -577,7 +577,7 @@ __برهان الادّعاء:__ بما أن $N_{M,x}$ تتجاهل مدخلها
 وعليه، إذا كانت الخوارزمية الافتراضية $A$ تحقّق $A(M)=HALTONZERO(M)$ لكل $M$، فإن الخوارزمية $B$ التي نبنيها تحقّق $B(M,x)=HALT(M,x)$ لكل $M,x$، مما يناقض عدم قابلية حساب $HALT$.
 :::
 
-![A Python implementation of the reduction showing that $HALTONZERO$ is uncomputable if $HALT$ is. See this [Colab notebook](https://colab.research.google.com/drive/1PZQCNLO1YqQXOkBxfgtEjCeisxnhAEhH?usp=sharing) for a full implementation of the reduction.](/images/introtcs/original-haltonzeropython.webp){#haltonzeropythonfig}
+![تنفيذ بايثوني للاختزال يُظهر أنّ $HALTONZERO$ غير قابلة للحساب إذا كان $HALT$ كذلك. انظر هذا [دفتر Colab](https://colab.research.google.com/drive/1PZQCNLO1YqQXOkBxfgtEjCeisxnhAEhH?usp=sharing) لتنفيذٍ كاملٍ للاختزال.](/images/introtcs/original-haltonzeropython.webp){#haltonzeropythonfig}
 > ### {.remark title="تقنية تثبيت المدخلات" #hardwiringrem}
 في برهان [haltonzero-thm](#haltonzero-thm){.ref} استعملنا تقنية «تثبيت» (hardwiring) مدخل $x$ في برنامج/آلة $P$. أي إننا نأخذ برنامجًا يحسب الدالة $x \mapsto f(x)$ ونثبّت بعض المداخل عند قيمة ثابتة ما. فمثلًا، إذا كان لديك برنامج يأخذ كمدخل زوجًا من الأعداد $x,y$ ويُخرج حاصل ضربهما (أي يحسب الدالة $f(x,y) =x\times y$)، فيمكنك أن «تثبّت» المدخل الثاني على القيمة $17$ فتحصل على برنامج يأخذ كمدخل عدد $x$ ويُخرج $x\times 17$ (أي يحسب الدالة $g(x) = x\times 17$).
 وهذه التقنية شائعة جدًا في الاختزال وفي مواضع أخرى، وسنستعملها مرارًا وتكرارًا في هذا الكتاب.
@@ -844,7 +844,7 @@ Y[0] = NAND(X[0],Harvard[0])
 ومع ذلك، يبقى التحقّق — وخاصةً تحقّق البرامج الكبيرة والمعقّدة — مهمّة شديدة الصعوبة عمليًا أيضًا، ولا يزال عدد البرامج التي ثبتت صحتها رسميًا صغيرًا إلى حد بعيد.
 وفضلا عن ذلك، فإن حتى صياغة النظرية الصحيحة لإثباتها (أي المواصفة) غالبًا ما تكون مهمّة غير تافهة إلى حد كبير.
 
-![The set $\mathbf{R}$ of computable Boolean functions ([classRdef](#classRdef){.ref}) is a proper subset of the set of all functions mapping $\{0,1\}^*$ to $\{0,1\}$. In this chapter we saw a few examples of elements in the latter set that are not in the former.](/images/introtcs/original-inclusion_noncomputable.webp){#inclusionuncomputablefig .class  }
+![المجموعة $\mathbf{R}$ من الدوال البولية القابلة للحساب ([classRdef](#classRdef){.ref}) مجموعةٌ فرعية صحيحة لمجموعة كلّ الدوال التي تُطابق $\{0,1\}^*$ إلى $\{0,1\}$. وفي هذا الفصل رأينا أمثلةً قليلةً على عناصرٍ في المجموعة الثانية ليست في الأولى.](/images/introtcs/original-inclusion_noncomputable.webp){#inclusionuncomputablefig .class  }
 
 
 ::: { .recap }

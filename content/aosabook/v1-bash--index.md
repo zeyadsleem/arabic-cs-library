@@ -1,5 +1,5 @@
 ---
-title: "The Bourne-Again Shell"
+title: "صدفة بورن-أغين"
 lang: ar
 source: https://aosabook.org/en/v1/bash.html
 ---
@@ -309,5 +309,5 @@ bash مثال جيّد على قطعة برمجية حرة كبيرة ومعقّ
 1. في معظم الحالات، تتوالى أحرف من أحد هذه المحارف.
 2. الأمر المدمج `exec` استثناء لهذه القاعدة.
 
-[^1]: In most cases, a sequence of one of the characters.
-[^2]: The `exec` builtin is an exception to this rule.
+[^1]: في معظم الحالات، تتوالى أحرف من أحد هذه المحارف.
+[^2]: الأمر المدمج `exec` استثناء لهذه القاعدة.

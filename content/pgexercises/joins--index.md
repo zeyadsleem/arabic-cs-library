@@ -68,7 +68,7 @@ select bks.starttime
 
 ولنتجاهل الآن عبارتي select وwhere، ونركّز على ما ينتجه بيان FROM. في كل أمثلتنا السابقة، كان FROM مجرد جدول بسيط. فما هو الآن؟ جدول آخر! وهذه المرة، ينتج كتركيب من bookings وmembers. ويمكنك أن ترى مجموعة فرعية من ناتج الربط أدناه:
 
-![Output of a from clause of a join](https://pgexercises.com/images/pgexercises/joins-simplejoin-0-joinbefore.webp)
+![ناتج عبارة FROM لعملية ربط](https://pgexercises.com/images/pgexercises/joins-simplejoin-0-joinbefore.webp)
 
 لكل عضو في جدول members، وجد الربط كل معرّفات الأعضاء المطابقة في جدول bookings. ولكل تطابق، أنتج صفًا يجمع الصف من جدول members والصف من جدول bookings.
 

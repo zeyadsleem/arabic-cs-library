@@ -567,31 +567,31 @@ class Interaction(object):
 \rowcolors{2}{TableOdd}{TableEven}
 \begin{tabular}{lll}
 \hline
-\textbf{Callback}
-& \textbf{Arguments}
-& \textbf{Purpose}
+\textbf{دالة الاستدعاء}
+& \textbf{الوسائط}
+& \textbf{الغرض}
 \\
 \hline
 pick    
 & x:number, y:number 
-& Selects the node at the mouse pointer location
+& تحدّد العقدة الموجودة عند موضع مؤشر الفأرة.
 \\
 place & 
 shape:string, x:number, y:number & 
-Places a shape of the specified type at the mouse pointer location.
+تضع شكلًا من النوع المحدَّد عند موضع مؤشر الفأرة.
 \\
 rotate\_color & 
 forward:boolean & 
-Rotates the color of the currently selected node.
+تدوّر لون العقدة المحدَّدة حاليًا.
 \\
 scale & 
 up:boolean & 
-Scales the currently selected node up or down.
+تكبّر أو تصغّر العقدة المحدَّدة حاليًا.
 \\
 \hline
 \end{tabular}
 }
-\caption{Interaction callbacks and arguments}
+\caption{دوال الاستدعاء ووسائطها الخاصة بتفاعل المستخدم}
 \label{500l.tbl.callbacks}
 \end{table}
 </latex>

@@ -1261,7 +1261,7 @@ archive_command = 'cp %p /home/postgres/archives/%f'
 
 وفي هذا الأمر، يمثّل العنصر النائب `%p` مسار قطعة WAL المصدر، ويمثّل العنصر النائب `%f` اسم ملف سجل الأرشيف.
 
-![When the WAL segment file WAL_7 is switched, the file is copied to the archival area as Archive log 7.](/images/postgres-internals/pgsql09-fig-9-26.webp)
+![عند تبديل ملف قطعة WAL المسمى WAL_7، يُنسخ الملف إلى منطقة الأرشيف باسم Archive log 7.](/images/postgres-internals/pgsql09-fig-9-26.webp)
 
 #### الشكل 9.26. الأرشفة المستمرة.
 

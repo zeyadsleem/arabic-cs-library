@@ -73,7 +73,7 @@ n)*. لكن مع <span name="rolodex">جدول تجزئة</span>، يستغرق 
 
 <aside name="bucket">
 
-<img src="/images/crafting-interpreters/hash-tables-1.webp" alt="A row of buckets, each labeled with a letter of the alphabet." />
+<img src="/images/crafting-interpreters/hash-tables-1.webp" alt="صفّ من الدلاء، كلٌّ منها مُعلَّم بحرف من الأبجدية." />
 
 </aside>
 
@@ -138,7 +138,7 @@ name="power-of-two">8</span>) ليناسب الحدود فنحصل على فهر
 حجم المصفوفة سينتهيان في الدلو نفسه. ويمكن أن **تتصادم** (collide) المفاتيح. فمثلًا، إن حاولنا
 إضافة "jam"، فإنّه سينتهي أيضًا في الدلو 2.
 
-<img src="/images/crafting-interpreters/hash-tables-2.webp" alt="'Bagel' and 'jam' both end up in bucket index 2." />
+<img src="/images/crafting-interpreters/hash-tables-2.webp" alt="ينتهي كلٌّ من «Bagel» و«jam» إلى الدلو رقم 2." />
 
 لدينا بعض التحكّم في هذا عبر ضبط حجم المصفوفة. فكلّما كانت المصفوفة أكبر، قلّ عدد الفهارس التي
 تُسقط إلى الدلو نفسه، وقلّ احتمال وقوع التصادمات. ويتتبّع منفّذو جداول التجزئة هذا الاحتمال
@@ -179,7 +179,7 @@ name="power-of-two">8</span>) ليناسب الحدود فنحصل على فهر
 يحتوي على 365 خانة، واستخدم عيد ميلاد كلّ حمامة لإسنادها إلى خانة. ستحتاج فقط إلى نحو 26 حمامة
 مختارة عشوائيًّا قبل أن تحصل على احتمال أكبر من 50% لوجود حمّتين في الصندوق نفسه.
 
-<img src="/images/crafting-interpreters/hash-tables-3.webp" alt="Two pigeons in the same hole." />
+<img src="/images/crafting-interpreters/hash-tables-3.webp" alt="حمّامان في جحر واحد." />
 
 </aside>
 
@@ -190,7 +190,7 @@ chaining). وبدلًا من أن يحتوي كل دلو على مُدخل وا�
 التنفيذ الكلاسيكي، يشير كل دلو إلى قائمة مرتبطة من المُدخلات. وللبحث عن مُدخل، تجد دلوه ثمّ
 تمشي في القائمة حتى تجد مُدخلًا بمفتاح مطابق.
 
-<img src="/images/crafting-interpreters/hash-tables-4.webp" alt="An array with eight buckets. Bucket 2 links to a chain of two nodes. Bucket 5 links to a single node." />
+<img src="/images/crafting-interpreters/hash-tables-4.webp" alt="مصفوفة بثمانية دلاء. الدلو 2 موصول بسلسلة من عقدتين، والدلو 5 موصول بعقدة واحدة." />
 
 في الحالات الكارثية السيّئة حيث يصطدم كل مُدخل في الدلو نفسه، تتراجع بنية البيانات إلى قائمة
 واحدة مرتبطة غير مرتّبة ببحث من نوع *O(n)*. وفي الممارسة، من السهل تفادي ذلك بالتحكّم في معامل
@@ -258,37 +258,37 @@ hashing" و"Robin Hood hashing" وأيّ شيء يقودك إليه.
 الجزء الصعب هو أنّ أكثر من واحدة من تلك القوائم الضمنية قد تكون متشابكة معًا. لنمرّ على مثال يغطّي
 جميع الحالات المثيرة. سنتجاهل القيم الآن ونركّز على مجموعة مفاتيح. نبدأ بمصفوفة فارغة من 8 دلاء.
 
-<img src="/images/crafting-interpreters/hash-tables-5.webp" alt="An array with eight empty buckets." class="wide" />
+<img src="/images/crafting-interpreters/hash-tables-5.webp" alt="مصفوفة بثمانية دلاء فارغة." class="wide" />
 
 نقرّر إدراج "bagel". فالحرف الأول، "b" (قيمته ASCII هي 98)، فإنّ باقي القسمة على حجم المصفوفة (8) يضعه في
 الدلو 2.
 
-<img src="/images/crafting-interpreters/hash-tables-6.webp" alt="Bagel goes into bucket 2." class="wide" />
+<img src="/images/crafting-interpreters/hash-tables-6.webp" alt="تدخل Bagel في الدلو 2." class="wide" />
 
 ثمّ نُدرج "jam". فذاك أيضًا يريد الذهاب إلى الدلو 2 (106 mod 8 = 2)، لكنّ ذلك الدلو مشغول. فنواصل
 السبر إلى الدلو التالي. وهو فارغ، فنضعه هناك.
 
-<img src="/images/crafting-interpreters/hash-tables-7.webp" alt="Jam goes into bucket 3, since 2 is full." class="wide" />
+<img src="/images/crafting-interpreters/hash-tables-7.webp" alt="تدخل jam في الدلو 3 لأنّ 2 ممتلئ." class="wide" />
 
 نُدرج "fruit"، الذي يقع بكلّ سرور في الدلو 6.
 
-<img src="/images/crafting-interpreters/hash-tables-8.webp" alt="Fruit goes into bucket 6." class="wide" />
+<img src="/images/crafting-interpreters/hash-tables-8.webp" alt="تدخل Fruit في الدلو 6." class="wide" />
 
 وكذلك، يمكن لـ "migas" أن تذهب إلى دلوها المفضّل 5.
 
-<img src="/images/crafting-interpreters/hash-tables-9.webp" alt="Migas goes into bucket 5." class="wide" />
+<img src="/images/crafting-interpreters/hash-tables-9.webp" alt="تدخل Migas في الدلو 5." class="wide" />
 
 وحين نحاول إدراج "eggs"، فإنّه أيضًا يريد أن يكون في الدلو 5. ذلك الدلو ممتلئ، فنتخطّى إلى 6.
 والدلو 6 ممتلئ أيضًا. لاحظ أنّ المُدخل الموجود هناك *ليس* جزءًا من تسلسل السبر نفسه. فـ "Fruit"
 في دلوه المفضّل، 6. إذن فإنّ تسلسلي السبر 5 و6 قد اصطدما وشُبِّكا. فنتخطّى ذلك ونضع "eggs" في
 النهاية في الدلو 7.
 
-<img src="/images/crafting-interpreters/hash-tables-10.webp" alt="Eggs goes into bucket 7 because 5 and 6 are full." class="wide" />
+<img src="/images/crafting-interpreters/hash-tables-10.webp" alt="تدخل Eggs في الدلو 7 لأنّ 5 و6 ممتلئان." class="wide" />
 
 نصطدم بمشكلة مشابهة مع "nuts". فلا يمكنه أن يقع في 6 كما يريد، ولا يمكنه أن يذهب إلى 7. فنواصل.
 لكنّنا وصلنا إلى نهاية المصفوفة، فنلتفّ عائدين إلى 0 ونضعه هناك.
 
-<img src="/images/crafting-interpreters/hash-tables-11.webp" alt="Nuts wraps around to bucket 0 because 6 and 7 are full." class="wide" />
+<img src="/images/crafting-interpreters/hash-tables-11.webp" alt="تعود Nuts إلى الدلو 0 لأنّ 6 و7 ممتلئان." class="wide" />
 
 في الممارسة، يتبيّن أنّ التشابك ليس مشكلة كبيرة. فحتى في التسلسل المنفصل، نحتاج إلى المشي في
 القائمة للتحقّق من مفتاح كل مُدخل لأنّ مفاتيح متعدّدة يمكن أن تُسقط إلى الدلو نفسه. ومع العنونة
@@ -639,7 +639,7 @@ name="delete">العنونة المفتوحة</span> أمر صعب.
 يعيش فيه المُدخل قد يكون جزءًا من تسلسل سبر ضمني واحد أو أكثر. فمثلًا، إليك جدول تجزئة يحتوي ثلاثة
 مفاتيح كلّها لها الدلو المفضّل نفسه، 2:
 
-<img src="/images/crafting-interpreters/hash-tables-12.webp" alt="A hash table containing 'bagel' in bucket 2, 'biscuit' in bucket 3, and 'jam' in bucket 4." />
+<img src="/images/crafting-interpreters/hash-tables-12.webp" alt="جدول تجزئة يحوي bagel في الدلو 2، وbiscuit في الدلو 3، وjam في الدلو 4." />
 
 تذكّر أنّنا حين نمشي في تسلسل سبر للعثور على مُدخل، نعرف أنّنا بلغنا نهاية تسلسل وأنّ المُدخل غير
 موجود حين نصطدم بدلو فارغ. إنّه كأنّ تسلسل السبر قائمة مُدخلات والمُدخل الفارغ ينهي تلك القائمة.
@@ -650,7 +650,7 @@ name="delete">العنونة المفتوحة</span> أمر صعب.
 
 إن حاولنا لاحقًا البحث عن "jam"، فسنبدأ عند "bagel" ونتوقّف عند Entry فارغ تالٍ ولن نجده أبدًا.
 
-<img src="/images/crafting-interpreters/hash-tables-13.webp" alt="The 'biscuit' entry has been deleted from the hash table, breaking the chain." />
+<img src="/images/crafting-interpreters/hash-tables-13.webp" alt="حُذفت المدخلة biscuit من جدول التجزئة، فانقطعت السلسلة." />
 
 ولحلّ ذلك، تستخدم معظم التنفيذات خدعة تُسمّى <span name="tombstone">**شواهد القبر**
 (tombstones)</span>. فبدلًا من تفريغ المُدخل عند الحذف، فإنّنا نستبدله بمُدخل حارس خاصّ يُسمّى "شاهد
@@ -658,7 +658,7 @@ name="delete">العنونة المفتوحة</span> أمر صعب.
 ونتوقّف عن التكرار. وبدلًا من ذلك، نواصل السير كي لا يكسر حذف مُدخل أيّ سلسلة تصادمات ضمنية،
 ولا يزال بإمكاننا العثور على مُدخلات بعده.
 
-<img src="/images/crafting-interpreters/hash-tables-14.webp" alt="Instead of deleting 'biscuit', it's replaced with a tombstone." />
+<img src="/images/crafting-interpreters/hash-tables-14.webp" alt="بدل حذف biscuit، يُستبدل بشاهد قبر." />
 
 وتبدو الشيفرة هكذا:
 
@@ -670,7 +670,7 @@ name="delete">العنونة المفتوحة</span> أمر صعب.
 
 <aside name="tombstone">
 
-<img src="/images/crafting-interpreters/hash-tables-15.webp" alt="A tombstone enscribed 'Here lies entry biscuit &rarr; 3.75, gone but not deleted'." />
+<img src="/images/crafting-interpreters/hash-tables-15.webp" alt="شاهد قبر محفور عليه: «هنا ترقد المدخلة biscuit &rarr; 3.75، غائبة لكنها لم تُحذف»." />
 
 </aside>
 

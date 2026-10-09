@@ -156,7 +156,7 @@ Return $\infty$
 
 على نحو مفاجئ، بينما يمكننا إيجاد أقصر مسار في زمن $O(m)$، لا توجد خوارزمية معروفة لمهمة _إيجاد أطول مسار_ تُحسّن بشكل ملموس على خوارزمية «البحث الشامل» (_exhaustive search_) أو «القوة الغاشمة» (_brute force_) البديهية التي تحصر كل الاحتمالات الأسّية لهذه المسارات.
 وبالتحديد، فإنّ أفضل الخوارزميات المعروفة لمهمة إيجاد أطول مسار تستغرق زمن $O(c^n)$ حيث $c>1$ ثابت ما.
-(حاليًا الرقم القياسي الأفضل هو $c \sim 1.65$ تقريبًا؛ حتى 얻اب حدّّ زمني $O(2^n)$ ليس بالأمر الهيّن، انظر [longest-path-ex](#longest-path-ex){.ref}.)
+(حاليًا الرقم القياسي الأفضل هو $c \sim 1.65$ تقريبًا؛ حتى إنّ حدّّ زمني $O(2^n)$ ليس بالأمر الهيّن، انظر [longest-path-ex](#longest-path-ex){.ref}.)
 
 ![/images/introtcs/lec_10_efficient_alg-2.webp](/images/introtcs/original-knights_tour.webp){#knighttourpath .margin  }
 
@@ -261,7 +261,7 @@ $$
 
 ###  ملاحظة على التقعّر { #convexnotesec }
 
-![In a _convex_ function $f$ (left figure), for every $x$ and $y$ and $p\in [0,1]$ it holds that $f(px+(1-p)y) \leq p\cdot f(x)+(1-p)\cdot f(y)$. In particular this means that every _local minimum_ of $f$ is also a _global minimum_. In contrast in a _non-convex_ function there can be many local minima.](/images/introtcs/original-convexvsnot.webp){#convexdeffig .margin  }
+![في الدالة المتَقَعِّرة $f$ (الشكل الأيسر)، يتحقّق لكلّ $x$ و$y$ و$p\in [0,1]$ أنّ $f(px+(1-p)y) \leq p\cdot f(x)+(1-p)\cdot f(y)$. وبخاصّة، يعني هذا أنّ كلّ _حدٍّ أدنى محليّ_ لـ$f$ هو أيضًا _حدٍّ أدنى عامّ_. وعلى العكس، في الدالة غير المتَقَعِّرة قد يكون هناك حدودٌ دنيا محلّيةٌ كثيرة.](/images/introtcs/original-convexvsnot.webp){#convexdeffig .margin  }
 
 ![/images/introtcs/lec_10_efficient_alg-4.webp](/images/introtcs/original-convexandnon.webp){#convexfunctionfig .margin  }
 
@@ -505,7 +505,7 @@ $$
 ![/images/introtcs/lec_10_efficient_alg-5.webp](/images/introtcs/original-poly_vs_exp.webp){#current_status .margin  }
 
 قد يبدو الفرق بين خوارزمية بزمن أسّي وخوارزمية بزمن متعدّد الحدود مجرّدًا «كمّيًّا»، لكنّه في الواقع بالغ الأهمية.
-وكما رأينا من قبل، فإنّ خوارزمية القوة الغاشمة ذات الزمن الأسّي تنفد طاقتها بسرعة بالغة جدًّا، 그리고 كما يقول إدموندز، فإنّه في الممارسة قد لا يكون هناك فرق كبير بين مسألة أفضل خوارزمية فيها أسّية ومسألة لا يمكن حلّها أصلًا.
+وكما رأينا من قبل، فإنّ خوارزمية القوة الغاشمة ذات الزمن الأسّي تنفد طاقتها بسرعة بالغة جدًّا، كما يقول إدموندز، فإنّه في الممارسة قد لا يكون هناك فرق كبير بين مسألة أفضل خوارزمية فيها أسّية ومسألة لا يمكن حلّها أصلًا.
 ولذلك فإنّ الخوارزميات الكفؤة التي ذكرناها أعلاه مستعملة على نطاق واسع وتُشغّل تطبيقات كثيرة في علوم الحاسوب.
 وفضلا عن ذلك، فإنّ خوارزمية بزمن متعدّد الحدود كثيرًا ما تنشأ عن بصيرة جوهرية في المسألة المطروحة، سواء كانت نتيجة «أقصى تدفّق وأصغر قطع»، أم قابلية حساب المُحدِّد، أم البنية النظرية للمجموعات التي تمكّن من اختبار الأوّلية.
 وهذه البصيرة قد تكون مفيدة بغضّ النظر عن آثارها الحاسوبية.

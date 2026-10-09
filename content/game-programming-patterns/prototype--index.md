@@ -44,12 +44,12 @@ class="gof-pattern">نمط التصميم</a> نفسه. وسنغطي ذلك هن
 
 <span name="inherits-arrow"></span>
 
-<img src="/images/game-programming-patterns/prototype-1.webp" alt="Parallel class hierarchies. Ghost, Demon, and Sorceror all inherit from Monster. GhostSpawner, DemonSpawner, and SorcerorSpawner inherit from Spawner." />
+<img src="/images/game-programming-patterns/prototype-1.webp" alt="تسلسلات فئات متوازية. يرث Ghost وDemon وSorceror جميعًا من Monster. ويرث GhostSpawner وDemonSpawner وSorcerorSpawner من Spawner." />
 
 <aside name="inherits-arrow">
 
 كان عليّ أن أستخرج من الأتراب كتاب UML غباراً لأرسم هذا المخطط. فالسهم <img
-src="/images/game-programming-patterns/prototype-2.webp" class="arrow" alt="A UML arrow." /> يعني «يرث من».
+src="/images/game-programming-patterns/prototype-2.webp" class="arrow" alt="سهم UML." /> يعني «يرث من».
 
 </aside>
 
@@ -82,7 +82,7 @@ src="/images/game-programming-patterns/prototype-2.webp" class="arrow" alt="A UM
 وهو يحتفظ في داخله بوحشٍ مخفيّ غرضه الوحيد أن تستخدمه منشأة الإنشاء كقالبٍ تُختَز
 بمقتضاه وحوشٌ أخرى مثله، على نحو ما تفعل ملكة النحل التي لا تغادر الخلية.
 
-<img src="/images/game-programming-patterns/prototype-3.webp" alt="A Spawner contains a prototype field referencing a Monster. It calls clone() on the prototype to create new monsters." />
+<img src="/images/game-programming-patterns/prototype-3.webp" alt="يحتوي Spawner على حقل prototype يشير إلى Monster. يستدعي clone() على النموذج الأولي (prototype) لإنشاء وحوش جديدة." />
 
 ولإنشاء منشأة إنشاء للأشباح، ننشئ نسخة شبح نموذجية أولية، ثم ننشئ منشأة إنشاء تحمل ذلك
 النموذج:
@@ -214,7 +214,7 @@ class="pattern">كائن النوع (Type Object)</a> لنمذجة مختلف أ
 *هناك*. فالسلوك محتوا في *الصنف*. وهناك دائماً ذلك المستوى من التوجيه للوصول إلى الدالة،
 وهذا يعني أن الحقول والدوال مختلفة.
 
-<img src="/images/game-programming-patterns/prototype-4.webp" alt="A Class contains a list of Methods. An Instance contains a list of Fields and a reference to its Class." />
+<img src="/images/game-programming-patterns/prototype-4.webp" alt="تحوي Class قائمة من Methods. وتحوي Instance قائمة من Fields ومرجعًا إلى فئتها Class." />
 
 <aside name="vtable">
 
@@ -228,7 +228,7 @@ class="pattern">كائن النوع (Type Object)</a> لنمذجة مختلف أ
 
 <span name="island"></span>
 
-<img src="/images/game-programming-patterns/prototype-5.webp" alt="An Object contains a mixed list of Fields and Methods." />
+<img src="/images/game-programming-patterns/prototype-5.webp" alt="يحوي Object قائمة مختلطة من Fields وMethods." />
 
 <aside name="island">
 
@@ -253,7 +253,7 @@ class="pattern">كائن النوع (Type Object)</a> لنمذجة مختلف أ
 
 </aside>
 
-<img src="/images/game-programming-patterns/prototype-6.webp" alt="An Object contains Fields and Methods and a reference to another object that it delegates to." />
+<img src="/images/game-programming-patterns/prototype-6.webp" alt="يحوي Object حقولًا (Fields) وطرقًا (Methods) ومرجعًا إلى كائن آخر تفوّض إليه." />
 
 وتتيح لنا كائنات الآباء إعادة استخدام السلوك (والحالة أيضاً!) عبر عدة كائنات، فقد غطّينا
 جزءاً من فائدة الأصناف. والأمر الأساسي الآخر الذي تفعله الأصناف أنه يمنحك طريقة لإنشاء
@@ -386,7 +386,7 @@ JavaScript؟ إليك لغة تستخدم النماذج الأولية ويست
 `new Weapon()` يفوّض إلى `Weapon.prototype`، فصار بإمكانك الآن استدعاء `sword.attack()`
 فتستدعي تلك الدالة. ويبدو الأمر قليلاً كهذا:
 
-<img src="/images/game-programming-patterns/prototype-7.webp" alt="A Weapon object contains an attack() method and other methods. A Sword object contains fields and delegates to Weapon." />
+<img src="/images/game-programming-patterns/prototype-7.webp" alt="يحوي كائن Weapon طريقة attack() وطرق أخرى. ويحوي كائن Sword حقولًا وفوّض إليه." />
 
 لنراجع:
 

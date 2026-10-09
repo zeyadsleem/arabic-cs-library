@@ -7,7 +7,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "1. Introduction",
+          "title": "1. مقدّمة",
           "order": 0
         }
       ]
@@ -19,7 +19,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "2. Array-Based Lists",
+          "title": "2. القوائم المعتمدة على المصفوفات",
           "order": 1
         }
       ]
@@ -43,7 +43,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "4. Skiplists",
+          "title": "4. قوائم التخطّي",
           "order": 3
         }
       ]
@@ -55,7 +55,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "5. Hash Tables",
+          "title": "5. جداول التجزئة",
           "order": 4
         }
       ]
@@ -67,7 +67,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "6. Binary Trees",
+          "title": "6. الأشجار الثنائية",
           "order": 5
         }
       ]
@@ -79,7 +79,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "7. Random Binary Search Trees",
+          "title": "7. أشجار البحث الثنائية العشوائية",
           "order": 6
         }
       ]
@@ -91,7 +91,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "8. Scapegoat Trees",
+          "title": "8. أشجار الكبش الفداء",
           "order": 7
         }
       ]
@@ -103,7 +103,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "9. Red-Black Trees",
+          "title": "9. الأشجار الحمراء-السوداء",
           "order": 8
         }
       ]
@@ -115,7 +115,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "10. Heaps",
+          "title": "10. الأكوام",
           "order": 9
         }
       ]
@@ -139,7 +139,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "12. Graphs",
+          "title": "12. الرسوم البيانية",
           "order": 11
         }
       ]
@@ -151,7 +151,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "13. Data Structures for Integers",
+          "title": "13. بنى بيانات الأعداد الصحيحة",
           "order": 12
         }
       ]
@@ -163,7 +163,7 @@
       "sections": [
         {
           "slug": "index",
-          "title": "14. External Memory Searching",
+          "title": "14. البحث في الذاكرة الخارجية",
           "order": 13
         }
       ]

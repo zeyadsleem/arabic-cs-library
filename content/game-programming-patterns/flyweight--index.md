@@ -57,7 +57,7 @@ source: https://gameprogrammingpatterns.com/
 
 <span name="trees"></span>
 
-<img src="/images/game-programming-patterns/flyweight-1.webp" alt="A row of trees, each of which has its own Mesh, Bark, Leaves, Params, and Position." />
+<img src="/images/game-programming-patterns/flyweight-1.webp" alt="صف من الأشجار، لكل منها Mesh وBark وLeaves وParams وPosition خاصّة بها." />
 
 <aside name="trees">
 
@@ -79,7 +79,7 @@ source: https://gameprogrammingpatterns.com/
 
 يمكنك تصوّرها هكذا:
 
-<img src="/images/game-programming-patterns/flyweight-2.webp" alt="A row of trees each with its own Params and Position, but pointing to a shared Model with a Mesh, Bark, and Leaves." />
+<img src="/images/game-programming-patterns/flyweight-2.webp" alt="صف من الأشجار لكل منها Params وPosition خاصان، لكنها تشير إلى Model مشترك يحوي Mesh وBark وLeaves." />
 
 <aside name="type">
 
@@ -241,7 +241,7 @@ source: https://gameprogrammingpatterns.com/
 
 كل بلاطة تستخدم التضاريس نفسها تشير إلى النسخة نفسها من التضاريس.
 
-<img src="/images/game-programming-patterns/flyweight-3.webp" alt="A row of tiles. Each tile points to either a shared Grass, River, or Hill object." />
+<img src="/images/game-programming-patterns/flyweight-3.webp" alt="صف من البلاطات. كل بلاطة تشير إلى كائن مشترك من نوع Grass أو River أو Hill." />
 
 ولأن نسخ التضاريس تُستخدم في أماكن متعددة، فإن إدارة أعمارها ستكون أعقد قليلاً لو
 خُصّصت ديناميكياً. بدلاً من ذلك، سنخزّنها مباشرةً داخل العالم:

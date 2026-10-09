@@ -1,5 +1,5 @@
 ---
-title: "4. Skiplists"
+title: "4. قوائم التخطّي"
 lang: ar
 source: https://opendatastructures.org/ods-java/4_Skiplists.html
 ---
@@ -12,7 +12,7 @@ source: https://opendatastructures.org/ods-java/4_Skiplists.html
 
 ## 4.1 البنية الأساسية
 
-من الناحية المفاهيمية، قائمة التخطي هي تسلسل من القوائم المترابطة أحادية الاتجاه $ L_0,\ldots,L_h$ . تحتوي كل قائمة $ L_r$ على مجموعة جزئية من العناصر الموجودة في $ L_{r-1}$ . نبدأ بالقائمة المُدخلة $ L_0$ التي تحتوي على $ \mathtt{n}$ عنصر، ونبني $ L_1$ من $ L_0$ ، ثم $ L_2$ من $ L_1$ ، وهكذا. تُحصل عناصر $ L_r$ برمي عملة مقابل كل عنصر $ \mathtt{x}$ في $ L_{r-1}$ وإدراج $ \mathtt{x}$ في $ L_r$ إذا ظهر وجه العملة. وتنتهي هذه العملية عند إنشاء قائمة $ L_r$ فارغة. ويظهر مثال على قائمة تخطٍ في الشكل 4.1. **الشكل 4.1:** قائمة تخطٍ تحتوي على سبعة عناصر. ![\includegraphics[width=\textwidth ]{figs/skiplist}](/images/open-data-structures/4_1_Basic_Structure-img1615.png.webp) وبالنسبة إلى عنصر $ \mathtt{x}$ في قائمة تخطٍ، فإننا نسمّي ارتفاع $ \mathtt{x}$ هو أكبر قيمة $ r$ بحيث يظهر $ \mathtt{x}$ في $ L_r$ . فمثلًا، العناصر التي لا تظهر إلا في $ L_0$ يكون ارتفاعها . وإذا أمعنا التفكير لحظة، نلاحظ أن ارتفاع $ \mathtt{x}$ يوافق التجربة التالية: ارمِ عملة تكرارًا حتى يأتي ظهرها. كم مرة كان وجهها؟ والإجابة، وهو ما ليس مفاجئًا، هي أن الارتفاع المتوقع للعقدة يساوي 1. (نتوقع أن نرمي العملة مرتين قبل الحصول على ظهرها، لكننا لا نحسب الرمية الأخيرة.) وارتفاع قائمة التخطي هو ارتفاع أطول عقدة فيها. وفي رأس كل قائمة توجد عقدة خاصة تُسمى الحارس (sentinel)، تعمل كعقدة صورية (dummy) لتلك القائمة. والخاصية الأساسية لقوائم التخطي هي وجود مسار قصير، يُسمى مسار البحث (search path)، من الحارس في $ L_h$ إلى كل عقدة في $ L_0$ . وتذكّر كيفية بناء مسار البحث لعقدة $ \mathtt{u}$ أمر سهل (انظر الشكل 4.2): ابدأ من الزاوية العلوية اليسرى لقائمة التخطي (الحارس في $ L_h$ )، وتحرَّك دائمًا إلى اليمين إلا إذا كان ذلك سيتجاوز $ \mathtt{u}$ ، وعندئذ تنزل خطوة إلى القائمة التي تحتها. وبأدق عبارة، لبناء مسار البحث للعقدة $ \mathtt{u}$ في $ L_0$ ، نبدأ من الحارس $ \mathtt{w}$ في $ L_h$ . ثم نفحص $ \mathtt{w.next}$ . فإذا كان $ \mathtt{w.next}$ يحتوي على عنصر يظهر قبل $ \mathtt{u}$ في $ L_0$ ، فإننا نجعل $ \ensuremath{\mathtt{w}}=\ensuremath{\mathtt{w.next}}$ . وإلا فإننا ننزل ونواصل البحث عند موضع ورود $ \mathtt{w}$ في القائمة $ L_{h-1}$ . ونستمر على هذا النحو حتى نصل إلى السابقة (predecessor) للعقدة $ \mathtt{u}$ في $ L_0$ . **الشكل 4.2:** مسار البحث عن العقدة التي تحتوي على $ 4$ في قائمة تخطٍ. ![\includegraphics[width=\textwidth ]{figs/skiplist-searchpath}](/images/open-data-structures/4_1_Basic_Structure-img1641.png.webp) وفيما يلي النتيجة التي سنثبتها في القسم 4.4، والتي تُظهر أن مسار البحث قصير إلى حد كبير: **المُلَم 4.1** *الطول المتوقع لمسار البحث عن أي عقدة $ \mathtt{u}$ في $ L_0$ لا يتجاوز $ 2\log \ensuremath{\mathtt{n}} + O(1) = O(\log \ensuremath{\mathtt{n}})$ .*
+من الناحية المفاهيمية، قائمة التخطي هي تسلسل من القوائم المترابطة أحادية الاتجاه $ L_0,\ldots,L_h$ . تحتوي كل قائمة $ L_r$ على مجموعة جزئية من العناصر الموجودة في $ L_{r-1}$ . نبدأ بالقائمة المُدخلة $ L_0$ التي تحتوي على $ \mathtt{n}$ عنصر، ونبني $ L_1$ من $ L_0$ ، ثم $ L_2$ من $ L_1$ ، وهكذا. تُحصل عناصر $ L_r$ برمي عملة مقابل كل عنصر $ \mathtt{x}$ في $ L_{r-1}$ وإدراج $ \mathtt{x}$ في $ L_r$ إذا ظهر وجه العملة. وتنتهي هذه العملية عند إنشاء قائمة $ L_r$ فارغة. ويظهر مثال على قائمة تخطٍ في الشكل 4.1. **الشكل 4.1:** قائمة تخطٍ تحتوي على سبعة عناصر. ![ ](/images/open-data-structures/4_1_Basic_Structure-img1641.png.webp) وفيما يلي النتيجة التي سنثبتها في القسم 4.4، والتي تُظهر أن مسار البحث قصير إلى حد كبير: **المُلَم 4.1** *الطول المتوقع لمسار البحث عن أي عقدة $ \mathtt{u}$ في $ L_0$ لا يتجاوز $ 2\log \ensuremath{\mathtt{n}} + O(1) = O(\log \ensuremath{\mathtt{n}})$ .*
 
 إحدى الطرق الموفِّرة للمساحة لتنفيذ قائمة تخطٍ هي تعريف العقدة (Node) $ \mathtt{u}$ على أنها تتكوّن من قيمة بيانات $ \mathtt{x}$ ومصفوفة $ \mathtt{next}$ من المؤشرات، حيث يشير $ \mathtt{u.next[i]}$ إلى العنصر اللاحق لـ $ \mathtt{u}$ في القائمة $ L_{\ensuremath{\mathtt{i}}}$ . بهذه الطريقة، لا تتم الإشارة إلى البيانات $ \mathtt{x}$ داخل العقدة إلا مرة واحدة، حتى لو ظهر $ \mathtt{x}$ في عدة قوائم.
 
@@ -124,7 +124,7 @@ source: https://opendatastructures.org/ods-java/4_Skiplists.html
     }
 ```
 
-**الشكل 4.4:** إزالة العقدة التي تحتوي على $ 3$ من قائمة تخطٍ. ![\includegraphics[width=\textwidth ]{figs/skiplist-remove}](/images/open-data-structures/4_2_SkiplistSSet_Efficient_-img1703.png.webp) 4.2.1 ملخص تلخّص المبرهنة التالية أداء قوائم التخطي عند استخدامها لتنفيذ المجموعات المرتبة: **المبرهنة 4.1** *تنفّذ SkiplistSSet واجهة SSet. تدعم SkiplistSSet العمليات $ \mathtt{add(x)}$ ، $ \mathtt{remove(x)}$ ، و $ \mathtt{find(x)}$ بزمن متوقع قدره $ O(\log \ensuremath{\mathtt{n}})$ لكل عملية.*
+**الشكل 4.4:** إزالة العقدة التي تحتوي على $ 3$ من قائمة تخطٍ. ![ ](/images/open-data-structures/4_2_SkiplistSSet_Efficient_-img1703.png.webp) 4.2.1 ملخص تلخّص المبرهنة التالية أداء قوائم التخطي عند استخدامها لتنفيذ المجموعات المرتبة: **المبرهنة 4.1** *تنفّذ SkiplistSSet واجهة SSet. تدعم SkiplistSSet العمليات $ \mathtt{add(x)}$ ، $ \mathtt{remove(x)}$ ، و $ \mathtt{find(x)}$ بزمن متوقع قدره $ O(\log \ensuremath{\mathtt{n}})$ لكل عملية.*
 
 #### الحواشي
 
@@ -267,7 +267,7 @@ source: https://opendatastructures.org/ods-java/4_Skiplists.html
 
 *البرهان*. نفترض أننا نتوقف عن رمي العملة أول مرة يأتي فيها وجهها. ولنفعرّف المتغير المؤشّر (indicator variable)
 
-![$\displaystyle I_{i} = \left\{\begin{array}{ll} 0 & \mbox{if the coin is tossed... ...\\ 1 & \mbox{if the coin is tossed $i$\ or more times} \end{array}\right. $](/images/open-data-structures/4_4_Analysis_Skiplists-img1789.png.webp)
+![ ](/images/open-data-structures/4_4_Analysis_Skiplists-img1789.png.webp)
 
 لاحظ أن $ I_i=1$ إذا وفقط إذا كانت أول $ i-1$ رمية من رميات العملة قد جاءت بظهر العملة، لذا $ \mathrm{E}[I_i]=\Pr\{I_i=1\}=1/2^{i-1}$ . ولاحظ أن $ T$ ، وهو إجمالي عدد رميات العملة، يمكن كتابته على النحو $ T=\sum_{i=1}^{\infty} I_i$ . لذلك،
 
@@ -286,7 +286,7 @@ $$
 
 *البرهان*. احتمال أن يُدرَج عنصر معيّن $ \mathtt{x}$ في القائمة $ L_{\ensuremath{\mathtt{r}}}$ هو $ 1/2^{\ensuremath{\mathtt{r}}}$ ، لذا فإن العدد المتوقع للعقد في $ L_{\ensuremath{\mathtt{r}}}$ هو $ \ensuremath{\mathtt{n}}/2^{\ensuremath{\mathtt{r}}}$ .4.2 ومن ثم فإن إجمالي العدد المتوقع للعقد في جميع القوائم هو
 
-![$\displaystyle \sum_{\ensuremath{\mathtt{r}}=0}^\infty \ensuremath{\mathtt{n}}/2... ...athtt{n}}(1+1/2+1/4+1/8+\cdots) = 2\ensuremath{\mathtt{n}} \enspace . \qedhere $](/images/open-data-structures/4_4_Analysis_Skiplists-img1809.png.webp)
+![ ](/images/open-data-structures/4_4_Analysis_Skiplists-img1809.png.webp)
 
 $$
 \qedsymbol
@@ -308,7 +308,7 @@ $$
 
 لاحظ أن $ I_{\ensuremath{\mathtt{r}}}$ لا يتجاوز أبدًا الطول $ \vert L_{\ensuremath{\mathtt{r}}}\vert$ للقائمة $ L_{\ensuremath{\mathtt{r}}}$ ، لذا
 
-![$\displaystyle \mathrm{E}[I_{\ensuremath{\mathtt{r}}}] \le \mathrm{E}[\vert L_{\... ...t{r}}}\vert] = \ensuremath{\mathtt{n}}/2^{\ensuremath{\mathtt{r}}} \enspace . $](/images/open-data-structures/4_4_Analysis_Skiplists-img1820.png.webp)
+![ ](/images/open-data-structures/4_4_Analysis_Skiplists-img1820.png.webp)
 
 لذلك لدينا
 
@@ -334,7 +334,7 @@ $$
 
 يرتبط عدد العقد التي يزورها مسار البحث العكسي عند مستوى معيّن $ \mathtt{r}$ بالتجربة التالية: ارمِ عملة. فإذا جاءت العملة بوجهها، فارتقِ مستوى واحدًا وتوقّف. وإلا فارتح إلى اليسار وكرّر التجربة. ويمثّل عدد رميات العملة قبل ظهور الوجه عدد الخطوات إلى اليسار التي يخطوها مسار البحث العكسي عند مستوى معيّن.4.3 ويخبرنا المُلم 4.2 أن العدد المتوقع لرميات العملة قبل أول ظهور للوجه هو 1. ولنفترض أن $ S_{\ensuremath{\mathtt{r}}}$ تدل على عدد الخطوات التي يتخذها مسار البحث الأمامي عند المستوى $ \ensuremath{\mathtt{r}}$ ويتحرك بها إلى اليمين. وقد رجّحنا للتو أن $ \mathrm{E}[S_{\ensuremath{\mathtt{r}}}]\le 1$ . كذلك $ S_{\ensuremath{\mathtt{r}}}\le \vert L_{\ensuremath{\mathtt{r}}}\vert$ ، إذ لا يمكننا اتخاذ خطوات في $ L_{\ensuremath{\mathtt{r}}}$ أكثر من طول $ L_{\ensuremath{\mathtt{r}}}$ ، لذا
 
-![$\displaystyle \mathrm{E}[S_{\ensuremath{\mathtt{r}}}] \le \mathrm{E}[\vert L_{\... ...t{r}}}\vert] = \ensuremath{\mathtt{n}}/2^{\ensuremath{\mathtt{r}}} \enspace . $](/images/open-data-structures/4_4_Analysis_Skiplists-img1848.png.webp)
+![ ](/images/open-data-structures/4_4_Analysis_Skiplists-img1848.png.webp)
 
 ويمكننا الآن أن نُتمّ كما في برهان المُلم 4.4. ولنفترض أن $ S$ هو طول مسار البحث لعقدة ما $ \mathtt{u}$ في قائمة تخطٍ، وأن $ \ensuremath{\mathtt{h}}$ هو ارتفاع قائمة التخطي. عندئذ
 
@@ -378,7 +378,7 @@ $$
 
 **التمرين 4.9** صمّم ونفّذ صيغة من قائمة التخطي تنفّذ واجهة SSet، لكنها تسمح أيضًا بالوصول السريع إلى العناصر حسب الرتبة. أي أنها تدعم أيضًا الدالة $ \mathtt{get(i)}$ التي تُعيد العنصر الذي رتبته $ \mathtt{i}$ في زمن متوقع قدره $ O(\log \ensuremath{\mathtt{n}})$ . (رتبة العنصر $ \mathtt{x}$ في مجموعة SSet هي عدد العناصر في مجموعة SSet الأقل من $ \mathtt{x}$ .)
 
-**التمرين 4.10** الإصبع (finger) في قائمة التخطي هو مصفوفة تخزّن تسلسل العقد الموجودة على مسار البحث عندها ينزل مسار البحث. (المتغير $ \mathtt{stack}$ في شيفرة $ \mathtt{add(x)}$ في صفحة ![*](/images/open-data-structures/4_5_Discussion_Exercises-crossref.png.webp) هو إصبع؛ وتُظهر العقد المظلَّلة في الشكل 4.3 محتوى الإصبع.) ويمكن تخيّل الإصبع على أنه يشير إلى المسار المؤدّي إلى عقدة في أدنى القوائم، $ L_0$ . وينفّذ البحث بالإصبع (finger search) الدالة $ \mathtt{find(x)}$ باستخدام إصبع، بأن يصعد في القائمة مستخدمًا الإصبع حتى يبلغ عقدة $ \mathtt{u}$ بحيث $ \ensuremath{\mathtt{u.x}} < \ensuremath{\mathtt{x}}$ و $ \ensuremath{\mathtt{u.next}}=\ensuremath{\mathtt{null}}$ أو $ \ensuremath{\mathtt{u.next.x}} > \ensuremath{\mathtt{x}}$ ، ثم يُجري بحثًا عاديًا عن $ \mathtt{x}$ بدءًا من $ \mathtt{u}$ . ومن الممكن إثبات أن العدد المتوقع من الخطوات اللازمة للبحث بالإصبع هو $ O(1+\log r)$ ، حيث $ r$ هو عدد القيم في $ L_0$ الواقعة بين $ \mathtt{x}$ والقيمة التي يشير إليها الإصبع. نفّذ صنفًا فرعيًا (subclass) من Skiplist باسم SkiplistWithFinger ينفّذ عمليات $ \mathtt{find(x)}$ باستخدام إصبع داخلي. يخزّن هذا الصنف الفرعي إصبعًا يُستخدم بعد ذلك بحيث تُنفَّذ كل عملية $ \mathtt{find(x)}$ على هيئة بحث بالإصبع. وأثناء كل عملية $ \mathtt{find(x)}$ يُحدَّث الإصبع بحيث تستخدم كل عملية $ \mathtt{find(x)}$ ، كنقطة انطلاق، إصبعًا يشير إلى نتيجة عملية $ \mathtt{find(x)}$ السابقة.
+**التمرين 4.10** الإصبع (finger) في قائمة التخطي هو مصفوفة تخزّن تسلسل العقد الموجودة على مسار البحث عندها ينزل مسار البحث. (المتغير $ \mathtt{stack}$ في شيفرة $ \mathtt{add(x)}$ في صفحة ![ ](/images/open-data-structures/4_5_Discussion_Exercises-crossref.png.webp) هو إصبع؛ وتُظهر العقد المظلَّلة في الشكل 4.3 محتوى الإصبع.) ويمكن تخيّل الإصبع على أنه يشير إلى المسار المؤدّي إلى عقدة في أدنى القوائم، $ L_0$ . وينفّذ البحث بالإصبع (finger search) الدالة $ \mathtt{find(x)}$ باستخدام إصبع، بأن يصعد في القائمة مستخدمًا الإصبع حتى يبلغ عقدة $ \mathtt{u}$ بحيث $ \ensuremath{\mathtt{u.x}} < \ensuremath{\mathtt{x}}$ و $ \ensuremath{\mathtt{u.next}}=\ensuremath{\mathtt{null}}$ أو $ \ensuremath{\mathtt{u.next.x}} > \ensuremath{\mathtt{x}}$ ، ثم يُجري بحثًا عاديًا عن $ \mathtt{x}$ بدءًا من $ \mathtt{u}$ . ومن الممكن إثبات أن العدد المتوقع من الخطوات اللازمة للبحث بالإصبع هو $ O(1+\log r)$ ، حيث $ r$ هو عدد القيم في $ L_0$ الواقعة بين $ \mathtt{x}$ والقيمة التي يشير إليها الإصبع. نفّذ صنفًا فرعيًا (subclass) من Skiplist باسم SkiplistWithFinger ينفّذ عمليات $ \mathtt{find(x)}$ باستخدام إصبع داخلي. يخزّن هذا الصنف الفرعي إصبعًا يُستخدم بعد ذلك بحيث تُنفَّذ كل عملية $ \mathtt{find(x)}$ على هيئة بحث بالإصبع. وأثناء كل عملية $ \mathtt{find(x)}$ يُحدَّث الإصبع بحيث تستخدم كل عملية $ \mathtt{find(x)}$ ، كنقطة انطلاق، إصبعًا يشير إلى نتيجة عملية $ \mathtt{find(x)}$ السابقة.
 
 **التمرين 4.11** اكتب دالة $ \mathtt{truncate(i)}$ تقتطع SkiplistList عند الموضع $ \mathtt{i}$ . وبعد تنفيذ هذه الدالة يصبح حجم القائمة $ \mathtt{i}$ ، وتحتوي على العناصر ذات الفهارس $ 0,\ldots,\ensuremath{\mathtt{i}}-1$ فقط. وقيمة الإعادة هي SkiplistList أخرى تحتوي على العناصر ذات الفهارس $ \ensuremath{\mathtt{i}},\ldots,\ensuremath{\mathtt{n}}-1$ . وينبغي أن تعمل هذه الدالة في زمن $ O(\log \ensuremath{\mathtt{n}})$ .
 

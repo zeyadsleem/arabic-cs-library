@@ -31,7 +31,7 @@ source: https://www.patterns.dev/react/client-side-rendering/
 
 إليك أصغر مثال ذا معنى للعرض في جانب العميل باستخدام واجهة React 18+ الحالية. أُهملت `ReactDOM.render` في React 18 واستُبدلت فعليًا بـ `createRoot`، الذي يفعّل لشجرة المكوّنات (component tree) لديك العرض المتزامن (Concurrent Rendering).
 
-JavaScript iconmain.jsxJavaScript iconApp.jsxJavaScript iconindex.html
+`main.jsx` · `App.jsx` · `index.html`
 
 ```javascript
 import { StrictMode } from "react";

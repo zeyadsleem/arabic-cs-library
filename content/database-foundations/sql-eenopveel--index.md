@@ -12,13 +12,13 @@ source: https://df.webontwerp.ucll.be/EN/SQL_eenopveel/
 
 في الفصول السابقة، جرى تطوير مكوّنات جملة `SELECT` المختلفة. واستخدمنا أساسًا جدولًا كان ترجمة لهذا النموذج المفاهيمي (conceptual model):
 
-![Conceptual model of course](https://df.webontwerp.ucll.be/images/database-foundations/sql-eenopveel-0-opo_conceptueel.webp)
+![النموذج المفاهيمي للمقرر](https://df.webontwerp.ucll.be/images/database-foundations/sql-eenopveel-0-opo_conceptueel.webp)
 
 ### جدولان منفصلان
 
 يحتوي هذا المخطط على *نوع كيان* واحد له عدد من *الخواص*. وإحدى تلك الخواص رمز المحاضر لمنسّق المقرر. فلكل مقرر منسّق فريد في النهاية. ومن المنطقي إضافة نوع كيان ثانٍ "Lecturer" إلى المخطط. فلدينا في النهاية كثير من المعلومات عن المحاضرين. ويحتوي نوع الكيان هذا معلومات عن جميع المحاضرين، لا عن منسّقي المقررات فقط. والمحاولة الساذجة هي الشكل التالي:
 
-![Two independent entities, a bad idea!](https://df.webontwerp.ucll.be/images/database-foundations/sql-eenopveel-1-2_losse_entiteittypes.webp)
+![كيانان مستقلان، فكرة سيئة!](https://df.webontwerp.ucll.be/images/database-foundations/sql-eenopveel-1-2_losse_entiteittypes.webp)
 
 وإذا ترجمت هذا إلى PostgreSQL فتحصل على جدولين منفصلين. غير أن هذه البنية *مصدر مشكلات*. ونذكر خطأين محتملين:
 
@@ -31,7 +31,7 @@ source: https://df.webontwerp.ucll.be/EN/SQL_eenopveel/
 
 المشكلة، بالطبع، أن الجدولين لا يمكن أن يوجدا منفصلين. *فهناك علاقة بينهما*. ويجعل النموذج المفاهيمي في الشكل أدناه هذه العلاقة ظاهرة:
 
-![2 entities connected by a relationship](https://df.webontwerp.ucll.be/images/database-foundations/sql-eenopveel-2-gekoppelde_entiteittypes.webp)
+![كيانان موصولان بعلاقة](https://df.webontwerp.ucll.be/images/database-foundations/sql-eenopveel-2-gekoppelde_entiteittypes.webp)
 
 من اليمين إلى اليسار تقرأ العلاقة "هو منسّق لـ"، ومن اليسار إلى اليمين يمكن أن تصبح شيئًا على غرار "له منسّق". ولكل مقرر منسّق واحد على الأقل وواحد على الأكثر (أي واحد فقط). وليس كل محاضر منسّقًا لمقرر، لكن قد يكون المحاضر منسّقًا لعدة مقررات. والتعددية على جهة المحاضر هي إذن (0, N). وهذا مثال على علاقة واحد إلى متعدد.
 
@@ -43,7 +43,7 @@ source: https://df.webontwerp.ucll.be/EN/SQL_eenopveel/
 
 ويمكنك دراسة كل شيء عن النماذج المنطقية بالتفصيل في فصل ["نموذج البيانات المنطقي"](/book/database-foundations/model-logisch/index). والغرض الوحيد من هذا القسم هو تقديمك بإيجاز إلى هذا الموضوع حتى نمضي إلى الجزء التالي في استكشافنا للغة SQL (`JOIN`). ويبدو النموذج المنطقي هكذا:
 
-![Logisch model voor deze relatie](https://df.webontwerp.ucll.be/images/database-foundations/sql-eenopveel-3-logisch.webp)
+![النموذج المنطقي لهذه العلاقة](https://df.webontwerp.ucll.be/images/database-foundations/sql-eenopveel-3-logisch.webp)
 
 وما يكفي الآن أن تستطيع قراءة هذا المخطط، وهو ليس بالصعب:
 
@@ -58,7 +58,7 @@ source: https://df.webontwerp.ucll.be/EN/SQL_eenopveel/
 
 ورُسم النموذج الفيزيائي بـ DBSchema. وسنغطّي ذلك بالتفصيل [لاحقًا](/book/database-foundations/sql-dbschema/index). ويقابل هذا النموذج الفيزيائي النموذجَ المنطقي بتدوين مختلف قليلًا (لاحظ السهم الأزرق المنطلق الذي يشير إلى أن هذا الحقل مفتاح أجنبي يشير إلى السهم الأصفر-البنّي الواصل عند lecturer_id). كما أُعطي كل حقل نوع بيانات (`char` و`date`...):
 
-![Physical model of 2 tables with one-to-many relation](https://df.webontwerp.ucll.be/images/database-foundations/sql-eenopveel-4-course_lecturer.webp)
+![نموذج فيزيائي لجدولين بعلاقة واحد-إلى-كثير](https://df.webontwerp.ucll.be/images/database-foundations/sql-eenopveel-4-course_lecturer.webp)
 
 وتتم إضافة علاقة واحد إلى متعدد هذه في قاعدة البيانات كما يلي:
 

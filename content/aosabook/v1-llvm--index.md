@@ -337,8 +337,8 @@ define i32 @test() {
 [^1]: `http://llvm.org`
 [^2]: `http://clang.llvm.org`
 [^3]: `http://en.wikipedia.org/wiki/List_of_JVM_languages`
-[^4]: A backronym that now stands for "GNU Compiler Collection".
-[^5]: This is in contrast to a two-address instruction set, like X86, which destructively updates an input register, or one-address machines which take one explicit operand and operate on an accumulator or the top of the stack on a stack machine.
-[^6]: For all the details, please see *Writing an LLVM Pass manual* at `http://llvm.org/docs/WritingAnLLVMPass.html`.
+[^4]: لاحقة تكرارية (backronym) صارت الآن تقف على عبارة «GNU Compiler Collection».
+[^5]: ويقابل ذلك مجموعات تعليمات ثنائية العناوين مثل X86، والتي تُحدِّث سجل مُدخَل إتلافيًّا، أو آلات أحادية العنوان تأخذ معاملًا صريحًا واحدًا وتعمل على مرّاكِم (accumulator) أو على قمة المكدّس في آلات المكدّس.
+[^6]: للاطلاع على جميع التفاصيل، انظر *دليل كتابة مرحلة LLVM* (Writing an LLVM Pass manual) في `http://llvm.org/docs/WritingAnLLVMPass.html`.
 [^7]: `http://llvm.org/docs/Bugpoint.html`
-[^8]: I often say that none of the subsystems in LLVM are really good until they have been rewritten at least once.
+[^8]: كثيرًا ما أقول إنّه لا يُعدّ أي نظام فرعي في LLVM جيّدًا حقًّا إلى أن تُعاد كتابته مرّة واحدة على الأقلّ.

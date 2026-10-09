@@ -201,5 +201,5 @@ Roy Bryant و Andrés Lagar-Cavilla
 
 [^1]: `http://sysweb.cs.toronto.edu/projects/1`
 [^2]: `http://www.gridcentriclabs.com/architecture-of-open-source-applications`
-[^3]: OUI, or Organizational Unique ID, is a range of MAC addresses assigned to a vendor.
+[^3]: OUI، أو المعرّف الفريد للمؤسسة (Organizational Unique ID)، هو نطاق من عناوين MAC المخصّصة لمورّد.
 [^4]: `http://www.gridcentriclabs.com/`

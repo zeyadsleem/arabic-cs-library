@@ -259,7 +259,7 @@ Apple IIe، كنت تعرف *تماماً* أي معالج مركزي تعمل �
 فيمكنك العمل بمعدّل إطارات ثابت. كل ما عليك فعله هو معالجة الإطار ثم *الانتظار*
 حين يحين وقت الإطار التالي، كالتالي:
 
-<img src="/images/game-programming-patterns/game-loop-1.webp" alt="A simple game loop flowchart. Process Input &rarr; Update Game &rarr; Render &rarr; Wait, then loop back to the beginning." />
+<img src="/images/game-programming-patterns/game-loop-1.webp" alt="مخطط تدفّق بسيط لحلقة اللعبة. معالجة المدخلات &rarr; تحديث اللعبة &rarr; الرسم &rarr; الانتظار، ثم العودة إلى البداية." />
 
 تبدو الشيفرة على النحو التالي تقريباً:
 
@@ -390,7 +390,7 @@ name="render">العرض</span> (rendering). فبما أن محرّك العرض
 داخلية تحدّث اللعبة، بخطوة ثابتة في كل مرة، حتى تلحق بالركب. وحالما نلحق، نرسم
 ونبدأ من جديد. ويمكنك تخيّل الأمر على النحو التالي تقريباً:
 
-<img src="/images/game-programming-patterns/game-loop-2.webp" alt="A modified flowchart. Process Input &rarr; Update Game &rarr; Wait, then loop back to this step then &rarr; Render &rarr; Loop back to the beginning." />
+<img src="/images/game-programming-patterns/game-loop-2.webp" alt="مخطط تدفّق معدَّل. معالجة المدخلات &rarr; تحديث اللعبة &rarr; الانتظار، ثم العودة إلى هذه الخطوة، ثم &rarr; الرسم &rarr; العودة إلى البداية." />
 
 لاحظ أن الخطوة الزمنية هنا لم تعد معدّل الإطارات *المرئي*. فـ`MS_PER_UPDATE` هو
 مجرد *دقّة* (granularity) نستخدمها لتحديث اللعبة. وكلما قصرت هذه الخطوة، استغرق
@@ -423,14 +423,14 @@ name="render">العرض</span> (rendering). فبما أن محرّك العرض
 
 إليك خطاً زمنياً:
 
-<img src="/images/game-programming-patterns/game-loop-3.webp" alt="A timeline containing evenly spaced Updates and intermittent Renders." />
+<img src="/images/game-programming-patterns/game-loop-3.webp" alt="خط زمني يحوي تحديثات (Updates) متباعدة بالتساوي وعمليات رسم متقطعة." />
 
 وكما ترى، نحن نحدّث على فاصل ثابت محكم. وفي الوقت نفسه، نرسم كلما أتاح لنا ذلك.
 فالتكرار أقل من التحديث، وليس ثابتاً أيضاً. وكلاهما مقبول. الجزء المؤسف هو أننا لا
 نرسم دائماً في نقطة التحديث بالذات. انظر إلى وقت الرسم الثالث. إنه يقع بالضبط بين
 تحديثين:
 
-<img src="/images/game-programming-patterns/game-loop-4.webp" alt="Close-up of the timeline showing Renders falling between Update steps." />
+<img src="/images/game-programming-patterns/game-loop-4.webp" alt="لقطة مقرَّبة من الخط الزمني تُظهر عمليات الرسم واقعة بين خطوات التحديث." />
 
 تخيّل رصاصة تعبر الشاشة. عند التحديث الأول، تكون على الجهة اليسرى. والتحديث الثاني
 ينقلها إلى الجهة اليمنى. وتُرسم اللعبة عند لحظة زمنية بين التحديثين، لذا يتوقّع

@@ -58,7 +58,7 @@ closure();
 
 <aside name="flying">
 
-<img src="/images/crafting-interpreters/closures-1.webp" class="above" alt="A local variable flying away from the stack."/>
+<img src="/images/crafting-interpreters/closures-1.webp" class="above" alt="متغيّر محلّي يتطاير بعيداً عن المكدّس."/>
 
 لا، لا! لقد هرب!
 
@@ -158,7 +158,7 @@ ObjClosure جديدة. ولبنية هذه الأخيرة إشارةٌ إلى ا
 
 </aside>
 
-<img src="/images/crafting-interpreters/closures-2.webp" alt="An ObjClosure with a reference to an ObjFunction."/>
+<img src="/images/crafting-interpreters/closures-2.webp" alt="كائن ObjClosure يحمل مرجعاً إلى ObjFunction."/>
 
 سنغلّف كل دالة داخل ObjClosure، حتى لو كانت الدالة لا تغلق فعلًا على أيّ
 متغيّرات محلّية محيطة وتلتقطها. هذا هدرٌ قليل، لكنه يُبسّط الآلة الافتراضية
@@ -397,7 +397,7 @@ fun outer() {
 سيتضافر المصرّف ووقت التشغيل معًا لبناء مجموعة من الكائنات في الذاكرة على هذا
 النحو:
 
-<img src="/images/crafting-interpreters/closures-3.webp" alt="The object graph of the stack, ObjClosure, ObjFunction, and upvalue array."/>
+<img src="/images/crafting-interpreters/closures-3.webp" alt="رسم الكائنات للمكدّس وObjClosure وObjFunction ومصفوفة القيم العليا."/>
 
 
 قد يبدو هذا مُرهقًا، لكن لا تخف. سنعمل على اختراجه. الجزء المهم هو أنّ القيم
@@ -600,7 +600,7 @@ value
 
 وهنا، رسمتُ لك تدفّق التنفيذ:
 
-<img src="/images/crafting-interpreters/closures-4.webp" alt="Tracing through the previous example program."/>
+<img src="/images/crafting-interpreters/closures-4.webp" alt="تتبّع البرنامج المثال السابق."/>
 
 لاحظ كيف يُسقط `x` &#9312; قبل أن يُلتقط &#9313; ثم يُستعمل لاحقًا &#9314;؟ لدينا
 في الواقع مشكلتان:
@@ -620,7 +620,7 @@ value
 بعد عدة قفزات، فسنمرّره عبر كل الدوال الوسيطة بأن تُلتقط كل دالة قيمةً عليا
 تمسك بها الدالة التالية.
 
-<img src="/images/crafting-interpreters/closures-5.webp" alt="An upvalue in inner() points to an upvalue in middle(), which points to a local variable in outer()."/>
+<img src="/images/crafting-interpreters/closures-5.webp" alt="قيمة عليا في inner() تشير إلى قيمة عليا في middle()، والتي تشير إلى متغيّر محلّي في outer()."/>
 
 في المثال أعلاه، تلتقط `middle()` المتغيّر المحلّي `x` في الدالة المحيطة
 مباشرة `outer()` وتخزّنه في قيمتها العليا الخاصة. وهي تفعل ذلك حتى مع أنّ
@@ -677,7 +677,7 @@ name="outer">المتداخلة</span> وتُرجِع فهرس القيمة ال
 
 قد يفيدك المرور على المثال الأصلي أثناء حلّ `x`:
 
-<img src="/images/crafting-interpreters/closures-6.webp" alt="Tracing through a recursive call to resolveUpvalue()."/>
+<img src="/images/crafting-interpreters/closures-6.webp" alt="تتبّع استدعاء resolveUpvalue() المتكرّر."/>
 
 لاحظ أنّ الاستدعاء الجديد لـ `addUpvalue()` يمرّر `false` للمُعامل `isLocal`.
 والآن ترى أنّ ذلك العَلَم يتحكّم فيما إذا كان الإغلاق يلتقط متغيّرًا محلّيًا أم
@@ -1208,7 +1208,7 @@ ObjUpvalue نفسها.
 
 ينتج سلسلة من القيم العليا المترابطة على النحو التالي:
 
-<img src="/images/crafting-interpreters/closures-7.webp" alt="Three upvalues in a linked list."/>
+<img src="/images/crafting-interpreters/closures-7.webp" alt="ثلاث قيم عليا في قائمة موصولة."/>
 
 كلّما أغلقنا على متغيّر محلّي، وقبل إنشاء قيمة عليا جديدة، نبحث عن قيمة عليا قائمة
 في القائمة.
@@ -1313,7 +1313,7 @@ name="double">خاصة</span> حين نُدرج قيمة عليا جديدة ع�
 
 </aside>
 
-<img src="/images/crafting-interpreters/closures-8.webp" alt="Moving a value from the stack to the upvalue's 'closed' field and then pointing the 'value' field to it."/>
+<img src="/images/crafting-interpreters/closures-8.webp" alt="نقل قيمة من المكدّس إلى حقل closed في القيمة العليا ثمّ جعل حقل value يشير إليها."/>
 
 لا نحتاج إلى تغيير طريقة تفسير `OP_GET_UPVALUE` و`OP_SET_UPVALUE` إطلاقًا. هذا يبقيهما
 بسيطَين، وهو بدوره يبقيهما سريعَين. لكننا نحتاج فعلًا إلى إضافة الحقل الجديد إلى

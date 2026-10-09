@@ -70,7 +70,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 تُمثَّل أنواع الكيانات في مخطط الكيانات والعلاقات بمستطيل يحتوي على اسم نوع الكيان. ونختار كتابة الاسم في المفرد والبدء بحرف كبير. فمثلًا، تُمثَّل أنواع الكيانات "Customer" و"Product" و"Car" كما يلي:
 
-![Voorbeelden van de notatie van een entiteittype: ‘Klant’, ‘Product’ en ‘Wagen’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-1-model_conceptueel_entiteiten_afb01.webp)
+![أمثلة على رمزية نوع الكيان (entity type): ‘Klant’ و‘Product’ و‘Wagen’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-1-model_conceptueel_entiteiten_afb01.webp)
 
 ### كيف تبدأ؟
 
@@ -124,7 +124,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 في سياق مخطط الكيانات والعلاقات، تُمثَّل الخاصية بشكل بيضاوي (ellipse) يحتوي على اسم الخاصية. ثم يُوصل هذا البيضاوي بخط إلى نوع الكيان. ولا يمكن مشاركة الخاصية بين أنواع كيانات مختلفة!
 
-![Voorbeeld van de notatie van attributen: het entiteittype ‘Klant’ met een aantal attributen ‘Voornaam’, ‘Naam’, ‘Geboortedatum’, ‘Leeftijd’, ‘Hobby's’ en ‘Woonplaats’](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-2-model_conceptueel_attributen_afb01.webp)
+![مثال على رمزية السمات: نوع الكيان ‘Klant’ بعدة سمات: ‘Voornaam’ و‘Naam’ و‘Geboortedatum’ و‘Leeftijd’ و‘Hobby's’ و‘Woonplaats’](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-2-model_conceptueel_attributen_afb01.webp)
 
 مجال الخاصية (= القيم الممكنة التي يمكن أن تأخذها الخاصية) لا يُعرض في مخطط الكيانات والعلاقات.
 
@@ -152,7 +152,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 تُرسم العلاقة في مخطط الكيانات والعلاقات على شكل *معيّن (diamond)* نضع فيه اسمًا للعلاقة. ويُوصل المعيّن بأنواع الكيانات ذات الصلة.
 
-![Een voorbeeld van de notatoe van een relatie: een relatie ‘Koopt’ tussen twee entiteittypes ‘Klant’ en ‘Product’. Elk entiteittype heeft een aantal attributen.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-3-model_conceptueel_relaties_afb01.webp)
+![مثال على رمزية علاقة: العلاقة ‘Koopt’ بين نوعي الكيان ‘Klant’ و‘Product’. لكل نوع كيان عدد من السمات.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-3-model_conceptueel_relaties_afb01.webp)
 
 ### التكرار
 
@@ -166,7 +166,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 فلنفترض مثلًا أننا نريد تتبّع أن عميلًا يزور كراجًا معينًا، فيمكننا تعريف علاقة "Visits" بين نوعي الكيان "Customer" و"Garage". وقد لا تؤدي الزيارة إلى شراء، لذا نريد فعلًا تتبّع ذلك بشكل منفصل.
 
-![Een voorbeeld van een niet-redundante relatie ‘Bezoekt’ tussen de entiteittypes ‘Klant’ en ‘Garage’ die bijkomende informatie aangeeft.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-4-model_conceptueel_relaties_afb03.webp) سنعود إلى هذا لاحقًا عندما نتحدث عن نموذج قاعدة البيانات العلائقية.
+![مثال على علاقة غير متكررة (non-redundant) ‘Bezoekt’ بين نوعي الكيان ‘Klant’ و‘Garage’ تدل على معلومات إضافية.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-4-model_conceptueel_relaties_afb03.webp) سنعود إلى هذا لاحقًا عندما نتحدث عن نموذج قاعدة البيانات العلائقية.
 
 ### الدرجة
 
@@ -176,25 +176,25 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 مثال على علاقة أحادية هو "Is married to" حيث يكون كيان من نوع الكيان "Person" متزوجًا من كيان من النوع نفسه.
 
-![Voorbeeld van een unaire relatie ‘Is getrouwd met’ die het entiteittypes ‘Persoon’ met zichzelf verbindt.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-5-model_conceptueel_relaties_afb04.webp)
+![مثال على علاقة أحادية (unary) ‘Is getrouwd met’ تربط نوع الكيان ‘Persoon’ بنفسه.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-5-model_conceptueel_relaties_afb04.webp)
 
 نفترض في هذا المثال أن الكيانين ليسا الكيان نفسه؛ لكن من حيث المبدأ يمكن أن يكونا كذلك. فمثلًا، *علاقة كيان له علاقة بنفسه* هي حيث نشير إلى أن وزيرًا يخلفه وزير آخر. ويمكننا وصف ذلك باستخدام العلاقة "Successor of" التي تربط كيانين من نوع الكيان "Minister" ببعضهما. وقد يحدث أن يخلف الوزير نفسه.
 
 مثال على علاقة ثنائية هو "Is pilot" حيث يُسنَد كيان من نوع الكيان "Pilot" إلى كيان من نوع الكيان "Scheduled flight". وكما يوضح المثال أدناه أيضًا، من الممكن أن توجد *علاقات متعددة بين نوعي كيان*، إذ عرّفنا أيضًا علاقة ثنائية "Is co-pilot". فبالنسبة لرحلة مجدولة، سيُسنَد طيار واحد كطيار (رئيسي) وطيار آخر كطيار مساعد. وبناءً على النموذج، نحتفظ بمعلومات الدورين.
 
-![Voorbeeld van twee binaire relaties: de relatie ‘Is piloot’ en de relatie ‘Is co-piloot’ die het entiteittypes ‘Piloot’ en ‘Geplande vlucht’ verbinden.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-6-model_conceptueel_relaties_afb05.webp)
+![مثال على علاقتين ثنائيتين: العلاقة ‘Is piloot’ والعلاقة ‘Is co-piloot’ تربطان نوعي الكيان ‘Piloot’ و‘Geplande vlucht’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-6-model_conceptueel_relaties_afb05.webp)
 
 مثال على علاقة ثلاثية هو "Prescribes" حيث ترتبط كيانات من أنواع الكيانات "Patient" و"Doctor" و"Medication" ببعضها.
 
-![](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-7-Doctor-advising-patient-about-medication-pills_Hero_iStock-1169928112_2021-02_1336x614.webp) ![Voorbeeld van een ternaire relatie ‘Schrijft voor’ die de entiteittypes ‘Patiënt’, ‘Dokter’ en ‘Medicatie’ verbindt.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-8-model_conceptueel_relaties_afb06.webp)
+![](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-7-Doctor-advising-patient-about-medication-pills_Hero_iStock-1169928112_2021-02_1336x614.webp) ![مثال على علاقة ثلاثية (ternary) ‘Schrijft voor’ تربط أنواع الكيان ‘Patiënt’ و‘Dokter’ و‘Medicatie’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-8-model_conceptueel_relaties_afb06.webp)
 
 لكي توجد العلاقة بين الثلاثة، لا بد أن تكون أنواع الكيانات الثلاثة جميعها مشاركة. *وفعلًا، لو استبدلنا هذه العلاقة بعلاقات ثنائية، لفقدنا معلومات.* فالشكل أدناه يتيح لنا معرفة أي مريض يتلقى أي دواء، لكن ليس الطبيب الذي وصفه. ويتيح لنا معرفة أي مريض يعالجه أي طبيب، لكن ليس الدواء الموصوف في أثناء ذلك. وأخيرًا نعرف أيضًا أي طبيب يصف أي دواء، لكن ليس لأي مريض. وإذا أردنا الحصول على الصورة الكاملة في كل حالة، فعلينا إشراك أنواع الكيانات الثلاثة في العلاقة.
 
-![Een voorbeeld hoe drie binaire relaties die geen goed alternatief vormen voor de ternaire relatie.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-9-model_conceptueel_relaties_afb07.webp)
+![مثال يوضح أن ثلاث علاقات ثنائية لا تصلح بديلاً عن العلاقة الثلاثية.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-9-model_conceptueel_relaties_afb07.webp)
 
 *وبدلًا من ذلك، يمكن نمذجة العلاقة الثلاثية أعلاه كنوع كيان "Prescription".* وهنا سنستبدل العلاقة "Prescribes" التي تربط أنواع الكيانات "Patient" و"Doctor" و"Medication" بنوع كيان "Prescription" يُوصل في كل مرة بعلاقة ثنائية بأنواع الكيانات "Patient" و"Doctor" و"Medication". ولكل وصفة، نعرف حينئذ أي مريض يتلقى الوصفة، وأي طبيب يكتب الوصفة، وأي دواء يُوصف.
 
-![Een nieuw entiteittype ‘Voorschrift’ dat de entiteittypes ‘Patient’, ‘Dokter’ en ‘Medicatie’ verbindt als alternatief op de ternaire relatie ‘Schrijft voor’](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-10-model_conceptueel_relaties_afb08.webp)
+![نوع كيان جديد ‘Voorschrift’ يربط أنواع الكيان ‘Patient’ و‘Dokter’ و‘Medicatie’ بديلاً عن العلاقة الثلاثية ‘Schrijft voor’](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-10-model_conceptueel_relaties_afb08.webp)
 
 وميزة هذا النهج أننا نستطيع إرفاق خواص إضافية بنوع الكيان هذا. فمثلًا، يمكننا إضافة الخاصية "Date". وبهذه الطريقة، نعرف أيضًا التاريخ الذي كُتبت فيه الوصفة.
 
@@ -227,7 +227,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 داخل مخطط الكيانات والعلاقات، سنضع التعددية الدنيا حيث يلامس الخط القادم من المعيّن الذي يمثل العلاقة المربعَ الذي يمثل نوع الكيان. ونكتب (0, ...) أو (1, ...).
 
-![Een voorbeeld van de minimumkardinaliteit in (min,max) notatie voor elk van de entiteittypes in de relatie ‘Koopt’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-12-model_conceptueel_relaties_afb09.webp)
+![مثال على الحد الأدنى للاكرامية (minimum cardinality) في ترميز (min,max) لكل أنواع الكيان في العلاقة ‘Koopt’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-12-model_conceptueel_relaties_afb09.webp)
 
 في سياق التعددية الدنيا، *القيمة "1" هي الأكثر تقييدًا*، لأننا نشترط وجود علاقة واحدة على الأقل. وعند الشك، ننصح باختيار "0"، أو الأفضل من ذلك، بألا تفترض شيئًا وأن تسأل تحديدًا عمّا إذا كانت العلاقة اختيارية أم لا لنوع الكيان.
 
@@ -246,7 +246,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 داخل مخطط الكيانات والعلاقات، سنضيف التعددية العليا بعد التعددية الدنيا. ونكتب (<التعددية الدنيا>, 1) أو (<التعددية الدنيا>, N). وعندما تظهر تعددية عليا N عدة مرات داخل النوع نفسه من العلاقة، نميّز بينها باستخدام M أو O أو P... بدلًا من تكرار N. وبذلك نريد التأكيد على أن هذه تمثل قيمًا مختلفة في كل مرة، لكنها أكبر من "1" في كل مرة.
 
-![Een voorbeeld van de minimum- en maximumkardinaliteit in (min,max) notatie voor elk van de entiteittypes in de relatie ‘Koopt’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-13-model_conceptueel_relaties_afb10.webp)
+![مثال على الحدّين الأدنى والأقصى للاكرامية في ترميز (min,max) لكل أنواع الكيان في العلاقة ‘Koopt’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-13-model_conceptueel_relaties_afb10.webp)
 
 كيف ينبغي أن تقرأ الشكل أعلاه؟ "Product" في العلاقة "Buys" لها تعددية دنيا "0"، أي أن المنتج يمكن أن يوجد دون أن يُباع. والتعددية العليا لـ "Product" في العلاقة "Buys" هي "1"، أي أن المنتج لا يمكن أن يشتريه إلا عميل واحد.
 
@@ -266,11 +266,11 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 مثال على علاقة 1-1 علاقة "Has" حيث يمكن أن يرتبط كيان (مثل "Sam Peters") من نوع الكيان "Person" بكيان واحد على الأكثر من نوع الكيان "Identity card"، ويمكن أن يرتبط كل كيان من نوع الكيان "Identity card" بكيان واحد على الأكثر من نوع الكيان "Person". فلكل شخص بطاقة هوية واحدة على الأكثر، وكل بطاقة هوية تنتمي إلى شخص واحد بالضبط.
 
-![Een voorbeeld van een 1-1 relatie.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-14-model_conceptueel_relaties_afb11.webp) ![](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-15-idkaart.webp)
+![مثال على علاقة 1-1.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-14-model_conceptueel_relaties_afb11.webp) ![](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-15-idkaart.webp)
 
 في المثال أعلاه، نفترض عدم الاحتفاظ بالسجل التاريخي، لكن قد يكون لشخص عدة بطاقات هوية على مر السنين. ويمكننا حل ذلك بتعريف علاقتين مختلفتين: "Has" و"Had". فيمكن أن تكون لشخص بطاقة هوية واحدة على الأكثر، لكن قد تكون له على مر الوقت عدة بطاقات.
 
-![Een voorbeeld van een 1-1 relatie.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-16-model_conceptueel_relaties_afb12.webp)
+![مثال على علاقة 1-1.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-16-model_conceptueel_relaties_afb12.webp)
 
 *التعددية الدنيا* لا دور لها في هذا التصنيف. فنحن نعتبر التعددية العليا فقط.
 
@@ -282,7 +282,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 مثال على علاقة 1-N علاقة "Buys" حيث يمكن لكيان (مثل "Sam Peters") من نوع الكيان "Customer" أن يشتري عدة كيانات من نوع الكيان "Car"، لكن كل كيان من نوع الكيان "Car" يمكن أن يُباع لكيان واحد على الأكثر من نوع الكيان "Customer". فيمكن للعميل أن يشتري عدة سيارات، لكن كل سيارة يمكن بيعها مرة واحدة على الأكثر (لن نأخذ البيع المستعمل في الاعتبار في الوقت الحالي). والمهم في هذا المثال أن كل سيارة قابلة للتحديد بشكل فردي وأن معرفة أي عميل اشترى أي سيارة أمر ذو صلة.
 
-![Een voorbeeld van een 1-N relatie.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-18-model_conceptueel_relaties_afb13.webp)
+![مثال على علاقة 1-N.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-18-model_conceptueel_relaties_afb13.webp)
 
 كذلك *التعددية الدنيا* لا دور لها في هذا التصنيف.
 
@@ -292,7 +292,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 مثال على علاقة N-M علاقة "Buys" حيث يمكن لكيان (مثل "Sam Peters") من نوع الكيان "Customer" أن يشتري عدة كيانات من نوع الكيان "Product"، ويمكن لكل كيان من نوع الكيان "Product" أن يشتريه عدة كيانات من نوع الكيان "Customer". فيمكن للعميل أن يشتري منتجات متعددة، ويمكن لكل منتج أن يشتريه عدة عملاء. والمهم في هذا المثال أنه ليس ذا صلة تحديد كل قطعة مباعة بشكل فردي. فنحن نريد تتبّع أن العميل "Sam Peters" اشترى زجاجة ماء، لكن ليس أي زجاجة بعينها، بخلاف مثال السيارة حيث نريد تتبّع ذلك.
 
-![Een voorbeeld van een N-M relatie.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-19-model_conceptueel_relaties_afb14.webp)
+![مثال على علاقة N-M.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-19-model_conceptueel_relaties_afb14.webp)
 
 ### تمرين جمعية الشباب: العلاقات
 
@@ -308,7 +308,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 في مخطط الكيانات والعلاقات، سنرمز إلى الخواص المفتاحية بوضع خط تحت اسم الخاصية. وإذا احتجنا إلى الجمع بين عدة خواص لتحديد كيان، نضع خطًّا تحت كل خاصية من الخواص اللازمة. وإذا كان لدينا عدة مرشحات من خواص (مفردة أو مدمجة)، نضع خطًّا تحت أحد الخيارات فقط.
 
-![Een voorbeeld van een entiteittype ‘Student’ met een sleutelattribuut ‘Studentennummer’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-20-model_conceptueel_soorten_attributen_afb02.webp)
+![مثال على نوع كيان ‘Student’ بسمة مفتاحية (key attribute) ‘Studentennummer’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-20-model_conceptueel_soorten_attributen_afb02.webp)
 
 *المفاتيح مكوّنات مهمة في نموذج قاعدة البيانات العلائقية*، لذا سنعود إليها بالتفصيل في سياق نموذج البيانات المنطقي.
 
@@ -320,7 +320,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 وتُشار إلى الخاصية المشتقة في مخطط الكيانات والعلاقات ببيضاوي مرسوم بخط منقّط يُوضع فيه اسم الخاصية.
 
-![Een voorbeeld van een entiteittype ‘Student’ met een afgeleid attribuut ‘Leeftijd’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-21-model_conceptueel_soorten_attributen_afb03.webp)
+![مثال على نوع كيان ‘Student’ بسمة مشتقة (derived attribute) ‘Leeftijd’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-21-model_conceptueel_soorten_attributen_afb03.webp)
 
 والخاصية التي تُستخدم لاشتقاق القيمة يلزم أيضًا أن تكون موجودة في نموذج البيانات. ففي حالة "Age" يجب أن تكون "Date of birth" موجودة أيضًا. ولا يمكن الإشارة في مخطط الكيانات والعلاقات إلى أن "Age" مشتقة تحديدًا من "Date of Birth"؛ عليك بيان ذلك في التوثيق أو في ملاحظة على النموذج.
 
@@ -346,7 +346,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 وتُشار إلى الخاصية متعددة القيم في مخطط الكيانات والعلاقات ببيضاوي مزدوج الحدود يُوضع فيه اسم الخاصية.
 
-![Een voorbeeld van een entiteittype ‘Student’ met een meerwaardig attribuut ‘E-mail’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-22-model_conceptueel_soorten_attributen_afb04.webp)
+![مثال على نوع كيان ‘Student’ بسمة متعددة القيم (multi-valued attribute) ‘E-mail’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-22-model_conceptueel_soorten_attributen_afb04.webp)
 
 ### خاصية العلاقة
 
@@ -354,7 +354,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 لنلقِ نظرة على المثال التالي. في شركة تبيع سيارات مستعملة، يمكن للعملاء حجز تجربة قيادة بإحدى السيارات المتاحة. بل من الممكن لعميل مهتم بسيارة أن يجرّب السيارة نفسها عدة مرات. وإضافة إلى ذلك، يمكن لعدة عملاء حجز تجارب قيادة لسيارة واحدة. وإذا حوّلنا ذلك إلى مخطط كيانات وعلاقات، نصل إلى المخطط التالي:
 
-![Een voorbeeld van een N-M relatie met een relatie ‘Boekt testrit’ tussen de entiteittypes ‘Klant’ en ‘Wagen’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-23-model_conceptueel_soorten_attributen_afb05.webp)
+![مثال على علاقة N-M مع العلاقة ‘Boekt testrit’ بين نوعي الكيان ‘Klant’ و‘Wagen’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-23-model_conceptueel_soorten_attributen_afb05.webp)
 
 ويريد عميلنا أيضًا معرفة اليوم والوقت المحددين لتجربة القيادة، لذا نريد إضافة الخاصيتين "Day" و"Time of day". وإذا أضفنا هاتين الخاصيتين إلى نوع الكيان "Car"، فذلك يعني أننا نستطيع تعيين يوم واحد ووقت واحد لكل كيان من "Car". ولكن بما أن أكثر من شخص يمكن أن يطلب تجربة قيادة، فقد تُسجَّل أوقات مختلفة لسيارة واحدة. ويمكننا تحويل "Day" و"Time of day" إلى خاصيتين متعددتي القيم لنوع الكيان "Car". لكن حتى ذلك ليس خيارًا؛ فسيكون لدينا عدة أيام لكل كيان من "Car" وأوقات متعددة، لكننا لن نعرف حينئذ أي عميل تنتمي إليه هذه.
 
@@ -362,7 +362,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 والحل هو اعتبار هذه الخواص صفات للعلاقة. ونتيجة لذلك، لكل تركيبة من عميل وسيارة، سنحدد اليوم والوقت المقررين لتجربة القيادة.
 
-![Een voorbeeld van een N-M relatie met een relatie ‘Boekt testrit’ tussen de entiteittypes ‘Klant’ en ‘Wagen’. De relatie is uitgebreid met twee attributen ‘Datum’ en ‘Tijdstip’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-24-model_conceptueel_soorten_attributen_afb06.webp)
+![مثال على علاقة N-M مع العلاقة ‘Boekt testrit’ بين نوعي الكيان ‘Klant’ و‘Wagen’. أُضيفت إلى العلاقة سمتان: ‘Datum’ و‘Tijdstip’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-24-model_conceptueel_soorten_attributen_afb06.webp)
 
 تنبيه * يمكن أن توجد خاصية العلاقة في حالة علاقة N-M. * أما بالنسبة لجميع أنواع العلاقات الأخرى، فذلك غير ممكن، لأننا نستطيع دائمًا إرفاق الخاصية بأحد نوعي الكيان.
 
@@ -384,7 +384,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 ويُحدَّد نوع الكيان الضعيف في مخطط الكيانات والعلاقات بمربع مزدوج الحدود يحتوي على اسم نوع الكيان. وتُعرض العلاقة بين نوع الكيان الضعيف والقوي على شكل معيّن مزدوج الحدود.
 
-![Een voorbeeld van een zwak entiteittype‘Inschrijving’ met relatietype ‘Schrijft in’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-25-model_conceptueel_sterk_zwakke_entiteiten_afb01.webp)
+![مثال على نوع كيان ضعيف (weak entity type) ‘Inschrijving’ بنوع العلاقة ‘Schrijft in’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-25-model_conceptueel_sterk_zwakke_entiteiten_afb01.webp)
 
 لاحظ أننا في مخطط الكيانات والعلاقات لا نأخذ الخاصية المحدِّدة لنوع الكيان "Student" بوصفها الخاصية المحدِّدة لـ "Enrolment". غير أننا نستطيع استنتاج ذلك من التدوين بالمستطيلات والمعينات مزدوجة الحدود.
 
@@ -424,7 +424,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel/
 
 يتم تدوين الأنواع الفرعية والفائقة باستخدام دائرة بداخلها "O" للإشارة إلى أنواع فرعية متداخلة، أو "D" للإشارة إلى أنواع فرعية منفصلة. ومن الأنواع الفرعية يذهب خط إلى الدائرة نرسم عليها قوسًا. ومن الدائرة يذهب خط إلى النوع الفائق. ويُرسم الخط مزدوجًا أو مفردًا. فالخط المزدوج يشير إلى وراثة كلية، والمفرد إلى وراثة اختيارية.
 
-![Een voorbeeld van een supertype ‘Werknemer’ met twee subtypes ‘Tijdelijke werknemer’ en ‘Permanente werknemer’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-26-model_conceptueel_eerd_afb01.webp)
+![مثال على نوع أعلى (supertype) ‘Werknemer’ مع نوعين فرعيين (subtype): ‘Tijdelijke werknemer’ و‘Permanente werknemer’.](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-26-model_conceptueel_eerd_afb01.webp)
 
 #### التعميم والتخصيص
 

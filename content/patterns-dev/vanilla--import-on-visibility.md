@@ -7,7 +7,7 @@ source: https://www.patterns.dev/vanilla/import-on-visibility/
 
 ولأننا لا نطلب جميع الصور فورًا، يمكننا تقليل زمن التحميل الأولي. ويمكننا فعل الشيء نفسه مع المكونات! ولأنعرف ما إذا كانت المكونات موجودة حاليًا في إطار العرض لدينا، يمكننا استخدام [`IntersectionObserver` API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)، أو استخدام مكتبات مثل `react-lazyload` أو `react-loadable-visibility` لإضافة الاستيراد عند الظهور إلى تطبيقنا بسرعة.
 
-JavaScript iconChatInput.jsJavaScript iconChatList.jsicon-square-bigwebpack.config.js
+`ChatInput.js` · `ChatList.js` · `webpack.config.js`
 
 ```javascript
 import React from "react";

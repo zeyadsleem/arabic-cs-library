@@ -18,7 +18,7 @@ source: https://www.crypto101.io/
 يعلمون أنّ له هذا الاسم. يمكننا توضيح مبادئ الحساب المعياريّ باستعمال
 ساعة.
 
-![center](/images/crypto-101/fig-0-Clock2.svg)
+![ساعة تشير إلى الساعة الثانية](/images/crypto-101/fig-0-Clock2.svg)
 
    ساعةٌ تشير إلى الساعة الثانية.
 
@@ -33,14 +33,14 @@ source: https://www.crypto101.io/
 الثانية، وأردتَ أن تعرف ما هي الساعة بعد خمس ساعات، يمكنك أن تجمع 5
 فتصير 7، كما ترى في `fig-Clock2Plus5`.
 
-![center](/images/crypto-101/fig-1-Clock2Plus5.svg){#fig-Clock2Plus5}
+![الجمع على الساعة: 2 + 5 = 7](/images/crypto-101/fig-1-Clock2Plus5.svg){#fig-Clock2Plus5}
 
    `2 + 5 = 7`، على الساعة.
 
 وبالمثل، يمكننا طرح الأوقات. إن كانت الساعة الآن العاشرة، وأردتَ أن
 تعرف ما كانت الساعة قبل ساعتين، فتطرح 2 فتصل إلى 8.
 
-![center](/images/crypto-101/fig-2-Clock10Minus2.svg){#fig-ClockMinus}
+![الطرح على الساعة: 10 - 2 = 8](/images/crypto-101/fig-2-Clock10Minus2.svg){#fig-ClockMinus}
 
    `10 - 2 = 8`، على الساعة.
 
@@ -360,7 +360,7 @@ group).
 
 ### اشتقاق السلّم
 
-advanced
+متقدّم
 
    يتضمّن هذا القسم قدرًا كبيرًا من الحيل الحسابية. ربّما أخرجتَ ورقةً
    وقلمًا لتتابع معي.

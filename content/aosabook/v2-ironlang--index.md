@@ -1,5 +1,5 @@
 ---
-title: "The Dynamic Language Runtime and the Iron Languages"
+title: "بيئة تشغيل اللغات الديناميكية ولغات Iron"
 lang: ar
 source: https://aosabook.org/en/v2/ironlang.html
 ---

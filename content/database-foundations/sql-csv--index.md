@@ -61,13 +61,13 @@ S.NO,Country code,Country,Continental region,NO. OF Internet Plans,Average price
 
 ويوضح اللقطتان أدناه ملف CSV الأصلي بدون إضافة "Rainbow CSV" ومعها. النسخة الملوّنة أسهل قراءة بكثير، أليس كذلك؟
 
-![CSV file without rainbow coloring](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-1-zonderkleur.webp) ![CSV file with rainbow coloring](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-2-metkleur.webp)
+![ملف CSV دون التلوين بألوان قوس قزح](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-1-zonderkleur.webp) ![ملف CSV مع التلوين بألوان قوس قزح](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-2-metkleur.webp)
 
 تنبيه: يوجد خطأ صغير لأن هناك "إدخالًا" (Enter) بين "Avg" و"(Mbit/s)Ookla". واحرص على إزالته حتى تكون الترويسة الكاملة في السطر الأول فقط!
 
 وبمجرد تثبيت هذه الإضافات، افتح ملف csv وانقر على "Edit CSV" في الزاوية العلوية اليمنى. وستحصل الآن على العرض التالي للملف:
 
-![this is what a CSV file looks like after installing edit CSV in VS Code](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-3-editcsv.webp)
+![هكذا يبدو ملف CSV بعد تثبيت إضافة Edit CSV في VS Code](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-3-editcsv.webp)
 
 ## تنظيف البيانات
 
@@ -118,7 +118,7 @@ S.NO,Country code,Country,Continental region,NO. OF Internet Plans,Average price
 
 *أفضل ما يمكنك فعله إذا لم ينجح الأمر هو أن تذهب في نزهة...*
 
-![Sometimes, as a developer, you have to go for a walk.](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-5-goforwalk.webp)
+![أحيانًا، بصفتك مطوّراً، عليك أن تذهب للتنزه.](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-5-goforwalk.webp)
 
 وعندما عدت رأيت فجأة أن الأمر يمكن فعلًا بسهولة *داخل VS Code نفسه*. فالدافع إلى الحل موجود في إحدى الفقرات السابقة. ونفّذ الآن الخطوات التالية في VS Code:
 
@@ -133,7 +133,7 @@ FJ;Fiji;OCEANIA;18;0.19;0.05;0.85;0.59;3.57;452,479;883,483;"25.99"
 
 والفواصل الوحيدة المتبقية الآن هي تلك بين الآلاف والملايين ونحو ذلك. لذا يمكن إزالتها بـ*أمر بحث/استبدال* في VS Code (انظر الشكل أدناه).
 
-![Search and replace in VSCode.](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-6-zoekvervang.webp)
+![البحث والاستبدال في VSCode.](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-6-zoekvervang.webp)
 
 في حقل البحث أدخل الفاصلة، واترك حقل الاستبدال فارغًا (ولا حتى مسافة). وتتيح لك الأزرار على الجانب الأيمن الاستبدال واحدًا واحدًا أو دفعة واحدة. وفي النص نفسه يمكنك رؤية جميع الفواصل التي ستُزال. ويبدو ذلك جيدًا، لذا نفّذ الاستبدال دفعة واحدة. *وإذا ساء الأمر فلا تهلع: تراجع!*
 
@@ -206,7 +206,7 @@ CREATE TABLE internet_prices (
 
 ويُجرى الاستيراد في pgAdmin كما يلي. انقر بزر الفأرة الأيمن على اسم الجدول المنشأ حديثًا واختر "Import/Export Data...". وفي مربع الحوار (علامة التبويب "General") تضبط الآن ما يلي:
 
-![first dialog box for import of CSV in pgAdmin](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-7-importcsv1.webp)
+![مربع الحوار الأول لاستيراد CSV في pgAdmin](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-7-importcsv1.webp)
 
 - Import/Export: اختر Import؛
 - Filename: رابط ملف .csv الذي تريد استيراده ("internetprices.csv")؛
@@ -215,7 +215,7 @@ CREATE TABLE internet_prices (
 
 وفي علامة التبويب الثانية "Options" (الشكل أدناه)، عدّل ما يلي:
 
-![second dialog box for importing CSV into pgAdmin](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-8-importcsv2.webp)
+![مربع الحوار الثاني لاستيراد CSV في pgAdmin](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-8-importcsv2.webp)
 
 - Header: ضع علامة (حتى يُتخطى الصف الأول)؛
 - Delimiter: اختر ";" فاصلًا؛
@@ -225,7 +225,7 @@ CREATE TABLE internet_prices (
 
 لكن كما ذُكر... نادرًا ما تسير الأمور كما هو مخطط لها تمامًا في المرة الأولى. فقد ظنّنا أن "تنظيف بياناتنا" نجح، لكنك لا تزال تحصل على رسالة خطأ. ولرؤية رسالة الخطأ هذه، عليك أولًا الدخول إلى المربع الأحمر حيث توجد رسالة خطأ، والنقر على "View Processes". وستحصل حينئذ على جدول بسطر من المعلومات عن عملية الاستيراد الفاشلة. وفي ذلك السطر، وقبل عمود "PID" مباشرة، يوجد رمز "View Details". انقر عليه لرؤية الخطأ الصحيح. وقد تحتاج إلى تكبير النافذة لقراءة رسالة الخطأ كاملة. وستبدو رسالة الخطأ كهذه:
 
-![Error importing country Aruba.](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-9-importfoutAruba.webp)
+![خطأ في استيراد دولة أروبا.](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-9-importfoutAruba.webp)
 
 يبدو أن رمز البلد AW (مفتاحنا الأساسي!) يظهر مرتين قرب السطر 176 من ملف CSV. *وبما أن المفتاح الأساسي يجب أن يكون فريدًا، يعطي خادم قاعدة البيانات رسالة خطأ عن حق، ويُلغى الاستيراد.* ولذلك لا يُستورد أي شيء.
 
@@ -270,7 +270,7 @@ LB;Lebanon;NEAR EAST;15;4.81;1.21;77.7;3.82;5.84;4755187;6859408;16.38
 
 اطلب نظرة عامة كاملة بواسطة `SELECT * FROM internet_prices`:
 
-![Successful! Overview of all prices.](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-10-selectalleprijzen.webp)
+![تم بنجاح! نظرة عامة على جميع الأسعار.](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-10-selectalleprijzen.webp)
 
 ## من البيانات إلى المعلومات
 
@@ -344,7 +344,7 @@ ORDER by avg_price desc;
 
 في أي بلد يكون فرق السعر بين أغلى عرض وأرخصه الأكبر؟ (الجواب: اليونان، حيث الفرق كبير لدرجة تجعلك تتساءل إن كانت هذه الأعداد صحيحة...). وينبغي أن تحصل على لقطة الشاشة في الشكل أدناه.
 
-![In Greece, the difference between the most expensive and the cheapest provider is the largest.](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-11-grootsteprijsverschil.webp)
+![في اليونان، يكون الفرق بين المزوّد الأغلى والأرخص هو الأكبر.](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-11-grootsteprijsverschil.webp)
 
 #### الحل
 
@@ -423,8 +423,8 @@ ORDER BY 2 desc;
 
 أحيانًا لا تريد بعد الآن استرجاع تفاصيل فردية، بل تهتم فقط بـ*معلومات عن مجموعة معينة*. وبعض الأمثلة على جدول أسعار الإنترنت:
 
-- ما متوسط سرعة الإنترنت ومتوسط الحد الأدنى للسعر وعدد البلدان في كل منطقة (انظر الشكل)؟ ![Grouped data, such as average by region.](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-12-groupbyvb1.webp)
-- اسرد البلدان حسب عدد صيغ الإنترنت (من 40 صيغة على الأقل) وأعطِ متوسط السعر: ![Grouped data, with a condition: having](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-13-groupbyhaving.webp)
+- ما متوسط سرعة الإنترنت ومتوسط الحد الأدنى للسعر وعدد البلدان في كل منطقة (انظر الشكل)؟ ![بيانات مجمّعة، مثل المتوسط حسب المنطقة.](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-12-groupbyvb1.webp)
+- اسرد البلدان حسب عدد صيغ الإنترنت (من 40 صيغة على الأقل) وأعطِ متوسط السعر: ![بيانات مجمّعة مع شرط: having](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-13-groupbyhaving.webp)
 
 ولنحل سؤال المثال الأول: "لكل منطقة، اسرد عدد البلدان في تلك المنطقة ومتوسط سرعة الإنترنت ومتوسط الحد الأدنى للسعر.". نحتاج إلى تقديم بعض المعلومات حسب المنطقة، لذا نستخدم `GROUP BY region`. وفي هذه المرحلة لا يمكننا استرجاع سوى *المنطقة نفسها* و*الأعداد الملخّصة (دوال التجميع المطبقة على أعمدة معينة)*. وهذا يعطي الاستعلام التالي:
 
@@ -481,7 +481,7 @@ ORDER BY 2 DESC;
 
 يسرد هذا الاستعلام حسب المنطقة عدد البلدان في تلك المنطقة ومتوسط سرعة الإنترنت فيها. ويوضح الشكل التالي النتائج الكاملة مرتبة تنازليًا حسب العمود الثاني:
 
-![Having to use as a condition in conjunction with group by](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-14-havingvb.webp)
+![استخدام HAVING شرطاً إلى جانب GROUP BY](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-14-havingvb.webp)
 
 ويمكننا الآن إضافة HAVING إلى الشيفرة:
 
@@ -495,7 +495,7 @@ ORDER BY 2 DESC;
 
 وإضافة `HAVING COUNT(*) > 16` تعني "أبقِ فقط الصناديق (المناطق) التي تحتوي أكثر من 16 صفًا فرديًا". ويتكوّن ناتج الاستعلام الآن من صفوف أقل بكثير:
 
-![Keep only those boxes that meet the condition in the having](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-15-havingminstens16.webp)
+![الإبقاء فقط على العناصر التي تحقق الشرط في having](https://df.webontwerp.ucll.be/images/database-foundations/sql-csv-15-havingminstens16.webp)
 
 فما أكبر فرق عن `WHERE`؟ يُنفَّذ `WHERE` مباشرة بعد `FROM` وقبل أن يدخل `GROUP BY` حيز التنفيذ. ويختار الشرط الذي بعد `WHERE` صفوفًا معينة من الجدول (ويطرح البقية). وعندها فقط تُجمع هذه الصفوف في صناديق بواسطة `GROUP BY`. وعندما يصبح كل صف في صندوق، يبدأ `HAVING` الذي يبقي صناديق معينة ويزيل غيرها.
 

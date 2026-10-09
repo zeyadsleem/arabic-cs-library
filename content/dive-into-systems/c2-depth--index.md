@@ -68,7 +68,7 @@ int change(int amt) {
 
 يُقسَّم فضاء ذاكرة البرنامج إلى عدة أجزاء، يُستخدم كل منها لتخزين نوع مختلف من الكيانات في فضاء عناوين العملية. ويوضّح [الشكل 1](#FigMemParts) أجزاء فضاء ذاكرة البرنامج.
 
-![The parts of program memory arranged into a program’s address space. At the top (addresses closer to 0), we have regions for the OS, code (instructions), data (globals), and the heap (dynamically allocated memory). At the other end of the address space (maximum address), the stack stores local variables and function parameters.](https://diveintosystems.org/images/dive-into-systems/c2-depth-0-memparts.webp){#FigMemParts} الشكل 1. أجزاء فضاء عناوين البرنامج.
+![أجزاء ذاكرة البرنامج مرتَّبة في فضاء عناوين البرنامج. وفي الأعلى (العناوين الأقرب إلى 0) توجد مناطق لنظام التشغيل، والشيفرة (التعليمات)، والبيانات (المتغيّرات العامة)، والكومة (الذاكرة المخصَّصة ديناميكياً). وفي الطرف الآخر من فضاء العناوين (العنوان الأقصى)، يخزّن المكدّس المتغيّرات المحلية ومعاملات الدوال.](https://diveintosystems.org/images/dive-into-systems/c2-depth-0-memparts.webp){#FigMemParts} الشكل 1. أجزاء فضاء عناوين البرنامج.
 
 يُحجز أعلى ذاكرة البرنامج لاستخدام نظام التشغيل، أما الأجزاء المتبقية فهي قابلة للاستخدام من البرنامج قيد التشغيل. وتُخزَّن تعليمات البرنامج في قسم *الشيفرة* (code) من الذاكرة. فمثلاً، يخزّن البرنامج المذكور أعلاه تعليمات الدوال `main` و`max` و`change` في هذه المنطقة من الذاكرة.
 
@@ -92,7 +92,7 @@ int change(int amt) {
 
 يخزّن **متغيّر المؤشّر** (pointer variable) عنوان موقع ذاكرة يمكن تخزين قيمة من نوع محدد فيه. فمثلاً، يمكن لمتغيّر مؤشّر تخزين قيمة عنوان `int` تُخزَّن فيه القيمة الصحيحة 12. و*يشير* متغيّر المؤشّر إلى القيمة (يرتبط بها). ويوفّر المؤشّر *مستوى من الإحالة غير المباشرة* للوصول إلى القيم المخزّنة في الذاكرة. ويوضّح [الشكل 1](#FigPointerMem) مثالاً على ما قد يبدو عليه متغيّر مؤشّر في الذاكرة:
 
-![A pointer named "ptr" points to a memory location that stores the integer value 12.](https://diveintosystems.org/images/dive-into-systems/c2-depth-0-ptr.webp){#FigPointerMem} الشكل 1. يخزّن متغيّر المؤشّر عنوان موقع في الذاكرة. وهنا يخزّن المؤشّر عنوان متغيّر صحيح يحمل العدد 12.
+![مؤشّر اسمه "ptr" يشير إلى موقع في الذاكرة يخزّن القيمة الصحيحة 12.](https://diveintosystems.org/images/dive-into-systems/c2-depth-0-ptr.webp){#FigPointerMem} الشكل 1. يخزّن متغيّر المؤشّر عنوان موقع في الذاكرة. وهنا يخزّن المؤشّر عنوان متغيّر صحيح يحمل العدد 12.
 
 من خلال متغيّر المؤشّر `ptr`، يمكن الوصول بشكل غير مباشر إلى القيمة (`12`) المخزّنة في موقع الذاكرة الذي يشير إليه. وأكثر ما تستخدم برامج C متغيّرات المؤشّرات فيه:
 
@@ -127,7 +127,7 @@ ptr = &x;    // ptr gets the address of x, pointer "points to" x
 cptr = &ch;  // cptr gets the address of ch, pointer "points to" ch
 ```
 
-![Initialize ptr to the address of x and cptr to the address of ch (to point to x and ch, respectively).](https://diveintosystems.org/images/dive-into-systems/c2-depth-1-ptrinit.webp){#FigPointerInit} الشكل 2. يمكن للبرنامج تهيئة مؤشّر بإسناد عنوان متغيّر موجود من النوع المناسب إليه.
+![تهيئة ptr على عنوان x وcptr على عنوان ch (لكي يشيرا إلى x وch على التوالي).](https://diveintosystems.org/images/dive-into-systems/c2-depth-1-ptrinit.webp){#FigPointerInit} الشكل 2. يمكن للبرنامج تهيئة مؤشّر بإسناد عنوان متغيّر موجود من النوع المناسب إليه.
 
 وفيما يلي مثال على تهيئة مؤشّر غير صالحة بسبب عدم تطابق الأنواع:
 
@@ -145,7 +145,7 @@ ptr = NULL;
 cptr = NULL;
 ```
 
-![Initialize ptr and cptr to NULL.](https://diveintosystems.org/images/dive-into-systems/c2-depth-2-ptrnull.webp){#FigPointerNull} الشكل 3. يمكن إعطاء أي مؤشّر القيمة الخاصة NULL، التي تشير إلى أنه لا يشير إلى أي عنوان بعينه. ولا ينبغي أبداً إلغاء الإشارة إلى المؤشّرات الفارغة.
+![تهيئة ptr وcptr على NULL.](https://diveintosystems.org/images/dive-into-systems/c2-depth-2-ptrnull.webp){#FigPointerNull} الشكل 3. يمكن إعطاء أي مؤشّر القيمة الخاصة NULL، التي تشير إلى أنه لا يشير إلى أي عنوان بعينه. ولا ينبغي أبداً إلغاء الإشارة إلى المؤشّرات الفارغة.
 
 وأخيراً، **استخدم متغيّر المؤشّر**: يتبع **معامل إلغاء الإشارة** (dereference operator) (`*`) متغيّر مؤشّر إلى موقع الذاكرة الذي يشير إليه ويصل إلى القيمة في ذلك الموقع:
 
@@ -157,7 +157,7 @@ ptr = &x;   /* initialize ptr to the address of x (ptr points to variable x) */
 *ptr = 8;   /* the memory location ptr points to is assigned 8 */
 ```
 
-![Dereference ptr to access the memory it points to (x, whose value is 8).](https://diveintosystems.org/images/dive-into-systems/c2-depth-3-ptrderef.webp){#FigPointerDeref} الشكل 4. يؤدي إلغاء الإشارة إلى مؤشّر إلى الوصول إلى القيمة التي يشير إليها المؤشّر.
+![إلغاء الإشارة إلى ptr للوصول إلى الذاكرة التي يشير إليها (وهي x التي قيمتها 8).](https://diveintosystems.org/images/dive-into-systems/c2-depth-3-ptrderef.webp){#FigPointerDeref} الشكل 4. يؤدي إلغاء الإشارة إلى مؤشّر إلى الوصول إلى القيمة التي يشير إليها المؤشّر.
 
 #### أمثلة على المؤشّرات {#_pointer_examples}
 
@@ -171,33 +171,33 @@ ptr2 = &x;     // ptr2 is assigned the address of x
 ptr1 = NULL;
 ```
 
-![We initialize x to 8, ptr2 to the address of x, and ptr1 gets NULL.](https://diveintosystems.org/images/dive-into-systems/c2-depth-4-ptrs1.webp)
+![نهيئة x على 8، وptr2 على عنوان x، وتحصل ptr1 على NULL.](https://diveintosystems.org/images/dive-into-systems/c2-depth-4-ptrs1.webp)
 
 ```c
 *ptr2 = 10;     // the memory location ptr2 points to is assigned 10
 y = *ptr2 + 3;  // y is assigned what ptr2 points to plus 3
 ```
 
-![Dereference ptr2 to change x to 10 and assign y 13.](https://diveintosystems.org/images/dive-into-systems/c2-depth-5-ptrs2.webp)
+![إلغاء الإشارة إلى ptr2 لتغيير x إلى 10 وإسناد 13 إلى y.](https://diveintosystems.org/images/dive-into-systems/c2-depth-5-ptrs2.webp)
 
 ```c
 ptr1 = ptr2;   // ptr1 gets the address value stored in ptr2 (both point to x)
 ```
 
-![Assign ptr1 the value of ptr2 (they now both point to same location).](https://diveintosystems.org/images/dive-into-systems/c2-depth-6-ptrs3.webp)
+![إسناد قيمة ptr2 إلى ptr1 (يشيران الآن كلاهما إلى الموقع نفسه).](https://diveintosystems.org/images/dive-into-systems/c2-depth-6-ptrs3.webp)
 
 ```c
 *ptr1 = 100;
 ```
 
-![Dereference ptr1 and assign 100 to the value it points to. Note: this assignment changes value pointed to by both ptr1 and ptr2, since they both refer to the same location.](https://diveintosystems.org/images/dive-into-systems/c2-depth-7-ptrs4.webp)
+![إلغاء الإشارة إلى ptr1 وإسناد 100 إلى القيمة التي يشير إليها. ملاحظة: يغيّر هذا الإسناد القيمة التي يشير إليها كل من ptr1 وptr2، إذ يشيران كلاهما إلى الموقع نفسه.](https://diveintosystems.org/images/dive-into-systems/c2-depth-7-ptrs4.webp)
 
 ```c
 ptr1 = &y;     // change ptr1's value (change what it points to)
 *ptr1 = 80;
 ```
 
-![Reassign ptr1 to point to the address of y and dereference it to change y’s value to 80.](https://diveintosystems.org/images/dive-into-systems/c2-depth-8-ptrs5.webp)
+![إعادة تعيين ptr1 ليشير إلى عنوان y ثم إلغاء الإشارة إليه لتغيير قيمة y إلى 80.](https://diveintosystems.org/images/dive-into-systems/c2-depth-8-ptrs5.webp)
 
 عند استخدام متغيّرات المؤشّرات، تأمّل بعناية أنواع المتغيّرات ذات الصلة. ويمكن أن يساعد رسم صور للذاكرة (مثل المعروضة أعلاه) في فهم ما تفعله شيفرة المؤشّرات. وتشمل بعض الأخطاء الشائعة إساءة استخدام معامل إلغاء الإشارة (`*`) أو معامل العنوان (`&`). فمثلاً:
 
@@ -314,7 +314,7 @@ x: 100 y: 30
 
 يعرض [الشكل 1](#FigPassPointer) كيف يبدو مكدّس الاستدعاء قبل تنفيذ الإرجاع في `change_value`.
 
-![The input parameter to change_value stores the address of main’s 'x' variable.](https://diveintosystems.org/images/dive-into-systems/c2-depth-0-passbypointer.webp){#FigPassPointer} الشكل 1. لقطة لمكدّس الاستدعاء قبل العودة من change_value.
+![يُخزّن معامل الإدخال في change_value عنوان المتغيّر 'x' في main.](https://diveintosystems.org/images/dive-into-systems/c2-depth-0-passbypointer.webp){#FigPassPointer} الشكل 1. لقطة لمكدّس الاستدعاء قبل العودة من change_value.
 
 يحصل وسيط الإدخال على نسخة من قيمة وسيطته (عنوان `x`). وقيمة `x` هي 30 عند إجراء استدعاء الدالة. وداخل الدالة `change_value`، يُلغى الإشارة إلى الوسيط لإسناد القيمة 100 إلى موقع الذاكرة الذي يشير إليه الوسيط (`*input = 100;`، أي «الموقع الذي يشير إليه `input` يحصل على القيمة 100»). ولأن الوسيط يخزّن عنوان متغيّر محلي في إطار مكدّس الدالة `main`، يمكن تغيير القيمة المخزّنة في المتغيّر المحلي للمستدعي من خلال إلغاء الإشارة إلى الوسيط. وعند عودة الدالة، تعكس قيمة الوسيطة التغيير الذي أُجري عليها عبر وسيط المؤشّر (تغيّرت قيمة `x` في `main` إلى 100 بفعل الدالة `change_value` عبر وسيطها `input`).
 
@@ -335,7 +335,7 @@ x: 100 y: 30
 
 يوضّح [الشكل 1](#FigProgramMemory) أجزاء ذاكرة برنامج قيد التشغيل مع مثال على متغيّر مؤشّر (`ptr`) على المكدّس يخزّن عنوان ذاكرة كومة مخصَّصة ديناميكياً (أي يشير إلى ذاكرة الكومة).
 
-![The parts of program memory showing a stack variable pointing to dynamically allocated heap memory.](https://diveintosystems.org/images/dive-into-systems/c2-depth-0-program_memory.webp){#FigProgramMemory} الشكل 1. مؤشّر على المكدّس يشير إلى كتلة ذاكرة خُصِّصت من الكومة.
+![أجزاء ذاكرة البرنامج التي تُظهر متغيّراً على المكدّس يشير إلى ذاكرة كومة مخصَّصة ديناميكياً.](https://diveintosystems.org/images/dive-into-systems/c2-depth-0-program_memory.webp){#FigProgramMemory} الشكل 1. مؤشّر على المكدّس يشير إلى كتلة ذاكرة خُصِّصت من الكومة.
 
 من المهم تذكّر أن ذاكرة الكومة ذاكرة مجهولة، حيث تعني «مجهولة» أن العناوين في الكومة ليست مرتبطة بأسماء متغيّرات. فالإعلان عن متغيّر برنامج مسمّى يخصّصه على المكدّس أو في جزء البيانات من ذاكرة البرنامج. ويمكن لمتغيّر مؤشّر محلي أو عام تخزين عنوان موقع ذاكرة كومة مجهول (مثلاً، يمكن لمتغيّر مؤشّر محلي على المكدّس أن يشير إلى ذاكرة الكومة)، ويمكّن إلغاء الإشارة إلى مؤشّر كهذا البرنامج من تخزين بيانات في الكومة.
 
@@ -416,7 +416,7 @@ c_arr = malloc(sizeof(char) * 10);
 
 بعد الاستدعاءين `malloc` في هذا المثال، يخزّن متغيّر المؤشّر `int` `arr` عنوان أساس مصفوفة من 20 موقع تخزين صحيح متجاورة في ذاكرة الكومة، ويخزّن متغيّر مؤشّر المحارف `c_arr` عنوان أساس مصفوفة من 10 مواقع تخزين محارف متجاورة في ذاكرة الكومة. ويصوّر [الشكل 2](#FigHeapArray) كيف قد يبدو ذلك.
 
-![Main’s stack holds two pointer variables. The first, arr, contains the address of a block of memory on the heap with enough space for 20 integers. The second, c_arr, contains the address of a different block of memory on the heap with enough space for 10 characters.](https://diveintosystems.org/images/dive-into-systems/c2-depth-1-heaparray.webp){#FigHeapArray} الشكل 2. مصفوفة صحيحة من 20 عنصراً ومصفوفة محارف من 10 عناصر مخصَّصتان على الكومة.
+![يحتوي مكدّس main على متغيّري مؤشّر: الأول arr يحوي عنوان كتلة ذاكرة على الكومة تتسع لـ20 عدداً صحيحاً، والثاني c_arr يحوي عنوان كتلة ذاكرة أخرى على الكومة تتسع لـ10 محارف.](https://diveintosystems.org/images/dive-into-systems/c2-depth-1-heaparray.webp){#FigHeapArray} الشكل 2. مصفوفة صحيحة من 20 عنصراً ومصفوفة محارف من 10 عناصر مخصَّصتان على الكومة.
 
 لاحظ أنه رغم أن `malloc` ترجع مؤشّراً إلى مساحة مخصَّصة ديناميكياً في ذاكرة الكومة، فإن برامج C تخزّن المؤشّر إلى مواقع الكومة على المكدّس. وتحتوي متغيّرات المؤشّرات على *عنوان الأساس فقط* (عنوان البداية) لمساحة تخزين المصفوفة في الكومة. وكما في المصفوفات المعلَنة ساكنةً، تكون مواقع الذاكرة للمصفوفات المخصَّصة ديناميكياً في مواقع ذاكرة متجاورة. ورغم أن استدعاءً واحداً لـ `malloc` يؤدي إلى تخصيص قطعة ذاكرة بعدد البايتات المطلوب، فإن استدعاءات متعددة لـ `malloc` *لن* تؤدي إلى عناوين كومة متجاورة (على معظم الأنظمة). وفي المثال أعلاه، قد تكون عناصر مصفوفة `char` وعناصر مصفوفة `int` عند عناوين متباعدة في الكومة.
 
@@ -511,7 +511,7 @@ void init_array(int *arr, int size) {
 
 عند النقطة قبل العودة من الدالة `init_array` مباشرة، سيبدو محتوى الذاكرة كما في [الشكل 3](#FigHeapArrayParam). لاحظ أنه عندما يمرّر `main` `arr1` إلى `init_array` فإنه يمرّر عنوان أساس المصفوفة فقط. وتبقى الكتلة الكبيرة المتجاورة لذاكرة المصفوفة على الكومة، ويمكن للدالة الوصول إليها بإلغاء الإشارة إلى وسيط المؤشّر `arr`. كما يمرّر حجم المصفوفة حتى تعرف `init_array` عدد العناصر المطلوب الوصول إليها.
 
-![Main’s arr1 and init_array’s arr variable both store the same base address of a block of heap memory.](https://diveintosystems.org/images/dive-into-systems/c2-depth-2-heaparrayparam.webp){#FigHeapArrayParam} الشكل 3. محتويات الذاكرة قبل العودة من init_array. يشير كل من arr1 في main والمتغيّر arr في init_array إلى كتلة ذاكرة الكومة نفسها.
+![يخزّن كل من arr1 في main والمتغيّر arr في init_array العنوان الأساسي نفسه لكتلة ذاكرة الكومة.](https://diveintosystems.org/images/dive-into-systems/c2-depth-2-heaparrayparam.webp){#FigHeapArrayParam} الشكل 3. محتويات الذاكرة قبل العودة من init_array. يشير كل من arr1 في main والمتغيّر arr في init_array إلى كتلة ذاكرة الكومة نفسها.
 
 قدّمنا في [الفصل السابق](https://diveintosystems.org/book/C1-C_intro/arrays_strings.html#_introduction_to_arrays) المصفوفات أحادية البعد المعلَنة ساكنةً في C وناقشنا دلالات تمرير المصفوفات إلى الدوال. وفي [قسم التخصيص الديناميكي للذاكرة](https://diveintosystems.org/book/C2-C_depth/pointers.html#_dynamic_memory_allocation) في هذا الفصل، قدّمنا المصفوفات أحادية البعد المخصَّصة ديناميكياً وناقشنا دلالات تمريرها إلى الدوال.
 
@@ -651,7 +651,7 @@ num = little[8][4];  // get short value in row 8, column 4 of little
 
 يوضّح [الشكل 1](#FigAccessingMatrix) المصفوفة ثنائية الأبعاد كمصفوفة (matrix) من القيم الصحيحة، حيث يُفهرَس عنصر محدد في المصفوفة ثنائية الأبعاد بقيمتي فهرس الصف والعمود.
 
-![Accessing matrix[2][3] is like indexing into a grid at row 2 and column 3.](https://diveintosystems.org/images/dive-into-systems/c2-depth-0-matrix.webp) الشكل 1. مصفوفة ثنائية الأبعاد ممثَّلة كمصفوفة. الوصول إلى matrix[2][3] يشبه الفهرسة في شبكة عند الصف 2 والعمود 3.
+![الوصول إلى matrix[2][3] يشبه الفهرسة في شبكة عند الصف 2 والعمود 3.](https://diveintosystems.org/images/dive-into-systems/c2-depth-0-matrix.webp) الشكل 1. مصفوفة ثنائية الأبعاد ممثَّلة كمصفوفة. الوصول إلى matrix[2][3] يشبه الفهرسة في شبكة عند الصف 2 والعمود 3.
 
 كثيراً ما تصل البرامج إلى عناصر مصفوفة ثنائية الأبعاد بالتكرار عبر حلقات متداخلة. فمثلاً، تهيّئ الحلقة المتداخلة التالية جميع العناصر في `matrix` إلى 0:
 
@@ -716,7 +716,7 @@ int arr[3][4];  // int array with 3 rows and 4 columns
 
 قد يبدو تخطيطها في الذاكرة كما في [الشكل 2](#Fig2DMem).
 
-![Declaring an array as "int arr[3][4]" yields three rows, each of which has four elements. Row 0 consists of arr[0][0], arr[0][1], arr[0][2], and arr[0][3]. Row 1 consists of arr[1][0], arr[1][1], etc.](https://diveintosystems.org/images/dive-into-systems/c2-depth-1-2Dmem.webp) الشكل 2. تخطيط مصفوفة ثنائية الأبعاد بترتيب الصفوف.
+![إعلان مصفوفة على شكل "int arr[3][4]" ينتج ثلاثة صفوف، لكل منها أربعة عناصر. ويتكوّن الصف 0 من arr[0][0] وarr[0][1] وarr[0][2] وarr[0][3]. ويتكوّن الصف 1 من arr[1][0] وarr[1][1] وما إلى ذلك.](https://diveintosystems.org/images/dive-into-systems/c2-depth-1-2Dmem.webp) الشكل 2. تخطيط مصفوفة ثنائية الأبعاد بترتيب الصفوف.
 
 لاحظ أن جميع عناصر المصفوفة تُخصَّص على عناوين ذاكرة متجاورة. أي أن عنوان أساس المصفوفة ثنائية الأبعاد هو عنوان ذاكرة العنصر `[0][0]` (`&arr[0][0]`)، وتُخزَّن العناصر التالية بشكل متجاور بترتيب الصفوف (مثلاً، يأتي الصف 1 بأكمله مباشرة بعد الصف 0 بأكمله، وهكذا).
 
@@ -757,7 +757,7 @@ int main(void) {
 
 يعرض [الشكل 3](#Fig2DOneMalloc) مثالاً على تخصيص مصفوفة ثنائية الأبعاد بهذه الطريقة ويوضح كيف قد تبدو الذاكرة بعد الاستدعاء `malloc`.
 
-![We can allocate an array with malloc(sizeof(int) * (3*4)) and store the base address in a stack pointer variable. Because malloc returns a contiguous chunk of memory, we can treat the memory as a collection of rows and columns in row-major order like a statically allocated array.](https://diveintosystems.org/images/dive-into-systems/c2-depth-2-2Donemalloc.webp){#Fig2DOneMalloc} الشكل 3. نتائج تخصيص مصفوفة ثنائية الأبعاد باستدعاء واحد لـ malloc.
+![يمكننا تخصيص مصفوفة باستخدام malloc(sizeof(int) * (3*4)) وتخزين العنوان الأساسي في متغيّر مؤشّر على المكدّس. ولأن malloc تعيد كتلة ذاكرة متصلة، يمكننا معاملة الذاكرة كمجموعة من الصفوف والأعمدة بترتيب الصفوف الأول، تمامًا كالمصفوفة المخصَّصة ساكناً.](https://diveintosystems.org/images/dive-into-systems/c2-depth-2-2Donemalloc.webp){#Fig2DOneMalloc} الشكل 3. نتائج تخصيص مصفوفة ثنائية الأبعاد باستدعاء واحد لـ malloc.
 
 وكما في المصفوفات أحادية البعد المخصَّصة ديناميكياً، يُخصَّص متغيّر المؤشّر الخاص بالمصفوفة ثنائية الأبعاد على المكدّس. ثم يُسنَد إلى ذلك المؤشّر القيمة التي يرجعها الاستدعاء `malloc`، وهي تمثّل عنوان أساس القطعة المتجاورة من مواقع تخزين *N*x*M* من النوع `int` في ذاكرة الكومة.
 
@@ -838,7 +838,7 @@ for (i = 0; i < N; i++) {
 
 يعرض [الشكل 4](#Fig2DNMallocs) كيف قد تبدو الذاكرة بعد استدعاءات *N+1* لـ `malloc` في المثال أعلاه.
 
-![two_d_array is a stack variable that points to a dynamically allocated array of pointers. Each of those pointers points to a 1D array of integers.](https://diveintosystems.org/images/dive-into-systems/c2-depth-3-2Dnmallocs.webp){#Fig2DNMallocs} الشكل 4. ترتيب الذاكرة بعد تخصيص مصفوفة ثنائية الأبعاد بـ N+1 استدعاءً لـ malloc.
+![two_d_array متغيّر على المكدّس يشير إلى مصفوفة من المؤشّرات مخصَّصة ديناميكياً. ويشير كل مؤشّر من تلك المؤشّرات إلى مصفوفة أحادية الأبعاد من الأعداد الصحيحة.](https://diveintosystems.org/images/dive-into-systems/c2-depth-3-2Dnmallocs.webp){#Fig2DNMallocs} الشكل 4. ترتيب الذاكرة بعد تخصيص مصفوفة ثنائية الأبعاد بـ N+1 استدعاءً لـ malloc.
 
 لاحظ أنه عند استخدام هذه الطريقة، لا تكون متجاورة في الذاكرة إلا العناصر المخصَّصة كجزء من استدعاء واحد لـ `malloc`. أي أن العناصر داخل كل صف متجاورة، لكن العناصر من صفوف مختلفة (حتى الصفوف المتجاورة) ليست كذلك.
 
@@ -1522,7 +1522,7 @@ strcpy(sptr->name, "Lars");
 
 يرسم [الشكل 1](#FigStructPointer) تصوراً لما قد يبدو عليه المتغيّران `s` و`sptr` في الذاكرة بعد تنفيذ الشيفرة أعلاه. تذكّر أن `malloc` تخصّص ذاكرة من الكومة، وتُخصَّص المتغيّرات المحلية على المكدّس.
 
-![All the fields of struct s (Freya) are stored on the stack. The sptr pointer on the stack stores the heap address of another student struct (Lars).](https://diveintosystems.org/images/dive-into-systems/c2-depth-0-structptr.webp){#FigStructPointer} الشكل 1. الفروق في تخطيط الذاكرة بين بنية مخصَّصة ساكنةً (بيانات على المكدّس) وبنية مخصَّصة ديناميكياً (بيانات على الكومة).
+![تُخزَّن جميع حقول البنية s (Freya) على المكدّس. ويخزّن المؤشّر sptr على المكدّس عنوان كومة لبنية طالب أخرى (Lars).](https://diveintosystems.org/images/dive-into-systems/c2-depth-0-structptr.webp){#FigStructPointer} الشكل 1. الفروق في تخطيط الذاكرة بين بنية مخصَّصة ساكنةً (بيانات على المكدّس) وبنية مخصَّصة ديناميكياً (بيانات على الكومة).
 
 ### 2.7.3. حقول المؤشّرات في البنى {#_pointer_fields_in_structs}
 
@@ -1558,7 +1558,7 @@ int main(void) {
 
 في الذاكرة، ستبدو هذه المتغيّرات كما في [الشكل 2](#FigStructPointerField) (لاحظ أي الأجزاء مخصَّص على المكدّس وأيها على الكومة).
 
-![Example struct with a pointer field type](https://diveintosystems.org/images/dive-into-systems/c2-depth-1-structptrfield.webp){#FigStructPointerField} الشكل 2. تخطيط بنية ذات حقل مؤشّر في الذاكرة.
+![مثال على بنية ذات حقل من نوع مؤشّر](https://diveintosystems.org/images/dive-into-systems/c2-depth-1-structptrfield.webp){#FigStructPointerField} الشكل 2. تخطيط بنية ذات حقل مؤشّر في الذاكرة.
 
 مع ازدياد تعقيد البنى وأنواع حقولها، كن حذراً في صياغتها. وللوصول إلى قيم الحقول على النحو المناسب، ابدأ من نوع المتغيّر الخارجي واستخدم صياغة نوعه للوصول إلى الأجزاء الفردية. فمثلاً، تحكم أنواع متغيّرات `struct` المعروضة في [الجدول 1](#TabStructFields) كيفية وصول المبرمج إلى حقولها.
 
@@ -1779,7 +1779,7 @@ updateAges(classroom2, 15);
 
 يعرض [الشكل 3](#FigArrayStructFuncs) كيف قد يبدو المكدّس في الاستدعاء الثاني للدالة `updateAges` (مع إظهار مصفوفة `classroom2` الممرَّرة بقيم حقول مثالية للبنية في كل عنصر من عناصرها).
 
-![Main’s classroom2 variable points to an array of studentT structs on the heap. When classroom2 gets passed to updateAges, it makes a copy of the pointer, yielding another pointer that points to the same heap array.](https://diveintosystems.org/images/dive-into-systems/c2-depth-2-arraystructfuncs.webp){#FigArrayStructFuncs} الشكل 3. تخطيط الذاكرة لمصفوفة من بنى studentT مُرِّرت إلى دالة.
+![يشير المتغيّر classroom2 في main إلى مصفوفة من بنى studentT على الكومة. وعند تمرير classroom2 إلى updateAges تُنسخ قيم المؤشّر، فيُتحصَّل على مؤشّر آخر يشير إلى مصفوفة الكومة نفسها.](https://diveintosystems.org/images/dive-into-systems/c2-depth-2-arraystructfuncs.webp){#FigArrayStructFuncs} الشكل 3. تخطيط الذاكرة لمصفوفة من بنى studentT مُرِّرت إلى دالة.
 
 وكما هو الحال دائماً، يحصل الوسيط على نسخة من قيمة وسيطته (عنوان ذاكرة المصفوفة في ذاكرة الكومة). وبالتالي، فإن تعديل عناصر المصفوفة في الدالة يبقى في قيم وسيطته (فالوسيط والوسيطة يشيران إلى المصفوفة نفسها في الذاكرة).
 
@@ -1837,7 +1837,7 @@ for (i = 0; i < 2; i++) {
 
 ستبدو نتيجة تنفيذ هذه الشيفرة في الذاكرة كما في [الشكل 4](#FigLinkedList).
 
-![Two stack variables, head and temp, contain the address of the first node on the heap. The first node’s next field points to the second node, whose next field points to the third. The third node’s next pointer is null, indicating the end of the list.](https://diveintosystems.org/images/dive-into-systems/c2-depth-3-linkedlist.webp){#FigLinkedList} الشكل 4. تخطيط ثلاث عقد مثال لقائمة مترابطة في الذاكرة.
+![يحتوي متغيّرا المكدّس head وtemp على عنوان العقدة الأولى على الكومة. ويشير حقل next في العقدة الأولى إلى العقدة الثانية التي يشير حقل next فيها إلى الثالثة. أمّا مؤشّر next في العقدة الثالثة فهو null، ما يدل على نهاية القائمة.](https://diveintosystems.org/images/dive-into-systems/c2-depth-3-linkedlist.webp){#FigLinkedList} الشكل 4. تخطيط ثلاث عقد مثال لقائمة مترابطة في الذاكرة.
 
 تدعم C دوالاً كثيرة لتنفيذ الإدخال/الإخراج القياسي وإدخال/إخراج الملفات. ونناقش في هذا القسم بعض الواجهات الأكثر استخداماً للإدخال/الإخراج في C.
 
@@ -2606,7 +2606,7 @@ int main(int argc, char *argv[]) { ...
 
 ويخزّن الوسيط الثاني **argv** متجه الوسائط. وهو يحتوي قيمة كل وسيط من وسائط سطر الأوامر. ويُمرَّر كل وسيط سطر أوامر كقيمة سلسلة نصية، لذا فإن نوع `argv` مصفوفة سلاسل نصية (أو مصفوفة من مصفوفات `char`). وتحتوي مصفوفة `argv` العناصر `argc + 1`. وتخزّن العناصر `argc` الأولى سلاسل وسائط سطر الأوامر، ويخزّن العنصر الأخير `NULL` دلالةً على نهاية قائمة وسائط سطر الأوامر. فمثلاً، في سطر الأوامر المدخل أعلاه، ستبدو مصفوفة `argv` كما في [الشكل 1](#Figargv):
 
-![an example argv list with 5 elements, one for the 3 input values (10, 11, 200) plus the executable as the first element, and NULL as the last.](https://diveintosystems.org/images/dive-into-systems/c2-depth-0-argv.webp){#Figargv} الشكل 1. الوسيط argv الممرَّر إلى main مصفوفة سلاسل نصية. ويُمرَّر كل وسيط سطر أوامر كعنصر سلسلة منفصل في المصفوفة. وقيمة العنصر الأخير NULL، دلالةً على نهاية قائمة وسائط سطر الأوامر.
+![مثال على قائمة argv من 5 عناصر: عناصر للقيم المدخلة الثلاث (10 و11 و200) مع ملف التنفيذ بوصفه العنصر الأول، وNULL بوصفه العنصر الأخير.](https://diveintosystems.org/images/dive-into-systems/c2-depth-0-argv.webp){#Figargv} الشكل 1. الوسيط argv الممرَّر إلى main مصفوفة سلاسل نصية. ويُمرَّر كل وسيط سطر أوامر كعنصر سلسلة منفصل في المصفوفة. وقيمة العنصر الأخير NULL، دلالةً على نهاية قائمة وسائط سطر الأوامر.
 
 كثيراً ما يريد البرنامج تفسير وسيط سطر أوامر ممرَّر إلى `main` كنوع غير السلسلة النصية. وفي المثال أعلاه، قد يريد البرنامج استخراج القيمة الصحيحة `10` من قيمة السلسلة `"10"` في وسيط سطر أوامره الأول. وتوفّر مكتبة C القياسية دوالاً لتحويل السلاسل إلى أنواع أخرى. فمثلاً، الدالة `atoi` («a to i»، أي «ASCII to integer») تحوّل سلسلة من محارف الأرقام إلى قيمتها الصحيحة المقابلة:
 

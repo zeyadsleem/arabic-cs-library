@@ -18,7 +18,7 @@ PostgreSQL هو نظام إدارة قواعد بيانات علائقية بن�
 
 وتصف الأقسام الفرعية التالية تفاصيل الأنواع الثلاثة الأولى من العمليات.
 
-![This figure illustrates the process architecture of a PostgreSQL server, including a postgres server process, two backend processes, seven background processes, and two client processes. The database cluster and shared memory are also shown.](/images/postgres-internals/pgsql02-fig-2-01.webp)
+![يوضّح هذا الشكل معمارية العمليات في خادم PostgreSQL، بما في ذلك عملية خادم postgres، وعمليتا خلفية (backend)، وسبع عمليات في الخلفية (background)، وعمليتا عميل. ويظهر أيضًا عنقود قواعد البيانات والذاكرة المشتركة.](/images/postgres-internals/pgsql02-fig-2-01.webp)
 
 #### الشكل 2.1. مثال على معمارية العمليات في PostgreSQL.
 

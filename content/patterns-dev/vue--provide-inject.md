@@ -69,7 +69,7 @@ const data = inject("data");
 
 بتحديد `inject("data")` في المكوّن الفرعي (`ChildComponent`)، فإننا نصل مباشرةً إلى قيمة `data` الموفَّرة من المكوّن الأب. ثم نربط `data` بالقالب لعرض قيمتها.
 
-JavaScript iconApp.vue
+`App.vue`
 
 ```javascript
 <template>
@@ -204,7 +204,7 @@ provide("data", "Data from parent!");
 
 ستُعرض البيانات القادمة من المكوّن الأب `` في المكوّن `` دون الحاجة إلى حَفْر الخصائص عبر كل مكوّن في الشجرة، وذلك بفضل provide/inject!
 
-JavaScript iconApp.vue
+`App.vue`
 
 ```javascript
 <template>

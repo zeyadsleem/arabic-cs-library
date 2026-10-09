@@ -1,5 +1,5 @@
 ---
-title: "5. Hash Tables"
+title: "5. جداول التجزئة"
 lang: ar
 source: https://opendatastructures.org/ods-java/5_Hash_Tables.html
 ---
@@ -41,7 +41,7 @@ $$
     }
 ```
 
-ينطوي نموُّ الجدول، عند الضرورة، على مضاعفة طول $ \mathtt{t}$ وإعادة إدراج جميع العناصر في الجدول الجديد. وهذه الاستراتيجية هي نفسها تمامًا المستخدَمة في تنفيذ ArrayStack، وينطبق عليها النتيجة نفسها: ف تكلفة النموّ ثابتة فقط عند الاحتساب بمعدل (amortized) على تسلسل من عمليات الإدراج (انظر المتراجمة 2.1 في الصفحة ![*](/images/open-data-structures/5_1_ChainedHashTable_Hashin-crossref.png.webp)). وإلى جانب النموّ، فإن العمل الوحيد الآخر الذي يجري عند إضافة قيمة جديدة $ \mathtt{x}$ إلى ChainedHashTable هو إلحاق $ \mathtt{x}$ بالقائمة $ \mathtt{t[hash(x)]}$. ولكلٍّ من تنفيذي القوائم الموصوفين في الفصلين 2 أو 3، لا يستغرق هذا سوى زمن ثابت. ولإزالة عنصر $ \mathtt{x}$ من جدول التجزئة، نمرّ على القائمة $ \mathtt{t[hash(x)]}$ حتى نجد $ \mathtt{x}$ لنتمكن من إزالته:
+ينطوي نموُّ الجدول، عند الضرورة، على مضاعفة طول $ \mathtt{t}$ وإعادة إدراج جميع العناصر في الجدول الجديد. وهذه الاستراتيجية هي نفسها تمامًا المستخدَمة في تنفيذ ArrayStack، وينطبق عليها النتيجة نفسها: ف تكلفة النموّ ثابتة فقط عند الاحتساب بمعدل (amortized) على تسلسل من عمليات الإدراج (انظر المتراجمة 2.1 في الصفحة ![ ](/images/open-data-structures/5_1_ChainedHashTable_Hashin-crossref.png.webp)). وإلى جانب النموّ، فإن العمل الوحيد الآخر الذي يجري عند إضافة قيمة جديدة $ \mathtt{x}$ إلى ChainedHashTable هو إلحاق $ \mathtt{x}$ بالقائمة $ \mathtt{t[hash(x)]}$. ولكلٍّ من تنفيذي القوائم الموصوفين في الفصلين 2 أو 3، لا يستغرق هذا سوى زمن ثابت. ولإزالة عنصر $ \mathtt{x}$ من جدول التجزئة، نمرّ على القائمة $ \mathtt{t[hash(x)]}$ حتى نجد $ \mathtt{x}$ لنتمكن من إزالته:
 
 ```
     T remove(T x) {
@@ -73,7 +73,7 @@ $$
 
 يعتمد أداء جدول التجزئة اعتمادًا حاسمًا على اختيار دالة التجزئة (hash function). فدالة التجزئة الجيدة توزّع العناصر بالتساوي على القوائم الـ $ \mathtt{t.length}$، بحيث يكون الحجم المتوقَّع للقائمة $ \mathtt{t[hash(x)]}$ هو $ O(\ensuremath{\mathtt{n}}/\ensuremath{\mathtt{t.length)}} = O(1)$. وعلى النقيض، فإن دالة التجزئة السيئة تجعل جميع القيم (بما فيها $ \mathtt{x}$) تُجزَّأ إلى موضع الجدول نفسه، وعندها يكون حجم القائمة $ \mathtt{t[hash(x)]}$ هو $ \mathtt{n}$. وفي القسم التالي نصف دالة تجزئة جيدة. 5.1.1 التجزئة الضربية (multiplicative hashing) التجزئة الضربية طريقةٌ كفؤة لتوليد قيم التجزئة بالاعتماد على الحساب النمطي (modular arithmetic) (المُناقَش في القسم 2.3) والقسمة الصحيحة. وهي تستخدم المعامل $ \ddiv $ الذي يحسب الجزء الصحيح من ناتج القسمة مع تجاهل الباقي. وصيغته: لأي عددين صحيحين $ a\ge 0$ و $ b\ge 1$، فإن $ a\ddiv b = \lfloor a/b\rfloor$. وفي التجزئة الضربية نستخدم جدول تجزئة حجمه $ 2^{\ensuremath{\mathtt{d}}}$ مهما كان العدد الصحيح $ \mathtt{d}$ (ويسمى البُعد (dimension)). وصيغة تجزئة العدد الصحيح $ \ensuremath{\mathtt{x}}\in\{0,\ldots,2^{\ensuremath{\mathtt{w}}}-1\}$ هي
 
-![$\displaystyle \ensuremath{\mathtt{hash(x)}} = ((\ensuremath{\mathtt{z}}\cdot\en... ...htt{w}}}) \ddiv 2^{\ensuremath{\mathtt{w}}-\ensuremath{\mathtt{d}}} \enspace . $](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img1977.png.webp)
+![ ](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img1977.png.webp)
 
 هنا $ \mathtt{z}$ عددٌ صحيح فردي يُختار عشوائيًا من $ \{1,\ldots,2^{\ensuremath{\mathtt{w}}}-1\}$. ويمكن تنفيذ دالة التجزئة هذه بكفاءة بالغة بمجرد ملاحظة أن عمليات الأعداد الصحيحة تُنفَّذ افتراضيًا بمقياس $ 2^{\ensuremath{\mathtt{w}}}$ حيث $ \ensuremath{\mathtt{w}}$ عدد البتّات في العدد الصحيح.5.1 (انظر الشكل 5.2.) وإضافةً إلى ذلك، فإن القسمة الصحيحة على $ 2^{\ensuremath{\mathtt{w}}-\ensuremath{\mathtt{d}}}$ تعادل إسقاط البتّات $ \ensuremath{\mathtt{w}}-\ensuremath{\mathtt{d}}$ الأخيرة في التمثيل الثنائي (وهذا يُنفَّذ بإزاحة البتّات إلى اليمين بمقدار $ \ensuremath{\mathtt{w}}-\ensuremath{\mathtt{d}}$ باستخدام المعامل $ \mathtt{\text{\ttfamily >>>}}$). وبهذه الطريقة تكون الشيفرة التي تنفّذ الصيغة أعلاه أبسط من الصيغة نفسها:
 
@@ -83,13 +83,13 @@ $$
     }
 ```
 
-**الشكل 5.2:** تشغيل دالة التجزئة الضربية مع $ \ensuremath{\mathtt{w}}=32$ و $ \ensuremath{\mathtt{d}}=8$. ![\begin{figure}\begin{center} \resizebox{.98\textwidth}{!}{ \setlength{\arrayru... ... \end{tabular}} \setlength{\arrayrulewidth}{.4pt} \end{center} \end{figure}](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img1991.png.webp) وتبيّن المتراجمة التالية (Lemma)، إن كان برهانها مؤجَّلًا إلى ما بعد في هذا القسم، أن التجزئة الضربية تحسن التخلّص من التصادمات (collisions): **المتراجمة 5.1** *ليكن $ \mathtt{x}$ و $ \mathtt{y}$ أي قيمتين في $ \{0,\ldots,2^{\ensuremath{\mathtt{w}}}-1\}$ بحيث $ \ensuremath{\mathtt{x}}\neq \ensuremath{\mathtt{y}}$. وعندئذ $ \Pr\{\ensuremath{\mathtt{hash(x)}}=\ensuremath{\mathtt{hash(y)}}\} \le 2/2^{\ensuremath{\mathtt{d}}}$.*
+**الشكل 5.2:** تشغيل دالة التجزئة الضربية مع $ \ensuremath{\mathtt{w}}=32$ و $ \ensuremath{\mathtt{d}}=8$. ![ ](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img1991.png.webp) وتبيّن المتراجمة التالية (Lemma)، إن كان برهانها مؤجَّلًا إلى ما بعد في هذا القسم، أن التجزئة الضربية تحسن التخلّص من التصادمات (collisions): **المتراجمة 5.1** *ليكن $ \mathtt{x}$ و $ \mathtt{y}$ أي قيمتين في $ \{0,\ldots,2^{\ensuremath{\mathtt{w}}}-1\}$ بحيث $ \ensuremath{\mathtt{x}}\neq \ensuremath{\mathtt{y}}$. وعندئذ $ \Pr\{\ensuremath{\mathtt{hash(x)}}=\ensuremath{\mathtt{hash(y)}}\} \le 2/2^{\ensuremath{\mathtt{d}}}$.*
 
 بالمتراجمة 5.1، يصبح تحليل أداء $ \mathtt{remove(x)}$ و $ \mathtt{find(x)}$ سهلًا: **المتراجمة 5.2** *لكل قيمة بيانات $ \mathtt{x}$، يكون الطول المتوقَّع للقائمة $ \mathtt{t[hash(x)]}$ هو $ \ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}} + 2$ على الأكثر، حيث $ \ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}}$ هو عدد تكرارات $ \mathtt{x}$ في جدول التجزئة.*
 
 *إثبات*. ليكن $ S$ المجموعة (متعددة العناصر) للعناصر المخزَّنة في جدول التجزئة التي لا تساوي $ \mathtt{x}$. ولكل عنصر $ \ensuremath{\mathtt{y}}\in S$، عرّف المتغيّر الإشاري (indicator variable)
 
-![$\displaystyle I_{\ensuremath{\mathtt{y}}} = \left\{\begin{array}{ll} 1 & \mbox... ...\ensuremath{\mathtt{hash(y)}}$} \\ 0 & \mbox{otherwise} \end{array}\right. $](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2008.png.webp)
+![ ](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2008.png.webp)
 
 ولاحظ أن، بحسب المتراجمة 5.1، $ \mathrm{E}[I_{\ensuremath{\mathtt{y}}}] \le 2/2^{\ensuremath{\mathtt{d}}}=2/\ensuremath{\mathtt{t.length}}$. ويعطى الطول المتوقَّع للقائمة $ \mathtt{t[hash(x)]}$ بـ
 
@@ -98,7 +98,7 @@ $$
 |  | $\displaystyle =$ | $\displaystyle \ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}} + \sum_{\ensuremath{\mathtt{y}}\in S} \mathrm{E}[I_{\ensuremath{\mathtt{y}}} ]$ |  |
 |  | $\displaystyle \le$ | $\displaystyle \ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}} + \sum_{\ensuremath{\mathtt{y}}\in S} 2/\ensuremath{\mathtt{t.length}}$ |  |
 |  | $\displaystyle \le$ | $\displaystyle \ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}} + \sum_{\ensuremath{\mathtt{y}}\in S} 2/\ensuremath{\mathtt{n}}$ |  |
-|  | $\displaystyle \le$ | ![$\displaystyle \ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}} + (\ensuremath{... ...n}}-\ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}})2/\ensuremath{\mathtt{n}}$](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2021.png.webp) |  |
+|  | $\displaystyle \le$ | ![ ](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2021.png.webp) |  |
 |  | $\displaystyle \le$ | $\displaystyle \ensuremath{\mathtt{n}}_{\ensuremath{\mathtt{x}}} + 2 \enspace ,$ |  |
 
 كما هو مطلوب. $\qedsymbol$
@@ -159,11 +159,11 @@ $$
 
 ليكن $ q$ العدد الفردية الفريد بحيث $ (\ensuremath{\mathtt{x}}-\ensuremath{\mathtt{y}})\bmod 2^{\ensuremath{\mathtt{w}}}=q2^r$ لبعض العدد الصحيح $ r\ge 0$. وبالمتراجمة 5.3، فإن التمثيل الثنائي لـ $ \ensuremath{\mathtt{z}}q\bmod 2^{\ensuremath{\mathtt{w}}}$ يحتوي $ \ensuremath{\mathtt{w}}-1$ بتّ عشوائي يليه بتّ بقيمة 1:
 
-![$\displaystyle \ensuremath{\mathtt{z}}q\bmod 2^{\ensuremath{\mathtt{w}}} = (\und... ...{b_{\ensuremath{\mathtt{w}}-1},\ldots,b_{1}}_{\ensuremath{\mathtt{w}}-1},1)_2 $](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2089.png.webp)
+![ ](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2089.png.webp)
 
 لذلك، فإن التمثيل الثنائي لـ ![المعادلة الأصلية: تحليل الاحتمالات ودوال التجزئة في جداول التجزئة، الصيغة 1](/images/open-data-structures/math-e09b57e6f33689d6bf9b.webp) يحتوي $ \ensuremath{\mathtt{w}}-r-1$ بتّ عشوائي، يليه بتّ بقيمة 1، يليه $ r$ من الأصفار:
 
-![$\displaystyle \ensuremath{\mathtt{z}}(\ensuremath{\mathtt{x}}-\ensuremath{\math... ...ldots,b_{1}}_{\ensuremath{\mathtt{w}}-r-1},1,\underbrace{0,0,\ldots,0}_{r})_2 $](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2093.png.webp)
+![ ](/images/open-data-structures/5_1_ChainedHashTable_Hashin-img2093.png.webp)
 
 يمكننا الآن إكمال البرهان: إذا كان $ r > \ensuremath{\mathtt{w}}-\ensuremath{\mathtt{d}}$، فالبتّات $ \mathtt{d}$ ذات الرتبة العليا في $ \ensuremath{\mathtt{z}}(\ensuremath{\mathtt{x}}-\ensuremath{\mathtt{y}})\bmod 2^{\ensuremath{\mathtt{w}}}$ تحتوي أصفارًا وآحادًا معًا، ومن ثمّ فإن احتمال أن يبدو $ \ensuremath{\mathtt{z}}(\ensuremath{\mathtt{x}}-\ensuremath{\mathtt{y}})\bmod 2^{\ensuremath{\mathtt{w}}}$ على هيئة (5.2) أو (5.3) هو 0. وإذا كان $ \ensuremath{\mathtt{r}}=\ensuremath{\mathtt{w}}-\ensuremath{\mathtt{d}}$، فإن احتمال الظهور على هيئة (5.2) هو 0، لكن احتمال الظهور على هيئة (5.3) هو $ 1/2^{\ensuremath{\mathtt{d}}-1}=2/2^{\ensuremath{\mathtt{d}}}$ (لأننا يجب أن يكون $ b_1,\ldots,b_{d-1}=1,\ldots,1$). وإذا كان $ r < \ensuremath{\mathtt{w}}-\ensuremath{\mathtt{d}}$، فيجب أن يكون $ b_{\ensuremath{\mathtt{w}}-r-1},\ldots,b_{\ensuremath{\mathtt{w}}-r-\ensuremath{\mathtt{d}}}=0,\ldots,0$ أو $ b_{\ensuremath{\mathtt{w}}-r-1},\ldots,b_{\ensuremath{\mathtt{w}}-r-\ensuremath{\mathtt{d}}}=1,\ldots,1$. احتمال كلٍّ من هذين الحالتين هو $ 1/2^{\ensuremath{\mathtt{d}}}$ وهما متعارضتان تبادليًا، ومن ثمّ فإن احتمال إحداهما هو $ 2/2^{\ensuremath{\mathtt{d}}}$. وبهذا يكتمل البرهان. $\qedsymbol$
 
@@ -267,7 +267,7 @@ $$
 
 *إثبات*. إذا وقع مقطع طوله $ k$ يبدأ عند $ \mathtt{i}$، فإن هناك بالضبط $ k$ عنصرًا $ \ensuremath{\mathtt{x}}_j$ بحيث $ \ensuremath{\mathtt{hash}}(\ensuremath{\mathtt{x}}_j)\in\{\ensuremath{\mathtt{i}},\ldots,\ensuremath{\mathtt{i}}+k-1\}$. واحتمال حدوث ذلك هو بالضبط
 
-![$\displaystyle p_k = \binom{\ensuremath{\mathtt{q}}}{k}\left(\frac{k}{\ensuremat... ...{\ensuremath{\mathtt{t.length}}}\right)^{\ensuremath{\mathtt{q}}-k} \enspace , $](/images/open-data-structures/5_2_LinearHashTable_Linear_-img2253.png.webp)
+![ ](/images/open-data-structures/5_2_LinearHashTable_Linear_-img2253.png.webp)
 
 إذ إن كل اختيار لـ $ k$ عنصرًا يفرض أن تُجزَّأ هذه $ k$ عناصر إلى أحد مواضع $ k$، وأن تُجزَّأ العناصر الـ $ \ensuremath{\mathtt{q}}-k$ الباقية إلى بقية مواضع الجدول وعددها $ \ensuremath{\mathtt{t.length}}-k$.5.2
 
@@ -287,7 +287,7 @@ $$
 
 أصبح استخدام المتراجمة 5.4 لإثبات الحدود العليا لزمن التشغيل المتوقَّع للدوال $ \mathtt{find(x)}$ و $ \mathtt{add(x)}$ و $ \mathtt{remove(x)}$ سهلًا إلى حدٍّ ما. لنفحص أبسط حالة: أن نُنفّذ $ \mathtt{find(x)}$ لقيمة $ \mathtt{x}$ لم تُخزَّن قط في LinearHashTable. في هذه الحالة تكون $ \ensuremath{\mathtt{i}}=\ensuremath{\mathtt{hash(x)}}$ قيمة عشوائية في $ \{0,\ldots,\ensuremath{\mathtt{t.length}}-1\}$ مستقلة عن محتوى $ \mathtt{t}$. وإذا كان $ \mathtt{i}$ جزءًا من مقطع طوله $ k$، فإن الزمن اللازم لتنفيذ عملية $ \mathtt{find(x)}$ هو $ O(1+k)$ على الأكثر. ومن ثمّ يمكن تحديد حدّ أعلى لزمن التشغيل المتوقَّع بـ
 
-![$\displaystyle O\left(1 + \left(\frac{1}{\ensuremath{\mathtt{t.length}}}\right)\... ...xt{\ensuremath{\mathtt{i}} is part of a run of length $k$}\}\right) \enspace . $](/images/open-data-structures/5_2_LinearHashTable_Linear_-img2294.png.webp)
+![ ](/images/open-data-structures/5_2_LinearHashTable_Linear_-img2294.png.webp)
 
 لاحظ أن كل مقطع طوله $ k$ يساهم في المجموع الداخلي $ k$ مرة، أي بمساهمة إجمالية قدرها $ k^2$، ومن ثمّ يمكن إعادة كتابة المجموع أعلاه على الصورة
 
@@ -339,7 +339,7 @@ $$
 
 تُستخدم جداول التجزئة التي ناقشناها في القسم السابق لربط البيانات بمفاتيح صحيحة مكوَّنة من $ \mathtt{w}$ بت. وفي كثير من الحالات تكون لدينا مفاتيح ليست أعدادًا صحيحة؛ قد تكون نصوصًا (strings) أو كائنات (objects) أو مصفوفات أو بنى مركّبة أخرى. ولاستخدام جداول التجزئة مع أنواع البيانات هذه، علينا ربطها برموز تجزئة (hash codes) بطول $ \mathtt{w}$ بت. وينبغي أن توفّر ربطات رموز التجزئة الخصائص التالية: إذا كان $ \mathtt{x}$ و $ \mathtt{y}$ متساويين، فإن $ \mathtt{x.hashCode()}$ و $ \mathtt{y.hashCode()}$ متساويان. وإذا كان $ \mathtt{x}$ و $ \mathtt{y}$ غير متساويين، فيجب أن يكون احتمال $ \ensuremath{\mathtt{x.hashCode()}}=\ensuremath{\mathtt{y.hashCode()}}$ صغيرًا (قريبًا من $ 1/2^{\ensuremath{\mathtt{w}}}$). والخاصية الأولى تضمن أنه إذا خزّنّا $ \mathtt{x}$ في جدول تجزئة ثم بحثنا لاحقًا عن قيمة $ \mathtt{y}$ مساوية لـ $ \mathtt{x}$، فسنجد $ \mathtt{x}$ -- كما ينبغي. أما الخاصية الثانية فتُقلّل الخسارة الناتجة عن تحويل كائناتنا إلى أعداد صحيحة. فهي تضمن أن الكائنات غير المتساوية تملك عادةً رموز تجزئة مختلفة، ومن ثمّ يُرجَّح أن تُخزَّن في مواضع مختلفة في جدول التجزئة لدينا. 5.3.1 رموز التجزئة لأنواع البيانات البدائية عادةً ما يكون إيجاد رموز تجزئة للأنواع البدائية الصغيرة مثل $ \mathtt{char}$ و $ \mathtt{byte}$ و $ \mathtt{int}$ و $ \mathtt{float}$ سهلًا. فلهذه الأنواع تمثيل ثنائي دائمًا، وهذا التمثيل الثنائي يتكوّن عادةً من $ \mathtt{w}$ بت أو أقل. (على سبيل المثال، في Java، $ \mathtt{byte}$ نوع بطول 8 بت و $ \mathtt{float}$ نوع بطول 32 بت.) وفي هذه الحالات، نتعامل مع هذه البتّات بوصفها تمثيلًا لعدد صحيح ضمن المدى $ \{0,\ldots,2^\ensuremath{\mathtt{w}}-1\}$. فإذا اختلفت قيمتان فستحصلان على رمزي تجزئة مختلفين، وإذا تساوتا فستحصلان على رمز التجزئة نفسه. وهناك القليل من أنواع البيانات البدائية المكوَّنة من أكثر من $ \mathtt{w}$ بت، عادةً $ c\ensuremath{\mathtt{w}}$ بت حيث $ c$ عدد صحيح ثابت. (ومن أمثلتها نوعا $ \mathtt{long}$ و $ \mathtt{double}$ في Java مع $ c=2$.) ويمكن التعامل مع أنواع البيانات هذه بوصفها كائنات مركّبة من $ c$ أجزاء، كما سيأتي في القسم التالي. 5.3.2 رموز التجزئة للكائنات المركّبة بالنسبة إلى كائن مركّب، نريد إنشاء رمز تجزئة بدمج رموز التجزئة الفردية لأجزاء الكائن المكوّنة له. وهذا ليس بالأمر السهل كما يبدو. فعلى الرغم من وجود طرق كثيرة — بل متناهية — للقيام بذلك (مثلًا دمج رموز التجزئة بعمليات XOR على مستوى البتات)، إلا أن كثيرًا من هذه الحيل يسهل إبطالها (انظر التمارين 5.7-5.9). لكن إذا كان المرء مستعدًا لإجراء عمليات حسابية بدقة $ 2\ensuremath{\mathtt{w}}$ بت، فإن هناك طرقًا بسيطة ومتينة متاحة. لنفترض لدينا كائن مكوَّن من عدة أجزاء $ P_0,\ldots,P_{r-1}$ رموز تجزئتها $ \ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_{r-1}$. عندئذ يمكننا اختيار أعداد صحيحة عشوائية مستقلة متبادلة بطول $ \mathtt{w}$ بت هي $ \ensuremath{\mathtt{z}}_0,\ldots,\ensuremath{\mathtt{z}}_{r-1}$، وعددًا صحيحًا فرديًا عشوائيًا بطول $ 2\ensuremath{\mathtt{w}}$ بت هو $ \mathtt{z}$، ثم نحسب رمز تجزئة لكائننا بمعادلة
 
-![$\displaystyle h(\ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_{r-1})... ...2\ensuremath{\mathtt{w}}}\right) \ddiv 2^{\ensuremath{\mathtt{w}}} \enspace . $](/images/open-data-structures/5_3_Hash_Codes-img2399.png.webp)
+![ ](/images/open-data-structures/5_3_Hash_Codes-img2399.png.webp)
 
 لاحظ أن رمز التجزئة هذا يتضمّن خطوة أخيرة (الضرب في $ \mathtt{z}$ والقسمة على $ 2^{\ensuremath{\mathtt{w}}}$) تستخدم دالة التجزئة الضربية من القسم 5.1.1 لتحويل النتيجة الوسيطة ذات $ 2\ensuremath{\mathtt{w}}$ بت واختصارها إلى نتيجة نهائية ذات $ \mathtt{w}$ بت. وفيما يلي مثال على تطبيق هذه الطريقة على كائن مركّب بسيط من ثلاثة أجزاء $ \mathtt{x0}$ و $ \mathtt{x1}$ و $ \mathtt{x2}$:
 
@@ -369,7 +369,7 @@ $$
 
 *إثبات*. سنتجاهل أولًا خطوة التجزئة الضربية الأخيرة، ونرى لاحقًا كيف تساهم تلك الخطوة. نعرّف:
 
-![$\displaystyle h'(\ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_{r-1}... ...\ensuremath{\mathtt{x}}_j\right)\bmod 2^{2\ensuremath{\mathtt{w}}} \enspace . $](/images/open-data-structures/5_3_Hash_Codes-img2415.png.webp)
+![ ](/images/open-data-structures/5_3_Hash_Codes-img2415.png.webp)
 
 لنفترض أن $ h'(\ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_{r-1}) = h'(\ensuremath{\mathtt{y}}_0,\ldots,\ensuremath{\mathtt{y}}_{r-1})$. ويمكن إعادة كتابة ذلك على الصورة:
 
@@ -398,7 +398,7 @@ $$
 
 لاستخدام النظرية 5.4، نجزّئ تسلسلًا من الأعداد الصحيحة $ \ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_{r-1}$، حيث كل $ \ensuremath{\mathtt{x}}_i\in \{0,\ldots,\ensuremath{\mathtt{p}}-2\}$، باستخدام عدد صحيح عشوائي $ \ensuremath{\mathtt{z}}\in\{0,\ldots,\ensuremath{\mathtt{p}}-1\}$ عبر الصيغة
 
-![$\displaystyle h(\ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_{r-1})... ...}}-1)\ensuremath{\mathtt{z}}^r \right)\bmod \ensuremath{\mathtt{p}} \enspace . $](/images/open-data-structures/5_3_Hash_Codes-img2458.png.webp)
+![ ](/images/open-data-structures/5_3_Hash_Codes-img2458.png.webp)
 
 لاحظ الحدّ الإضافي $ (\ensuremath{\mathtt{p}}-1)\ensuremath{\mathtt{z}}^r$ في نهاية الصيغة. ومن المفيد التفكير في $ (\ensuremath{\mathtt{p}}-1)$ بوصفه العنصر الأخير، $ \ensuremath{\mathtt{x}}_r$، في التسلسل $ \ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_{r}$. ولاحظ أن هذا العنصر يختلف عن كل عنصر آخر في التسلسل (وكلٌّ منها يقع في المجموعة $ \{0,\ldots,\ensuremath{\mathtt{p}}-2\}$). ويمكننا أن نرى في $ \ensuremath{\mathtt{p}}-1$ علامة نهاية تسلسل. وتبيّن النظرية التالية، التي تتناول حالة تسلسلين بالطول نفسه، أن دالة التجزئة هذه تحقّق عائدًا جيدًا بالمقابل مع مقدار التوزيع العشوائي المحدود اللازم لاختيار $ \mathtt{z}$: **نظرية 5.5** *ليكن $ \ensuremath{\mathtt{p}}>2^{\ensuremath{\mathtt{w}}}+1$ عددًا أوليًا، وليكن $ \ensuremath{\mathtt{x}}_0,\ldots,\ensuremath{\mathtt{x}}_{r-1}$ و $ \ensuremath{\mathtt{y}}_0,\ldots,\ensuremath{\mathtt{y}}_{r-1}$ كلٌّ منهما تسلسلًا من الأعداد الصحيحة بطول $ \mathtt{w}$ بت ضمن $ \{0,\ldots,2^{\ensuremath{\mathtt{w}}}-1\}$، ولنفترض أن $ \ensuremath{\mathtt{x}}_i \neq \ensuremath{\mathtt{y}}_i$ لفهرس واحد على الأقل $ i\in\{0,\ldots,r-1\}$. عندئذ*
 
@@ -460,15 +460,15 @@ $$
 
 ## 5.4 مناقشة وتمارين
 
-تمثّل جداول التجزئة ورموز التجزئة حقلًا بحثيًا هائلًا ونشطًا لم يقتصر هذا الفصل على إلماح سريع به. تحتوي «ببليوغرافيا التجزئة» (Bibliography on Hashing) على الإنترنت [10] على نحو 2000 مدخل. وتوجد تنوّعات كثيرة من تنفيذي جداول التجزئة. والتنفيذ الموصوف في القسم 5.1 معروف بالتجزئة بالتسلسل (hashing with chaining) (يحتوي كل مدخل في المصفوفة على سلسلة (List) من العناصر). وتعود التجزئة بالتسلسل إلى مذكرة داخلية من IBM كتبها H. P. Luhn وتاريخها يناير 1953. ويبدو أن هذه المذكرة أيضًا إحدى أقدم الإشارات إلى القوائم المترابطة (linked lists). والبديل عن التجزئة بالتسلسل هو ما تعتمده مخططات العنونة المفتوحة، حيث تُخزَّن جميع البيانات مباشرةً في مصفوفة. ومن هذه المخططات بنية LinearHashTable في القسم 5.2. وقد اقتُرح هذه الفكرة أيضًا، بشكل مستقل، من مجموعة في IBM في خمسينيات القرن الماضي. ويجب أن تتعامل مخططات العنونة المفتوحة مع مسألة معالجة التصادم (collision resolution): الحالة التي تُجزَّأ فيها قيمتان إلى موضع المصفوفة نفسه. وتوجد استراتيجيات مختلفة لمعالجة التصادم؛ وهي تقدّم ضمانات أداء مختلفة، وغالبًا ما تتطلّب دوال تجزئة أكثر تطوّرًا من تلك الموصوفة هنا. وهناك فئة أخرى من تنفيذي جداول التجزئة هي ما تُسمّى طرائق التجزئة التامّة (perfect hashing). وهذه طرائق تستغرق فيها عمليات $ \mathtt{find(x)}$ زمنًا قدره $ O(1)$ في أسوأ الحالات. وبالنسبة لمجموعات البيانات الساكنة، يمكن تحقيق ذلك بإيجاد دوال تجزئة تامّة (perfect hash functions) للبيانات؛ وهذه دوال تربط كل قطعة بيانات بموضع فريد في المصفوفة. أما البيانات التي تتغيّر مع الزمن، فتشمل طرائق التجزئة التامّة جداول التجزئة ثنائية المستوى من نوع FKS [31,24] وتجزئة cuckoo [57]. ومن المرجّح أن دوال التجزئة المقدَّمة في هذا الفصل من بين أكثر الأساليب العملية المعروفة اليوم التي يمكن إثبات أنها تعمل جيدًا مع أي مجموعة بيانات. وهناك أساليب أخرى جيدة يمكن إثباتها تعود إلى العمل الرائد لـ Carter و Wegman اللذين أدخلا مفهوم التجزئة الشاملة (universal hashing) ووصفا عدة دوال تجزئة لسيناريوهات مختلفة [14]. أمّا التجزئة بالجداول الموصوفة في القسم 5.2.3 فينسبها Carter و Wegman [14]، لكن تحليلها عند تطبيقها على الاستكشاف الخطي (وعدة مخططات أخرى لجداول التجزئة) فينسبه إلى P ![{\v{a\/}}\kern.05em](/images/open-data-structures/5_4_Discussion_Exercises-img2583.png.webp) tra ![{\c{s\/}}](/images/open-data-structures/5_4_Discussion_Exercises-img2584.png.webp) cu و Thorup [60]. وفكرة التجزئة الضربية قديمة جدًا ويبدو أنها جزء من التراث المتعلق بالتجزئة [48, Section 6.4]. لكن فكرة اختيار المُضاعِف $ \mathtt{z}$ عددًا فرديًا عشوائيًا، وكذلك التحليل في القسم 5.1.1، فينسبها إلى Dietzfelbinger وآخرون [23]. وهذه النسخة من التجزئة الضربية من أبسط النسخ، لكن احتمال التصادم فيها البالغ $ 2/2^{\ensuremath{\mathtt{d}}}$ أكبر بمعامل اثنين مما يمكن توقّعه مع دالة عشوائية من $ 2^{\ensuremath{\mathtt{w}}}\to 2^{\ensuremath{\mathtt{d}}}$. وتستخدم طريقة التجزئة بالضرب-والجمع (multiply-add hashing) الدالة
+تمثّل جداول التجزئة ورموز التجزئة حقلًا بحثيًا هائلًا ونشطًا لم يقتصر هذا الفصل على إلماح سريع به. تحتوي «ببليوغرافيا التجزئة» (Bibliography on Hashing) على الإنترنت [10] على نحو 2000 مدخل. وتوجد تنوّعات كثيرة من تنفيذي جداول التجزئة. والتنفيذ الموصوف في القسم 5.1 معروف بالتجزئة بالتسلسل (hashing with chaining) (يحتوي كل مدخل في المصفوفة على سلسلة (List) من العناصر). وتعود التجزئة بالتسلسل إلى مذكرة داخلية من IBM كتبها H. P. Luhn وتاريخها يناير 1953. ويبدو أن هذه المذكرة أيضًا إحدى أقدم الإشارات إلى القوائم المترابطة (linked lists). والبديل عن التجزئة بالتسلسل هو ما تعتمده مخططات العنونة المفتوحة، حيث تُخزَّن جميع البيانات مباشرةً في مصفوفة. ومن هذه المخططات بنية LinearHashTable في القسم 5.2. وقد اقتُرح هذه الفكرة أيضًا، بشكل مستقل، من مجموعة في IBM في خمسينيات القرن الماضي. ويجب أن تتعامل مخططات العنونة المفتوحة مع مسألة معالجة التصادم (collision resolution): الحالة التي تُجزَّأ فيها قيمتان إلى موضع المصفوفة نفسه. وتوجد استراتيجيات مختلفة لمعالجة التصادم؛ وهي تقدّم ضمانات أداء مختلفة، وغالبًا ما تتطلّب دوال تجزئة أكثر تطوّرًا من تلك الموصوفة هنا. وهناك فئة أخرى من تنفيذي جداول التجزئة هي ما تُسمّى طرائق التجزئة التامّة (perfect hashing). وهذه طرائق تستغرق فيها عمليات $ \mathtt{find(x)}$ زمنًا قدره $ O(1)$ في أسوأ الحالات. وبالنسبة لمجموعات البيانات الساكنة، يمكن تحقيق ذلك بإيجاد دوال تجزئة تامّة (perfect hash functions) للبيانات؛ وهذه دوال تربط كل قطعة بيانات بموضع فريد في المصفوفة. أما البيانات التي تتغيّر مع الزمن، فتشمل طرائق التجزئة التامّة جداول التجزئة ثنائية المستوى من نوع FKS [31,24] وتجزئة cuckoo [57]. ومن المرجّح أن دوال التجزئة المقدَّمة في هذا الفصل من بين أكثر الأساليب العملية المعروفة اليوم التي يمكن إثبات أنها تعمل جيدًا مع أي مجموعة بيانات. وهناك أساليب أخرى جيدة يمكن إثباتها تعود إلى العمل الرائد لـ Carter و Wegman اللذين أدخلا مفهوم التجزئة الشاملة (universal hashing) ووصفا عدة دوال تجزئة لسيناريوهات مختلفة [14]. أمّا التجزئة بالجداول الموصوفة في القسم 5.2.3 فينسبها Carter و Wegman [14]، لكن تحليلها عند تطبيقها على الاستكشاف الخطي (وعدة مخططات أخرى لجداول التجزئة) فينسبه إلى P ![](/images/open-data-structures/5_4_Discussion_Exercises-img2583.png.webp) tra ![](/images/open-data-structures/5_4_Discussion_Exercises-img2584.png.webp) cu و Thorup [60]. وفكرة التجزئة الضربية قديمة جدًا ويبدو أنها جزء من التراث المتعلق بالتجزئة [48, Section 6.4]. لكن فكرة اختيار المُضاعِف $ \mathtt{z}$ عددًا فرديًا عشوائيًا، وكذلك التحليل في القسم 5.1.1، فينسبها إلى Dietzfelbinger وآخرون [23]. وهذه النسخة من التجزئة الضربية من أبسط النسخ، لكن احتمال التصادم فيها البالغ $ 2/2^{\ensuremath{\mathtt{d}}}$ أكبر بمعامل اثنين مما يمكن توقّعه مع دالة عشوائية من $ 2^{\ensuremath{\mathtt{w}}}\to 2^{\ensuremath{\mathtt{d}}}$. وتستخدم طريقة التجزئة بالضرب-والجمع (multiply-add hashing) الدالة
 
-![$\displaystyle h(\ensuremath{\mathtt{x}}) = ((\ensuremath{\mathtt{z}}\ensuremath... ...math{\mathtt{2w}}}) \ddiv 2^{\ensuremath{\mathtt{2w}}-\ensuremath{\mathtt{d}}} $](/images/open-data-structures/5_4_Discussion_Exercises-img2508.png.webp)
+![ ](/images/open-data-structures/5_4_Discussion_Exercises-img2508.png.webp)
 
 حيث $ \mathtt{z}$ و $ \mathtt{b}$ يُختار كلٌّ منهما عشوائيًا من $ \{0,\ldots,2^{\ensuremath{\mathtt{2w}}}-1\}$. وتجزئة الضرب-والجمع (multiply-add hashing) ذات احتمال تصادم يبلغ $ 1/2^{\ensuremath{\mathtt{d}}}$ فقط [21]، لكنها تتطلّب حسابًا بدقة $ 2\ensuremath{\mathtt{w}}$ بت.
 
 توجد عدة طرق للحصول على رموز تجزئة من تسلسلات ثابتة الطول من الأعداد الصحيحة بطول $ \mathtt{w}$ بت. ومن أسرعها على الإطلاق [11] هي الدالة
 
-![\begin{displaymath}\begin{array}{l} h(\ensuremath{\mathtt{x}}_0,\ldots,\ensurem... ...htt{w}}})\right) \bmod 2^{2\ensuremath{\mathtt{w}}} \end{array}\end{displaymath}](/images/open-data-structures/5_4_Discussion_Exercises-img2515.png.webp)
+![ ](/images/open-data-structures/5_4_Discussion_Exercises-img2515.png.webp)
 
 حيث $ r$ زوجي و $ \ensuremath{\mathtt{a}}_0,\ldots,\ensuremath{\mathtt{a}}_{r-1}$ تُختار عشوائيًا من $ \{0,\ldots,2^{\ensuremath{\mathtt{w}}}\}$. وينتج عن ذلك رمز تجزئة بطول $ 2\ensuremath{\mathtt{w}}$ بت احتمال تصادمه $ 1/2^{\ensuremath{\mathtt{w}}}$. ويمكن اختصاره إلى رمز تجزئة بطول $ \mathtt{w}$ بت باستخدام التجزئة الضربية (أو التجزئة بالضرب-والجمع). وهذه الطريقة سريعة لأنها تتطلّب $ r/2$ فقط من الضربيات ذات $ 2\ensuremath{\mathtt{w}}$ بت، في حين تتطلّب الطريقة الموصوفة في القسم 5.3.2 ما مقداره $ r$ ضربة. (وتحدث عمليات $ \bmod$ ضمنيًا باستخدام حساب بطول $ \mathtt{w}$ للجمعيات وبحساب بطول $ 2\ensuremath{\mathtt{w}}$ للضربيات على التوالي.)
 

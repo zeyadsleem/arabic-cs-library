@@ -98,7 +98,7 @@ ORDER BY 2 DESC;
 
 أنشئ قائمة تعرض متوسط عدد النقاط لكل فصل دراسي. ورتّب صفوف الإجابة حسب الفصل من الصغير إلى الكبير. وينبغي أن تحصل على الشكل أدناه. وهل يمكنك إدراج اسم المقرر أيضًا؟
 
-![Grouped on semester](https://df.webontwerp.ucll.be/images/database-foundations/sql-groupby-having-2-groupavgsemester.webp)
+![مجمّع حسب الفصل الدراسي](https://df.webontwerp.ucll.be/images/database-foundations/sql-groupby-having-2-groupavgsemester.webp)
 
 #### الحل
 
@@ -146,7 +146,7 @@ ORDER BY 1, 2;
 
 ينشئ هذا الاستعلام 15 صندوقًا (انظر الشكل). ويظهر الصندوق الأول (بإطار برتقالي) على التسمية "الفصل الأول، مقررات ذات 3 نقاط". ويوجد أربعة صفوف في هذا الصندوق. أما الصندوق الثاني (بإطار أزرق) فهو "الفصل الأول، مقررات ذات 4 نقاط". وفي هذا الصندوق مقرر واحد فقط. وهكذا.
 
-![Grouping can be on multiple columns](https://df.webontwerp.ucll.be/images/database-foundations/sql-groupby-having-3-grouptweekol.webp)
+![يمكن التجميع على أعمدة متعددة](https://df.webontwerp.ucll.be/images/database-foundations/sql-groupby-having-3-grouptweekol.webp)
 
 ## HAVING
 
@@ -162,7 +162,7 @@ ORDER BY 1, 2;
 
 ونصيحة لإيجاد الفصول الفردية: انظر لهذا الغرض في إمكانات *باقي القسمة الصحيحة* (عملية "المودولو")، وابحث عن "Modulo" في صفحة [https://www.postgresql.org/docs/current/functions-math.html](https://www.postgresql.org/docs/current/functions-math.html).
 
-![group on odd semesters](https://df.webontwerp.ucll.be/images/database-foundations/sql-groupby-having-4-grouponevensem.webp)
+![تجميع على فصول دراسية فردية](https://df.webontwerp.ucll.be/images/database-foundations/sql-groupby-having-4-grouponevensem.webp)
 
 #### الحل
 

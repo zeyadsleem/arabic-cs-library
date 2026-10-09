@@ -49,7 +49,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 الأسماء المرشّحة لتكون نوع كيان هي: Member وRegistration وAge Group وGroup وActivity وActivity Type.
 
-![Solution exercise Conceptual.1](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-1-model_conceptueel_oefening1_oplossing_afb01.webp)
+![الحل للتمرين Conceptual.1](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-1-model_conceptueel_oefening1_oplossing_afb01.webp)
 
 ## تمرين 2: نادي الشباب: الخواص
 
@@ -66,7 +66,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 فيما يلي نظرة عامة على الخواص المختلفة التي حُدِّدت لكل من أنواع الكيانات:
 
-![Solution exercise Conceptual.2](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-2-model_conceptueel_oefening2_oplossing_afb01.webp)
+![الحل للتمرين Conceptual.2](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-2-model_conceptueel_oefening2_oplossing_afb01.webp)
 
 ## تمرين 3: نادي الشباب: العلاقات
 
@@ -81,7 +81,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 يحتوي مخطط الكيانات والعلاقات أدناه على العلاقات مع تعددياتها.
 
-![Solution exercise Conceptual.3](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-3-model_conceptueel_oefening3_oplossing_afb01.webp)
+![الحل للتمرين Conceptual.3](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-3-model_conceptueel_oefening3_oplossing_afb01.webp)
 
 ## تمرين 4: نادي الشباب: أنواع الخواص
 
@@ -91,7 +91,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 #### الحل
 
-![Solution exercise Conceptual.4](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-4-model_conceptueel_oefening4_oplossing_afb01.webp)
+![الحل للتمرين Conceptual.4](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-4-model_conceptueel_oefening4_oplossing_afb01.webp)
 
 ## تمرين 5: شركة تأجير السيارات
 
@@ -109,7 +109,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 #### الحل
 
-![Solution exercise Conceptual.5.1](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-6-model_conceptueel_oefening5_oplossing_afb01.webp)
+![الحل للتمرين Conceptual.5.1](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-6-model_conceptueel_oefening5_oplossing_afb01.webp)
 
 #### الخطوة 2
 
@@ -126,7 +126,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 #### الحل
 
-![Solution exercise Conceptual.5.2](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-7-model_conceptueel_oefening5_oplossing_afb02.webp)
+![الحل للتمرين Conceptual.5.2](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-7-model_conceptueel_oefening5_oplossing_afb02.webp)
 
 #### الخطوة 3
 
@@ -141,7 +141,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 #### الحل
 
-![Solution exercise Conceptual.5.3](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-8-model_conceptueel_oefening5_oplossing_afb03.webp)
+![الحل للتمرين Conceptual.5.3](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-8-model_conceptueel_oefening5_oplossing_afb03.webp)
 
 ## تمرين 6: إدارة الطلاب
 
@@ -155,7 +155,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 #### الحل
 
-![Solution exercise Conceptual.6.1](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-10-model_conceptueel_oefening6_oplossing_afb01.webp)
+![الحل للتمرين Conceptual.6.1](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-10-model_conceptueel_oefening6_oplossing_afb01.webp)
 
 #### الخطوة 2
 
@@ -171,7 +171,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 #### الحل
 
-![Solution exercise Conceptual.6.3](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-11-model_conceptueel_oefening6_oplossing_afb03.webp)
+![الحل للتمرين Conceptual.6.3](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-11-model_conceptueel_oefening6_oplossing_afb03.webp)
 
 #### الخطوة 4
 
@@ -179,7 +179,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 #### الحل
 
-![Solution exercise Conceptual.6.4](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-12-model_conceptueel_oefening6_oplossing_afb04.webp)
+![الحل للتمرين Conceptual.6.4](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-12-model_conceptueel_oefening6_oplossing_afb04.webp)
 
 #### الخطوة 5
 
@@ -189,7 +189,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 يمكنك حل ذلك بطريقتين: من جهة بنوع كيان "Field of Expertise"، ومن جهة أخرى بخاصية متعددة القيم "Field of Expertise". وكلا الحلين صحيح.
 
-![Solution exercise Conceptual.6.5.a](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-13-model_conceptueel_oefening6_oplossing_afb05a.webp) ![Solution exercise Conceptual.6.5.b](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-14-model_conceptueel_oefening6_oplossing_afb05b.webp)
+![الحل للتمرين Conceptual.6.5.a](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-13-model_conceptueel_oefening6_oplossing_afb05a.webp) ![الحل للتمرين Conceptual.6.5.b](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-14-model_conceptueel_oefening6_oplossing_afb05b.webp)
 
 #### الخطوة 6
 
@@ -197,7 +197,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 #### الحل
 
-![Solution exercise Conceptual.6.6](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-15-model_conceptueel_oefening6_oplossing_afb06.webp)
+![الحل للتمرين Conceptual.6.6](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-15-model_conceptueel_oefening6_oplossing_afb06.webp)
 
 #### الخطوة 7
 
@@ -205,7 +205,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 #### الحل
 
-![Solution exercise Conceptual.6.7](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-16-model_conceptueel_oefening6_oplossing_afb07.webp)
+![الحل للتمرين Conceptual.6.7](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-16-model_conceptueel_oefening6_oplossing_afb07.webp)
 
 #### الخطوة 8
 
@@ -213,7 +213,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 #### الحل
 
-![Solution exercise Conceptual.6.8](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-17-model_conceptueel_oefening6_oplossing_afb08.webp)
+![الحل للتمرين Conceptual.6.8](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-17-model_conceptueel_oefening6_oplossing_afb08.webp)
 
 #### الخطوة 9
 
@@ -229,7 +229,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 #### الحل
 
-![Solution exercise Conceptual.6.10](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-18-model_conceptueel_oefening6_oplossing_afb010.webp)
+![الحل للتمرين Conceptual.6.10](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-18-model_conceptueel_oefening6_oplossing_afb010.webp)
 
 #### الخطوة 11
 
@@ -237,7 +237,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 #### الحل
 
-![Solution exercise Conceptual.6.11](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-19-model_conceptueel_oefening6_oplossing_afb011.webp)
+![الحل للتمرين Conceptual.6.11](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-19-model_conceptueel_oefening6_oplossing_afb011.webp)
 
 #### الخطوة 12
 
@@ -245,7 +245,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 #### الحل
 
-![Solution exercise Conceptual.6.12](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-20-model_conceptueel_oefening6_oplossing_afb012.webp)
+![الحل للتمرين Conceptual.6.12](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-20-model_conceptueel_oefening6_oplossing_afb012.webp)
 
 ## تمرين 7: المكتبة
 
@@ -261,11 +261,11 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 يمكننا إضافة 3 علاقات ثنائية بين Member وFine وBook.
 
-![Solution exercise Conceptual.7.1.a](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-22-conceptual_7_1_a.webp)
+![الحل للتمرين Conceptual.7.1.a](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-22-conceptual_7_1_a.webp)
 
 غير أن ذلك قد يؤدي إلى مواقف غريبة في الواقع. فلنفترض أن مستخدمة تُدعى Emma استعارت الكتاب 1 والكتاب 2. فقد تتلقى حينئذ غرامة على الكتاب 3 رغم أنها لم تستعره. وهذا غير صحيح. وسنستخدم بدلًا من ذلك علاقة ثلاثية، بحيث ترتبط الغرامة بفعل الاستعارة.
 
-![Solution exercise Conceptual.7.1.b](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-23-conceptual_7_1_b.webp)
+![الحل للتمرين Conceptual.7.1.b](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-23-conceptual_7_1_b.webp)
 
 #### الخطوة 2
 
@@ -273,7 +273,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 #### الحل
 
-![Solution exercise Conceptual.7.2](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-24-conceptual_7_2.webp)
+![الحل للتمرين Conceptual.7.2](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-24-conceptual_7_2.webp)
 
 #### الخطوة 3
 
@@ -281,7 +281,7 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 #### الحل
 
-![Solution exercise Conceptual.7.3](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-25-conceptual_7_3.webp)
+![الحل للتمرين Conceptual.7.3](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-25-conceptual_7_3.webp)
 
 ## تمرين 8: جمعية ألعاب الطاولة
 
@@ -298,4 +298,4 @@ source: https://df.webontwerp.ucll.be/EN/model_conceptueel_oefeningen/
 
 #### الحل
 
-![Solution exercise conceptual.8](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-27-model_conceptueel_oefening8_oplossing_afb01.webp)
+![الحل للتمرين conceptual.8](https://df.webontwerp.ucll.be/images/database-foundations/model-conceptueel-oefeningen-27-model_conceptueel_oefening8_oplossing_afb01.webp)

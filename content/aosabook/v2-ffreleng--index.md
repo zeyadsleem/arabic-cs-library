@@ -1,5 +1,5 @@
 ---
-title: "Firefox Release Engineering"
+title: "هندسة إصدارات فَيرفُكس"
 lang: ar
 source: https://aosabook.org/en/v2/ffreleng.html
 ---

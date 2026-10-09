@@ -18,7 +18,7 @@ source: https://craftinginterpreters.com/
 بقيمة ذلك المتغيّر في الأثناء. لذا سنمنح مفسّرنا في هذا الفصل
 دماغاً لا يقدر على المعالجة فحسب بل على *الذاكرة*.
 
-<img src="/images/crafting-interpreters/statements-and-state-1.webp" alt="A brain, presumably remembering stuff." />
+<img src="/images/crafting-interpreters/statements-and-state-1.webp" alt="مخّ، يتذكّر أشياء على الأرجح." />
 
 الحالة و<span name="expr">الجمل</span> يمشيان جنباً إلى جنب. ولأنّ
 الجمل، بحكم تعريفها، لا تُقيَّم إلى قيمة، فإنّها تحتاج إلى فعل شيءٍ
@@ -504,7 +504,7 @@ AST نضيف عقدة <span name="var-stmt-ast">جملة جديدة</span> لت�
 ومنذ اخترع أهل Lisp الأقواس، سُمّي بنية البيانات هذه <span
 name="env">**بيئةً**</span> (environment).
 
-<img src="/images/crafting-interpreters/statements-and-state-2.webp" alt="An environment containing two bindings." />
+<img src="/images/crafting-interpreters/statements-and-state-2.webp" alt="بيئة تحتوي على ربطَين." />
 
 <aside name="env">
 
@@ -1031,7 +1031,7 @@ JavaScript تحوّل خصائص الكائن إلى متغيّرات ذات ن�
 وأستطيع أن نلاحظ بمجرّد النظر إلى الشيفرة أنّ استعمال `a` في جملة
 `print` الأولى يشير إلى `a` الأولى، والثانية تشير إلى الثانية.
 
-<img src="/images/crafting-interpreters/statements-and-state-3.webp" alt="An environment for each 'a'." />
+<img src="/images/crafting-interpreters/statements-and-state-3.webp" alt="بيئة لكلّ a." />
 
 وهذا على عكس **النطاق الديناميكي** حيث لا تعرف ما يشير إليه الاسم
 إلّا حين تنفّذ الشيفرة. وLox ليس لها متغيّرات *ذات نطاق ديناميكي*،
@@ -1142,7 +1142,7 @@ var global = "outside";
 نمشي على تلك السلسلة من الأعمق إلى الخارج حتى نجد المتغيّر. والبدء
 من النطاق الداخليّ هو ما يجعل المتغيّرات المحلّية تحجب الخارجيّة.
 
-<img src="/images/crafting-interpreters/statements-and-state-4.webp" alt="Environments for each scope, linked together." />
+<img src="/images/crafting-interpreters/statements-and-state-4.webp" alt="بيئات لكلّ نطاق، موصولة معاً." />
 
 <aside name="cactus">
 
@@ -1159,7 +1159,7 @@ var global = "outside";
 
 [parent pointer]: https://en.wikipedia.org/wiki/Parent_pointer_tree
 
-<img class="above" src="/images/crafting-interpreters/statements-and-state-5.webp" alt="Each branch points to its parent. The root is global scope." />
+<img class="above" src="/images/crafting-interpreters/statements-and-state-5.webp" alt="يشير كلّ فرع إلى أصله، والجذر هو النطاق العامّ." />
 
 </aside>
 

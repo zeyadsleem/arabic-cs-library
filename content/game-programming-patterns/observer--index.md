@@ -36,7 +36,7 @@ name="devised">[Model-View-Controller][MVC]</span>، وأنت خلف ذلك هو
 
 <aside name="weasel">
 
-<img src="/images/game-programming-patterns/observer-1.webp" width="240" alt="Achievement: Weasel Wielder" />
+<img src="/images/game-programming-patterns/observer-1.webp" width="240" alt="إنجاز: سيّد ابن العرس" />
 
 أقسم أنني لم أقصد أي معنى مزدوج حين رسمتُ هذا.
 
@@ -206,7 +206,7 @@ name="devised">[Model-View-Controller][MVC]</span>، وأنت خلف ذلك هو
 والآن، عندما يفعل محرك الفيزياء شيئاً يستحقّ الانتباه، فإنه يستدعي `notify()` كما في
 المثال التحفيزي السابق. وذلك يجوب قائمة المراقبين ويخبرهم جميعاً مقدّماً.
 
-<img src="/images/game-programming-patterns/observer-2.webp" alt="A Subject containing a list of Observer pointers. The first two point to Achievements and Audio." />
+<img src="/images/game-programming-patterns/observer-2.webp" alt="كائن Subject يحوي قائمة من مؤشرات Observer. أول مؤشرين يشيران إلى Achievements وAudio." />
 
 بسيطة جداً، أليس كذلك؟ صنف واحد فقط يحتفظ بقائمة مؤشرات إلى نسخ من واجهة ما. ومن
 بسيطة جداً، أليس كذلك؟ صنف واحد فقط يحتفظ بقائمة مؤشرات إلى نسخ من واجهة ما. ومن
@@ -303,7 +303,7 @@ class="pattern">مجموعة الكائنات (Object Pool)</a> يتعمّق ف�
 نمرّر قائمة الموضوع *عبر المراقبين أنفسهم*. وبدلاً من أن يملك الموضوع مجموعة منفصلة
 من المؤشرات، تصير كائنات المراقب عقداً في قائمة مترابطة:
 
-<img src="/images/game-programming-patterns/observer-3.webp" alt="A linked list of Observers. Each has a next_ field pointing to the next one. A Subject has a head_ pointing to the first Observer." />
+<img src="/images/game-programming-patterns/observer-3.webp" alt="قائمة موصولة من Observers. لكل منها حقل next_ يشير إلى التالي. ولدى Subject حقل head_ يشير إلى أول Observer." />
 
 ولتنفيذ ذلك، سنبدأ بالتخلّص من المصفوفة في `Subject` واستبدالها بمؤشر إلى رأس قائمة
 المراقبين:
@@ -391,7 +391,7 @@ Responsibility)</a>.
 name="intrusive">صغيرة</span> منفصلة تحتوي مؤشراً إلى المراقب ثم مؤشراً إلى العقدة
 التالية في القائمة.
 
-<img src="/images/game-programming-patterns/observer-4.webp" alt="A linked list of nodes. Each node has an observer_ field pointing to an Observer, and a next_ field pointing to the next node in the list. A Subject's head_ field points to the first node." />
+<img src="/images/game-programming-patterns/observer-4.webp" alt="قائمة موصولة من العقد. لكل عقدة حقل observer_ يشير إلى Observer، وحقل next_ يشير إلى العقدة التالية في القائمة. وحقل head_ في Subject يشير إلى أول عقدة." />
 
 ولأن عدة عقد تستطيع كلّها أن تشير إلى المراقب نفسه، فهذا يعني أن المراقب يمكن أن يكون
 في قوائم أكثر من موضوع في الوقت نفسه. فعُدنا إلى القدرة على مراقبة عدة مواضيع في آن

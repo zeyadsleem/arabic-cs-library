@@ -23,7 +23,7 @@ LIMIT 2;
 
 من المنطقي أنك لا تستطيع فعل ذلك بشكل مفيد إلا إذا كانت جملة `ORDER BY` موجودة أيضًا. وهذه هي النتيجة:
 
-![Limit the list to the upper two](https://df.webontwerp.ucll.be/images/database-foundations/sql-limit-0-limit2.webp)
+![تقييد القائمة بأعلى قيمتين](https://df.webontwerp.ucll.be/images/database-foundations/sql-limit-0-limit2.webp)
 
 ## OFFSET
 
@@ -62,7 +62,7 @@ OFFSET 2
 FETCH FIRST 2 ROWS WITH TIES;
 ```
 
-![extra rows with the same values are also shown](https://df.webontwerp.ucll.be/images/database-foundations/sql-limit-1-withties.webp)
+![تظهر أيضًا صفوف إضافية بالقيم نفسها](https://df.webontwerp.ucll.be/images/database-foundations/sql-limit-1-withties.webp)
 
 ## تمارين
 

@@ -55,7 +55,7 @@ source: https://introtcs.org/
 
 
 
-![Overview of our models for finite and unbounded computation. In the previous chapters we study the computation of _finite functions_, which are functions $f:\{0,1\}^n \rightarrow \{0,1\}^m$ for some fixed $n,m$, and modeled computing these functions using circuits or straight-line programs. In this chapter we study computing _unbounded_ functions of the form $F:\{0,1\}^* \rightarrow \{0,1\}^m$ or $F:\{0,1\}^* \rightarrow \{0,1\}^*$. We model computing these functions using _Turing Machines_ or (equivalently) NAND-TM programs, which add the notion of _loops_ to the NAND-CIRC programming language. In [chapequivalentmodels](#chapequivalentmodels){.ref} we will show that these models are equivalent to many other models, including RAM machines, the $\lambda$ calculus, and all the common programming languages including C, Python, Java, JavaScript, etc.](/images/introtcs/original-chaploopoverview.webp){#chaploopoverviewfig  }
+![نظرة عامة على نماذجنا للحوسبة المحدودة وغير المحدودة. في الفصول السابقة درسنا حساب _الدوال المحدودة_، وهي دوالٌ على النمط $f:\{0,1\}^n \rightarrow \{0,1\}^m$ لبعض $n,m$ مُثبّتين، ونمذجنا حساب هذه الدوال باستعمال الدوائر أو البرامج ذات الخطوط المستقيمة. وفي هذا الفصل ندرس حساب الدوال _غير المحدودة_ على النمط $F:\{0,1\}^* \rightarrow \{0,1\}^m$ أو $F:\{0,1\}^* \rightarrow \{0,1\}^*$. ونُنمذج حساب هذه الدوال باستعمال _آلات تورينج_ (أو ما يكافئها) برامج NAND-TM، التي تُضيف مفهوم _الحلقات_ إلى لغة برمجة NAND-CIRC. وفي [chapequivalentmodels](#chapequivalentmodels){.ref} سنُظهر أنّ هذه النماذج تكافئ نماذجَ كثيرةً أخرى، منها آلات RAM، وحساب λ، ولغات البرمجة الشائعة كلّها مثل C وPython وJava وJavaScript وغيرها.](/images/introtcs/original-chaploopoverview.webp){#chaploopoverviewfig  }
 
 
 
@@ -77,7 +77,7 @@ source: https://introtcs.org/
 «جدّ» كل نماذج الحوسبة هو _آلة تورينج_.
 عُرِّفت آلات تورينج سنة 1936 على يد آلان تورينج، في محاولة لالتقاط رسميّ لكل الدوال التي يمكن أن يحسبها «حاسوبون» (computers) من البشر (انظر [humancomputersfig](#humancomputersfig){.ref}) ويتبعون مجموعة قواعد محدَّدة تمامًا، مثل الخوارزميات القياسية للجمع أو الضرب.
 
-![Until the advent of electronic computers, the word "computer" was used to describe a person that performed calculations. Most of these "human computers" were women, and they were absolutely essential to many achievements, including mapping the stars, breaking the Enigma cipher, and the NASA space mission; see also the bibliographical notes. Photo from [National Photo Company Collection](https://www.loc.gov/pictures/item/2016838906/); see also  [@sobel2017the].](/images/introtcs/original-HumanComputers.webp){#humancomputersfig .margin  }
+![حتّى مجيء الحاسوبات الإلكترونية، كان استخدام كلمة «حاسوب» (computer) لوصف شخصٍ يُجري الحسابات. وكان أغلب هؤلاء «الحواسيب البشرية» نساء، وكانوا عنصرًا بالغ الأهمية في إنجازاتٍ كثيرة، من بينها رسم خرائط النجوم، وكسر تشفير إنغما، ومهمّة ناسا الفضائية؛ انظر أيضًا الملاحظات الببليوغرافية. الصورة من مجموعة [شركة الصور الوطنية](https://www.loc.gov/pictures/item/2016838906/)؛ انظر أيضًا [@sobel2017the].](/images/introtcs/original-HumanComputers.webp){#humancomputersfig .margin  }
 
 تصوّر تورينج هذا الشخص بصفته يملك ما يشاء من «ورق مسودّة» (scratch paper).
 وللبساطة، يمكننا أن نتعامل مع هذه الورقة المسودّة على أنها قطعة ورق مربّعات ببعد واحد (أو _شريط_ (_tape_) كما يُسمّى عادةً).
@@ -85,7 +85,7 @@ source: https://introtcs.org/
 في أي لحظة من الزمن، يمكن للشخص أن يقرأ من خليّة واحدة من الورق ويكتب فيها. واستنادًا إلى محتوى هذه الخلية، يمكن للشخص أن يحدّث حالته الذهنية المتناهية، و/أو ينتقل إلى الخلية المجاورة مباشرةً على اليمين أو اليسار.
 
 
-![Steam-powered Turing machine mural, painted by CSE grad students at the University of Washington on the night before spring qualifying examinations, 1987. Image from [https://www.cs.washington.edu/building/art/SPTM](https://www.cs.washington.edu/building/art/SPTM). ](/images/introtcs/original-SPTM.webp){#steamturingmachine .margin  }
+![جدارية لآلة تورينج مُشغَّلة بالبخار، رسمها طلاب الدراسات العليا في قسم هندسة الحاسبات والعلوم بجامعة واشنطن في الليلة السابقة لامتحانات التأهيل الربيعي، سنة 1987. الصورة من [https://www.cs.washington.edu/building/art/SPTM](https://www.cs.washington.edu/building/art/SPTM).](/images/introtcs/original-SPTM.webp){#steamturingmachine .margin  }
 
 
 
@@ -107,7 +107,7 @@ source: https://introtcs.org/
 
 * عندما تتوقّف الآلة، فإن خرجها هو السلسلة الثنائية التي تُقرأ من الشريط من بدايته حتى أول موضع يحتوي فيه على الرمز $\varnothing$، ثم إخراج كل رموز $0$ و$1$ بالترتيب، مع إسقاط الرمز $\triangleright$ الأولي إن وُجد، وكذلك الرمز $\varnothing\) الأخير.
 
-![The components of a Turing Machine. Note how they correspond to the general components of algorithms as described in [algcomponentfig](#algcomponentfig){.ref}.](/images/introtcs/original-turingmachinecomponents.webp){#turingmachinecomponentsfig .margin }
+![مكوّنات آلة تورينج. لاحِث كيف تقابل المكوّنات العامة للخوارزميات كما وُصفت في [algcomponentfig](#algcomponentfig){.ref}.](/images/introtcs/original-turingmachinecomponents.webp){#turingmachinecomponentsfig .margin }
 
 ### مثال موسَّع:  آلة تورينج للكلمات المتناظرة  { #turingmachinepalindrome }
 
@@ -368,7 +368,7 @@ def M(Tape):
 
 * _المصفوفات_ (_arrays_): يلمس برنامج NAND-CIRC بطول $s$ سطرًا ما لا يزيد عن $3s$ متغيّرًا. ورغم أننا يمكننا استخدام متغيّرات بأسماء مثل  `Foo_17` أو `Bar[22]` في NAND-CIRC، فإنها ليست مصفوفات حقيقية، لأن الرقم في المُعرِّف هو ثابت «مضمَّن» (_hardwired_) في البرنامج. أما NAND-TM فتحتوي مصفوفات فعلية يمكن أن يكون طولها غير محدود مسبقًا.
 
-![A NAND-TM program has _scalar_ variables that can take a Boolean value, _array_ variables that hold a sequence of Boolean values, and a special _index_ variable `i` that can be used to index the array variables. We refer to the `i`-th value of the array variable `Spam` using `Spam[i]`. At each iteration of the program the index variable can be incremented or decremented by one step using the `MODANDJUMP` operation.](/images/introtcs/original-nandtmprog.webp){#nandtmfig}
+![لبرنامج NAND-TM متغيّرات _قيمية_ (scalar) تتّخذ قيمةً بولية، ومتغيّرات _مصفوفية_ تحفظ متتاليةً من القيم البولية، ومتغيّر _فهرسة_ خاصّ هو `` `i` `` يمكن استعماله لفهرسة المتغيّرات المصفوفية. ونُشير إلى القيمة رقم `` `i` `` من المتغيّر المصفوف `` `Spam` `` باستعمال `` `Spam[i]` ``. وفي كلّ تكرارةٍ للبرنامج يمكن زيادة متغيّر الفهرسة أو إنقاصه بخطوةٍ واحدة باستعمال عملية `` `MODANDJUMP` ``.](/images/introtcs/original-nandtmprog.webp){#nandtmfig}
 
 إذن، فإن طريقة جيدة لتذكّر NAND-TM هي استخدام المعادلة غير الرسمية التالية:
 

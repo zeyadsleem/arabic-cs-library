@@ -233,7 +233,7 @@ $$
 :::
 
 
-![The proof of [polyRAMTM-thm](#polyRAMTM-thm){.ref} shows that we can simulate $T$ steps of a Turing machine with $T$ steps of a NAND-RAM program, and can simulate $T$ steps of a NAND-RAM program with $o(T^4)$ steps of a Turing machine. Hence $TIME_{\mathsf{TM}}(T(n)) \subseteq TIME_{\mathsf{RAM}}(10\cdot T(n)) \subseteq TIME_{\mathsf{TM}}(T(n)^4)$.](/images/introtcs/original-RAMTMsimulation.webp){#RAMTMsimulationfig .margin}
+![يُظهر برهان [polyRAMTM-thm](#polyRAMTM-thm){.ref} أنّنا نستطيع محاكاة $T$ خطوةً من آلة تورينج بـ$T$ خطوةً من برنامج NAND-RAM، ونستطيع محاكاة $T$ خطوةً من برنامج NAND-RAM بـ$o(T^4)$ خطوةً من آلة تورينج. وبالتالي $TIME_{\mathsf{TM}}(T(n)) \subseteq TIME_{\mathsf{RAM}}(10\cdot T(n)) \subseteq TIME_{\mathsf{TM}}(T(n)^4)$.](/images/introtcs/original-RAMTMsimulation.webp){#RAMTMsimulationfig .margin}
 
 على سبيل المثال، بتطبيق [polyRAMTM-thm](#polyRAMTM-thm){.ref} مع $T(n)=n^a$، وباستعمال الحقيقة $10n^a = o(n^{a+1})$، نرى أن $TIME_{\mathsf{TM}}(n^a) \subseteq TIME_{\mathsf{RAM}}(n^{a+1}) \subseteq TIME_{\mathsf{TM}}(n^{4a+4})$، وهذا يعني (بحسب [diffdefofP](#diffdefofP){.ref})
 $$
@@ -423,7 +423,7 @@ $$
 $$TIMEDEVAL(M,x,1^T) = \begin{cases} M(x) & M \text{ halts within $\leq T$ steps on $x$} \\ 0 & \text{otherwise}\end{cases} \;.$$
 عندئذٍ $TIMEDEVAL \in \mathbf{P}$.
 
-![The _timed_ universal Turing machine takes as input a Turing machine $M$, an input $x$, and a time bound $T$, and outputs $M(x)$ if $M$ halts within at most $T$ steps. [timeduniversalTM](#timeduniversalTM){.ref} states that there is such a machine that runs in time polynomial in $T$. ](/images/introtcs/original-timeduniversaltm.webp){#timeduniversaltmfig  .margin }
+![تأخذ الآلة التورينجية الكامنة _المُوقَّتة_ مدخلًا آلة تورينج $M$ ومدخلًا $x$ وحدًّا زمنيًّا $T$، وتُخرج $M(x)$ إذا توقّفت $M$ خلال $T$ خطوةً على الأكثر. وتنصّ [timeduniversalTM](#timeduniversalTM){.ref} على وجود آلةٍ كهذه تَعمل في زمنٍ متعدد الحدود في $T$.](/images/introtcs/original-timeduniversaltm.webp){#timeduniversaltmfig  .margin }
 
 
 ::: {.proof #proofoftimeduniversalTM data-ref="timeduniversalTM"}
@@ -463,7 +463,7 @@ $$TIMEDEVAL(M,x,1^T) = \begin{cases} M(x) & M \text{ halts within $\leq T$ steps
 
 
 
-![The _Time Hierarchy Theorem_ ([time-hierarchy-thm](#time-hierarchy-thm){.ref}) states that all of these classes are _distinct_.](/images/introtcs/original-timehierarchythm.webp){#timehierarchythmfig}
+![تنصّ _مبرهنة التسلسل الزمني_ ([time-hierarchy-thm](#time-hierarchy-thm){.ref}) على أنّ كلّ هذه الأصناف _متمايزة_.](/images/introtcs/original-timehierarchythm.webp){#timehierarchythmfig}
 
 
 > ### {.proofidea data-ref="time-hierarchy-thm"}
@@ -766,7 +766,7 @@ $$
 :::
 
 
-![We can transform a Turing machine $M$, input length parameter $n$, and time bound $T$ into an $O(T^2)$-sized NAND circuit that agrees with $M$ on all inputs $x\in \{0,1\}^n$ on which $M$ halts in at most $T$ steps. The transformation is obtained by first using the equivalence of Turing machines and NAND-TM programs $P$, then turning $P$ into an equivalent _oblivious_ NAND-TM program $P'$ via [obliviousnandtmthm](#obliviousnandtmthm){.ref}, then "unrolling" $O(T^2)$ iterations of the loop of $P'$ to obtain an $O(T^2)$ line  NAND-CIRC program  that agrees with $P'$ on length $n$ inputs, and finally translating this program into an equivalent circuit.](/images/introtcs/original-unrolldescription.webp){#unrolldescriptionfig }
+![يمكننا تحويل آلة تورينج $M$ ومعامل طول المدخل $n$ وحدًّا زمنيًّا $T$ إلى دائرة NAND حجمها $O(T^2)$ تتفق مع $M$ على كلّ المداخل $x\in \{0,1\}^n$ التي توقّف فيها $M$ خلال $T$ خطوةً على الأكثر. ويتمّ التحوّل باستعمال تكافؤ آلات تورينج وبرامج NAND-TM أوّلًا للحصول على برنامج $P$، ثمّ تحويل $P$ إلى برنامج NAND-TM مكافئ _غافل_ (oblivious) $P'$ عبر [obliviousnandtmthm](#obliviousnandtmthm){.ref}، ثمّ «تفريع» (unrolling) $O(T^2)$ تكرارةً من حلقة $P'$ للحصول على برنامج NAND-CIRC من $O(T^2)$ خطوةً يتفق مع $P'$ على المداخل بطول $n$، وأخيرًا ترجمة هذا البرنامج إلى دائرةٍ مكافئة.](/images/introtcs/original-unrolldescription.webp){#unrolldescriptionfig }
 
 ::: { .bigidea #unrollloop}
 بـ«نشر الحلقة» يمكننا تحويل خوارزمية تأخذ $T(n)$ خطوة لحساب $F$ إلى دائرة تستعمل $poly(T(n))$ بوابة لحساب تقييد $F$ على $\{0,1\}^n$.

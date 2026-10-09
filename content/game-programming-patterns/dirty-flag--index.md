@@ -43,7 +43,7 @@ source: https://gameprogrammingpatterns.com/
 المحلي للسفينة السفينة في البحر، ويضع تحويل العشّ العشّ على السفينة، وهكذا.
 
 <span name="pirate"></span>
-<img src="/images/game-programming-patterns/dirty-flag-1.webp" alt="A pirate ship containing a crow's nest with a pirate in it with a parrot on his shoulder." />
+<img src="/images/game-programming-patterns/dirty-flag-1.webp" alt="سفينة قرصان بها برج مراقبة يقف فيه قرصان وببغاء على كتفه." />
 
 <aside name="pirate">
 
@@ -74,7 +74,7 @@ source: https://gameprogrammingpatterns.com/
 هو:
 
 <span name="degenerate"></span>
-<img src="/images/game-programming-patterns/dirty-flag-2.webp" alt="The parrot's world position comes from multiplying the local positions for the ship, nest, pirate, and parrot." />
+<img src="/images/game-programming-patterns/dirty-flag-2.webp" alt="موقع الببغاء العالمي يُنتَج عن ضرب المواضع المحلية للسفينة والبرج والقرصان والببغاء." />
 
 <aside name="degenerate">
 
@@ -111,7 +111,7 @@ source: https://gameprogrammingpatterns.com/
 أعدنا حساب التحويلات العالمية بحماس كلما تغيّر تحويل محلي، فماذا يحدث؟
 
 <span name="stars"></span>
-<img src="/images/game-programming-patterns/dirty-flag-3.webp" alt="Any time an object moves, the world coordinates are recalculated eagerly and redundantly." />
+<img src="/images/game-programming-patterns/dirty-flag-3.webp" alt="كلما تحرك كائن تُعاد حساب إحداثيات العالم مباشرةً وبشكل مكرّر." />
 
 <aside name="stars">
 
@@ -161,7 +161,7 @@ source: https://gameprogrammingpatterns.com/
 
 فإن طبّقنا هذا النمط ثم حرّكنا كل الكائنات في مثالنا السابق، تنتهي اللعبة إلى فعل:
 
-<img src="/images/game-programming-patterns/dirty-flag-4.webp" alt="By deferring until all moves are done, we only recalculate once." />
+<img src="/images/game-programming-patterns/dirty-flag-4.webp" alt="بتأجيل الحساب حتى اكتمال كل التحركات لا تُعاد الحساب إلا مرة واحدة." />
 
 هذا أفضل ما يمكنك الأمل فيه -- فالتحويل العالمي لكل كائن متأثّر يُحسب مرّة واحدة
 بالضبط. وببست بت واحد من البيانات، يفعل هذا النمط لنا عدة أمور:
@@ -247,7 +247,7 @@ name="gc">توقّف</span> مرئي مزعج.
 الصغيرة أو النجمة في شريط عنوان الملف هي علامة الوسخ مصوّرة. فالبيانات الأولية هي
 المستند المفتوح في الذاكرة، والبيانات المشتقّة هي الملف على القرص.
 
-<img src="/images/game-programming-patterns/dirty-flag-5.webp" alt="A window titlebar showing the little icon representing unsaved changes." />
+<img src="/images/game-programming-patterns/dirty-flag-5.webp" alt="شريط عنوان نافذة يعرض الأيقونة الصغيرة التي تمثّل التغييرات غير المحفوظة." />
 
 لا تحفظ كثير من البرامج على القرص إلا حين يُغلق المستند أو يُنهى التطبيق. وهذا مقبول
 في معظم الأحيان، لكن إن سحبت كابل الكهرباء من المقبس بالخطأ، ضاع تحفتك.

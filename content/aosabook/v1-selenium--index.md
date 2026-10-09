@@ -547,6 +547,6 @@ public String getAttribute(String name) {
 4. أي أنها تُعيد النتيجة نفسها دائمًا.
 
 [^1]: `http://fit.c2.com`
-[^2]: This is very similar to FIT, and James Shore, one of that project's coordinators, helps explain some of the drawbacks at `http://jamesshore.com/Blog/The-Problems-With-Acceptance-Testing.html`.
-[^3]: For example, the remote server returns a base64-encoded screen grab with every exception as a debugging aid but the Firefox driver doesn't.
-[^4]: I.e., always returns the same result.
+[^2]: هذا قريب جدًّا من FIT، ويشرح James Shore، أحد منسّقي ذلك المشروع، بعض عيوبه في `http://jamesshore.com/Blog/The-Problems-With-Acceptance-Testing.html`.
+[^3]: فمثلًا، يُعيد الخادم البعيد لقطة شاشة مرمّزة بـ base64 مع كل استثناء كمعين على التنقيح، لكن مشغّل Firefox لا يفعل ذلك.
+[^4]: أي أنها تُعيد النتيجة نفسها دائمًا.

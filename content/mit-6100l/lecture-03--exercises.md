@@ -101,7 +101,7 @@ MIT OpenCourseWare — https://ocw.mit.edu
 # Fun Lost Forest code, run it on your own!
 #where = input("You are in the Lost Forest\n****************\n****************\n :)\n****************\n****************\nGo left or right? ")
 #while where.lower() == "right":
-#    where = input("You are in the Lost Forest\n****************\n******       ***\n  (╯°□°）╯\n     ︵ \n    ┻━┻\n****************\n****************\nGo left or right? ")
+#    where = input("You are in the Lost Forest\n****************\n******       ***\n  (╯°□°)╯\n     ︵ \n    ┻━┻\n****************\n****************\nGo left or right? ")
 #print("\nYou got out of the Lost Forest!\n\o/")
 
     

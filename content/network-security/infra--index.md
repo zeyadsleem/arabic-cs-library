@@ -307,4 +307,4 @@ P. Schmitt وA. Edmundson وA. Mankin وN. Feamster. [DNS الغافِل: خصو
 
 X. Qie وR. Pang وL. Peterson. [البرمجةُ الدفاعية: استعمالُ أدواتِ التعليقاتِ لبناء برمجياتٍ مقاومةٍ لحجب الخدمة](https://www.usenix.org/conference/osdi-02/defensive-programming-using-annotation-toolkit-build-dos-resistant-software). وقائعُ الندوة الخامسة حول تصميم أنظمة التشغيل وتنفيذها (OSDI)، Usenix، ديسمبر 2002.
 
-[^1]: Many thanks to Cecilia Testart for her contributions to this chapter, particularly the BGP and Routing Security sections.
+[^1]: شكرٌ جزيلٌ لـ Cecilia Testart على مساهماتها في هذا الفصل، ولا سيّما قِسمَي BGP وأمن التوجيه (Routing Security).

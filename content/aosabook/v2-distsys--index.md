@@ -1,5 +1,5 @@
 ---
-title: "Scalable Web Architecture and Distributed Systems"
+title: "بنية الويب القابلة للتوسّع والأنظمة الموزّعة"
 lang: ar
 source: https://aosabook.org/en/v2/distsys.html
 ---

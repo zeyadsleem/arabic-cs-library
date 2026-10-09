@@ -88,7 +88,7 @@ Lox فيتبع تقليدًا يمتدّ إلى BCPL. وبصفتنا مبرمج�
 
 تنقّل عبر برنامج المثال هذا وراقب كيف تدخل المتغيّرات المحلّية نطاقها وتخرجه:
 
-<img src="/images/crafting-interpreters/local-variables-1.webp" alt="A series of local variables come into and out of scope in a stack-like fashion." />
+<img src="/images/crafting-interpreters/local-variables-1.webp" alt="سلسلة من المتغيّرات المحلية تدخل النطاق وتخرج منه بأسلوب يشبه المكدّس." />
 
 لاحظ كيف تتّسع المكدّس تمامًا! يبدو أنّ المكدّس سيصلح لتخزين المتغيّرات المحلّية وقت
 التشغيل. لكن يمكننا أن نذهب أبعد من ذلك. فنحن لا نعرف *أنّها* ستكون على المكدّس
@@ -205,7 +205,7 @@ block          → "{" declaration* "}" ;
 *مركّبة* — سلسلة من التصريحات. يمكن أن تكون أسوأ، على ما أظنّ. كانت Algol 58 تسمّي
 `begin` و`end` "أقواس التصريحات".
 
-<img src="/images/crafting-interpreters/local-variables-2.webp" alt="A cinder block." class="above" />
+<img src="/images/crafting-interpreters/local-variables-2.webp" alt="طوبة إسمنتية." class="above" />
 
 </aside>
 
@@ -251,7 +251,7 @@ block          → "{" declaration* "}" ;
 يفترض أنّ كل المتغيّرات عامة. لذا لا نحتاج إلى أيّ دعم تحليل جديد، بل نحتاج فقط
 إلى ربط دلالات النطاق الجديدة بالشيفرة القائمة.
 
-<img src="/images/crafting-interpreters/local-variables-3.webp" alt="The code flow within varDeclaration()." />
+<img src="/images/crafting-interpreters/local-variables-3.webp" alt="تدفّق الشيفرة داخل varDeclaration()." />
 
 يبدأ تحليل تصريح المتغيّر في `varDeclaration()` ويعتمد على بضع دوال أخرى. أولًا،
 تستهلك `parseVariable()` رمز المُعرِّف الخاص باسم المتغيّر، وتضيف لَمحته إلى جدول
@@ -283,7 +283,7 @@ block          → "{" declaration* "}" ;
 
 <span name="locals"></span>
 
-<img src="/images/crafting-interpreters/local-variables-4.webp" alt="Walking through the bytecode execution showing that each initializer's result ends up in the local's slot." />
+<img src="/images/crafting-interpreters/local-variables-4.webp" alt="خطوة بخطوة في تنفيذ شيفرة البايت يُظهر أنّ نتيجة كلّ مُهيِّئ تنتهي في خانة المتغيّر المحلي." />
 
 <aside name="locals">
 
@@ -557,7 +557,7 @@ name="pop">لإسقاطه</span> من المكدّس.
 
 لقد قتلناه حينها بتقسيم تصريح المتغيّر إلى مرحلتين، وسنفعل ذلك هنا أيضًا:
 
-<img src="/images/crafting-interpreters/local-variables-5.webp" alt="An example variable declaration marked 'declared uninitialized' before the variable name and 'ready for use' after the initializer." />
+<img src="/images/crafting-interpreters/local-variables-5.webp" alt="مثال على إعلان متغيّر مُعلَّم فيه «declared uninitialized» قبل اسم المتغيّر و«ready for use» بعد المُهيِّئ." />
 
 بمجرد أن يبدأ تصريح المتغيّر — بمعنى آخر، قبل مُهيّئه — يُصرَّح بالاسم في النطاق
 الحالي. المتغيّر موجود، لكن في حالة خاصة "غير مهيّأة". ثم نترجم المُهيّئ. إن حللنا

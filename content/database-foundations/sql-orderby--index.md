@@ -43,7 +43,7 @@ ORDER BY credits ASC;
 
 وهذه نتيجة الاستعلام:
 
-![sort by ascending number of credits](https://df.webontwerp.ucll.be/images/database-foundations/sql-orderby-0-orderbySP.webp) المقررات ذات أقل عدد من النقاط في الأعلى. وداخل الصفوف ذات القيمة نفسها لعدد النقاط (مثل 3)، يبقى الترتيب غير متوقع. غير أنه يمكنك تحديد أكثر من عمود للترتيب حسبه. افترض أنك تريد الترتيب أولًا حسب عدد النقاط المتزايد ثم (داخل الصفوف ذات عدد النقاط نفسه) أبجديًا حسب الاسم، فيمكنك فعل ذلك كما يلي:
+![الترتيب تصاعديًا حسب عدد الوحدات المعتمدة (credits)](https://df.webontwerp.ucll.be/images/database-foundations/sql-orderby-0-orderbySP.webp) المقررات ذات أقل عدد من النقاط في الأعلى. وداخل الصفوف ذات القيمة نفسها لعدد النقاط (مثل 3)، يبقى الترتيب غير متوقع. غير أنه يمكنك تحديد أكثر من عمود للترتيب حسبه. افترض أنك تريد الترتيب أولًا حسب عدد النقاط المتزايد ثم (داخل الصفوف ذات عدد النقاط نفسه) أبجديًا حسب الاسم، فيمكنك فعل ذلك كما يلي:
 
 ```sql
 SELECT code, credits, name
@@ -54,7 +54,7 @@ ORDER BY credits, name;
 
 وهذه هي النتيجة:
 
-![sort by ascending number of credits and then by name](https://df.webontwerp.ucll.be/images/database-foundations/sql-orderby-1-orderbySPnaam.webp)
+![الترتيب تصاعديًا حسب عدد الوحدات المعتمدة (credits) ثم حسب الاسم](https://df.webontwerp.ucll.be/images/database-foundations/sql-orderby-1-orderbySPnaam.webp)
 
 لاحظ أن الترتيب مهم: `ORDER BY credits, name` يعيد نتيجة مختلفة عن `ORDER BY name, credits`!
 

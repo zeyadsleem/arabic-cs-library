@@ -1,5 +1,5 @@
 ---
-title: "14. External Memory Searching"
+title: "14. البحث في الذاكرة الخارجية"
 lang: ar
 source: https://opendatastructures.org/ods-java/14_External_Memory_Searchin.html
 ---
@@ -56,7 +56,7 @@ $$
 
 يبيّن الشكل 14.2 مثالًا لشجرة $ B$ مع $ B=2$ .
 
-**الشكل 14.2:** شجرة $ B$ مع $ B=2$ . ![\includegraphics[width=\textwidth ]{figs/btree-1}](/images/open-data-structures/14_2_B_Trees-img5357.png.webp) لاحظ أن البيانات المخزَّنة في عقدة شجرة $ B$ حجمها $ O(B)$ . ولذلك، في سياق الذاكرة الخارجية، تُختار قيمة $ B$ في شجرة $ B$ بحيث تتّسع العقدة في كتلة ذاكرة خارجية واحدة. وبهذه الطريقة، يكون الزمن اللازم لتنفيذ عملية على شجرة $ B$ في نموذج الذاكرة الخارجية متناسبًا مع عدد العقد التي تصل إليها العملية (تقرأها أو تكتبها). فمثلًا، إذا كانت المفاتيح أعدادًا صحيحة ذات 4 بايتات وكانت فهارس العقد كذلك بحجم 4 بايتات، فإن ضبط $ B=256$ يعني أن كل عقدة تخزّن
+**الشكل 14.2:** شجرة $ B$ مع $ B=2$ . ![ ](/images/open-data-structures/14_2_B_Trees-img5357.png.webp) لاحظ أن البيانات المخزَّنة في عقدة شجرة $ B$ حجمها $ O(B)$ . ولذلك، في سياق الذاكرة الخارجية، تُختار قيمة $ B$ في شجرة $ B$ بحيث تتّسع العقدة في كتلة ذاكرة خارجية واحدة. وبهذه الطريقة، يكون الزمن اللازم لتنفيذ عملية على شجرة $ B$ في نموذج الذاكرة الخارجية متناسبًا مع عدد العقد التي تصل إليها العملية (تقرأها أو تكتبها). فمثلًا، إذا كانت المفاتيح أعدادًا صحيحة ذات 4 بايتات وكانت فهارس العقد كذلك بحجم 4 بايتات، فإن ضبط $ B=256$ يعني أن كل عقدة تخزّن
 
 $$
 \displaystyle (4+4)\times 2B = 8\times512=4096
@@ -123,20 +123,20 @@ $$
 
 هناك فرق مهم بين أشجار $ B$ وبنية بيانات BinarySearchTree المذكورة في القسم 6.2، وهو أن عقد شجرة $ B$ لا تخزّن مؤشرات إلى آباءها. وسيُشرح سبب ذلك بعد قليل. وغياب مؤشرات الأمّ يعني أن عمليتي $ \mathtt{add(x)}$ و $ \mathtt{remove(x)}$ على أشجار $ B$ يُعتمَل بهما على نحو أسهل ما يكون بالتعاود (recursion). وكما في كل أشجار البحث المتوازنة، يلزم شكلٌ من إعادة التوازن أثناء عملية $ \mathtt{add(x)}$ . وفي شجرة $ B$ يتم ذلك بتقسيم العقد. انظر الشكل 14.5 لما يأتي. ومع أن التقسيم يجري عبر مستويين من التعاود، فمن الأفضل فهمه كعملية تأخذ عقدة، $ \mathtt{u}$، تحتوي $ 2B$ مفتاحًا ولها $ 2B+1$ ابنًا. فهي تنشئ عقدة جديدة، $ \mathtt{w}$، تتبنّى $ \ensuremath{\mathtt{u.children}}[B],\ldots,\ensuremath{\mathtt{u.children}}[2B]$ . وتتبنّى العقدة الجديدة $ \mathtt{w}$ أيضًا أكبر $ B$ مفاتيح لـ $ \mathtt{u}$، أي $ \ensuremath{\mathtt{u.keys}}[B],\ldots,\ensuremath{\mathtt{u.keys}}[2B-1]$ . وعند هذه النقطة، تكون $ \mathtt{u}$ ذات $ B$ أبناء و $ B$ مفاتيح. أمّا المفتاح الزائد، $ \ensuremath{\mathtt{u.keys}}[B-1]$ ، فيُمرَّر إلى أمّ $ \mathtt{u}$ التي تتبنّى هي الأخرى $ \mathtt{w}$ . ولاحظ أن عملية التقسيم تعدّل ثلاث عقد: $ \mathtt{u}$ ، وأمّ $ \mathtt{u}$ ، والعقدة الجديدة $ \mathtt{w}$ . ولهذا فمن المهم ألّا تحتفظ عقد شجرة $ B$ بمؤشرات الأمّ. فإذا كانت تفعل ذلك، لكان على الأبناء الـ $ B+1$ التي تتبنّاها $ \mathtt{w}$ أن تُعدَّل مؤشرات أمّاتها جميعًا. وهذا يزيد عدد عمليات الوصول إلى الذاكرة الخارجية من 3 إلى $ B+4$ ويجعل أشجار $ B$ أقل كفاءة بكثير مع قيم $ B$ الكبيرة.
 
-|  | ![\includegraphics[width=\textwidth ]{figs/btree-split-1}](/images/open-data-structures/14_2_B_Trees-img5469.png.webp) |  |
+|  | ![ ](/images/open-data-structures/14_2_B_Trees-img5469.png.webp) |  |
 | --- | --- | --- |
 |  | $ \mathtt{u.split()}$ |  |
 |  | $ \Downarrow$ |  |
-|  | ![\includegraphics[width=\textwidth ]{figs/btree-split-2}](/images/open-data-structures/14_2_B_Trees-img5470.png.webp) |  |
+|  | ![ ](/images/open-data-structures/14_2_B_Trees-img5470.png.webp) |  |
 
 يبيّن الشكل 14.6 طريقة $ \mathtt{add(x)}$ في شجرة $ B$ . وعلى مستوى عالٍ، تجد هذه الطريقة ورقة، $ \mathtt{u}$، تُضاف عندها القيمة $ \mathtt{x}$ . فإذا أدّى هذا إلى أن تتجاوز $ \mathtt{u}$ طاقتها (لأنها كانت تحتوي أصلًا على $ B-1$ مفاتيح)، فإن $ \mathtt{u}$ تُقسَّم. فإذا أدّى هذا إلى أن تتجاوز أمّ $ \mathtt{u}$ طاقتها، فإن أمّ $ \mathtt{u}$ تُقسَّم هي الأخرى، وقد يسبّب ذلك تجاوز جدّة $ \mathtt{u}$ لطاقتها، وهكذا. ويستمر هذا المسار، صاعدًا في الشجرة مستوى بعد مستوى، حتى يبلغ عقدة لا تتجاوز طاقتها أو حتى يُقسَّم الجذر. وفي الحالة الأولى تتوقف العملية. وفي الحالة الثانية يُنشأ جذر جديد يصير ابناه هما العقدتان الناتجتان عند تقسيم الجذر الأصلي.
 
-|  | ![\includegraphics[width=\textwidth ]{figs/btree-add-1}](/images/open-data-structures/14_2_B_Trees-img5489.png.webp) |  |
+|  | ![ ](/images/open-data-structures/14_2_B_Trees-img5489.png.webp) |  |
 | --- | --- | --- |
 |  | $ \Downarrow$ |  |
-|  | ![\includegraphics[width=\textwidth ]{figs/btree-add-2}](/images/open-data-structures/14_2_B_Trees-img5490.png.webp) |  |
+|  | ![ ](/images/open-data-structures/14_2_B_Trees-img5490.png.webp) |  |
 |  | $ \Downarrow$ |  |
-|  | ![\includegraphics[width=\textwidth ]{figs/btree-add-3}](/images/open-data-structures/14_2_B_Trees-img5491.png.webp) |  |
+|  | ![ ](/images/open-data-structures/14_2_B_Trees-img5491.png.webp) |  |
 
 الملخّص التنفيذي لطريقة $ \mathtt{add(x)}$ هو أنها تنطلق من الجذر إلى ورقة بحثًا عن $ \mathtt{x}$، وتضيف $ \mathtt{x}$ إلى هذه الورقة، ثم تعود صاعدةً إلى الجذر، مقسِّمةً أي عقدة تتجاوز طاقتها تصادفها في الطريق. ومع هذه الرؤية العامة في الأذهان، يمكننا الآن التعمّق في تفاصيل كيفية تنفيذ هذه الطريقة تعاوديًا. فالعمل الحقيقي لطريقة $ \mathtt{add(x)}$ تقوم به طريقة $ \mathtt{addRecursive(x,ui)}$ التي تضيف القيمة $ \mathtt{x}$ إلى الشجرة الفرعية التي جذرها، $ \mathtt{u}$، له المعرِّف $ \mathtt{ui}$ . فإذا كانت $ \mathtt{u}$ ورقة، فإن $ \mathtt{x}$ تُدرَج ببساطة في $ \mathtt{u.keys}$ . وإلا فإن $ \mathtt{x}$ تُضاف تعاوديًا إلى الابن المناسب، $ \ensuremath{\mathtt{u}}'$ ، لـ $ \mathtt{u}$ . ونتيجة هذا الاستدعاء التعاودي تكون عادةً $ \mathtt{null}$ ، لكنها قد تكون أيضًا مرجعًا إلى عقدة أُنشئت حديثًا، $ \mathtt{w}$، وقد أُنشئت لأن $ \ensuremath{\mathtt{u}}'$ قُسِّمت. وفي هذه الحالة تتبنّى $ \mathtt{u}$ العقدة $ \mathtt{w}$ وتؤخذ مفتاحها الأول، مما يُكمل عملية التقسيم على $ \ensuremath{\mathtt{u}}'$ . وبعد أن تُضاف القيمة $ \mathtt{x}$ (سواء إلى $ \mathtt{u}$ أو إلى نسل من $ \mathtt{u}$)، تفحص طريقة $ \mathtt{addRecursive(x,ui)}$ ما إذا كانت $ \mathtt{u}$ تخزّن عددًا كبيرًا من المفاتيح (أكثر من $ 2B-1$ ). فإذا كان الأمر كذلك، فيلزم تقسيم $ \mathtt{u}$ باستدعاء طريقة $ \mathtt{u.split()}$ . ونتيجة استدعاء $ \mathtt{u.split()}$ هي عقدة جديدة تُستخدَم بوصفها القيمة المُعادة لطريقة $ \mathtt{addRecursive(x,ui)}$ .
 
@@ -192,23 +192,23 @@ $$
 
 عملية $ \mathtt{remove(x)}$ في BTree، هي أيضًا، أسهل ما تكون تنفيذًا بطريقة تعاودية. ومع أن التنفيذ التعاودي لطريقة $ \mathtt{remove(x)}$ يوزّع التعقيد على عدة دوال، فإن العملية الكلية، والمبيَّنة في الشكل 14.7، مباشرة إلى حدٍّ كبير. فبتبديل المفاتيح موضعًا، يُختزل الحذف في مسألة حذف قيمة، $ \ensuremath{\mathtt{x}}'$ ، من ورقة ما، $ \mathtt{u}$ . وقد يترك حذف $ \ensuremath{\mathtt{x}}'$ في $ \mathtt{u}$ أقل من $ B-1$ مفتاحًا؛ وتُسمّى هذه الحالة بالنقص (underflow).
 
-|  | ![\includegraphics[width=\textwidth ]{figs/btree-remove-full-1}](/images/open-data-structures/14_2_B_Trees-img5560.png.webp) |  |
+|  | ![ ](/images/open-data-structures/14_2_B_Trees-img5560.png.webp) |  |
 | --- | --- | --- |
 |  | $ \Downarrow$ |  |
-|  | ![\includegraphics[width=\textwidth ]{figs/btree-remove-full-2}](/images/open-data-structures/14_2_B_Trees-img5561.png.webp) |  |
+|  | ![ ](/images/open-data-structures/14_2_B_Trees-img5561.png.webp) |  |
 |  | $ \mathtt{merge(v,w)}$ |  |
 |  | $ \Downarrow$ |  |
-|  | ![\includegraphics[width=\textwidth ]{figs/btree-remove-full-3}](/images/open-data-structures/14_2_B_Trees-img5562.png.webp) |  |
+|  | ![ ](/images/open-data-structures/14_2_B_Trees-img5562.png.webp) |  |
 |  | $ \mathtt{shiftLR(w,v)}$ |  |
 |  | $ \Downarrow$ |  |
-|  | ![\includegraphics[width=\textwidth ]{figs/btree-remove-full-4}](/images/open-data-structures/14_2_B_Trees-img5563.png.webp) |  |
+|  | ![ ](/images/open-data-structures/14_2_B_Trees-img5563.png.webp) |  |
 
 عند حدوث نقص، فإن $ \mathtt{u}$ تستعير مفاتيح من أحد أشقائها (siblings) أو تُدمج معه. فإذا دُمجت $ \mathtt{u}$ مع شقيق، صارت لأمّ $ \mathtt{u}$ الآن ابنة أقل ومفتاح أقل، وقد يسبّب ذلك نقصًا عند أمّ $ \mathtt{u}$؛ ويُصحَّح هذا بدوره بالاستعارة أو بالدمج، لكن الدمج قد يسبّب نقصًا عند جدّة $ \mathtt{u}$ . ويعمل هذا المسار عائدًا إلى الجذر حتى لا يعود هناك نقص، أو حتى يُدمج آخر ابنتين للجذر في ابنة واحدة. وحين تقع الحالة الأخيرة، يُحذف الجذر وتصير ابنته الوحيدة جذرًا جديدًا. بعد ذلك نتعمّق في تفاصيل كيفية تنفيذ كل واحدة من هذه الخطوات. فأول مهمة لطريقة $ \mathtt{remove(x)}$ هي إيجاد العنصر $ \mathtt{x}$ الذي ينبغي حذفه. فإذا وُجدت $ \mathtt{x}$ في ورقة، فإن $ \mathtt{x}$ تُحذف من تلك الورقة. وإلا، إذا وُجدت $ \mathtt{x}$ عند $ \mathtt{u.keys[i]}$ في عقدة داخلية ما، $ \mathtt{u}$ ، فإن الخوارزم يحذف أصغر قيمة، $ \mathtt{x'}$ ، في الشجرة الفرعية المجذّرة عند $ \mathtt{u.children[i+1]}$ . وقيمة $ \mathtt{x'}$ هي أصغر قيمة مخزَّنة في BTree أكبر من $ \mathtt{x}$ . ثم تُستخدَم قيمة $ \mathtt{x'}$ لاستبدال $ \mathtt{x}$ في $ \mathtt{u.keys[i]}$ . ويبيّن الشكل 14.8 هذه العملية.
 
-|  | ![\includegraphics[width=\textwidth ]{figs/btree-remove-1}](/images/open-data-structures/14_2_B_Trees-img5586.png.webp) |  |
+|  | ![ ](/images/open-data-structures/14_2_B_Trees-img5586.png.webp) |  |
 | --- | --- | --- |
 |  | $ \Downarrow$ |  |
-|  | ![\includegraphics[width=\textwidth ]{figs/btree-remove-2}](/images/open-data-structures/14_2_B_Trees-img5587.png.webp) |  |
+|  | ![ ](/images/open-data-structures/14_2_B_Trees-img5587.png.webp) |  |
 
 طريقة $ \mathtt{removeRecursive(x,ui)}$ هي تنفيذ تعاودي للخوارزم السابق:
 
@@ -264,19 +264,19 @@ $$
 
 مفتاحًا. ومن ثمّ يمكننا نقل مفاتيح من $ \mathtt{v}$ إلى $ \mathtt{w}$ بحيث يمتلك كلٌّ من $ \mathtt{v}$ و $ \mathtt{w}$ ما لا يقل عن $ B-1$ مفتاحًا. ويبيّن الشكل 14.9 هذه العملية.
 
-|  | ![\includegraphics[width=\textwidth ]{figs/btree-borrow-1}](/images/open-data-structures/14_2_B_Trees-img5642.png.webp) |  |
+|  | ![ ](/images/open-data-structures/14_2_B_Trees-img5642.png.webp) |  |
 | --- | --- | --- |
 |  | $ \mathtt{shiftRL(v,w)}$ |  |
 |  | $ \Downarrow$ |  |
-|  | ![\includegraphics[width=\textwidth ]{figs/btree-borrow-2}](/images/open-data-structures/14_2_B_Trees-img5643.png.webp) |  |
+|  | ![ ](/images/open-data-structures/14_2_B_Trees-img5643.png.webp) |  |
 
 **الدمج:** إذا كان $ \mathtt{v}$ يملك $ B-1$ مفتاحًا فقط، فعلينا أن نفعل شيئًا أكثر حدّة، إذ لا يستطيع $ \mathtt{v}$ أن يتخلّى عن أي مفتاح لصالح $ \mathtt{w}$ . ولذلك ندمج $ \mathtt{v}$ و $ \mathtt{w}$ كما يبيّن الشكل 14.10. وعملية الدمج هي عكس عملية التقسيم. فهي تأخذ عقدتين تحتويان معًا ما مجموعه $ 2B-3$ مفتاحًا وتدمجهما في عقدة واحدة تحتوي $ 2B-2$ مفتاحًا. (ويأتي المفتاح الإضافي من أنه، حين ندمج $ \mathtt{v}$ و $ \mathtt{w}$، تصير لأمّهما المشتركة، $ \mathtt{u}$ ، ذات ابنة أقل، ومن ثمّ عليها أن تفرّط بواحد من مفاتيحها.)
 
-|  | ![\includegraphics[width=\textwidth ]{figs/btree-merge-1}](/images/open-data-structures/14_2_B_Trees-img5662.png.webp) |  |
+|  | ![ ](/images/open-data-structures/14_2_B_Trees-img5662.png.webp) |  |
 | --- | --- | --- |
 |  | $ \mathtt{merge(v,w)}$ |  |
 |  | $ \Downarrow$ |  |
-|  | ![\includegraphics[width=\textwidth ]{figs/btree-merge-2}](/images/open-data-structures/14_2_B_Trees-img5663.png.webp) |  |
+|  | ![ ](/images/open-data-structures/14_2_B_Trees-img5663.png.webp) |  |
 
 ```python
     void checkUnderflowNonZero(Node u, int i) {

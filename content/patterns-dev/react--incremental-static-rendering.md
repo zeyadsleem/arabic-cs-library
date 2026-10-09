@@ -16,7 +16,7 @@ source: https://www.patterns.dev/react/incremental-static-rendering/
 - **التوليد الفوري للمسارات الجديدة** — اعرض صفحة في أول مرة يطلبها أحد، ثم خزّنها مؤقتًا.
 - **إعادة التحقق (revalidation) للمسارات الحالية** — حدّث صفحة سبق عرضها إما بعد فاصل زمني أو بعد طلب إبطال صريح.
 
-يعرض App Router هاتين القدرتين عبر أدوات تحكم مختلفة عن تلك التي كان 제공한다 Pages Router القديم. لم يعد هناك `getStaticProps({ revalidate })` أو `fallback: true`.
+يعرض App Router هاتين القدرتين عبر أدوات تحكم مختلفة عن تلك التي كان يقدّمه Pages Router القديم. لم يعد هناك `getStaticProps({ revalidate })` أو `fallback: true`.
 
 ## إعادة التحقق المبنية على الوقت
 

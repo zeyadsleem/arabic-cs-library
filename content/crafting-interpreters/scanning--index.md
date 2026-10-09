@@ -305,7 +305,7 @@ var language = "lox";
 
 <span name="alligator"></span>
 
-<img src="/images/crafting-interpreters/scanning-2.webp" alt="An alligator eating characters and, well, you don't want to know." />
+<img src="/images/crafting-interpreters/scanning-2.webp" alt="تمساح يلتهم المحارف، وبصراحة، لا تودّ أن تعرف." />
 
 <aside name="alligator">
 

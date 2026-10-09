@@ -7,7 +7,7 @@ source: https://www.patterns.dev/vanilla/static-import/
 
 لننظر إلى مثال! يحتوي تطبيق دردشة بسيط على مكوّن `Chat`، نقوم فيه باستيراد ثلاثة مكونات بشكل ساكن وعرضها: `UserProfile` و`ChatList` و`ChatInput` لكتابة الرسائل وإرسالها! وداخل وحدة `ChatInput`، نقوم باستيراد مكوّن `EmojiPicker` بشكل ساكن كي نتمكّن من إظهار منتقي الإيموجي للمستخدم عندما يُبدّل حالة زر الإيموجي.
 
-JavaScript iconApp.js
+`App.js`
 
 ```javascript
 import React from "react";
@@ -36,7 +36,7 @@ export default App;
 
 تُنفَّذ الوحدات فور وصول المحرك (engine) إلى السطر الذي استوردناها فيه. وعندما تفتح وحدة التحكم، يمكنك أن ترى الترتيب الذي حُمِّلت به الوحدات!
 
-JavaScript iconApp.js
+`App.js`
 
 ```javascript
 import React from "react";

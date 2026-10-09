@@ -7,7 +7,7 @@ source: https://www.patterns.dev/react/presentational-container-pattern/
 
 لنفترض أننا نريد إنشاء تطبيق يجلب 6 صور لكلاب، ويعرض هذه الصور على الشاشة.
 
-JavaScript iconDogImages.jsJavaScript iconDogImagesContainer.js
+`DogImages.js` · `DogImagesContainer.js`
 
 ```javascript
 import React from "react";
@@ -32,7 +32,7 @@ export default function DogImages({ dogs }) {
 
 لننظر إلى المثال الذي يعرض صور الكلاب. عند عرض صور الكلاب، نريد ببساطة المرور على كل صورة كلاب تم جلبها من الواجهة البرمجية (API)، وعرض تلك الصور. وللقيام بذلك، يمكننا إنشاء مكوّن دالتي (functional component) يتلقّى البيانات عبر `props`، ويعرض ما يتلقّاه.
 
-JavaScript iconDogImages.jsJavaScript iconDogImagesContainer.js
+`DogImages.js` · `DogImagesContainer.js`
 
 ```javascript
 import React from "react";
@@ -54,7 +54,7 @@ export default function DogImages({ dogs }) {
 
 في مثالنا، نريد تمرير صور الكلاب إلى المكوّن التقديمي `DogsImages`. وقبل أن نتمكن من ذلك، نحتاج إلى جلب الصور من واجهة برمجية خارجية. فنحتاج إلى إنشاء **مكوّن حاوية (container component)** يجلب هذه البيانات، ويمرّرها إلى المكوّن التقديمي `DogImages` لعرضها على الشاشة.
 
-JavaScript iconDogImages.jsJavaScript iconDogImagesContainer.js
+`DogImages.js` · `DogImagesContainer.js`
 
 ```javascript
 import React from "react";
@@ -112,7 +112,7 @@ return dogs;
 
 باستخدام هذا الخطّاف، لم نعد بحاجة إلى مكوّن الحاوية `DogImagesContainer` الغالب ليجلب البيانات ويمرّرها إلى المكوّن التقديمي `DogImages`. وبدلًا من ذلك، يمكننا استخدام هذا الخطّاف مباشرةً في المكوّن التقديمي `DogImages` لدينا!
 
-JavaScript iconDogImages.jsJavaScript iconuseDogImages.js
+`DogImages.js` · `useDogImages.js`
 
 ```javascript
 import React from "react";

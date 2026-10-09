@@ -117,7 +117,7 @@ source: https://introtcs.org/
 
 لأن برامج NAND-TM مكافئة لآلات تورينج، وبرامج NAND-RAM مكافئة لآلات RAM، فإن [RAMTMequivalencethm](#RAMTMequivalencethm){.ref} تُظهر أن هذه النماذج الأربعة كلها متكافئة فيما بينها.
 
-![Overview of the steps in the proof of [RAMTMequivalencethm](#RAMTMequivalencethm){.ref} simulating NANDRAM with NANDTM. We first use the inner loop syntactic sugar of [nandtminnerloopssec](#nandtminnerloopssec){.ref} to enable loading an integer from an array to the index variable `i` of NANDTM. Once we can do that, we can simulate _indexed access_ in NANDTM. We then use an embedding of $\N^2$ in $\N$ to simulate two dimensional bit arrays in NANDTM. Finally, we use the binary representation to encode one-dimensional arrays of integers as two dimensional arrays of bits hence completing the simulation of NANDRAM with NANDTM.](/images/introtcs/original-nandramproofoverview.webp){#nandramoverviewfig .margin}
+![نظرة عامة على خطوات برهان [RAMTMequivalencethm](#RAMTMequivalencethm){.ref} الذي يُحاكي NANDRAM بـNANDTM. نبدأ باستعمال الحلقة الداخلية (inner loop) كسكرٍ نحويٍّ في [nandtminnerloopssec](#nandtminnerloopssec){.ref} لإتاحة تحميل عددٍ صحيحٍ من مصفوفة إلى متغيّر الفهرسة `i` في NANDTM. ومتى استطعنا ذلك، حاكينا _العنونة بالفهرس_ في NANDTM. ثمّ نستعمل تضمينًا لـ$\N^2$ في $\N$ لمحاكاة مصفوفات بتٍّ ثنائيّة الأبعاد في NANDTM. وأخيرًا نستعمل التمثيل الثنائي لتشفير مصفوفاتٍ أحادية الأبعاد من الأعداد الصحيحة كمصفوفاتٍ ثنائيّة الأبعاد من البتات، مُتمّنين بذلك محاكاة NANDRAM بـNANDTM.](/images/introtcs/original-nandramproofoverview.webp){#nandramoverviewfig .margin}
 
 ::: {.proofidea data-ref="RAMTMequivalencethm"}
 من الواضح أن NAND-RAM أقوى من NAND-TM فحسب، لذا إذا كانت دالة $F$ قابلة للحساب ببرنامج NAND-TM، فيمكن حسابها ببرنامج NAND-RAM.
@@ -228,7 +228,7 @@ MODANDJUMP(dir0,dir1)
 $$embed(x,y) = \tfrac{1}{2}(x+y)(x+y+1)+x\;\;.$$
 
 
-![Illustration of the map $embed(x,y) = \tfrac{1}{2}(x+y)(x+y+1)+x$ for $x,y \in [10]$, one can see that for every distinct pairs $(x,y)$ and $(x',y')$, $embed(x,y) \neq embed(x',y')$. ](/images/introtcs/original-pairing_function.webp){#pairingfuncfig .margin  }
+![تصويرٌ للتطبيق $embed(x,y) = \tfrac{1}{2}(x+y)(x+y+1)+x$ لـ$x,y \in [10]$؛ فيمكن للمرء أن يرى أنّ كلّ زوجين متمايزين $(x,y)$ و$(x',y')$ يُحقّق $embed(x,y) \neq embed(x',y')$.](/images/introtcs/original-pairing_function.webp){#pairingfuncfig .margin  }
 
 [pair-ex](#pair-ex){.ref} يطلب إليك أن تُثبت أن $embed$ يق فعلًا واحدًا إلى واحد، وكذلك أن حسابه ممكن ببرنامج NAND-TM. (ويمكن للأخير أن يتم ببساطة باتباع خوارزميات المدرسة الابتدائية في الضرب والجمع والقسمة.)
 وهذا يعني أننا نستطيع استبدال شيفرة من الشكل `Two[Foo][Bar] = something` (أي الوصول إلى المصفوفة ثنائية البعد `Two` عند الأعداد الصحيحة التي ترمّزها المصفوفتان أحاديتا البعد `Foo` و`Bar`) بشيفرة من الشكل:
@@ -418,7 +418,7 @@ _النموذج الحوسبي_ هو دالة $\mathcal{M}:\{0,1\}^* \rightarrow
 لكل خلية عدد ثابت فقط من الحالات الممكنة.
 وفي كل خطوة زمنية، تحدّث الخلية حالتها إلى حالة جديدة بتطبيق قاعدة بسيطة على حالتها وعلى حالة جيرانها.
 
-![Rules for Conway's Game of Life. Image from [this blog post](https://mblogscode.wordpress.com/2017/06/07/python-simulation-coding-conways-game-of-life/).](/images/introtcs/original-conwaysgrids.webp){#gameofliferulesfig}
+![قواعد لعبة حياة كونواي (Conway's Game of Life). الصورة من [هذه التدوينة](https://mblogscode.wordpress.com/2017/06/07/python-simulation-coding-conways-game-of-life/).](/images/introtcs/original-conwaysgrids.webp){#gameofliferulesfig}
 
 
 مثال نموذجي على آلية خلوية هو [لعبة حياة كونواي](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) (Conway's Game of Life).
@@ -469,7 +469,7 @@ __التكوين المتناهي.__ نقول إن تكوينًا للآلة $r$
 
 
 
-![A Game-of-Life configuration simulating a Turing machine. Figure by [Paul Rendell](http://rendell-attic.org/gol/tm.htm).](/images/introtcs/original-turing_gol.webp){#golfig .margin  }
+![تكوينٌ للعبة الحياة يُحاكي آلة تورينج. الشكل بقلم [Paul Rendell](http://rendell-attic.org/gol/tm.htm).](/images/introtcs/original-turing_gol.webp){#golfig .margin  }
 
 
 
@@ -495,9 +495,7 @@ __التكوين المتناهي.__ نقول إن تكوينًا للآلة $r$
 وسيفيدنا هذا المفهوم أيضًا في الفصول اللاحقة.
 
 
-![A _configuration_ of a Turing machine $M$ with alphabet $\Sigma$ and state space $[k]$ encodes the state of $M$ at a particular step in its execution as a string $\alpha$ over the alphabet $\overline{\Sigma} = \Sigma \times (\{\cdot \} \cup [k])$. The string is of length $t$ where $t$ is such that $M$'s tape contains $\varnothing$ in all positions $t$ and larger and $M$'s head is in a position smaller than $t$.
-If $M$'s head is in the $i$-th position, then for $j \neq i$, $\alpha_j$ encodes the value of the $j$-th cell of $M$'s tape, while $\alpha_i$ encodes both this value as well as the current state of $M$.
-If the machine writes the value $\tau$, changes state to $t$, and moves right, then in the next configuration will contain at position $i$ the value  $(\tau,\cdot)$ and at position $i+1$ the value $(\alpha_{i+1},t)$.](/images/introtcs/original-turingmachineconf.webp){#turingconfigfig   }
+![يُشفِّر _تكوين_ آلة تورينج $M$ ذات حقل الرموز $\Sigma$ ومجموعة الحالات $[k]$ حالة $M$ في خطوةٍ معيّنة من تنفيذها كنصٍّ $\alpha$ فوق حقل الرموز $\overline{\Sigma} = \Sigma \times (\{\cdot \} \cup [k])$. طول النصّ هو $t$ حيث يحوي شريط $M$ القيمة $\varnothing$ في كلّ المواقف $t$ فأكبر، ويكون رأس $M$ في موضعٍ أصغر من $t$. وإذا كان رأس $M$ في الموضع رقم $i$، فإنّ $\alpha_j$ تُشفِّر قيمة الخلية رقم $j$ من شريط $M$ لكلّ $j \neq i$، بينما تُشفِّر $\alpha_i$ هذه القيمة مع الحالة الحالية لـ$M$ في آنٍ واحد. وإذا كتبت الآلة القيمة $\tau$ وتغيّرت إلى الحالة $t$ وتحركت يمينًا، فإنّ التكوين التالي سيحوي في الموضع $i$ القيمة $(\tau,\cdot)$ وفي الموضع $i+1$ القيمة $(\alpha_{i+1},t)$.](/images/introtcs/original-turingmachineconf.webp){#turingconfigfig   }
 
 
 ::: {.definition title="تكوين آلة تورينج." #configtmdef}
@@ -561,7 +559,7 @@ $$ NEXT_M \left( \alpha \right)  = NEXT_r \left( \alpha \right)$$
 الآلية الناتجة عن برهان [onedimcathmformal](#onedimcathmformal){.ref} لها أبجدية كبيرة، وفوق ذلك حجمها يعتمد على الآلة $M$ التي يجري محاكاتها. ويبيّن أنه يمكن الحصول على آلية بأبجدية ذات حجم ثابت مستقل عن البرنامج الذي يُحاكى، بل يمكن أن تكون أبجدية الآلية هي المجموعة الدنيا $\{0,1\}$! انظر [onedimautfig](#onedimautfig){.ref} لمثال على مثل هذه الآلة الكاملة بحسب تورينج.
 
 
-![Evolution of a one dimensional automata. Each row in the figure corresponds to the configuration. The initial configuration corresponds to the top row and contains only a single "live" cell. This figure corresponds to the "Rule 110" automaton of Stephen Wolfram which is Turing Complete. Figure taken from [Wolfram MathWorld](http://mathworld.wolfram.com/Rule110.html).](/images/introtcs/original-Rule110Big.webp){#onedimautfig .margin  }
+![تطوّر آلة ذاتية أحادية البعد. كلّ صفٍّ في الشكل يقابل تكوينًا. ويقابل التكوين الأولي الصفّ العلوي ويحوي خليةً «حيّة» واحدة فحسب. ويقابل هذا الشكل آلة «القاعدة 110» لستيفن وولفروم (Rule 110) وهي مكتملة حسابيًا (Turing Complete). الشكل مأخوذ من [Wolfram MathWorld](http://mathworld.wolfram.com/Rule110.html).](/images/introtcs/original-Rule110Big.webp){#onedimautfig .margin  }
 
 
 
@@ -675,7 +673,7 @@ $$
 وبقواعد التجميع التي لدينا، فإن هذا هو نفسه $(f a b)$، وهو ما سنكتبه أحيانًا أيضًا $f(a,b)$.
 
 
-![In the "currying" transformation, we can create the effect of a two parameter function $f(x,y)$ with the λ expression $\lambda x.(\lambda y. f(x,y))$ which on input $x$ outputs a one-parameter function $f_x$ that has $x$ "hardwired" into it and such that $f_x(y)=f(x,y)$. This can be illustrated by a circuit diagram; see [Chelsea Voss's site](https://tromp.github.io/cl/diagrams.html).](/images/introtcs/original-currying.webp){#currying .margin  }
+![في تحوّل Currying، يمكننا إحداث أثر الدالة ذات المعاملين $f(x,y)$ بتعبير λ $\lambda x.(\lambda y. f(x,y))$ الذي يُخرج على المدخل $x$ دالةً بمعاملٍ واحد $f_x$ يكون فيها $x$ مُثبَّتًا مسبقًا فيها وتُحقّق $f_x(y)=f(x,y)$. ويمكن تصوير ذلك بمخطّط دائرة؛ انظر [موقع Chelsea Voss](https://tromp.github.io/cl/diagrams.html).](/images/introtcs/original-currying.webp){#currying .margin  }
 
 
 

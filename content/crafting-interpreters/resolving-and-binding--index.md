@@ -191,12 +191,12 @@ block
 لنمرّ على ذلك المثال المُشتبِه ونرى كيف تبدو البيئات في كلّ
 خطوة. أوّلاً، نصرّح بـ`a` في النطاق العام.
 
-<img src="/images/crafting-interpreters/resolving-and-binding-1.webp" alt="The global environment with 'a' defined in it." />
+<img src="/images/crafting-interpreters/resolving-and-binding-1.webp" alt="البيئة العامة وفيها a مُعرَّفة." />
 
 يمنحنا ذلك بيئةً واحدة فيها متغيّرٌ واحد. ثمّ ندخل الكتلة
 ونُنفّذ تصريح `showA()`.
 
-<img src="/images/crafting-interpreters/resolving-and-binding-2.webp" alt="A block environment linking to the global one." />
+<img src="/images/crafting-interpreters/resolving-and-binding-2.webp" alt="بيئة كتلة موصولة بالبيئة العامة." />
 
 نحصل على بيئة جديدة للكتلة. وفيها نصرّح باسمٍ واحد، وهو
 `showA`، المربوط بكائن LoxFunction الذي ننشئه لتمثيل الدالة. ولدى
@@ -205,7 +205,7 @@ block
 
 الآن نستدعي `showA()`.
 
-<img src="/images/crafting-interpreters/resolving-and-binding-3.webp" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the global environment." />
+<img src="/images/crafting-interpreters/resolving-and-binding-3.webp" alt="بيئة فارغة لجسم showA() موصولة بالبيئتين السابقتين. تُحَلّ a في البيئة العامة." />
 
 يُنشئ المفسّر ديناميكياً بيئةً جديدة لجسم دالة `showA()`. وهي
 فارغة لأنّ تلك الدالة لا تصرّح بأيّ متغيّرات. وأمّ والد تلك
@@ -217,14 +217,14 @@ block
 
 ثمّ نصرّح بـ`a` الثانية، هذه المرّة داخل الكتلة.
 
-<img src="/images/crafting-interpreters/resolving-and-binding-4.webp" alt="The block environment has both 'a' and 'showA' now." />
+<img src="/images/crafting-interpreters/resolving-and-binding-4.webp" alt="بيئة الكتلة تحوي الآن a وshowA معاً." />
 
 إنّها في الكتلة نفسها -- النطاق نفسه -- التي فيها `showA()`، لذا
 تذهب إلى البيئة نفسها، وهي أيضاً البيئة التي يشير إليها إغلاقُ
 `showA()`. وهنا يصبح الأمر مثيراً للاهتمام. نستدعي `showA()`
 مرّةً أخرى.
 
-<img src="/images/crafting-interpreters/resolving-and-binding-5.webp" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the block environment." />
+<img src="/images/crafting-interpreters/resolving-and-binding-5.webp" alt="بيئة فارغة لجسم showA() موصولة بالبيئتين السابقتين. تُحَلّ a في بيئة الكتلة." />
 
 ننشئ بيئةً فارغة جديدة لجسم `showA()` مرّةً أخرى، ونربطها بذلك
 الإغلاق، ونشغّل الجسم. وحين يمشي المفسّر في سلسلة البيئات
@@ -297,7 +297,7 @@ block
 مع الاسم الجديد الواحد. وتصرّحُ متغيّرٍ سيُنجز التقسيمَ الضمني
 حيث تكون لديك بيئةٌ قبل تصريح المتغيّر وبيئةٌ بعده:
 
-<img src="/images/crafting-interpreters/resolving-and-binding-6.webp" alt="Separate environments before and after the variable is declared." />
+<img src="/images/crafting-interpreters/resolving-and-binding-6.webp" alt="بيئتان منفصلتان قبل إعلان المتغيّر وبعده." />
 
 يحتفظ الإغلاق بمرجعٍ إلى كائن البيئة الجاري لحظة تصريح الدالة.
 وبما أنّ أيّ تصريحاتٍ لاحقة في تلك الكتلة ستُنتج كائنات Environment
@@ -342,13 +342,13 @@ block
 Environment القائم. وتذكّر كيف كانت وصولاتُ `a` تُفسَّر في المثال
 المُشتبِه.
 
-<img src="/images/crafting-interpreters/resolving-and-binding-3.webp" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the global environment." />
+<img src="/images/crafting-interpreters/resolving-and-binding-3.webp" alt="بيئة فارغة لجسم showA() موصولة بالبيئتين السابقتين. تُحَلّ a في البيئة العامة." />
 
 في التقييم الأوّل (الصحيح)، ننظر في ثلاث بيئات في السلسلة قبل أن
 نجد التصريح العامّ لـ`a`. ثمّ حين يُصرَّح بـ`a` الداخلي لاحقاً في
 نطاق كتلة، يحجب العامّ.
 
-<img src="/images/crafting-interpreters/resolving-and-binding-5.webp" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the block environment." />
+<img src="/images/crafting-interpreters/resolving-and-binding-5.webp" alt="بيئة فارغة لجسم showA() موصولة بالبيئتين السابقتين. تُحَلّ a في بيئة الكتلة." />
 
 والبحث التالي يمشي في السلسلة، ويجد `a` في البيئة *الثانية*
 ويتوقّف هناك. ولكلّ بيئة نطاقٌ معجميٌّ واحد تُصرَّح فيه

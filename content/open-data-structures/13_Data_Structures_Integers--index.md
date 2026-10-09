@@ -1,5 +1,5 @@
 ---
-title: "13. Data Structures for Integers"
+title: "13. بنى بيانات الأعداد الصحيحة"
 lang: ar
 source: https://opendatastructures.org/ods-java/13_Data_Structures_Integers.html
 ---
@@ -230,7 +230,7 @@ $$
 
 $ \ensuremath{\mathtt{n}}_\ensuremath{\mathtt{x}}=j+k$ ، إذًا
 
-![$\displaystyle \mathrm{E}[\ensuremath{\mathtt{n}}_\ensuremath{\mathtt{x}}] = \ma... ...athrm{E}[j] + \mathrm{E}[k] \le 2\ensuremath{\mathtt{w}}-1 \enspace . \qedhere $](/images/open-data-structures/13_3_YFastTrie_Doubly_Logar-img5217.png.webp)
+![ ](/images/open-data-structures/13_3_YFastTrie_Doubly_Logar-img5217.png.webp)
 
 $$
 \qedsymbol
@@ -246,7 +246,7 @@ $$
 
 ## 13.4 مناقشة وتمارين
 
-أوّل بنية بيانات توفّر عمليات بزمن $ O(\log\ensuremath{\mathtt{w}})$ هي عمليات $ \mathtt{add(x)}$ و $ \mathtt{remove(x)}$ و $ \mathtt{find(x)}$ التي اقترحها van Emde Boas وصارت معروفة منذ ذلك الحين باسم شجرة van Emde Boas (أو الشجرة المتدرّجة (stratified)) [74]. وكانت بنية van Emde Boas الأصلية ذات حجم $ 2^{\ensuremath{\mathtt{w}}}$ ، ممّا يجعلها غير عمليةٍ للأعداد الصحيحة الكبيرة. واكتشف Willard [77] بنيتَي البيانات XFastTrie وYFastTrie. وترتبط بنية XFastTrie ارتباطًا وثيقًا بأشجار van Emde Boas؛ فمثلًا، تحلّ جداول التجزئة في XFastTrie محلَّ المصفوفات في شجرة van Emde Boas. أي إنّ شجرة van Emde Boas تخزّن، بدلًا من جدول التجزئة $ \mathtt{t[i]}$ ، مصفوفةً طولها $ 2^{\ensuremath{\mathtt{i}}}$ . وبنية أخرى لتخزين الأعداد الصحيحة هي أشجار الدمج (fusion trees) لفريدمان وويلارد [32]. ويمكن لهذه البنية أن تخزّن $ \mathtt{n}$ عددًا صحيحًا بطول $ \mathtt{w}$ بت في مساحة $ O(\ensuremath{\mathtt{n}})$ بحيث تعمل العملية $ \mathtt{find(x)}$ بزمن $ O((\log \ensuremath{\mathtt{n}})/(\log \ensuremath{\mathtt{w}}))$ . وباستعمال شجرة دمج حين $ \log \ensuremath{\mathtt{w}} > \sqrt{\log \ensuremath{\mathtt{n}}}$ و YFastTrie حين $ \log \ensuremath{\mathtt{w}} \le \sqrt{\log \ensuremath{\mathtt{n}}}$ ، نحصل على بنية بيانات تشغل $ O(\ensuremath{\mathtt{n}})$ من المساحة وتستطيع تنفيذ العملية $ \mathtt{find(x)}$ بزمن $ O(\sqrt{\log \ensuremath{\mathtt{n}}})$ . وتبيّن نتائج الحدود الدنيا الحديثة لـ P ![{\v{a\/}}\kern.05em](/images/open-data-structures/13_4_Discussion_Exercises-img5275.png.webp) tra ![{\c{s\/}}](/images/open-data-structures/13_4_Discussion_Exercises-img5276.png.webp) cu و Thorup [59] أنّ هذه النتائج مثلى إلى حدٍّ كبير، على الأقلّ بالنسبة إلى البنى التي لا تشغل إلّا $ O(\ensuremath{\mathtt{n}})$ من المساحة. **التمرين 13.1** صمّم ونفّذ نسخةً مبسَّطة من BinaryTrie لا تملك قائمة مترابطة ولا مؤشّرات قفز (jump pointers)، لكنّ العملية $ \mathtt{find(x)}$ تظلّ تعمل فيها بزمن $ O(\ensuremath{\mathtt{w}})$ .
+أوّل بنية بيانات توفّر عمليات بزمن $ O(\log\ensuremath{\mathtt{w}})$ هي عمليات $ \mathtt{add(x)}$ و $ \mathtt{remove(x)}$ و $ \mathtt{find(x)}$ التي اقترحها van Emde Boas وصارت معروفة منذ ذلك الحين باسم شجرة van Emde Boas (أو الشجرة المتدرّجة (stratified)) [74]. وكانت بنية van Emde Boas الأصلية ذات حجم $ 2^{\ensuremath{\mathtt{w}}}$ ، ممّا يجعلها غير عمليةٍ للأعداد الصحيحة الكبيرة. واكتشف Willard [77] بنيتَي البيانات XFastTrie وYFastTrie. وترتبط بنية XFastTrie ارتباطًا وثيقًا بأشجار van Emde Boas؛ فمثلًا، تحلّ جداول التجزئة في XFastTrie محلَّ المصفوفات في شجرة van Emde Boas. أي إنّ شجرة van Emde Boas تخزّن، بدلًا من جدول التجزئة $ \mathtt{t[i]}$ ، مصفوفةً طولها $ 2^{\ensuremath{\mathtt{i}}}$ . وبنية أخرى لتخزين الأعداد الصحيحة هي أشجار الدمج (fusion trees) لفريدمان وويلارد [32]. ويمكن لهذه البنية أن تخزّن $ \mathtt{n}$ عددًا صحيحًا بطول $ \mathtt{w}$ بت في مساحة $ O(\ensuremath{\mathtt{n}})$ بحيث تعمل العملية $ \mathtt{find(x)}$ بزمن $ O((\log \ensuremath{\mathtt{n}})/(\log \ensuremath{\mathtt{w}}))$ . وباستعمال شجرة دمج حين $ \log \ensuremath{\mathtt{w}} > \sqrt{\log \ensuremath{\mathtt{n}}}$ و YFastTrie حين $ \log \ensuremath{\mathtt{w}} \le \sqrt{\log \ensuremath{\mathtt{n}}}$ ، نحصل على بنية بيانات تشغل $ O(\ensuremath{\mathtt{n}})$ من المساحة وتستطيع تنفيذ العملية $ \mathtt{find(x)}$ بزمن $ O(\sqrt{\log \ensuremath{\mathtt{n}}})$ . وتبيّن نتائج الحدود الدنيا الحديثة لـ P ![](/images/open-data-structures/13_4_Discussion_Exercises-img5275.png.webp) tra ![](/images/open-data-structures/13_4_Discussion_Exercises-img5276.png.webp) cu و Thorup [59] أنّ هذه النتائج مثلى إلى حدٍّ كبير، على الأقلّ بالنسبة إلى البنى التي لا تشغل إلّا $ O(\ensuremath{\mathtt{n}})$ من المساحة. **التمرين 13.1** صمّم ونفّذ نسخةً مبسَّطة من BinaryTrie لا تملك قائمة مترابطة ولا مؤشّرات قفز (jump pointers)، لكنّ العملية $ \mathtt{find(x)}$ تظلّ تعمل فيها بزمن $ O(\ensuremath{\mathtt{w}})$ .
 
 **التمرين 13.2** صمّم ونفّذ تنفيذًا مبسَّطًا لـ XFastTrie لا يستعمل شجرة بادئات ثنائية إطلاقًا. وبدلًا من ذلك، ينبغي أن يخزّن تنفيذك كلّ شيء في قائمة مترابطة ثنائية الوصل وفي $ \ensuremath{\mathtt{w}}+1$ من جداول التجزئة.
 

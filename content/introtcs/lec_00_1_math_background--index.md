@@ -93,9 +93,9 @@ _اعتذار الرياضياتي._  قد يتساءل بعض الطلاب لم
 إنّها مهارة أسهل بكثير في الاكتساب داخل سياق مساق رياضي، وهو سياق آمن ومستقرّ نسبيًا، حيث تضمن لك على الأقلّ أنّ المفاهيم محدّدة بدقّة، وهنا يمكنك مراجعة أسئلتك مع هيئة التدريس.
 
 
-![A snippet from the "methods" section of the  ["AlphaGo Zero" paper](https://goo.gl/k8pVpL) by Silver et al, _Nature_, 2017. ](/images/introtcs/original-alphagozero.webp){#alphagozerofig .margin  }
+![مقتطف من قسم «الطرق» (methods) في [ورقة «AlphaGo Zero»](https://goo.gl/k8pVpL) لسيلفر وآخرين، _Nature_، 2017.](/images/introtcs/original-alphagozero.webp){#alphagozerofig .margin  }
 
-![A snippet from the ["Zerocash" paper](http://zerocash-project.org/paper) of Ben-Sasson et al, that forms the basis of the cryptocurrency startup Zcash.](/images/introtcs/original-zerocash.webp){#zerocashfig .margin  }
+![مقتطف من [ورقة «Zerocash»](http://zerocash-project.org/paper) لبين-ساسون وآخرين، التي تُشكّل أساس شركة Zcash الناشئة في العملات الرقمية.](/images/introtcs/original-zerocash.webp){#zerocashfig .margin  }
 
 
 المكوّنات الأساسية لأي نص رياضي هي __التعريفات__ و__الادّعاءات__ و__البراهين__.
@@ -121,7 +121,7 @@ _اعتذار الرياضياتي._  قد يتساءل بعض الطلاب لم
 
 
 
-![An annotated form of [onetoonedef](#onetoonedef){.ref}, marking which part is being defined and how.](/images/introtcs/original-onetoonedef3.webp){#onetoonedefannotatedef .margin  }
+![شكلٌ مُعلَّق من [onetoonedef](#onetoonedef){.ref}، يُبيّن أيّ جزء يُعرَّف وكيف.](/images/introtcs/original-onetoonedef3.webp){#onetoonedefannotatedef .margin  }
 
 
 

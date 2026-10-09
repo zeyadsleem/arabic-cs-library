@@ -259,7 +259,7 @@ import DataProvider from "./components/DataProvider.vue";
 
 مع نمط مزوّد البيانات، أصبح بإمكاننا إدارة البيانات وتوفيرها لعناصر/مكوّنات مختلفة بطريقة مفكوكة (decoupled) وقابلة لإعادة الاستخدام. وبتجريد منطق جلب الواجهة البرمجية في مكوّن بلا عرض، يمكننا إعادة استخدام طلب بيانات الواجهة البرمجية في سياقات مختلفة دون تكرار الشيفرة.
 
-JavaScript iconDataProvider.vue
+`DataProvider.vue`
 
 ```javascript
 <template>
@@ -366,7 +366,7 @@ const { data, loading } = useGetJoke();
 
 سيتصرّف تطبيقنا الآن تمامًا كما كان قبله مع مثال مزوّد البيانات الخاص بنا.
 
-JavaScript iconApp.vue
+`App.vue`
 
 ```javascript
 <template>

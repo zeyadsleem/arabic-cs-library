@@ -34,7 +34,7 @@ HTML5 iconindex.html
 const EmojiPicker = import(/* webpackPreload: true */ "./EmojiPicker");
 ```
 
-JavaScript iconChatInput.jsicon-square-bigwebpack.config.js
+`ChatInput.js` · `webpack.config.js`
 
 ```javascript
 import React, { Suspense, lazy } from "react";

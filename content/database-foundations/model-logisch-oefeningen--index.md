@@ -14,11 +14,11 @@ source: https://df.webontwerp.ucll.be/EN/model_logisch_oefeningen/
 
 حوّل نموذج البيانات المفاهيمي التالي (conceptual data model) إلى نموذج بيانات منطقي وفق نموذج البيانات العلائقية. واستخدم draw.io.
 
-![Assignment car rental](https://df.webontwerp.ucll.be/images/database-foundations/model-logisch-oefeningen-1-model_logisch_oefening1_opgave_afb01.webp)
+![تكليف تأجير السيارات](https://df.webontwerp.ucll.be/images/database-foundations/model-logisch-oefeningen-1-model_logisch_oefening1_opgave_afb01.webp)
 
 #### الحل
 
-![Solution assignment car rental](https://df.webontwerp.ucll.be/images/database-foundations/model-logisch-oefeningen-2-model_logisch_oefening1_oplossing_afb01.webp)
+![حل تكليف تأجير السيارات](https://df.webontwerp.ucll.be/images/database-foundations/model-logisch-oefeningen-2-model_logisch_oefening1_oplossing_afb01.webp)
 
 ## تمرين 2: جمعية الشباب
 
@@ -26,11 +26,11 @@ source: https://df.webontwerp.ucll.be/EN/model_logisch_oefeningen/
 
 حوّل نموذج البيانات المفاهيمي التالي إلى نموذج بيانات منطقي وفق نموذج البيانات العلائقية. واستخدم draw.io.
 
-![Assignment youth association](https://df.webontwerp.ucll.be/images/database-foundations/model-logisch-oefeningen-4-model_logisch_oefening2_opgave_afb01.webp)
+![تكليف جمعية الشباب](https://df.webontwerp.ucll.be/images/database-foundations/model-logisch-oefeningen-4-model_logisch_oefening2_opgave_afb01.webp)
 
 #### الحل
 
-![Solution assignment youth association](https://df.webontwerp.ucll.be/images/database-foundations/model-logisch-oefeningen-5-model_logisch_oefening2_oplossing_afb01.webp)
+![حل تكليف جمعية الشباب](https://df.webontwerp.ucll.be/images/database-foundations/model-logisch-oefeningen-5-model_logisch_oefening2_oplossing_afb01.webp)
 
 ## تمرين 3: جمعية ألعاب الطاولة
 
@@ -38,11 +38,11 @@ source: https://df.webontwerp.ucll.be/EN/model_logisch_oefeningen/
 
 حوّل نموذج البيانات المفاهيمي التالي إلى نموذج بيانات منطقي وفق نموذج البيانات العلائقية. واستخدم draw.io.
 
-![Assignment Board Game Association](https://df.webontwerp.ucll.be/images/database-foundations/model-logisch-oefeningen-7-model_logisch_oefening3_opgave_afb01.webp)
+![تكليف جمعية ألعاب الطاولة](https://df.webontwerp.ucll.be/images/database-foundations/model-logisch-oefeningen-7-model_logisch_oefening3_opgave_afb01.webp)
 
 #### الحل
 
-![Solution Assignment Board Game Association](https://df.webontwerp.ucll.be/images/database-foundations/model-logisch-oefeningen-8-model_logisch_oefening3_oplossing_afb01.webp)
+![حل تكليف جمعية ألعاب الطاولة](https://df.webontwerp.ucll.be/images/database-foundations/model-logisch-oefeningen-8-model_logisch_oefening3_oplossing_afb01.webp)
 
 ## تمرين 4: الصيانة والإصلاح التقنيان
 
@@ -50,11 +50,11 @@ source: https://df.webontwerp.ucll.be/EN/model_logisch_oefeningen/
 
 حوّل نموذج البيانات المفاهيمي التالي إلى نموذج بيانات منطقي وفق نموذج البيانات العلائقية. واستخدم draw.io.
 
-![Assignment technical maintenance and repair](https://df.webontwerp.ucll.be/images/database-foundations/model-logisch-oefeningen-10-model_logisch_oefening4_opgave_afb01.webp)
+![تكليف الصيانة والإصلاح الفني](https://df.webontwerp.ucll.be/images/database-foundations/model-logisch-oefeningen-10-model_logisch_oefening4_opgave_afb01.webp)
 
 #### الحل
 
-![Solution assignment technical maintenance and repair](https://df.webontwerp.ucll.be/images/database-foundations/model-logisch-oefeningen-11-model_logisch_oefening4_oplossing_afb01.webp)
+![حل تكليف الصيانة والإصلاح الفني](https://df.webontwerp.ucll.be/images/database-foundations/model-logisch-oefeningen-11-model_logisch_oefening4_oplossing_afb01.webp)
 
 ## تمرين 5: المكتبة
 
@@ -62,8 +62,8 @@ source: https://df.webontwerp.ucll.be/EN/model_logisch_oefeningen/
 
 حوّل نموذج البيانات المفاهيمي التالي إلى نموذج بيانات منطقي وفق نموذج البيانات العلائقية. واستخدم draw.io.
 
-![Assignment Library](https://df.webontwerp.ucll.be/images/database-foundations/model-logisch-oefeningen-13-model_logisch_oefening5_opgave_afb01.webp)
+![تكليف المكتبة](https://df.webontwerp.ucll.be/images/database-foundations/model-logisch-oefeningen-13-model_logisch_oefening5_opgave_afb01.webp)
 
 #### الحل
 
-![Solution assignment library](https://df.webontwerp.ucll.be/images/database-foundations/model-logisch-oefeningen-14-model_logisch_oefening5_oplossing_afb01.webp)
+![حل تكليف المكتبة](https://df.webontwerp.ucll.be/images/database-foundations/model-logisch-oefeningen-14-model_logisch_oefening5_oplossing_afb01.webp)

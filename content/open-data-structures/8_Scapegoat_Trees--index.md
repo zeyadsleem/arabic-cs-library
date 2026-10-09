@@ -1,5 +1,5 @@
 ---
-title: "8. Scapegoat Trees"
+title: "8. أشجار الكبش الفداء"
 lang: ar
 source: https://opendatastructures.org/ods-java/8_Scapegoat_Trees.html
 ---
@@ -73,7 +73,7 @@ $$
 
 حتى مع هذا القيد، قد تبدو ScapegoatTree غير متوازنة على نحوٍ مفاجئ. فشجرة الشكل 8.1 تحوي $ \ensuremath{\mathtt{q}}=\ensuremath{\mathtt{n}}=10$ وارتفاعها $ 5<\log_{3/2}10 \approx 5.679$ .
 
-**الشكل 8.1:** ScapegoatTree تحوي 10 عقد وارتفاعها 5. ![\includegraphics[scale=0.90909]{figs/scapegoat-insert-1}](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3227.png.webp) يُنفَّذ تنفيذ العملية $ \mathtt{find(x)}$ في ScapegoatTree باستخدام الخوارزمية المعيارية للبحث في BinarySearchTree (راجع القسم 6.2). وهذا يستغرق زمنًا متناسبًا مع ارتفاع الشجرة الذي، بحسب (8.1)، هو $ O(\log \ensuremath{\mathtt{n}})$ . ولتنفيذ العملية $ \mathtt{add(x)}$، نزيد أوّلًا $ \mathtt{n}$ و$ \mathtt{q}$ ثم نستخدم الخوارزمية المعتادة لإضافة $ \mathtt{x}$ إلى شجرة بحث ثنائية؛ فنبحث عن $ \mathtt{x}$ ثم نضيف ورقة جديدة $ \mathtt{u}$ بحيث $ \ensuremath{\mathtt{u.x}}=\ensuremath{\mathtt{x}}$ . وفي هذه المرحلة قد نكون محظوظين، فقد لا يتجاوز عمق $ \mathtt{u}$ القيمة $ \log_{3/2}\ensuremath{\mathtt{q}}$ . وإن كان الأمر كذلك، فاتركنا الحال على حالها ولم نفعل شيئًا آخر. لكن للأسف، سيحدث أحيانًا أنّ $ \ensuremath{\mathtt{depth(u)}} > \log_{3/2} \ensuremath{\mathtt{q}}$ . وفي هذه الحالة، نحتاج إلى تقليل الارتفاع. وليست هذه عملًا كبيرًا؛ إذ لا توجد سوى عقدة واحدة، وهي $ \mathtt{u}$ ، يتجاوز عمقها $ \log_{3/2} \ensuremath{\mathtt{q}}$ . ولإصلاح $ \mathtt{u}$ ، نصعد من $ \mathtt{u}$ عائدين إلى الجذر باحثين عن كبش فداء، $ \mathtt{w}$ . إنّ كبش الفداء $ \mathtt{w}$ هو عقدة شديدة اللاتوازن، وله الخاصية التالية
+**الشكل 8.1:** ScapegoatTree تحوي 10 عقد وارتفاعها 5. ![ ](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3227.png.webp) يُنفَّذ تنفيذ العملية $ \mathtt{find(x)}$ في ScapegoatTree باستخدام الخوارزمية المعيارية للبحث في BinarySearchTree (راجع القسم 6.2). وهذا يستغرق زمنًا متناسبًا مع ارتفاع الشجرة الذي، بحسب (8.1)، هو $ O(\log \ensuremath{\mathtt{n}})$ . ولتنفيذ العملية $ \mathtt{add(x)}$، نزيد أوّلًا $ \mathtt{n}$ و$ \mathtt{q}$ ثم نستخدم الخوارزمية المعتادة لإضافة $ \mathtt{x}$ إلى شجرة بحث ثنائية؛ فنبحث عن $ \mathtt{x}$ ثم نضيف ورقة جديدة $ \mathtt{u}$ بحيث $ \ensuremath{\mathtt{u.x}}=\ensuremath{\mathtt{x}}$ . وفي هذه المرحلة قد نكون محظوظين، فقد لا يتجاوز عمق $ \mathtt{u}$ القيمة $ \log_{3/2}\ensuremath{\mathtt{q}}$ . وإن كان الأمر كذلك، فاتركنا الحال على حالها ولم نفعل شيئًا آخر. لكن للأسف، سيحدث أحيانًا أنّ $ \ensuremath{\mathtt{depth(u)}} > \log_{3/2} \ensuremath{\mathtt{q}}$ . وفي هذه الحالة، نحتاج إلى تقليل الارتفاع. وليست هذه عملًا كبيرًا؛ إذ لا توجد سوى عقدة واحدة، وهي $ \mathtt{u}$ ، يتجاوز عمقها $ \log_{3/2} \ensuremath{\mathtt{q}}$ . ولإصلاح $ \mathtt{u}$ ، نصعد من $ \mathtt{u}$ عائدين إلى الجذر باحثين عن كبش فداء، $ \mathtt{w}$ . إنّ كبش الفداء $ \mathtt{w}$ هو عقدة شديدة اللاتوازن، وله الخاصية التالية
 
 حيث $ \mathtt{w.child}$ هو الابن الذي يلي $ \mathtt{w}$ على المسار الممتد من الجذر إلى $ \mathtt{u}$ . وسنبرهن بعد قليلٍ على أنّ كبش فداء موجود. أمّا الآن فيمكننا التسليم بذلك. وبعد أن نجد كبش الفداء $ \mathtt{w}$ ، نهدم تمامًا الشجرة الفرعية ذات الجذر $ \mathtt{w}$ ونعيد بناؤها كشجرة بحث ثنائية متوازنة تمامًا. ومن المعادلة (8.2) نعلم أنّه حتى قبل إضافة $ \mathtt{u}$ لم تكن الشجرة الفرعية ذات الجذر $ \mathtt{w}$ شجرة ثنائية كاملة. ومن ثمّ، عندما نعيد بناء $ \mathtt{w}$ ، ينخفض الارتفاع بمقدار 1 على الأقل، بحيث يعود ارتفاع ScapegoatTree إلى ما لا يتجاوز $ \log_{3/2}\ensuremath{\mathtt{q}}$ .
 
@@ -130,7 +130,7 @@ $$
 
 لكنّ هذا يعطي تناقضًا، إذ إنّ $ \ensuremath{\mathtt{size(u)}}\ge 1$ ، ومن ثمّ
 
-![$\displaystyle 1 \le \ensuremath{\mathtt{size(u)}} \le \left(\frac{2}{3}\right)^... ...suremath{\mathtt{n}}}\right) \ensuremath{\mathtt{n}} = 1 \enspace . \qedhere $](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3288.png.webp)
+![ ](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3288.png.webp)
 
 $$
 \qedsymbol
@@ -148,7 +148,7 @@ $$
 
 | $\displaystyle O\left( \sum_{i=0}^k \ensuremath{\mathtt{size(u}}_{k-i}\ensuremath{\mathtt{)}} \right)$ | $\displaystyle =$ | $\displaystyle O\left( \ensuremath{\mathtt{size(u}}_k\ensuremath{\mathtt{)}} + \... ...{i=0}^{k-1} \ensuremath{\mathtt{size(u}}_{k-i-1}\ensuremath{\mathtt{)}} \right)$ |  |
 | --- | --- | --- | --- |
-|  | $\displaystyle =$ | ![$\displaystyle O\left( \ensuremath{\mathtt{size(u}}_k\ensuremath{\mathtt{)}} + \... ...c{2}{3}\right)^i\ensuremath{\mathtt{size(u}}_{k}\ensuremath{\mathtt{)}} \right)$](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3312.png.webp) |  |
+|  | $\displaystyle =$ | ![ ](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3312.png.webp) |  |
 |  | $\displaystyle =$ | $\displaystyle O\left( \ensuremath{\mathtt{size(u}}_k\ensuremath{\mathtt{)}}\left(1+ \sum_{i=0}^{k-1} \left(\frac{2}{3}\right)^i \right)\right)$ |  |
 |  | $\displaystyle =$ | $\displaystyle O(\ensuremath{\mathtt{size(u}}_k\ensuremath{\mathtt{)}}) = O(\ensuremath{\mathtt{size(w)}}) \enspace ,$ |  |
 
@@ -158,7 +158,7 @@ $$
 
 *البرهان*. لإثبات ذلك، سنستخدم مخطّط أرصدة (credit scheme). نتخيّل أنّ كل عقدة تخزّن عددًا من الأرصدة. ويمكن لكل رصيدٍ أن يدفع ثمن ثابتٍ، $ c$ ، من وحدات الزمن التي تُنفق في إعادة البناء. ويوزّع هذا المخطّط ما مجموعه $ O(m\log m)$ من الأرصدة، ويُدفَع كل استدعاء إلى $ \mathtt{rebuild(u)}$ بالأرصدة المخزَّنة عند $ \mathtt{u}$ .
 
-أثناء الإدراج أو الحذف، نمنح رصيدًا واحدًا لكل عقدةٍ على المسار المؤدّي إلى العقدة المُدرَجة أو المحذوفة، $ \mathtt{u}$ . وبهذه الطريقة نوزّع على الأكثر $ \log_{3/2}\ensuremath{\mathtt{q}}\le \log_{3/2}m$ رصيدًا لكل عملية. وأثناء الحذف نحتفظ برصيدٍ إضافي ``مُدَّخرًا إلى جانب.'' وعليه، فإنّ ما نوزّعه إجمالًا لا يتجاوز $ O(m\log m)$ من الأرصدة. ولم يبقَ سوى بيان أنّ هذه الأرصدة تكفي لدفع كلفة جميع الاستدعاءات إلى $ \mathtt{rebuild(u)}$ . فإذا استدعينا $ \mathtt{rebuild(u)}$ أثناء إدراج، فإنّ ذلك لأنّ $ \mathtt{u}$ كبش فداء. ولنفترض، دون 잃انٍ من العموم، أنّ
+أثناء الإدراج أو الحذف، نمنح رصيدًا واحدًا لكل عقدةٍ على المسار المؤدّي إلى العقدة المُدرَجة أو المحذوفة، $ \mathtt{u}$ . وبهذه الطريقة نوزّع على الأكثر $ \log_{3/2}\ensuremath{\mathtt{q}}\le \log_{3/2}m$ رصيدًا لكل عملية. وأثناء الحذف نحتفظ برصيدٍ إضافي مُدَّخرًا إلى جانب. وعليه، فإنّ ما نوزّعه إجمالًا لا يتجاوز $ O(m\log m)$ من الأرصدة. ولم يبقَ سوى بيان أنّ هذه الأرصدة تكفي لدفع كلفة جميع الاستدعاءات إلى $ \mathtt{rebuild(u)}$ . فإذا استدعينا $ \mathtt{rebuild(u)}$ أثناء إدراج، فإنّ ذلك لأنّ $ \mathtt{u}$ كبش فداء. ولنفترض، دون تضييقٍ من العموم، أنّ
 
 $$
 \displaystyle \frac{\ensuremath{\mathtt{size(u.left)}}}{\ensuremath{\mathtt{size(u)}}} > \frac{2}{3} \enspace .
@@ -178,7 +178,7 @@ $$
 
 وبالتالي
 
-![$\displaystyle \ensuremath{\mathtt{size(u.left)}} - \ensuremath{\mathtt{size(u.r... ...\mathtt{size(u.left)}} > \frac{1}{3}\ensuremath{\mathtt{size(u)}} \enspace . $](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3338.png.webp)
+![ ](/images/open-data-structures/8_1_ScapegoatTree_Binary_Se-img3338.png.webp)
 
 والآن، في آخر مرّةٍ أُعيدت فيها بناء شجرةٍ فرعية تحوي $ \mathtt{u}$ (أو حين أُدرجت $ \mathtt{u}$، إن لم تُعَد بناء شجرةٍ فرعية تحوي $ \mathtt{u}$ قطّ)، كان لدينا
 

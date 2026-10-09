@@ -83,7 +83,7 @@ Lox مُنمَّطة <span name="unityped">ديناميكياً</span>. فمتغ
 بيانات القيمة -- الـ`double` للعدد، و `true` أو `false` للقيمة
 المنطقيّة. يمكننا تعريف بنية (struct) فيها حقول لكلّ نوعٍ ممكن.
 
-<img src="/images/crafting-interpreters/types-of-values-1.webp" alt="A struct with two fields laid next to each other in memory." />
+<img src="/images/crafting-interpreters/types-of-values-1.webp" alt="بنية (struct) بحقلين متجاورَين في الذاكرة." />
 
 لكنّ هذا مضيعةٌ للذاكرة. فلا يمكن أن تكون القيمة عدداً ومنطقيّةً
 في الوقت نفسه. لذا فإنّ واحداً من هذين الحقلين فقط هو ما سيُستعمل
@@ -99,7 +99,7 @@ Lox مُنمَّطة <span name="unityped">ديناميكياً</span>. فمتغ
 
 </aside>
 
-<img src="/images/crafting-interpreters/types-of-values-2.webp" alt="A union with two fields overlapping in memory." />
+<img src="/images/crafting-interpreters/types-of-values-2.webp" alt="اتّحاد (union) بحقلين متداخلَين في الذاكرة." />
 
 حجم الاتّحاد هو حجم أكبر حقلٍ فيه. ولأنّ الحقول كلها تعيد
 استعمال البتات ذاتها، عليك توخّي بالغ الحذر عند العمل معها. فإن
@@ -134,7 +134,7 @@ name="reinterpret">آخر</span>، فستُعيد تفسير ما تعنيه ا�
 
 </aside>
 
-<img src="/images/crafting-interpreters/types-of-values-3.webp" alt="The full value struct, with the type and as fields next to each other in memory." />
+<img src="/images/crafting-interpreters/types-of-values-3.webp" alt="بنية القيمة الكاملة، مع حقلَي type وas متجاورَين في الذاكرة." />
 
 يأتي وسم النوع ذي البتات الأربعة أولاً، ثمّ الاتّحاد. تفضّل
 معظم البنى المحاذاةَ (alignment) على أن تكون القيم محاذاةً
@@ -219,7 +219,7 @@ double number = AS_NUMBER(value);
 
 <aside name="universe">
 
-<img src="/images/crafting-interpreters/types-of-values-4.webp" alt="The earthly C firmament with the Lox heavens above." />
+<img src="/images/crafting-interpreters/types-of-values-4.webp" alt="فلك الـC الأرضي وفوقه سماوات Lox." />
 
 ترفع ماكروهات `_VAL` قيمة C إلى السماء. وتُنزلها ماكروهات `AS_`
 إلى الأسفل.
@@ -668,7 +668,7 @@ name="equal">أنواع</span> مختلفة، فهما بالتأكيد غير �
 على بتاتٍ غير مستعملة. ولا تُعطي C أيّ ضمانٍ عمّا فيها، لذا من
 الممكن أن تختلف قيمتان متساويتان فعلاً في ذاكرةٍ غير مستعملة.
 
-<img src="/images/crafting-interpreters/types-of-values-5.webp" alt="The memory respresentations of two equal values that differ in unused bytes." />
+<img src="/images/crafting-interpreters/types-of-values-5.webp" alt="تمثيلَان في الذاكرة لقيمتَين متساويَتين تختلفان في البتّات غير المستخدمة." />
 
 (لن تُصدّق كم من الألم مررتُ به قبل أن أتعلّم هذه الحقيقة.)
 

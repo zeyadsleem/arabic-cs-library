@@ -1,5 +1,5 @@
 ---
-title: "Introduction"
+title: "مقدّمة"
 lang: ar
 source: https://aosabook.org/en/v1/intro1.html
 ---
@@ -32,7 +32,7 @@ Amy Brown وGreg Wilson
 
 *Roy Bryant (Snowflock)*: على مدى عشرين عامًا في العمل كمعماري برمجيات ومسؤول تنفيذي للتقنية (CTO)، صمّم Roy أنظمة من بينها Electronics Workbench (والمعروف اليوم بـ Multisim من National Instruments) وخط أنابيب بيانات Linkwalker (Linkwalker Data Pipeline)، الذي فاز بجائزة Microsoft العالمية «Winning Customer Award» في الحوسبة عالية الأداء عام 2006. وبعد أن باع شركته الناشئة الأخيرة، عاد إلى جامعة تورونتو لإكمال الدراسات العليا في علوم الحاسوب، مع تركيز بحثي على المحاكاة الافتراضية (virtualization) والحوسبة السحابية (cloud computing). وفي الأحدث، نشر امتداداته المسمّاة Kaleidoscope لـ Snowflock في مؤتمر Eurosys التابع لـ ACM عام 2011. وموقعه الشخصي على الويب هو [http://www.roybryant.net/](http://www.roybryant.net/).
 
-*Russell Bryant (Asterisk)*: Russell هو مدير الهندسة لفريق البرمجيات مفتوحة المصدر في شركة Digium, Inc. وقد كان عضوًا أساسيًا في فريق تطوير Asterisk منذ خريف عام 2004. ومنذ ذلك الحين أسهم في 거의 جميع مجالات تطوير Asterisk، بدءًا من إدارة المشروع ووصولًا إلى التصميم المعماري الأساسي وتنفيذه. وهو يدوّن على مدونته في [http://www.russellbryant.net](http://www.russellbryant.net).
+*Russell Bryant (Asterisk)*: Russell هو مدير الهندسة لفريق البرمجيات مفتوحة المصدر في شركة Digium, Inc. وقد كان عضوًا أساسيًا في فريق تطوير Asterisk منذ خريف عام 2004. ومنذ ذلك الحين أسهم في تقريب جميع مجالات تطوير Asterisk، بدءًا من إدارة المشروع ووصولًا إلى التصميم المعماري الأساسي وتنفيذه. وهو يدوّن على مدونته في [http://www.russellbryant.net](http://www.russellbryant.net).
 
 *Rosangela Canino-Koning (Continuous Integration)*: بعد ثلاثة عشر عامًا من الكدح في ميادين صناعة البرمجيات، عادت Rosangela إلى الجامعة لنيل درجة الدكتوراه في علوم الحاسوب وعلم الأحياء التطوري من جامعة ميشيغان ستيت. وفي وقتها الفارغ الوفير، تحب القراءة والمشي في الطبيعة والسفر، وإجراء تعديلات على البرمجيات مفتوحة المصدر في المعلوماتية الحيوية. وهي تدوّن على مدونتها في [http://www.voidptr.net](http://www.voidptr.net).
 

@@ -184,9 +184,9 @@ target=integral(sumSeries(products.*.salesPerMinute))&amp;from=midnight
 7. هذا يفرض أن تكون الرسوم البيانية نفسها مفتوحة المصدر. فبإمكان أي شخص النظر في عنوان URL الخاص بالرسم البياني لفهمه أو تعديله.
 
 [^1]: `http://launchpad.net/graphite`
-[^2]: There is another port over which serialized objects can be sent, which is more efficient than the plain-text format. This is only needed for very high levels of traffic.
+[^2]: هناك منفذ آخر يمكن عبره إرسال كائنات مُسلسَلة (serialized objects)، وهو أكثر كفاءةً من تنسيق النص العادي. ولا يلزم هذا إلّا عند مستويات مرتفعة جدًّا من حجم الحركة.
 [^3]: `http://memcached.org`
-[^4]: Solid-state drives generally have extremely fast seek times compared to conventional hard drives.
-[^5]: RRD files are actually branch nodes because they can contain multiple data sources; an RRD data source is a leaf node.
-[^6]: Knuth specifically meant low-level code optimization, not macroscopic optimization such as design improvements.
-[^7]: This forces the graphs themselves to be open source. Anyone can simply look at a graph's URL to understand it or modify it.
+[^4]: تمتلك الأقراص الصلبة الحالة (solid-state drives) أزمنة بحث شديدة السرعة عمومًا مقارنةً بالأقراص الصلبة التقليدية.
+[^5]: ملفات RRD هي في الحقيقة عقد فروع لأنّها قد تحوي عدّة مصادر بيانات؛ أمّا مصدر بيانات RRD الواحد فهو عقدة ورقة.
+[^6]: قصد Knuth تحديدًا تحسين الشيفرة على المستوى الأدنى (low-level)، لا التحسينات البنيوية (macroscopic) مثل تحسينات التصميم.
+[^7]: هذا يفرض أن تكون الرسوم البيانية نفسها مفتوحة المصدر. فبإمكان أي شخص النظر في عنوان URL الخاص بالرسم البياني لفهمه أو تعديله.

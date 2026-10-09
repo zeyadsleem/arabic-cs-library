@@ -112,6 +112,6 @@ const count = await env.DB.prepare('SELECT value FROM counter WHERE id = 1')
 
         AHA counter         
 
-# Count: {count}
+# العدّ: {count}
 
    Increment  Decrement     Reset    Sure?  Yes  No       ">

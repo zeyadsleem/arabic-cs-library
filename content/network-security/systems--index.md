@@ -341,4 +341,4 @@ source: https://security.systemsapproach.org/systems.html
 
 وعليًا، يعني هذا أنّ VPN تُبنى دائمًا تقريبًا بوصفها نوعًا من الطبقات (overlay) فوق بنيةٍ تحتيةٍ مشتركة.
 
-[^1]: Version 3 of SSH (SSH3) has also been proposed, but it is currently an experimental effort that changes the underlying protocols used by SSH. For example, SSH3 runs on top of QUIC (which is UDP-based) instead of TCP. SSH2 remains the widely adopted standard.
+[^1]: اقتُرح أيضًا الإصدار الثالث من SSH (SSH3)، لكنّه جهدٌ تجريبيّ حاليًّا يغيّر البروتوكولات الأساسية التي يستعملها SSH. فمثلًا، يعمل SSH3 فوق QUIC (القائم على UDP) بدلًا من TCP. ويبقى SSH2 هو المعيار المعتمد على نطاقٍ واسع.
