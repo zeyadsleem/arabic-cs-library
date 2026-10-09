@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -61,7 +61,7 @@ vendors~emoji-picker.<span class="hljs-property">bundle</span>.<span class="hljs
 </code></pre>
 <p>في حين كانت حزمة التحميل الأولية في السابق بحجم <code>1.5MiB</code>، تمكنا من تقليلها إلى <code>1.33 MiB</code> بفضل تعليق استيراد <code>EmojiPicker</code>!</p>
 <p>في وحدة التحكم، يمكنك أن ترى أن <code>EmojiPicker</code> لا يُنفَّذ إلا عندما نقوم بإظهار <code>EmojiPicker</code>!</p>
-<p>JavaScript iconChatInput.js</p>
+<p><code>ChatInput.js</code></p>
 <pre><code class="language-javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span>, { <span class="hljs-title class_">Suspense</span>, lazy } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;
   <span class="hljs-comment">// import Send from &quot;./icons/Send&quot;;</span>
   <span class="hljs-comment">// import Emoji from &quot;./icons/Emoji&quot;;</span>
@@ -100,7 +100,7 @@ vendors~emoji-picker.<span class="hljs-property">bundle</span>.<span class="hljs
 <p>باستيراد المكوّن <code>EmojiPicker</code> ديناميكيًا، تمكنا من تقليل حجم حزمة التحميل الأولية من <code>1.5MiB</code> إلى <code>1.33 MiB</code>! ورغم أن المستخدم قد يظل مضطرًا إلى الانتظار قليلًا حتى يتم تحميل <code>EmojiPicker</code> بالكامل، فقد حسّنا تجربة المستخدم من خلال ضمان عرض التطبيق وتفاعله بينما ينتظر المستخدم تحميل المكوّن.</p>
 <h2 id="المكونات-القابلة-للتحميل">المكوّنات القابلة للتحميل</h2>
 <p>لا يدعم التصيير على جانب الخادم (server-side rendering) خاصية React Suspense (بعد). البديل الجيد لـ React Suspense هو مكتبة <a href="https://loadable-components.com/docs/getting-started/"><code>loadable-components</code></a>، التي يمكن استخدامها في تطبيقات SSR.</p>
-<p>JavaScript iconChatInput.js</p>
+<p><code>ChatInput.js</code></p>
 <pre><code class="language-javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;
 <span class="hljs-keyword">import</span> loadable <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@loadable/component&quot;</span>;
 
@@ -129,7 +129,7 @@ vendors~emoji-picker.<span class="hljs-property">bundle</span>.<span class="hljs
 <p><a href="https://codesandbox.io/embed/confident-pond-5bil0">افتح CodeSandbox</a></p>
 <p>على غرار React Suspense، يمكننا تمرير الوحدة المستوردة بشكل كسول إلى <code>loadable</code>، التي لن تستورد الوحدة إلا عند طلب وحدة <code>EmojiPicker</code>! وأثناء تحميل الوحدة، يمكننا عرض مكوّن <code>fallback</code>.</p>
 <p>ورغم أن المكوّنات القابلة للتحميل بديل رائع لـ React Suspense في تطبيقات SSR، فإنها مفيدة أيضًا في تطبيقات CSR من أجل تعليق استيراد الوحدات.</p>
-<p>JavaScript iconChatInput.js</p>
+<p><code>ChatInput.js</code></p>
 <pre><code class="language-javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;
   <span class="hljs-keyword">import</span> <span class="hljs-title class_">Send</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./icons/Send&quot;</span>;
   <span class="hljs-keyword">import</span> <span class="hljs-title class_">Emoji</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./icons/Emoji&quot;</span>;
@@ -163,7 +163,7 @@ vendors~emoji-picker.<span class="hljs-property">bundle</span>.<span class="hljs
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -171,8 +171,8 @@ vendors~emoji-picker.<span class="hljs-property">bundle</span>.<span class="hljs
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

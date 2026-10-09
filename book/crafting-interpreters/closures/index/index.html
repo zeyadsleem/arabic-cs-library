@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -90,7 +90,7 @@ closure();
 معه المتغيّر المحلّي، فإنّ <code>local</code> يجب أن يعمّر أطول من الاستدعاء الذي أُنشئ
 فيه.</p>
 <aside name="flying">
-<img src="/arabic-cs-library/images/crafting-interpreters/closures-1.webp" class="above" alt="A local variable flying away from the stack."/>
+<img src="/arabic-cs-library/images/crafting-interpreters/closures-1.webp" class="above" alt="متغيّر محلّي يتطاير بعيداً عن المكدّس."/>
 <p>لا، لا! لقد هرب!</p>
 </aside>
 <p>يمكنك حلّ هذه المشكلة بتخصيص ذاكرة ديناميكيًا لكل المتغيّرات المحلّية. هذا ما
@@ -162,7 +162,7 @@ ObjClosure جديدة. ولبنية هذه الأخيرة إشارةٌ إلى ا
 &quot;prototype&quot;، وهي كلمةٌ ممتازة لوصف هذا، غير أنّ هذه الكلمة تُحمَّل أيضًا
 للإشارة إلى <a href="https://en.wikipedia.org/wiki/Prototype-based_programming">الوراثة النماذجية</a>.</p>
 </aside>
-<img src="/arabic-cs-library/images/crafting-interpreters/closures-2.webp" alt="An ObjClosure with a reference to an ObjFunction."/>
+<img src="/arabic-cs-library/images/crafting-interpreters/closures-2.webp" alt="كائن ObjClosure يحمل مرجعاً إلى ObjFunction."/>
 <p>سنغلّف كل دالة داخل ObjClosure، حتى لو كانت الدالة لا تغلق فعلًا على أيّ
 متغيّرات محلّية محيطة وتلتقطها. هذا هدرٌ قليل، لكنه يُبسّط الآلة الافتراضية
 لأننا نستطيع أن نفترض دائمًا أنّ الدالة التي نستدعيها هي ObjClosure. وتبدأ
@@ -323,7 +323,7 @@ name="naked">في الإغلاقات</span> قبل أن يراها أيّ شيء
 </code></pre>
 <p>سيتضافر المصرّف ووقت التشغيل معًا لبناء مجموعة من الكائنات في الذاكرة على هذا
 النحو:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/closures-3.webp" alt="The object graph of the stack, ObjClosure, ObjFunction, and upvalue array."/>
+<img src="/arabic-cs-library/images/crafting-interpreters/closures-3.webp" alt="رسم الكائنات للمكدّس وObjClosure وObjFunction ومصفوفة القيم العليا."/>
 <p>قد يبدو هذا مُرهقًا، لكن لا تخف. سنعمل على اختراجه. الجزء المهم هو أنّ القيم
 العليا تؤدّي دور طبقة الاستدلال اللازمة لمواصلة العثور على متغيّر محلّي
 ملتقَط حتى بعد أن ينتقل بعيدًا عن المكدّس. لكن قبل أن نصل إلى كل ذلك، لنركّز
@@ -471,7 +471,7 @@ value
 متغيّراته من المكدّس قبل أن يُنفَّذ <em>تصريح</em> <code>inner()</code>. لذا، في اللحظة التي
 ننشئ فيها الإغلاق لـ <code>inner()</code>، يكون <code>x</code> قد غادر المكدّس بالفعل.</p>
 <p>وهنا، رسمتُ لك تدفّق التنفيذ:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/closures-4.webp" alt="Tracing through the previous example program."/>
+<img src="/arabic-cs-library/images/crafting-interpreters/closures-4.webp" alt="تتبّع البرنامج المثال السابق."/>
 <p>لاحظ كيف يُسقط <code>x</code> ① قبل أن يُلتقط ② ثم يُستعمل لاحقًا ③؟ لدينا
 في الواقع مشكلتان:</p>
 <ol>
@@ -491,7 +491,7 @@ value
 في الدالة المحيطة مباشرة. إذا أشارت دالة متداخلة بعمق إلى متغيّر محلّي معلَن
 بعد عدة قفزات، فسنمرّره عبر كل الدوال الوسيطة بأن تُلتقط كل دالة قيمةً عليا
 تمسك بها الدالة التالية.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/closures-5.webp" alt="An upvalue in inner() points to an upvalue in middle(), which points to a local variable in outer()."/>
+<img src="/arabic-cs-library/images/crafting-interpreters/closures-5.webp" alt="قيمة عليا في inner() تشير إلى قيمة عليا في middle()، والتي تشير إلى متغيّر محلّي في outer()."/>
 <p>في المثال أعلاه، تلتقط <code>middle()</code> المتغيّر المحلّي <code>x</code> في الدالة المحيطة
 مباشرة <code>outer()</code> وتخزّنه في قيمتها العليا الخاصة. وهي تفعل ذلك حتى مع أنّ
 <code>middle()</code> نفسها لا تشير إلى <code>x</code>. ثم، حين يُنفَّذ تصريح <code>inner()</code>، يلتقط إغلاقه
@@ -533,7 +533,7 @@ name="outer">المتداخلة</span> وتُرجِع فهرس القيمة ال
 <em>الدالة الخارجية</em>، في داخل الدالة المحيطة التي يُعلن فيها ذلك المتغيّر فعلًا.</p>
 </aside>
 <p>قد يفيدك المرور على المثال الأصلي أثناء حلّ <code>x</code>:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/closures-6.webp" alt="Tracing through a recursive call to resolveUpvalue()."/>
+<img src="/arabic-cs-library/images/crafting-interpreters/closures-6.webp" alt="تتبّع استدعاء resolveUpvalue() المتكرّر."/>
 <p>لاحظ أنّ الاستدعاء الجديد لـ <code>addUpvalue()</code> يمرّر <code>false</code> للمُعامل <code>isLocal</code>.
 والآن ترى أنّ ذلك العَلَم يتحكّم فيما إذا كان الإغلاق يلتقط متغيّرًا محلّيًا أم
 قيمة عليا من الدالة المحيطة.</p>
@@ -916,7 +916,7 @@ ObjUpvalue نفسها.</p>
 }
 </code></pre>
 <p>ينتج سلسلة من القيم العليا المترابطة على النحو التالي:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/closures-7.webp" alt="Three upvalues in a linked list."/>
+<img src="/arabic-cs-library/images/crafting-interpreters/closures-7.webp" alt="ثلاث قيم عليا في قائمة موصولة."/>
 <p>كلّما أغلقنا على متغيّر محلّي، وقبل إنشاء قيمة عليا جديدة، نبحث عن قيمة عليا قائمة
 في القائمة.</p>
 <p>^code look-for-existing-upvalue (1 before, 1 after)</p>
@@ -997,7 +997,7 @@ name="double">خاصة</span> حين نُدرج قيمة عليا جديدة ع�
 <aside name="cool">
 <p>لستُ أُمدح نفسي هنا. كل هذا من ابتكار فريق تطوير Lua.</p>
 </aside>
-<img src="/arabic-cs-library/images/crafting-interpreters/closures-8.webp" alt="Moving a value from the stack to the upvalue's 'closed' field and then pointing the 'value' field to it."/>
+<img src="/arabic-cs-library/images/crafting-interpreters/closures-8.webp" alt="نقل قيمة من المكدّس إلى حقل closed في القيمة العليا ثمّ جعل حقل value يشير إليها."/>
 <p>لا نحتاج إلى تغيير طريقة تفسير <code>OP_GET_UPVALUE</code> و<code>OP_SET_UPVALUE</code> إطلاقًا. هذا يبقيهما
 بسيطَين، وهو بدوره يبقيهما سريعَين. لكننا نحتاج فعلًا إلى إضافة الحقل الجديد إلى
 ObjUpvalue.</p>
@@ -1242,7 +1242,7 @@ C# 5، تنشئ كل دورة متغيّرًا جديدًا تمامًا.</p>
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -1250,8 +1250,8 @@ C# 5، تنشئ كل دورة متغيّرًا جديدًا تمامًا.</p>
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

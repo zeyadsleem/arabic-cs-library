@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -110,7 +110,7 @@ Lox فيتبع تقليدًا يمتدّ إلى BCPL. وبصفتنا مبرمج�
 لغة ما لا يزال حتى اليوم متأثّرًا بحدود العتاد في الماضية.</p>
 </aside>
 <p>تنقّل عبر برنامج المثال هذا وراقب كيف تدخل المتغيّرات المحلّية نطاقها وتخرجه:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/local-variables-1.webp" alt="A series of local variables come into and out of scope in a stack-like fashion." />
+<img src="/arabic-cs-library/images/crafting-interpreters/local-variables-1.webp" alt="سلسلة من المتغيّرات المحلية تدخل النطاق وتخرج منه بأسلوب يشبه المكدّس." />
 <p>لاحظ كيف تتّسع المكدّس تمامًا! يبدو أنّ المكدّس سيصلح لتخزين المتغيّرات المحلّية وقت
 التشغيل. لكن يمكننا أن نذهب أبعد من ذلك. فنحن لا نعرف <em>أنّها</em> ستكون على المكدّس
 فحسب، بل يمكننا حتى تحديد <em>أين</em> بالضبط ستكون على المكدّس. ولأنّ المصرّف يعرف بدقّة
@@ -191,7 +191,7 @@ name="thread">منضبطين</span>، لأعطينا كل دالة في واجه
 غير قابلة للتجزئة، لكن لسبب ما، قرّرت لجنة Algol 60 استخدامه للإشارة إلى بنية
 <em>مركّبة</em> — سلسلة من التصريحات. يمكن أن تكون أسوأ، على ما أظنّ. كانت Algol 58 تسمّي
 <code>begin</code> و<code>end</code> &quot;أقواس التصريحات&quot;.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/local-variables-2.webp" alt="A cinder block." class="above" />
+<img src="/arabic-cs-library/images/crafting-interpreters/local-variables-2.webp" alt="طوبة إسمنتية." class="above" />
 </aside>
 <p>الكتل نوعٌ من التصريحات، لذا تذهب قاعدةها إلى إنتاج <code>statement</code>. والشيفرة المقابلة
 لتجميع واحدة تبدو هكذا:</p>
@@ -220,7 +220,7 @@ name="thread">منضبطين</span>، لأعطينا كل دالة في واجه
 لدينا الآن عبارات <code>var</code> وتعبيرات مُعرِّفات والإسناد فيها. كل ما في الأمر أنّ المصرّف
 يفترض أنّ كل المتغيّرات عامة. لذا لا نحتاج إلى أيّ دعم تحليل جديد، بل نحتاج فقط
 إلى ربط دلالات النطاق الجديدة بالشيفرة القائمة.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/local-variables-3.webp" alt="The code flow within varDeclaration()." />
+<img src="/arabic-cs-library/images/crafting-interpreters/local-variables-3.webp" alt="تدفّق الشيفرة داخل varDeclaration()." />
 <p>يبدأ تحليل تصريح المتغيّر في <code>varDeclaration()</code> ويعتمد على بضع دوال أخرى. أولًا،
 تستهلك <code>parseVariable()</code> رمز المُعرِّف الخاص باسم المتغيّر، وتضيف لَمحته إلى جدول
 ثوابت القطعة (chunk) كسلسلة، ثم تُرجِع فهرس جدول الثوابت الذي أُضيف إليه. ثم، بعد
@@ -243,7 +243,7 @@ name="thread">منضبطين</span>، لأعطينا كل دالة في واجه
 المكدّس... في المكان نفسه الذي توجد فيه تلك القيمة بالضبط. إذن، لا شيء لفعله.
 المؤقّت ببساطة <em>يصبح</em> المتغيّر المحلّي. ولا يمكن أن تكون الكفاءة أعلى من ذلك.</p>
 <p><span name="locals"></span></p>
-<img src="/arabic-cs-library/images/crafting-interpreters/local-variables-4.webp" alt="Walking through the bytecode execution showing that each initializer's result ends up in the local's slot." />
+<img src="/arabic-cs-library/images/crafting-interpreters/local-variables-4.webp" alt="خطوة بخطوة في تنفيذ شيفرة البايت يُظهر أنّ نتيجة كلّ مُهيِّئ تنتهي في خانة المتغيّر المحلي." />
 <aside name="locals">
 <p>الشيفرة على اليسار تُترجم إلى سلسلة التعليمات على اليمين.</p>
 </aside>
@@ -419,7 +419,7 @@ name="pop">لإسقاطه</span> من المكدّس.</p>
 }
 </code></pre>
 <p>لقد قتلناه حينها بتقسيم تصريح المتغيّر إلى مرحلتين، وسنفعل ذلك هنا أيضًا:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/local-variables-5.webp" alt="An example variable declaration marked 'declared uninitialized' before the variable name and 'ready for use' after the initializer." />
+<img src="/arabic-cs-library/images/crafting-interpreters/local-variables-5.webp" alt="مثال على إعلان متغيّر مُعلَّم فيه «declared uninitialized» قبل اسم المتغيّر و«ready for use» بعد المُهيِّئ." />
 <p>بمجرد أن يبدأ تصريح المتغيّر — بمعنى آخر، قبل مُهيّئه — يُصرَّح بالاسم في النطاق
 الحالي. المتغيّر موجود، لكن في حالة خاصة &quot;غير مهيّأة&quot;. ثم نترجم المُهيّئ. إن حللنا
 في أيّ نقطة من ذلك التعبير مُعرِّفًا يشير إلى هذا المتغيّر، فسنرى أنّه لم يُهيّأ بعد
@@ -493,7 +493,7 @@ name="pop">لإسقاطه</span> من المكدّس.</p>
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -501,8 +501,8 @@ name="pop">لإسقاطه</span> من المكدّس.</p>
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

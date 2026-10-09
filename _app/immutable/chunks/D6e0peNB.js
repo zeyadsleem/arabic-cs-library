@@ -1,0 +1,1805 @@
+const s="postgres-internals",n="pgsql12",a="النسخ المتماثل المنطقي",t="index",p="النسخ المتماثل المنطقي",l=[{depth:2,id:"1211-العمليات-ذات-الصلة",text:"12.1.1. العمليات ذات الصلة"},{depth:2,id:"1212-مخطط-النسخ-المتماثل-المنطقي",text:"12.1.2. مخطط النسخ المتماثل المنطقي"},{depth:3,id:"12121-غير-المتزامن-مقابل-المتزامن",text:"12.1.2.1. غير المتزامن مقابل المتزامن"},{depth:3,id:"12122-إدارة-المعاملات-الكبيرة-وتحسينها",text:"12.1.2.2. إدارة المعاملات الكبيرة وتحسينها"},{depth:2,id:"1213-هوية-النسخة",text:"12.1.3. هوية النسخة"},{depth:3,id:"12131-أنواع-هوية-النسخة",text:"12.1.3.1. أنواع هوية النسخة"},{depth:3,id:"12132-الإعداد-والتحقق",text:"12.1.3.2. الإعداد والتحقق"},{depth:2,id:"1214-أصل-النسخ-المتماثل",text:"12.1.4. أصل النسخ المتماثل"},{depth:3,id:"12141-منع-حلقات-النسخ-المتماثل-اللانهائية-عبر-أصل-النسخ-المتماثل",text:"12.1.4.1. منع حلقات النسخ المتماثل اللانهائية عبر أصل النسخ المتماثل"},{depth:2,id:"1215-فتحة-النسخ",text:"12.1.5. فتحة النسخ"},{depth:2,id:"1216-التعارضات",text:"12.1.6. التعارضات"},{depth:2,id:"1221-إنشاء-منشور",text:"12.2.1. إنشاء منشور"},{depth:2,id:"1222-إنشاء-اشتراك",text:"12.2.2. إنشاء اشتراك"},{depth:3,id:"12221-المرحلة-1",text:"12.2.2.1. المرحلة 1"},{depth:3,id:"12222-المرحلة-2",text:"12.2.2.2. المرحلة 2"},{depth:3,id:"12223-المرحلة-3",text:"12.2.2.3. المرحلة 3"},{depth:2,id:"1231-reorderbuffer",text:"12.3.1. ReorderBuffer"},{depth:2,id:"1232-reorderbuffertxn",text:"12.3.2. ReorderBufferTXN"},{depth:2,id:"1233-reorderbufferchange",text:"12.3.3. ReorderBufferChange"},{depth:2,id:"1241-الترشيح",text:"12.4.1. الترشيح"},{depth:2,id:"1242-تخزين-بيانات-wal-مؤقتا",text:"12.4.2. تخزين بيانات WAL مؤقتًا"},{depth:3,id:"12411-الإعداد-العلاقات-الهدف",text:"12.4.1.1. الإعداد: العلاقات الهدف"},{depth:3,id:"12412-السيناريو-معالجة-معاملات-متداخلة",text:"12.4.1.2. السيناريو: معالجة معاملات متداخلة"},{depth:3,id:"12413-تغييرات-الحالة-التفصيلية",text:"12.4.1.3. تغييرات الحالة التفصيلية"},{depth:2,id:"1243-العلاقة-بين-هوية-النسخة-والصفوف-المفككة",text:"12.4.3. العلاقة بين هوية النسخة والصفوف المُفكَّكة"},{depth:3,id:"12431-عمليات-update",text:"12.4.3.1. عمليات UPDATE"},{depth:3,id:"12432-عمليات-delete",text:"12.4.3.2. عمليات DELETE"},{depth:2,id:"1244-إدارة-ذاكرة-reorderbuffer-وتسلسل-المعاملات-الانسكاب-إلى-القرص",text:"12.4.4. إدارة ذاكرة ReorderBuffer وتسلسل المعاملات (الانسكاب إلى القرص)"},{depth:3,id:"12441-خوارزمية-الانسكاب",text:"12.4.4.1. خوارزمية الانسكاب"},{depth:3,id:"12442-بنية-ملف-الانسكاب-واصطلاحات-التسمية",text:"12.4.4.2. بنية ملف الانسكاب واصطلاحات التسمية"},{depth:2,id:"1251-tupledata-رسالة-فرعية-مشتركة",text:"12.5.1. TupleData (رسالة فرعية مشتركة)"},{depth:2,id:"1252-التحكم-في-المعاملات",text:"12.5.2. التحكم في المعاملات"},{depth:3,id:"12521-البدء-b",text:"12.5.2.1. البدء (‘B’)"},{depth:3,id:"12522-الالتزام-c",text:"12.5.2.2. الالتزام (‘C’)"},{depth:2,id:"1253-لغة-معالجة-البيانات-dml",text:"12.5.3. لغة معالجة البيانات (DML)"},{depth:3,id:"12531-الأصل-o",text:"12.5.3.1. الأصل (‘O’)"},{depth:3,id:"12532-العلاقة-r",text:"12.5.3.2. العلاقة (‘R’)"},{depth:3,id:"12533-الإدراج-i",text:"12.5.3.3. الإدراج (‘I’)"},{depth:3,id:"12534-التحديث-u",text:"12.5.3.4. التحديث (‘U’)"},{depth:3,id:"12535-الحذف-d",text:"12.5.3.5. الحذف (‘D’)"},{depth:3,id:"12536-الاقتطاع-t",text:"12.5.3.6. الاقتطاع (‘T’)"},{depth:2,id:"1254-التحكم-في-البث",text:"12.5.4. التحكم في البث"},{depth:3,id:"12541-بدء-البث-s",text:"12.5.4.1. بدء البث (‘S’)"},{depth:3,id:"12542-إيقاف-البث-e",text:"12.5.4.2. إيقاف البث (‘E’)"},{depth:3,id:"12543-التزام-البث-c",text:"12.5.4.3. التزام البث (‘c’)"},{depth:3,id:"12544-إلغاء-البث-a",text:"12.5.4.4. إلغاء البث (‘A’)"},{depth:2,id:"1261-مخطط-إعادة-تجميع-المعاملات",text:"12.6.1. مخطط إعادة تجميع المعاملات"},{depth:3,id:"12611-أمثلة",text:"12.6.1.1. أمثلة"},{depth:2,id:"1262-إرسال-الرسائل",text:"12.6.2. إرسال الرسائل"},{depth:2,id:"1263-بث-المعاملات-الكبيرة",text:"12.6.3. بث المعاملات الكبيرة"},{depth:3,id:"12631-المقطع-الأول-txid842",text:"12.6.3.1. المقطع الأول (txid=842)"},{depth:3,id:"12632-المقطع-الثاني-txid842",text:"12.6.3.2. المقطع الثاني (txid=842)"},{depth:3,id:"12633-التزام-البث",text:"12.6.3.3. التزام البث"},{depth:2,id:"1271-نظرة-عامة-على-العملية-streaming-off",text:"12.7.1. نظرة عامة على العملية (streaming = off)"},{depth:3,id:"12711-ترشيح-الأصل-وتتبع-lsn",text:"12.7.1.1. ترشيح الأصل وتتبّع LSN"},{depth:3,id:"12712-توزيع-الرسائل-وتدفق-إعادة-التنفيذ",text:"12.7.1.2. توزيع الرسائل وتدفق إعادة التنفيذ"},{depth:3,id:"12713-تحسين-replica-identity-full",text:"12.7.1.3. تحسين REPLICA IDENTITY FULL"},{depth:2,id:"1272-وضع-البث-streaming-on",text:"12.7.2. وضع البث (streaming = on)"},{depth:3,id:"12721-ضغط-الذاكرة-والانسكاب-إلى-القرص",text:"12.7.2.1. ضغط الذاكرة والانسكاب إلى القرص"},{depth:2,id:"1273-وضع-عامل-التطبيق-المتوازي-streaming-parallel",text:"12.7.3. وضع عامل التطبيق المتوازي (streaming = parallel)"},{depth:3,id:"12731-تسلسل-إعادة-التنفيذ-في-الوضع-المتوازي",text:"12.7.3.1. تسلسل إعادة التنفيذ في الوضع المتوازي"},{depth:3,id:"12732-تجنب-الأعطال-الناتجة-عن-تبعيات-المعاملات",text:"12.7.3.2. تجنّب الأعطال الناتجة عن تبعيات المعاملات"},{depth:2,id:"1281-إدارة-بيانات-wal",text:"12.8.1. إدارة بيانات WAL"},{depth:3,id:"12811-آليات-إدارة-lsn-لدى-الناشر-والمشترك",text:"12.8.1.1. آليات إدارة LSN لدى الناشر والمشترك"},{depth:3,id:"12812-تدفق-بيانات-lsn-في-التسلسل-الطبيعي",text:"12.8.1.2. تدفق بيانات LSN في التسلسل الطبيعي"},{depth:2,id:"1282-تسلسل-إعادة-التشغيل",text:"12.8.2. تسلسل إعادة التشغيل"},{depth:2,id:"1283-تسلسل-الاستعادة",text:"12.8.3. تسلسل الاستعادة"}],e=`<h1>12.1. نظرة عامة ومفاهيم أساسية</h1>
+<h4>نسخة تجريبية: العمل قيد الإنجاز.</h4>
+<p>يقدّم هذا القسم المفاهيم الأساسية اللازمة لفهم الأقسام التالية.</p>
+<p>محتويات القسم</p>
+<ul>
+<li>12.1.1. العمليات ذات الصلة</li>
+<li>12.1.2. مخطط النسخ المتماثل المنطقي</li>
+<li>12.1.3. هوية النسخة</li>
+<li>12.1.4. أصل النسخ المتماثل</li>
+<li>12.1.5. فتحة النسخ</li>
+<li>12.1.6. التعارضات</li>
+</ul>
+<h2 id="1211-العمليات-ذات-الصلة">12.1.1. العمليات ذات الصلة</h2>
+<p>في النسخ المتماثل المنطقي، تعمل أربعة أنواع من العمليات تعاونيًا:</p>
+<ul>
+<li>عملية <strong>walsender</strong> على الناشر ترسل بيانات WAL إلى المشترك وتنفّذ مهام تنسيق متنوعة.</li>
+<li>عملية <strong>مُشغّل النسخ المتماثل المنطقي</strong> (logical replication launcher) على المشترك تشغّل عمال التطبيق.</li>
+<li><strong>عامل التطبيق</strong> (apply worker) على المشترك يتصل بعملية walsender على الناشر، ويستقبل تدفقات التغييرات المنطقية، ويحلّل الرسائل، ويحدّث الجداول الهدف.</li>
+<li><strong>عامل مزامنة الجدول</strong> (table sync worker) على المشترك ينفّذ المزامنة الأولية للبيانات لجدول محدّد. وهو يلحق بتدفق النسخ المتماثل الرئيسي قبل تسليم التحديثات إلى عامل التطبيق. راجع القسم 12.2.2 للتفاصيل.</li>
+</ul>
+<h2 id="1212-مخطط-النسخ-المتماثل-المنطقي">12.1.2. مخطط النسخ المتماثل المنطقي</h2>
+<p>النسخ المتماثل المنطقي في PostgreSQL <strong>قائم على الصفوف</strong>. فهو يلتقط التغييرات على الصفوف الفردية ويدفقها بتنسيق مُفكَّك الترميز. ولأن الرسائل المنطقية تحتوي على <strong>نتائج العمليات المحسوبة مسبقًا</strong>، يتجنّب النسخ المتماثل المنطقي حالات عدم الاتساق الناتجة عن الدوال غير الحتمية مثل random() أو now().</p>
+<p>ويقارن المثال التالي بين النسخ المتماثل المنطقي والنسخ المتماثل المتدفّق، كما هو موضّح في الشكل 12.2.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-02.webp" alt=""></p>
+<h4>الشكل 12.2. مقارنة مفاهيمية لإرسال البيانات: النسخ المتماثل المتدفّق مقابل المنطقي.</h4>
+<p>تأمّل سيناريو تنفّذ فيه معاملتان متزامنتان (txid=99 و100) عبارات SQL تؤثر في <em>tbl_a</em> و<em>tbl_b</em>.</p>
+<p>في <strong>النسخ المتماثل المتدفّق</strong>، يكتب الناشر بيانات WAL (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">w_{1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> إلى <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mn>5</mn></msub></mrow><annotation encoding="application/x-tex">w_{5}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">5</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>) في ملف WAL بالتسلسل فور تنفيذ كل عبارة SQL. ويقرأ walsender هذه السجلات ويرسلها فورًا إلى walreceiver على الخادم الاحتياطي، بصرف النظر عن حالة الالتزام بالمعاملة. ويكتب walreceiver البيانات المستلمة في ملف WAL الخاص به بالترتيب المستلم نفسه، حافظًا بذلك على نسخة فيزيائية مطابقة للخادم الأساسي.</p>
+<p>في المقابل، يعالج <strong>النسخ المتماثل المنطقي</strong> البيانات استنادًا إلى حدود المعاملات ونطاقات المنشورات. فبينما يقرأ walsender بيانات WAL فور توليدها، فإنه لا يرسل البيانات على الفور. بل يراكم التغييرات في منطقة ذاكرة تسمى <strong>ReorderBuffer</strong>، حيث تُعاد تجميع التغييرات لكل معاملة.</p>
+<p>تتضمن عملية ReorderBuffer داخل walsender ثلاث عمليات رئيسية:</p>
+<ul>
+<li><strong>الترشيح:</strong> يرشّح walsender التغييرات المُفكَّكة الترميز بناءً على نطاق المنشور. فحتى بعد التزام txid=100، لا يجهّز walsender للإرسال سوى التغييرات المتعلقة بالجداول المشترك بها. فمثلًا، إذا كان المشترك يتابع <em>tbl_a</em> فقط، يتجاهل walsender التغيير <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">c_{3}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> (المُفكَّك من <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">w_{3}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> الخاص بـ<em>tbl_b</em>). راجع القسم 12.4.1 للتفاصيل.</li>
+<li><strong>فكّ الترميز والتخزين المؤقت:</strong> بينما يقرأ walsender سجل WAL، يفكّ ترميز كل سجل <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">w_{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> إلى تغيير منطقي <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">c_{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> ويخزّنه في ReorderBuffer. راجع القسم 12.4.3 للتفاصيل.</li>
+<li><strong>الإرسال:</strong> عند مصادفة سجل الالتزام <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mn>5</mn></msub></mrow><annotation encoding="application/x-tex">w_{5}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">5</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> الخاص بـtxid=100، يجمع walsender التغييرات المخزّنة المؤقتة ذات الصلة (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">c_{1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mn>4</mn></msub></mrow><annotation encoding="application/x-tex">c_{4}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>) ويرسلها إلى المشترك كسلسلة من الرسائل، تُختم برسالة الالتزام <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mn>5</mn></msub></mrow><annotation encoding="application/x-tex">c_{5}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">5</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>. وتبقى التغييرات من المعاملات غير الملتزمة، مثل <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">c_{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> من txid=99، مخزّنة مؤقتًا ولا تُرسل بعد. راجع القسم 12.6 للتفاصيل.</li>
+</ul>
+<p>وتوصف بنية ReorderBuffer في القسم 12.3.</p>
+<p>ويوفّر PostgreSQL الإضافة <strong>pgoutput</strong> افتراضيًا للنسخ المتماثل المنطقي القياسي، وإن كانت عملية الخرج قابلة للتوسيع عبر الإضافات. راجع القسم 12.5 للتفاصيل.</p>
+<p>ويحقّق عامل التطبيق على المشترك النسخ المتماثل بإعادة بناء المعاملات وتنفيذها استنادًا إلى الرسائل المستلمة. وترد تفاصيل إضافية في القسم 12.7.</p>
+<h3 id="12121-غير-المتزامن-مقابل-المتزامن">12.1.2.1. غير المتزامن مقابل المتزامن</h3>
+<p>يدعم PostgreSQL وضعين للنسخ المتماثل المنطقي: <strong>غير المتزامن</strong> و<strong>المتزامن</strong>. والوضع غير المتزامن هو الافتراضي. انظر الشكل 12.3.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-03.webp" alt=""></p>
+<h4>الشكل 12.3. مقارنة تدفق المعاملات في وضعي النسخ المتماثل المنطقي غير المتزامن والمتزامن.</h4>
+<p>في <strong>الوضع غير المتزامن</strong>، تكتمل عبارة COMMIT على الناشر فورًا بعد دفع WAL المحلي، دون انتظار استجابة من المشترك.</p>
+<p>وفي <strong>الوضع المتزامن</strong> (تحديدًا عندما تُضبط synchronous_commit على ‘remote_apply’)، تنتظر عملية الالتزام على الناشر حتى تستقبل إشعارًا (ACK) من المشترك. وكما هو موضّح في الشكل 12.3، لا يرسل عامل التطبيق هذا الإشعار إلا بعد إنهاء تطبيق التغييرات في قاعدة بيانات المشترك.</p>
+<p>والوقت الإضافي اللازم لإتمام الالتزام المتزامن مقارنةً بالوضع غير المتزامن هو <strong>زمن الاستجابة من الطرف إلى الطرف</strong> (End-to-End Latency).</p>
+<p>تتطلب المعاملات التي تتضمن كميات كبيرة من التغييرات وقتًا أطول لفكّ الترميز والنقل والتطبيق. ونتيجة لذلك:</p>
+<ul>
+<li>في <strong>الوضع غير المتزامن</strong>، تزيد أحجام المعاملات الأكبر تأخّر النسخ المتماثل، ما يوسّع نافذة عدم اتساق البيانات.</li>
+<li>في <strong>الوضع المتزامن</strong>، تزيد الأحجام الأكبر زمن الالتزام على الناشر، لأن العملية الخلفية يجب أن تنتظر اكتمال خط النسخ المتماثل بأكمله.</li>
+</ul>
+<h3 id="12122-إدارة-المعاملات-الكبيرة-وتحسينها">12.1.2.2. إدارة المعاملات الكبيرة وتحسينها</h3>
+<p>يفحص هذا القسم سلوك «المعاملات الكبيرة» — أي تلك ذات أحجام التغييرات الكبيرة — وتطوّر تقنيات التحسين.</p>
+<h4>[1] معالجة المعاملات القياسية (streaming = off)</h4>
+<p>عندما يتجاوز حجم التغييرات سعة ReorderBuffer (المحددة بـ<a href="https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-LOGICAL-DECODING-WORK-MEM">logical_decoding_work_mem</a>)، يحفظ walsender البيانات في <strong>ملفات انسكاب</strong> (spill files) على القرص. ويوضّح الشكل 12.4 ذلك [1].</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-04.webp" alt=""></p>
+<h4>الشكل 12.4: سلوك المعاملات الكبيرة عند تعطيل streaming.</h4>
+<p>وتدفق المعالجة كما يلي:</p>
+<ul>
+<li>(1) تُنفَّذ عمليات INSERT على tbl_a، وتتراكم التغييرات المُفكَّكة في ReorderBuffer.</li>
+<li>(2) عند تجاوز حد الذاكرة، يمسح ReorderBuffer السجلات المحتفظ بها حاليًا.</li>
+<li>(3) يولّد walsender <strong>ملفات انسكاب</strong> وينقل البيانات الفائضة عن الذاكرة إلى القرص لتحرير مساحة المخزن المؤقت.</li>
+<li>(4) <strong>تلتزم</strong> المعاملة على الناشر.</li>
+<li>(5) بعد اكتشاف الالتزام، يرسل walsender التغييرات المجمّعة (من ملفات الانسكاب والذاكرة) إلى المشترك.</li>
+<li>(6) يطبّق عامل التطبيق الرسائل المستلمة بالتسلسل.</li>
+</ul>
+<p>وترد آليات ملفات الانسكاب في القسم 12.4.4.</p>
+<p>وفي هذا الإعداد، يرسل walsender تغييرات معاملة واحدة فقط في كل مرة لكل اتصال. ونتيجة لذلك، يسلسل المشترك تطبيق التغييرات، ما يؤدي غالبًا إلى تأخّر كبير في النسخ المتماثل (الشكل 12.4 [2]).</p>
+<h4>[2] البث الجاري للمعاملات الكبيرة (الإصدار 14 وما بعده)</h4>
+<p>قدّم الإصدار 14 (2021) الإرسال الاستباقي لبيانات التغييرات قبل التزام المعاملة. ويخفّف ذلك كلفة النقل ويقلّل تأخّر النسخ المتماثل. ويوضّح الشكل 12.5 ذلك [1].</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-05.webp" alt=""></p>
+<h4>الشكل 12.5: آلية البث الجاري للمعاملات الكبيرة.</h4>
+<p>وتدفق التشغيل كما يلي:</p>
+<ul>
+<li>(1) تُنفَّذ عمليات INSERT، وتتراكم البيانات في ReorderBuffer.</li>
+<li>(2) عند تجاوز حد الذاكرة (المحدد بـ<a href="https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-LOGICAL-DECODING-WORK-MEM">logical_decoding_work_mem</a>)، <strong>يبدأ walsender الإرسال فورًا</strong>، دون انتظار الالتزام.</li>
+<li>(3) يخزّن عامل التطبيق البيانات الواردة مؤقتًا في الذاكرة باستخدام بنية <code>StringInfoData</code> باسم <em>original_msg</em>.</li>
+<li>(4) إذا بلغ حد الذاكرة على جانب المشترك، يحفظ العامل البيانات في <strong>ملفات مؤقتة</strong> (Temp files).</li>
+<li>(5) <strong>تلتزم</strong> المعاملة على الناشر.</li>
+<li>(6) يسترجع عامل التطبيق البيانات من الملفات المؤقتة (أو الذاكرة) ويطبّق التغييرات.</li>
+</ul>
+<p>وخلافًا لـwalsender الذي يدير التغييرات داخل ReorderBuffer منظّم، يخزّن عامل التطبيق التغييرات الواردة مؤقتًا كتدفق ثنائي خام داخل بنية StringInfoData عامة (original_msg).</p>
+<p>فعّل البث بتحديد “streaming = on” في أمر <a href="https://www.postgresql.org/docs/current/sql-createsubscription.html">CREATE SUBSCRIPTION</a>. وتُحكم سعة مخزن رسائل عامل التطبيق أيضًا بـlogical_decoding_work_mem. وترد تفاصيل إدارة الملفات المؤقتة في القسم 12.7.2.1.</p>
+<p>وتُزيل هذه الطريقة زمن النقل الذي يحدث عادةً بعد الالتزام. وحتى مع وجود معاملات كبيرة متزامنة، يضمن النقل الاستباقي بدء عملية التطبيق فورًا بعد الالتزام (الشكل 12.5 [2]).</p>
+<h4>[3] التطبيق المتوازي للتغييرات المبثوثة (الإصدار 16 وما بعده)</h4>
+<p>قدّم الإصدار 16 القدرة على <strong>توزيع عملية التطبيق بالتوازي أثناء البث</strong> قبل التزام المعاملة. ويتراكب ذلك مع نقل البيانات والتطبيق معًا. ويوضّح الشكل 12.6 ذلك [1].</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-06.webp" alt=""></p>
+<h4>الشكل 12.6: آلية وكفاءة عمال التطبيق المتوازيين أثناء البث.</h4>
+<p>وتدفق البث المتوازي كما يلي:</p>
+<ul>
+<li>(1) تؤدي عمليات INSERT إلى تراكم البيانات في ReorderBuffer.</li>
+<li>(2) عند تجاوز حد الذاكرة، يبدأ walsender إرسال بيانات التغييرات.</li>
+<li>(3) يستقبل <strong>عامل التطبيق القائد</strong> (leader apply worker) التدفق ويوزّع البيانات على <strong>عامل تطبيق متوازٍ</strong> (parallel apply worker).</li>
+<li>(4) <strong>يبدأ عامل التطبيق المتوازي فورًا بتطبيق التغييرات</strong> على الجداول الهدف.</li>
+<li>(5) <strong>تُنفَّذ عبارة COMMIT</strong> على الناشر.</li>
+<li>(6) يستقبل عامل التطبيق القائد رسالة الالتزام ويرسلها إلى عامل التطبيق المتوازي.</li>
+<li>(7) يُكمل عامل التطبيق المتوازي المعاملة المحلية وينهي التطبيق.</li>
+</ul>
+<p>فعّل التطبيق المتوازي بتحديد <em>streaming</em> = <em>‘parallel’</em> في <a href="https://www.postgresql.org/docs/current/sql-createsubscription.html">CREATE SUBSCRIPTION</a>.</p>
+<p>وتتيح هذه البنية تراكبًا شبه كامل بين معالجة الناشر وتطبيق المشترك. ويقلّل ذلك بشكل جذري تأخّر النسخ المتماثل خلال التحديثات الكبيرة (الشكل 12.6 [2]).</p>
+<p>ومع ذلك، لا يُضمن التنفيذ المتوازي في كل سيناريو. فإذا بلغ العمال النشطون حدّ <a href="https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-PARALLEL-APPLY-WORKERS-PER-SUBSCRIPTION">max_parallel_apply_workers_per_subscription</a>، يعود المشترك إلى التطبيق التسلسلي عند الالتزام – مطابقًا لسلوك “streaming = on”. وتُناقش قيود أخرى في القسم 12.7.3.</p>
+<h2 id="1213-هوية-النسخة">12.1.3. هوية النسخة</h2>
+<p>النسخ المتماثل المنطقي في PostgreSQL قائم على الصفوف ويعمل على صفوف البيانات المنطقية لا على تخطيطات التخزين الفيزيائية (مثل الكتل أو الإزاحات). ونتيجة لذلك، عندما ينفّذ المشترك عمليات UPDATE أو DELETE، يحتاج النظام إلى «مفتاح بحث» لتحديد الصف الذي يجب تعديله بالضبط. ويُعرف هذا الإعداد بـ<strong>هوية النسخة</strong> (Replica Identity).</p>
+<p>وإذا لم تُعرَّف هوية نسخة مناسبة، لا يستطيع المشترك تحديد الصفوف الهدف بشكل فريد. ويؤدي ذلك إلى أخطاء في النسخ المتماثل أو تعديلات بيانات غير مقصودة. ولمنع مثل هذه المشكلات، يرفض الناشر محاولات UPDATE أو DELETE على جدول تفتقر هويته إلى هوية نسخة بإرجاع خطأ:</p>
+<pre><code>testdb=# UPDATE tbl SET data = 'updated_value' WHERE id = 1;
+ERROR:  cannot update table &amp;#34;tbl&amp;#34; because it does not have a replica identity and publishes updates
+HINT:  To enable updating the table, set REPLICA IDENTITY using ALTER TABLE.
+</code></pre>
+<h3 id="12131-أنواع-هوية-النسخة">12.1.3.1. أنواع هوية النسخة</h3>
+<p>يوفّر PostgreSQL أربعة أوضاع لهوية النسخة، قابلة للضبط لكل جدول على حدة:</p>
+<table>
+<thead>
+<tr>
+<th>الوضع</th>
+<th>الوصف</th>
+<th>الاستخدام والخصائص</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DEFAULT</strong></td>
+<td>يستخدم أعمدة <strong>المفتاح الأساسي</strong> كمعرّف.</td>
+<td>يُطبَّق هذا الوضع تلقائيًا عند تعريف مفتاح أساسي.</td>
+</tr>
+<tr>
+<td><strong>USING INDEX</strong></td>
+<td>يستخدم <strong>فهرسًا فريدًا غير فارغ</strong> محدّدًا كمعرّف.</td>
+<td>هذا مفيد للجداول التي لا تحتوي على مفتاح أساسي حيث يعمل فهرس فريد محدّد كمفتاح.</td>
+</tr>
+<tr>
+<td><strong>FULL</strong></td>
+<td>يسجّل <strong>القيم القديمة لجميع الأعمدة</strong> في الصف.</td>
+<td>يُطلب هذا للجداول التي لا تحتوي على قيود فريدة. ويزيد هذا الوضع حجم الرسائل؛ انظر القسم 12.4.3 للتفاصيل.</td>
+</tr>
+<tr>
+<td><strong>NOTHING</strong></td>
+<td>لا يسجّل أي معلومات هوية.</td>
+<td>هذا هو الافتراضي للجداول التي لا تحتوي على مفتاح أساسي. وتُتابع عمليات INSERT، لكن لا يمكن نسخ UPDATE وDELETE.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12132-الإعداد-والتحقق">12.1.3.2. الإعداد والتحقق</h3>
+<p>يضبط أمر <a href="https://www.postgresql.org/docs/current/sql-altertable.html#SQL-ALTERTABLE-REPLICA-IDENTITY">ALTER TABLE … REPLICA IDENTITY</a> هوية النسخة. وعند إنشاء مفتاح أساسي، يضبط النظام الوضع تلقائيًا على <strong>DEFAULT</strong>.</p>
+<p><strong>مثال: تحديد فهرس فريد</strong></p>
+<pre><code>testdb=# CREATE TABLE tbl_ri (id int NOT NULL, name text, data int NOT NULL);
+testdb=# CREATE UNIQUE INDEX tbl_ri_idx ON tbl_ri (id, data);
+testdb=# ALTER TABLE tbl_ri REPLICA IDENTITY USING INDEX tbl_ri_idx;
+</code></pre>
+<p><strong>مثال: الإعداد إلى FULL</strong></p>
+<pre><code>testdb=# CREATE TABLE tbl_ri_full (id int, name text, data int);
+testdb=# ALTER TABLE tbl_ri_full REPLICA IDENTITY FULL;
+</code></pre>
+<p>يُخزَّن إعداد هوية النسخة لكل جدول في العمود <strong>relreplident</strong> من كتالوج النظام <strong>pg_class</strong>. ويتحقق الاستعلام التالي من هذا الإعداد:</p>
+<pre><code>testdb=# -- Values: 'd' (default), 'n' (nothing), 'f' (full), 'i' (index)
+testdb=# SELECT relname, relreplident FROM pg_class WHERE relname = 'tbl_ri';
+ relname | relreplident
+---------+--------------
+ tbl_ri  | i
+(1 row)
+
+testdb=# SELECT relname, relreplident FROM pg_class WHERE relname = 'tbl_ri_full';
+   relname   | relreplident
+-------------+--------------
+ tbl_ri_full | f
+(1 row)
+</code></pre>
+<p>** معلومات</p>
+<p>ومع أن <em>pg_class.relreplident</em> يشير إلى نوع هوية النسخة، فإنه لا يخزّن معرّف الفهرس المحدد (OID). وبدلًا من ذلك، عند إعداد “REPLICA IDENTITY USING INDEX”، يُسجَّل الفهرس المعيّن في كتالوج النظام <strong>pg_index</strong>. وتحديدًا، يُضبط العمود <strong>indisreplident</strong> (من النوع المنطقي) على <em>true</em> للفهرس المختار.</p>
+<p>ويحدّد الاستعلام التالي أي فهرس بعينه يعمل كهوية نسخة لجدول معيّن:</p>
+<pre><code>testdb=# SELECT rel.relname AS table_name, idx_rel.relname AS index_name
+	 FROM pg_class rel
+	 JOIN pg_index idx ON rel.oid = idx.indrelid
+	 JOIN pg_class idx_rel
+	 ON idx.indexrelid = idx_rel.oid
+	 WHERE rel.relname = 'tbl_ri' AND idx.indisreplident = true;
+ table_name | index_name
+------------+------------
+ tbl_ri     | tbl_ri_idx
+(1 row)
+</code></pre>
+<h2 id="1214-أصل-النسخ-المتماثل">12.1.4. أصل النسخ المتماثل</h2>
+<p>يحدّد <strong>أصل النسخ المتماثل</strong> (Replication Origin) مصدر تغيير البيانات. وهو يخدم غرضين رئيسيين:</p>
+<ol>
+<li><strong>تتبّع تقدّم النسخ المتماثل (التحكم في الاستعادة)</strong>: عند تطبيق بيانات من عقدة خارجية، يسجّل المشترك LSN الخاص بالالتزام على الناشر (رقم تسلسل السجل) داخل سجل WAL الخاص به. وبهذا الربط، يضمن النظام أن يستأنف النسخ المتماثل المنطقي بدقة من النقطة الصحيحة بعد أي انقطاع.</li>
+<li><strong>منع حلقات النسخ المتماثل اللانهائية (النسخ المتماثل الدائري)</strong>: في النسخ المتماثل ثنائي الاتجاه، قد يُرسل تغيير أُرسل من العقدة A إلى العقدة B مرة أخرى عن غير قصد إلى العقدة A. وبتختم كل تغيير بأصل، يميّز النظام التغييرات المحلية من التغييرات المنسوخة، مانعًا إعادة الإرسال الزائدة.</li>
+</ol>
+<p>ومع أن أصل النسخ المتماثل مدمج بعمق في إطار النسخ المتماثل المنطقي، فإن عنصره الأساسي هو <strong>origin_id</strong>. ويتيح هذا المعرّف المحلي للمشترك التمييز داخليًا بين الناشرين المختلفين (الأصول).</p>
+<p>وآليات تتبّع التقدّم مضمنة في البنية ومفصّلة في القسم 12.8. ويركّز هذا القسم على منع الحلقات، وهي ميزة أُدخلت في الإصدار 16.</p>
+<p>** معرّفات الأصل: معرّفات محلية لا مفاتيح عامة</p>
+<p>من الضروري إدراك أن origin_id ليس معرّفًا فريدًا على مستوى التجمّع أو عالميًا. بل يسند المشترك هذه القيمة داخليًا للتمييز بين الناشرين المتعددين الذين يتصل بهم.</p>
+<p>وبناءً على ذلك، لا تحمل القيمة العددية المحددة لـorigin_id أي دلالة للعقد الأخرى في طوبولوجيا النسخ المتماثل. وتعمل هذه القيمة فقط كتمييز ثنائي بسيط: هل هي صفر أم غير صفر.</p>
+<ul>
+<li><strong>origin_id يساوي 0</strong> يشير إلى تغييرات من معاملات نُفِّذت أصلًا على تلك العقدة.</li>
+<li><strong>origin_id يساوي 1 أو أكبر</strong> يشير إلى أن العقدة كانت تعيد تنفيذ تغييرات مستلمة من مصدر أعلى.</li>
+</ul>
+<h3 id="12141-منع-حلقات-النسخ-المتماثل-اللانهائية-عبر-أصل-النسخ-المتماثل">12.1.4.1. منع حلقات النسخ المتماثل اللانهائية عبر أصل النسخ المتماثل</h3>
+<p>يتيح النسخ المتماثل المنطقي في PostgreSQL بقاء جداول جانب المشترك قابلة للكتابة. ويسمح ذلك لعقدتين بالعمل في الوقت نفسه كناشرَين ومشتركَين، محقّقًا <strong>النسخ المتماثل النشط-النشط</strong> (إعداد متعدد الأساسيين)، كما هو موضّح في الشكل 12.7 [1].</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-07.webp" alt=""></p>
+<h4>الشكل 12.7. النسخ المتماثل النشط-النشط وحلقة النسخ المتماثل اللانهائية.</h4>
+<p>قبل الإصدار 16، كان النسخ المتماثل المنطقي يعيد إرسال جميع التغييرات المُفكَّكة دون قيد. وفي إعداد ثنائي الاتجاه، كان تغيير ينشأ على العقدة 1 ينتقل إلى العقدة 2؛ ثم تعامله العقدة 2 كـ«تغيير محلي جديد» وترسله مرة أخرى إلى العقدة 1. وتُسمى هذه السلسلة التي لا تتوقف <strong>حلقة نسخ متماثل لانهائية</strong> (أو <strong>نسخًا متماثلًا دائريًا</strong>).</p>
+<p>وعالج الإصدار 16 هذه المشكلة بالآلية التالية. ومع أن البنية متعددة الاستخدامات، فإن التنفيذ الحالي يتبع هذه السلوكيات:</p>
+<ul>
+<li><strong>origin = ‘any’ (الافتراضي)</strong>: يرسل walsender التغييرات بصرف النظر عمّا إذا كان WAL قد تولّد محليًا أم بتطبيق رسائل من ناشر.</li>
+<li><strong>origin = ’none’</strong>: يستبعد walsender سجلات WAL المتولّدة بتطبيق رسائل من عقدة خارجية.</li>
+</ul>
+<p>وإعداد “origin” خيار إعداد في أمر <a href="https://www.postgresql.org/docs/current/sql-createsubscription.html">CREATE SUBSCRIPTION</a>.</p>
+<h4>الآلية الداخلية وتسلسل الترشيح</h4>
+<p>ينسّق المشترك والناشر لتحديد الأصول وترشيحها:</p>
+<ol>
+<li><strong>ختم الأصل</strong>: عندما يلتزم عامل التطبيق على المشترك بمعاملة، يُلحق <em>origin_id</em> بسجل WAL الخاص بالالتزام (أو الإلغاء)<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>. ويعيّن التنفيذ الحالي عددًا صحيحًا غير صفري للتغييرات الواردة من عقد خارجية.</li>
+<li><strong>التقييم بواسطة walsender</strong>: أثناء فكّ ترميز معاملة في ReorderBuffer، يفحص walsender معلومات الأصل داخل سجل WAL الخاص بالالتزام على الناشر.</li>
+<li><strong>تنفيذ الترشيح</strong>: إذا ضُبط origin = “none” وكان origin_id موجودًا، يتخطّى walsender إرسال تلك المعاملة بأكملها ويتجاهل البيانات.</li>
+</ol>
+<p>ويوضّح الشكل 12.8 هذا السلوك باستخدام إعداد متسلسل (العقدة 1 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> العقدة 2 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> العقدة 3).</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-08.webp" alt=""></p>
+<h4>الشكل 12.8. سلوك انتشار البيانات وفقًا لإعداد origin.</h4>
+<p><strong>[1] الحالة: origin = ‘any’ (الانتشار عبر جميع العقد)</strong></p>
+<ul>
+<li><strong>العقدة 1</strong>: تنفّذ INSERT. وبما أنه لا يوجد أصل في سجل الالتزام، يرسل walsender البيانات إلى العقدة 2.</li>
+<li><strong>العقدة 2</strong>: يطبّق عامل التطبيق البيانات ويسجّل “origin_id = 1”. ولأن origin = “any”، يرسل walsender هذه البيانات المختومة إلى العقدة 3.</li>
+<li><strong>العقدة 3</strong>: يستقبل عامل التطبيق البيانات من العقدة 2. ورغم وجود origin_id، يطبّق العامل التغيير لأن \`origin = “any”.</li>
+</ul>
+<p><strong>[2] الحالة: origin = ’none’ (الإنهاء عند العقدة الوسيطة)</strong></p>
+<ul>
+<li><strong>العقدة 1</strong>: تنفّذ INSERT. وتُرسل البيانات إلى العقدة 2 لعدم وجود أصل.</li>
+<li><strong>العقدة 2</strong>: يطبّق عامل التطبيق التغيير ويسجّل “origin_id = 1”. وعندما يحدّد walsender قيمة origin_id عبر ReorderBuffer، يتخطّى إرسال الرسالة إلى العقدة 3.</li>
+<li><strong>العقدة 3</strong>: لا تُستقبل أي بيانات لأن walsender على العقدة 2 يرشّح المعاملة.</li>
+</ul>
+<p>ويؤدي ضبط origin = “none” في إعدادات الاشتراك على جميع العقد المشاركة إلى منع حلقات النسخ المتماثل اللانهائية، ما يتيح طوبولوجيات نشط-نشط.</p>
+<h2 id="1215-فتحة-النسخ">12.1.5. فتحة النسخ</h2>
+<p>تتضمن فتحات النسخ المنطقية خمس سمات إضافية مقارنة بالنسخ المتماثل المتدفّق الفيزيائي. والسمات الثلاث التالية أساسية للمناقشات في الأقسام اللاحقة:</p>
+<ul>
+<li><strong>plugin</strong>: اسم إضافة الخرج المستخدمة لفكّ الترميز المنطقي (مثل pgoutput).</li>
+<li><strong>database</strong>: اسم قاعدة البيانات التي ترتبط بها فتحة النسخ. فبينما تكون فتحات النسخ الفيزيائية على مستوى النسخة، تُقصر فتحات النسخ المنطقية على قاعدة بيانات واحدة.</li>
+<li><strong>confirmed_flush_lsn</strong>: رقم تسلسل السجل (LSN) الذي أكّد عامل التطبيق على المشترك استلام البيانات حتى عنده. ولم يعد الناشر يحتفظ بالمعاملات الملتزمة السابقة لهذا LSN، فأصبحت مؤهّلة للحذف. انظر القسم 12.8 للتفاصيل.</li>
+</ul>
+<p>لاحظ أنه مع أن الفتحات المنطقية تتضمن أيضًا سمات مثل <em>catalog_xmin</em> و<em>two_phase</em>، فإن هذا التوثيق يحذف أوصافها. راجع <a href="https://www.postgresql.org/docs/current/view-pg-replication-slots.html">التوثيق الرسمي</a> للتفاصيل.</p>
+<h2 id="1216-التعارضات">12.1.6. التعارضات</h2>
+<p>لا ينسخ النسخ المتماثل المنطقي عمليات DDL ولا يتأثر بعمليات VACUUM على الناشر، خلافًا للنسخ المتماثل المتدفّق الفيزيائي. ونتيجة لذلك، لا تحدث أنواع التعارضات المرتبطة بالنسخ المتماثل المتدفّق.</p>
+<p>ومع ذلك، تنشأ التعارضات أساسًا بسبب تعديلات بيانات متزامنة على مستوى التطبيق على المشترك. فمثلًا، إذا حُذف صف مباشرةً على المشترك ثم حاول الناشر تحديث الصف نفسه لاحقًا، يحدث تعارض <strong>“update_missing”</strong>.</p>
+<p>وتتوفر قائمة شاملة بالتعارضات التي يكتشفها PostgreSQL في التوثيق الرسمي: <a href="https://www.postgresql.org/docs/current/logical-replication-conflicts.html">النسخ المتماثل المنطقي: التعارضات</a>.</p>
+<h1>12.2. بدء النسخ المتماثل المنطقي</h1>
+<h4>نسخة تجريبية: العمل قيد الإنجاز.</h4>
+<p>قبل إعداد النسخ المتماثل المنطقي، يُفترض توافر الشروط التالية:</p>
+<ul>
+<li>أن يكون لدى الناشر الجداول التي ستُنسخ إلى المشترك.</li>
+<li>أن يكون المشترك قد أنشأ بالفعل جداول بالبنية نفسها الموجودة على الناشر، ولكن دون أي بيانات.</li>
+</ul>
+<p>ويستخدم هذا القسم الجداول التالية:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">CREATE TABLE</span> tbl_1 (id <span class="hljs-type">int</span> <span class="hljs-keyword">PRIMARY KEY</span>, name text, data <span class="hljs-type">int</span>);
+<span class="hljs-keyword">CREATE TABLE</span> tbl_2 (id <span class="hljs-type">int</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">UNIQUE</span>, name text, data <span class="hljs-type">int</span>);
+<span class="hljs-keyword">CREATE</span> INDEX tbl_2_idx <span class="hljs-keyword">on</span> tbl_2 (id, name);
+<span class="hljs-keyword">CREATE TABLE</span> tbl_3 (id <span class="hljs-type">int</span>, name text, data <span class="hljs-type">int</span>);
+<span class="hljs-keyword">ALTER TABLE</span> tbl_3 REPLICA <span class="hljs-keyword">IDENTITY</span> <span class="hljs-keyword">FULL</span>;
+</code></pre>
+<p>لإعداد النسخ المتماثل المنطقي، يُصدر أمران:</p>
+<ul>
+<li><a href="https://www.postgresql.org/docs/current/sql-createpublication.html">CREATE PUBLICATION</a> على الناشر.</li>
+<li><a href="https://www.postgresql.org/docs/current/sql-createsubscription.html">CREATE SUBSCRIPTION</a> على المشترك.</li>
+</ul>
+<p>محتويات القسم</p>
+<ul>
+<li>12.2.1. إنشاء منشور</li>
+<li>12.2.2. إنشاء اشتراك</li>
+</ul>
+<h2 id="1221-إنشاء-منشور">12.2.1. إنشاء منشور</h2>
+<p>ينشئ أمر <a href="https://www.postgresql.org/docs/current/sql-createpublication.html">CREATE PUBLICATION</a> بيانات المنشور في كتالوجات النظام التالية ويحدّث <a href="https://www.postgresql.org/docs/current/catalog-pg-class.html">pg_class</a> إذا لزم الأمر:</p>
+<ul>
+<li><a href="https://www.postgresql.org/docs/current/catalog-pg-publication.html">pg_publication</a></li>
+<li><a href="https://www.postgresql.org/docs/current/catalog-pg-publication-rel.html">pg_publication_rel</a></li>
+<li><a href="https://www.postgresql.org/docs/current/catalog-pg-publication-namespace.html">pg_publication_namespace</a></li>
+</ul>
+<pre><code class="language-sql">testdb<span class="hljs-operator">=</span># <span class="hljs-comment">-- Publisher</span>
+testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">CREATE</span> PUBLICATION mypub <span class="hljs-keyword">FOR</span> <span class="hljs-keyword">TABLE</span> tbl_1, tbl_2, tbl_3;
+<span class="hljs-keyword">CREATE</span> PUBLICATION
+testdb<span class="hljs-operator">=</span># \\x
+Expanded display <span class="hljs-keyword">is</span> on.
+testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> pg_publication;
+<span class="hljs-operator">-</span>[ RECORD <span class="hljs-number">1</span> ]<span class="hljs-operator">+</span><span class="hljs-comment">------</span>
+oid          <span class="hljs-operator">|</span> <span class="hljs-number">16460</span>
+pubname      <span class="hljs-operator">|</span> mypub
+pubowner     <span class="hljs-operator">|</span> <span class="hljs-number">10</span>
+puballtables <span class="hljs-operator">|</span> f
+pubinsert    <span class="hljs-operator">|</span> t
+pubupdate    <span class="hljs-operator">|</span> t
+pubdelete    <span class="hljs-operator">|</span> t
+pubtruncate  <span class="hljs-operator">|</span> t
+pubviaroot   <span class="hljs-operator">|</span> f
+pubgencols   <span class="hljs-operator">|</span> n
+
+testdb<span class="hljs-operator">=</span># \\x
+Expanded display <span class="hljs-keyword">is</span> off.
+testdb<span class="hljs-operator">=</span># <span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> pg_publication_rel;
+  oid  <span class="hljs-operator">|</span> prpubid <span class="hljs-operator">|</span> prrelid <span class="hljs-operator">|</span> prqual <span class="hljs-operator">|</span> prattrs
+<span class="hljs-comment">-------+---------+---------+--------+---------</span>
+ <span class="hljs-number">16461</span> <span class="hljs-operator">|</span>   <span class="hljs-number">16460</span> <span class="hljs-operator">|</span>   <span class="hljs-number">16438</span> <span class="hljs-operator">|</span>        <span class="hljs-operator">|</span>
+ <span class="hljs-number">16462</span> <span class="hljs-operator">|</span>   <span class="hljs-number">16460</span> <span class="hljs-operator">|</span>   <span class="hljs-number">16446</span> <span class="hljs-operator">|</span>        <span class="hljs-operator">|</span>
+ <span class="hljs-number">16463</span> <span class="hljs-operator">|</span>   <span class="hljs-number">16460</span> <span class="hljs-operator">|</span>   <span class="hljs-number">16455</span> <span class="hljs-operator">|</span>        <span class="hljs-operator">|</span>
+(<span class="hljs-number">3</span> <span class="hljs-keyword">rows</span>)
+</code></pre>
+<p>ويعرض عرض النظام <a href="https://www.postgresql.org/docs/current/view-pg-publication-tables.html">pg_publication_tables</a> الربط بين المنشورات والجداول التي تنتمي إليها.</p>
+<pre><code>testdb=# -- Publisher
+testdb=# SELECT * FROM pg_publication_tables;
+ pubname | schemaname | tablename |    attnames    | rowfilter
+---------+------------+-----------+----------------+-----------
+ mypub   | public     | tbl_1     | {id,name,data} |
+ mypub   | public     | tbl_2     | {id,name,data} |
+ mypub   | public     | tbl_3     | {id,name,data} |
+(3 rows)
+</code></pre>
+<h2 id="1222-إنشاء-اشتراك">12.2.2. إنشاء اشتراك</h2>
+<p>ينشئ أمر <a href="https://www.postgresql.org/docs/current/sql-createsubscription.html">CREATE SUBSCRIPTION</a> على المشترك اشتراكًا.</p>
+<pre><code>testdb=# -- subscriber
+testdb=# CREATE SUBSCRIPTION mysub
+            CONNECTION 'host=192.168.3.10 port=5432 dbname=testdb'
+            PUBLICATION mypub
+            WITH (enabled = true, binary = false);
+</code></pre>
+<p>وتتكوّن هذه العملية من ثلاث مراحل (انظر الشكل 12.9):</p>
+<ul>
+<li><strong>المرحلة 1:</strong> إنشاء الاشتراك و(افتراضيًا) طلب فتحة نسخ على الناشر.</li>
+<li><strong>المرحلة 2:</strong> ربط عامل تطبيق بعملية walsender على الناشر.</li>
+<li><strong>المرحلة 3:</strong> مزامنة الجداول مع نظيراتها على الناشر.</li>
+</ul>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-09.webp" alt=""></p>
+<h4>الشكل 12.9. تسلسل تهيئة النسخ المتماثل المنطقي.</h4>
+<p>وتستكشف الأقسام الفرعية التالية هذه المراحل.</p>
+<h3 id="12221-المرحلة-1">12.2.2.1. المرحلة 1</h3>
+<p>تتضمن هذه المرحلة مهمتين رئيسيتين:</p>
+<ul>
+<li>إنشاء بيانات الاشتراك في كتالوجَي النظام <a href="https://www.postgresql.org/docs/current/catalog-pg-subscription.html">pg_subscription</a> و<a href="https://www.postgresql.org/docs/current/catalog-pg-subscription-rel.html">pg_subscription_rel</a>.</li>
+<li>(افتراضيًا) طلب فتحة نسخ على الناشر لإدارة النسخ المتماثل المنطقي.</li>
+</ul>
+<p>ولتنفيذ هاتين المهمتين، ينفّذ المشترك التسلسل التالي:</p>
+<ul>
+<li>(1) تنشئ عملية postgres التي تصدر ‘CREATE SUBSCRIPTION’ اتصالًا بعملية walsender.</li>
+<li>(2) تتفاعل عملية postgres مع walsender من أجل: التحقق من وجود المنشور المحدد.</li>
+<li>استرجاع مخططات الجداول الهدف ومعرّفات OID الخاصة بها لضمان التوافق البنيوي.</li>
+<li>(افتراضيًا) طلب فتحة نسخ. وإذا حدّد الأمر فتحة موجودة، تحذف العملية هذا الطلب.</li>
+</ul>
+<p>(3) تُدرج عملية postgres بيانات الاشتراك في ‘pg_subscription’ و‘pg_subscription_rel’. (4) يُنهي الناشر عملية walsender.</p>
+<pre><code>testdb=# -- Subscriber
+testdb=# SELECT * FROM pg_subscription;
+-[ RECORD 1 ]-------+---------------------------------------
+oid                 | 16436
+subdbid             | 16388
+subskiplsn          | 0/0
+subname             | mysub
+subowner            | 10
+subenabled          | t
+subbinary           | f
+substream           | p
+subtwophasestate    | d
+subdisableonerr     | f
+subpasswordrequired | t
+subrunasowner       | f
+subfailover         | f
+subconninfo         | host=192.168.3.10 port=5432 dbname=testdb
+subslotname         | mysub
+subsynccommit       | off
+subpublications     | {mypub}
+suborigin           | any
+
+testdb=# \\x
+Expanded display is off.
+testdb=# SELECT s.srsubid, s.srrelid, c.relname, s.srsublsn
+testdb-#       FROM pg_subscription_rel AS s, pg_class AS c WHERE c.oid = s.srrelid;
+ srsubid | srrelid | relname | srsublsn
+---------+---------+---------+-----------
+   16436 |   16414 | tbl_1   | 0/1BF35E0
+   16436 |   16422 | tbl_2   | 0/1BF35E0
+   16436 |   16431 | tbl_3   | 0/1BF5320
+(3 rows)
+</code></pre>
+<p>وتُنشأ فتحة النسخ على الناشر كما يلي:</p>
+<pre><code>testdb=# -- Publisher
+testdb=# SELECT * FROM pg_replication_slots;
+-[ RECORD 1 ]-------+----------
+slot_name           | mysub
+plugin              | pgoutput
+slot_type           | logical
+datoid              | 16384
+database            | testdb
+temporary           | f
+active              | t
+active_pid          | 2051
+xmin                |
+catalog_xmin        | 823
+restart_lsn         | 0/1BF5320
+confirmed_flush_lsn | 0/1BF5358
+wal_status          | reserved
+safe_wal_size       |
+two_phase           | f
+two_phase_at        |
+inactive_since      |
+conflicting         | f
+invalidation_reason |
+failover            | f
+synced              | f
+</code></pre>
+<h3 id="12222-المرحلة-2">12.2.2.2. المرحلة 2</h3>
+<p>تبدأ هذه المرحلة العمليات الخلفية اللازمة للنسخ المتماثل المنطقي.</p>
+<ul>
+<li>(5) يبدأ مُشغّل النسخ المتماثل المنطقي عامل تطبيق.</li>
+<li>(6) يتصل عامل التطبيق بعملية walsender على الناشر ويهيّئ أصل النسخ المتماثل الخاص به (بإنشاء مدخل في <a href="https://www.postgresql.org/docs/current/catalog-pg-replication-origin.html">pg_replication_origin</a> إن لم يكن موجودًا).</li>
+</ul>
+<p>وتواصل هاتان العمليتان — walsender على الناشر وعامل التطبيق على المشترك — العمل لتدفق التغييرات وتطبيقها.</p>
+<h3 id="12223-المرحلة-3">12.2.2.3. المرحلة 3</h3>
+<p>تزامن هذه المرحلة الجداول مع الجداول المقابلة على الناشر.</p>
+<p>ولتنفيذ هذه المهمة، يبدأ مُشغّل النسخ المتماثل المنطقي عمال تطبيق لاسترجاع صفوف الجداول الهدف.</p>
+<p>ويبدأ المُشغّل أكبر عدد ممكن من العمال لتعظيم الكفاءة. ويُسمى العمال المستخدمون للمزامنة <strong>عمال مزامنة الجداول</strong> (table sync workers).</p>
+<ul>
+<li>(7) يبدأ المُشغّل عمال مزامنة الجداول.</li>
+<li>(8) يتصل عمال مزامنة الجداول بعمليات walsender.</li>
+<li>(9) ترسل عمليات walsender بيانات الجداول إلى عمال مزامنة الجداول، الذين يُدرجون البيانات بعد ذلك في الجداول الهدف.</li>
+<li>(10) بعد المزامنة، تنتهي عمليات walsender وعمال مزامنة الجداول.</li>
+</ul>
+<p>وتستخدم عمليات walsender وعمال مزامنة الجداول بروتوكولي <code>COPY ... TO STDOUT</code> و<code>COPY ... FROM STDIN</code> لتدفق بيانات الجداول وإدراجها بكفاءة. راجع <a href="https://github.com/postgres/postgres/blob/master/src/backend/replication/logical/tablesync.c">tablesync.c</a> لمزيد من التفاصيل.</p>
+<p>** pg_createsubscriber</p>
+<p>يدعم الإصدار 17 أداة <a href="https://www.postgresql.org/docs/current/app-pgcreatesubscriber.html">pg_createsubscriber</a>.</p>
+<h1>12.3. بنية ReorderBuffer</h1>
+<h4>نسخة تجريبية: العمل قيد الإنجاز.</h4>
+<p>تخصّص كل عملية walsender منطقة <strong>ReorderBuffer</strong>. وتحدّ معلمة الإعداد <a href="https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-LOGICAL-DECODING-WORK-MEM">logical_decoding_work_mem</a> حجم هذه المنطقة (الافتراضي 64 ميغابايت).</p>
+<p>ويتكوّن ReorderBuffer من المكوّنات الثلاثة التالية (انظر الشكل 12.11):</p>
+<ul>
+<li><a href="https://github.com/postgres/postgres/blob/REL_18_STABLE/src/include/replication/reorderbuffer.h#L574">ReorderBuffer</a></li>
+<li><a href="https://github.com/postgres/postgres/blob/REL_18_STABLE/src/include/replication/reorderbuffer.h#L293">ReorderBufferTXN</a></li>
+<li><a href="https://github.com/postgres/postgres/blob/REL_18_STABLE/src/include/replication/reorderbuffer.h#L76">ReorderBufferChange</a></li>
+</ul>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-11.webp" alt=""></p>
+<h4>الشكل 12.11. بنية ReorderBuffer.</h4>
+<p>العنصر المحوري في بنية <code>ReorderBuffer</code> هو جدول التجزئة <em>by_txn</em>، الذي يستخدم معرّف المعاملة (txid) مفتاحًا له. وكل مدخل في جدول التجزئة هذا هو بنية <code>ReorderBufferTXN</code>. وتخزّن هذه البنية البيانات الوصفية وبيانات WAL الفعلية المرتبطة بكل معاملة.</p>
+<p>وتُمثَّل تعديلات البيانات الفردية (مثل INSERT وUPDATE وDELETE) ببنى <code>ReorderBufferChange</code>. ويُلحق النظام هذه البنى <strong>بترتيب LSN</strong> بالقائمة المترابطة المزدوجة <strong>changes</strong> داخل ReorderBufferTXN المقابلة.</p>
+<h2 id="1231-reorderbuffer">12.3.1. ReorderBuffer</h2>
+<p>تحافظ هذه البنية على السياق الأساسي لفكّ الترميز المنطقي.</p>
+<table>
+<thead>
+<tr>
+<th>العنصر</th>
+<th>النوع</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>by_txn</strong></td>
+<td>HTAB_*</td>
+<td>جدول تجزئة يربط معرّفات txid بمدخلات ReorderBufferTXN. ويعمل كفهرس لاسترجاع المعاملات النشطة بسرعة.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1232-reorderbuffertxn">12.3.2. ReorderBufferTXN</h2>
+<p>تدير هذه البنية حالة معاملة فردية والتغييرات المرتبطة بها.</p>
+<table>
+<thead>
+<tr>
+<th>العنصر</th>
+<th>النوع</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>first_lsn</strong></td>
+<td>XLogRecPtr</td>
+<td>LSN الخاص بأول سجل تغيير ينتمي إلى هذه المعاملة. ويُستخدم لتحديد نقطة بداية المعاملة.</td>
+</tr>
+<tr>
+<td><strong>final_lsn</strong></td>
+<td>XLogRecPtr</td>
+<td>LSN الخاص بسجل الالتزام (أو الإلغاء) لهذه المعاملة.</td>
+</tr>
+<tr>
+<td><strong>origin_id</strong></td>
+<td>RepOriginId</td>
+<td>معرّف أصل النسخ المتماثل الذي أُنشئت فيه هذه المعاملة أصلًا.</td>
+</tr>
+<tr>
+<td><strong>origin_lsn</strong></td>
+<td>XLogRecPtr</td>
+<td>LSN الخاص بسجل الالتزام على الناشر الذي نشأت فيه هذه المعاملة.</td>
+</tr>
+<tr>
+<td><strong>base_snapshot</strong></td>
+<td>Snapshot</td>
+<td>اللقطة التاريخية المستخدمة لفكّ ترميز المعاملة. وتضمن صحة الظهور أثناء مسح الكتالوجات بتحديد البيانات التي كانت مرئية عند بداية المعاملة.</td>
+</tr>
+<tr>
+<td><strong>changes</strong></td>
+<td>dlist_head</td>
+<td>قائمة مترابطة مزدوجة من بنى ReorderBufferChange، تخزّن سجلات تغييرات البيانات الفردية بترتيب LSN. انظر القسم الفرعي التالي.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ملاحظة:</strong> مع أن <em>base_snapshot</em> ضرورية لتحديد الظهور مباشرةً بعد إنشاء الفتحة أو أثناء تغييرات الكتالوج، فإن المناقشات اللاحقة تحذفها للتركيز على تدفق البيانات في الحالة المستقرة.</p>
+<h2 id="1233-reorderbufferchange">12.3.3. ReorderBufferChange</h2>
+<p>تُمثّل هذه البنية تعديل بيانات فرديًا. وتضمّ هذه القائمة العناصر الرئيسية فقط.</p>
+<table>
+<thead>
+<tr>
+<th>العنصر</th>
+<th>النوع</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>lsn</strong></td>
+<td>XLogRecPtr</td>
+<td>LSN الخاص بسجل WAL الذي ولّد هذا التغيير تحديدًا.</td>
+</tr>
+<tr>
+<td><strong>action</strong></td>
+<td>ReorderBufferChangeType</td>
+<td>نوع عملية التغيير (مثل INSERT أو UPDATE أو DELETE أو TRUNCATE).</td>
+</tr>
+<tr>
+<td><strong>data</strong></td>
+<td>union</td>
+<td>اتحاد يحتوي على بيانات خاصة بالعملية، مثل بنيتَي tp (tuple) أو truncate.</td>
+</tr>
+<tr>
+<td><strong>data.tp.rlocator</strong></td>
+<td>RelFileLocator</td>
+<td>يحدّد العلاقة الفيزيائية (الجدول) المتأثرة بالتغيير. وهو ثلاثي يتكوّن من spcOid (فضاء الجداول) وdbOid (قاعدة البيانات) وrelNumber (رقم RelFilenode).</td>
+</tr>
+<tr>
+<td><strong>data.tp.oldtuple</strong></td>
+<td>HeapTuple</td>
+<td>النسخة «قبل» من الصف. وتُملأ لعمليات UPDATE أو DELETE إذا تطلّب ذلك إعداد <strong>هوية النسخة</strong> (انظر القسم 12.4.3).</td>
+</tr>
+<tr>
+<td><strong>data.tp.newtuple</strong></td>
+<td>HeapTuple</td>
+<td>النسخة «بعد» من الصف، وتحتوي على البيانات الجديدة لعمليات INSERT أو UPDATE.</td>
+</tr>
+</tbody>
+</table>
+<p>** ** ReorderBufferChange</p>
+<pre><code>/*
+ * Types of the change passed to a 'change' callback.
+ *
+ * For efficiency and simplicity reasons we want to keep Snapshots, CommandIds
+ * and ComboCids in the same list with the user visible INSERT/UPDATE/DELETE
+ * changes. Users of the decoding facilities will never see changes with
+ * *_INTERNAL_* actions.
+ *
+ * The INTERNAL_SPEC_INSERT and INTERNAL_SPEC_CONFIRM, and INTERNAL_SPEC_ABORT
+ * changes concern &amp;#34;speculative insertions&amp;#34;, their confirmation, and abort
+ * respectively.  They're used by INSERT .. ON CONFLICT .. UPDATE.  Users of
+ * logical decoding don't have to care about these.
+ */
+typedef enum ReorderBufferChangeType
+{
+	REORDER_BUFFER_CHANGE_INSERT,
+	REORDER_BUFFER_CHANGE_UPDATE,
+	REORDER_BUFFER_CHANGE_DELETE,
+	REORDER_BUFFER_CHANGE_MESSAGE,
+	REORDER_BUFFER_CHANGE_INVALIDATION,
+	REORDER_BUFFER_CHANGE_INTERNAL_SNAPSHOT,
+	REORDER_BUFFER_CHANGE_INTERNAL_COMMAND_ID,
+	REORDER_BUFFER_CHANGE_INTERNAL_TUPLECID,
+	REORDER_BUFFER_CHANGE_INTERNAL_SPEC_INSERT,
+	REORDER_BUFFER_CHANGE_INTERNAL_SPEC_CONFIRM,
+	REORDER_BUFFER_CHANGE_INTERNAL_SPEC_ABORT,
+	REORDER_BUFFER_CHANGE_TRUNCATE,
+} ReorderBufferChangeType;
+
+/* forward declaration */
+struct ReorderBufferTXN;
+
+/*
+ * a single 'change', can be an insert (with one tuple), an update (old, new),
+ * or a delete (old).
+ *
+ * The same struct is also used internally for other purposes but that should
+ * never be visible outside reorderbuffer.c.
+ */
+typedef struct ReorderBufferChange
+{
+	XLogRecPtr	lsn;
+
+	/* The type of change. */
+	ReorderBufferChangeType action;
+
+	/* Transaction this change belongs to. */
+	struct ReorderBufferTXN *txn;
+
+	RepOriginId origin_id;
+
+	/*
+	 * Context data for the change. Which part of the union is valid depends
+	 * on action.
+	 */
+	union
+	{
+		/* Old, new tuples when action == *_INSERT|UPDATE|DELETE */
+		struct
+		{
+			/* relation that has been changed */
+			RelFileLocator rlocator;
+
+			/* no previously reassembled toast chunks are necessary anymore */
+			bool		clear_toast_afterwards;
+
+			/* valid for DELETE || UPDATE */
+			HeapTuple	oldtuple;
+			/* valid for INSERT || UPDATE */
+			HeapTuple	newtuple;
+		}			tp;
+
+		/*
+		 * Truncate data for REORDER_BUFFER_CHANGE_TRUNCATE representing one
+		 * set of relations to be truncated.
+		 */
+		struct
+		{
+			Size		nrelids;
+			bool		cascade;
+			bool		restart_seqs;
+			Oid		   *relids;
+		}			truncate;
+
+		/* Message with arbitrary data. */
+		struct
+		{
+			char	   *prefix;
+			Size		message_size;
+			char	   *message;
+		}			msg;
+
+		/* New snapshot, set when action == *_INTERNAL_SNAPSHOT */
+		Snapshot	snapshot;
+
+		/*
+		 * New command id for existing snapshot in a catalog changing tx. Set
+		 * when action == *_INTERNAL_COMMAND_ID.
+		 */
+		CommandId	command_id;
+
+		/*
+		 * New cid mapping for catalog changing transaction, set when action
+		 * == *_INTERNAL_TUPLECID.
+		 */
+		struct
+		{
+			RelFileLocator locator;
+			ItemPointerData tid;
+			CommandId	cmin;
+			CommandId	cmax;
+			CommandId	combocid;
+		}			tuplecid;
+
+		/* Invalidation. */
+		struct
+		{
+			uint32		ninvalidations; /* Number of messages */
+			SharedInvalidationMessage *invalidations;	/* invalidation message */
+		}			inval;
+	}			data;
+
+	/*
+	 * While in use this is how a change is linked into a transactions,
+	 * otherwise it's the preallocated list.
+	 */
+	dlist_node	node;
+} ReorderBufferChange;
+</code></pre>
+<h1>12.4. ترشيح بيانات WAL وتخزينها مؤقتًا</h1>
+<h4>نسخة تجريبية: العمل قيد الإنجاز.</h4>
+<p>يصف هذا القسم آلية ترشيح البيانات وتخزينها مؤقتًا داخل ReorderBuffer.</p>
+<p>تبدأ المناقشة بعملية الترشيح متعددة المراحل التي ينفّذها walsender، والتي تحدّد السجلات المؤهّلة لفكّ الترميز. ويتبع ذلك عرض توضيحي لكيفية تراكم ReorderBuffer لهذه التغييرات عبر سيناريو معاملات ملموس.</p>
+<p>علاوة على ذلك، يشرح هذا القسم الفروق في تخزين بيانات WAL لعمليات UPDATE وDELETE وفقًا لـ<strong>هوية النسخة</strong>.</p>
+<p>وأخيرًا، يقدّم القسم نظرة عامة على آلية «الانسكاب إلى القرص» (Spill to Disk)، التي تُطلَق عندما يتجاوز <code>ReorderBuffer</code> حدّ ذاكرته.</p>
+<p>محتويات القسم</p>
+<ul>
+<li>12.4.1. الترشيح</li>
+<li>12.4.2. تخزين بيانات WAL مؤقتًا</li>
+<li>12.4.3. العلاقة بين هوية النسخة والصفوف المُفكَّكة</li>
+<li>12.4.4. إدارة ذاكرة ReorderBuffer وتسلسل المعاملات (الانسكاب إلى القرص)</li>
+</ul>
+<h2 id="1241-الترشيح">12.4.1. الترشيح</h2>
+<p>يقرّر walsender ما إذا كان سيفكّ ترميز سجل WAL ويسجّله في قائمة <strong>changes</strong> الخاصة بـReorderBuffer عبر بوابة ترشيح متعددة المراحل.</p>
+<ul>
+<li><strong>البوابة الأولى (OID قاعدة البيانات):</strong> يتجاهل walsender فورًا سجلات WAL التي تنتمي إلى قواعد بيانات غير قاعدة البيانات الهدف.</li>
+<li><strong>البوابة الثانية (معرّف الأصل / دالة الاستدعاء):</strong> منذ الإصدار 16، يفحص walsender الأصل قبل دخول البيانات إلى ReorderBuffer. وإذا كان origin = “none” مضبوطًا، يتجاهل walsender أي تغيير قادم من عقدة أخرى (origin_id &gt; 0) في هذه المرحلة. ويمنع ذلك حلقات النسخ المتماثل اللانهائية. راجع القسم 12.1.4.1 للتفاصيل.</li>
+<li><strong>البوابة الثالثة (ذاكرة المنشور المؤقتة):</strong> منذ الإصدار 15، ينفّذ walsender ترشيحًا على مستوى الجدول قبل التخزين المؤقت. فيتخطّى التغييرات على الجداول غير المضمّنة في منشور والصفوف المستبعدة بمرشّحات الصفوف دون تجميعها في المخزن المؤقت.</li>
+<li><strong>البوابة الرابعة (نوع العلاقة / البنية الفيزيائية):</strong> يرشّح walsender أيضًا سجلات WAL المتعلقة بتحديثات الفهارس. فالنسخ المتماثل المنطقي يركّز على تغييرات البيانات على مستوى الصف؛ وبمجرد أن يحدّث عامل التطبيق صفًّا على المشترك، تتولّى آلية الفهرسة الخاصة بالمشترك تلقائيًا تحديثات الفهارس المرتبطة.</li>
+</ul>
+<p>ولا تُخزَّن في ReorderBuffer إلا التغييرات التي تعبر جميع هذه البوابات بنجاح.</p>
+<p>** الترشيح في الإصدار 14 أو أقدم</p>
+<p>قبل الإصدار 15، كانت العملية تجري كما يلي:</p>
+<ol>
+<li>فحص OID قاعدة البيانات لسجل WAL (الإصدار 10 أو أحدث).</li>
+<li>فكّ ترميز سجل WAL وتجميع جميع التغييرات الناتجة في ReorderBuffer.</li>
+<li>ترشيح التغييرات مقابل تعريفات المنشور فقط عند <strong>الالتزام</strong>.</li>
+</ol>
+<p>وفي هذه الإصدارات، كان walsender يقيّم الترشيح على مستوى الجدول بتكاسل. ونتيجة لذلك، استهلك ReorderBuffer ذاكرة دون داعٍ بتجميع تغييرات كان سيُتجاهلها في النهاية عند الالتزام.</p>
+<h2 id="1242-تخزين-بيانات-wal-مؤقتا">12.4.2. تخزين بيانات WAL مؤقتًا</h2>
+<p>لفهم كيفية إعادة بناء walsender للتغييرات المنطقية من بيانات WAL الخام، يفحص هذا القسم عملية التخزين المؤقت عبر سيناريو عملي لتداخل المعاملات.</p>
+<h3 id="12411-الإعداد-العلاقات-الهدف">12.4.1.1. الإعداد: العلاقات الهدف</h3>
+<p>يستخدم السيناريو جدولين، <em>tbl_a</em> و<em>tbl_b</em>. ويستخدم كلاهما مفتاحًا أساسيًا كـ<strong>REPLICA IDENTITY</strong> الافتراضية.</p>
+<pre><code class="language-sql"><span class="hljs-keyword">CREATE TABLE</span> tbl_a (id <span class="hljs-type">int</span> <span class="hljs-keyword">PRIMARY KEY</span>, name text, data <span class="hljs-type">int</span>);
+<span class="hljs-keyword">CREATE TABLE</span> tbl_b (id <span class="hljs-type">int</span> <span class="hljs-keyword">PRIMARY KEY</span>, name text, data <span class="hljs-type">int</span>);
+
+<span class="hljs-keyword">INSERT INTO</span> tbl_a <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;Alice&#x27;</span>, <span class="hljs-number">100</span>);
+<span class="hljs-keyword">INSERT INTO</span> tbl_b <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">10</span>, <span class="hljs-string">&#x27;Ken&#x27;</span>, <span class="hljs-number">100</span>);
+</code></pre>
+<h3 id="12412-السيناريو-معالجة-معاملات-متداخلة">12.4.1.2. السيناريو: معالجة معاملات متداخلة</h3>
+<p>يوضّح الخط الزمني أدناه توليد سجلات WAL بواسطة معاملتين متزامنتين (txid 840 وtxid 841)، والعملية التي يلتقط بها ReorderBuffer هذه التغييرات.</p>
+<pre><code>T0: BEGIN; -- txid 840
+T1: INSERT INTO tbl_a VALUES(2,'Bob',200);
+T2:
+T3: INSERT INTO tbl_b VALUES(11,'Luke',110);
+T4:
+T5:
+T6: DELETE FROM tbl_b WHERE id=10;
+T7: COMMIT;
+T8:
+</code></pre>
+<pre><code>T0: BEGIN; -- txid 841
+T1:
+T2: INSERT INTO tbl_a VALUES(3,'Candy',3);
+T3:
+T4: UPDATE tbl_a SET data=data+1 WHERE id=1;
+T5: UPDATE tbl_a SET data=data+1 WHERE id=1;
+T6:
+T7:
+T8: COMMIT;
+</code></pre>
+<p><strong>تسلسل العمليات:</strong></p>
+<ul>
+<li><strong>T0:</strong> تبدأ كل من txid 840 وtxid 841.</li>
+<li><strong>T1:</strong> تُدرج txid 840 صفًّا في <em>tbl_a</em>.</li>
+<li><strong>T2:</strong> تُدرج txid 841 صفًّا في <em>tbl_a</em>.</li>
+<li><strong>T3:</strong> تُدرج txid 840 صفًّا في <em>tbl_b</em>.</li>
+<li><strong>T4:</strong> تحدّث txid 841 الجدول <em>tbl_a</em>.</li>
+<li><strong>T5:</strong> تحدّث txid 841 الجدول <em>tbl_a</em> مرة أخرى.</li>
+<li><strong>T6:</strong> تحذف txid 840 صفًّا من <em>tbl_b</em>.</li>
+<li><strong>T7:</strong> تلتزم txid 840. ويؤدي ذلك إلى أن ينهي ReorderBuffer معالجة التغييرات المتراكمة لهذه المعاملة ويجهّزها.</li>
+<li><strong>T8:</strong> تلتزم txid 841، وتُعالَج تغييراتها بعد ذلك.</li>
+</ul>
+<p>** لماذا لا تؤثر مستويات العزل في فكّ الترميز المنطقي</p>
+<p>لفهم سبب عدم تأثير مستويات عزل المعاملات في فكّ الترميز المنطقي، من الضروري النظر في متى وكيف تعمل هذه الآليات.</p>
+<p>يعيد فكّ الترميز المنطقي بناء سجلات التغييرات الملتزمة (WAL) التي أُنهيت وأُطبّقت على الصفوف بالفعل. وعندما تصل هذه التغييرات إلى WAL، تكون قد اجتازت بالفعل جميع فحوص الظهور التي تفرضها مستويات العزل الخاصة بها أثناء التنفيذ. فالتحكم في التزامن يحكم ظهور الصفوف أثناء عمل المعاملة؛ في المقابل، تركّز عملية فكّ الترميز فقط على إعادة تجميع النتائج التاريخية للمعاملات المكتملة.</p>
+<p>وبناءً على ذلك، لا يكون لمستوى العزل الأصلي للمعاملة أي تأثير في منطق فكّ الترميز نفسه.</p>
+<p>وفيما يلي شرح لكيفية التقاط ReorderBuffer لبيانات WAL في كل خطوة.</p>
+<h3 id="12413-تغييرات-الحالة-التفصيلية">12.4.1.3. تغييرات الحالة التفصيلية</h3>
+<h4><strong>T1:</strong> إدراج في tbl_a بواسطة txid 840</h4>
+<p>تنشئ txid 840 بنية ReorderBufferTXN جديدة. ويُضبط حقلها first_lsn على LSN الخاص ببيانات WAL المكتوبة بهذا الإدراج، ويُضاف سجل التغيير إلى قائمة changes (انظر الشكل 12.12).</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-12.webp" alt=""></p>
+<h4>الشكل 12.12. حالة ReorderBuffer بعد T1.</h4>
+<p>تمثّل بنية ReorderBufferChange التغييرات الفردية. وهي تغلّف بيانات وصفية أساسية، تشمل LSN ونوع العملية (مثل INSERT) ومعرّفات OID للعلاقة الهدف (فضاء الجداول وقاعدة البيانات والعلاقة). كما تخزّن البنية بيانات الصف الفعلية.</p>
+<p>** كتابات الصفحة الكاملة على المستوى المنطقي (FPW)</p>
+<p>كما ذُكر في القسم 9.4.3.1، عندما تُضبط <a href="https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-WAL-LEVEL">wal_level</a> على <strong>logical</strong>، يتضمّن جزء البيانات الرئيسية لكتابة الصفحة الكاملة (FPW) بيانات الصف المعدَّلة الفعلية.</p>
+<p>ويتيح ذلك لـwalsender تجاوز كتلة الصفحة أثناء استرجاع WAL. فيقرأ walsender بيانات الصف مباشرةً من قسم البيانات الرئيسية، ما يقلّل كلفة الاستخراج ويحسّن كفاءة فكّ الترميز.</p>
+<h4><strong>T2:</strong> إدراج في tbl_a بواسطة txid 841</h4>
+<p>تهيّئ txid 841 بنية ReorderBufferTXN جديدة (انظر الشكل 12.13).</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-13.webp" alt=""></p>
+<h4>الشكل 12.13. حالة ReorderBuffer بعد T2.</h4>
+<p>يجمع ReorderBuffer تغييرات txid 840 وtxid 841 في قوائم فرعية مستقلة لضمان العزل المعاملاتي داخل المخزن المؤقت.</p>
+<h4><strong>T3:</strong> إدراج في tbl_b بواسطة txid 840</h4>
+<p>يُلحق ReorderBuffer بيانات WAL الناتجة عن عملية الإدراج في txid 840 بقائمة <code>changes</code> الخاصة بها (انظر الشكل 12.14).</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-14.webp" alt=""></p>
+<h4>الشكل 12.14. حالة ReorderBuffer بعد T3.</h4>
+<h4><strong>T4-T5:</strong> تحديث tbl_a بواسطة txid 841</h4>
+<p>تنفّذ txid 841 عبارتي UPDATE متتاليتين على <em>tbl_a</em>.</p>
+<p>يُلحق ReorderBuffer بيانات WAL الخاصة بأول UPDATE بقائمة changes الخاصة بـtxid 841 (انظر الشكل 12.15).</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-15.webp" alt=""></p>
+<h4>الشكل 12.15. حالة ReorderBuffer بعد T4.</h4>
+<p>في إعداد REPLICA IDENTITY DEFAULT، يتضمّن سجل WAL العنصر <em>oldtuple</em> فقط إذا عُدّلت أعمدة المفتاح الأساسي.</p>
+<p>وفي هذا السيناريو، بما أن المفتاح الأساسي (id) يبقى دون تغيير، يمكن للمشترك تحديد الصف الهدف بشكل فريد باستخدام <em>id = 1</em> الموجود في <em>newtuple</em>. ونتيجة لذلك، يُحذف <em>oldtuple</em> لأنه غير ضروري لتحديد الصف.</p>
+<p>راجع القسم 12.4.3 لمزيد من التفاصيل.</p>
+<p>يوضّح الشكل 12.16 الحالة بعد أن تحدّث عبارة UPDATE الثانية الصف نفسه مرة أخرى.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-16.webp" alt=""></p>
+<h4>الشكل 12.16. حالة ReorderBuffer بعد T5.</h4>
+<h4><strong>T6:</strong> حذف من tbl_b بواسطة txid 840</h4>
+<p>عندما تحذف txid 840 صفًّا من <em>tbl_b</em>، يُلحق ReorderBuffer سجل التغيير بقائمة changes (انظر الشكل 12.17).</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-17.webp" alt=""></p>
+<h4>الشكل 12.17. حالة ReorderBuffer بعد T6.</h4>
+<p>ويخزّن هذا السجل بيانات المفتاح الأساسي فقط، التي تعمل كهوية نسخة (انظر الشكل 12.18).</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-18.webp" alt=""></p>
+<h4>الشكل 12.18. تفاصيل سجل تغيير DELETE الذي يحتوي على بيانات المفتاح الأساسي فقط.</h4>
+<p>لا يحتاج المشترك إلا إلى معلومات المفتاح لتحديد الصف الهدف وحذفه. وبحذف الأعمدة غير المفتاحية (مثل ’name’ و‘data’)، يقلّل PostgreSQL استهلاك الذاكرة في ReorderBuffer ويخفّض عرض النطاق الشبكي.</p>
+<h4><strong>T7:</strong> التزام بواسطة txid 840</h4>
+<p>عندما تلتزم txid 840، يمرّ ReorderBuffer على قائمة changes الخاصة ببنية ReorderBufferTXN المقابلة من الرأس. وتستقبل إضافة الخرج كل تغيير، وتنسّقه في رسالة نسخ متماثل، وترسله إلى المشترك.</p>
+<p>ويصف القسم 12.6 إعادة ترتيب التغييرات وإرسال الرسائل. وبعد إرسال البيانات، يحذف ReorderBuffer مدخل ReorderBufferTXN (انظر الشكل 12.19).</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-19.webp" alt=""></p>
+<h4>الشكل 12.19. حالة ReorderBuffer بعد T7.</h4>
+<h4><strong>T8:</strong> التزام بواسطة txid 841</h4>
+<p>وبالمثل، عندما تلتزم txid 841، تُعاد بناء تغييراتها المتراكمة وتُرسل إلى المشترك بالطريقة نفسها.</p>
+<h2 id="1243-العلاقة-بين-هوية-النسخة-والصفوف-المفككة">12.4.3. العلاقة بين هوية النسخة والصفوف المُفكَّكة</h2>
+<p>تعتمد البيانات المسجَّلة في WAL لعمليات UPDATE وDELETE على <strong>هوية النسخة</strong> المضبوطة للجدول الهدف.</p>
+<h3 id="12431-عمليات-update">12.4.3.1. عمليات UPDATE</h3>
+<p>يختلف سلوك عمليات UPDATE وفقًا لما إذا كانت هوية النسخة مضبوطة على مفتاح محدّد (مفتاح أساسي أو فهرس) أم على FULL.</p>
+<p>أولًا، تأمّل الحالة التي تكون فيها هوية النسخة <strong>DEFAULT (مفتاح أساسي)</strong> أو <strong>USING INDEX</strong>:</p>
+<p>ويختلف محتوى <em>oldtuple</em> و<em>newtuple</em> وفقًا للأعمدة المعدَّلة:</p>
+<table>
+<thead>
+<tr>
+<th>هوية النسخة</th>
+<th>نوع التحديث</th>
+<th>oldtuple</th>
+<th>newtuple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PK / Index</strong></td>
+<td>أعمدة غير مفتاحية</td>
+<td><none></td>
+<td>الصف الجديد كاملًا</td>
+</tr>
+<tr>
+<td><strong>PK / Index</strong></td>
+<td><strong>أعمدة مفتاحية</strong></td>
+<td><strong>الأعمدة المفتاحية</strong></td>
+<td>الصف الجديد كاملًا</td>
+</tr>
+</tbody>
+</table>
+<p>ويتوقف تسجيل PostgreSQL للعنصر <em>oldtuple</em> على ما إذا كانت الأعمدة المحدَّثة جزءًا من هوية النسخة. انظر الشكل 12.20.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-20.webp" alt=""></p>
+<h4>الشكل 12.20. بنية الحمولة لعمليات UPDATE في ظل REPLICA IDENTITY القياسية.</h4>
+<p>عند تحديث أعمدة تشكّل هوية النسخة، يحتوي <em>oldtuple</em> على قيم المفتاح السابقة. ويتيح ذلك للمشترك <strong>تحديد</strong> الصف الهدف الموجود باستخدام هذه القيم الأصلية. وتوضّح شبه الشيفرة التالية هذا المنطق:</p>
+<pre><code class="language-sql"><span class="hljs-comment">-- Pseudo-SQL: Identifying the tuple via the old key</span>
+<span class="hljs-keyword">UPDATE</span> tbl_a <span class="hljs-keyword">SET</span> id <span class="hljs-operator">=</span> id <span class="hljs-operator">+</span> <span class="hljs-number">100</span> <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+</code></pre>
+<p>وبالعكس، إذا لم تُحدَّث سوى الأعمدة غير الهوياتية، يبقى <em>oldtuple</em> فارغًا (none). وفي هذا السيناريو، يحدّد المشترك الصف الهدف باستخدام قيم المفتاح الموجودة أصلًا في <em>newtuple</em>.</p>
+<pre><code class="language-sql"><span class="hljs-comment">-- Pseudo-SQL: Identifying the tuple via the current key</span>
+<span class="hljs-keyword">UPDATE</span> tbl_a <span class="hljs-keyword">SET</span> data <span class="hljs-operator">=</span> data <span class="hljs-operator">+</span> <span class="hljs-number">100</span> <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+</code></pre>
+<p>** ملاحظة</p>
+<p>عامل التطبيق <strong>لا</strong> يجمّع استعلامات SQL النصية ولا ينفّذها. ومع أنه يستفيد من بنية المُنفّذ، فإنه يتجاوز مرحلتي التحليل والتخطيط.</p>
+<p>وبدلًا من ذلك، ينفّذ عمليات بحث مباشرة عن الصفوف — باستخدام مسوح الفهارس أو المسوح التسلسلية عبر دوال مثل <a href="https://github.com/postgres/postgres/blob/3b28dad70e2fa57a973697d51242c284d475c7df/src/backend/executor/execReplication.c#L182">RelationFindReplTupleByIndex</a> — لتحديد البيانات الهدف وتعديلها.</p>
+<p>وعندما تكون هوية النسخة <strong>FULL</strong>، يخزّن <em>oldtuple</em> الصف كاملًا كما كان قبل التحديث، ويخزّن <em>newtuple</em> الصف المحدَّث كاملًا. انظر الشكل 12.21.</p>
+<table>
+<thead>
+<tr>
+<th>هوية النسخة</th>
+<th>نوع التحديث</th>
+<th>oldtuple</th>
+<th>newtuple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FULL</strong></td>
+<td>أي أعمدة</td>
+<td>الصف القديم كاملًا</td>
+<td>الصف الجديد كاملًا</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-21.webp" alt=""></p>
+<h4>الشكل 12.21. بنية الحمولة لعمليات UPDATE في ظل REPLICA IDENTITY FULL.</h4>
+<p>لتحديد الصف الهدف بشكل فريد في جدول بلا مفتاح رسمي، يجب على المشترك مطابقة قيم جميع الأعمدة في جملة WHERE الخاصة به.</p>
+<pre><code class="language-sql"><span class="hljs-comment">-- Pseudo-SQL: Full column matching required for identification</span>
+<span class="hljs-keyword">UPDATE</span> tbl_a <span class="hljs-keyword">SET</span> data <span class="hljs-operator">=</span> data <span class="hljs-operator">+</span> <span class="hljs-number">100</span> <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">1</span> <span class="hljs-keyword">AND</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Alice&#x27;</span> <span class="hljs-keyword">AND</span> data <span class="hljs-operator">=</span> <span class="hljs-number">100</span>;
+</code></pre>
+<h3 id="12432-عمليات-delete">12.4.3.2. عمليات DELETE</h3>
+<p>في عمليات DELETE، يسجّل PostgreSQL العنصر <em>oldtuple</em> فقط، إذ لا توجد حالة لاحقة:</p>
+<table>
+<thead>
+<tr>
+<th>هوية النسخة</th>
+<th>oldtuple</th>
+<th>newtuple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PK / Index</strong></td>
+<td><strong>الأعمدة المفتاحية</strong></td>
+<td><none></td>
+</tr>
+<tr>
+<td><strong>FULL</strong></td>
+<td>الصف القديم كاملًا</td>
+<td><none></td>
+</tr>
+</tbody>
+</table>
+<p>عند استخدام هوية <strong>PK</strong> أو <strong>Index</strong>، يحفظ <em>oldtuple</em> المفتاح فقط، لأن هذه المعلومات كافية للمشترك لتحديد الصف الهدف وإزالته.</p>
+<p>في المقابل، يتطلب إعداد <strong>FULL</strong> وجود <em>oldtuple</em> كاملًا لضمان قدرة المشترك على تحديد الصف المعني بالحذف بدقة. انظر الشكل 12.22.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-22.webp" alt=""></p>
+<h4>الشكل 12.22. تحديد الصفوف لعمليات DELETE عبر بيانات oldtuple.</h4>
+<h2 id="1244-إدارة-ذاكرة-reorderbuffer-وتسلسل-المعاملات-الانسكاب-إلى-القرص">12.4.4. إدارة ذاكرة ReorderBuffer وتسلسل المعاملات (الانسكاب إلى القرص)</h2>
+<p>لمنع استنفاد الذاكرة عند معالجة المعاملات الكبيرة، ينفّذ ReorderBuffer آلية <strong>الانسكاب إلى القرص</strong>. وتُطلَق هذه العملية كلما تجاوز الاستهلاك التراكمي للذاكرة لجميع المعاملات المخزّنة مؤقتًا الحدَّ الذي تحدّده معلمة <a href="https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-LOGICAL-DECODING-WORK-MEM">logical_decoding_work_mem</a>.</p>
+<h3 id="12441-خوارزمية-الانسكاب">12.4.4.1. خوارزمية الانسكاب</h3>
+<p>وتوضّح الخطوات التالية كيفية إدارة ReorderBuffer لبصمته الذاكرية:</p>
+<ol>
+<li><strong>مراقبة استهلاك الذاكرة</strong>: لكل سجل WAL جديد يُلحق بـReorderBuffer، يزداد حجم الذاكرة المتتبَّع بمقدار حجم سجل ReorderBufferChange المضاف حديثًا.</li>
+<li><strong>تقييم الحد</strong>: يُقارَن حجم الذاكرة الحالي بحدّ <em>logical_decoding_work_mem</em>.</li>
+<li><strong>إطلاق الإخلاء (إذا تجاوز الحد)</strong>:</li>
+<li><strong>تحديد الهدف</strong>: يحدّد النظام المعاملة «الأثقل» — أي المعاملة التي <strong>تراكم</strong> حاليًا أكبر عدد من التغييرات المخزّنة.</li>
+<li><strong>تسلسل البيانات</strong>: تُكتب جميع التغييرات المخزّنة لتلك المعاملة تحديدًا في ملف <code>.spill</code> داخل الدليل <code>$PGDATA/pg_replslot/</code>.</li>
+<li><strong>استعادة الذاكرة</strong>: <strong>تُحرَّر</strong> الذاكرة المخصّصة للتغييرات المسلسَلة، بينما تبقى البيانات الوصفية للمعاملة (بنية ReorderBufferTXN) في المخزن المؤقت.</li>
+<li><strong>تحديث حالة المعاملة</strong>: تُحدَّث حالة المعاملة إلى <em>serialized = true</em>. وتشير هذه العلامة إلى أنه يجب قراءة البيانات مرة أخرى من القرص خلال مرحلة فكّ الترميز النهائية (مثل وقت الالتزام).</li>
+</ol>
+<p>يوضّح الشكل 12.23 سيناريو تُسكب فيه معاملة إلى القرص لاستيعاب البيانات الواردة:</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-23.webp" alt=""></p>
+<h4>الشكل 12.23. إدارة الذاكرة في ReorderBuffer والانسكاب إلى القرص.</h4>
+<ol>
+<li>يُلحق سجل WAL جديد من <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>txid</mtext><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\\text{txid}_{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">txid</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>، لكن ReorderBuffer بلغ سعته بالفعل.</li>
+<li>يحدّد النظام <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>txid</mtext><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">\\text{txid}_{3}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">txid</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> كالمعاملة الأكثر تراكمًا للتغييرات. فتُسلسَل تغييراتها في ملف انسكاب، وتُحرَّر الذاكرة المرتبطة بها.</li>
+<li>تُضاف تغييرات <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>txid</mtext><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\\text{txid}_{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">txid</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> بنجاح إلى ReorderBuffer باستخدام المساحة المتاحة حديثًا.</li>
+</ol>
+<p>يعطي PostgreSQL الأولوية لسكب المعاملة «الأثقل» بدلًا من دفع جميع المعاملات دفعة واحدة. ويقلّل هذا النهج إدخال/إخراج القرص مع إبقاء استهلاك الذاكرة ضمن الحدود المسموح بها بفعالية.</p>
+<h3 id="12442-بنية-ملف-الانسكاب-واصطلاحات-التسمية">12.4.4.2. بنية ملف الانسكاب واصطلاحات التسمية</h3>
+<p>تُخزَّن ملفات الانسكاب داخل دليل فتحة النسخ:</p>
+<pre><code>$PGDATA/pg_replslot/&lt;slot_name&gt;/
+    \\-+-- xid-856-lsn-0-6000000.spill
+      |-- xid-856-lsn-0-7000000.spill
+      +-- xid-856-lsn-0-8000000.spill
+</code></pre>
+<p>وتتيح اصطلاحات تسمية هذه الملفات تحديدها بشكل فريد بمعرّف المعاملة ونطاق LSN:</p>
+<p><strong>التنسيق:</strong> <code>xid-[XID]-lsn-[LSN_HIGH]-[LSN_LOW].spill</code></p>
+<ul>
+<li><strong>XID</strong>: معرّف المعاملة (ممثّلًا بالنظام العشري).</li>
+<li><strong>LSN_HIGH</strong>: الخانات الـ32 العلوية من LSN (ممثّلة بالنظام السداسي عشري).</li>
+<li><strong>LSN_LOW</strong>: الخانات الـ32 السفلية من LSN (ممثّلة بالنظام السداسي عشري).</li>
+</ul>
+<p><strong>مثال عملي:</strong></p>
+<pre><code class="language-bash">$ <span class="hljs-built_in">ls</span> -l -h <span class="hljs-variable">$PGDATA</span>/pg_replslot/myslot/
+total 68M
+-rw------- 1 postgres postgres  200 Mar 24 08:12 state
+-rw------- 1 postgres postgres  30M Mar 24 08:12 xid-856-lsn-0-6000000.spill
+-rw------- 1 postgres postgres  34M Mar 24 08:12 xid-856-lsn-0-7000000.spill
+-rw------- 1 postgres postgres 4.5M Mar 24 08:12 xid-856-lsn-0-8000000.spill
+</code></pre>
+<h1>12.5. إضافات خرج فكّ الترميز المنطقي: pgoutput</h1>
+<h4>نسخة تجريبية: العمل قيد الإنجاز.</h4>
+<p>تُسلسِل إضافة الخرج أساسًا بيانات التغييرات — المنظّمة والمعاد ترتيبها بواسطة <strong>ReorderBuffer</strong> — إلى تنسيق متوافق مع المشترك.</p>
+<p>وتنفّذ الإضافة المهام المحددة التالية:</p>
+<ul>
+<li><strong>تحويل البيانات وترشيحها:</strong> تنفّذ الإضافة تحققًا نهائيًا من البيانات الثنائية داخل ReorderBuffer مقابل إعداد المنشور. وتحدّد ما إذا كان الجدول الهدف أو إجراءات محدّدة (مثل INSERT أو TRUNCATE) مضمّنة في الاشتراك، وتقيّم مرشّحات الصفوف أو قوائم الأعمدة. وبعد استبعاد البيانات غير ذات الصلة، تنسّق الإضافة الحمولة المتبقية في أنواع البيانات المناسبة (مثل النصية أو الثنائية) التي يفرضها بروتوكول النسخ المتماثل.</li>
+<li><strong>توليد الرسائل:</strong> تبني الإضافة تسلسلًا منطقيًا من الرسائل، مثل BEGIN وINSERT/UPDATE/DELETE/TRUNCATE وCOMMIT. وتُمرَّر هذه الرسائل إلى عملية walsender، التي تدير النقل الشبكي.</li>
+</ul>
+<p>وكما يوحي الاسم، فإن هذه الآلية <strong>قابلة للإضافة</strong>. ويمكن للإضافات المخصّصة دعم تنسيقات خرج فريدة أو منطق معالجة داخلي متخصص. وفي النسخ المتماثل المنطقي القياسي في PostgreSQL، تعمل الإضافة المدعومة رسميًا <strong>pgoutput</strong> كالإضافة الافتراضية.</p>
+<p>ويتكوّن تنسيق رسائل pgoutput من سلسلة حزم بيانات موسومة. وتصف الأقسام التالية بنية هذه الرسائل.</p>
+<p>** معلومات</p>
+<p>مع أن PostgreSQL يدعم إصدارات بروتوكول متعددة (الإصدارات 1 حتى 4)، يركّز هذا القسم أساسًا على البنى الأساسية. وللاطلاع على مرجع شامل، راجع التوثيق الرسمي: <a href="https://www.postgresql.org/docs/current/protocol-logicalrep-message-formats.html">تنسيقات رسائل النسخ المتماثل المنطقي</a>.</p>
+<p>محتويات القسم</p>
+<ul>
+<li>12.5.1. TupleData (رسالة فرعية مشتركة)</li>
+<li>12.5.2. التحكم في المعاملات</li>
+<li>12.5.3. لغة معالجة البيانات (DML)</li>
+<li>12.5.4. التحكم في البث</li>
+</ul>
+<h2 id="1251-tupledata-رسالة-فرعية-مشتركة">12.5.1. TupleData (رسالة فرعية مشتركة)</h2>
+<p>بنية TupleData رسالة فرعية مشتركة تُستخدم داخل عمليات DML لتمثيل محتويات الصفوف.</p>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>num_cols<span class="hljs-punctuation">:</span> Int16<span class="hljs-punctuation">]</span>
+  For each column<span class="hljs-punctuation">:</span>
+    <span class="hljs-punctuation">[</span>kind<span class="hljs-punctuation">:</span> Byte1(<span class="hljs-string">&#x27;n&#x27;</span>|<span class="hljs-string">&#x27;u&#x27;</span>|<span class="hljs-string">&#x27;t&#x27;</span>|<span class="hljs-string">&#x27;b&#x27;</span>)<span class="hljs-punctuation">]</span>
+    if kind = <span class="hljs-string">&#x27;t&#x27;</span> or <span class="hljs-attr">&#x27;b&#x27;</span><span class="hljs-punctuation">:</span>
+      <span class="hljs-punctuation">[</span>length<span class="hljs-punctuation">:</span> Int32<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>value<span class="hljs-punctuation">:</span> Byte*n*<span class="hljs-punctuation">]</span>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>العنصر</th>
+<th>النوع</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>num_cols</strong></td>
+<td>Int16</td>
+<td>عدد الأعمدة في الصف.</td>
+</tr>
+<tr>
+<td><em>لكل عمود:</em></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>kind</strong></td>
+<td>Byte1</td>
+<td>’n’ = NULL؛ ‘u’ = قيمة TOASTed غير متغيّرة؛ ’t’ = بتنسيق نصي؛ ‘b’ = بتنسيق ثنائي.</td>
+</tr>
+<tr>
+<td><strong>length</strong></td>
+<td>Int32</td>
+<td>طول قيمة العمود بالبايتات. يوجد فقط عندما يكون kind هو ’t’ أو ‘b’.</td>
+</tr>
+<tr>
+<td><strong>value</strong></td>
+<td>Byte<em>n</em></td>
+<td>قيمة العمود الفعلية. ويساوي <em>n</em> الطولَ السابق. ويوجد فقط عندما يكون kind هو ’t’ أو ‘b’.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1252-التحكم-في-المعاملات">12.5.2. التحكم في المعاملات</h2>
+<h3 id="12521-البدء-b">12.5.2.1. البدء (‘B’)</h3>
+<p>تحدّد بداية معاملة. وتوفّر LSN الخاص بالمعاملة والطابع الزمني للالتزام، ما يتيح للمشترك الحفاظ على الترتيب الزمني.</p>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>Byte1(<span class="hljs-string">&#x27;B&#x27;</span>)<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>final_lsn<span class="hljs-punctuation">:</span> Int64<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>commit_timestamp<span class="hljs-punctuation">:</span> Int64<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>txid<span class="hljs-punctuation">:</span> Int32<span class="hljs-punctuation">]</span>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>العنصر</th>
+<th>النوع</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>‘B’</strong></td>
+<td>Byte1</td>
+<td>يحدّد الرسالة كرسالة BEGIN.</td>
+</tr>
+<tr>
+<td><strong>final_lsn</strong></td>
+<td>Int64 (XLogRecPtr)</td>
+<td>LSN النهائي للمعاملة. ويقابل عادةً <em>commit_lsn</em>، لكنه يعكس <em>prepare_lsn</em> في عمليات الالتزام على مرحلتين.</td>
+</tr>
+<tr>
+<td><strong>commit_timestamp</strong></td>
+<td>Int64 (TimestampTz)</td>
+<td>الطابع الزمني للالتزام بالميكروثانية منذ حقبة PostgreSQL (2000-01-01).</td>
+</tr>
+<tr>
+<td><strong>txid</strong></td>
+<td>Int32 (TransactionId)</td>
+<td>المعرّف XID (معرّف المعاملة) للمعاملة.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12522-الالتزام-c">12.5.2.2. الالتزام (‘C’)</h3>
+<p>تحدّد نهاية معاملة. وعند استقبالها، يطبّق المشترك التغييرات المتراكمة محليًا كوحدة ذرّية واحدة.</p>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>Byte1(<span class="hljs-string">&#x27;C&#x27;</span>)<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>flags<span class="hljs-punctuation">:</span> Int8<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>commit_lsn<span class="hljs-punctuation">:</span> Int64<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>end_lsn<span class="hljs-punctuation">:</span> Int64<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>commit_timestamp<span class="hljs-punctuation">:</span> Int64<span class="hljs-punctuation">]</span>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>العنصر</th>
+<th>النوع</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>‘C’</strong></td>
+<td>Byte1</td>
+<td>يحدّد الرسالة كرسالة COMMIT.</td>
+</tr>
+<tr>
+<td><strong>flags</strong></td>
+<td>Int8(0)</td>
+<td>علامات محجوزة؛ غير مستخدمة حاليًا.</td>
+</tr>
+<tr>
+<td><strong>commit_lsn</strong></td>
+<td>Int64 (XLogRecPtr)</td>
+<td>LSN الخاص بالالتزام.</td>
+</tr>
+<tr>
+<td><strong>end_lsn</strong></td>
+<td>Int64 (XLogRecPtr)</td>
+<td>LSN النهائي للمعاملة.</td>
+</tr>
+<tr>
+<td><strong>commit_timestamp</strong></td>
+<td>Int64 (TimestampTz)</td>
+<td>الطابع الزمني للالتزام.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1253-لغة-معالجة-البيانات-dml">12.5.3. لغة معالجة البيانات (DML)</h2>
+<h3 id="12531-الأصل-o">12.5.3.1. الأصل (‘O’)</h3>
+<p>تُستخدم في الإعدادات التي تتضمن نسخًا متماثلًا متعدد العقد. وهي تُعلم المشترك بالمكان الذي حدثت فيه المعاملة أصلًا لمنع حلقات النسخ المتماثل.</p>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>Byte1(<span class="hljs-string">&#x27;O&#x27;</span>)<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>origin_lsn<span class="hljs-punctuation">:</span> Int64<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>origin_name<span class="hljs-punctuation">:</span> String<span class="hljs-punctuation">]</span>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>العنصر</th>
+<th>النوع</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>‘O’</td>
+<td>Byte1</td>
+<td>يحدّد الرسالة كرسالة أصل.</td>
+</tr>
+<tr>
+<td>origin_lsn</td>
+<td>Int64 (XLogRecPtr)</td>
+<td>LSN الخاص بالالتزام على الخادم الأصلي.</td>
+</tr>
+<tr>
+<td>origin_name</td>
+<td>String</td>
+<td>اسم الأصل. لاحظ أنه قد توجد رسائل أصل متعددة داخل معاملة واحدة.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12532-العلاقة-r">12.5.3.2. العلاقة (‘R’)</h3>
+<p>توفّر بيانات وصفية لجدول محدّد. وتُرسل هذه الرسالة عادةً قبل أول رسالة DML لجدول ما في جلسة، وتربط معرّفًا فريدًا بمخطط الجدول وأعمدته.</p>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>Byte1(<span class="hljs-string">&#x27;R&#x27;</span>)<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>rel_id<span class="hljs-punctuation">:</span> Int32<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>namespace<span class="hljs-punctuation">:</span> String<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>relname<span class="hljs-punctuation">:</span> String<span class="hljs-punctuation">]</span>
+             <span class="hljs-punctuation">[</span>replica_identity<span class="hljs-punctuation">:</span> Int8<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>num_columns<span class="hljs-punctuation">:</span> Int16<span class="hljs-punctuation">]</span>
+  For each column<span class="hljs-punctuation">:</span>
+    <span class="hljs-punctuation">[</span>flags<span class="hljs-punctuation">:</span> Int8<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>name<span class="hljs-punctuation">:</span> String<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>type_oid<span class="hljs-punctuation">:</span> Int32<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>atttypmod<span class="hljs-punctuation">:</span> Int32<span class="hljs-punctuation">]</span>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>العنصر</th>
+<th>النوع</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>‘R’</td>
+<td>Byte1</td>
+<td>يحدّد الرسالة كرسالة علاقة.</td>
+</tr>
+<tr>
+<td>rel_id</td>
+<td>Int32 (Oid)</td>
+<td>معرّف OID للعلاقة.</td>
+</tr>
+<tr>
+<td>namespace</td>
+<td>String</td>
+<td>فضاء الأسماء (سلسلة فارغة بالنسبة إلى pg_catalog).</td>
+</tr>
+<tr>
+<td>relname</td>
+<td>String</td>
+<td>اسم العلاقة.</td>
+</tr>
+<tr>
+<td>replica_identity</td>
+<td>Int8</td>
+<td>إعداد هوية النسخة للعلاقة (مثل relreplident في pg_class). ’d’=افتراضي، ’n’=لا شيء، ‘f’=كامل، ‘i’=فهرس.</td>
+</tr>
+<tr>
+<td>num_columns</td>
+<td>Int16</td>
+<td>عدد الأعمدة.</td>
+</tr>
+<tr>
+<td><em>لكل عمود:</em></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>flags</td>
+<td>Int8</td>
+<td>علامات العمود. 0 = لا علامات؛ 1 = العمود جزء من مفتاح هوية النسخة.</td>
+</tr>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>اسم العمود.</td>
+</tr>
+<tr>
+<td>type_oid</td>
+<td>Int32 (Oid)</td>
+<td>معرّف OID لنوع بيانات العمود.</td>
+</tr>
+<tr>
+<td>atttypmod</td>
+<td>Int32</td>
+<td>مُعدِّل نوع العمود (atttypmod).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12533-الإدراج-i">12.5.3.3. الإدراج (‘I’)</h3>
+<p>تمثّل إدراج صف جديد. وتتضمّن معرّف العلاقة الهدف وTupleData الخاصة بالصف الجديد.</p>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>Byte1(<span class="hljs-string">&#x27;I&#x27;</span>)<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>rel_id<span class="hljs-punctuation">:</span> Int32<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>Byte1(<span class="hljs-string">&#x27;N&#x27;</span>)<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>new_tuple<span class="hljs-punctuation">:</span> TupleData<span class="hljs-punctuation">]</span>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>العنصر</th>
+<th>النوع</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>‘I’</td>
+<td>Byte1</td>
+<td>يحدّد الرسالة كرسالة إدراج.</td>
+</tr>
+<tr>
+<td>rel_id</td>
+<td>Int32 (Oid)</td>
+<td>معرّف OID للعلاقة المقابلة للمعرّف في رسالة العلاقة.</td>
+</tr>
+<tr>
+<td>‘N’</td>
+<td>Byte1</td>
+<td>يحدّد TupleData التالية كصف جديد.</td>
+</tr>
+<tr>
+<td>new_tuple</td>
+<td>TupleData</td>
+<td>TupleData تمثّل محتويات الصف الجديد.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12534-التحديث-u">12.5.3.4. التحديث (‘U’)</h3>
+<p>تمثّل تحديث صف موجود. ووفقًا لإعداد REPLICA IDENTITY وما إذا تغيّرت الأعمدة المفتاحية، قد تتضمّن قيم الصف القديم لمساعدة المشترك على تحديد السجل الصحيح الذي يجب تعديله.</p>
+<pre><code>-- REPLICA IDENTITY DEFAULT or INDEX (key columns changed):
+[Byte1('U')] [rel_id: Int32] [Byte1('K')] [old_tuple: TupleData] [Byte1('N')] [new_tuple: TupleData]
+
+-- REPLICA IDENTITY FULL:
+[Byte1('U')] [rel_id: Int32] [Byte1('O')] [old_tuple: TupleData] [Byte1('N')] [new_tuple: TupleData]
+
+-- REPLICA IDENTITY DEFAULT or INDEX (key columns NOT changed):
+[Byte1('U')] [rel_id: Int32] [Byte1('N')] [new_tuple: TupleData]
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>العنصر</th>
+<th>النوع</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>‘U’</td>
+<td>Byte1</td>
+<td>يحدّد الرسالة كرسالة تحديث.</td>
+</tr>
+<tr>
+<td>rel_id</td>
+<td>Int32 (Oid)</td>
+<td>معرّف OID للعلاقة المقابلة للمعرّف في رسالة العلاقة.</td>
+</tr>
+<tr>
+<td>‘K’</td>
+<td>Byte1</td>
+<td><em>(اختياري)</em> يحدّد TupleData التالية كمفتاح. ويوجد فقط إذا غيّر التحديث بيانات في أي عمود جزء من فهرس REPLICA IDENTITY. وهو متنافٍ مع ‘O’.</td>
+</tr>
+<tr>
+<td>‘O’</td>
+<td>Byte1</td>
+<td><em>(اختياري)</em> يحدّد TupleData التالية كصف قديم. ويوجد فقط إذا كان الجدول مضبوطًا على REPLICA IDENTITY FULL. وهو متنافٍ مع ‘K’.</td>
+</tr>
+<tr>
+<td>old_tuple</td>
+<td>TupleData</td>
+<td><em>(اختياري)</em> TupleData للصف القديم أو المفتاح الأساسي. ويوجد فقط إذا كانت العلامة السابقة ‘K’ أو ‘O’ موجودة.</td>
+</tr>
+<tr>
+<td>‘N’</td>
+<td>Byte1</td>
+<td>يحدّد TupleData التالية كصف جديد.</td>
+</tr>
+<tr>
+<td>new_tuple</td>
+<td>TupleData</td>
+<td>TupleData تمثّل محتويات الصف الجديد.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12535-الحذف-d">12.5.3.5. الحذف (‘D’)</h3>
+<p>تمثّل حذف صف. ويستخدم المشترك بيانات المفتاح أو الصف القديم الموفَّرة لتحديد السجل وإزالته.</p>
+<pre><code>-- REPLICA IDENTITY DEFAULT or INDEX:
+[Byte1('D')] [rel_id: Int32] [Byte1('K')] [old_key_tuple: TupleData]
+
+-- REPLICA IDENTITY FULL:
+[Byte1('D')] [rel_id: Int32] [Byte1('O')] [old_tuple: TupleData]
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>العنصر</th>
+<th>النوع</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>‘D’</td>
+<td>Byte1</td>
+<td>يحدّد الرسالة كرسالة حذف.</td>
+</tr>
+<tr>
+<td>rel_id</td>
+<td>Int32 (Oid)</td>
+<td>معرّف OID للعلاقة المقابلة للمعرّف في رسالة العلاقة.</td>
+</tr>
+<tr>
+<td>‘K’</td>
+<td>Byte1</td>
+<td><em>(إما ‘K’ أو ‘O’، وليس كلتاهما)</em> يحدّد TupleData التالية كمفتاح. ويوجد إذا كان الجدول يستخدم فهرسًا كهوية نسخة.</td>
+</tr>
+<tr>
+<td>‘O’</td>
+<td>Byte1</td>
+<td><em>(إما ‘K’ أو ‘O’، وليس كلتاهما)</em> يحدّد TupleData التالية كصف قديم. ويوجد إذا كان الجدول مضبوطًا على REPLICA IDENTITY FULL.</td>
+</tr>
+<tr>
+<td>old_key_tuple</td>
+<td>TupleData</td>
+<td>TupleData تمثّل محتويات الصف القديم أو المفتاح الأساسي، وفقًا للعلامة السابقة.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12536-الاقتطاع-t">12.5.3.6. الاقتطاع (‘T’)</h3>
+<p>تمثّل إزالة جماعية لجميع الصفوف في جدول واحد أو أكثر.</p>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>Byte1(<span class="hljs-string">&#x27;T&#x27;</span>)<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>num_relations<span class="hljs-punctuation">:</span> Int32<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>options<span class="hljs-punctuation">:</span> Int8<span class="hljs-punctuation">]</span>
+             <span class="hljs-punctuation">[</span>rel_id<span class="hljs-punctuation">:</span> Int32<span class="hljs-punctuation">]</span> ...   -- repeated num_relations times
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>العنصر</th>
+<th>النوع</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>‘T’</td>
+<td>Byte1</td>
+<td>يحدّد الرسالة كرسالة اقتطاع.</td>
+</tr>
+<tr>
+<td>num_relations</td>
+<td>Int32</td>
+<td>عدد العلاقات المراد اقتطاعها.</td>
+</tr>
+<tr>
+<td>options</td>
+<td>Int8</td>
+<td>بتات خيارات TRUNCATE: البت 0 (1) = CASCADE؛ البت 1 (2) = RESTART IDENTITY.</td>
+</tr>
+<tr>
+<td>rel_id</td>
+<td>Int32 (Oid)</td>
+<td>معرّف OID للعلاقة المقابلة للمعرّف في رسالة العلاقة. ويتكرر هذا الحقل num_relations مرة.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1254-التحكم-في-البث">12.5.4. التحكم في البث</h2>
+<p>تُستخدم الرسائل التالية عندما يرسل الناشر البيانات على شكل مقاطع لدعم <strong>بث المعاملات الكبيرة</strong>.</p>
+<p>للتفاصيل، راجع القسم 12.6.3.</p>
+<h3 id="12541-بدء-البث-s">12.5.4.1. بدء البث (‘S’)</h3>
+<p>تحدّد بداية <strong>مقطع بث</strong>. وتُستخدم عندما تُقسَّم معاملة كبيرة جارية إلى مقاطع متعددة.</p>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>Byte1(<span class="hljs-string">&#x27;S&#x27;</span>)<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>txid<span class="hljs-punctuation">:</span> Int32<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>first_segment<span class="hljs-punctuation">:</span> Int8<span class="hljs-punctuation">]</span>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>العنصر</th>
+<th>النوع</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>‘S’</strong></td>
+<td>Byte1</td>
+<td>يحدّد الرسالة كرسالة بدء بث.</td>
+</tr>
+<tr>
+<td><strong>txid</strong></td>
+<td>Int32 (TransactionId)</td>
+<td>المعرّف XID للمعاملة.</td>
+</tr>
+<tr>
+<td><strong>first_segment</strong></td>
+<td>Int8</td>
+<td>يُضبط على 1 إذا كان هذا أول مقطع لهذا XID؛ وإلا 0.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12542-إيقاف-البث-e">12.5.4.2. إيقاف البث (‘E’)</h3>
+<p>تحدّد نهاية مقطع بث.</p>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>Byte1(<span class="hljs-string">&#x27;E&#x27;</span>)<span class="hljs-punctuation">]</span>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>العنصر</th>
+<th>النوع</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>‘E’</strong></td>
+<td>Byte1</td>
+<td>يحدّد الرسالة كرسالة إيقاف بث.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12543-التزام-البث-c">12.5.4.3. التزام البث (‘c’)</h3>
+<p>تحدّد التزام معاملة مبثوثة. وتحتوي على معلومات مشابهة لرسالة الالتزام القياسية (‘C’) لكنها تعمل في سياق البث.</p>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>Byte1(<span class="hljs-string">&#x27;c&#x27;</span>)<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>txid<span class="hljs-punctuation">:</span> Int32<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>flags<span class="hljs-punctuation">:</span> Int8<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>commit_lsn<span class="hljs-punctuation">:</span> Int64<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>end_lsn<span class="hljs-punctuation">:</span> Int64<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>commit_timestamp<span class="hljs-punctuation">:</span> Int64<span class="hljs-punctuation">]</span>
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>العنصر</th>
+<th>النوع</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>‘c’</strong></td>
+<td>Byte1</td>
+<td>يحدّد الرسالة كرسالة التزام بث.</td>
+</tr>
+<tr>
+<td><strong>txid</strong></td>
+<td>Int32 (TransactionId)</td>
+<td>المعرّف XID للمعاملة.</td>
+</tr>
+<tr>
+<td><strong>flags</strong></td>
+<td>Int8(0)</td>
+<td>علامات محجوزة؛ غير مستخدمة حاليًا.</td>
+</tr>
+<tr>
+<td><strong>commit_lsn</strong></td>
+<td>Int64 (XLogRecPtr)</td>
+<td>LSN الخاص بالالتزام.</td>
+</tr>
+<tr>
+<td><strong>end_lsn</strong></td>
+<td>Int64 (XLogRecPtr)</td>
+<td>LSN النهائي للمعاملة.</td>
+</tr>
+<tr>
+<td><strong>commit_timestamp</strong></td>
+<td>Int64 (TimestampTz)</td>
+<td>الطابع الزمني للالتزام.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12544-إلغاء-البث-a">12.5.4.4. إلغاء البث (‘A’)</h3>
+<p>تحدّد إلغاء (تراجع) معاملة مبثوثة. وتُستخدم أيضًا لإلغاء المعاملات الفرعية.</p>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>Byte1(<span class="hljs-string">&#x27;A&#x27;</span>)<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>txid<span class="hljs-punctuation">:</span> Int32<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>subxid<span class="hljs-punctuation">:</span> Int32<span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span>abort_lsn<span class="hljs-punctuation">:</span> Int64<span class="hljs-punctuation">]</span>? <span class="hljs-punctuation">[</span>abort_timestamp<span class="hljs-punctuation">:</span> Int64<span class="hljs-punctuation">]</span>?
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>العنصر</th>
+<th>النوع</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>‘A’</strong></td>
+<td>Byte1</td>
+<td>يحدّد الرسالة كرسالة إلغاء بث.</td>
+</tr>
+<tr>
+<td><strong>txid</strong></td>
+<td>Int32 (TransactionId)</td>
+<td>المعرّف XID للمعاملة.</td>
+</tr>
+<tr>
+<td><strong>subxid</strong></td>
+<td>Int32 (TransactionId)</td>
+<td>المعرّف XID للمعاملة الفرعية (مطابق لـtxid في المعاملات العليا).</td>
+</tr>
+<tr>
+<td><strong>abort_lsn</strong></td>
+<td>Int64 (XLogRecPtr)</td>
+<td>LSN الخاص بعملية الإلغاء. ويوجد فقط إذا كان البث المتوازي مفعّلًا (البروتوكول v4+).</td>
+</tr>
+<tr>
+<td><strong>abort_timestamp</strong></td>
+<td>Int64 (TimestampTz)</td>
+<td>الطابع الزمني للإلغاء. ويوجد فقط إذا كان البث المتوازي مفعّلًا (البروتوكول v4+).</td>
+</tr>
+</tbody>
+</table>
+<h1>12.6. إعادة تجميع المعاملات وإرسال الرسائل</h1>
+<h4>نسخة تجريبية: العمل قيد الإنجاز.</h4>
+<p>يصف هذا القسم كيفية إعادة تجميع ReorderBuffer للتغييرات المتراكمة وإرسالها إلى عامل التطبيق على المشترك عبر إضافة خرج.</p>
+<p>محتويات القسم</p>
+<ul>
+<li>12.6.1. مخطط إعادة تجميع المعاملات</li>
+<li>12.6.2. إرسال الرسائل</li>
+<li>12.6.3. بث المعاملات الكبيرة</li>
+</ul>
+<h2 id="1261-مخطط-إعادة-تجميع-المعاملات">12.6.1. مخطط إعادة تجميع المعاملات</h2>
+<p>عندما يكتشف walsender سجل <strong>COMMIT</strong> في WAL، يبدأ ReorderBuffer عملية إعادة التجميع. فينظّم التغييرات الملتقطة بترتيب LSN ويمرّرها إلى إضافة الخرج. وبعد أن تعالج الإضافة المعاملة، يحرّر <code>ReorderBuffer</code> الذاكرة بحذف سجلات التغيير ومدخل <code>ReorderBufferTXN</code>.</p>
+<p>وتدفق المعالجة القياسي كما يلي:</p>
+<ol>
+<li><strong>استرجاع بيانات المعاملة</strong>: يُسترجع ReorderBufferTXN الخاص بالمعاملة الملتزمة.</li>
+<li><strong>دمج المعاملات الفرعية</strong>: إذا وُجدت معاملات فرعية، تُدمج قوائم تغييراتها في المعاملة العليا وتُرتَّب وفق LSN.</li>
+<li><strong>ضمان الاتساق</strong>: تُرتَّب القائمة النهائية لسجلات التغيير وفق LSN لضمان الاتساق الزمني.</li>
+<li><strong>فحص الأصل</strong>: كما هو مفصّل في القسم 12.1.4، توجد معلومات الأصل داخل سجلات COMMIT أو ABORT. وإذا كانت موجودة، يضمّنها ReorderBuffer في رسالة النسخ المتماثل؛ وإلا حذفها.</li>
+<li><strong>التمرير إلى الإضافة</strong>: تُكرَّر التغييرات وتُمرَّر بالتسلسل إلى إضافة الخرج (مثل <strong>pgoutput</strong>).</li>
+<li><strong>التنظيف</strong>: يُحرَّر ReorderBufferTXN وجميع كائنات ReorderBufferChange الداخلية لتحرير الذاكرة.</li>
+</ol>
+<p>ومع أنه يجب دمج المعاملات الفرعية عمليًا، يفترض هذا القسم معاملات بلا معاملات فرعية للتبسيط. وفي هذه الحالة، تكون سجلات <code>ReorderBufferChange</code> مرتّبة طبيعيًا داخل قائمتها، ما يتيح للإضافة معالجتها بمرور بسيط على القائمة بترتيب تصاعدي.</p>
+<p>وإذا <strong>أُلغيت</strong> معاملة، يتجاهل ReorderBuffer فورًا ReorderBufferTXN المقابلة وجميع التغييرات المرتبطة بها دون تمريرها إلى الإضافة.</p>
+<h3 id="12611-أمثلة">12.6.1.1. أمثلة</h3>
+<p>يمثّل الشكلان 12.24 و12.25، مع تسلسلات البايتات التالية، الرسائل التي تولّدها pgoutput خلال معاملات نموذجية تتضمن جداول وإجراءات متعددة.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-24.webp" alt=""></p>
+<h4>الشكل 12.24. بنية ReorderBufferTXN وتغييراتها بالنسبة إلى txid 840.</h4>
+<p><strong>تسلسل الرسائل المتولّد لـtxid 840:</strong></p>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>B<span class="hljs-punctuation">]</span> lsn=<span class="hljs-number">0</span>/<span class="hljs-number">1</span>CAA128  ts=<span class="hljs-number">2026</span><span class="hljs-number">-03</span><span class="hljs-number">-28</span>T16<span class="hljs-punctuation">:</span><span class="hljs-number">55</span><span class="hljs-punctuation">:</span><span class="hljs-number">00</span>  txid=<span class="hljs-number">840</span>
+<span class="hljs-punctuation">[</span>R<span class="hljs-punctuation">]</span> oid=<span class="hljs-number">16456</span>  &amp;#<span class="hljs-number">34</span>;public&amp;#<span class="hljs-number">34</span>;.&amp;#<span class="hljs-number">34</span>;tbl_a&amp;#<span class="hljs-number">34</span>;  <span class="hljs-string">&#x27;d&#x27;</span>  <span class="hljs-number">3</span>cols      <span class="hljs-punctuation">[</span>id<span class="hljs-punctuation">:</span>int4(key)<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>name<span class="hljs-punctuation">:</span>text<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>data<span class="hljs-punctuation">:</span>int4<span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">[</span>I<span class="hljs-punctuation">]</span> oid=<span class="hljs-number">16456</span>  N      <span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">2</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;Bob&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">2</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">[</span>R<span class="hljs-punctuation">]</span> oid=<span class="hljs-number">16464</span>  &amp;#<span class="hljs-number">34</span>;public&amp;#<span class="hljs-number">34</span>;.&amp;#<span class="hljs-number">34</span>;tbl_b&amp;#<span class="hljs-number">34</span>;  <span class="hljs-string">&#x27;d&#x27;</span>  <span class="hljs-number">3</span>cols      <span class="hljs-punctuation">[</span>id<span class="hljs-punctuation">:</span>int4(key)<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>name<span class="hljs-punctuation">:</span>text<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>data<span class="hljs-punctuation">:</span>int4<span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">[</span>I<span class="hljs-punctuation">]</span> oid=<span class="hljs-number">16464</span>  N      <span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">11</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;Luke&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">110</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">[</span>D<span class="hljs-punctuation">]</span> oid=<span class="hljs-number">16464</span>  K      <span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">10</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>u<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>u<span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">[</span>C<span class="hljs-punctuation">]</span> flags=<span class="hljs-number">0</span>  commit=<span class="hljs-number">0</span>/<span class="hljs-number">1</span>CAA128  end=<span class="hljs-number">0</span>/<span class="hljs-number">1</span>CAA200  ts=<span class="hljs-number">2026</span><span class="hljs-number">-03</span><span class="hljs-number">-28</span>T16<span class="hljs-punctuation">:</span><span class="hljs-number">55</span><span class="hljs-punctuation">:</span><span class="hljs-number">10</span>
+</code></pre>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-25.webp" alt=""></p>
+<h4>الشكل 12.25. بنية ReorderBufferTXN وتغييراتها بالنسبة إلى txid 841.</h4>
+<p><strong>تسلسل الرسائل المتولّد لـtxid 841:</strong></p>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>B<span class="hljs-punctuation">]</span> lsn=<span class="hljs-number">0</span>/<span class="hljs-number">1</span>CA9E00  ts=<span class="hljs-number">2026</span><span class="hljs-number">-03</span><span class="hljs-number">-28</span>T16<span class="hljs-punctuation">:</span><span class="hljs-number">55</span><span class="hljs-punctuation">:</span><span class="hljs-number">05</span>  txid=<span class="hljs-number">841</span>
+<span class="hljs-punctuation">[</span>R<span class="hljs-punctuation">]</span> oid=<span class="hljs-number">16456</span>  &amp;#<span class="hljs-number">34</span>;public&amp;#<span class="hljs-number">34</span>;.&amp;#<span class="hljs-number">34</span>;tbl_a&amp;#<span class="hljs-number">34</span>;  <span class="hljs-string">&#x27;d&#x27;</span>  <span class="hljs-number">3</span>cols      <span class="hljs-punctuation">[</span>id<span class="hljs-punctuation">:</span>int4(key)<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>name<span class="hljs-punctuation">:</span>text<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>data<span class="hljs-punctuation">:</span>int4<span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">[</span>I<span class="hljs-punctuation">]</span> oid=<span class="hljs-number">16456</span>  N      <span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">3</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;Candy&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">3</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">[</span>U<span class="hljs-punctuation">]</span> oid=<span class="hljs-number">16456</span>  N      <span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">1</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;Alice&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">2</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">[</span>U<span class="hljs-punctuation">]</span> oid=<span class="hljs-number">16456</span>  N      <span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">1</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;Alice&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">3</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">[</span>C<span class="hljs-punctuation">]</span> flags=<span class="hljs-number">0</span>  commit=<span class="hljs-number">0</span>/<span class="hljs-number">1</span>CA9E00  end=<span class="hljs-number">0</span>/<span class="hljs-number">1</span>CA9F00  ts=<span class="hljs-number">2026</span><span class="hljs-number">-03</span><span class="hljs-number">-28</span>T16<span class="hljs-punctuation">:</span><span class="hljs-number">55</span><span class="hljs-punctuation">:</span><span class="hljs-number">15</span>
+</code></pre>
+<p><strong>ملاحظة حول رسائل العلاقة (‘R’):</strong> لا تُرسل رسالة العلاقة إلا إذا لم تُرسل البيانات الوصفية للجدول المحدد خلال جلسة walsender الحالية، أو إذا تغيّر تعريف الجدول. ويقلّل ذلك نقل البيانات الوصفية الزائد.</p>
+<h2 id="1262-إرسال-الرسائل">12.6.2. إرسال الرسائل</h2>
+<p>وبمجرد تسلسل هذه الرسائل بواسطة إضافة الخرج، تُغلَّف في بروتوكول النسخ المتماثل المنطقي وتُرسل عبر الشبكة. انظر الشكل 12.26.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-26.webp" alt=""></p>
+<h4>الشكل 12.26. تسلسل الرسائل للمعاملات القياسية (غير المبثوثة).</h4>
+<p>في معاملة قياسية (غير مبثوثة)، يستقبل عامل التطبيق على المشترك التسلسل كاملًا، من <code>Begin</code> إلى <code>Commit</code>، كتدفق متصل واحد فقط بعد أن يلتزم الناشر بالمعاملة.</p>
+<p>** عرض رسائل النسخ المتماثل الخام</p>
+<p>تستخدم رسائل النسخ المتماثل المنطقي تنسيقًا ثنائيًا ولا يمكن عرضها مباشرةً كنص عادي. ومع ذلك، يمكن فحص التدفق الثنائي الخام بتوجيه خرج أداة <a href="https://www.postgresql.org/docs/current/app-pgrecvlogical.html">pg_recvlogical</a> إلى الأمر <code>od</code> (التفريغ الثماني).</p>
+<pre><code class="language-bash">$ <span class="hljs-comment"># Create a slot using the pgoutput plugin</span>
+$ pg_recvlogical -d testdb --slot myslot --create-slot  -P pgoutput
+
+$ <span class="hljs-comment"># Start the slot and pipe the binary stream to od for inspection</span>
+$ pg_recvlogical -d testdb --slot=myslot --start -f -  -o proto_version=1  -o publication_names=<span class="hljs-string">&#x27;my_publication&#x27;</span> |  <span class="hljs-built_in">od</span> -c  -A n
+   B  \\0  \\0  \\0  \\0 001 276 203 270  \\0 002 364 005 301   &lt; 232
+ 350  \\0  \\0 003  \\b  \\n   R  \\0  \\0   @ 033   p   u   b   l   i
+   c  \\0   t   b   l   _   1  \\0   d  \\0 003 001   i   d  \\0  \\0
+  \\0  \\0 027 377 377 377 377  \\0   n   a   m   e  \\0  \\0  \\0  \\0
+ 031 377 377 377 377  \\0   d   a   t   a  \\0  \\0  \\0  \\0 027 377
+ 377 377 377  \\n   I  \\0  \\0   @ 033   N  \\0 003   t  \\0  \\0  \\0
+ 001   1   t  \\0  \\0  \\0 005   A   l   i   c   e   t  \\0  \\0  \\0
+ 001   1  \\n   I  \\0  \\0   @ 033   N  \\0 003   t  \\0  \\0  \\0 001
+   2   t  \\0  \\0  \\0 003   B   o   b   t  \\0  \\0  \\0 001   2  \\n
+   U  \\0  \\0   @ 033   N  \\0 003   t  \\0  \\0  \\0 001   1   t  \\0
+  \\0  \\0 005   A   l   i   c   e   t  \\0  \\0  \\0 002   1   0  \\n
+   C  \\0  \\0  \\0  \\0  \\0 001 276 203 270  \\0  \\0  \\0  \\0 001 276
+... snip ...
+</code></pre>
+<p>ولأغراض التنقيح أو البحث، تُعدّ إضافة <a href="https://www.postgresql.org/docs/current/test-decoding.html">test_decoding</a> بديلًا مناسبًا، إذ تفكّ ترميز WAL إلى تنسيق مقروء للبشر.</p>
+<pre><code class="language-bash">$ <span class="hljs-comment"># Create a slot using the test_decoding plugin</span>
+$ pg_recvlogical -d testdb --slot myslot --create-slot  -P test_decoding
+
+$ <span class="hljs-comment"># View the decoded output</span>
+$ pg_recvlogical -d testdb --slot=myslot --start -f -
+
+BEGIN 840
+table public.tbl_a: INSERT: <span class="hljs-built_in">id</span>[<span class="hljs-built_in">integer</span>]:2 name[text]:<span class="hljs-string">&#x27;Bob&#x27;</span> data[<span class="hljs-built_in">integer</span>]:2
+table public.tbl_b: INSERT: <span class="hljs-built_in">id</span>[<span class="hljs-built_in">integer</span>]:11 name[text]:<span class="hljs-string">&#x27;Luke&#x27;</span> data[<span class="hljs-built_in">integer</span>]:110
+table public.tbl_b: DELETE: <span class="hljs-built_in">id</span>[<span class="hljs-built_in">integer</span>]:10
+COMMIT 840
+BEGIN 841
+table public.tbl_a: INSERT: <span class="hljs-built_in">id</span>[<span class="hljs-built_in">integer</span>]:3 name[text]:<span class="hljs-string">&#x27;Candy&#x27;</span> data[<span class="hljs-built_in">integer</span>]:3
+table public.tbl_a: UPDATE: <span class="hljs-built_in">id</span>[<span class="hljs-built_in">integer</span>]:1 name[text]:<span class="hljs-string">&#x27;Alice&#x27;</span> data[<span class="hljs-built_in">integer</span>]:2
+table public.tbl_a: UPDATE: <span class="hljs-built_in">id</span>[<span class="hljs-built_in">integer</span>]:1 name[text]:<span class="hljs-string">&#x27;Alice&#x27;</span> data[<span class="hljs-built_in">integer</span>]:3
+COMMIT 841
+</code></pre>
+<h2 id="1263-بث-المعاملات-الكبيرة">12.6.3. بث المعاملات الكبيرة</h2>
+<p>عندما تُضبط <em>streaming</em> على <em>‘on’</em> أو <em>‘parallel’</em> ويبلغ ReorderBuffer حدّ ذاكرته، لا يكتب PostgreSQL التغييرات في ملفات انسكاب محلية. وبدلًا من ذلك، يرسل الناشر هذه التغييرات فورًا إلى المشترك — تحديدًا إلى عامل التطبيق أو عامل التطبيق القائد.</p>
+<p>ويوضّح المثال التالي كيفية تقسيم معاملة كبيرة إلى مقاطع. انظر الشكل 12.27.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-27.webp" alt=""></p>
+<h4>الشكل 12.27. تسلسل الرسائل للمعاملات المبثوثة.</h4>
+<p>إذا كانت txid 842 تستهلك أكبر قدر من الذاكرة عند فيضان المخزن المؤقت، يعيد الناشر ترتيب تغييراتها ويغلّفها بين علامتي <strong>بدء البث (‘S’)</strong> و<strong>إيقاف البث (‘E’)</strong> لتشكيل مقطع.</p>
+<p>والجدير بالذكر أن رسالة <strong>بدء البث</strong> تحلّ محل رسالة <strong>البدء (‘B’)</strong> في المقطع الأول من معاملة مبثوثة.</p>
+<h3 id="12631-المقطع-الأول-txid842">12.6.3.1. المقطع الأول (txid=842)</h3>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>S<span class="hljs-punctuation">]</span> txid=<span class="hljs-number">842</span>  first_segment=<span class="hljs-number">1</span>
+<span class="hljs-punctuation">[</span>R<span class="hljs-punctuation">]</span> oid=<span class="hljs-number">16456</span>  &amp;#<span class="hljs-number">34</span>;public&amp;#<span class="hljs-number">34</span>;.&amp;#<span class="hljs-number">34</span>;tbl_a&amp;#<span class="hljs-number">34</span>;  <span class="hljs-string">&#x27;d&#x27;</span>  <span class="hljs-number">3</span>cols  <span class="hljs-punctuation">[</span>id<span class="hljs-punctuation">:</span>int4(key)<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>name<span class="hljs-punctuation">:</span>text<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>data<span class="hljs-punctuation">:</span>int4<span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">[</span>I<span class="hljs-punctuation">]</span> txid=<span class="hljs-number">842</span>  oid=<span class="hljs-number">16456</span>  N  <span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">1</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;Data1&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">100</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">[</span>I<span class="hljs-punctuation">]</span> txid=<span class="hljs-number">842</span>  oid=<span class="hljs-number">16456</span>  N  <span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">2</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;Data2&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">200</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span>
+... (thousands of INSERTs) ...
+<span class="hljs-punctuation">[</span>I<span class="hljs-punctuation">]</span> txid=<span class="hljs-number">842</span>  oid=<span class="hljs-number">16456</span>  N  <span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">50000</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;Data50000&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">5000000</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">[</span>E<span class="hljs-punctuation">]</span>
+</code></pre>
+<p>وتؤدي الفيضانات اللاحقة إلى مقاطع إضافية. وبما أن هذه ليست الإرسال الأول لهذه المعاملة، تُضبط علامة <em>first_segment</em> في أمر <strong>بدء البث</strong> على 0.</p>
+<h3 id="12632-المقطع-الثاني-txid842">12.6.3.2. المقطع الثاني (txid=842)</h3>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>S<span class="hljs-punctuation">]</span> txid=<span class="hljs-number">842</span>  first_segment=<span class="hljs-number">0</span>
+<span class="hljs-punctuation">[</span>I<span class="hljs-punctuation">]</span> txid=<span class="hljs-number">842</span>  oid=<span class="hljs-number">16456</span>  N  <span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">50001</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;Data50001&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">5000100</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span>
+... (further INSERTs) ...
+<span class="hljs-punctuation">[</span>I<span class="hljs-punctuation">]</span> txid=<span class="hljs-number">842</span>  oid=<span class="hljs-number">16456</span>  N  <span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">100000</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;Data100000&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">10000000</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">[</span>E<span class="hljs-punctuation">]</span>
+</code></pre>
+<p>وعندما تلتزم txid 842 في النهاية على الناشر، يرسل الناشر رسالة <strong>التزام البث (‘c’)</strong>.</p>
+<h3 id="12633-التزام-البث">12.6.3.3. التزام البث</h3>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>c<span class="hljs-punctuation">]</span> txid=<span class="hljs-number">842</span>  flags=<span class="hljs-number">0</span>  commit=<span class="hljs-number">0</span>/<span class="hljs-number">1</span>CB0000  end=<span class="hljs-number">0</span>/<span class="hljs-number">1</span>CB0100  ts=<span class="hljs-number">2026</span><span class="hljs-number">-03</span><span class="hljs-number">-28</span>T17<span class="hljs-punctuation">:</span><span class="hljs-number">10</span><span class="hljs-punctuation">:</span><span class="hljs-number">00</span>
+</code></pre>
+<p>وإذا أُلغيت المعاملة بدلًا من ذلك، يرسل الناشر رسالة <strong>إلغاء البث (‘A’)</strong> لإبلاغ المشترك بتجاهل المقاطع المستلمة سابقًا.</p>
+<h1>12.7. عامل التطبيق وإعادة تنفيذ المعاملات</h1>
+<h4>نسخة تجريبية: العمل قيد الإنجاز.</h4>
+<p>عامل التطبيق هو المكوّن الجوهري المسؤول عن إعادة تنفيذ التغييرات المنطقية المستلمة من الناشر على الجداول المحلية للمشترك.</p>
+<p>يستعرض هذا القسم أولًا التشغيل الأساسي لعامل التطبيق، ثم يحلّل الأوضاع المتقدمة التي تتضمن المعالجة التزايدية للمعاملات الكبيرة والاستخدام المنسّق لعمال التطبيق المتوازيين.</p>
+<p>محتويات القسم</p>
+<ul>
+<li>12.7.1. نظرة عامة على العملية (streaming = off)</li>
+<li>12.7.2. وضع البث (streaming = on)</li>
+<li>12.7.3. وضع عامل التطبيق المتوازي (streaming = parallel)</li>
+</ul>
+<h2 id="1271-نظرة-عامة-على-العملية-streaming-off">12.7.1. نظرة عامة على العملية (streaming = off)</h2>
+<p>ينفّذ عامل التطبيق على عقدة المشترك المهام الأساسية التالية:</p>
+<ul>
+<li><strong>ترشيح الأصل</strong>: يفحص البيانات الوصفية للأصل في الرسالة الواردة لتحديد ما إذا كان ينبغي إعادة تنفيذ المعاملة أو تخطّيها لمنع الحلقات.</li>
+<li><strong>فحص تخطّي LSN (اللاتكرارية)</strong>: يقارن LSN الخاص بالمعاملة الواردة بـ<em>remote_lsn</em> المحفوظ في العرض <a href="https://www.postgresql.org/docs/current/view-pg-replication-origin-status.html">pg_replication_origin_status</a>. وإذا كانت المعاملة قد طُبّقت بالفعل، يتخطّاها العامل لضمان اتساق البيانات.</li>
+<li><strong>التوزيع</strong>: يوجّه الرسائل إلى معالجاتها المعنية وفقًا لنوع الرسالة، مثل INSERT أو UPDATE أو DELETE.</li>
+<li><strong>اكتشاف التعارضات</strong>: يحدّد التعارضات التشغيلية، مثل محاولة تحديث صف غير موجود. وافتراضيًا، يبلّغ العامل عن هذه التعارضات ويوقف النسخ المتماثل لمنع التباعد.</li>
+</ul>
+<h3 id="12711-ترشيح-الأصل-وتتبع-lsn">12.7.1.1. ترشيح الأصل وتتبّع LSN</h3>
+<p>كما نوقش في القسم 12.1.4، يعتمد قرار تطبيق المعاملة على المعلمة <em>origin</em> ووجود <em>origin_id</em>.</p>
+<p>وفي التنفيذ الحالي، إذا كانت <em>origin</em> = <em>’none’</em> مضبوطة وكان <em>origin_id</em> أكبر من صفر، يُجهض عامل التطبيق إعادة التنفيذ؛ وإلا يواصل العامل.</p>
+<h3 id="12712-توزيع-الرسائل-وتدفق-إعادة-التنفيذ">12.7.1.2. توزيع الرسائل وتدفق إعادة التنفيذ</h3>
+<p>عند استقبال تدفق من رسائل فكّ الترميز المنطقي، يعالجها عامل التطبيق بالتسلسل وفقًا لنوعها. تأمّل سيناريو يُدرَج فيه صف واحد في tbl_a على الناشر:</p>
+<p><strong>عينة تدفق الرسائل:</strong></p>
+<pre><code class="language-json"><span class="hljs-punctuation">[</span>B<span class="hljs-punctuation">]</span> lsn=<span class="hljs-number">0</span>/<span class="hljs-number">1</span>CA96C0  ts=<span class="hljs-number">2026</span><span class="hljs-number">-03</span><span class="hljs-number">-29</span>T16<span class="hljs-punctuation">:</span><span class="hljs-number">55</span><span class="hljs-punctuation">:</span><span class="hljs-number">05</span>  txid=<span class="hljs-number">845</span>
+<span class="hljs-punctuation">[</span>R<span class="hljs-punctuation">]</span> oid=<span class="hljs-number">16456</span>  &amp;#<span class="hljs-number">34</span>;public&amp;#<span class="hljs-number">34</span>;.&amp;#<span class="hljs-number">34</span>;tbl_a&amp;#<span class="hljs-number">34</span>;  <span class="hljs-string">&#x27;d&#x27;</span>  <span class="hljs-number">3</span>cols      <span class="hljs-punctuation">[</span>id<span class="hljs-punctuation">:</span>int4(key)<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>name<span class="hljs-punctuation">:</span>text<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>data<span class="hljs-punctuation">:</span>int4<span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">[</span>I<span class="hljs-punctuation">]</span> oid=<span class="hljs-number">16456</span>  N      <span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">3</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;Candy&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span><span class="hljs-punctuation">[</span>t&amp;#<span class="hljs-number">34</span>;<span class="hljs-number">3</span>&amp;#<span class="hljs-number">34</span>;<span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">[</span>C<span class="hljs-punctuation">]</span> flags=<span class="hljs-number">0</span>  commit=<span class="hljs-number">0</span>/<span class="hljs-number">1</span>CA9E00  end=<span class="hljs-number">0</span>/<span class="hljs-number">1</span>CA9F00  ts=<span class="hljs-number">2026</span><span class="hljs-number">-03</span><span class="hljs-number">-29</span>T16<span class="hljs-punctuation">:</span><span class="hljs-number">55</span><span class="hljs-punctuation">:</span><span class="hljs-number">15</span>
+</code></pre>
+<p>وتدفق معالجة معاملة INSERT هذه كما يلي:</p>
+<ol>
+<li><strong>رسالة البدء [B]</strong>: يبدأ عامل التطبيق معاملة محلية ويلتقط LSN الالتزام على الناشر والطابع الزمني. ويضبط العامل <a href="https://www.postgresql.org/docs/current/runtime-config-client.html#GUC-SESSION-REPLICATION-ROLE">session_replication_role</a> على <em>replica</em>، ضامنًا أن المُطلِقات والقيود المحلية تتبع أدوار النسخ المتماثل المحددة لها.</li>
+<li><strong>رسالة العلاقة [R]</strong>: يستقبل عامل التطبيق تعريف الجدول. ويحدّث العامل RelationSyncCache، رابطًا معرّف OID على جانب الناشر (مثل 16456) بمعرّف OID للجدول المحلي استنادًا إلى المخطط واسم الجدول.</li>
+<li><strong>رسالة الإدراج [I]</strong>: يحوّل العامل بيانات الصف الثنائية إلى تنسيق الجدول المحلي. وينفّذ عامل التطبيق إدراجًا داخليًا (عبر <a href="https://github.com/postgres/postgres/blob/6ca631b9901264b97c5b165e66edd3a85847ee0b/src/backend/executor/execReplication.c#L810">ExecSimpleRelationInsert</a>)، ما يحدّث أيضًا أي فهارس مرتبطة. وتولّد هذه العملية سجلات WAL الخاصة بها على المشترك.</li>
+<li><strong>رسالة الالتزام [C]</strong>: تلتزم المعاملة المحلية. ويُلحق عامل التطبيق <em>origin_id</em> المقابل للناشر بسجل WAL الخاص بالالتزام. ثم يحدّث العامل <a href="https://www.postgresql.org/docs/current/catalog-pg-replication-origin.html">pg_replication_origin</a> لتخزين أحدث LSN مُطبَّق ويرسل إشعارًا (ACK) إلى walsender، مؤكّدًا أن البيانات قد دُفعت إلى القرص.</li>
+</ol>
+<p>ومع أن INSERT هو المثال الأساسي هنا، فإن عمليات DML الأخرى مثل UPDATE وDELETE تتبع منطق توزيع مشابهًا.</p>
+<p>ويحتوي سجل WAL الخاص بالالتزام على بيانات وصفية ملحقة من الناشر المصدر: تحديدًا <em>origin_id</em>، و<em>final_lsn</em> بوصفه <em>origin_lsn</em>، و<em>commit_timestamp</em> بوصفه <em>origin_timestamp</em>.</p>
+<p>وكما ذُكر في القسم 12.4.3، تتضمن عمليات UPDATE وDELETE خطوة إضافية: يجب على عامل التطبيق تنفيذ عمليات بحث مباشرة عن الصفوف — باستخدام مسوح الفهارس أو المسوح التسلسلية عبر دوال مثل <a href="https://github.com/postgres/postgres/blob/3b28dad70e2fa57a973697d51242c284d475c7df/src/backend/executor/execReplication.c%23L182">RelationFindReplTupleByIndex</a> — لتحديد البيانات الهدف بشكل فريد وتعديلها قبل تطبيق التغيير.</p>
+<h3 id="12713-تحسين-replica-identity-full">12.7.1.3. تحسين REPLICA IDENTITY FULL</h3>
+<p>في الإصدار 15 أو أقدم، كانت الجداول المضبوطة على <em>REPLICA IDENTITY FULL</em> تتطلب مسحًا تسلسليًا لتحديد الصف الهدف لعمليات UPDATE أو DELETE، ما أدى إلى كلفة أداء كبيرة في الجداول الكبيرة.</p>
+<p>وابتداءً من الإصدار 16، يمكن لعامل التطبيق الاستفادة من الفهارس الموجودة لتحديد الصفوف حتى في ظل <em>REPLICA IDENTITY FULL</em>. وتحدّد الدالة <a href="https://github.com/postgres/postgres/blob/32770ea03247bc42b38ccc53b84711e0c13d1498/src/backend/replication/logical/relation.c#L868">FindLogicalRepLocalIndex()</a> فهارس B-tree غير جزئية مناسبة يمكنها تحديد الصف بشكل فريد، ما يقلّل كثيرًا من الاعتماد على المسوح التسلسلية المكلفة.</p>
+<h2 id="1272-وضع-البث-streaming-on">12.7.2. وضع البث (streaming = on)</h2>
+<p>عندما تُضبط المعلمة <em>streaming</em> على <em>on</em>، يستقبل عامل التطبيق معاملات جارية من الناشر على شكل مقاطع متعددة قبل الالتزام النهائي.</p>
+<p>تأمّل سيناريو يتضمن معاملتين متزامنتين: txid 842، وهي معاملة كبيرة تُرسل عبر مقطعي بث، وtxid 843، وهي معاملة أصغر تُرسل ككتلة رسائل قياسية. انظر الشكل 12.28.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-28.webp" alt=""></p>
+<h4>الشكل 12.28. عملية إعادة تنفيذ التغييرات المنطقية عند تفعيل streaming.</h4>
+<p>وتسلسل المعالجة الموضّح في الشكل 12.28 كما يلي:</p>
+<ul>
+<li>(1) <strong>المقطع الأول من txid 842</strong>: يستقبل عامل التطبيق مقطع البث الأولي ويراكم التغييرات في الذاكرة باستخدام بنية <code>StringInfoData</code> (داخليًا، مخزن <em>original_msg</em>).</li>
+<li>(2) <strong>رسالة txid 843</strong>: تصل كتلة قياسية غير مبثوثة لـtxid 843. ويفكّ عامل التطبيق ترميز هذه التغييرات فورًا ويطبّقها على الجدول المحلي.</li>
+<li>(3) <strong>المقطع الثاني من txid 842</strong>: يصل مقطع البث التالي لـtxid 842 ويُضاف إلى المخزن الموجود في الذاكرة.</li>
+<li>(4) <strong>التزام txid 842</strong>: عند استقبال رسالة <strong>التزام البث</strong>، يفكّ عامل التطبيق ترميز جميع التغييرات المتراكمة لـtxid 842 ويعيد تنفيذها بالتسلسل.</li>
+</ul>
+<p>وخلاصة القول، يعالج عامل التطبيق الرسائل القياسية فورًا بينما يخزّن مقاطع البث في مخزن مؤقت حتى تُطلق رسالة الالتزام إعادة تنفيذ المعاملة بأكملها.</p>
+<h3 id="12721-ضغط-الذاكرة-والانسكاب-إلى-القرص">12.7.2.1. ضغط الذاكرة والانسكاب إلى القرص</h3>
+<p>تحكم المعلمة <a href="https://www.postgresql.org/docs/current/runtime-config-resource.html#GUC-LOGICAL-DECODING-WORK-MEM">logical_decoding_work_mem</a> الذاكرة المخصّصة لتخزين التغييرات المبثوثة مؤقتًا. وإذا تجاوز حجم التغييرات المتراكمة هذا الحد، يسكب عامل التطبيق البيانات إلى ملفات مؤقتة.</p>
+<p>وتوجد هذه الملفات المؤقتة في الدليل <code>$PGDATA/base/pgsql_tmp/</code>. واصطلاحات التسمية منظّمة كما يلي:</p>
+<ul>
+<li>
+<p><strong>تنسيق الدليل</strong>: <code>$PGDATA/base/pgsql_tmp/pgsql_tmp[PID].[FilesetSerial].fileset/</code></p>
+</li>
+<li>
+<p><strong>تنسيق الملف</strong>: <code>[SubID]-[txid].changes</code></p>
+</li>
+</ul>
+<p>إذا عالج اشتراك بمعرّف OID <em>16403</em> معاملة مبثوثة بمعرّف txid 767 باستخدام عامل تطبيق بمعرّف PID <em>2212</em>، فسيكون مسار الملف كما يلي:</p>
+<pre><code>base/pgsql_tmp/pgsql_tmp2212.0.fileset/16403-767.changes
+</code></pre>
+<p>وبمجرد أن تلتزم المعاملة أو تُلغى، يحذف PostgreSQL هذه الملفات المؤقتة تلقائيًا.</p>
+<h2 id="1273-وضع-عامل-التطبيق-المتوازي-streaming-parallel">12.7.3. وضع عامل التطبيق المتوازي (streaming = parallel)</h2>
+<p>أُدخل <strong>التطبيق المتوازي</strong> في الإصدار 16، ويعزّز أداء النسخ المتماثل المنطقي بالسماح بإعادة تنفيذ معاملات متعددة بالتوازي على المشترك. وخلافًا لوضع <code>streaming = 'on'</code> القياسي الذي يخزّن التغييرات المبثوثة مؤقتًا حتى وصول الالتزام، يتيح التطبيق المتوازي للعمال المعيّنين البدء بإعادة تنفيذ التغييرات فور استلامها.</p>
+<p>** ملاحظة</p>
+<p>لا ينطبق التطبيق المتوازي إلا على المعاملات <em>المبثوثة</em> — أي تلك المرسلة كسلسلة مقاطع لا كرسالة واحدة. ولذلك، تظل المعاملات غير المبثوثة تُستقبل وتُطبَّق مباشرةً بواسطة عامل التطبيق القائد نفسه، تمامًا كما في وضع <code>streaming = 'off'</code>؛ ولا يشارك أي عامل تطبيق متوازٍ في تلك الحالة.</p>
+<p>وفيما يلي ملخّص لبنية هذا الوضع وقيوده:</p>
+<ul>
+<li><strong>عامل التطبيق القائد</strong>: يحافظ على الاتصال بـwalsender ويوزّع عمال التطبيق المتوازيين على التغييرات الواردة.</li>
+<li><strong>عمال التطبيق المتوازيون</strong>: يطلقهم عامل التطبيق القائد لتطبيق التغييرات بالتوازي.</li>
+<li><strong>حدّ العمال</strong>: يُحكم عدد عمال التطبيق المتوازيين المتزامنين بالمعلمة <a href="https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-PARALLEL-APPLY-WORKERS-PER-SUBSCRIPTION">max_parallel_apply_workers_per_subscription</a>.</li>
+<li><strong>آلية الرجوع الاحتياطي</strong>: إذا تجاوز عدد المعاملات المبثوثة النشطة الحدّ المضبوط، يتولّى عامل التطبيق القائد المعاملات الكبيرة الإضافية بالرجوع إلى سلوك <em>streaming = ‘on’</em> (التخزين في الذاكرة أو على القرص).</li>
+</ul>
+<p>وتوضّح الأقسام التالية نظرة عامة على معالجة عمال التطبيق المتوازيين باستخدام عدة سيناريوهات.</p>
+<h3 id="12731-تسلسل-إعادة-التنفيذ-في-الوضع-المتوازي">12.7.3.1. تسلسل إعادة التنفيذ في الوضع المتوازي</h3>
+<p>تأمّل أبسط سيناريو: معاملتان، txid 845 وtxid 846، وكلتاهما معاملة كبيرة تُدرج صفوفًا كثيرة في الجدولين tbl_a وtbl_b على الترتيب. انظر الشكل 12.29.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-29.webp" alt=""></p>
+<h4>الشكل 12.29. تسلسل إعادة تنفيذ المعاملات في وضع التطبيق المتوازي.</h4>
+<p>وكما هو موضّح في الشكل 12.29، يجري تدفق المعالجة كما يلي:</p>
+<ul>
+<li>(1) <strong>وصول مقطع txid 845</strong>: يحدّد عامل التطبيق القائد أن هذه معاملة مبثوثة ويطلق (أو يعيّن) عامل تطبيق متوازيًا.</li>
+<li>(2) <strong>إعادة تنفيذ فورية</strong>: يوزّع عامل التطبيق القائد المقطع على عامل التطبيق المتوازي، الذي يبدأ فورًا بإعادة تنفيذ التغييرات على الجدول المحلي.</li>
+<li>(3) <strong>وصول مقطع txid 846</strong>: يطلق عامل التطبيق القائد (أو يعيّن) عامل تطبيق متوازيًا.</li>
+<li>(4) <strong>إعادة تنفيذ فورية</strong>: يوزّع عامل التطبيق القائد المقطع على عامل تطبيق متوازٍ آخر، يعيد فورًا تنفيذ التغييرات على الجدول المحلي.</li>
+<li>(5) <strong>وصول التزام البث لـtxid 845</strong>: يستقبل عامل التطبيق القائد رسالة التزام البث الخاصة بـtxid 845 ويحيلها إلى عامل التطبيق المتوازي المعيّن.</li>
+<li>(6) <strong>إنهاء txid 845</strong>: يلتزم عامل التطبيق المتوازي بالمعاملة المحلية ويعود إلى حالة الاستعداد.</li>
+<li>(7) <strong>انتظار القائد</strong>: بينما يُنهى التزام txid 845، يتوقف عامل التطبيق القائد ولا يقرأ تغييرات إضافية — بما فيها رسالة التزام البث الخاصة بـtxid 846 — من الناشر. وبعد اكتمال التزام txid 845 فقط، يستأنف عامل التطبيق القائد القراءة، ويستقبل رسالة التزام البث الخاصة بـtxid 846 ويحيلها إلى عامل التطبيق المتوازي الذي يعالج txid 846. ويُشرح سبب هذا الانتظار في <a href="#12-7-3-2">القسم 12.7.3.2</a> (انظر أيضًا <a href="https://github.com/postgres/postgres/blob/master/src/backend/replication/logical/applyparallelworker.c">pa_wait_for_xact_finish()</a>).</li>
+<li>(8) <strong>إنهاء txid 846</strong>: يلتزم عامل التطبيق المتوازي بالمعاملة المحلية ويعود إلى حالة الاستعداد.</li>
+</ul>
+<p>ويدير عامل التطبيق القائد توزيع المهام ديناميكيًا استنادًا إلى موارد النظام المتاحة:</p>
+<ul>
+<li>إذا كان عامل تطبيق متوازٍ معيّنًا بالفعل للمعاملة، يحيل عامل التطبيق القائد المقطع إلى ذلك العامل لإعادة التنفيذ فورًا.</li>
+<li>إذا لم يكن أي عامل معيّنًا وكان عدد عمال التطبيق المتوازيين النشطين دون حدّ <a href="https://www.postgresql.org/docs/current/runtime-config-replication.html#GUC-MAX-PARALLEL-APPLY-WORKERS-PER-SUBSCRIPTION">max_parallel_apply_workers_per_subscription</a>، يطلق عامل التطبيق القائد عاملًا جديدًا ويفوّض المعاملة إليه.</li>
+<li><strong>آلية الرجوع الاحتياطي</strong>: إذا بلغ حدّ عمال التطبيق المتوازيين، يعود عامل التطبيق القائد إلى سلوك <em>streaming = ‘on’</em>، فيراكم المقاطع الواردة في الذاكرة أو على القرص حتى تصل رسالة الالتزام.</li>
+</ul>
+<h3 id="12732-تجنب-الأعطال-الناتجة-عن-تبعيات-المعاملات">12.7.3.2. تجنّب الأعطال الناتجة عن تبعيات المعاملات</h3>
+<p>يشرح هذا القسم الفرعي سبب توقف عامل التطبيق القائد عن قراءة التغييرات الإضافية وتطبيقها أثناء إنهاء التزام معاملة جارية.</p>
+<p>في الوضع غير المتوازي، تُسلسَل التغييرات من معاملات متعددة على الناشر بواسطة MVCC، ويعيد عامل التطبيق على المشترك تنفيذها بالترتيب نفسه بالضبط، ما يمنع مشكلات الصحة.</p>
+<p>أما في الوضع المتوازي، فتطبّق عمال تطبيق متوازون منفصلون التغييرات في الوقت نفسه. ونتيجة لذلك، لم يعد ترتيب المعاملات المسلسَل على الناشر محفوظًا تلقائيًا على المشترك.</p>
+<p>ولحل ذلك، يتوقف عامل التطبيق القائد عن قراءة التغييرات الجديدة أثناء إنهاء التزام. ويوضّح المثال التالي هذا السلوك.</p>
+<p>تأمّل الجدول tbl_a، الذي يكون فارغًا في البداية. وتنفّذ معاملتان، txid 851 وtxid 852، عملية INSERT وعملية UPDATE على tbl_a على الترتيب. انظر الشكل 12.30.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-30.webp" alt=""></p>
+<h4>الشكل 12.30. توقف عامل التطبيق القائد للحفاظ على ترتيب المعاملات.</h4>
+<p>على الناشر، تُدرج txid 851 صفوفًا وتلتزم؛ وعندها فقط تحدّث txid 852 تلك الصفوف في tbl_a.</p>
+<ul>
+<li>(1) <strong>وصول مقطع txid 851</strong>: يستقبل عامل التطبيق القائد مقطع txid 851 ويحيله إلى عامل التطبيق المتوازي 1.</li>
+<li>(2) <strong>إعادة تنفيذ فورية</strong>: يبدأ عامل التطبيق المتوازي 1 فورًا بإعادة تنفيذ تغييرات INSERT على الجدول المحلي.</li>
+<li>(3) <strong>وصول التزام txid 851، وتوقف القائد</strong>: يستقبل عامل التطبيق القائد رسالة التزام البث الخاصة بـtxid 851، ويحيلها إلى عامل التطبيق المتوازي 1، ويتوقف عن قراءة مزيد من الرسائل من الناشر حتى يكتمل هذا الالتزام.</li>
+<li>(4) <strong>وصول مقطع txid 852 دون قراءته</strong>: بينما يكون عامل التطبيق القائد متوقفًا، يرسل الناشر مقطع txid 852. ولا يسترجع عامل التطبيق القائد هذه الرسالة بعد. وكما هو موضّح في الشكل 12.30، لو أحالها عامل التطبيق القائد فورًا وطبّقها عامل التطبيق المتوازي 2، فلن يجد أمر UPDATE أي صفوف مطابقة على المشترك لأن إدراج txid 851 لم يلتزم بعد ولم يظهر.</li>
+<li>(5) <strong>وصول التزام txid 852 أيضًا دون قراءته</strong>: تصل رسالة التزام البث الخاصة بـtxid 852 كذلك إلى المشترك، لكنها تبقى غير مقروءة للسبب نفسه.</li>
+<li>(6) <strong>استئناف القائد وإحالة txid 852</strong>: بمجرد أن يُنهي عامل التطبيق المتوازي 1 التزام txid 851 محليًا، يستأنف عامل التطبيق القائد القراءة. فيسترجع المقطع ورسالة التزام البث معًا لـtxid 852، ويحيلهما إلى عامل التطبيق المتوازي 2.</li>
+<li>(7) <strong>إعادة تنفيذ فورية وإنهاء</strong>: يعيد عامل التطبيق المتوازي 2 تنفيذ تغييرات UPDATE ويلتزم، وخلال ذلك يتوقف عامل التطبيق القائد مرة أخرى كما في الخطوة (3).</li>
+</ul>
+<p>وبتوقّف استقبال الرسائل من لحظة استلام رسالة الالتزام حتى إنهاء الالتزام المحلي، يمنع عامل التطبيق القائد التنفيذ خارج الترتيب ويحافظ على تسلسل المعاملات المنشأ على الناشر.</p>
+<h1>12.8. الآلية الداخلية لإعادة التشغيل واستعادة الانهيار</h1>
+<h4>نسخة تجريبية: العمل قيد الإنجاز.</h4>
+<p>يقدّم هذا القسم نظرة عامة على إدارة بيانات التسجيل المسبق للكتابة (WAL) في النسخ المتماثل المنطقي. وبناءً على هذه الأساسيات، يفصّل بعد ذلك تسلسلات إعادة تشغيل المشترك واستعادة الانهيار.</p>
+<p>محتويات القسم</p>
+<ul>
+<li>12.8.1. إدارة بيانات WAL</li>
+<li>12.8.2. تسلسل إعادة التشغيل</li>
+<li>12.8.3. تسلسل الاستعادة</li>
+</ul>
+<h2 id="1281-إدارة-بيانات-wal">12.8.1. إدارة بيانات WAL</h2>
+<p>تُدار تقدّم النسخ المتماثل استنادًا إلى رقم تسلسل السجل (LSN) لبيانات WAL.</p>
+<p>وخلافًا للنسخ المتماثل المتدفّق، حيث يتشارك الخادم الأساسي والخادم الاحتياطي مساحة WAL نفسها بالضبط، يتطلب النسخ المتماثل المنطقي <strong>ربطًا</strong> بين مساحتي WAL لدى الناشر والمشترك. وذلك لأن كل عقدة تستخدم LSN خاصًا بها مستقلًا.</p>
+<p>وفي تنفيذ PostgreSQL، يتحمّل المشترك مسؤولية هذا الربط. فبينما يستخدم الناشر دائمًا معرّفات LSN الخاصة به، يحتفظ المشترك بسجل للتقابل بين معرّفات LSN المحلية لديه ومعرّفات LSN البعيدة المستلمة من الناشر.</p>
+<h3 id="12811-آليات-إدارة-lsn-لدى-الناشر-والمشترك">12.8.1.1. آليات إدارة LSN لدى الناشر والمشترك</h3>
+<h4>الناشر</h4>
+<p>يدير الناشر <em>confirmed_flush_lsn</em> داخل فتحة النسخ الخاصة به:</p>
+<ul>
+<li><strong>confirmed_flush_lsn</strong>: هو LSN الذي أكّد مستهلك الفتحة المنطقية استلام البيانات حتى عنده. ولم تعد المعاملات الملتزمة قبل هذا LSN متاحة للنسخ المتماثل.</li>
+<li><strong>التخزين</strong>: تُحفظ معلومات فتحة النسخ في الذاكرة وتُثبَّت عادةً في وسيط التخزين عند كل نقطة تفتيش.</li>
+</ul>
+<h4>المشترك</h4>
+<p>وكما ذُكر في القسم 12.7.1.2، تتضمن سجلات WAL المتولّدة عن عبارات COMMIT (وABORT) على المشترك بيانات وصفية من الناشر: <em>origin_id</em>، وLSN الالتزام على الناشر (<em>final_lsn</em>)، و<em>commit_timestamp</em>.</p>
+<p>علاوة على ذلك، يحتفظ المشترك بأحدث ربط لـLSN الالتزام في الذاكرة:</p>
+<ul>
+<li><strong>local_lsn</strong>: LSN الخاص بالتزام المشترك نفسه.</li>
+<li><strong>remote_lsn</strong>: <em>final_lsn</em> الخاص بالناشر المقابل لذلك الالتزام.</li>
+<li><strong>الظهور</strong>: تكون هذه القيم مرئية عبر عرض النظام <a href="https://www.postgresql.org/docs/current/view-pg-replication-origin-status.html">pg_replication_origin_status</a>.</li>
+</ul>
+<p>ولأن pg_replication_origin_status عرض نظام، تُخزَّن حالته في الملف <code>$PGDATA/pg_logical/replorigin_checkpoint</code> عند كل نقطة تفتيش.</p>
+<p><strong>ملاحظة حول السلامة عند الانهيار</strong>: إذا انهار المشترك على نحو غير متوقع، فقد يُفقد أحدث ربط في ملف <code>replorigin_checkpoint</code>. ومع ذلك، يعيد النظام تلقائيًا بناء أحدث ربط خلال عملية الاستعادة اللاحقة. وتُوصف التفاصيل في القسم 12.8.3.</p>
+<h3 id="12812-تدفق-بيانات-lsn-في-التسلسل-الطبيعي">12.8.1.2. تدفق بيانات LSN في التسلسل الطبيعي</h3>
+<p>يوضّح المثال التالي كيفية إدارة معرّفات LSN عندما ينفّذ الناشر أمر INSERT (انظر الشكل 12.31).</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-31.webp" alt="مع أن هذا الشكل يوضّح origin_id وorigin_lsn داخل سجل WAL الخاص بالالتزام المكتوب بواسطة المشترك، فإن البنية الدقيقة كما يلي: في سجل WAL الخاص بالالتزام (أو الإلغاء)، يُضمَّن origin_id في جزء الترويسة، بينما يُلحق origin_commit_lsn (أو origin_abort_lsn) وorigin_commit_timestamp (أو origin_abort_timestamp) بالقسم الموسَّع."></p>
+<h4>الشكل 12.31. تدفق ربط LSN خلال معاملة عادية.</h4>
+<p>مع أن هذا الشكل يوضّح origin_id وorigin_lsn داخل سجل WAL الخاص بالالتزام المكتوب بواسطة المشترك، فإن البنية الدقيقة كما يلي: في سجل WAL الخاص بالالتزام (أو الإلغاء)، يُضمَّن origin_id في جزء الترويسة، بينما يُلحق origin_commit_lsn (أو origin_abort_lsn) وorigin_commit_timestamp (أو origin_abort_timestamp) بالقسم الموسَّع.</p>
+<h4>الشكل 12.31 [1]</h4>
+<p>يعكس <em>confirmed_flush_lsn</em> لفتحة النسخ القيمة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mtext>LSN</mtext><mi>P</mi></msup><mi mathvariant="normal">_</mi><mn>0</mn></mrow><annotation encoding="application/x-tex">\\text{LSN}^{P}\\_{0}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.2246em;vertical-align:-0.31em;"></span><span class="mord"><span class="mord text"><span class="mord">LSN</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9146em;"><span style="top:-3.1362em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.1389em;">P</span></span></span></span></span></span></span></span></span><span class="mord" style="margin-right:0.0278em;">_</span><span class="mord"><span class="mord">0</span></span></span></span></span>، مؤكّدًا أن المشترك قد طبّق ودفع تغييرات المعاملة السابقة بنجاح.</p>
+<p>ثم ينفّذ الناشر عملية INSERT (txid=100)، حيث يبدأ سجل WAL الخاص بالالتزام عند <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mtext>LSN</mtext><mi>P</mi></msup><mi mathvariant="normal">_</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\\text{LSN}^{P}\\_{1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.2246em;vertical-align:-0.31em;"></span><span class="mord"><span class="mord text"><span class="mord">LSN</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9146em;"><span style="top:-3.1362em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.1389em;">P</span></span></span></span></span></span></span></span></span><span class="mord" style="margin-right:0.0278em;">_</span><span class="mord"><span class="mord">1</span></span></span></span></span> وينتهي عند <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mtext>LSN</mtext><mn>2</mn><mi>P</mi></msubsup></mrow><annotation encoding="application/x-tex">\\text{LSN}^{P}_{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.1616em;vertical-align:-0.247em;"></span><span class="mord"><span class="mord text"><span class="mord">LSN</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9146em;"><span style="top:-2.453em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.1362em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.1389em;">P</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span></span>.</p>
+<p>وتولّد إضافة pgoutput رسائل تحتوي على معرّفات LSN هذه:</p>
+<ul>
+<li><strong>B (البدء)</strong>: <em>final_lsn</em> = <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mtext>LSN</mtext><mi>P</mi></msup><mi mathvariant="normal">_</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\\text{LSN}^{P}\\_{1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.2246em;vertical-align:-0.31em;"></span><span class="mord"><span class="mord text"><span class="mord">LSN</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9146em;"><span style="top:-3.1362em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.1389em;">P</span></span></span></span></span></span></span></span></span><span class="mord" style="margin-right:0.0278em;">_</span><span class="mord"><span class="mord">1</span></span></span></span></span></li>
+<li><strong>C (الالتزام)</strong>: <em>commit_lsn</em> = <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mtext>LSN</mtext><mi>P</mi></msup><mi mathvariant="normal">_</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\\text{LSN}^{P}\\_{1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.2246em;vertical-align:-0.31em;"></span><span class="mord"><span class="mord text"><span class="mord">LSN</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9146em;"><span style="top:-3.1362em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.1389em;">P</span></span></span></span></span></span></span></span></span><span class="mord" style="margin-right:0.0278em;">_</span><span class="mord"><span class="mord">1</span></span></span></span></span>، <em>end_lsn</em> = <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mtext>LSN</mtext><mi>P</mi></msup><mi mathvariant="normal">_</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">\\text{LSN}^{P}\\_{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.2246em;vertical-align:-0.31em;"></span><span class="mord"><span class="mord text"><span class="mord">LSN</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9146em;"><span style="top:-3.1362em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.1389em;">P</span></span></span></span></span></span></span></span></span><span class="mord" style="margin-right:0.0278em;">_</span><span class="mord"><span class="mord">2</span></span></span></span></span></li>
+</ul>
+<h4>الشكل 12.31 [2]</h4>
+<p>تحتوي ذاكرة المشترك في البداية على <em>local_lsn</em> = <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mtext>LSN</mtext><mi>S</mi></msup><mi mathvariant="normal">_</mi><mn>0</mn></mrow><annotation encoding="application/x-tex">\\text{LSN}^{S}\\_{0}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.2246em;vertical-align:-0.31em;"></span><span class="mord"><span class="mord text"><span class="mord">LSN</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9146em;"><span style="top:-3.1362em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0576em;">S</span></span></span></span></span></span></span></span></span><span class="mord" style="margin-right:0.0278em;">_</span><span class="mord"><span class="mord">0</span></span></span></span></span> و<em>remote_lsn</em> = <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mtext>LSN</mtext><mi>P</mi></msup><mi mathvariant="normal">_</mi><mn>0</mn></mrow><annotation encoding="application/x-tex">\\text{LSN}^{P}\\_{0}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.2246em;vertical-align:-0.31em;"></span><span class="mord"><span class="mord text"><span class="mord">LSN</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9146em;"><span style="top:-3.1362em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.1389em;">P</span></span></span></span></span></span></span></span></span><span class="mord" style="margin-right:0.0278em;">_</span><span class="mord"><span class="mord">0</span></span></span></span></span>، بما يتسق مع ملف “replorigin_checkpoint”.</p>
+<p>وبمجرد أن يطبّق عامل التطبيق التغييرات، يكتب سجل التزام في WAL الخاص بالمشترك عند <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mtext>LSN</mtext><mi>S</mi></msup><mi mathvariant="normal">_</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\\text{LSN}^{S}\\_{1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.2246em;vertical-align:-0.31em;"></span><span class="mord"><span class="mord text"><span class="mord">LSN</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9146em;"><span style="top:-3.1362em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0576em;">S</span></span></span></span></span></span></span></span></span><span class="mord" style="margin-right:0.0278em;">_</span><span class="mord"><span class="mord">1</span></span></span></span></span>. ويتضمن هذا السجل <em>origin_id</em> و<em>final_lsn</em> الخاص بالناشر (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mtext>LSN</mtext><mi>P</mi></msup><mi mathvariant="normal">_</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\\text{LSN}^{P}\\_{1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.2246em;vertical-align:-0.31em;"></span><span class="mord"><span class="mord text"><span class="mord">LSN</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9146em;"><span style="top:-3.1362em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.1389em;">P</span></span></span></span></span></span></span></span></span><span class="mord" style="margin-right:0.0278em;">_</span><span class="mord"><span class="mord">1</span></span></span></span></span>). ثم تُحدَّث حالة الذاكرة إلى <em>local_lsn</em> = <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mtext>LSN</mtext><mi>S</mi></msup><mi mathvariant="normal">_</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\\text{LSN}^{S}\\_{1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.2246em;vertical-align:-0.31em;"></span><span class="mord"><span class="mord text"><span class="mord">LSN</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9146em;"><span style="top:-3.1362em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0576em;">S</span></span></span></span></span></span></span></span></span><span class="mord" style="margin-right:0.0278em;">_</span><span class="mord"><span class="mord">1</span></span></span></span></span> و<em>remote_lsn</em> = <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mtext>LSN</mtext><mi>P</mi></msup><mi mathvariant="normal">_</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\\text{LSN}^{P}\\_{1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.2246em;vertical-align:-0.31em;"></span><span class="mord"><span class="mord text"><span class="mord">LSN</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9146em;"><span style="top:-3.1362em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.1389em;">P</span></span></span></span></span></span></span></span></span><span class="mord" style="margin-right:0.0278em;">_</span><span class="mord"><span class="mord">1</span></span></span></span></span>.</p>
+<p>لاحظ أن ملف <em>replorigin_checkpoint</em> يبقى دون تغيير حتى نقطة التفتيش التالية.</p>
+<h4>الشكل 12.31 [3]</h4>
+<p>عند اكتمال المعاملة، يرسل المشترك إشعار ACK يحتوي على <em>write_lsn</em> و<em>flush_lsn</em> و<em>apply_lsn</em>.</p>
+<p>وفي هذا السيناريو، تُضبط جميع القيم على <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mtext>LSN</mtext><mi>P</mi></msup><mi mathvariant="normal">_</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\\text{LSN}^{P}\\_{1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.2246em;vertical-align:-0.31em;"></span><span class="mord"><span class="mord text"><span class="mord">LSN</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9146em;"><span style="top:-3.1362em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.1389em;">P</span></span></span></span></span></span></span></span></span><span class="mord" style="margin-right:0.0278em;">_</span><span class="mord"><span class="mord">1</span></span></span></span></span>. ولاحظ أن المشترك يعيد معرّفات LSN نسبةً إلى مساحة WAL الخاصة بـ<strong>الناشر</strong>.</p>
+<p>ثم يحدّث الناشر <em>confirmed_flush_lsn</em> لفتحة نسخه إلى <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mtext>LSN</mtext><mi>P</mi></msup><mi mathvariant="normal">_</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">\\text{LSN}^{P}\\_{1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.2246em;vertical-align:-0.31em;"></span><span class="mord"><span class="mord text"><span class="mord">LSN</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9146em;"><span style="top:-3.1362em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.1389em;">P</span></span></span></span></span></span></span></span></span><span class="mord" style="margin-right:0.0278em;">_</span><span class="mord"><span class="mord">1</span></span></span></span></span> استنادًا إلى هذا الإشعار.</p>
+<h2 id="1282-تسلسل-إعادة-التشغيل">12.8.2. تسلسل إعادة التشغيل</h2>
+<p>بمجرد إعداد النسخ المتماثل المنطقي، يبدأ الناشر والمشترك عملية النسخ المتماثل. وإذا توقفت العملية — مثلًا بسبب إعادة تشغيل أي من الطرفين — فإنها تستأنف تلقائيًا. انظر الشكل 12.32.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-32.webp" alt=""></p>
+<h4>الشكل 12.32. تسلسل إعادة تشغيل النسخ المتماثل المنطقي.</h4>
+<ul>
+<li>(1) <strong>قراءة نقطة التفتيش</strong>: يقرأ المشترك ملف “replorigin_checkpoint” لتهيئة <em>local_lsn</em> و<em>remote_lsn</em>.</li>
+<li>(2) <strong>إطلاق العامل</strong>: يبدأ مُشغّل النسخ المتماثل المنطقي عامل تطبيق.</li>
+<li>(3) <strong>طلب الاتصال</strong>: يطلب عامل التطبيق اتصالًا من الناشر.</li>
+<li>(4) <strong>إنشاء walsender</strong>: يُنشئ مدير عمليات postmaster على الناشر عملية walsender.</li>
+<li>(5) <strong>إقامة الاتصال</strong>: يتصل عامل التطبيق بـwalsender.</li>
+<li>(6) <strong>التفاوض على LSN</strong>: يتفاوض عامل التطبيق وwalsender على نقطة البداية باستخدام <em>remote_lsn</em>. فيرسل المشترك <em>remote_lsn</em>، ويبدأ walsender فكّ ترميز WAL من ذلك الموضع على جانب الناشر.</li>
+<li>(7) <strong>استئناف النسخ المتماثل</strong>: تستأنف العملية من LSN المحدد.</li>
+</ul>
+<h2 id="1283-تسلسل-الاستعادة">12.8.3. تسلسل الاستعادة</h2>
+<p>يصف تسلسل الاستعادة العملية التي تلي انهيار المشترك.</p>
+<p>وخلافًا لإعادة التشغيل القياسية، قد يكون <em>local_lsn</em> و<em>remote_lsn</em> المخزّنان في ملف “replorigin_checkpoint” قديمين، لأنهما يعكسان حالة نقطة التفتيش الأخيرة فقط. لذلك يجب على المشترك مسح بيانات WAL الخاصة به لإعادة بناء أحدث ربط قبل الاتصال بالناشر. انظر الشكل 12.33.</p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-33.webp" alt=""></p>
+<h4>الشكل 12.33. تسلسل استعادة النسخ المتماثل المنطقي.</h4>
+<h4>[1] مسح قطع WAL</h4>
+<p>أثناء استعادة الانهيار القياسية (راجع القسم 9.8)، يمسح النظام قطع WAL ويستخرج <em>origin_id</em> و<em>origin_lsn</em> من سجلات الالتزام الصادرة عن الناشر.</p>
+<h4>[2] استعادة حالة الأصل</h4>
+<p>بعد اكتمال الاستعادة، يستعيد النظام أحدث <em>origin_lsn</em> (نقطة الالتزام على الناشر) وLSN الالتزام المقابل له على المشترك إلى الذاكرة كـ<em>remote_lsn</em> و<em>local_lsn</em> على الترتيب. ويُستعاد ملف “replorigin_checkpoint” أيضًا.</p>
+<p>ومن هذه النقطة، يواصل النظام تسلسل إعادة التشغيل القياسي لإعادة الاتصال بالناشر.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>في سجل WAL الخاص بالالتزام (أو الإلغاء)، يُضمَّن origin_id في الترويسة، بينما يُضاف “origin_commit_lsn” و“origin_commit_timestamp” إلى القسم الموسَّع. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+`,r={book:s,chapter:n,chapterTitle:a,slug:t,title:p,headings:l,html:e};export{s as book,n as chapter,a as chapterTitle,r as default,l as headings,e as html,t as slug,p as title};

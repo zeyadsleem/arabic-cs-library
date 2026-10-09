@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -118,7 +118,7 @@
 التعبير.</p>
 </aside>
 <p><span name="legend"></span></p>
-<img src="/arabic-cs-library/images/crafting-interpreters/jumping-back-and-forth-1.webp" alt="Flowchart of the compiled bytecode of an if statement." />
+<img src="/arabic-cs-library/images/crafting-interpreters/jumping-back-and-forth-1.webp" alt="مخطط انسيابي لشيفرة البايت المُصرَّفة لعبارة if." />
 <p>لكنّ لدينا مشكلة. حين نكتب مُعامل تعليمة <code>OP_JUMP_IF_FALSE</code>، كيف نعرف كم يجب أن نقفز؟
 فنحن لم نترجم فرع then بعد، لذا لا نعرف كم من شيفرة البايت يحتوي.</p>
 <p>لإصلاح ذلك، نستخدم خدعة كلاسيكية تُسمّى <strong>الترقيع الخلفي</strong> (backpatching). فنُصدر تعليمة
@@ -126,7 +126,7 @@
 جسم then. وحين ننتهي من ذلك، نعرف كم يجب أن نقفز. فنعود ونستبدل تلك الإزاحة النائبة
 بالإزاحة الحقيقية الآن بعد أن صرنا قادرين على حسابها. شيءٌ كخياطة رقعة على نسيج الشيفرة
 المُصرَّفة القائم.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/jumping-back-and-forth-2.webp" alt="A patch containing a number being sewn onto a sheet of bytecode." />
+<img src="/arabic-cs-library/images/crafting-interpreters/jumping-back-and-forth-2.webp" alt="رقعة تحوي رقماً تُخاط على ورقة شيفرة بايت." />
 <p>نرمّز هذه الخدعة في دالتَي مساعِدة.</p>
 <p>^code emit-jump</p>
 <p>تُصدر الأولى تعليمة شيفرة بايت وتكتب مُعاملًا نائبًا لإزاحة القفز. ونمرّر رمز التشغيل كمُعامل
@@ -183,11 +183,11 @@
 <p>^code compile-else (1 before, 1 after)</p>
 <p>حين يكون الشرط خاطئًا، سنقفز فوق فرع then. وإن وُجد فرع else، فإنّ <code>ip</code> ستهبط مباشرةً في
 بداية شيفرته. لكنّ ذلك لا يكفي. وإليك التدفّق الذي يؤدي إلى:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/jumping-back-and-forth-3.webp" alt="Flowchart of the compiled bytecode with the then branch incorrectly falling through to the else branch." />
+<img src="/arabic-cs-library/images/crafting-interpreters/jumping-back-and-forth-3.webp" alt="مخطط انسيابي لشيفرة البايت المُصرَّفة حيث يمرّ فرع then سهواً إلى فرع else." />
 <p>إن كان الشرط صحيحًا، فإنّنا ننفّذ فرع then كما نريد. لكن بعد ذلك، يستمر التنفيذ مباشرةً إلى
 داخل فرع else. أوه! وحين يكون الشرط صحيحًا، وبعد أن ننفّذ فرع then، نحتاج إلى القفز فوق فرع
 else. وبهذه الطريقة، في كلتا الحالتين، ننفّذ فرعًا واحدًا فقط، هكذا:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/jumping-back-and-forth-4.webp" alt="Flowchart of the compiled bytecode for an if with an else clause." />
+<img src="/arabic-cs-library/images/crafting-interpreters/jumping-back-and-forth-4.webp" alt="مخطط انسيابي لشيفرة البايت المُصرَّفة لعبارة if ذات فرع else." />
 <p>لتنفيذ ذلك، نحتاج إلى قفزة أخرى من نهاية فرع then.</p>
 <p>^code jump-over-else (2 before, 1 after)</p>
 <p>نرقّع تلك الإزاحة بعد نهاية جسم else.</p>
@@ -213,7 +213,7 @@ else. وبهذه الطريقة، في كلتا الحالتين، ننفّذ ف
 المستخدم بند <code>else</code>. وفي الحالة التي تركها فيها، فإنّ كل ما يفعله الفرع هو التخلّص من قيمة
 الشرط.</p>
 <p>والتدفّق الصحيح الكامل يبدو هكذا:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/jumping-back-and-forth-5.webp" alt="Flowchart of the compiled bytecode including necessary pop instructions." />
+<img src="/arabic-cs-library/images/crafting-interpreters/jumping-back-and-forth-5.webp" alt="مخطط انسيابي لشيفرة البايت المُصرَّفة متضمّناً تعليمات pop الضرورية." />
 <p>إن تتبّعت المسار، يمكنك أن ترى أنّه ينفّذ دائمًا فرعًا واحدًا ويضمن أُسقوط الشرط أولًا. ولم
 يبقَ سوى بعض دعم المفكّك.</p>
 <p>^code disassemble-jump (1 before, 1 after)</p>
@@ -241,7 +241,7 @@ else. وبهذه الطريقة، في كلتا الحالتين، ننفّذ ف
 كاملًا. وإلا، فإنّنا نتخلّص من قيمة اليسار ونقيّم المُعامل الأيمن الذي يصبح نتيجة تعبير <code>and</code>
 كامل.</p>
 <p>أربعة أسطر الشيفرة هناك تنتج ذلك بالضبط. يبدو التدفّق هكذا:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/jumping-back-and-forth-6.webp" alt="Flowchart of the compiled bytecode of an 'and' expression." />
+<img src="/arabic-cs-library/images/crafting-interpreters/jumping-back-and-forth-6.webp" alt="مخطط انسيابي لشيفرة البايت المُصرَّفة لتعبير and." />
 <p>الآن ترى لماذا <span name="instr">يُبقي</span> <code>OP_JUMP_IF_FALSE</code> القيمة على المكدّس. فحين
 تكون قيمة الجهة اليسرى من <code>and</code> خاطئة، تبقى تلك القيمة لتصبح نتيجة التعبير كاملًا.</p>
 <aside name="instr">
@@ -262,7 +262,7 @@ else. وبهذه الطريقة، في كلتا الحالتين، ننفّذ ف
 <p>حين تكون الجهة اليسرى خاطئة، فإنّها تقفز قفزة صغيرة فوق التصريح التالي. وذلك التصريح هو
 قفزة غير مشروطة فوق شيفرة المُعامل الأيمن. وهذه الرقصة الصغيرة تُنجز فعليًا قفزة حين تكون
 القيمة صحيحة. يبدو التدفّق هكذا:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/jumping-back-and-forth-7.webp" alt="Flowchart of the compiled bytecode of a logical or expression." />
+<img src="/arabic-cs-library/images/crafting-interpreters/jumping-back-and-forth-7.webp" alt="مخطط انسيابي لشيفرة البايت المُصرَّفة لتعبير or المنطقي." />
 <p>إن كنت صادقًا معك، فهذه ليست أفضل طريقة للقيام بذلك. فهناك تعليمات أكثر توجيهًا وحِمل
 زائد أكثر. ولا يوجد سبب جيّد لماذا ينبغي أن يكون <code>or</code> أبطأ من <code>and</code>. لكنّ من الممتع أن ترى
 أنّه من الممكن تنفيذ المعاملين دون إضافة أيّ تعليمات جديدة. سامحني على ترفّي.</p>
@@ -312,7 +312,7 @@ else. وبهذه الطريقة، في كلتا الحالتين، ننفّذ ف
 <p>^code disassemble-loop (1 before, 1 after)</p>
 <p>تلك هي عبارة <code>while</code>. وهي تحوي قفزتين -- قفزة أمامية مشروطة للخروج من الحلقة حين لا يتحقّق
 الشرط، وقفزة حلقة غير مشروطة إلى الخلف بعد أن نفّذنا الجسم. يبدو التدفّق هكذا:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/jumping-back-and-forth-8.webp" alt="Flowchart of the compiled bytecode of a while statement." />
+<img src="/arabic-cs-library/images/crafting-interpreters/jumping-back-and-forth-8.webp" alt="مخطط انسيابي لشيفرة البايت المُصرَّفة لعبارة while." />
 <h2 id="عبارات-for">عبارات for</h2>
 <p>التصريح المتكرّر الآخر في Lox هو حلقة <code>for</code> العريقة الموروثة من C. ولديها أمور أكثر بكثير
 مقارنةً بحلقة <code>while</code>. فهي تملك ثلاثة بنود، جميعها اختيارية:</p>
@@ -393,7 +393,7 @@ C، أليس كذلك؟ وإليك الشيفرة:</p>
 الحلقة بعد تصريح الجسم، سيؤدي ذلك إلى قفزها إلى الأعلى إلى تعبير <em>الزيادة</em> بدلًا من أعلى
 الحلقة كما تفعل حين لا توجد زيادة. وهكذا ننسج الزيادة لتُنفَّذ بعد الجسم.</p>
 <p>إنّه ملتوٍّ، لكن كل شيء يعمل في النهاية. حلقة كاملة بجميع بنودها تُترجم إلى تدفّق كهذا:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/jumping-back-and-forth-9.webp" alt="Flowchart of the compiled bytecode of a for statement." />
+<img src="/arabic-cs-library/images/crafting-interpreters/jumping-back-and-forth-9.webp" alt="مخطط انسيابي لشيفرة البايت المُصرَّفة لعبارة for." />
 <p>وكما عند تنفيذ حلقات <code>for</code> في jlox، لم نضطر إلى لمس وقت التشغيل. فكل ذلك يُترجم إلى عمليات
 تدفّق تحكّم أوّلية تدعمها الآلة الافتراضية بالفعل. وفي هذا الفصل، أخذنا قفزة <span
 name="leap">كبيرة</span> إلى الأمام -- أصبحت clox الآن مكتملة تورينغ. وقد غطّينا قدرًا كبيرًا
@@ -590,7 +590,7 @@ done:
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -598,8 +598,8 @@ done:
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

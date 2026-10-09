@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -255,8 +255,8 @@ print echo(echo(1) + echo(2)) + echo(echo(4) + echo(5));
 يمكن أن يكون كشف ما يجري عبئًا محرقًا.</p>
 </aside>
 <p>إليك شجرة الصياغة لعبارة <code>print</code>:</p>
-<p><img src="/arabic-cs-library/images/crafting-interpreters/a-virtual-machine-1.webp" alt="The AST for the example
-statement, with numbers marking the order that the nodes are evaluated." /></p>
+<p><img src="/arabic-cs-library/images/crafting-interpreters/a-virtual-machine-1.webp" alt="شجرة الصياغة للمثال،
+مع أرقام تحدّد ترتيب تقييم العُقد." /></p>
 <p>مع التقييم من اليسار إلى اليمين، وطريقة تداخل التعبيرات، يجب على أيّ تنفيذ صحيح
 لـ Lox أن <em>يطبع</em> هذه الأرقام بهذا الترتيب:</p>
 <pre><code class="language-text">1  // from echo(1)
@@ -284,8 +284,8 @@ Java فريدًا لكل عقدة يجري تقييمها، فيمكن أن نم
 <p>تلميح: إنه في اسم هذا القسم، وهو كيف تدير Java وC الاستدعاءات العودية للدوالّ.</p>
 </aside>
 <p>لنجرّب تمرينًا غريبًا. سنمشي على تنفيذ البرنامج أعلاه خطوةً خطوة:</p>
-<p><img src="/arabic-cs-library/images/crafting-interpreters/a-virtual-machine-2.webp" alt="The series of instructions with
-bars showing which numbers need to be preserved across which instructions." /></p>
+<p><img src="/arabic-cs-library/images/crafting-interpreters/a-virtual-machine-2.webp" alt="سلسلة من التعليمات مع
+أشرطة تُظهر الأرقام التي يجب حفظها عبر أيّ من التعليمات." /></p>
 <p>على اليسار خطوات الشيفرة. وعلى اليمين القيم التي نتتبّعها. يمثّل كل شريط رقمًا.
 يبدأ حين تُنتَج القيمة أول مرة -- إمّا ثابتًا وإمّا نتيجة جمع. ويتبّع طول الشريط
 الفترة التي يجب أن تبقى فيها قيمة منتَجة سابقًا، وينتهي حين تستهلك تلك القيمة عملية
@@ -295,15 +295,15 @@ bars showing which numbers need to be preserved across which instructions." /></
 <p>في المخطّط أعلاه، أعطيت كل رقم فريد عموده البصري الخاص. لنكن أكثر وفورًا. بمجرّد
 أن يُستهلك رقم، نسمح بإعادة استخدام عموده لقيمة لاحقة أخرى. بمعنى آخر، نأخذ كل
 تلك الفجوات في الأعلى ونملؤها، بدفع الأرقام من اليمين:</p>
-<p><img src="/arabic-cs-library/images/crafting-interpreters/a-virtual-machine-3.webp" alt="Like the previous
-diagram, but with number bars pushed to the left, forming a stack." /></p>
+<p><img src="/arabic-cs-library/images/crafting-interpreters/a-virtual-machine-3.webp" alt="كالرسم
+السابق، لكنّ الأشرطة الرقمية مدفوعة إلى اليسار مكوّنةً مكدّساً." /></p>
 <p>هناك أشياء مثيرة تحدث هنا. حين نزيح كل شيء إلى اليسار، يبقى كل رقم في عمود واحد
 طوال حياته. كما لا تتبقّى أيّ فجوات. بمعنى آخر، متى ظهر رقم أبكر من آخر، فسيعيش
 وقتًا لا يقلّ عن عمر ذاك الثاني. أول رقم يظهر هو آخر رقم يُستهلك. همم... آخر داخل،
 أول خارج... ولماذا، هذا <span name="pancakes">مكدّس</span>!</p>
 <aside name="pancakes">
 <p>وهذا أيضًا مكدّس:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/a-virtual-machine-4.webp" alt="A stack... of pancakes." />
+<img src="/arabic-cs-library/images/crafting-interpreters/a-virtual-machine-4.webp" alt="مكدّس... من الفطائر." />
 </aside>
 <p>في المخطّط الثاني، في كل مرّة نُدخل رقمًا، ندفعه على المكدّس من اليمين. وحين تُستهلك
 الأرقام، فإنّها تُسقط دائمًا من الأيمن إلى الأيسر.</p>
@@ -339,16 +339,16 @@ diagram, but with number bars pushed to the left, forming a stack." /></p>
 قيمة تُسقط -- هو العنصر صفر في المصفوفة، وتتبعه القيم المدفوعة لاحقًا. إن دفعنا
 حروف كلمة &quot;crepe&quot; -- فطورتي الصباحية المفضّلة القابلة للتكديس -- على المكدّس
 بالترتيب، بدت مصفوفة C الناتجة هكذا:</p>
-<p><img src="/arabic-cs-library/images/crafting-interpreters/a-virtual-machine-5.webp" alt="An array containing the
-letters in 'crepe' in order starting at element 0." /></p>
+<p><img src="/arabic-cs-library/images/crafting-interpreters/a-virtual-machine-5.webp" alt="مصفوفة تحوي حروف
+كلمة crepe بالترتيب ابتداءً من العنصر 0." /></p>
 <p>بما أنّ المكدّس ينمو ويتراجع مع دفع القيم وإسقاطها، فنحن نتاجع مكان أعلى المكدّس في
 المصفوفة. وكما في <code>ip</code>، نستخدم مؤشّرًا مباشرًا بدلًا من فهرس عدد صحيح لأنّ فكّ
 المؤشّر أسرع من حساب الإزاحة من الفهرس في كل مرّة نحتاج فيها إليها.</p>
 <p>يشير المؤشّر إلى عنصر المصفوفة الواقع <em>خلف</em> العنصر الذي يحتوي على القيمة العليا في
-المكدّس. يبدو ذلك غريبًا قليلًا، لكن كل تنفيذ تقريبًا يفعل هذا. 이는 يعني أننا
+المكدّس. يبدو ذلك غريبًا قليلًا، لكن كل تنفيذ تقريبًا يفعل هذا. وهذا يعني أننا
 نستطيع الإشارة إلى أنّ المكدّس فارغ بأن يشير إلى العنصر صفر في المصفوفة.</p>
-<p><img src="/arabic-cs-library/images/crafting-interpreters/a-virtual-machine-6.webp" alt="An empty array with
-stackTop pointing at the first element." /></p>
+<p><img src="/arabic-cs-library/images/crafting-interpreters/a-virtual-machine-6.webp" alt="مصفوفة فارغة يشير فيها
+stackTop إلى العنصر الأول." /></p>
 <p>إن كان مؤشّرنا يشير إلى العنصر العلوي، فإنّ المكدّس الفارغ سيحتاج أن يشير إلى العنصر
 ‎-1‎. وهذا <span name="defined">غير معرَّف</span> في C. وكما ندفع القيم على المكدّس...</p>
 <aside name="defined">
@@ -356,11 +356,11 @@ stackTop pointing at the first element." /></p>
 <em>من</em> المسموح به وموصوف بدقّة أن يكون لديك مؤشّر مصفوفة يشير إلى ما بعد نهاية المصفوفة
 بقليل.</p>
 </aside>
-<p><img src="/arabic-cs-library/images/crafting-interpreters/a-virtual-machine-7.webp" alt="An array with 'c' at element
-zero." /></p>
+<p><img src="/arabic-cs-library/images/crafting-interpreters/a-virtual-machine-7.webp" alt="مصفوفة فيها الحرف c في
+العنصر الصفر." /></p>
 <p>...يشير <code>stackTop</code> دائمًا إلى ما بعد آخر عنصر بقليل.</p>
-<p><img src="/arabic-cs-library/images/crafting-interpreters/a-virtual-machine-8.webp" alt="An array with 'c', 'r',
-'e', 'p', and 'e' in the first five elements." /></p>
+<p><img src="/arabic-cs-library/images/crafting-interpreters/a-virtual-machine-8.webp" alt="مصفوفة فيها الحروف c وr
+وe وp وe في أول خمسة عناصر." /></p>
 <p>أتذكّرها هكذا: يشير <code>stackTop</code> إلى المكان الذي ستذهب إليه القيمة التالية التي
 ستُدفع. وأقصى عدد قيم يمكننا تخزينها على المكدّس (على الأقلّ الآن) هو:</p>
 <p>^code stack-max (1 before, 2 after)</p>
@@ -495,9 +495,9 @@ print -a; // -1.2.
 ثم الأيمن. هذا يعني أنّ المُعامل الأيسر يُدفع قبل المُعامل الأيمن. إذن يكون المُعامل
 الأيمن في أعلى المكدّس. ومن ثمّ، القيمة الأولى التي نسقطها هي <code>b</code>.</p>
 <p>مثلًا، إن ترجمنا <code>3 - 1</code>، فإنّ تدفّق البيانات بين التعليمات يبدو هكذا:</p>
-<p><img src="/arabic-cs-library/images/crafting-interpreters/a-virtual-machine-9.webp" alt="A sequence of instructions
-with the stack for each showing how pushing and then popping values reverses
-their order." /></p>
+<p><img src="/arabic-cs-library/images/crafting-interpreters/a-virtual-machine-9.webp" alt="سلسلة من التعليمات
+ومكدّس لكلٍّ منها يُظهر كيف يقلب الدفع ثمّ السحب ترتيب
+القيم." /></p>
 <p>وكما فعلنا مع الماكروهات الأخرى داخل <code>run()</code>، فإنّنا ننظّف خلفنا في نهاية الدالة.</p>
 <p>^code undef-binary-op (1 before, 1 after)</p>
 <p>والأخير هو دعم المفكّك.</p>
@@ -505,8 +505,8 @@ their order." /></p>
 <p>تنسيقات التعليمات الحسابية بسيطة، مثل <code>OP_RETURN</code>. وبرغم أنّ المعاملات <em>الحسابية</em>
 تأخذ مُعاملات -- تُوجد على المكدّس -- فإنّ تعليمات <em>الشيفرة بايت</em> الحسابية لا تأخذ.</p>
 <p>لنُجرّب بعض تعليماتنا الجديدة على أرض الواقع بتقييم تعبير أكبر:</p>
-<p><img src="/arabic-cs-library/images/crafting-interpreters/a-virtual-machine-10.webp" alt="The expression being
-evaluated: -((1.2 + 3.4) / 5.6)" /></p>
+<p><img src="/arabic-cs-library/images/crafting-interpreters/a-virtual-machine-10.webp" alt="التعبير قيد
+التقييم: -((1.2 + 3.4) / 5.6)" /></p>
 <p>مبنيًا على قطعتنا المثال القائمة، إليك التعليمات الإضافية التي نحتاج إليها لتُترجَم تلك الشجرة يدويًا
 إلى شيفرة بايت.</p>
 <p>^code main-chunk (3 before, 3 after)</p>
@@ -623,7 +623,7 @@ name="lua">Lua 5.0</span>، انتقل المنفّذون إلى مجموعة ت
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -631,8 +631,8 @@ name="lua">Lua 5.0</span>، انتقل المنفّذون إلى مجموعة ت
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -72,7 +72,7 @@ name="recycle">النفايات (collector)</span></strong>.</p>
 <p>كان من الأنسب أن نستخدم استعارة &quot;إعادة التدوير&quot; هنا. فجامع النفايات لا يتخلّص من الذاكرة، بل يستعيدها
 لإعادة استخدامها في بيانات جديدة. لكن اللغات المُدارة أقدم من يوم الأرض، لذا التقط المخترعون
 التشبيه الذي يعرفونه.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-1.webp" class="above" alt="A recycle bin full of bits." />
+<img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-1.webp" class="above" alt="سلة إعادة تدوير مليئة بالبتّات." />
 </aside>
 <h2 id="إمكانية-الوصول">إمكانية الوصول</h2>
 <p>يطرح هذا سؤالًا صعبًا بشكل مفاجئ: كيف تُخبر الآلة الافتراضية أيّ ذاكرة <em>غير</em> مطلوبة؟ فالذاكرة لا
@@ -139,12 +139,12 @@ print a;
 <p>لنفترض أنّنا نوقف البرنامج عند السطر المعلَّم ونُشغّل جامع النفايات. وحين ينتهي الجامع ويستأنف
 البرنامج، فإنّه سيستدعي الإغلاق، الذي سيطبع بدوره <code>&quot;data&quot;</code>. لذا يحتاج الجامع إلى ألّا <em>يحرّر</em> تلك
 السلسلة. لكن إليك كيف يبدو المكدّس حين نوقف البرنامج:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-2.webp" alt="The stack, containing only the script and closure." />
+<img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-2.webp" alt="المكدّس، لا يحوي سوى السكربت والإغلاق." />
 <p>سلسلة <code>&quot;data&quot;</code> ليست في أيّ موضع عليه. فقد رُفعت بالفعل من المكدّس ونُقلت إلى القيمة العليا المُغلَقة
 التي يستخدمها الإغلاق. والإغلاق نفسه موجود على المكدّس. لكن للوصول إلى السلسلة، نحتاج إلى التتبّع عبر
 الإغلاق ومصفوفة قيمه العليا. وبما أنّه <em>من الممكن</em> لبرنامج المستخدم أن يفعل ذلك، فإنّ كل هذه
 الكائنات التي يمكن الوصول إليها بشكل غير مباشر تُعدّ كذلك قابلة للوصول.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-3.webp" class="wide" alt="All of the referenced objects from the closure, and the path to the 'data' string from the stack." />
+<img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-3.webp" class="wide" alt="كل الكائنات المشار إليها من الإغلاق، والمسار إلى سلسلة data من المكدّس." />
 <p>يعطينا هذا تعريفًا استقرائيًّا لإمكانية الوصول:</p>
 <ul>
 <li>
@@ -200,7 +200,7 @@ name="procrastination">في النهاية</span> استقرّ على جمع ا�
 </li>
 </ul>
 <p>يبدو الأمر شيءًا كهذا:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-4.webp" class="wide" alt="Starting from a graph of objects, first the reachable ones are marked, the remaining are swept, and then only the reachable remain." />
+<img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-4.webp" class="wide" alt="انطلاقاً من رسم كائنات، تُعلَّم أولاً الكائنات القابلة للوصول، ثمّ تُكنَس الباقية، فلا تبقى إلا القابلة للوصول." />
 <aside name="trace">
 <p><strong>جامع النفايات المتتبّع</strong> (tracing garbage collector) هو أيّ خوارزمية تعبر عبر رسم إشارات
 الكائنات. وهذا في المقابل عدّ المراجع، الذي له استراتيجية مختلفة لتتبّع الكائنات القابلة للوصول.</p>
@@ -356,19 +356,19 @@ CallFrames. ويحتوي كل CallFrame على مؤشّر إلى الإغلاق 
 </aside>
 <ul>
 <li>
-<p><strong><img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-5.webp" alt="A white circle."
+<p><strong><img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-5.webp" alt="دائرة بيضاء."
 class="dot" /> الأبيض:</strong> في بداية جمع النفايات، كل الكائنات بيضاء. وهذا اللون يعني أنّنا لم نصل إلى
 الكائن أو نعالجه إطلاقًا.</p>
 </li>
 <li>
-<p><strong><img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-6.webp" alt="A gray circle."
+<p><strong><img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-6.webp" alt="دائرة رمادية."
 class="dot" /> الرمادي:</strong> أثناء التحديد، حين نصل إلى كائنٍ لأول مرّة، فإنّنا نُغمّقه فيصبح رماديًّا.
 وهذا اللون يعني أنّنا نعرف أنّ الكائن نفسه قابل للوصول ولا ينبغي جمعه. لكنّنا لم نعبُر <em>عبره</em>
 بعد لنرى ما هي الكائنات <em>الأخرى</em> التي يشير إليها. وبعبارات خوارزميات الرسوم البيانية، هذه هي
 <em>قائمة العمل</em> (worklist) -- مجموعة الكائنات التي نعرف عنها لكن لم نعالجها بعد.</p>
 </li>
 <li>
-<p><strong><img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-7.webp" alt="A black circle."
+<p><strong><img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-7.webp" alt="دائرة سوداء."
 class="dot" /> الأسود:</strong> حين نأخذ كائنًا رماديًّا ونحدّد كلّ الكائنات التي يشير إليها، فإنّنا
 نُحوّل عندئذٍ الكائن الرمادي إلى أسود. وهذا اللون يعني أنّ مرحلة التحديد انتهت من معالجة ذلك
 الكائن.</p>
@@ -399,7 +399,7 @@ class="dot" /> الأسود:</strong> حين نأخذ كائنًا رماديً�
 الرمادي. ثمّ يتحوّل كل كائن رمادي وإخوتُه إلى الرمادي بينما يتحوّل الكائن نفسه إلى الأسود. والأثر
 الكامل هو جبهة موجية رمادية تعبر عبر الرسم البياني، تاركةً خلفها حقلًا من الكائنات السوداء القابلة
 للوصول. أما الكائنات غير القابلة للوصول فلا تمسّها الجبهة الموجية وتبقى بيضاء.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-8.webp" class="wide" alt="A gray wavefront working through a graph of nodes." />
+<img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-8.webp" class="wide" alt="جبهة رمادية تجتاح رسم عُقد." />
 <p>في <span name="invariant">النهاية (end)</span>، يبقى لديك بحر من الكائنات السوداء التي تم الوصول إليها،
 منثرًا بجزر من الكائنات البيضاء التي يمكن كنسها وتحريرها. وبمجرد تحرير الكائنات غير القابلة للوصول،
 تُعاد الكائنات المتبقّية -- وكلّها سوداء -- إلى الأبيض استعدادًا لدورة جمع النفايات التالية.</p>
@@ -499,7 +499,7 @@ class="dot" /> الأسود:</strong> حين نأخذ كائنًا رماديً�
 تعمل عليه. فحلقة <code>while</code> الخارجية تمشي في القائمة المرتبطة لكلّ كائنات الكومة، وتتحقّق من بتّات التحديد
 لديها. وإذا كان الكائن محدَّدًا (أسود)، فإنّنا نتركه وشأنه ونتجاوزه. وإذا كان غير محدَّد (أبيض)، فإنّنا
 نفصله من القائمة ونحرّره باستخدام دالة <code>freeObject()</code> التي كتبناها من قبل.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-9.webp" alt="A recycle bin full of bits." />
+<img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-9.webp" alt="سلة إعادة تدوير مليئة بالبتّات." />
 <p>معظم الشيفرة الأخرى هنا تتناول حقيقة أنّ إزالة عقدة من قائمة مرتبطة في اتجاه واحد أمر مربك. علينا أن
 نتذكّر العقدة السابقة باستمرار كي نفصل مؤشّرها التالي، وعلينا أن نتعامل مع الحالة الحديّة التي نحرّر فيها العقدة الأولى. لكن، عدا ذلك، الأمر بسيط إلى حدٍّ ما -- احذف كل عقدة في قائمة مرتبطة لا يوجد فيها
 بتّ مضبوط.</p>
@@ -603,7 +603,7 @@ class="dot" /> الأسود:</strong> حين نأخذ كائنًا رماديً�
 </li>
 </ul>
 <p><span name="latency"></span></p>
-<img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-10.webp" alt="A bar representing execution time with slices for running user code and running the GC. The largest GC slice is latency. The size of all of the user code slices is throughput." />
+<img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-10.webp" alt="عمود يمثّل زمن التنفيذ مقسَّم إلى قطاعات لتشغيل شيفرة المستخدم وتشغيل الجامع. أكبر قطاع في الجامع هو الكمون، ومجموع قطاعات شيفرة المستخدم هو الإنتاجية." />
 <aside name="latency">
 <p>يمثّل الشريط تنفيذ البرنامج، مقسّمًا إلى وقتٍ قُضي في تشغيل شيفرة المستخدم ووقتٍ قُضي في الجامع.
 وحجم أكبر مقطع منقطع من الزمن في تشغيل الجامع هو الكمون. وحجم كل مقاطع شيفرة المستخدم مجتمعةً هو
@@ -622,7 +622,7 @@ class="dot" /> الأسود:</strong> حين نأخذ كائنًا رماديً�
 الخابزين -- خيوط العمّال -- قادرين على تشغيل شيفرة المستخدم بأقلّ قدر من الانقطاع.</p>
 <p>لكنّ التنسيق مطلوب. فأنت لا تريد لغسّال أوانٍ أن يخطف وعاءً من يد خبّاز! وهذا التنسيق يضيف حملًا
 وقدرًا كبيرًا من التعقيد. فالأجهزة المتزامنة سريعة، لكنّ تنفيذها على نحو صحيح تحدٍّ.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-11.webp" class="above" alt="Un baguette." />
+<img src="/arabic-cs-library/images/crafting-interpreters/garbage-collection-11.webp" class="above" alt="رغيف باغيت." />
 </aside>
 <p>إنّ بيع أرغفة خبز أقلّ في اليوم أمر سيّئ، وجعل أيّ زبون معيّن يجلس وينتظر بينما تنظّف كلّ الأواني أمر
 سيّئ أيضًا. الهدف هو زيادة الإنتاجية إلى أقصى حدّ وتقليل الكمون، لكنّ لا وجبة مجّانية، ولا حتى داخل
@@ -837,7 +837,7 @@ name="nursery">بشكل متكرّر (frequently)</span> على الكائنات
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -845,8 +845,8 @@ name="nursery">بشكل متكرّر (frequently)</span> على الكائنات
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

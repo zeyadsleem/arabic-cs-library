@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -197,7 +197,7 @@ END
 <p>فأول شرط يتحقق يؤدي إلى إسناد قيمة في العمود. وتُتخطى بقية السطور في <code>CASE</code> حينئذ. ولاحظ أيضًا أننا نستخدم اسمًا مستعارًا (<code>AS</code>) لأنه لولا ذلك لأظهرت ترويسة العمود 'case' فقط.</p>
 <p><em>المسافات البيضاء</em> (الإزاحة بعلامات الجدولة أو المسافات) ليست مهمة لخادم قاعدة البيانات، لكنها <em>مهمة للأشخاص الذين عليهم قراءة شيفرتك</em> (مثل المحاضرين الذين يصححون واجباتك).</p>
 <p>المقررات التي ليس لها تاريخ انتهاء تُسمّى مقررات 'new' في مقابل المقررات 'old' التي لم تعد تُدرَّس ولها تاريخ انتهاء في جدولنا. اكتب الاستعلام الذي يولّد نتيجة الشكل أدناه. هل نحتاج إلى قول المزيد؟ لاحظ ترويسات الأعمدة...</p>
-<p><img src="/arabic-cs-library/images/database-foundations/sql-select-3-oudnieuw.webp" alt="new column with the text old or new"></p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-select-3-oudnieuw.webp" alt="عمود جديد يحوي النص old أو new"></p>
 <h4>الحل</h4>
 <pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> name, code,
   <span class="hljs-keyword">CASE</span>
@@ -229,7 +229,7 @@ END
 <h2 id="العمل-بالتواريخ">العمل بالتواريخ</h2>
 <p>نوع البيانات <code>date</code> مهم جدًا في قاعدة بيانات. وهناك عشرات الدوال التي يمكنها معالجة تاريخ. وسننظر في بعضها فقط هنا. علاوة على ذلك، لا يوجد نوع بيانات <code>date</code> فقط، بل أيضًا <code>timestamp</code> و<code>time</code> و<code>interval</code> (انظر التوثيق في <a href="https://www.postgresql.org/docs/current/datatype-datetime.html">https://www.postgresql.org/docs/current/datatype-datetime.html</a>).</p>
 <p>وفي الوقت الحالي، نقتصر على نوع البيانات <code>date</code>. ويقدّم <a href="https://www.postgresql.org/docs/current/functions-datetime.html">التوثيق</a> نظرة عامة على دوال <code>date/time</code> التي توفّرها PostgreSQL.</p>
-<h3 id="extract-from">Extract … from</h3>
+<h3 id="استخراج-من">استخراج … من</h3>
 <p>يحتوي التاريخ على السنة والشهر واليوم. ويضم الوقت إضافة إلى ذلك الساعات والدقائق والثواني... وبالدالة <a href="https://www.postgresql.org/docs/current/functions-datetime.html#FUNCTIONS-DATETIME-EXTRACT"><code>EXTRACT</code></a> يمكنك استخراج جزء من تاريخ (أو وقت). ومثال صغير من قائمة المقررات لتوضيح ذلك:</p>
 <pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> code, <span class="hljs-built_in">EXTRACT</span>(<span class="hljs-keyword">year</span> <span class="hljs-keyword">FROM</span> start_date) <span class="hljs-keyword">AS</span> &quot;start academic year&quot;
 <span class="hljs-keyword">FROM</span> course;
@@ -277,7 +277,7 @@ END
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -285,8 +285,8 @@ END
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

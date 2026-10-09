@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -408,7 +408,7 @@ testdb=# VACUUM tbl;
 <p>لذلك يُنصح القرّاء غير الملمّين بـ<strong>WAL</strong> أو <strong>النسخ المنطقي</strong> بقراءة <a href="/arabic-cs-library/book/postgres-internals/pgsql09/index">الفصل 9</a> و<a href="/arabic-cs-library/book/postgres-internals/pgsql12/index">الفصل 12</a> قبل العودة إلى هذا القسم.</p>
 <h2 id="661-repack-vacuum-full">6.6.1. REPACK (VACUUM FULL)</h2>
 <p>يستخدم الأمر REPACK (VACUUM FULL) استراتيجية بسيطة تُعيد إنشاء ملف جدول فيزيائي جديد تحت قفل حصري. ويوضّح الشكل 6.11 مخطط هذا الأمر.</p>
-<p><img src="/arabic-cs-library/images/postgres-internals/pgsql06-fig-6-11.webp" alt="To simplify, index files are omitted."></p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql06-fig-6-11.webp" alt="للتبسيط، تُحذف ملفات الفهرس."></p>
 <h4>الشكل 6.11. مخطط معالجة REPACK (VACUUM FULL).</h4>
 <p>للتبسيط، تُحذف ملفات الفهرس.</p>
 <ul>
@@ -476,7 +476,7 @@ Indexes:
 </code></pre>
 <p>في هذا المثال، تكون REPLICA IDENTITY هي المفتاح الأساسي: “tbl_pkey”.</p>
 <p>يوضّح الشكل 6.12 عملية REPACK CONCURRENTLY تصورية من مرحلتين (أما التنفيذ الفعلي فيتكوّن من ثلاث مراحل، كما هو موضّح في القسم التالي).</p>
-<p><img src="/arabic-cs-library/images/postgres-internals/pgsql06-fig-6-12.webp" alt="To simplify, the old index file is omitted."></p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql06-fig-6-12.webp" alt="للتبسيط، يُحذف ملف الفهرس القديم."></p>
 <h4>الشكل 6.12. نظرة عامة على REPACK CONCURRENTLY.</h4>
 <p>للتبسيط، يُحذف ملف الفهرس القديم.</p>
 <p><strong>المرحلة 1: نسخ الصفوف</strong></p>
@@ -499,7 +499,7 @@ Indexes:
 <p>يصف هذا القسم الفرعي العملية وفق التنفيذ الفعلي.</p>
 <p>للتركيز على أنواع الأقفال المحتجزة أثناء كل مرحلة، تُحذف هنا تفاعلات العمليات الخلفية الداخلية وتفاصيل repack_decoding_worker.</p>
 <p>وكما هو موضّح في الشكل 6.13، يطبّق التنفيذ التغييرات مرتين لتقليل حالات التعطّل التشغيلي الناتجة عن قفل AccessExclusiveLock.</p>
-<p><img src="/arabic-cs-library/images/postgres-internals/pgsql06-fig-6-13.webp" alt="To simplify, the old index file is omitted."></p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql06-fig-6-13.webp" alt="للتبسيط، يُحذف ملف الفهرس القديم."></p>
 <h4>الشكل 6.13. المراحل الثلاث لـ REPACK CONCURRENTLY.</h4>
 <p>للتبسيط، يُحذف ملف الفهرس القديم.</p>
 <p>يقوم هذا النهج على افتراض أن حجم التغييرات المتزامنة المولَّدة أثناء المرحلة 2 سيكون صغيراً نسبياً. وهذا ما يتيح إكمال المرحلة 3 — التي تطبّق التغييرات المتبقية وتنفّذ التبديل النهائي تحت القفل الصارم — بسرعة.</p>
@@ -524,7 +524,7 @@ Indexes:
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -532,8 +532,8 @@ Indexes:
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

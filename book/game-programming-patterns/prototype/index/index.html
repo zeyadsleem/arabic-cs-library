@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -74,10 +74,10 @@ class="gof-pattern">نمط التصميم</a> نفسه. وسنغطي ذلك هن
 <p>تبني منشأة الإنشاء نسخاً من نوع وحش بعينه. ولدعم كل وحش في اللعبة، يمكننا أن نلجأ
 إلى الحلّ الأعمى بصنف منشأة إنشاء لكل صنف وحش، مما يقود إلى تسلسل أصناف متوازٍ:</p>
 <p><span name="inherits-arrow"></span></p>
-<img src="/arabic-cs-library/images/game-programming-patterns/prototype-1.webp" alt="Parallel class hierarchies. Ghost, Demon, and Sorceror all inherit from Monster. GhostSpawner, DemonSpawner, and SorcerorSpawner inherit from Spawner." />
+<img src="/arabic-cs-library/images/game-programming-patterns/prototype-1.webp" alt="تسلسلات فئات متوازية. يرث Ghost وDemon وSorceror جميعًا من Monster. ويرث GhostSpawner وDemonSpawner وSorcerorSpawner من Spawner." />
 <aside name="inherits-arrow">
 <p>كان عليّ أن أستخرج من الأتراب كتاب UML غباراً لأرسم هذا المخطط. فالسهم <img
-src="/arabic-cs-library/images/game-programming-patterns/prototype-2.webp" class="arrow" alt="A UML arrow." /> يعني «يرث من».</p>
+src="/arabic-cs-library/images/game-programming-patterns/prototype-2.webp" class="arrow" alt="سهم UML." /> يعني «يرث من».</p>
 </aside>
 <p>ولتنفيذه، سيبدو هكذا:</p>
 <p>^code spawner-classes</p>
@@ -96,7 +96,7 @@ src="/arabic-cs-library/images/game-programming-patterns/prototype-2.webp" class
 <p>^code spawner-clone</p>
 <p>وهو يحتفظ في داخله بوحشٍ مخفيّ غرضه الوحيد أن تستخدمه منشأة الإنشاء كقالبٍ تُختَز
 بمقتضاه وحوشٌ أخرى مثله، على نحو ما تفعل ملكة النحل التي لا تغادر الخلية.</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/prototype-3.webp" alt="A Spawner contains a prototype field referencing a Monster. It calls clone() on the prototype to create new monsters." />
+<img src="/arabic-cs-library/images/game-programming-patterns/prototype-3.webp" alt="يحتوي Spawner على حقل prototype يشير إلى Monster. يستدعي clone() على النموذج الأولي (prototype) لإنشاء وحوش جديدة." />
 <p>ولإنشاء منشأة إنشاء للأشباح، ننشئ نسخة شبح نموذجية أولية، ثم ننشئ منشأة إنشاء تحمل ذلك
 النموذج:</p>
 <p>^code spawn-ghost-clone</p>
@@ -183,7 +183,7 @@ class="pattern">كائن النوع (Type Object)</a> لنمذجة مختلف أ
 <p>أما لاستدعاء <span name="vtable">دالة</span>، فتنظر إلى صنف النسخة، ثم تبحث عن الدالة
 <em>هناك</em>. فالسلوك محتوا في <em>الصنف</em>. وهناك دائماً ذلك المستوى من التوجيه للوصول إلى الدالة،
 وهذا يعني أن الحقول والدوال مختلفة.</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/prototype-4.webp" alt="A Class contains a list of Methods. An Instance contains a list of Fields and a reference to its Class." />
+<img src="/arabic-cs-library/images/game-programming-patterns/prototype-4.webp" alt="تحوي Class قائمة من Methods. وتحوي Instance قائمة من Fields ومرجعًا إلى فئتها Class." />
 <aside name="vtable">
 <p>فمثلاً، لاستدعاء دالة افتراضية في C++، تنظر في النسخة إلى مؤشر جدول الدوال الافتراضية،
 ثم تبحث عن الدالة هناك.</p>
@@ -191,7 +191,7 @@ class="pattern">كائن النوع (Type Object)</a> لنمذجة مختلف أ
 <p>وتلغي Self هذا التمييز. فالبحث عن <em>أي شيء</em> يتم بالنظر إلى الكائن نفسه. فالنسخة يمكن أن
 تحتوي على الحالة والسلوك معاً. ويمكن أن يكون لديك كائن واحد لديه دالة فريدة عنه تماماً.</p>
 <p><span name="island"></span></p>
-<img src="/arabic-cs-library/images/game-programming-patterns/prototype-5.webp" alt="An Object contains a mixed list of Fields and Methods." />
+<img src="/arabic-cs-library/images/game-programming-patterns/prototype-5.webp" alt="يحوي Object قائمة مختلطة من Fields وMethods." />
 <aside name="island">
 <p>لا أحد رجلٌ جزيرة، لكن هذا الكائن كذلك.</p>
 </aside>
@@ -207,7 +207,7 @@ class="pattern">كائن النوع (Type Object)</a> لنمذجة مختلف أ
 وهذا يعني أنك تستطيع أن ترث آباء أو تغيّرهم وقت التنفيذ، مما يقود إلى ما يُعرف
 بال<em>وراثة الديناميكية</em>.</p>
 </aside>
-<img src="/arabic-cs-library/images/game-programming-patterns/prototype-6.webp" alt="An Object contains Fields and Methods and a reference to another object that it delegates to." />
+<img src="/arabic-cs-library/images/game-programming-patterns/prototype-6.webp" alt="يحوي Object حقولًا (Fields) وطرقًا (Methods) ومرجعًا إلى كائن آخر تفوّض إليه." />
 <p>وتتيح لنا كائنات الآباء إعادة استخدام السلوك (والحالة أيضاً!) عبر عدة كائنات، فقد غطّينا
 جزءاً من فائدة الأصناف. والأمر الأساسي الآخر الذي تفعله الأصناف أنه يمنحك طريقة لإنشاء
 النسخ. فحين تحتاج إلى شيء جديد، يمكنك أن تكتب مجرّد <code>new Thingamabob()</code> أو ما شابه بحسب
@@ -309,7 +309,7 @@ Weapon.prototype.attack = function(target) {
 <p>وهذا يضيف خاصية <code>attack</code> إلى نموذج السلاح وقيمتها دالة. وبما أن كل كائن يُعاد من
 <code>new Weapon()</code> يفوّض إلى <code>Weapon.prototype</code>، فصار بإمكانك الآن استدعاء <code>sword.attack()</code>
 فتستدعي تلك الدالة. ويبدو الأمر قليلاً كهذا:</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/prototype-7.webp" alt="A Weapon object contains an attack() method and other methods. A Sword object contains fields and delegates to Weapon." />
+<img src="/arabic-cs-library/images/game-programming-patterns/prototype-7.webp" alt="يحوي كائن Weapon طريقة attack() وطرق أخرى. ويحوي كائن Sword حقولًا وفوّض إليه." />
 <p>لنراجع:</p>
 <ul>
 <li>
@@ -458,7 +458,7 @@ n.html).</p>
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -466,8 +466,8 @@ n.html).</p>
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

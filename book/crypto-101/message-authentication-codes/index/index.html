@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -239,7 +239,7 @@ Keccak وBLAKE(2). بل إنّ مواصفات دوالّ التجزئة هذه �
 المبنية على تلك الدوالّ آمنة تمامًا.</p>
 <p>وأكبر فرق بين HMAC وبين بادئة-MAC أو تنويعاتها هو أنّ الرسالة تمرّ عبر دالة التجزئة
 مرّتين، وتُدمج مع المفتاح قبل كلّ مرّة. وعلى نحو بصريّ يبدو HMAC هكذا:</p>
-<p><img src="/arabic-cs-library/images/crypto-101/message-authentication-codes-fig-0-HMAC.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/message-authentication-codes-fig-0-HMAC.svg" alt="بناء HMAC"></p>
 <p>ولعلّ الشيء المفاجئ الوحيد هنا هما الثابتان <code>p_{inner}</code> (الحشو الداخلي، أي مقدار طول
 كتلة واحدة من دالة التجزئة من بايتات <code>0x36</code>) و<code>p_{outer}</code> (الحشو الخارجي، أي مقدار
 طول كتلة واحدة من بايتات <code>0x5c</code>). وهذان ضروريّان ليعمل برهان أمن HMAC؛ أمّا
@@ -405,13 +405,13 @@ b &amp;\equiv t_1 - m_1 \cdot a \pmod p
 <p>وتعالج <code>أوضاع AEAD</code> (AEAD modes) هذه المشكلة بتوفير طريقة محدّدة لإضافة البيانات
 الوصفية إلى المحتوى المشفَّر، بحيث تُصادق على المحتوى المشفَّر مع البيانات
 الوصفية معًا، لا على القطعتين كلٌّ على حدة:</p>
-<p><img src="/arabic-cs-library/images/crypto-101/message-authentication-codes-fig-1-AEAD.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/message-authentication-codes-fig-1-AEAD.svg" alt="إضافة البيانات الوصفية في أوضاع AEAD"></p>
 <h4>وضع OCB</h4>
-<p>advanced</p>
+<p>متقدّم</p>
 <p>وعادةً ما سترغب في استعمال نظام تشفير أعلى مستوى بكثير، مثل OpenPGP أو NaCl أو TLS.</p>
 <p><code>وضع OCB</code> (<code>OCB mode</code>) هو <code>وضع AEAD</code> (AEAD mode) من أوضاع التشغيل. وهو إحدى أقدم
 <code>أوضاع AEAD</code> (AEAD modes) التي تطوّرت.</p>
-<p><img src="/arabic-cs-library/images/crypto-101/message-authentication-codes-fig-2-Encryption.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/message-authentication-codes-fig-2-Encryption.svg" alt="تشفير وضع OCB"></p>
 <p>وكما ترى، يبدو معظم هذا النظام مشابهًا إلى حدٍّ كبير لـ<code>وضع ECB</code> (<code>ECB mode</code>). واسم
 OCB مشابه أيضًا لـ«الكتاب الإلكتروني الشيفري» (electronic codebook). لكنّ OCB لا
 يشترك في مشكلات الأمان التي يملكها وضع ECB، إذ توجد فروق مهمّة عدّة، مثل الإزاحات
@@ -420,7 +420,7 @@ OCB مشابه أيضًا لـ«الكتاب الإلكتروني الشيفري
 هو <code>t</code>، الذي يُبنى من <code>X</code>، وهي مجمّع اختباري (checksum) بسيط جدًّا (غير آمن تشفيريًا
 بذاته) للنصّ الصريح. وهناك أيضًا وسم منفصل آخر هو <code>t_a</code>، الذي يصادق على بيانات AEAD
 الوصفية. ويُحسب وسم البيانات الوصفية <code>t_a</code> على النحو التالي:</p>
-<p><img src="/arabic-cs-library/images/crypto-101/message-authentication-codes-fig-3-Auth.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/message-authentication-codes-fig-3-Auth.svg" alt="حساب وسم المصادقة t_a"></p>
 <p>ولهذا التصميم عدد من الخصائص المثيرة. فمثلًا، هو سريع جدًّا: إذ لا يحتاج إلّا نحو
 عملية واحدة لشيفرة الكتل لكلّ كتلة مشفَّرة أو كتلة بيانات وصفية، إضافةً إلى عملية
 واحدة إضافية لشيفرة الكتل للوسم النهائي. كما أنّ الإزاحات (<code>\Delta_i</code>) سهلة الحساب
@@ -437,7 +437,7 @@ OCB مشابه أيضًا لـ«الكتاب الإلكتروني الشيفري
 المصادر المفتوحة، فإنّ ذلك لا يبدو أنّه أثّر كثيرًا في مقدار استعمال <code>وضع OCB</code>
 (<code>OCB mode</code>) في الميدان. <code>ocb:license</code></p>
 <h4>وضع GCM</h4>
-<p>advanced</p>
+<p>متقدّم</p>
 <p>وعادةً ما سترغب في استعمال نظام تشفير أعلى مستوى بكثير، مثل OpenPGP أو NaCl أو TLS.</p>
 <p>ويُعدّ <code>وضع GCM</code> (<code>GCM mode</code>) <code>وضع AEAD</code> (AEAD mode) يقع في متلازمة المختصر
 المتكرّر (RAS، أي redundant acronym syndrome): فـGCM نفسها اختصار لعبارة «وضع العدّاد
@@ -452,7 +452,7 @@ OCB مشابه أيضًا لـ«الكتاب الإلكتروني الشيفري
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -460,8 +460,8 @@ OCB مشابه أيضًا لـ«الكتاب الإلكتروني الشيفري
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

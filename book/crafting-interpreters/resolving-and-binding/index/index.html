@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -192,16 +192,16 @@ block
 نُجريها على البيئات: ربط متغيّرٍ فيها. وهنا يقع خللنا.</p>
 <p>لنمرّ على ذلك المثال المُشتبِه ونرى كيف تبدو البيئات في كلّ
 خطوة. أوّلاً، نصرّح بـ<code>a</code> في النطاق العام.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/resolving-and-binding-1.webp" alt="The global environment with 'a' defined in it." />
+<img src="/arabic-cs-library/images/crafting-interpreters/resolving-and-binding-1.webp" alt="البيئة العامة وفيها a مُعرَّفة." />
 <p>يمنحنا ذلك بيئةً واحدة فيها متغيّرٌ واحد. ثمّ ندخل الكتلة
 ونُنفّذ تصريح <code>showA()</code>.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/resolving-and-binding-2.webp" alt="A block environment linking to the global one." />
+<img src="/arabic-cs-library/images/crafting-interpreters/resolving-and-binding-2.webp" alt="بيئة كتلة موصولة بالبيئة العامة." />
 <p>نحصل على بيئة جديدة للكتلة. وفيها نصرّح باسمٍ واحد، وهو
 <code>showA</code>، المربوط بكائن LoxFunction الذي ننشئه لتمثيل الدالة. ولدى
 ذلك الكائن حقل <code>closure</code> يلتقط البيئة التي صُرِّحت فيها الدالة،
 لذا لديه مرجعٌ يعود إلى بيئة الكتلة.</p>
 <p>الآن نستدعي <code>showA()</code>.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/resolving-and-binding-3.webp" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the global environment." />
+<img src="/arabic-cs-library/images/crafting-interpreters/resolving-and-binding-3.webp" alt="بيئة فارغة لجسم showA() موصولة بالبيئتين السابقتين. تُحَلّ a في البيئة العامة." />
 <p>يُنشئ المفسّر ديناميكياً بيئةً جديدة لجسم دالة <code>showA()</code>. وهي
 فارغة لأنّ تلك الدالة لا تصرّح بأيّ متغيّرات. وأمّ والد تلك
 البيئة فهو إغلاقُ الدالة -- أي بيئة الكتلة الخارجية.</p>
@@ -209,12 +209,12 @@ block
 بالمشي في سلسلة البيئات. ويصل كلّ الطريق إلى البيئة العامة قبل
 أن يجدها هناك ويطبع <code>&quot;global&quot;</code>. ممتاز.</p>
 <p>ثمّ نصرّح بـ<code>a</code> الثانية، هذه المرّة داخل الكتلة.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/resolving-and-binding-4.webp" alt="The block environment has both 'a' and 'showA' now." />
+<img src="/arabic-cs-library/images/crafting-interpreters/resolving-and-binding-4.webp" alt="بيئة الكتلة تحوي الآن a وshowA معاً." />
 <p>إنّها في الكتلة نفسها -- النطاق نفسه -- التي فيها <code>showA()</code>، لذا
 تذهب إلى البيئة نفسها، وهي أيضاً البيئة التي يشير إليها إغلاقُ
 <code>showA()</code>. وهنا يصبح الأمر مثيراً للاهتمام. نستدعي <code>showA()</code>
 مرّةً أخرى.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/resolving-and-binding-5.webp" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the block environment." />
+<img src="/arabic-cs-library/images/crafting-interpreters/resolving-and-binding-5.webp" alt="بيئة فارغة لجسم showA() موصولة بالبيئتين السابقتين. تُحَلّ a في بيئة الكتلة." />
 <p>ننشئ بيئةً فارغة جديدة لجسم <code>showA()</code> مرّةً أخرى، ونربطها بذلك
 الإغلاق، ونشغّل الجسم. وحين يمشي المفسّر في سلسلة البيئات
 للعثور على <code>a</code>، يجد الآن <code>a</code> <em>الجديدة</em> في بيئة الكتلة. بوو.</p>
@@ -270,7 +270,7 @@ block
 متغيّرٍ بيئةً <em>جديدة</em> تحتوي كلَّ المتغيّرات المصرَّحة سابقاً
 مع الاسم الجديد الواحد. وتصرّحُ متغيّرٍ سيُنجز التقسيمَ الضمني
 حيث تكون لديك بيئةٌ قبل تصريح المتغيّر وبيئةٌ بعده:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/resolving-and-binding-6.webp" alt="Separate environments before and after the variable is declared." />
+<img src="/arabic-cs-library/images/crafting-interpreters/resolving-and-binding-6.webp" alt="بيئتان منفصلتان قبل إعلان المتغيّر وبعده." />
 <p>يحتفظ الإغلاق بمرجعٍ إلى كائن البيئة الجاري لحظة تصريح الدالة.
 وبما أنّ أيّ تصريحاتٍ لاحقة في تلك الكتلة ستُنتج كائنات Environment
 جديدة، فلن يرى الإغلاق المتغيّرات الجديدة وسيُصلَح خللنا.</p>
@@ -305,11 +305,11 @@ block
 <p>بدلاً من ذلك، سنخزّن ناتج الحَلّ بطريقة تستثمر أقصى ما في صنف
 Environment القائم. وتذكّر كيف كانت وصولاتُ <code>a</code> تُفسَّر في المثال
 المُشتبِه.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/resolving-and-binding-3.webp" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the global environment." />
+<img src="/arabic-cs-library/images/crafting-interpreters/resolving-and-binding-3.webp" alt="بيئة فارغة لجسم showA() موصولة بالبيئتين السابقتين. تُحَلّ a في البيئة العامة." />
 <p>في التقييم الأوّل (الصحيح)، ننظر في ثلاث بيئات في السلسلة قبل أن
 نجد التصريح العامّ لـ<code>a</code>. ثمّ حين يُصرَّح بـ<code>a</code> الداخلي لاحقاً في
 نطاق كتلة، يحجب العامّ.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/resolving-and-binding-5.webp" alt="An empty environment for showA()'s body linking to the previous two. 'a' is resolved in the block environment." />
+<img src="/arabic-cs-library/images/crafting-interpreters/resolving-and-binding-5.webp" alt="بيئة فارغة لجسم showA() موصولة بالبيئتين السابقتين. تُحَلّ a في بيئة الكتلة." />
 <p>والبحث التالي يمشي في السلسلة، ويجد <code>a</code> في البيئة <em>الثانية</em>
 ويتوقّف هناك. ولكلّ بيئة نطاقٌ معجميٌّ واحد تُصرَّح فيه
 المتغيّرات. فلو استطعنا ضمان أن بحثاً عن متغيّر يمشي دائماً
@@ -795,7 +795,7 @@ name="separate">بقايا</span> منفصلة.</p>
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -803,8 +803,8 @@ name="separate">بقايا</span> منفصلة.</p>
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

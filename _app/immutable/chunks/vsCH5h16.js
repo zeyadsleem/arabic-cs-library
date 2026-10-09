@@ -1,0 +1,1823 @@
+const s="dive-into-systems",n="c14-sharedmemory",a="14. Leveraging Shared Memory in the Multicore Era",e="index",t="14. استغلال الذاكرة المشتركة في عصر تعدد الأنوية",l=[{depth:3,id:"نظرة-أقرب-كم-عدد-الأنوية",text:"نظرة أقرب: كم عدد الأنوية؟"},{depth:3,id:"1411-أثر-الأنظمة-متعددة-الأنوية-في-تنفيذ-العمليات",text:"14.1.1. أثر الأنظمة متعددة الأنوية في تنفيذ العمليات"},{depth:3,id:"1412-تعجيل-تنفيذ-العمليات-بالخيوط",text:"14.1.2. تعجيل تنفيذ العمليات بالخيوط"},{depth:3,id:"1421-إنشاء-الخيوط-وضمها",text:"14.2.1. إنشاء الخيوط وضمّها"},{depth:3,id:"1422-دالة-الخيط",text:"14.2.2. دالة الخيط"},{depth:3,id:"1423-تشغيل-الشيفرة",text:"14.2.3. تشغيل الشيفرة"},{depth:3,id:"1424-إعادة-النظر-في-الضرب-القياسي",text:"14.2.4. إعادة النظر في الضرب القياسي"},{depth:3,id:"1425-تحسين-الضرب-القياسي-وسائط-متعددة",text:"14.2.5. تحسين الضرب القياسي: وسائط متعددة"},{depth:3,id:"countsort",text:"CountSort"},{depth:3,id:"جعل-countelems-متوازية-محاولة-أولية",text:"جعل countElems متوازية: محاولة أولية"},{depth:3,id:"حالات-سباق-البيانات",text:"حالات سباق البيانات"},{depth:3,id:"1451-الذاكرات-المؤقتة-في-الأنظمة-متعددة-الأنوية",text:"14.5.1. الذاكرات المؤقتة في الأنظمة متعددة الأنوية"},{depth:3,id:"1452-المشاركة-الزائفة",text:"14.5.2. المشاركة الزائفة"},{depth:3,id:"1453-إصلاح-المشاركة-الزائفة",text:"14.5.3. إصلاح المشاركة الزائفة"},{depth:3,id:"1461-إصلاح-مشكلات-أمان-الخيوط",text:"14.6.1. إصلاح مشكلات أمان الخيوط"},{depth:3,id:"1471-التوجيهات-الشائعة-pragmas",text:"14.7.1. التوجيهات الشائعة (pragmas)"},{depth:3,id:"1472-مرحبا-بالتعدد-الخيطي-بأسلوب-openmp",text:"14.7.2. مرحّبا بالتعدد الخيطي: بأسلوب OpenMP"},{depth:3,id:"1473-مثال-أعقد-countsort-في-openmp",text:"14.7.3. مثال أعقد: CountSort في OpenMP"},{depth:3,id:"1474-معرفة-المزيد-عن-openmp",text:"14.7.4. معرفة المزيد عن OpenMP"},{depth:3,id:"المراجع",text:"المراجع:"},{depth:3,id:"النقاط-الرئيسية",text:"النقاط الرئيسية"},{depth:3,id:"قراءات-إضافية",text:"قراءات إضافية"},{depth:3,id:"تمارين-إضافية",text:"تمارين إضافية"}],p=`<p><em>تغيّر العالم.</em></p>
+<p><em>أشعر به في السيليكا.</em></p>
+<p><em>أشعر به في الترانزستور.</em></p>
+<p><em>أراه في النواة.</em></p>
+<p>~ مع الاعتذار إلى Galadriel (<em>سيد الخواتم: رفقة الخاتم</em>)</p>
+<p>حتى الآن، ركّزت مناقشتنا للمعمارية على عالم أحادي المعالج خالص. لكن العالم تغيّر. فمعالجات اليوم تملك <strong>أنوية</strong> متعددة، أي وحدات حساب. ونناقش في هذا الفصل المعماريات متعددة الأنوية، وكيفية استغلالها لتسريع تنفيذ البرامج.</p>
+<p><strong>ملاحظة — المعالجات ووحدات المعالجة المركزية والأنوية</strong></p>
+<blockquote>
+<p>في مواضع كثيرة من هذا الفصل، يُستخدم المصطلحان <em>معالج</em> و<em>وحدة معالجة مركزية</em> بالتبادل. وعلى المستوى الأساسي، <strong>المعالج</strong> أي دائرة تجري بعض الحساب على بيانات خارجية. وبناءً على هذا التعريف، فإن <strong>وحدة المعالجة المركزية</strong> (CPU) مثال على معالج. ويُشار إلى معالج أو وحدة معالجة مركزية بعدة أنوية حسابية بـ<strong>معالج متعدد الأنوية</strong> أو <strong>وحدة معالجة مركزية متعددة الأنوية</strong>. أما <strong>النواة</strong> فوحدة حساب تحتوي كثيرًا من المكوّنات التي تتألف منها وحدة المعالجة المركزية الكلاسيكية: وحدة حساب ومنطق، وسجلات، وقليل من الذاكرة المؤقتة. ومع أن <em>النواة</em> تختلف عن المعالج، فليس غريبًا رؤية هذه المصطلحات مستخدمة بالتبادل في الأدبيات (خصوصًا إذا كانت الأدبيات قد نشأت في وقت كانت فيه المعالجات متعددة الأنوية ما زالت تُعدّ جديدة).</p>
+</blockquote>
+<p>في عام 1965، قدّر مؤسس Intel، Gordon Moore، أن عدد الترانزستورات في الدارة المتكاملة سيتضاعف كل سنة. وقد نُقّح تنبؤه، المعروف الآن بـ<strong>قانون Moore</strong>، لاحقًا ليصبح تضاعف عدد الترانزستورات كل <em>سنتين</em>. ومع أن المفاتيح الإلكترونية تطوّرت من ترانزستور Bardeen إلى ترانزستورات الشرائح الصغيرة المستخدمة حاليًا في الحواسيب الحديثة، ظل قانون Moore صحيحًا على مدى الخمسين سنة الماضية. لكن مطلع الألفية شهد اصطدام تصميم المعالجات بعدة جدران أداء حرجة:</p>
+<ul>
+<li><strong>جدار الذاكرة</strong>: لم تواكب التحسينات في تقنية الذاكرة التحسينات في سرعة الساعة، فصارت الذاكرة عنق زجاجة للأداء. ونتيجة لذلك، لم يعد التسريع المستمر لتنفيذ وحدة المعالجة المركزية يحسّن أداء النظام الكلي.</li>
+<li><strong>جدار الطاقة</strong>: تؤدي زيادة عدد الترانزستورات في المعالج بالضرورة إلى زيادة حرارته واستهلاكه للطاقة، ما يزيد بدوره الكلفة اللازمة لتغذية النظام وتبريده. ومع انتشار الأنظمة متعددة الأنوية، صارت الطاقة الشغل الشاغل المهيمن في تصميم أنظمة الحاسوب.</li>
+</ul>
+<p>دفع جدارا الطاقة والذاكرة معماريي الحواسيب إلى تغيير طريقة تصميمهم للمعالجات. فبدلًا من إضافة مزيد من الترانزستورات لزيادة سرعة تنفيذ وحدة المعالجة المركزية لتدفق تعليمات واحد، بدأ المعماريون بإضافة عدة <strong>أنوية حسابية</strong> إلى وحدة المعالجة المركزية. والأنوية الحسابية وحدات معالجة مبسّطة تحتوي ترانزستورات أقل من وحدات المعالجة المركزية التقليدية وتكون عمومًا أسهل في الإنشاء. ويسمح دمج عدة أنوية في وحدة معالجة مركزية واحدة بتنفيذ <em>عدة</em> تدفقات مستقلة من التعليمات دفعة واحدة.</p>
+<p><strong>تحذير — أنوية أكثر لا تعني أفضل</strong></p>
+<blockquote>
+<p>قد يغريك افتراض أن جميع الأنوية متساوية وأن الحاسوب كلما زاد عدد أنويته كان أفضل. وهذا ليس صحيحًا بالضرورة! فمثلًا، تحتوي أنوية <strong>وحدة معالجة الرسوميات</strong> (graphics processing unit أو GPU) ترانزستورات أقل حتى من أنوية المعالج، وهي متخصصة في مهام معينة تتعلق بالمتجهات. وقد تملك وحدة معالجة رسوميات نموذجية 5,000 نواة GPU أو أكثر. لكن أنوية GPU محدودة في أنواع العمليات التي تستطيع تنفيذها، وليست مناسبة دائمًا للحوسبة عامة الغرض مثل نواة المعالج. وتُعرف الحوسبة باستخدام وحدات معالجة الرسوميات بـالحوسبة <strong>متعددة الأنوية بكثافة</strong> (manycore). ونركّز في هذا الفصل على الحوسبة <strong>متعددة الأنوية</strong> (multicore). انظر <a href="https://diveintosystems.org/book/C15-Parallel/gpu.html#_GPUs">الفصل 15</a> لمناقشة الحوسبة متعددة الأنوية بكثافة.</p>
+</blockquote>
+<h3 id="نظرة-أقرب-كم-عدد-الأنوية">نظرة أقرب: كم عدد الأنوية؟</h3>
+<p>تملك جميع أنظمة الحاسوب الحديثة تقريبًا أنوية متعددة، بما في ذلك الأجهزة الصغيرة مثل <a href="https://www.raspberrypi.org/">Raspberry Pi</a>. وتحديد عدد الأنوية في النظام جوهري لقياس أداء البرامج متعددة الأنوية قياسًا دقيقًا. وفي حواسيب Linux وmacOS، يقدّم الأمر <code>lscpu</code> ملخصًا لمعمارية النظام. وفي المثال التالي، نعرض مخرجات الأمر <code>lscpu</code> عند تشغيله على آلة نموذجية (حُذفت بعض المخرجات لإبراز السمات الرئيسية):</p>
+<pre><code class="language-bash">$ lscpu
+
+Architecture:          x86_64
+CPU op-mode(s):        32-bit, 64-bit
+Byte Order:            Little Endian
+CPU(s):                8
+On-line CPU(s) list:   0-7
+Thread(s) per core:    2
+Core(s) per socket:    4
+Socket(s):             1
+Model name:            Intel(R) Core(TM) i7-3770 CPU @ 3.40GHz
+CPU MHz:               1607.562
+CPU max MHz:           3900.0000
+CPU min MHz:           1600.0000
+L1d cache:             32K
+L1i cache:             32K
+L2 cache:              256K
+L3 cache:              8192K
+...
+</code></pre>
+<p>يقدّم الأمر <code>lscpu</code> كثيرًا من المعلومات المفيدة، منها نوع المعالجات وسرعة النواة وعدد الأنوية. ولحساب عدد الأنوية <strong>الفيزيائية</strong> (أو الفعلية) في نظام، اضرب عدد المقابس في عدد الأنوية لكل مقبس. وتُظهر مخرجات <code>lscpu</code> النموذجية أعلاه أن للنظام مقبسًا واحدًا فيه أربع أنوية لكل مقبس، أي أربع أنوية فيزيائية إجمالًا.</p>
+<p>تعدد الخيوط الفائق</p>
+<p>للوهلة الأولى، قد يبدو أن النظام في المثال السابق يملك ثمانية أنوية إجمالًا. فهذا ما يبدو أن حقل &quot;CPU(s)&quot; يعنيه. لكن ذلك الحقل يدل فعلًا على عدد الأنوية <strong>الفائقة الخيوط</strong> (المنطقية)، لا عدد الأنوية الفيزيائية. ويتيح تعدد الخيوط الفائق، أو تعدد الخيوط المتزامن (SMT)، المعالجة الكفؤة لخيوط متعددة على نواة واحدة. ومع أن تعدد الخيوط الفائق قد يقلل زمن التشغيل الكلي لبرنامج، فإن الأداء على الأنوية الفائقة الخيوط لا يتوسع بالمعدل نفسه الذي يتوسع به على الأنوية الفيزيائية. لكن إذا خملت مهمة ما (مثلًا بسبب <a href="https://diveintosystems.org/book/C5-Arch/pipelining_advanced.html#_pipelining_hazards_control_hazards">خطر تحكم</a>)، تستطيع مهمة أخرى استخدام النواة. وباختصار، أُدخل تعدد الخيوط الفائق لتحسين <em>إنتاجية العمليات</em> (التي تقيس عدد العمليات التي تكتمل في وحدة زمنية معينة) بدلًا من <em>تسريع العملية</em> (الذي يقيس مقدار التحسن في زمن تشغيل عملية فردية). وسيركّز كثير من مناقشتنا للأداء في الفصل القادم على التسريع.</p>
+<p>أنوية الأداء وأنوية الكفاءة</p>
+<p>في بعض المعماريات الأحدث (مثل معالجات Intel من الجيل الثاني عشر وما بعده)، يعطي ضرب عدد المقابس في أعداد الأنوية وخيوط العتاد عددًا مختلفًا (أصغر عادةً) من المعروض في حقل &quot;CPU(s)&quot;. فما الذي يجري؟ تكمن الإجابة في المعماريات غير المتجانسة الجديدة التي تطوّرها شركات تصنيع الشرائح. فمثلًا، بدءًا من معالجاتها من الجيل الثاني عشر، قدّمت Intel معمارية تتألف من مزيج من أنوية «الأداء» (<strong>P-cores</strong>) وأنوية «الكفاءة» (<strong>E-cores</strong>). وهدف هذا التصميم الهجين تفويض المهام الخلفية الأصغر إلى أنوية E الأصغر قليلة الاستهلاك للطاقة، وتحرير أنوية P الأكبر كثيفة الاستهلاك للمهام الحسابية. ويقود مبدأ مشابه تصميم معمارية big.LITTLE المتنقلة الأسبق التي قدّمتها Arm. وفي المعماريات غير المتجانسة، تُظهر المخرجات الافتراضية لـ <code>lscpu</code> أنوية P المتاحة فقط؛ ويمكن عادةً حساب عدد أنوية E بطرح عدد أنوية P من إجمالي الأنوية المعروض في حقل &quot;CPU(s)&quot;. واستدعاء الأمر <code>lscpu</code> بعلميه <code>--all</code> و<code>--extended</code> سيعرض خريطة كاملة لأنوية P وE في النظام، حيث يمكن تمييز نواة E بسرعات معالجها الأدنى.</p>
+<p>أُنشئت معظم اللغات الشائعة التي يعرفها المبرمجون اليوم قبل عصر تعدد الأنوية. ونتيجة لذلك، لا تستطيع لغات كثيرة استخدام المعالجات متعددة الأنوية <em>ضمنيًا</em> (أو تلقائيًا) لتسريع تنفيذ البرنامج. بل يجب على المبرمجين كتابة برمجيات تحديدًا للاستفادة من الأنوية المتعددة في النظام.</p>
+<h3 id="1411-أثر-الأنظمة-متعددة-الأنوية-في-تنفيذ-العمليات">14.1.1. أثر الأنظمة متعددة الأنوية في تنفيذ العمليات <span class="content-anchor" id="_the_impact_of_multicore_systems_on_process_execution"></span></h3>
+<p>تذكّر أن <a href="https://diveintosystems.org/book/C13-OS/processes.html#_processes"><strong>العملية</strong></a> يمكن التفكير فيها كتجريد لبرنامج عامل. وتنفّذ كل عملية في فضاء عنوانها الافتراضي الخاص. ويجدول نظام التشغيل العمليات للتنفيذ على المعالج؛ ويحدث <strong>تبديل السياق</strong> عندما يغيّر المعالج العملية التي ينفّذها حاليًا.</p>
+<p>ويوضح <a href="#FigConcurrency1">الشكل 1</a> كيف يمكن لخمس عمليات نموذجية أن تنفّذ على معالج أحادي النواة.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-0-concurrency_1.webp" alt="مثال على التزامن مع خمس عمليات" id="FigConcurrency1"> الشكل 1. تسلسل زمني للتنفيذ لخمس عمليات بينما تتشارك نواة معالجة مركزية واحدة</p>
+<p>المحور الأفقي هو الزمن، وتستغرق كل شريحة زمنية وحدة زمن واحدة. ويمثّل المربع وقت استخدام العملية للمعالج أحادي النواة. لنفترض أن كل عملية تنفّذ شريحة زمنية كاملة قبل حدوث تبديل السياق. فعملية 1 تستخدم المعالج خلال الخطوتين الزمنيتين T1 وT3.</p>
+<p>في هذا المثال، ترتيب تنفيذ العمليات هو P1، P2، P1، P2، P4، P2، P3، P4، P5، P3، P5. ونستغرق لحظة هنا للتمييز بين مقياسين للزمن. فـ<strong>زمن المعالج</strong> (CPU time) يقيس مقدار الوقت الذي تستغرقه العملية في التنفيذ على المعالج. وفي المقابل، يقيس <strong>الزمن الحائطي</strong> (wall-clock time) مقدار الوقت الذي يتصور فيه الإنسان أن العملية استغرقته لتكتمل. وكثيرًا ما يكون الزمن الحائطي أطول بكثير من زمن المعالج بسبب تبديلات السياق. فمثلًا، يحتاج زمن المعالج لعملية 1 إلى وحدتي زمن، بينما زمنها الحائطي ثلاث وحدات زمن.</p>
+<p>وعندما يتداخل زمن التنفيذ الكلي لعملية مع أخرى، تكون العمليات عاملة <strong>بالتزامن</strong> مع بعضها. وقد استخدمت أنظمة التشغيل التزامن في عصر النواة الواحدة لإعطاء وهم بأن الحاسوب يستطيع تنفيذ أشياء كثيرة دفعة واحدة (مثلًا، يمكن أن يكون لديك برنامج آلة حاسبة ومتصفح ويب ومستند معالجة نصوص مفتوحة كلها في الوقت نفسه). وفي الحقيقة، كل عملية تنفّذ تتابعيًا، ويحدد نظام التشغيل <a href="https://diveintosystems.org/book/C13-OS/processes.html#_multiprogramming_and_context_switching">ترتيب تنفيذ العمليات واكتمالها</a> (وهو ترتيب يختلف غالبًا في التشغيلات اللاحقة).</p>
+<p>وبالعودة إلى المثال، لاحظ أن العملية 1 والعملية 2 تعملان بالتزامن مع بعضهما، لأن تنفيذهما يتداخل عند النقاط الزمنية T2-T4. وبالمثل، تعمل العملية 2 بالتزامن مع العملية 4، لأن تنفيذهما يتداخل عند النقاط T4-T6. وفي المقابل، <em>لا</em> تعمل العملية 2 بالتزامن مع العملية 3، لأنه لا تداخل بين تنفيذهما؛ فالعملية 3 تبدأ العمل فقط عند الزمن T7، بينما تكتمل العملية 2 عند الزمن T6.</p>
+<p>وتتيح وحدة المعالجة المركزية متعددة الأنوية لنظام التشغيل جدولة عملية مختلفة لكل نواة متاحة، ما يتيح للعمليات التنفيذ <em>في الوقت نفسه</em>. ويُشار إلى التنفيذ المتزامن لتعليمات من عمليات تعمل على أنوية متعددة بـ<strong>التنفيذ المتوازي</strong> (parallel execution). ويعرض <a href="#FigConcurrency2">الشكل 2</a> كيف يمكن لعملياتنا المثال أن تنفّذ على نظام ثنائي الأنوية.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-1-concurrency_2.webp" alt="مثال على التوازي مع نواتين" id="FigConcurrency2"> الشكل 2. تسلسل زمني للتنفيذ لخمس عمليات، ممتد ليشمل نواتَي معالجة مركزية (إحداهما باللون الأزرق الداكن والأخرى بالأخضر الفاتح).</p>
+<p>في هذا المثال، تُلوَّن نواتا المعالج بلونين مختلفين. لنفترض أن ترتيب تنفيذ العمليات هو مرة أخرى P1، P2، P1، P2، P4، P2، P3، P4، P5، P3، P5. ويتيح وجود أنوية متعددة لبعض العمليات التنفيذ <em>مبكرًا</em>. فمثلًا، خلال الوحدة الزمنية T1، تنفّذ النواة الأولى العملية 1 بينما تنفّذ النواة الثانية العملية 2. وعند الزمن T2، تنفّذ النواة الأولى العملية 2 بينما تنفّذ الثانية العملية 1. وبذلك تكمل العملية 1 تنفيذها بعد الزمن T2، بينما تكمل العملية 2 تنفيذها عند الزمن T3.</p>
+<p>لاحظ أن التنفيذ المتوازي لعمليات متعددة يزيد فقط عدد العمليات التي تنفّذ في أي لحظة. وفي <a href="#FigConcurrency2">الشكل 2</a>، تكمل جميع العمليات التنفيذ بحلول الوحدة الزمنية T7. لكن كل عملية فردية ما زالت تحتاج المقدار نفسه من زمن المعالج لتكتمل كما يظهر في <a href="#FigConcurrency1">الشكل 1</a>. فمثلًا، تحتاج العملية 2 ثلاث وحدات زمن سواء نُفّذت على نظام أحادي النواة أم متعدد الأنوية (أي أن <em>زمن معالجها</em> يبقى كما هو). ويزيد المعالج متعدد الأنوية <strong>إنتاجية</strong> تنفيذ العمليات، أي عدد العمليات التي يمكن أن تكتمل في فترة زمنية معينة. وبذلك، بينما يبقى زمن المعالج لعملية فردية دون تغيير، قد ينخفض زمنها الحائطي.</p>
+<h3 id="1412-تعجيل-تنفيذ-العمليات-بالخيوط">14.1.2. تعجيل تنفيذ العمليات بالخيوط <span class="content-anchor" id="_expediting_process_execution_with_threads"></span></h3>
+<p>من طرق تسريع تنفيذ عملية واحدة تفكيكها إلى تدفقات تنفيذ مستقلة خفيفة تُسمى <strong>الخيوط</strong> (threads). ويعرض <a href="#FigProcess">الشكل 3</a> كيف يتغير فضاء العنوان الافتراضي للعملية عندما تصبح متعددة الخيوط بخيطين. ومع أن لكل خيط تخصيصه الخاص لمساحة مكدّس النداء، فإن جميع الخيوط <em>تتشارك</em> بيانات البرنامج وتعليماته والكومة المخصصة للعملية متعددة الخيوط.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-2-multithread-vas.webp" alt="عملية بخيطين" id="FigProcess"> الشكل 3. مقارنة فضاء العنوان الافتراضي لعملية أحادية الخيط وعملية متعددة الخيوط بخيطين</p>
+<p>ويجدول نظام التشغيل الخيوط بالطريقة نفسها التي يجدول بها العمليات. وعلى معالج متعدد الأنوية، يستطيع نظام التشغيل تسريع تنفيذ برنامج متعدد الخيوط بجدولة خيوطه المختلفة للعمل على أنوية منفصلة. ويساوي الحد الأقصى لعدد الخيوط التي يمكن أن تنفّذ على التوازي عدد الأنوية الفيزيائية في النظام. وإذا تجاوز عدد الخيوط عدد الأنوية الفيزيائية، وجب على الخيوط الباقية انتظار دورها للتنفيذ (على غرار طريقة تنفيذ العمليات على نواة واحدة).</p>
+<h4>مثال: الضرب القياسي <span class="content-anchor" id="_an_example_scalar_multiplication"></span></h4>
+<p>وكمثال أولي على كيفية استخدام تعدد الخيوط لتسريع تطبيق، فكّر في مسألة إجراء ضرب قياسي لمصفوفة <code>array</code> في عدد صحيح ما <code>s</code>. وفي الضرب القياسي، يُقاس كل عنصر في المصفوفة بضربه في <code>s</code>.</p>
+<p>وتطبيق تتابعي لدالة الضرب القياسي كما يلي:</p>
+<pre><code class="language-c"><span class="hljs-type">void</span> <span class="hljs-title function_">scalar_multiply</span><span class="hljs-params">(<span class="hljs-type">int</span> * <span class="hljs-built_in">array</span>, <span class="hljs-type">long</span> length, <span class="hljs-type">int</span> s)</span> {
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; length; i++) {
+      <span class="hljs-built_in">array</span>[i] = <span class="hljs-built_in">array</span>[i] * s;
+    }
+}
+</code></pre>
+<p>لنفترض أن <code>array</code> يحتوي <em>N</em> عنصرًا إجمالًا. ولإنشاء نسخة متعددة الخيوط من هذا التطبيق بـ<em>t</em> من الخيوط، يلزم:</p>
+<ol>
+<li>إنشاء <em>t</em> خيوط.</li>
+<li>إسناد كل خيط مجموعة جزئية من مصفوفة الإدخال (أي <em>N</em>/<em>t</em> عنصرًا).</li>
+<li>تكليف كل خيط بضرب العناصر في مجموعته الجزئية من المصفوفة في <code>s</code>.</li>
+</ol>
+<p>لنفترض أن التطبيق التتابعي لـ <code>scalar_multiply</code> يستغرق 60 ثانية لضرب مصفوفة إدخال من 100 مليون عنصر. ولبناء نسخة تنفّذ بـ<em>t</em>= 4 خيوط، نُسند إلى كل خيط ربع مصفوفة الإدخال الكلية (25 مليون عنصر).</p>
+<p>ويعرض <a href="#singleCPU">الشكل 4</a> ما يحدث عند تشغيل أربعة خيوط على نواة واحدة. وكما سبق، يُترك ترتيب التنفيذ لنظام التشغيل. وفي هذا السيناريو، افترض أن ترتيب تنفيذ الخيوط هو الخيط 1، الخيط 3، الخيط 2، الخيط 4. وعلى معالج أحادي النواة (تمثله المربعات)، ينفّذ كل خيط تتابعيًا. وبذلك، ستستغرق العملية متعددة الخيوط العاملة على نواة واحدة 60 ثانية أيضًا (وربما أطول قليلًا بسبب كلفة إنشاء الخيوط).</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-3-single-core-thread.webp" alt="عملية متعددة الخيوط على نواة واحدة" id="singleCPU"> الشكل 4. تشغيل أربعة خيوط على معالج أحادي النواة</p>
+<p>والآن لنفترض أننا نشغّل عمليتنا متعددة الخيوط على نظام ثنائي الأنوية. ويعرض <a href="#doubleCPU">الشكل 5</a> النتيجة. ومرة أخرى، افترض <em>t</em> = 4 خيوط، وأن ترتيب تنفيذ الخيوط هو الخيط 1، الخيط 3، الخيط 2، الخيط 4. ونواتانا تمثلهما مربعات مظللة. ولأن النظام ثنائي الأنوية، ينفّذ الخيطان 1 و3 على التوازي خلال الخطوة الزمنية T1. ثم ينفّذ الخيطان 2 و4 على التوازي خلال الخطوة الزمنية T2. وبذلك، صارت العملية متعددة الخيوط التي كانت تستغرق 60 ثانية تعمل في 30 ثانية.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-4-dual-core-thread.webp" alt="عملية متعددة الخيوط على نواتين" id="doubleCPU"> الشكل 5. تشغيل أربعة خيوط على معالج ثنائي النواة</p>
+<p>وأخيرًا، لنفترض أن العملية متعددة الخيوط (<em>t</em> = 4) تُشغَّل على معالج رباعي الأنوية. ويعرض <a href="#quadCPU">الشكل 6</a> أحد تسلسلات التنفيذ هذه. وتظلَّل كل نواة من الأنوية الأربع في <a href="#quadCPU">الشكل 6</a> بلون مختلف. وعلى النظام رباعي الأنوية، ينفّذ كل خيط على التوازي خلال الشريحة الزمنية T1. وبذلك، على معالج رباعي الأنوية، صارت العملية متعددة الخيوط التي كانت تستغرق 60 ثانية تعمل في 15 ثانية.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-5-quad-core-thread.webp" alt="عملية متعددة الخيوط على أربع نوى" id="quadCPU"> الشكل 6. تشغيل أربعة خيوط على معالج رباعي النواة</p>
+<p>وبصفة عامة، إذا طابق عدد الخيوط عدد الأنوية (<em>c</em>) وجدول نظام التشغيل كل خيط للعمل على نواة منفصلة على التوازي، فمن المفترض أن تعمل العملية متعددة الخيوط في نحو 1/<em>c</em> من الزمن. وهذا التسريع الخطي مثالي، لكنه لا يُلاحظ كثيرًا في الواقع العملي. فمثلًا، إذا كانت هناك عمليات أخرى كثيرة (أو عمليات متعددة الخيوط) تنتظر استخدام المعالج، فستتنافس كلها على العدد المحدود من الأنوية، ما يؤدي إلى <strong>تنازع الموارد</strong> (resource contention) بين العمليات. وإذا تجاوز عدد الخيوط المحددة عدد أنوية المعالج، وجب على كل خيط انتظار دوره للعمل. وسنستكشف عوامل أخرى كثيرًا ما تمنع التسريع الخطي <a href="https://diveintosystems.org/book/C14-SharedMemory/performance.html#_measuring_the_performance_of_parallel_programs">لاحقًا في هذا الفصل</a>.</p>
+<p>نفحص في هذا القسم مكتبة الخيوط الشائعة POSIX، أي <strong>Pthreads</strong>. وPOSIX اختصار لـ Portable Operating System Interface. وهو معيار من IEEE يحدد شكل أنظمة UNIX وسلوكها وإحساسها. وتتوافر واجهة برمجة خيوط POSIX على جميع أنظمة التشغيل الشبيهة بـ UNIX تقريبًا، وكل منها يستوفي المعيار بكامله أو بدرجة كبيرة. لذلك، إذا كتبت شيفرة متوازية باستخدام خيوط POSIX على آلة Linux، فستعمل بالتأكيد على آلات Linux أخرى، ويُرجَّح أن تعمل على آلات تشغّل macOS أو متغيرات UNIX أخرى.</p>
+<p>لنبدأ بتحليل برنامج Pthreads نموذجي لـ«Hello World» (<a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/hellothreads.c">hellothreads.c</a>). وللإيجاز، استبعدنا معالجة الأخطاء من القائمة، مع أن <a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/hellothreads.c">النسخة القابلة للتنزيل</a> تحتوي معالجة أخطاء نموذجية.</p>
+<pre><code class="language-c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;pthread.h&gt;</span></span>
+
+<span class="hljs-comment">/* The &quot;thread function&quot; passed to pthread_create.  Each thread executes this
+ * function and terminates when it returns from this function. */</span>
+<span class="hljs-type">void</span> *<span class="hljs-title function_">HelloWorld</span><span class="hljs-params">(<span class="hljs-type">void</span> *id)</span> {
+
+    <span class="hljs-comment">/* We know the argument is a pointer to a long, so we cast it from a
+     * generic (void *) to a (long *). */</span>
+    <span class="hljs-type">long</span> *myid = (<span class="hljs-type">long</span> *) id;
+
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Hello world! I am thread %ld\\n&quot;</span>, *myid);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>; <span class="hljs-comment">// We don&#x27;t need our threads to return anything.</span>
+}
+
+<span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv)</span> {
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-type">int</span> nthreads; <span class="hljs-comment">//number of threads</span>
+    <span class="hljs-type">pthread_t</span> *thread_array; <span class="hljs-comment">//pointer to future thread array</span>
+    <span class="hljs-type">long</span> *thread_ids;
+
+    <span class="hljs-comment">// Read the number of threads to create from the command line.</span>
+    <span class="hljs-keyword">if</span> (argc !=<span class="hljs-number">2</span>) {
+        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;usage: %s &lt;n&gt;\\n&quot;</span>, argv[<span class="hljs-number">0</span>]);
+        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;where &lt;n&gt; is the number of threads\\n&quot;</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    }
+    nthreads = strtol(argv[<span class="hljs-number">1</span>], <span class="hljs-literal">NULL</span>, <span class="hljs-number">10</span>);
+
+    <span class="hljs-comment">// Allocate space for thread structs and identifiers.</span>
+    thread_array = <span class="hljs-built_in">malloc</span>(nthreads * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">pthread_t</span>));
+    thread_ids = <span class="hljs-built_in">malloc</span>(nthreads * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">long</span>));
+
+    <span class="hljs-comment">// Assign each thread an ID and create all the threads.</span>
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; nthreads; i++) {
+        thread_ids[i] = i;
+        pthread_create(&amp;thread_array[i], <span class="hljs-literal">NULL</span>, HelloWorld, &amp;thread_ids[i]);
+    }
+
+    <span class="hljs-comment">/* Join all the threads. Main will pause in this loop until all threads
+     * have returned from the thread function. */</span>
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; nthreads; i++) {
+        pthread_join(thread_array[i], <span class="hljs-literal">NULL</span>);
+    }
+
+    <span class="hljs-built_in">free</span>(thread_array);
+    <span class="hljs-built_in">free</span>(thread_ids);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>لنفحص هذا البرنامج في مكوّنات أصغر.</p>
+<ul>
+<li>لاحظ تضمين ملف الترويسة <code>pthread.h</code> الذي يعرّف أنواع <code>pthread</code> ودوالها.</li>
+<li>بعد ذلك، تعرّف الدالة <code>HelloWorld</code> <strong>دالة الخيط</strong> التي نمرّرها لاحقًا إلى <code>pthread_create</code>. ودالة الخيط مماثلة لدالة <code>main</code> بالنسبة إلى خيط عامل (منشأ) — فيبدأ الخيط تنفيذه عند بداية دالة خيطه وينتهي عند وصوله إلى نهايتها. وينفّذ كل خيط دالة الخيط باستخدام حالة تنفيذه الخاصة (أي ذاكرة مكدّسه وقيم سجلاته الخاصة). لاحظ أيضًا أن دالة الخيط من النوع <code>void*</code>. وتحديد <a href="https://diveintosystems.org/book/C2-C_depth/advanced_voidstar.html#_c_voidstar_recasting_"><strong>مؤشر مجهول</strong></a> في هذا السياق يتيح للمبرمجين كتابة دوال خيوط تتعامل مع وسائط وقيم إرجاع من أنواع مختلفة.</li>
+<li>وأخيرًا، في الدالة <code>main</code>، يهيّئ الخيط الرئيسي حالة البرنامج قبل إنشاء خيوط العمل وضمّها.</li>
+</ul>
+<h3 id="1421-إنشاء-الخيوط-وضمها">14.2.1. إنشاء الخيوط وضمّها <span class="content-anchor" id="_creating_and_joining_threads"></span></h3>
+<p>يبدأ البرنامج أولًا كعملية أحادية الخيط. وأثناء تنفيذه الدالة <code>main</code>، يقرأ عدد الخيوط المراد إنشاؤها، ويخصص ذاكرة لمصفوفتين: <code>thread_array</code> و<code>thread_ids</code>. وتحتوي المصفوفة <code>thread_array</code> مجموعة عناوين كل خيط مُنشأ. وتخزّن المصفوفة <code>thread_ids</code> مجموعة الوسائط التي تُمرَّر إلى كل خيط. وفي هذا المثال، يُمرَّر إلى كل خيط عنوان رتبته (أو معرّفه، الممثَّل بـ <code>thread_ids[i]</code>).</p>
+<p>وبعد تخصيص جميع المتغيرات الأولية وتهيئتها، ينفّذ الخيط الرئيسي خطوتي تعدد الخيوط الرئيستين:</p>
+<ul>
+<li>خطوة <strong>الإنشاء</strong>، وفيها يولّد الخيط الرئيسي خيط عمل واحدًا أو أكثر. وبعد توليده، يعمل كل خيط عمل داخل سياق تنفيذه الخاص بالتزامن مع الخيوط والعمليات الأخرى في النظام.</li>
+<li>خطوة <strong>الضم</strong> (join)، وفيها ينتظر الخيط الرئيسي اكتمال جميع خيوط العمل قبل المتابعة كعملية أحادية الخيط. وضم خيط انتهى يحرّر سياق تنفيذ الخيط وموارده. ومحاولة ضم خيط <em>لم</em> ينتهِ تحجب المستدعي حتى ينتهي الخيط، على غرار دلالات <a href="https://diveintosystems.org/book/C13-OS/processes.html#_exit_and_wait">دالة wait للعمليات</a>.</li>
+</ul>
+<p>وتوفّر مكتبة Pthreads دالة <code>pthread_create</code> لإنشاء الخيوط ودالة <code>pthread_join</code> لضمّها. وتوقيع الدالة <code>pthread_create</code> كما يلي:</p>
+<pre><code class="language-c">pthread_create(<span class="hljs-type">pthread_t</span> *thread, <span class="hljs-type">const</span> <span class="hljs-type">pthread_attr_t</span> *attr,
+               <span class="hljs-type">void</span> *(*thread_function)(<span class="hljs-type">void</span> *), <span class="hljs-type">void</span> *thread_args)
+</code></pre>
+<p>وتأخذ الدالة مؤشرًا إلى بنية خيط (من النوع <code>pthread_t</code>)، ومؤشرًا إلى بنية سمات (تُضبط عادةً على <code>NULL</code>)، واسم الدالة التي ينبغي أن ينفّذها الخيط، ومصفوفة الوسائط التي ستُمرَّر إلى دالة الخيط عند بدئه.</p>
+<p>ويستدعي برنامج Hello World الدالة <code>pthread_create</code> في الدالة <code>main</code> بالشكل:</p>
+<pre><code class="language-c">pthread_create(&amp;thread_array[i], <span class="hljs-literal">NULL</span>, HelloWorld, &amp;thread_ids[i]);
+</code></pre>
+<p>وهنا:</p>
+<ul>
+<li>يحتوي <code>&amp;thread_array[i]</code> عنوان الخيط <em>i</em>. وتخصص الدالة <code>pthread_create</code> كائن خيط <code>pthread_t</code> وتخزّن عنوانه في هذا الموقع، ما يتيح للمبرمج الإشارة إلى الخيط لاحقًا (مثلًا عند ضمّه).</li>
+<li>يحدد <code>NULL</code> أنه ينبغي إنشاء الخيط بسمات افتراضية. وفي معظم البرامج، من الآمن ترك هذا المُعامِل الثاني <code>NULL</code>.</li>
+<li>يسمّي <code>HelloWorld</code> دالة الخيط التي ينبغي أن ينفّذها الخيط المنشأ. وتتصرف هذه الدالة مثل دالة «main» للخيط. وبالنسبة إلى دالة خيط اعتباطية (مثل <code>function</code>)، يجب أن يطابق نموذجها الشكل <code>void * function(void *)</code>.</li>
+<li>يحدد <code>&amp;thread_ids[i]</code> عنوان الوسائط التي ستُمرَّر إلى الخيط <em>i</em>. وفي هذه الحالة، يحتوي <code>thread_ids[i]</code> عددًا واحدًا من النوع <code>long</code> يمثل معرّف الخيط. ولأن المُعامِل الأخير لـ <code>pthread_create</code> يجب أن يكون مؤشرًا، نمرّر <em>عنوان</em> معرّف الخيط.</li>
+</ul>
+<p>ولتوليد عدة خيوط تنفّذ دالة الخيط <code>HelloWorld</code>، يُسند البرنامج إلى كل خيط معرّفًا فريدًا وينشئ كل خيط داخل حلقة <code>for</code>:</p>
+<pre><code class="language-c"><span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; nthreads; i++) {
+    thread_ids[i] = i;
+    pthread_create(&amp;thread_array[i], <span class="hljs-literal">NULL</span>, HelloWorld, &amp;thread_ids[i]);
+}
+</code></pre>
+<p>ويجدول نظام التشغيل تنفيذ كل خيط مُنشأ؛ ولا يستطيع المستخدم افتراض أي شيء عن ترتيب تنفيذ الخيوط.</p>
+<p>وتوقف دالة <code>pthread_join</code> تنفيذ مستدعيها حتى ينتهي الخيط الذي تشير إليه. وتوقيعها:</p>
+<pre><code class="language-c">pthread_join(<span class="hljs-type">pthread_t</span> thread, <span class="hljs-type">void</span> **return_val)
+</code></pre>
+<p>تأخذ <code>pthread_join</code> مدخلًا بنية <code>pthread_t</code> تدل على الخيط الذي ستنتظره، ومُعامِل مؤشر اختياريًا يحدد أين تُخزَّن قيمة إرجاع الخيط.</p>
+<p>ويستدعي برنامج Hello World الدالة <code>pthread_join</code> في <code>main</code> بالشكل:</p>
+<pre><code class="language-c">pthread_join(thread_array[t], <span class="hljs-literal">NULL</span>);
+</code></pre>
+<p>يدل هذا السطر على أن على الخيط الرئيسي انتظار انتهاء الخيط <code>t</code>. وتمرير <code>NULL</code> مُعامِلًا ثانيًا يدل على أن البرنامج لا يستخدم قيمة إرجاع الخيط.</p>
+<p>وفي البرنامج السابق، يستدعي <code>main</code> الدالة <code>pthread_join</code> في حلقة لأن <em>جميع</em> خيوط العمل تحتاج إلى الانتهاء قبل أن تتابع الدالة <code>main</code> تنظيف الذاكرة وإنهاء العملية:</p>
+<pre><code class="language-c"><span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; nthreads; i++) {
+    pthread_join(thread_array[i], <span class="hljs-literal">NULL</span>);
+}
+</code></pre>
+<h3 id="1422-دالة-الخيط">14.2.2. دالة الخيط <span class="content-anchor" id="_the_thread_function"></span></h3>
+<p>في البرنامج السابق، يطبع كل خيط مُنشأ <code>Hello world! I am thread n</code>، حيث <code>n</code> معرّف الخيط الفريد. وبعد أن يطبع الخيط رسالته، ينتهي. لنلقِ نظرة أقرب على الدالة <code>HelloWorld</code>:</p>
+<pre><code class="language-c"><span class="hljs-type">void</span> *<span class="hljs-title function_">HelloWorld</span><span class="hljs-params">(<span class="hljs-type">void</span> *id)</span> {
+    <span class="hljs-type">long</span> *myid = (<span class="hljs-type">long</span>*)id;
+
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Hello world! I am thread %ld\\n&quot;</span>, *myid);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+}
+</code></pre>
+<p>تذكّر أن <code>pthread_create</code> تمرّر الوسائط إلى دالة الخيط عبر المُعامِل <code>thread_args</code>. وفي الدالة <code>pthread_create</code> في <code>main</code>، حدد برنامج Hello World أن هذا المُعامِل هو في الواقع معرّف الخيط. لاحظ أن المُعامِل في <code>HelloWorld</code> يجب أن يُعلَن كمؤشر عام أو <a href="https://diveintosystems.org/book/C2-C_depth/advanced_voidstar.html#_c_voidstar_recasting_">مؤشر مجهول (<code>void *</code>)</a>. وتستخدم مكتبة Pthreads <code>void *</code> لجعل <code>pthread_create</code> أكثر عمومية بعدم فرض نوع مُعامِل. وبالنسبة إلى المبرمج، يكون <code>void *</code> غير مريح قليلًا لأنه يجب إعادة صبه قبل استخدامه. وهنا <em>نعرف</em> أن المُعامِل من النوع <code>long *</code> لأن ذلك ما مرّرناه إلى <code>pthread_create</code> في <code>main</code>. ولذلك يمكننا صب القيمة بأمان كـ <code>long *</code> وإلغاء الإشارة عن المؤشر للوصول إلى قيمة <code>long</code>. وتتبع برامج متوازية كثيرة هذه البنية.</p>
+<p>وعلى غرار مُعامِل دالة الخيط، تتجنّب مكتبة Pthreads فرض نوع إرجاع دالة الخيط بتحديد <code>void *</code> آخر — فالمبرمج حر في إعادة أي مؤشر من دالة الخيط. وإذا احتاج البرنامج إلى الوصول إلى قيمة إرجاع الخيط، فيمكنه استرجاعها عبر المُعامِل الثاني لـ <code>pthread_join</code>. وفي مثالنا، لا حاجة للخيط إلى إعادة قيمة، فيعيد ببساطة مؤشر <code>NULL</code>.</p>
+<h3 id="1423-تشغيل-الشيفرة">14.2.3. تشغيل الشيفرة <span class="content-anchor" id="_running_the_code"></span></h3>
+<p>يوضح الأمر التالي كيفية استخدام GCC لتصريف <a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/hellothreads.c">hellothreads.c</a>. ويتطلب بناء تطبيق Pthreads تمرير علم الربط <code>-pthread</code> إلى GCC لضمان إتاحة دوال Pthreads وأنواعها:</p>
+<pre><code class="language-bash">$ gcc -o hellothreads hellothreads.c -pthread
+</code></pre>
+<p>وينتج عن تشغيل البرنامج من دون وسيطة سطر أوامر رسالة استخدام:</p>
+<pre><code class="language-bash">$ ./hellothreads
+usage: ./hellothreads &lt;n&gt;
+<span class="hljs-built_in">where</span> &lt;n&gt; is the number of threads
+</code></pre>
+<p>وينتج عن تشغيل البرنامج بأربعة خيوط المخرجات التالية:</p>
+<pre><code class="language-bash">$ ./hellothreads 4
+Hello world! I am thread 1
+Hello world! I am thread 2
+Hello world! I am thread 3
+Hello world! I am thread 0
+</code></pre>
+<p>لاحظ أن كل خيط يطبع رقم معرّفه الفريد. وفي هذا التشغيل، تظهر مخرجات الخيط 1 أولًا، ثم الخيوط 2 و3 و0. وإذا شغّلنا البرنامج مرة أخرى، فقد نرى المخرجات معروضة بترتيب مختلف:</p>
+<pre><code class="language-bash">$ ./hellothreads 4
+Hello world! I am thread 0
+Hello world! I am thread 1
+Hello world! I am thread 2
+Hello world! I am thread 3
+</code></pre>
+<p>تذكّر أن مجدول نظام التشغيل هو الذي يحدد ترتيب تنفيذ الخيوط. ومن منظور المستخدم، الترتيب <em>عشوائي فعليًا</em> لأنه يتأثر بعوامل كثيرة تتفاوت خارج سيطرته (مثل موارد النظام المتاحة، أو تلقّي النظام مدخلات، أو جدولة نظام التشغيل). ولأن جميع الخيوط تعمل بالتزامن مع بعضها وكل خيط ينفّذ نداءً إلى <code>printf</code> (التي تطبع إلى <code>stdout</code>)، فإن أول خيط يطبع إلى <code>stdout</code> ستظهر مخرجاته أولًا. وقد تؤدي التشغيلات اللاحقة (أو لا تؤدي) إلى مخرجات مختلفة.</p>
+<p><strong>تحذير — ترتيب تنفيذ الخيوط</strong></p>
+<blockquote>
+<p>ينبغي <em>ألا</em> تفترض أبدًا أي شيء عن ترتيب تنفيذ الخيوط. وإذا كانت صحة برنامجك تتطلب عمل الخيوط بترتيب معين، فيجب أن تضيف <a href="https://diveintosystems.org/book/C14-SharedMemory/synchronization.html#_synchronizing_threads"><strong>تزامنًا</strong></a> إلى برنامجك لمنع الخيوط من العمل عندما لا ينبغي لها ذلك.</p>
+</blockquote>
+<h3 id="1424-إعادة-النظر-في-الضرب-القياسي">14.2.4. إعادة النظر في الضرب القياسي <span class="content-anchor" id="_revisiting_scalar_multiplication"></span></h3>
+<p>لنستكشف كيفية إنشاء تطبيق متعدد الخيوط لبرنامج <a href="https://diveintosystems.org/book/C14-SharedMemory/multicore.html#_an_example_scalar_multiplication">الضرب القياسي</a> من القسم السابق. تذكّر أن استراتيجيتنا العامة لجعل <code>scalar_multiply</code> متوازية هي:</p>
+<ol>
+<li>إنشاء خيوط متعددة،</li>
+<li>إسناد كل خيط مجموعة جزئية من مصفوفة الإدخال،</li>
+<li>تكليف كل خيط بضرب العناصر في مجموعته الجزئية من المصفوفة في <code>s</code>.</li>
+</ol>
+<p>وفيما يلي دالة خيط تنجز هذه المهمة. لاحظ أننا نقلنا <code>array</code> و<code>length</code> و<code>s</code> إلى النطاق العام للبرنامج.</p>
+<pre><code class="language-c"><span class="hljs-type">long</span> *<span class="hljs-built_in">array</span>; <span class="hljs-comment">//allocated in main</span>
+<span class="hljs-type">long</span> length; <span class="hljs-comment">//set in main (1 billion)</span>
+<span class="hljs-type">long</span> nthreads; <span class="hljs-comment">//number of threads</span>
+<span class="hljs-type">long</span> s; <span class="hljs-comment">//scalar</span>
+
+<span class="hljs-type">void</span> *<span class="hljs-title function_">scalar_multiply</span><span class="hljs-params">(<span class="hljs-type">void</span> *id)</span> {
+    <span class="hljs-type">long</span> *myid = (<span class="hljs-type">long</span> *) id;
+    <span class="hljs-type">int</span> i;
+
+    <span class="hljs-comment">//assign each thread its own chunk of elements to process</span>
+    <span class="hljs-type">long</span> chunk = length / nthreads;
+    <span class="hljs-type">long</span> start = *myid * chunk;
+    <span class="hljs-type">long</span> end  = start + chunk;
+    <span class="hljs-keyword">if</span> (*myid == nthreads - <span class="hljs-number">1</span>) {
+        end = length;
+    }
+
+    <span class="hljs-comment">//perform scalar multiplication on assigned chunk</span>
+    <span class="hljs-keyword">for</span> (i = start; i &lt; end; i++) {
+        <span class="hljs-built_in">array</span>[i] *= s;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+}
+</code></pre>
+<p>لنفصّل ذلك إلى أجزاء. تذكّر أن الخطوة الأولى هي إسناد مكوّن من المصفوفة إلى كل خيط. وتنجز الأسطر التالية هذه المهمة:</p>
+<pre><code class="language-c"><span class="hljs-type">long</span> chunk = length / nthreads;
+<span class="hljs-type">long</span> start = *myid * chunk;
+<span class="hljs-type">long</span> end  = start + chunk;
+</code></pre>
+<p>يخزّن المتغير <code>chunk</code> عدد العناصر المسندة إلى كل خيط. ولضمان حصول كل خيط على كمية عمل متقاربة تقريبًا، نضبط حجم القطعة أولًا على عدد العناصر مقسومًا على عدد الخيوط، أو <code>length / nthreads</code>.</p>
+<p>بعد ذلك، نُسند إلى كل خيط مجالًا مميزًا من العناصر لمعالجته. ويحسب كل خيط فهرسي <code>start</code> و<code>end</code> لمجاله باستخدام حجم <code>chunk</code> ومعرّف خيطه الفريد.</p>
+<p>فمثلًا، مع أربعة خيوط (بمعرّفات 0-3) تعمل على مصفوفة من 100 مليون عنصر، يكون كل خيط مسؤولًا عن معالجة <code>chunk</code> من 25 مليون عنصر. وإدراج معرّف الخيط يُسند إلى كل خيط مجموعة جزئية فريدة من الإدخال.</p>
+<p>ويعالج السطران التاليان حالة عدم قابلية <code>length</code> للقسمة على عدد الخيوط بالتساوي:</p>
+<pre><code class="language-c"><span class="hljs-keyword">if</span> (*myid == nthreads - <span class="hljs-number">1</span>) {
+    end = length;
+}
+</code></pre>
+<p>لنفترض أننا حددنا ثلاثة خيوط بدلًا من أربعة. سيكون حجم القطعة الاسمي 33,333,333 عنصرًا، فيتبقى عنصر واحد غير محسوب. وستسند الشيفرة في المثال السابق العنصر المتبقي إلى الخيط الأخير.</p>
+<p><strong>ملاحظة — إنشاء إدخال متوازن</strong></p>
+<blockquote>
+<p>شيفرة التقطيع المعروضة للتو غير مثالية. فعندما لا يقسم عدد الخيوط الإدخال بالتساوي، يُسند الباقي إلى الخيط الأخير. فكّر في تشغيل نموذجي تكون فيه المصفوفة من 100 عنصر ويُحدَّد 12 خيطًا. سيكون حجم القطعة الاسمي 8 والباقي 4. ومع شيفرة المثال، سيكون لكل من الخيوط الأحد عشر الأولى 8 عناصر مسندة، بينما يُسند إلى الخيط الأخير 12 عنصرًا. ونتيجة لذلك، ينفّذ الخيط الأخير عملًا أكثر بنسبة 50% من الخيوط الأخرى. وربما تكون الطريقة الأفضل لتقطيع هذا المثال أن يعالج كل من الخيوط الأربعة الأولى 9 عناصر، بينما يعالج كل من الخيوط الثمانية الأخيرة 8 عناصر. وسينتج عن ذلك <strong>موازنة حمل</strong> (load balancing) أفضل للإدخال بين الخيوط.</p>
+</blockquote>
+<p>وبعد حساب فهرسي <code>start</code> و<code>end</code> المحليين المناسبين، يصبح كل خيط جاهزًا لإجراء الضرب القياسي على مكوّنه من المصفوفة. وينجز الجزء الأخير من دالة <code>scalar_multiply</code> ذلك:</p>
+<pre><code class="language-c"><span class="hljs-keyword">for</span> (i = start; i &lt; end; i++) {
+    <span class="hljs-built_in">array</span>[i] *= s;
+}
+</code></pre>
+<h3 id="1425-تحسين-الضرب-القياسي-وسائط-متعددة">14.2.5. تحسين الضرب القياسي: وسائط متعددة <span class="content-anchor" id="_improving_scalar_multiplication_multiple_arguments"></span></h3>
+<p>من أوجه الضعف الرئيسية في التطبيق السابق الاستخدام الواسع للمتغيرات العامة. وقد أظهرت مناقشتنا الأصلية لـ<a href="https://diveintosystems.org/book/C2-C_depth/scope_memory.html#_parts_of_program_memory_and_scope">المتغيرات العامة</a> أنه مع فائدتها، ينبغي تجنّب المتغيرات العامة عمومًا في C. ولتقليل عدد المتغيرات العامة في البرنامج، يتمثل أحد الحلول في تعريف بنية <code>t_arg</code> كما يلي في النطاق العام:</p>
+<pre><code class="language-c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">t_arg</span> {</span>
+    <span class="hljs-type">int</span> *<span class="hljs-built_in">array</span>; <span class="hljs-comment">// pointer to shared array</span>
+    <span class="hljs-type">long</span> length; <span class="hljs-comment">// num elements in array</span>
+    <span class="hljs-type">long</span> s; <span class="hljs-comment">//scaling factor</span>
+    <span class="hljs-type">long</span> numthreads; <span class="hljs-comment">// total number of threads</span>
+    <span class="hljs-type">long</span> id; <span class="hljs-comment">//  logical thread id</span>
+};
+</code></pre>
+<p>وستخصص دالتنا main، إضافةً إلى تخصيص <code>array</code> وضبط المتغيرات المحلية <code>length</code> و<code>nthreads</code> و<code>s</code> (عامل القياس لدينا)، مصفوفة من سجلات <code>t_arg</code>:</p>
+<pre><code class="language-c"><span class="hljs-type">long</span> nthreads = strtol(argv[<span class="hljs-number">1</span>], <span class="hljs-literal">NULL</span>, <span class="hljs-number">10</span>); <span class="hljs-comment">//get number of threads</span>
+<span class="hljs-type">long</span> length = strtol(argv[<span class="hljs-number">2</span>], <span class="hljs-literal">NULL</span>, <span class="hljs-number">10</span>); <span class="hljs-comment">//get length of array</span>
+<span class="hljs-type">long</span> s = strtol( argv[<span class="hljs-number">3</span>], <span class="hljs-literal">NULL</span>, <span class="hljs-number">10</span> ); <span class="hljs-comment">//get scaling factor</span>
+
+<span class="hljs-type">int</span> *<span class="hljs-built_in">array</span> = <span class="hljs-built_in">malloc</span>(length*<span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));
+
+<span class="hljs-comment">//allocate space for thread structs and identifiers</span>
+<span class="hljs-type">pthread_t</span> *thread_array = <span class="hljs-built_in">malloc</span>(nthreads * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">pthread_t</span>));
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">t_arg</span> *<span class="hljs-title">thread_args</span> =</span> <span class="hljs-built_in">malloc</span>(nthreads * <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> t_arg));
+
+<span class="hljs-comment">//Populate thread arguments for all the threads</span>
+<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; nthreads; i++){
+    thread_args[i].<span class="hljs-built_in">array</span> = <span class="hljs-built_in">array</span>;
+    thread_args[i].length = length;
+    thread_args[i].s = s;
+    thread_args[i].numthreads = nthreads;
+    thread_args[i].id = i;
+}
+</code></pre>
+<p>لاحقًا في <code>main</code>، عند استدعاء <code>pthread_create</code>، تُمرَّر بنية <code>t_args</code> المرتبطة بالخيط كوسيطة:</p>
+<pre><code class="language-c"><span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; nthreads; i++){
+    pthread_create(&amp;thread_array[i], <span class="hljs-literal">NULL</span>, scalar_multiply, &amp;thread_args[i]);
+}
+</code></pre>
+<p>وأخيرًا، ستبدو دالتنا <code>scalar_multiply</code> كما يلي:</p>
+<pre><code class="language-c"><span class="hljs-type">void</span> * <span class="hljs-title function_">scalar_multiply</span><span class="hljs-params">(<span class="hljs-type">void</span>* args)</span> {
+    <span class="hljs-comment">//cast to a struct t_arg from void*</span>
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">t_arg</span> * <span class="hljs-title">myargs</span> =</span> (<span class="hljs-keyword">struct</span> t_arg *) args;
+
+    <span class="hljs-comment">//extract all variables from struct</span>
+    <span class="hljs-type">long</span> myid =  myargs-&gt;id;
+    <span class="hljs-type">long</span> length = myargs-&gt;length;
+    <span class="hljs-type">long</span> s = myargs-&gt;s;
+    <span class="hljs-type">long</span> nthreads = myargs-&gt;numthreads;
+    <span class="hljs-type">int</span> * ap = myargs-&gt;<span class="hljs-built_in">array</span>; <span class="hljs-comment">//pointer to array in main</span>
+
+    <span class="hljs-comment">//code as before</span>
+    <span class="hljs-type">long</span> chunk = length/nthreads;
+    <span class="hljs-type">long</span> start = myid * chunk;
+    <span class="hljs-type">long</span> end  = start + chunk;
+    <span class="hljs-keyword">if</span> (myid == nthreads<span class="hljs-number">-1</span>) {
+        end = length;
+    }
+
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-keyword">for</span> (i = start; i &lt; end; i++) {
+        ap[i] *= s;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+}
+</code></pre>
+<p>وتنفيذ هذا البرنامج تنفيذًا كاملًا تمرين نتركه للقارئ. يرجى ملاحظة أن معالجة الأخطاء حُذفت للإيجاز.</p>
+<p>في الأمثلة التي نظرنا إليها حتى الآن، ينفّذ كل خيط من دون تشارك بيانات مع أي خيوط أخرى. وفي برنامج الضرب القياسي، مثلًا، يكون كل عنصر في المصفوفة مستقلًا تمامًا عن جميع العناصر الأخرى، فلا حاجة إلى تشارك الخيوط بيانات.</p>
+<p>غير أن قدرة الخيط على تشارك البيانات مع الخيوط الأخرى بسهولة من سماته الرئيسية. تذكّر أن جميع خيوط العملية متعددة الخيوط تتشارك الكومة المشتركة للعملية. وفي هذا القسم، ندرس آليات تشارك البيانات والحماية المتاحة للخيوط بالتفصيل.</p>
+<p>يشير <strong>تزامن الخيوط</strong> (thread synchronization) إلى إجبار الخيوط على التنفيذ بترتيب معين. ومع أن تزامن الخيوط قد يضيف إلى زمن تشغيل البرنامج، فإنه ضروري غالبًا لضمان صحة البرنامج. ونناقش في هذا القسم أساسًا كيف تساعد بنية تزامن واحدة (وهي <em>قفل التبادل المتبادل</em>) في ضمان صحة برنامج ذي خيوط. ونختم القسم بمناقشة بعض بنى التزامن الشائعة الأخرى: <em>السيمافورات</em> و<em>الحواجز</em> و<em>متغيرات الشرط</em>.</p>
+<h3 id="countsort">CountSort</h3>
+<p>لندرس مثالًا أعقد قليلًا يُسمى CountSort. وخوارزمية CountSort خوارزمية ترتيب خطية بسيطة (O(<em>N</em>)) لترتيب مجال صغير معروف من <em>R</em> قيمة، حيث <em>R</em> أصغر بكثير من <em>N</em>. ولتوضيح كيفية عمل CountSort، فكّر في مصفوفة <code>A</code> من 15 عنصرًا، تحتوي جميعها قيمًا عشوائية بين 0 و9 (10 قيم ممكنة):</p>
+<pre><code>A = [9, 0, 2, 7, 9, 0, 1, 4, 2, 2, 4, 5, 0, 9, 1]
+</code></pre>
+<p>وبالنسبة إلى مصفوفة معينة، يعمل CountSort كما يلي:</p>
+<ol>
+<li>يحصي تكرار كل قيمة في المصفوفة.</li>
+<li>يكتب فوق المصفوفة الأصلية بذكر كل قيمة بحسب تكرارها.</li>
+</ol>
+<p>وبعد الخطوة 1، يُوضع تكرار كل قيمة في مصفوفة <code>counts</code> بطول 10، حيث قيمة <code>counts[i]</code> هي تكرار القيمة <em>i</em> في المصفوفة <code>A</code>. فمثلًا، بما أن هناك ثلاثة عناصر قيمتها 2 في المصفوفة <code>A</code>، فإن <code>counts[2]</code> تساوي 3.</p>
+<p>وتبدو مصفوفة <code>counts</code> المقابلة للمثال السابق كما يلي:</p>
+<pre><code>counts = [3, 2, 3, 0, 2, 1, 0, 1, 0, 3]
+</code></pre>
+<p>لاحظ أن مجموع جميع عناصر مصفوفة <code>counts</code> يساوي طول <code>A</code>، أي 15.</p>
+<p>وتستخدم الخطوة 2 مصفوفة <code>counts</code> للكتابة فوق <code>A</code>، مستخدمةً أعداد التكرار لتحديد مجموعة الفهارس في <code>A</code> التي تخزّن كل قيمة متعاقبة بترتيب مفروز. ولأن مصفوفة <code>counts</code> تدل على وجود ثلاثة عناصر قيمتها 0 وعنصرين قيمتهما 1 في المصفوفة <code>A</code>، ستكون العناصر الثلاثة الأولى من المصفوفة النهائية 0، والعنصران التاليان 1.</p>
+<p>وبعد تشغيل الخطوة 2، تبدو المصفوفة النهائية كما يلي:</p>
+<pre><code>A = [0, 0, 0, 1, 1, 2, 2, 2, 4, 4, 5, 7, 9, 9, 9]
+</code></pre>
+<p>وفيما يلي تطبيق تتابعي لخوارزمية CountSort، مع تمييز دالتي <code>count</code> (الخطوة 1) و<code>overwrite</code> (الخطوة 2) بوضوح. وللإيجاز، لا نعيد إدراج البرنامج كاملًا هنا، لكن يمكنك تنزيل الشيفرة المصدرية (<a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/countSort.c">countSort.c</a>).</p>
+<pre><code class="language-c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAX 10 <span class="hljs-comment">//the maximum value of an element. (10 means 0-9)</span></span>
+
+<span class="hljs-comment">/*step 1:
+ * compute the frequency of all the elements in the input array and store
+ * the associated counts of each element in array counts. The elements in the
+ * counts array are initialized to zero prior to the call to this function.
+*/</span>
+<span class="hljs-type">void</span> <span class="hljs-title function_">countElems</span><span class="hljs-params">(<span class="hljs-type">int</span> *counts, <span class="hljs-type">int</span> *array_A, <span class="hljs-type">long</span> length)</span> {
+    <span class="hljs-type">int</span> val, i;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; length; i++) {
+      val = array_A[i]; <span class="hljs-comment">//read the value at index i</span>
+      counts[val] = counts[val] + <span class="hljs-number">1</span>; <span class="hljs-comment">//update corresponding location in counts</span>
+    }
+}
+
+<span class="hljs-comment">/* step 2:
+ * overwrite the input array (array_A) using the frequencies stored in the
+ *  array counts
+*/</span>
+<span class="hljs-type">void</span> <span class="hljs-title function_">writeArray</span><span class="hljs-params">(<span class="hljs-type">int</span> *counts, <span class="hljs-type">int</span> *array_A)</span> {
+    <span class="hljs-type">int</span> i, j = <span class="hljs-number">0</span>, amt;
+
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; MAX; i++) { <span class="hljs-comment">//iterate over the counts array</span>
+        amt = counts[i]; <span class="hljs-comment">//capture frequency of element i</span>
+        <span class="hljs-keyword">while</span> (amt &gt; <span class="hljs-number">0</span>) { <span class="hljs-comment">//while all values aren&#x27;t written</span>
+            array_A[j] = i; <span class="hljs-comment">//replace value at index j of array_A with i</span>
+            j++; <span class="hljs-comment">//go to next position in array_A</span>
+            amt--; <span class="hljs-comment">//decrease the amount written by 1</span>
+        }
+    }
+}
+
+<span class="hljs-comment">/* main function:
+ * gets array length from command line args, allocates a random array of that
+ * size, allocates the counts array, the executes step 1 of the CountSort
+ * algorithm (countsElem) followed by step 2 (writeArray).
+*/</span>
+<span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">( <span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv )</span> {
+    <span class="hljs-comment">//code ommitted for brevity -- download source to view full file</span>
+
+    srand(<span class="hljs-number">10</span>); <span class="hljs-comment">//use of static seed ensures the output is the same every run</span>
+
+    <span class="hljs-type">long</span> length = strtol( argv[<span class="hljs-number">1</span>], <span class="hljs-literal">NULL</span>, <span class="hljs-number">10</span> );
+    <span class="hljs-type">int</span> verbose = atoi(argv[<span class="hljs-number">2</span>]);
+
+    <span class="hljs-comment">//generate random array of elements of specified length</span>
+    <span class="hljs-type">int</span> *<span class="hljs-built_in">array</span> = <span class="hljs-built_in">malloc</span>(length * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));
+    genRandomArray(<span class="hljs-built_in">array</span>, length);
+
+    <span class="hljs-comment">//print unsorted array (commented out)</span>
+    <span class="hljs-comment">//printArray(array, length);</span>
+
+    <span class="hljs-comment">//allocate counts array and initializes all elements to zero.</span>
+    <span class="hljs-type">int</span> counts[MAX] = {<span class="hljs-number">0</span>};
+
+    countElems(counts, <span class="hljs-built_in">array</span>, length); <span class="hljs-comment">//calls step 1</span>
+    writeArray(counts, <span class="hljs-built_in">array</span>); <span class="hljs-comment">//calls step2</span>
+
+    <span class="hljs-comment">//print sorted array (commented out)</span>
+    <span class="hljs-comment">//printArray(array, length);</span>
+
+    <span class="hljs-built_in">free</span>(<span class="hljs-built_in">array</span>); <span class="hljs-comment">//free memory</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>وينتج عن تشغيل هذا البرنامج على مصفوفة بحجم 15 المخرجات التالية:</p>
+<pre><code class="language-bash">$ ./countSort 15 1
+array before <span class="hljs-built_in">sort</span>:
+5 8 8 5 8 7 5 1 7 7 3 3 8 3 4
+result after <span class="hljs-built_in">sort</span>:
+1 3 3 3 4 5 5 5 7 7 7 8 8 8 8
+</code></pre>
+<p>والمُعامِل الثاني لهذا البرنامج هو علم <em>الإسهاب</em> (verbose) الذي يدل على ما إذا كان البرنامج يطبع مخرجات. وهذا خيار مفيد للمصفوفات الأكبر التي قد نريد تشغيل البرنامج عليها من دون بالضرورة طباعة المخرجات.</p>
+<h3 id="جعل-countelems-متوازية-محاولة-أولية">جعل countElems متوازية: محاولة أولية</h3>
+<p>يتألف CountSort من خطوتين رئيسيتين، تستفيد كل منهما من جعلها متوازية. وفي ما تبقى من الفصل، نركّز أساسًا على جعل الخطوة 1، أي الدالة <code>countElems</code>، متوازية. وتُترك موازاة الدالة <code>writeArray</code> تمرينًا للقارئ.</p>
+<p>ويوضح مقطع الشيفرة التالي محاولة أولى لإنشاء دالة <code>countElems</code> بخيوط. وقد حُذفت أجزاء من الشيفرة (تحليل الوسائط ومعالجة الأخطاء) في هذا المثال للإيجاز، لكن الشيفرة المصدرية الكاملة يمكن تنزيلها من هنا (<a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/countElems_p.c">countElems_p.c</a>). وفي الشيفرة التالية، يحاول كل خيط إحصاء تكرار عناصر المصفوفة في مكوّنه المسند من المصفوفة العامة ويحدّث مصفوفة عدّ عامة بالأعداد المكتشفة:</p>
+<pre><code class="language-c"><span class="hljs-comment">/*parallel version of step 1 (first cut) of CountSort algorithm:
+ * extracts arguments from args value
+ * calculates the portion of the array that thread is responsible for counting
+ * computes the frequency of all the elements in assigned component and stores
+ * the associated counts of each element in counts array
+*/</span>
+<span class="hljs-type">void</span> *<span class="hljs-title function_">countElems</span><span class="hljs-params">( <span class="hljs-type">void</span> *args )</span> {
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">t_arg</span> * <span class="hljs-title">myargs</span> =</span> (<span class="hljs-keyword">struct</span> t_arg *)args;
+    <span class="hljs-comment">//extract arguments (omitted for brevity)</span>
+    <span class="hljs-type">int</span> *<span class="hljs-built_in">array</span> = myargs-&gt;ap;
+    <span class="hljs-type">long</span> *counts = myargs-&gt;countp;
+    <span class="hljs-comment">//... (get nthreads, length, myid)</span>
+
+    <span class="hljs-comment">//assign work to the thread</span>
+    <span class="hljs-type">long</span> chunk = length / nthreads; <span class="hljs-comment">//nominal chunk size</span>
+    <span class="hljs-type">long</span> start = myid * chunk;
+    <span class="hljs-type">long</span> end = (myid + <span class="hljs-number">1</span>) * chunk;
+    <span class="hljs-type">long</span> val;
+    <span class="hljs-keyword">if</span> (myid == nthreads<span class="hljs-number">-1</span>) {
+        end = length;
+    }
+
+    <span class="hljs-type">long</span> i;
+    <span class="hljs-comment">//heart of the program</span>
+    <span class="hljs-keyword">for</span> (i = start; i &lt; end; i++) {
+        val = <span class="hljs-built_in">array</span>[i];
+        counts[val] = counts[val] + <span class="hljs-number">1</span>;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+}
+</code></pre>
+<p>وتبدو الدالة <code>main</code> شبه مطابقة لبرامجنا النموذجية السابقة:</p>
+<pre><code class="language-c"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv)</span> {
+
+    <span class="hljs-keyword">if</span> (argc != <span class="hljs-number">4</span>) {
+        <span class="hljs-comment">//print out usage info (ommitted for brevity)</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    }
+
+    srand(<span class="hljs-number">10</span>); <span class="hljs-comment">//static seed to assist in correctness check</span>
+
+    <span class="hljs-comment">//parse command line arguments</span>
+    <span class="hljs-type">long</span> t;
+    <span class="hljs-type">long</span> length = strtol(argv[<span class="hljs-number">1</span>], <span class="hljs-literal">NULL</span>, <span class="hljs-number">10</span>);
+    <span class="hljs-type">int</span> verbose = atoi(argv[<span class="hljs-number">2</span>]);
+    <span class="hljs-type">long</span> nthreads = strtol(argv[<span class="hljs-number">3</span>], <span class="hljs-literal">NULL</span>, <span class="hljs-number">10</span>);
+
+    <span class="hljs-comment">//generate random array of elements of specified length</span>
+    <span class="hljs-type">int</span> *<span class="hljs-built_in">array</span> = <span class="hljs-built_in">malloc</span>(length * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));
+    genRandomArray(<span class="hljs-built_in">array</span>, length);
+
+    <span class="hljs-comment">//specify counts array and initialize all elements to zero</span>
+    <span class="hljs-type">long</span> counts[MAX] = {<span class="hljs-number">0</span>};
+
+    <span class="hljs-comment">//allocate threads and args array</span>
+    <span class="hljs-type">pthread_t</span> *thread_array; <span class="hljs-comment">//pointer to future thread array</span>
+    thread_array = <span class="hljs-built_in">malloc</span>(nthreads * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">pthread_t</span>)); <span class="hljs-comment">//allocate the array</span>
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">t_arg</span> *<span class="hljs-title">thread_args</span> =</span> <span class="hljs-built_in">malloc</span>( nthreads * <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> t_arg) );
+
+    <span class="hljs-comment">//fill thread array with parameters</span>
+    <span class="hljs-keyword">for</span> (t = <span class="hljs-number">0</span>; t &lt; nthreads; t++) {
+        <span class="hljs-comment">//ommitted for brevity...</span>
+    }
+
+    <span class="hljs-keyword">for</span> (t = <span class="hljs-number">0</span>; t &lt; nthreads; t++) {
+        pthread_create(&amp;thread_array[t], <span class="hljs-literal">NULL</span>, countElems, &amp;thread_args[t]);
+    }
+
+    <span class="hljs-keyword">for</span> (t = <span class="hljs-number">0</span>; t &lt; nthreads; t++) {
+        pthread_join(thread_array[t], <span class="hljs-literal">NULL</span>);
+    }
+
+    <span class="hljs-built_in">free</span>(thread_array);
+    <span class="hljs-built_in">free</span>(<span class="hljs-built_in">array</span>);
+
+    <span class="hljs-keyword">if</span> (verbose) {
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Counts array:\\n&quot;</span>);
+        printCounts(counts);
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>ولأغراض قابلية إعادة الإنتاج، تُهيَّأ مولّد الأعداد العشوائية بقيمة ساكنة (10) لضمان احتواء <code>array</code> (وبالتالي <code>counts</code>) دائمًا المجموعة نفسها من الأعداد. وتطبع دالة إضافية (<code>printCounts</code>) محتويات مصفوفة <code>counts</code> العامة. والتوقع أن تظل محتويات مصفوفة <code>counts</code> هي نفسها دائمًا، أيًا كان عدد الخيوط المستخدم. وللإيجاز، أُزيلت معالجة الأخطاء من القائمة.</p>
+<p>وينتج عن تصريف البرنامج وتشغيله بخيط واحد وخيطين وأربعة خيوط على 10 ملايين عنصر ما يلي:</p>
+<pre><code class="language-bash">$ gcc -o countElems_p countElems_p.c -pthread
+
+$./countElems_p 10000000 1 1
+Counts array:
+999170 1001044 999908 1000431 999998 1001479 999709 997250 1000804 1000207
+
+$./countElems_p 10000000 1 2
+Counts array:
+661756 661977 657828 658479 657913 659308 658561 656879 658070 657276
+
+$./countElems_p 10000000 1 4
+Counts array:
+579846 580814 580122 579772 582509 582713 582518 580917 581963 581094
+</code></pre>
+<p>لاحظ أن النتائج المطبوعة تتغير تغيرًا كبيرًا في كل تشغيل. وعلى وجه الخصوص، تبدو متغيرة كلما غيّرنا عدد الخيوط! ولا ينبغي أن يحدث هذا، لأن استخدامنا للبذرة الساكنة يضمن المجموعة نفسها من الأعداد في كل تشغيل. وتناقض هذه النتائج إحدى القواعد الأساسية للبرامج ذات الخيوط: ينبغي أن يكون إخراج البرنامج صحيحًا ومتسقًا <em>بغض النظر</em> عن عدد الخيوط المستخدم.</p>
+<p>ولأن محاولتنا الأولى لجعل <code>countElems</code> متوازية لا تبدو ناجحة، لنغص أعمق في ما يفعله هذا البرنامج ونفحص كيف يمكن إصلاحه.</p>
+<h3 id="حالات-سباق-البيانات">حالات سباق البيانات</h3>
+<p>لفهم ما يجري، لنفكّر في تشغيل نموذجي بخيطين على نواتين منفصلتين في نظام متعدد الأنوية. تذكّر أن تنفيذ أي خيط يمكن أن يُستبق في أي وقت بواسطة نظام التشغيل، ما يعني أن كل خيط قد ينفّذ تعليمات مختلفة من دالة معينة في أي لحظة (أو ربما التعليمة نفسها). ويعرض <a href="#ExecSequence">الجدول 1</a> مسارًا ممكنًا للتنفيذ عبر دالة <code>countElems</code>. ولتوضيح ما يجري توضيحًا أفضل، ترجمنا السطر <code>counts[val] = counts[val] + 1</code> إلى التسلسل التالي من التعليمات المكافئة:</p>
+<ol>
+<li><strong>اقرأ</strong> <code>counts[val]</code> وضعها في سجل.</li>
+<li><strong>عدّل</strong> السجل بزيادته بمقدار واحد.</li>
+<li><strong>اكتب</strong> محتويات السجل إلى <code>counts[val]</code>.</li>
+</ol>
+<p>ويُعرف هذا بـ<strong>نمط القراءة-التعديل-الكتابة</strong> (read-modify-write). وفي المثال المعروض في <a href="#ExecSequence">الجدول 1</a>، ينفّذ كل خيط على نواة منفصلة (الخيط 0 على النواة 0، والخيط 1 على النواة 1). ونبدأ فحص تنفيذ العملية عند الخطوة الزمنية <em>i</em>، حيث يكون لدى كلا الخيطين <code>val</code> تساوي 1.</p>
+<table>
+<thead>
+<tr>
+<th>الزمن</th>
+<th>الخيط 0</th>
+<th>الخيط 1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>i</em></td>
+<td>اقرأ counts[1] وضعها في سجل النواة 0</td>
+<td>…​</td>
+</tr>
+<tr>
+<td><em>i+1</em></td>
+<td>زد السجل بمقدار 1</td>
+<td>اقرأ counts[1] وضعها في سجل النواة 1</td>
+</tr>
+<tr>
+<td><em>i+2</em></td>
+<td>اكتب فوق counts[1] محتويات السجل</td>
+<td>زد السجل بمقدار 1</td>
+</tr>
+<tr>
+<td><em>i+3</em></td>
+<td>…​</td>
+<td>اكتب فوق counts[1] محتويات السجل</td>
+</tr>
+</tbody>
+</table>
+<p>لنفترض أن <code>counts[1]</code> كانت تحتوي القيمة 60 قبل تسلسل التنفيذ في <a href="#ExecSequence">الجدول 1</a>. وفي الخطوة الزمنية <em>i</em>، يقرأ الخيط 0 القيمة <code>counts[1]</code> ويضع القيمة 60 في سجل النواة 0. وفي الخطوة الزمنية <em>i+1</em>، بينما يزيد الخيط 0 سجل النواة 0 بمقدار واحد، تُقرأ القيمة <em>الحالية</em> في <code>counts[1]</code> (وهي 60) إلى سجل النواة 1 بواسطة الخيط 1. وفي الخطوة الزمنية <em>i+2</em>، يحدّث الخيط 0 القيمة <code>counts[1]</code> إلى 61 بينما يزيد الخيط 1 القيمة المخزَّنة في سجله المحلي (60) بمقدار واحد. والنتيجة النهائية أن القيمة <code>counts[1]</code> يُكتب فوقها في الخطوة الزمنية <em>i+3</em> بواسطة الخيط 1 بالقيمة 61، لا 62 كما كنا نتوقع! ويؤدي هذا إلى أن <code>counts[1]</code> «تفقد» زيادة!</p>
+<p>ونشير إلى السيناريو الذي يحاول فيه خيطان الكتابة إلى موقع الذاكرة نفسه بـ<strong>حالة سباق البيانات</strong> (data race). وبصفة أعم، تشير <strong>حالة السباق</strong> (race condition) إلى أي سيناريو يعطي فيه التنفيذ المتزامن لعمليتين نتيجة غير صحيحة. لاحظ أن القراءة المتزامنة لموقع <code>counts[1]</code> <em>لا</em> تشكّل في حد ذاتها حالة سباق، لأن القيم يمكن قراءتها عمومًا من الذاكرة وحدها من دون مشكلة. وقد كان الجمع بين هذه الخطوة والكتابات في <code>counts[1]</code> هو ما سبب النتيجة غير الصحيحة. ونمط القراءة-التعديل-الكتابة هذا مصدر شائع لنوع معين من حالات السباق يُسمى <strong>حالة سباق البيانات</strong> في معظم البرامج ذات الخيوط. وفي مناقشتنا لحالات السباق وكيفية إصلاحها، نركّز على حالات سباق البيانات.</p>
+<p><strong>ملاحظة — العمليات الذرية</strong></p>
+<blockquote>
+<p>تُعرَّف العملية بأنها <strong>ذرية</strong> (atomic) إذا رأى خيط أنها تنفّذ من دون انقطاع (وبعبارة أخرى، كإجراء «كل شيء أو لا شيء»). وفي بعض المكتبات، تُستخدم كلمة مفتاحية أو نوع لتحديد أن كتلة حساب يجب أن تُعامل كذرية. وفي المثال السابق، السطر <code>counts[val] = counts[val] + 1</code> (حتى لو كُتب بالشكل <code>counts[val]++</code>) <em>ليس</em> ذريًا، لأن هذا السطر يقابل فعلًا عدة تعليمات على مستوى الآلة. ويلزم بنية تزامن مثل الاستبعاد المتبادل لضمان عدم وجود حالات سباق بيانات. وبصفة عامة، ينبغي افتراض أن جميع العمليات غير ذرية إلا إذا فُرض الاستبعاد المتبادل صراحةً.</p>
+</blockquote>
+<p>تذكّر أن ليس كل تسلسلات تنفيذ الخيطين تسبب حالة سباق. فكّر في تسلسل التنفيذ النموذجي للخيطين 0 و1 في <a href="#NoRaceExec">الجدول 2</a>.</p>
+<table>
+<thead>
+<tr>
+<th>الزمن</th>
+<th>الخيط 0</th>
+<th>الخيط 1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>i</em></td>
+<td>اقرأ counts[1] وضعها في سجل النواة 0</td>
+<td>…​</td>
+</tr>
+<tr>
+<td><em>i+1</em></td>
+<td>زد السجل بمقدار 1</td>
+<td>…​</td>
+</tr>
+<tr>
+<td><em>i+2</em></td>
+<td>اكتب فوق counts[1] محتويات السجل</td>
+<td>…​</td>
+</tr>
+<tr>
+<td><em>i+3</em></td>
+<td>…​</td>
+<td>اقرأ counts[1] وضعها في سجل النواة 1</td>
+</tr>
+<tr>
+<td><em>i+4</em></td>
+<td>…​</td>
+<td>زد السجل بمقدار 1</td>
+</tr>
+<tr>
+<td><em>i+5</em></td>
+<td>…​</td>
+<td>اكتب فوق counts[1] محتويات السجل</td>
+</tr>
+</tbody>
+</table>
+<p>في تسلسل التنفيذ هذا، لا يقرأ الخيط 1 من <code>counts[1]</code> إلا بعد أن يحدّثها الخيط 0 بقيمته الجديدة (61). والنتيجة النهائية أن الخيط 1 يقرأ القيمة 61 من <code>counts[1]</code> ويضعها في سجل النواة 1 خلال الخطوة الزمنية <em>i+3</em>، ويكتب القيمة 62 إلى <code>counts[1]</code> في الخطوة الزمنية <em>i+5</em>.</p>
+<p>ولإصلاح حالة سباق بيانات، يجب أولًا عزل <strong>القسم الحرج</strong> (critical section)، أي المجموعة الجزئية من الشيفرة التي يجب أن تنفّذ <strong>ذرّيًا</strong> (بمعزل) لضمان سلوك صحيح. وفي البرامج ذات الخيوط، تُحدَّد عادةً كتل الشيفرة التي تحدّث موردًا مشتركًا كأقسام حرجة.</p>
+<p>وفي الدالة <code>countElems</code>، ينبغي وضع تحديثات مصفوفة <code>counts</code> في قسم حرج لضمان عدم فقدان قيم بسبب تحديث خيوط متعددة الموقع نفسه في الذاكرة:</p>
+<pre><code class="language-c"><span class="hljs-type">long</span> i;
+<span class="hljs-keyword">for</span> (i = start; i &lt; end; i++) {
+    val = <span class="hljs-built_in">array</span>[i];
+    counts[val] = counts[val] + <span class="hljs-number">1</span>; <span class="hljs-comment">//this line needs to be protected</span>
+}
+</code></pre>
+<p>ولأن المشكلة الجوهرية في <code>countElems</code> هي الوصول المتزامن إلى <code>counts</code> من خيوط متعددة، تلزم آلية تضمن ألا ينفّذ داخل القسم الحرج إلا خيط واحد في المرة. واستخدام بنية تزامن (مثل قفل التبادل المتبادل الذي يُغطّى في القسم التالي) سيجبر الخيوط على دخول القسم الحرج تتابعيًا.</p>
+<p><em>ما هو قفل التبادل المتبادل؟ الجواب هناك في الخارج، وهو يبحث عنك، وسيجدك إن أردت ذلك.</em></p>
+<p>~Trinity وهي تشرح أقفال التبادل المتبادل لـ Neo (مع الاعتذار إلى <em>The Matrix</em>)</p>
+<p>ولإصلاح حالة سباق البيانات، لنستخدم بنية تزامن تُعرف بقفل الاستبعاد المتبادل، أو <strong>قفل التبادل المتبادل</strong> (mutex). وأقفال التبادل المتبادل نوع من عناصر التزامن الأولية تضمن ألا يدخل وينفّذ الشيفرة داخل القسم الحرج إلا خيط واحد في أي لحظة.</p>
+<p>وقبل استخدام قفل التبادل المتبادل، يجب على البرنامج أولًا:</p>
+<ol>
+<li>تعريف القفل في ذاكرة تتشاركها الخيوط (غالبًا كمتغير عام).</li>
+<li>تهيئة القفل قبل أن تحتاج الخيوط إلى استخدامه (عادةً في الدالة <code>main</code>).</li>
+</ol>
+<p>وتعرّف مكتبة Pthreads نوع <code>pthread_mutex_t</code> لأقفال التبادل المتبادل. ولتعريف متغير قفل، أضف هذا السطر:</p>
+<pre><code class="language-c"><span class="hljs-type">pthread_mutex_t</span> mutex;
+</code></pre>
+<p>وتهيئة القفل باستخدام الدالة <code>pthread_mutex_init</code> التي تأخذ عنوان قفل وبنية سمات تُضبط عادةً على <code>NULL</code>:</p>
+<pre><code class="language-c">pthread_mutex_init(&amp;mutex, <span class="hljs-literal">NULL</span>);
+</code></pre>
+<p>وعندما لا تعود الحاجة إلى القفل (عادةً في نهاية الدالة <code>main</code> بعد <code>pthread_join</code>)، ينبغي للبرنامج تحرير بنية القفل باستدعاء الدالة <code>pthread_mutex_destroy</code>:</p>
+<pre><code class="language-c">pthread_mutex_destroy(&amp;mutex);
+</code></pre>
+<h4>قفل التبادل المتبادل: مقفل وجاهز</h4>
+<p>الحالة الأولية لقفل التبادل المتبادل غير مقفلة، أي أنه قابل للاستخدام فورًا من أي خيط. ولدخول قسم حرج، يجب على الخيط أولًا حيازة القفل. ويتحقق ذلك باستدعاء الدالة <code>pthread_mutex_lock</code>. وبعد أن يحوز الخيط القفل، لا يستطيع أي خيط آخر دخول القسم الحرج حتى يحرّره الخيط الحائز للقفل. وإذا استدعى خيط آخر <code>pthread_mutex_lock</code> وكان القفل مقفلًا بالفعل، فسيُحجب الخيط (أو ينتظر) حتى يصبح القفل متاحًا. تذكّر أن <a href="https://diveintosystems.org/book/C13-OS/processes.html#_process_state"><em>الحجب</em> يعني أن الخيط لن يُجدول</a> لاستخدام المعالج حتى يتحقق الشرط الذي ينتظره (أي توافر القفل).</p>
+<p>وعند خروج الخيط من القسم الحرج، يجب أن يستدعي الدالة <code>pthread_mutex_unlock</code> لتحرير القفل وجعله متاحًا لخيط آخر. وبذلك يمكن لخيط واحد على الأكثر حيازة القفل ودخول القسم الحرج في المرة، ما يمنع خيوطًا متعددة من <em>التسابق</em> لقراءة المتغيرات المشتركة وتحديثها.</p>
+<p>وبعد تعريف قفل وتهيئته، يصبح السؤال التالي أين ينبغي وضع دالتي القفل وفتح القفل لفرض القسم الحرج فرضًا أفضل. وإليك محاولة أولية لتعزيز الدالة <code>countElems</code> بقفل تبادل متبادل (يمكن تنزيل الشيفرة الكاملة من <a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/countElems_p_v2.c">countElems_p_v2.c</a>):</p>
+<pre><code class="language-c"><span class="hljs-type">pthread_mutex_t</span> mutex; <span class="hljs-comment">//global declaration of mutex, initialized in main()</span>
+
+<span class="hljs-comment">/*parallel version of step 1 of CountSort algorithm (attempt 1 with mutexes):
+ * extracts arguments from args value
+ * calculates component of the array that thread is responsible for counting
+ * computes the frequency of all the elements in assigned component and stores
+ * the associated counts of each element in counts array
+*/</span>
+<span class="hljs-type">void</span> *<span class="hljs-title function_">countElems</span><span class="hljs-params">( <span class="hljs-type">void</span> *args )</span> {
+    <span class="hljs-comment">//extract arguments</span>
+    <span class="hljs-comment">//ommitted for brevity</span>
+    <span class="hljs-type">int</span> *<span class="hljs-built_in">array</span> = myargs-&gt;ap;
+    <span class="hljs-type">long</span> *counts = myargs-&gt;countp;
+
+    <span class="hljs-comment">//assign work to the thread</span>
+    <span class="hljs-type">long</span> chunk = length / nthreads; <span class="hljs-comment">//nominal chunk size</span>
+    <span class="hljs-type">long</span> start = myid * chunk;
+    <span class="hljs-type">long</span> end = (myid + <span class="hljs-number">1</span>) * chunk;
+    <span class="hljs-type">long</span> val;
+    <span class="hljs-keyword">if</span> (myid == nthreads - <span class="hljs-number">1</span>) {
+        end = length;
+    }
+    <span class="hljs-type">long</span> i;
+
+    <span class="hljs-comment">//heart of the program</span>
+    pthread_mutex_lock(&amp;mutex); <span class="hljs-comment">//acquire the mutex lock</span>
+    <span class="hljs-keyword">for</span> (i = start; i &lt; end; i++) {
+        val = <span class="hljs-built_in">array</span>[i];
+        counts[val] = counts[val] + <span class="hljs-number">1</span>;
+    }
+    pthread_mutex_unlock(&amp;mutex); <span class="hljs-comment">//release the mutex lock</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+}
+</code></pre>
+<p>وتُوضع دالتا تهيئة القفل وتدميره في <code>main</code> حول دالتي إنشاء الخيوط وضمّها:</p>
+<pre><code class="language-c"><span class="hljs-comment">//code snippet from main():</span>
+
+pthread_mutex_init(&amp;mutex, <span class="hljs-literal">NULL</span>); <span class="hljs-comment">//initialize the mutex</span>
+
+<span class="hljs-keyword">for</span> (t = <span class="hljs-number">0</span>; t &lt; nthreads; t++) {
+    pthread_create( &amp;thread_array[t], <span class="hljs-literal">NULL</span>, countElems, &amp;thread_args[t] );
+}
+
+<span class="hljs-keyword">for</span> (t = <span class="hljs-number">0</span>; t &lt; nthreads; t++) {
+    pthread_join(thread_array[t], <span class="hljs-literal">NULL</span>);
+}
+pthread_mutex_destroy(&amp;mutex); <span class="hljs-comment">//destroy (free) the mutex</span>
+</code></pre>
+<p>لنعد تصريف هذا البرنامج الجديد ونشغّله مع تغيير عدد الخيوط:</p>
+<pre><code class="language-bash">$ ./countElems_p_v2 10000000 1 1
+Counts array:
+999170 1001044 999908 1000431 999998 1001479 999709 997250 1000804 1000207
+
+$ ./countElems_p_v2 10000000 1 2
+Counts array:
+999170 1001044 999908 1000431 999998 1001479 999709 997250 1000804 1000207
+
+$ ./countElems_p_v2 10000000 1 4
+Counts array:
+999170 1001044 999908 1000431 999998 1001479 999709 997250 1000804 1000207
+</code></pre>
+<p>ممتاز، صارت المخرجات <em>أخيرًا</em> متسقة بغض النظر عن عدد الخيوط المستخدم!</p>
+<p>تذكّر أن من الأهداف الرئيسية الأخرى لتعدد الخيوط تقليل زمن تشغيل البرنامج كلما زاد عدد الخيوط (وبعبارة أخرى، <em>تسريع</em> تنفيذ البرنامج). لنقِس أداء الدالة <code>countElems</code>. ومع أن استخدام أداة سطر أوامر مثل <code>time -p</code> قد يغريك، تذكّر أن استدعاء <code>time -p</code> يقيس الزمن الحائطي للبرنامج <em>كله</em> (بما في ذلك توليد العناصر العشوائية) <em>لا</em> تشغيل الدالة <code>countElems</code> وحدها. وفي هذه الحالة، الأفضل استخدام نداء نظام مثل <code>gettimeofday</code> يتيح للمستخدم قياس الزمن الحائطي لقسم معين من الشيفرة قياسًا دقيقًا. وينتج عن قياس <code>countElems</code> على 100 مليون عنصر أزمنة التشغيل التالية:</p>
+<pre><code class="language-bash">$ ./countElems_p_v2 100000000 0 1
+Time <span class="hljs-keyword">for</span> Step 1 is 0.368126 s
+
+$ ./countElems_p_v2 100000000 0 2
+Time <span class="hljs-keyword">for</span> Step 1 is 0.438357 s
+
+$ ./countElems_p_v2 100000000 0 4
+Time <span class="hljs-keyword">for</span> Step 1 is 0.519913 s
+</code></pre>
+<p>إضافة مزيد من الخيوط تجعل البرنامج <em>أبطأ</em>! وهذا يناقض هدف جعل البرامج <em>أسرع</em> بالخيوط.</p>
+<p>ولفهم ما يجري، فكّر في مكان وضع الأقفال في الدالة <code>countsElems</code>:</p>
+<pre><code class="language-c"><span class="hljs-comment">//code snippet from the countElems function from earlier</span>
+<span class="hljs-comment">//the heart of the program</span>
+pthread_mutex_lock(&amp;mutex); <span class="hljs-comment">//acquire the mutex lock</span>
+<span class="hljs-keyword">for</span> (i = start; i &lt; end; i++){
+    val = <span class="hljs-built_in">array</span>[i];
+    counts[val] = counts[val] + <span class="hljs-number">1</span>;
+}
+pthread_mutex_unlock(&amp;mutex); <span class="hljs-comment">//release the mutex lock</span>
+</code></pre>
+<p>في هذا المثال، وضعنا القفل حول حلقة <code>for</code> <em>بالكامل</em>. ومع أن هذا الوضع يحل مشكلات الصحة، فهو قرار بالغ السوء من منظور الأداء — فالقسم الحرج يشمل الآن جسم الحلقة كله. ووضع الأقفال بهذه الطريقة يضمن ألا ينفّذ الحلقة إلا خيط واحد في المرة، ما يجعل البرنامج تتابعيًا فعليًا!</p>
+<h4>قفل التبادل المتبادل: النسخة المحمَّلة</h4>
+<p>لنجرّب مقاربة أخرى ونضع دالتي قفل القفل وفتحه داخل كل تكرار من تكرارات الحلقة:</p>
+<pre><code class="language-c"><span class="hljs-comment">/*modified code snippet of countElems function:
+ *locks are now placed INSIDE the for loop!
+*/</span>
+<span class="hljs-comment">//the heart of the program</span>
+<span class="hljs-keyword">for</span> (i = start; i &lt; end; i++) {
+    val = <span class="hljs-built_in">array</span>[i];
+    pthread_mutex_lock(&amp;m); <span class="hljs-comment">//acquire the mutex lock</span>
+    counts[val] = counts[val] + <span class="hljs-number">1</span>;
+    pthread_mutex_unlock(&amp;m); <span class="hljs-comment">//release the mutex lock</span>
+}
+</code></pre>
+<p>قد يبدو هذا في البداية حلًا أفضل لأن كل خيط يستطيع دخول الحلقة على التوازي، ولا يتسلسل إلا عند وصوله إلى القفل. والقسم الحرج صغير جدًا، إذ يشمل السطر <code>counts[val] = counts[val] + 1</code> فقط.</p>
+<p>لنجرِ أولًا فحص صحة على هذه النسخة من البرنامج:</p>
+<pre><code class="language-bash">$ ./countElems_p_v3 10000000 1 1
+Counts array:
+999170 1001044 999908 1000431 999998 1001479 999709 997250 1000804 1000207
+
+$ ./countElems_p_v3 10000000 1 2
+Counts array:
+999170 1001044 999908 1000431 999998 1001479 999709 997250 1000804 1000207
+
+$ ./countElems_p_v3 10000000 1 4
+Counts array:
+999170 1001044 999908 1000431 999998 1001479 999709 997250 1000804 1000207
+</code></pre>
+<p>حتى الآن، كل شيء جيد. وتنتج هذه النسخة من البرنامج أيضًا مخرجات متسقة بغض النظر عن عدد الخيوط المستخدمة.</p>
+<p>والآن، لننظر إلى الأداء:</p>
+<pre><code class="language-bash">$ ./countElems_p_v3 100000000 0 1
+Time <span class="hljs-keyword">for</span> Step 1 is 1.92225 s
+
+$ ./countElems_p_v3 100000000 0 2
+Time <span class="hljs-keyword">for</span> Step 1 is 10.9704 s
+
+$ ./countElems_p_v3 100000000 0 4
+Time <span class="hljs-keyword">for</span> Step 1 is 9.13662 s
+</code></pre>
+<p>وينتج عن تشغيل هذه النسخة من الشيفرة (والمثير للعجب) زمن تشغيل <em>أبطأ بدرجة كبيرة</em>!</p>
+<p>وتبيّن أن قفل قفل التبادل المتبادل وفتحه عمليتان مكلفتان. تذكّر ما غُطّي في مناقشة <a href="https://diveintosystems.org/book/C12-CodeOpt/loops_functions.html#_function_inlining">تحسينات نداء الدوال</a>: استدعاء دالة بتكرار (وبلا داعٍ) في حلقة يمكن أن يكون سببًا رئيسيًا لإبطاء البرنامج. وفي استخدامنا السابق لأقفال التبادل المتبادل، كان كل خيط يقفل القفل ويفتحه مرة واحدة بالضبط. وفي الحل الحالي، يقفل كل خيط القفل ويفتحه <em>n/t</em> مرة، حيث <em>n</em> حجم المصفوفة و<em>t</em> عدد الخيوط و<em>n/t</em> حجم مكوّن المصفوفة المسند إلى كل خيط بعينه. ونتيجة لذلك، تؤدي كلفة عمليات القفل الإضافية إلى إبطاء تنفيذ الحلقة بدرجة كبيرة.</p>
+<h4>قفل التبادل المتبادل: إعادة النظر</h4>
+<p>إضافةً إلى حماية القسم الحرج لتحقيق سلوك صحيح، سيستخدم الحل المثالي دالتي القفل وفتح القفل بأقل قدر ممكن، ويقلل القسم الحرج إلى أصغر حجم ممكن.</p>
+<p>يحقق التطبيق الأصلي الشرط الأول، بينما يحاول التطبيق الثاني إنجاز الثاني. وللوهلة الأولى، يبدو الشرطان غير متوافقين. فهل من طريقة لإنجاز كليهما فعلًا (وبينما نفعل ذلك، تسريع تنفيذ برنامجنا)؟</p>
+<p>في المحاولة التالية، يحتفظ كل خيط بمصفوفة عدّ خاصة <em>محلية</em> على مكدّسه. ولأن المصفوفة محلية لكل خيط، يستطيع الخيط الوصول إليها من دون قفل — فلا خطر لحدوث حالة سباق على بيانات غير مشتركة بين الخيوط. ويعالج كل خيط مجموعته الجزئية المسندة من المصفوفة المشتركة ويملأ مصفوفة عدّه المحلية. وبعد إحصاء جميع القيم ضمن مجموعته الجزئية، يقوم كل خيط بما يلي:</p>
+<ol>
+<li>يقفل القفل المشترك (دخول قسم حرج).</li>
+<li>يضيف القيم من مصفوفة عدّه المحلية إلى مصفوفة العدّ المشتركة.</li>
+<li>يفتح القفل المشترك (خروج من القسم الحرج).</li>
+</ol>
+<p>وتقييد كل خيط بتحديث مصفوفة العدّ المشتركة مرة واحدة فقط يقلل بدرجة كبيرة تنافس المتغيرات المشتركة ويقلل عمليات القفل المكلفة.</p>
+<p>وفيما يلي دالتنا المعدّلة <code>countElems</code>. ويمكن الوصول إلى الشيفرة المصدرية الكاملة لهذا البرنامج النهائي في (<a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/countElems_p_v3.c">countElems_p_v3.c</a>):</p>
+<pre><code class="language-c"><span class="hljs-comment">/*parallel version of step 1 of CountSort algorithm (final attempt w/mutexes):
+ * extracts arguments from args value
+ * calculates component of the array that thread is responsible for counting
+ * computes the frequency of all the elements in assigned component and stores
+ * the associated counts of each element in counts array
+*/</span>
+<span class="hljs-type">void</span> *<span class="hljs-title function_">countElems</span><span class="hljs-params">( <span class="hljs-type">void</span> *args )</span> {
+    <span class="hljs-comment">//extract arguments</span>
+    <span class="hljs-comment">//ommitted for brevity</span>
+    <span class="hljs-type">int</span> *<span class="hljs-built_in">array</span> = myargs-&gt;ap;
+    <span class="hljs-type">long</span> *counts = myargs-&gt;countp;
+
+    <span class="hljs-comment">//local declaration of counts array, initializes every element to zero.</span>
+    <span class="hljs-type">long</span> local_counts[MAX] = {<span class="hljs-number">0</span>};
+
+    <span class="hljs-comment">//assign work to the thread</span>
+    <span class="hljs-type">long</span> chunk = length / nthreads; <span class="hljs-comment">//nominal chunk size</span>
+    <span class="hljs-type">long</span> start = myid * chunk;
+    <span class="hljs-type">long</span> end = (myid + <span class="hljs-number">1</span>) * chunk;
+    <span class="hljs-type">long</span> val;
+    <span class="hljs-keyword">if</span> (myid == nthreads<span class="hljs-number">-1</span>)
+        end = length;
+
+    <span class="hljs-type">long</span> i;
+
+    <span class="hljs-comment">//heart of the program</span>
+    <span class="hljs-keyword">for</span> (i = start; i &lt; end; i++) {
+        val = <span class="hljs-built_in">array</span>[i];
+
+        <span class="hljs-comment">//updates local counts array</span>
+        local_counts[val] = local_counts[val] + <span class="hljs-number">1</span>;
+    }
+
+    <span class="hljs-comment">//update to global counts array</span>
+    pthread_mutex_lock(&amp;mutex); <span class="hljs-comment">//acquire the mutex lock</span>
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; MAX; i++) {
+        counts[i] += local_counts[i];
+    }
+    pthread_mutex_unlock(&amp;mutex); <span class="hljs-comment">//release the mutex lock</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+}
+</code></pre>
+<p>ولهذه النسخة سمات إضافية قليلة:</p>
+<ul>
+<li>وجود <code>local_counts</code>، وهي مصفوفة خاصة بنطاق كل خيط (أي مخصصة على مكدّس الخيط). ومثل <code>counts</code>، تحتوي <code>local_counts</code> عناصر <code>MAX</code>، حيث <code>MAX</code> أقصى قيمة يمكن أن يحملها أي عنصر في مصفوفة إدخالنا.</li>
+<li>يجري كل خيط تحديثات على <code>local_counts</code> بوتيرته الخاصة، من دون أي تنافس على متغيرات مشتركة.</li>
+<li>نداء واحد إلى <code>pthread_mutex_lock</code> يحمي تحديث كل خيط للمصفوفة العامة <code>counts</code>، وهو تحديث يحدث مرة واحدة فقط في نهاية تنفيذ كل خيط.</li>
+</ul>
+<p>وبهذه الطريقة، نقلل الوقت الذي يقضيه كل خيط في قسم حرج إلى تحديث مصفوفة العدّ المشتركة فقط. ومع أنه لا يستطيع دخول القسم الحرج إلا خيط واحد في المرة، فالوقت الذي يقضيه كل خيط فيه يتناسب مع <code>MAX</code> لا مع <em>n</em>، طول المصفوفة العامة. ولأن <code>MAX</code> أصغر بكثير من <em>n</em>، ينبغي أن نرى تحسنًا في الأداء.</p>
+<p>لنقِس الآن أداء هذه النسخة من شيفرتنا:</p>
+<pre><code class="language-bash">$ ./countElems_p_v3 100000000 0 1
+Time <span class="hljs-keyword">for</span> Step 1 is 0.334574 s
+
+$ ./countElems_p_v3 100000000 0 2
+Time <span class="hljs-keyword">for</span> Step 1 is 0.209347 s
+
+$ ./countElems_p_v3 100000000 0 4
+Time <span class="hljs-keyword">for</span> Step 1 is 0.130745 s
+</code></pre>
+<p>يا للفرق! فبرنامجنا لا يحسب الإجابات الصحيحة فحسب، بل ينفّذ أيضًا أسرع كلما زدنا عدد الخيوط.</p>
+<p>والدرس المستفاد هنا هو: لتقليل القسم الحرج بفعالية، استخدم متغيرات محلية لتجميع القيم الوسيطة. وبعد انتهاء العمل الشاق الذي يتطلب التوازي، استخدم قفل تبادل متبادل لتحديث أي متغير (متغيرات) مشتركة بأمان.</p>
+<h4>التجمّد</h4>
+<p>في بعض البرامج، تعتمد الخيوط المنتظرة على بعضها. وقد تنشأ حالة تُسمى <strong>التجمّد</strong> (deadlock) عند تطبيق عناصر تزامن متعددة مثل أقفال التبادل المتبادل تطبيقًا خاطئًا. فخيط المتجمّد يُحجب عن التنفيذ بواسطة خيط آخر <em>محجوب هو نفسه</em> على خيط محجوب. والازدحام التام (الذي لا تستطيع فيه السيارات من جميع الاتجاهات التقدم بسبب انسدادها بسيارات أخرى) مثال واقعي شائع على التجمّد يحدث عند تقاطعات المدن المزدحمة.</p>
+<p>ولتوضيح سيناريو تجمّد في الشيفرة، لنفكّر في مثال يُستخدم فيه تعدد الخيوط لتنفيذ تطبيق مصرفي. وتُعرَّف كل حساب مستخدم برصيد وقفل تبادل متبادل خاص به (يضمن عدم حدوث حالات سباق عند تحديث الرصيد):</p>
+<pre><code class="language-c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">account</span> {</span>
+    <span class="hljs-type">pthread_mutex_t</span> lock;
+    <span class="hljs-type">int</span> balance;
+};
+</code></pre>
+<p>لنفكّر في التطبيق الساذج التالي لدالة <code>Transfer</code> التي تنقل مالًا من حساب مصرفي إلى آخر:</p>
+<pre><code class="language-c"><span class="hljs-type">void</span> *<span class="hljs-title function_">Transfer</span><span class="hljs-params">(<span class="hljs-type">void</span> *args)</span>{
+    <span class="hljs-comment">//argument passing removed to increase readability</span>
+    <span class="hljs-comment">//...</span>
+
+    pthread_mutex_lock(&amp;fromAcct-&gt;lock);
+    pthread_mutex_lock(&amp;toAcct-&gt;lock);
+
+    fromAcct-&gt;balance -= amt;
+    toAcct-&gt;balance += amt;
+
+    pthread_mutex_unlock(&amp;fromAcct-&gt;lock);
+    pthread_mutex_unlock(&amp;toAcct-&gt;lock);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+}
+</code></pre>
+<p>لنفترض أن الخيطين 0 و1 ينفّذان بالتزامن ويمثلان المستخدمين A وB على الترتيب. ولنفكّر الآن في الوضع الذي يريد فيه A وB تحويل مال أحدهما للآخر: يريد A تحويل 20 دولارًا إلى B، بينما يريد B تحويل 40 إلى A.</p>
+<p>وفي مسار التنفيذ المميز في <a href="#deadlockFig">الشكل 1</a>، ينفّذ الخيطان بالتزامن الدالة <code>Transfer</code>. فيحوز الخيط 0 قفل <code>acctA</code> بينما يحوز الخيط 1 قفل <code>acctB</code>. والآن فكّر في ما يحدث. لمواصلة التنفيذ، يحتاج الخيط 0 إلى حيازة قفل <code>acctB</code> الذي يحوزه الخيط 1. وبالمثل، يحتاج الخيط 1 إلى حيازة قفل <code>acctA</code> لمواصلة التنفيذ، وهو محجوز للخيط 0. ولأن كلا الخيطين محجوبان على الآخر، فهما في تجمّد.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-0-deadlock.webp" alt="خيطان مجمّدان أحدهما بالآخر" id="deadlockFig"> الشكل 1. مثال على التجمّد</p>
+<p>ومع أن نظام التشغيل يوفّر بعض الحماية من التجمّد، ينبغي للمبرمجين الانتباه إلى كتابة شيفرة تزيد احتمال التجمّد. فمثلًا، كان يمكن تجنّب السيناريو السابق بإعادة ترتيب الأقفال بحيث يحيط كل زوج قفل/فتح قفل بعبارة تحديث الرصيد المرتبطة به فقط:</p>
+<pre><code class="language-c"><span class="hljs-type">void</span> *<span class="hljs-title function_">Transfer</span><span class="hljs-params">(<span class="hljs-type">void</span> *args)</span>{
+    <span class="hljs-comment">//argument passing removed to increase readability</span>
+    <span class="hljs-comment">//...</span>
+
+    pthread_mutex_lock(&amp;fromAcct-&gt;lock);
+    fromAcct-&gt;balance -= amt;
+    pthread_mutex_unlock(&amp;fromAcct-&gt;lock);
+
+    pthread_mutex_lock(&amp;toAcct-&gt;lock);
+    toAcct-&gt;balance += amt;
+    pthread_mutex_unlock(&amp;toAcct-&gt;lock);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+}
+</code></pre>
+<p>والتجمّد ليس حالة خاصة بالخيوط. فالعمليات (خصوصًا تلك التي تتواصل مع بعضها) يمكن أن تتجمد مع بعضها. وينبغي للمبرمجين الانتباه إلى عناصر التزامن الأولية التي يستخدمونها وعواقب استخدامها استخدامًا خاطئًا.</p>
+<p>تُستخدم السيمافورات عادةً في أنظمة التشغيل والبرامج المتزامنة التي يكون الهدف فيها إدارة الوصول المتزامن إلى مجموعة موارد. وعند استخدام سيمافور، ليس الهدف <em>من</em> يملك ماذا، بل <em>كم</em> من الموارد لا يزال متاحًا. وتختلف السيمافورات عن أقفال التبادل المتبادل في عدة أوجه:</p>
+<ul>
+<li>لا يلزم أن تكون السيمافورات في حالة ثنائية (مقفلة أو غير مقفلة). فنوع خاص من السيمافورات يُسمى <em>سيمافور العدّ</em> يمكن أن تتراوح قيمته من 0 إلى عدد ما <em>r</em>، حيث <em>r</em> عدد الموارد الممكنة. وكلما أُنتج مورد، يزداد السيمافور. وكلما استُخدم مورد، ينقص السيمافور. وعندما تكون قيمة سيمافور العدّ 0، فهذا يعني عدم توافر أي موارد، ويجب على أي خيوط أخرى تحاول حيازة مورد أن تنتظر (أي تُحجب).</li>
+<li>يمكن أن تكون السيمافورات مقفلة افتراضيًا.</li>
+</ul>
+<p>ومع أن قفل التبادل المتبادل ومتغيرات الشرط يمكنهما محاكاة وظيفة السيمافور، فقد يكون استخدام سيمافور أبسط وأكفأ في بعض الحالات. وللسيمافورات أيضًا ميزة أن <em>أي</em> خيط يمكنه فتح السيمافور (خلافًا لقفل التبادل المتبادل حيث يجب أن يفتحه الخيط المستدعي).</p>
+<p>والسيمافورات ليست جزءًا من مكتبة Pthreads، لكن هذا لا يعني أنه لا يمكنك استخدامها. وفي أنظمة Linux وmacOS، يمكن الوصول إلى عناصر السيمافور الأولية من <code>semaphore.h</code> الموجود عادةً في <code>/usr/include</code>. ولأنه لا يوجد معيار، قد تختلف نداءات الدوال على أنظمة مختلفة. ومع ذلك، فللمكتبة السيمافور تصريحات مشابهة لتصريحات أقفال التبادل المتبادل:</p>
+<ul>
+<li>عرّف سيمافورًا (النوع <code>sem_t</code>، مثل <code>sem_t semaphore</code>).</li>
+<li>هيّئ سيمافورًا باستخدام <code>sem_init</code> (عادةً في <code>main</code>). وللدالة <code>sem_init</code> ثلاثة مُعامِلات: الأول عنوان سيمافور، والثاني حالته الأولية (مقفل أو غير مقفل)، والمُعامِل الثالث يدل على ما إذا كان ينبغي تشارك السيمافور مع خيوط عملية (مثلًا بالقيمة 0) أو بين العمليات (مثلًا بالقيمة 1). وهذا مفيد لأن السيمافورات تُستخدم عادةً لتزامن العمليات. فمثلًا، تهيئة سيمافور بالنداء <code>sem_init(&amp;semaphore, 1, 0)</code> تدل على أن سيمافورنا مقفل ابتدائيًا (المُعامِل الثاني هو 1)، وأنه سيُتشارك بين خيوط عملية مشتركة (المُعامِل الثالث هو 0). وفي المقابل، تبدأ أقفال التبادل المتبادل دائمًا غير مقفلة. ومن المهم ملاحظة أن الدالة المكافئة في macOS هي <code>sem_open</code>.</li>
+<li>دمّر سيمافورًا باستخدام <code>sem_destroy</code> (عادةً في <code>main</code>). وتأخذ هذه الدالة مؤشرًا إلى السيمافور فقط (<code>sem_destroy(&amp;semaphore)</code>). لاحظ أن الدالة المكافئة في macOS قد تكون <code>sem_unlink</code> أو <code>sem_close</code>.</li>
+<li>تدل الدالة <code>sem_wait</code> على أن موردًا قيد الاستخدام، وتنقص السيمافور. وإذا كانت قيمة السيمافور أكبر من 0 (دلالةً على توافر موارد)، تعود الدالة فورًا ويُسمح للخيط بالمتابعة. وإذا كانت قيمة السيمافور 0 بالفعل، يُحجب الخيط حتى يتوافر مورد (أي تصبح للسيمافور قيمة موجبة). ويبدو نداء <code>sem_wait</code> عادةً بالشكل <code>sem_wait(&amp;semaphore)</code>.</li>
+<li>تدل الدالة <code>sem_post</code> على تحرير مورد، وتزيد السيمافور. وتعود هذه الدالة فورًا. وإذا كان هناك خيط منتظر على السيمافور (أي كانت قيمة السيمافور 0 سابقًا)، فسيأخذ الخيط الآخر ملكية المورد المحرَّر. ويبدو نداء <code>sem_post</code> بالشكل <code>sem_post(&amp;semaphore)</code>.</li>
+</ul>
+<p>وأقفال التبادل المتبادل والسيمافورات ليست المثال الوحيد على عناصر التزامن التي يمكن استخدامها في سياق البرامج متعددة الخيوط. وفي هذا القسم الفرعي سنناقش بإيجاز عنصرَي التزامن الحاجز ومتغير الشرط، وكلاهما جزء من مكتبة Pthreads.</p>
+<h4>الحواجز <span class="content-anchor" id="_barriers"></span></h4>
+<p><strong>الحاجز</strong> (barrier) نوع من عناصر التزامن يجبر <em>جميع</em> الخيوط على الوصول إلى نقطة مشتركة في التنفيذ قبل إطلاق الخيوط لمتابعة التنفيذ بالتزامن. وتوفّر Pthreads عنصر تزامن أولي للحاجز. ولاستخدام حواجز Pthreads، يلزم فعل ما يلي:</p>
+<ul>
+<li>تعريف متغير حاجز عام (مثل <code>pthread_barrier_t barrier</code>)</li>
+<li>تهيئة الحاجز في <code>main</code> (<code>pthread_barrier_init(&amp;barrier)</code>)</li>
+<li>تدمير الحاجز في <code>main</code> بعد الاستخدام (<code>pthread_barrier_destroy(&amp;barrier)</code>)</li>
+<li>استخدام الدالة <code>pthread_barrier_wait</code> لإنشاء نقطة تزامن.</li>
+</ul>
+<p>ويعرض البرنامج التالي استخدام حاجز في دالة تُسمى <code>threadEx</code>:</p>
+<pre><code class="language-c"><span class="hljs-type">void</span> *<span class="hljs-title function_">threadEx</span><span class="hljs-params">(<span class="hljs-type">void</span> *args)</span>{
+    <span class="hljs-comment">//parse args</span>
+    <span class="hljs-comment">//...</span>
+    <span class="hljs-type">long</span> myid = myargs-&gt;id;
+    <span class="hljs-type">int</span> nthreads = myargs-&gt;numthreads;
+    <span class="hljs-type">int</span> *<span class="hljs-built_in">array</span> = myargs-&gt;<span class="hljs-built_in">array</span>
+
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Thread %ld starting thread work!\\n&quot;</span>, myid);
+    pthread_barrier_wait(&amp;barrier); <span class="hljs-comment">//forced synchronization point</span>
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;All threads have reached the barrier!\\n&quot;</span>);
+    <span class="hljs-keyword">for</span> (i = start; i &lt; end; i++) {
+        <span class="hljs-built_in">array</span>[i] = <span class="hljs-built_in">array</span>[i] * <span class="hljs-number">2</span>;
+    }
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Thread %ld done with work!\\n&quot;</span>, myid);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+}
+</code></pre>
+<p>في هذا المثال، لا يستطيع أي خيط بدء معالجة جزئه المسند من المصفوفة حتى <em>يُطبع</em> في <em>كل</em> خيط الرسالة الدالة على بدء العمل. ومن دون الحاجز، من الممكن أن يكون خيط قد أنهى عمله قبل أن تطبع الخيوط الأخرى رسالتها عن بدء العمل! لاحظ أنه <em>ما زال</em> ممكنًا أن يطبع خيط رسالة انتهائه من العمل قبل أن ينتهي خيط آخر.</p>
+<h4>متغيرات الشرط <span class="content-anchor" id="_condition_variables"></span></h4>
+<p>تجبر متغيرات الشرط خيطًا على الحجب حتى بلوغ شرط معين. ويفيد هذا العنصر في السيناريوهات التي يجب فيها بلوغ شرط قبل أن يؤدّي الخيط عملًا ما. وفي غياب متغيرات الشرط، سيتعين على الخيط فحص بلوغ الشرط مرارًا بتكرار، مستهلكًا المعالج باستمرار. وتُستخدم متغيرات الشرط دائمًا مقترنة بقفل تبادل متبادل. وفي هذا النوع من عناصر التزامن، يفرض القفل الاستبعاد المتبادل، بينما يضمن متغير الشرط بلوغ شروط معينة قبل أن يحوز الخيط القفل.</p>
+<p>لمتغيرات الشرط في POSIX النوع <code>pthread_cond_t</code>. وكما في عنصرَي القفل والحاجز، يجب تهيئة متغيرات الشرط قبل استخدامها وتدميرها بعده.</p>
+<p>ولتهيئة متغير شرط، استخدم الدالة <code>pthread_cond_init</code>. ولتدمير متغير شرط، استخدم الدالة <code>pthread_cond_destroy</code>.</p>
+<p>والدالتان الشائع استدعاؤهما عند استخدام متغيرات الشرط هما <code>pthread_cond_wait</code> و<code>pthread_cond_signal</code>. وتحتاج كلتا الدالتين عنوان قفل تبادل متبادل إضافةً إلى عنوان متغير الشرط:</p>
+<ul>
+<li>تأخذ الدالة <code>pthread_cond_wait(&amp;cond, &amp;mutex)</code> عنواني متغير شرط <code>cond</code> وقفل <code>mutex</code> كمُعامِلَيها. وتسبب حجب الخيط المستدعي على متغير الشرط <code>cond</code> حتى يشير إليه خيط آخر (أو «يوقظه»).</li>
+<li>تسبب الدالة <code>pthread_cond_signal(&amp;cond)</code> إلغاء حجب (أو إشعار) خيط آخر منتظر على متغير الشرط <code>cond</code> (بحسب أولوية الجدولة). وإذا لم تكن هناك خيوط محجوبة حاليًا على الشرط، فلا أثر للدالة. وخلافًا لـ <code>pthread_cond_wait</code>، يمكن استدعاء الدالة <code>pthread_cond_signal</code> من خيط سواء كان يملك القفل الذي يُستدعى فيه <code>pthread_cond_wait</code> أم لا.</li>
+</ul>
+<h4>مثال على متغير الشرط</h4>
+<p>تقليديًا، تكون متغيرات الشرط أكثر فائدة عندما تنتظر مجموعة جزئية من الخيوط مجموعة أخرى لإكمال إجراء ما. وفي المثال التالي، نستخدم خيوطًا متعددة لمحاكاة مجموعة مزارعين يجمعون البيض من مجموعة دجاجات. ويمثّل «Chicken» و«Farmer» صنفين منفصلين من الخيوط. ويمكن تنزيل الشيفرة الكاملة لهذا البرنامج (<a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/layeggs.c">layeggs.c</a>). لاحظ أن القائمة تستبعد كثيرًا من التعليقات ومعالجة الأخطاء للإيجاز.</p>
+<p>تنشئ الدالة <code>main</code> متغيرًا مشتركًا <code>num_eggs</code> (يدل على العدد الإجمالي للبيض المتاح في أي لحظة)، و<code>mutex</code> مشتركًا (يُستخدم كلما وصل خيط إلى <code>num_eggs</code>)، ومتغير شرط مشتركًا <code>eggs</code>. ثم تنشئ خيطَي Chicken وخيطَي Farmer:</p>
+<pre><code class="language-c"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv)</span>{
+    <span class="hljs-comment">//... declarations omitted for brevity</span>
+
+    <span class="hljs-comment">// these will be shared by all threads via pointer fields in t_args</span>
+    <span class="hljs-type">int</span> num_eggs;           <span class="hljs-comment">// number of eggs ready to collect</span>
+    <span class="hljs-type">pthread_mutex_t</span> mutex;  <span class="hljs-comment">// mutex associated with cond variable</span>
+    <span class="hljs-type">pthread_cond_t</span>  eggs;   <span class="hljs-comment">// used to block/wake-up farmer waiting for eggs</span>
+
+    <span class="hljs-comment">//... args parsing removed for brevity</span>
+
+    num_eggs = <span class="hljs-number">0</span>; <span class="hljs-comment">// number of eggs ready to collect</span>
+    ret = pthread_mutex_init(&amp;mutex, <span class="hljs-literal">NULL</span>); <span class="hljs-comment">//initialize the mutex</span>
+    pthread_cond_init(&amp;eggs, <span class="hljs-literal">NULL</span>); <span class="hljs-comment">//initialize the condition variable</span>
+
+    <span class="hljs-comment">//... thread_array and thread_args creation/filling omitted for brevity</span>
+
+    <span class="hljs-comment">// create some chicken and farmer threads</span>
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; (<span class="hljs-number">2</span> * nthreads); i++) {
+        <span class="hljs-keyword">if</span> ( (i % <span class="hljs-number">2</span>) == <span class="hljs-number">0</span> ) {
+            ret = pthread_create(&amp;thread_array[i], <span class="hljs-literal">NULL</span>,
+                                 chicken, &amp;thread_args[i]);
+        }
+        <span class="hljs-keyword">else</span> {
+            ret = pthread_create(&amp;thread_array[i], <span class="hljs-literal">NULL</span>,
+                                 farmer, &amp;thread_args[i] );
+        }
+    }
+
+    <span class="hljs-comment">// wait for chicken and farmer threads to exit</span>
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; (<span class="hljs-number">2</span> * nthreads); i++)  {
+        ret = pthread_join(thread_array[i], <span class="hljs-literal">NULL</span>);
+    }
+
+    <span class="hljs-comment">// clean-up program state</span>
+    pthread_mutex_destroy(&amp;mutex); <span class="hljs-comment">//destroy the mutex</span>
+    pthread_cond_destroy(&amp;eggs);   <span class="hljs-comment">//destroy the cond var</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>وكل خيط Chicken مسؤول عن وضع عدد معين من البيض:</p>
+<pre><code class="language-c"><span class="hljs-type">void</span> *<span class="hljs-title function_">chicken</span><span class="hljs-params">(<span class="hljs-type">void</span> *args )</span> {
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">t_arg</span> *<span class="hljs-title">myargs</span> =</span> (<span class="hljs-keyword">struct</span> t_arg *)args;
+    <span class="hljs-type">int</span> *num_eggs, i, num;
+
+    num_eggs = myargs-&gt;num_eggs;
+    i = <span class="hljs-number">0</span>;
+
+    <span class="hljs-comment">// lay some eggs</span>
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; myargs-&gt;total_eggs; i++) {
+        usleep(EGGTIME); <span class="hljs-comment">//chicken sleeps</span>
+
+        pthread_mutex_lock(myargs-&gt;mutex);
+        *num_eggs = *num_eggs + <span class="hljs-number">1</span>;  <span class="hljs-comment">// update number of eggs</span>
+        num = *num_eggs;
+        pthread_cond_signal(myargs-&gt;eggs); <span class="hljs-comment">// wake a sleeping farmer (squawk)</span>
+        pthread_mutex_unlock(myargs-&gt;mutex);
+
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;chicken %d created egg %d available %d\\n&quot;</span>,myargs-&gt;id,i,num);
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+}
+</code></pre>
+<p>لوضع بيضة، ينام خيط Chicken مدة، ثم يحوز القفل ويحدّث العدد الإجمالي للبيض المتاح بواحد. وقبل تحرير القفل، «يوقظ» خيط Chicken مزارعًا نائمًا (بصياحه على الأرجح). ويكرر خيط Chicken الدورة حتى يضع كل البيض الذي يعتزم وضعه (<code>total_eggs</code>).</p>
+<p>وكل خيط Farmer مسؤول عن جمع <code>total_eggs</code> بيضة من مجموعة الدجاجات (لإفطاره على الأرجح):</p>
+<pre><code class="language-c"><span class="hljs-type">void</span> *<span class="hljs-title function_">farmer</span><span class="hljs-params">(<span class="hljs-type">void</span> *args )</span> {
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">t_arg</span> * <span class="hljs-title">myargs</span> =</span> (<span class="hljs-keyword">struct</span> t_arg *)args;
+    <span class="hljs-type">int</span> *num_eggs, i, num;
+
+    num_eggs = myargs-&gt;num_eggs;
+
+    i = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; myargs-&gt;total_eggs; i++) {
+        pthread_mutex_lock(myargs-&gt;mutex);
+        <span class="hljs-keyword">while</span> (*num_eggs == <span class="hljs-number">0</span> ) { <span class="hljs-comment">// no eggs to collect</span>
+            <span class="hljs-comment">// wait for a chicken to lay an egg</span>
+            pthread_cond_wait(myargs-&gt;eggs, myargs-&gt;mutex);
+        }
+
+        <span class="hljs-comment">// we hold mutex lock here and num_eggs &gt; 0</span>
+        num = *num_eggs;
+        *num_eggs = *num_eggs - <span class="hljs-number">1</span>;
+        pthread_mutex_unlock(myargs-&gt;mutex);
+
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;farmer %d gathered egg %d available %d\\n&quot;</span>,myargs-&gt;id,i,num);
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+}
+</code></pre>
+<p>يحوز كل خيط Farmer القفل قبل فحص المتغير المشترك <code>num_eggs</code> لمعرفة ما إذا كان هناك بيض متاح (<code>*num_eggs == 0</code>). وما دام لا يوجد بيض متاح، يُحجب خيط Farmer (أي يأخذ قسطًا من النوم).</p>
+<p>وبعد أن «يستيقظ» خيط Farmer بسبب إشارة من خيط Chicken، يتحقق من أن بيضة لا تزال متاحة (فقد يلتقطها مزارع آخر أولًا)، وإن كان الأمر كذلك «يجمع» المزارع بيضة (منقصًا <code>num_eggs</code> بواحد) ويحرر القفل.</p>
+<p>وبهذه الطريقة، يعمل Chicken وFarmer معًا لوضع/جمع البيض. وتضمن متغيرات الشرط ألا يجمع أي خيط Farmer بيضة حتى تضعها دجاجة.</p>
+<h4>البث <span class="content-anchor" id="_broadcasting"></span></h4>
+<p>من الدوال الأخرى المستخدمة مع متغيرات الشرط <code>pthread_cond_broadcast</code>، وهي مفيدة عندما تكون خيوط متعددة محجوبة على شرط معين. ويؤدي استدعاء <code>pthread_cond_broadcast(&amp;cond)</code> إلى إيقاظ <em>جميع</em> الخيوط المحجوبة على الشرط <code>cond</code>. وفي المثال التالي، نوضح كيف يمكن لمتغيرات الشرط تنفيذ عنصر الحاجز المناقش سابقًا:</p>
+<pre><code class="language-c"><span class="hljs-comment">// mutex (initialized in main)</span>
+<span class="hljs-type">pthread_mutex_t</span> mutex;
+
+<span class="hljs-comment">// condition variable signifying the barrier (initialized in main)</span>
+<span class="hljs-type">pthread_cond_t</span> barrier;
+
+<span class="hljs-type">void</span> *<span class="hljs-title function_">threadEx_v2</span><span class="hljs-params">(<span class="hljs-type">void</span> *args)</span>{
+    <span class="hljs-comment">// parse args</span>
+    <span class="hljs-comment">// ...</span>
+
+    <span class="hljs-type">long</span> myid = myargs-&gt;id;
+    <span class="hljs-type">int</span> nthreads = myargs-&gt;numthreads;
+    <span class="hljs-type">int</span> *<span class="hljs-built_in">array</span> = myargs-&gt;<span class="hljs-built_in">array</span>
+
+    <span class="hljs-comment">// counter denoting the number of threads that reached the barrier</span>
+    <span class="hljs-type">int</span> *n_reached = myargs-&gt;n_reached;
+
+    <span class="hljs-comment">// start barrier code</span>
+    pthread_mutex_lock(&amp;mutex);
+    *n_reached++;
+
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Thread %ld starting work!\\n&quot;</span>, myid)
+
+    <span class="hljs-comment">// if some threads have not reached the barrier</span>
+    <span class="hljs-keyword">while</span> (*n_reached &lt; nthreads) {
+        pthread_cond_wait(&amp;barrier, &amp;mutex);
+    }
+    <span class="hljs-comment">// all threads have reached the barrier</span>
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;all threads have reached the barrier!\\n&quot;</span>);
+    pthread_cond_broadcast(&amp;barrier);
+
+    pthread_mutex_unlock(&amp;mutex);
+    <span class="hljs-comment">// end barrier code</span>
+
+    <span class="hljs-comment">// normal thread work</span>
+    <span class="hljs-keyword">for</span> (i = start; i &lt; end; i++) {
+        <span class="hljs-built_in">array</span>[i] = <span class="hljs-built_in">array</span>[i] * <span class="hljs-number">2</span>;
+    }
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Thread %ld done with work!\\n&quot;</span>, myid);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+}
+</code></pre>
+<p>للدالة <code>threadEx_v2</code> الوظيفة نفسها التي لـ <code>threadEx</code>. وفي هذا المثال، يُسمى متغير الشرط <code>barrier</code>. وعندما يحوز كل خيط القفل، يزيد <code>n_reached</code>، أي عدد الخيوط التي وصلت إلى تلك النقطة. وما دام عدد الخيوط التي وصلت إلى الحاجز أقل من العدد الإجمالي للخيوط، ينتظر الخيط على متغير الشرط <code>barrier</code> والقفل <code>mutex</code>.</p>
+<p>لكن عندما يصل الخيط الأخير إلى الحاجز، يستدعي <code>pthread_cond_broadcast(&amp;barrier)</code> التي تحرّر <em>جميع</em> الخيوط الأخرى المنتظرة على متغير الشرط <code>barrier</code>، فتتيح لها متابعة التنفيذ.</p>
+<p>هذا المثال مفيد لتوضيح الدالة <code>pthread_cond_broadcast</code>؛ لكن من الأفضل استخدام عنصر الحاجز الأولي في Pthreads كلما لزمت الحواجز في برنامج.</p>
+<p>ومن الأسئلة التي يميل الطلاب إلى طرحها: هل يمكن استبدال حلقة <code>while</code> حول نداء <code>pthread_cond_wait</code> في شيفرة <code>farmer</code> و<code>threadEx_v2</code> بعبارة <code>if</code>؟ في الواقع، حلقة <code>while</code> هذه ضرورية تمامًا لسببين رئيسيين. أولًا، قد يتغير الشرط قبل أن يصل الخيط المستيقظ لمتابعة التنفيذ. وتفرض حلقة <code>while</code> إعادة اختبار الشرط اختبارًا أخيرًا. وثانيًا، الدالة <code>pthread_cond_wait</code> عرضة لـ<strong>الاستيقاظات الكاذبة</strong> (spurious wakeups)، حيث يُوقظ خيط خطأً حتى لو لم يكن الشرط متحققًا. وحلقة <code>while</code> في الواقع مثال على <strong>حلقة محمول</strong> (predicate loop) تفرض فحصًا أخيرًا لمتغير الشرط قبل تحرير القفل. ولذلك فإن استخدام حلقات المحمول ممارسة صحيحة عند استخدام متغيرات الشرط.</p>
+<p>حتى الآن، استخدمنا الدالة <code>gettimeofday</code> لقياس مقدار الوقت الذي تستغرقه البرامج في التنفيذ. ونناقش في هذا القسم كيفية قياس مدى أداء برنامج متوازٍ مقارنةً ببرنامج تتابعي، فضلًا عن موضوعات أخرى مرتبطة بقياس أداء البرامج المتوازية.</p>
+<p>نغطي أولًا بعض الأساسيات المتعلقة بالأداء المتوازي:</p>
+<ul>
+<li><a href="https://diveintosystems.org/book/C14-SharedMemory/performance_basics.html#_speedup">التسريع</a></li>
+<li><a href="https://diveintosystems.org/book/C14-SharedMemory/performance_basics.html#_efficiency">الكفاءة</a></li>
+<li><a href="https://diveintosystems.org/book/C14-SharedMemory/performance_basics.html#_amdahls_law">قانون Amdahl</a></li>
+</ul>
+<p>ومع أن قانون Amdahl والتسريع مفهومان مهمان جدًا مرتبطان بالأداء، فإن الفهم الجيد للموضوعين التاليين سيكمل فهم القارئ للأداء:</p>
+<ul>
+<li><a href="https://diveintosystems.org/book/C14-SharedMemory/performance_advanced.html#_gustafson_barsis_law">قانون Gustafson-Barsis</a></li>
+<li><a href="https://diveintosystems.org/book/C14-SharedMemory/performance_advanced.html#_scalability">قابلية التوسع</a></li>
+</ul>
+<p>وتحديدًا، يعطي قانون Gustafson-Barsis فهمًا أفضل لحدود قانون Amdahl.</p>
+<h4>التسريع <span class="content-anchor" id="_speedup"></span></h4>
+<p>لنفترض أن برنامجًا يستغرق زمن T<em>c</em> للتنفيذ على <em>c</em> من الأنوية. وبذلك تستغرق النسخة التتابعية من البرنامج زمن T1.</p>
+<p>ويعبَّر عن تسريع البرنامج على <em>c</em> من الأنوية بالمعادلة:</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-0-speedup.webp" alt="التسريع"></p>
+<p>إذا استغرق برنامج تتابعي 60 ثانية للتنفيذ، بينما تستغرق نسخته المتوازية 30 ثانية على نواتين، فالتسريع المقابل هو 2. وبالمثل، إذا استغرق ذلك البرنامج 15 ثانية على أربع أنوية، فالتسريع 4. وفي سيناريو مثالي، يكون تسريع برنامج يعمل على <em>n</em> من الأنوية بـ<em>n</em> من الخيوط الإجمالية مساويًا <em>n</em>.</p>
+<p>وإذا كان تسريع برنامج أكبر من 1، فهو يدل على أن التوازي حقق بعض التحسن. وإذا كان التسريع أقل من 1، فالحل المتوازي في الواقع أبطأ من الحل التتابعي. ومن الممكن أن يكون تسريع برنامج أكبر من <em>n</em> (مثلًا كأثر جانبي لوجود ذاكرات مؤقتة إضافية تقلل الوصول إلى الذاكرة). وتُشار إلى هذه الحالات بـ<strong>التسريع فوق الخطي</strong> (superlinear speedup).</p>
+<h4>الكفاءة <span class="content-anchor" id="_efficiency"></span></h4>
+<p>لا يأخذ التسريع عدد الأنوية في الحسبان — فهو ببساطة نسبة الزمن التتابعي إلى الزمن المتوازي. فمثلًا، إذا استغرق برنامج تتابعي 60 ثانية، لكن برنامجًا متوازيًا استغرق 30 ثانية على أربع أنوية، فسيظل تسريعه 2. غير أن هذا المقياس لا يجسّد حقيقة أنه عمل على أربع أنوية.</p>
+<p>ولقياس التسريع لكل نواة، استخدم الكفاءة:</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-1-efficiency.webp" alt="الكفاءة"></p>
+<p>تتفاوت الكفاءة عادةً من 0 إلى 1. وتدل كفاءة 1 على أن الأنوية تُستخدم استخدامًا مثاليًا. وإذا كانت الكفاءة قريبة من 0، فللتوازي فائدة ضئيلة أو معدومة، إذ لا تحسّن الأنوية الإضافية الأداء. وإذا كانت الكفاءة أكبر من 1، فهي تدل على تسريع فوق خطي.</p>
+<p>لنعد إلى المثال السابق الذي يستغرق فيه برنامج تتابعي 60 ثانية. فإذا استغرقت النسخة المتوازية 30 ثانية على نواتين، فكفاءتها 1 (أو 100%). وإذا استغرق البرنامج بدلًا من ذلك 30 ثانية على أربع أنوية، تهبط الكفاءة إلى 0.5 (أو 50%).</p>
+<h4>الأداء المتوازي في العالم الواقعي <span class="content-anchor" id="_parallel_performance_in_the_real_world"></span></h4>
+<p>في عالم مثالي، يكون التسريع خطيًا. فلكل وحدة حساب إضافية، ينبغي أن يحقق البرنامج المتوازي مقدارًا متناسبًا من التسريع. لكن هذا السيناريو نادر الحدوث في العالم الواقعي. فمعظم البرامج تحتوي مكوّنًا تتابعيًا ضروريًا وُجد بسبب تبعيات متأصلة في الشيفرة. وتُشار إلى أطول مجموعة من التبعيات في برنامج بـ<strong>المسار الحرج</strong> (critical path). وتقليل طول المسار الحرج للبرنامج خطوة أولى مهمة في جعله متوازيًا. ونقاط تزامن الخيوط و(بالنسبة إلى البرامج التي تعمل على عقد حسابية متعددة) الكلفة الإضافية للتواصل بين العمليات مكوّنات أخرى في الشيفرة يمكن أن تحدّ من الأداء المتوازي للبرنامج.</p>
+<p><strong>تحذير — ليست كل البرامج مرشحة جيدة للتوازي!</strong></p>
+<blockquote>
+<p>يمكن أن يجعل طول المسار الحرج بعض البرامج <em>عسيرة</em> التوازي تمامًا. وكمثال، فكّر في مسألة توليد عدد فيبوناتشي رقم <em>n</em>. ولأن كل عدد فيبوناتشي يعتمد على العددين السابقين له، فمن الصعب جدًا جعل هذا البرنامج متوازيًا بكفاءة!</p>
+</blockquote>
+<p>لننظر في موازاة الدالة <code>countElems</code> من خوارزمية CountSort من وقت سابق في هذا الفصل. في عالم مثالي، كنا نتوقع أن يكون تسريع البرنامج خطيًا بالنسبة إلى عدد الأنوية. لكن لنقِس زمن تشغيله (وفي هذه الحالة على نظام رباعي الأنوية بثمانية خيوط منطقية):</p>
+<pre><code class="language-bash">$ ./countElems_p_v3 100000000 0 1
+Time <span class="hljs-keyword">for</span> Step 1 is 0.331831 s
+
+$ ./countElems_p_v3 100000000 0 2
+Time <span class="hljs-keyword">for</span> Step 1 is 0.197245 s
+
+$ ./countElems_p_v3 100000000 0 4
+Time <span class="hljs-keyword">for</span> Step 1 is 0.140642 s
+
+$ ./countElems_p_v3 100000000 0 8
+Time <span class="hljs-keyword">for</span> Step 1 is 0.107649 s
+</code></pre>
+<p>ويعرض <a href="#PerformanceBenchmarks">الجدول 1</a> التسريع والكفاءة لهذه التشغيلات متعددة الخيوط:</p>
+<table>
+<thead>
+<tr>
+<th>عدد الخيوط</th>
+<th>2</th>
+<th>4</th>
+<th>8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>التسريع</td>
+<td>1.68</td>
+<td>2.36</td>
+<td>3.08</td>
+</tr>
+<tr>
+<td>الكفاءة</td>
+<td>0.84</td>
+<td>0.59</td>
+<td>0.39</td>
+</tr>
+</tbody>
+</table>
+<p>ومع أن لدينا كفاءة 84% بنواتين، تهبط كفاءة الأنوية إلى 39% بثماني أنوية. لاحظ أن التسريع المثالي البالغ 8 لم يتحقق. وأحد أسباب ذلك أن الكلفة الإضافية لإسناد العمل إلى الخيوط والتحديث التتابعي لمصفوفة <code>counts</code> تبدأ بالسيطرة على الأداء عند أعداد أكبر من الخيوط. وثانيًا، يقلل تنازع الموارد بين الخيوط الثمانية (تذكّر أن هذا معالج رباعي الأنوية) كفاءة الأنوية.</p>
+<h4>قانون Amdahl <span class="content-anchor" id="_amdahls_law"></span></h4>
+<p>في عام 1967، تنبأ Gene Amdahl، وهو معماري حواسيب بارز في IBM، بأن التسريع الأقصى الذي يمكن أن يحققه برنامج حاسوبي محدود بحجم مكوّنه التتابعي الضروري (المعروف الآن بقانون Amdahl). وبصفة أعم، ينص قانون Amdahl على أنه يوجد في كل برنامج مكوّن يمكن تسريعه (أي الجزء من البرنامج الذي يمكن تحسينه أو جعله متوازيًا، <em>P</em>)، ومكوّن <em>لا</em> يمكن تسريعه (أي الجزء من البرنامج التتابعي بطبيعته، <em>S</em>). وحتى لو انخفض الوقت اللازم لتنفيذ المكوّن القابل للتحسين أو التوازي <em>P</em> إلى الصفر، فسيظل المكوّن التتابعي <em>S</em> موجودًا، وسيسيطر على الأداء في نهاية الأمر. ولأن <em>S</em> و<em>P</em> كسران، لاحظ أن <em>S</em> + <em>P</em> = 1.</p>
+<p>فكّر في برنامج ينفّذ على نواة واحدة في زمن T1. عندئذٍ يستغرق الجزء التتابعي الضروري من تنفيذ البرنامج زمن <em>S</em> × T1 للعمل، ويستغرق الجزء القابل للتوازي من تنفيذ البرنامج (<em>P</em> = 1 - <em>S</em>) زمن <em>P</em> × T1 للعمل.</p>
+<p>وعندما ينفّذ البرنامج على <em>c</em> من الأنوية، ما زال الجزء التتابعي من الشيفرة يستغرق زمن <em>S</em> × T1 للعمل (مع بقاء جميع الشروط الأخرى على حالها)، لكن الجزء القابل للتوازي يمكن تقسيمه على <em>c</em> من الأنوية. وبذلك يكون التحسن الأقصى للمعالج المتوازي بـ<em>c</em> من الأنوية لتنفيذ المهمة نفسها هو:</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-2-amdahl.webp" alt="معادلة قانون Amdahl"></p>
+<p>وكلما زاد <em>c</em>، صار زمن التنفيذ على المعالج المتوازي مسيطرًا عليه بالجزء التتابعي من البرنامج.</p>
+<p>ولفهم أثر قانون Amdahl، فكّر في برنامج 90% منه قابل للتوازي وينفّذ في 10 ثوانٍ على نواة واحدة. وفي معادلتنا، المكوّن القابل للتوازي (<em>P</em>) هو 0.9، بينما المكوّن التتابعي (<em>S</em>) هو 0.1. ويعرض <a href="#TabAmdahl">الجدول 2</a> الزمن الكلي المقابل على <em>c</em> من الأنوية (T<em>c</em>) وفق قانون Amdahl، والتسريع المرتبط به.</p>
+<table>
+<thead>
+<tr>
+<th>عدد الأنوية</th>
+<th>الزمن التتابعي (ث)</th>
+<th>الزمن المتوازي (ث)</th>
+<th>الزمن الكلي (T<em>c</em> ث)</th>
+<th>التسريع (مقارنةً بنواة واحدة)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>10</td>
+<td>1</td>
+</tr>
+<tr>
+<td>10</td>
+<td>1</td>
+<td>0.9</td>
+<td>1.9</td>
+<td>5.26</td>
+</tr>
+<tr>
+<td>100</td>
+<td>1</td>
+<td>0.09</td>
+<td>1.09</td>
+<td>9.17</td>
+</tr>
+<tr>
+<td>1000</td>
+<td>1</td>
+<td>0.009</td>
+<td>1.009</td>
+<td>9.91</td>
+</tr>
+</tbody>
+</table>
+<p>لاحظ أنه مع مرور الوقت، يبدأ المكوّن التتابعي من البرنامج بالسيطرة، ويبدو أن أثر إضافة مزيد من الأنوية ضئيل أو معدوم.</p>
+<p>وثمة طريقة أكثر رسمية للنظر إلى ذلك تتطلب إدماج حساب Amdahl لـ T<em>c</em> في معادلة التسريع:</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-3-amdahl_speed.webp" alt="تسريع قانون Amdahl"></p>
+<p>ويُظهر أخذ نهاية هذه المعادلة أنه كلما اقترب عدد الأنوية (<em>c</em>) من اللانهاية، اقترب التسريع من 1/<em>S</em>. وفي المثال المعروض في <a href="#TabAmdahl">الجدول 2</a>، يقترب التسريع من 1/0.1، أي 10.</p>
+<p>وكمثال آخر، فكّر في برنامج حيث <em>P</em> = 0.99. وبعبارة أخرى، 99% من البرنامج قابل للتوازي. وكلما اقترب <em>c</em> من اللانهاية، بدأ الزمن التتابعي بالسيطرة على الأداء (وفي هذا المثال <em>S</em> = 0.01). وبذلك يقترب التسريع من 1/0.01، أي 100. وبعبارة أخرى، حتى بمليون نواة، فإن التسريع الأقصى الذي يمكن أن يحققه هذا البرنامج هو 100 فقط.</p>
+<p>لم يضع كل شيء: حدود قانون Amdahl</p>
+<p>عند تعلّم قانون Amdahl، من المهم مراعاة <em>مقاصد</em> واضعه، Gene Amdahl. وبكلماته هو، اقترح القانون لبيان «<em>استمرار صلاحية مقاربة المعالج الواحد، وضعف مقاربة المعالجات المتعددة من حيث تطبيقها على المسائل الحقيقية وما يصاحبها من تفاوتات</em>1». وفي ورقته عام 1967، وسّع Amdahl هذا المفهوم قائلًا: «<em>على مدى أكثر من عقد، أكد الأنبياء أن تنظيم الحاسوب الواحد بلغ حدوده، وأن التقدم الجوهري لا يمكن أن يتحقق إلا بربط عدد كبير من الحواسيب بطريقة تتيح حلًا تعاونيًا</em>1».</p>
+<p>وقد تحدّث أعمال لاحقة عن بعض الافتراضات الرئيسية التي بنى عليها Amdahl. اقرأ عن <a href="https://diveintosystems.org/book/C14-SharedMemory/performance_advanced.html#_gustafson_barsis_law">قانون Gustafson-Barsis</a> لمناقشة حدود قانون Amdahl وحجة مختلفة حول كيفية التفكير في فوائد التوازي.</p>
+<h4>المراجع <span class="content-anchor" id="_references"></span></h4>
+<ol>
+<li>جين أمهدال. «Validity of the single processor approach to achieving large scale computing capabilities»، <em>Proceedings of the April 18-20, 1967, Spring Joint Computer Conference</em>. ص. 483—485. ACM. 1967.</li>
+</ol>
+<h4>قانون Gustafson-Barsis <span class="content-anchor" id="_gustafson_barsis_law"></span></h4>
+<p>في عام 1988، كتب John L. Gustafson، وهو عالم حاسوب وباحث في مختبرات Sandia الوطنية، ورقة بعنوان &quot;Reevaluating Amdahl’s Law1&quot;. ويُبرز Gustafson في هذه الورقة افتراضًا جوهريًا كان قد وُضع حول تنفيذ البرنامج المتوازي ولا يصح دائمًا.</p>
+<p>وتحديدًا، يعني قانون Amdahl أن عدد أنوية الحساب <em>c</em> والجزء القابل للتوازي من البرنامج <em>P</em> مستقلان عن بعضهما. ويلاحظ Gustafson أن هذا «<em>لا يحدث فعليًا أبدًا تقريبًا</em>»1. ومع أن قياس أداء برنامج بتغيير عدد الأنوية على مجموعة بيانات ثابتة تمرين أكاديمي مفيد، فإنه في العالم الواقعي تُضاف أنوية (أو معالجات، كما بحثنا في مناقشة الذاكرة الموزعة) كلما كبرت المسألة. ويكتب Gustafson1: «<em>قد يكون الأكثر واقعية افتراض ثبات زمن التشغيل، لا حجم المسألة</em>».</p>
+<p>وبالتالي، ووفق Gustafson، فالأدق أن نقول إن «<em>مقدار العمل القابل للتنفيذ على التوازي يتغير خطيًا مع عدد المعالجات</em>»1.</p>
+<p>فكّر في برنامج <em>متوازٍ</em> يستغرق زمن T<em>c</em> للعمل على نظام بـ<em>c</em> من الأنوية. ولتمثّل <em>S</em> الجزء التتابعي الضروري من تنفيذ البرنامج الذي يستغرق زمن <em>S</em> × T<em>c</em> للعمل. وبذلك يستغرق الجزء القابل للتوازي من تنفيذ البرنامج، <em>P</em> = 1 - <em>S</em>، زمن <em>P</em> × T<em>c</em> للعمل على <em>c</em> من الأنوية.</p>
+<p>وعندما يعمل البرنامج نفسه على نواة واحدة فقط، ما زال الجزء التتابعي من الشيفرة يستغرق <em>S</em> x T<em>c</em> (بافتراض بقاء جميع الشروط الأخرى على حالها). لكن الجزء القابل للتوازي (الذي كان مقسومًا على <em>c</em> من الأنوية) يجب الآن أن تنفّذه نواة واحدة فقط ليعمل تتابعيًا، فيستغرق زمن <em>P</em> × T<em>c</em> × <em>c</em>. وبعبارة أخرى، سيستغرق المكوّن المتوازي <em>c</em> ضعف المدة على نظام أحادي النواة. ويترتب على ذلك أن التسريع المعياري سيكون:</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-0-sspeedup.webp" alt="التسريع المعياري"></p>
+<p>وهذا يدل على أن التسريع المعياري يزداد خطيًا مع عدد وحدات الحساب.</p>
+<p>فكّر في مثالنا السابق الذي كان 99% منه قابلًا للتوازي (أي <em>P</em> = 0.99). وبتطبيق معادلة التسريع المعياري، سيكون التسريع النظري على 100 معالج 99.01. وعلى 1,000 معالج سيكون 990.01. لاحظ أن الكفاءة تبقى ثابتة عند <em>P</em>.</p>
+<p>وكما يستنتج Gustafson، «<em>ينبغي قياس التسريع بقياس المسألة إلى عدد المعالجات، لا بتثبيت حجم المسألة</em>»1. وتُعدّ نتيجة Gustafson جديرة بالملاحظة لأنها تُظهر إمكانية الحصول على تسريع متزايد بتحديث عدد المعالجات. وكم باحث يعمل في منشأة حوسبة فائقة وطنية، كان اهتمام Gustafson أكبر بأداء <em>عمل أكثر</em> في مقدار ثابت من الزمن. وفي عدة مجالات علمية، تؤدي القدرة على تحليل بيانات أكثر إلى دقة أو إتقان أعلى في النتائج عادةً. وقد أظهر عمل Gustafson إمكانية الحصول على تسريعات كبيرة على أعداد كبيرة من المعالجات، وأعاد إحياء الاهتمام بالمعالجة المتوازية2.</p>
+<h4>قابلية التوسع <span class="content-anchor" id="_scalability"></span></h4>
+<p>نصف برنامجًا بـ<strong>قابل للتوسع</strong> (scalable) إذا رأينا أداءً متحسنًا (أو ثابتًا) كلما زدنا عدد الموارد (الأنوية والمعالجات) أو حجم المسألة. وثمة مفهومان مرتبطان هما <strong>التوسع القوي</strong> (strong scaling) و<strong>التوسع الضعيف</strong> (weak scaling). ومن المهم ملاحظة أن «الضعيف» و«القوي» في هذا السياق لا يدلان على <em>جودة</em> قابلية توسع البرنامج، بل هما مجرد طريقتين مختلفتين لقياس قابلية التوسع.</p>
+<p>نقول إن برنامجًا <strong>قابل للتوسع بقوة</strong> إذا أدت زيادة عدد الأنوية/وحدات المعالجة على حجم مسألة <em>ثابت</em> إلى تحسن في الأداء. ويُظهر البرنامج قابلية توسع قوية خطية إذا كان تسريعه على <em>n</em> من الأنوية مساويًا <em>n</em> أيضًا. وبالطبع، يضمن قانون Amdahl أنه بعد نقطة ما تصبح إضافة أنوية إضافية بلا معنى تقريبًا.</p>
+<p>ونقول إن برنامجًا <strong>قابل للتوسع بضعف</strong> إذا أدت زيادة حجم البيانات بالمعدل نفسه الذي يزداد به عدد الأنوية (أي إذا كان هناك حجم بيانات ثابت لكل نواة/معالج) إلى أداء ثابت أو متحسن. ونقول إن برنامجًا يُظهر قابلية توسع ضعيفة خطية إذا رأينا تحسنًا بمقدار <em>n</em> عند زيادة العمل لكل نواة بمعامل <em>n</em>.</p>
+<h4>نصائح عامة بشأن قياس الأداء <span class="content-anchor" id="_general_advice_regarding_measuring_performance"></span></h4>
+<p>نختم مناقشتنا للأداء ببعض الملاحظات عن القياس المرجعي والأداء على الأنوية الفائقة الخيوط.</p>
+<p>شغّل البرنامج مرات متعددة عند القياس المرجعي.</p>
+<p>في كثير من الأمثلة المعروضة حتى الآن في هذا الكتاب، نشغّل برنامجًا مرة واحدة فقط للإحساس بزمن تشغيله. لكن هذا لا يكفي للقياسات المرجعية الرسمية. فتشغيل البرنامج مرة واحدة <em>ليس</em> أبدًا مقياسًا دقيقًا لزمن تشغيله الحقيقي! فقد تؤدي تبديلات السياق والعمليات الأخرى العاملة إلى تذبذب زمن التشغيل جذريًا مؤقتًا. ولذلك من الأفضل دائمًا تشغيل البرنامج عدة مرات والإبلاغ عن زمن تشغيل متوسط مع أكبر قدر ممكن من التفاصيل، بما في ذلك عدد التشغيلات وتغير القياسات الملاحظ (مثل أشرطة الخطأ والحد الأدنى والحد الأقصى والوسيط والانحراف المعياري) والظروف التي أُخذت فيها القياسات.</p>
+<p>كن حذرًا في موضع قياس التوقيت.</p>
+<p>تفيد الدالة <code>gettimeofday</code> في المساعدة على قياس الوقت الذي يستغرقه البرنامج قياسًا دقيقًا. لكن يمكن أيضًا إساءة استخدامها. ومع أن وضع نداء <code>gettimeofday</code> حول مكوّن إنشاء الخيوط وضمّها فقط في <code>main</code> قد يغريك، فمن المهم التفكير فيما تريد قياسه بالضبط. فمثلًا، إذا قرأ برنامج ملف بيانات خارجيًا كجزء ضروري من تنفيذه، فيُرجَّح أن يُدرج زمن قراءة الملف في قياس البرنامج.</p>
+<p>كن منتبهًا لأثر الأنوية الفائقة الخيوط.</p>
+<p>كما نوقش في <a href="https://diveintosystems.org/book/C14-SharedMemory/index.html#_taking_a_closer_look_how_many_cores">مقدمة هذا الفصل</a> و<a href="https://diveintosystems.org/book/C5-Arch/modern.html#_multicore_and_hardware_multithreading">قسم تعدد خيوط العتاد</a>، تستطيع الأنوية الفائقة الخيوط (المنطقية) تنفيذ خيوط متعددة على نواة واحدة. وفي نظام رباعي الأنوية بخيطين منطقيين لكل نواة، نقول إن في النظام ثمانية أنوية فائقة الخيوط. وينتج عن تشغيل برنامج على التوازي على ثمانية أنوية منطقية في كثير من الحالات زمن حائطي أفضل من تشغيله على أربع أنوية. لكن بسبب تنازع الموارد الذي يحدث عادةً مع الأنوية الفائقة الخيوط، قد ترى انخفاضًا في كفاءة الأنوية وتسريعًا غير خطي.</p>
+<p>احترس من تنازع الموارد.</p>
+<p>عند القياس المرجعي، من المهم دائمًا مراعاة العمليات والتطبيقات المتعددة الخيوط <em>الأخرى</em> العاملة على النظام. وإذا بدت نتائج أدائك غريبة بعض الشيء، فمن الجدير تشغيل <code>top</code> بسرعة لرؤية ما إذا كان هناك مستخدمون آخرون يشغّلون أيضًا مهام كثيفة الموارد على النظام نفسه. وإن كان الأمر كذلك، فحاول استخدام نظام مختلف للقياس المرجعي (أو انتظر حتى لا يكون النظام مستخدمًا بكثافة).</p>
+<h4>المراجع <span class="content-anchor" id="_references"></span></h4>
+<ol>
+<li>جون غوستافسون. «Reevaluating Amdahl’s law». <em>Communications of the ACM</em> 31(5)، ص. 532—533. ACM. 1988.</li>
+<li>كارولين كونور. «Movers and Shakers in HPC: John Gustafson». <em>HPC Wire</em>. <a href="http://www.hpcwire.com/hpcwire/2010-10-20/movers_and_shakers_in_hpc_john_gustafson.html">http://www.hpcwire.com/hpcwire/2010-10-20/movers_and_shakers_in_hpc_john_gustafson.html</a></li>
+</ol>
+<p>قد يكون لذاكرات التخزين المؤقت في الأنظمة متعددة الأنوية آثار عميقة في أداء برنامج متعدد الخيوط. لكن أولًا، لنراجع سريعًا بعض <a href="https://diveintosystems.org/book/C11-MemHierarchy/caching.html#_cpu_caches">المفاهيم الأساسية المرتبطة بتصميم الذاكرة المؤقتة</a>:</p>
+<ul>
+<li>لا تُنقل البيانات/التعليمات إلى الذاكرة المؤقتة <em>منفردةً</em>. بل تُنقل البيانات في <em>كتل</em>، وتميل أحجام الكتل إلى الكبر في المستويات الأدنى من هرم الذاكرة.</li>
+<li>تُنظَّم كل ذاكرة مؤقتة في سلسلة من المجموعات، ولكل مجموعة عدد من الأسطر. ويحمل كل سطر كتلة بيانات واحدة.</li>
+<li>تُستخدم بتات عنوان الذاكرة الفردية لتحديد أي مجموعة ووسم وإزاحة كتلة في الذاكرة المؤقتة تُكتب فيها كتلة بيانات.</li>
+<li>تحدث <strong>إصابة في الذاكرة المؤقتة</strong> عندما توجد كتلة البيانات المطلوبة في الذاكرة المؤقتة. وإلا تحدث <strong>إخفاق في الذاكرة المؤقتة</strong>، ويُجرى بحث في المستوى الأدنى التالي من هرم الذاكرة (الذي قد يكون ذاكرة مؤقتة أو الذاكرة الرئيسية).</li>
+<li>يدل <strong>بت الصلاحية</strong> على ما إذا كانت الكتلة عند سطر معين في الذاكرة المؤقتة آمنة للاستخدام. وإذا كان بت الصلاحية 0، فلا يمكن استخدام كتلة البيانات عند ذلك السطر (مثلًا، قد تحتوي الكتلة بيانات من عملية منتهية).</li>
+<li>تُكتب المعلومات في الذاكرة المؤقتة/الذاكرة وفق استراتيجيتين رئيسيتين. في استراتيجية <strong>الكتابة المباشرة</strong>، تُكتب البيانات في الذاكرة المؤقتة والذاكرة الرئيسية في الوقت نفسه. وفي استراتيجية <strong>الكتابة المرتجعة</strong>، تُكتب البيانات في الذاكرة المؤقتة فقط، وتُكتب إلى المستويات الأدنى من الهرم بعد إخلاء الكتلة من الذاكرة المؤقتة.</li>
+</ul>
+<h3 id="1451-الذاكرات-المؤقتة-في-الأنظمة-متعددة-الأنوية">14.5.1. الذاكرات المؤقتة في الأنظمة متعددة الأنوية <span class="content-anchor" id="_caches_on_multicore_systems"></span></h3>
+<p><a href="https://diveintosystems.org/book/C11-MemHierarchy/coherency.html#_looking_ahead_caching_on_multicore_processors">تذكّر</a> أنه في معماريات الذاكرة المشتركة يمكن أن تملك كل نواة ذاكرتها المؤقتة الخاصة، ويمكن أن تتشارك أنوية متعددة ذاكرة مؤقتة مشتركة. ويعرض <a href="#FigMulticoreCache">الشكل 1</a> مثالًا على وحدة معالجة مركزية ثنائية الأنوية. ومع أن كل نواة تملك ذاكرتها المؤقتة L1 المحلية، فإن الأنوية تتشارك ذاكرة L2 مؤقتة مشتركة.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-0-multicore-cache.webp" alt="معالج ثنائي النواة بذاكرتين مؤقتيتين L1 منفصلتين وذاكرة مؤقتة L2 مشتركة" id="FigMulticoreCache"> الشكل 1. مثال على معالج ثنائي الأنوية بذاكرتين مؤقتيتين L1 منفصلتين وذاكرة مؤقتة L2 مشتركة</p>
+<p>قد تنفّذ خيوط متعددة في ملف تنفيذي واحد دوال منفصلة. ومن دون استراتيجية <a href="https://diveintosystems.org/book/C11-MemHierarchy/coherency.html#_cache_coherency"><strong>تماسك الذاكرة المؤقتة</strong></a> تضمن أن كل ذاكرة مؤقتة تحافظ على رؤية متسقة للذاكرة المشتركة، يمكن تحديث المتغيرات المشتركة تحديثًا غير متسق. وكمثال، فكّر في المعالج ثنائي الأنوية في <a href="#FigMulticoreCache">الشكل 1</a>، حيث تكون كل نواة مشغولة بتنفيذ خيوط منفصلة بالتزامن. وللخيط المسند إلى النواة 0 متغير محلي <code>x</code>، وللخيط المنفّذ على النواة 1 متغير محلي <code>y</code>، ولكلا الخيطين وصول مشترك إلى متغير عام <code>g</code>. ويعرض <a href="#TabCache">الجدول 1</a> مسارًا ممكنًا للتنفيذ.</p>
+<table>
+<thead>
+<tr>
+<th>الزمن</th>
+<th>النواة 0</th>
+<th>النواة 1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>g = 5</td>
+<td>(عمل آخر)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>(عمل آخر)</td>
+<td>y = g*4</td>
+</tr>
+<tr>
+<td>2</td>
+<td>x += g</td>
+<td>y += g*2</td>
+</tr>
+</tbody>
+</table>
+<p>لنفترض أن القيمة الأولية لـ <code>g</code> هي 10، والقيمتين الأوليتين لـ <code>x</code> و<code>y</code> كلتاهما 0. ما القيمة النهائية لـ <code>y</code> في نهاية هذا التسلسل من العمليات؟ من دون تماسك الذاكرة المؤقتة، يصعب جدًا الإجابة عن هذا السؤال، بما أن هناك ثلاث قيم مخزَّنة لـ <code>g</code> على الأقل: واحدة في ذاكرة L1 المؤقتة للنواة 0، وواحدة في ذاكرة L1 المؤقتة للنواة 1، ونسخة منفصلة من <code>g</code> مخزَّنة في ذاكرة L2 المشتركة.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c14-sharedmemory-1-mc-cache-example.webp" alt="تحديث مشكلل للذاكرات المؤقتة" id="FigMCCacheExample"> الشكل 2. تحديث مشكلل للذاكرات المؤقتة التي لا تستخدم تماسك الذاكرة المؤقتة</p>
+<p>ويعرض <a href="#FigMCCacheExample">الشكل 2</a> نتيجة خاطئة ممكنة بعد اكتمال تسلسل العمليات في <a href="#TabCache">الجدول 1</a>. لنفترض أن ذاكرات L1 المؤقتة تنفّذ سياسة الكتابة المرتجعة. فعندما يكتب الخيط المنفّذ على النواة 0 القيمة 5 في <code>g</code>، لا يحدّث إلا قيمة <code>g</code> في ذاكرة L1 المؤقتة للنواة 0. وتبقى قيمة <code>g</code> في ذاكرة L1 المؤقتة للنواة 1 مساوية 10، وكذلك النسخة في ذاكرة L2 المشتركة. وحتى لو نُفّذت سياسة الكتابة المباشرة، فلا ضمان أن تُحدَّث نسخة <code>g</code> المخزَّنة في ذاكرة L1 المؤقتة للنواة 1! وفي هذه الحالة، ستكون القيمة النهائية لـ <code>y</code> هي <code>60</code>.</p>
+<p>وتُبطل استراتيجية تماسك الذاكرة المؤقتة النسخ المخزَّنة مؤقتًا للقيم المشتركة في الذاكرات المؤقتة الأخرى أو تحدّثها عندما تُجرى كتابة في القيمة المشتركة في ذاكرة مؤقتة واحدة. وبروتوكول <a href="https://diveintosystems.org/book/C11-MemHierarchy/coherency.html#_the_msi_protocol">المعدَّلة المشتركة غير الصالحة (MSI)</a> (المناقش بالتفصيل في <a href="https://diveintosystems.org/book/C11-MemHierarchy/coherency.html#_the_msi_protocol">الفصل 11.6</a>) مثال على بروتوكول تماسك ذاكرة مؤقتة بالإبطال.</p>
+<p>ومن التقنيات الشائعة لتنفيذ MSI التجسّس. وتتجنّس <strong>الذاكرة المؤقتة المتجسّسة</strong> (snoopy cache) كهذه على ناقل الذاكرة بحثًا عن إشارات كتابة محتملة. وإذا اكتشفت الذاكرة المؤقتة المتجسّسة كتابة في كتلة ذاكرة مؤقتة مشتركة، أُبطلت سطرها الحاوي تلك الكتلة. والنتيجة النهائية أن النسخة الصالحة الوحيدة من الكتلة تكون في الذاكرة المؤقتة التي كُتب فيها، بينما تُوسم <em>جميع النسخ الأخرى</em> من الكتلة في الذاكرات المؤقتة الأخرى غير صالحة.</p>
+<p>ومن شأن استخدام بروتوكول MSI مع التجسّس أن يعطي الإسناد النهائي الصحيح للقيمة <code>30</code> إلى المتغير <code>y</code> في المثال السابق.</p>
+<h3 id="1452-المشاركة-الزائفة">14.5.2. المشاركة الزائفة <span class="content-anchor" id="_false_sharing"></span></h3>
+<p>يضمن تماسك الذاكرة المؤقتة الصحة، لكنه قد يضر بالأداء. تذكّر أنه عندما يحدّث الخيط <code>g</code> على النواة 0، تُبطل الذاكرة المؤقتة المتجسّسة ليس <code>g</code> فقط، بل <em>سطر الذاكرة المؤقتة كله</em> الذي يقع فيه <code>g</code>.</p>
+<p>فكّر في <a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/countElems_p.c">محاولتنا الأولية</a> لجعل الدالة <code>countElems</code> من خوارزمية CountSort متوازية. وللتيسير، أُعيد إدراج الدالة هنا:</p>
+<pre><code class="language-c"><span class="hljs-comment">/*parallel version of step 1 (first cut) of CountSort algorithm:
+ * extracts arguments from args value
+ * calculates portion of the array this thread is responsible for counting
+ * computes the frequency of all the elements in assigned component and stores
+ * the associated counts of each element in counts array
+*/</span>
+<span class="hljs-type">void</span> *<span class="hljs-title function_">countElems</span><span class="hljs-params">(<span class="hljs-type">void</span> *args)</span>{
+    <span class="hljs-comment">//extract arguments</span>
+    <span class="hljs-comment">//ommitted for brevity</span>
+    <span class="hljs-type">int</span> *<span class="hljs-built_in">array</span> = myargs-&gt;ap;
+    <span class="hljs-type">long</span> *counts = myargs-&gt;countp;
+
+    <span class="hljs-comment">//assign work to the thread</span>
+    <span class="hljs-comment">//compute chunk, start, and end</span>
+    <span class="hljs-comment">//ommited for brevity</span>
+
+    <span class="hljs-type">long</span> i;
+    <span class="hljs-comment">//heart of the program</span>
+    <span class="hljs-keyword">for</span> (i = start; i &lt; end; i++){
+        val = <span class="hljs-built_in">array</span>[i];
+        counts[val] = counts[val] + <span class="hljs-number">1</span>;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+}
+</code></pre>
+<p>في <a href="https://diveintosystems.org/book/C14-SharedMemory/synchronization.html#_data_races">مناقشتنا السابقة</a> لهذه الدالة، أشرنا إلى كيف يمكن لحالات سباق البيانات أن تمنع امتلاء مصفوفة <code>counts</code> بالمجموعة الصحيحة من الأعداد. لنرَ ما يحدث إذا حاولنا <em>قياس</em> زمن هذه الدالة. نضيف شيفرة قياس إلى <code>main</code> باستخدام <code>getimeofday</code> بالطريقة نفسها المعروضة في <a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/countElems_p_v3.c">countElems_p_v3.c</a>. وينتج عن القياس المرجعي للنسخة الأولية من <code>countElems</code> كما هي معروضة للتو على 100 مليون عنصر الأزمنة التالية:</p>
+<pre><code class="language-bash">$ ./countElems_p 100000000 0 1
+Time <span class="hljs-keyword">for</span> Step 1 is 0.336239 s
+
+$ ./countElems_p 100000000 0 2
+Time <span class="hljs-keyword">for</span> Step 1 is 0.799464 s
+
+$ ./countElems_p 100000000 0 4
+Time <span class="hljs-keyword">for</span> Step 1 is 0.767003 s
+</code></pre>
+<p>حتى من دون أي عناصر تزامن، فإن هذه النسخة من البرنامج <em>تصبح أبطأ</em> كلما زاد عدد الخيوط!</p>
+<p>ولفهم ما يجري، لنعد إلى مصفوفة <code>counts</code>. تحمل مصفوفة <code>counts</code> تكرار حدوث كل عدد في مصفوفة إدخالنا. ويتحدد الحد الأقصى بالمتغير <code>MAX</code>. وفي برنامجنا المثال، <code>MAX</code> مضبوط على 10. وبعبارة أخرى، تشغل مصفوفة <code>counts</code> مساحة 40 بايتًا.</p>
+<p>تذكّر أن <a href="https://diveintosystems.org/book/C11-MemHierarchy/coherency.html#_looking_ahead_caching_on_multicore_processors">تفاصيل الذاكرة المؤقتة</a> في نظام Linux موجودة في الدليل <code>/sys/devices/system/cpu/</code>. ولكل نواة منطقية دليلها الفرعي الخاص المسمى <code>cpuk</code> حيث <code>k</code> يدل على النواة المنطقية <em>kth</em>. ولكل دليل فرعي <code>cpu</code> بدوره أدلة <code>index</code> منفصلة تدل على الذاكرات المؤقتة المتاحة لتلك النواة.</p>
+<p>وتحتوي أدلة <code>index</code> ملفات فيها تفاصيل كثيرة عن الذاكرات المؤقتة لكل نواة منطقية. وتُعرض محتويات دليل <code>index0</code> نموذجي هنا (<code>index0</code> يقابل عادةً ذاكرة L1 المؤقتة في نظام Linux):</p>
+<pre><code class="language-bash">$ <span class="hljs-built_in">ls</span> /sys/devices/system/cpu/cpu0/cache/index0
+coherency_line_size      power            <span class="hljs-built_in">type</span>
+level                    shared_cpu_list  uevent
+number_of_sets           shared_cpu_map   ways_of_associativity
+physical_line_partition  size
+</code></pre>
+<p>ولمعرفة حجم سطر الذاكرة المؤقتة L1، استخدم هذا الأمر:</p>
+<pre><code class="language-bash">$ <span class="hljs-built_in">cat</span> /sys/devices/system/cpu/cpu0/cache/index0/coherency_line_size
+64
+</code></pre>
+<p>وتكشف المخرجات أن حجم سطر ذاكرة L1 المؤقتة للآلة هو 64 بايتًا. وبعبارة أخرى، فإن مصفوفة <code>counts</code> البالغة 40 بايتًا تتسع <em>داخل سطر ذاكرة مؤقتة واحد</em>.</p>
+<p>تذكّر أنه مع بروتوكولات تماسك الذاكرة المؤقتة بالإبطال مثل MSI، في كل مرة يحدّث فيها برنامج متغيرًا مشتركًا، <em>يُبطل سطر الذاكرة المؤقتة كله في الذاكرات المؤقتة الأخرى التي تخزّن المتغير</em>. لنفكّر فيما يحدث عندما ينفّذ خيطان الدالة السابقة. ويُعرض مسار تنفيذ ممكن في <a href="#TabInvalidate">الجدول 2</a> (بافتراض أن كل خيط مسند إلى نواة منفصلة، وأن المتغير <code>x</code> محلي لكل خيط).</p>
+<table>
+<thead>
+<tr>
+<th>الزمن</th>
+<th>الخيط 0</th>
+<th>الخيط 1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>i</em></td>
+<td>يقرأ array[x] (1)</td>
+<td>…​</td>
+</tr>
+<tr>
+<td><em>i+1</em></td>
+<td>يزيد counts[1] (<strong>يبطل سطر الذاكرة المؤقتة</strong>)</td>
+<td>يقرأ array[x] (4)</td>
+</tr>
+<tr>
+<td><em>i+2</em></td>
+<td>يقرأ array[x] (6)</td>
+<td>يزيد counts[4] (<strong>يبطل سطر الذاكرة المؤقتة</strong>)</td>
+</tr>
+<tr>
+<td><em>i+3</em></td>
+<td>يزيد counts[6] (<strong>يبطل سطر الذاكرة المؤقتة</strong>)</td>
+<td>يقرأ array[x] (2)</td>
+</tr>
+<tr>
+<td><em>i+4</em></td>
+<td>يقرأ array[x] (3)</td>
+<td>يزيد counts[2] (<strong>يبطل سطر الذاكرة المؤقتة</strong>)</td>
+</tr>
+<tr>
+<td><em>i+5</em></td>
+<td>يزيد counts[3] (<strong>يبطل سطر الذاكرة المؤقتة</strong>)</td>
+<td>…​</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>خلال الخطوة الزمنية <em>i</em>، يقرأ الخيط 0 القيمة عند <code>array[x]</code> في جزئه من المصفوفة، وهي 1 في هذا المثال.</li>
+<li>وخلال الخطوات الزمنية <em>i + 1</em> إلى <em>i + 5</em>، يقرأ كل خيط قيمة من <code>array[x]</code>. لاحظ أن كل خيط ينظر إلى مكوّنات مختلفة من المصفوفة. وليس هذا فحسب، بل تعطي كل قراءة من <code>array</code> في تنفيذنا النموذجي قيمًا فريدة (فلا حالات سباق في هذا التسلسل التنفيذي النموذجي!). وبعد قراءة القيمة من <code>array[x]</code>، يزيد كل خيط القيمة المرتبطة بها في <code>counts</code>.</li>
+<li>تذكّر أن مصفوفة <code>counts</code> <em>تتسع في سطر ذاكرة مؤقتة واحد</em> في ذاكرة L1 المؤقتة لدينا. ونتيجة لذلك، تُبطل كل كتابة في <code>counts</code> <em>السطر كله</em> في <em>كل ذاكرة L1 مؤقتة أخرى</em>.</li>
+<li>والنتيجة النهائية أنه رغم تحديث <em>مواقع ذاكرة مختلفة</em> في <code>counts</code>، فإن أي سطر ذاكرة مؤقتة يحتوي <code>counts</code> <em>يُبطل</em> مع <em>كل تحديث</em> لـ <code>counts</code>!</li>
+</ul>
+<p>ويجبر الإبطال جميع ذاكرات L1 المؤقتة على تحديث السطر بنسخة «صالحة» من L2. والتكرار المتواصل لإبطال أسطر من ذاكرة L1 والكتابة فوقها مثال على <strong>الخبط</strong> (thrashing)، حيث تسبب التعارضات المتكررة في الذاكرة المؤقتة سلسلة من الإخفاقات.</p>
+<p>وتزيد إضافة مزيد من الأنوية المشكلة سوءًا، بما أن ذاكرات L1 مؤقتة أكثر تُبطل السطر الآن. ونتيجة لذلك، تؤدي إضافة خيوط إضافية إلى إبطاء زمن التشغيل، رغم أن كل خيط يصل إلى عناصر مختلفة من مصفوفة <code>counts</code>! وهذا مثال على <strong>المشاركة الزائفة</strong> (false sharing)، أو الوهم بأن عناصر فردية يتشاركها عدة أنوية. وفي المثال السابق، يبدو أن جميع الأنوية تصل إلى العناصر نفسها من <code>counts</code>، حتى لو لم يكن الأمر كذلك.</p>
+<h3 id="1453-إصلاح-المشاركة-الزائفة">14.5.3. إصلاح المشاركة الزائفة <span class="content-anchor" id="_fixing_false_sharing"></span></h3>
+<p>من طرق إصلاح حالة مشاركة زائفة حشو المصفوفة (في حالتنا <code>counts</code>) بعناصر إضافية بحيث لا تتسع في سطر ذاكرة مؤقتة واحد. لكن الحشو قد يهدر الذاكرة، وقد لا يزيل المشكلة من جميع المعماريات (فكّر في سيناريو تكون فيه آلتان مختلفتان بأحجام ذاكرة L1 مؤقتة مختلفة). وفي معظم الحالات، لا تستحق كتابة شيفرة تدعم أحجام ذاكرات مؤقتة مختلفة المكسب في الأداء.</p>
+<p>والحل الأفضل أن يكتب الخيوط في <em>تخزين محلي</em> كلما أمكن. والتخزين المحلي في هذا السياق يشير إلى ذاكرة <em>محلية</em> لخيط. ويقلل الحل التالي المشاركة الزائفة باختيار إجراء تحديثات على نسخة معلنة محليًا من <code>counts</code> تُسمى <code>local_counts</code>.</p>
+<p>لنعد إلى النسخة النهائية من دالتنا <code>countElems</code> (معادة من <a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/countElems_p_v3.c">countElems_p_v3.c</a>):</p>
+<pre><code class="language-c"><span class="hljs-comment">/*parallel version of CountSort algorithm step 1 (final attempt with mutexes):
+ * extracts arguments from args value
+ * calculates the portion of the array this thread is responsible for counting
+ * computes the frequency of all the elements in assigned component and stores
+ * the associated counts of each element in counts array
+*/</span>
+<span class="hljs-type">void</span> *<span class="hljs-title function_">countElems</span><span class="hljs-params">( <span class="hljs-type">void</span> *args )</span>{
+    <span class="hljs-comment">//extract arguments</span>
+    <span class="hljs-comment">//omitted for brevity</span>
+    <span class="hljs-type">int</span> *<span class="hljs-built_in">array</span> = myargs-&gt;ap;
+    <span class="hljs-type">long</span> *counts = myargs-&gt;countp;
+
+    <span class="hljs-type">long</span> local_counts[MAX] = {<span class="hljs-number">0</span>}; <span class="hljs-comment">//local declaration of counts array</span>
+
+    <span class="hljs-comment">//assign work to the thread</span>
+    <span class="hljs-comment">//compute chunk, start, and end values (omitted for brevity)</span>
+
+    <span class="hljs-type">long</span> i;
+
+    <span class="hljs-comment">//heart of the program</span>
+    <span class="hljs-keyword">for</span> (i = start; i &lt; end; i++){
+        val = <span class="hljs-built_in">array</span>[i];
+        local_counts[val] = local_counts[val] + <span class="hljs-number">1</span>; <span class="hljs-comment">//update local counts array</span>
+    }
+
+    <span class="hljs-comment">//update to global counts array</span>
+    pthread_mutex_lock(&amp;mutex); <span class="hljs-comment">//acquire the mutex lock</span>
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; MAX; i++){
+        counts[i] += local_counts[i];
+    }
+    pthread_mutex_unlock(&amp;mutex); <span class="hljs-comment">//release the mutex lock</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+}
+</code></pre>
+<p>واستخدام <code>local_counts</code> لتجميع التكرارات بدلًا من <code>counts</code> هو المصدر الرئيسي لتقليل المشاركة الزائفة في هذا المثال:</p>
+<pre><code class="language-c"><span class="hljs-keyword">for</span> (i = start; i &lt; end; i++){
+    val = <span class="hljs-built_in">array</span>[i];
+    local_counts[val] = local_counts[val] + <span class="hljs-number">1</span>; <span class="hljs-comment">//updates local counts array</span>
+}
+</code></pre>
+<p>ولأن تماسك الذاكرة المؤقتة يهدف إلى الحفاظ على رؤية متسقة للذاكرة المشتركة، فلا تُفعَّل عمليات الإبطال إلا على <em>الكتابات</em> في <em>القيم المشتركة</em> في الذاكرة. ولأن <code>local_counts</code> غير مشتركة بين الخيوط المختلفة، فإن الكتابة فيها لن تبطل سطر الذاكرة المؤقتة المرتبط بها.</p>
+<p>وفي المكوّن الأخير من الشيفرة، يفرض القفل الصحة بضمان ألا يحدّث مصفوفة <code>counts</code> المشتركة إلا خيط واحد في المرة:</p>
+<pre><code class="language-c"><span class="hljs-comment">//update to global counts array</span>
+pthread_mutex_lock(&amp;mutex); <span class="hljs-comment">//acquire the mutex lock</span>
+<span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; MAX; i++){
+    counts[i] += local_counts[i];
+}
+pthread_mutex_unlock(&amp;mutex); <span class="hljs-comment">//release the mutex lock</span>
+</code></pre>
+<p>ولأن <code>counts</code> تقع على سطر ذاكرة مؤقتة واحد، فسيظل يُبطل مع كل كتابة. والفرق أن العقوبة هنا <code>MAX</code> × <em>t</em> كتابة على الأكثر مقابل <em>n</em> كتابة، حيث <em>n</em> طول مصفوفة إدخالنا و<em>t</em> عدد الخيوط المستخدمة.</p>
+<p>حتى الآن، غطينا عناصر التزامن التي يمكن للمبرمجين استخدامها لضمان اتساق برامجهم متعددة الخيوط وصحتها بغض النظر عن عدد الخيوط المستخدم. لكن ليس من الآمن دائمًا افتراض أن دوال مكتبة C القياسية يمكن استخدامها «كما هي» في سياق أي تطبيق متعدد الخيوط. فليست كل الدوال في مكتبة C <strong>آمنة للخيوط</strong> (thread safe)، أو قادرة على التشغيل بواسطة خيوط متعددة مع ضمان نتيجة صحيحة بلا آثار جانبية غير مقصودة. ولضمان أن البرامج التي <em>نكتبها</em> آمنة للخيوط، من المهم استخدام <a href="https://diveintosystems.org/book/C14-SharedMemory/synchronization.html#_synchronizing_threads">عناصر التزامن الأولية</a> مثل أقفال التبادل المتبادل والحواجز لفرض اتساق البرامج متعددة الخيوط وصحتها بغض النظر عن تغير عدد الخيوط.</p>
+<p>وثمة مفهوم آخر وثيق الصلة بأمان الخيوط هو إعادة الدخول. فجميع الشيفرة الآمنة للخيوط قابلة لإعادة الدخول؛ لكن ليست كل شيفرة قابلة لإعادة الدخول آمنة للخيوط. وتكون الدالة <strong>قابلة لإعادة الدخول</strong> (re-entrant) إذا أمكن إعادة تنفيذها/تنفيذها جزئيًا بواسطة دالة من دون إحداث مشكلة. وبحكم التعريف، تضمن الشيفرة القابلة لإعادة الدخول أن تؤدي عمليات الوصول إلى الحالة العامة للبرنامج دائمًا إلى بقاء تلك الحالة العامة متسقة. ومع أن إعادة الدخول تُستخدم كثيرًا (استخدامًا خاطئًا) كمرادف لأمان الخيوط، فثمة حالات خاصة تكون فيها الشيفرة القابلة لإعادة الدخول غير آمنة للخيوط.</p>
+<p>عند كتابة شيفرة متعددة الخيوط، تحقق من أن دوال مكتبة C المستخدمة آمنة للخيوط فعلًا. لحسن الحظ، قائمة دوال مكتبة C غير الآمنة للخيوط صغيرة نسبيًا. وتحتفظ The Open Group مشكورةً بـ<a href="http://pubs.opengroup.org/onlinepubs/009695399/functions/xsh_chap02_09.html">قائمة بالدوال غير الآمنة للخيوط</a>.</p>
+<h3 id="1461-إصلاح-مشكلات-أمان-الخيوط">14.6.1. إصلاح مشكلات أمان الخيوط <span class="content-anchor" id="_fixing_issues_of_thread_safety"></span></h3>
+<p><a href="https://diveintosystems.org/book/C14-SharedMemory/synchronization.html#_synchronizing_threads">عناصر التزامن الأولية</a> هي الطريقة الأكثر شيوعًا لإصلاح المشكلات المرتبطة بأمان الخيوط. لكن استخدام دوال مكتبة C غير الآمنة للخيوط من دون علم قد يسبب مشكلات دقيقة. لننظر في نسخة معدّلة قليلًا من دالتنا <code>countsElem</code> تُسمى <code>countElemsStr</code>، تحاول إحصاء تكرار الأرقام في سلسلة نصية معينة، حيث يُفصل بين كل رقم ورقم بمسافات. وقد حُرّر البرنامج التالي للإيجاز؛ والشيفرة الكاملة لهذا البرنامج متاحة في: <a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/countElemsStr.c">countElemsStr.c</a>.</p>
+<pre><code class="language-c"><span class="hljs-comment">/* computes the frequency of all the elements in the input string and stores
+ * the associated counts of each element in the array called counts. */</span>
+<span class="hljs-type">void</span> <span class="hljs-title function_">countElemsStr</span><span class="hljs-params">(<span class="hljs-type">int</span> *counts, <span class="hljs-type">char</span> *input_str)</span> {
+    <span class="hljs-type">int</span> val, i;
+    <span class="hljs-type">char</span> *token;
+    token = strtok(input_str, <span class="hljs-string">&quot; &quot;</span>);
+    <span class="hljs-keyword">while</span> (token != <span class="hljs-literal">NULL</span>) {
+        val = atoi(token);
+        counts[val] = counts[val] + <span class="hljs-number">1</span>;
+        token = strtok(<span class="hljs-literal">NULL</span>, <span class="hljs-string">&quot; &quot;</span>);
+    }
+}
+
+<span class="hljs-comment">/* main function:
+ * calls countElemsStr on a static string and counts up all the digits in
+ * that string. */</span>
+<span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">( <span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv )</span> {
+    <span class="hljs-comment">//lines omitted for brevity, but gets user defined length of string</span>
+
+    <span class="hljs-comment">//fill string with n digits</span>
+    <span class="hljs-type">char</span> *inputString = <span class="hljs-built_in">calloc</span>(length * <span class="hljs-number">2</span>, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">char</span>));
+    fillString(inputString, length * <span class="hljs-number">2</span>);
+
+    countElemsStr(counts, inputString);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>الدالة <code>countElemsStr</code> تستخدم الدالة <code>strtok</code> (كما نظرنا في <a href="https://diveintosystems.org/book/C2-C_depth/strings.html#_strtok_strtok_r">نقاشنا عن السلاسل</a>) لتحليل كل رقم (المخزَّن في <code>token</code>) في السلسلة، قبل تحويله إلى عدد صحيح وإجراء التحديثات المرتبطة به في مصفوفة <code>counts</code>.</p>
+<p>يُنتج تصريف وتشغيل هذا البرنامج على 100,000 عنصر المخرجات التالية:</p>
+<pre><code class="language-bash">$ gcc -o countElemsStr countElemsStr.c
+
+$ ./countElemsStr 100000 1
+contents of counts array:
+9963 9975 9953 10121 10058 10017 10053 9905 9915 10040
+</code></pre>
+<p>والآن، لننظر إلى نسخة متعددة الخيوط من <code>countElemsStr</code> (المصدر الكامل للبرنامج متاح <a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/countElemsStr_p.c">هنا</a>):</p>
+<pre><code class="language-c"><span class="hljs-comment">/* parallel version of countElemsStr (First cut):
+ * computes the frequency of all the elements in the input string and stores
+ * the associated counts of each element in the array called counts
+*/</span>
+<span class="hljs-type">void</span> *<span class="hljs-title function_">countElemsStr</span><span class="hljs-params">(<span class="hljs-type">void</span> *args)</span> {
+    <span class="hljs-comment">//parse args</span>
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">t_arg</span> *<span class="hljs-title">myargs</span> =</span> (<span class="hljs-keyword">struct</span> t_arg *)args;
+    <span class="hljs-comment">//omitted for brevity</span>
+
+    <span class="hljs-comment">//local variables</span>
+    <span class="hljs-type">int</span> val, i;
+    <span class="hljs-type">char</span> *token;
+    <span class="hljs-type">int</span> local_counts[MAX] = {<span class="hljs-number">0</span>};
+
+    <span class="hljs-comment">//compute local start and end values and chunk size:</span>
+    <span class="hljs-comment">//omitted for brevity</span>
+
+    <span class="hljs-comment">//tokenize values</span>
+    token = strtok(input_str + start, <span class="hljs-string">&quot; &quot;</span>);
+    <span class="hljs-keyword">while</span> (token != <span class="hljs-literal">NULL</span>) {
+        val = atoi(token); <span class="hljs-comment">//convert to an int</span>
+        local_counts[val] = local_counts[val] + <span class="hljs-number">1</span>; <span class="hljs-comment">//update associated counts</span>
+        token = strtok(<span class="hljs-literal">NULL</span>, <span class="hljs-string">&quot; &quot;</span>);
+    }
+
+    pthread_mutex_lock(&amp;mutex);
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; MAX; i++) {
+        counts[i] += local_counts[i];
+    }
+    pthread_mutex_unlock(&amp;mutex);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+}
+</code></pre>
+<p>في هذه النسخة من البرنامج، تعالج كل خيط قسمًا منفصلًا من السلسلة المرجَّة بـ<code>input_str</code>. تضمن مصفوفة <code>local_counts</code> أن تقع معظم عمليات الكتابة على التخزين المحلي. ويُستخدم قفل التبادل المتبادل لضمان عدم كتابة خيطين اثنين إلى المتغير المشترك <code>counts</code>.</p>
+<p>ومع ذلك، يُنتج تصريف وتشغيل هذا البرنامج النتائج التالية:</p>
+<pre><code class="language-bash">$ gcc -o countElemsStr_p countElemsStr_p.c -pthread
+
+$ ./countElemsStr_p 100000 1 1
+contents of counts array:
+9963 9975 9953 10121 10058 10017 10053 9905 9915 10040
+
+$ ./countElemsStr_p 100000 1 2
+contents of counts array:
+498 459 456 450 456 471 446 462 450 463
+
+$ ./countElemsStr_p 100000 1 4
+contents of counts array:
+5038 4988 4985 5042 5056 5013 5025 5035 4968 5065
+</code></pre>
+<p>على الرغم من استخدام أقفال قفل التبادل المتبادل حول الوصولات إلى مصفوفة <code>counts</code>، فإن نتائج التشغيلات المنفصلة تختلف جذريًا. ينشأ هذا الأمر لأن الدالة <code>countsElemsStr</code> ليست آمنة للخيوط، لأن دالة مكتبة السلاسل <code>strtok</code> <em>ليست آمنة للخيوط</em>! يؤكد زيارة موقع <a href="http://pubs.opengroup.org/onlinepubs/009695399/functions/xsh_chap02_09.html">OpenGroup</a> أن <code>strtok</code> مدرجة في قائمة الدوال غير الآمنة للخيوط.</p>
+<p>ولإصلاح هذا الأمر، يكفي استبدال <code>strtok</code> بالبديل الآمن للخيوط <code>strtok_r</code>. وفي الدالة الأخيرة، يُستخدم مؤشر معامل أخير لمساعدة الخيط على تتبّع موقعه في السلسلة أثناء تحليلها. وإليك الدالة المصحَّحة بـ<code>strtok_r</code> (المصدر الكامل هنا (<a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/countElemsStr_p_v2.c">countsElemsStr_p_v2.c</a>):</p>
+<pre><code class="language-c"><span class="hljs-comment">/* parallel version of countElemsStr (First cut):
+ * computes the frequency of all the elements in the input string and stores
+ * the associated counts of each element in the array called counts */</span>
+<span class="hljs-type">void</span>* <span class="hljs-title function_">countElemsStr</span><span class="hljs-params">(<span class="hljs-type">void</span>* args)</span> {
+    <span class="hljs-comment">//parse arguments</span>
+    <span class="hljs-comment">//omitted for brevity</span>
+
+    <span class="hljs-comment">//local variables</span>
+    <span class="hljs-type">int</span> val, i;
+    <span class="hljs-type">char</span> * token;
+    <span class="hljs-type">int</span> local_counts[MAX] = {<span class="hljs-number">0</span>};
+    <span class="hljs-type">char</span> * saveptr; <span class="hljs-comment">//for saving state of strtok_r</span>
+
+    <span class="hljs-comment">//compute local start and end values and chunk size:</span>
+    <span class="hljs-comment">//omitted for brevity</span>
+
+    <span class="hljs-comment">//tokenize values</span>
+    token = strtok_r(input_str+start, <span class="hljs-string">&quot; &quot;</span>, &amp;saveptr);
+    <span class="hljs-keyword">while</span> (token != <span class="hljs-literal">NULL</span>) {
+        val = atoi(token); <span class="hljs-comment">//convert to an int</span>
+        local_counts[val] = local_counts[val]+<span class="hljs-number">1</span>; <span class="hljs-comment">//update associated counts</span>
+        token = strtok_r(<span class="hljs-literal">NULL</span>, <span class="hljs-string">&quot; &quot;</span>, &amp;saveptr);
+    }
+
+    pthread_mutex_lock(&amp;mutex);
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; MAX; i++) {
+        counts[i]+=local_counts[i];
+    }
+    pthread_mutex_unlock(&amp;mutex);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+}
+</code></pre>
+<p>التغيير الوحيد في هذه النسخة من الشيفرة هو إعلان مؤشر الأحرف <code>saveptr</code> واستبدال جميع حالات <code>strtok</code> بـ<code>strtok_r</code>. يُنتج إعادة تشغيل الشيفرة بهذه التغييرات المخرجات التالية:</p>
+<pre><code class="language-bash">$ gcc -o countElemsStr_p_v2 countElemsStr_p_v2.c -pthread
+
+$ ./countElemsStr_p_v2 100000 1 1
+contents of counts array:
+9963 9975 9953 10121 10058 10017 10053 9905 9915 10040
+
+$ ./countElemsStr_p_v2 100000 1 2
+contents of counts array:
+9963 9975 9953 10121 10058 10017 10053 9905 9915 10040
+
+$ ./countElemsStr_p_v2 100000 1 4
+contents of counts array:
+9963 9975 9953 10121 10058 10017 10053 9905 9915 10040
+</code></pre>
+<p>الآن يُنتج البرنامج النتيجة نفسها في كل تشغيل. تضمن استخدام <code>saveptr</code> بالاشتراك مع <code>strtok_r</code> أن يكون كل خيط قادرًا على تتبّع موقعه باستقلالية أثناء تحليل السلسلة.</p>
+<p>الفكرة الأساسية من هذا القسم هي أنه ينبغي دائمًا الاطلاع على <a href="http://pubs.opengroup.org/onlinepubs/009695399/functions/xsh_chap02_09.html">قائمة الدوال غير الآمنة للخيوط في C</a> عند كتابة تطبيقات متعددة الخيوط. فهذا يمكن أن يوفّر على المبرمج كثيرًا من الألم والإحباط عند كتابة تطبيقات الخيوط وتصحيح أخطائها.</p>
+<p>حتى الآن، قدّمنا البرمجة بالذاكرة المشتركة باستخدام خيوط POSIX. ومع أن Pthreads ممتازة للتطبيقات البسيطة، إلا أنها تصبح صعبة الاستخدام بشكل متزايد كلما أصبحت البرامج نفسها أكثر تعقيدًا. وتمثل خيوط POSIX مثالًا على <strong>البرمجة التوازية الصريحة</strong> للخيوط، إذ تلزم المبرمج بتحديد بدقة ما يجب أن ينفّذه كل خيط ومتى يبدأ كل خيط ومتى يتوقف.</p>
+<p>مع Pthreads، قد يكون من الصعب أيضًا إضافة التوازي <em>تدريجيًا</em> إلى برنامج تتابعي موجود. أي أنه يلزم إعادة كتابة البرنامج بالكامل غالبًا لاستخدام الخيوط، وهو ما ليس مرغوبًا غالبًا عند محاولة موازاة قاعدة شيفرة كبيرة موجودة.</p>
+<p>تنفّذ مكتبة Open Multiprocessing (OpenMP) بديلًا <em>ضمنيًا</em> لـPthreads. وOpenMP مدمجة في GCC وغيرها من المترجمات الشائعة مثل LLVM وClang، ويمكن استخدامها مع لغات البرمجة C وC++ وFortran. ومن ميزة أساسية لـOpenMP أنها تمكن المبرمجين من موازاة مكوّنات شيفرة C موجودة وتتابعة بإضافة <strong>توجيهات</strong> (pragmas) (وهي توجيهات مترجم خاصة) إلى أجزاء من الشيفرة. وتبدأ التوجيهات الخاصة بـOpenMP بـ<code>#pragma omp</code>.</p>
+<p>التغطية التفصيلية لـOpenMP خارج نطاق هذا الكتاب، لكننا نغطي بعض التوجيهات الشائعة، ونُظهر كيف يمكن استخدام عدة منها في سياق بعض التطبيقات النموذجية.</p>
+<h3 id="1471-التوجيهات-الشائعة-pragmas">14.7.1. التوجيهات الشائعة (pragmas) <span class="content-anchor" id="_common_pragmas"></span></h3>
+<p>وإليكم بعض التوجيهات الأكثر استخدامًا في برامج OpenMP:</p>
+<p><code>#pragma omp parallel</code></p>
+<p>ينشئ هذا التوجيه فريقًا من الخيوط ويُكلِّف كل خيط بتشغيل شيفرة نطاقه (وهي عادة نداء دالة) على كل خيط. ونداء هذا التوجيه يعادل عادةً نداء زوج الدالتين <code>pthread_create</code> و<code>pthread_join</code> <a href="https://diveintosystems.org/book/C14-SharedMemory/posix.html#_creating_and_joining_threads">الذي ناقشناه في مناقشتنا الأصلية لـPthreads</a>. وقد يحتوي التوجيه على عدد من العبارات (clauses)، بما في ذلك ما يلي:</p>
+<ul>
+<li><code>num_threads</code> يحدد عدد الخيوط المراد إنشاؤها.</li>
+<li><code>private</code> قائمة من المتغيرات التي ينبغي أن تكون خاصة (أو محلية) بكل خيط. ويمكن أيضًا إعلان المتغيرات التي ينبغي أن تكون خاصة بخيط داخل نطاق التوجيه (انظر أدناه لمثال). ويحصل كل خيط على نسخته الخاصة من كل متغير.</li>
+<li><code>shared</code> قائمة بالمتغيرات التي ينبغي أن تتشاركها الخيوط. فتوجد نسخة واحدة من المتغير تتشاركها جميع الخيوط.</li>
+<li><code>default</code> يشير إلى ما إذا كان تحديد المتغيرات التي ينبغي أن تكون مشتركة متروكًا للمترجم. وفي معظم الحالات، نريد استخدام <code>default(none)</code> وتحديد صراحةً أي المتغيرات ينبغي أن تكون مشتركة وأيّها ينبغي أن يكون خاصًا.</li>
+</ul>
+<p><code>#pragma omp for</code></p>
+<p>يحدد أن ينفّذ كل خيط مجموعة جزئية من تكرارات حلقة <code>for</code>. ومع أن جدولة الحلقات متروكة للنظام، فالافتراض عادةً هو طريقة «التقطيع» (chunking) التي ناقشناها أولًا في <a href="https://diveintosystems.org/book/C14-SharedMemory/posix.html#_revisiting_scalar_multiplication">مثال الضرب القياسي</a>. وهذا شكل <em>ثابت</em> من الجدولة: يحصل كل خيط على كتلة مُسندة إليه، ثم يعالج التكرارات في كتلته. غير أن OpenMP يجعل الجدولة <em>الديناميكية</em> أيضًا سهلة. وفي الجدولة الديناميكية، يحصل كل خيط على عدد من التكرارات، ويطلب مجموعة جديدة عند إتمام معالجة تكراراته. ويمكن ضبط سياسة الجدولة باستخدام العبارة التالية:</p>
+<ul>
+<li><code>schedule(dynamic)</code>: يحدد أنه ينبغي استخدام شكل <em>ديناميكي</em> من الجدولة. ومع أن هذا مفيد في بعض الحالات، فإن الشكل الثابت (الافتراضي) من الجدولة عادةً أسرع.</li>
+</ul>
+<p><code>#pragma omp parallel for</code></p>
+<p>هذا التوجيه مزيج من التوجيهين <code>omp parallel</code> و<code>omp for</code>. وعلى عكس التوجيه <code>omp for</code>، يُنشئ التوجيه <code>omp parallel for</code> فريقًا من الخيوط أيضًا قبل إسناد مجموعة من تكرارات الحلقة إلى كل خيط.</p>
+<p><code>#pragma omp critical</code></p>
+<p>يُستخدم هذا التوجيه لتحديد أن ينبغي التعامل مع شيفرة نطاقه كـ<em>قسم حرج</em> — أي أنه ينبغي لخيط واحد فقط أن ينفّذ قسم الشيفرة في وقت واحد لضمان سلوك صحيح.</p>
+<p>وهناك أيضًا عدة <em>دوال</em> يستطيع الخيط الوصول إليها تفيد كثيرًا أثناء التنفيذ. فمثلًا:</p>
+<p><code>omp_get_num_threads</code></p>
+<p>تُعيد عدد الخيوط في الفريق الحالي قيد التنفيذ.</p>
+<p><code>omp_set_num_threads</code></p>
+<p>تضبط عدد الخيوط الذي ينبغي أن يمتلكه فريق.</p>
+<p><code>omp_get_thread_num</code></p>
+<p>تُعيد معرّف الخيط النداء.</p>
+<p><strong>تحذير — التوجيه <code>omp parallel for</code> يعمل مع حلقات for فقط!</strong></p>
+<blockquote>
+<p>تذكّر أن التوجيه <code>omp parallel for</code> يعمل <em>فقط</em> مع حلقات <code>for</code>. ولا تُدعم أنواع حلقات أخرى، مثل حلقات <code>while</code> وحلقات <code>do</code>-<code>while</code>.</p>
+</blockquote>
+<h3 id="1472-مرحبا-بالتعدد-الخيطي-بأسلوب-openmp">14.7.2. مرحّبا بالتعدد الخيطي: بأسلوب OpenMP <span class="content-anchor" id="_hello_threading_openmp_flavored"></span></h3>
+<p>لنعد إلى برنامج «Hello World» (<a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/hellothreads.c">hellothreads.c</a>)، هذه المرة باستخدام OpenMP بدلًا من Pthreads:</p>
+<pre><code class="language-c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;omp.h&gt;</span></span>
+
+<span class="hljs-type">void</span> <span class="hljs-title function_">HelloWorld</span><span class="hljs-params">( <span class="hljs-type">void</span> )</span> {
+    <span class="hljs-type">long</span> myid = omp_get_thread_num();
+    <span class="hljs-built_in">printf</span>( <span class="hljs-string">&quot;Hello world! I am thread %ld\\n&quot;</span>, myid );
+}
+
+<span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">( <span class="hljs-type">int</span> argc, <span class="hljs-type">char</span>** argv )</span> {
+    <span class="hljs-type">long</span> nthreads;
+
+    <span class="hljs-keyword">if</span> (argc !=<span class="hljs-number">2</span>) {
+        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;usage: %s &lt;n&gt;\\n&quot;</span>, argv[<span class="hljs-number">0</span>]);
+        <span class="hljs-built_in">fprintf</span>(<span class="hljs-built_in">stderr</span>, <span class="hljs-string">&quot;where &lt;n&gt; is the number of threads\\n&quot;</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    }
+
+    nthreads = strtol( argv[<span class="hljs-number">1</span>], <span class="hljs-literal">NULL</span>, <span class="hljs-number">10</span> );
+
+    <span class="hljs-meta">#<span class="hljs-keyword">pragma</span> omp parallel num_threads(nthreads)</span>
+        HelloWorld();
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>لاحظ أن برنامج OpenMP <em>أقصر بكثير</em> من نسخة Pthreads. وللوصول إلى دوال مكتبة OpenMP، نُضمّن ملف الترويسة <code>omp.h</code>. ينشئ التوجيه <code>omp parallel num_threads(nthreads)</code> في <code>main</code> مجموعة من الخيوط، ينادي كل خيط منها الدالة <code>HelloWorld</code>. وتحدد العبارة <code>num_threads(nthreads)</code> إجمالي عدد الخيوط المراد توليدها. كما يضمّ التوجيه كل خيط مُنشأ عائدًا إلى عملية أحادية الخيط. وبعبارة أخرى، تُجسَّد جميع أعمال المستوى المنخفض لإنشاء الخيوط وضمّها بعيدًا عن المبرمج وتُنجَّز بتضمين توجيه واحد فقط. ولهذا السبب تُعدّ OpenMP مكتبة <strong>تعدد خيوط ضمني</strong>.</p>
+<p>كما تجسّد OpenMP الحاجة إلى إدارة معرّفات الخيوط صراحةً. وفي سياق <code>HelloWorld</code>، تستخرج الدالة <code>omp_get_thread_num</code> المعرّف الفريد المرتبط بالخيط الذي ينفّذها.</p>
+<h4>تصريف الشيفرة <span class="content-anchor" id="_compiling_the_code"></span></h4>
+<p>لنصريف وتشغيل هذا البرنامج، نمرّر الخيار <code>-fopenmp</code> إلى المصرّف، ما يشير إلى أننا نصرّف باستخدام OpenMP:</p>
+<pre><code class="language-bash">$ gcc -o hello_mp hello_mp.c -fopenmp
+
+$ ./hello_mp 4
+Hello world! I am thread 2
+Hello world! I am thread 3
+Hello world! I am thread 0
+Hello world! I am thread 1
+</code></pre>
+<p>وبما أن تنفيذ الخيوط قد يتغير في التشغيلات اللاحقة، تُنتج إعادة تشغيل هذا البرنامج تسلسلًا مختلفًا من الرسائل:</p>
+<pre><code class="language-bash">$ ./hello_mp 4
+Hello world! I am thread 3
+Hello world! I am thread 2
+Hello world! I am thread 1
+Hello world! I am thread 0
+</code></pre>
+<p>هذا السلوك متسق مع <a href="https://diveintosystems.org/book/C14-SharedMemory/posix.html#_hello_threading_writing_your_first_multithreaded_program">مثالنا مع Pthreads</a>.</p>
+<h3 id="1473-مثال-أعقد-countsort-في-openmp">14.7.3. مثال أعقد: CountSort في OpenMP <span class="content-anchor" id="_a_more_complex_example_countsort_in_openmp"></span></h3>
+<p>من مزايا OpenMP القوية أنها تمكن المبرمجين من موازاة شيفرتهم تدريجيًا. ولرؤية ذلك عمليًا، لنوازِ خوارزمية CountSort الأعقد التي ناقشناها سابقًا في هذا الفصل (الشيفرة التتابعية موجودة هنا: <a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/countSort.c">countSort.c</a>). وتذكّر أن هذه الخوارزمية ترتيب مصفوفات تحتوي مجالًا صغيرًا من القيم. ويبدو الدالة الرئيسية للبرنامج التتابعي كالتالي:</p>
+<pre><code class="language-c"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">( <span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv )</span> {
+    <span class="hljs-comment">//parse args (omitted for brevity)</span>
+
+    srand(<span class="hljs-number">10</span>); <span class="hljs-comment">//use of static seed ensures the output is the same every run</span>
+
+    <span class="hljs-comment">//generate random array of elements of specified length</span>
+    <span class="hljs-comment">//(omitted for brevity)</span>
+
+    <span class="hljs-comment">//allocate counts array and initializes all elements to zero.</span>
+    <span class="hljs-type">int</span> counts[MAX] = {<span class="hljs-number">0</span>};
+
+    countElems(counts, <span class="hljs-built_in">array</span>, length); <span class="hljs-comment">//calls step 1</span>
+    writeArray(counts, <span class="hljs-built_in">array</span>); <span class="hljs-comment">//calls step2</span>
+
+    <span class="hljs-built_in">free</span>(<span class="hljs-built_in">array</span>); <span class="hljs-comment">//free memory</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>تنادي الدالة <code>main</code>، بعد إجراء بعض تحليل سطر الأوامر وتوليد مصفوفة عشوائية، الدالة <code>countsElems</code> يليها نداء الدالة <code>writeArray</code>.</p>
+<h4>موازاة CountElems باستخدام OpenMP <span class="content-anchor" id="_parallelizing_countelems_using_openmp"></span></h4>
+<p>هناك عدة طرق لموازاة البرنامج أعلاه. إحدى الطريقتين (المعروضة في المثال التالي) تستخدم التوجيه <code>omp parallel</code> في سياق الدالتين <code>countElems</code> و<code>writeArray</code>. ونتيجة لذلك، لا حاجة إلى إجراء أي تغييرات على الدالة <code>main</code>. ونسخة البرنامج الكاملة متاحة هنا: <a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/countSort_mp.c">countSort_mp.c</a>.</p>
+<p>أولًا، لنفحص كيفية موازاة الدالة <code>countElems</code> باستخدام OpenMP:</p>
+<pre><code class="language-c"><span class="hljs-type">void</span> <span class="hljs-title function_">countElems</span><span class="hljs-params">(<span class="hljs-type">int</span> *counts, <span class="hljs-type">int</span> *<span class="hljs-built_in">array</span>, <span class="hljs-type">long</span> length)</span> {
+
+    <span class="hljs-meta">#<span class="hljs-keyword">pragma</span> omp parallel default(none) shared(counts, array, length)</span>
+    {
+        <span class="hljs-type">int</span> val, i, local[MAX] = {<span class="hljs-number">0</span>};
+        <span class="hljs-meta">#<span class="hljs-keyword">pragma</span> omp for</span>
+        <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; length; i++) {
+            val = <span class="hljs-built_in">array</span>[i];
+            local[val]++;
+        }
+
+       <span class="hljs-meta">#<span class="hljs-keyword">pragma</span> omp critical</span>
+       {
+           <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; MAX; i++) {
+               counts[i] += local[i];
+           }
+       }
+   }
+}
+</code></pre>
+<p>في هذه النسخة من الشيفرة، تُستخدم ثلاثة توجيهات:</p>
+<ul>
+<li>يشير التوجيه <code>#pragma omp parallel</code> إلى أنه ينبغي إنشاء فريق من الخيوط. يضبط السطر <code>omp_set_num_threads(nthreads)</code> في <code>main</code> الحجم الافتراضي لفريق الخيوط ليكون <code>nthreads</code>. وإذا لم تُستخدم الدالة <code>omp_set_num_threads</code>، فسيساوي عدد الخيوط المُسندة عدد الأنوية في النظام. وللتذكير، يُنشئ التوجيه <code>omp parallel</code> الخيوط ضمنيًا في بداية الكتلة ويضمّها في نهاية الكتلة. وتُستخدم الأقواس (<code>{}</code>) لتحديد النطاق. وتنشيء العبارة <code>shared</code> المتغيرات <code>counts</code> و<code>array</code> و<code>length</code> مشتركة (عالمية) بين جميع الخيوط. وبذلك، تُعلن المتغيرات <code>val</code> و<code>i</code> و<code>local[MAX]</code> <em>محلية</em> في كل خيط.</li>
+<li>التوجيه التالي هو <code>#pragma omp for</code>، الذي يوازي حلقة <code>for</code> بتقسيم عدد التكرارات على عدد الخيوط. تحسب OpenMP كيف تُقسَّم تكرارات الحلقة بأفضل طريقة. وكما ذُكر سابقًا، تكون الاستراتيجية الافتراضية عادةً طريقة التقطيع، حيث يحصل كل خيط على عدد متساوٍ تقريبًا من التكرارات لحسابها. وبذلك، يقرأ كل خيط مكوّنًا من المصفوفة المشتركة <code>array</code> ويُراكم عدّاداته في مصفوفته المحلية <code>local</code>.</li>
+<li>يشير التوجيه <code>#pragma omp critical</code> إلى أنه ينبغي لخيط واحد بالضبط أن ينفّذ شيفرة نطاق القسم الحرج في وقت واحد. وهذا يعادل قفل التبادل المتبادل الذي استُخدم في نسخة Pthreads من هذا البرنامج. وهنا، يزيد كل خيط من مصفوفة <code>counts</code> المشتركة واحدًا تلو الآخر.</li>
+</ul>
+<p>لنحصل على فكرة عن أداء هذه الدالة بتشغيلها على 100 مليون عنصر:</p>
+<pre><code class="language-bash">$ ./countElems_mp 100000000 1
+Run Time <span class="hljs-keyword">for</span> Phase 1 is 0.249893
+
+$ ./countElems_mp 100000000 2
+Run Time <span class="hljs-keyword">for</span> Phase 1 is 0.124462
+
+$ ./countElems_mp 100000000 4
+Run Time <span class="hljs-keyword">for</span> Phase 1 is 0.068749
+</code></pre>
+<p>هذا أداء ممتاز، إذ حققت دالتنا تسريعًا قدره 2 بخيطين، وتسريعًا قدره 3.63 بأربعة خيوط. بل نحصل على أداء أفضل حتى من تنفيذ Pthreads!</p>
+<h4>الدالة <code>writeArray</code> في OpenMP <span class="content-anchor" id="_the_writearray_function_in_openmp"></span></h4>
+<p>موازاة الدالة <code>writeArray</code> <em>أصعب بكثير</em>. وتُظهر الشيفرة التالية حلًا واحدًا ممكنًا:</p>
+<pre><code class="language-c"><span class="hljs-type">void</span> <span class="hljs-title function_">writeArray</span><span class="hljs-params">(<span class="hljs-type">int</span> *counts, <span class="hljs-type">int</span> *<span class="hljs-built_in">array</span>)</span> {
+    <span class="hljs-type">int</span> i;
+
+    <span class="hljs-comment">//assumed the number of threads is no more than MAX</span>
+    <span class="hljs-meta">#<span class="hljs-keyword">pragma</span> omp parallel for schedule(dynamic)</span>
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; MAX; i++) {
+        <span class="hljs-type">int</span> j = <span class="hljs-number">0</span>, amt, start = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; i; j++) {  <span class="hljs-comment">//calculate the &quot;true&quot; start position</span>
+            start += counts[j];
+        }
+
+        amt = counts[i]; <span class="hljs-comment">//the number of array positions to fill</span>
+
+        <span class="hljs-comment">//overwrite amt elements with value i, starting at position start</span>
+        <span class="hljs-keyword">for</span> (j = start; j &lt; start + amt; j++) {
+            <span class="hljs-built_in">array</span>[j] = i;
+        }
+    }
+}
+</code></pre>
+<p>قبل الموازاة، أجرينا تغييرًا على هذه الدالة، لأن <a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/countSort.c">النسخة القديمة</a> من <code>writeArray</code> جعلت <code>j</code> تعتمد على التكرارات السابقة للحلقة. وفي هذه النسخة، يحسب كل خيط قيمة <code>start</code> الفريدة له بناءً على مجموع جميع العناصر السابقة في <code>counts</code>.</p>
+<p>وعند إزالة هذه التبعية، تصبح الموازاة بسيطة إلى حد كبير. يُنشئ التوجيه <code>#pragma omp parallel for</code> فريقًا من الخيوط ويوازي حلقة <code>for</code> بإسناد مجموعة جزئية من تكرارات الحلقة إلى كل خيط. وللتذكير، هذا التوجيه مزيج من التوجيهين <code>omp parallel</code> و<code>omp for</code> (الذين استُخدما في موازاة <code>countElems</code>).</p>
+<p>لا تلائم طريقة التقطيع لجدولة الخيوط (كما في الدالة <code>countElems</code> أعلاه) هنا، لأن من المحتمل أن يكون لكل عنصر في <code>counts</code> تكرار جذريًا مختلف. وبذلك لن يتساوى حجم عمل الخيوط، ما يؤدي إلى إسناد عمل أكثر إلى بعض الخيوط من غيرها. ولذلك تُستخدم العبارة <code>schedule(dynamic)</code>، بحيث يُكمل كل خيط التكرار المُسند إليه قبل أن يطلب تكرارًا جديدًا من مدير الخيوط.</p>
+<p>وبما أن كل خيط يكتب إلى مواقع مصفوفة متمايزة، فلا حاجة للاستبعاد المتبادل في هذه الدالة.</p>
+<p>لاحظ كيف أن شيفرة OpenMP أنظف بكثير من تنفيذ خيوط POSIX. فالشيفرة مقروءة جدًا واحتاجت إلى تعديلات قليلة جدًا. وهذا أحد قوى <strong>التجريد</strong>، حيث تُخفى تفاصيل التنفيذ عن المبرمج.</p>
+<p>غير أن التنازل اللازم عن التجريد هو التحكم. يفترض المبرمج أن المترجم «ذكي» بما يكفي للعناية بتفاصيل الموازاة، وبذلك يكون أسهل في موازاة تطبيقه. غير أن المبرمج لم يعد يتخذ قرارات مفصلة عن تفاصيل تلك الموازاة. وبدون فكرة واضحة حول كيفية تنفيذ توجيهات OpenMP في الخلفية، قد يكون من الصعب تصحيح أخطاء تطبيق OpenMP أو معرفة التوجيه الأنسب لاستخدامه في وقت معين.</p>
+<h3 id="1474-معرفة-المزيد-عن-openmp">14.7.4. معرفة المزيد عن OpenMP <span class="content-anchor" id="_learning_more_about_openmp"></span></h3>
+<p>مناقشة أعمق لـOpenMP تتجاوز نطاق هذا الكتاب، لكن توجد موارد مجانية مفيدة1,2 لتعلم OpenMP.</p>
+<h3 id="المراجع">المراجع:</h3>
+<ol>
+<li>بلايس بارني. «OpenMP». <a href="https://hpc.llnl.gov/tuts/openMP/">https://hpc.llnl.gov/tuts/openMP/</a></li>
+<li>ريتشارد براون وليبي شوب. «Multicore Programming with OpenMP». <em>CSinParallel: Parallel Computing in the Computer Science curriculum</em>. <a href="http://selkie.macalester.edu/csinparallel/modules/MulticoreProgramming/build/html/index.html">http://selkie.macalester.edu/csinparallel/modules/MulticoreProgramming/build/html/index.html</a></li>
+</ol>
+<p>قدّم هذا الفصل نظرة عامة على المعالجات متعددة الأنوية وكيفية البرمجة لها. وتحديدًا، غطينا مكتبة خيوط POSIX (أو Pthreads) وكيفية استخدامها لإنشاء برامج صحيحة متعددة الخيوط تسرّع أداء برنامج أحادي الخيط. وتستخدم مكتبات مثل POSIX وOpenMP نموذج الاتصال بال<strong>ذاكرة المشتركة</strong>، إذ تتشارك الخيوط بيانات في مساحة ذاكرة مشتركة.</p>
+<h3 id="النقاط-الرئيسية">النقاط الرئيسية</h3>
+<p>الخيوط هي الوحدة الأساسية للبرامج المتزامنة</p>
+<p>لموازاة برنامج تتابعي، يستخدم المبرمجون بنى خفيفة تُسمى <strong>الخيوط</strong> (threads). ففي عملية متعددة خيوط بعينها، لكل خيط تخصيصه الخاص لمساحة مكدّس الذاكرة، لكنه يتشارك بيانات البرنامج وكومة تعليمات العملية. ووكما في العمليات، تعمل الخيوط على المعالج <strong>بشكل عشوائي غير حتمي</strong> (أي أن ترتيب التنفيذ يتغير بين التشغيلات، وأن إسناد كل خيط إلى أي نواة متروك لنظام التشغيل).</p>
+<p>بنى التزامن تضمن عمل البرامج بشكل صحيح</p>
+<p>من نتائج الذاكرة المشتركة أن تستطيع الخيوط الكتابة فوق البيانات الموجودة في الذاكرة المشتركة عن غير قصد. ويمكن أن تحدث <strong>حالة سباق</strong> (race condition) كلما حدّثت عمليتان قيمة مشتركة بشكل غير صحيح. وعندما تكون القيمة المشتركة بيانات، قد تنشأ حالة سباق خاصة تُسمى <strong>سباق بيانات</strong> (data race). وتساعد بنى التزامن (القفل المتبادل والسيمافورات وغيرها) على ضمان صحة البرنامج بضمان تنفيذ الخيوط واحدًا تلو الآخر عند تحديث المتغيرات المشتركة.</p>
+<p>انتبه عند استخدام بنى التزامن</p>
+<p>يُحدث التزامن بطبعه نقاطًا من الحساب التتابعي في برنامج خلاف ذلك متوازي. ومن المهم لذلك أن يكون المرء مدركًا <em>لكيفية</em> استخدام مفاهيم التزامن. ويُشار إلى مجموعة العمليات التي يجب أن تنفَّذ ذريةً بـ<strong>القسم الحرج</strong> (critical section). وإذا كان القسم الحرج كبيرًا جدًا، ستتنفّذ الخيوط تتابعيًا دون أي تحسن في زمن التشغيل. واستخدام بنى التزامن بطريقة رعوية قد يؤدي إلى مواقف مثل <strong>التجمّد</strong> عن غير قصد. واستراتيجية جيدة أن تستخدم الخيوط المتغيرات المحلية قدر الإمكان ولا تحدّث المتغيرات المشتركة إلا عند الضرورة.</p>
+<p>ليس كل مكوّنات البرنامج قابلة للموازاة</p>
+<p>بعض البرامج بالضرورة تحتوي مكوّنات تتابعة كبيرة يمكن أن تعيق أداء برنامج متعدد الخيوط على أنوية متعددة (مثلًا، <strong>قانون Amdahl</strong>). وحتى عندما تكون نسبة كبيرة من البرنامج قابلة للتوازي، نادرًا ما يكون التسريع خطيًا. ويشجَّع القراء أيضًا على النظر إلى مقاييس أخرى مثل الكفاءة وقابلية التوسع عند تقييم أداء برامجهم.</p>
+<h3 id="قراءات-إضافية">قراءات إضافية</h3>
+<p>يهدف هذا الفصل إلى منح القارئ نموذجًا أوليًا لمواضيع التزامن بالخيوط؛ وليس هو شاملًا بأي حال. ولمعرفة المزيد عن البرمجة بخيوط POSIX وOpenMP، راجع الدروس الممتازة عن <a href="https://hpc-tutorials.llnl.gov/posix/">Pthreads</a> و<a href="https://hpc.llnl.gov/tuts/openMP/">OpenMP</a> من Blaise Barney في مختبرات لورنس ليفرمور الوطنية. أما بالنسبة للأدوات الآلية لتصحيح أخطاء البرامج المتوازية، فيُشجَّع القراء على تجربة أداتي Valgrind وهما <a href="https://valgrind.org/docs/manual/hg-manual.html">Helgrind</a> و<a href="https://valgrind.org/docs/manual/drd-manual.html">DRD</a>.</p>
+<p>وفي <a href="https://diveintosystems.org/book/C15-Parallel/index.html#_looking_ahead_other_parallel_systems_and_parallel_programming_models">الفصل الأخير</a> من الكتاب، نعطي نظرة عامة عالية المستوى على معماريات توازية شائعة أخرى وكيفية البرمجة لها. <a href="https://diveintosystems.org/book/C15-Parallel/index.html#_looking_ahead_other_parallel_systems_and_parallel_programming_models">تابع القراءة لمعرفة المزيد</a>.</p>
+<ul>
+<li><a href="https://diveintosystems.org/exercises/dive-into-systems-exercises-17.html">تمارين الفصل 14</a> (قيد الإعداد)</li>
+</ul>
+<div class="exercises"><h3 id="تمارين-إضافية">تمارين إضافية</h3>
+<ol>
+<li>نفّذ برنامج scalar_multiply بالكامل. قِس زمن شيفرتك باستخدام الدالة <code>gettimeofday()</code> و100 مليون عنصر. كيف يتغير الزمن كلما زددت عدد الخيوط؟ وماذا لو زددت عدد العناصر إلى مليار؟ 2 مليار؟</li>
+<li>حسّن دالة الخيط الأصلية <code>scalar multiply</code> بوضع جميع المعاملات في <code>struct</code> وتمريرها عبر main. قِس أداء هذه النسخة من الشيفرة. هل ثمة فرق؟ <a href="https://diveintosystems.org/book/C14-SharedMemory/_attachments/scalar2.c">(الحل)</a></li>
+<li>حسّن دالة الخيط <code>scalar_multiply</code> بتنفيذ إجراء أفضل لتوزيع الحِمل. وبعبارة أخرى، نفّذ إجراء توزيع الحِمل المذكور في الملاحظة أعلاه.</li>
+<li>باستخدام ما تعلمته، حاول تنفيذ برنامج يُجري ضرب مصفوفة في متجه. وفي ضرب المصفوفة في المتجه، يُضرب كل صف في المصفوفة في متجه معين من العناصر.</li>
+<li>نفّذ نسخة متوازية من الخطوة 2 من خوارزمية CountSort. قِس أداءك.</li>
+<li>حاول دمج الخطوة 1 والخطوة 2 من برنامج CountSort في برنامج واحد. ولفعل ذلك، ستحتاج إلى إضافة دورة أخرى من <code>pthread_create()</code> و<code>pthread_join()</code> إلى برنامجك.</li>
+<li>قِس الأداء الكلي لبرنامج CountSort الجديد.</li>
+<li>OpenMP: تفترض الدالة <code>writeElems()</code> أن المستخدم يدخل عددًا من الخيوط أقل من <code>MAX</code>. هل من طريقة لإعادة كتابة هذه الشيفرة بحيث تعمل بصرف النظر عن عدد الخيوط؟</li>
+</ol>
+</div>`,o={book:s,chapter:n,chapterTitle:a,slug:e,title:t,headings:l,html:p};export{s as book,n as chapter,a as chapterTitle,o as default,l as headings,p as html,e as slug,t as title};

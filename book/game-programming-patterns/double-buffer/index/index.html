@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -111,7 +111,7 @@
 بعد. النتيجة هي <em>التمزّق</em> (tearing)، وهو خلل بصري فظيع ترى فيه نصف شيء
 مرسوماً على الشاشة.</p>
 <p><span name="tearing"></span></p>
-<img src="/arabic-cs-library/images/game-programming-patterns/double-buffer-1.webp" alt="A series of images of an in-progress frame being rendered. A pointer writes pixels while another reads them. The reader outpaces the writer until it starts reading pixels that haven't been rendered yet." />
+<img src="/arabic-cs-library/images/game-programming-patterns/double-buffer-1.webp" alt="سلسلة صور لإطار قيد الرسم. مؤشر يكتب البكسلات بينما يقرأها مؤشر آخر. يسبق القارئ الكاتب حتى يبدأ بقراءة بكسلات لم تُرسم بعد." />
 <aside name="tearing">
 <p>نبدأ برسم البكسلات في اللحظة التي يبدأ فيها سائق الفيديو بالقراءة من إطار
 التخزين (الصورة 1). ثم يلحق سائق الفيديو بالعارض فيلحق به، ثم يتجاوزه إلى
@@ -228,7 +228,7 @@ B المظلماً. وعندما تنتهي شيفرة العرض لدينا م�
 <p>^code 2</p>
 <aside name="draw">
 <p>على وجه التحديد، يرسم هذا التحفة الفنية:</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/double-buffer-2.webp" width="240" alt="A pixellated smiley face." />
+<img src="/arabic-cs-library/images/game-programming-patterns/double-buffer-2.webp" width="240" alt="وجه مبتسم مُبكسل." />
 </aside>
 <p>في كل إطار، تطلب اللعبة من المشهد أن يرسم. يمسح المشهد المخزن ثم يرسم مجموعة
 من البكسلات، واحداً تلو الآخر. كما يوفّر الوصول إلى المخزن الداخلي عبر
@@ -291,7 +291,7 @@ Method)</a>.</p>
 <p>^code 8</p>
 <p>يكون المسرح الناتج معدّاً كما يوضّح الصورة التالية. تُظهر الأسهم إلى من يواجه كل
 ممثل، والأرقام تُظهر فهرسهم في مصفوفة المسرح.</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/double-buffer-3.webp" alt="Boxes for Harry, Baldy, and Chump, in that order. Harry has an arrow pointing to Baldy, who has an arrow pointing to Chump, who has an arrow pointing back to Harry." />
+<img src="/arabic-cs-library/images/game-programming-patterns/double-buffer-3.webp" alt="مربّعات لـ Harry ثم Baldy ثم Chump بترتيبها. سهم من Harry يشير إلى Baldy، وسهم من Baldy يشير إلى Chump، وسهم من Chump يعود إلى Harry." />
 <p>سنصفع هاري لبدء الأمور، ونرى ما يحدث عندما نبدأ المعالجة:</p>
 <p>^code 9</p>
 <p>تذكّر أن الدالة <code>update()</code> في <code>Stage</code> تحدّث كل ممثل بالترتيب، فإذا شرذمنا الشيفرة
@@ -307,7 +307,7 @@ Method)</a>.</p>
 <p>في إطار واحد، انتشرت صفعتنا الأولى على هاري بين كل المهرجين. والآن، لنخلط الأمور
 قليلاً، ولنفترض أننا نعيد ترتيب المهرجين داخل مصفوفة المسرح لكن نتركهم يواجهون
 بعضهم بالطريقة نفسها.</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/double-buffer-4.webp" alt="The same boxes as before with the same arrows, but now they are ordered Chump, Baldy, Harry." />
+<img src="/arabic-cs-library/images/game-programming-patterns/double-buffer-4.webp" alt="المربّعات نفسها والسهام نفسها، لكن ترتيبها الآن Chump ثم Baldy ثم Harry." />
 <p>سنترك بقية إعداد المسرح كما هو، لكننا سنستبدل الجزء من الشيفرة الذي يضيف الممثلين
 إلى المسرح بما يلي:</p>
 <p>^code 10</p>
@@ -479,7 +479,7 @@ name="cascade">لاحقة</span> من خطوة التحديث <em>نفسها</em
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -487,8 +487,8 @@ name="cascade">لاحقة</span> من خطوة التحديث <em>نفسها</em
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

@@ -1,0 +1,735 @@
+const s="mit-6100l",n="lecture-20",a="المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة",e="notes",l="المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة (Fitness Tracker)",t=[{depth:2,id:"المصادر-والنسبة-والترخيص",text:"المصادر والنسبة والترخيص"},{depth:2,id:"الشريحة-1-عنوان-المحاضرة",text:"الشريحة 1: عنوان المحاضرة"},{depth:2,id:"الشريحة-2-تنفيذ-الصنف-مقابل-استخدام-الصنف",text:"الشريحة 2: تنفيذ الصنف مقابل استخدام الصنف"},{depth:2,id:"الشريحة-3-مثال-متتبع-التمارين-workout-tracker",text:"الشريحة 3: مثال متتبّع التمارين (Workout Tracker)"},{depth:2,id:"الشريحة-4-fitness-tracker",text:"الشريحة 4: Fitness Tracker"},{depth:2,id:"الشريحة-5-مجموعات-الكائنات-لها-سمات-مراجعة",text:"الشريحة 5: مجموعات الكائنات لها سمات (مراجعة)"},{depth:2,id:"الشريحة-6-عرف-صنفا-بسيطا-مراجعة",text:"الشريحة 6: عرّف صنفًا بسيطًا (مراجعة)"},{depth:2,id:"الشريحة-7-دوال-الجلب-ودوال-التعيين-مراجعة",text:"الشريحة 7: دوال الجلب ودوال التعيين (مراجعة)"},{depth:2,id:"الشريحة-8-demo-self-provides-access-to-class-state",text:"الشريحة 8: Demo — SELF PROVIDES ACCESS TO CLASS STATE"},{depth:2,id:"الشريحة-9-النسخة-instance-وصيغة-النقطة-مراجعة",text:"الشريحة 9: النسخة (instance) وصيغة النقطة (مراجعة)"},{depth:2,id:"الشريحة-10-لماذا-نخفي-المعلومات",text:"الشريحة 10: لماذا نخفي المعلومات؟"},{depth:2,id:"الشريحة-11-تغيير-تنفيذ-الصنف",text:"الشريحة 11: تغيير تنفيذ الصنف"},{depth:2,id:"الشريحة-12-demo-changing-the-class-implementation",text:"الشريحة 12: Demo — CHANGING THE CLASS IMPLEMENTATION"},{depth:2,id:"الشريحة-13-ملاحظة-جانبية-كائنات-datetime-ومكتبات-بايثون-أخرى",text:"الشريحة 13: ملاحظة جانبية: كائنات datetime ومكتبات بايثون أخرى"},{depth:2,id:"الشريحة-14-متغيرات-الصنف-تعيش-في-قاموس-حالة-الصنف",text:"الشريحة 14: متغيّرات الصنف تعيش في قاموس حالة الصنف"},{depth:2,id:"الشريحة-15-متغيرات-الصنف-class-variables",text:"الشريحة 15: متغيّرات الصنف (Class Variables)"},{depth:2,id:"الشريحة-16-جرب-بنفسك",text:"الشريحة 16: جرّب بنفسك!"},{depth:2,id:"الشريحة-17-التالي-تسلسلات-الأصناف-class-hierarchies",text:"الشريحة 17: التالي: تسلسلات الأصناف (Class Hierarchies)"},{depth:2,id:"الشريحة-18-التسلسلات-الهرمية-hierarchies",text:"الشريحة 18: التسلسلات الهرمية (Hierarchies)"},{depth:2,id:"الشريحة-19-fitness-tracker-أنواع-مختلفة-من-التمارين",text:"الشريحة 19: Fitness Tracker — أنواع مختلفة من التمارين"},{depth:2,id:"الشريحة-20-الوراثة-صنف-الأب",text:"الشريحة 20: الوراثة: صنف الأب"},{depth:2,id:"الشريحة-21-الوراثة-الصنف-الابن",text:"الشريحة 21: الوراثة: الصنف الابن"},{depth:2,id:"الشريحة-22-demo-تمثيل-الوراثة-في-الذاكرة",text:"الشريحة 22: Demo — تمثيل الوراثة في الذاكرة"},{depth:2,id:"الشريحة-23-لماذا-نستخدم-الوراثة",text:"الشريحة 23: لماذا نستخدم الوراثة؟"},{depth:2,id:"الشريحة-24-الأصناف-الأبناء-تعيد-استخدام-شيفرة-الصنف-الأب",text:"الشريحة 24: الأصناف الأبناء تعيد استخدام شيفرة الصنف الأب"},{depth:2,id:"الشريحة-25-demo-الأصناف-الأبناء-تعيد-استخدام-شيفرة-الصنف-الأب",text:"الشريحة 25: Demo — الأصناف الأبناء تعيد استخدام شيفرة الصنف الأب"},{depth:2,id:"الشريحة-26-أين-يمكنني-استخدام-نسخة-من-صنف",text:"الشريحة 26: أين يمكنني استخدام نسخة من صنف؟"},{depth:2,id:"الشريحة-27-demo-أين-يمكنني-استخدام-نسخة-من-صنف",text:"الشريحة 27: Demo — أين يمكنني استخدام نسخة من صنف؟"},{depth:2,id:"الشريحة-28-جرب-بنفسك",text:"الشريحة 28: جرّب بنفسك!"},{depth:2,id:"الشريحة-29-demo-تجاوز-دوال-الصنف-الأعلى-overriding-superclasses",text:"الشريحة 29: Demo — تجاوز دوال الصنف الأعلى (Overriding Superclasses)"},{depth:2,id:"الشريحة-30-الدوال-المتجاوزة-في-الذاكرة",text:"الشريحة 30: الدوال المُتجاوَزة في الذاكرة"},{depth:2,id:"الشريحة-31-أي-دالة-ستنادى",text:"الشريحة 31: أي دالة ستُنادى؟"},{depth:2,id:"الشريحة-32-demo-اختبار-التساوي-مع-الأصناف-الأبناء",text:"الشريحة 32: Demo — اختبار التساوي مع الأصناف الأبناء"},{depth:2,id:"الشريحة-33-تصميم-كائني-التوجه-فن-أكثر-منه-علم",text:"الشريحة 33: تصميم كائني التوجه: فنّ أكثر منه علم"},{depth:2,id:"الشريحة-34-mit-opencourseware",text:"الشريحة 34: MIT OpenCourseWare"}],o=`<h1>المحاضرة 20: مثال البرمجة كائنية التوجه: متتبّع اللياقة (Fitness Tracker)</h1>
+<h2 id="المصادر-والنسبة-والترخيص">المصادر والنسبة والترخيص</h2>
+<p>هذه ترجمة عربية لمادة مقرّرة من MIT OpenCourseWare:</p>
+<blockquote>
+<p>Ana Bell. 6.100L Introduction to CS and Programming using Python, Fall 2022. Massachusetts Institute of Technology: MIT OpenCourseWare, https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/. License: CC BY-NC-SA 4.0.</p>
+</blockquote>
+<ul>
+<li>صفحة المحاضرة الرسمية على OCW: <a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-20-fitness-tracker-object-oriented-programming-example/">https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/pages/lecture-20-fitness-tracker-object-oriented-programming-example/</a></li>
+<li>الشرائح (ملف PDF): <a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec20_pdf/">https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec20_pdf/</a> — والملف المباشر: <a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec20.pdf">https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/mit6_100l_f22_lec20.pdf</a></li>
+<li>ملفات الشيفرة للتمرين: <a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec20_code_zip/">https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec20_code_zip/</a></li>
+<li>النص الكامل (Transcript) للمحاضرة على OCW: <a href="https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec20/">https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/resources/mit6_100l_f22_lec20/</a></li>
+<li>رخصة CC BY-NC-SA 4.0: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">https://creativecommons.org/licenses/by-nc-sa/4.0/</a></li>
+<li>شروط الاستخدام في MIT OCW: <a href="https://ocw.mit.edu/terms/">https://ocw.mit.edu/terms/</a></li>
+</ul>
+<p><strong>منهج الترجمة:</strong> عنوان واحد وترجمة عربية لكل شريحة من شرائح الملف الأصلي (34 شريحة). المواضع التي يعرض فيها النص المستخرَج مخططًا لكائن وصنف في الذاكرة، أو مخططًا هرميًا، نُقلت إلى جداول أو قوائم. الشيفرة وعناوين وثائق الأصناف (docstrings) تُركت بالإنجليزية كما هي. صور شاشات الأجهزة والمُصنِّعين (Apple وFitbit وGarmin) مستثناة من رخصة CC حسب تنويه حقوق النشر في ملف MIT نفسه، فلم تُنشر.</p>
+<h2 id="الشريحة-1-عنوان-المحاضرة">الشريحة 1: عنوان المحاضرة</h2>
+<ul>
+<li>FITNESS TRACKER — OBJECT ORIENTED PROGRAMMING EXAMPLE</li>
+<li>(download slides and .py files to follow along)</li>
+<li>6.100L Lecture 20 — Ana Bell</li>
+</ul>
+<h2 id="الشريحة-2-تنفيذ-الصنف-مقابل-استخدام-الصنف">الشريحة 2: تنفيذ الصنف مقابل استخدام الصنف</h2>
+<p>مقابل: <strong>تنفيذ الصنف (Implementing the class)</strong> ⟷ <strong>استخدام الصنف (Using the class)</strong></p>
+<table>
+<thead>
+<tr>
+<th>تنفيذ نوع كائن جديد بصنف</th>
+<th>استخدام نوع الكائن الجديد في الشيفرة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>عرّف الصنف</td>
+<td>أنشئ نسخًا (instances) من نوع الكائن</td>
+</tr>
+<tr>
+<td>عرّف سمات البيانات (ما هو الكائن)</td>
+<td>نفّذ عمليات عليها</td>
+</tr>
+<tr>
+<td>عرّف الدوال (كيفية استخدام الكائن)</td>
+<td>النسخ لها قيم محدّدة لكل سمة</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>الصنف يلتقط بشكل مجرّد الخصائص والسلوكيات المشتركة</li>
+<li>منظوران مختلفان لكتابة الشيفرة</li>
+</ul>
+<div class="exercises"><h2 id="الشريحة-3-مثال-متتبع-التمارين-workout-tracker">الشريحة 3: مثال متتبّع التمارين (Workout Tracker)</h2>
+<ul>
+<li>نشكر Sam Maynard على هذا مثال البرمجة الكائنية التوجه (شرائحه جرى تعديلها)</li>
+<li>نفترض أننا نكتب برنامجًا يتتبّع التمارين الرياضية، مثلًا لساعة ذكية (smart watch)</li>
+</ul>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> الصور في هذه الشريحة مستثناة من رخصة CC. تنويه حقوق النشر في الملف الأصلي:
+&quot;Watch and fitness tracker screens © Apple. Fitbit © Fitbit Inc. Different kinds of workouts. Apple Garmin watch © Garmin. All rights reserved. This content is excluded from our Creative Commons license.&quot;
+لذلك لم تُنشر الصور، ونُقلت النقاط النصية فقط. للمزيد: <a href="https://ocw.mit.edu/help/faq-fair-use/">https://ocw.mit.edu/help/faq-fair-use/</a></p>
+</blockquote>
+<h2 id="الشريحة-4-fitness-tracker">الشريحة 4: Fitness Tracker</h2>
+<p>أنواع مختلفة من التمارين الرياضية:</p>
+<p><strong>خصائص مشتركة:</strong></p>
+<ul>
+<li>الأيقونة (Icon)</li>
+<li>التاريخ (Date)</li>
+<li>وقت البداية (Start Time)</li>
+<li>وقت النهاية (End Time)</li>
+<li>معدل ضربات القلب (Heart Rate)</li>
+<li>النوع (Kind)</li>
+<li>السعرات الحرارية (Calories)</li>
+<li>المسافة (Distance)</li>
+</ul>
+<p><strong>خاص بسباحة:</strong></p>
+<ul>
+<li>سرعة السباحة (Swimming Pace)</li>
+<li>نوع الضربة (Stroke Type)</li>
+<li>تقسيمات كل 100 يارد (100 yd Splits)</li>
+</ul>
+<p><strong>خاص بجرية:</strong></p>
+<ul>
+<li>الإيقاع (Cadence)</li>
+<li>سرعة الجري (Running Pace)</li>
+<li>تقسيمات كل ميل (Mile Splits)</li>
+<li>الارتفاع (Elevation)</li>
+</ul>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> صور الشاشة في هذه الشريحة © Apple ومستثناة من رخصة CC، فلم تُنشر؛ ونُقلت القوائم النصية أعلاه.</p>
+</blockquote>
+<h2 id="الشريحة-5-مجموعات-الكائنات-لها-سمات-مراجعة">الشريحة 5: مجموعات الكائنات لها سمات (مراجعة)</h2>
+<ul>
+<li><strong>سمات بيانات (Data attributes)</strong>
+<ul>
+<li>كيف يمكن أن تمثّل كائنك ببيانات؟</li>
+<li>ما هو الكائن:
+<ul>
+<li>لإحداثيَّي (coordinate): قيمتَي <code>x</code> و<code>y</code></li>
+<li>لتمرين رياضي (workout): وقت البداية، ووقت النهاية، والسعرات الحرارية</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>سمات وظيفية (Functional attributes)</strong> — أي السلوك أو العمليات أو الدوال (methods):
+<ul>
+<li>كيف يمكن أن يتفاعل أحدهم مع الكائن؟</li>
+<li>ماذا يفعل:
+<ul>
+<li>لإحداثيَّين: إيجاد المسافة بين إحداثيين</li>
+<li>لتمرين رياضي: عرض بطاقة معلومات</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> صورة الشاشة في هذه الشريحة © Apple ومستثناة من رخصة CC، فلم تُنشر.</p>
+</blockquote>
+<h2 id="الشريحة-6-عرف-صنفا-بسيطا-مراجعة">الشريحة 6: عرّف صنفًا بسيطًا (مراجعة)</h2>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Workout</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, start, end, calories</span>):
+        <span class="hljs-variable language_">self</span>.start = start
+        <span class="hljs-variable language_">self</span>.end = end
+        <span class="hljs-variable language_">self</span>.calories = calories
+        <span class="hljs-variable language_">self</span>.icon = <span class="hljs-string">&#x27;😓😓&#x27;</span>
+        <span class="hljs-variable language_">self</span>.kind = <span class="hljs-string">&#x27;Workout&#x27;</span>
+
+my_workout = Workout(<span class="hljs-string">&#x27;9/30/2021 1:35 PM&#x27;</span>, <span class="hljs-number">9</span>/<span class="hljs-number">30</span>/<span class="hljs-number">2021</span> <span class="hljs-number">1</span>:<span class="hljs-number">57</span> PM<span class="hljs-string">&#x27;, 200)
+</span></code></pre>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> السطر الأخير في الملف الأصلي فيه خطأ مطبعي (علامتا اقتباس مفردتان ناقصتان في الوسيط); نُقل كما هو.</p>
+</blockquote>
+<h2 id="الشريحة-7-دوال-الجلب-ودوال-التعيين-مراجعة">الشريحة 7: دوال الجلب ودوال التعيين (مراجعة)</h2>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Workout</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, start, end, calories</span>):
+        <span class="hljs-variable language_">self</span>.start = start
+        <span class="hljs-variable language_">self</span>.end = end
+        <span class="hljs-variable language_">self</span>.calories = calories
+        <span class="hljs-variable language_">self</span>.icon = <span class="hljs-string">&#x27;😓😓&#x27;</span>
+        <span class="hljs-variable language_">self</span>.kind = <span class="hljs-string">&#x27;Workout&#x27;</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_calories</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.calories
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_start</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.start
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_end</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.end
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">set_calories</span>(<span class="hljs-params">self, calories</span>):
+        <span class="hljs-variable language_">self</span>.calories = calories
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">set_start</span>(<span class="hljs-params">self, start</span>):
+        <span class="hljs-variable language_">self</span>.start = start
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">set_end</span>(<span class="hljs-params">self, end</span>):
+        <span class="hljs-variable language_">self</span>.end = end
+</code></pre>
+<ul>
+<li>تُستخدم دوال الجلب ودوال التعيين خارج الصنف للوصول إلى سمات البيانات</li>
+</ul>
+<h2 id="الشريحة-8-demo-self-provides-access-to-class-state">الشريحة 8: Demo — SELF PROVIDES ACCESS TO CLASS STATE</h2>
+<pre><code class="language-python">my_workout = Workout(<span class="hljs-string">&#x27;9/30/2021 1:35 PM&#x27;</span>, <span class="hljs-number">9</span>/<span class="hljs-number">30</span>/<span class="hljs-number">2021</span> <span class="hljs-number">1</span>:<span class="hljs-number">57</span> PM<span class="hljs-string">&#x27;, 200)
+</span></code></pre>
+<p>مخطط الكائن في الذاكرة، كما يظهر في النص المستخرَج:</p>
+<table>
+<thead>
+<tr>
+<th>الصنف (Class State Dictionary)</th>
+<th>النسخة (Instance State Dictionary)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Workout</code> — الصنف</td>
+<td><code>my_workout</code> — نسخة</td>
+</tr>
+<tr>
+<td><code>__init__()</code></td>
+<td><code>start</code></td>
+</tr>
+<tr>
+<td><code>get_calories()</code></td>
+<td><code>end</code></td>
+</tr>
+<tr>
+<td><code>get_start()</code></td>
+<td><code>calories</code></td>
+</tr>
+<tr>
+<td><code>get_end()</code></td>
+<td><code>icon</code></td>
+</tr>
+<tr>
+<td><code>set_calories()</code></td>
+<td><code>kind</code></td>
+</tr>
+<tr>
+<td><code>set_start()</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>set_end()</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>تُوصول إليها عبر الكلمة المفتاحية <code>self</code></li>
+</ul>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> هذا المخطط في الأصل رسم يربط كل دالة أو سمة في الصنف بما يقابلها في النسخة عبر أسهم. الأسهم لا تظهر في طبقة النص، لذا نُقلت القائمة الاثنتين كما وردت من اليسار إلى اليمين، والربط بينها هو: <code>__init__</code> ينشئ سمات النسخة <code>start</code> و<code>end</code> و<code>calories</code> و<code>icon</code> و<code>kind</code>، ودوال الجلب/التعيين تقرأ وتكتب هذه السمات.</p>
+</blockquote>
+<h2 id="الشريحة-9-النسخة-instance-وصيغة-النقطة-مراجعة">الشريحة 9: النسخة (instance) وصيغة النقطة (مراجعة)</h2>
+<ul>
+<li>إنشاء نسخة (instantiation) يُنشئ نسخة من كائن:</li>
+</ul>
+<pre><code class="language-python">myWorkout = Workout(<span class="hljs-string">&#x27;9/30/2021 1:35 PM&#x27;</span>, <span class="hljs-string">&#x27;9/30/2021 1:57 PM&#x27;</span>, <span class="hljs-number">200</span>)
+</code></pre>
+<ul>
+<li>تُستخدم صيغة النقطة للوصول إلى السمات (بيانات ودوال)</li>
+<li>الأفضل استخدام دوال الجلب ودوال التعيين للوصول إلى سمات البيانات:</li>
+</ul>
+<pre><code class="language-python">my_workout.calories
+my_workout.get_calories()
+</code></pre>
+<h2 id="الشريحة-10-لماذا-نخفي-المعلومات">الشريحة 10: لماذا نخفي المعلومات؟</h2>
+<ul>
+<li>أبقِ واجهة صنفك أبسط ما يمكن</li>
+<li>استخدم دوال الجلب ودوال التعيين، لا السمات مباشرة
+<ul>
+<li>أي: استخدم دالة <code>get_calories()</code> <strong>وليس</strong> سمة <code>calories</code></li>
+</ul>
+</li>
+<li>هذا يمنع الأخطاء الناتجة عن تغيّرات التنفيذ</li>
+<li>قد يبدو تافهًا في البرامج الصغيرة، لكن في البرامج الكبيرة تزيد الواجهات المعقّدة احتمال حدوث الأخطاء</li>
+<li>إذا كنت تكتب صنفًا ليستخدمه آخرون، فأنت تلتزم بصيانة واجهته!</li>
+</ul>
+<h2 id="الشريحة-11-تغيير-تنفيذ-الصنف">الشريحة 11: تغيير تنفيذ الصنف</h2>
+<ul>
+<li>قد يغيّر كاتب تعريف الصنف التمثيل الداخلي أو طريقة التنفيذ</li>
+<li>استخدم متغيّر صنف (class variable)</li>
+<li>الآن تقدّر <code>get_calories</code> السعرات الحرارية بناءً على مدة التمرين إذا لم تُمرَّر سعرات</li>
+<li>إذا كنت تصل إلى سمات البيانات خارج الصنف وتغيّر تنفيذ الصنف، فقد تحصل على أخطاء</li>
+</ul>
+<h2 id="الشريحة-12-demo-changing-the-class-implementation">الشريحة 12: Demo — CHANGING THE CLASS IMPLEMENTATION</h2>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Workout</span>:
+    cal_per_hr = <span class="hljs-number">200</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, start, end, calories=<span class="hljs-literal">None</span></span>):
+        <span class="hljs-variable language_">self</span>.start = parser.parse(start)
+        <span class="hljs-variable language_">self</span>.end = parser.parse(end)
+        <span class="hljs-variable language_">self</span>.calories = calories <span class="hljs-comment"># may be None</span>
+        <span class="hljs-variable language_">self</span>.icon = <span class="hljs-string">&#x27;😓😓&#x27;</span>
+        <span class="hljs-variable language_">self</span>.kind = <span class="hljs-string">&#x27;Workout&#x27;</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_calories</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">if</span> (calories == <span class="hljs-literal">None</span>):
+            <span class="hljs-keyword">return</span> Workout.cal_per_hr*(<span class="hljs-variable language_">self</span>.end-<span class="hljs-variable language_">self</span>.start).total_seconds()/<span class="hljs-number">3600</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.calories
+</code></pre>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> الشرط <code>if (calories == None)</code> في الملف الأصلي يشير إلى <code>calories</code> غير المعرَّفة بدل <code>self.calories</code>، وهو خطأ في الأصل المطبوع؛ نُقل كما هو. (وفي ملفات الشيفرة المرافقة صُحّح إلى <code>self.calories</code>.)</p>
+</blockquote>
+<h2 id="الشريحة-13-ملاحظة-جانبية-كائنات-datetime-ومكتبات-بايثون-أخرى">الشريحة 13: ملاحظة جانبية: كائنات <code>datetime</code> ومكتبات بايثون أخرى</h2>
+<ul>
+<li>تأخذ السلسلة التي تمثّل التاريخ والوقت وتحوّلها إلى كائن <code>datetime</code>:</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-keyword">from</span> dateutil <span class="hljs-keyword">import</span> parser
+start = <span class="hljs-string">&#x27;9/30/2021 1:35 PM&#x27;</span>
+end = <span class="hljs-string">&#x27;9/30/2021 1:45 PM&#x27;</span>
+start_date = parser.parse(start)
+end_date = parser.parse(end)
+<span class="hljs-built_in">type</span>(start_date)
+</code></pre>
+<ul>
+<li>لماذا نفعل ذلك؟ لأنه يجعل العمليات على التواريخ سهلة! كائن <code>datetime</code> يتولّى كل شيء:</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-built_in">print</span>((end_date-start_date).total_seconds())
+</code></pre>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> عنوان الشريحة في الأصل «ASIDE: datetime OBJECTS / OTHER PYTON LIBRARIES»، وفيه خطأ مطبعي (<code>PYTON</code> بدل <code>PYTHON</code>)؛ نُقل العنوان مع تصحيح الهجاء، والكلمة <code>ASIDE</code> تُترجم هنا بـ «ملاحظة جانبية».</p>
+</blockquote>
+<h2 id="الشريحة-14-متغيرات-الصنف-تعيش-في-قاموس-حالة-الصنف">الشريحة 14: متغيّرات الصنف تعيش في قاموس حالة الصنف</h2>
+<table>
+<thead>
+<tr>
+<th>الصنف (Class State Dictionary)</th>
+<th>النسخة (Instance State Dictionary)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Workout</code> — الصنف</td>
+<td><code>my_workout</code> — نسخة</td>
+</tr>
+<tr>
+<td><code>__init__()</code></td>
+<td><code>start</code></td>
+</tr>
+<tr>
+<td><code>get_calories()</code></td>
+<td><code>end</code></td>
+</tr>
+<tr>
+<td><code>get_start()</code></td>
+<td><code>calories</code></td>
+</tr>
+<tr>
+<td><code>get_end()</code></td>
+<td><code>set_calories()</code></td>
+</tr>
+<tr>
+<td><code>set_calories()</code></td>
+<td><code>icon</code></td>
+</tr>
+<tr>
+<td><code>set_start()</code></td>
+<td><code>kind</code></td>
+</tr>
+<tr>
+<td><code>set_end()</code></td>
+<td><code>cal_per_hr</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>تُوصول إليها عبر الكلمة المفتاحية <code>self</code></li>
+</ul>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> هذا هو المخطط نفسه الذي في الشريحة 8 مع إضافة اسم واحد. في النص المستخرَج يتشابك ترتيب عمودَي القائمة، لذا نُقل إلى جدولين. والإضافة هي <code>cal_per_hr</code>: هي <strong>متغيّر صنف (class variable)</strong>، ولذلك تقع في قاموس حالة الصنف لا في قاموس حالة النسخة.</p>
+</blockquote>
+<h2 id="الشريحة-15-متغيرات-الصنف-class-variables">الشريحة 15: متغيّرات الصنف (Class Variables)</h2>
+<ul>
+<li>اربط متغيّر صنف مع كل نسخ الصنف</li>
+<li><strong>تحذير:</strong> إذا غيّرت نسخة واحدة متغيّر الصنف، فهو يتغيّر لكل النسخ</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Workout</span>:
+    cal_per_hr = <span class="hljs-number">200</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, start, end, calories</span>):
+        …
+
+<span class="hljs-built_in">print</span>(Workout.cal_per_hr)
+w = Workout(<span class="hljs-string">&#x27;1/1/2021 2:34&#x27;</span>, <span class="hljs-string">&#x27;1/1/2021 3:35&#x27;</span>, <span class="hljs-literal">None</span>)
+<span class="hljs-built_in">print</span>(w.cal_per_hr)
+Workout.cal_per_hr = <span class="hljs-number">250</span>
+<span class="hljs-built_in">print</span>(w.cal_per_hr)
+</code></pre>
+<h2 id="الشريحة-16-جرب-بنفسك">الشريحة 16: جرّب بنفسك!</h2>
+<ul>
+<li>اكتب أسطر شيفرة لإنشاء كائني <code>Workout</code></li>
+<li>كائن <code>Workout</code> واحد يُحفظ في المتغيّر <code>w_one</code>، من 1 يناير 2021 الساعة 3:30 مساءً حتى 4 مساءً. تريد تقدير السعرات الحرارية من هذا التمرين. اطبع عدد السعرات الحرارية لـ <code>w_one</code>.</li>
+<li>كائن <code>Workout</code> آخر يُحفظ في <code>w_two</code>، من 1 يناير 2021 الساعة 3:35 مساءً حتى 4 مساءً. أنت تعرف أنك حرقت 300 سعرة حرارية في هذا التمرين. اطبع عدد السعرات الحرارية لـ <code>w_two</code>.</li>
+</ul>
+<h2 id="الشريحة-17-التالي-تسلسلات-الأصناف-class-hierarchies">الشريحة 17: التالي: تسلسلات الأصناف (Class Hierarchies)</h2>
+<h2 id="الشريحة-18-التسلسلات-الهرمية-hierarchies">الشريحة 18: التسلسلات الهرمية (Hierarchies)</h2>
+<ul>
+<li><strong>صنف الأب (Parent class)</strong> — أي الصنف الأعلى (superclass)</li>
+<li><strong>صنف الابن (Child class)</strong> — أي الصنف الأدنى (subclass)
+<ul>
+<li>يرث كل البيانات والسلوكيات من صنف الأب</li>
+<li>يضيف معلومات أكثر</li>
+<li>يضيف سلوكيات أكثر</li>
+<li>يتجاوز (override) سلوكًا</li>
+</ul>
+</li>
+</ul>
+<p>المخطط الهرمي كما يظهر في النص المستخرَج:</p>
+<ul>
+<li><code>Workout</code></li>
+<li><code>Outdoor Workout</code> — ابن <code>Workout</code></li>
+<li><code>Indoor Workout</code> — ابن <code>Workout</code></li>
+<li><code>Swimming</code> — ابن <code>Outdoor Workout</code></li>
+<li><code>Running</code> — ابن <code>Outdoor Workout</code></li>
+<li><code>Treadmill</code> — ابن <code>Indoor Workout</code></li>
+<li><code>Weights</code> — ابن <code>Indoor Workout</code></li>
+</ul>
+<h2 id="الشريحة-19-fitness-tracker-أنواع-مختلفة-من-التمارين">الشريحة 19: Fitness Tracker — أنواع مختلفة من التمارين</h2>
+<p><strong>خصائص مشتركة:</strong></p>
+<ul>
+<li>الأيقونة (Icon)</li>
+<li>التاريخ (Date)</li>
+<li>الوقت (Time)</li>
+<li>وقت البداية (Start)</li>
+<li>وقت النهاية (End Time)</li>
+<li>معدل ضربات القلب (Heart Rate)</li>
+<li>النوع (Kind)</li>
+<li>السعرات الحرارية (Calories)</li>
+<li>المسافة (Distance)</li>
+</ul>
+<p><strong>خاص بسباحة:</strong></p>
+<ul>
+<li>سرعة السباحة (Swimming Pace)</li>
+<li>نوع الضربة (Stroke Type)</li>
+<li>تقسيمات كل 100 يارد (100 yd Splits)</li>
+</ul>
+<p><strong>خاص بجرية:</strong></p>
+<ul>
+<li>الإيقاع (Cadence)</li>
+<li>سرعة الجري (Running Pace)</li>
+<li>تقسيمات كل ميل (Mile Splits)</li>
+<li>الارتفاع (Elevation)</li>
+</ul>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> صور الشاشة في هذه الشريحة © Apple ومستثناة من رخصة CC، فلم تُنشر. ولاحظ أن هذه القائمة تختلف قليلًا عن الشريحة 4: هنا يظهر «Time» و«Start» منفصلين بدل «Start Time» فقط.</p>
+</blockquote>
+<h2 id="الشريحة-20-الوراثة-صنف-الأب">الشريحة 20: الوراثة: صنف الأب</h2>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Workout</span>(<span class="hljs-title class_ inherited__">object</span>):
+    cal_per_hr = <span class="hljs-number">200</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, start, end, calories=<span class="hljs-literal">None</span></span>):
+        …
+</code></pre>
+<ul>
+<li>كل شيء كائن</li>
+<li>كائن الصنف ينفّذ العمليات الأساسية في بايثون، مثل ربط المتغيّرات</li>
+</ul>
+<h2 id="الشريحة-21-الوراثة-الصنف-الابن">الشريحة 21: الوراثة: الصنف الابن</h2>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">RunWorkout</span>(<span class="hljs-title class_ inherited__">Workout</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, start, end, elev=<span class="hljs-number">0</span>, calories=<span class="hljs-literal">None</span></span>):
+        <span class="hljs-built_in">super</span>().__init__(start,end,calories)
+        <span class="hljs-variable language_">self</span>.icon = <span class="hljs-string">&#x27;🏃&#x27;</span>
+        <span class="hljs-variable language_">self</span>.kind = <span class="hljs-string">&#x27;Running&#x27;</span>
+        <span class="hljs-variable language_">self</span>.elev = elev
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_elev</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.elev
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">set_elev</span>(<span class="hljs-params">self, e</span>):
+        <span class="hljs-variable language_">self</span>.elev = e
+</code></pre>
+<ul>
+<li>تُضاف وظيفة جديدة، مثل <code>get_elev()</code></li>
+<li>يمكن استدعاء الدوال الجديدة على نسخة من نوع <code>RunWorkout</code></li>
+<li>تستخدم <code>__init__</code> الدالة <code>super()</code> لإعداد النسخة الأساسية من <code>Workout</code> (ويمكن أيضًا استدعاء <code>Workout.__init__(start,end,calories)</code> مباشرة)</li>
+</ul>
+<h2 id="الشريحة-22-demo-تمثيل-الوراثة-في-الذاكرة">الشريحة 22: Demo — تمثيل الوراثة في الذاكرة</h2>
+<table>
+<thead>
+<tr>
+<th>صنف <code>Workout</code> (Class State)</th>
+<th>صنف <code>RunWorkout</code> (Class State)</th>
+<th>النسخة (Instance State)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>__init__()</code></td>
+<td><code>RunWorkout</code> — الصنف</td>
+<td><code>start</code></td>
+</tr>
+<tr>
+<td><code>get_calories()</code></td>
+<td><code>__init__()</code></td>
+<td><code>end</code></td>
+</tr>
+<tr>
+<td><code>get_start()</code></td>
+<td><code>super()</code></td>
+<td><code>calories</code></td>
+</tr>
+<tr>
+<td><code>get_end()</code></td>
+<td><code>get_elev()</code></td>
+<td><code>icon</code></td>
+</tr>
+<tr>
+<td><code>set_calories()</code></td>
+<td><code>set_elev()</code></td>
+<td><code>kind</code></td>
+</tr>
+<tr>
+<td><code>set_start()</code></td>
+<td><code>cals_per_km</code> — يظهر لاحقًا</td>
+<td><code>elev</code></td>
+</tr>
+<tr>
+<td><code>set_end()</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>cal_per_hr</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>تُوصول إلى سمات النسخة عبر الكلمة المفتاحية <code>self</code></li>
+</ul>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> في النص المستخرَج تتشابك أسماء العناصر الثلاثة، لذا نُقلت إلى جدول بثلاثة أعمدة. الترتيب الحرفي للأسماء كما ورد: <code>Workout</code>، <code>Class</code>، <code>get_start()</code>، <code>get_end()</code>، <code>RunWorkout</code>، <code>set_calories()</code>، <code>instance</code>، <code>set_start()</code>، <code>super()</code>، <code>RunWorkout</code>، <code>Class</code>، <code>start</code>، <code>end</code>، <code>set_end()</code>، <code>calories</code>، <code>__init__()</code>، <code>icon</code>، <code>cal_per_hr</code>، <code>kind</code>، <code>elev</code>، <code>get_elev()</code>، <code>set_elev()</code>، <code>Accessed via &quot;self&quot; keyword</code>، <code>Instance State</code>، <code>Class State</code>.</p>
+</blockquote>
+<h2 id="الشريحة-23-لماذا-نستخدم-الوراثة">الشريحة 23: لماذا نستخدم الوراثة؟</h2>
+<ul>
+<li><strong>تحسين الوضوح</strong>
+<ul>
+<li>أوجه التشابه صريحة في صنف الأب</li>
+<li>أوجه الاختلاف صريحة في الصنف الابن</li>
+</ul>
+</li>
+<li><strong>إعادة استخدام الشيفرة</strong></li>
+<li><strong>تعزيز الترابطية (Modularity)</strong>
+<ul>
+<li>يمكن تمرير الأصناف الأبناء إلى أي دالة تستخدم الصنف الأب</li>
+</ul>
+</li>
+</ul>
+<h2 id="الشريحة-24-الأصناف-الأبناء-تعيد-استخدام-شيفرة-الصنف-الأب">الشريحة 24: الأصناف الأبناء تعيد استخدام شيفرة الصنف الأب</h2>
+<ul>
+<li>دالة طباعة معقّدة مشتركة بين كل الأصناف الأبناء</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Workout</span>(<span class="hljs-title class_ inherited__">object</span>):
+    ………
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__str__</span>(<span class="hljs-params">self</span>):
+        outputs
+        width = <span class="hljs-number">16</span>
+        retstr = <span class="hljs-string">f&quot;|<span class="hljs-subst">{<span class="hljs-string">&#x27;–&#x27;</span>*width}</span>|\\n&quot;</span>
+        retstr += <span class="hljs-string">f&quot;|<span class="hljs-subst">{<span class="hljs-string">&#x27; &#x27;</span> *width}</span>|\\n&quot;</span>
+        iconLen = <span class="hljs-number">0</span>
+        retstr += <span class="hljs-string">f&quot;| <span class="hljs-subst">{self.icon}</span><span class="hljs-subst">{<span class="hljs-string">&#x27; &#x27;</span>*(width-<span class="hljs-number">3</span>)}</span>|\\n&quot;</span>
+        retstr += <span class="hljs-string">f&quot;| <span class="hljs-subst">{self.kind}</span><span class="hljs-subst">{<span class="hljs-string">&#x27; &#x27;</span>*(width-<span class="hljs-built_in">len</span>(self.kind)-<span class="hljs-number">1</span>)}</span>|\\n&quot;</span>
+        retstr += <span class="hljs-string">f&quot;|<span class="hljs-subst">{<span class="hljs-string">&#x27; &#x27;</span> *width}</span>|\\n&quot;</span>
+        duration_str = <span class="hljs-built_in">str</span>(<span class="hljs-variable language_">self</span>.get_duration())
+        retstr += <span class="hljs-string">f&quot;| <span class="hljs-subst">{duration_str}</span><span class="hljs-subst">{<span class="hljs-string">&#x27; &#x27;</span>*(width-<span class="hljs-built_in">len</span>(duration_str)-<span class="hljs-number">1</span>)}</span>|\\n&quot;</span>
+        cal_str = <span class="hljs-string">f&quot;<span class="hljs-subst">{self.get_calories():<span class="hljs-number">.0</span>f}</span>&quot;</span>
+        retstr += <span class="hljs-string">f&quot;| <span class="hljs-subst">{cal_str}</span> Calories <span class="hljs-subst">{<span class="hljs-string">&#x27; &#x27;</span>*(width-<span class="hljs-built_in">len</span>(cal_str)-<span class="hljs-number">11</span>)}</span>|\\n&quot;</span>
+        retstr += <span class="hljs-string">f&quot;|<span class="hljs-subst">{<span class="hljs-string">&#x27; &#x27;</span> *width}</span>|\\n&quot;</span>
+        retstr += <span class="hljs-string">f&quot;|<span class="hljs-subst">{<span class="hljs-string">&#x27;_&#x27;</span>*width}</span>|\\n&quot;</span>
+        <span class="hljs-keyword">return</span> retstr
+</code></pre>
+<h2 id="الشريحة-25-demo-الأصناف-الأبناء-تعيد-استخدام-شيفرة-الصنف-الأب">الشريحة 25: Demo — الأصناف الأبناء تعيد استخدام شيفرة الصنف الأب</h2>
+<pre><code class="language-python">w=Workout(…)
+rw=RunWorkout(…)
+sw=SwimWorkout(…)
+<span class="hljs-built_in">print</span>(w)
+<span class="hljs-built_in">print</span>(rw)
+<span class="hljs-built_in">print</span>(sw)
+</code></pre>
+<h2 id="الشريحة-26-أين-يمكنني-استخدام-نسخة-من-صنف">الشريحة 26: أين يمكنني استخدام نسخة من صنف؟</h2>
+<ul>
+<li>يمكننا استخدام نسخة من <code>RunWorkout</code> في أي مكان يمكن فيه استخدام <code>Workout</code></li>
+<li>العكس غير صحيح (لا يمكنك استخدام <code>Workout</code> في أي مكان يُستخدم فيه <code>RunWorkout</code>)</li>
+<li>فكّر في دالتين مساعدتين:</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">total_calories</span>(<span class="hljs-params">workouts</span>):
+    cals = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> workouts:
+        cals += w.get_cals()
+    <span class="hljs-keyword">return</span> cals
+</code></pre>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">total_elevation</span>(<span class="hljs-params">run_workouts</span>):
+    elev = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> run_workouts:
+        elev += w.get_elev()
+    <span class="hljs-keyword">return</span> elev
+</code></pre>
+<h2 id="الشريحة-27-demo-أين-يمكنني-استخدام-نسخة-من-صنف">الشريحة 27: Demo — أين يمكنني استخدام نسخة من صنف؟</h2>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">total_calories</span>(<span class="hljs-params">workouts</span>):
+    cals = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> workouts:
+        cals += w.get_cals()
+    <span class="hljs-keyword">return</span> cals
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">total_elevation</span>(<span class="hljs-params">run_workouts</span>):
+    elev = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> run_workouts:
+        elev += w.get_elev()
+    <span class="hljs-keyword">return</span> elev
+
+w1 = Workout(<span class="hljs-string">&#x27;9/30/2021 1:35 PM&#x27;</span>,<span class="hljs-string">&#x27;9/30/2021 2:05 PM&#x27;</span>)
+w2 = Workout(<span class="hljs-string">&#x27;9/30/2021 4:35 PM&#x27;</span>,<span class="hljs-string">&#x27;9/30/2021 5:05 PM&#x27;</span>)
+rw1 = RunWorkout(<span class="hljs-string">&#x27;9/30/2021 1:35 PM&#x27;</span>,<span class="hljs-string">&#x27;9/30/2021 3:35 PM&#x27;</span>, <span class="hljs-number">100</span>)
+rw2 = RunWorkout(<span class="hljs-string">&#x27;9/30/2021 1:35 PM&#x27;</span>,<span class="hljs-string">&#x27;9/30/2021 3:35 PM&#x27;</span>, <span class="hljs-number">200</span>)
+
+total_calories([w1,w2,rw1,rw2])      <span class="hljs-comment"># (1)  # cal = 100+100+400+400</span>
+
+total_elevation([rw1,rw2])          <span class="hljs-comment"># (2)  # elev = 100+200</span>
+
+total_elevation([w1,rw1])           <span class="hljs-comment"># (3)  # err! w1 has no elev method</span>
+</code></pre>
+<h2 id="الشريحة-28-جرب-بنفسك">الشريحة 28: جرّب بنفسك!</h2>
+<ul>
+<li>لكل سطر ينشئ كائنًا أدناه، أخبرني:
+<ul>
+<li>ما قيمة السعرات الحرارية عبر <code>get_calories()</code>؟</li>
+<li>ما قيمة الارتفاع عبر <code>get_elev()</code>؟</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-python">w1 = Workout(<span class="hljs-string">&#x27;9/30/2021 2:20 PM&#x27;</span>,<span class="hljs-string">&#x27;9/30/2021 2:50 PM&#x27;</span>)
+w2 = Workout(<span class="hljs-string">&#x27;9/30/2021 2:20 PM&#x27;</span>,<span class="hljs-string">&#x27;9/30/2021 2:50 PM&#x27;</span>,<span class="hljs-number">450</span>)
+rw1 = RunWorkout(<span class="hljs-string">&#x27;9/30/2021 2:20 PM&#x27;</span>,<span class="hljs-string">&#x27;9/30/2021 2:50 PM&#x27;</span>,<span class="hljs-number">250</span>)
+rw2 = RunWorkout(<span class="hljs-string">&#x27;9/30/2021 2:20 PM&#x27;</span>,<span class="hljs-string">&#x27;9/30/2021 2:50 PM&#x27;</span>,<span class="hljs-number">250</span>,<span class="hljs-number">300</span>)
+rw3 = RunWorkout(<span class="hljs-string">&#x27;9/30/2021 2:20 PM&#x27;</span>,<span class="hljs-string">&#x27;9/30/2021 2:50 PM&#x27;</span>,calories=<span class="hljs-number">300</span>)
+</code></pre>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> سطرا <code>rw2</code> و<code>rw3</code> في نص الشريحة المستخرَج مختصران عند نهاية السطر في الملف الأصلي؛ نُقلا كما هما.</p>
+</blockquote>
+<h2 id="الشريحة-29-demo-تجاوز-دوال-الصنف-الأعلى-overriding-superclasses">الشريحة 29: Demo — تجاوز دوال الصنف الأعلى (Overriding Superclasses)</h2>
+<ul>
+<li>تجاوز الصنف الأعلى — إضافة حساب للسعرات الحرارية اعتمادًا على المسافة</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">RunWorkout</span>(<span class="hljs-title class_ inherited__">Workout</span>):
+    cals_per_km = <span class="hljs-number">100</span>
+    …
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_calories</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">self</span>.route_gps_points != <span class="hljs-literal">None</span>):
+            dist = <span class="hljs-number">0</span>
+            lastP = <span class="hljs-variable language_">self</span>.routeGpsPoints[<span class="hljs-number">0</span>]
+            <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.routeGpsPoints[<span class="hljs-number">1</span>:]:
+                dist += gpsDistance(lastP,p)
+                lastP = p
+            <span class="hljs-keyword">return</span> dist * RunWorkout.cals_per_km
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">super</span>().get_calories()
+</code></pre>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> اسم السمة في شرط <code>if</code> هو <code>self.route_gps_points</code> بينما يُستعمل في بقية الدالة <code>self.routeGpsPoints</code>؛ هذا التعارض موجود في الأصل المطبوع وقد نُقل كما هو.</p>
+</blockquote>
+<h2 id="الشريحة-30-الدوال-المتجاوزة-في-الذاكرة">الشريحة 30: الدوال المُتجاوَزة في الذاكرة</h2>
+<table>
+<thead>
+<tr>
+<th>صنف <code>Workout</code> (Class State)</th>
+<th>صنف <code>RunWorkout</code> (Class State)</th>
+<th>النسخة (Instance State)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>__init__()</code></td>
+<td><code>RunWorkout</code> — الصنف</td>
+<td><code>start</code></td>
+</tr>
+<tr>
+<td><code>get_start()</code></td>
+<td><code>__init__()</code></td>
+<td><code>end</code></td>
+</tr>
+<tr>
+<td><code>get_end()</code></td>
+<td><code>super()</code></td>
+<td><code>calories</code></td>
+</tr>
+<tr>
+<td><code>set_calories()</code></td>
+<td><code>get_elev()</code></td>
+<td><code>icon</code></td>
+</tr>
+<tr>
+<td><code>set_start()</code></td>
+<td><code>set_elev()</code></td>
+<td><code>kind</code></td>
+</tr>
+<tr>
+<td><code>set_end()</code></td>
+<td><code>get_calories()</code></td>
+<td><code>elev</code></td>
+</tr>
+<tr>
+<td><code>cal_per_hr</code></td>
+<td><code>cals_per_km</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>get_calories()</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>تُوصول إلى سمات النسخة عبر الكلمة المفتاحية <code>self</code></li>
+</ul>
+<blockquote>
+<p><strong>ملاحظة المترجم:</strong> في هذه الشريحة يظهر <code>get_calories()</code> مرتين: مرة في صنف <code>Workout</code> (الأصل) ومرة في صنف <code>RunWorkout</code> (الدالة المُتجاوَزة، وبداخلها <code>super()</code>). هذا هو جوهر الشريحة.</p>
+</blockquote>
+<h2 id="الشريحة-31-أي-دالة-ستنادى">الشريحة 31: أي دالة ستُنادى؟</h2>
+<ul>
+<li><strong>التجاوز (Overriding):</strong> دوال في الصنف الابن لها نفس اسم دوال في الصنف الأعلى</li>
+<li>لنسخة من صنف ما، ابحث عن اسم الدالة في تعريف الصنف الحالي</li>
+<li>إذا لم يُعثر عليه، ابحث عن اسم الدالة صعودًا في التسلسل الهرمي (في الصنف الأب، ثم الجد، وهكذا)</li>
+<li>استخدم أول دالة تصعد في التسلسل الهرمي وتجدها بهذا الاسم</li>
+</ul>
+<p>المخطط مع <code>get_calories()</code> في كل مستوى:</p>
+<ul>
+<li><code>Workout</code> ← فيه <code>get_calories()</code></li>
+<li><code>Outdoor Workout</code> ← <code>get_calories()</code>؟</li>
+<li><code>Indoor Workout</code> ← <code>get_calories()</code>؟</li>
+<li><code>Swimming</code></li>
+<li><code>Running</code> ← <code>get_calories()</code>؟</li>
+<li><code>Weights</code></li>
+<li><code>Treadmill</code></li>
+</ul>
+<h2 id="الشريحة-32-demo-اختبار-التساوي-مع-الأصناف-الأبناء">الشريحة 32: Demo — اختبار التساوي مع الأصناف الأبناء</h2>
+<ul>
+<li>مع الأصناف الأبناء، غالبًا ما نريد ضمان تساوي الصنف الأساسي، إضافةً إلى الخصائص الجديدة في الصنف الابن</li>
+</ul>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Workout</span>(<span class="hljs-title class_ inherited__">object</span>):
+    ……
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__eq__</span>(<span class="hljs-params">self, other</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">type</span>(<span class="hljs-variable language_">self</span>) == <span class="hljs-built_in">type</span>(other) <span class="hljs-keyword">and</span> \\
+        <span class="hljs-variable language_">self</span>.startDate == other.startDate <span class="hljs-keyword">and</span> \\
+        <span class="hljs-variable language_">self</span>.endDate == other.endDate <span class="hljs-keyword">and</span> \\
+        <span class="hljs-variable language_">self</span>.kind == other.kind <span class="hljs-keyword">and</span> \\
+        <span class="hljs-variable language_">self</span>.get_calories() == other.get_calories()
+</code></pre>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">RunWorkout</span>(<span class="hljs-title class_ inherited__">Workout</span>):
+    ……
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__eq__</span>(<span class="hljs-params">self,other</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">super</span>().__eq__(other) <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.elev == other.elev
+</code></pre>
+<h2 id="الشريحة-33-تصميم-كائني-التوجه-فن-أكثر-منه-علم">الشريحة 33: تصميم كائني التوجه: فنّ أكثر منه علم</h2>
+<ul>
+<li>البرمجة الكائنية التوجه أداة قويّة لتجزئة شيفرتك وتجميع الحالة مع الدوال</li>
+<li><strong>لكن</strong></li>
+<li>من الممكن أن تفرط في ذلك</li>
+<li>المبرمجون الجدد في البرمجة الكائنية التوجه كثيرًا ما ينشئون تسلسلات أصناف متقاربة</li>
+<li>ليس بالضرورة فكرة جيدة</li>
+<li>فكّر في مستخدمي شيفرتك: هل سيبدو تفكيكك منطقيًا لهم؟</li>
+<li>لأن الدالة التي ستُنادى ضمنية داخل التسلسل الهرمي للأصناف، قد يصعب أحيانًا استدلال تدفّق التحكّم</li>
+<li>الإنترنت مليء بالآراء حول البرمجة الكائنية التوجه و«تصميم الشيفرة الجيد» — عليك أن تبني ذوقك الخاص من خلال الخبرة!</li>
+</ul>
+<h2 id="الشريحة-34-mit-opencourseware">الشريحة 34: MIT OpenCourseWare</h2>
+<ul>
+<li><a href="https://ocw.mit.edu">https://ocw.mit.edu</a></li>
+<li>6.100L Introduction to Computer Science and Programming Using Python — Fall 2022</li>
+<li>ولمعلومات كيفية الاستشهاد بهذه المواد أو شروط استخدامها، راجع: <a href="https://ocw.mit.edu/terms">https://ocw.mit.edu/terms</a></li>
+</ul>
+</div>`,c={book:s,chapter:n,chapterTitle:a,slug:e,title:l,headings:t,html:o};export{s as book,n as chapter,a as chapterTitle,c as default,t as headings,o as html,e as slug,l as title};

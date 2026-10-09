@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -106,11 +106,11 @@ class="gof-pattern">المُفسِّر (Interpreter)</a>.</p>
 </code></pre>
 <p>ثم تأخذ كل قطعة من ذلك التعبير، كل قاعدة في قواعد اللغة، وتحولها إلى <em>كائن</em>. فالأعداد
 الحرفية ستكون كائنات:</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/bytecode-1.webp" alt="A series of number literal objects." />
+<img src="/arabic-cs-library/images/game-programming-patterns/bytecode-1.webp" alt="سلسلة من كائنات الثوابت الرقمية." />
 <p>في الأساس، هي أغلفة صغيرة حول القيمة الخام. وسيكون المعامِلات كائنات أيضاً، وستحمل
 مراجع إلى معاملاتها. وإذا أخذت الأقواس والأسبقية في الحسبان، فإن ذلك التعبير <span
 name="magic">كسحرٍ</span> يتحوّل إلى شجرة صغيرة من الكائنات هكذا:</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/bytecode-2.webp" alt="A syntax tree. The number literals are connected by operator objects." />
+<img src="/arabic-cs-library/images/game-programming-patterns/bytecode-2.webp" alt="شجرة صياغة. الثوابت الرقمية متّصلة بكائنات العوامل." />
 <aside name="magic">
 <p>أيّ «سحر» هذا؟ إنه بسيط — <em>التحليل</em> (parsing). فأداة التحليل تأخذ سلسلة من
 المحارف وتحوّلها إلى <em>شجرة بناء مجرّدة</em> (abstract syntax tree)، وهي مجموعة من
@@ -329,7 +329,7 @@ name="assembly">لغة تجميع</span> (assembly language) — حتى لو ك�
 <p>ولترميز تعويذ في بيانات، فإننا نخزّن مصفوفة من قيم <code>enum</code>. ولدينا عدد قليل فقط من
 الأوّليات المختلفة، لذا فإن نطاق قيم <code>enum</code> يتّسع بسهولة في بايت واحد. وهذا يعني أن
 شيفرة التعويذ ليست سوى قائمة من <span name="byte">بايتات</span> (bytes) — أي «شيفرة البايت».</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/bytecode-3.webp" alt="A sequence of bytecode instructions: 0x00 HEALTH, 0x03 SOUND, 0x004 PARTICLES, ..." />
+<img src="/arabic-cs-library/images/game-programming-patterns/bytecode-3.webp" alt="تسلسل من تعليمات الشفرة البينية: 0x00 HEALTH، 0x03 SOUND، 0x004 PARTICLES، ..." />
 <aside name="byte">
 <p>تستخدم بعض الآلات الافتراضية لشيفرة البايت أكثر من بايت واحد لكل تعليمة، ولها قواعد
 أعقد في كيفية فكّ ترميزها. فشيفرة الآلة الحقيقية على الشرائح الشائعة مثل x86 أكثر
@@ -386,17 +386,17 @@ name="stack-machine">بمكدّس</span>.</p>
 فك ترميز عدد صحيح متعدّد البايتات، لكن في التنفيذ الحقيقي ستريد أن تدعم قيماً حرفية
 تغطّي كامل نطاقك العددي.</p>
 </aside>
-<img src="/arabic-cs-library/images/game-programming-patterns/bytecode-4.webp" alt="Binary encoding of a literal instruction: 0x05 (LITERAL) followed by 123 (the value)." />
+<img src="/arabic-cs-library/images/game-programming-patterns/bytecode-4.webp" alt="تمثيل ثنائي لتعليمية حرفية واحدة: 0x05 (LITERAL) يليها 123 (القيمة)." />
 <p>تقرأ <span name="single">البايت</span> التالي في تدفّق شيفرة البايت <em>كعدد</em> وتدفعه إلى
 المكدّس.
 لننصّل بعض هذه التعليمات معاً ونراقب المُفسّر ينفّذها لتكتشف إحساس كيفية عمل المكدّس.
 نبدأ بمكدّس فارغ والمُفسّر يشير إلى أول تعليمة:</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/bytecode-5.webp" alt="Executing a bytecode sequence. The execution pointer points to the first literal instruction and the stack is empty." />
+<img src="/arabic-cs-library/images/game-programming-patterns/bytecode-5.webp" alt="تنفيذ تسلسل من الشفرة البينية. مؤشر التنفيذ يشير إلى التعليمة الحرفية الأولى والكدس فارغ." />
 <p>أولاً، ينفّذ أول <code>INST_LITERAL</code>. يقرأ البايت التالي من شيفرة البايت (<code>0</code>) ويدفعه إلى
 المكدّس:</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/bytecode-6.webp" alt="The next step. The literal 0 has been pushed onto the stack and the execution pointer is on the next literal." />
+<img src="/arabic-cs-library/images/game-programming-patterns/bytecode-6.webp" alt="الخطوة التالية. دُفِعت القيمة الحرفية 0 إلى الكدس وأصبح مؤشر التنفيذ عند الحرفية التالية." />
 <p>ثم ينفّذ <code>INST_LITERAL</code> الثانية. يقرأ <code>10</code> ويدفعه:</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/bytecode-7.webp" alt="The next step. Now 10 has been pushed onto the stack and the execution pointer is at the Health instruction." />
+<img src="/arabic-cs-library/images/game-programming-patterns/bytecode-7.webp" alt="الخطوة التالية. دُفِعت القيمة 10 إلى الكدس ووصل مؤشر التنفيذ إلى تعليمة Health." />
 <p>وأخيراً، ينفّذ <code>INST_SET_HEALTH</code>. يسحب <code>10</code> ويخزّنها في <code>amount</code>، ثم يسحب <code>0</code>
 ويخزّنها في <code>wizard</code>. ثم يستدعي <code>setHealth()</code> بتلك المعاملات.</p>
 <p>ها هي! لقد حصلنا على تعويذ يضبط صحة ساحر اللاعب على عشر نقاط. الآن، لدينا مرونة كافية
@@ -519,7 +519,7 @@ niques,_and_Tools).</p>
 صغيرة وسحبها، أو بسحب عناصر من القوائم، أو بأي شيء آخر منطقي يناسب نوع السلوك
 الذي تريدهم أن ينشئوه.</p>
 <p><span name="text"></span></p>
-<img src="/arabic-cs-library/images/game-programming-patterns/bytecode-8.webp" alt="A mock-up of a little tree-based UI for authoring behavior." />
+<img src="/arabic-cs-library/images/game-programming-patterns/bytecode-8.webp" alt="نموذج أولي لواجهة صغيرة قائمة على الشجرة لتأليف السلوكيات." />
 <aside name="text">
 <p>كان نظام السكربت الذي كتبته لـ<a href="http://en.wikipedia.org/wiki/Henry_Hatsworth_in_the_Puzzling_Adventure">Henry Hatsworth in the Puzzling
 Adventure</a> يعمل على هذا النحو.</p>
@@ -849,7 +849,7 @@ class="gof-pattern">المُفسِّر (Interpreter)</a> لدى «الرباعي
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -857,8 +857,8 @@ class="gof-pattern">المُفسِّر (Interpreter)</a> لدى «الرباعي
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

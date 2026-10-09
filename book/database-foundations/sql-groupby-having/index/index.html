@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -106,7 +106,7 @@ LINE <span class="hljs-number">2</span>: <span class="hljs-keyword">select</span
 <h3 id="الحد-الأدنى-والحد-الأعلى-والمتوسط">الحد الأدنى والحد الأعلى والمتوسط</h3>
 <p>ودوال التجميع الثلاث الأخيرة هي <code>MIN()</code> و<code>MAX()</code> و<code>AVG()</code>، على التوالي للحد الأدنى والحد الأعلى أو المتوسط الحسابي <em>للقيم في عمود معين</em>. أنجز التمارين التالية.</p>
 <p>أنشئ قائمة تعرض متوسط عدد النقاط لكل فصل دراسي. ورتّب صفوف الإجابة حسب الفصل من الصغير إلى الكبير. وينبغي أن تحصل على الشكل أدناه. وهل يمكنك إدراج اسم المقرر أيضًا؟</p>
-<p><img src="/arabic-cs-library/images/database-foundations/sql-groupby-having-2-groupavgsemester.webp" alt="Grouped on semester"></p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-groupby-having-2-groupavgsemester.webp" alt="مجمّع حسب الفصل الدراسي"></p>
 <h4>الحل</h4>
 <p>لن تحتوي كل مهمة على الكلمتين &quot;لكل&quot;. فاللغة فيها بدائل كثيرة لطلب الشيء نفسه. لذا هنا سيتعيّن عليك التجميع حسب الفصل الدراسي وسيتعيّن عليك استخدام دالة التجميع <code>AVG()</code>. ومن الواضح أنك لا تستطيع استرجاع معلومات من مقررات فردية (مثل الاسم) لأنها &quot;معلومات داخل الصندوق&quot;. والاستعلام التالي حل ممكن:</p>
 <pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> semester, <span class="hljs-built_in">AVG</span>(credits) <span class="hljs-keyword">AS</span> &quot;average number of credits&quot;
@@ -136,7 +136,7 @@ LINE <span class="hljs-number">2</span>: <span class="hljs-keyword">select</span
 <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">1</span>, <span class="hljs-number">2</span>;
 </code></pre>
 <p>ينشئ هذا الاستعلام 15 صندوقًا (انظر الشكل). ويظهر الصندوق الأول (بإطار برتقالي) على التسمية &quot;الفصل الأول، مقررات ذات 3 نقاط&quot;. ويوجد أربعة صفوف في هذا الصندوق. أما الصندوق الثاني (بإطار أزرق) فهو &quot;الفصل الأول، مقررات ذات 4 نقاط&quot;. وفي هذا الصندوق مقرر واحد فقط. وهكذا.</p>
-<p><img src="/arabic-cs-library/images/database-foundations/sql-groupby-having-3-grouptweekol.webp" alt="Grouping can be on multiple columns"></p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-groupby-having-3-grouptweekol.webp" alt="يمكن التجميع على أعمدة متعددة"></p>
 <h2 id="having">HAVING</h2>
 <p>سبق أن غُطّيت جملة <code>HAVING</code> <a href="/arabic-cs-library/book/database-foundations/sql-csv/index#HAVING">في فصل ملفات CSV</a>. ويجد الطلاب غالبًا صعوبة في تمييزها عن جملة <code>WHERE</code>، وهو أمر مفهوم لأنها تفعل شيئًا مشابهًا. فـ <code>WHERE</code> تأتي مباشرة بعد تنفيذ المكوّن <code>FROM</code> وتختار <em>أي الصفوف يجوز أن تبقى وأيّها سيختفي</em>.</p>
 <p>أما المكوّن <code>HAVING</code> فلا يُنفَّذ إلا بعد إنشاء &quot;الصناديق&quot; عند التجميع. <em>ويقرر هذا الشرط أي الصناديق يجوز أن تبقى وأيّها سيختفي من النتيجة</em>.</p>
@@ -144,7 +144,7 @@ LINE <span class="hljs-number">2</span>: <span class="hljs-keyword">select</span
 <p>أنجز الآن التمارين التالية.</p>
 <p>بالنسبة إلى الفصول الفردية (أي 1 و3 و5...)، اسرد عدد النقاط وعدد المقررات في ذلك الفصل. ورتّب حسب عدد النقاط المتناقص. وينبغي أن تحصل على الشكل التالي.</p>
 <p>ونصيحة لإيجاد الفصول الفردية: انظر لهذا الغرض في إمكانات <em>باقي القسمة الصحيحة</em> (عملية &quot;المودولو&quot;)، وابحث عن &quot;Modulo&quot; في صفحة <a href="https://www.postgresql.org/docs/current/functions-math.html">https://www.postgresql.org/docs/current/functions-math.html</a>.</p>
-<p><img src="/arabic-cs-library/images/database-foundations/sql-groupby-having-4-grouponevensem.webp" alt="group on odd semesters"></p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-groupby-having-4-grouponevensem.webp" alt="تجميع على فصول دراسية فردية"></p>
 <h4>الحل</h4>
 <pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> semester, <span class="hljs-built_in">SUM</span>(credits) <span class="hljs-keyword">AS</span> &quot;total number of credits&quot;, <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>) <span class="hljs-keyword">AS</span> &quot;number of courses&quot;
 <span class="hljs-keyword">FROM</span> course
@@ -181,7 +181,7 @@ LINE <span class="hljs-number">2</span>: <span class="hljs-keyword">select</span
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -189,8 +189,8 @@ LINE <span class="hljs-number">2</span>: <span class="hljs-keyword">select</span
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

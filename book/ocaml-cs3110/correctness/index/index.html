@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -251,7 +251,7 @@
 <p>كان أحد الأسباب المهمة لاستحداث كتابة مواصفات الدوال تمكين <em>الاستدلال المحلي (local reasoning)</em>: فبمجرد أن تكون للدالة مواصفة، يمكننا الحكم على ما إذا كانت الدالة تفعل ما يفترض بها دون النظر إلى بقية البرنامج. ويمكننا أيضًا الحكم على عمل بقية البرنامج دون النظر إلى شيفرة الدالة. غير أننا لا نستطيع الاستدلال محليًا على الدوال الفردية في تنفيذات الوحدات الثلاثة المذكورة للتو. والمشكلة أننا لا نملك معلومات كافية عن العلاقة بين النوع الملموس (<code>int list</code>) والنوع المجرّد المقابل (<code>set</code>). ويمكن معالجة هذا النقص في المعلومات بإضافة نوعين جديدين من التعليقات إلى التنفيذ: <em>دالة التجريد (abstraction function)</em> و<em>ثابت التمثيل (representation invariant)</em> لنوع البيانات المجرّد. وسننتقل إلى مناقشتهما بعد ذلك.</p>
 <h3 id="831-دوال-التجريد">8.3.1. دوال التجريد <span class="content-anchor" id="abstraction-functions"></span></h3>
 <p>ينبغي ألا يستطيع عميل أي تنفيذ للوحدة <code>Set</code> تمييزه عن أي تنفيذ آخر بناءً على سلوكه الوظيفي. وبقدر ما يستطيع العميل معرفته، تعمل العمليات كعمليات على المثال الرياضي المثالي للمجموعة. ففي التنفيذ الأول، تكون القوائم <code>[3; 1]</code> و<code>[1; 3]</code> و<code>[1; 1; 3]</code> قابلة للتمييز عند المنفّذ، لكن ليس عند العميل. فالعميل يراها كلها تمثل المجموعة المجرّدة {1, 3} ولا يمكن تمييزها بأي من عمليات توقيع <code>Set</code>. ومن وجهة نظر العميل، يصف نوع البيانات المجرّد مجموعة من القيم المجرّدة والعمليات المرتبطة بها. ويعلم المنفّذ أن هذه القيم المجرّدة تمثلها قيم ملموسة قد تحتوي معلومات إضافية غير مرئية من منظور العميل. ويوصف هذا الفقدان للمعلومات بـ <em>دالة التجريد</em>، وهي تطبيق من فضاء القيم الملموسة إلى الفضاء المجرّد. وتبدو دالة التجريد لتنفيذ <code>ListSet</code> هكذا:</p>
-<p><img src="/arabic-cs-library/images/ocaml-cs3110/correctness-module_docs-0-abst-fcn2.webp" alt="af-listset"></p>
+<p><img src="/arabic-cs-library/images/ocaml-cs3110/correctness-module_docs-0-abst-fcn2.webp" alt="دالة التجريد لتنفيذ ListSet"></p>
 <p>لاحظ أن عدة قيم ملموسة قد تُطبَّق على قيمة مجرّدة واحدة؛ أي أن دالة التجريد قد تكون <em>متعددة إلى واحد (many-to-one)</em>. ومن الممكن أيضًا ألا تُطبَّق بعض القيم الملموسة على أي قيمة مجرّدة؛ فقد تكون دالة التجريد <em>جزئية (partial)</em>. وهذا ليس حال <code>ListSet</code>، لكنه قد يكون حال تنفيذات أخرى.</p>
 <p>ودالة التجريد مهمة للحكم على صحة التنفيذ، لذا فهي من التعليقات التي تنتمي إلى تنفيذ أي نوع بيانات مجرّد. فمثلًا، في وحدة <code>ListSet</code>، يمكننا توثيق دالة التجريد كما يلي:</p>
 <pre><code class="language-ocaml"><span class="hljs-keyword">module</span> <span class="hljs-type">ListSet</span> : <span class="hljs-type">Set</span> = <span class="hljs-keyword">struct</span>
@@ -294,7 +294,7 @@
 <p>كما يمكن فهم تثبيت منسّق مخصص، كما نوقش في <a href="https://cs3110.github.io/textbook/chapters/modules/encapsulation.html">قسم التغليف</a>، على أنه تنفيذ لدالة التجريد. لكنه في تلك الحالة لا يكون قابلًا للاستخدام إلا بواسطة البشر في المستوى الأعلى، لا بواسطة شيفرة أخرى برمجيًا.</p>
 <h3 id="833-المخططات-التبديلية">8.3.3. المخططات التبديلية <span class="content-anchor" id="commutative-diagrams"></span></h3>
 <p>باستخدام دالة التجريد، يمكننا الآن الحديث عما يعنيه أن يكون تنفيذ تجريد ما <em>صحيحًا</em>. فهو صحيح بالضبط عندما تكون كل عملية تجري في الفضاء الملموس ذات معنى عند تطبيق دالة التجريد عليها إلى الفضاء المجرّد. ويمكن تصوّر ذلك بـ <em>مخطط تبديلي (commutative diagram)</em>:</p>
-<p><img src="/arabic-cs-library/images/ocaml-cs3110/correctness-module_docs-1-commutation.webp" alt="commutative-diagram"></p>
+<p><img src="/arabic-cs-library/images/ocaml-cs3110/correctness-module_docs-1-commutation.webp" alt="مخطط تبديلي"></p>
 <p>ويعني المخطط التبديلي أننا إذا سلكنا المسارين حول المخطط، وجب أن نصل إلى الموضع نفسه. لنفترض أننا نبدأ من قيمة ملموسة ونطبّق عليها التنفيذ الفعلي لبعض العمليات لنحصل على قيمة ملموسة جديدة أو قيم جديدة. فعند النظر إليها مجرّدةً، ينبغي أن تكون النتيجة الملموسة قيمة مجرّدة ممكنة ناتجة من تطبيق الدالة <em>كما هي موصوفة في مواصفتها</em> على الصورة المجرّدة للمدخلات الفعلية. فمثلًا، تأمل دالة union من تنفيذ المجموعات كقوائم بعناصر متكررة الذي تناولناه سابقًا. فعندما تُطبَّق هذه الدالة على الزوج الملموس [1; 3] و[2; 2]، يقابل ذلك الركن الأيسر السفلي من المخطط. ونتيجة هذه العملية هي القائمة [2; 2; 1; 3]، التي تقابلها القيمة المجرّدة {1, 2, 3}. ولاحظ أننا إذا طبّقنا دالة التجريد AF على قائمتي المدخلات [1; 3] و[2; 2]، حصلنا على المجموعتين {1, 3} و{2}. ويقتضي المخطط التبديلي في هذه الحالة أن يكون اتحاد {1, 3} و{2} هو {1, 2, 3}، وهذا صحيح بالطبع.</p>
 <h3 id="834-ثوابت-التمثيل">8.3.4. ثوابت التمثيل <span class="content-anchor" id="representation-invariants"></span></h3>
 <p>تشرح دالة التجريد كيف تُرى المعلومات داخل الوحدة مجرّدةً من منظور عملاء الوحدة. لكن هذا ليس كل ما نحتاج معرفته لضمان صحة التنفيذ. تأمل دالة <code>size</code> في كل من التنفيذين. فبالنسبة إلى <code>ListSet</code>، الذي يسمح بالتكرار، نحتاج إلى التأكد من عدم عدّ العناصر المكررة مرتين:</p>
@@ -314,7 +314,7 @@
 <span class="hljs-keyword">end</span>
 </code></pre>
 <p>وإذا فكرنا في هذه المسألة من منظور المخطط التبديلي، نرى أن هناك خاصية جوهرية ضرورية لضمان الصحة: وهي أن تحافظ جميع العمليات الملموسة على ثابت التمثيل. فإذا خُرق هذا القيد، فلن تعيد دوال مثل <code>size</code> الجواب الصحيح. وتوضح هذه الصورة العلاقة بين ثابت التمثيل ودالة التجريد:</p>
-<p><img src="/arabic-cs-library/images/ocaml-cs3110/correctness-module_docs-2-ri-af.webp" alt="af-and-ri"></p>
+<p><img src="/arabic-cs-library/images/ocaml-cs3110/correctness-module_docs-2-ri-af.webp" alt="العلاقة بين ثابت التمثيل ودالة التجريد"></p>
 <p>ويمكننا استخدام ثابت التمثيل ودالة التجريد للحكم على صحة تنفيذ عملية واحدة <em>بمعزل عن بقية دوال الوحدة</em>. وتكون الدالة صحيحة إذا كان هذان الشرطان:</p>
 <ol>
 <li>الشروط المسبقة للدالة تصح على قيم الوسائط.</li>
@@ -2458,7 +2458,7 @@ QED
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -2466,8 +2466,8 @@ QED
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

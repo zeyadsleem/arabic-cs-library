@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -174,7 +174,7 @@
 </code></pre>
 <p>بالإعطاء على ذلك، فهاهو ما يولّده المُصرِّف وكيف تؤثّر تلك التعليمات في المكدّس في
 الزمن التشغيل:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/methods-and-initializers-1.webp" alt="The series of bytecode instructions for a class declaration with two methods." />
+<img src="/arabic-cs-library/images/crafting-interpreters/methods-and-initializers-1.webp" alt="سلسلة تعليمات شيفرة البايت لإعلان صنف يتضمّن دالتين." />
 <p>لم يبقَ أمامنا سوى تنفيذ الجزء الزمني لتلك التعليمة الجديدة <code>OP_METHOD</code>.</p>
 <h3 id="تنفيذ-إعلانات-الدوال">تنفيذ إعلانات الدوال</h3>
 <p>أولاً، نُعرّف رمز العملية (opcode).</p>
@@ -268,7 +268,7 @@ method(); // ?
 <p>وتنفيذ تلك الدالة هنا:</p>
 <p>^code new-bound-method</p>
 <p>دالةٌ تشبه المُنشئ (constructor) تكتفي بتخزين الإغلاق والمستقبِل المعطَيين. وعندما
-لا تعود الدالة المربوطة محلّ 필요، نحرّرها.</p>
+لا تعود الدالة المربوطة محلّ ضروري، نحرّرها.</p>
 <p>^code free-bound-method (1 before, 1 after)</p>
 <p>تحمل الدالة المربوطة بضع مراجع، لكنها لا <em>تملكها</em>، لذا لا تحرّر شيئاً سوى نفسها.
 لكنّ تلك المراجع يتتبّعها جامع القمامة مع ذلك.</p>
@@ -287,7 +287,7 @@ method(); // ?
 المستخدم، الدالة المربوطة <em>هي</em> دالة. إنها كائن يستطيع استدعاؤه. ولا نكشف أنّ الآلة
 الافتراضية تنفّذ الدوال المربوطة باستخدام نوع كائن مختلف.</p>
 <aside name="party">
-<img src="/arabic-cs-library/images/crafting-interpreters/methods-and-initializers-2.webp" alt="A party hat." />
+<img src="/arabic-cs-library/images/crafting-interpreters/methods-and-initializers-2.webp" alt="قبعة حفل." />
 </aside>
 <p>ارتدِ قبّعة <span name="party">حفلتك</span>، لأنّنا بلغنا للتو معالماً صغيراً. فـ
 <code>ObjBoundMethod</code> هو آخر نوع زمني نُضيفه إلى clox. وقد كتبت آخر ماكرروَي <code>IS_</code> و<code>AS_</code>.
@@ -325,11 +325,11 @@ var eggs = brunch.eggs;
 </code></pre>
 <p>وها ما يحدث عندما تنفّذ الآلة الافتراضية استدعاء <code>bindMethod()</code> مقابل تعبير
 <code>brunch.eggs</code>:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/methods-and-initializers-3.webp" alt="The stack changes caused by bindMethod()." />
+<img src="/arabic-cs-library/images/crafting-interpreters/methods-and-initializers-3.webp" alt="تغيّرات المكدّس الناتجة عن bindMethod()." />
 <p>هذه كميّة كبيرة من الآلات تحت الغطاء، لكن من منظور المستخدم، كلّ ما يحصل عليه هو
 دالة يستطيع استدعاؤها.</p>
 <h3 id="استدعاء-الدوال">استدعاء الدوال</h3>
-<p>يستطيع المستخدمون 선언 الدوال على الأصناف، والوصول إليها على النسخ، والحصول على
+<p>يستطيع المستخدمون تعريف الدوال على الأصناف، والوصول إليها على النسخ، والحصول على
 دوال مربوطة على المكدّس. لكنّهم ببساطة لا يستطيعون <span name="do"><em>فعل</em></span>
 شيء مفيد بتلك كائنات الدوال المربوطة. فالعملية الناقصة هي استدعاؤها. والاستدعاءات
 مُنفَّذة في <code>callValue()</code>، لذا نضيف حالة هناك لنوع الكائن الجديد.</p>
@@ -425,7 +425,7 @@ Nested().method();
 <pre><code class="language-lox">scone.topping(&quot;berries&quot;, &quot;cream&quot;);
 </code></pre>
 <p>نحسب خانة تخزين المستقبِل على النحو التالي:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/methods-and-initializers-4.webp" alt="Skipping over the argument stack slots to find the slot containing the closure." />
+<img src="/arabic-cs-library/images/crafting-interpreters/methods-and-initializers-4.webp" alt="التخطّي فوق خانات المكدّس المخصّصة للمُمعاملات للعثور على الخانة التي تحوي الإغلاق." />
 <p>يتخطّى <code>-argCount</code> المُعاملات، ويصحّح <code>- 1</code> الأمر بحيث إنّ <code>stackTop</code> يشير إلى ما
 <em>بعد</em> خانة المكدّس المستخدمة الأخيرة مباشرةً.</p>
 <h3 id="إساءة-استخدام-this">إساءة استخدام this</h3>
@@ -527,7 +527,7 @@ fun notMethod() {
 Brunch(&quot;eggs&quot;, &quot;coffee&quot;);
 </code></pre>
 <p>عندما تنفّذ الآلة الافتراضية الاستدعاء لـ <code>Brunch()</code>، يحدث ما يلي:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/methods-and-initializers-5.webp" alt="The aligned stack windows for the Brunch() call and the corresponding init() method it forwards to." />
+<img src="/arabic-cs-library/images/crafting-interpreters/methods-and-initializers-5.webp" alt="نوافذ المكدّس المصفوفة لاستدعاء Brunch() والدالة init() المقابلة التي يُحيل إليها." />
 <p>أيّ مُعاملات مُمرَّرة إلى الصنف حين استدعناه ما زالت على المكدّس فوق النسخة. والـ
 CallFrame الجديد لدالة <code>init()</code> يتشارك تلك النافذة من المكدّس، لذا تُمرَّر تلك
 المُعاملات ضمنياً إلى المُهيّئ.</p>
@@ -710,7 +710,7 @@ name="juggle">لعب</span> أيّ شيء على المكدّس. فالمستق�
 نسبيةً إلى تنفيذنا الخاصّ غير المحسَّن لاستدعاء الدوال، وكان بطيئاً إلى حدٍّ كبير.
 فإجراء تخصيص في الذاكرة لكلّ استدعاء دالة على حدة لن يُفوز بأيّ سباق.</p>
 </aside>
-<img src="/arabic-cs-library/images/crafting-interpreters/methods-and-initializers-6.webp" alt="Bar chart comparing the two benchmark results." />
+<img src="/arabic-cs-library/images/crafting-interpreters/methods-and-initializers-6.webp" alt="مخطط أعمدة يقارن نتيجتي القياس المرجعي." />
 <h3 id="استدعاء-الحقول">استدعاء الحقول</h3>
 <p>العقيدة الأساسية للتحسين هي: &quot;لا تخرق الصحة.&quot; يحبّ المستخدمون أن يقدّم لهم تنفيذ اللغة
 إجابةً أسرع، لكن فقط إذا كانت تلك الإجابة هي الإجابة <em>الصحيحة</em>. وللأسف، فإنّ تنفيذنا
@@ -898,7 +898,7 @@ oops.field();
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -906,8 +906,8 @@ oops.field();
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

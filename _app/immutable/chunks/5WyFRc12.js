@@ -1,0 +1,625 @@
+const s="dive-into-systems",a="c15-parallel",n="15. Looking Ahead: Other Parallel Systems and Parallel Programming Models",e="index",p="15. نظرة إلى الأمام: أنظمة التوازي الأخرى ونماذج البرمجة المتوازية",o=[{depth:3,id:"عالم-جديد-بالكامل-تصنيف-فلين-للمعماريات",text:"عالم جديد بالكامل: تصنيف فلين للمعماريات"},{depth:3,id:"1511-مسرعات-العتاد",text:"15.1.1. مسرّعات العتاد"},{depth:3,id:"1512-نظرة-عامة-على-معمارية-gpu",text:"15.1.2. نظرة عامة على معمارية GPU"},{depth:3,id:"1513-حوسبة-gpgpu",text:"15.1.3. حوسبة GPGPU"},{depth:3,id:"1514-cuda",text:"15.1.4. CUDA"},{depth:3,id:"1515-لغات-أخرى-لبرمجة-gpgpu",text:"15.1.5. لغات أخرى لبرمجة GPGPU"},{depth:3,id:"1516-المراجع",text:"15.1.6. المراجع"},{depth:3,id:"1521-نماذج-المعالجة-المتوازية-والموزعة",text:"15.2.1. نماذج المعالجة المتوازية والموزّعة"},{depth:3,id:"1522-بروتوكولات-الاتصال",text:"15.2.2. بروتوكولات الاتصال"},{depth:3,id:"1523-واجهة-تمرير-الرسائل-mpi",text:"15.2.3. واجهة تمرير الرسائل (MPI)"},{depth:3,id:"1524-برنامج-mpi-hello-world",text:"15.2.4. برنامج MPI hello world"},{depth:3,id:"1525-الضرب-القياسي-بـmpi",text:"15.2.5. الضرب القياسي بـMPI"},{depth:3,id:"1526-تحديات-الأنظمة-الموزعة",text:"15.2.6. تحديات الأنظمة الموزّعة"},{depth:3,id:"موارد-mpi",text:"موارد MPI"},{depth:3,id:"1531-الحوسبة-السحابية",text:"15.3.1. الحوسبة السحابية"},{depth:3,id:"1532-mapreduce",text:"15.3.2. MapReduce"},{depth:3,id:"1533-النظر-نحو-المستقبل-الفرص-والتحديات",text:"15.3.3. النظر نحو المستقبل: الفرص والتحديات"},{depth:3,id:"المراجع",text:"المراجع:"}],l=`<p>ناقشنا في <a href="https://diveintosystems.org/book/C14-SharedMemory/index.html#_leveraging_shared_memory_in_the_multicore_era">الفصل السابق</a> التوازي بالذاكرة المشتركة والبرمجة متعددة الخيوط. ونقدّم في هذا الفصل نماذج ولغات برمجة متوازية أخرى لفئات مختلفة من المعماريات. وتحديدًا، نقدّم التوازي من أجل مسرّعات العتاد مع التركيز على وحدات معالجة الرسوميات (GPUs) والحوسبة عامة الغرض على وحدات معالجة الرسوميات (حوسبة GPGPU)، باستخدام CUDA كمثال؛ وأنظمة الذاكرة الموزّعة وتمرير الرسائل، باستخدام MPI كمثال؛ والحوسبة السحابية، باستخدام MapReduce وApache Spark كمثالين.</p>
+<h3 id="عالم-جديد-بالكامل-تصنيف-فلين-للمعماريات">عالم جديد بالكامل: تصنيف فلين للمعماريات</h3>
+<p>يُستخدم <strong>تصنيف فلين</strong> (Flynn's taxonomy) عادةً لوصف منظومة معماريات الحوسبة الحديثة (<a href="#Flynn">الشكل 1</a>).</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c15-parallel-0-flynn.webp" alt="يتكوّن تصنيف فلين من محورين مستقلَّين" id="Flynn"> الشكل 1. يصنّف تصنيف فلين الطرق التي يطبّق بها المعالج التعليمات.</p>
+<p>يشير المحور الأفقي إلى تدفق البيانات، بينما يشير المحور الرأسي إلى تدفق التعليمات. و<strong>التدفق</strong> (stream) في هذا السياق هو سيل من البيانات أو التعليمات. ويُصدر <strong>التدفق الواحد</strong> عنصرًا واحدًا في وحدة الزمن، شأنه شأن الصف. وفي المقابل، تُصدر <strong>التدفقات المتعددة</strong> عادةً عناصر كثيرة في وحدة الزمن (فكّر في صفوف متعددة). وهكذا، يُصدر تدفق التعليمات الواحد (SI) تعليمة واحدة في وحدة الزمن، بينما يُصدر تدفق التعليمات المتعدد (MI) تعليمات كثيرة في وحدة الزمن. وبالمثل، يُصدر تدفق البيانات الواحد (SD) عنصر بيانات واحد في وحدة الزمن، بينما يُصدر تدفق البيانات المتعدد (MD) عناصر بيانات كثيرة في وحدة الزمن.</p>
+<p>ويمكن تصنيف المعالج في واحدة من أربع فئات بناءً على أنواع التدفقات التي يستخدمها:</p>
+<ul>
+<li><strong>SISD</strong>: تحتوي أنظمة التعليمات الواحدة/البيانات الواحدة على وحدة تحكم واحدة تعالج تدفقًا واحدًا من التعليمات، ما يسمح لها بتنفيذ تعليمة واحدة في المرة. وبالمثل، لا يستطيع المعالج معالجة سوى تدفق واحد من البيانات أو معالجة وحدة بيانات واحدة في المرة. وكانت معظم المعالجات المتاحة تجاريًا قبل منتصف الألفينيات من أجهزة SISD.</li>
+<li><strong>MISD</strong>: تحتوي أنظمة التعليمات المتعددة/البيانات الواحدة على وحدات تعليمات متعددة تعمل على تدفق بيانات واحد. وقد صُمّمت أنظمة MISD عادةً لتضمين تحمّل الأخطاء في الأنظمة الحرجة، مثل برامج التحكم في الطيران لمكوكات NASA. ومع ذلك، نادرًا ما تُستخدم أجهزة MISD في الممارسة العملية اليوم.</li>
+<li><strong>SIMD</strong>: تنفّذ أنظمة التعليمات الواحدة/البيانات المتعددة التعليمة <em>نفسها</em> على بيانات متعددة في الوقت نفسه وبطريقة متزامنة الخطى. وأثناء التنفيذ &quot;متزامن الخطى&quot; (lockstep)، تُوضع جميع التعليمات في صف، بينما تُوزَّع البيانات على وحدات حسابية مختلفة. وأثناء التنفيذ، تنفّذ كل وحدة حسابية التعليمة الأولى في الصف في الوقت نفسه، قبل أن تنفّذ في الوقت نفسه التعليمة التالية في الصف، ثم التالية، وهكذا. وأشهر مثال على معمارية SIMD هو وحدة معالجة الرسوميات. وقد اتبعت الحواسيب الفائقة الأولى معمارية SIMD أيضًا. ونناقش وحدات GPU بمزيد من التفصيل في <a href="https://diveintosystems.org/book/C15-Parallel/gpu.html#_GPUs">القسم التالي</a>.</li>
+<li><strong>MIMD</strong>: تمثّل أنظمة التعليمات المتعددة/البيانات المتعددة فئة المعماريات الأكثر استخدامًا. وهي مرنة للغاية وقادرة على العمل على تعليمات متعددة أو تدفقات بيانات متعددة. وبما أن جميع الحواسيب الحديثة تقريبًا تستخدم معالجات متعددة الأنوية (multicore CPUs)، فإن معظمها يُصنَّف كأجهزة MIMD. ونناقش فئة أخرى من أنظمة MIMD، هي أنظمة الذاكرة الموزّعة، في <a href="https://diveintosystems.org/book/C15-Parallel/distrmem.html#_distributed_memory_systems_message_passing_and_mpi">القسم 15.2</a>.</li>
+</ul>
+<p><strong>الحوسبة غير المتجانسة</strong> (heterogeneous computing) هي الحوسبة باستخدام وحدات معالجة متعددة ومختلفة موجودة في الحاسوب. وغالبًا ما تكون لهذه الوحدات بنى ISA مختلفة، بعضها يديره نظام التشغيل وبعضها لا. وعادةً تعني الحوسبة غير المتجانسة دعم الحوسبة المتوازية باستخدام أنوية المعالج في الحاسوب وواحدة أو أكثر من وحدات التسريع فيه مثل <strong>وحدات معالجة الرسوميات</strong> (GPUs) أو <strong>مصفوفات البوابات القابلة للبرمجة ميدانيًا</strong> (FPGAs)1.</p>
+<p>يزداد شيوع قيام المطورين بتطبيق حلول الحوسبة غير المتجانسة للمسائل الكبيرة كثيفة البيانات والحساب. وتنتشر هذه الأنواع من المسائل في الحوسبة العلمية، وكذلك في مجموعة أكثر تنوعًا من التطبيقات المتعلقة بمعالجة البيانات الضخمة وتحليلها واستخراج المعلومات. وبالاستفادة من قدرات المعالجة لكل من وحدة المعالجة المركزية ووحدات التسريع المتاحة في الحاسوب، يستطيع المبرمج زيادة درجة التنفيذ المتوازي في تطبيقه، ما يؤدي إلى تحسين الأداء وقابلية التوسع.</p>
+<p>نقدّم في هذا القسم الحوسبة غير المتجانسة باستخدام مسرّعات العتاد لدعم الحوسبة المتوازية عامة الغرض. ونركّز على وحدات GPU ولغة البرمجة CUDA.</p>
+<h3 id="1511-مسرعات-العتاد">15.1.1. مسرّعات العتاد <span class="content-anchor" id="_hardware_accelerators"></span></h3>
+<p>إلى جانب وحدة المعالجة المركزية، تحتوي الحواسيب على وحدات معالجة أخرى مصمّمة لأداء مهام محدّدة. وهذه الوحدات ليست وحدات معالجة عامة الغرض مثل وحدة المعالجة المركزية، بل عتاد متخصّص محسَّن لتنفيذ وظائف خاصة بأجهزة معينة أو تُستخدم لأداء أنواع متخصّصة من المعالجة في النظام. وتُعدّ مصفوفات FPGA ومعالجات Cell ووحدات GPU ثلاثة أمثلة على هذه الأنواع من وحدات المعالجة.</p>
+<h4>FPGAs <span class="content-anchor" id="_fpgas"></span></h4>
+<p>مصفوفة FPGA دارة متكاملة تتكوّن من بوابات وذاكرة ومكوّنات ترابط. وهي قابلة لإعادة البرمجة، أي يمكن إعادة تهيئتها لتنفيذ وظائف محدّدة في العتاد، وغالبًا ما تُستخدم لنمذجة الدوائر المتكاملة الخاصة بالتطبيقات (ASICs) أوليًا. وتحتاج مصفوفات FPGA عادةً إلى طاقة أقل للتشغيل من وحدة معالجة مركزية كاملة، ما يؤدي إلى تشغيل موفّر للطاقة. ومن الأمثلة على طرق دمج مصفوفات FPGA في نظام حاسوبي استخدامها كمتحكمات أجهزة، ولمعالجة بيانات المستشعرات، وللتشفير، ولاختبار تصاميم عتاد جديدة (فبما أنها قابلة لإعادة البرمجة، يمكن تنفيذ التصاميم وتصحيحها واختبارها على FPGA). ويمكن تصميم مصفوفات FPGA كدارة فيها عدد كبير من وحدات المعالجة البسيطة. كما أن مصفوفات FPGA أجهزة منخفضة زمن الاستجابة يمكن توصيلها مباشرة بنواقل النظام. ونتيجة لذلك، استُخدمت لتنفيذ حسابات متوازية سريعة جدًا تتكوّن من أنماط منتظمة من المعالجة المتوازية المستقلة على عدة قنوات إدخال بيانات. غير أن إعادة برمجة مصفوفات FPGA تستغرق وقتًا طويلًا، ويقتصر استخدامها على دعم التنفيذ السريع لأجزاء محدّدة من أحمال العمل المتوازية أو لتشغيل حمل عمل برنامج ثابت2.</p>
+<h4>وحدات GPU ومعالجات Cell <span class="content-anchor" id="_gpus_and_cell_processors"></span></h4>
+<p>معالج Cell معالج متعدد الأنوية يتكوّن من معالج عام الغرض واحد ومعالجات مساعدة متعددة متخصّصة في تسريع نوع معيّن من الحسابات، مثل معالجة الوسائط المتعددة. وكان نظام الألعاب Sony PlayStation 3 أول معمارية Cell، إذ استخدم المعالجات المساعدة Cell لرسوميات سريعة.</p>
+<p>تنفّذ وحدات GPU حسابات رسوميات الحاسوب — فهي تعمل على بيانات الصور لتمكين العرض الرسومي ومعالجة الصور بسرعة عالية. وتكتب وحدة GPU نتائجها في مخزن إطارات (frame buffer) يوصل البيانات إلى شاشة الحاسوب. ومدفوعةً بتطبيقات ألعاب الحاسوب، أصبحت وحدات GPU المتطورة اليوم قياسية في أنظمة الحواسيب المكتبية والمحمولة.</p>
+<p>في منتصف الألفينيات، أدرك باحثو الحوسبة المتوازية إمكانات استخدام المسرّعات بالاشتراك مع أنوية المعالج في الحاسوب لدعم الحوسبة المتوازية عامة الغرض.</p>
+<h3 id="1512-نظرة-عامة-على-معمارية-gpu">15.1.2. نظرة عامة على معمارية GPU <span class="content-anchor" id="_gpu_architecture_overview"></span></h3>
+<p>صُمّم عتاد GPU لرسوميات الحاسوب ومعالجة الصور. وتاريخيًا، دفعت صناعة ألعاب الفيديو تطوير وحدات GPU. ولدعم رسوميات أكثر تفصيلًا وعرض إطارات أسرع، يتكوّن جهاز GPU من آلاف المعالجات المتخصّصة المصمّمة تحديدًا لمعالجة بيانات الصور بكفاءة وبشكل متوازٍ، مثل قيم البكسلات الفردية لصورة ثنائية الأبعاد.</p>
+<p>نموذج التنفيذ العتادي الذي تطبّقه وحدات GPU هو <strong>التعليمة الواحدة/الخيوط المتعددة</strong> (single instruction/multiple thread, SIMT)، وهو تنويع على SIMD. ويشبه SIMT نموذج SIMD متعدد الخيوط، حيث تُنفَّذ تعليمة واحدة بتزامن الخطى بواسطة خيوط متعددة تعمل على وحدات المعالجة. وفي SIMT، قد يكون العدد الإجمالي للخيوط أكبر من العدد الإجمالي لوحدات المعالجة، ما يستلزم جدولة مجموعات متعددة من الخيوط على المعالجات لتنفيذ التسلسل نفسه من التعليمات.</p>
+<p>وكمثال، تتكوّن وحدات NVIDIA GPU من عدة معالجات متعددة التدفقات (streaming multiprocessors, SMs)، لكل منها وحدات تحكم في التنفيذ وفضاء ذاكرة خاص بها (سجلات وذاكرة مؤقتة L1 وذاكرة مشتركة). ويتكوّن كل SM من عدة أنوية معالجة قياسية (scalar processor, SP). ويتضمّن SM مُجدوِل الحُزم (warp scheduler) الذي يجدول <strong>الحُزم</strong> (warps)، أي مجموعات من خيوط التطبيق، لتنفيذها بتزامن الخطى على أنوية SP الخاصة به. وفي التنفيذ بتزامن الخطى، ينفّذ كل خيط في الحزمة التعليمة نفسها في كل دورة لكن على بيانات مختلفة. فمثلًا، إذا كان تطبيق يحوّل صورة ملوّنة إلى تدرجات رمادية، فإن كل خيط في الحزمة ينفّذ التسلسل نفسه من التعليمات في الوقت نفسه لضبط قيمة RGB لبكسل ما على ما يقابلها بالتدرج الرمادي. وينفّذ كل خيط في الحزمة هذه التعليمات على قيمة بيانات بكسل مختلفة، ما يؤدي إلى تحديث بكسلات متعددة من الصورة بالتوازي. وبما أن الخيوط تُنفَّذ بتزامن الخطى، يمكن تبسيط تصميم المعالج بحيث تتشارك أنوية متعددة وحدات التحكم نفسها في التعليمات. وتحتوي كل وحدة على ذاكرة مؤقتة وسجلات متعددة تستخدمها لحمل البيانات أثناء معالجتها بتزامن الخطى بواسطة أنوية المعالجة المتوازية.</p>
+<p>يعرض <a href="#Figgpuarch">الشكل 1</a> معمارية GPU مبسّطة تتضمّن عرضًا تفصيليًا لإحدى وحدات SM فيها. ويتكوّن كل SM من عدة أنوية SP، ومُجدوِل حُزم، ووحدة تحكم في التنفيذ، وذاكرة مؤقتة L1، وفضاء ذاكرة مشتركة.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c15-parallel-0-gpugpu.webp" alt="مثال على معمارية GPU يُظهر عدة وحدات SM لكل منها 32 نواة SP." id="Figgpuarch"> الشكل 1. مثال على معمارية GPU مبسّطة بـ2,048 نواة. يوضّح هذا تقسيم GPU إلى 64 وحدة SM، وتفاصيل وحدة SM واحدة تتكوّن من 32 نواة SP. ويجدول مُجدوِل الحُزم في SM حُزم الخيوط على أنوية SP الخاصة به. وتنفّذ حزمة من الخيوط بتزامن الخطى على أنوية SP.</p>
+<h3 id="1513-حوسبة-gpgpu">15.1.3. حوسبة GPGPU <span class="content-anchor" id="_gpgpu_computing"></span></h3>
+<p>تعني حوسبة <strong>GPU عامة الغرض</strong> (General Purpose GPU, GPGPU) تطبيق معالجات GPU المتخصّصة على مهام الحوسبة المتوازية عامة الغرض. وتجمع حوسبة GPGPU بين الحساب على أنوية المعالج المضيف والحساب بتقنية SIMT على معالجات GPU. وتؤدي حوسبة GPGPU أفضل أداء في التطبيقات المتوازية (أو أجزاء من التطبيقات) التي يمكن بناؤها كحساب معالجة تدفقات على شبكة من البيانات متعددة الأبعاد.</p>
+<p>لا يدير نظام التشغيل المضيف معالجات GPU ولا ذاكرتها. ونتيجة لذلك، يجب على المبرمج حجز مساحة بيانات البرنامج على GPU ونسخ البيانات بين ذاكرة المضيف وذاكرة GPU. وعادةً توفّر لغات ومكتبات برمجة GPGPU واجهات برمجية لذاكرة GPU تخفي عن المبرمج بعض صعوبة إدارة ذاكرة GPU صراحةً أو كلها. فمثلًا، في CUDA يمكن للمبرمج تضمين استدعاءات لدوال مكتبة CUDA لحجز ذاكرة CUDA على GPU صراحةً ونسخ البيانات بين ذاكرة CUDA على GPU وذاكرة المضيف. ويمكن لمبرمج CUDA أيضًا استخدام الذاكرة الموحّدة في CUDA (CUDA unified memory)، وهي تجريد CUDA لفضاء ذاكرة واحد فوق ذاكرة المضيف وذاكرة GPU. وتخفي الذاكرة الموحّدة في CUDA ذاكرتي GPU والمضيف المنفصلتين، وعمليات النسخ بينهما، عن مبرمج CUDA.</p>
+<p>توفّر وحدات GPU أيضًا دعمًا محدودًا لمزامنة الخيوط، ما يعني أن الحوسبة المتوازية بـGPGPU تؤدي أداءً جيدًا بشكل خاص في التطبيقات المتوازية التي تكون إما متوازية بشكل سهل (embarrassingly parallel) وإما ذات امتدادات كبيرة من حسابات تدفقية متوازية مستقلة بنقاط مزامنة قليلة جدًا. ووحدات GPU معالجات متوازية هائلة، وأي برنامج ينفّذ تسلسلات طويلة من خطوات حسابية متطابقة (أو شبه متطابقة) مستقلة على البيانات قد يؤدي أداءً جيدًا كتطبيق GPGPU متوازٍ. كما تؤدي حوسبة GPGPU أداءً جيدًا عندما تكون عمليات النسخ بين ذاكرة المضيف وذاكرة الجهاز قليلة. وإذا كان نقل البيانات بين GPU وCPU يسيطر على زمن التنفيذ، أو إذا تطلّب تطبيق مزامنة دقيقة الحبيبات، فقد لا تؤدي حوسبة GPGPU أداءً جيدًا أو قد لا تقدّم مكسبًا كبيرًا، إن قدّمت أي مكسب، على نسخة متعددة الخيوط من البرنامج تعمل على CPU.</p>
+<h3 id="1514-cuda">15.1.4. CUDA <span class="content-anchor" id="_cuda"></span></h3>
+<p>CUDA (Compute Unified Device Architecture)3 هي الواجهة البرمجية من NVIDIA لحوسبة GPGPU على أجهزتها الرسومية. وقد صُمّمت CUDA للحوسبة غير المتجانسة التي تُنفَّذ فيها بعض دوال البرنامج على المعالج المضيف وتُنفَّذ أخرى على جهاز GPU. ويكتب المبرمجون عادةً برامج CUDA بلغة C أو C++ مع شروح تحدّد دوال نواة CUDA (kernel)، ويستدعون دوال مكتبة CUDA لإدارة ذاكرة جهاز GPU. و<strong>دالة النواة</strong> (kernel function) في CUDA دالة تُنفَّذ على GPU، و<strong>الخيط</strong> (thread) في CUDA هو وحدة التنفيذ الأساسية في برنامج CUDA. وتُجدول خيوط CUDA في حُزم تُنفَّذ بتزامن الخطى على وحدات SM في GPU، فتنفّذ شيفرة نواة CUDA على حصتها من البيانات المخزّنة في ذاكرة GPU. وتُوسَم دوال النواة بـ<code>global</code> لتمييزها عن دوال المضيف. ودوال <code>device</code> في CUDA دوال مساعدة يمكن استدعاؤها من دالة نواة CUDA.</p>
+<p>ينقسم فضاء ذاكرة برنامج CUDA إلى ذاكرة المضيف وذاكرة GPU. ويجب على البرنامج حجز مساحة ذاكرة GPU وتحريرها صراحةً لتخزين بيانات البرنامج التي تعالجها أنوية CUDA. ويجب على مبرمج CUDA إما نسخ البيانات من ذاكرة المضيف وذاكرة GPU وإليهما صراحةً، وإما استخدام الذاكرة الموحّدة في CUDA التي تقدّم عرضًا لفضاء ذاكرة يتشاركه GPU والمضيف مباشرةً. وإليك مثالًا على دوال CUDA الأساسية لحجز الذاكرة وتحريرها والنسخ الصريح للذاكرة:</p>
+<pre><code class="language-c"><span class="hljs-comment">/* &quot;returns&quot; through pass-by-pointer param dev_ptr GPU memory of size bytes
+ * returns cudaSuccess or a cudaError value on error
+ */</span>
+cudaMalloc(<span class="hljs-type">void</span> **dev_ptr, <span class="hljs-type">size_t</span> size);
+
+<span class="hljs-comment">/* free GPU memory
+ * returns cudaSuccess or cudaErrorInvalidValue on error
+ */</span>
+cudaFree(<span class="hljs-type">void</span> *data);
+
+<span class="hljs-comment">/* copies data from src to dst, direction is based on value of kind
+ *   kind: cudaMemcpyHosttoDevice is copy from cpu to gpu memory
+ *   kind: cudaMemcpyDevicetoHost is copy from gpu to cpu memory
+ * returns cudaSuccess or a cudaError value on error
+ */</span>
+cudaMemcpy(<span class="hljs-type">void</span> *dst, <span class="hljs-type">const</span> <span class="hljs-type">void</span> *src, <span class="hljs-type">size_t</span> count, cudaMemcpyKind kind);
+</code></pre>
+<p>تُنظَّم خيوط CUDA في <strong>كتل</strong> (blocks)، وتُنظَّم الكتل في <strong>شبكة</strong> (grid). ويمكن تنظيم الشبكات في تجميعات أحادية أو ثنائية أو ثلاثية الأبعاد من الكتل. وبالمثل، يمكن تنظيم الكتل في تجميعات أحادية أو ثنائية أو ثلاثية الأبعاد من الخيوط. ويُعرَّف كل خيط بشكل فريد بموضع الخيط (<em>x</em>،<em>y</em>،<em>z</em>) داخل الكتلة الحاوية له وموضع تلك الكتلة (<em>x</em>،<em>y</em>،<em>z</em>) في الشبكة. فمثلًا، يمكن للمبرمج تعريف أبعاد كتلة وشبكة ثنائية الأبعاد كما يلي:</p>
+<pre><code class="language-c">dim3 <span class="hljs-title function_">blockDim</span><span class="hljs-params">(<span class="hljs-number">16</span>,<span class="hljs-number">16</span>)</span>;  <span class="hljs-comment">// 256 threads per block, in a 16x16 2D arrangement</span>
+dim3 <span class="hljs-title function_">gridDim</span><span class="hljs-params">(<span class="hljs-number">20</span>,<span class="hljs-number">20</span>)</span>;   <span class="hljs-comment">// 400 blocks per grid, in a 20x20 2D arrangement</span>
+</code></pre>
+<p>عند استدعاء نواة، يُحدَّد تخطيط الكتل/الشبكة والخيوط/الكتل في الاستدعاء. فمثلًا، هذا استدعاء لدالة نواة اسمها <code>do_something</code> يحدّد تخطيط الشبكة والكتلة باستخدام <code>gridDim</code> و<code>blockDim</code> المعرّفين أعلاه (ويمرّر المعاملين <code>dev_array</code> و100):</p>
+<pre><code class="language-c">ret = do_something&lt;&lt;&lt;gridDim,blockDim&gt;&gt;&gt;(dev_array, <span class="hljs-number">100</span>);
+</code></pre>
+<p>يعرض <a href="#Figcuda">الشكل 2</a> مثالًا على ترتيب ثنائي الأبعاد لكتل الخيوط. وفي هذا المثال، الشبكة مصفوفة 3 × 2 من الكتل، وكل كتلة مصفوفة 4 × 3 من الخيوط.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c15-parallel-1-gridblockthr.webp" alt="شبكة من كتل ثنائية الأبعاد، تحتوي كل كتلة على مجموعة ثنائية الأبعاد من الخيوط." id="Figcuda"> الشكل 2. نموذج خيوط CUDA. شبكة من كتل الخيوط. يمكن تنظيم الكتل والخيوط في تخطيطات أحادية أو ثنائية أو ثلاثية الأبعاد. ويعرض هذا المثال شبكة من كتل ثنائية الأبعاد، 3 × 2 كتلة في الشبكة، ولكل كتلة مجموعة ثنائية الأبعاد من الخيوط، 4 × 3 خيطًا في الكتلة).</p>
+<p>يُعطى موضع الخيط في هذا التخطيط بالإحداثي (<em>x</em>،<em>y</em>) في الكتلة الحاوية له (<code>threadId.x</code> و<code>threadId.y</code>) وبالإحداثي (<em>x</em>،<em>y</em>) لكتلته في الشبكة (<code>blockIdx.x</code> و<code>blockIdx.y</code>). لاحظ أن إحداثيات الكتل والخيوط قائمة على (<em>x</em>،<em>y</em>)، حيث يكون المحور x أفقيًا والمحور y رأسيًا. والعنصر (0,0) في أعلى اليسار. وتملك نواة CUDA أيضًا متغيرات معرّفة لأبعاد الكتلة (<code>blockDim.x</code> و<code>blockDim.y</code>). وبالتالي، لأي خيط ينفّذ النواة، يمكن تحديد موضعه (صف، عمود) في المصفوفة ثنائية الأبعاد من الخيوط داخل المصفوفة ثنائية الأبعاد من الكتل منطقيًا كما يلي:</p>
+<pre><code class="language-c"><span class="hljs-type">int</span> row = blockIdx.y * blockDim.y + threadIdx.y;
+<span class="hljs-type">int</span> col = blockIdx.x * blockDim.x + threadIdx.x;
+</code></pre>
+<p>مع أن ذلك ليس ضروريًا بالمعنى الدقيق، غالبًا ما ينظّم مبرمجو CUDA الكتل والخيوط لتطابق التنظيم المنطقي لبيانات البرنامج. فمثلًا، إذا كان برنامج يعالج مصفوفة ثنائية الأبعاد، فمن المنطقي غالبًا تنظيم الخيوط والكتل في ترتيب ثنائي الأبعاد. وبهذه الطريقة، يمكن استخدام (<em>x</em>،<em>y</em>) كتلة الخيط و(<em>x</em>،<em>y</em>) الخيط داخل كتلته لربط موضع الخيط في الكتل ثنائية الأبعاد من الخيوط بقيمة بيانات واحدة أو أكثر في المصفوفة ثنائية الأبعاد.</p>
+<h4>مثال برنامج CUDA: الضرب القياسي <span class="content-anchor" id="_example_cuda_program_scalar_multiply"></span></h4>
+<p>وكمثال، تأمّل برنامج CUDA ينفّذ ضربًا قياسيًا لمتجه:</p>
+<pre><code>x = a * x    // where x is a vector and a is a scalar value
+</code></pre>
+<p>بما أن بيانات البرنامج تتكوّن من مصفوفات أحادية البعد، فإن استخدام تخطيط أحادي البعد للكتل/الشبكة والخيوط/الكتل يعمل جيدًا. وهذا ليس ضروريًا، لكنه يسهّل ربط الخيوط بالبيانات.</p>
+<p>وعند التشغيل، ستفعل الدالة <code>main</code> في هذا البرنامج ما يلي:</p>
+<ol>
+<li>تحجز ذاكرة على جانب المضيف للمتجه <code>x</code> وتهيّئه.</li>
+<li>تحجز ذاكرة على جانب الجهاز للمتجه <code>x</code> وتنسخه من ذاكرة المضيف إلى ذاكرة GPU.</li>
+<li>تستدعي دالة نواة CUDA لتنفيذ ضرب المتجه القياسي بالتوازي، وتمرّر كوسائط عنوان الجهاز للمتجه <code>x</code> والقيمة القياسية <code>a</code>.</li>
+<li>تنسخ النتيجة من ذاكرة GPU إلى المتجه <code>x</code> في ذاكرة المضيف.</li>
+</ol>
+<p>في المثال التالي، نعرض برنامج CUDA ينفّذ هذه الخطوات لتطبيق ضرب المتجه القياسي. وقد أزلنا بعض معالجة الأخطاء والتفاصيل من سرد الشيفرة، لكن الحل الكامل متاح هنا: <a href="https://diveintosystems.org/book/C15-Parallel/_attachments/scalar_multiply_cuda.cu">scalar_multiply_cuda.cu</a>.</p>
+<p>تنفّذ الدالة <code>main</code> في برنامج CUDA3 الخطوات الأربع المذكورة أعلاه:</p>
+<pre><code class="language-c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cuda.h&gt;</span></span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> BLOCK_SIZE       64     <span class="hljs-comment">/* threads per block */</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> N              10240    <span class="hljs-comment">/* vector size */</span></span>
+
+<span class="hljs-comment">// some host-side init function</span>
+<span class="hljs-type">void</span> <span class="hljs-title function_">init_array</span><span class="hljs-params">(<span class="hljs-type">int</span> *<span class="hljs-built_in">vector</span>, <span class="hljs-type">int</span> size, <span class="hljs-type">int</span> step)</span>;
+
+<span class="hljs-comment">// host-side function: main</span>
+<span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv)</span> {
+
+  <span class="hljs-type">int</span> *<span class="hljs-built_in">vector</span>, *dev_vector, scalar;
+
+  scalar = <span class="hljs-number">3</span>;     <span class="hljs-comment">// init scalar to some default value</span>
+  <span class="hljs-keyword">if</span>(argc == <span class="hljs-number">2</span>) { <span class="hljs-comment">// get scalar&#x27;s value from a command line argument</span>
+    scalar = atoi(argv[<span class="hljs-number">1</span>]);
+  }
+
+  <span class="hljs-comment">// 1. allocate host memory space for the vector (missing error handling)</span>
+  <span class="hljs-built_in">vector</span> = (<span class="hljs-type">int</span> *)<span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>)*N);
+
+  <span class="hljs-comment">// initialize vector in host memory</span>
+  <span class="hljs-comment">// (a user-defined initialization function not listed here)</span>
+  init_array(<span class="hljs-built_in">vector</span>, N, <span class="hljs-number">7</span>);
+
+  <span class="hljs-comment">// 2. allocate GPU device memory for vector (missing error handling)</span>
+  cudaMalloc(&amp;dev_vector, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>)*N);
+
+  <span class="hljs-comment">// 2. copy host vector to device memory (missing error handling)</span>
+  cudaMemcpy(dev_vector, <span class="hljs-built_in">vector</span>, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>)*N, cudaMemcpyHostToDevice);
+
+  <span class="hljs-comment">// 3. call the CUDA scalar_multiply kernel</span>
+  <span class="hljs-comment">// specify the 1D layout for blocks/grid (N/BLOCK_SIZE)</span>
+  <span class="hljs-comment">//    and the 1D layout for threads/block (BLOCK_SIZE)</span>
+  scalar_multiply&lt;&lt;&lt;(N/BLOCK_SIZE), BLOCK_SIZE&gt;&gt;&gt;(dev_vector, scalar);
+
+  <span class="hljs-comment">// 4. copy device vector to host memory (missing error handling)</span>
+  cudaMemcpy(<span class="hljs-built_in">vector</span>, dev_vector, <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>)*N, cudaMemcpyDeviceToHost);
+
+  <span class="hljs-comment">// ...(do something on the host with the result copied into vector)</span>
+
+  <span class="hljs-comment">// free allocated memory space on host and GPU</span>
+  cudaFree(dev_vector);
+  <span class="hljs-built_in">free</span>(<span class="hljs-built_in">vector</span>);
+
+  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>ينفّذ كل خيط CUDA دالة النواة <code>scalar_multiply</code>. وتُكتب دالة نواة CUDA من منظور خيط فردي. وتتكوّن عادةً من خطوتين رئيسيتين: (1) يحدّد الخيط المستدعي الجزء الذي يتحمّل مسؤوليته من البيانات بناءً على موضع خيطه في الكتلة الحاوية له وموضع كتلته في الشبكة؛ (2) وينفّذ الخيط المستدعي حسابات خاصة بالتطبيق على حصته من البيانات. وفي هذا المثال، كل خيط مسؤول عن حساب الضرب القياسي لعنصر واحد بالضبط في المصفوفة. وتحسب شيفرة دالة النواة أولًا قيمة فهرس فريدة بناءً على معرّف الكتلة والخيط للخيط المستدعي. ثم تستخدم هذه القيمة كفهرس في مصفوفة البيانات لتنفيذ الضرب القياسي على عنصر المصفوفة الخاص به (<code>array[index] = array[index] * scalar</code>). وتحسب خيوط CUDA العاملة على وحدات SM في GPU كلٌّ قيمة فهرس مختلفة لتحديث عناصر المصفوفة بالتوازي.</p>
+<pre><code class="language-c"><span class="hljs-comment">/*
+ * CUDA kernel function that performs scalar multiply
+ * of a vector on the GPU device
+ *
+ * This assumes that there are enough threads to associate
+ * each array[i] element with a signal thread
+ * (in general, each thread would be responsible for a set of data elements)
+ */</span>
+__global__ <span class="hljs-type">void</span> <span class="hljs-title function_">scalar_multiply</span><span class="hljs-params">(<span class="hljs-type">int</span> *<span class="hljs-built_in">array</span>, <span class="hljs-type">int</span> scalar)</span> {
+
+  <span class="hljs-type">int</span> index;
+
+  <span class="hljs-comment">// compute the calling thread&#x27;s index value based on</span>
+  <span class="hljs-comment">// its position in the enclosing block and grid</span>
+  index = blockIdx.x * blockDim.x + threadIdx.x;
+
+  <span class="hljs-comment">// the thread&#x27;s uses its index value is to</span>
+  <span class="hljs-comment">// perform scalar multiply on its array element</span>
+  <span class="hljs-built_in">array</span>[index] = <span class="hljs-built_in">array</span>[index] * scalar;
+}
+</code></pre>
+<h4>جدولة خيوط CUDA ومزامنتها <span class="content-anchor" id="_cuda_thread_scheduling_and_synchronization"></span></h4>
+<p>تُشغَّل كل كتلة خيوط CUDA بوحدة SM في GPU. ويجدول SM حزمة من الخيوط من كتلة الخيوط نفسها لتشغيل أنوية معالجاته. وتنفّذ جميع الخيوط في الحزمة المجموعة نفسها من التعليمات بتزامن الخطى، على بيانات مختلفة عادةً. وتتشارك الخيوط خط أنابيب التعليمات لكنها تحصل على سجلاتها الخاصة ومساحة مكدّس للمتغيرات المحلية والمعاملات.</p>
+<p>وبما أن كتل الخيوط تُجدول على وحدات SM فردية، فإن زيادة عدد الخيوط في الكتلة تزيد درجة التنفيذ المتوازي. وبما أن SM يجدول حُزم الخيوط لتشغيلها على وحدات معالجاته، فإذا كان عدد الخيوط في الكتلة من مضاعفات حجم الحزمة، فلن تُهدر أي من أنوية SM في الحساب. ومن الناحية العملية، يُجدّ استخدام عدد خيوط في الكتلة يكون مضاعفًا صغيرًا لعدد أنوية المعالجة في SM.</p>
+<p>تضمن CUDA أن تكتمل جميع الخيوط من استدعاء نواة واحد قبل جدولة أي خيوط من استدعاء نواة لاحق. وبالتالي، توجد نقطة مزامنة ضمنية بين استدعاءات الأنوية المنفصلة. أما داخل استدعاء نواة واحد، فتُجدول كتل الخيوط لتشغيل شيفرة النواة بأي ترتيب على وحدات SM في GPU. ونتيجة لذلك، لا ينبغي للمبرمج افتراض أي ترتيب للتنفيذ بين خيوط في كتل خيوط مختلفة. وتوفّر CUDA بعض الدعم لمزامنة الخيوط، لكن للخيوط التي في كتلة الخيوط نفسها فقط.</p>
+<h3 id="1515-لغات-أخرى-لبرمجة-gpgpu">15.1.5. لغات أخرى لبرمجة GPGPU <span class="content-anchor" id="_other_languages_for_gpgpu_programming"></span></h3>
+<p>توجد لغات برمجة أخرى لحوسبة GPGPU. وتعدّ OpenCL وOpenACC وOpenHMPP ثلاثة أمثلة على لغات يمكن استخدامها لبرمجة أي جهاز رسومي (فهي ليست خاصة بأجهزة NVIDIA). وتملك OpenCL (Open Computing Language) نموذج برمجة مشابهًا لنموذج CUDA؛ وكلاهما ينفّذ نموذج برمجة أدنى مستوى (أو ينفّذ تجريدًا برمجيًا أرقّ) فوق المعماريات الهدف. وتستهدف OpenCL مجموعة واسعة من منصات الحوسبة غير المتجانسة التي تشمل معالج مضيف مقترنًا بوحدات حسابية أخرى، قد تتضمّن معالجات CPUs أو مسرّعات مثل وحدات GPU ومصفوفات FPGA. وOpenACC (Open Accelerator) نموذج برمجة بتجريد أعلى مستوى من CUDA أو OpenCL. وقد صُمّم لقابلية النقل وسهولة المبرمج. ويضع المبرمج شروحًا على أجزاء من شيفرته للتنفيذ المتوازي، ويولّد المترجم شيفرة متوازية يمكن تشغيلها على وحدات GPU. وOpenHMPP (Open Hybrid Multicore Programming) لغة أخرى توفّر تجريدًا برمجيًا أعلى مستوى للبرمجة غير المتجانسة.</p>
+<h3 id="1516-المراجع">15.1.6. المراجع <span class="content-anchor" id="_references"></span></h3>
+<ol>
+<li>&quot;A Survey Of Techniques for Architecting and Managing Asymmetric Multicore Processors&quot;، Sparsh Mittal، في ACM Computing Surveys 48(3)، فبراير 2016</li>
+<li>&quot;FPGAs and the Road to Reprogrammable HPC&quot;، inside HPC، يوليو 2019 (<a href="https://insidehpc.com/2019/07/fpgas-and-the-road-to-reprogrammable-hpc/">https://insidehpc.com/2019/07/fpgas-and-the-road-to-reprogrammable-hpc/</a>)</li>
+<li>توثيق CUDA Toolkit: <a href="https://docs.nvidia.com/cuda/index.html">https://docs.nvidia.com/cuda/index.html</a></li>
+<li>&quot;GPU Programming&quot;، من CSinParallel: <a href="https://csinparallel.org/csinparallel/modules/gpu_programming.html">https://csinparallel.org/csinparallel/modules/gpu_programming.html</a>، ولدى CSinParallel وحدات أخرى لبرمجة GPU: <a href="https://csinparallel.org">https://csinparallel.org</a></li>
+</ol>
+<p>يصف الفصل 14 آليات مثل <a href="https://diveintosystems.org/book/C14-SharedMemory/posix.html#_hello_threading_writing_your_first_multithreaded_program">Pthreads</a> و<a href="https://diveintosystems.org/book/C14-SharedMemory/openmp.html#_implicit_threading_with_openmp">OpenMP</a> تستخدمها البرامج للاستفادة من أنوية CPU المتعددة في <em>نظام ذاكرة مشتركة</em>. وفي مثل هذه الأنظمة، تتشارك كل نواة عتاد الذاكرة الفيزيائي نفسه، ما يسمح لها بتبادل البيانات ومزامنة سلوكها بالقراءة من عناوين الذاكرة المشتركة والكتابة فيها. ومع أن أنظمة الذاكرة المشتركة تجعل التواصل سهلًا نسبيًا، فإن قابليتها للتوسع محدودة بعدد أنوية CPU في النظام.</p>
+<p>حتى عام 2019، كانت معالجات الخواديم التجارية الراقية توفّر عمومًا 64 نواة كحد أقصى. غير أن بعض المهام تحتاج حتى إلى بضع مئات من أنوية CPU كحد أدنى. فمثلًا، تخيّل محاولة محاكاة ديناميكيات السوائل لمحيطات الأرض أو فهرسة المحتوى الكامل للشبكة العنكبوتية العالمية لبناء تطبيق بحث. وتتطلب هذه المهام الضخمة ذاكرة فيزيائية ومعالجات أكثر مما يستطيع أي حاسوب واحد توفيره. وبالتالي، تعمل التطبيقات التي تحتاج إلى عدد كبير من أنوية CPU على أنظمة تتخلى عن الذاكرة المشتركة. وبدلًا من ذلك، تنفَّذ على أنظمة مبنية من حواسيب متعددة، لكل منها معالجه وذاكرته، تتواصل عبر شبكة لتنسيق سلوكها.</p>
+<p>وتُعرف مجموعة الحواسيب العاملة معًا بـ<strong>نظام الذاكرة الموزّعة</strong> (distributed memory system) (وكثيرًا ما يُقال <strong>النظام الموزّع</strong> فقط).</p>
+<p><strong>ملاحظة — ملاحظة عن التسلسل الزمني</strong></p>
+<blockquote>
+<p>رغم الترتيب الذي عُرضت به في هذا الكتاب، بنى مصمّمو الأنظمة الأنظمة الموزّعة قبل وجود آليات مثل الخيوط أو OpenMP بوقت طويل.</p>
+</blockquote>
+<p>تُدمج بعض أنظمة الذاكرة الموزّعة العتاد بعضه ببعض بشكل أوثق من غيرها. فمثلًا، <strong>الحاسوب الفائق</strong> (supercomputer) نظام عالي الأداء ترتبط فيه العديد من <em>عقد الحساب</em> ارتباطًا وثيقًا (تكاملًا قريبًا) بشبكة ترابط سريعة. وتحتوي كل عقدة حساب على معالجها ووحدات GPU وذاكرتها الخاصة، لكن عقدًا متعددة قد تتشارك موارد مساعدة مثل التخزين الثانوي ومصادر الطاقة. ويتفاوت المستوى الدقيق لتشارك العتاد من حاسوب فائق إلى آخر.</p>
+<p>وفي الطرف الآخر من الطيف، قد يعمل تطبيق موزّع على مجموعة متراخية الترابط (أقل تكاملًا) من حواسيب مستقلة تمامًا (<em>عقد</em>) متصلة بتقنية شبكة محلية تقليدية (LAN) مثل Ethernet. وتُعرف هذه المجموعة من العقد بـعنقود <strong>المنتجات الجاهزة التجارية</strong> (commodity off-the-shelf, COTS). وتستخدم عناقيد COTS عادةً <strong>معمارية لا شيء مشترك</strong> (shared-nothing architecture) التي تحتوي فيها كل عقدة على مجموعة عتاد الحساب الخاصة بها (معالجات CPU ووحدات GPU وذاكرة وتخزين). ويوضّح <a href="#FigSharedNothing">الشكل 1</a> نظامًا موزّعًا لا شيء مشترك يتكوّن من حاسوبين بذاكرة مشتركة.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c15-parallel-0-SharedNothing.webp" alt="مخططان بالكتل لحاسوبين، لكل منهما معالج ذو أربع نوى متصل بذاكرة خاصة ووحدة تحكّم إدخال/إخراج. وترتبط وحدة تحكّم الإدخال/الإخراج بواجهة شبكة تربط العقدتين عبر بنية شبكة غير محدّدة (مثل Ethernet أو InfiniBand أو Fibre Channel)." id="FigSharedNothing"> الشكل 1. المكوّنات الرئيسية لمعمارية ذاكرة موزّعة لا شيء مشترك مبنية من عقدتي حساب</p>
+<h3 id="1521-نماذج-المعالجة-المتوازية-والموزعة">15.2.1. نماذج المعالجة المتوازية والموزّعة <span class="content-anchor" id="_parallel_and_distributed_processing_models"></span></h3>
+<p>غالبًا ما ينظّم مصمّمو التطبيقات التطبيقات الموزّعة باستخدام تصاميم مجرّبة وموثوقة. ويساعد تبنّي نماذج تطبيقات كهذه المطورين على التفكير في التطبيق لأن سلوكه سيتوافق مع معايير مفهومة جيدًا. ولكل نموذج فوائده وعيوبه الفريدة — فلا يوجد حل واحد يناسب الجميع. ونوصف بإيجاز بعض النماذج الأكثر شيوعًا أدناه، مع التنبيه إلى أننا لا نقدّم قائمة شاملة.</p>
+<h4>العميل/الخادم <span class="content-anchor" id="_clientserver"></span></h4>
+<p><strong>نموذج العميل/الخادم</strong> (client/server model) نموذج تطبيقات شائع للغاية يوزّع مسؤوليات التطبيق على طرفين: عمليات العميل وعمليات الخادم. وتوفّر عملية الخادم خدمة للعملاء الذين يطلبون إنجاز شيء ما. وتنتظر عمليات الخادم عادةً عند عناوين معروفة لتستقبل الاتصالات الواردة من العملاء. وعند إنشاء اتصال، يرسل العميل طلبات إلى عملية الخادم، التي إما تستجيب لتلك الطلبات (مثلًا بجلب ملف مطلوب) وإما تبلّغ بخطأ (مثلًا عدم وجود الملف أو تعذّر مصادقة العميل بشكل صحيح).</p>
+<p>ومع أنك قد لا تكون قد فكّرت في ذلك، فقد وصلت إلى الكتاب الذي تقرأه الآن عبر نموذج العميل/الخادم! فقد اتصل متصفح الويب لديك (العميل) بموقع ويب (الخادم) عند عنوان عام (<code>diveintosystems.org</code>) لاسترجاع محتويات الكتاب.</p>
+<h4>خط الأنابيب <span class="content-anchor" id="_pipeline"></span></h4>
+<p>يقسّم <strong>نموذج خط الأنابيب</strong> (pipeline model) التطبيق إلى تسلسل مميّز من الخطوات تتدفق فيه البيانات من خطوة إلى أخرى. وتعالج كل مكوّنة داخل خط الأنابيب بياناتها بشكل مستقل ومتزامن. ويعمل هذا النموذج جيدًا في التطبيقات التي يتضمّن سير عملها مهام خطية متكررة على مدخلات بيانات كبيرة. فمثلًا، تأمّل إنتاج أفلام الرسوم المتحركة بالحاسوب. فيجب معالجة كل إطار من الفيلم عبر تسلسل من الخطوات التي تحوّل الإطار (مثل إضافة الأنسجة أو تطبيق الإضاءة). وبما أن كل خطوة تحدث بشكل مستقل في تسلسل، يستطيع الرسامون المتحركون تسريع العرض بمعالجة الإطارات بالتوازي عبر عنقود كبير من الحواسيب.</p>
+<h4>الرئيس/العامل <span class="content-anchor" id="_bossworker"></span></h4>
+<p>في <strong>نموذج الرئيس/العامل</strong> (boss/worker model)، تعمل عملية واحدة كمنسّق مركزي وتوزّع العمل على العمليات في العقد الأخرى. ويعمل هذا النموذج جيدًا في المسائل التي تتطلب معالجة مدخلات كبيرة قابلة للتقسيم. ويقسّم الرئيس المدخلات إلى أجزاء أصغر ويخصّص للعامل الواحد جزءًا واحدًا أو أكثر. وفي بعض التطبيقات، قد يخصّص الرئيس لكل عامل جزءًا واحدًا بالضبط من المدخلات تخصيصًا ساكنًا. وفي حالات أخرى، قد يُكمل العاملون جزءًا من المدخلات مرارًا ثم يعودون إلى الرئيس لاسترجاع الجزء التالي من المدخلات ديناميكيًا. وسنعرض لاحقًا في هذا القسم برنامجًا نموذجيًا يقسّم فيه رئيس مصفوفة على عمال كثيرين لتنفيذ ضرب قياسي على مصفوفة.</p>
+<p>لاحظ أن هذا النموذج يُسمّى أحيانًا بأسماء أخرى، مثل &quot;السيد/العامل&quot; أو تنويعات أخرى، لكن الفكرة الأساسية هي نفسها.</p>
+<h4>النظير إلى النظير <span class="content-anchor" id="_peer_to_peer"></span></h4>
+<p>وخلافًا لنموذج الرئيس/العامل، يتجنّب تطبيق <strong>النظير إلى النظير</strong> (peer-to-peer) الاعتماد على عملية تحكم مركزية. وبدلًا من ذلك، تنظّم عمليات الأقران التطبيق ذاتيًا في بنية يتحمّل فيها كل منها مسؤوليات متساوية تقريبًا. فمثلًا، في بروتوكول مشاركة الملفات BitTorrent، يتبادل كل نظير أجزاء من ملف مع الآخرين مرارًا حتى يستقبل الجميع الملف كاملًا.</p>
+<p>ولأنها تفتقر إلى مكوّن مركزي، تكون تطبيقات النظير إلى النظير متينة عمومًا في وجه أعطال العقد. ومن جهة أخرى، تتطلب تطبيقات النظير إلى النظير عادةً خوارزميات تنسيق معقّدة، ما يجعل بنائها واختبارها بدقة أمرًا صعبًا.</p>
+<h3 id="1522-بروتوكولات-الاتصال">15.2.2. بروتوكولات الاتصال <span class="content-anchor" id="_communication_protocols"></span></h3>
+<p>سواء كانت جزءًا من حاسوب فائق أو عنقود COTS، تتواصل العمليات في نظام الذاكرة الموزّعة عبر <strong>تمرير الرسائل</strong> (message passing)، حيث ترسل عملية ما رسالة صراحةً إلى عمليات على عقدة أخرى أو أكثر، فتستقبلها. ويعود إلى التطبيقات العاملة على النظام تحديد كيفية استخدام الشبكة — فبعض التطبيقات يتطلب تواصلًا متكررًا لتنسيق سلوك العمليات عبر عقد كثيرة تنسيقًا وثيقًا، بينما تتواصل تطبيقات أخرى لتقسيم مدخلات كبيرة على العمليات ثم تعمل بعد ذلك باستقلالية في الغالب.</p>
+<p>ويصوغ التطبيق الموزّع توقعاته التواصلية بتعريف <strong>بروتوكول</strong> (protocol) اتصال يصف مجموعة من القواعد التي تحكم استخدامه للشبكة، ومنها:</p>
+<ul>
+<li>متى ينبغي للعملية إرسال رسالة</li>
+<li>إلى أي عملية أو عمليات ينبغي إرسال الرسالة</li>
+<li>كيفية تنسيق الرسالة</li>
+</ul>
+<p>وبدون بروتوكول، قد يفشل التطبيق في تفسير الرسائل تفسيرًا صحيحًا أو قد يقع في <a href="https://diveintosystems.org/book/C14-SharedMemory/mutex.html#_deadlock">جمود</a> حتى. فمثلًا، إذا تكوّن تطبيق من عمليتين، وكانت كل عملية تنتظر الأخرى لترسل لها رسالة، فلن تحرز أي من العمليتين أي تقدم أبدًا. وتضيف البروتوكولات بنية إلى التواصل لتقليل احتمال حدوث مثل هذه الإخفاقات.</p>
+<p>ولتنفيذ بروتوكول اتصال، تحتاج التطبيقات إلى وظائف أساسية لمهام مثل إرسال الرسائل واستقبالها، وتسمية العمليات (العنونة)، ومزامنة تنفيذ العمليات. وتتوجه تطبيقات كثيرة إلى واجهة تمرير الرسائل (Message Passing Interface) للحصول على هذه الوظائف.</p>
+<h3 id="1523-واجهة-تمرير-الرسائل-mpi">15.2.3. واجهة تمرير الرسائل (MPI) <span class="content-anchor" id="_message_passing_interface_mpi"></span></h3>
+<p>تعرّف <strong>واجهة تمرير الرسائل</strong> (Message Passing Interface, MPI) (لكنها لا تنفّذها بنفسها) واجهة معيارية يمكن للتطبيقات استخدامها للتواصل في نظام ذاكرة موزّعة. وباتباع معيار اتصال MPI، تصبح التطبيقات <strong>قابلة للنقل</strong> (portable)، أي يمكن ترجمتها وتنفيذها على أنظمة مختلفة كثيرة. وبعبارة أخرى، ما دام أحد تنفيذات MPI مثبّتًا، يمكن للتطبيق القابل للنقل الانتقال من نظام إلى آخر وتوقّع التنفيذ السليم، حتى لو كانت للأنظمة خصائص أساسية مختلفة.</p>
+<p>تتيح MPI للمبرمج تقسيم التطبيق إلى عمليات متعددة. وتخصّص لكل عملية من عمليات التطبيق معرّفًا فريدًا يُعرف بـ<strong>الرتبة</strong> (rank)، وتتراوح من 0 إلى <em>N</em>-1 لتطبيق فيه <em>N</em> عملية. ويمكن للعملية معرفة رتبتها باستدعاء الدالة <code>[MPI_Comm_rank](https://www.open-mpi.org/doc/v4.0/man3/MPI_Comm_rank.3.php)</code>، ومعرفة عدد العمليات العاملة في التطبيق باستدعاء <code>[MPI_Comm_size](https://www.open-mpi.org/doc/v4.0/man3/MPI_Comm_size.3.php)</code>. ولإرسال رسالة، تستدعي العملية <code>[MPI_Send](https://www.open-mpi.org/doc/v4.0/man3/MPI_Send.3.php)</code> وتحدّد رتبة المستلم المقصود. وبالمثل، تستدعي العملية <code>[MPI_Recv](https://www.open-mpi.org/doc/v4.0/man3/MPI_Recv.3.php)</code> لاستقبال رسالة، وتحدّد ما إذا كانت ستنتظر رسالة من عقدة محددة أو ستستقبل رسالة من أي مرسل (باستخدام الثابت <code>MPI_ANY_SOURCE</code> كرتبة).</p>
+<p>إلى جانب دالتي الإرسال والاستقبال الأساسيتين، تعرّف MPI أيضًا مجموعة متنوعة من الدوال التي تسهّل على عملية واحدة توصيل البيانات إلى مستلمين متعددين. فمثلًا، تتيح <code>[MPI_Bcast](https://www.open-mpi.org/doc/v4.0/man3/MPI_Bcast.3.php)</code> لعملية واحدة إرسال رسالة إلى كل عملية أخرى في التطبيق باستدعاء دالة واحد فقط. كما تعرّف زوجًا من الدوال، <code>[MPI_Scatter](https://www.open-mpi.org/doc/v4.0/man3/MPI_Scatter.3.php)</code> و<code>[MPI_Gather](https://www.open-mpi.org/doc/v4.0/man3/MPI_Gather.3.php)</code>، يتيح لعملية واحدة تقسيم مصفوفة وتوزيع الأجزاء على العمليات (التوزيع)، والعمل على البيانات، ثم استرجاع جميع البيانات لاحقًا لدمج النتائج (التجميع).</p>
+<p>ولأن MPI <em>يحدّد</em> فقط مجموعة من الدوال وكيف ينبغي أن تتصرف، يستطيع كل مصمّم نظام تنفيذ وظائف MPI بطريقة تلائم قدرات نظامه الخاص. فمثلًا، قد يتمكن نظام فيه شبكة ترابط تدعم البث (إرسال نسخة واحدة من رسالة إلى مستلمين متعددين في الوقت نفسه) من تنفيذ دالة <code>[MPI_Bcast](https://www.open-mpi.org/doc/v4.0/man3/MPI_Bcast.3.php)</code> في MPI بكفاءة أكبر من نظام لا يوفّر هذا الدعم.</p>
+<h3 id="1524-برنامج-mpi-hello-world">15.2.4. برنامج MPI hello world <span class="content-anchor" id="_mpi_hello_world"></span></h3>
+<p>كمقدمة لبرمجة MPI، تأمّل برنامج &quot;hello world&quot; (<a href="https://diveintosystems.org/book/C15-Parallel/_attachments/hello_world_mpi.c">hello_world_mpi.c</a>) المعروض هنا:</p>
+<pre><code class="language-c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;mpi.h&quot;</span></span>
+
+<span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv)</span> {
+    <span class="hljs-type">int</span> rank, process_count;
+    <span class="hljs-type">char</span> hostname[<span class="hljs-number">1024</span>];
+
+    <span class="hljs-comment">/* Initialize MPI. */</span>
+    MPI_Init(&amp;argc, &amp;argv);
+
+    <span class="hljs-comment">/* Determine how many processes there are and which one this is. */</span>
+    MPI_Comm_size(MPI_COMM_WORLD, &amp;process_count);
+    MPI_Comm_rank(MPI_COMM_WORLD, &amp;rank);
+
+    <span class="hljs-comment">/* Determine the name of the machine this process is running on. */</span>
+    gethostname(hostname, <span class="hljs-number">1024</span>);
+
+    <span class="hljs-comment">/* Print a message, identifying the process and machine it comes from. */</span>
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Hello from %s process %d of %d\\n&quot;</span>, hostname, rank, process_count);
+
+    <span class="hljs-comment">/* Clean up. */</span>
+    MPI_Finalize();
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>عند بدء هذا البرنامج، تنفّذ MPI عدة نسخ منه في الوقت نفسه كعمليات مستقلة عبر حاسوب واحد أو أكثر. وتستدعي كل عملية دوال MPI لتحديد العدد الإجمالي للعمليات العاملة (بـ<code>[MPI_Comm_size](https://www.open-mpi.org/doc/v4.0/man3/MPI_Comm_size.3.php)</code>) وأي عملية هي بين تلك العمليات (رتبة العملية، بـ<code>[MPI_Comm_rank](https://www.open-mpi.org/doc/v4.0/man3/MPI_Comm_rank.3.php)</code>). وبعد البحث عن هذه المعلومات، تطبع كل عملية رسالة قصيرة تحتوي على الرتبة واسم الحاسوب (<code>hostname</code>) الذي تعمل عليه قبل أن تنتهي.</p>
+<p><strong>ملاحظة — تشغيل شيفرة MPI</strong></p>
+<blockquote>
+<p>لتشغيل أمثلة MPI هذه، ستحتاج إلى تنفيذ MPI مثل <a href="https://www.open-mpi.org/">OpenMPI</a> أو <a href="https://www.mpich.org/">MPICH</a> مثبّتًا على نظامك.</p>
+</blockquote>
+<p>لترجمة هذا المثال، استدعِ برنامج المترجم <code>mpicc</code>، الذي ينفّذ إصدارًا مدركًا لـMPI من <code>gcc</code> لبناء البرنامج وربطه بمكتبات MPI:</p>
+<pre><code class="language-bash">$ mpicc -o hello_world_mpi hello_world_mpi.c
+</code></pre>
+<p>لتنفيذ البرنامج، استخدم أداة <code>mpirun</code> لبدء عدة عمليات متوازية بـMPI. ويجب إخبار الأمر <code>mpirun</code> بالحواسيب التي سيشغّل العمليات عليها (<code>--hostfile</code>) وبعدد العمليات التي سيشغّلها على كل حاسوب (<code>-np</code>). وهنا نزوّده بملف اسمه <code>hosts.txt</code> يخبر <code>mpirun</code> بإنشاء أربع عمليات عبر حاسوبين، أحدهما اسمه <code>lemon</code> والآخر اسمه <code>orange</code>:</p>
+<pre><code class="language-bash">$ mpirun -np 8 --hostfile hosts.txt ./hello_world_mpi
+Hello from lemon process 4 of 8
+Hello from lemon process 5 of 8
+Hello from orange process 2 of 8
+Hello from lemon process 6 of 8
+Hello from orange process 0 of 8
+Hello from lemon process 7 of 8
+Hello from orange process 3 of 8
+Hello from orange process 1 of 8
+</code></pre>
+<p><strong>تحذير — ترتيب تنفيذ MPI</strong></p>
+<blockquote>
+<p>ينبغي <em>ألا</em> تفترض أبدًا أي شيء عن ترتيب تنفيذ عمليات MPI. فتبدأ العمليات العمل على حواسيب متعددة، لكل منها نظام تشغيله ومجدول عملياته. وإذا كانت صحة برنامجك تتطلب تشغيل العمليات بترتيب معيّن، فيجب أن تضمن حدوث الترتيب الصحيح — مثلًا بإجبار عمليات معينة على التوقف حتى تستقبل رسالة.</p>
+</blockquote>
+<h3 id="1525-الضرب-القياسي-بـmpi">15.2.5. الضرب القياسي بـMPI <span class="content-anchor" id="_mpi_scalar_multiplication"></span></h3>
+<p>لمثال MPI أكثر جوهرية، تأمّل تنفيذ ضرب قياسي على مصفوفة. يتبنّى هذا المثال نموذج الرئيس/العامل — إذ تقسم عملية واحدة المصفوفة إلى أجزاء أصغر وتوزّعها على عمليات العمال. لاحظ أن عملية الرئيس في هذا التطبيق للضرب القياسي تتصرف أيضًا كعامل وتضرب جزءًا من المصفوفة بعد توزيع الأقسام على العمال الآخرين.</p>
+<p>للاستفادة من العمل بالتوازي، تضرب كل عملية جزءها المحلي فقط من المصفوفة في القيمة القياسية، ثم يرسل جميع العمال النتائج إلى عملية الرئيس لتكوين النتيجة النهائية. وفي مواضع عدة من البرنامج، تتحقق الشيفرة مما إذا كانت رتبة العملية صفرًا:</p>
+<pre><code class="language-c"><span class="hljs-keyword">if</span> (rank == <span class="hljs-number">0</span>) {
+    <span class="hljs-comment">/* This code only executes at the boss. */</span>
+}
+</code></pre>
+<p>يضمن هذا التحقق أن عملية واحدة فقط (ذات الرتبة 0) تؤدي دور الرئيس. وحسب الاصطلاح، تختار تطبيقات MPI غالبًا الرتبة 0 لتنفيذ المهام التي تحدث مرة واحدة، لأنه مهما كان عدد العمليات، ستُمنح واحدة دائمًا الرتبة 0 (حتى لو كانت عملية واحدة فقط قيد التنفيذ).</p>
+<h4>تواصل MPI <span class="content-anchor" id="_mpi_communication"></span></h4>
+<p>تبدأ عملية الرئيس بتحديد القيمة القياسية ومصفوفة الإدخال الأولية. وفي تطبيق حوسبة علمية حقيقي، من المرجّح أن يقرأ الرئيس هذه القيم من ملف إدخال. ولتبسيط هذا المثال، يستخدم الرئيس قيمة قياسية ثابتة (10) ويولّد مصفوفة بسيطة من 40 عنصرًا (تحتوي التسلسل من 0 إلى 39) لأغراض التوضيح.</p>
+<p>يتطلب هذا البرنامج تواصلًا بين عمليات MPI لثلاث مهام مهمة:</p>
+<ol>
+<li>يرسل الرئيس القيمة القياسية وحجم المصفوفة إلى <em>جميع</em> العمال.</li>
+<li>يقسّم الرئيس المصفوفة الأولية إلى أجزاء ويرسل جزءًا إلى كل عامل.</li>
+<li>تضرب كل عملية في جزءها من المصفوفة القيم في القيمة القياسية ثم ترسل القيم المحدَّثة عائدة إلى الرئيس.</li>
+</ol>
+<h4>بث القيم المهمة <span class="content-anchor" id="_broadcasting_important_values"></span></h4>
+<p>لإرسال القيمة القياسية إلى العمال، يستخدم البرنامج المثال دالة <code>[MPI_Bcast](https://www.open-mpi.org/doc/v4.0/man3/MPI_Bcast.3.php)</code>، التي تتيح لعملية MPI واحدة إرسال القيمة نفسها إلى جميع عمليات MPI الأخرى باستدعاء دالة واحد:</p>
+<pre><code class="language-c"><span class="hljs-comment">/* Boss sends the scalar value to every process with a broadcast. */</span>
+MPI_Bcast(&amp;scalar, <span class="hljs-number">1</span>, MPI_INT, <span class="hljs-number">0</span>, MPI_COMM_WORLD);
+</code></pre>
+<p>يرسل هذا الاستدعاء عددًا صحيحًا واحدًا (<code>MPI_INT</code>) بدءًا من عنوان المتغير <code>scalar</code> من العملية ذات الرتبة 0 إلى كل عملية أخرى (<code>MPI_COMM_WORLD</code>). وتستقبل جميع عمليات العمال (ذات الرتب غير الصفرية) البث في نسختها المحلية من المتغير <code>scalar</code>، فعندما يكتمل هذا الاستدعاء، تعرف كل عملية القيمة القياسية التي ستستخدمها.</p>
+<p><strong>ملاحظة — سلوك MPI_Bcast</strong></p>
+<blockquote>
+<p>تنفّذ كل عملية <code>MPI_Bcast</code>، لكنها تتصرف بشكل مختلف حسب رتبة العملية المستدعية. وإذا طابقت الرتبة رتبة الوسيط الرابع، تتولى العملية المستدعية دور المرسل. وتعمل جميع العمليات الأخرى التي تستدعي <code>MPI_Bcast</code> كمستقبلات.</p>
+</blockquote>
+<p>وبالمثل، يبثّ الرئيس الحجم الإجمالي للمصفوفة إلى كل عملية أخرى. وبعد معرفة الحجم الإجمالي للمصفوفة، تضبط كل عملية متغير <code>local_size</code> بقسمة الحجم الإجمالي للمصفوفة على عدد عمليات MPI. ويمثّل المتغير <code>local_size</code> عدد العناصر التي سيحتوي عليها جزء كل عامل من المصفوفة. فمثلًا، إذا كانت مصفوفة الإدخال تحتوي 40 عنصرًا ويتكوّن التطبيق من ثماني عمليات، فكل عملية مسؤولة عن جزء من خمسة عناصر من المصفوفة (40 / 8 = 5). ولإبقاء المثال بسيطًا، يُفترض أن عدد العمليات يقسم حجم المصفوفة قسمة تامة:</p>
+<pre><code class="language-c"><span class="hljs-comment">/* Each process determines how many processes there are. */</span>
+MPI_Comm_size(MPI_COMM_WORLD, &amp;process_count);
+
+<span class="hljs-comment">/* Boss sends the total array size to every process with a broadcast. */</span>
+MPI_Bcast(&amp;array_size, <span class="hljs-number">1</span>, MPI_INT, <span class="hljs-number">0</span>, MPI_COMM_WORLD);
+
+<span class="hljs-comment">/* Determine how many array elements each process will get.
+ * Assumes the array is evenly divisible by the number of processes. */</span>
+local_size = array_size / process_count;
+</code></pre>
+<h4>توزيع المصفوفة <span class="content-anchor" id="_distributing_the_array"></span></h4>
+<p>الآن بعد أن تعرف كل عملية القيمة القياسية وعدد القيم المسؤولة عن ضربها، يجب على الرئيس تقسيم المصفوفة إلى أجزاء وتوزيعها على العمال. لاحظ أن الرئيس (الرتبة 0) يشارك أيضًا كعامل في هذا التطبيق. فمثلًا، مع مصفوفة من 40 عنصرًا وثماني عمليات (الرتب 0-7)، ينبغي أن يحتفظ الرئيس بعناصر المصفوفة 0-4 لنفسه (الرتبة 0)، ويرسل العناصر 5-9 إلى الرتبة 1، والعناصر 10-14 إلى الرتبة 2، وهكذا. ويعرض <a href="#FigArrayDivision">الشكل 2</a> كيفية تخصيص الرئيس أجزاء المصفوفة لكل عملية MPI.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c15-parallel-1-ArrayDivision.webp" alt="يُوزَّع كل كتلة من خمسة عناصر من المصفوفة على العملية التالية. فمثلاً تُسند العناصر 0-4 إلى الرتبة 0، والعناصر 5-9 إلى الرتبة 1، والعناصر 10-14 إلى الرتبة 2، ويستمر النمط حتى تُسند العناصر 35-39 إلى الرتبة 7." id="FigArrayDivision"> الشكل 2. توزيع مصفوفة من 40 عنصرًا على ثماني عمليات MPI (الرتب 0-7)</p>
+<p>يتضمن أحد خيارات توزيع أجزاء المصفوفة على كل عامل الجمع بين استدعاءات <code>[MPI_Send](https://www.open-mpi.org/doc/v4.0/man3/MPI_Send.3.php)</code> عند الرئيس واستدعاء <code>[MPI_Recv](https://www.open-mpi.org/doc/v4.0/man3/MPI_Recv.3.php)</code> عند كل عامل:</p>
+<pre><code class="language-c"><span class="hljs-keyword">if</span> (rank == <span class="hljs-number">0</span>) {
+    <span class="hljs-type">int</span> i;
+
+    <span class="hljs-comment">/* For each worker process, send a unique chunk of the array. */</span>
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">1</span>; i &lt; process_count; i++) {
+        <span class="hljs-comment">/* Send local_size ints starting at array index (i * local_size) */</span>
+        MPI_Send(<span class="hljs-built_in">array</span> + (i * local_size), local_size, MPI_INT, i, <span class="hljs-number">0</span>,
+                 MPI_COMM_WORLD);
+    }
+} <span class="hljs-keyword">else</span> {
+    MPI_Recv(local_array, local_size, MPI_INT, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, MPI_COMM_WORLD,
+             MPI_STATUS_IGNORE);
+}
+</code></pre>
+<p>في هذه الشيفرة، ينفّذ الرئيس حلقة تُنفَّذ مرة واحدة لكل عملية عامل، يرسل فيها إلى العامل جزءًا من المصفوفة. ويبدأ إرسال البيانات من عنوان <code>array</code> بإزاحة <code>(i * local_size)</code> لضمان حصول كل عامل على جزء فريد من المصفوفة. أي أن العامل ذا الرتبة 1 يحصل على جزء من المصفوفة يبدأ عند الفهرس 5، والرتبة 2 تحصل على جزء يبدأ عند الفهرس 10، وهكذا، كما هو معروض في <a href="#FigArrayDivision">الشكل 2</a>.</p>
+<p>يرسل كل استدعاء لـ<code>[MPI_Send](https://www.open-mpi.org/doc/v4.0/man3/MPI_Send.3.php)</code> بيانات مقدارها <code>local_size</code> (5) من الأعداد الصحيحة (20 بايت) إلى العملية ذات الرتبة i. ويمثّل الوسيط <code>0</code> القريب من النهاية وسم رسالة، وهو ميزة متقدمة لا يحتاجها هذا البرنامج — فتحديده على <code>0</code> يعامل جميع الرسائل بالتساوي.</p>
+<p>تستدعي جميع العمال <code>[MPI_Recv](https://www.open-mpi.org/doc/v4.0/man3/MPI_Recv.3.php)</code> لاسترجاع جزءهم من المصفوفة، فيخزّنونه في الذاكرة عند العنوان الذي يشير إليه <code>local_array</code>. ويستقبلون بيانات مقدارها <code>local_size</code> (5) من الأعداد الصحيحة (20 بايت) من العقدة ذات الرتبة 0. لاحظ أن <code>[MPI_Recv](https://www.open-mpi.org/doc/v4.0/man3/MPI_Recv.3.php)</code> استدعاء <strong>حاجب</strong> (blocking)، أي أن العملية التي تستدعيه تتوقف حتى تستقبل بيانات. ولأن استدعاء <code>[MPI_Recv](https://www.open-mpi.org/doc/v4.0/man3/MPI_Recv.3.php)</code> حاجب، لن يتقدم أي عامل حتى يرسل الرئيس جزأه من المصفوفة.</p>
+<h4>التنفيذ المتوازي <span class="content-anchor" id="_parallel_execution"></span></h4>
+<p>بعد أن يستقبل العامل جزأه من المصفوفة، يمكنه البدء بضرب كل قيمة من قيم المصفوفة في القيمة القياسية. وبما أن كل عامل يحصل على مجموعة فرعية فريدة من المصفوفة، فيمكنهم التنفيذ باستقلالية وبالتوازي دون حاجة إلى التواصل.</p>
+<h4>تجميع النتائج <span class="content-anchor" id="_aggregating_results"></span></h4>
+<p>وأخيرًا، بعد أن يكمل العمال عمليات الضرب، يرسلون قيم المصفوفة المحدَّثة عائدة إلى الرئيس الذي يجمع النتائج. وباستخدام <code>[MPI_Send](https://www.open-mpi.org/doc/v4.0/man3/MPI_Send.3.php)</code> و<code>[MPI_Recv](https://www.open-mpi.org/doc/v4.0/man3/MPI_Recv.3.php)</code>، تشبه هذه العملية شيفرة توزيع المصفوفة أعلاه، إلا أن دوري المرسل والمستقبل معكوسان:</p>
+<pre><code class="language-c"><span class="hljs-keyword">if</span> (rank == <span class="hljs-number">0</span>) {
+    <span class="hljs-type">int</span> i;
+
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">1</span>; i &lt; process_count; i++) {
+        MPI_Recv(<span class="hljs-built_in">array</span> + (i * local_size), local_size, MPI_INT, i, <span class="hljs-number">0</span>,
+                 MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    }
+} <span class="hljs-keyword">else</span> {
+    MPI_Send(local_array, local_size, MPI_INT, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, MPI_COMM_WORLD);
+}
+</code></pre>
+<p>تذكّر أن <code>[MPI_Recv](https://www.open-mpi.org/doc/v4.0/man3/MPI_Recv.3.php)</code> <strong>تحجب</strong> التنفيذ أو توقفه مؤقتًا، لذا يتسبب كل استدعاء في حلقة <code>for</code> في انتظار الرئيس حتى يستقبل جزءًا من المصفوفة من العامل <em>i</em>.</p>
+<h4>التوزيع/التجميع <span class="content-anchor" id="_scattergather"></span></h4>
+<p>مع أن حلقات <code>for</code> في المثال السابق توزّع البيانات بشكل صحيح باستخدام <code>[MPI_Send](https://www.open-mpi.org/doc/v4.0/man3/MPI_Send.3.php)</code> و<code>[MPI_Recv](https://www.open-mpi.org/doc/v4.0/man3/MPI_Recv.3.php)</code>، فإنها لا تجسّد <em>القصد</em> الكامن وراءها بإيجاز. أي أنها تظهر لـMPI كسلسلة من استدعاءات الإرسال والاستقبال دون الهدف الواضح المتمثل في توزيع مصفوفة على عمليات MPI. ولأن التطبيقات المتوازية تحتاج كثيرًا إلى توزيع البيانات وجمعها كما في مصفوفة هذا المثال، توفّر MPI دوالّ لهذا الغرض بالتحديد: <code>[MPI_Scatter](https://www.open-mpi.org/doc/v4.0/man3/MPI_Scatter.3.php)</code> و<code>[MPI_Gather](https://www.open-mpi.org/doc/v4.0/man3/MPI_Gather.3.php)</code>.</p>
+<p>وتوفّر هاتان الدالتان فائدتين رئيسيتين:</p>
+<ol>
+<li>تتيح التعبير عن كل كتلة شيفرة كاملة من الكتل أعلاه باستدعاء دالة MPI واحد، ما يبسّط الشيفرة.</li>
+<li>تعبّر عن <em>قصد</em> العملية لتنفيذ MPI الأساسي، الذي قد يكون قادرًا على تحسين أدائه بشكل أفضل.</li>
+</ol>
+<p>لاستبدال الحلقة الأولى أعلاه، يمكن لكل عملية استدعاء <code>[MPI_Scatter](https://www.open-mpi.org/doc/v4.0/man3/MPI_Scatter.3.php)</code>:</p>
+<pre><code class="language-c"><span class="hljs-comment">/* Boss scatters chunks of the array evenly among all the processes. */</span>
+MPI_Scatter(<span class="hljs-built_in">array</span>, local_size, MPI_INT, local_array, local_size, MPI_INT,
+            <span class="hljs-number">0</span>, MPI_COMM_WORLD);
+</code></pre>
+<p>توزّع هذه الدالة تلقائيًا محتويات الذاكرة بدءًا من <code>array</code> في أجزاء تحتوي <code>local_size</code> من الأعداد الصحيحة إلى المتغير الهدف <code>local_array</code>. ويحدّد الوسيط <code>0</code> أن العملية ذات الرتبة 0 (الرئيس) هي المرسل، فتقرأ المصدر <code>array</code> وتوزّعه على العمليات الأخرى (بما في ذلك إرسال جزء واحد إلى نفسها). وتعمل كل عملية أخرى كمستقبل وتستقبل البيانات في هدفها <code>local_array</code>.</p>
+<p>بعد هذا الاستدعاء الواحد، يمكن للعمال كلٌّ ضرب المصفوفة بالتوازي. وعندما ينتهون، تستدعي كل عملية <code>[MPI_Gather](https://www.open-mpi.org/doc/v4.0/man3/MPI_Gather.3.php)</code> لتجميع النتائج عائدة في متغير <code>array</code> الخاص بالرئيس:</p>
+<pre><code class="language-c"><span class="hljs-comment">/* Boss gathers the chunks from all the processes and coalesces the
+ * results into a final array. */</span>
+MPI_Gather(local_array, local_size, MPI_INT, <span class="hljs-built_in">array</span>, local_size, MPI_INT,
+           <span class="hljs-number">0</span>, MPI_COMM_WORLD);
+</code></pre>
+<p>يتصرف هذا الاستدعاء عكس <code>[MPI_Scatter](https://www.open-mpi.org/doc/v4.0/man3/MPI_Scatter.3.php)</code>: فهذه المرة، يحدّد الوسيط <code>0</code> أن العملية ذات الرتبة 0 (الرئيس) هي المستقبل، فيحدّث متغير <code>array</code>، ويرسل العمال كلٌّ <code>local_size</code> من الأعداد الصحيحة من متغيرات <code>local_array</code> الخاصة بهم.</p>
+<h4>الشيفرة الكاملة لضرب MPI القياسي <span class="content-anchor" id="_full_code_for_mpi_scalar_multiply"></span></h4>
+<p>وفيما يلي سرد كامل لشيفرة ضرب MPI القياسي تستخدم <code>MPI_Scatter</code> و<code>MPI_Gather</code> (<a href="https://diveintosystems.org/book/C15-Parallel/_attachments/scalar_multiply_mpi.c">scalar_multiply_mpi.c</a>):</p>
+<pre><code class="language-c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;mpi.h&quot;</span></span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> ARRAY_SIZE (40)</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> SCALAR (10)</span>
+
+<span class="hljs-comment">/* In a real application, the boss process would likely read its input from a
+ * data file.  This example program produces a simple array and informs the
+ * caller of the size of the array through the array_size pointer parameter.*/</span>
+<span class="hljs-type">int</span> *<span class="hljs-title function_">build_array</span><span class="hljs-params">(<span class="hljs-type">int</span> *array_size)</span> {
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-type">int</span> *result = <span class="hljs-built_in">malloc</span>(ARRAY_SIZE * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));
+
+    <span class="hljs-keyword">if</span> (result == <span class="hljs-literal">NULL</span>) {
+        <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);
+    }
+
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; ARRAY_SIZE; i++) {
+        result[i] = i;
+    }
+
+    *array_size = ARRAY_SIZE;
+    <span class="hljs-keyword">return</span> result;
+}
+
+<span class="hljs-comment">/* Print the elements of an array, given the array and its size. */</span>
+<span class="hljs-type">void</span> <span class="hljs-title function_">print_array</span><span class="hljs-params">(<span class="hljs-type">int</span> *<span class="hljs-built_in">array</span>, <span class="hljs-type">int</span> array_size)</span> {
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; array_size; i++) {
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%3d &quot;</span>, <span class="hljs-built_in">array</span>[i]);
+    }
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\\n\\n&quot;</span>);
+}
+
+<span class="hljs-comment">/* Multiply each element of an array by a scalar value. */</span>
+<span class="hljs-type">void</span> <span class="hljs-title function_">scalar_multiply</span><span class="hljs-params">(<span class="hljs-type">int</span> *<span class="hljs-built_in">array</span>, <span class="hljs-type">int</span> array_size, <span class="hljs-type">int</span> scalar)</span> {
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; array_size; i++) {
+        <span class="hljs-built_in">array</span>[i] = <span class="hljs-built_in">array</span>[i] * scalar;
+    }
+}
+
+<span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> **argv)</span> {
+    <span class="hljs-type">int</span> rank, process_count;
+    <span class="hljs-type">int</span> array_size, local_size;
+    <span class="hljs-type">int</span> scalar;
+    <span class="hljs-type">int</span> *<span class="hljs-built_in">array</span>, *local_array;
+
+    <span class="hljs-comment">/* Initialize MPI */</span>
+    MPI_Init(&amp;argc, &amp;argv);
+
+    <span class="hljs-comment">/* Determine how many processes there are and which one this is. */</span>
+    MPI_Comm_size(MPI_COMM_WORLD, &amp;process_count);
+    MPI_Comm_rank(MPI_COMM_WORLD, &amp;rank);
+
+    <span class="hljs-comment">/* Designate rank 0 to be the boss.  It sets up the problem by generating
+     * the initial input array and choosing the scalar to multiply it by. */</span>
+    <span class="hljs-keyword">if</span> (rank == <span class="hljs-number">0</span>) {
+        <span class="hljs-built_in">array</span> = build_array(&amp;array_size);
+        scalar = SCALAR;
+
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Initial array:\\n&quot;</span>);
+        print_array(<span class="hljs-built_in">array</span>, array_size);
+    }
+
+    <span class="hljs-comment">/* Boss sends the scalar value to every process with a broadcast.
+     * Worker processes receive the scalar value by making this MPI_Bcast
+     * call. */</span>
+    MPI_Bcast(&amp;scalar, <span class="hljs-number">1</span>, MPI_INT, <span class="hljs-number">0</span>, MPI_COMM_WORLD);
+
+    <span class="hljs-comment">/* Boss sends the total array size to every process with a broadcast.
+     * Worker processes receive the size value by making this MPI_Bcast
+     * call. */</span>
+    MPI_Bcast(&amp;array_size, <span class="hljs-number">1</span>, MPI_INT, <span class="hljs-number">0</span>, MPI_COMM_WORLD);
+
+    <span class="hljs-comment">/* Determine how many array elements each process will get.
+     * Assumes the array is evenly divisible by the number of processes. */</span>
+    local_size = array_size / process_count;
+
+    <span class="hljs-comment">/* Each process allocates space to store its portion of the array. */</span>
+    local_array = <span class="hljs-built_in">malloc</span>(local_size * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));
+    <span class="hljs-keyword">if</span> (local_array == <span class="hljs-literal">NULL</span>) {
+        <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);
+    }
+
+    <span class="hljs-comment">/* Boss scatters chunks of the array evenly among all the processes. */</span>
+    MPI_Scatter(<span class="hljs-built_in">array</span>, local_size, MPI_INT, local_array, local_size, MPI_INT,
+                <span class="hljs-number">0</span>, MPI_COMM_WORLD);
+
+    <span class="hljs-comment">/* Every process (including boss) performs scalar multiplication over its
+     * chunk of the array in parallel. */</span>
+    scalar_multiply(local_array, local_size, scalar);
+
+    <span class="hljs-comment">/* Boss gathers the chunks from all the processes and coalesces the
+     * results into a final array. */</span>
+    MPI_Gather(local_array, local_size, MPI_INT, <span class="hljs-built_in">array</span>, local_size, MPI_INT,
+               <span class="hljs-number">0</span>, MPI_COMM_WORLD);
+
+    <span class="hljs-comment">/* Boss prints the final answer. */</span>
+    <span class="hljs-keyword">if</span> (rank == <span class="hljs-number">0</span>) {
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Final array:\\n&quot;</span>);
+        print_array(<span class="hljs-built_in">array</span>, array_size);
+    }
+
+    <span class="hljs-comment">/* Clean up. */</span>
+    <span class="hljs-keyword">if</span> (rank == <span class="hljs-number">0</span>) {
+        <span class="hljs-built_in">free</span>(<span class="hljs-built_in">array</span>);
+    }
+    <span class="hljs-built_in">free</span>(local_array);
+    MPI_Finalize();
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>في الدالة <code>main</code>، يهيّئ الرئيس المسألة وينشئ مصفوفة. ولو كان هذا حلًّا لمسألة حقيقية (مثل تطبيق حوسبة علمية)، فمن المرجّح أن يقرأ الرئيس بياناته الأولية من ملف إدخال. وبعد تهيئة المصفوفة، يحتاج الرئيس إلى إرسال معلومات عن حجم المصفوفة والقيمة القياسية المستخدمة في الضرب إلى جميع عمليات العمال الأخرى، فيبثّ هذين المتغيرين إلى كل عملية.</p>
+<p>الآن بعد أن تعرف كل عملية حجم المصفوفة وعدد العمليات، يمكن لكل منها إجراء القسمة لتحديد عدد عناصر المصفوفة المسؤولة عن ضربها. وللتبسيط، تفترض هذه الشيفرة أن المصفوفة قابلة للقسمة قسمة تامة على عدد العمليات.</p>
+<p>ثم يستخدم الرئيس دالة <code>[MPI_Scatter](https://www.open-mpi.org/doc/v4.0/man3/MPI_Scatter.3.php)</code> لإرسال جزء متساوٍ من المصفوفة إلى كل عملية عامل (بما فيها نفسها). والآن يملك العمال كل المعلومات التي يحتاجونها، فينفّذ كل منهم الضرب على حصته من المصفوفة بالتوازي. وأخيرًا، بينما يكمل العمال عمليات الضرب، يجمع الرئيس جزء كل عامل من المصفوفة باستخدام <code>[MPI_Gather](https://www.open-mpi.org/doc/v4.0/man3/MPI_Gather.3.php)</code> لإعلان النتائج النهائية.</p>
+<p>وترجمة هذا البرنامج وتنفيذه تبدوان كما يلي:</p>
+<pre><code class="language-bash">$ mpicc -o scalar_multiply_mpi scalar_multiply_mpi.c
+
+$ mpirun -np 8 --hostfile hosts.txt ./scalar_multiply_mpi
+Initial array:
+  0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19
+ 20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39
+
+Final array:
+  0  10  20  30  40  50  60  70  80  90 100 110 120 130 140 150 160 170 180 190
+200 210 220 230 240 250 260 270 280 290 300 310 320 330 340 350 360 370 380 390
+</code></pre>
+<h3 id="1526-تحديات-الأنظمة-الموزعة">15.2.6. تحديات الأنظمة الموزّعة <span class="content-anchor" id="_distributed_systems_challenges"></span></h3>
+<p>بشكل عام، يُعرف تنسيق سلوك عمليات متعددة في الأنظمة الموزّعة بأنه صعب للغاية. فإذا تعطّل مكوّن عتادي (مثل CPU أو مصدر طاقة) في نظام ذاكرة مشتركة، يصبح النظام كله غير قابل للتشغيل. أما في نظام موزّع، فيمكن للعقد المستقلة أن تتعطل كلٌّ على حدة. فمثلًا، يجب أن يقرر التطبيق كيف يتصرف إذا اختفت عقدة واحدة وبقيت الأخريات قيد التشغيل. وبالمثل، قد تتعطل شبكة الترابط، فيبدو لكل عملية كأن جميع العمليات الأخرى قد تعطلت.</p>
+<p>تواجه الأنظمة الموزّعة أيضًا تحديات بسبب غياب عتاد مشترك، وتحديدًا الساعات. فنظرًا لتأخيرات نقل الشبكة غير المتوقعة، لا تستطيع العقد المستقلة تحديد الترتيب الذي أُرسلت به الرسائل بسهولة. وحلّ هذه التحديات (وغيرها الكثير) يتجاوز نطاق هذا الكتاب. ولحسن الحظ، بنى مصمّمو البرمجيات الموزّعة عدة أطر عمل تسهّل تطوير التطبيقات الموزّعة. ونصف بعض هذه الأطر في القسم التالي.</p>
+<h3 id="موارد-mpi">موارد MPI</h3>
+<p>MPI كبيرة ومعقّدة، وهذا القسم لا يكاد يلامس السطح. ولمزيد من المعلومات عن MPI، نقترح:</p>
+<ul>
+<li>ال<a href="https://hpc-tutorials.llnl.gov/mpi/">درس التعليمي عن MPI</a> من مختبر Lawrence Livermore الوطني، بقلم Blaise Barney.</li>
+<li><a href="http://selkie.macalester.edu/csinparallel/modules/Patternlets/build/html/MessagePassing/MPI_Patternlets.html">أنماط MPI</a> من CSinParallel.</li>
+</ul>
+<p>أتاحت التطورات التقنية للبشرية إنتاج البيانات بمعدل لم يُرَ من قبل. وتنتج الأدوات العلمية مثل التلسكوبات وأجهزة التسلسل البيولوجي والمستشعرات بيانات علمية عالية الدقة بتكلفة منخفضة. وبينما يكافح العلماء لتحليل هذا &quot;طوفان البيانات&quot;، يتزايد اعتمادهم على حواسيب فائقة متقدمة متعددة العقد تشكّل أساس <strong>الحوسبة عالية الأداء</strong> (high-performance computing, HPC).</p>
+<p>تُكتب تطبيقات HPC عادةً بلغات مثل C أو C++ أو Fortran، مع تمكين <a href="https://diveintosystems.org/book/C14-SharedMemory/multicore.html#_programming_multicore_systems">تعدد الخيوط</a> و<a href="https://diveintosystems.org/book/C15-Parallel/distrmem.html#_distributed_memory_systems_message_passing_and_mpi">تمرير الرسائل</a> بمكتبات مثل <a href="https://diveintosystems.org/book/C14-SharedMemory/posix.html#_hello_threading_writing_your_first_multithreaded_program">خيوط POSIX</a> و<a href="https://diveintosystems.org/book/C14-SharedMemory/openmp.html#_implicit_threading_with_openmp">OpenMP</a> و<a href="https://diveintosystems.org/book/C15-Parallel/distrmem.html#_message_passing_interface_mpi">MPI</a>. وقد وصف القسم الأكبر من هذا الكتاب حتى الآن سمات معمارية ولغات ومكتبات تُستفاد منها عادةً في أنظمة HPC. وتستخدم الشركات والمختبرات الوطنية وغيرها من المنظمات المهتمة بتقدم العلم أنظمة HPC عادةً، وتشكّل نواة منظومة العلوم الحاسوبية.</p>
+<p>وفي الوقت نفسه، أدى انتشار الأجهزة المتصلة بالإنترنت وشيوع وسائل التواصل الاجتماعي إلى أن تنتج البشرية بسهولة كميات كبيرة من الوسائط المتعددة على الإنترنت، في هيئة صفحات ويب وصور ومقاطع فيديو وتغريدات ومنشورات على وسائل التواصل. ويُقدَّر أن 90% من جميع البيانات على الإنترنت أُنتجت في العامين الماضيين، وأن المجتمع ينتج 30 تيرابايت من بيانات المستخدمين في الثانية (أو 2.5 إكسابايت يوميًا). ويقدّم طوفان <strong>بيانات المستخدمين</strong> للشركات والمنظمات ثروة من المعلومات عن عادات مستخدميها واهتماماتهم وسلوكهم، ويسهّل بناء ملفات عملاء غنية بالبيانات لتخصيص المنتجات والخدمات التجارية بشكل أفضل. ولتحليل بيانات المستخدمين، تعتمد الشركات عادةً على مراكز بيانات متعددة العقد تتشارك كثيرًا من مكوّنات معمارية العتاد في الحواسيب الفائقة النموذجية. غير أن مراكز البيانات هذه تعتمد على حزمة برمجيات مختلفة مصمّمة خصيصًا للبيانات القائمة على الإنترنت. وتُشار أحيانًا إلى الأنظمة الحاسوبية المستخدمة لتخزين وتحليل البيانات القائمة على الإنترنت واسعة النطاق بـأنظمة <strong>تحليل البيانات الراقية</strong> (high-end data analysis, HDA). وللشركات مثل Amazon وGoogle وMicrosoft وFacebook مصلحة راسخة في تحليل بيانات الإنترنت، وتشكّل نواة منظومة تحليلات البيانات. وقد بدأت ثورة HDA وتحليلات البيانات حوالي عام 2010، وهي الآن مجال مهيمن في أبحاث الحوسبة السحابية.</p>
+<p>يبرز <a href="#BDEC">الشكل 1</a> الفروق الرئيسية في البرمجيات التي يستخدمها مجتمعا HDA وHPC. لاحظ أن كلا المجتمعين يستخدم عتاد عناقيد متشابهًا يتبع نموذج <a href="https://diveintosystems.org/book/C15-Parallel/distrmem.html#_distributed_memory_systems_message_passing_and_mpi">الذاكرة الموزّعة</a>، حيث تحتوي كل عقدة حساب عادةً على معالج <a href="https://diveintosystems.org/book/C14-SharedMemory/index.html#_leveraging_shared_memory_in_the_multicore_era">متعدد الأنوية</a> واحد أو أكثر، وغالبًا على <a href="https://diveintosystems.org/book/C15-Parallel/gpu.html#_GPUs">GPU</a>. ويضمّ عتاد العنقود عادةً <strong>نظام ملفات موزّعًا</strong> يتيح للمستخدمين والتطبيقات وصولًا مشتركًا إلى الملفات المقيمة محليًا على عقد متعددة في العنقود.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c15-parallel-0-NewHPCHDAFigure.webp" alt="تحليل البيانات الراقية (HDA) مقابل الحوسبة عالية الأداء (HPC)." id="BDEC"> الشكل 1. مقارنة بين أطر HDA وHPC. استنادًا إلى شكل من إعداد Jack Dongarra وDaniel Reed.8</p>
+<p>وخلافًا للحواسيب الفائقة، المصمّمة والمحسَّنة عادةً لاستخدام HPC، يعتمد مجتمع HDA على <strong>مراكز البيانات</strong>، التي تتكوّن من مجموعة كبيرة من عقد الحساب عامة الغرض المتصلة عادةً معًا عبر Ethernet. وعلى المستوى البرمجي، تستخدم مراكز البيانات عادةً أجهزة ظاهرية وقواعد بيانات موزّعة كبيرة وأطر عمل تمكّن من تحليل بيانات الإنترنت بمعدل إنتاجية عالٍ. ويشير مصطلح <strong>السحابة</strong> (cloud) إلى مكوّنات تخزين البيانات وقدرة الحوسبة في مراكز بيانات HDA.</p>
+<p>نلقي في هذا القسم نظرة موجزة على الحوسبة السحابية، وبعض البرمجيات الشائعة المستخدمة لتمكينها (تحديدًا MapReduce)، وبعض التحديات المستقبلية. ويرجى ملاحظة أن هذا القسم ليس مقصودًا به التعمق في هذه المفاهيم؛ ونشجّع القراء المهتمين على استكشاف المصادر المشار إليها لمزيد من التفصيل.</p>
+<h3 id="1531-الحوسبة-السحابية">15.3.1. الحوسبة السحابية <span class="content-anchor" id="_cloud_computing"></span></h3>
+<p><strong>الحوسبة السحابية</strong> هي استخدام السحابة أو استئجارها لمجموعة متنوعة من الخدمات. وتمكّن الحوسبة السحابية البنية التحتية الحاسوبية من العمل كـ&quot;مرفق عام&quot;: إذ يمنح عدد قليل من المزوّدين المركزيين المستخدمين والمنظمات إمكانية الوصول إلى قدرة حوسبة (تبدو غير محدودة) عبر الإنترنت، بحيث يختار المستخدمون والمنظمات استخدام ما يشاؤون منه ويدفعون حسب مستوى استخدامهم. وللحوسبة السحابية ثلاث ركائز رئيسية: البرمجيات كخدمة (SaaS)، والبنية التحتية كخدمة (IaaS)، والمنصة كخدمة (PaaS)1.</p>
+<h4>البرمجيات كخدمة <span class="content-anchor" id="_software_as_a_service"></span></h4>
+<p>تشير <strong>البرمجيات كخدمة</strong> (Software as a service, SaaS) إلى البرمجيات المقدَّمة مباشرةً للمستخدمين عبر السحابة. ويستخدم معظم الناس هذه الركيزة من الحوسبة السحابية دون أن يدركوا ذلك حتى. فالتطبيقات التي يستخدمها كثيرون يوميًا (مثل البريد الإلكتروني عبر الويب ووسائل التواصل الاجتماعي وبث الفيديو) تعتمد على البنية التحتية السحابية. تأمّل التطبيق الكلاسيكي للبريد الإلكتروني عبر الويب. فيستطيع المستخدمون تسجيل الدخول والوصول إلى بريدهم الإلكتروني من أي جهاز، وإرسال البريد واستقباله، ويبدو أن مساحة التخزين لا تنفد أبدًا. ويمكن للمنظمات المهتمة بدورها &quot;استئجار&quot; خدمات البريد الإلكتروني السحابية لتوفير البريد لعملائها وموظفيها، دون تحمّل تكلفة العتاد والصيانة لتشغيل الخدمة بنفسها. وتُدار الخدمات في ركيزة SaaS بالكامل بواسطة مزوّدي السحابة؛ فلا تدير المنظمات والمستخدمون (ربما عدا ضبط بعض الإعدادات) أي جزء من التطبيق أو البيانات أو البرمجيات أو البنية التحتية للعتاد، وكل ذلك سيكون ضروريًا لو حاولوا إعداد الخدمة على عتادهم الخاص. وقبل ظهور الحوسبة السحابية، كانت المنظمات المهتمة بتوفير البريد الإلكتروني عبر الويب لمستخدميها تحتاج إلى بنيتها التحتية الخاصة وفريق دعم تقنية معلومات مخصّص لصيانتها. ومن الأمثلة الشائعة على مزوّدي SaaS: G Suite من Google وOffice 365 من Microsoft.</p>
+<h4>البنية التحتية كخدمة <span class="content-anchor" id="_infrastructure_as_a_service"></span></h4>
+<p>تتيح <strong>البنية التحتية كخدمة</strong> (Infrastructure as a service, IaaS) للأفراد والمنظمات &quot;استئجار&quot; موارد حسابية لتلبية احتياجاتها، وذلك عادةً في هيئة الوصول إلى أجهزة ظاهرية إما عامة الغرض وإما مهيّأة مسبقًا لتطبيق معيّن. ومن الأمثلة الكلاسيكية خدمة Elastic Compute Cloud (EC2) من Amazon Web Services (AWS). وتمكّن EC2 المستخدمين من إنشاء أجهزة ظاهرية قابلة للتخصيص بالكامل. ويشير مصطلح <strong>elastic</strong> (مرن) في EC2 إلى قدرة المستخدم على توسيع طلبات موارده الحسابية أو تقليصها حسب الحاجة، مع الدفع حسب الاستخدام. فمثلًا، قد تستخدم منظمة مزوّد IaaS لاستضافة موقعها أو نشر سلسلة من تطبيقاتها المخصصة للمستخدمين. وتستخدم بعض المختبرات البحثية والفصول الدراسية خدمات IaaS بدلًا من أجهزة المختبر، فتشغّل التجارب في السحابة أو تقدّم منصة افتراضية ليتعلم طلابها. وفي جميع الحالات، الهدف هو إلغاء الصيانة ورأس المال اللازمين للحفاظ على عنقود أو خادم شخصي لأغراض مشابهة. وخلافًا لحالات الاستخدام في ركيزة SaaS، تتطلب حالات الاستخدام في ركيزة IaaS من العملاء تهيئة التطبيقات والبيانات، وفي بعض الحالات نظام تشغيل الجهاز الظاهري نفسه. غير أن نظام التشغيل المضيف والبنية التحتية للعتاد يعدّهما مزوّد السحابة ويديرهما. ومن مزوّدي IaaS الشائعين: Amazon AWS وGoogle Cloud Services وMicrosoft Azure.</p>
+<h4>المنصة كخدمة <span class="content-anchor" id="_platform_as_a_service"></span></h4>
+<p>تتيح <strong>المنصة كخدمة</strong> (Platform as a service, PaaS) للأفراد والمنظمات تطوير تطبيقات الويب الخاصة بهم ونشرها للسحابة، ما يلغي الحاجة إلى التهيئة أو الصيانة المحلية. وتمكّن معظم مزوّدي PaaS المطورين من كتابة تطبيقاتهم بلغات متنوعة وتقدّم اختيارًا من واجهات API لاستخدامها. فمثلًا، تتيح خدمة Microsoft Azure للمستخدمين كتابة تطبيقات الويب في بيئة تطوير Visual Studio ونشر تطبيقاتهم على Azure للاختبار. وتمكّن Google App Engine المطورين من بناء تطبيقات محمولة مخصصة واختبارها في السحابة بلغات متنوعة. ويُعدّ Heroku وCloudBees مثالين بارزين آخرين. لاحظ أن المطورين يتحكمون في تطبيقاتهم وبياناتهم فقط؛ بينما يتحكم مزوّد السحابة في بقية البنية التحتية للبرمجيات وفي كامل البنية التحتية للعتاد الأساسي.</p>
+<h3 id="1532-mapreduce">15.3.2. MapReduce <span class="content-anchor" id="mapreduce"></span></h3>
+<p>لعلّ أشهر نموذج برمجي مستخدم على الأنظمة السحابية هو MapReduce3. ومع أن أصول MapReduce تعود إلى عمليتي Map وReduce في البرمجة الوظيفية، كانت Google أول من طبّق هذا المفهوم على تحليل كميات كبيرة من بيانات الويب. وقد مكّن MapReduce شركة Google من تنفيذ استعلامات الويب بسرعة أكبر من منافسيها، ومكّن صعودها الصاروخي لتصبح مزوّد خدمة الويب المفضّل وعملاق الإنترنت الذي هي عليه اليوم.</p>
+<h4>فهم عمليتي Map وReduce <span class="content-anchor" id="_understanding_map_and_reduce_operations"></span></h4>
+<p>تستند الدالتان <code>map</code> و<code>reduce</code> في نموذج MapReduce إلى العمليتين الرياضيتين Map وReduce من البرمجة الوظيفية. ونناقش في هذا القسم بإيجاز كيفية عمل هاتين العمليتين الرياضيتين بالعودة إلى بعض الأمثلة المقدَّمة سابقًا في الكتاب.</p>
+<p>تُطبّق عملية Map عادةً الدالة نفسها على جميع العناصر في مجموعة. وقد يتعرّف القراء الملمّون بـPython على هذه الوظيفة بوضوح أكبر في ميزة استيعاب القوائم (list comprehension) في Python. فمثلًا، مقطعا الشيفرة التاليان في <a href="#ScalarMap">الجدول 1</a> ينفّذان الضرب القياسي في Python:</p>
+<p><strong>الجدول 1. مقارنة الضرب القياسي باستخدام الحلقة واستيعاب القوائم.</strong></p>
+<p><strong>الضرب القياسي العادي</strong></p>
+<pre><code class="language-python"><span class="hljs-string">&#x27;&#x27;&#x27;
+    The typical way to perform
+    scalar multiplication
+&#x27;&#x27;&#x27;</span>
+
+<span class="hljs-comment"># array is an array of numbers</span>
+<span class="hljs-comment"># s is an integer</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">scalarMultiply</span>(<span class="hljs-params">array, s</span>):
+
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(array)):
+        array[i] = array[i] * s
+
+    <span class="hljs-keyword">return</span> array
+
+<span class="hljs-comment"># call the scalarMultiply function:</span>
+myArray = [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>]
+result = scalarMultiply(myArray, <span class="hljs-number">2</span>)
+
+<span class="hljs-comment">#prints [2, 6, 10, 14, 18]</span>
+<span class="hljs-built_in">print</span>(result)
+</code></pre>
+<p><strong>الضرب القياسي باستخدام استيعاب القوائم</strong></p>
+<pre><code class="language-python"><span class="hljs-string">&#x27;&#x27;&#x27;
+    Equivalent program that
+    performs scalar multiplication
+    with list comprehension
+&#x27;&#x27;&#x27;</span>
+
+<span class="hljs-comment"># multiplies two numbers together</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">multiply</span>(<span class="hljs-params">num1, num2</span>):
+    <span class="hljs-keyword">return</span> num1 * num2
+
+<span class="hljs-comment"># array is an array of numbers</span>
+<span class="hljs-comment"># s is an integer</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">scalarMultiply</span>(<span class="hljs-params">array, s</span>):
+
+    <span class="hljs-comment"># using list comprehension</span>
+    <span class="hljs-keyword">return</span> [multiply(x, s) <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> array]
+
+<span class="hljs-comment"># call the scalarMultiply function:</span>
+myArray = [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>]
+result = scalarMultiply(myArray, <span class="hljs-number">2</span>)
+
+<span class="hljs-comment"># prints [2, 6, 10, 14, 18]</span>
+<span class="hljs-built_in">print</span>(result)
+</code></pre>
+<p>ويطبّق استيعاب القوائم الدالة نفسها (في هذه الحالة ضرب عنصر المصفوفة في القيمة القياسية <code>s</code>) على كل عنصر <code>x</code> في <code>array</code>.</p>
+<p>تأخذ عملية Reduce الواحدة مجموعة من العناصر وتدمجها معًا في قيمة واحدة باستخدام دالة مشتركة ما. فمثلًا، تعمل دالة <code>sum</code> في Python على نحو مشابه لعملية Reduce، إذ تأخذ مجموعة (قائمة Python عادةً) وتدمج جميع العناصر معًا بالجمع. لذا، وعلى سبيل المثال، فإن تطبيق الجمع على جميع العناصر في مصفوفة <code>result</code> المُعادة من دالة <code>scalarMultiply</code> في <a href="#ScalarMap">الجدول 1</a> يعطي مجموعًا مدموجًا مقداره 50.</p>
+<h4>نموذج برمجة MapReduce <span class="content-anchor" id="_the_mapreduce_programming_model"></span></h4>
+<p>من السمات الرئيسية لـMapReduce نموذج برمجته المبسّط. فلا يحتاج المطورون إلى تنفيذ سوى نوعين من الدوال، <code>map</code> و<code>reduce</code>؛ بينما يؤتمت إطار MapReduce الأساسي بقية العمل.</p>
+<p>تأخذ دالة <code>map</code> المكتوبة من المبرمج زوج (<em>مفتاح</em>،<em>قيمة</em>) مدخلًا وتُخرج سلسلة من أزواج (<em>مفتاح</em>،<em>قيمة</em>) وسيطة تُكتب في نظام ملفات موزّع يتشاركه جميع العقد. ثم تُجمّع أداة دمج (combiner) يعرّفها إطار MapReduce عادةً أزواج (<em>مفتاح</em>،<em>قيمة</em>) حسب المفتاح، لتنتج أزواج (<em>مفتاح</em>،list(<em>قيمة</em>)) تُمرَّر إلى دالة <code>reduce</code> المعرّفة من المبرمج. ثم تأخذ دالة <code>reduce</code> كمدخل زوج (<em>مفتاح</em>،list(<em>قيمة</em>)) وتدمج جميع القيم معًا عبر عملية يعرّفها المبرمج لتكوين زوج نهائي (<em>مفتاح</em>،<em>قيمة</em>)، حيث تقابل <em>القيمة</em> في هذا الخرج نتيجة عملية الاختزال. ويُكتب خرج دالة <code>reduce</code> في نظام الملفات الموزّع وعادةً ما يُخرج إلى المستخدم.</p>
+<p>لتوضيح كيفية استخدام نموذج MapReduce لتوازي برنامج، نناقش برنامج تكرار الكلمات (Word Frequency). وهدف هذا البرنامج تحديد تكرار كل كلمة في مجموعة نصوص كبيرة.</p>
+<p>قد ينفّذ مبرمج C دالة <code>map</code> التالية لبرنامج تكرار الكلمات:3</p>
+<pre><code class="language-c"><span class="hljs-type">void</span> <span class="hljs-title function_">map</span><span class="hljs-params">(<span class="hljs-type">char</span> *key, <span class="hljs-type">char</span> *value)</span> {
+    <span class="hljs-comment">// key is document name</span>
+    <span class="hljs-comment">// value is string containing some words (separated by spaces)</span>
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-type">int</span> numWords = <span class="hljs-number">0</span>; <span class="hljs-comment">// number of words found: populated by parseWords()</span>
+
+    <span class="hljs-comment">// returns an array of numWords words</span>
+    <span class="hljs-type">char</span> *words[] = parseWords(value, &amp;numWords);
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; numWords; i++) {
+        <span class="hljs-comment">// output (word, 1) key-value intermediate to file system</span>
+        emit(words[i], <span class="hljs-string">&quot;1&quot;</span>);
+    }
+}
+</code></pre>
+<p>تستقبل دالة <code>map</code> هذه كمدخل سلسلة (<code>key</code>) تقابل اسم الملف، وسلسلة منفصلة (<code>value</code>) تحتوي مكوّنًا من بيانات الملف. ثم تحلّل الدالة الكلمات من المدخل <code>value</code> وتُصدر كل كلمة (<code>words[i]</code>) منفصلة مع القيمة النصية <code>&quot;1&quot;</code>. ودالة <code>emit</code> يوفّرها إطار MapReduce وتكتب أزواج (<em>مفتاح</em>،<em>قيمة</em>) الوسيطة في نظام الملفات الموزّع.</p>
+<p>لإكمال برنامج تكرار الكلمات، قد ينفّذ المبرمج دالة <code>reduce</code> التالية:</p>
+<pre><code class="language-c"><span class="hljs-type">void</span> <span class="hljs-title function_">reduce</span><span class="hljs-params">(<span class="hljs-type">char</span> *key, <span class="hljs-keyword">struct</span> Iterator values)</span> {
+    <span class="hljs-comment">// key is individual word</span>
+    <span class="hljs-comment">// value is of type Iterator (a struct that consists of</span>
+    <span class="hljs-comment">// a items array (type char **), and its associated length (type int))</span>
+    <span class="hljs-type">int</span> numWords = values.length();  <span class="hljs-comment">// get length</span>
+    <span class="hljs-type">char</span> *counts[] = values.items(); <span class="hljs-comment">// get counts</span>
+    <span class="hljs-type">int</span> i, total = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; numWords; i++) {
+        total += atoi(counts[i]); <span class="hljs-comment">// sum up all counts</span>
+    }
+    <span class="hljs-type">char</span> *stringTotal = itoa(total); <span class="hljs-comment">// convert total to a string</span>
+    emit(key, stringTotal); <span class="hljs-comment">// output (word, total) pair to file system</span>
+}
+</code></pre>
+<p>تستقبل دالة <code>reduce</code> هذه كمدخل سلسلة (<code>key</code>) تقابل كلمة معيّنة، وبنية <code>Iterator</code> (يوفّرها إطار MapReduce أيضًا) تتكوّن من مصفوفة مجمَّعة من العناصر المرتبطة بالمفتاح (<code>items</code>)، وطول تلك المصفوفة (<code>length</code>). وفي تطبيق تكرار الكلمات، يقابل <code>items</code> قائمة بالعددات (counts). ثم تستخرج الدالة عدد الكلمات من الحقل <code>length</code> في بنية <code>Iterator</code>، ومصفوفة العددات من الحقل <code>items</code>. ثم تتكرر على جميع العددات، وتجمع القيم في المتغير <code>total</code>. وبما أن دالة <code>emit</code> تتطلب معاملات من نوع <code>char *</code>، تحوّل الدالة <code>total</code> إلى سلسلة قبل استدعاء <code>emit</code>.</p>
+<p>بعد تنفيذ <code>map</code> و<code>reduce</code>، تنتهي مسؤولية المبرمج. فيؤتمت إطار MapReduce بقية العمل، بما في ذلك تقسيم المدخل، وتوليد العمليات التي تشغّل دالة <code>map</code> وإدارتها (مهام map)، وتجميع أزواج (<em>مفتاح</em>،<em>قيمة</em>) الوسيطة وفرزها، وتوليد العمليات المنفصلة التي تشغّل دالة <code>reduce</code> وإدارتها (مهام reduce)، وتوليد ملف خرج نهائي.</p>
+<p>وللتبسيط، نوضّح في <a href="#MapReduceFig">الشكل 2</a> كيف يوازي MapReduce الأسطر الأولى من أغنية &quot;Code Monkey&quot; الشهيرة لجوناثان كولتون: <em>code monkey get up get coffee, code monkey go to job</em>.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c15-parallel-1-mapreduceEx.webp" alt="موازاة الأسطر الأولى من أغنية Code Monkey باستخدام إطار MapReduce" id="MapReduceFig"> الشكل 2. توازي الأسطر الأولى من أغنية &quot;Code Monkey&quot; باستخدام إطار MapReduce</p>
+<p>يعطي <a href="#MapReduceFig">الشكل 2</a> نظرة عامة على هذه العملية. وقبل التنفيذ، تقسم عقدة الرئيس المدخل أولًا إلى <em>M</em> جزءًا، حيث يقابل <em>M</em> عدد مهام map. وفي <a href="#MapReduceFig">الشكل 2</a>، <em>M</em> = 3، ويُقسَّم ملف الإدخال (<code>coulton.txt</code>) إلى ثلاثة أجزاء. وأثناء مرحلة map، توزّع عقدة الرئيس مهام map على عقدة عاملة واحدة أو أكثر، وتنفّذ كل مهمة map باستقلالية وبالتوازي. فمثلًا، تحلّل مهمة map الأولى المقتطف <em>code monkey get up</em> إلى كلمات منفصلة وتُصدر أزواج (<em>مفتاح</em>،<em>قيمة</em>) الأربعة التالية: (<code>code</code>,<code>1</code>) و(<code>monkey</code>,<code>1</code>) و(<code>get</code>,<code>1</code>) و(<code>up</code>,<code>1</code>). ثم تُصدر كل مهمة map قيمها الوسيطة إلى نظام ملفات موزّع يشغل قدرًا معيّنًا من التخزين على كل عقدة.</p>
+<p>وقبل بدء مرحلة reduce، يجمع الإطار أزواج (<em>مفتاح</em>،<em>قيمة</em>) الوسيطة ويدمجها في أزواج (<em>مفتاح</em>،list(<em>قيمة</em>)). وفي <a href="#MapReduceFig">الشكل 2</a>، على سبيل المثال، يُصدر زوج (<em>مفتاح</em>،<em>قيمة</em>) (<code>get</code>,<code>1</code>) بواسطة مهمتي map منفصلتين. ويجمع إطار MapReduce زوجي (<em>مفتاح</em>،<em>قيمة</em>) المنفصلين في زوج (<em>مفتاح</em>،list(<em>قيمة</em>)) الواحد (<code>get</code>,<code>[1,1]</code>). وتُكتب الأزواج الوسيطة المجمَّعة في نظام الملفات الموزّع على القرص.</p>
+<p>بعد ذلك، يوجّه إطار MapReduce عقدة الرئيس لتوليد <em>R</em> مهمة reduce. وفي <a href="#MapReduceFig">الشكل 2</a>، <em>R</em> = 8. ثم يوزّع الإطار المهام على عقد العمل الخاصة به. ومرة أخرى، تنفّذ كل مهمة reduce باستقلالية وبالتوازي. وفي مرحلة reduce من هذا المثال، يُختزل زوج (<em>مفتاح</em>،list(<em>قيمة</em>)) (<code>get</code>,<code>[1,1]</code>) إلى زوج (<em>مفتاح</em>،<em>قيمة</em>) (<code>get</code>,<code>2</code>). وتضيف كل عقدة عاملة خرج مجموعة مهام reduce الخاصة بها إلى ملف نهائي يكون متاحًا للمستخدم عند الاكتمال.</p>
+<h4>تحمّل الأخطاء <span class="content-anchor" id="_fault_tolerance"></span></h4>
+<p>تحتوي مراكز البيانات عادةً على آلاف العقد. وبالتالي، يكون معدل الأعطال مرتفعًا؛ فتأمّل أنه إذا كان احتمال تعطّل العتاد في عقدة فردية داخل مركز بيانات 2%، فإن احتمال تعطّل بعض العقد في مركز بيانات من 1,000 عقدة يتجاوز 99.99%. ولذلك يجب أن تكون البرمجيات المكتوبة لمراكز البيانات <strong>متينة في وجه الأخطاء</strong> (fault tolerant)، أي أن تكون قادرة على مواصلة العمل في وجه أعطال العتاد (أو أن تتعطل بلطف على الأقل).</p>
+<p>صُمّم MapReduce مع مراعاة تحمّل الأخطاء. ففي أي تشغيل لـMapReduce، توجد عقدة رئيس واحدة وربما آلاف العقد العاملة. لذا يكون احتمال تعطّل عقدة عاملة مرتفعًا. ولمعالجة ذلك، تتحقق عقدة الرئيس من العقد العاملة فرديةً دوريًا (ping). وإذا لم تستقبل عقدة الرئيس ردًّا من عقدة عاملة، تعيد الرئيس توزيع عبء العمل المخصّص للعاملة على عقدة أخرى وتعيد تنفيذ المهمة3. وإذا تعطلت عقدة الرئيس (احتمال منخفض نظرًا لأنها عقدة واحدة فقط)، تُجهض مهمة MapReduce ويجب إعادة تشغيلها على عقدة منفصلة. لاحظ أن العقدة العاملة قد تفشل أحيانًا في الرد على تحققات عقدة الرئيس لأن العاملة غارقة في المهام. ولذلك يستخدم MapReduce استراتيجية التحقق وإعادة توزيع العمل نفسها للحد من أثر العقد العاملة البطيئة (أو المتخلفة).</p>
+<h4>Hadoop وApache Spark <span class="content-anchor" id="_hadoop_and_apache_spark"></span></h4>
+<p>أحدث تطوير MapReduce ضجة في عالم الحوسبة. غير أن تنفيذ Google لـMapReduce مغلق المصدر. ونتيجة لذلك، طوّر مهندسون في Yahoo! نظام <a href="https://hadoop.apache.org/">Hadoop</a>، وهو تنفيذ مفتوح المصدر لـMapReduce، تبنّته مؤسسة Apache لاحقًا. ويتكوّن مشروع Hadoop من منظومة أدوات لـApache Hadoop، منها نظام ملفات Hadoop الموزّع (HDFS) (بديل مفتوح المصدر لنظام Google File System)، وHBase (المستوحى من BigTable من Google).</p>
+<p>ولـHadoop بعض القيود الرئيسية. أولًا، يصعب ربط مهام MapReduce المتعددة معًا في سير عمل أكبر. ثانيًا، تبيّن أن كتابة البيانات الوسيطة في HDFS عنق زجاجة، خصوصًا في المهام الصغيرة (أصغر من جيجابايت واحد). وقد صُمّم <a href="https://spark.apache.org/">Apache Spark</a> لمعالجة هذه المسائل من بين أمور أخرى. وبفضل تحسيناته وقدرته على معالجة البيانات الوسيطة في الذاكرة إلى حد كبير، يكون Apache Spark أسرع من Hadoop بما يصل إلى 100 مرة في بعض التطبيقات4.</p>
+<h3 id="1533-النظر-نحو-المستقبل-الفرص-والتحديات">15.3.3. النظر نحو المستقبل: الفرص والتحديات <span class="content-anchor" id="challenges-toward-exascale"></span></h3>
+<p>رغم الابتكارات في مجتمع تحليلات بيانات الإنترنت، لا تزال كمية البيانات التي تنتجها البشرية تنمو. وتُنتَج معظم البيانات الجديدة في ما يُسمى <strong>بيئات الحافة</strong> (edge environments)، أو بالقرب من المستشعرات وغيرها من الأدوات المولّدة للبيانات التي تكون بحكم تعريفها في الطرف الآخر من الشبكة بعيدًا عن مزوّدي السحابة التجاريين وأنظمة HPC. وتقليديًا، يجمع العلماء والممارسون البيانات ويحلّلونها باستخدام عنقود محلي، أو ينقلونها إلى حاسوب فائق أو مركز بيانات للتحليل. ولم تعد هذه الرؤية &quot;المركزية&quot; للحوسبة استراتيجية قابلة للاستمرار، إذ فاقمت التحسينات في تقنية المستشعرات طوفان البيانات.</p>
+<p>أحد أسباب هذا النمو الانفجاري هو انتشار الأجهزة الصغيرة المتصلة بالإنترنت التي تحتوي على مجموعة متنوعة من المستشعرات. وقد أدت هذه الأجهزة، أي أجهزة <strong>إنترنت الأشياء</strong> (Internet of Things, IoT)، إلى توليد مجموعات بيانات كبيرة ومتنوعة في بيئات الحافة. ويصعب نقل مجموعات البيانات الكبيرة من الحافة إلى السحابة، لأن المجموعات الأكبر تستهلك وقتًا وطاقة أكبر في النقل. وللتخفيف من المسائل اللوجستية لما يسمى &quot;البيانات الضخمة&quot;، بدأ مجتمع البحث في إنشاء تقنيات تلخّص البيانات بقوة عند كل نقطة نقل بين الحافة والسحابة2. ويوجد اهتمام شديد في مجتمع أبحاث الحوسبة بإنشاء بنية تحتية قادرة على معالجة البيانات وتخزينها وتلخيصها في بيئات الحافة في منصة موحّدة؛ وتُعرف هذه المجال بـحوسبة <strong>الحافة</strong> (edge) (أو <strong>الضباب</strong>، fog). وتقلب حوسبة الحافة نموذج التحليل التقليدي للبيانات الضخمة؛ فبدلًا من حدوث التحليل في الحاسوب الفائق أو مركز البيانات (&quot;الميل الأخير&quot;)، يحدث التحليل في مصدر إنتاج البيانات (&quot;الميل الأول&quot;)2.</p>
+<p>إلى جانب لوجستيات نقل البيانات، فإن الشاغل الشامل الآخر لتحليل البيانات الضخمة هو إدارة الطاقة. فالموارد الكبيرة المركزية مثل الحواسيب الفائقة ومراكز البيانات تستهلك طاقة كثيرة؛ وتحتاج الحواسيب الفائقة الحديثة إلى عدة ميغاواط (مليون واط) للتشغيل والتبريد. ويقول قول قديم في مجتمع الحوسبة الفائقة إن &quot;الميغاواط يكلّف مليون دولار&quot;؛ وبعبارة أخرى، يكلّف الحفاظ على متطلب الطاقة لميغاواط واحد نحو مليون دولار سنويًا5. وتساعد المعالجة المحلية للبيانات في بيئات الحافة على تخفيف المسألة اللوجستية لنقل مجموعات البيانات الكبيرة، لكن البنية التحتية الحاسوبية في مثل هذه البيئات يجب أن تستخدم أقل طاقة ممكنة بالمثل2. وفي الوقت نفسه، فإن زيادة كفاءة الطاقة في الحواسيب الفائقة ومراكز البيانات الكبيرة أمر بالغ الأهمية5.</p>
+<p>يوجد أيضًا اهتمام بإيجاد سبل لتقريب منظومتي HPC والحوسبة السحابية لإنشاء مجموعة مشتركة من الأطر والبنية التحتية والأدوات لتحليل البيانات على نطاق واسع. وفي السنوات الأخيرة، استخدم كثير من العلماء تقنيات وأدوات طوّرها باحثون في مجتمع الحوسبة السحابية لتحليل مجموعات بيانات HPC التقليدية، والعكس صحيح. وسيتيح تقريب هاتين المنظومتين البرمجيتين التلقيح المتبادل للأبحاث ويؤدي إلى تطوير نظام موحّد يمكّن المجتمعين من مواجهة الطوفان القادم من البيانات، وربما تقاسم الموارد. وترى مجموعة عمل <a href="https://www.exascale.org/bdec/">Big Data Exascale Computing (BDEC)</a> أنه بدلًا من النظر إلى HPC والحوسبة السحابية كنموذجين مختلفين جذريًا، ربما يكون من المفيد أكثر اعتبار الحوسبة السحابية مرحلة &quot;ممكّنة رقميًا&quot; من الحوسبة العلمية، تتولّد فيها مصادر البيانات بشكل متزايد عبر الإنترنت2. علاوة على ذلك، يلزم تقارب في الثقافة والتدريب والأدوات لدمج مجتمعي برمجيات وأبحاث HPC والحوسبة السحابية دمجًا كاملًا. وتقترح BDEC أيضًا نموذجًا تكون فيه الحواسيب الفائقة ومراكز البيانات &quot;عقدًا&quot; في شبكة ضخمة جدًا من الموارد الحاسوبية، تعمل جميعها بتناغم للتعامل مع تدفق البيانات من مصادر متعددة2. وتلخّص كل عقدة البيانات المتدفقة إليها بقوة، ولا تطلقها إلى عقدة موارد حسابية أكبر إلا عند الضرورة.</p>
+<p>وبينما تبحث منظومتا الحوسبة السحابية وHPC عن التوحيد وتشددان أحزمتهما في وجه الطوفان المتزايد من البيانات، يفيض مستقبل الأنظمة الحاسوبية باحتمالات مثيرة. فالمجالات الجديدة مثل الذكاء الاصطناعي والحوسبة الكمومية تؤدي إلى إنشاء <strong>معماريات خاصة بالمجال</strong> (domain-specific architectures, DSAs) و<strong>دوائر متكاملة خاصة بالتطبيقات</strong> (ASICs) ستكون قادرة على التعامل مع سير عمل مخصص بكفاءة طاقة أعلى من قبل (انظر TPU6 كمثال). علاوة على ذلك، سيصبح أمن هذه المعماريات، الذي أهمله المجتمع طويلًا، أمرًا حاسمًا مع تزايد أهمية البيانات التي تحلّلها. وستؤدي المعماريات الجديدة أيضًا إلى لغات جديدة لبرمجتها، وربما حتى أنظمة تشغيل جديدة لإدارة واجهاتها المتنوعة. ولمعرفة المزيد عن الشكل المحتمل لمستقبل معمارية الحاسوب، نشجّع القراء على تصفّح <a href="https://cacm.acm.org/magazines/2019/2/234352-a-new-golden-age-for-computer-architecture/fulltext">هذه المقالة</a> بقلم الفائزين بجائزة ACM Turing لعام 2017 وعملاقي معمارية الحاسوب، John Hennessy وDavid Patterson7.</p>
+<h3 id="المراجع">المراجع:</h3>
+<ol>
+<li>Armbrust et. al. &quot;A view of cloud computing&quot;. CACM 53(4). 2010.</li>
+<li>Asch et. al. &quot;Big data and extreme-scale computing: Pathways to Convergence-Toward a shaping strategy for a future software and data ecosystem for scientific inquiry&quot;. The International Journal of High Performance Computing Applications 32(4), 435–479. 2018.</li>
+<li>Dean and Ghemawat. &quot;MapReduce: Simplified Data Processing on Large Clusters&quot;. USENIX. 2004.</li>
+<li>DataBricks. &quot;Apache Spark&quot;. <a href="https://databricks.com/spark/about">https://databricks.com/spark/about</a></li>
+<li>M. Halper. &quot;Supercomputing’s Super Energy Needs, and What to Do About Them&quot;. CACM News: <a href="https://cacm.acm.org/news/192296-supercomputings-super-energy-needs-and-what-to-do-about-them/fulltext">https://cacm.acm.org/news/192296-supercomputings-super-energy-needs-and-what-to-do-about-them/fulltext</a></li>
+<li>Jouppi et. al. &quot;In-datacenter performance analysis of a tensor processing unit&quot;. 2017 ACM/IEEE 44th Annual International Symposium on Computer Architecture (ISCA), الصفحات 1-12. 2017.</li>
+<li>J. Hennessy and D. Patterson. &quot;A New Golden Age for Computer Architecture&quot;. CACM 62(2), 48-60. 2019.</li>
+<li>D. A. Reed and J. Dongarra. &quot;Exascale computing and big data&quot;. CACM 58(7), 56–68. 2015.</li>
+</ol>
+`,c={book:s,chapter:a,chapterTitle:n,slug:e,title:p,headings:o,html:l};export{s as book,a as chapter,n as chapterTitle,c as default,o as headings,l as html,e as slug,p as title};

@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -113,7 +113,7 @@
 ودوالّ وأصنافاً إلى clox. وإلى جانب النوع، نحتاج أيضاً إلى تخزين
 بيانات القيمة -- الـ<code>double</code> للعدد، و <code>true</code> أو <code>false</code> للقيمة
 المنطقيّة. يمكننا تعريف بنية (struct) فيها حقول لكلّ نوعٍ ممكن.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/types-of-values-1.webp" alt="A struct with two fields laid next to each other in memory." />
+<img src="/arabic-cs-library/images/crafting-interpreters/types-of-values-1.webp" alt="بنية (struct) بحقلين متجاورَين في الذاكرة." />
 <p>لكنّ هذا مضيعةٌ للذاكرة. فلا يمكن أن تكون القيمة عدداً ومنطقيّةً
 في الوقت نفسه. لذا فإنّ واحداً من هذين الحقلين فقط هو ما سيُستعمل
 في أيّ لحظة. تتيح لك C أن تُحسّن هذا بتعريف <span name="sum">اتّحاد
@@ -124,7 +124,7 @@
 في C تعكس تقريباً الفرق بين أنواع المُنتَج وأنواع المُجَمَع، وبين
 الصفوف وأنواع البيانات الجبرية.</p>
 </aside>
-<img src="/arabic-cs-library/images/crafting-interpreters/types-of-values-2.webp" alt="A union with two fields overlapping in memory." />
+<img src="/arabic-cs-library/images/crafting-interpreters/types-of-values-2.webp" alt="اتّحاد (union) بحقلين متداخلَين في الذاكرة." />
 <p>حجم الاتّحاد هو حجم أكبر حقلٍ فيه. ولأنّ الحقول كلها تعيد
 استعمال البتات ذاتها، عليك توخّي بالغ الحذر عند العمل معها. فإن
 خزّنتَ البيانات باستخدام حقلٍ ثمّ فعّلتها باستخدام حقلٍ <span
@@ -148,7 +148,7 @@ name="reinterpret">آخر</span>، فستُعيد تفسير ما تعنيه ا�
 حقل الاتّحاد، لأنّه يُقرأ بسلاسة، تماماً كصنف (cast) تقريباً،
 حين تُخرِج القيم المختلفة.</p>
 </aside>
-<img src="/arabic-cs-library/images/crafting-interpreters/types-of-values-3.webp" alt="The full value struct, with the type and as fields next to each other in memory." />
+<img src="/arabic-cs-library/images/crafting-interpreters/types-of-values-3.webp" alt="بنية القيمة الكاملة، مع حقلَي type وas متجاورَين في الذاكرة." />
 <p>يأتي وسم النوع ذي البتات الأربعة أولاً، ثمّ الاتّحاد. تفضّل
 معظم البنى المحاذاةَ (alignment) على أن تكون القيم محاذاةً
 لحجمها. وبما أنّ حقل الاتّحاد يحتوي عدداً مزدوجاً من ثمانية
@@ -208,7 +208,7 @@ name="reinterpret">آخر</span>، فستُعيد تفسير ما تعنيه ا�
 صار بإمكاننا أن نتنقّل بأمان بين عالم Lox الديناميكي وعالم C
 الساكن.</p>
 <aside name="universe">
-<img src="/arabic-cs-library/images/crafting-interpreters/types-of-values-4.webp" alt="The earthly C firmament with the Lox heavens above." />
+<img src="/arabic-cs-library/images/crafting-interpreters/types-of-values-4.webp" alt="فلك الـC الأرضي وفوقه سماوات Lox." />
 <p>ترفع ماكروهات <code>_VAL</code> قيمة C إلى السماء. وتُنزلها ماكروهات <code>AS_</code>
 إلى الأسفل.</p>
 </aside>
@@ -514,7 +514,7 @@ name="equal">أنواع</span> مختلفة، فهما بالتأكيد غير �
 بسبب الحشو وحقول الاتّحاد ذات الأحجام المختلفة، تحتوي القيمة
 على بتاتٍ غير مستعملة. ولا تُعطي C أيّ ضمانٍ عمّا فيها، لذا من
 الممكن أن تختلف قيمتان متساويتان فعلاً في ذاكرةٍ غير مستعملة.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/types-of-values-5.webp" alt="The memory respresentations of two equal values that differ in unused bytes." />
+<img src="/arabic-cs-library/images/crafting-interpreters/types-of-values-5.webp" alt="تمثيلَان في الذاكرة لقيمتَين متساويَتين تختلفان في البتّات غير المستخدمة." />
 <p>(لن تُصدّق كم من الألم مررتُ به قبل أن أتعلّم هذه الحقيقة.)</p>
 <p>على أيّ حال، ومع إضافتنا المزيد من الأنواع إلى clox، ستنمو هذه
 الدالة حالاتٍ جديدة. أمّا الآن فهذه الحالات الثلاث كافية. وبقية
@@ -557,7 +557,7 @@ name="equal">أنواع</span> مختلفة، فهما بالتأكيد غير �
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -565,8 +565,8 @@ name="equal">أنواع</span> مختلفة، فهما بالتأكيد غير �
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

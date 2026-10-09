@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -117,7 +117,7 @@ class="gof-pattern">نمط الحالة (State)</a>، لكنني لا أستطي
 انسيابياً. فترسم صندوقاً لكل شيء يمكن أن تكون البطلة تفعله: واقفة، قافزة،
 منخفضة، وغاطسة. وعندما تستطيع الاستجابة لضغطة زر في إحدى تلك الحالات، ترسم سهماً
 من ذلك الصندوق، وتُسمّيه باسم الزر، وتربطه بالحالة التي تنتقل إليها.</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/state-1.webp" alt="A flowchart containing boxes for Standing, Jumping, Diving, and Ducking. Arrows for button presses and releases connect some of the boxes." />
+<img src="/arabic-cs-library/images/game-programming-patterns/state-1.webp" alt="مخطط تدفّق يحوي مربّعات لـ Standing وJumping وDiving وDucking. أسهم ضغط الأزرار وإفلاتها تربط بعض المربّعات." />
 <p>مبروك، لقد أنشأت للتو <em>آلة حالات منتهية</em>. لقد جاءت هذه من فرع في علوم الحاسوب
 يسمى <em>نظرية الأوتوماتا</em> (automata theory)، وعائلة هياكل البيانات فيها تضمّ
 أيضاً آلة تورينغ الشهيرة. وآلات الحالات المنتهية هي أبسط أعضاء تلك العائلة.</p>
@@ -462,7 +462,7 @@ name="turing">مقيّدة</span> جداً عليها. فكل ما لديك هو
 وتصبح الحالة التي تحتها هي الحالة الحالية الجديدة.</p>
 </li>
 </ol>
-<img src="/arabic-cs-library/images/game-programming-patterns/state-2.webp" alt="The stack for a pushdown automaton. First it just contains a Standing state. A Firing state is pushed on top, then popped back off when done." />
+<img src="/arabic-cs-library/images/game-programming-patterns/state-2.webp" alt="كدس آلة الدفع (pushdown automaton). في البداية يحوي حالة Standing فقط. تُدفع فوقها حالة Firing ثم تُستخرج منها عند الانتهاء." />
 <p>هذا هو بالضبط ما نحتاجه لإطلاق النار. فنحن ننشئ حالة إطلاق نار <em>واحدة</em>. وحين
 يُضغط زر الإطلاق أثناء وجودنا في أي حالة أخرى، فإننا <em>ندفع</em> حالة إطلاق النار إلى
 المكدّس. وعندما تنتهي حركة إطلاق النار، فإننا <em>نسحب</em> تلك الحالة من المكدّس، وتنتقل
@@ -495,7 +495,7 @@ name="turing">مقيّدة</span> جداً عليها. فكل ما لديك هو
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -503,8 +503,8 @@ name="turing">مقيّدة</span> جداً عليها. فكل ما لديك هو
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

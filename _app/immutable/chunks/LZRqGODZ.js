@@ -1,0 +1,336 @@
+const s="database-foundations",a="sql-csv",n="Fetching information from a data file via SQL",e="index",p="جلب المعلومات من ملف بيانات عبر SQL",o=[{depth:2,id:"مجموعات-البيانات-الموجودة",text:"مجموعات البيانات الموجودة"},{depth:2,id:"ملفات-csv",text:"ملفات CSV"},{depth:2,id:"تنظيف-البيانات",text:"تنظيف البيانات"},{depth:3,id:"أعمدة-غير-ضرورية",text:"أعمدة غير ضرورية"},{depth:3,id:"ترميز-المحارف",text:"ترميز المحارف"},{depth:3,id:"معلومات-ناقصة",text:"معلومات ناقصة"},{depth:3,id:"تدوين-مختلف-للأعداد",text:"تدوين مختلف للأعداد"},{depth:2,id:"إنشاء-المخطط-والجدول-عبر-pgadmin",text:"إنشاء المخطط والجدول عبر pgAdmin"},{depth:2,id:"استيراد-csv-عبر-pgadmin",text:"استيراد CSV عبر pgAdmin"},{depth:2,id:"من-البيانات-إلى-المعلومات",text:"من البيانات إلى المعلومات"},{depth:2,id:"تمارين-على-مجموعة-البيانات-هذه",text:"تمارين على مجموعة البيانات هذه"},{depth:3,id:"ترتيب-حسب-سرعة-الإنترنت",text:"ترتيب حسب سرعة الإنترنت"},{depth:3,id:"البلد-ذو-أغلى-متوسط-سعر",text:"البلد ذو أغلى متوسط سعر"},{depth:3,id:"أكبر-فرق-في-السعر",text:"أكبر فرق في السعر"},{depth:3,id:"البلد-ذو-أسرع-إنترنت-في-الأمريكتين",text:"البلد ذو أسرع إنترنت في الأمريكتين"},{depth:3,id:"نسبة-مستخدمي-الإنترنت",text:"نسبة مستخدمي الإنترنت"},{depth:2,id:"تجميع-البيانات-بواسطة-group-by",text:"تجميع البيانات بواسطة GROUP BY"},{depth:3,id:"ترتيب-تنفيذ-الاستعلام",text:"ترتيب تنفيذ الاستعلام"},{depth:3,id:"تجميع-البيانات",text:"تجميع البيانات"},{depth:3,id:"خطأ-كلاسيكي-مع-group-by",text:"خطأ كلاسيكي مع GROUP BY"},{depth:3,id:"having",text:"HAVING"}],l=`<blockquote>
+<p>من أكثر أيامي إنتاجية ذلك اليوم الذي تخلصت فيه من 1000 سطر من الشيفرة. —Ken Thompson</p>
+</blockquote>
+<h2 id="مجموعات-البيانات-الموجودة">مجموعات البيانات الموجودة</h2>
+<p>رأينا في الفصل السابق كيفية إضافة بياناتك الخاصة إلى جدول عبر <code>INSERT INTO</code>. وفي المثال التمهيدي أخذنا بيانات مقررات من دليل البرنامج باستخدام أوراق ECTS الخاصة ببرنامجنا في علوم الحاسوب. غير أن البيانات تُجمع أحيانًا على يد أشخاص آخرين ويمكن العثور عليها في مواقع الويب. ونتحدث عندئذ عن <em>مجموعات البيانات</em> (datasets).</p>
+<p>وكمثال، نأخذ مجموعة بيانات تقدّم بعض البيانات المتعلقة باستخدام الإنترنت حسب البلد. اطّلع على صفحة Kaggle: <a href="https://www.kaggle.com/datasets/ramjasmaurya/1-gb-internet-price">https://www.kaggle.com/datasets/ ramjasmaurya/1-gb-internet-price</a>. وفي هذه الصفحة يقدّم المستخدم &quot;Ram Jas Maurya&quot; بيانات عن &quot;أسعار الإنترنت في أكثر من 200 بلد في عام 2022&quot;. والبيانات متاحة في <em>الملكية العامة</em> (بلا حقوق نشر). لذا يجوز لك استخدام مجموعة البيانات هذه دون أي مشكلة.</p>
+<p>لكن ما لا نجده للأسف هو <em>المصادر</em>. وينبغي أن يكون ردّ الفعل الطبيعي هو البحث عن المصادر دائمًا. فمن أين أتت البيانات التي جمعها هذا المؤلف في مجموعة البيانات هذه؟ لنجرِ فحصًا سريعًا برقم يسهل التحقق منه. سيكون في بلجيكا (وفق ويكيبيديا، والمصدر Statbel) في 1 يناير 2022 نحو 11.6 مليون نسمة. وتعطي مجموعة البيانات هذه عدد السكان 11.5 مليون. وهذا قريب جدًا. أما من أين أُخذت المعلومة عن رسوم بيانات الإنترنت لـ 1 جيجابايت فلا تعلم. وبالمناسبة، تقرأ تعليقات مشابهة في تعليقات هذه المجموعة على Kaggle.</p>
+<p>غير أننا نريد في هذا الفصل أن نؤكد <strong>الاستخدام التعليمي لمجموعة بيانات CSV ثم يمكن أن يخدم هذا الغرض. ما دمنا لا نريد استنتاج أي &quot;حقائق مطلقة&quot; من هذا...</strong></p>
+<p>وعند كتابة هذا الفصل (14 أغسطس 2022)، كانت هناك أربع مجموعات بيانات متاحة. ونحن مهتمون بشكل خاص بـ &quot;all_csv sorted.csv&quot; (الإصدار 7 وقت الكتابة). وتجمع مجموعة البيانات هذه مجموعات البيانات الثلاث الأخرى في مجموعة أكبر تضم 200 صف و13 عمودًا. ويحتوي الملف على بيانات عن المتوسط والحد الأدنى والحد الأعلى لسعر 1 جيجابايت من البيانات في عام 2022 والمتوسطات في العامين السابقين (إن توفّرت). وستجد أيضًا عدد مستخدمي الإنترنت والسكان في كل بلد ومتوسط سرعة الاتصال بالميغابت في الثانية. وكما ذُكر بالفعل ويبقى مهمًا: <em>لا علم لنا بمصدر البيانات</em>، لذا استخدم هذه البيانات بحذر.</p>
+<p>نزّل مجموعة البيانات هذه عبر <a href="https://df.webontwerp.ucll.be/assets/CSV/all_csv_sorted_versie7.csv">رابط التنزيل المباشر لملف CSV هذا</a>.</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-csv-0-downloadCSV.webp" alt=""></p>
+<p>وربما تُفتح مجموعة البيانات هذه مباشرة في نافذة متصفحك. فإما أن تأمر صراحةً بتنزيل الملف المرتبط، وإما أن تحدد كامل محتوى نافذة متصفحك (ويندوز: CTRL + A، وماك: CMD + A) وتنسخ هذا المحتوى وتلصقه في ملف نصي جديد.</p>
+<p>احفظ الملف باسم &quot;internetprices.csv&quot;.</p>
+<h2 id="ملفات-csv">ملفات CSV</h2>
+<p>ملف CSV (&quot;Comma Separated Values&quot;) هو <em>ملف نصي</em> عادي مفيد لتبادل البيانات بين تطبيقات مختلفة. فمثلًا، يمكنك تصدير ملف Excel بهذه الصيغة. ويوجد بين كل قيمة عمود فاصل (يمكنك غالبًا اختياره بنفسك) مثل فاصلة أو فاصلة منقوطة ونحو ذلك. ويبدأ كل صف في سطر جديد. ويبدو الملف المنزّل هكذا:</p>
+<pre><code>S.NO,Country code,Country,Continental region,NO. OF Internet Plans,Average price of 1GB (USD),Cheapest 1GB for 30 days (USD),Most expensive 1GB (USD),Average price of 1GB (USD at the start of 2021),Average price of 1GB (USD â€&quot; at start of 2020),Internet users,Population, &quot;Avg
+(Mbit/s)Ookla&quot;
+0,IL,Israel,NEAR EAST,27,0.05,0.02,20.95,0. 11,0.9,&quot;6,788,737&quot;,&quot;8,381,516&quot;,28.01
+1,KG,Kyrgyzstan,CIS (FORMER USSR),20,0.15,0.1,7.08,0.21,0.27,&quot;2,309,235&quot;,&quot;6,304,030&quot;,16.3
+2,FJ,Fiji,OCEANIA,18,0. 19,0.05,0.85,0.59,3.57,&quot;452,479&quot;,&quot;883,483&quot;,25.99
+3,IT,Italy,WESTERN EUROPE,29,0.27,0.09,3.54,0.43,1.73,&quot;50,540,000&quot;,&quot;60,627,291&quot;,37.15
+…
+</code></pre>
+<p>عادةً ما يحتوي السطر الأول من ملف CSV على نوع من <em>ترويسة الأعمدة</em>، وهي في هذه الحالة:</p>
+<ul>
+<li>رقم (نوع الرقم التسلسلي)،</li>
+<li>رمز البلد المكوّن من حرفين،</li>
+<li>اسم البلد،</li>
+<li>المنطقة،</li>
+<li>عدد صيغ الإنترنت المختلفة،</li>
+<li>متوسط سعر 1 جيجابايت،</li>
+<li>أرخص سعر للشيء نفسه،</li>
+<li>أغلى سعر،</li>
+<li>المتوسطان للسنتين السابقتين،</li>
+<li>عدد مستخدمي الإنترنت،</li>
+<li>عدد السكان،</li>
+<li>متوسط معدل البيانات.</li>
+</ul>
+<p>وبما أن هذا ملف نصي، يمكنك فتحه وعرضه ومعالجته بواسطة <em>محرر</em>. وتختار أنت المحرر الذي تستخدمه لذلك، لكننا سنستخدم في هذا المثال <a href="https://code.visualstudio.com/">Visual Studio Code</a> (&quot;VS Code&quot;)، وهو محرر تستخدمه بلا شك في دورات أخرى (الواجهة الأمامية والبرمجة...). واقتراحنا: ثبّت في VS Code إضافة &quot;Edit CSV&quot; التي أنشأها شخص يُدعى janisdd. وتتيح لك هذه الإضافة العمل بعرض شبيه بجداول البيانات بصفوف وأعمدة لعرض البيانات ومعالجتها.</p>
+<p>وهناك إضافة ثانية مفيدة لملفات CSV هي &quot;Rainbow CSV&quot;. وهي تعطي الأعمدة المختلفة لونًا مختلفًا وبالتالي يسهل تمييزها بعضها عن بعض. ثبّت هذه الإضافة أيضًا في VS Code.</p>
+<p>ويوضح اللقطتان أدناه ملف CSV الأصلي بدون إضافة &quot;Rainbow CSV&quot; ومعها. النسخة الملوّنة أسهل قراءة بكثير، أليس كذلك؟</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-csv-1-zonderkleur.webp" alt="ملف CSV دون التلوين بألوان قوس قزح"> <img src="/arabic-cs-library/images/database-foundations/sql-csv-2-metkleur.webp" alt="ملف CSV مع التلوين بألوان قوس قزح"></p>
+<p>تنبيه: يوجد خطأ صغير لأن هناك &quot;إدخالًا&quot; (Enter) بين &quot;Avg&quot; و&quot;(Mbit/s)Ookla&quot;. واحرص على إزالته حتى تكون الترويسة الكاملة في السطر الأول فقط!</p>
+<p>وبمجرد تثبيت هذه الإضافات، افتح ملف csv وانقر على &quot;Edit CSV&quot; في الزاوية العلوية اليمنى. وستحصل الآن على العرض التالي للملف:</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-csv-3-editcsv.webp" alt="هكذا يبدو ملف CSV بعد تثبيت إضافة Edit CSV في VS Code"></p>
+<h2 id="تنظيف-البيانات">تنظيف البيانات</h2>
+<p><em>نادرًا ما تكون مجموعة البيانات قابلة للاستخدام دون تعديل.</em> وتحتوي مجموعة البيانات هذه أيضًا بعض الأمور المزعجة التي تجعل تحميلها في جدول صعبًا.</p>
+<h3 id="أعمدة-غير-ضرورية">أعمدة غير ضرورية</h3>
+<p>لا يمكنك تحميل بيانات CSV إلا في <em>جدول موجود</em>. لذا عليك <em>أن تنشئ جدولًا جديدًا أولًا</em>. وأنت تعرف بالفعل أن لكل جدول <em>مفتاحًا أساسيًا</em>: حقلًا (أو مجموعة حقول) فريدًا لكل صف. ويحتوي العمود الأول من مجموعة البيانات هذه على عدد صحيح متزايد (سنسميه لاحقًا <a href="/arabic-cs-library/book/database-foundations/model-logisch/index#Relational-database-model">&quot;مفتاحًا تقنيًا&quot;</a>). ويمكن أن يفي هذا الغرض بالتأكيد، لكن لننظر أبعد.</p>
+<p>يحتوي العمود الثاني على <em>رمز بلد</em> مكوّن من حرفين. وهذا الرمز فريد بشكل مضمون إذا اتبع <a href="https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes">المعيار</a>. وفي الواقع، <em>من الأفضل عندئذ استخدام هذا العمود الثاني مفتاحًا أساسيًا لجدولنا</em>.</p>
+<p>والعمود الأول يحتوي في الواقع على معلومات لا فائدة منها. والأفضل إزالته من الملف. وتسهّل إضافة &quot;Edit CSV&quot; التي ثبّتها في VS Code ذلك. فإن لم تكن فعلت ذلك من قبل، فانقر فقط على &quot;Edit CSV&quot; في الزاوية العلوية اليمنى. وستحصل عندئذ على عرض أعمدة للملف. ومرّر المؤشر فوق الترويسة &quot;column 1&quot;. وسيظهر رمز سلة مهملات. انقر عليه لحذف هذا العمود.</p>
+<h3 id="ترميز-المحارف">ترميز المحارف</h3>
+<p>مرّر إلى الصف 35. لا أعرف كيف سيبدو على شاشتك، لكنني أقرأ على جهاز Mac اسم البلد &quot;RÃ©union&quot;. وهذه مشكلة نمطية في <a href="https://en.wikipedia.org/wiki/Character_encoding">ترميز المحارف</a>. ولو أردنا اختصار القصة: فقد اتفق مصنّعو الحواسيب (منذ زمن طويل) على أي تركيبات البتات تقابل أي حرف أو رقم أو محرف. وإذا لم تستخدم ترميز المحارف نفسه المستخدم لهذا الملف، فستُفسَّر بعض الحروف تفسيرًا خاطئًا.</p>
+<p>وترميز المحارف الأكثر استخدامًا هو UTF-8. وهو الترميز القياسي لمتصفحك ومن VS Code... وفي خادم قاعدة البيانات أيضًا يمكنك اختيار ترميز المحارف. ولنتفق على أن نختار دائمًا UTF-8. وهناك بعض أسماء البلدان التي تحتوي محارف خاصة مثل é وô وغيرها. ولنعدّلها يدويًا. وإذا واجهت صعوبة في العثور على تلك المحارف على لوحة مفاتيحك، فيمكنك دائمًا نسخها من ملف يحتوي هذه المحارف بشكل صحيح.</p>
+<p>عدّل ما يلي (ما لم يكن صحيحًا بالفعل):</p>
+<ul>
+<li>الصف 35: Réunion</li>
+<li>الصف 125: Saint Barthélemy (St. Barts)</li>
+<li>الصف 131: Côte d'Ivoire</li>
+<li>الصف 139: حالة صعبة، حرف كبير سويدي: Åland Islands (والأسهل على الأرجح نسخ الحرف من هنا)</li>
+<li>الصف 199: Curaçao</li>
+<li>وأخيرًا الأصعب في الصف 229: São Tomé and Príncipe.</li>
+</ul>
+<p>وبهذا انتهى هذا الجزء من <em>&quot;تنظيف البيانات&quot;</em>. ويمكننا أن نتساءل بعد ذلك إن كنا نحتاج الصف الأول. من حيث المبدأ لا نحتاجه، لكنه يحتوي معلومات مفيدة تلزم لتعريف الجدول لاحقًا. علاوة على ذلك، يمكننا لاحقًا أثناء الاستيراد أن نبيّن أنه لا ينبغي استيراد الصف الأول.</p>
+<p>وللاحتياط، احفظ هذه التغييرات في VS Code: &quot;Apply changes to file and save&quot; (انظر اللقطة أدناه).</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-csv-4-applychanges.webp" alt=""></p>
+<h3 id="معلومات-ناقصة">معلومات ناقصة</h3>
+<p>ابتداءً من الصف 233 (&quot;Christmas Island&quot;) تنقص معلومات كثيرة: فإما أنه لا يوجد مزوّدون، وإما أن العملة التي تُعبَّر بها التكاليف غير مستقرة لدرجة يتعذّر معها تحويلها إلى الدولار. ولنحذف كل هذه الصفوف (أي من &quot;Christmas Island&quot; إلى &quot;Zimbabwe&quot;) من هذا المثال. ويمكنك فعل ذلك في عرض الأعمدة، لكن <em>الأسهل في الواقع هو في نسخة النص</em> لأنك في تخطيط الأعمدة تضطر إلى فعل ذلك صفًا صفًا.</p>
+<p>راجع كل شيء مرة أخرى. ويبرز هنا وهناك الوصف &quot;NO PACKAGES&quot;. وهذه غالبًا بلدان صغيرة جدًا. ولنحذف صفوفًا من مجموعة البيانات أيضًا. وبشكل أكثر تحديدًا يمكن حذف البلدان الخمسة التالية (الصفوف): &quot;Cook Islands&quot; و&quot;Vanuatu&quot; و&quot;Tuvalu&quot; و&quot;Cuba&quot; (وهو أمر مؤسف بعض الشيء لأنها بلد كبير في النهاية) و&quot;Cocos (Keeling) Islands&quot;. احذف الآن هذه الصفوف (والأفضل في نسخة النص، وابحث عن &quot;PACK&quot;) واحفظ الملف مرة أخيرة.</p>
+<p>وأريد أن أضيف هنا كلمة تحذير. في الحالات الواقعية، قد يكون لحذف البيانات أو تعديلها عواقب وخيمة على صلاحية دراستك. فمثلًا، تخيّل أنك تحلل متوسط الدخل في بلجيكا. فقد يكون أصحاب الدخول الأدنى أقل استعدادًا للإفصاح عن رواتبهم الشهرية. وإذا حذفت تلك الإجابات الناقصة ببساطة، فقد تُظهر نتائجك متوسط دخل أعلى بكثير من الواقع. وستتعلم استراتيجيات أخرى للتعامل مع البيانات الناقصة في فصول قادمة. وأما الآن فتذكّر: عند العمل ببيانات حقيقية لعميل حقيقي، <em>اطرح الأسئلة دائمًا قبل حذف البيانات أو تعديلها.</em>.</p>
+<h3 id="تدوين-مختلف-للأعداد">تدوين مختلف للأعداد</h3>
+<p>لاحظ أن الأعداد الكبيرة الممثلة للسكان والمستخدمين تستخدم التدوين الأمريكي: تُفصل الآلاف بفاصلة، بينما الفاصل بين الوحدات والكسور العشرية هنا نقطة وليس فاصلة. وهذه النقطة ليست مشكلة، لكن <em>الفاصلة بين الأعداد ستكون مشكلة عند استيراد البيانات</em>. فنحن نريد الأعداد فقط بلا فاصل للآلاف والملايين ونحو ذلك.</p>
+<p>ويتعقد ذلك لأننا لا نستطيع ببساطة حذف جميع الفواصل، لأن تلك الفاصلة هي أيضًا الفاصل بين الأعمدة المختلفة. ويجب أن أعترف بصراحة بأنني أمضيت وقتًا طويلًا في العبث بـ Excel أثناء إعداد هذا النص التعليمي. كانت تلك خطتي الأولى: استيراد هذه البيانات إلى Excel وتعديلها هناك ثم تصديرها مرة أخرى بصيغة CSV. يبدو ذلك بسيطًا جدًا، لكن العملية كانت محبطة إلى حد كبير.</p>
+<p><em>أفضل ما يمكنك فعله إذا لم ينجح الأمر هو أن تذهب في نزهة...</em></p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-csv-5-goforwalk.webp" alt="أحيانًا، بصفتك مطوّراً، عليك أن تذهب للتنزه."></p>
+<p>وعندما عدت رأيت فجأة أن الأمر يمكن فعلًا بسهولة <em>داخل VS Code نفسه</em>. فالدافع إلى الحل موجود في إحدى الفقرات السابقة. ونفّذ الآن الخطوات التالية في VS Code:</p>
+<p>الفاصل بين الأعمدة هو الفاصلة. غير أن ملف CSV يمكن أن يستخدم محارف أخرى فواصل. ويمكننا ضبط ذلك عبر إضافة VS Code. فاختر مرة أخرى &quot;Edit CSV&quot;. وفي أعلى النافذة لديك &quot;Write options&quot;. وفي خيارات الكتابة اختر الفاصلة المنقوطة &quot;;&quot; فاصلًا (&quot;Delimiter&quot;). ثم طبّق واحفظ عبر زر &quot;Apply changes to file and save&quot;. وأغلق ملفي .csv كليهما (الأصلي و&quot;edit CSV&quot;) في VS Code وافتح ملف .csv الأصلي مرة أخرى لعرض التعديل. ويستخدم ملف CSV الآن الفاصلة المنقوطة ; بين عمودين:</p>
+<pre><code>Country code;Country;Continental region;NO. OF Internet Plans;Average price of 1GB (USD);Cheapest 1GB for 30 days (USD);Most expensive 1GB (USD);Average price of 1GB (USD at the start of 2021);Average price of 1GB (USD at start of 2020);Internet users;Population; &quot;Avg (Mbit/s)Alsola&quot; Israel;NEAR EAST;27;0. 05;0.02;20.95;0.11;0.9;6,788,737;8,381,516;&quot;28.01&quot;
+KG;Kyrgyzstan;CIS (FORMER USSR);20;0.15;0.1;7.08;0.21;0. 27;2,309,235;6,304,030;&quot;16.3&quot;
+FJ;Fiji;OCEANIA;18;0.19;0.05;0.85;0.59;3.57;452,479;883,483;&quot;25.99&quot;
+…
+</code></pre>
+<p>والفواصل الوحيدة المتبقية الآن هي تلك بين الآلاف والملايين ونحو ذلك. لذا يمكن إزالتها بـ<em>أمر بحث/استبدال</em> في VS Code (انظر الشكل أدناه).</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-csv-6-zoekvervang.webp" alt="البحث والاستبدال في VSCode."></p>
+<p>في حقل البحث أدخل الفاصلة، واترك حقل الاستبدال فارغًا (ولا حتى مسافة). وتتيح لك الأزرار على الجانب الأيمن الاستبدال واحدًا واحدًا أو دفعة واحدة. وفي النص نفسه يمكنك رؤية جميع الفواصل التي ستُزال. ويبدو ذلك جيدًا، لذا نفّذ الاستبدال دفعة واحدة. <em>وإذا ساء الأمر فلا تهلع: تراجع!</em></p>
+<p>وينبغي أيضًا إزالة علامات الاقتباس المزدوجة (&quot;...&quot;) حول بعض الأعداد. ففي النهاية نريد قراءة هذه البيانات في قاعدة البيانات كأعداد لأننا نريد إجراء حسابات بهذه الأعداد. فلا ينبغي قراءتها كنصوص.</p>
+<p>أزل جميع علامات الاقتباس المزدوجة بأمر بحث/استبدال في VS Code عبر Edit &gt; Replace.</p>
+<p>وبعد إزالة هذين المحرفين، تبدو النتيجة النهائية هكذا:</p>
+<pre><code>Country code;Country;Continental region;NO. OF Internet Plans;Average price of 1GB (USD);Cheapest 1GB for 30 days (USD);Most expensive 1GB (USD);Average price of 1GB (USD at the start of 2021);Average price of 1GB (USD at the start of 2020);Internet users;Population;Avg (Mbit/s)AlsolaNIL;Israel;NEAR EAST;27;0. 05;0.02;20.95;0.11;0.9;6788737;8381516;28.01
+KG;Kyrgyzstan;CIS (FORMER USSR);20;0.15;0.1;7.08;0.21;0.27;2309235;6304030;16. 3
+FJ;Fiji;OCEANIA;18;0.19;0.05;0.85;0.59;3.57;452479;883483;25.99
+IT;Italy;WESTERN EUROPE;29;0.27;0.09;3.54;0.43;1.73;50540000;60627291;37.15
+SD;Sudan;SUB-SAHARAN AFRICA;33;0.27;0.03;0.92;0. 63;0.68;12512639;41801533;9.5
+RU;Russia;CIS (FORMER USSR);22;0.29;0.13;1.86;0.52;0.91;124000000;145734038;20.46
+MD;Moldova;EASTERN EUROPE;18;0.32;0.07;2.79;1.12;2.82;3083783;4051944;29.46
+…
+</code></pre>
+<p>والملف الآن جاهز للاستيراد إلى جدول. فلننشئ ذلك الجدول الآن.</p>
+<h2 id="إنشاء-المخطط-والجدول-عبر-pgadmin">إنشاء المخطط والجدول عبر pgAdmin</h2>
+<p>عبر pgAdmin لديك بالفعل إمكانية الوصول إلى مخطط باسم رقم طالبك &quot;rxxxxxxxx&quot; في قاعدة البيانات الخاصة بصفك. وسننشئ في هذا المخطط الآن جدولًا جديدًا باسم &quot;internet prices&quot; (ويمكنك إنشاء أي عدد تريده من الجداول في مخططك). ولنستعرض جميع الأعمدة:</p>
+<ul>
+<li><em>رمز البلد</em> (العمود 1) سلسلة من محرفين، لذا <code>char(2)</code>. وهو مطلوب لأنه سيكون مفتاحنا الأساسي.</li>
+<li><em>اسم</em> البلد (العمود 2) و<em>المنطقة</em> (العمود 3) غير محددَي الطول. لذا سيلزم أن يكونا <code>varchar()</code>. واختر بنفسك عدد المحارف لكل منهما بما يكفي لتخزين جميع الأسماء (ابحث عن أطول سلسلة). وكلاهما إلزامي.</li>
+<li><em>عدد صيغ الإنترنت</em> (العمود 4) عدد صحيح صغير. ويكفي نوع البيانات <code>smallint</code> بالتأكيد. وهو حقل مطلوب أيضًا.</li>
+<li>والأعمدة الثلاثة التالية هي <em>متوسط السعر</em> و<em>الحد الأدنى للسعر</em> و<em>الحد الأعلى للسعر</em> لـ 1 جيجابايت من البيانات. وهي حقول مطلوبة تمثل مبلغًا بالدولار. ونوع البيانات المناسب لذلك هو <code>numeric(5,2)</code>. وفي هذا، 5 هو العدد الإجمالي للأرقام و2 هو عدد الأرقام بعد الفاصلة العشرية (أي مبلغ مقرّب إلى سنت واحد). وتُشار إلى القيم الثلاث كلها في كل مرة في مجموعة البيانات.</li>
+<li>والعمودان 8 و9 هما <em>متوسطا سعري السنتين السابقتين</em>. وهنا أيضًا يكون اختيار <code>numeric(5,2)</code> مناسبًا. وتوجد مشكلة صغيرة إذا نظرت إلى مجموعة البيانات. فهذه الأعداد غير محددة لكل صف. لذا لن نضيف هنا شرط <code>NOT NULL</code>. فقد تُترك هذه الحقول فارغة عند استيراد البيانات.</li>
+<li>والعمودان 10 و11 هما <em>عدد مستخدمي الإنترنت</em> و<em>عدد السكان</em>. وهما عددان صحيحان كبيران، لذا يصلح <code>integer</code> نوع بيانات مناسبًا. وتحقق مما إذا كانت جميع الصفوف تحتوي هذه المعلومة. فإن كانت كذلك، فيمكنك أن تشترط ألا تُترك هذه الحقول فارغة.</li>
+<li>وأخيرًا، العمود الأخير عمود آخر لا يكون معروفًا دائمًا، ألا وهو <em>متوسط معدل البيانات</em>. ومرة أخرى، يمكن أن يكون <code>numeric(5,2)</code> على الأرجح.</li>
+</ul>
+<p>والآن، كتمرين، أنشئ هذا الجدول بجملة <code>CREATE</code>. وبعض الأخطاء النمطية التي تتكرر كثيرًا:</p>
+<ul>
+<li>أنت تعمل عن طريق الخطأ في المخطط &quot;Public&quot; (<a href="/arabic-cs-library/book/database-foundations/sql-intro/index#Choosing-the-right-schema">التفسيرات والحلول</a>).</li>
+<li>تستخدم أسماء أعمدة فيها مسافات: فكرة سيئة. في حد ذاتها يمكن فعل ذلك، لكن يجب أن تُحيط الاسم عندئذ دائمًا بعلامات اقتباس مزدوجة (&quot;...&quot;). والحل الأفضل هو كتابة الكلمات معًا أو استخدام شرطة سفلية (underscore).</li>
+<li>نسيت تعريف مفتاح أساسي.</li>
+</ul>
+<h4>الحل</h4>
+<pre><code class="language-sql"><span class="hljs-keyword">CREATE</span> SCHEMA u0012047; <span class="hljs-comment">-- probably unnecessary because this schema exists already</span>
+<span class="hljs-keyword">SET</span> search_path <span class="hljs-keyword">to</span> u0012047; <span class="hljs-comment">-- otherwise you&#x27;re working in schema public!</span>
+<span class="hljs-keyword">CREATE TABLE</span> internet_prices (
+  country_code         <span class="hljs-type">char</span>(<span class="hljs-number">2</span>) <span class="hljs-keyword">NOT NULL</span>,
+  name                 <span class="hljs-type">varchar</span>(<span class="hljs-number">60</span>) <span class="hljs-keyword">NOT NULL</span>,
+  region               <span class="hljs-type">varchar</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">NOT NULL</span>,
+  number               <span class="hljs-type">smallint</span> <span class="hljs-keyword">NOT NULL</span>,
+  avg_price            <span class="hljs-type">numeric</span>(<span class="hljs-number">5</span>,<span class="hljs-number">2</span>) <span class="hljs-keyword">NOT NULL</span>,
+  min_price            <span class="hljs-type">numeric</span>(<span class="hljs-number">5</span>,<span class="hljs-number">2</span>) <span class="hljs-keyword">NOT NULL</span>,
+  max_price            <span class="hljs-type">numeric</span>(<span class="hljs-number">5</span>,<span class="hljs-number">2</span>) <span class="hljs-keyword">NOT NULL</span>,
+  avg_21_price         <span class="hljs-type">numeric</span>(<span class="hljs-number">5</span>,<span class="hljs-number">2</span>),
+  avg_20_price         <span class="hljs-type">numeric</span>(<span class="hljs-number">5</span>,<span class="hljs-number">2</span>),
+  internet_users       <span class="hljs-type">integer</span>,
+  residents            <span class="hljs-type">integer</span>,
+  avg_data_rate        <span class="hljs-type">numeric</span>(<span class="hljs-number">5</span>,<span class="hljs-number">2</span>),
+  <span class="hljs-keyword">CONSTRAINT</span> pk_internet_prices <span class="hljs-keyword">PRIMARY KEY</span> ( country_code )
+);
+</code></pre>
+<h2 id="استيراد-csv-عبر-pgadmin">استيراد CSV عبر pgAdmin</h2>
+<p>غالبًا ما يُستخدم CSV لـ<em>تبادل البيانات بين التطبيقات</em>. لذا من البديهي أن يستطيع خادم قاعدة بيانات PostgreSQL العمل بملفات CSV. ويتيح لنا العميل الذي نستخدمه (pgAdmin) إجراء هذه العملية بسهولة.</p>
+<p>وعن كلمة &quot;سهل&quot; هذه ربما تحذير صغير... فعند استيراد ملف CSV إلى جدول ستصطدم بالتأكيد تقريبًا ببعض الأخطاء. فأحيانًا لا يكون تعريف عمود متوافقًا تمامًا مع البيانات، أو يحتوي ملف CSV على أخطاء صغيرة، ونحو ذلك. ونأمل أن تكفي عملية التنظيف التي أجريناها أعلاه لنجاح الاستيراد.</p>
+<p><em>أمل زائف</em>، كما سنرى قريبًا...</p>
+<p>ويُجرى الاستيراد في pgAdmin كما يلي. انقر بزر الفأرة الأيمن على اسم الجدول المنشأ حديثًا واختر &quot;Import/Export Data...&quot;. وفي مربع الحوار (علامة التبويب &quot;General&quot;) تضبط الآن ما يلي:</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-csv-7-importcsv1.webp" alt="مربع الحوار الأول لاستيراد CSV في pgAdmin"></p>
+<ul>
+<li>Import/Export: اختر Import؛</li>
+<li>Filename: رابط ملف .csv الذي تريد استيراده (&quot;internetprices.csv&quot;)؛</li>
+<li>Format: csv؛</li>
+<li>Encoding: UTF8؛</li>
+</ul>
+<p>وفي علامة التبويب الثانية &quot;Options&quot; (الشكل أدناه)، عدّل ما يلي:</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-csv-8-importcsv2.webp" alt="مربع الحوار الثاني لاستيراد CSV في pgAdmin"></p>
+<ul>
+<li>Header: ضع علامة (حتى يُتخطى الصف الأول)؛</li>
+<li>Delimiter: اختر &quot;;&quot; فاصلًا؛</li>
+<li>لا تحتاج إلى تغيير بقية الخيارات.</li>
+</ul>
+<p>وأكّد بزر OK. وإذا سار كل شيء على ما يرام، تُقرأ الآن جميع صفوف ملف CSV في صفوف الجدول.</p>
+<p>لكن كما ذُكر... نادرًا ما تسير الأمور كما هو مخطط لها تمامًا في المرة الأولى. فقد ظنّنا أن &quot;تنظيف بياناتنا&quot; نجح، لكنك لا تزال تحصل على رسالة خطأ. ولرؤية رسالة الخطأ هذه، عليك أولًا الدخول إلى المربع الأحمر حيث توجد رسالة خطأ، والنقر على &quot;View Processes&quot;. وستحصل حينئذ على جدول بسطر من المعلومات عن عملية الاستيراد الفاشلة. وفي ذلك السطر، وقبل عمود &quot;PID&quot; مباشرة، يوجد رمز &quot;View Details&quot;. انقر عليه لرؤية الخطأ الصحيح. وقد تحتاج إلى تكبير النافذة لقراءة رسالة الخطأ كاملة. وستبدو رسالة الخطأ كهذه:</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-csv-9-importfoutAruba.webp" alt="خطأ في استيراد دولة أروبا."></p>
+<p>يبدو أن رمز البلد AW (مفتاحنا الأساسي!) يظهر مرتين قرب السطر 176 من ملف CSV. <em>وبما أن المفتاح الأساسي يجب أن يكون فريدًا، يعطي خادم قاعدة البيانات رسالة خطأ عن حق، ويُلغى الاستيراد.</em> ولذلك لا يُستورد أي شيء.</p>
+<p>انظر قرب ذلك السطر في الشيفرة:</p>
+<pre><code>...
+AG;Antigua and Barbuda;CARIBBEAN;39;4.44;1.48;42.18;7.17;12.7;77529;96286;
+AW;Aruba (Netherlands);CARIBBEAN;17;4.44;0.74;8.96;9.11;5.56;15877494;17059560;108. 33
+AW;Aruba (Netherlands);CARIBBEAN;17;4.44;0.74;8.96;9.11;5.56;102285;105845;108.33
+PA;Panama;CENTRAL AMERICA;8;4.49;2;7.48;6.69;4.69;2371852;4176869;17.03
+...
+</code></pre>
+<p>إذن هناك بلدان رمز بلدهما AW والاسم نفسه Aruba. وتكشف زيارة سريعة إلى ويكيبيديا أن عدد سكان Aruba يزيد قليلًا على 100000 نسمة. وهذا العدد يوافق السطر الثاني. أما السطر الأول فيوافق على الأرجح هولندا، إذ يبلغ عدد سكانها نحو 17 مليون نسمة. ولننظر في بيانات هولندا في ملف CSV لتأكيد ما فكرنا فيه. وعبر بحث في VS Code نجد ما يلي:</p>
+<pre><code>NL;The Netherlands;WESTERN EUROPE;24;3.11;0.77;15.97;2.98;4.62;;;
+</code></pre>
+<p>إذن ينقص هذا السطر عدد مستخدمي الإنترنت وعدد السكان ومتوسط السرعة. وقد حذّرنا مقدمًا من <em>غياب الاستشهاد الواضح بالمصدر</em> لمجموعة البيانات هذه. وتبيّن الآن أيضًا وجود <em>أخطاء</em> في الملف. ويفضَّل على الأرجح تصحيح الخطأ بنقل البيانات من مدخل AW الأول، Aruba... إلى السطر الخاص بهولندا ثم حذف ذلك السطر الأول من Aruba من الملف.</p>
+<pre><code>NL;The Netherlands;WESTERN EUROPE;24;3.11;0.77;15.97;2.98;4.62;15877494;17059560;108.33
+...
+AG;Antigua and Barbuda;CARIBBEAN;39;4.44;1.48;42.18;7.17;12. 7;77529;96286;
+AW;Aruba (Netherlands);CARIBBEAN;17;4.44;0.74;8.96;9.11;5.56;102285;105845;108.33
+PA;Panama;CENTRAL AMERICA;8;4.49;2;7.48;6.69;4.69;2371852;4176869;17.03
+...
+</code></pre>
+<p>المحاولة التالية. كرّر خطوات الاستيراد. ويسوء الأمر هذه المرة أيضًا لأن رمز البلد LB يظهر مرتين. ويقرأ ملف CSV:</p>
+<pre><code>LB;Lebanon;NEAR EAST;15;4.81;1.21;77.7;3.82;5.84;4755187;6859408;16.38
+LB;Lebanon;NEAR EAST;15;4.81;1.21;77.7;3.82;5.84;4755187;6859408;16.38
+</code></pre>
+<p>وهذا الخطأ سهل التصحيح: احذف أيًّا من السطرين في VS Code. ولا تنسَ حفظ ملفك بعد ذلك!</p>
+<p>محاولة جديدة. ولحسن الحظ، نحصل هذه المرة على رسالة تفيد بنجاح الاستيراد عبر نافذة خضراء فيها &quot;Process completed&quot;.</p>
+<p>اطلب نظرة عامة كاملة بواسطة <code>SELECT * FROM internet_prices</code>:</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-csv-10-selectalleprijzen.webp" alt="تم بنجاح! نظرة عامة على جميع الأسعار."></p>
+<h2 id="من-البيانات-إلى-المعلومات">من البيانات إلى المعلومات</h2>
+<p>وضعنا <em>البيانات</em> (مجموعة وقائع) في جدول. ويمكننا الآن استخدام SQL لهيكلة هذه البيانات ودمجها وتنظيمها بشكل مختلف... وتذكّر أننا نتحدث عن <em>تحويل البيانات إلى معلومات</em>.</p>
+<p>وعلى سبيل المثال، لنبحث عن إجابة عن سؤال: كيف تقارن بلجيكا بغيرها من البلدان من حيث تكلفة (في عام 2022) 1 جيجابايت من البيانات على الإنترنت؟ ويمكن إيجاد ذلك بالاستعلام البسيط التالي:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> name, avg_price
+<span class="hljs-keyword">FROM</span> internet_prices
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">2</span>; <span class="hljs-comment">--so from cheap to expensive</span>
+</code></pre>
+<p>اختبر هذا الاستعلام والاستعلامات التالية بنفسك!</p>
+<p>وتأتي بلجيكا في المرتبة 186 وفق هذه البيانات. فاتصالات الإنترنت لدينا غالية!</p>
+<p>فأين نقف مقارنة بجيراننا في أوروبا الغربية؟ هناك أيضًا لا نبدو جيدًا. فلا تجاوزنا في الغلاء إلا ثلاثة بلدان (النرويج وأندورا واليونان)، كما يوضح الاستعلام التالي:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> name, region, avg_price
+<span class="hljs-keyword">FROM</span> internet_prices
+<span class="hljs-keyword">WHERE</span> region <span class="hljs-operator">=</span><span class="hljs-string">&#x27;WESTERN EUROPE&#x27;</span>
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">By</span> <span class="hljs-number">3</span>;
+</code></pre>
+<div class="exercises"><h2 id="تمارين-على-مجموعة-البيانات-هذه">تمارين على مجموعة البيانات هذه</h2>
+<p>أفضل طريقة لتعلّم مجموعة بيانات هي اللعب بها. اختبر استعلامات مختلفة. وحاول حل التمارين التالية.</p>
+<h3 id="ترتيب-حسب-سرعة-الإنترنت">ترتيب حسب سرعة الإنترنت</h3>
+<p>أنشئ ترتيبًا لجميع البلدان حسب متوسط معدل البيانات. وينبغي أن يكون البلد ذو الاتصال الأسرع في الأعلى. واعرض العمودين &quot;name&quot; و&quot;avg_data_rate&quot; فقط. وفي نسخة ثانية من هذا الاستعلام اعرض فقط البلدان المعطى لها معدل.</p>
+<h4>الحل</h4>
+<p>يمكن أن تكون النسخة الأولى من الاستعلام هكذا:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> name, avg_data_rate
+<span class="hljs-keyword">FROM</span> internet_prices
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> avg_data_rate <span class="hljs-keyword">DESC</span>;
+</code></pre>
+<p>ستلاحظ أمرًا خاصًا في الناتج: تُعرض جميع الصفوف التي تحتوي <code>NULL</code> في عمود المعدل أولًا. وسبب ذلك أن PostgreSQL يعتبر قيم <code>NULL</code> <em>أكبر</em> من جميع القيم غير <code>NULL</code>. ويتوقف هذا السلوك على قاعدة البيانات: فـ Oracle تفعل الشيء نفسه، لكن SQLite وMySQL تفعلان العكس. فهذان الخادمان يعتبران <code>NULL</code> قيمة أصغر من جميع القيم الأخرى.</p>
+<p>ولعرض الصفوف التي يوجد لها معدل معطى فعليًا فقط، يمكنك الترشيح بالقيمة <code>NOT NULL</code>:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> name, avg_data_rate
+<span class="hljs-keyword">FROM</span> internet_prices
+<span class="hljs-keyword">WHERE</span> avg_data_rate <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NOT NULL</span>
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> avg_data_rate <span class="hljs-keyword">DESC</span>;
+</code></pre>
+<h3 id="البلد-ذو-أغلى-متوسط-سعر">البلد ذو أغلى متوسط سعر</h3>
+<p>أي بلد لديه أغلى متوسط سعر لـ 1 جيجابايت من البيانات؟</p>
+<h4>الحل</h4>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span>
+<span class="hljs-keyword">FROM</span> internet_prices
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">by</span> avg_price <span class="hljs-keyword">desc</span>;
+</code></pre>
+<h3 id="أكبر-فرق-في-السعر">أكبر فرق في السعر</h3>
+<p>في <code>SELECT</code> يمكنك أيضًا <em>الحساب بالأعمدة</em>. وسنستفيد من ذلك في هذا التمرين.</p>
+<p>في أي بلد يكون فرق السعر بين أغلى عرض وأرخصه الأكبر؟ (الجواب: اليونان، حيث الفرق كبير لدرجة تجعلك تتساءل إن كانت هذه الأعداد صحيحة...). وينبغي أن تحصل على لقطة الشاشة في الشكل أدناه.</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-csv-11-grootsteprijsverschil.webp" alt="في اليونان، يكون الفرق بين المزوّد الأغلى والأرخص هو الأكبر."></p>
+<h4>الحل</h4>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> name, max_price <span class="hljs-operator">-</span> min_price <span class="hljs-keyword">AS</span> price_difference, max_price, min_price
+<span class="hljs-keyword">FROM</span> internet_prices
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">2</span> <span class="hljs-keyword">desc</span>;
+</code></pre>
+<h3 id="البلد-ذو-أسرع-إنترنت-في-الأمريكتين">البلد ذو أسرع إنترنت في الأمريكتين</h3>
+<p>أي بلد في القارة الأمريكية (سواء في أمريكا الشمالية أو الجنوبية) لديه أسرع سرعة إنترنت؟ أنشئ استعلام SQL يولّد قائمة يمكنك أن تجد فيها الإجابة.</p>
+<h4>الحل</h4>
+<p>هذا تركيب موسّع بالفعل من <code>AND</code> و<code>OR</code>. لا تقلق إن وجدت ذلك صعبًا، فسنعود إليه في الفصل التالي.</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> name, avg_data_rate, region
+<span class="hljs-keyword">FROM</span> internet_prices
+<span class="hljs-keyword">WHERE</span> (region <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;SOUTH AMERICA&#x27;</span> <span class="hljs-keyword">OR</span> region <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;NORTHERN AMERICA&#x27;</span>) <span class="hljs-keyword">AND</span> avg_data_rate <span class="hljs-keyword">is</span> <span class="hljs-keyword">not null</span>
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> avg_data_rate <span class="hljs-keyword">desc</span>;
+</code></pre>
+<h3 id="نسبة-مستخدمي-الإنترنت">نسبة مستخدمي الإنترنت</h3>
+<p>هذا تمرين صعب!</p>
+<p>احسب نسبة مستخدمي الإنترنت في كل بلد ورتّبها بحيث يكون البلد ذو النسبة الأكبر في الأعلى. وإذا كنت قد فكرت حتى الآن &quot;أليس كل شخص في بلدنا لديه بالتأكيد إمكانية الوصول إلى الإنترنت؟&quot;: فنسبة بلجيكا 87%... وتجد أدناه في الحل بعض النصائح، لكن جرّب التمرين أولًا بدون النصائح!</p>
+<h4>الحل</h4>
+<p>النسبة هي العدد مقسومًا على المجموع مضروبًا في 100.</p>
+<p>وتوجد مشكلة في قسمة عددين صحيحين. جرّب الشيفرة التالية:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-number">1</span> <span class="hljs-operator">/</span> <span class="hljs-number">2</span>;
+</code></pre>
+<p>تنتج هذه القسمة نتيجة مفاجئة: 0. والسبب أنها قسمة <em>صحيحة</em>. فالعدد 2 يدخل في 1 صفر مرة. وجرّب تركيبات أعداد أخرى حتى تفهم كيف تعمل قسمة الأعداد الصحيحة. وإذا أردت الحصول على عدد عشري (float) نتيجةً، فعليك استخدام المعامل <code>CAST ... AS ...</code>. واكتب استعلام <code>SELECT</code> التالي:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">cast</span>(<span class="hljs-number">1</span> <span class="hljs-keyword">AS</span> <span class="hljs-type">float</span>) <span class="hljs-operator">/</span> <span class="hljs-built_in">cast</span>(<span class="hljs-number">2</span> <span class="hljs-keyword">AS</span> <span class="hljs-type">float</span>);
+</code></pre>
+<p>يحسب هذا الاستعلام قسمة عددين عشريين. والنتيجة الآن عدد عشري أيضًا، ويُسمى في قاعدة البيانات float.</p>
+<p>ولا نريد قيم <code>NULL</code> في الناتج. واستخدم اسمًا مستعارًا (بـ <code>AS</code>) في <code>SELECT</code>.</p>
+<p>هذه الشيفرة حل جيد:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> name, <span class="hljs-built_in">cast</span>(internet_users <span class="hljs-keyword">as</span> <span class="hljs-type">float</span>) <span class="hljs-operator">/</span> <span class="hljs-built_in">cast</span>(residents <span class="hljs-keyword">as</span> <span class="hljs-type">float</span>) <span class="hljs-operator">*</span> <span class="hljs-number">100</span> <span class="hljs-keyword">AS</span> percentage
+<span class="hljs-keyword">FROM</span> internet_prices
+<span class="hljs-keyword">WHERE</span> internet_users <span class="hljs-operator">/</span> residents <span class="hljs-keyword">is</span> <span class="hljs-keyword">not null</span>
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">2</span> <span class="hljs-keyword">desc</span>;
+</code></pre>
+<h2 id="تجميع-البيانات-بواسطة-group-by">تجميع البيانات بواسطة GROUP BY</h2>
+<p>وبعد أن أصبحت لدينا مجموعة بيانات كبيرة بما يكفي، يمكننا تجميع البيانات (أو بعبارة تقنية &quot;تجميعها&quot;) بطريقة ذات معنى، مثلًا حسب المنطقة. ونقدّم <code>GROUP BY</code> لهذا الغرض. وسيأتي تناول وافٍ في <a href="/arabic-cs-library/book/database-foundations/sql-groupby-having/index">فصل &quot;GROUP BY / HAVING&quot;</a>.</p>
+<h3 id="ترتيب-تنفيذ-الاستعلام">ترتيب تنفيذ الاستعلام</h3>
+<p>يمكنك بحلول الآن إنشاء استعلامات بسيطة. ويُنجز خادم قاعدة البيانات تلك الاستعلامات بهذا الترتيب:</p>
+<ol>
+<li><code>FROM</code>: ما الجداول التي نحتاجها وينبغي تحميلها في الذاكرة؟</li>
+<li><code>WHERE</code>: ما صفوف هذه الجداول التي نختارها؟</li>
+<li><code>SELECT</code>: ما الأعمدة التي نعرضها في الناتج؟</li>
+<li><code>ORDER BY</code>: حسب أي عمود (أو أعمدة) تُرتَّب الصفوف في الناتج؟</li>
+</ol>
+<p>ولاحظ أن ذلك يختلف عن الترتيب الذي تكتب به الاستعلام!</p>
+<h3 id="تجميع-البيانات">تجميع البيانات</h3>
+<p>أحيانًا لا تريد بعد الآن استرجاع تفاصيل فردية، بل تهتم فقط بـ<em>معلومات عن مجموعة معينة</em>. وبعض الأمثلة على جدول أسعار الإنترنت:</p>
+<ul>
+<li>ما متوسط سرعة الإنترنت ومتوسط الحد الأدنى للسعر وعدد البلدان في كل منطقة (انظر الشكل)؟ <img src="/arabic-cs-library/images/database-foundations/sql-csv-12-groupbyvb1.webp" alt="بيانات مجمّعة، مثل المتوسط حسب المنطقة."></li>
+<li>اسرد البلدان حسب عدد صيغ الإنترنت (من 40 صيغة على الأقل) وأعطِ متوسط السعر: <img src="/arabic-cs-library/images/database-foundations/sql-csv-13-groupbyhaving.webp" alt="بيانات مجمّعة مع شرط: having"></li>
+</ul>
+<p>ولنحل سؤال المثال الأول: &quot;لكل منطقة، اسرد عدد البلدان في تلك المنطقة ومتوسط سرعة الإنترنت ومتوسط الحد الأدنى للسعر.&quot;. نحتاج إلى تقديم بعض المعلومات حسب المنطقة، لذا نستخدم <code>GROUP BY region</code>. وفي هذه المرحلة لا يمكننا استرجاع سوى <em>المنطقة نفسها</em> و<em>الأعداد الملخّصة (دوال التجميع المطبقة على أعمدة معينة)</em>. وهذا يعطي الاستعلام التالي:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> region, <span class="hljs-built_in">AVG</span>(avg_data_rate), <span class="hljs-built_in">AVG</span>(min_price), <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>)
+<span class="hljs-keyword">FROM</span> internet_prices
+<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> region
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">2</span> <span class="hljs-keyword">DESC</span>;
+</code></pre>
+<p>ولنستعرض تنفيذ هذا الاستعلام خطوة بخطوة بالترتيب الصحيح <em>(أي لا بالترتيب الذي كُتب به الاستعلام!)</em>:</p>
+<ol>
+<li><code>FROM internet_prices</code>: يُحمَّل جدول internet_prices بأكمله في الذاكرة.</li>
+<li>لا يوجد <code>WHERE</code>، لذا لا تُسقَط أي صفوف.</li>
+<li>ثم يأتي <code>GROUP BY region</code>: تذهب جميع الصفوف ذات المنطقة نفسها إلى صندوق واحد. ويظهر على كل صندوق اسم المنطقة. لذا سيكون عدد الصناديق بعدد المناطق المختلفة في الجدول.</li>
+<li>وعندها فقط يُنفَّذ <code>SELECT</code>. والشيء الوحيد الذي يمكننا استرجاعه الآن هو تسمية كل صندوق (المنطقة) ومعلومات ملخّصة عن كل البيانات الواردة في كل صندوق باستخدام دوال تجميع مثل <code>AVG(avg_data_rate)</code> (المتوسط الحسابي لجميع المعدلات في كل صندوق)، و<code>AVG(min_price)</code> (المتوسط الحسابي لجميع الأسعار الدنيا في كل صندوق)، و<code>COUNT(*)</code> (عدد الصفوف في كل صندوق).</li>
+<li>وأخيرًا، تُرتَّب صفوف الناتج النهائي (<code>ORDER BY 2 DESC</code>) من الأكبر إلى الأصغر حسب العمود الثاني، بحيث يكون صف أكبر متوسط سرعة في الأعلى.</li>
+</ol>
+<h3 id="خطأ-كلاسيكي-مع-group-by">خطأ كلاسيكي مع GROUP BY</h3>
+<p>ألقِ نظرة على الاستعلام البسيط التالي. سيفشل هذا الاستعلام لأنه يحتوي أخطاء. فما الخطأ فيه؟</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span>
+<span class="hljs-keyword">FROM</span> internet_prices
+<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">by</span> region;
+</code></pre>
+<h4>الحل</h4>
+<p>اقرأ رسالة الخطأ التي تحصل عليها بتعمّن:</p>
+<pre><code>ERROR: column &quot;internet_prices.country_code&quot; must appear in the GROUP BY clause
+  or be used in an aggregate function
+LINE 2: select *
+               ^
+SQL state: 42803
+ Character: 39
+</code></pre>
+<p>باستخدام <code>GROUP BY</code> تُوضع جميع الصفوف ذات القيمة نفسها للحقل &quot;region&quot; في صندوق واحد. ومن هذا الصندوق يمكنك أن تختار فقط الاسم (&quot;region&quot;) والمتوسطات والحدود العليا والدنيا والعدد والمجموع** (دوال التجميع الخمس) لبعض الأعمدة. أما مع <code>SELECT *</code> فإنك تستعلم عن <em>جميع</em> الأعمدة، وهو ما لا يمكن فعله. ويفشل الأمر فورًا مع العمود الأول (&quot;country_code&quot;)، ومن هنا الرسالة التي تفيد بأن هذا العمود يجب أن يكون في <code>GROUP BY</code>.</p>
+<h3 id="having">HAVING</h3>
+<p>في استعلام يحتوي <code>GROUP BY</code>، ستواجه أيضًا بانتظام <code>HAVING</code>. وهي تشبه <code>WHERE</code> إلى حد ما من حيث إنها تجري أيضًا اختيارًا وربما تُسقط بيانات. تأمّل المثال التالي:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> region, <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>), <span class="hljs-built_in">AVG</span>(avg_data_rate)
+<span class="hljs-keyword">FROM</span> internet_prices
+<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> region
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">2</span> <span class="hljs-keyword">DESC</span>;
+</code></pre>
+<p>يسرد هذا الاستعلام حسب المنطقة عدد البلدان في تلك المنطقة ومتوسط سرعة الإنترنت فيها. ويوضح الشكل التالي النتائج الكاملة مرتبة تنازليًا حسب العمود الثاني:</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-csv-14-havingvb.webp" alt="استخدام HAVING شرطاً إلى جانب GROUP BY"></p>
+<p>ويمكننا الآن إضافة HAVING إلى الشيفرة:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">SELECT</span> region, <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>), <span class="hljs-built_in">AVG</span>(avg_data_rate)
+<span class="hljs-keyword">FROM</span> internet_prices
+<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> region
+<span class="hljs-keyword">HAVING</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>) <span class="hljs-operator">&gt;</span> <span class="hljs-number">16</span> <span class="hljs-comment">--has to come after the GROUP BY clause</span>
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">2</span> <span class="hljs-keyword">DESC</span>;
+</code></pre>
+<p>وإضافة <code>HAVING COUNT(*) &gt; 16</code> تعني &quot;أبقِ فقط الصناديق (المناطق) التي تحتوي أكثر من 16 صفًا فرديًا&quot;. ويتكوّن ناتج الاستعلام الآن من صفوف أقل بكثير:</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-csv-15-havingminstens16.webp" alt="الإبقاء فقط على العناصر التي تحقق الشرط في having"></p>
+<p>فما أكبر فرق عن <code>WHERE</code>؟ يُنفَّذ <code>WHERE</code> مباشرة بعد <code>FROM</code> وقبل أن يدخل <code>GROUP BY</code> حيز التنفيذ. ويختار الشرط الذي بعد <code>WHERE</code> صفوفًا معينة من الجدول (ويطرح البقية). وعندها فقط تُجمع هذه الصفوف في صناديق بواسطة <code>GROUP BY</code>. وعندما يصبح كل صف في صندوق، يبدأ <code>HAVING</code> الذي يبقي صناديق معينة ويزيل غيرها.</p>
+<p>وتُنفَّذ الجمل المختلفة في الاستعلام بهذا الترتيب:</p>
+<ol>
+<li><code>FROM</code>: ما الجداول التي تحتوي المعلومة؟</li>
+<li><code>WHERE</code>: ما الصفوف التي تحقق الشرط؟ أبقِ تلك الصفوف فقط.</li>
+<li><code>GROUP BY</code>: هل نضع المعلومات معًا في صناديق...؟</li>
+<li><code>HAVING</code>: ... تحقق شرطًا معينًا؟</li>
+<li><code>SELECT</code>: ما الأعمدة التي نعرضها؟</li>
+<li><code>ORDER BY</code>: كيف تُرتَّب الصفوف؟</li>
+</ol>
+</div>`,t={book:s,chapter:a,chapterTitle:n,slug:e,title:p,headings:o,html:l};export{s as book,a as chapter,n as chapterTitle,t as default,o as headings,l as html,e as slug,p as title};

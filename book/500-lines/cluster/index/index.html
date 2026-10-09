@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -290,13 +290,13 @@
 <p>وكذلك، من الممكن أن يُحسم المقترح نفسه مرتين. ويتخطّى الـ replica استدعاء آلة الحالة لأي مقترحات مكرّرة من هذا النوع، فلا ينفّذ أي انتقال بالنسبة إلى تلك الخانة.</p>
 <p>تحتاج الـ replicas إلى معرفة أي عقدة هي القائد النشط كي ترسل إليها رسائل <code>Propose</code>. وهناك مقدار مفاجئ من الدقّة والعناية مطلوب لإتمام هذا على النحو الصحيح، كما سنرى لاحقاً. وتتتبّع كل replica القائد النشط بثلاثة مصادر للمعلومات.</p>
 <p>حين يصبح دور القائد نشطاً، يرسل رسالة <code>Adopted</code> إلى الـ replica الموجودة على العقدة نفسها (adopted.)</p>
-<p><img src="/arabic-cs-library/images/500-lines/cluster-2-adopted.webp" alt="Adopted"></p>
+<p><img src="/arabic-cs-library/images/500-lines/cluster-2-adopted.webp" alt="حالة Adopted"></p>
 <p>وحين يرسل دور القابل للقبول رسالة <code>Promise</code> إلى قائد جديد، فإنه يرسل رسالة <code>Accepting</code> إلى الـ replica المحلية (accepting.)</p>
-<p><img src="/arabic-cs-library/images/500-lines/cluster-3-accepting.webp" alt="Accepting"></p>
+<p><img src="/arabic-cs-library/images/500-lines/cluster-3-accepting.webp" alt="حالة Accepting"></p>
 <p>يرسل القائد النشط رسائل <code>Active</code> بوصفها نبضاً للحياة (active.) فإذا لم تصل أي رسالة من هذا النوع قبل انتهاء صلاحية <code>LEADER_TIMEOUT</code>، تفترض الـ replica أن القائد قد مات وتنتقل إلى القائد التالي. وفي هذه الحالة، من المهم أن تختار جميع الـ replicas القائد الجديد <em>نفسه</em>، وهو ما نحققه بترتيب الأعضاء واختيار التالي في القائمة.</p>
-<p><img src="/arabic-cs-library/images/500-lines/cluster-4-active.webp" alt="Active"></p>
+<p><img src="/arabic-cs-library/images/500-lines/cluster-4-active.webp" alt="حالة Active"></p>
 <p>وأخيراً، حين تنضم عقدة إلى الشبكة، يرسل دور bootstrap رسالة <code>Join</code> (bootstrap.) وتستجيب الـ replica برسالة <code>Welcome</code> تحتوي على أحدث حالة لها، مما يتيح للعقدة الجديدة أن تلحق بالركب بسرعة.</p>
-<p><img src="/arabic-cs-library/images/500-lines/cluster-5-bootstrap.webp" alt="Bootstrap"></p>
+<p><img src="/arabic-cs-library/images/500-lines/cluster-5-bootstrap.webp" alt="حالة Bootstrap"></p>
 <pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Replica</span>(<span class="hljs-title class_ inherited__">Role</span>):
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, node, execute_fn, state, slot, decisions, peers</span>):
@@ -471,7 +471,7 @@
             <span class="hljs-variable language_">self</span>.logger.info(<span class="hljs-string">&quot;got PROPOSE for a slot already being proposed&quot;</span>)
 </code></pre>
 <p>ينشئ القائد دور scout عندما يريد أن يصبح نشطاً، استجابةً لتلقّيه رسالة <code>Propose</code> وهو غير نشط (leaderscout.) ويرسل scout رسالة <code>Prepare</code> (ويعيد إرسالها عند الحاجة) ويجمع ردود <code>Promise</code> حتى يسمع من أغلبية أقرانه أو حتى يُسبقَه غيره. ثم يتواصل مع القائد عبر <code>Adopted</code> أو <code>Preempted</code> على التوالي.</p>
-<p><img src="/arabic-cs-library/images/500-lines/cluster-6-leaderscout.webp" alt="Scout"></p>
+<p><img src="/arabic-cs-library/images/500-lines/cluster-6-leaderscout.webp" alt="دور Scout"></p>
 <pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Scout</span>(<span class="hljs-title class_ inherited__">Role</span>):
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, node, ballot_num, peers</span>):
@@ -522,7 +522,7 @@
             <span class="hljs-variable language_">self</span>.stop()
 </code></pre>
 <p>وينشئ القائد دور commander (القائد المأمور) لكل خانة لديه فيها مقترح نشط (leadercommander.) ومثل scout، يرسل commander رسائل <code>Accept</code> ويعيد إرسالها وينتظر ردّ أغلبية القابلين للقبول بـ <code>Accepted</code>، أو خبراً بتوقّفه. وحين يُقبَل مقترح، يبثّ commander رسالة <code>Decision</code> إلى جميع العقد. ويستجيب للقائد بـ <code>Decided</code> أو <code>Preempted</code>.</p>
-<p><img src="/arabic-cs-library/images/500-lines/cluster-7-leadercommander.webp" alt="Commander"></p>
+<p><img src="/arabic-cs-library/images/500-lines/cluster-7-leadercommander.webp" alt="دور Commander"></p>
 <pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Commander</span>(<span class="hljs-title class_ inherited__">Role</span>):
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, node, ballot_num, slot, proposal, peers</span>):
@@ -775,7 +775,7 @@
 <p>في وقت ما خلال السنوات العشر الماضية، صار البرمجة دون اختبارات جنوناً في نهاية المطاف، كالقيادة دون حزام أمان. فالشيفرة دون اختبارات على الأرجح غير صحيحة، وتعديل الشيفرة محفوف بالمخاطر ما لم تكن هناك طريقة لمعرفة ما إذا كان سلوكها قد تغيّر.</p>
 <p>وتكون الاختبارات أكثر فاعلية عندما تُنظَّم الشيفرة لأغراض قابلية الاختبار. وهناك مدارس فكرية نشطة قليلة في هذا المجال، لكن النهج الذي اتّخذناه هو تقسيم الشيفرة إلى وحدات صغيرة مترابطة بأقل قدر ممكن، ويمكن اختبارها بمعزل عن بعضها. وهذا يتّفق في جماله مع نموذج الأدوار، حيث يكون لكل دور غرض محدّد ويمكن أن يعمل بمعزل عن الأدوار الأخرى، مما ينتج صنفاً مضغوطاً مكتفياً بذاته.</p>
 <p>وكُتب Cluster على نحو يزيد هذا العزل إلى أقصى حد: فكل التواصل بين الأدوار يتم عبر الرسائل، باستثناء إنشاء الأدوار الجديدة. وبذلك، يمكن إلى حدّ كبير اختبار الأدوار بإرسال رسائل إليها ومراقبة استجاباتها.</p>
-<h4>Unit Testing</h4>
+<h4>اختبار الوحدة</h4>
 <p>الاختبارات الوحدوية لـ Cluster بسيطة وقصيرة:</p>
 <pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Tests</span>(utils.ComponentTestCase):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">test_propose_active</span>(<span class="hljs-params">self</span>):
@@ -785,7 +785,7 @@
         <span class="hljs-variable language_">self</span>.assertCommanderStarted(Ballot(<span class="hljs-number">0</span>, <span class="hljs-string">&#x27;F999&#x27;</span>), <span class="hljs-number">10</span>, PROPOSAL1)
 </code></pre>
 <p>تختبر هذه الدالة سلوكاً واحداً (إطلاق commander) لوحدة واحدة (الصنف <code>Leader</code>). وهي تتبع النمط المعروف «رتّب، نفّذ، تحقّق»: هيّئ قائداً نشطاً، وأرسل إليه رسالة، ثم افحص النتيجة.</p>
-<h4>Dependency Injection</h4>
+<h4>حقن الاعتماديات</h4>
 <p>نستخدم تقنية تُسمّى «حقن الاعتماديات» (dependency injection) للتعامل مع إنشاء الأدوار الجديدة. يأخذ كل صنف دور يضيف أدواراً أخرى إلى الشبكة قائمةً من كائنات الأصناف كوسائط للبناء، مع القيم الافتراضية المساوية للأصناف الفعلية. فمثلاً، يبدو باني <code>Leader</code> هكذا:</p>
 <pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Leader</span>(<span class="hljs-title class_ inherited__">Role</span>):
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, node, peers, commander_cls=Commander, scout_cls=Scout</span>):
@@ -806,15 +806,15 @@
         <span class="hljs-variable language_">self</span>.scout_cls(<span class="hljs-variable language_">self</span>.node, <span class="hljs-variable language_">self</span>.ballot_num, <span class="hljs-variable language_">self</span>.peers).start()
 </code></pre>
 <p>وتسحر هذه التقنية في أنه، أثناء الاختبار، يمكن إعطاء <code>Leader</code> أصنافاً وهمية، وبالتالي اختباره بمعزل عن <code>Scout</code> و<code>Commander</code>.</p>
-<h4>Interface Correctness</h4>
+<h4>صحة الواجهة</h4>
 <p>ومن محاذير التركيز على الوحدات الصغيرة أنها لا تختبر الواجهات بين الوحدات. فمثلاً، تتحقّق اختبارات الوحدة لدور القابل للقبول من صيغة الصفة <code>accepted</code> في رسالة <code>Promise</code>، وتقدّم اختبارات الوحدة لدور scout قيماً مصاغة على نحو سليم لتلك الصفة. ولا يتحقّق أيّ من الاختبارين من تطابق تلك الصيغ.</p>
 <p>وأحد الحلول لهذه المشكلة هو جعل الواجهات تفرض نفسها. وفي Cluster، يتجنّب استخدام الصفوف المسمّاة والوسائط المسمّاة أي خلاف حول صفات الرسائل. ولأن التفاعل الوحيد بين أصناف الأدوار يتم عبر الرسائل، فإن هذا يغطي جزءاً كبيراً من الواجهة.</p>
 <p>وللمشكلات المحدّدة مثل صيغة <code>accepted_proposals</code>، يمكن التحقّق من البيانات الحقيقية والبيانات الاختبارية باستخدام الدالة نفسها، وفي حالتنا <code>verifyPromiseAccepted</code>. وتستخدم اختبارات القابل للقبول هذه الدالة للتحقّق من كل <code>Promise</code> مُرجَعة، وتستخدم اختبارات scout منها للتحقّق من كل <code>Promise</code> وهمي.</p>
-<h4>Integration Testing</h4>
+<h4>اختبار التكامل</h4>
 <p>وآخر حصن ضد مشكلات الواجهة وأخطاء التصميم هو اختبار التكامل. يجمع اختبار التكامل عدة وحدات معاً ويختبر أثرها المُجمَع. وفي حالتنا، يعني ذلك بناء شبكة من عدة عقد، وحقن بعض الطلبات فيها، والتحقّق من النتائج. وإن كانت هناك أي مشكلات في الواجهة لم تُكتشف في اختبارات الوحدة، فينبغي أن تجعل اختبارات التكامل تفشل بسرعة.</p>
 <p>ولأن البروتوكول مصمَّم للتعامل مع تعطّل العقد بأمان، فإننا نختبر أيضاً بعض سيناريوهات الإخفاق، بما في ذلك التعطّل المبكر للقائد النشط.</p>
 <p>واختبارات التكامل أصعب في الكتابة من اختبارات الوحدة، لأنها أقلّ عزلاً. بالنسبة إلى Cluster، يتّضح هذا في اختبار القائد الفاشل، إذ يمكن لأي عقدة أن تكون القائد النشط. وحتى مع شبكة حتمية، فإن تغيير رسالة واحدة يغيّر حالة مولّد الأعداد العشوائية، وبدذلك يغيّر الأحداث اللاحقة بشكل غير متوقّع. وبدلاً من تثبيت القائد المتوقّع كتابةً، يجب أن تنقّب شيفرة الاختبار في الحالة الداخلية لكل قائد لتجد واحداً يعتقد نفسه نشطاً.</p>
-<h4>Fuzz Testing</h4>
+<h4>اختبار الضباب</h4>
 <p>من الصعب جداً اختبار شيفرة متينة: فمن المرجّح أنها متينة تجاه أخطائها هي، لذا قد لا تكتشف اختبارات التكامل أخطاء خطيرة جداً. كما يصعب تخيل اختبارات وبناؤها لكل وضع فشل ممكن.</p>
 <p>ومن الأساليب الشائعة لهذه النوعية من المشكلات «اختبار الضباب» (fuzz testing): تشغيل الشيفرة مراراً بمدخلات متغيّرة عشوائياً حتى ينكسر شيء ما. وحين ينكسر شيء ما <em>فعلاً</em>، تصبح كل وسائل التنقيح حيوية: فإذا تعذّر إعادة إنتاج الإخفاق، وكانت معلومات التسجيل غير كافية لإيجاد الخلل، فستعجز عن إصلاحه!</p>
 <p>وقد أجريت بعض اختبارات الضباب اليدوية للمجموعة أثناء التطوير، لكن بنية اختبار ضباب كاملة تتجاوز نطاق هذا المشروع.</p>
@@ -833,11 +833,11 @@
 <p>تقدّم مكتبة إدارة المجموعات موثوقية في حضور مكوّنات غير موثوقة. ولا ينبغي أن تضيف هي عدم موثوقية خاصة بها. وللأسف، لن تعمل Cluster طويلاً دون أن تتعطّل بسبب النمو المتواصل في استخدام الذاكرة وحجم الرسائل.</p>
 <p>وفي تعريف البروتوكول، يشكّل القابلون للقبول والـ replicas «ذاكرة» البروتوكول، لذا عليهم أن يتذكّروا كل شيء. فهذه الأصناف لا تعرف أبداً متى ستتلقّى طلباً يخصّ خانة قديمة، ربما من replica أو قائد متأخّر. ولصيانة الصحّة، تحتفظ بقائمة بكل قرار أُخذ منذ بدء المجموعة. والأسوأ أن هذه القرارات تُنقل بين الـ replicas في رسائل <code>Welcome</code>، ما يجعل هذه الرسائل هائلة في مجموعة طويلة العمر.</p>
 <p>ومن التقنيات لمعالجة هذه المشكلة أن نأخذ «نقطة تحقّق» (checkpoint) دورية لحالة كل عقدة، مع الاحتفاظ بمعلومات عن عدد محدود من القرارات. أما العقد التي تأخّرت بحيث لم تثبّت كل الخانات حتى نقطة التحقّق، فعليها أن «تعيد ضبط» نفسها بمغادرة المجموعة والانضمام إليها من جديد.</p>
-<h4>Persistent Storage</h4>
+<h4>التخزين الدائم</h4>
 <p>على حين أن تعطّل أقلية من أعضاء المجموعة مقبول، فإن سماح القابل للقبول بأن «ينسى» أي قيمة قبلها أو أي وعد قطعه ليس مقبولاً.</p>
 <p>وللأسف، هذا هو بالضبط ما يحدث حين يعجز عضو مجموعة ويعيد التشغيل: فنسخة Acceptor المُهيّأة حديثاً لا تملك أي سجل بالوعود التي قطعها سابقتها. والمشكلة في أن النسخة التي بدأت حديثاً تحلّ محل القديمة.</p>
 <p>وهناك طريقتان لحل هذه المشكلة. أما الحل الأبسط فيتضمّن كتابة حالة القابل للقبول على القرص وإعادة قراءة تلك الحالة عند بدء التشغيل. أما الحل الأعقد فيتمثّل في إزالة أعضاء المجموعة الفاشلين من المجموعة، واشتراط أن تُضاف أعضاء جدد إليها. وهذا النوع من التعديل الديناميكي لعضوية المجموعة يسمّى «تغيير المشهد» (view change).</p>
-<h4>View Changes</h4>
+<h4>تغييرات المشهد</h4>
 <p>يحتاج مهندسو العمليات إلى القدرة على تغيير حجم المجموعات لتلبية متطلبات الحمل والإتاحة. فقد يبدأ مشروع اختبار بسيط بمجموعة مصغّرة من ثلاث عقد، يمكن لأيٍّ منها أن تتعطّل دون أثر. لكن حين ينتقل المشروع إلى «التشغيل الفعلي» (live)، فإن الحمل الإضافي سيتطلّب مجموعة أكبر.</p>
 <p>وCluster، على نحوها مكتوبة الآن، لا تستطيع تغيير مجموعة الأقران في مجموعة خوادم دون إعادة تشغيل المجموعة بأكملها. والأفضل لو تستطيع المجموعة الحفاظ على توافق بشأن عضويتها، تماماً كما تفعل بشأن انتقالات آلة الحالة. وهذا يعني أن مجموعة أعضاء المجموعة (أي <em>المشهد</em> view) يمكن تغييرها بمقترحات خاصة لتغيير المشهد. لكن خوارزمية Paxos تعتمد على اتفاق عام بشأن أعضاء المجموعة، لذا علينا تعريف المشهد لكل خانة.</p>
 <p>وتعالج Lamport هذا التحدّي في الفقرة الأخيرة من «Paxos Made Simple»:</p>
@@ -877,7 +877,7 @@
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -885,8 +885,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

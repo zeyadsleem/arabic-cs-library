@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -57,7 +57,7 @@
 <li>خلال آخر 1000 مراجعة، متى ولماذا توقّف اختبار وحدةٍ معيّن عن العمل؟</li>
 </ul>
 <p>في حين توجد أنظمة تحكم في الإصدارات أخرى، فإن <strong>Git</strong> هو المعيار الفعلي (de facto) للتحكم في الإصدارات. هذه <a href="https://xkcd.com/1597/">رسوم XKCD</a> الهزلية تلتقط سمعة Git:</p>
-<p><img src="/arabic-cs-library/images/missing-semester/remote-0537866bd5e4ee93.webp" alt="xkcd 1597"></p>
+<p><img src="/arabic-cs-library/images/missing-semester/remote-0537866bd5e4ee93.webp" alt="رسم XKCD الهزلي رقم 1597"></p>
 <p>لأن واجهة Git تجريدٌ مُسرِّب (leaky abstraction)، فإن تعلّم Git من الأعلى إلى الأسفل (بدءًا بواجهته / واجهة سطر الأوامر) قد يقود إلى الكثير من الارتباك. من الممكن حفظ حفنةٍ من الأوامر والتفكير فيها كتعويذاتٍ سحرية، واتّباع المنهج في الرسوم الهزلية أعلاه كلما حدث خطأٌ ما.</p>
 <p>في حين أن واجهة Git قبيحةٌ بلا خلاف، فإن تصميمها الأساسي وأفكارها جميلة. فبينما يجب <em>حفظ</em> واجهةٍ قبيحةٍ عن ظهر قلب، يمكن <em>فهم</em> تصميمٍ جميل. لهذا السبب، نقدم شرحًا تصاعديًا (bottom-up) لـGit، بدءًا من نموذج البيانات (data model) الخاص به، ثم تغطية واجهة سطر الأوامر لاحقًا. وبمجرد فهم نموذج البيانات، يمكن فهم الأوامر بشكلٍ أفضل من حيث كيفية تلاعبها بنموذج البيانات الأساسي.</p>
 <h1>نموذج بيانات Git</h1>
@@ -269,7 +269,7 @@ def load_reference(name_or_id):
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -277,8 +277,8 @@ def load_reference(name_or_id):
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

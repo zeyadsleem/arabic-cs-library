@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -95,7 +95,7 @@
 <p>يستخدم نموذج قاعدة البيانات العلائقية مكوّنًا واحدًا فقط، هو <em>الجدول</em> (table). وكل البيانات التي نريد تتبّعها ستوضع في جدول واحد أو عدة جداول. ويمثل كل جدول مجموعة من البيانات المتشابهة، مثلًا جدول يحتوي جميع بيانات الطلاب. ويُبنى الجدول كبنية مصفوفة ثنائية الأبعاد، نسمي البعد الأفقي فيها <em>الصفوف</em> والبعد الرأسي <em>الأعمدة</em>.</p>
 <p>ويمثل الصف <em>سجلًا</em> (أو <em>كيانًا</em>) من الجدول. ويمكن أن يحتوي الجدول نظريًا على عدد لا نهائي من الصفوف. وعندما ننشئ جدولًا بسجلات الطلاب، فقد يمثل كل صف طالبًا.</p>
 <p>ويمثل العمود <em>خاصية</em> (أو <em>حقلًا</em>) من الجدول، وستصف كل منها جزءًا من الصف (أو الكيان). ويحتوي الجدول على <em>عدد ثابت</em> من الأعمدة. وإذا أردنا إضافة عمود، وهو أمر ممكن، فعلينا أن نفكر في ما يعنيه ذلك للصفوف الموجودة في الجدول. فمثلًا، من الممكن أن نحتاج إلى إدخال قيمة لهذا العمود لكل صف من الصفوف المدرجة بالفعل في الجدول.</p>
-<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-0-model_logisch_relationeel_databankmodel_afb01.webp" alt="A table as a 2-dimensional array structure consisting of rows and columns."></p>
+<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-0-model_logisch_relationeel_databankmodel_afb01.webp" alt="جدول كبنية مصفوفة ثنائية الأبعاد تتكوّن من صفوف وأعمدة."></p>
 <p>وفي مثالنا لجدول بيانات الطلاب، سيحتوي كل عمود على خاصية معينة للطالب، مثل الاسم وتاريخ الميلاد...</p>
 <p>لذلك، ولأن الجدول له بنية محددة من الأعمدة، فإن كل البيانات المحتفظ بها في جدول واحد ستكون دائمًا بالبنية نفسها. وفي كل مرة نريد الاحتفاظ ببيانات إضافية ذات بنية مختلفة، ننشئ جدولًا إضافيًا. * وفي نموذج قاعدة البيانات العلائقية، نسمي مجموعة من عدد من الجداول &quot;قاعدة بيانات&quot;. * لذا يمكن أن تحتوي قاعدة بياناتنا العلائقية على جداول كثيرة ومختلفة. ولدمج هذه الجداول بعضها ببعض وإنشاء علاقات، نستخدم المفاتيح.</p>
 <h4>المفاتيح</h4>
@@ -108,7 +108,7 @@
 <p>وداخل النموذج العلائقي، نحدد <em>مفتاحًا أساسيًا واحدًا لكل جدول</em>. وقيمة المفتاح الأساسي معرّف فريد لكل صف. وسنستخدم هذا المفتاح الأساسي لربط الجداول المختلفة ببعضها.</p>
 <p>ويُختار المفتاح الأساسي من عدد من المفاتيح المرشّحة. و<em>المفتاح المرشّح</em> (candidate key) مفتاح محتمل لجدول، وهو يحقق بالتالي الشروط الثلاثة للمفتاح.</p>
 <p>ويوضح الشكل أدناه مثالًا لجدول &quot;Lecturers&quot;. لدينا أربعة أعمدة قد تكون مفتاحًا. وبعد التفكير لا يبقى لدينا سوى &quot;Lecturer ID&quot; مفتاحًا مرشّحًا. * وبما أن هناك مفتاحًا مرشّحًا واحدًا فقط، فمن المنطقي اختياره مفتاحًا أساسيًا. *</p>
-<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-1-model_logisch_relationeel_databankmodel_afb02.webp" alt="An overview of possible keys for the table lectors."></p>
+<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-1-model_logisch_relationeel_databankmodel_afb02.webp" alt="نظرة عامة على المفاتيح الممكنة لجدول lectors."></p>
 <p>إذن يمكن أن يكون للجدول عدة مفاتيح. ومن قائمة المفاتيح المرشّحة نختار مفتاحًا أساسيًا واحدًا. ولاختيار <em>مفتاح جيد من قائمة المفاتيح الممكنة</em> يمكنك النظر في المعايير التالية:</p>
 <ul>
 <li>ينبغي أن يكون المفتاح <em>مستقرًا</em> قدر الإمكان. فنحن نفترض في الواقع أن المفتاح لا يُعدَّل أبدًا. وهناك بعض الاستثناءات لذلك، لكننا نحاول تجنّب تغيير المفتاح الأساسي. فمثلًا، إذا كان لديك في سياق إدارة الطلاب اختيار بين رقم السجل المدني ورقم الطالب لتحديد طالب تحديدًا فريدًا، فاختر رقم الطالب. فنحن لا نتحكم داخل إدارة الطلاب في رقم الطالب فحسب، بل نستطيع ضمان عدم تغييره أبدًا. أما رقم السجل المدني فقد يتغير. وإضافة إلى ذلك، يخضع استخدام رقم السجل المدني في قاعدة بيانات (وخارجها) لتشريعات GDPR صارمة جدًا، لكننا سنشرح ذلك في دورة أخرى.</li>
@@ -140,11 +140,11 @@
 <h3 id="الخطوة-1-أنواع-الكيانات-تصبح-جداول">الخطوة 1: أنواع الكيانات تصبح جداول</h3>
 <p>في الخطوة الأولى، ننشئ <em>جدولًا لكل من أنواع الكيانات</em>. ونمنح هذا الجدول الاسم نفسه الذي لنوع الكيان. ثم نحدد أعمدة الجدول، فننشئ <em>عمودًا لكل خاصية</em>، باستثناء الخواص متعددة القيم والخواص المشتقة. وسنعود إلى الخواص متعددة القيم لاحقًا. ويتطابق اسم العمود المنشأ مع اسم الخاصية.</p>
 <p>ويختلف تدوين نموذج البيانات المنطقي عن تدوين نموذج البيانات المفاهيمي. فنمثل الجدول بأكمله بإطار يحتوي على قائمة بخواصه.</p>
-<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-2-model_logisch_relationeel_conceptueel_naar_logisch_afb01.webp" alt="Step 1: entities become tables."></p>
+<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-2-model_logisch_relationeel_conceptueel_naar_logisch_afb01.webp" alt="الخطوة 1: تصبح أنواع الكيانات جداول."></p>
 <h3 id="الخطوة-2-يسند-مفتاح-أساسي-لكل-جدول">الخطوة 2: يُسنَد مفتاح أساسي لكل جدول</h3>
 <p>في الخطوة الثانية، نحدد <em>مفتاحًا أساسيًا</em> لكل جدول. وهذا يعني أننا نحتاج إلى تحديد عدد من المفاتيح المرشّحة ثم اختيار أفضل مرشح من هذه القائمة.</p>
 <p>ونمثل المفتاح الأساسي بصريًا بوضع أعمدة المفتاح في أعلى القائمة مع خط أسفلها للتمييز بوضوح بين المفتاح الأساسي والأعمدة المتبقية. وعند فعل ذلك نضع أيضًا لأعمدة المفتاح الأساسي المختلفة الرمز &quot;PK&quot; (من primary key)، ولكي نكون متأكدين تمامًا من أن لا أحد يمكنه ارتكاب خطأ، نضع خطًّا تحت أسماء الأعمدة أيضًا.</p>
-<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-3-model_logisch_relationeel_conceptueel_naar_logisch_afb02.webp" alt="Step 2: Each table is assigned a primary key."></p>
+<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-3-model_logisch_relationeel_conceptueel_naar_logisch_afb02.webp" alt="الخطوة 2: يُخصَّص لكل جدول مفتاح أساسي (primary key)."></p>
 <p>ونفعل ذلك لكل جدول. وضع أيضًا في اعتبارك أنه يجوز لك إنشاء مفتاح تقني، إذا كان إنشاء مفتاح أساسي بالأعمدة الموجودة صعبًا.</p>
 <h3 id="الخطوة-3-لكل-علاقات-1-1-و1-n-ننقل-المفتاح-الأساسي-مفتاحا-أجنبيا">الخطوة 3: لكل علاقات 1-1 و1-N، ننقل المفتاح الأساسي مفتاحًا أجنبيًا</h3>
 <p>في الخطوة الثالثة، سنحوّل بعض <em>العلاقات من نموذج البيانات المفاهيمي إلى ما يكافئها في نموذج البيانات المنطقي</em>. وبما أننا ننشئ العلاقات داخل نموذج البيانات المنطقي بواسطة المفاتيح، فسنعمل بالمفاتيح الأساسية والأجنبية.</p>
@@ -152,15 +152,15 @@
 <p>فمثلًا، لدينا نوعا كيان: &quot;Team&quot; و&quot;Staff Member&quot;. وكل موظف في فريق واحد بالضبط. ويمكن أن يضم كل فريق عدة موظفين. ننشئ جدولين: جدول &quot;Team&quot; وجدول &quot;Staff member&quot;. ويُمنح جدول &quot;Team&quot; المفتاح الأساسي &quot;Team Code&quot;، الذي يحصل به كل فريق في الجدول على رمز فريق فريد. ويُمنح جدول &quot;Staff member&quot; المفتاح الأساسي &quot;Member number&quot;، الذي يُسنَد به لكل موظف في الجدول رقم عضوية فريد. ولنمذجة العلاقة بين نوعي الكيان في نموذج البيانات المنطقي، نضيف رمز الفريق من جدول &quot;Team&quot; (جهة 1) إلى كل موظف في جدول &quot;Staff Member&quot; (جهة N).</p>
 <p>والعكس (أي إضافة المفتاح الأساسي من &quot;Staff Member&quot; إلى &quot;Team&quot;) ليس خيارًا. فلا يمكننا إضافة سوى قيمة واحدة إلى فريق. ومن ثم، لو أنشأنا إشارة من الفريق إلى موظف واحد، لفقدنا الارتباط ببقية أعضاء الفريق.</p>
 <p>وفي نموذج البيانات <em>نضيف المفتاح الأجنبي إلى قائمة الأعمدة</em>. ونرمز إلى المفتاح الأجنبي بالاختصار &quot;FK&quot; (من foreign key) متبوعًا برقم تسلسلي، مثل FK1 وFK2... وينبغي أن يتيح الرقم التسلسلي التمييز بين المفاتيح الأجنبية المختلفة. وإذا كان لدينا مفتاح أجنبي يتكوّن من عدة أعمدة، ننقل كل عمود منها. ثم نمنحها جميعًا الرقم التسلسلي نفسه للإشارة إلى أنها تنتمي معًا.</p>
-<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-4-model_logisch_relationeel_conceptueel_naar_logisch_afb03.webp" alt="Step 3: For each 1-N relationship, we transfer the primary key as the foreign key."></p>
+<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-4-model_logisch_relationeel_conceptueel_naar_logisch_afb03.webp" alt="الخطوة 3: لكل علاقة 1-N ننقل المفتاح الأساسي بوصفه مفتاحًا أجنبيًا (foreign key)."></p>
 <p>ولا نزال نرمز إلى العلاقة بخط نستخدم فيه <em>تدوين قدم الغراب (crow's foot notation)</em>. ويختلف تدوين قدم الغراب عن تدوين (min,max) الذي استخدمته حتى الآن.</p>
-<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-5-model_logisch_relationeel_conceptueel_naar_logisch_afb04.webp" alt="crowsfoot notation 1-N relationships"></p>
+<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-5-model_logisch_relationeel_conceptueel_naar_logisch_afb04.webp" alt="ترميز عُنق الغُراب (crowsfoot) لعلاقات 1-N"></p>
 <p>ولكل علاقة من علاقات 1-1 نفعل شيئًا مشابهًا، لكننا هنا نستطيع <em>الاختيار</em> من أي جهة نأخذ المفتاح الأساسي لنضيفه إلى الجهة الأخرى مفتاحًا أجنبيًا.</p>
 <p>و<em>الإرشاد</em> في علاقة 1-1 هو النظر إلى التعددية الدنيا. <em>فإذا تعذّر وجود نوع كيان معين دون العلاقة (أي أن التعددية الدنيا &quot;1&quot;)، فمن الأفضل أن يأخذ هذا الجدول المفتاح الأساسي للجدول الآخر مفتاحًا أجنبيًا.</em> وبما أن الكيان لا يوجد إلا إذا كانت له علاقة، فيجب أن يكون هذا العمود ممتلئًا دائمًا في الصف الذي يصف الكيان. لأنه بدون هذه القيمة لا توجد العلاقة.</p>
 <p>وإذا تعذّر وجود نوعي الكيان دون بعضهما (أي أن التعددية الدنيا &quot;1&quot; في كليهما)، أو أمكن وجودهما معًا دون بعضهما (أي أن التعددية الدنيا &quot;0&quot; في كليهما)، <em>فلك أن تختار</em>. وعادةً تختار الجدول ذا العدد الأصغر من الصفوف ليضم المفتاح الأساسي للجدول الآخر مفتاحًا أجنبيًا.</p>
 <h4>الخواص متعددة القيم <span class="content-anchor" id="multi-valued"></span></h4>
 <p>الخواص متعددة القيم نوع من علاقات 1-N حيث يرتبط <em>كيان بعدة قيم خاصية</em>. ومن ثم، تحتاج إلى اتباع نهج مشابه لهذه كما في تحويل علاقات 1-N. <em>ولكل خاصية متعددة القيم، أنشئ جدولًا جديدًا باسم الخاصية متعددة القيم.</em> وإلى هذا الجدول تضيف قيمة الخاصية ثم المفتاح الأساسي لجدول نوع الكيان مفتاحًا أجنبيًا. ولا تنسَ الإشارة إلى المفتاح الأساسي وإضافة خط بتدوين قدم الغراب.</p>
-<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-6-model_logisch_relationeel_conceptueel_naar_logisch_afb05.webp" alt="Multi-valued attributes."></p>
+<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-6-model_logisch_relationeel_conceptueel_naar_logisch_afb05.webp" alt="سمات متعددة القيم (multi-valued attributes)."></p>
 <p>فمثلًا، ينتج عن الخاصية متعددة القيم &quot;Email&quot; لنوع الكيان &quot;Employee&quot; جدول &quot;Email&quot; يحتوي عمود &quot;Email&quot;. ولربط كل عنوان بريد إلكتروني بموظف، نضيف المفتاح الأساسي لجدول &quot;Staff member&quot; مفتاحًا أجنبيًا إلى جدول &quot;Email&quot;. ولاحظ في هذا المثال أن المفتاح الأساسي لجدول &quot;Email&quot; مفتاح مركّب: فـ<em>تركيب</em> العمودين &quot;Staff Member&quot; و&quot;Email&quot; وحده هو الفريد.</p>
 <h3 id="الخطوة-4-لكل-علاقة-n-m-ننشئ-جدولا-وسيطا">الخطوة 4: لكل علاقة N-M، ننشئ جدولًا وسيطًا</h3>
 <p>الآن تصبح الأمور أكثر تعقيدًا قليلًا.</p>
@@ -170,10 +170,10 @@
 <p>ونحل ذلك بإنشاء <em>جدول وسيط</em> نضيف إليه صفًا لكل تركيبة من كيان &quot;Student&quot; يدرس كيان &quot;Course&quot;. ويحتوي كل صف حينئذ على المفتاح الأساسي لجدول &quot;Student&quot; والمفتاح الأساسي لجدول &quot;Course&quot;. <em>وبذلك سيحتوي الجدول على مفتاحين أجنبيين.</em> ثم يصبح تركيب المفتاحين الأجنبيين هو <em>المفتاح الأساسي الجديد</em> للجدول الوسيط الجديد.</p>
 <p>وتنطبق هنا القواعد نفسها التي قدّمناها سابقًا للمفتاح. فإذا كانت هناك حاجة إلى علاقات متعددة بين الكيانين نفسيهما، فقد يكون تركيب المفتاحين الأجنبيين غير كافٍ لتحقيق جميع القواعد. وهذا يعني أن شيئًا ما قد يكون ناقصًا في نموذج بياناتك.</p>
 <p>وبعبارة أخرى، ينتج عن المثال أعلاه جدول (وسيط) &quot;StudentFollowsCourse&quot; (أو &quot;Student_Course&quot;، وكن متسقًا في تسميتك) نجد فيه عمود &quot;Student Number&quot; وعمود &quot;Course Code&quot;. وكلاهما مفتاح أجنبي، لذا نرمز إليهما بالاختصار &quot;FK&quot; (Foreign Key) متبوعًا برقم تسلسلي. وتركيب المفتاحين هو أيضًا المفتاح الأساسي للجدول الجديد، لذا نرمز إلى كل عمود أيضًا بالاختصار &quot;PK&quot; (Primary key). وادرس الشكل أدناه بتمعّن!</p>
-<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-7-model_logisch_relationeel_conceptueel_naar_logisch_afb06.webp" alt="Step 4: We create an intermediate table for each N-M relationship."></p>
+<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-7-model_logisch_relationeel_conceptueel_naar_logisch_afb06.webp" alt="الخطوة 4: ننشئ جدولًا وسيطًا لكل علاقة N-M."></p>
 <p>وعلاقة N-M هي النوع الوحيد من العلاقات الذي يمكن أن تكون له <em>خواص</em>. وفي نموذج البيانات المنطقي، سننشئ <em>أعمدة إضافية</em> لهذه الخواص في الجدول الوسيط.</p>
 <p>فمثلًا، في المثال أعلاه، إذا أردنا الاحتفاظ بعلامة لكل تركيبة بين طالب ومقرر، فإننا ننشئ عمودًا إضافيًا &quot;Score&quot; في جدول &quot;StudentFollowsCourse&quot; (انظر الشكل أدناه).</p>
-<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-8-model_logisch_relationeel_conceptueel_naar_logisch_afb07.webp" alt="Step 4: we create an intermediate table for each N-M relationship (with attributes of the relationship)."></p>
+<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-8-model_logisch_relationeel_conceptueel_naar_logisch_afb07.webp" alt="الخطوة 4: ننشئ جدولًا وسيطًا لكل علاقة N-M (مع سمات العلاقة)."></p>
 <h3 id="الخطوة-5-الحالات-الخاصة">الخطوة 5: الحالات الخاصة</h3>
 <p>لا تزال هناك بعض التراكيب في نموذج البيانات المفاهيمي لم نقدّم لها حلًا بعد. ونريد شرحها بإيجاز حتى تستطيع أيضًا تحويلها من نموذج بيانات مفاهيمي إلى نموذج بيانات منطقي.</p>
 <h4>علاقات من الدرجة 1</h4>
@@ -181,14 +181,14 @@
 <p>فمثلًا، تخيّل حالة يدرّب فيها موظف موظفًا آخر. نريد تضمين هذه المعلومة في قاعدة بياناتنا (وبالتالي في نموذج بياناتنا). لدينا نوع الكيان &quot;Employee&quot; الذي يشير إلى نفسه عبر علاقة &quot;Coaches&quot;. وتحدد العلاقة أن كل موظف يدرّب ربما عدة موظفين آخرين أو لا يدرّب أحدًا. وإضافة إلى ذلك، لكل موظف مدرب واحد على الأكثر، لكن ذلك ليس إلزاميًا أيضًا.</p>
 <p>ولتحويل ذلك بعد ذلك إلى نموذج بيانات منطقي، نعامل هذه العلاقة الأحادية <em>كما لو كانت علاقة ثنائية تقابل علاقة 1-N</em>.</p>
 <p>فكيف نقارب ذلك عمليًا؟ أولًا، ننشئ جدول &quot;Employee&quot; ونحدد مفتاحًا أساسيًا، وهو في هذه الحالة &quot;Staff Number&quot;. وفي حالة علاقة 1-N، ننقل المفتاح الأساسي من جهة 1 (الموظف المدرِّب) مفتاحًا أجنبيًا إلى جهة N (الموظف المتدرِّب). ونضيف المفتاح الأساسي &quot;Staff Number&quot; عمودًا إضافيًا إلى جدول &quot;Employee&quot; حيث نعيد تسميته &quot;CoachedByStaffNumber&quot; للوضوح، ونحدده مفتاحًا أجنبيًا بالاختصار &quot;FK&quot;، اختياريًا متبوعًا برقم تسلسلي. ويتيح لنا ذلك، لكل موظف، الارتباط بمدربه لأن كل صف من الموظف سيحتوي إشارة.</p>
-<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-9-model_logisch_relationeel_conceptueel_naar_logisch_afb08.webp" alt="We convert unary relations as if they were binary relations."></p>
+<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-9-model_logisch_relationeel_conceptueel_naar_logisch_afb08.webp" alt="نحوّل العلاقات الأحادية وكأنها علاقات ثنائية."></p>
 <p>وبالنسبة إلى الأنواع الأخرى من العلاقات، يجري الاستدلال بالمثل. <em>فإذا كانت العلاقة الأحادية علاقة N-M، نستخدم جدولًا وسيطًا</em> كما وُصف سابقًا.</p>
 <h4>علاقات من الدرجة 3 أو أعلى</h4>
 <p>علاقة من الدرجة 3 أو أعلى في نموذج بيانات مفاهيمي هي حالة تربط فيها علاقة ثلاثة أنواع كيانات أو أكثر.</p>
 <p>فمثلًا، تخيّل حالة يصف فيها طبيب دواءً لمريض. وإذا نمذجنا ذلك في نموذج بيانات مفاهيمي، سيكون لدينا ثلاثة أنواع كيانات &quot;Doctor&quot; و&quot;Patient&quot; و&quot;Medication&quot; تربطها علاقة &quot;Prescribes&quot;. وقد استخدمنا هذا المثال سابقًا <a href="/arabic-cs-library/book/database-foundations/model-conceptueel/index#Degree">في فصل نموذج البيانات المفاهيمي</a>، لذا نعرف أنه لا يمكن اختزاله إلى علاقات ثنائية.</p>
 <p>ولتحويل ذلك بعد ذلك إلى نموذج بيانات منطقي، ننشئ جدولًا لكل من أنواع الكيانات الثلاثة: &quot;Doctor&quot; و&quot;Patient&quot; و&quot;Medication&quot;. ولكل من هذه الجداول الثلاثة مفتاح أساسي هو على التوالي &quot;Doctor Number&quot; و&quot;Patient Number&quot; و&quot;Medication Code&quot;. ونستبدل العلاقة بـ<em>جدول وسيط &quot;Prescription&quot; نضيف إليه الأعمدة الثلاثة التي يشير كل منها إلى المفاتيح الأساسية لجداول &quot;Doctor&quot; و&quot;Patient&quot; و&quot;Medication&quot;</em>. وكل مفتاح مفتاح أجنبي في جدول &quot;Prescription&quot;، لذا نرمز إليه بالاختصار &quot;FK&quot; متبوعًا برقم تسلسلي. <em>وتشكّل الأعمدة الثلاثة معًا المفتاح الأساسي لجدول &quot;Prescription&quot;</em>، ولذلك نرمز إليها أيضًا بالاختصار &quot;PK&quot;. ولكل علاقة توجد بين الكيانات المختلفة من أنواع الكيانات &quot;Doctor&quot; و&quot;Patient&quot; و&quot;Medication&quot;، سيُضاف صف إلى جدول &quot;Prescription&quot;.</p>
 <p>وكل <em>خاصية</em> للعلاقة، مثل الخاصية &quot;Date&quot; للإشارة إلى وقت وصف الدواء، تُضاف إلى الجدول الوسيط &quot;Prescription&quot; <em>كعمود إضافي</em>.</p>
-<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-10-model_logisch_relationeel_conceptueel_naar_logisch_afb09.webp" alt="We convert relationships of grade 3 and above to an intermediate table."></p>
+<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-10-model_logisch_relationeel_conceptueel_naar_logisch_afb09.webp" alt="نحوّل العلاقات من الرتبة 3 فأعلى إلى جدول وسيط."></p>
 <p>ويمكننا توسيع المبدأ نفسه لعلاقات من الدرجة 4 و5... وفي كل حالة، ننشئ جدولًا وسيطًا يحتوي المفاتيح الأساسية لجميع الجداول المشاركة.</p>
 <h4>تمرين تأجير السيارات</h4>
 <p>أنشئ <a href="/arabic-cs-library/book/database-foundations/model-logisch-oefeningen/index#Exercise-1:-car-rental">التمرين 1: تأجير السيارات</a>.</p>
@@ -204,8 +204,8 @@
 <p>ولتحويل ذلك بعد ذلك إلى نموذج بيانات منطقي، يمكننا استخدام <em>استراتيجيات مختلفة</em>. وتُجرى المقايضة بين الاستراتيجيات المختلفة عادةً بناءً على الأداء، وبما أن هذه الدورة لا تركّز على الأداء، فلك أن تختار استراتيجيتك بحرية. غير أنه يجب أن تكون قادرًا على تطبيق الاستراتيجيتين.</p>
 <p>وسنستعرض الاستراتيجيتين:</p>
 <ol>
-<li><em>الاستراتيجية الأولى هي إنشاء جدول واحد</em> &quot;Employee&quot;، نضيف فيه عمودًا لكل خاصية من خواص نوع الكيان &quot;Employee&quot;، باستثناء الخواص متعددة القيم والخواص المشتقة. ونمنح هذا الجدول مفتاحًا أساسيًا، مثل &quot;Staff Number&quot;. ثم نضيف أيضًا أعمدة لكل من خواص الأنواع الفرعية لنوع الكيان &quot;Employee&quot; (وبعبارة أخرى نوعي الكيان &quot;Temporary Employee&quot; و&quot;Permanent Employee&quot;). وينتج عن ذلك جدول كبير واحد يضم جميع خواص الأنواع الفائقة والأنواع الفرعية معًا. وإذا كانت للأنواع الفرعية علاقات أيضًا، فيجب بالطبع إضافة كل من هذه العلاقات إلى الجدول بشكل صحيح كما وصفنا سابقًا. ويحتوي الجدول الناتج على صف واحد لكل موظف، وتُملأ الأعمدة المختلفة وفقًا لما إذا كان الموظف مؤقتًا أم دائمًا. <img src="/arabic-cs-library/images/database-foundations/model-logisch-11-model_logisch_relationeel_conceptueel_naar_logisch_afb10.webp" alt="Converting supertypes and subtypes to a logical data model: 1 table."> <em>تعمل هذه الاستراتيجية بشكل جيد جدًا إذا كان النوع الفائق يحتوي على النسبة الأكبر من الخواص والعلاقات</em>، وكان لكل نوع فرعي عدد قليل فقط من الخواص أو العلاقات الإضافية. وهكذا نختار عن قصد عدم إضافة تعقيد بإضافة جداول إضافية. وإضافة إلى ذلك <em>تعمل هذه الاستراتيجية بشكل جيد مع الوراثة المتداخلة و/أو الكلية</em>. فمع الوراثة المتداخلة و/أو الكلية، سيكون لدينا عدد أكبر من الأعمدة الممتلئة لكيان معين، أو بعبارة أخرى، عند ترجمتها إلى النموذج المنطقي، سيكون عدد أقل من الأعمدة فارغًا لصف معين.</li>
-<li>أما <em>الاستراتيجية الثانية</em> فهي إنشاء جدول واحد &quot;Employee&quot; نضيف فيه عمودًا لكل خاصية من خواص نوع الكيان &quot;Employee&quot;، باستثناء الخواص متعددة القيم والخواص المشتقة. ونمنح هذا الجدول مفتاحًا أساسيًا، مثل &quot;Staff Number&quot;. <em>ثم ننشئ جداول إضافية لكل من الأنواع الفرعية</em>، مما ينتج في مثالنا الجدولين &quot;Temporary Employee&quot; و&quot;Permanent Employee&quot;. وإلى هذين الجدولين نضيف عمودًا لكل خاصية من خواص الأنواع الفرعية، باستثناء الخواص متعددة القيم والخواص المشتقة مرة أخرى. وإلى كل من جدولي النوعين الفرعيين نضيف المفتاح الأساسي لجدول النوع الفائق. وفي مثالنا، نضيف العمود &quot;Employee Number&quot; إلى جدولي &quot;Temporary Employee&quot; و&quot;Permanent Employee&quot;. وبما أن هذا مفتاح أساسي لجدول آخر، نرمز إليه مفتاحًا أجنبيًا بالاختصار &quot;FK&quot; متبوعًا برقم تسلسلي. وفي الوقت نفسه، يتولى هذا المفتاح أيضًا دور المفتاح الأساسي لجدولي النوعين الفرعيين، لذا نرمز إليه أيضًا بالاختصار &quot;PK&quot;. <em>وينتج عن ذلك عدة جداول، جدول للنوع الفائق وجدول لكل من الأنواع الفرعية.</em> وبالطبع يجب هنا أيضًا معالجة العلاقات المختلفة بشكل صحيح كما وصفنا سابقًا. ويحتوي جدول النوع الفائق الناتج على صف واحد لكل موظف. وإضافة إلى ذلك، سيُضاف صف لكل موظف مؤقت إلى جدول &quot;Temporary Employee&quot;، وسيُضاف صف لكل موظف دائم إلى جدول &quot;Permanent Employee&quot; مع ملء كل عمود وفقًا لذلك. <img src="/arabic-cs-library/images/database-foundations/model-logisch-12-model_logisch_relationeel_conceptueel_naar_logisch_afb11.webp" alt="Converting supertypes and subtypes to a logical data model: multiple tables."> تعمل هذه الاستراتيجية <em>بشكل جيد جدًا إذا كان النوع الفائق يضم عددًا صغيرًا من الخواص والعلاقات</em>، وكان للأنواع الفرعية نفسها كثير من الخواص أو العلاقات. ولتجنّب تعقيد كل تلك الأعمدة الإضافية التي ستكون عادةً فارغة في جدول واحد، نقسّم الأمر كله. وإضافة إلى ذلك، تعمل هذه الاستراتيجية <em>بشكل جيد إذا كان الأمر يتعلق بوراثة منفصلة و/أو اختيارية</em>. فمع الوراثة المنفصلة و/أو الاختيارية، يكون لدينا خطر كبير من كثرة الأعمدة الفارغة لصف معين، وهو ما يستهلك بدوره مساحة غير ضرورية.</li>
+<li><em>الاستراتيجية الأولى هي إنشاء جدول واحد</em> &quot;Employee&quot;، نضيف فيه عمودًا لكل خاصية من خواص نوع الكيان &quot;Employee&quot;، باستثناء الخواص متعددة القيم والخواص المشتقة. ونمنح هذا الجدول مفتاحًا أساسيًا، مثل &quot;Staff Number&quot;. ثم نضيف أيضًا أعمدة لكل من خواص الأنواع الفرعية لنوع الكيان &quot;Employee&quot; (وبعبارة أخرى نوعي الكيان &quot;Temporary Employee&quot; و&quot;Permanent Employee&quot;). وينتج عن ذلك جدول كبير واحد يضم جميع خواص الأنواع الفائقة والأنواع الفرعية معًا. وإذا كانت للأنواع الفرعية علاقات أيضًا، فيجب بالطبع إضافة كل من هذه العلاقات إلى الجدول بشكل صحيح كما وصفنا سابقًا. ويحتوي الجدول الناتج على صف واحد لكل موظف، وتُملأ الأعمدة المختلفة وفقًا لما إذا كان الموظف مؤقتًا أم دائمًا. <img src="/arabic-cs-library/images/database-foundations/model-logisch-11-model_logisch_relationeel_conceptueel_naar_logisch_afb10.webp" alt="تحويل الأنواع الفائقة والفرعية إلى نموذج بيانات منطقي: جدول واحد."> <em>تعمل هذه الاستراتيجية بشكل جيد جدًا إذا كان النوع الفائق يحتوي على النسبة الأكبر من الخواص والعلاقات</em>، وكان لكل نوع فرعي عدد قليل فقط من الخواص أو العلاقات الإضافية. وهكذا نختار عن قصد عدم إضافة تعقيد بإضافة جداول إضافية. وإضافة إلى ذلك <em>تعمل هذه الاستراتيجية بشكل جيد مع الوراثة المتداخلة و/أو الكلية</em>. فمع الوراثة المتداخلة و/أو الكلية، سيكون لدينا عدد أكبر من الأعمدة الممتلئة لكيان معين، أو بعبارة أخرى، عند ترجمتها إلى النموذج المنطقي، سيكون عدد أقل من الأعمدة فارغًا لصف معين.</li>
+<li>أما <em>الاستراتيجية الثانية</em> فهي إنشاء جدول واحد &quot;Employee&quot; نضيف فيه عمودًا لكل خاصية من خواص نوع الكيان &quot;Employee&quot;، باستثناء الخواص متعددة القيم والخواص المشتقة. ونمنح هذا الجدول مفتاحًا أساسيًا، مثل &quot;Staff Number&quot;. <em>ثم ننشئ جداول إضافية لكل من الأنواع الفرعية</em>، مما ينتج في مثالنا الجدولين &quot;Temporary Employee&quot; و&quot;Permanent Employee&quot;. وإلى هذين الجدولين نضيف عمودًا لكل خاصية من خواص الأنواع الفرعية، باستثناء الخواص متعددة القيم والخواص المشتقة مرة أخرى. وإلى كل من جدولي النوعين الفرعيين نضيف المفتاح الأساسي لجدول النوع الفائق. وفي مثالنا، نضيف العمود &quot;Employee Number&quot; إلى جدولي &quot;Temporary Employee&quot; و&quot;Permanent Employee&quot;. وبما أن هذا مفتاح أساسي لجدول آخر، نرمز إليه مفتاحًا أجنبيًا بالاختصار &quot;FK&quot; متبوعًا برقم تسلسلي. وفي الوقت نفسه، يتولى هذا المفتاح أيضًا دور المفتاح الأساسي لجدولي النوعين الفرعيين، لذا نرمز إليه أيضًا بالاختصار &quot;PK&quot;. <em>وينتج عن ذلك عدة جداول، جدول للنوع الفائق وجدول لكل من الأنواع الفرعية.</em> وبالطبع يجب هنا أيضًا معالجة العلاقات المختلفة بشكل صحيح كما وصفنا سابقًا. ويحتوي جدول النوع الفائق الناتج على صف واحد لكل موظف. وإضافة إلى ذلك، سيُضاف صف لكل موظف مؤقت إلى جدول &quot;Temporary Employee&quot;، وسيُضاف صف لكل موظف دائم إلى جدول &quot;Permanent Employee&quot; مع ملء كل عمود وفقًا لذلك. <img src="/arabic-cs-library/images/database-foundations/model-logisch-12-model_logisch_relationeel_conceptueel_naar_logisch_afb11.webp" alt="تحويل الأنواع الفائقة والفرعية إلى نموذج بيانات منطقي: جداول متعددة."> تعمل هذه الاستراتيجية <em>بشكل جيد جدًا إذا كان النوع الفائق يضم عددًا صغيرًا من الخواص والعلاقات</em>، وكان للأنواع الفرعية نفسها كثير من الخواص أو العلاقات. ولتجنّب تعقيد كل تلك الأعمدة الإضافية التي ستكون عادةً فارغة في جدول واحد، نقسّم الأمر كله. وإضافة إلى ذلك، تعمل هذه الاستراتيجية <em>بشكل جيد إذا كان الأمر يتعلق بوراثة منفصلة و/أو اختيارية</em>. فمع الوراثة المنفصلة و/أو الاختيارية، يكون لدينا خطر كبير من كثرة الأعمدة الفارغة لصف معين، وهو ما يستهلك بدوره مساحة غير ضرورية.</li>
 </ol>
 <p>وأخيرًا، يمكنك البدء بـ<em>دمج</em> الاستراتيجيتين أعلاه، حيث تنشئ جدولًا إضافيًا لأنواع فرعية معينة، وتُضمّن أنواعًا فرعية أخرى مع جدول النوع الفائق.</p>
 <h4>تمرين المكتبة</h4>
@@ -215,9 +215,9 @@
 <p>وفي سياق نموذج قاعدة البيانات العلائقية، يعني التكرار أننا <em>نعرّف جداول وأعمدة لا نحتاجها فعليًا</em>. ولكن كيف يبدو ذلك؟</p>
 <p>لنبدأ من المثال الذي استخدمناه سابقًا. يشتري عميل سيارة من إحدى الكراجات. ونحن نعرف أي عميل يشتري أي سيارة. ونعرف أيضًا في أي كراج تُباع السيارة. وإذا أردنا معرفة في أي كراج يشتري العميل سيارة، يمكننا إنشاء العلاقة &quot;Buys car in&quot; بين نوعي الكيان &quot;Customer&quot; و&quot;Garage&quot;. وقد ذكرنا سابقًا أن <em>هذه العلاقة زائدة</em>، لأن المعلومة التي يمكننا اشتقاقها من هذه العلاقة موجودة بالفعل في العلاقة &quot;Buys&quot; بين نوعي الكيان &quot;Customer&quot; و&quot;Car&quot; والعلاقة &quot;Is in&quot; بين نوعي الكيان &quot;Car&quot; و&quot;Garage&quot;. فماذا يعني الآن إضافة العلاقة على أي حال بالنسبة إلى نموذج بياناتنا المنطقي؟</p>
 <p>وبناءً على ما سبق، قد نصل إلى نموذج البيانات المفاهيمي التالي. وقد أضفنا تعدديات وخواص إضافية.</p>
-<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-13-model_logisch_redundantie_afb01.webp" alt="An example of a conceptual data model with a redundant relationship ‘Buys car in’ between the entity types ‘Customer’ and ‘Garage’ indicating additional information."></p>
+<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-13-model_logisch_redundantie_afb01.webp" alt="مثال على نموذج بيانات مفاهيمي فيه علاقة متكررة ‘Buys car in’ بين نوعي الكيان ‘Customer’ و‘Garage’ تدل على معلومات إضافية."></p>
 <p>وإذا ترجمنا نموذج البيانات هذا إلى نموذج بيانات منطقي، نحصل على النتيجة أدناه.</p>
-<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-14-model_logisch_redundantie_afb02.webp" alt="An example of a logical data model with a redundant relationship ‘Buys car in’ between the entity types ‘Customer’ and ‘Garage’ indicating additional information."></p>
+<p><img src="/arabic-cs-library/images/database-foundations/model-logisch-14-model_logisch_redundantie_afb02.webp" alt="مثال على نموذج بيانات منطقي فيه علاقة متكررة ‘Buys car in’ بين نوعي الكيان ‘Customer’ و‘Garage’ تدل على معلومات إضافية."></p>
 <p>الآن أصبح هناك تكرار. لأنه إذا أردنا معرفة أي عميل اشترى سيارة في كراج معين، يمكننا النظر في جدول &quot;Buys_car_in&quot;. ويمكننا أيضًا النظر في جدول &quot;Car&quot;، لأنه لكل سيارة مباعة توجد إشارة في هذا الجدول إلى العميل وإلى الكراج معًا. <em>ولكن لماذا يُعدّ ذلك مشكلة؟</em></p>
 <p>عندما نمثل المعلومة نفسها داخل نموذج عبر مسارات مختلفة، ينشأ <em>خطر إنشاء شذوذات داخل قاعدة البيانات</em>. وأنواع الشذوذ المحتملة هي:</p>
 <ul>
@@ -527,7 +527,7 @@
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -535,8 +535,8 @@
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

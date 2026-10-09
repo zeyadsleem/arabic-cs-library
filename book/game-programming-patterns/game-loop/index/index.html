@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -223,7 +223,7 @@ Apple IIe، كنت تعرف <em>تماماً</em> أي معالج مركزي ت�
 إطار. ما دمت تستطيع بثبات إنجاز كل معالجات اللعبة ورسمها في أقل من ذلك الوقت،
 فيمكنك العمل بمعدّل إطارات ثابت. كل ما عليك فعله هو معالجة الإطار ثم <em>الانتظار</em>
 حين يحين وقت الإطار التالي، كالتالي:</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/game-loop-1.webp" alt="A simple game loop flowchart. Process Input &rarr; Update Game &rarr; Render &rarr; Wait, then loop back to the beginning." />
+<img src="/arabic-cs-library/images/game-programming-patterns/game-loop-1.webp" alt="مخطط تدفّق بسيط لحلقة اللعبة. معالجة المدخلات &rarr; تحديث اللعبة &rarr; الرسم &rarr; الانتظار، ثم العودة إلى البداية." />
 <p>تبدو الشيفرة على النحو التالي تقريباً:</p>
 <aside name="16">
 <p><em>1000 مللي ثانية / عدد الإطارات في الثانية = مللي ثانية لكل إطار</em>.</p>
@@ -326,7 +326,7 @@ name="render">العرض</span> (rendering). فبما أن محرّك العرض
 الذي مرّ. وهذا يقيس كم تتأخر ساعة اللعبة مقارنة بالعالم الحقيقي. ثم لدينا حلقة
 داخلية تحدّث اللعبة، بخطوة ثابتة في كل مرة، حتى تلحق بالركب. وحالما نلحق، نرسم
 ونبدأ من جديد. ويمكنك تخيّل الأمر على النحو التالي تقريباً:</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/game-loop-2.webp" alt="A modified flowchart. Process Input &rarr; Update Game &rarr; Wait, then loop back to this step then &rarr; Render &rarr; Loop back to the beginning." />
+<img src="/arabic-cs-library/images/game-programming-patterns/game-loop-2.webp" alt="مخطط تدفّق معدَّل. معالجة المدخلات &rarr; تحديث اللعبة &rarr; الانتظار، ثم العودة إلى هذه الخطوة، ثم &rarr; الرسم &rarr; العودة إلى البداية." />
 <p>لاحظ أن الخطوة الزمنية هنا لم تعد معدّل الإطارات <em>المرئي</em>. فـ<code>MS_PER_UPDATE</code> هو
 مجرد <em>دقّة</em> (granularity) نستخدمها لتحديث اللعبة. وكلما قصرت هذه الخطوة، استغرق
 لحاقنا بالزمن الحقيقي وقتاً أكبر في المعالجة. وكلما طالت، صار اللعب متقطّعاً أكثر.
@@ -349,12 +349,12 @@ name="render">العرض</span> (rendering). فبما أن محرّك العرض
 زمنية ثابتة، لكننا نرسم عند نقاط زمنية اعتباطية. وهذا يعني أن اللعبة ستعرض غالباً،
 من منظور المستخدم، عند لحظة زمنية تقع بين تحديثين.</p>
 <p>إليك خطاً زمنياً:</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/game-loop-3.webp" alt="A timeline containing evenly spaced Updates and intermittent Renders." />
+<img src="/arabic-cs-library/images/game-programming-patterns/game-loop-3.webp" alt="خط زمني يحوي تحديثات (Updates) متباعدة بالتساوي وعمليات رسم متقطعة." />
 <p>وكما ترى، نحن نحدّث على فاصل ثابت محكم. وفي الوقت نفسه، نرسم كلما أتاح لنا ذلك.
 فالتكرار أقل من التحديث، وليس ثابتاً أيضاً. وكلاهما مقبول. الجزء المؤسف هو أننا لا
 نرسم دائماً في نقطة التحديث بالذات. انظر إلى وقت الرسم الثالث. إنه يقع بالضبط بين
 تحديثين:</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/game-loop-4.webp" alt="Close-up of the timeline showing Renders falling between Update steps." />
+<img src="/arabic-cs-library/images/game-programming-patterns/game-loop-4.webp" alt="لقطة مقرَّبة من الخط الزمني تُظهر عمليات الرسم واقعة بين خطوات التحديث." />
 <p>تخيّل رصاصة تعبر الشاشة. عند التحديث الأول، تكون على الجهة اليسرى. والتحديث الثاني
 ينقلها إلى الجهة اليمنى. وتُرسم اللعبة عند لحظة زمنية بين التحديثين، لذا يتوقّع
 المستخدم أن يرى تلك الرصاصة في منتصف الشاشة. ومع تنفيذنا الحالي، ستبقى على الجهة
@@ -583,7 +583,7 @@ Spacewar! عليها.</p>
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -591,8 +591,8 @@ Spacewar! عليها.</p>
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

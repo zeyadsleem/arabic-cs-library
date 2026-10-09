@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -732,7 +732,7 @@ ERROR:couldn't serialize access due to concurrent update
 <h4>مستويات الأقفال وتجميعها:</h4>
 <p>لأقفال SIREAD ثلاثة مستويات: <strong>الصف</strong> و<strong>الصفحة</strong> و<strong>العلاقة</strong>.</p>
 <p>يجمع PostgreSQL أقفال SIREAD لتقليل المساحة في الذاكرة. فإذا أُنشئت أقفال SIREAD لجميع الصفوف داخل صفحة واحدة، دُمجت في قفل SIREAD واحد على مستوى الصفحة، وحُرّرت الأقفال الفردية على مستوى الصف (راجع الشكل 5.13). وينطبق المنطق نفسه عندما تُقرأ جميع صفحات علاقة ما.</p>
-<p><img src="/arabic-cs-library/images/postgres-internals/pgsql05-fig-5-13.webp" alt="Transaction Tx reads tuple_1 and tuple_2 in Page_1, creating two tuple-level SIREAD locks. When Tx subsequently reads tuple_3, completing the scan of Page_1, PostgreSQL replaces the individual tuple-level locks with a single page-level SIREAD lock."></p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql05-fig-5-13.webp" alt="تقرأ المعاملة Tx الصفّين tuple_1 وtuple_2 في الصفحة Page_1، فتنشئ قفلَي SIREAD على مستوى الصف. وعندما تقرأ Tx بعد ذلك الصف tuple_3، مكملةً مسح الصفحة Page_1، يستبدل PostgreSQL القفلين الفرديين على مستوى الصف بقفل SIREAD واحد على مستوى الصفحة."></p>
 <h4>الشكل 5.13. مثال على تجميع أقفال SIREAD.</h4>
 <p>تقرأ المعاملة Tx الصفين tuple_1 وtuple_2 في Page_1، فيُنشأ قفلان من أقفال SIREAD على مستوى الصف. وعندما تقرأ Tx بعد ذلك الصف tuple_3، مكملةً مسح Page_1، يستبدل PostgreSQL الأقفال الفردية على مستوى الصف بقفل SIREAD واحد على مستوى الصفحة.</p>
 <p>عند استخدام مسح تسلسلي (sequential scan)، يُنشئ PostgreSQL قفل SIREAD على مستوى العلاقة منذ البداية، بصرف النظر عن الفهارس أو شروط WHERE. وفي بعض الحالات، قد يتسبّب هذا التنفيذ في كشف إيجابي كاذب لشذوذات التسلسل. وتُقدَّم التفاصيل في القسم 5.9.4.</p>
@@ -845,7 +845,7 @@ testdb=# ANALYZE tbl;
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -853,8 +853,8 @@ testdb=# ANALYZE tbl;
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

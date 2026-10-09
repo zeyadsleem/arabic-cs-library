@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -82,7 +82,7 @@
 الفرعية، لذا عليك تقييم تلك أوّلاً. يعني ذلك أن تعمل من الأوراق
 صعوداً إلى الجذر -- وهو اجتياز <em>بترتيب لاحق</em> (post-order):</p>
 <p><span name="tree-steps"></span></p>
-<img src="/arabic-cs-library/images/crafting-interpreters/representing-code-1.webp" alt="Evaluating the tree from the bottom up." />
+<img src="/arabic-cs-library/images/crafting-interpreters/representing-code-1.webp" alt="تقييم الشجرة من الأسفل إلى الأعلى." />
 <aside name="tree-steps">
 <p>أ. ابدأ بالشجرة الكاملة، وقيّم العملية في الأسفل، <code>2 * 3</code>.</p>
 <p>ب. والآن يمكننا تقييم <code>+</code>.</p>
@@ -585,14 +585,14 @@ name="automate">نُؤتمت</span> الأمر.</p>
 <p>هذه المشكلة أكثرُ جوهريّةً مما تبدو للوهلة الأولى. لدينا حفنةٌ من
 الأنواع، وحفنةٌ من العمليات عالية المستوى مثل &quot;interpret&quot;. ولكلّ زوج
 من نوعٍ وعملية، نحتاج إلى تنفيذٍ محدّد. تخيّل جدولاً:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/representing-code-3.webp" alt="A table where rows are labeled with expression classes, and columns are function names." />
+<img src="/arabic-cs-library/images/crafting-interpreters/representing-code-3.webp" alt="جدول تُسمَّى صفوفه بأصناف التعبيرات وأعمدته بأسماء الدوال." />
 <p>الصفوف أنواع، والأعمدة عمليات. وتمثّل كلّ خانة قطعةَ الشيفرة
 الفريدة التي تنفّذ تلك العملية على ذلك النوع.</p>
 <p>تفترض اللّغة الموجّهة نحو الأشياء مثل Java أنّ كلّ الشيفرة في
 صفٍّ واحد تتجمّع بشكلٍ طبيعي. فهي تظنّ أنّ كلّ الأشياء التي
 تفعلها بنوعٍ ما يُرجَّح أن تكون مرتبطة ببعضها، واللّغة تجعل
 واللّغة تجعل من السهل تحديدها معاً كطُرق داخل الصنف نفسه.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/representing-code-4.webp" alt="The table split into rows for each class." />
+<img src="/arabic-cs-library/images/crafting-interpreters/representing-code-4.webp" alt="الجدول مقسَّم إلى صفوف لكلّ صنف." />
 <p>وهذا يجعل توسيع الجدول بإضافة صفوفٍ جديدة سهلاً. عرّف صنفاً جديداً
 فقط. لا شيفرةٍ قائمة تحتاج اللمس. لكنّ تخيّل ما لو أردت إضافة
 <em>عملية</em> جديدة -- عموداً جديداً. في Java، يعني ذلك فتح كلّ تلك
@@ -615,7 +615,7 @@ Swift تشبهه كثيراً.</p>
 </aside>
 <p>وهذا يجعل إضافة عملياتٍ جديدة أمراً تافهاً -- عرّف دالةً أخرى
 يطابق الأنماط على كلّ الأنواع.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/representing-code-5.webp" alt="The table split into columns for each function." />
+<img src="/arabic-cs-library/images/crafting-interpreters/representing-code-5.webp" alt="الجدول مقسَّم إلى أعمدة لكلّ دالة." />
 <p>لكنّ العكس صحيح: إضافة نوعٍ جديد صعبة. عليك العودة وإضافة حالة
 جديدة إلى كلّ مطابقة أنماط في كلّ الدوالّ القائمة.</p>
 <p>لكلّ نمطٍ من هذه الأنماط &quot;حبيبات&quot; خاصة به. هذا ما يعنيه اسم النموذج
@@ -704,7 +704,7 @@ name="beignet">كرواصون</span> وكرولات.</p>
 متعدّد الأشكال على أصناف <em>الحلوى</em> لاختيار الطريقة المناسبة على
 صنف <em>الزائر</em>. في الجدول، كلّ صنف حلوى هو صفٌّ، لكن إن نظرت إلى
 كلّ طرائق زائرٍ واحد فإنّها تشكّل <em>عموداً</em>.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/representing-code-6.webp" alt="Now all of the cells for one operation are part of the same class, the visitor." />
+<img src="/arabic-cs-library/images/crafting-interpreters/representing-code-6.webp" alt="الآن صارت كلّ خلايا العملية الواحدة جزءاً من الصنف نفسه: الزائر." />
 <p>أضفنا طريقة <code>accept()</code> واحدةً إلى كلّ صنف، ويمكننا استعمالها مع
 عددٍ غير محدود من الزوّار دون أن نلمس أصناف الحلوى مرّةً أخرى.
 إنّه نمطٌ ذكيّ.</p>
@@ -760,7 +760,7 @@ printing) حين يكون الهدف إنتاج سلسلة نصّية صالحة
 بدلاً من ذلك، سيبدو كثيراً مثل -- حسناً -- Lisp. فكلّ تعبيرٍ
 محاطٌ بأقواس صراحةً، وكلّ تعبيراته الفرعية ورموزه مضمّنةٌ بداخله.</p>
 <p>معطًى شجرة صياغةٍ مثل:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/representing-code-7.webp" alt="An example syntax tree." />
+<img src="/arabic-cs-library/images/crafting-interpreters/representing-code-7.webp" alt="شجرة تركيب مثال." />
 <p>فإنّها تُنتج:</p>
 <pre><code class="language-text">(* (- 123) (group 45.67))
 </code></pre>
@@ -843,7 +843,7 @@ Lisp أخرى تعمل أيضاً.)</p>
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -851,8 +851,8 @@ Lisp أخرى تعمل أيضاً.)</p>
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -261,19 +261,19 @@ oracle). فمعطى بعض البيانات <code>A</code> التي يختاره
 والذي يمكننا تسميته <code>s_0</code>. ويحفظ المهاجم الكتلة المشفَّرة. فهو لا يعرف قيمة
 <code>s_0</code>، لكنّه يعرف قيمة الكتلة المشفَّرة الأولى: <code>E_k(A \| s_0)</code>. وفي الرسم، هذه
 هي الكتلة <code>C_{R1}</code>:</p>
-<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-0-RememberFirst.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-0-RememberFirst.svg" alt="حفظ الكتلة المشفّرة الأولى"></p>
 <p>ثمّ يجرّب المهاجم جميع القيم الممكنة للبايت الأخير في كتلة كاملة الحجم. وفي نهاية
 الأمر يجد قيمة <code>s_0</code>؛ إذ يكون التخمين صحيحًا لأنّ الكتلة المشفَّرة الناتجة تطابق
 الكتلة المشفَّرة <code>C_{R1}</code> التي حُفظت في وقت سابق.</p>
-<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-1-GuessFirst.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-1-GuessFirst.svg" alt="تخمين البايت الأخير"></p>
 <p>ويمكن للمهاجم أن يكرّر هذه الاستراتيجية مع البايت ما قبل الأخير. فيُرسَل نصّ صريح
 <code>A</code> أقصر ببايتين من حجم الكتلة. فتشفّر الآلة كتلة أولى تحوي <code>A</code> يتبعها البايتان
 الأوّلان من اللاحقة السرّية، أي <code>s_0s_1</code>. ويحفظ المهاجم الكتلة.</p>
-<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-2-RememberSecond.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-2-RememberSecond.svg" alt="حفظ الكتلة المشفّرة الثانية"></p>
 <p>وبما أنّ المهاجم يعرف <code>s_0</code> أصلًا، فإنّ التخمين يبدأ من :math:<code>A \| s_0</code> متبوعًا
 بجميع القيم الممكنة لـ<code>s_1</code>. وفي نهاية المطاف تصحّ تخمينات المهاجم، فتتطابق كتل
 النصّ المشفَّر:</p>
-<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-3-GuessSecond.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-3-GuessSecond.svg" alt="تخمين البايت ما قبل الأخير"></p>
 <p>وهكذا يكرّر المهاجم الخطوات حتى يفكّ تشفير كتلة كاملة. وتتيح هذه الاستراتيجية تفريغ
 كتلة بالقوة الغاشمة في <code>p \cdot b</code> محاولة، حيث <code>p</code> هو عدد القيم الممكنة لكلّ بايت
 (مثلًا، بالنسبة إلى البايتات ذات الثمانية بتّات فإنّ ذلك <code>2^8 = 256</code>)، و<code>b</code> هو
@@ -327,10 +327,10 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 المهمّ أن نتذكّر أنّ على المهاجم ألّا يكون قادرًا على التنبّؤ بمتجه تهيئة معيّن
 <em>مقدّمًا</em>. وسنوضّح ذلك لاحقًا بهجوم على متجهات تهيئة وضع CBC القابلة للتنبّؤ.</p>
 <p>يوضّح المخطّط التالي التشفير في <code>وضع CBC</code>:</p>
-<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-4-Encryption.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-4-Encryption.svg" alt="تشفير وضع CBC"></p>
 <p>وفكّ التشفير هو البناء المعكوس. إذ تكون شيفرات الكتل في وضع فكّ التشفير بدلًا من
 وضع التشفير:</p>
-<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-5-Decryption.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-5-Decryption.svg" alt="فكّ تشفير وضع CBC"></p>
 <p>وفيما أنّ <code>وضع CBC</code> ليس غير آمن بطبيعته (بخلاف <code>وضع ECB</code>)، فإنّ استعماله بعينه في
 TLS 1.0 كان غير آمن. وقد أدّى ذلك في النهاية إلى هجوم BEAST، الذي نتناوله بالتفصيل
 في قسم SSL/TLS. أمّا الخلاصة فهي أنّ الكتلة المشفَّرة السابقة استُعملت كمتّجه تهيئة
@@ -441,7 +441,7 @@ attack). وباستعمال هجوم قلب بتّات في وضع CBC، يست�
 <p>عنما «نقلب بعض البتّات»، فإنّنا نفعل ذلك بإجراء XOR مع تسلسل من البتّات، سنسمّيه
 <code>X</code>. فإذا كان البتّ المقابل في <code>X</code> يساوي 1، فإنّ البتّ يُقلَب؛ وإلّا فسيبقى البتّ
 كما هو.</p>
-<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-6-BitFlipping.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-6-BitFlipping.svg" alt="قلب البتّات في وضع CBC"></p>
 <p>وعنما نحاول فكّ تشفير كتلة النصّ المشفَّر ذات البتّات المقلوبة، سنحصل على ترميز
 <sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup> غير مفهوم. وتذكّر كيف يعمل فكّ التشفير في وضع CBC: فإنّ خرج شيفرة الكتل يُجرى
 عليه XOR مع كتلة النصّ المشفَّر السابقة لإنتاج كتلة النصّ الصريح. وبعد أن عُدِّلت
@@ -547,7 +547,7 @@ P^{\prime}_{i + 1}
 الصريح المقابل لـ<code>R \| C_i</code> حشو صالح. وبالإحصاء، على الأرجح ألّا يكون لهذا النصّ
 الصريح العشوائي حشو صالح: فالاحتمالات في حدود نصف بالمئة. وإذا اتّفق بالصدفة أن
 تكون الرسالة تملك حشوًا صالحًا أصلًا، فيمكن للمهاجم ببساطة تخطّي الخطوة التالية.</p>
-<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-7-PaddingAttack.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-7-PaddingAttack.svg" alt="هجوم حشو CBC"></p>
 <p>ثمّ يحاول المهاجم تعديل الرسالة بحيث تملك حشوًا صالحًا. ويمكنه فعل ذلك بتعديل
 البايت الأخير من النصّ الصريح تعديلًا غير مباشر: فسينتهي ذلك البايت إلى أن يساوي
 <code>01</code>، وهو حشو صالح دائمًا. ولتعديل البايت الأخير من كتلة النصّ الصريح، يعدّل
@@ -706,7 +706,7 @@ r_b^{\prime} = r_b \xor \mathtt{01} \xor \mathtt{02}
 النصّ الصريح لإنتاج النصّ المشفَّر. وفكّ التشفير هو العملية نفسها تمامًا التي تُكرَّر:
 فتدفّق المفاتيح يُنتَج من المفتاح، ثمّ يُجرى عليه XOR مع النصّ المشفَّر لإنتاج النصّ
 الصريح.</p>
-<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-8-Synchronous.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-8-Synchronous.svg" alt="بناء شيفرة التيار المتزامنة"></p>
 <p>يمكنك أن ترى كيف يبدو هذا البناء مشابهًا إلى حدٍّ كبير لوسادة المرّة الواحدة، إلّا
 أنّ وسادة المرّة الواحدة العشوائية حقًّا قد استُبدلت بشيفرة تيار شبه عشوائية.</p>
 <p>وهناك أيضًا شيفرات تيار <em>غير متزامنة</em> (asynchronous) أو <em>ذاتية تزامن</em>
@@ -738,7 +738,7 @@ r_b^{\prime} = r_b \xor \mathtt{01} \xor \mathtt{02}
 فعند تصميم RC4 كان تحالف آنذاك هو 3DES، وهي بطيئة إلى حدّ مؤلم بالمقارنة
 (134.5 دورة لكلّ بايت في <code>CTR mode</code>). <code>cryptopp:bench</code></p>
 <h3 id="نظرة-معمقة-على-rc4">نظرة معمَّقة على RC4</h3>
-<p>advanced</p>
+<p>متقدّم</p>
 <p>على الجهة المقابلة، فإنّ RC4 بسيطة إلى حدٍّ مذهل، وقد يستحقّ هذا القسم قراءة سريعة.</p>
 <p>وللأسف، فإنّ RC4 مكسورة إلى حدٍّ كبير. ولمعرفة مقدار انهيارها على نحو أفضل، سننظر
 في كيفية عمل RC4. ويتطلّب هذا الشرط فهم الجمع النمطي (modular addition)؛ فإن لم تكن
@@ -758,13 +758,13 @@ r_b^{\prime} = r_b \xor \mathtt{01} \xor \mathtt{02}
 <h3 id="خوارزمية-جدولة-المفاتيح">خوارزمية جدولة المفاتيح</h3>
 <p>تبدأ خوارزمية جدولة المفاتيح بـ<em>التبديل الهويّ</em> (identity permutation). أي إنّ كلّ
 بايت يُسقَط على نفسه.</p>
-<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-9-IdentityPermutation.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-9-IdentityPermutation.svg" alt="التبديل الهويّ في RC4"></p>
 <p>ثمّ يُمزج المفتاح في الحالة. ويتم ذلك بجعل الفهرس <code>i</code> يتكرّر على كلّ عنصر
 من عناصر الحالة. أمّا الفهرس <code>j</code> فيُعثر عليه بجمع القيمة الحالية لـ<code>j</code> (بدءًا من 0)
 مع البايت التالي من المفتاح ومع عنصر الحالة الحالي:</p>
-<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-10-FindIndex.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-10-FindIndex.svg" alt="العثور على الفهرس j في RC4"></p>
 <p>وبعد العثور على <code>j</code>، تُبدَّل <code>S[i]</code> و<code>S[j]</code>:</p>
-<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-11-Swap.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-11-Swap.svg" alt="تبديل عنصرَي الحالة في RC4"></p>
 <p>وتتكرّر هذه العملية على جميع عناصر <code>S</code>. فإذا نفدت بايتات المفتاح، فإنّك تعيد
 البدء من أوّل المفتاح. وهذا يفسّر لماذا تقبل RC4 مفاتيح يتراوح طولها بين 1 و256
 بايتًا. وعادةً تُستعمل مفاتيح بطول 128 بتًّا (16 بايتًا)، ما يعني أنّ كلّ بايت في
@@ -787,10 +787,10 @@ def key_schedule(key):
 <p>المولّد شبه العشوائي مسؤول عن إنتاج بايتات شبه عشوائية من الحالة <code>S</code>. وتُشكّل هذه
 البايتات تدفّق المفاتيح، ويُجرى عليها XOR مع النصّ الصريح لإنتاج النصّ المشفَّر.
 ولكلّ فهرس <code>i</code>، يحسب <code>j = j + S[i]</code> (مع بداية <code>j</code> من 0). ثمّ تُبدَّل <code>S[i]</code> و<code>S[j]</code>:</p>
-<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-12-Swap.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-12-Swap.svg" alt="تبديل عنصرَي الحالة في المولّد شبه العشوائي"></p>
 <p>ولإنتاج بايت الخرج، تُجمع <code>S[i]</code> و<code>S[j]</code> معًا. ويُستعمل مجموعهما فهرسًا في <code>S</code>؛
 فتكون القيمة عند <code>S[S[i] + S[j]]</code> هي بايت تدفّق المفاتيح <code>K_i</code>:</p>
-<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-13-PRNGOutput.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-13-PRNGOutput.svg" alt="إنتاج بايت تدفّق المفاتيح"></p>
 <p>ويمكننا التعبير عن ذلك في Python:</p>
 <pre><code>def pseudorandom_generator(s):
     j = 0
@@ -802,7 +802,7 @@ def key_schedule(key):
         yield s[k]
 </code></pre>
 <h3 id="الهجمات">الهجمات</h3>
-<p>advanced</p>
+<p>متقدّم</p>
 <p>قسم الهجمات على RC4 أعقد بكثير من RC4 نفسها، لذا فقد ترغب في تخطّيه حتى وإن قرأت
 إلى هذا الحدّ.</p>
 <p>وهناك هجمات كثيرة على الأنظمة التشفيرية المستعملة لـ RC4 لا تكون فيها RC4 نفسها
@@ -973,7 +973,7 @@ instructions)، حيث يؤدّي المعالج عمليات متّصلة عل�
 <code>رقم فريد</code> (nonce) مع عدّاد. ويُزاد العدّاد مع كلّ كتلة، ويُحشو بأصفار بحيث يصير كلّه
 بطول حجم الكتلة. ثمّ تُمرَّر السلسلة الناتجة من الدمج على شيفرة كتلة. وتُستعمل
 مخرجات شيفرة الكتل عندئذٍ كتدفّق مفاتيح.</p>
-<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-16-CTR.svg" alt="center"></p>
+<p><img src="/arabic-cs-library/images/crypto-101/stream-ciphers-fig-16-CTR.svg" alt="تشفير وضع CTR"></p>
 <p><code>CTR mode</code>: يُشفَّر <code>رقم فريد</code> (nonce) واحد <code>N</code> مع عدّاد <code>i</code> محشو بالأصفار بواسطة
 شيفرة الكتل لإنتاج كتلة تدفّق مفاتيح؛ ثمّ يُجرى على هذه الكتلة XOR مع كتلة النصّ
 الصريح <code>P_i</code> لإنتاج كتلة النصّ المشفَّر <code>C_i</code>.</p>
@@ -1055,7 +1055,7 @@ CBC من حيث أنّ المهاجم يقلب عدة بتّات في النصّ
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -1063,8 +1063,8 @@ CBC من حيث أنّ المهاجم يقلب عدة بتّات في النصّ
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

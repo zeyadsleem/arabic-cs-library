@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -83,7 +83,7 @@
 <p>المشكلة التي نواجهها هي أن مصفوفة الوحدات لا تحمل أي ترتيب باطني. فللعثور على وحدة
 قريبة من موقع ما، علينا تمرير على المصفوفة كاملة. والآن، تخيّل أننا نبسّط لعبتنا قليلاً.
 فبدلاً من ميدان <em>معركة</em> ثنائي الأبعاد، تخيّل أنه خط <em>معركة</em> أحادي البعد.</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/spatial-partition-1.webp" alt="A number line with Units positioned at different coordinates on it." />
+<img src="/arabic-cs-library/images/game-programming-patterns/spatial-partition-1.webp" alt="خط أعداد توجد عليه وحدات (Units) بإحداثيات مختلفة." />
 <p>في تلك الحالة، يمكننا تيسير الأمور على أنفسنا بأن <em>نرتّب</em> (sort) مصفوفة الوحدات حسب
 مواضعها على خط المعركة. وبمجرد أن نفعل ذلك، يمكننا استخدام شيء <span name="array">مثل</span>
 <a href="http://en.wikipedia.org/wiki/Binary_search">بحث ثنائي</a> للعثور على الوحدات القريبة دون
@@ -136,7 +136,7 @@ name="variations">التنويعات</span> موثّقة جيداً. فالأك�
 <p>تخيّل ميدان المعركة بأكمله. والآن، أطيق فوقه شبكة من المربّعات ذات الحجم الثابت كما لو
 كانت ورقة رسم بياني. بدلاً من تخزين وحداتنا في مصفوفة واحدة، نضعها في خلايا هذه الشبكة.
 وتخزّن كل خانة قائمة الوحدات التي تقع مواضعها ضمن حدود تلك الخانة.</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/spatial-partition-2.webp" alt="A grid with Units occupying different cells. Some cells have multiple Units." />
+<img src="/arabic-cs-library/images/game-programming-patterns/spatial-partition-2.webp" alt="شبكة تشغل فيها وحدات (Units) خلايا مختلفة. بعض الخلايا تحوي عدة وحدات." />
 <p>وحين نتعامل مع القتال، لا نأخذ في الحسبان إلا الوحدات الواقعة في الخانة نفسها. فبدلاً من مقارنة
 كل وحدة في اللعبة بكل وحدة أخرى، فقد <em>قسّمنا</em> ميدان المعركة إلى مجموعة من ميادين
 معارك أصغر، لكل منها عدد وحدات أقل بكثير.</p>
@@ -153,7 +153,7 @@ name="variations">التنويعات</span> موثّقة جيداً. فالأك�
 <p>^code unit-linked</p>
 <p>يتيح لنا هذا تنظيم الوحدات في <a href="http://en.wikipedia.org/wiki/Doubly_linked_list">قائمة مترابطة
 ثنائية</a> بدلاً من مصفوفة.</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/spatial-partition-3.webp" alt="A Cell pointing to a a doubly linked list of Units." />
+<img src="/arabic-cs-library/images/game-programming-patterns/spatial-partition-3.webp" alt="خلية تشير إلى قائمة موصولة ذهابًا وإيابًا من الوحدات (Units)." />
 <p>كل خانة في الشبكة تشير إلى أول وحدة في قائمة الوحدات الواقعة داخل تلك الخانة، ولكل وحدة
 مؤشرات إلى الوحدات التي قبلها وبعدها في القائمة. وسنرى السبب قريباً.</p>
 <aside name="stl">
@@ -229,7 +229,7 @@ Enough لكتابة القوائم المترابطة من الصفر.</p>
 <p>^code handle-distance</p>
 <p>وحين يدخل المدى في الحسبان، هناك حالة حافّة نحتاج إلى مراعاتها: فالوحدات في خلايا
 مختلفة قد تكون قريبة بما يكفي للتفاعل.</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/spatial-partition-4.webp" alt="Two Units in adjacent Cells are close enough to interact." />
+<img src="/arabic-cs-library/images/game-programming-patterns/spatial-partition-4.webp" alt="وحدتان في خليتين متجاورتين على بُعد كافٍ للتفاعل." />
 <p>هنا، تقع B ضمن نطاق هجوم A رغم أن مركزيهما في خلايا مختلفة. وللتعامل مع هذا، سنحتاج
 إلى مقارنة الوحدات ليس في الخانة نفسها فحسب، بل في الخلايا المجاورة أيضاً. ولتنفيذ ذلك،
 سنفصل أولاً الحلقة الداخلية من <code>handleCell()</code>:</p>
@@ -245,7 +245,7 @@ name="neighbor">أربع</span> من الخلايا الثماني المجاو�
 المجاورة قريبة بما يكفي من الحافة لتقع ضمن نطاق هجوم الوحدة، فستجد الاصطدام.</p>
 <aside name="neighbor">
 <p>الخانة التي فيها الوحدة هي <code>U</code>، والخلايا المجاورة التي ينظر إليها هي <code>X</code>.</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/spatial-partition-5.webp" width="240" alt="The set of neighbors for a Cell with the four being considered highlighted." />
+<img src="/arabic-cs-library/images/game-programming-patterns/spatial-partition-5.webp" width="240" alt="مجموعة جيران الخلية، مع تمييز الأربع التي تُؤخذ بعين الاعتبار." />
 </aside>
 <p>ونحن ننظر إلى <em>نصف</em> الجيران فقط لنفس السبب الذي تبدأ به الحلقة الداخلية <em>بعد</em> الوحدة
 الحالية -- لتفادي مقارنة كل زوج من الوحدات مرتين. وتخيّل ما الذي سيحدث لو فحصنا
@@ -395,7 +395,7 @@ AVL: فحين تضيف عنصراً واحداً، قد تنتهي إلى إعا
 عدد صغير من الكائنات. وبما أننا لا نقسّم بشكل تعاودياً إلا المربّعات ذات الكثافة العالية،
 فإن هذا التقسيم يتكيّف مع مجموعة الكائنات، لكن التقسيمات لا <em>تتحرّك</em>.</p>
 <p>يمكنك رؤية التقسيم وهو يعمل إذا قرأت من اليسار إلى اليمين هنا:</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/spatial-partition-6.webp" alt="A quadtree." />
+<img src="/arabic-cs-library/images/game-programming-patterns/spatial-partition-6.webp" alt="شجرة رباعية (quadtree)." />
 <ul>
 <li>
 <p><em>يمكن إضافة الكائنات تدريجياً.</em> فإضافة كائن جديد تعني العثور على المربّع
@@ -481,7 +481,7 @@ AVL: فحين تضيف عنصراً واحداً، قد تنتهي إلى إعا
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -489,8 +489,8 @@ AVL: فحين تضيف عنصراً واحداً، قد تنتهي إلى إعا
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -72,7 +72,7 @@ myusername
 <h3 id="1711-نظام-ملفات-unix">17.1.1. نظام ملفات Unix <span class="content-anchor" id="_unix_file_system"></span></h3>
 <p>يتكوّن نظام ملفات Unix من ملفات وأدلة. ويخزّن الملف بيانات مثل شيفرة البرامج المصدرية وبيانات إدخال البرامج وملاحظات المحاضرات وشيفرة الملفات التنفيذية الثنائية. وتخزّن الأدلة الملفات والأدلة الفرعية وتُستخدم لتنظيم مجموعة الملفات المخزّنة في نظام الملفات.</p>
 <p>ونظام ملفات Unix منظّم في بنية شجرية هرمية، بدليل واحد في الأعلى (<code>/</code>) يُسمى الدليل الجذر. وتحته بعض الأدلة الرئيسية التي تحمل محتوى النظام. ومن الأمثلة عليها <code>bin</code> الذي يخزّن برامج النظام التي يمكن تشغيلها من سطر أوامر Unix، و<code>lib</code> الذي يخزّن شيفرة مكتبات النظام، و<code>home</code> الذي يخزّن الدليل الرئيسي لكل مستخدم ليخزّن فيه ملفاته الخاصة. ويعرض <a href="#FigUnixFS">الشكل 1</a> مثالًا على بنية أدلة نظام ملفات Unix، مع دليلي <code>home</code> للمستخدمين <code>sam</code> و<code>sarita</code>.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c17-appendix-2-0-unixfs1.webp" alt="The unix file system with root directory at top, with example child directories bin, home, lib, and two example subdirectories under home sam and sarita." id="FigUnixFS"> الشكل 1. نظام ملفات Unix منظّم كهرمية يكون الدليل الجذر في أعلاها، وتُرتَّب الأدلة الفرعية والملفات تحته.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c17-appendix-2-0-unixfs1.webp" alt="نظام ملفات Unix بالدليل الجذر في الأعلى، مع أدلة فرعية نموذجية هي bin وhome وlib، ودليلَين فرعيَّين نموذجيَّين تحت home هما sam وsarita." id="FigUnixFS"> الشكل 1. نظام ملفات Unix منظّم كهرمية يكون الدليل الجذر في أعلاها، وتُرتَّب الأدلة الفرعية والملفات تحته.</p>
 <p>لاحظ أن <code>/</code> هو الدليل الأعلى مستوى، وله عدة أدلة فرعية <strong>تابعة</strong>، منها <code>bin</code> و<code>lib</code> و<code>home</code>. ولكل دليل عدا الدليل الجذر دليل <strong>أب</strong> فريد؛ والدليل الجذر هو الوحيد الذي ليس له دليل أب.</p>
 <p>ولكل مستخدم في النظام دليله الرئيسي الخاص، وهو دليل فرعي في <code>/home</code>. ويحمل الدليل الرئيسي لكل مستخدم الاسم نفسه الذي يحمله اسم المستخدم. وفي الشكل نعرض بعض الأدلة الرئيسية كمثال. ولكل دليل عدا <code>/</code> دليل أب واحد بالضبط. فمثلًا، <code>home</code> هو الدليل الأب لـ<code>sarita</code>، و<code>/</code> هو الدليل الأب لـ<code>home</code>. ويُعرَّف كل دليل بـ<strong>اسم مسار</strong> (pathname) فريد يبدأ من الدليل الجذر. فمثلًا، <code>/home/sarita</code> هو اسم مسار الدليل الرئيسي للمستخدم <code>sarita</code>: يبدأ اسم المسار من الدليل الجذر <code>/</code>، ثم يتبع الدليل الفرعي <code>home</code> في <code>/</code>، وأخيرًا الدليل الفرعي <code>sarita</code> في <code>home</code>.</p>
 <p>وعند تسجيلك الدخول إلى نظام Unix لأول مرة أو بدء برنامج صدفة جديد، تبدأ في دليلك الرئيسي. ويطبع الأمر <code>pwd</code> (طباعة دليل العمل) الدليل الذي أنت فيه حاليًا، مع عرض اسم مساره الكامل بدءًا من الدليل الجذر <code>/</code>. فمثلًا، هذه هي المخرجات عندما يسجّل المستخدم <code>sarita</code> الدخول ويكتب <code>pwd</code>:</p>
@@ -139,7 +139,7 @@ $ <span class="hljs-built_in">pwd</span>
 /home/sam/classes/CS31
 </code></pre>
 <p>ويعرض <a href="#FigUnixFSSam">الشكل 2</a> شكل نظام الملفات بعد أن يشغّل <code>sam</code> جميع أوامر <code>mkdir</code>.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c17-appendix-2-1-unixfs2.webp" alt="The unix file system after sam creates subdirectories classes, letters, projects, and creates a subdirectory under classes named CS31." id="FigUnixFSSam"> الشكل 2. تنظيم نظام ملفات Unix بعد أن ينشئ المستخدم sam بعض الأدلة الفرعية.</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c17-appendix-2-1-unixfs2.webp" alt="نظام ملفات Unix بعد أن ينشئ sam الأدلة الفرعية classes وletters وprojects، وينشئ دليلاً فرعياً باسم CS31 تحت classes." id="FigUnixFSSam"> الشكل 2. تنظيم نظام ملفات Unix بعد أن ينشئ المستخدم sam بعض الأدلة الفرعية.</p>
 <p>والآن يمكن لـ<code>sam</code> الانتقال إلى دليله CS31 عندما يعمل على دروس مقرر CS31، وإنشاء المزيد من الأدلة الفرعية والملفات في هذا الدليل:</p>
 <pre><code class="language-bash">$ <span class="hljs-built_in">cd</span> CS31
 $ <span class="hljs-built_in">pwd</span>
@@ -2027,7 +2027,7 @@ next input/ file is: songs
 <h3 id="17161-top-وhtop">17.16.1. top وhtop <span class="content-anchor" id="_top_and_htop"></span></h3>
 <p>يوفر تشغيل <code>top</code> أو <code>htop</code> على سطر الأوامر معلومات ملخّصة ديناميكية عن حالة النظام. وكتابة <code>q</code> تخرج من <code>top</code> و<code>htop</code>. ويعرض كلاهما معلومات استخدام الذاكرة وCPU، لكن <code>htop</code> يعرض بعض إحصاءات الاستخدام بشكل أكثر رسمية من <code>top</code>، وخصوصًا عرض استخدام الذاكرة واستخدام CPU لكل نواة كرسم بياني. كما يسرد كلاهما افتراضيًا معلومات عن المهام التي تستخدم أكبر وقت CPU حاليًا. والمهمة (task) هو المصطلح العام في Linux لعملية أو خيط. وتُحدَّث هذه الأدوات كل ثانية أثناء عملها، فتعرض التغييرات في بيانات استخدام النظام الملخّصة. لاحظ أنه مع تحديث العرض كل ثانية، سيتغير ترتيب العمليات أثناء تنفيذها حسب مقدار وقت CPU الذي تستخدمه. وكلا الأداتين قابل للتهيئة بدرجة كبيرة لعرض معلومات مختلفة عن العمليات وحالة النظام.</p>
 <p>ويعرض <a href="#FigHOP">الشكل 1</a> لقطة شاشة نموذجية من <code>htop</code>.</p>
-<p><img src="/arabic-cs-library/images/dive-into-systems/c17-appendix-2-0-htop.webp" alt="Example output form htop showing the current cpu usage of the 12 cores, of memory, and information about the top cpu-using processes." id="FigHOP"> الشكل 1. لقطة شاشة نموذجية من htop).</p>
+<p><img src="/arabic-cs-library/images/dive-into-systems/c17-appendix-2-0-htop.webp" alt="مخرجات نموذجية من htop تُظهر الاستخدام الحالي للنوى الـ12 من المعالج، واستخدام الذاكرة، ومعلومات عن العمليات الأعلى استهلاكاً للمعالج." id="FigHOP"> الشكل 1. لقطة شاشة نموذجية من htop).</p>
 <p>وفي أعلى الشاشة تمامًا، يعرض <code>htop</code> استخدام CPU الحالي لكل نواة من النوى الـ12 في هذا النظام كرسم بياني للاستخدام مُعلَّم بالنسب المئوية، يليه استخدام الذاكرة الحالي (<code>Mem</code>)، ومعلومات ملخّصة عن متوسط حِمل CPU (<code>Load average</code>)، والعدد الإجمالي للمهام (<code>Tasks</code>) والخيوط (<code>thr</code>) العاملة في النظام، ومعلومات عن استخدام قسم المبادلة (<code>Swp</code>). وتحتها سرد للمهام التي تستخدم أكبر وقت CPU في النظام. لاحظ أن المهام الخمس الأولى المدرجة في <a href="#FigHOP">الشكل 1</a> عمليات تشغّل برنامج الحلقة اللانهائية <code>a.out</code>، لذا فهي تستهلك وقت CPU كثيرًا كما هو متوقع. وفي أسفل الشاشة مفاتيح وظائف لتغيير البيانات المعروضة بطرق مختلفة.</p>
 <p>ويعرض برنامج <code>top</code> بيانات شبيهة جدًا بـ<code>htop</code> (لكن دون العروض الرسومية في الأعلى)، ويوفّر بالمثل واجهة لتغيير البيانات المعروضة بطرق مختلفة أثناء عمله. فمثلًا، يمكن للمستخدمين رؤية استخدام CPU لكل نواة في <code>top</code> بضغط مفتاح &quot;1&quot;.</p>
 <p>وإلى جانب كونهما قابلين للتهيئة بدرجة كبيرة عند التشغيل، فإن لـ<code>top</code> و<code>htop</code> عددًا كبيرًا من خيارات سطر الأوامر لتهيئة ما يعرضانه وكيفية عرضه. فمثلًا، لا يعرض <code>top</code> افتراضيًا إحصاءات لكل خيط (بل لكل عملية فقط)، لكنه سيفعل ذلك عند تشغيله بخيار سطر الأوامر <code>-H</code>.</p>
@@ -2085,7 +2085,7 @@ Socket(s):                       2
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -2093,8 +2093,8 @@ Socket(s):                       2
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

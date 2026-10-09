@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -267,7 +267,7 @@ print sum;
 <p>ولأنّنا نلاعب بالبتات بذكاء، فإنّنا نعرف طريقة أسرع لحساب باقي قسمة عدد على قوة للعدد 2: <strong>قناع
 البتات</strong> (bit masking). لنقل إنّنا نريد حساب 229 mod 64. الجواب 37، وهو ليس واضحًا على نحو
 خاصّ في النظام العشري، لكنّه أوضح حين ننظر إلى تلك الأعداد في النظام الثنائي:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/optimization-1.webp" alt="The bit patterns resulting from 229 % 64 = 37 and 229 &amp; 63 = 37." />
+<img src="/arabic-cs-library/images/crafting-interpreters/optimization-1.webp" alt="أنماط البتّات الناتجة عن 229 % 64 = 37 و229 &amp; 63 = 37." />
 <p>على الجانب الأيسر من الرسم، لاحظ كيف أنّ النتيجة (37) هي ببساطة المقسوم (229) وقد قُصّت منه أعلى
 بتّين؟ هذان البتّان الأعلى هما البتّان عند بت القاسمة الواحدة أو إلى يسارها.</p>
 <p>وعلى الجانب الأيمن، نحصل على النتيجة نفسها بأخذ 229 وعمل <span class="small-caps">AND</span> على مستوى البتّات مع 63، وهو أقلّ
@@ -298,7 +298,7 @@ class="small-caps">AND</span> معه على واحد من تلك القوة. و�
 <p>ولنرَ إن كانت إصلاحاتنا تستحقّ. عدّلت ذلك المقياس الحيواني ليعدّ كمّ <span name="batch">دفعة</span>
 من 10,000 استدعاء يستطيع إنجازها في عشر ثوانٍ. والمزيد من الدفعات يعني أداءً أسرع. على جهازي باستخدام
 الشيفرة غير المُحسَّنة، يتجاوز المقياس 3,192 دفعة. وبعد هذا التحسين، يقفز الرقم إلى 6,249.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/optimization-2.webp" alt="Bar chart comparing the performance before and after the optimization." />
+<img src="/arabic-cs-library/images/crafting-interpreters/optimization-2.webp" alt="مخطط أعمدة يقارن الأداء قبل التحسين وبعده." />
 <p>ذلك يكاد بالضبط ضعف كمّ العمل في الوقت نفسه. جعلنا الآلة الافتراضية أسرع مرّتين (مع التحفّظ المعتاد:
 على هذا المقياس). وهذه مكسب هائل حين يأتي الأمر إلى التحسين. فعادةً تشعر بالارتياح إن استطعت
 انتزاع بضعة نقاط مئوية هنا وهناك. وبما أنّ الطرق والحقول والمتغيّرات العامة شديدة الشيوع في برامج
@@ -342,7 +342,7 @@ Gudeman لعام 1993 بعنوان &quot;Representing Type Information in Dynami
 <p>على آلة من 64 بتًّا، يشغل نوع Value لدينا 16 بايت. للبنية حقلان: وسم نوع واتّحاد (union) للحمولة.
 وأكبر حقول الاتّحاد هي مؤشّر Obj وdouble، وكلاهما 8 بايتات. ولإبقاء حقل الاتّحاد محاذيًا لحدّ
 8 بايتات، يضيف المصرّف حشوًا بعد الوسم أيضًا:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/optimization-3.webp" alt="Byte layout of the 16-byte tagged union Value." />
+<img src="/arabic-cs-library/images/crafting-interpreters/optimization-3.webp" alt="تخطيط بايتات الوحدة الموسومة (union) Value البالغة 16 بايتاً." />
 <p>ذلك كبير إلى حدٍّ ما. فلو استطعنا تقليصه، لأمكن للآلة الافتراضية حزم قيم أكثر في المقدار نفسه من
 الذاكرة. ومعظم الحواسيب لديها ذاكرة عشوائية وفيرة اليوم، لذا فإنّ توفير الذاكرة المباشر ليس
 أمرًا كبيرًا. لكنّ تمثيلًا أصغر يعني اتّساعَ عدد القيم التي تتّسع في سطر واحد من الذاكرة المخبّأة.
@@ -368,7 +368,7 @@ Gudeman لعام 1993 بعنوان &quot;Representing Type Information in Dynami
 <aside name="hyphen">
 <p>ذلك كمٌّ كبير من الشرطات لجملة واحدة.</p>
 </aside>
-<img src="/arabic-cs-library/images/crafting-interpreters/optimization-4.webp" alt="Bit representation of an IEEE 754 double." />
+<img src="/arabic-cs-library/images/crafting-interpreters/optimization-4.webp" alt="التمثيل البتّي لعدد عشري ذي الدقة المزدوجة (IEEE 754)." />
 <ul>
 <li>
 <p>بدءًا من اليمين، البتّات الخمسة والخمسون الأولى هي بتات <strong>الكسر</strong> أو <strong>المانتيسا</strong> أو
@@ -408,7 +408,7 @@ Gudeman لعام 1993 بعنوان &quot;Representing Type Information in Dynami
 بتّة دون حساب. وسنتجنّب واحدة من تلك حتى لا نقع على قيمة &quot;QNaN Floating-Point Indefinite&quot; الخاصة
 بـ Intel، فيتبقّى لنا 51 بتّة. ويمكن أن تكون تلك البتّات المتبقّية أيّ شيء. ونحن نتكلّم عن
 2,251,799,813,685,248 نمط بتّات فريد من NaN الهادئة.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/optimization-5.webp" alt="The bits in a double that make it a quiet NaN." />
+<img src="/arabic-cs-library/images/crafting-interpreters/optimization-5.webp" alt="البتّات في double التي تجعلها quiet NaN." />
 <p>وهذا يعني أنّ double من 64 بتًّا فيه متّسع كافٍ لتخزين كلّ قيم الأعداد العشرية المتحركة المختلفة، و
 <em>أيضًا</em> فيه متّسع لـ 51 بتّة إضافية من البيانات يمكننا استخدامها كيفما نشاء. وهذا متّسع وافٍ
 لأن نُخصّص بضعة أنماط بتّات لتمثيل قيم <code>nil</code> و<code>true</code> و<code>false</code> في Lox. لكن ماذا عن مؤشّرات Obj؟ ألست
@@ -528,7 +528,7 @@ NaN من نوع آخر في Lox. وإلا، فإنّها في الواقع عد�
 <p>وتُعلَن مجموعة بتّات quiet NaN هكذا:</p>
 <p>^code qnan (1 before, 2 after)</p>
 <p>كان من الجميل لو دعمت C القيم الثنائية. لكن إن حوّلتَ، فسترى أنّ القيمة نفسها:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/optimization-6.webp" alt="The quiet NaN bits." />
+<img src="/arabic-cs-library/images/crafting-interpreters/optimization-6.webp" alt="بتّات quiet NaN." />
 <p>وهذا هو بالضبط كلّ بتّات الأس، مضافًا إليها بتّة quiet NaN، مضافًا إليها بتّة إضافية لتفادي قيمة
 Intel تلك.</p>
 <h3 id="nil-و-true-و-false">nil و true و false</h3>
@@ -541,7 +541,7 @@ Intel تلك.</p>
 <p>^code tags (1 before, 2 after)</p>
 <p>وتمثيلنا لـ <code>nil</code> هو إذن كلّ البتّات المطلوبة لتعريف تمثيل quiet NaN لدينا إلى جانب بتّات وسم النوع
 <code>nil</code>:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/optimization-7.webp" alt="The bit representation of the nil value." />
+<img src="/arabic-cs-library/images/crafting-interpreters/optimization-7.webp" alt="التمثيل البتّي لقيمة nil." />
 <p>وفي الشيفرة، نتحقّق من البتّات هكذا:</p>
 <p>^code nil-val (2 before, 1 after)</p>
 <p>نكتفي بعمل <span class="small-caps">OR</span> على مستوى البتّات بين بتّات quiet NaN ووسم النوع، ثمّ نفعل بعض رقصات التحويل
@@ -553,7 +553,7 @@ Intel تلك.</p>
 <p>ويمكنك أن تخمّن كيف نعرّف قيمتَي <code>true</code> و<code>false</code>.</p>
 <p>^code false-true-vals (2 before, 1 after)</p>
 <p>وتبدو البتّات هكذا:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/optimization-8.webp" alt="The bit representation of the true and false values." />
+<img src="/arabic-cs-library/images/crafting-interpreters/optimization-8.webp" alt="التمثيل البتّي لقيمتَي true وfalse." />
 <p>ولتحويل bool في C إلى قيمة منطقية في Lox، فإنّنا نعتمد على قيمتي وحيدتَي هاتين والمُعامل الشرطي
 القديم الطرّاز.</p>
 <p>^code bool-val (2 before, 1 after)</p>
@@ -603,7 +603,7 @@ Intel تلك.</p>
 <p>وهذا تحسين تمثيل قيم آخر يُسمّى <strong>وسم المؤشّرات</strong> (pointer tagging).</p>
 </aside>
 <p>إذا كانت بتّة الإشارة مضبوطة، فإنّ البتّات الدنيا المتبقّية تخزّن المؤشّر إلى Obj:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/optimization-9.webp" alt="Bit representation of an Obj* stored in a Value." />
+<img src="/arabic-cs-library/images/crafting-interpreters/optimization-9.webp" alt="التمثيل البتّي لمؤشّر Obj* مخزَّن في Value." />
 <p>ولتحويل مؤشّر Obj خام إلى Value، نأخذ المؤشّر ونضبط كلّ بتّات quiet NaN وبتّة الإشارة.</p>
 <p>^code obj-val (1 before, 2 after)</p>
 <p>المؤشّر نفسه 64 بتًّا كاملًا، و<span name="safe">من حيث المبدأ</span>، يمكنه إذن أن يتداخل مع
@@ -802,7 +802,7 @@ name="license">لعبتك</span> الخاصة. غيّر الصياغة إلى ش
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -810,8 +810,8 @@ name="license">لعبتك</span> الخاصة. غيّر الصياغة إلى ش
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

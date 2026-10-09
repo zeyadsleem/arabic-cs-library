@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -59,7 +59,7 @@
 [قطع شيفرة البايت][] و[الآلة الافتراضية][]. والآن سنعود إلى
 البداية لنبني مُحلِّلاً معجمياً يُنتج الرموز. وفي [الفصل
 التالي][] سنربط الطرفين معاً بمصرّف شيفرة البايت.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/scanning-on-demand-1.webp" alt="Source code &rarr; scanner &rarr; tokens &rarr; compiler &rarr; bytecode chunk &rarr; VM." />
+<img src="/arabic-cs-library/images/crafting-interpreters/scanning-on-demand-1.webp" alt="الشيفرة المصدرية &rarr; الماسح &rarr; الرموز &rarr; المصرّف &rarr; قطعة شيفرة البايت &rarr; الآلة الافتراضية." />
 <p>سأعترف بأنّ هذا ليس أكثر الفصول إثارةً في الكتاب. فمع وجود
 تنفيذين لنفس اللّغة، لا بدّ من بعض التكرار. لكنّني تسلّلت
 بالفعل إلى بعض الفروق المثيرة مقارنةً بمُحلِّل jlox المعجمي.
@@ -180,7 +180,7 @@ Java، فإنّ الإخفاقات تُطلَق كاستثناءات وتفكّ 
 الحاليّ الجاري مسحه، و <code>current</code> يشير إلى المحرف الجاري النظر
 إليه.</p>
 <p><span name="fields"></span></p>
-<img src="/arabic-cs-library/images/crafting-interpreters/scanning-on-demand-2.webp" alt="The start and current fields pointing at 'print bacon;'. Start points at 'b' and current points at 'o'." />
+<img src="/arabic-cs-library/images/crafting-interpreters/scanning-on-demand-2.webp" alt="الحقلان start وcurrent يشييران إلى print bacon;. يشير start إلى الحرف b ويشير current إلى الحرف o." />
 <aside name="fields">
 <p>هنا، نحن في منتصف مسح المعرّف <code>bacon</code>. المحرف الحالي هو <code>o</code>
 والمحرف الذي استهلكناه أخيراً هو <code>c</code>.</p>
@@ -308,7 +308,7 @@ Java، فإنّ الإخفاقات تُطلَق كاستثناءات وتفكّ 
 <aside name="axolotl">
 <p>هذا الجزء من الفصل جافٌّ إلى حدٍّ كبير، لذا إليك صورةَ
 من السمندر المائي (axolotl).</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/scanning-on-demand-3.webp" alt="A drawing of an axolotl." />
+<img src="/arabic-cs-library/images/crafting-interpreters/scanning-on-demand-3.webp" alt="رسم للسمندر المائي." />
 </aside>
 <p>الفرق الوحيد هو أنّ &quot;الرمز النصّي&quot; يشير إلى سلسلة رسالة الخطأ
 بدلاً من أن يشير داخل شيفرة المستخدم المصدرية. ومرةً أخرى،
@@ -470,7 +470,7 @@ Java، فإنّ الإخفاقات تُطلَق كاستثناءات وتفكّ 
 التعرّف على ذلك والفشل سريعاً.</p>
 <p>وهذا تمثيلٌ بصري لمنطق فحص المحارف المتفرّع:</p>
 <p><span name="down"></span></p>
-<img src="/arabic-cs-library/images/crafting-interpreters/scanning-on-demand-4.webp" alt="A trie that contains all of Lox's keywords." />
+<img src="/arabic-cs-library/images/crafting-interpreters/scanning-on-demand-4.webp" alt="شجرة trie تحتوي على كلّ الكلمات المفتاحية في Lox." />
 <aside name="down">
 <p>اقرأ نزولاً في كلّ سلسلة من العقد وسترى كلمات Lox المفتاحية
 تظهر.</p>
@@ -521,7 +521,7 @@ DFA في التحليل المعجمي، فإنّ كلّ انتقالٍ هو م�
 بين الحالات. وهذا يتيح لك التعرّف على نصوصٍ طويلةٍ بشكلٍ
 اعتباطي. فمثلاً، إليك DFA يتعرّف على القيم العددية الحرفية:</p>
 <p><span name="railroad"></span></p>
-<img src="/arabic-cs-library/images/crafting-interpreters/scanning-on-demand-5.webp" alt="A syntax diagram that recognizes integer and floating point literals." />
+<img src="/arabic-cs-library/images/crafting-interpreters/scanning-on-demand-5.webp" alt="مخطط نحوي يتعرّف على الثوابت الصحيحة وثوابت الفاصلة العائمة." />
 <aside name="railroad">
 <p>تُسمّى هذه النمط من المخطّطات <a href="https://en.wikipedia.org/wiki/Syntax_diagram"><strong>مخطّط صياغة</strong></a> أو
 <em>لا</em> تحتوي على &quot;banque&quot; -- فعقدة &quot;e&quot; لن تحمل تلك العلامة، بينما
@@ -656,7 +656,7 @@ print &quot;${drink} will be ready in ${steep + cool} minutes.&quot;;
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -664,8 +664,8 @@ print &quot;${drink} will be ready in ${steep + cool} minutes.&quot;;
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

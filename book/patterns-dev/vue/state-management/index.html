@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -114,7 +114,7 @@
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
 </code></pre>
 <p>يمرّر المكوّن <code>ParentComponent</code> مصفوفة <code>numbers</code> كخصائص (props) تحمل الاسم نفسه إلى <code>ChildComponent</code>. و<code>ChildComponent</code> يربط ببساطة قيمة <code>numbers</code> على قالبه.</p>
-<p>JavaScript iconParentComponent.vue</p>
+<p><code>ParentComponent.vue</code></p>
 <pre><code class="language-javascript">&lt;template&gt;
   <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">ChildComponent</span> <span class="hljs-attr">:numbers</span>=<span class="hljs-string">&quot;numbers&quot;</span> /&gt;</span>
@@ -183,7 +183,7 @@ Add new number
 </code></pre>
 <p>يمتلك المكوّن <code>ChildComponent</code> حقل إدخال يلتقط قيمة <code>number</code> وزرًّا يُصدر حدثًا مخصّصًا اسمه <code>number-added</code> يحمل قيمة <code>number</code> الملتقطة.</p>
 <p>وفي <code>ParentComponent</code>، يُحدَّد مستمع للحدث المخصّص يُشار إليه بـ <code>@number-added</code> في الموضع الذي يُعرض فيه المكوّن الفرعي. وعندما يُصدر هذا الحدث في المكوّن الفرعي، فإنه يدفع قيمة <code>number</code> القادمة من الحدث إلى مصفوفة <code>numbers</code> الخاصة بـ <code>ParentComponent</code>.</p>
-<p>JavaScript iconParentComponent.vue</p>
+<p><code>ParentComponent.vue</code></p>
 <pre><code class="language-javascript">&lt;template&gt;
   <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">ChildComponent</span> <span class="hljs-attr">:numbers</span>=<span class="hljs-string">&quot;numbers&quot;</span> @<span class="hljs-attr">number-added</span>=<span class="hljs-string">&quot;(n) =&gt; numbers.push(n)&quot;</span> /&gt;</span>
@@ -267,7 +267,7 @@ Add new number
 </code></pre>
 <p>يمتلك المكوّن <code>NumberSubmit</code> طريقة <code>addNumber()</code> تستدعي تغيير (mutation) المخزن <code>store.addNumber()</code> وتمرّر الحمولة المتوقّعة.</p>
 <p>تتلقّى طريقة المخزن الحمولة وتُعدّل مباشرةً مصفوفة <code>store.numbers</code>. وبفضل تفاعلية Vue، فكلما تغيّرت مصفوفة <code>numbers</code> في حالة المخزن، فإن الـ DOM ذي الصلة الذي يعتمد على هذه القيمة (قالب المكوّن <code>NumberDisplay</code>) <em>يُحدَّث تلقائيًا</em>.</p>
-<p>JavaScript iconstore.js</p>
+<p><code>store.js</code></p>
 <pre><code class="language-javascript"><span class="hljs-keyword">import</span> { reactive } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vue&quot;</span>;
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> store = <span class="hljs-title function_">reactive</span>({
@@ -372,7 +372,7 @@ app.<span class="hljs-title function_">mount</span>(<span class="hljs-string">&q
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
 </code></pre>
 <p>مع هذه التغييرات، سيتصرّف تطبيقنا تمامًا كما كان من قبل.</p>
-<p>JavaScript iconstore.js</p>
+<p><code>store.js</code></p>
 <pre><code class="language-javascript"><span class="hljs-keyword">import</span> { defineStore } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;pinia&quot;</span>;
   <span class="hljs-keyword">import</span> { ref } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;vue&quot;</span>;
   
@@ -415,7 +415,7 @@ app.<span class="hljs-title function_">mount</span>(<span class="hljs-string">&q
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -423,8 +423,8 @@ app.<span class="hljs-title function_">mount</span>(<span class="hljs-string">&q
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

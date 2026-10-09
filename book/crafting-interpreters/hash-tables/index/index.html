@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -97,7 +97,7 @@ n)</em>. لكن مع <span name="rolodex">جدول تجزئة</span>، يستغ�
 ما، فإنّ ذلك المفتاح موجود بتلك القيمة. وإلا، فإنّ الدلو فارغ وذلك الزوج غير موجود في بنية
 البيانات.</p>
 <aside name="bucket">
-<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-1.webp" alt="A row of buckets, each labeled with a letter of the alphabet." />
+<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-1.webp" alt="صفّ من الدلاء، كلٌّ منها مُعلَّم بحرف من الأبجدية." />
 </aside>
 <p>استهلاك الذاكرة جيّد -- مجرّد <span name="bucket">مصفوفة</span> واحدة بحجم معقول. وهناك بعض
 الهدر من الدلاء الفارغة، لكنه ليس ضخمًا. ولا يوجد حِمل زائد لمؤشّرات العُقد، أو الحشو، أو أمور
@@ -145,7 +145,7 @@ name="power-of-two">8</span>) ليناسب الحدود فنحصل على فهر
 الهدر لدينا، لكنه يقدّم مشكلة جديدة. فأيّ متغيّرين يكون لرقمي مفتاحهما الباقي نفسه عند القسمة على
 حجم المصفوفة سينتهيان في الدلو نفسه. ويمكن أن <strong>تتصادم</strong> (collide) المفاتيح. فمثلًا، إن حاولنا
 إضافة &quot;jam&quot;، فإنّه سينتهي أيضًا في الدلو 2.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-2.webp" alt="'Bagel' and 'jam' both end up in bucket index 2." />
+<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-2.webp" alt="ينتهي كلٌّ من «Bagel» و«jam» إلى الدلو رقم 2." />
 <p>لدينا بعض التحكّم في هذا عبر ضبط حجم المصفوفة. فكلّما كانت المصفوفة أكبر، قلّ عدد الفهارس التي
 تُسقط إلى الدلو نفسه، وقلّ احتمال وقوع التصادمات. ويتتبّع منفّذو جداول التجزئة هذا الاحتمال
 بوصفه يقيس <strong>معامل الحشو</strong> (load factor) للجدول. وهو معرَّف بأنه عدد المُدخلات مقسومًا على عدد
@@ -173,14 +173,14 @@ name="power-of-two">8</span>) ليناسب الحدود فنحصل على فهر
 <p>ضع هاتين القاعدتين الرياضيتين الغريبتَي الاسم معًا فتحصل على هذه الملاحظة: خذ بيتًا للطيور
 يحتوي على 365 خانة، واستخدم عيد ميلاد كلّ حمامة لإسنادها إلى خانة. ستحتاج فقط إلى نحو 26 حمامة
 مختارة عشوائيًّا قبل أن تحصل على احتمال أكبر من 50% لوجود حمّتين في الصندوق نفسه.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-3.webp" alt="Two pigeons in the same hole." />
+<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-3.webp" alt="حمّامان في جحر واحد." />
 </aside>
 <h3 id="التسلسل-المنفصل">التسلسل المنفصل</h3>
 <p>تقع تقنيات معالجة التصادمات في فئتين واسعتين. الأولى هي <strong>التسلسل المنفصل</strong> (separate
 chaining). وبدلًا من أن يحتوي كل دلو على مُدخل واحد، نسمح له بأن يحتوي على مجموعة منها. وفي
 التنفيذ الكلاسيكي، يشير كل دلو إلى قائمة مرتبطة من المُدخلات. وللبحث عن مُدخل، تجد دلوه ثمّ
 تمشي في القائمة حتى تجد مُدخلًا بمفتاح مطابق.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-4.webp" alt="An array with eight buckets. Bucket 2 links to a chain of two nodes. Bucket 5 links to a single node." />
+<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-4.webp" alt="مصفوفة بثمانية دلاء. الدلو 2 موصول بسلسلة من عقدتين، والدلو 5 موصول بعقدة واحدة." />
 <p>في الحالات الكارثية السيّئة حيث يصطدم كل مُدخل في الدلو نفسه، تتراجع بنية البيانات إلى قائمة
 واحدة مرتبطة غير مرتّبة ببحث من نوع <em>O(n)</em>. وفي الممارسة، من السهل تفادي ذلك بالتحكّم في معامل
 الحشو وفي كيفية توزّع المُدخلات على الدلاء. ففي جداول التجزئة ذات التسلسل المنفصل المعتادة، من
@@ -228,25 +228,25 @@ hashing&quot; و&quot;Robin Hood hashing&quot; وأيّ شيء يقودك إلي
 الروابط بينها في مؤشّرات، تُحتسب الاتصالات ضمنًا بترتيب الدلاء التي تفحصها.</p>
 <p>الجزء الصعب هو أنّ أكثر من واحدة من تلك القوائم الضمنية قد تكون متشابكة معًا. لنمرّ على مثال يغطّي
 جميع الحالات المثيرة. سنتجاهل القيم الآن ونركّز على مجموعة مفاتيح. نبدأ بمصفوفة فارغة من 8 دلاء.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-5.webp" alt="An array with eight empty buckets." class="wide" />
+<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-5.webp" alt="مصفوفة بثمانية دلاء فارغة." class="wide" />
 <p>نقرّر إدراج &quot;bagel&quot;. فالحرف الأول، &quot;b&quot; (قيمته ASCII هي 98)، فإنّ باقي القسمة على حجم المصفوفة (8) يضعه في
 الدلو 2.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-6.webp" alt="Bagel goes into bucket 2." class="wide" />
+<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-6.webp" alt="تدخل Bagel في الدلو 2." class="wide" />
 <p>ثمّ نُدرج &quot;jam&quot;. فذاك أيضًا يريد الذهاب إلى الدلو 2 (106 mod 8 = 2)، لكنّ ذلك الدلو مشغول. فنواصل
 السبر إلى الدلو التالي. وهو فارغ، فنضعه هناك.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-7.webp" alt="Jam goes into bucket 3, since 2 is full." class="wide" />
+<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-7.webp" alt="تدخل jam في الدلو 3 لأنّ 2 ممتلئ." class="wide" />
 <p>نُدرج &quot;fruit&quot;، الذي يقع بكلّ سرور في الدلو 6.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-8.webp" alt="Fruit goes into bucket 6." class="wide" />
+<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-8.webp" alt="تدخل Fruit في الدلو 6." class="wide" />
 <p>وكذلك، يمكن لـ &quot;migas&quot; أن تذهب إلى دلوها المفضّل 5.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-9.webp" alt="Migas goes into bucket 5." class="wide" />
+<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-9.webp" alt="تدخل Migas في الدلو 5." class="wide" />
 <p>وحين نحاول إدراج &quot;eggs&quot;، فإنّه أيضًا يريد أن يكون في الدلو 5. ذلك الدلو ممتلئ، فنتخطّى إلى 6.
 والدلو 6 ممتلئ أيضًا. لاحظ أنّ المُدخل الموجود هناك <em>ليس</em> جزءًا من تسلسل السبر نفسه. فـ &quot;Fruit&quot;
 في دلوه المفضّل، 6. إذن فإنّ تسلسلي السبر 5 و6 قد اصطدما وشُبِّكا. فنتخطّى ذلك ونضع &quot;eggs&quot; في
 النهاية في الدلو 7.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-10.webp" alt="Eggs goes into bucket 7 because 5 and 6 are full." class="wide" />
+<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-10.webp" alt="تدخل Eggs في الدلو 7 لأنّ 5 و6 ممتلئان." class="wide" />
 <p>نصطدم بمشكلة مشابهة مع &quot;nuts&quot;. فلا يمكنه أن يقع في 6 كما يريد، ولا يمكنه أن يذهب إلى 7. فنواصل.
 لكنّنا وصلنا إلى نهاية المصفوفة، فنلتفّ عائدين إلى 0 ونضعه هناك.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-11.webp" alt="Nuts wraps around to bucket 0 because 6 and 7 are full." class="wide" />
+<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-11.webp" alt="تعود Nuts إلى الدلو 0 لأنّ 6 و7 ممتلئان." class="wide" />
 <p>في الممارسة، يتبيّن أنّ التشابك ليس مشكلة كبيرة. فحتى في التسلسل المنفصل، نحتاج إلى المشي في
 القائمة للتحقّق من مفتاح كل مُدخل لأنّ مفاتيح متعدّدة يمكن أن تُسقط إلى الدلو نفسه. ومع العنونة
 المفتوحة، نحتاج إلى ذلك الفحص نفسه، وهو يغطّي أيضًا الحالة التي تكون فيها بصعد فوق مُدخلات
@@ -489,27 +489,27 @@ name="delete">العنونة المفتوحة</span> أمر صعب.</p>
 <p>في الحالات التي لا توجد فيها تصادمات، فإنّ ذلك يعمل على ما يرام. لكن إن وقع تصادم، فإنّ الدلو الذي
 يعيش فيه المُدخل قد يكون جزءًا من تسلسل سبر ضمني واحد أو أكثر. فمثلًا، إليك جدول تجزئة يحتوي ثلاثة
 مفاتيح كلّها لها الدلو المفضّل نفسه، 2:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-12.webp" alt="A hash table containing 'bagel' in bucket 2, 'biscuit' in bucket 3, and 'jam' in bucket 4." />
+<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-12.webp" alt="جدول تجزئة يحوي bagel في الدلو 2، وbiscuit في الدلو 3، وjam في الدلو 4." />
 <p>تذكّر أنّنا حين نمشي في تسلسل سبر للعثور على مُدخل، نعرف أنّنا بلغنا نهاية تسلسل وأنّ المُدخل غير
 موجود حين نصطدم بدلو فارغ. إنّه كأنّ تسلسل السبر قائمة مُدخلات والمُدخل الفارغ ينهي تلك القائمة.</p>
 <p>إن حذفنا &quot;biscuit&quot; بمجرّد تفريغ الـ Entry، فإنّنا نكسر ذلك تسلسل السبر في منتصفه، تاركةً المُدخلات
 التالية يتيمة وغير قابلة للوصول. شيءٌ يشبه إزالة عقدة من قائمة مرتبطة دون إعادة وصل المؤشّر من العقدة
 السابقة إلى التالية.</p>
 <p>إن حاولنا لاحقًا البحث عن &quot;jam&quot;، فسنبدأ عند &quot;bagel&quot; ونتوقّف عند Entry فارغ تالٍ ولن نجده أبدًا.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-13.webp" alt="The 'biscuit' entry has been deleted from the hash table, breaking the chain." />
+<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-13.webp" alt="حُذفت المدخلة biscuit من جدول التجزئة، فانقطعت السلسلة." />
 <p>ولحلّ ذلك، تستخدم معظم التنفيذات خدعة تُسمّى <span name="tombstone"><strong>شواهد القبر</strong>
 (tombstones)</span>. فبدلًا من تفريغ المُدخل عند الحذف، فإنّنا نستبدله بمُدخل حارس خاصّ يُسمّى &quot;شاهد
 قبر&quot;. وحين نتبع تسلسل سبر أثناء بحث، ونصطدم بشاهد قبر، فإنّنا <em>لا</em> نتعامل معه كخانة فارغة
 ونتوقّف عن التكرار. وبدلًا من ذلك، نواصل السير كي لا يكسر حذف مُدخل أيّ سلسلة تصادمات ضمنية،
 ولا يزال بإمكاننا العثور على مُدخلات بعده.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-14.webp" alt="Instead of deleting 'biscuit', it's replaced with a tombstone." />
+<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-14.webp" alt="بدل حذف biscuit، يُستبدل بشاهد قبر." />
 <p>وتبدو الشيفرة هكذا:</p>
 <p>^code table-delete</p>
 <p>أولًا، نجد الدلو الذي يحتوي المُدخل الذي نريد حذفه. (فإن لم نجده، فلا شيء لحذفه، لذا نخرج.) ونستبدل
 المُدخل بشاهد قبر. وفي clox، نستخدم مفتاحًا <code>NULL</code> وقيمة <code>true</code> لتمثيل ذلك، لكنّ أيّ تمثيل لا يمكن
 الخلط بينه وبين دلو فارغ أو مُدخل صالح يفي بالغرض.</p>
 <aside name="tombstone">
-<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-15.webp" alt="A tombstone enscribed 'Here lies entry biscuit &rarr; 3.75, gone but not deleted'." />
+<img src="/arabic-cs-library/images/crafting-interpreters/hash-tables-15.webp" alt="شاهد قبر محفور عليه: «هنا ترقد المدخلة biscuit &rarr; 3.75، غائبة لكنها لم تُحذف»." />
 </aside>
 <p>هذا كل ما نحتاج إلى فعله لحذف مُدخل. بسيط وسريع. لكنّ جميع العمليات الأخرى تحتاج أيضًا إلى التعامل
 الصحيح مع شواهد القبر. فشاهد القبر نوعٌ من المُدخل &quot;النصفي&quot;. فلديه بعض خصائص المُدخل الحاضر وبعض
@@ -696,7 +696,7 @@ clox أصنافًا معرَّفة من المستخدم. فإن أردنا دع
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -704,8 +704,8 @@ clox أصنافًا معرَّفة من المستخدم. فإن أردنا دع
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

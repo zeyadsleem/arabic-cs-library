@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -118,7 +118,7 @@ print after - before;
 <p>أجزاء &quot;(header)&quot; هي معلومات المحاسبة التي تستخدمها الآلة الافتراضية في Java لدعم إدارة
 الذاكرة وتخزين نوع الكائن. وتلك تشغل مساحة أيضًا!</p>
 </aside>
-<img src="/arabic-cs-library/images/crafting-interpreters/chunks-of-bytecode-1.webp" alt="The tree of Java objects created to represent '1 + 2'." />
+<img src="/arabic-cs-library/images/crafting-interpreters/chunks-of-bytecode-1.webp" alt="شجرة كائنات Java التي أُنشئت لتمثيل «1 + 2»." />
 <p>كل مؤشّر من تلك يضيف 32 أو 64 بتًّا إضافية من الحِمل الزائد إلى الكائن. والأسوأ، أنّ
 نثر بياناتنا عبر الكومة في شبكة متّصلة ترابطًا ضعيفًا يضرّ بـ<span
 name="locality"><em>المحلية المكانية</em></span>.</p>
@@ -215,7 +215,7 @@ Wirth. قد تظنّ أنّ PDP-11 يعمل بتردد 15MHz لا يحتمل ا�
 <p>هذا هو المسار الذي سنسلكه مع مفسّرنا الجديد، clox. وسنتبع آثار التنفيذات الرئيسة لـ
 Python وRuby وLua وOCaml وErlang وغيرها. وفي جوانب كثيرة، سيتوازى تصميم آلتنا الافتراضية
 مع بنية مفسّرنا السابق:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/chunks-of-bytecode-2.webp" alt="Phases of the two implementations. jlox is Parser to Syntax Trees to Interpreter. clox is Compiler to Bytecode to Virtual Machine." />
+<img src="/arabic-cs-library/images/crafting-interpreters/chunks-of-bytecode-2.webp" alt="مراحل التنفيذتين: يمرّ jlox من المحلِّل إلى شجرات التركيب ثمّ إلى المُفسِّر، ويمضي clox من المصرّف إلى شيفرة البايت ثمّ إلى الآلة الافتراضية." />
 <p>بالطبع، لن ننفّذ المراحل بالترتيب الصارم. تماماً كما في مفسّرنا السابق، سنتنقّل ذهابًا
 وإيابًا، ونبني التنفيذ ميزة لغة واحدة في كل مرّة. في هذا الفصل، سنضع هيكل التطبيق في مكانه
 وننشئ بنى البيانات اللازمة لتخزين قطعة شيفرة بايت وتمثيلها.</p>
@@ -273,9 +273,9 @@ Python وRuby وLua وOCaml وErlang وغيرها. وفي جوانب كثيرة�
 <p>^code count-and-capacity (1 before, 2 after)</p>
 <p>حين نضيف عنصرًا، إن كان العدّ أقلّ من السعة، فهناك مساحة متاحة بالفعل في المصفوفة. نخزّن
 العنصر الجديد هناك مباشرةً ونرفع العدّ.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/chunks-of-bytecode-3.webp" alt="Storing an element in an array that has enough capacity." />
+<img src="/arabic-cs-library/images/crafting-interpreters/chunks-of-bytecode-3.webp" alt="تخزين عنصر في مصفوفة تملك سعة كافية." />
 <p>إن لم تكن لدينا سعة فائضة، فإنّ العملية أعقد قليلًا.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/chunks-of-bytecode-4.webp" alt="Growing the dynamic array before storing an element." class="wide" />
+<img src="/arabic-cs-library/images/crafting-interpreters/chunks-of-bytecode-4.webp" alt="تكبير المصفوفة الديناميكية قبل تخزين عنصر." class="wide" />
 <ol>
 <li><span name="amortized">نُخصّص</span> مصفوفة جديدة بسعة أكبر.</li>
 <li>ننسخ العناصر القائمة من المصفوفة القديمة إلى الجديدة.</li>
@@ -564,7 +564,7 @@ print 2;
 <p>للتعامل مع حالات مثل هذه، تسمح شيفرتنا البايت -- كما يسمح معظمها -- للتعليمات بأن تحمل <span
 name="operand"><strong>مُعاملات</strong></span>. وتُخزَّن هذه كبيانات ثنائية مباشرةً بعد رمز التشغيل في
 تدفّق التعليمات، وتتيح لنا تخصيص ما تفعله التعليمة.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/chunks-of-bytecode-5.webp" alt="OP_CONSTANT is a byte for the opcode followed by a byte for the constant index." />
+<img src="/arabic-cs-library/images/crafting-interpreters/chunks-of-bytecode-5.webp" alt="OP_CONSTANT عبارة عن بايت للأوبيت يليه بايت لفهرس الثابت." />
 <p>يحدّد كل رمز تشغيل كم بايتًا من مُعاملاته وما الذي تعنيه. فمثلًا، قد تكون عملية بسيطة مثل
 &quot;الإرجاع&quot; بلا مُعاملات، بينما تحتاج تعليمة &quot;تحميل متغيّر محلّي&quot; إلى مُعامل يحدّد أيّ متغيّر
 نحمّل. وفي كل مرّة نضيف رمز تشغيل جديدًا إلى clox، نحدّد كيف تبدو مُعاملاته -- أي <strong>صيغة
@@ -797,7 +797,7 @@ jlox، تعيش تلك الأرقام في الرموز، التي نخزّنه�
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -805,8 +805,8 @@ jlox، تعيش تلك الأرقام في الرموز، التي نخزّنه�
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

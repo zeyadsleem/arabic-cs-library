@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -55,7 +55,7 @@
 <p>هذا الفصل مثير لسببٍ واحد، لا اثنين، بل <em>ثلاثة</em>. أولًا، فهو يوفّر المقطع الأخير من مسار
 التنفيذ في آلتنا الافتراضية. وبمجرد وضعه في مكانه، نستطيع أن نوصّل شيفرة المستخدم
 الأصلية من المسح الضوئي وصولًا إلى تنفيذها.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/compiling-expressions-1.webp" alt="Lowering the 'compiler' section of pipe between 'scanner' and 'VM'." />
+<img src="/arabic-cs-library/images/crafting-interpreters/compiling-expressions-1.webp" alt="إنزال قسم «compiler» من الأنبوب بين «scanner» و«VM»." />
 <p>ثانيًا، سنحصل على كتابة <em>مصرّف</em> حقيقي، صادق تمامًا. فهو يحلّل شيفرة المصدر ويُخرج
 سلسلة منخفضة المستوى من التعليمات الثنائية. صحيح، إنّه <span name="wirth">شيفرة
 بايت</span> (bytecode) وليست مجموعة تعليمات أصلية لإحدى الشرائح، لكنه أقرب كثيرًا إلى
@@ -134,7 +134,7 @@ name="lox">مناسبة تمامًا</span> لذلك.</p>
 <aside name="lox">
 <p>ليس أنّ هذا ينبغي أن يكون مفاجأة كبيرة. فاللغة صمّمتها خصيصًا لهذا الكتاب على أيّ
 حال.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/compiling-expressions-2.webp" alt="Peering through a keyhole at 'var x;'" />
+<img src="/arabic-cs-library/images/crafting-interpreters/compiling-expressions-2.webp" alt="الاطّلاع من ثقب المفتاح على «var x;»" />
 </aside>
 <p>ما يعنيه هذا من الناحية العملية هو أنّ وحدة &quot;المصرّف&quot; في C لدينا تملك وظائف
 ستتعرّفها من jlox للتحليل -- استهلاك الرموز، ومطابقة أنواع الرموز المتوقّعة، وهكذا.
@@ -236,7 +236,7 @@ name="setjmp">استثناءات</span> في C. وبدلًا من ذلك، سن�
 <h2 id="تحليل-التعبيرات-السابقة">تحليل التعبيرات السابقة</h2>
 <p>جمّعنا دوالّ التحليل وتوليد الشيفرة الخاصة بنا. والقطعة الناقصة هي الشيفرة في الوسط
 التي تربط تلك معًا.</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/compiling-expressions-3.webp" alt="Parsing functions on the left, bytecode emitting functions on the right. What goes in the middle?" />
+<img src="/arabic-cs-library/images/crafting-interpreters/compiling-expressions-3.webp" alt="دوالّ التحليل على اليسار، ودوالّ توليد شيفرة البايت على اليمين. فما الذي يوضع في المنتصف؟" />
 <p>الخطوة الوحيدة المتبقية في <code>compile()</code> التي علينا تنفيذها هي هذه الدالة:</p>
 <p>^code expression</p>
 <p>لسنا مستعدين بعد لتنفيذ كلّ أنواع التعبيرات في Lox. بصراحة، لا نملك حتى القيم
@@ -421,7 +421,7 @@ name="useful">متداخلة</span> مثل <code>!!doubleNegative</code>. وبم
 تاركةً قيمهما على المكدّس. ثم تنفّذ تعليمة المعامل. وهي تُسقط القيمتين وتحسب العملية
 وتدفع النتيجة.</p>
 <p>الشيفرة التي غالبًا ما لفتت انتباهك هنا هي سطر <code>getRule()</code> ذاك. حين نحلّل المُعامل
-الأيمن، ن 다시 نحتاج إلى معالجة الأسبقية. خذ تعبيرًا كهذا:</p>
+الأيمن، نحتاج إلى معالجة الأسبقية. خذ تعبيرًا كهذا:</p>
 <pre><code class="language-lox">2 * 3 + 4
 </code></pre>
 <p>حين نحلّل المُعامل الأيمن لتعبير <code>*</code>، نحتاج إلى التقاط <code>3</code> فقط، لا <code>3 + 4</code>، لأنّ <code>+</code> له
@@ -547,12 +547,12 @@ name="higher">بمستوى واحد</span> من أسبقيته. يمكننا أ�
 فهمًا كاملًا، فتنقّل عبر المحلّل في مصحّحك وهو يعمل على بعض التعبيرات.ربما يساعدك
 رسمٌ بياني. ليس هناك سوى حفنة من الدوالّ، لكنها مترابطة بشكل مذهل:</p>
 <p><span name="connections"></span></p>
-<p><img src="/arabic-cs-library/images/crafting-interpreters/compiling-expressions-4.webp" alt="The various parsing
-functions and how they call each other." /></p>
+<p><img src="/arabic-cs-library/images/crafting-interpreters/compiling-expressions-4.webp" alt="دوالّ التحليل المختلفة
+وكيف تستدعي بعضها بعضاً." /></p>
 <aside name="connections">
-<p>السهم <img src="/arabic-cs-library/images/crafting-interpreters/compiling-expressions-5.webp" alt="A solid arrow." class="arrow" />
-يربط دالة بدالة أخرى تستدعيها مباشرةً. والسهم <img src="/arabic-cs-library/images/crafting-interpreters/compiling-expressions-6.webp" alt="An open
-arrow." class="arrow" /> يُظهر مؤشّرات الجدول إلى دوالّ التحليل.</p>
+<p>السهم <img src="/arabic-cs-library/images/crafting-interpreters/compiling-expressions-5.webp" alt="سهم مصمت." class="arrow" />
+يربط دالة بدالة أخرى تستدعيها مباشرةً. والسهم <img src="/arabic-cs-library/images/crafting-interpreters/compiling-expressions-6.webp" alt="سهم
+مجوّف." class="arrow" /> يُظهر مؤشّرات الجدول إلى دوالّ التحليل.</p>
 </aside>
 <p>لاحقًا، سنحتاج إلى تعديل الشيفرة في هذا الفصل للتعامل مع الإسناد. لكن بخلاف ذلك، فإنّ
 ما كتبناه يغطي كل احتياجاتنا لتجميع التعبيرات لبقية الكتاب. سنُدرج دوالّ تحليل إضافية في
@@ -645,7 +645,7 @@ packrat، وأمور من كلّ هذا النوع. لأنّ، واضحًا، إ
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -653,8 +653,8 @@ packrat، وأمور من كلّ هذا النوع. لأنّ، واضحًا، إ
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

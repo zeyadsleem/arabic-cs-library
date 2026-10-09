@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -1802,7 +1802,7 @@ COMMIT 841
 <p><strong>ملاحظة حول السلامة عند الانهيار</strong>: إذا انهار المشترك على نحو غير متوقع، فقد يُفقد أحدث ربط في ملف <code>replorigin_checkpoint</code>. ومع ذلك، يعيد النظام تلقائيًا بناء أحدث ربط خلال عملية الاستعادة اللاحقة. وتُوصف التفاصيل في القسم 12.8.3.</p>
 <h3 id="12812-تدفق-بيانات-lsn-في-التسلسل-الطبيعي">12.8.1.2. تدفق بيانات LSN في التسلسل الطبيعي</h3>
 <p>يوضّح المثال التالي كيفية إدارة معرّفات LSN عندما ينفّذ الناشر أمر INSERT (انظر الشكل 12.31).</p>
-<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-31.webp" alt="While this figure illustrates the origin_id and origin_lsn within the COMMIT WAL record written by the subscriber, the precise structure is as follows: In the COMMIT (or ABORT) WAL record, the origin_id is included in the header portion, whereas the origin_commit_lsn (or origin_abort_lsn) and origin_commit_timestamp (or origin_abort_timestamp) are appended to the extended section."></p>
+<p><img src="/arabic-cs-library/images/postgres-internals/pgsql12-fig-12-31.webp" alt="مع أن هذا الشكل يوضّح origin_id وorigin_lsn داخل سجل WAL الخاص بالالتزام المكتوب بواسطة المشترك، فإن البنية الدقيقة كما يلي: في سجل WAL الخاص بالالتزام (أو الإلغاء)، يُضمَّن origin_id في جزء الترويسة، بينما يُلحق origin_commit_lsn (أو origin_abort_lsn) وorigin_commit_timestamp (أو origin_abort_timestamp) بالقسم الموسَّع."></p>
 <h4>الشكل 12.31. تدفق ربط LSN خلال معاملة عادية.</h4>
 <p>مع أن هذا الشكل يوضّح origin_id وorigin_lsn داخل سجل WAL الخاص بالالتزام المكتوب بواسطة المشترك، فإن البنية الدقيقة كما يلي: في سجل WAL الخاص بالالتزام (أو الإلغاء)، يُضمَّن origin_id في جزء الترويسة، بينما يُلحق origin_commit_lsn (أو origin_abort_lsn) وorigin_commit_timestamp (أو origin_abort_timestamp) بالقسم الموسَّع.</p>
 <h4>الشكل 12.31 [1]</h4>
@@ -1857,7 +1857,7 @@ COMMIT 841
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -1865,8 +1865,8 @@ COMMIT 841
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

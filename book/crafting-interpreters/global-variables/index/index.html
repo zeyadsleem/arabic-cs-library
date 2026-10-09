@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -174,7 +174,7 @@ effect) يصف كيف تعدّل التعليمة المكدّس. فمثلًا،
 المكدّس أصغر بعنصر واحد.</p>
 <aside name="effect">
 <p>المكدّس أقصر بعنصر واحد بعد <code>OP_ADD</code>، لذا أثرها ‎-1‎:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/global-variables-1.webp" alt="The stack effect of an OP_ADD instruction." />
+<img src="/arabic-cs-library/images/crafting-interpreters/global-variables-1.webp" alt="أثر تعليمة OP_ADD على المكدّس." />
 </aside>
 <p>يمكنك جمع آثار المكدّس لسلسلة من التعليمات للحصول على أثرها الكلّي. فحين تجمع آثار سلسلة
 التعليمات المترجَمة من أيّ تعبير كامل، يكون المجموع واحدًا. فكل تعبير يترك قيمة نتيجة واحدة على
@@ -374,7 +374,7 @@ print breakfast;
 عاديًّا إلا حين يصل إلى <code>=</code>، أي بعد رموز كثيرة بعد أول <code>menu</code>. وفي تلك اللحظة يكون المصرّف قد
 أصدر بالفعل شيفرة بايت للجزء كلّه.</p>
 <p>لكنّ المشكلة ليست بالوخامة التي قد تبدو. انظر إلى كيفية رؤية المحلّل لذلك المثال:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/global-variables-2.webp" alt="The 'menu.brunch(sunday).beverage = &quot;mimosa&quot;' statement, showing that 'menu.brunch(sunday)' is an expression." />
+<img src="/arabic-cs-library/images/crafting-interpreters/global-variables-2.webp" alt="عبارة «menu.brunch(sunday).beverage = &quot;mimosa&quot;»، تُظهر أنّ «menu.brunch(sunday)» تعبير." />
 <p>رغم أنّ جزء <code>.beverage</code> يجب ألّا يُترجم كتعبير قراءة، فإنّ كل ما إلى يسار <code>.</code> تعبيرٌ ذو دلالات
 تعبيرية عادية. ويمكن ترجمة <code>menu.brunch(sunday)</code> وتنفيذه كما هي العادة.</p>
 <p>ولحسن حظّنا، فإنّ فروق الدلالات الوحيدة على يسار الإسناد تظهر في أقصى يمين الرموز، قبيل <code>=</code>
@@ -409,7 +409,7 @@ print breakfast;
 <pre><code class="language-lox">a * b = c + d;
 </code></pre>
 <p>وفقًا لقواعد Lox، فإنّ <code>=</code> له أدنى أسبقية، لذا ينبغي أن يُحلَّل هذا تقريبًا هكذا:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/global-variables-3.webp" alt="The expected parse, like '(a * b) = (c + d)'." />
+<img src="/arabic-cs-library/images/crafting-interpreters/global-variables-3.webp" alt="التحليل المتوقّع، مثل «(a * b) = (c + d)»." />
 <p>من البديهي أنّ <code>a * b</code> ليس هدف إسناد <span name="do">صالحًا</span>، لذا ينبغي أن يكون هذا خطأ
 صياغة. لكن إليك ما يفعله محلّلنا:</p>
 <aside name="do">
@@ -427,7 +427,7 @@ print breakfast;
 وتُحلّل بذلك بقية السطر كإسناد.</li>
 </ol>
 <p>بعبارة أخرى، يرى المحلّل الشيفرة أعلاه هكذا:</p>
-<img src="/arabic-cs-library/images/crafting-interpreters/global-variables-4.webp" alt="The actual parse, like 'a * (b = c + d)'." />
+<img src="/arabic-cs-library/images/crafting-interpreters/global-variables-4.webp" alt="التحليل الفعلي، مثل «a * (b = c + d)»." />
 <p>لقد أفسدنا معالجة الأسبقية لأنّ <code>variable()</code> لا تأخذ في الحسبان أسبقية التعبير المحيط الذي يحتوي
 المتغيّر. فإن وقع المتغيّر صدفةً على يمين معامل وسطي، أو كمُعامل لمعامل أحادي، فإنّ ذلك التعبير
 المحيط ذا أسبقية أعلى من أن تسمح بـ <code>=</code>.</p>
@@ -529,7 +529,7 @@ var ooops = &quot;too many o's!&quot;;
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -537,8 +537,8 @@ var ooops = &quot;too many o's!&quot;;
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],

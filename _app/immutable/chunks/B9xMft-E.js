@@ -1,0 +1,150 @@
+const s="database-foundations",e="sql-eenopveel",n="One-to-many relationships",a="index",t="علاقات واحد إلى متعدد",o=[{depth:2,id:"جدولان",text:"جدولان"},{depth:3,id:"جدولان-منفصلان",text:"جدولان منفصلان"},{depth:3,id:"جداول-مترابطة",text:"جداول مترابطة"},{depth:3,id:"الترجمة-إلى-النموذج-العلائقي",text:"الترجمة إلى النموذج العلائقي"},{depth:2,id:"التنفيذ-في-مخططك-الخاص",text:"التنفيذ في مخططك الخاص"},{depth:2,id:"استجابة-نظام-إدارة-قواعد-البيانات-العلائقية-للأخطاء",text:"استجابة نظام إدارة قواعد البيانات العلائقية للأخطاء"}],l=`<blockquote>
+<p>لماذا ترك مدير قاعدة البيانات زوجته؟ لأنها كانت لديها علاقات واحد إلى متعدد. —مؤلف مجهول</p>
+</blockquote>
+<p>في الفصل التالي، نقدّم استعلامات SQL التي تمتد عبر عدة جداول باستخدام <code>JOINS</code>. وللتدريب، ستحتاج إلى مخطط يتكوّن من <em>عدة جداول</em>. ويقدّم لك هذا الفصل مخططًا صغيرًا فيه علاقة واحد إلى متعدد (one-to-many) بين جدولين. وفي أحد <a href="/arabic-cs-library/book/database-foundations/model-logisch/index">دروس النمذجة التالية</a> تُفصَّل النظرية الكامنة وراء هذا الفصل العملي تفصيلًا كاملًا. وهنا لن تجد سوى مقدمة موجزة.</p>
+<h2 id="جدولان">جدولان</h2>
+<p>في الفصول السابقة، جرى تطوير مكوّنات جملة <code>SELECT</code> المختلفة. واستخدمنا أساسًا جدولًا كان ترجمة لهذا النموذج المفاهيمي (conceptual model):</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-eenopveel-0-opo_conceptueel.webp" alt="النموذج المفاهيمي للمقرر"></p>
+<h3 id="جدولان-منفصلان">جدولان منفصلان</h3>
+<p>يحتوي هذا المخطط على <em>نوع كيان</em> واحد له عدد من <em>الخواص</em>. وإحدى تلك الخواص رمز المحاضر لمنسّق المقرر. فلكل مقرر منسّق فريد في النهاية. ومن المنطقي إضافة نوع كيان ثانٍ &quot;Lecturer&quot; إلى المخطط. فلدينا في النهاية كثير من المعلومات عن المحاضرين. ويحتوي نوع الكيان هذا معلومات عن جميع المحاضرين، لا عن منسّقي المقررات فقط. والمحاولة الساذجة هي الشكل التالي:</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-eenopveel-1-2_losse_entiteittypes.webp" alt="كيانان مستقلان، فكرة سيئة!"></p>
+<p>وإذا ترجمت هذا إلى PostgreSQL فتحصل على جدولين منفصلين. غير أن هذه البنية <em>مصدر مشكلات</em>. ونذكر خطأين محتملين:</p>
+<ul>
+<li>يضيف شخص صفًا (= مقررًا جديدًا) إلى جدول &quot;Course&quot; بمنسّق غير موجود في جدول &quot;Lecturer&quot;.</li>
+<li>يحذف شخص صفًا في جدول &quot;Lecturer&quot;. غير أن المحاضر في هذا الصف منسّق لمقرر أيضًا.</li>
+</ul>
+<p>وسيؤدي كلا العمليتين إلى أن تحتوي قاعدة البيانات أخطاء. فلن تستطيع بعد ذلك البحث عن معلومات بعض المقررات بشأن منسّق المقرر. وهذا ليس حلًا جيدًا. <em>أنت تريد أن يحميك نظام إدارة قواعد البيانات العلائقية (RDBMS) من العمليات التي تُدخل أخطاء إلى المخطط</em>.</p>
+<h3 id="جداول-مترابطة">جداول مترابطة</h3>
+<p>المشكلة، بالطبع، أن الجدولين لا يمكن أن يوجدا منفصلين. <em>فهناك علاقة بينهما</em>. ويجعل النموذج المفاهيمي في الشكل أدناه هذه العلاقة ظاهرة:</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-eenopveel-2-gekoppelde_entiteittypes.webp" alt="كيانان موصولان بعلاقة"></p>
+<p>من اليمين إلى اليسار تقرأ العلاقة &quot;هو منسّق لـ&quot;، ومن اليسار إلى اليمين يمكن أن تصبح شيئًا على غرار &quot;له منسّق&quot;. ولكل مقرر منسّق واحد على الأقل وواحد على الأكثر (أي واحد فقط). وليس كل محاضر منسّقًا لمقرر، لكن قد يكون المحاضر منسّقًا لعدة مقررات. والتعددية على جهة المحاضر هي إذن (0, N). وهذا مثال على علاقة واحد إلى متعدد.</p>
+<p>ولاحظ أن الخاصية &quot;Coordinator&quot; من شكل سابق أُسقطت. فقد استُبدلت فعلًا بعلاقة مع نوع كيان جديد &quot;Lecturer&quot; لأننا نشعر بالحاجة إلى أكثر من مجرد تتبّع رقم المحاضر.</p>
+<h3 id="الترجمة-إلى-النموذج-العلائقي">الترجمة إلى النموذج العلائقي</h3>
+<p>فكيف تترجم الآن علاقة واحد إلى متعدد هذه إلى نموذج <em>علائقي</em>؟ ففي النهاية، PostgreSQL مثال على قاعدة بيانات علائقية. وإذا ترجمنا النموذج <em>المفاهيمي</em> من القسم السابق إلى نموذج <em>منطقي</em>، فسيلزم أن يكون ذلك النموذج المنطقي نموذجًا علائقيًا.</p>
+<p>ويمكنك دراسة كل شيء عن النماذج المنطقية بالتفصيل في فصل <a href="/arabic-cs-library/book/database-foundations/model-logisch/index">&quot;نموذج البيانات المنطقي&quot;</a>. والغرض الوحيد من هذا القسم هو تقديمك بإيجاز إلى هذا الموضوع حتى نمضي إلى الجزء التالي في استكشافنا للغة SQL (<code>JOIN</code>). ويبدو النموذج المنطقي هكذا:</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-eenopveel-3-logisch.webp" alt="النموذج المنطقي لهذه العلاقة"></p>
+<p>وما يكفي الآن أن تستطيع قراءة هذا المخطط، وهو ليس بالصعب:</p>
+<ul>
+<li>يصبح كل نوع كيان <em>جدولًا</em>، يمثله مستطيل بعنوان: &quot;Course&quot; و&quot;Lecturer&quot;.</li>
+<li>وتصبح كل خاصية لنوع كيان <em>عمودًا</em> في الجدول.</li>
+<li>ولكل جدول <em>مفتاح أساسي</em> (PK)، ممثّل هنا بالأصفر. ولذلك المفتاح الأساسي قيمة فريدة لكل صف في الجدول.</li>
+<li>ويجب أن يكون لكل وحدة مقرر منسّق واحد. لذا توجد علاقة بين الجدولين. وفي جدول &quot;Course&quot; أُضيف عمود &quot;Coordinator&quot;. وهذا العمود ما يسمى &quot;مفتاحًا أجنبيًا&quot; (FK، ويُشار إليه بالأخضر) لأن كل قيمة من قيم هذا العمود يجب أن تظهر مفتاحًا أساسيًا لجدول &quot;Lecturer&quot;.</li>
+<li>ويوضح الرابط بين الجدولين أن محتوى العمود يوافق قيمة العمود &quot;Lecturer_id&quot;. ويرمز الرمز (شرطتان) في الدائرة الزرقاء الصغيرة إلى أنه يجب أن يكون لكل وحدة مقرر محاضر واحد منسّقًا.</li>
+<li>وبالعكس، يوضح الرمز في الدائرة البرتقالية الأكبر أن كل محاضر يمكن أن يكون منسّقًا لصفر (نقطة) أو واحد أو أكثر من المقررات (قدم الغراب).</li>
+</ul>
+<p>ويُحوَّل هذا النموذج المنطقي أخيرًا إلى نموذج <em>فيزيائي</em>، حيث نحدد معلومات إضافية تعتمد على الخصائص المحددة لنظام إدارة قواعد البيانات العلائقية المختار (في حالتنا PostgreSQL). ومن الأمثلة على ذلك أنواع بيانات الأعمدة.</p>
+<p>ورُسم النموذج الفيزيائي بـ DBSchema. وسنغطّي ذلك بالتفصيل <a href="/arabic-cs-library/book/database-foundations/sql-dbschema/index">لاحقًا</a>. ويقابل هذا النموذج الفيزيائي النموذجَ المنطقي بتدوين مختلف قليلًا (لاحظ السهم الأزرق المنطلق الذي يشير إلى أن هذا الحقل مفتاح أجنبي يشير إلى السهم الأصفر-البنّي الواصل عند lecturer_id). كما أُعطي كل حقل نوع بيانات (<code>char</code> و<code>date</code>...):</p>
+<p><img src="/arabic-cs-library/images/database-foundations/sql-eenopveel-4-course_lecturer.webp" alt="نموذج فيزيائي لجدولين بعلاقة واحد-إلى-كثير"></p>
+<p>وتتم إضافة علاقة واحد إلى متعدد هذه في قاعدة البيانات كما يلي:</p>
+<ol>
+<li>أنشئ أولًا جدول &quot;Lecturer&quot;.</li>
+<li>ابحث عن المفتاح الأساسي لجدول &quot;Lecturer&quot;. وهذا المفتاح الأساسي حقل &quot;lecturer_id&quot;. ونوع بيانات هذا المفتاح الأساسي <code>char(8)</code>، لأن رمز المحاضر يبدأ دائمًا بـ &quot;u&quot; متبوعًا بسبعة أرقام. ولاحظ أننا نستخدم في الواقع التعيينين &quot;حقل&quot; و&quot;عمود&quot; بالتبادل.</li>
+<li>وفي جدول &quot;Course&quot; ينبغي الآن إنشاء عمود بنوع البيانات نفسه بالضبط الذي للمفتاح الأساسي في جدول المحاضر، أي <code>char(8)</code> أيضًا. ونسمي ذلك &quot;نقل المفتاح الأساسي&quot; ونشير إليه في جدول المقررات بأنه &quot;مفتاح أجنبي&quot;.</li>
+<li>اربط الآن هذين العمودين بقيد (<code>constraint</code>).</li>
+<li>ثم <em>أدخل البيانات أولًا</em> في جدول &quot;Lecturer&quot;.</li>
+<li><em>وبعد ذلك</em> يمكنك ملء جدول &quot;Course&quot; بالصفوف.</li>
+</ol>
+<h2 id="التنفيذ-في-مخططك-الخاص">التنفيذ في مخططك الخاص</h2>
+<p>من هنا، عليك أن تشمّر عن ساعديك و<em>تُنشئ الجدولين فعليًا</em>. ففي النهاية نريدك أن تكون قادرًا قريبًا على إضافة المعلومات وإزالتها في جداولك الخاصة، ولن يكون ذلك ممكنًا إن تركنا الجميع يعملون في الجدول نفسه. لذا شغّل pgAdmin ونفّذ الخطوات التالية.</p>
+<p>وإذا اتبعت خارطة الطريق أدناه (المبنية على الخطوات في القسم السابق) فستحصل على جدولين مترابطين مملوءين بالبيانات. وسنضع بعض التمارين الصغيرة على هذا المخطط. وفي الفصل التالي عن <code>JOIN</code> سنستخدم هذا المخطط أساسًا.</p>
+<p>وتفترض الخطوات التالية أن لكل شخص مخططه الخاص بالاسم &quot;rxxxxxxx&quot;، مع استخدام رقم r الخاص به بالطبع. وأسهل طريقة هي أن تستخدم اتصال التجميع على المنفذ 62526. وتحقق من مخططك مما إذا كان جدول &quot;Course&quot; أو &quot;Lecturer&quot; موجودًا فيه بالفعل. فإن كان كذلك، أزل هذا الجدول بـ <code>DROP TABLE ...</code> في أداة استعلامات. وتذكّر: إما أن تستخدم لكل اسم جدول أولًا اسم المخطط متبوعًا بنقطة ثم اسم الجدول، وإما أن تحدد <code>search_path</code> بشكل صحيح. ونزّل الملف <a href="https://df.webontwerp.ucll.be/assets/een-op-veel-SQL/EN/lecturer-course-SQL.txt">&quot;lecturer-course-SQL.txt&quot;</a>. وتستخدم الخطوات التالية أجزاءً من شيفرة SQL هذه لبناء كل شيء وملئه بالبيانات. ويمكنك في كل مرة نسخ جزء من هذا المستند النصي ولصقه في أداة الاستعلامات وتنفيذه. أنشئ جدول &quot;Lecturer&quot; بتنفيذ شيفرة <code>CREATE</code> الخاصة بهذا الجدول من الملف الذي نزّلته للتو. لا جديد هنا: حقلان غير مطلوبين، وبعض أنواع بيانات مختلفة، ومفتاح أساسي... ثم أنشئ جدول &quot;Course&quot; بالنسخ واللصق من ملف txt. وتحتاج هذه الشيفرة إلى قليل من الشرح:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">CREATE TABLE</span> rxxxxxxx.course (
+  code <span class="hljs-type">char</span>(<span class="hljs-number">6</span>) <span class="hljs-keyword">NOT NULL</span> ,
+
+  ...
+
+  coordinator <span class="hljs-type">char</span>(<span class="hljs-number">8</span>) <span class="hljs-keyword">NOT NULL</span> ,
+  <span class="hljs-keyword">CONSTRAINT</span> pk_course_code <span class="hljs-keyword">PRIMARY KEY</span> ( code ),
+  <span class="hljs-keyword">CONSTRAINT</span> fk_course_lecturer <span class="hljs-keyword">FOREIGN KEY</span> ( coordinator )
+    <span class="hljs-keyword">REFERENCES</span> rxxxxxxx.lecturer( lecturer_id )
+);
+</code></pre>
+<p>وهذا القيد <code>CONSTRAINT</code> الأخير جديد. وبترجمة فضفاضة يقول هذا القيد ما يلي: &quot;يشير العمود &quot;coordinator&quot; في هذا الجدول إلى المفتاح <em>الأساسي</em> &quot;lecturer_id&quot; في جدول &quot;Lecturer&quot; وهو بالتالي مفتاح <em>أجنبي</em>&quot;. ومن الجيد أن تستخدم لكل <code>CONSTRAINT</code> <em>اسمًا معقولًا</em>. وفي هذه الحالة: &quot;fk&quot; (من &quot;foreign key&quot;) متبوعًا باسمي الجدولين المعنيين. وتستخدم أداة DBSchema التي سنستخدمها لاحقًا لذلك نظام التسمية هذا تلقائيًا.</p>
+<p>وفكّر منطقيًا في <em>الترتيب الصحيح لملء البيانات في الجدولين</em>. فجدول &quot;Course&quot; يعتمد على جدول &quot;Lecturer&quot;. ولا يمكنك إضافة منسّق لمقرر إلا إذا كان هذا الشخص موجودًا بالفعل في جدول &quot;Lecturer&quot;. لذا املأ أولًا جدول المحاضرين بعملية نسخ/لصق لجمل <code>INSERT</code> من ملف txt.</p>
+<pre><code class="language-sql"><span class="hljs-keyword">INSERT INTO</span> rxxxxxxx.lecturer( lecturer_id, last_name, first_name, email, street, house_number,
+  municipality, birthdate, start_date, end_date, sex ) <span class="hljs-keyword">VALUES</span> ( <span class="hljs-string">&#x27;u0042352&#x27;</span>, <span class="hljs-string">&#x27;Adriaens&#x27;</span>,
+  <span class="hljs-string">&#x27;Gerben&#x27;</span>, <span class="hljs-string">&#x27;gerben.adriaens@ucll.be&#x27;</span>, <span class="hljs-string">&#x27;Ankerstraat&#x27;</span>, <span class="hljs-string">&#x27;12&#x27;</span>, <span class="hljs-string">&#x27;1330 Rixensart&#x27;</span>,
+  <span class="hljs-string">&#x27;1984-02-16&#x27;</span>, <span class="hljs-string">&#x27;2017-09-01&#x27;</span>, <span class="hljs-keyword">null</span>, <span class="hljs-string">&#x27;M&#x27;</span>);
+<span class="hljs-keyword">INSERT INTO</span> rxxxxxxx.lecturer( lecturer_id, last_name, first_name, email, street, house_number,
+  municipality, birthdate, start_date, end_date, sex ) <span class="hljs-keyword">VALUES</span> ( <span class="hljs-string">&#x27;u0057764&#x27;</span>, <span class="hljs-string">&#x27;Bogers&#x27;</span>,
+  <span class="hljs-string">&#x27;Goedele&#x27;</span>, <span class="hljs-string">&#x27;goedele.bogers@ucll.be&#x27;</span>, <span class="hljs-string">&#x27;Elzasgang&#x27;</span>, <span class="hljs-keyword">null</span>, <span class="hljs-string">&#x27;2830 Willebroek&#x27;</span>,
+  <span class="hljs-string">&#x27;1979-09-09&#x27;</span>, <span class="hljs-string">&#x27;2006-11-20&#x27;</span>, <span class="hljs-keyword">null</span>, <span class="hljs-string">&#x27;F&#x27;</span>);
+<span class="hljs-keyword">INSERT INTO</span> ...
+</code></pre>
+<p>وأخيرًا، بعد أن امتلأ جدول &quot;Lecturer&quot;، يمكنك ملء جدول &quot;Course&quot; بالبيانات أيضًا. وسنفعل ذلك هذه المرة بقائمة CSV. انسخ هذه الأسطر من القائمة وضعها في ملف .csv جديد. واستورد ملف .csv هذا كما في (<a href="/arabic-cs-library/book/database-foundations/sql-csv/index">انظر قسم &quot;ملف CSV&quot;</a>):</p>
+<pre><code>code,credits,name,start_date,end_date,language,semester,coordinator
+MBI71A,3,Probleemoplossend denken,2016-09-15,2022-09-14,nl,1,u0012047
+MBI65X,4,Webontwikkeling 1,2017-09-15,2022-09-14,nl,1,u0012047
+MBI66X,4,Webontwikkeling 2,2017-09-15,2022-09-14,nl,2,u0015529
+MBI20X,3,MobieleToepassingen,2018-09-15,2023-09-14,nl,5,u0057764
+MBI26A,6,Computersystemen,2013-09-15,2022-09-14,nl,6,u0041234
+...
+</code></pre>
+<p>تم! نفّذ <code>SELECT * FROM ...</code> على الجدولين لعرض البيانات.</p>
+<h2 id="استجابة-نظام-إدارة-قواعد-البيانات-العلائقية-للأخطاء">استجابة نظام إدارة قواعد البيانات العلائقية للأخطاء</h2>
+<p>نفّذ الآن التمارين الصغيرة التالية. وأحيانًا يكون الغرض من تمرين <em>أن نجعلك ترتكب خطأ</em> حتى تتعلم تفسير رسائل الخطأ من نظام إدارة قواعد البيانات العلائقية تفسيرًا سليمًا.</p>
+<p>أضف محاضرًا جديدًا: &quot;Anouk De Ridder&quot; برقم u &quot;u0012047&quot;. وهي تسكن في &quot;Kerkstraat 23, 3053 Haasrode&quot;، ووُلدت في 5 مايو 1994 وتنضم إلى UCLL اليوم. وعناوين البريد في UCLL بسيطة: firstname.lastname@ucll.be. واشرح ما يحدث عند تنفيذ <code>INSERT</code> بالبيانات أعلاه.</p>
+<h4>الحل</h4>
+<p>تحصل على رسالة خطأ تفيد بوجود محاضر برمز المحاضر هذا بالفعل. وبما أن رمز المحاضر هو المفتاح <em>الأساسي</em> (وبالتالي <em>فريد</em>)، يعيد نظام إدارة قواعد البيانات رسالة خطأ و<em>لا يُنفَّذ</em> <code>INSERT</code>. ومرة أخرى ستلاحظ أن من المفيد استخدام اسم معبّر لقيدك <code>CONSTRAINT</code>: فهناك خطأ ما في المفتاح الأساسي &quot;lecturer_id&quot; في جدول &quot;Lecturer&quot;:</p>
+<pre><code>ERROR: duplicate key value violates unique constraint &quot;pk_lecturer_lecturer_id&quot;
+DETAIL: Key (lecturer_id)=&quot;(u0012047)&quot; already exists.
+SQL state: 23505
+</code></pre>
+<p>خطأ مطبعي سخيف بالطبع أعلاه. فرقم u الخاص بـ Anouk ليس &quot;u0012047&quot; بل &quot;u0099999&quot;. أضف الآن هذا المحاضر إلى جدول &quot;Lecturer&quot;.</p>
+<h4>الحل</h4>
+<p>لا مشكلة هذه المرة إذا كان استعلامك على غرار هذا:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">INSERT INTO</span> rxxxxxxx.lecturer( lecturer_id, last_name, first_name, email, street, house_number,
+  municipality, birthdate, start_date, end_date, sex ) <span class="hljs-keyword">VALUES</span> ( <span class="hljs-string">&#x27;u0099999&#x27;</span>, <span class="hljs-string">&#x27;De Ridder&#x27;</span>,
+  <span class="hljs-string">&#x27;Anouk&#x27;</span>, <span class="hljs-string">&#x27;anouk.deridder@ucll.be&#x27;</span>, <span class="hljs-string">&#x27;Kerkstraat&#x27;</span>, <span class="hljs-string">&#x27;23&#x27;</span>, <span class="hljs-string">&#x27;3053 Haasrode&#x27;</span>,
+  <span class="hljs-string">&#x27;1994-07-05&#x27;</span>, <span class="hljs-string">&#x27;2022-10-15&#x27;</span>, <span class="hljs-keyword">null</span>, <span class="hljs-string">&#x27;F&#x27;</span>);
+</code></pre>
+<p>ويردّ الخادم بأنه أُضيف صف واحد بنجاح:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">INSERT</span> <span class="hljs-number">0</span> <span class="hljs-number">1</span>
+
+Query returned successfully <span class="hljs-keyword">in</span> <span class="hljs-number">85</span> msec.
+</code></pre>
+<p>وفي اليوم نفسه الذي أُضيفت فيه إلى قاعدة البيانات، تقرر Anouk De Ridder أنها لا تريد أن تصبح محاضرة بعد كل شيء. أزلها من جدول &quot;Lecturer&quot;.</p>
+<h4>الحل</h4>
+<pre><code class="language-sql"><span class="hljs-keyword">DELETE</span>
+<span class="hljs-keyword">FROM</span> rxxxxxxx.lecturer
+<span class="hljs-keyword">WHERE</span> lecturer_id <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;u0099999&#x27;</span>;
+</code></pre>
+<p>ويمكنك استخدام الشيفرة التالية أيضًا، لكنك حينئذ تحذف <em>كل من يحمل هذا الاسم</em>. ومن يدري، ربما يوجد أكثر من شخص باسم &quot;Anouk De Ridder&quot; وحينئذ سيُزال هؤلاء الأشخاص أيضًا من الجدول:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">DELETE</span>
+<span class="hljs-keyword">FROM</span> rxxxxxxx.lecturer
+<span class="hljs-keyword">WHERE</span> last_name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;De Ridder&#x27;</span> <span class="hljs-keyword">AND</span> first_name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Anouk&#x27;</span>; <span class="hljs-comment">-- dangerous!</span>
+</code></pre>
+<p>ويردّ الخادم بأنه حُذف صف واحد بنجاح:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">DELETE</span> <span class="hljs-number">1</span>
+
+Query returned successfully <span class="hljs-keyword">in</span> <span class="hljs-number">53</span> msec
+</code></pre>
+<p>أزل &quot;Bram De Smet&quot; من Leuven من جدول &quot;Lecturer&quot;. واشرح ما يحدث.</p>
+<h4>الحل</h4>
+<p>بهذه الشيفرة تحذف الصف:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">DELETE</span>
+<span class="hljs-keyword">FROM</span> rxxxxxxx.lecturer
+<span class="hljs-keyword">WHERE</span> first_name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Bram&#x27;</span> <span class="hljs-keyword">AND</span> last_name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;De Smet&#x27;</span> <span class="hljs-keyword">AND</span> municipality <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;%Leuven&#x27;</span>;
+</code></pre>
+<p>غير أن الخادم يعطي رسالة الخطأ هذه:</p>
+<pre><code class="language-python">ERROR: update <span class="hljs-keyword">or</span> delete on table <span class="hljs-string">&quot;lecturer&quot;</span> violates foreign key constraint
+  <span class="hljs-string">&quot;fk_course_lecturer&quot;</span> on table <span class="hljs-string">&quot;course&quot;</span>
+DETAIL: Key (lecturer_id)=(u0012047) <span class="hljs-keyword">is</span> still referenced <span class="hljs-keyword">from</span> table <span class="hljs-string">&quot;course&quot;</span>.
+SQL state: <span class="hljs-number">23503</span>
+</code></pre>
+<p>وتقرأ رسالة الخطأ هذه كما يلي: &quot;يحتوي جدول &quot;Course&quot; على صف واحد على الأقل يشير إلى هذا المحاضر. فهذا المحاضر منسّق لمقرر. ولذلك لا ينبغي إزالته.&quot;. وفي حالة Anouk De Ridder لم تكن هناك مشكلة لأن رقم u الخاص بها لا يظهر في أي مكان في جدول المقررات، لذا كان يمكن إزالتها بأمان من ذلك الجدول.</p>
+<p>وأخيرًا، أضف مقررًا جديدًا: &quot;Trees and graphs&quot; برمز &quot;MBI39A&quot;. وقد دُرِّس هذا المقرر في الفصل الثاني، وتوقف هذا العام، واستمر من 15 سبتمبر 2017 إلى 14 سبتمبر 2022. ودُرِّس المقرر بالهولندية وكان له 3 نقاط. وكان منسّق المقرر المحاضر ذا الرقم u &quot;u0099998&quot;. اكتب <code>INSERT</code> ونفّذه وفسّر النتيجة.</p>
+<h4>الحل</h4>
+<p>بهذه الشيفرة تنفّذ <code>INSERT</code>:</p>
+<pre><code class="language-sql"><span class="hljs-keyword">INSERT INTO</span> rxxxxxxx.course( code, credits, name, start_date,
+  end_date, <span class="hljs-keyword">language</span>, semester, coordinator ) <span class="hljs-keyword">VALUES</span> ( <span class="hljs-string">&#x27;MBI39A&#x27;</span>, <span class="hljs-number">3</span>, <span class="hljs-string">&#x27;Trees and graphs&#x27;</span>,
+  <span class="hljs-string">&#x27;2017-09-15&#x27;</span>, <span class="hljs-string">&#x27;2022-09-14&#x27;</span>, <span class="hljs-string">&#x27;nl&#x27;</span>, <span class="hljs-number">2</span>, <span class="hljs-string">&#x27;u0099998&#x27;</span>);
+</code></pre>
+<p>ويرفض خادم قاعدة البيانات تنفيذ هذا <code>INSERT</code> ويعيد رسالة الخطأ التالية:</p>
+<pre><code>ERROR: insert or update on table &quot;course&quot; violates
+  foreign key constraint &quot;fk_course_lecturer&quot;
+DETAIL: Key (coordinator)=(u0099998) is not present in table &quot;lecturer&quot;.
+SQL state: 23503
+</code></pre>
+<p>وبما أنه لا يوجد محاضر برمز المحاضر هذا بالفعل في جدول &quot;Lecturer&quot;، لا يمكنك إضافة مقرر جديد بهذا المحاضر منسّقًا. ولا يمكنك إضافة المقرر إلا بعد إضافة هذا المحاضر في جدول &quot;Lecturer&quot;.</p>
+`,r={book:s,chapter:e,chapterTitle:n,slug:a,title:t,headings:o,html:l};export{s as book,e as chapter,n as chapterTitle,r as default,o as headings,l as html,a as slug,t as title};

@@ -19,26 +19,26 @@
         } catch (e) {}
       })();
     </script>
-    <link href="../../../../_app/immutable/entry/start.BgtrLNbH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/7HdEeiut.js" rel="modulepreload">
+    <link href="../../../../_app/immutable/entry/start.WwCbGKQJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C7llrmJa.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/CB16H0VS.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C5M2zIAg.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/entry/app.BKCjo5SH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.Gn2k_q_z.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/0.DnetuQJy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.BJ7IfPPs.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DyDjV9x3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Cde12WoB.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/DW13Yp9i.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/rkHjlr2m.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/nodes/5.D1QMeY_Y.js" rel="modulepreload">
-		<link href="../../../../_app/immutable/chunks/cyrpX0ww.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DK31YIkl.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CZy92UcG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.Diq4amjc.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B-F1Oq42.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
 		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
@@ -85,7 +85,7 @@
 <p>وهذا يعني أن حين يأتي إدخال المستخدم، فإن عليه أن يذهب إلى مكان ما حتى لا يفقده
 نظام التشغيل بين لحظة إبلاغ سائق الجهاز عنه ولحظة استدعاء تطبيقك لـ
 <code>getNextEvent()</code>. ذلك المكان هو <em>طابور</em> (queue).</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/event-queue-1.webp" alt="An event queue. The operating system enqueues Shift, Down, Up, and Click events, and the getNextEvent() function dequeues them." />
+<img src="/arabic-cs-library/images/game-programming-patterns/event-queue-1.webp" alt="طابور أحداث. نظام التشغيل يضع فيه أحداث Shift وDown وUp وClick، والدالة getNextEvent() تسحبها منه." />
 <p>حين يأتي إدخال المستخدم، يضيفه نظام التشغيل إلى طابور من الأحداث غير المعالَجة.
 وحين تستدعي <code>getNextEvent()</code>، فإنها تسحب أقدم حدث من الطابور وتسلمه إلى تطبيقك.</p>
 <h3 id="ناقل-أحداث-مركزي">ناقل أحداث مركزي</h3>
@@ -118,7 +118,7 @@ href="/arabic-cs-library/book/game-programming-patterns/game-loop/index" class="
 يشبه <a href="http://en.wikipedia.org/wiki/Blackboard_system">أنظمة السبورة
 السوداء</a> في مجال الذكاء الاصطناعي.</p>
 </aside>
-<img src="/arabic-cs-library/images/game-programming-patterns/event-queue-2.webp" alt="A central event queue is read from and written to by the Combat and Tutorial code." />
+<img src="/arabic-cs-library/images/game-programming-patterns/event-queue-2.webp" alt="طابور أحداث مركزي تقرأ منه وتكتب إليه شيفرتا Combat وTutorial." />
 <p>فكّرت في استخدام هذا كمثال لبقية الفصل، لكنني لست مؤيّداً عموماً للأنظمة العامة
 الكبيرة. فطوابير الأحداث لا يلزم أن تكون للتواصل عبر محرّك الألعاب بأكمله. إذ يمكن
 أن تكون مفيدة تماماً داخل صنف واحد أو مجال واحد.</p>
@@ -339,7 +339,7 @@ buffer). فهو يحافظ على كل ما هو رائع في المصفوفا�
 </ul>
 <p>بما أن <code>playSound()</code> تُلحق طلبات جديدة في نهاية المصفوفة، فيبدأ الرأس عند العنصر
 صفر وينمو الذيل إلى اليمين.</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/event-queue-3.webp" alt="An array of events. The head points to the first element, and the tail grows to the right." />
+<img src="/arabic-cs-library/images/game-programming-patterns/event-queue-3.webp" alt="مصفوفة من الأحداث. الرأس يشير إلى العنصر الأول، والذيل يتمدد نحو اليمين." />
 <p>لنكتب ذلك. أولاً، سنعدّل حقولنا قليلاً كي نجعل هذين المؤشّرَين واضحين في الصنف:</p>
 <p>^code head-tail</p>
 <p>في تنفيذ <code>playSound()</code>، حلّ <code>tail_</code> محلّ <code>numPending_</code>، لكن ما عدا ذلك فهو نفسه:</p>
@@ -360,11 +360,11 @@ buffer). فهو يحافظ على كل ما هو رائع في المصفوفا�
 <aside name="party">
 <p>هل تريد أن ينتهي وقت الحفل؟ لا. أنت لا تريد ذلك.</p>
 </aside>
-<img src="/arabic-cs-library/images/game-programming-patterns/event-queue-4.webp" alt="The same array as before but now the head is moving towards the right, leaving available cells on the left." />
+<img src="/arabic-cs-library/images/game-programming-patterns/event-queue-4.webp" alt="المصفوفة نفسها لكن الرأس يتحرك الآن نحو اليمين تاركًا خلايا متاحة على اليسار." />
 <p>لاحظ أن الذيل يزحف إلى الأمام، وكذلك <em>الرأس</em>. أي أن لدينا عناصر مصفوفة في <em>بداية</em>
 المصفوفة لم تعد مستخدَمة. إذاً ما نفعله هو أن نلتفّ بالذيل عائداً إلى بداية المصفوفة
 حين يخرج من نهايتها. لهذا تُسمّى <em>حلقياً</em> -- فهي تتصرّف كمصفوفة دائرية من الخلايا.</p>
-<img src="/arabic-cs-library/images/game-programming-patterns/event-queue-5.webp" alt="The array wraps around and now the head can circle back to the beginning." />
+<img src="/arabic-cs-library/images/game-programming-patterns/event-queue-5.webp" alt="تلتفّ المصفوفة حول نهايتها ويستطيع الرأس الآن أن يعود إلى البداية." />
 <p>تنفيذ ذلك سهل إلى حدٍّ لافت. فحين نُدرج عنصراً، لا نلزم سوى جعل الذيل يلتفّ إلى بداية
 المصفوفة حين يبلغ نهايتها:</p>
 <p>^code ring-play</p>
@@ -673,7 +673,7 @@ class="pattern">مجمّع الكائنات</a>.</p>
 			
 			<script>
 				{
-					__sveltekit_1v44q1m = {
+					__sveltekit_1ar8ptl = {
 						base: new URL("../../../..", location).pathname.slice(0, -1),
 						assets: "/arabic-cs-library"
 					};
@@ -681,8 +681,8 @@ class="pattern">مجمّع الكائنات</a>.</p>
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../../../../_app/immutable/entry/start.BgtrLNbH.js"),
-						import("../../../../_app/immutable/entry/app.BKCjo5SH.js")
+						import("../../../../_app/immutable/entry/start.WwCbGKQJ.js"),
+						import("../../../../_app/immutable/entry/app.Gn2k_q_z.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 5],
