@@ -1,29 +1,29 @@
 ---
-title: "Modularity, Objects, and State"
-lang: en
+title: "الوحدانية والكائنات والحالة"
+lang: ar
 ---
 
-> Mεταβάλλον ὰναπαύεται (Even while it changes, it stands still.) —Heraclitus Plus ça change, plus c’est la même chose. —Alphonse Karr
+> Mεταβάλλον ὰναπαύεται (حتّى وهي تتغيّر، تبقى ثابتةً.) —هيراقليطس Plus ça change, plus c’est la même chose. —ألفونس كار
 
-The preceding chapters introduced the basic elements from which programs are made. We saw how primitive procedures and primitive data are combined to construct compound entities, and we learned that abstraction is vital in helping us to cope with the complexity of large systems. But these tools are not sufficient for designing programs. Effective program synthesis also requires organizational principles that can guide us in formulating the overall design of a program. In particular, we need strategies to help us structure large systems so that they will be *modular*, that is, so that they can be divided “naturally” into coherent parts that can be separately developed and maintained.
+قدّمت الفصول السابقة العناصر الأساسيّة التي تُبنى منها البرامج. فرأينا كيف تُجمَع الإجراءات الأوّليّة والبيانات الأوّليّة لتكوين كائناتٍ مركّبة، وتعلّمنا أنّ التجريد أمرٌ حيويٌّ في مساعدتنا على مواجهة تعقيد النظم الكبيرة. غير أنّ هذه الأدوات غير كافيّةٍ لتصميم البرامج. فإنّ تركيب البرامج تركيبًا فعّالًا يتطلّب أيضًا مبادئ تنظيميّةً قادرةً على إرشادنا في صياغة التصميم الكلّيّ لبرنامجٍ ما. فنحن نحتاج، على وجه الخصوص، إلى استراتيجيّاتٍ تساعدنا على بناء النظم الكبيرة بحيث تكون *وحدانيّةً (modular)*، أي بحيث يمكن تقسيمها تقسيمًا «طبيعيًّا» إلى أجزاءٍ متماسكةٍ يمكن تطويرها وصيانتها كلًّا على حدة.
 
-One powerful design strategy, which is particularly appropriate to the construction of programs for modeling physical systems, is to base the structure of our programs on the structure of the system being modeled. For each object in the system, we construct a corresponding computational object. For each system action, we define a symbolic operation in our computational model. Our hope in using this strategy is that extending the model to accommodate new objects or new actions will require no strategic changes to the program, only the addition of the new symbolic analogs of those objects or actions. If we have been successful in our system organization, then to add a new feature or debug an old one we will have to work on only a localized part of the system.
+وإحدى استراتيجيّات التصميم القويّة، التي تلائم على وجه الخصوص بناء البرامج المخصّصة لنمذجة النظم المادّية، هي أن نبني بنية برامجنا على بنية النّظام المُمثَّل. فنحن نبني، مقابل كلّ كائنٍ في النّظام، كائنًا حسابيًّا مقابلًا. ونُعرّف، مقابل كلّ فعلٍ في النّظام، عمليّةً رمزيّةً في نموذجنا الحسابيّ. وأملنا في استخدام هذه الاستراتيجيّة هو أنّ توسيع النموذج لاستيعاب كائناتٍ جديدةٍ أو أفعالٍ جديدةٍ لن يتطلّب أيّ تغييرات استراتيجيّةٍ في البرنامج، بل إضافة الأمثال الرمزيّة الجديدة لتلك الكائنات أو الأفعال فقط. فإذا كنّا قد نجحنا في تنظيم نظامنا، فسنحتاج - لإضافة ميزةٍ جديدةٍ أو لتصحيح علةٍ قديمةٍ - إلى العمل على جزءٍ موضعيٍّ واحدٍ من النّظام فقط.
 
-To a large extent, then, the way we organize a large program is dictated by our perception of the system to be modeled. In this chapter we will investigate two prominent organizational strategies arising from two rather different “world views” of the structure of systems. The first organizational strategy concentrates on *objects*, viewing a large system as a collection of distinct objects whose behaviors may change over time. An alternative organizational strategy concentrates on the *streams* of information that flow in the system, much as an electrical engineer views a signal-processing system.
+فإذن، وإلى مدًى كبير، فإنّ الطريقة التي نُنظّم بها برنامجًا كبيرًا تُحدَّد بإدراكنا للنّظام المطلوب نمذجته. وسنبحث في هذا الفصل في استراتيجيّتَي تنظيمٍ بارزتين، تنشآن من «نظرةٍ إلى العالم» إلى بنية النظم نظرةً مختلفة إلى حدٍّ بعيد. فتركّز استراتيجيّة التنظيم الأولى على *الكائنات (objects)*، بنظرها إلى النّظام الكبير بوصفه مجموعةً من الكائنات المتميّزة التي قد تتغيّر سلوكيّاتها بمرور الزمن. وأمّا استراتيجيّة التنظيم البديلة فتركّز على *المجاري (streams)* من المعلومات التي تجري في النّظام، إلى حدٍّ كبيرٍ كما يرى المهندس الكهربائيّ نظام معالجة الإشارات.
 
-Both the object-based approach and the stream-processing approach raise significant linguistic issues in programming. With objects, we must be concerned with how a computational object can change and yet maintain its identity. This will force us to abandon our old substitution model of computation ([1.1.5](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e5)) in favor of a more mechanistic but less theoretically tractable *environment model* of computation. The difficulties of dealing with objects, change, and identity are a fundamental consequence of the need to grapple with time in our computational models. These difficulties become even greater when we allow the possibility of concurrent execution of programs. The stream approach can be most fully exploited when we decouple simulated time in our model from the order of the events that take place in the computer during evaluation. We will accomplish this using a technique known as *delayed evaluation*.
+وكلٌّ من المقاربة القائمة على الكائنات ومقاربة معالجة المجاري تُثير قضايا لغويّةً مهمّةً في البرمجة. ففي ما يتعلّق بالكائنات، يجب أن نُعني بالسؤال عن كيفيّة تغيّر كائنٍ حسابيٍّ مع احتفاظه بهويّته. وهذا سيُجبرنا على التخلّي عن نموذج الاستبدال القديم للاحتساب ([1.1.5](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e5)) لصالح *نموذج البيئة (environment model)* للاحتساب، الذي هو أكثر آليّةً لكنّه أقلّ قابليةً للمعالجة النظريّة. وصعوبات التعامل مع الكائنات والتغيّر والهويّة نتيجةٌ أساسيّةٌ للضرورة التي تُلزمنا بمواجهة الزمن في نماذجنا الحسابيّة. وهذه الصعوبات تزداد تفاقمًا حين نسمح بإمكان التنفيذ المتزامن للبرامج. ويمكن استثمار مقاربة المجاري أتمّ استثمارٍ حين نفصل الزمن المُحاكى في نموذجنا عن ترتيب الأحداث التي تقع في الحاسوب أثناء التقييم. وسنحقّق هذا بتقنيّةٍ تُعرف بـ*التقييم المتأخّر (delayed evaluation)*.
 
-### 3.1 Assignment and Local State
+### 3.1 الإحلال والحالة المحليّة
 
-We ordinarily view the world as populated by independent objects, each of which has a state that changes over time. An object is said to “have state” if its behavior is influenced by its history. A bank account, for example, has state in that the answer to the question “Can I withdraw $100?” depends upon the history of deposit and withdrawal transactions. We can characterize an object’s state by one or more *state variables*, which among them maintain enough information about history to determine the object’s current behavior. In a simple banking system, we could characterize the state of an account by a current balance rather than by remembering the entire history of account transactions.
+نحن نرى العالم عادةً وهو مأهولٌ بكائناتٍ مستقلّة، لكلٍّ منها حالةٌ تتغيّر بمرور الزمن. ويُقال عن كائنٍ إنّه «له حالة» إذا كان سلوكه متأثّرًا بتاريخه. فإنّ الحساب المصرفيّ، مثلًا، له حالةٌ من حيث أنّ الجواب عن سؤال «هل يمكنني سحب $100؟» يعتمد على تاريخ معاملات الإيداع والسحب. ويمكننا توصيف حالة كائنٍ ما بمتغيّر حالةٍ واحدٍ أو أكثر، وهي التي تحتفظ معًا بمعلوماتٍ كافيةٍ عن التاريخ لتحديد السلوك الحاليّ للكائن. ففي نظامٍ مصرفيٍّ بسيطٍ، يمكننا توصيف حالة حسابٍ برصيدٍ حاليّ، بدلًا من تذكّر تاريخ معاملات الحساب بأكمله.
 
-In a system composed of many objects, the objects are rarely completely independent. Each may influence the states of others through interactions, which serve to couple the state variables of one object to those of other objects. Indeed, the view that a system is composed of separate objects is most useful when the state variables of the system can be grouped into closely coupled subsystems that are only loosely coupled to other subsystems.
+وفي نظامٍ متكوّنٍ من كائناتٍ كثيرةٍ، نادرًا ما تكون الكائنات مستقلّةً استقلالًا تامًّا. فقد يؤثّر كلٌّ منها في حالات الآخرين عبر التفاعلات، وهي التي تعمل على ربط متغيّرات حالة كائنٍ ما بمتغيّرات حالة كائناتٍ أخرى. والواقع أنّ النظرة إلى النّظام بوصفه متكوّنًا من كائنات منفصلةٍ تكون نافعةً جدًّا حين يمكن تجميع متغيّرات حالة النّظام في نظمٍ جزئيّةٍ مترابطةٍ ترابطًا وثيقًا، لا ترتبط إلّا ارتباطًا فضفاضًا بالنظم الجزئيّة الأخرى.
 
-This view of a system can be a powerful framework for organizing computational models of the system. For such a model to be modular, it should be decomposed into computational objects that model the actual objects in the system. Each computational object must have its own *local state variables* describing the actual object’s state. Since the states of objects in the system being modeled change over time, the state variables of the corresponding computational objects must also change. If we choose to model the flow of time in the system by the elapsed time in the computer, then we must have a way to construct computational objects whose behaviors change as our programs run. In particular, if we wish to model state variables by ordinary symbolic names in the programming language, then the language must provide an *assignment operator* to enable us to change the value associated with a name.
+وهذه النظرة إلى النّظام قد تكون إطارًا قويًّا لتنظيم النماذج الحسابيّة له. وحتّى يكون نموذجٌ كهذا وحدانيًّا، ينبغي أن يُفكَّك إلى كائناتٍ حسابيّةٍ تمثّل الكائنات الفعليّة في النّظام. ويجب أن يكون لكلّ كائنٍ حسابيٍّ *متغيّرات حالة محلّيّة (local state variables)* خاصّةٌ به، تصف حالة الكائن الفعليّ. وحيث إنّ حالات الكائنات في النّظام المُمثَّل تتغيّر بمرور الزمن، فإنّ متغيّرات حالة الكائنات الحسابيّة المقابلة يجب أن تتغيّر هي أيضًا. فإذا اخترنا نمذجة جريان الزمن في النّظام بالزمن المنقضي في الحاسوب، فعلينا أن نجد طريقةً لبناء كائناتٍ حسابيّةٍ تتغيّر سلوكيّاتها مع تشغيل برامجنا. وعلى وجه الخصوص، إذا أردنا نمذجة متغيّرات الحالة بأسماء رمزيّةٍ اعتياديّةٍ في لغة البرمجة، فيجب أن توفّر اللغة *مشغّل إحلال (assignment operator)* يمكننا من تغيير القيمة المرتبطة باسم.
 
-#### 3.1.1 Local State Variables
+#### 3.1.1 متغيّرات الحالة المحليّة
 
-To illustrate what we mean by having a computational object with time-varying state, let us model the situation of withdrawing money from a bank account. We will do this using a procedure `withdraw`, which takes as argument an `amount` to be withdrawn. If there is enough money in the account to accommodate the withdrawal, then `withdraw` should return the balance remaining after the withdrawal. Otherwise, `withdraw` should return the message *Insufficient funds*. For example, if we begin with $100 in the account, we should obtain the following sequence of responses using `withdraw`:
+ولتوضيح ما نعنيه بامتلاك كائنٍ حسابيٍّ حالةً متغيّرةً مع الزمن، فلنُمثّل حالة سحب المال من حساب مصرفيّ. وسنفعل ذلك باستخدام إجراءٍ `withdraw`، يأخذ كمُعطى `amount` المطلوب سحبه. فإذا كان في الحساب مالٌ يكفي لتغطية السحب، فيجب أن يعيد `withdraw` الرصيد الباقي بعد السحب. وإلّا، فيجب أن يعيد `withdraw` الرسالة *رصيد غير كافٍ*. فمثلًا، إذا بدأنا بـ$100 في الحساب، فينبغي أن نحصل على تتالي الاستجابات الآتي باستخدام `withdraw`:
 
 ```scheme
 (withdraw 25)
@@ -39,9 +39,9 @@ To illustrate what we mean by having a computational object with time-varying st
 35
 ```
 
-Observe that the expression `(withdraw 25)`, evaluated twice, yields different values. This is a new kind of behavior for a procedure. Until now, all our procedures could be viewed as specifications for computing mathematical functions. A call to a procedure computed the value of the function applied to the given arguments, and two calls to the same procedure with the same arguments always produced the same result.[^1]
+لاحِظ أنّ التعبير `(withdraw 25)`، حين يُقيَّم مرّتين، يُعطي قيمتين مختلفتين. وهذا نوعٌ جديدٌ من السلوك بالنسبة إلى إجراء. فحتّى الآن، كان يمكن النظر إلى جميع إجراءاتنا بوصفها مواصفاتٍ لاحتساب دوالّ رياضيّة. فإنّ نداء إجراءٍ كان يحسب قيمة الدالّة مطبَّقةً على المعطيات المعطاة، وكان نداءان للإجراء ذاته بالمعطيات ذاتها يُنتجان النتيجة نفسها دائمًا.[^1]
 
-To implement `withdraw`, we can use a variable `balance` to indicate the balance of money in the account and define `withdraw` as a procedure that accesses `balance`. The `withdraw` procedure checks to see if `balance` is at least as large as the requested `amount`. If so, `withdraw` decrements `balance` by `amount` and returns the new value of `balance`. Otherwise, `withdraw` returns the *Insufficient funds* message. Here are the definitions of `balance` and `withdraw`:
+ولتنفيذ `withdraw`، يمكننا استخدام متغيّر `balance` للإشارة إلى رصيد المال في الحساب، وتعريف `withdraw` بوصفه إجراءٍ يصل إلى `balance`. ويفحص الإجراء `withdraw` ما إذا كان `balance` أكبر من `amount` المطلوب أو مساويًا له. فإن كان الأمر كذلك، فإنّ `withdraw` يُنقص `balance` بمقدار `amount` ويعيد القيمة الجديدة لـ`balance`. وإلّا، فإنّ `withdraw` يعيد رسالة *رصيد غير كافٍ*. وهذه هي تعاريف `balance` و`withdraw`:
 
 ```scheme
 (define balance 100)
@@ -53,31 +53,31 @@ To implement `withdraw`, we can use a variable `balance` to indicate the balance
       "Insufficient funds"))
 ```
 
-Decrementing `balance` is accomplished by the expression
+ويُنجَز إنقاص `balance` بالتعبير
 
 ```scheme
 (set! balance (- balance amount))
 ```
 
-This uses the `set!` special form, whose syntax is
+وهذا يستخدم الصيغة الخاصّة `set!`، التي صياغتها هي
 
 ```scheme
 (set! ⟨name⟩ ⟨new-value⟩)
 ```
 
-Here `⟨`name`⟩` is a symbol and `⟨`new-value`⟩` is any expression. `Set!` changes `⟨`name`⟩` so that its value is the result obtained by evaluating `⟨`new-value`⟩`. In the case at hand, we are changing `balance` so that its new value will be the result of subtracting `amount` from the previous value of `balance`.[^2]
+هنا `⟨`name`⟩` رمزٌ و`⟨`new-value`⟩` هو أيّ تعبير. و`Set!` يُغيّر `⟨`name`⟩` بحيث تصبح قيمته هي الناتج المتحصّل من تقييم `⟨`new-value`⟩`. وفي الحالة المعروضة، نُغيِّر `balance` بحيث تصبح قيمته الجديدة هي ناتج طرح `amount` من القيمة السابقة لـ`balance`.[^2]
 
-`Withdraw` also uses the `begin` special form to cause two expressions to be evaluated in the case where the `if` test is true: first decrementing `balance` and then returning the value of `balance`. In general, evaluating the expression
+كما يستخدم `Withdraw` الصيغة الخاصّة `begin` لإحداث تقييم تعبيرين في الحالة التي يكون فيها اختبار `if` صحيحًا: بأن يُنقص `balance` أوّلًا ثم يُعاد قيمة `balance`. وبصورةٍ عامّة، فإنّ تقييم التعبير
 
 ```scheme
 (begin ⟨exp₁⟩ ⟨exp₂⟩ … ⟨expₖ⟩)
 ```
 
-causes the expressions $⟨ e x p_{1} ⟩$ through $⟨ e x p_{k} ⟩$ to be evaluated in sequence and the value of the final expression $⟨ e x p_{k} ⟩$ to be returned as the value of the entire `begin` form.[^3]
+يؤدّي إلى تقييم التعبيرات $⟨ e x p_{1} ⟩$ إلى $⟨ e x p_{k} ⟩$ بالتتالي، وإعادة قيمة التعبير النهائيّ $⟨ e x p_{k} ⟩$ قيمةً لصيغة `begin` برمّتها.[^3]
 
-Although `withdraw` works as desired, the variable `balance` presents a problem. As specified above, `balance` is a name defined in the global environment and is freely accessible to be examined or modified by any procedure. It would be much better if we could somehow make `balance` internal to `withdraw`, so that `withdraw` would be the only procedure that could access `balance` directly and any other procedure could access `balance` only indirectly (through calls to `withdraw`). This would more accurately model the notion that `balance` is a local state variable used by `withdraw` to keep track of the state of the account.
+وبالرغم من أنّ `withdraw` يعمل كما هو مطلوب، إلّا أنّ المتغيّر `balance` يمثّل مشكلة. فكما حُدِّد أعلاه، فإنّ `balance` اسمٌ معرَّفٌ في البيئة العامّة ويمكن الوصول إليه بحريّةٍ لفحصه أو تعديله من قبل أيّ إجراء. لَكان أفضلَ بكثيرٍ لو استطعنا، بطريقةٍ أو بأخرى، جعل `balance` داخليًّا بالنسبة إلى `withdraw`، بحيث يكون `withdraw` الإجراء الوحيد القادر على الوصول إلى `balance` مباشرةً، وحيث لا يستطيع أيّ إجراءٍ آخر الوصول إلى `balance` إلّا بصورةٍ غير مباشرةٍ (عبر نداءات `withdraw`). وكان هذا سيمثّل مفهوم كون `balance` متغيّر حالة محلّيًّا يستخدمه `withdraw` لتتبّع حالة الحساب تمثيلًا أكثر دقّة.
 
-We can make `balance` internal to `withdraw` by rewriting the definition as follows:
+ويمكننا جعل `balance` داخليًّا بالنسبة إلى `withdraw` بإعادة كتابة التعريف على النحو الآتي:
 
 ```scheme
 (define new-withdraw
@@ -90,11 +90,11 @@ We can make `balance` internal to `withdraw` by rewriting the definition as foll
           "Insufficient funds"))))
 ```
 
-What we have done here is use `let` to establish an environment with a local variable `balance`, bound to the initial value 100. Within this local environment, we use `lambda` to create a procedure that takes `amount` as an argument and behaves like our previous `withdraw` procedure. This procedure—returned as the result of evaluating the `let` expression—is `new-withdraw`, which behaves in precisely the same way as `withdraw` but whose variable `balance` is not accessible by any other procedure.[^4]
+وما فعلناه هنا هو استخدام `let` لإقامة بيئةٍ ذات متغيّر محلّيّ `balance`، مربوطٍ بالقيمة الأوّليّة 100. وداخل هذه البيئة المحليّة، نستخدم `lambda` لإنشاء إجراءٍ يأخذ `amount` كمُعطى ويتصرّف كإجراء `withdraw` السابق. وهذا الإجراء - الذي يُعاد كنتيجةٍ لتقييم تعبير `let` - هو `new-withdraw`، الذي يتصرّف بالطريقة ذاتها تمامًا كـ`withdraw`، لكن متغيّره `balance` لا يمكن الوصول إليه من قبل أيّ إجراءٍ آخر.[^4]
 
-Combining `set!` with local variables is the general programming technique we will use for constructing computational objects with local state. Unfortunately, using this technique raises a serious problem: When we first introduced procedures, we also introduced the substitution model of evaluation ([1.1.5](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e5)) to provide an interpretation of what procedure application means. We said that applying a procedure should be interpreted as evaluating the body of the procedure with the formal parameters replaced by their values. The trouble is that, as soon as we introduce assignment into our language, substitution is no longer an adequate model of procedure application. (We will see why this is so in [3.1.3](#g_t3_002e1_002e3).) As a consequence, we technically have at this point no way to understand why the `new-withdraw` procedure behaves as claimed above. In order to really understand a procedure such as `new-withdraw`, we will need to develop a new model of procedure application. In [3.2](https://sarabander.github.io/sicp/html/3_002e2.xhtml#g_t3_002e2) we will introduce such a model, together with an explanation of `set!` and local variables. First, however, we examine some variations on the theme established by `new-withdraw`.
+والجمع بين `set!` والمتغيّرات المحليّة هو التقنيّة البرمجيّة العامّة التي سنستخدمها لبناء كائناتٍ حسابيّةٍ ذات حالة محلّيّة. ولسوء الحظّ، فإنّ استخدام هذه التقنيّة يُثير مشكلةً خطيرة: فإنّا عندما قدّمنا الإجراءات أوّل مرّة، قدّمنا أيضًا نموذج الاستبدال للتقييم ([1.1.5](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e5)) لتوفير تفسيرٍ لمعنى تطبيق الإجراء. وقد قلنا إنّه ينبغي تفسير تطبيق إجراءٍ على أنّه تقييم جسم الإجراء مع استبدال الوسائط الشكليّة بقيمها. وتكمن المشكلة في أنّ الاستبدال، بمجرّد إدخال الإحلال إلى لغتنا، لم يعد نموذجًا كافيًا لتطبيق الإجراء. (وسنرى سبب ذلك في [3.1.3](#g_t3_002e1_002e3).) ونتيجةً لذلك، فإنّه ليس لدينا - من الوجهة التقنيّة - في هذه النقطة أيّ طريقةٍ لفهم سبب تصرّف إجراء `new-withdraw` على النحو المزعوم أعلاه. ولكي نفهم فعلًا إجراءً مثل `new-withdraw`، سنحتاج إلى تطوير نموذجٍ جديدٍ لتطبيق الإجراء. وسنُقدّم في [3.2](https://sarabander.github.io/sicp/html/3_002e2.xhtml#g_t3_002e2) نموذجًا كهذا، مع شرحٍ لـ`set!` والمتغيّرات المحليّة. غير أنّنا، أوّلًا، نفحص بعض التنويعات على الموضوع الذي رسّخه `new-withdraw`.
 
-The following procedure, `make-withdraw`, creates “withdrawal processors.” The formal parameter `balance` in `make-withdraw` specifies the initial amount of money in the account.[^5]
+والإجراء الآتي، `make-withdraw`، يُنشئ «معالجات سحب». وقد يُحدِّد الوسيط الشكليّ `balance` في `make-withdraw` المبلغ الأوّل من المال في الحساب.[^5]
 
 ```scheme
 (define (make-withdraw balance)
@@ -106,7 +106,7 @@ The following procedure, `make-withdraw`, creates “withdrawal processors.” T
         "Insufficient funds")))
 ```
 
-`Make-withdraw` can be used as follows to create two objects `W1` and `W2`:
+ويمكن استخدام `Make-withdraw` على النحو الآتي لإنشاء كائنين `W1` و`W2`:
 
 ```scheme
 (define W1 (make-withdraw 100))
@@ -125,9 +125,9 @@ The following procedure, `make-withdraw`, creates “withdrawal processors.” T
 10
 ```
 
-Observe that `W1` and `W2` are completely independent objects, each with its own local state variable `balance`. Withdrawals from one do not affect the other.
+لاحِظ أنّ `W1` و`W2` كائنان مستقلّان تمامًا، لكلٍّ منهما متغيّر حالة محلّيّ `balance` خاصٌّ به. والسحوبات من أحدهما لا تؤثّر في الآخر.
 
-We can also create objects that handle deposits as well as withdrawals, and thus we can represent simple bank accounts. Here is a procedure that returns a “bank-account object” with a specified initial balance:
+ويمكننا أيضًا إنشاء كائناتٍ تتناول الإيداعات إضافةً إلى السحوبات، وبذلك يمكننا تمثيل حسابات مصرفيّةٍ بسيطة. وهناك إجراءٌ يعيد «كائن حساب مصرفيّ» برصيد أوّليّ محدَّد:
 
 ```scheme
 (define (make-account balance)
@@ -148,9 +148,9 @@ We can also create objects that handle deposits as well as withdrawals, and thus
   dispatch)
 ```
 
-Each call to `make-account` sets up an environment with a local state variable `balance`. Within this environment, `make-account` defines procedures `deposit` and `withdraw` that access `balance` and an additional procedure `dispatch` that takes a “message” as input and returns one of the two local procedures. The `dispatch` procedure itself is returned as the value that represents the bank-account object. This is precisely the *message-passing* style of programming that we saw in [2.4.3](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e3), although here we are using it in conjunction with the ability to modify local variables.
+وكلّ نداء لـ`make-account` يُقيم بيئةً ذات متغيّر حالة محلّيّ `balance`. وداخل هذه البيئة، يُعرّف `make-account` الإجراءين `deposit` و`withdraw` اللذين يصلان إلى `balance`، وإجراءً إضافيًّا `dispatch` يأخذ «رسالةً» كمدخل ويعيد أحد الإجراءين المحليّين. والإجراء `dispatch` ذاته هو ما يُعاد قيمةً تمثّل كائن الحساب المصرفيّ. وهذا هو بالضبط أسلوب *تمرير الرسائل (message passing)* في البرمجة الذي رأيناه في [2.4.3](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e3)، وإن كنّا نستخدمه هنا مقترنًا بالقدرة على تعديل المتغيّرات المحليّة.
 
-`Make-account` can be used as follows:
+ويمكن استخدام `Make-account` على النحو الآتي:
 
 ```scheme
 (define acc (make-account 100))
@@ -168,15 +168,15 @@ Each call to `make-account` sets up an environment with a local state variable `
 30
 ```
 
-Each call to `acc` returns the locally defined `deposit` or `withdraw` procedure, which is then applied to the specified `amount`. As was the case with `make-withdraw`, another call to `make-account`
+وكلّ نداء لـ`acc` يعيد الإجراء `deposit` أو `withdraw` المعرَّف محلّيًّا، والذي يُطبَّق بعد ذلك على `amount` المحدَّد. وكما كان الحال مع `make-withdraw`، فإنّ نداءً آخر لـ`make-account`
 
 ```scheme
 (define acc2 (make-account 100))
 ```
 
-will produce a completely separate account object, which maintains its own local `balance`.
+سيُنتج كائن حسابٍ منفصلًا تمامًا، يحتفظ بـ`balance` محلّيًّا خاصًّا به.
 
-**Exercise 3.1:** An *accumulator* is a procedure that is called repeatedly with a single numeric argument and accumulates its arguments into a sum. Each time it is called, it returns the currently accumulated sum. Write a procedure `make-accumulator` that generates accumulators, each maintaining an independent sum. The input to `make-accumulator` should specify the initial value of the sum; for example
+**التمرين 3.1:** *المُجمِّع (accumulator)* هو إجراءٌ يُنادى مرارًا بمعطًى عدديًّا واحد ويُجمِّع معطياته في مجموع. وفي كلّ مرّةٍ يُنادى فيها، يعيد المجموع المُجمَّع حاليًّا. اكتب إجراءَ `make-accumulator` يُنشئ مُجمِّعات، يحتفظ كلٌّ منها بمجموعٍ مستقلٍّ خاصٍّ به. وينبغي أن يُحدِّد مدخل `make-accumulator` القيمة الأوّليّة للمجموع؛ فمثلًا
 
 ```scheme
 (define A (make-accumulator 5))
@@ -188,7 +188,7 @@ will produce a completely separate account object, which maintains its own local
 25
 ```
 
-**Exercise 3.2:** In software-testing applications, it is useful to be able to count the number of times a given procedure is called during the course of a computation. Write a procedure `make-monitored` that takes as input a procedure, `f`, that itself takes one input. The result returned by `make-monitored` is a third procedure, say `mf`, that keeps track of the number of times it has been called by maintaining an internal counter. If the input to `mf` is the special symbol `how-many-calls?`, then `mf` returns the value of the counter. If the input is the special symbol `reset-count`, then `mf` resets the counter to zero. For any other input, `mf` returns the result of calling `f` on that input and increments the counter. For instance, we could make a monitored version of the `sqrt` procedure:
+**التمرين 3.2:** في تطبيقات اختبار البرمجيّات، من المفيد أن نكون قادرين على عدّ عدد المرّات التي يُنادى فيها إجراءٌ معيّنٌ في أثناء عمليّةٍ حسابيّةٍ ما. اكتب إجراءَ `make-monitored` يأخذ كمدخلٍ إجراءً، `f`، يأخذ هو ذاته مدخلًا واحدًا. والنتيجة التي يعيدها `make-monitored` هي إجراءٌ ثالث، لنسمّه `mf`، يتتبّع عدد مرّات ندائه بالاحتفاظ بعدّادٍ داخليّ. فإذا كان مدخل `mf` هو الرمز الخاصّ `how-many-calls?`، فإنّ `mf` يعيد قيمة العدّاد. وإذا كان المدخل هو الرمز الخاصّ `reset-count`، فإنّ `mf` يُصفّر العدّاد. ولكلّ مدخلٍ آخر، يعيد `mf` نتيجة نداء `f` على ذلك المدخل ويزيد العدّاد. فنحن نستطيع مثلًا إنشاء نسخةٍ مُراقَبةٍ من إجراء `sqrt`:
 
 ```scheme
 (define s (make-monitored sqrt))
@@ -200,14 +200,14 @@ will produce a completely separate account object, which maintains its own local
 1
 ```
 
-**Exercise 3.3:** Modify the `make-account` procedure so that it creates password-protected accounts. That is, `make-account` should take a symbol as an additional argument, as in
+**التمرين 3.3:** عدّل إجراء `make-account` بحيث يُنشئ حساباتٍ محميّةً بكلمة مرور. أي أنّ `make-account` ينبغي أن يأخذ رمزًا كوسيطٍ إضافيٍّ، كما في
 
 ```scheme
 (define acc 
   (make-account 100 'secret-password))
 ```
 
-The resulting account object should process a request only if it is accompanied by the password with which the account was created, and should otherwise return a complaint:
+ويجب أن يعالج كائن الحساب الناتج طلبًا ما فقط إذا كان مصحوبًا بكلمة المرور التي أُنشئ الحساب بها، وأن يعيد - فيما عدا ذلك - شكوى:
 
 ```scheme
 ((acc 'secret-password 'withdraw) 40)
@@ -217,22 +217,22 @@ The resulting account object should process a request only if it is accompanied 
 "Incorrect password"
 ```
 
-> **Exercise 3.4:** Modify the `make-account` procedure of [Exercise 3.3](#Exercise-3_002e3) by adding another local state variable so that, if an account is accessed more than seven consecutive times with an incorrect password, it invokes the procedure `call-the-cops`.
+> **التمرين 3.4:** عدّل إجراء `make-account` الوارد في [التمرين 3.3](#Exercise-3_002e3) بإضافة متغيّر حالة محلّيٍّ آخر، بحيث يستدعي الإجراء `call-the-cops` إذا وُصل إلى الحساب أكثر من سبع مرّاتٍ متتاليةٍ بكلمة مرورٍ خاطئة.
 
-#### 3.1.2 The Benefits of Introducing Assignment
+#### 3.1.2 فوائد إدخال الإحلال
 
-As we shall see, introducing assignment into our programming language leads us into a thicket of difficult conceptual issues. Nevertheless, viewing systems as collections of objects with local state is a powerful technique for maintaining a modular design. As a simple example, consider the design of a procedure `rand` that, whenever it is called, returns an integer chosen at random.
+كما سنرى، فإنّ إدخال الإحلال إلى لغة البرمجة لدينا يُدخلنا في متاهةٍ من القضايا المفاهيميّة العصيبة. ومع ذلك، فإنّ النظرة إلى النظم بوصفها مجموعاتٍ من الكائنات ذات الحالة المحليّة تقنيّةٌ قويّةٌ للحفاظ على تصميمٍ وحدانيّ. فتأمّل - وبصفتها مثالًا بسيطًا - تصميم إجراء `rand` يعيد، كلّما نُودي، عددًا صحيحًا مُختارًا عشوائيًّا.
 
-It is not at all clear what is meant by “chosen at random.” What we presumably want is for successive calls to `rand` to produce a sequence of numbers that has statistical properties of uniform distribution. We will not discuss methods for generating suitable sequences here. Rather, let us assume that we have a procedure `rand-update` that has the property that if we start with a given number $x_{1}$ and form
+ومن غير الواضح تمامًا ما يعنيه «مُختارٌ عشوائيًّا». وما نريده على الأرجح هو أن تُنتج نداءات `rand` المتعاقبة تتاليًا من الأعداد له الخصائص الإحصائيّة للتوزيع المنتظم. ولن نناقش هنا طرائق توليد تتالياتٍ ملائمةٍ لهذا الغرض. بل دعنا نفترض أنّ لدينا إجراءً `rand-update` له الخاصّيّة أنّنا إذا بدأنا بعددٍ معطًى $x_{1}$ وشكّلنا
 
 ```scheme
 x₂ = (rand-update x₁)
 x₃ = (rand-update x₂)
 ```
 
-then the sequence of values $x_{1}$ , $x_{2}$ , $x_{3}$ , … will have the desired statistical properties.[^6]
+فإنّ تتالي القيم $x_{1}$ ، $x_{2}$ ، $x_{3}$ ، … سيكون له الخصائص الإحصائيّة المرغوبة.[^6]
 
-We can implement `rand` as a procedure with a local state variable `x` that is initialized to some fixed value `random-init`. Each call to `rand` computes `rand-update` of the current value of `x`, returns this as the random number, and also stores this as the new value of `x`.
+ويمكننا تنفيذ `rand` بوصفه إجراءً ذا متغيّر حالة محلّيّ `x` تُهيَّأ قيمته الأوّليّة إلى قيمةٍ ثابتةٍ `random-init`. وكلّ نداء لـ`rand` يحسب `rand-update` للقيمة الحاليّة لـ`x`، ويعيد هذا بوصفه العدد العشوائيّ، ويخزّنه أيضًا بوصفه القيمة الجديدة لـ`x`.
 
 ```scheme
 (define rand
@@ -240,11 +240,11 @@ We can implement `rand` as a procedure with a local state variable `x` that is i
     (lambda () (set! x (rand-update x)) x)))
 ```
 
-Of course, we could generate the same sequence of random numbers without using assignment by simply calling `rand-update` directly. However, this would mean that any part of our program that used random numbers would have to explicitly remember the current value of `x` to be passed as an argument to `rand-update`. To realize what an annoyance this would be, consider using random numbers to implement a technique called *Monte Carlo simulation*.
+وبالطبع، يمكننا توليد تتالي الأعداد العشوائيّة ذاته دون استخدام الإحلال، بمجرّد نداء `rand-update` مباشرةً. غير أنّ هذا كان سيَعني أنّ أيّ جزءٍ من برنامجنا يستخدم أعدادًا عشوائيّةً سيتحيّن عليه أن يتذكّر صراحةً القيمة الحاليّة لـ`x` ليُمرَّر كوسيطٍ إلى `rand-update`. ولنُدرك كم كان هذا ليُسبّب إزعاجًا، تأمّل استخدام الأعداد العشوائيّة في تنفيذ تقنيّةٌ تُسمّى *محاكاة مونت كارلو (Monte Carlo simulation)*.
 
-The Monte Carlo method consists of choosing sample experiments at random from a large set and then making deductions on the basis of the probabilities estimated from tabulating the results of those experiments. For example, we can approximate $π$ using the fact that $6 / π^{2}$ is the probability that two integers chosen at random will have no factors in common; that is, that their greatest common divisor will be 1.[^7] To obtain the approximation to $π$ , we perform a large number of experiments. In each experiment we choose two integers at random and perform a test to see if their GCD is 1. The fraction of times that the test is passed gives us our estimate of $6 / π^{2}$ , and from this we obtain our approximation to $π$ .
+وتتكوّن طريقة مونت كارلو من اختيار تجاربٍ عيّنيّةٍ عشوائيًّا من مجموعةٍ كبيرة، ثمّ استخلاص استدلالاتٍ على أساس الاحتمالات المُقدَّرة من تبويب نتائج تلك التجارب. فنستطيع مثلًا تقريب $π$ باستخدام الحقيقة أنّ $6 / π^{2}$ هو احتمال أنّ عددين صحيحين مُختارين عشوائيًّا لا يشتركان في أيّ عاملٍ مشترك؛ أي أنّ أكبر قاسمٍ مشتركٍ لهما سيكون 1.[^7] ولكي نحصل على التقريب لـ$π$، نُجري عددًا كبيرًا من التجارب. وفي كلّ تجربةٍ نختار عددين صحيحين عشوائيًّا ونجري اختبارًا لنرى ما إذا كان أكبر قاسمٍ مشتركٍ لهما هو 1. والكسر من المرّات التي ينجح فيها الاختبار يُعطينا تقديرنا لـ$6 / π^{2}$، ومنه نحصل على تقريبنا لـ$π$.
 
-The heart of our program is a procedure `monte-carlo`, which takes as arguments the number of times to try an experiment, together with the experiment, represented as a no-argument procedure that will return either true or false each time it is run. `Monte-carlo` runs the experiment for the designated number of trials and returns a number telling the fraction of the trials in which the experiment was found to be true.
+وقلب برنامجنا هو إجراءٌ `monte-carlo`، يأخذ كوسيطين عدد مرّات محاولة التجربة، مع التجربة ذاتها، الممثَّلة بإجراءٍ لا يأخذ وسائط والذي يعيد القيمة صحيح أو خاطئة في كلّ مرّةٍ يُشغَّل فيها. و`Monte-carlo` يُشغّل التجربة لعدد المحاولات المعيَّن ويعيد عددًا يبيّن كسر المحاولات التي وُجد أنّ التجربة صحيحةٌ فيها.
 
 ```scheme
 (define (estimate-pi trials)
@@ -266,7 +266,7 @@ The heart of our program is a procedure `monte-carlo`, which takes as arguments 
   (iter trials 0))
 ```
 
-Now let us try the same computation using `rand-update` directly rather than `rand`, the way we would be forced to proceed if we did not use assignment to model local state:
+والآن، لنجرّب الاحتساب ذاته باستخدام `rand-update` مباشرةً بدلًا من `rand`، بالطريقة التي كنا سنُجبر على اتّباعها لو لم نستخدم الإحلال لنمذجة الحالة المحليّة:
 
 ```scheme
 (define (estimate-pi trials)
@@ -292,17 +292,17 @@ Now let us try the same computation using `rand-update` directly rather than `ra
   (iter trials 0 initial-x))
 ```
 
-While the program is still simple, it betrays some painful breaches of modularity. In our first version of the program, using `rand`, we can express the Monte Carlo method directly as a general `monte-carlo` procedure that takes as an argument an arbitrary `experiment` procedure. In our second version of the program, with no local state for the random-number generator, `random-gcd-test` must explicitly manipulate the random numbers `x1` and `x2` and recycle `x2` through the iterative loop as the new input to `rand-update`. This explicit handling of the random numbers intertwines the structure of accumulating test results with the fact that our particular experiment uses two random numbers, whereas other Monte Carlo experiments might use one random number or three. Even the top-level procedure `estimate-pi` has to be concerned with supplying an initial random number. The fact that the random-number generator’s insides are leaking out into other parts of the program makes it difficult for us to isolate the Monte Carlo idea so that it can be applied to other tasks. In the first version of the program, assignment encapsulates the state of the random-number generator within the `rand` procedure, so that the details of random-number generation remain independent of the rest of the program.
+وبينما لا يزال البرنامج بسيطًا، فإنّه يُظهر بعض الخروقات المؤلمة على الوحدانيّة. ففي نسختنا الأولى من البرنامج، باستخدام `rand`، يمكننا التعبير عن طريقة مونت كارلو مباشرةً بوصفها إجراءً `monte-carlo` عامًّا يأخذ كوسيطٍ إجراء `experiment` اعتباطيًّا. وأمّا في نسختنا الثانية من البرنامج، فحيث لا توجد حالة محلّيّة لمولّد الأعداد العشوائيّة، فإنّ `random-gcd-test` مضطرٌّ إلى التلاعب صراحةً بالعددين العشوائيين `x1` و`x2` وإعادة تدوير `x2` عبر حلقة التكرار بوصفه المدخل الجديد إلى `rand-update`. فهذا التناول الصريح للأعداد العشوائيّة يشبك بنية تجميع نتائج الاختبار بحقيقة أنّ تجربتنا الخاصّة تستخدم عددين عشوائيين، بخلاف تجارب مونت كارلو الأخرى التي قد تستخدم عددًا عشوائيًّا واحدًا أو ثلاثة. حتّى الإجراء الأعلى مستوىً `estimate-pi` يضطرّ إلى الاهتمام بتزويد عددٍ عشوائيٍّ أوّليّ. وحقيقة أنّ تفاصيل مولّد الأعداد العشوائيّة الداخليّة تتسرّب إلى أجزاء أخرى من البرنامج تجعل من الصعب علينا عزل فكرة مونت كارلو بحيث يمكن تطبيقها على مهامّ أخرى. وأمّا في النسخة الأولى من البرنامج، فإنّ الإحلال يُغلّف حالة مولّد الأعداد العشوائيّة داخل الإجراء `rand`، بحيث تبقى تفاصيل توليد الأعداد العشوائيّة مستقلّةً عن بقيّة البرنامج.
 
-The general phenomenon illustrated by the Monte Carlo example is this: From the point of view of one part of a complex process, the other parts appear to change with time. They have hidden time-varying local state. If we wish to write computer programs whose structure reflects this decomposition, we make computational objects (such as bank accounts and random-number generators) whose behavior changes with time. We model state with local state variables, and we model the changes of state with assignments to those variables.
+والظاهرة العامّة التي يُوضيحها مثال مونت كارلو هي هذه: من وجهة نظر جزءٍ واحدٍ من عمليّةٍ معقّدةٍ، تبدو الأجزاء الأخرى وكأنّها تتغيّر مع الزمن. ولديها حالة محلّيّةٌ مخفيّةٌ متغيّرةٌ مع الزمن. فإذا أردنا كتابة برامج حاسوبيّةٍ تُعبِّر بنيتُها عن هذا التفكيك، فإنّنا نُنشئ كائناتٍ حسابيّةً (كالحسابات المصرفيّة ومولّدات الأعداد العشوائيّة) تتغيّر سلوكيّاتها مع الزمن. ونحن نمثّل الحالة بمتغيّرات حالة محلّيّة، ونمثّل تغيّرات الحالة بإحلالاتٍ لتلك المتغيّرات.
 
-It is tempting to conclude this discussion by saying that, by introducing assignment and the technique of hiding state in local variables, we are able to structure systems in a more modular fashion than if all state had to be manipulated explicitly, by passing additional parameters. Unfortunately, as we shall see, the story is not so simple.
+ومن المغري أن نُنهي هذه المناقشة بالقول إنّه، بإدخال الإحلال وأسلوب إخفاء الحالة في متغيّرات محلّيّة، نُصبح قادرين على بناء النظم بناءً أكثر وحدانيّةً ممّا لو كان لا بدّ من التلاعب بجميع الحالات صراحةً، بتمرير وسائط إضافيّة. ولكن، للأسف، كما سنرى، الأمر ليس بهذه البساطة.
 
-**Exercise 3.5:** *Monte Carlo integration* is a method of estimating definite integrals by means of Monte Carlo simulation. Consider computing the area of a region of space described by a predicate $P ( x , y )$ that is true for points $( x , y )$ in the region and false for points not in the region. For example, the region contained within a circle of radius 3 centered at (5, 7) is described by the predicate that tests whether $( x − 5 )^{2} + ( y − 7 )^{2} ≤ 3^{2}$ . To estimate the area of the region described by such a predicate, begin by choosing a rectangle that contains the region. For example, a rectangle with diagonally opposite corners at (2, 4) and (8, 10) contains the circle above. The desired integral is the area of that portion of the rectangle that lies in the region. We can estimate the integral by picking, at random, points $( x , y )$ that lie in the rectangle, and testing $P ( x , y )$ for each point to determine whether the point lies in the region. If we try this with many points, then the fraction of points that fall in the region should give an estimate of the proportion of the rectangle that lies in the region. Hence, multiplying this fraction by the area of the entire rectangle should produce an estimate of the integral.
+**التمرين 3.5:** *التكامل بطريقة مونت كارلو (Monte Carlo integration)* هو طريقة لتقدير التكاملات المحدَّدة بمحاكاة مونت كارلو. تأمّل احتساب مساحة منطقةٍ من الفضاء موصوفةٌ بمُسَيِّم $P ( x , y )$ يكون صحيحًا للنقاط $( x , y )$ الواقعة في المنطقة، وخاطئًا للنقاط التي لا تقع فيها. فمثلًا، المنطقة الواقعة داخل دائرةٍ نصف قطرها 3 ومركزها (5, 7) موصوفةٌ بالمُسَيِّم الذي يختبر ما إذا كان $( x − 5 )^{2} + ( y − 7 )^{2} ≤ 3^{2}$ . ولكي نقدّر مساحة المنطقة الموصوفة بمُسَيِّمٍ كهذا، ابدأ باختيار مستطيلٍ يحتوي المنطقة. فمثلًا، فإنّ مستطيلًا رأساه المتقابلان قطريًّا هما (2, 4) و(8, 10) يحتوي الدائرة أعلاه. والتكامل المطلوب هو مساحة الجزء من المستطيل الواقع داخل المنطقة. ويمكننا تقدير التكامل بانتقاء نقاط $( x , y )$ تقع في المستطيل عشوائيًّا، واختبار $P ( x , y )$ لكلّ نقطةٍ لتحديد ما إذا كانت النقطة تقع في المنطقة. فإذا جرّبنا هذا بعددٍ كبيرٍ من النقاط، فإنّ كسر النقاط التي تقع في المنطقة ينبغي أن يُعطينا تقديرًا لنسبة المستطيل الواقعة داخل المنطقة. ومن ثمّ، فإنّ ضرب هذا الكسر في مساحة المستطيل بأكملهٍ ينبغي أن يُنتج تقديرًا للتكامل.
 
-Implement Monte Carlo integration as a procedure `estimate-integral` that takes as arguments a predicate `P`, upper and lower bounds `x1`, `x2`, `y1`, and `y2` for the rectangle, and the number of trials to perform in order to produce the estimate. Your procedure should use the same `monte-carlo` procedure that was used above to estimate $π$ . Use your `estimate-integral` to produce an estimate of $π$ by measuring the area of a unit circle.
+نفّذ تكامل مونت كارلو بوصفه إجراءَ `estimate-integral` يأخذ كوسائط مُسَيِّمًا `P`، وحدًّا عليويًا وسفليًّا `x1` و`x2` و`y1` و`y2` للمستطيل، وعدد المحاولات التي ينبغي إجراؤها لإنتاج التقدير. وينبغي أن يستخدم إجراءُك الإجراء `monte-carlo` ذاته الذي استُخدم أعلاه لتقدير $π$ . واستخدم `estimate-integral` لديك لإنتاج تقديرٍ لـ$π$ بقياس مساحة دائرة الوحدة.
 
-You will find it useful to have a procedure that returns a number chosen at random from a given range. The following `random-in-range` procedure implements this in terms of the `random` procedure used in [1.2.6](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e6), which returns a nonnegative number less than its input.[^8]
+وستجد أنه من المفيد أن تتوفر لديك دالّةٌ تعيد عددًا مُختارًا عشوائيًّا من مدىً معطًى. والإجراء `random-in-range` الآتي يُنفّذ هذا بدلالة الإجراء `random` المستخدم في [1.2.6](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e6)، والذي يعيد عددًا غير سالبٍ أصغر من مدخله.[^8]
 
 ```scheme
 (define (random-in-range low high)
@@ -310,15 +310,15 @@ You will find it useful to have a procedure that returns a number chosen at rand
     (+ low (random range))))
 ```
 
-> **Exercise 3.6:** It is useful to be able to reset a random-number generator to produce a sequence starting from a given value. Design a new `rand` procedure that is called with an argument that is either the symbol `generate` or the symbol `reset` and behaves as follows: `(rand 'generate)` produces a new random number; `((rand 'reset) ⟨new-value⟩)` resets the internal state variable to the designated `⟨`new-value`⟩`. Thus, by resetting the state, one can generate repeatable sequences. These are very handy to have when testing and debugging programs that use random numbers.
+> **التمرين 3.6:** من المفيد أن نكون قادرين على إعادة ضبط مولّد أعدادٍ عشوائيّةٍ بحيث يُنتج تتاليًا يبدأ من قيمةٍ معطاة. صمّم إجراء `rand` جديدًا يُنادى بوسيطٍ يكون إمّا الرمز `generate` أو الرمز `reset` ويتصرّف على النحو الآتي: فإنّ `(rand 'generate)` يُنتج عددًا عشوائيًّا جديدًا؛ و`((rand 'reset) ⟨new-value⟩)` يُعيد ضبط متغيّر الحالة الداخليّ إلى `⟨`new-value`⟩` المعيَّن. وبذلك، فبإعادة ضبط الحالة، يمكننا توليد تتاليات قابلةٍ للتكرار. وهذه أمورٌ بالغة الفائدة حين نختبر برامجنا التي تستخدم أعدادًا عشوائيّةً ونصحّح عللها.
 
-#### 3.1.3 The Costs of Introducing Assignment
+#### 3.1.3 تكاليف إدخال الإحلال
 
-As we have seen, the `set!` operation enables us to model objects that have local state. However, this advantage comes at a price. Our programming language can no longer be interpreted in terms of the substitution model of procedure application that we introduced in [1.1.5](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e5). Moreover, no simple model with “nice” mathematical properties can be an adequate framework for dealing with objects and assignment in programming languages.
+وكما رأينا، فإنّ العمليّة `set!` تُمكنّنا من نمذجة كائناتٍ لها حالة محلّيّة. غير أنّ هذه الميزة تأتي بثمن. فإنّ لغة البرمجة لدينا لم يعد ممكنًا تفسيرها من حيث نموذج الاستبدال لتطبيق الإجراء الذي قدّمناه في [1.1.5](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e5). وفوق ذلك، فإنّه لا يمكن لأيّ نموذجٍ بسيطٍ ذي خصائص رياضيّةٍ «جميلة» أن يكون إطارًا كافيًا للتعامل مع الكائنات والإحلال في لغات البرمجة.
 
-So long as we do not use assignments, two evaluations of the same procedure with the same arguments will produce the same result, so that procedures can be viewed as computing mathematical functions. Programming without any use of assignments, as we did throughout the first two chapters of this book, is accordingly known as *functional programming*.
+فما دمّا لا نستخدم الإحالات، فإنّ تقييمين للإجراء ذاته بالمعطيات ذاتها سيُنتجان النتيجة نفسها، بحيث يمكن النظر إلى الإجراءات بوصفها تحسب دوالّ رياضيّة. والبرمجة دون أيّ استخدامٍ للإحالات، كما فعلنا في الفصلين الأوّلين من هذا الكتاب، تُعرَف بالتالي بـ*البرمجة الدالّيّة (functional programming)*.
 
-To understand how assignment complicates matters, consider a simplified version of the `make-withdraw` procedure of [3.1.1](#g_t3_002e1_002e1) that does not bother to check for an insufficient amount:
+ولفهم كيف يعقّد الإحلال الأمور، تأمّل نسخةً مبسّطةً من إجراء `make-withdraw` الوارد في [3.1.1](#g_t3_002e1_002e1) لا تتعبّ نفسها بالتحقّق من عدم كفاية المبلغ:
 
 ```scheme
 (define (make-simplified-withdraw balance)
@@ -335,7 +335,7 @@ To understand how assignment complicates matters, consider a simplified version 
 -5
 ```
 
-Compare this procedure with the following `make-decrementer` procedure, which does not use `set!`:
+وقارن هذا الإجراء بالإجراء `make-decrementer` الآتي، الذي لا يستخدم `set!`:
 
 ```scheme
 (define (make-decrementer balance)
@@ -343,7 +343,7 @@ Compare this procedure with the following `make-decrementer` procedure, which do
     (- balance amount)))
 ```
 
-`Make-decrementer` returns a procedure that subtracts its input from a designated amount `balance`, but there is no accumulated effect over successive calls, as with `make-simplified-withdraw`:
+ويعيد `Make-decrementer` إجراءً يطرح مدخله من مبلغٍ معيَّنٍ `balance`، لكن لا يوجد هناك أثرٌ مُتراكمٌ على النداءات المتعاقبة، كما هو الحال مع `make-simplified-withdraw`:
 
 ```scheme
 (define D (make-decrementer 25))
@@ -355,33 +355,33 @@ Compare this procedure with the following `make-decrementer` procedure, which do
 15
 ```
 
-We can use the substitution model to explain how `make-decrementer` works. For instance, let us analyze the evaluation of the expression
+ويمكننا استخدام نموذج الاستبدال لشرح كيف يعمل `make-decrementer`. فلنحلّل مثلًا تقييم التعبير
 
 ```scheme
 ((make-decrementer 25) 20)
 ```
 
-We first simplify the operator of the combination by substituting 25 for `balance` in the body of `make-decrementer`. This reduces the expression to
+نبدأ ببساطة مشغّل التركيب باستبدال 25 مكان `balance` في جسم `make-decrementer`. وهذا يُختزل التعبير إلى
 
 ```scheme
 ((lambda (amount) (- 25 amount)) 20)
 ```
 
-Now we apply the operator by substituting 20 for `amount` in the body of the `lambda` expression:
+والآن نُطبّق المشغّل باستبدال 20 مكان `amount` في جسم تعبير `lambda`:
 
 ```scheme
 (- 25 20)
 ```
 
-The final answer is 5.
+والجواب النهائيّ هو 5.
 
-Observe, however, what happens if we attempt a similar substitution analysis with `make-simplified-withdraw`:
+ولكن، لاحِظ ما يحدث إذا حاولنا تحليلًا بالاستبدال شبيهًا بـ`make-simplified-withdraw`:
 
 ```scheme
 ((make-simplified-withdraw 25) 20)
 ```
 
-We first simplify the operator by substituting 25 for `balance` in the body of `make-simplified-withdraw`. This reduces the expression to[^9]
+نبدأ ببساطة المشغّل باستبدال 25 مكان `balance` في جسم `make-simplified-withdraw`. وهذا يُختزل التعبير إلى[^9]
 
 ```scheme
 ((lambda (amount) 
@@ -389,37 +389,37 @@ We first simplify the operator by substituting 25 for `balance` in the body of `
  20)
 ```
 
-Now we apply the operator by substituting 20 for `amount` in the body of the `lambda` expression:
+والآن نُطبّق المشغّل باستبدال 20 مكان `amount` في جسم تعبير `lambda`:
 
 ```scheme
 (set! balance (- 25 20)) 25
 ```
 
-If we adhered to the substitution model, we would have to say that the meaning of the procedure application is to first set `balance` to 5 and then return 25 as the value of the expression. This gets the wrong answer. In order to get the correct answer, we would have to somehow distinguish the first occurrence of `balance` (before the effect of the `set!`) from the second occurrence of `balance` (after the effect of the `set!`), and the substitution model cannot do this.
+فإذا تمسّكنا بنموذج الاستبدال، لَوجب علينا أن نقول إنّ معنى تطبيق الإجراء هو أن نُعيّن `balance` أوّلًا إلى 5 ثم نُعيد 25 قيمةً للتعبير. وهذا يُعطي الجواب الخاطئ. ولكي نحصل على الجواب الصحيح، كان يتحتّم علينا، بطريقةٍ أو بأخرى، تمييز أوّل ظهور لـ`balance` (قبل أثر `set!`) من ظهور `balance` الثاني (بعد أثر `set!`)، ونموذج الاستبدال لا يقدر على هذا.
 
-The trouble here is that substitution is based ultimately on the notion that the symbols in our language are essentially names for values. But as soon as we introduce `set!` and the idea that the value of a variable can change, a variable can no longer be simply a name. Now a variable somehow refers to a place where a value can be stored, and the value stored at this place can change. In [3.2](https://sarabander.github.io/sicp/html/3_002e2.xhtml#g_t3_002e2) we will see how environments play this role of “place” in our computational model.
+والمشكلة هنا أنّ الاستبدال يقوم في نهاية الأمر على فكرة أنّ الرموز في لغتنا هي في أساسها أسماءٌ للقيم. لكن بمجرّد إدخالنا `set!` وفكرة أنّ قيمة متغيّرٍ يمكن أن تتغيّر، لم يعد المتغيّر مجرّد اسم. فالآن، يشير المتغيّر - بطريقةٍ ما - إلى موضعٍ يمكن تخزين قيمةٍ فيه، والقيمة المخزّنة في هذا الموضع يمكن أن تتغيّر. وسنرى في [3.2](https://sarabander.github.io/sicp/html/3_002e2.xhtml#g_t3_002e2) كيف تؤدّي البيئات دورَ هذا «الموضع» في نموذجنا الحسابيّ.
 
-#### Sameness and change
+#### التماثل والتغيّر
 
-The issue surfacing here is more profound than the mere breakdown of a particular model of computation. As soon as we introduce change into our computational models, many notions that were previously straightforward become problematical. Consider the concept of two things being “the same.”
+والقضية التي تطفو إلى السطح هنا أعمق من مجرّد انهيار نموذجٍ معيّنٍ للاحتساب. فبمجرّد إدخالنا التغيّر إلى نماذجنا الحسابيّة، تصير مفاهيمُ كثيرةٌ كانت مباشرةً سابقًا إشكاليّة. وتأمّل مفهوم كون شيئين «متماثلين».
 
-Suppose we call `make-decrementer` twice with the same argument to create two procedures:
+فلنفترض أنّنا نادينا `make-decrementer` مرّتين بالمُعطى ذاته لإنشاء إجراءين:
 
 ```scheme
 (define D1 (make-decrementer 25))
 (define D2 (make-decrementer 25))
 ```
 
-Are `D1` and `D2` the same? An acceptable answer is yes, because `D1` and `D2` have the same computational behavior—each is a procedure that subtracts its input from 25. In fact, `D1` could be substituted for `D2` in any computation without changing the result.
+أفـ`D1` و`D2` متتماثلان؟ والجواب المقبول هو نعم، لأنّ `D1` و`D2` لهما السلوك الحسابيّ ذاته - كلٌّ منهما إجراءٌ يطرح مُدخله من 25. والواقع أنّ `D1` يمكن أن يُستبدل مكان `D2` في أيّ احتسابٍ دون تغيير النتيجة.
 
-Contrast this with making two calls to `make-simplified-withdraw`:
+وقارن هذا بنداءين لـ`make-simplified-withdraw`:
 
 ```scheme
 (define W1 (make-simplified-withdraw 25))
 (define W2 (make-simplified-withdraw 25))
 ```
 
-Are `W1` and `W2` the same? Surely not, because calls to `W1` and `W2` have distinct effects, as shown by the following sequence of interactions:
+أفـ`W1` و`W2` متتماثلان؟ بالتأكيد لا، لأنّ نداءات `W1` و`W2` لها آثار متمايزة، كما يُظهرها تتالي التفاعلات الآتي:
 
 ```scheme
 (W1 20)
@@ -432,33 +432,33 @@ Are `W1` and `W2` the same? Surely not, because calls to `W1` and `W2` have dist
 5
 ```
 
-Even though `W1` and `W2` are “equal” in the sense that they are both created by evaluating the same expression, `(make-simplified-withdraw 25)`, it is not true that `W1` could be substituted for `W2` in any expression without changing the result of evaluating the expression.
+وبالرغم من أنّ `W1` و`W2` «متساويان» بمعنى أنّهما كلاهما أُنشئ بتقييم التعبير ذاته، `(make-simplified-withdraw 25)`، فليس صحيحًا أنّ `W1` يمكن أن يُستبدل مكان `W2` في أيّ تعبيرٍ دون تغيير نتيجة تقييم التعبير.
 
-A language that supports the concept that “equals can be substituted for equals” in an expression without changing the value of the expression is said to be *referentially transparent*. Referential transparency is violated when we include `set!` in our computer language. This makes it tricky to determine when we can simplify expressions by substituting equivalent expressions. Consequently, reasoning about programs that use assignment becomes drastically more difficult.
+ويُقال عن لغةٍ تدعم مفهوم «المتساويات يمكن أن تُستبدل مكان المتساويات» في تعبيرٍ دون تغيير قيمة التعبير إنّها *شفّافة بالرجوع (referentially transparent)*. وإنّ الشفافيّة بالرجوع تُخرق عندما نُدرج `set!` في لغة الحاسوب لدينا. وهذا يجعل من الصعب تحديد متى يمكننا تبسيط التعبيرات باستبدال تعابيرَ مكافئةٍ بها. ونتيجةً لذلك، فإنّ الاستدلال على البرامج التي تستخدم الإحلال يصبح أصعبَ بكثيرٍ.
 
-Once we forgo referential transparency, the notion of what it means for computational objects to be “the same” becomes difficult to capture in a formal way. Indeed, the meaning of “same” in the real world that our programs model is hardly clear in itself. In general, we can determine that two apparently identical objects are indeed “the same one” only by modifying one object and then observing whether the other object has changed in the same way. But how can we tell if an object has “changed” other than by observing the “same” object twice and seeing whether some property of the object differs from one observation to the next? Thus, we cannot determine “change” without some *a priori* notion of “sameness,” and we cannot determine sameness without observing the effects of change.
+فبمجرّد أن نتنازل عن الشفافيّة بالرجوع، يصبح مفهوم معنى كون الكائنات الحسابيّة «متماثلة» عسيرًا على الإحاطة به بصورةٍ رسميّة. والواقع أنّ معنى «التماثل» في العالم الحقيقيّ الذي تمثّله برامجنا ليس واضحًا في ذاته. وبصورةٍ عامّة، لا نستطيع تحديد أنّ كائنين ظاهريًّا متماثلين هما حقًّا «الكائن ذاته» إلّا بتعديل أحد الكائنين ثمّ ملاحظة ما إذا كان الكائن الآخر قد تغيّر بالطريقة ذاتها. لكن كيف نستطيع أن نعرف ما إذا كان كائنٌ ما قد «تغيّر» بطريقةٍ أخرى غير ملاحظة «الكائن ذاته» مرّتين ورؤية ما إذا كانت خاصّيّةٌ ما للكائن تختلف من ملاحظةٍ إلى أخرى؟ وهكذا، فإنّا لا نستطيع تحديد «التغيّر» دون مفهومٍ *قبليّ (a priori)* عن «التماثل»، ولا نستطيع تحديد التماثل دون ملاحظة آثار التغيّر.
 
-As an example of how this issue arises in programming, consider the situation where Peter and Paul have a bank account with $100 in it. There is a substantial difference between modeling this as
+ومثالٌ على كيف تنشأ هذه القضية في البرمجة، تأمّل الحالة التي يكون لبطرس وبولس حساب مصرفيّ فيه $100. وهناك فرقٌ كبيرٌ بين نمذجة هذا على الشكل
 
 ```scheme
 (define peter-acc (make-account 100))
 (define paul-acc (make-account 100))
 ```
 
-and modeling it as
+ونمذجته على الشكل
 
 ```scheme
 (define peter-acc (make-account 100))
 (define paul-acc peter-acc)
 ```
 
-In the first situation, the two bank accounts are distinct. Transactions made by Peter will not affect Paul’s account, and vice versa. In the second situation, however, we have defined `paul-acc` to be *the same thing* as `peter-acc`. In effect, Peter and Paul now have a joint bank account, and if Peter makes a withdrawal from `peter-acc` Paul will observe less money in `paul-acc`. These two similar but distinct situations can cause confusion in building computational models. With the shared account, in particular, it can be especially confusing that there is one object (the bank account) that has two different names (`peter-acc` and `paul-acc`); if we are searching for all the places in our program where `paul-acc` can be changed, we must remember to look also at things that change `peter-acc`.[^10]
+في الحالة الأولى، الحسابان المصرفيّان متمايزان. فإنّ المعاملات التي يجريها بطرس لن تؤثّر في حساب بولس، والعكس بالعكس. وأمّا في الحالة الثانية، فقد عرّفنا `paul-acc` بوصفه *الشيء ذاته* كـ`peter-acc`. وفي الواقع، صار لبطرس وبولس الآن حساب مصرفيّ مشترك، وإذا سحب بطرس من `peter-acc` فسيلاحظ بولس مالًا أقلّ في `paul-acc`. وهاتان الحالتان المتشابهتان لكنهما متمايزتان قد تُسبّبان بلبلةً في بناء النماذج الحسابيّة. فعلى الحساب المشترك على وجه الخصوص، قد يكون الأمر مُحيّرًا بصفةٍ خاصّةٍ من حيث أنّ هناك كائنًا واحدًا (الحساب المصرفيّ) له اسمان مختلفان (`peter-acc` و`paul-acc`)؛ فإذا كنّا نبحث عن جميع الأماكن في برنامجنا حيث يمكن تغيير `paul-acc`، فعلينا أن نتذكّر أن ننظر أيضًا إلى الأشياء التي تُغيّر `peter-acc`.[^10]
 
-With reference to the above remarks on “sameness” and “change,” observe that if Peter and Paul could only examine their bank balances, and could not perform operations that changed the balance, then the issue of whether the two accounts are distinct would be moot. In general, so long as we never modify data objects, we can regard a compound data object to be precisely the totality of its pieces. For example, a rational number is determined by giving its numerator and its denominator. But this view is no longer valid in the presence of change, where a compound data object has an “identity” that is something different from the pieces of which it is composed. A bank account is still “the same” bank account even if we change the balance by making a withdrawal; conversely, we could have two different bank accounts with the same state information. This complication is a consequence, not of our programming language, but of our perception of a bank account as an object. We do not, for example, ordinarily regard a rational number as a changeable object with identity, such that we could change the numerator and still have “the same” rational number.
+وبالإشارة إلى الملاحظات الواردة أعلاه عن «التماثل» و«التغيّر»، لاحِظ أنّ بطرس وبولس، لو كانا لا يقدران إلّا على فحص رصيديهما المصرفيّين، ولم يستطيعا أداء عمليّاتٍ تُغيّر الرصيد، لكانت مسألة ما إذا كان الحسابان متمايزين مسألةً خاليةً من الأهمّيّة. وبصورةٍ عامّة، فما دمّا لا نُعدّل كائنات البيانات قطّ، فيمكننا اعتبار كائن بياناتٍ مركّبًا هو مجموع أجزائه بالضبط. فمثلًا، فإنّ العدد الكسريّ يُحدَّد بإعطاء بسطه ومقامه. لكن هذه النظرة لم تبقَ صالحةً بحضور التغيّر، حيث يكون لكائن البيانات المركّب «هويّةٌ» هي شيءٌ مختلفٌ عن الأجزاء التي يتكوّن منها. فإنّ الحساب المصرفيّ يبقى «الحساب المصرفيّ ذاته» حتّى لو غيّرنا الرصيد بإجراء سحب؛ وبالعكس، كان بإمكاننا أن نملك حسابين مصرفيّين مختلفين لهما المعلومات ذاتها عن الحالة. وهذا التعقيد نتيجة، لا للغة البرمجة لدينا، بل لإدراكنا للحساب المصرفيّ بوصفه كائنًا. فنحن لا نعتبر مثلًا - بصورةٍ اعتياديّةٍ - العدد الكسريّ كائنًا قابلًا للتغيّر وله هويّةٌ، بحيث نستطيع تغيير البسط ولا يزال «العدد الكسريّ ذاته».
 
-#### Pitfalls of imperative programming
+#### مزالق البرمجة الأمرة
 
-In contrast to functional programming, programming that makes extensive use of assignment is known as *imperative programming*. In addition to raising complications about computational models, programs written in imperative style are susceptible to bugs that cannot occur in functional programs. For example, recall the iterative factorial program from [1.2.1](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e1):
+وبالمقارنة مع البرمجة الدالّيّة، فإنّ البرمجة التي تُكثر من استخدام الإحلال تُعرَف بـ*البرمجة الأمرة (imperative programming)*. فبالإضافة إلى إثارة تعقيداتٍ حول النماذج الحسابيّة، فإنّ البرامج المكتوبة بالأسلوب الأمر عُرضةٌ لعللٍ لا يمكن أن تحدث في البرامج الدالّيّة. فمثلًا، تذكّر برنامج العامليّة التكراريّ الوارد في [1.2.1](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e1):
 
 ```scheme
 (define (factorial n)
@@ -470,7 +470,7 @@ In contrast to functional programming, programming that makes extensive use of a
   (iter 1 1))
 ```
 
-Instead of passing arguments in the internal iterative loop, we could adopt a more imperative style by using explicit assignment to update the values of the variables `product` and `counter`:
+وبدلًا من تمرير المعطيات في الحلقة التكراريّة الداخليّة، يمكننا اتباع أسلوبٍ أمريّ (imperative) أكثر باستخدام الإحلال الصريح لتحديث قيمتَي المتغيّرين `product` و`counter`:
 
 ```scheme
 (define (factorial n)
@@ -486,18 +486,18 @@ Instead of passing arguments in the internal iterative loop, we could adopt a mo
     (iter)))
 ```
 
-This does not change the results produced by the program, but it does introduce a subtle trap. How do we decide the order of the assignments? As it happens, the program is correct as written. But writing the assignments in the opposite order
+وهذا لا يُغيّر النتائج التي يُنتجها البرنامج، لكنّه يُدخل فخًّا خفيًّا. فكيف نقرّر ترتيب عمليّات الإحلال؟ والحال أنّ البرنامج صحيحٌ كما هو مكتوب. لكنّ كتابة عمليّات الإحلال بالترتيب المعاكس
 
 ```scheme
 (set! counter (+ counter 1))
 (set! product (* counter product))
 ```
 
-would have produced a different, incorrect result. In general, programming with assignment forces us to carefully consider the relative orders of the assignments to make sure that each statement is using the correct version of the variables that have been changed. This issue simply does not arise in functional programs.[^11]
+كانت ستُنتج نتيجةً مختلفةً وخاطئة. وبصورةٍ عامّة، فإنّ البرمجة بالإحلال تُجبرنا على النظر بعنايةٍ في الترتيبات النسبيّة لعمليّات الإحلال للتأكّد من أنّ كلّ عبارةٍ تستخدم الإصدار الصحيح من المتغيّرات التي تغيّرت. وهذه المسألة لا تنشأ إطلاقًا في البرامج الوظيفيّة (functional programs).[^11]
 
-The complexity of imperative programs becomes even worse if we consider applications in which several processes execute concurrently. We will return to this in [3.4](https://sarabander.github.io/sicp/html/3_002e4.xhtml#g_t3_002e4). First, however, we will address the issue of providing a computational model for expressions that involve assignment, and explore the uses of objects with local state in designing simulations.
+وتزداد تعقيد البرامج الأمريّة سوءًا إذا نظرنا في تطبيقاتٍ تنفّذ فيها عدّة عمليّاتٍ في الوقت ذاته. وسنعود إلى هذا في [3.4](https://sarabander.github.io/sicp/html/3_002e4.xhtml#g_t3_002e4). لكن قبل ذلك، سنتناول مسألة توفير نموذجٍ حسابيٍّ للتعبيرات التي تشمل الإحلال، وسنستكشف استخدامات الكائنات ذات الحالة المحليّة في تصميم المحاكاة.
 
-**Exercise 3.7:** Consider the bank account objects created by `make-account`, with the password modification described in [Exercise 3.3](#Exercise-3_002e3). Suppose that our banking system requires the ability to make joint accounts. Define a procedure `make-joint` that accomplishes this. `Make-joint` should take three arguments. The first is a password-protected account. The second argument must match the password with which the account was defined in order for the `make-joint` operation to proceed. The third argument is a new password. `Make-joint` is to create an additional access to the original account using the new password. For example, if `peter-acc` is a bank account with password `open-sesame`, then
+**التمرين 3.7:** فكِّر في كائنات الحساب المصرفيّ المُنشأة بـ`make-account`، مع تعديل كلمة المرور الموصوف في [التمرين 3.3](#Exercise-3_002e3). فلنفترض أنّ نظامنا المصرفيّ يتطلّب القدرة على إنشاء حساباتٍ مشتركة. عرّف إجراءً `make-joint` يُنجز ذلك. وينبغي أن يأخذ `make-joint` ثلاثة معطيات. الأوّل هو حسابٌ محميٌّ بكلمة مرور. ويجب أن يطابق المعطى الثاني كلمة المرور التي عُرِّف بها الحساب لكي تُجرى عمليّة `make-joint`. والمعطى الثالث هو كلمة مرورٌ جديدة. و`make-joint` يُنشئ وصولًا إضافيًّا إلى الحساب الأصليّ باستخدام كلمة المرور الجديدة. فمثلًا، إذا كان `peter-acc` حسابًا مصرفيًّا بكلمة المرور `open-sesame`، فإنّ
 
 ```scheme
 (define paul-acc
@@ -506,87 +506,87 @@ The complexity of imperative programs becomes even worse if we consider applicat
               'rosebud))
 ```
 
-will allow one to make transactions on `peter-acc` using the name `paul-acc` and the password `rosebud`. You may wish to modify your solution to [Exercise 3.3](#Exercise-3_002e3) to accommodate this new feature.
+سيسمح للمرء بإجراء تعاملاتٍ على `peter-acc` باستخدام الاسم `paul-acc` وكلمة المرور `rosebud`. وقد ترغب في تعديل حلك للـ[التمرين 3.3](#Exercise-3_002e3) لاستيعاب هذه الميزة الجديدة.
 
-**Exercise 3.8:** When we defined the evaluation model in [1.1.3](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e3), we said that the first step in evaluating an expression is to evaluate its subexpressions. But we never specified the order in which the subexpressions should be evaluated (e.g., left to right or right to left). When we introduce assignment, the order in which the arguments to a procedure are evaluated can make a difference to the result. Define a simple procedure `f` such that evaluating
+**التمرين 3.8:** حين عرّفنا نموذج التقييم في [1.1.3](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e3)، قلنا إنّ الخطوة الأولى في تقييم تعبيرٍ ما هي تقييم تعابيره الجزئيّة. لكنّنا لم نُحدّد قطّ الترتيب الذي يُقيَّم به التعبير الجزئيّ (مثلًا، من اليسار إلى اليمين أو من اليمين إلى اليسار). وحين نُدخل الإحلال، فإنّ الترتيب الذي تُقيَّم به معطيات إجراءٍ ما قد يُحدث فرقًا في النتيجة. عرّف إجراءً بسيطًا `f` بحيث يُنتج تقييم
 
 ```scheme
 (+ (f 0) (f 1))
 ```
 
-will return 0 if the arguments to `+` are evaluated from left to right but will return 1 if the arguments are evaluated from right to left.
+القيمة 0 إذا قُيِّمت معطيات `+` من اليسار إلى اليمين، لكنّه يُعيد 1 إذا قُيِّمت المعطيات من اليمين إلى اليسار.
 
-### 3.2 The Environment Model of Evaluation
+### 3.2 نموذج البيئة للتقييم
 
-When we introduced compound procedures in [Chapter 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1), we used the substitution model of evaluation ([1.1.5](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e5)) to define what is meant by applying a procedure to arguments:
+حين قدّمنا الإجراءات المركّبة في [الفصل 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1)، استخدمنا نموذج الاستبدال للتقييم ([1.1.5](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e5)) لتحديد معنى تطبيق إجراءٍ على معطيات:
 
-- To apply a compound procedure to arguments, evaluate the body of the procedure with each formal parameter replaced by the corresponding argument.
+- ولتطبيق إجراءٍ مركّبٍ على معطياتٍ، قيّم جسم الإجراء باستبدال كلّ وسيطٍ شكليّ بالمعطى المطابق له.
 
-Once we admit assignment into our programming language, such a definition is no longer adequate. In particular, [3.1.3](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e3) argued that, in the presence of assignment, a variable can no longer be considered to be merely a name for a value. Rather, a variable must somehow designate a “place” in which values can be stored. In our new model of evaluation, these places will be maintained in structures called *environments*.
+وحين نُدخل الإحلال في لغة البرمجة خاصّتنا، فإنّ مثل هذا التعريف لم يبقَ كافيًا. فبالأخصّ، أظهر [3.1.3](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e3) أنّه في وجود الإحلال، لم يعد من الممكن اعتبار المتغيّر اسمًا لقيمةٍ فحسب. بل ينبغي للمتغيّر أن يُشير بطريقةٍ ما إلى «مكانٍ» تُخزَّن فيه القيم. وفي نموذجنا الجديد للتقييم، ستُحفَظ هذه الأماكن في بنىً تُسمّى *بيئات (environments)*.
 
-An environment is a sequence of *frames*. Each frame is a table (possibly empty) of *bindings*, which associate variable names with their corresponding values. (A single frame may contain at most one binding for any variable.) Each frame also has a pointer to its *enclosing environment*, unless, for the purposes of discussion, the frame is considered to be *global*. The *value of a variable* with respect to an environment is the value given by the binding of the variable in the first frame in the environment that contains a binding for that variable. If no frame in the sequence specifies a binding for the variable, then the variable is said to be *unbound* in the environment.
+والبيئة تسلسلٌ من *الأُطُر (frames)*. وكلّ إطارٍ هو جدول (قد يكون فارغًا) من *الروابط (bindings)*، التي تربط أسماء المتغيّرات بقيمها المقابلة. (والإطار الواحد قد يحتوي على ربطٍ واحدٍ على الأكثرّ لأيّ متغيّر.) ولكلّ إطارٍ أيضًا مؤشّر إلى *بيئته المحيطة (enclosing environment)*، إلّا إذا اعتُبر الإطار، لأغراض المناقشة، *عامًّا (global)*. و*قيمة متغيّرٍ* بالنسبة إلى بيئةٍ ما هي القيمة التي يُعطيها ربط المتغيّر في أوّل إطارٍ في البيئة يحتوي على ربطٍ لذلك المتغيّر. فإن لم يُحدّد أيّ إطارٍ في التسلسل ربطًا للمتغيّر، قيل إنّ المتغيّر *غير مربوط (unbound)* في البيئة.
 
-[Figure 3.1](#Figure-3_002e1) shows a simple environment structure consisting of three frames, labeled I, II, and III. In the diagram, A, B, C, and D are pointers to environments. C and D point to the same environment. The variables `z` and `x` are bound in frame II, while `y` and `x` are bound in frame I. The value of `x` in environment D is 3. The value of `x` with respect to environment B is also 3. This is determined as follows: We examine the first frame in the sequence (frame III) and do not find a binding for `x`, so we proceed to the enclosing environment D and find the binding in frame I. On the other hand, the value of `x` in environment A is 7, because the first frame in the sequence (frame II) contains a binding of `x` to 7. With respect to environment A, the binding of `x` to 7 in frame II is said to *shadow* the binding of `x` to 3 in frame I.
+يُظهر [الشكل 3.1](#Figure-3_002e1) بنية بيئةٍ بسيطةٍ تتكوّن من ثلاثة أُطُر، موسومةً بـI وII وIII. وفي الرسم، A وB وC وD هي مؤشّرات إلى بيئات. ويشير C وD إلى البيئة نفسها. والمتغيّران `z` و`x` مربوطان في الإطار II، بينما `y` و`x` مربوطان في الإطار I. وقيمة `x` في البيئة D هي 3. وقيمة `x` بالنسبة إلى البيئة B هي 3 أيضًا. ويُحدَّد ذلك كما يلي: نفحص أوّل إطارٍ في التسلسل (الإطار III) فلا نجد ربطًا لـ`x`، فننتقل إلى البيئة المحيطة D ونجد الربط في الإطار I. ومن جانبٍ آخر، قيمة `x` في البيئة A هي 7، لأنّ أوّل إطارٍ في التسلسل (الإطار II) يحتوي على ربط `x` بـ7. وبالنسبة إلى البيئة A، يُقال إنّ ربط `x` بـ7 في الإطار II *يحجب (shadow)* ربط `x` بـ3 في الإطار I.
 
 ![](/images/sicp/c3-modularity-objects-and-state-0-Fig3.1b.std.webp)
 
-**Figure 3.1:** A simple environment structure.
+**الشكل 3.1:** بنية بيئةٍ بسيطة.
 
-The environment is crucial to the evaluation process, because it determines the context in which an expression should be evaluated. Indeed, one could say that expressions in a programming language do not, in themselves, have any meaning. Rather, an expression acquires a meaning only with respect to some environment in which it is evaluated. Even the interpretation of an expression as straightforward as `(+ 1 1)` depends on an understanding that one is operating in a context in which `+` is the symbol for addition. Thus, in our model of evaluation we will always speak of evaluating an expression with respect to some environment. To describe interactions with the interpreter, we will suppose that there is a global environment, consisting of a single frame (with no enclosing environment) that includes values for the symbols associated with the primitive procedures. For example, the idea that `+` is the symbol for addition is captured by saying that the symbol `+` is bound in the global environment to the primitive addition procedure.
+والبيئة حاسمةُ الأهمّيّة في عمليّة التقييم، لأنّها تُحدّد السياق الذي يُقيَّم فيه التعبير. ففي الحقيقة، يمكن القول إنّ التعابير في لغة البرمجة ليست لها بذاتها أيّ معنى. بل إنّ التعبير يكتسب معناه فقط بالنسبة إلى بعض البيئة التي يُقيَّم فيها. حتّى تفسير تعبيرٍ مباشرٍ كـ`(+ 1 1)` يعتمد على فهم أنّنا نعمل في سياقٍ يكون فيه `+` الرمز الدالّ على الجمع. وهكذا، في نموذجنا للتقييم سنتحدّث دائمًا عن تقييم تعبيرٍ بالنسبة إلى بيئةٍ ما. ولكي نصف التفاعلات مع المفسّر، سنفترض وجود بيئةٍ عامّة، تتكوّن من إطارٍ واحد (ليس له بيئة محيطة) يتضمّن القيم المرتبطة بالرموز المرتبطة بالإجراءات الأوّليّة. فمثلًا، فكرة أنّ `+` هو الرمز الدالّ على الجمع تُجسَّد بالقول إنّ الرمز `+` مربوطٌ في البيئة العامّة بإجراء الجمع الأوّليّ.
 
-#### 3.2.1 The Rules for Evaluation
+#### 3.2.1 قواعد التقييم
 
-The overall specification of how the interpreter evaluates a combination remains the same as when we first introduced it in [1.1.3](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e3):
+ويظلّ المواصفة الكلّيّة لكيفيّة تقييم المفسّر للتركيبات كما كانت حين قدّمناها أوّل مرّةٍ في [1.1.3](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e3):
 
-- To evaluate a combination:
+- ولتقييم تركيبةٍ:
 
-1. Evaluate the subexpressions of the combination.[^12]
-2. Apply the value of the operator subexpression to the values of the operand subexpressions.
+1. قيّم التعابير الجزئيّة للتركيبة.[^12]
+2. طبّق قيمة التعبير الجزئيّ المشغّل على قيم التعبيرات الجزئيّة العوامل.
 
-The environment model of evaluation replaces the substitution model in specifying what it means to apply a compound procedure to arguments.
+ويحلّ نموذج البيئة للتقييم محلّ نموذج الاستبدال في تحديد معنى تطبيق إجراءٍ مركّبٍ على معطيات.
 
-In the environment model of evaluation, a procedure is always a pair consisting of some code and a pointer to an environment. Procedures are created in one way only: by evaluating a λ-expression. This produces a procedure whose code is obtained from the text of the λ-expression and whose environment is the environment in which the λ-expression was evaluated to produce the procedure. For example, consider the procedure definition
+في نموذج البيئة للتقييم، الإجراء هو دائمًا زوجٌ يتكوّن من بعض الشيفرة ومؤشّر إلى بيئة. والإجراءات لا تُنشَأ إلّا بطريقةٍ واحدة: بتقييم تعبير λ. وهذا يُنتج إجراءً تُستمَدّ شيفرته من نصّ تعبير λ وتكون بيئته هي البيئة التي قُيِّم فيها تعبير λ لإنتاج الإجراء. فمثلًا، تأمّل تعريف الإجراء
 
 ```scheme
 (define (square x)
   (* x x))
 ```
 
-evaluated in the global environment. The procedure definition syntax is just syntactic sugar for an underlying implicit λ-expression. It would have been equivalent to have used
+المقيَّم في البيئة العامّة. وإنّ صياغة تعريف الإجراء هي مجرّد سُكْرٌ صياغيّ (syntactic sugar) لتعبير λ ضمنيّ كامن. وكان يمكن الاكتفاء باستخدام
 
 ```scheme
 (define square
   (lambda (x) (* x x)))
 ```
 
-which evaluates `(lambda (x) (* x x))` and binds `square` to the resulting value, all in the global environment.
+والذي يُقيّم `(lambda (x) (* x x))` ويربط `square` بالقيمة الناتجة، كلّ ذلك في البيئة العامّة.
 
-[Figure 3.2](#Figure-3_002e2) shows the result of evaluating this `define` expression. The procedure object is a pair whose code specifies that the procedure has one formal parameter, namely `x`, and a procedure body `(* x x)`. The environment part of the procedure is a pointer to the global environment, since that is the environment in which the λ-expression was evaluated to produce the procedure. A new binding, which associates the procedure object with the symbol `square`, has been added to the global frame. In general, `define` creates definitions by adding bindings to frames.
+يُظهر [الشكل 3.2](#Figure-3_002e2) نتيجة تقييم تعبير `define` هذا. وكائن الإجراء زوجٌ تُحدّد شيفرته أنّ للإجراء وسيطًا شكليًّا واحدًا، هو `x`، وجسم إجراءٍ هو `(* x x)`. وجزء البيئة في الإجراء مؤشّر إلى البيئة العامّة، لأنّها البيئة التي قُيِّم فيها تعبير λ لإنتاج الإجراء. وأُضيف رابطٌ جديد، يربط كائن الإجراء بالرمز `square`، إلى الإطار العامّ. وبصورةٍ عامّة، يُنشئ `define` التعريفات بإضافة روابط إلى الأُطُر.
 
 ![](/images/sicp/c3-modularity-objects-and-state-1-Fig3.2b.std.webp)
 
-**Figure 3.2:** Environment structure produced by evaluating `(define (square x) (* x x))` in the global environment.
+**الشكل 3.2:** بنية البيئة الناتجة عن تقييم `(define (square x) (* x x))` في البيئة العامّة.
 
-Now that we have seen how procedures are created, we can describe how procedures are applied. The environment model specifies: To apply a procedure to arguments, create a new environment containing a frame that binds the parameters to the values of the arguments. The enclosing environment of this frame is the environment specified by the procedure. Now, within this new environment, evaluate the procedure body.
+والآن بعد أن رأينا كيف تُنشَأ الإجراءات، نستطيع وصف كيف تُطبَّق الإجراءات. ويُحدّد نموذج البيئة ما يلي: لتطبيق إجراءٍ على معطيات، أنشئ بيئةً جديدةً تحتوي إطارًا يربط الوسائط بقيم المعطيات. وبيئة هذا الإطار المحيطة هي البيئة التي يُحدّدها الإجراء. والآن، داخل هذه البيئة الجديدة، قيّم جسم الإجراء.
 
-To show how this rule is followed, [Figure 3.3](#Figure-3_002e3) illustrates the environment structure created by evaluating the expression `(square 5)` in the global environment, where `square` is the procedure generated in [Figure 3.2](#Figure-3_002e2). Applying the procedure results in the creation of a new environment, labeled E1 in the figure, that begins with a frame in which `x`, the formal parameter for the procedure, is bound to the argument 5. The pointer leading upward from this frame shows that the frame’s enclosing environment is the global environment. The global environment is chosen here, because this is the environment that is indicated as part of the `square` procedure object. Within E1, we evaluate the body of the procedure, `(* x x)`. Since the value of `x` in E1 is 5, the result is `(* 5 5)`, or 25.
+ولإظهار كيف يُتّبع هذا القانون، يُوضّح [الشكل 3.3](#Figure-3_002e3) بنية البيئة المُنشأة بتقييم التعبير `(square 5)` في البيئة العامّة، حيث `square` هو الإجراء المُولَّد في [الشكل 3.2](#Figure-3_002e2). ويُنتج تطبيق الإجراء بيئةً جديدةً، موسومةً بـE1 في الشكل، تبدأ بإطارٍ يكون `x`، الوسيط الشكليّ للإجراء، مربوطًا فيه بالمعطى 5. والمؤشّر الصاعد من هذا الإطار يُظهر أنّ بيئته المحيطة هي البيئة العامّة. وقد اختيرت البيئة العامّة هنا، لأنّها البيئة المُشار إليها كجزءٍ من كائن الإجراء `square`. وداخل E1، نُقيّم جسم الإجراء، `(* x x)`. وبما أنّ قيمة `x` في E1 هي 5، فالنتيجة هي `(* 5 5)`، أي 25.
 
 ![](/images/sicp/c3-modularity-objects-and-state-2-Fig3.3b.std.webp)
 
-**Figure 3.3:** Environment created by evaluating `(square 5)` in the global environment.
+**الشكل 3.3:** البيئة المُنشأة بتقييم `(square 5)` في البيئة العامّة.
 
-The environment model of procedure application can be summarized by two rules:
+ويمكن تلخيص نموذج البيئة لتطبيق الإجراءات بقانونين:
 
-- A procedure object is applied to a set of arguments by constructing a frame, binding the formal parameters of the procedure to the arguments of the call, and then evaluating the body of the procedure in the context of the new environment constructed. The new frame has as its enclosing environment the environment part of the procedure object being applied.
-- A procedure is created by evaluating a λ-expression relative to a given environment. The resulting procedure object is a pair consisting of the text of the λ-expression and a pointer to the environment in which the procedure was created.
+- يُطبَّق كائن الإجراء على مجموعةٍ من المعطيات ببناء إطار، يربط الوسائط الشكليّة للإجراء بمعطيات النداء، ثمّ بتقييم جسم الإجراء في سياق البيئة الجديدة المبنيّة. وبيئة الإطار الجديد المحيطة هي جزء البيئة من كائن الإجراء المطبَّق.
+- يُنشَأ الإجراء بتقييم تعبير λ بالنسبة إلى بيئةٍ معيّنة. وكائن الإجراء الناتج زوجٌ يتكوّن من نصّ تعبير λ ومؤشّر إلى البيئة التي أُنشئ فيها الإجراء.
 
-We also specify that defining a symbol using `define` creates a binding in the current environment frame and assigns to the symbol the indicated value.[^13] Finally, we specify the behavior of `set!`, the operation that forced us to introduce the environment model in the first place. Evaluating the expression `(set! ⟨variable⟩ ⟨value⟩)` in some environment locates the binding of the variable in the environment and changes that binding to indicate the new value. That is, one finds the first frame in the environment that contains a binding for the variable and modifies that frame. If the variable is unbound in the environment, then `set!` signals an error.
+ونُحدّد أيضًا أنّ تعريف رمزٍ باستخدام `define` يُنشئ رابطًا في إطار البيئة الحاليّة ويسند إلى الرمز القيمة المُشار إليها.[^13] وأخيرًا، نُحدّد سلوك `set!`، العمليّة التي أَجبرتنا على تقديم نموذج البيئة في المقام الأوّل. فإنّ تقييم التعبير `(set! ⟨variable⟩ ⟨value⟩)` في بيئةٍ ما يجد ربط المتغيّر في البيئة ويغيّر ذلك الربط ليشير إلى القيمة الجديدة. أي أنّه يُعثَر على أوّل إطارٍ في البيئة يحتوي على ربطٍ للمتغيّر ويُعدَّل ذلك الإطار. فإن كان المتغيّر غير مربوطٍ في البيئة، فإنّ `set!` يُشير إلى خطأ.
 
-These evaluation rules, though considerably more complex than the substitution model, are still reasonably straightforward. Moreover, the evaluation model, though abstract, provides a correct description of how the interpreter evaluates expressions. In [Chapter 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4) we shall see how this model can serve as a blueprint for implementing a working interpreter. The following sections elaborate the details of the model by analyzing some illustrative programs.
+وهذه قواعد التقييم، وإن كانت أعقدَ كثيرًا من نموذج الاستبدال، فهي لا تزال مباشرةً إلى حدٍّ معقول. وفوق ذلك، فإنّ نموذج التقييم، وإن كان مجرّدًا، فهو يوفّر وصفًا صحيحًا لكيفيّة تقييم المفسّر للتعابير. في [الفصل 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4) سنرى كيف يستطيع هذا النموذج أن يخدم بوصفه مخططًا لتنفيذ مفسّرٍ عامل. وتُطوّل الأقسام التالية شرح تفاصيل النموذج بتحليل بعض البرامج التوضيحيّة.
 
-#### 3.2.2 Applying Simple Procedures
+#### 3.2.2 تطبيق الإجراءات البسيطة
 
-When we introduced the substitution model in [1.1.5](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e5) we showed how the combination `(f 5)` evaluates to 136, given the following procedure definitions:
+حين قدّمنا نموذج الاستبدال في [1.1.5](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e5)، أظهرنا كيف يُقيَّم التركيب `(f 5)` إلى 136، بالتعريفات الإجرائيّة التالية:
 
 ```scheme
 (define (square x)
@@ -597,13 +597,13 @@ When we introduced the substitution model in [1.1.5](https://sarabander.github.i
   (sum-of-squares (+ a 1) (* a 2)))
 ```
 
-We can analyze the same example using the environment model. [Figure 3.4](#Figure-3_002e4) shows the three procedure objects created by evaluating the definitions of `f`, `square`, and `sum-of-squares` in the global environment. Each procedure object consists of some code, together with a pointer to the global environment.
+نستطيع تحليل المثال نفسه باستخدام نموذج البيئة. يُظهر [الشكل 3.4](#Figure-3_002e4) كائنات الإجراءات الثلاثة المُنشأة بتقييم تعريفات `f` و`square` و`sum-of-squares` في البيئة العامّة. ويتكوّن كلّ كائن إجراءٍ من بعض الشيفرة، مع مؤشّر إلى البيئة العامّة.
 
 ![](/images/sicp/c3-modularity-objects-and-state-3-Fig3.4b.std.webp)
 
-**Figure 3.4:** Procedure objects in the global frame.
+**الشكل 3.4:** كائنات الإجراءات في الإطار العامّ.
 
-In [Figure 3.5](#Figure-3_002e5) we see the environment structure created by evaluating the expression `(f 5)`. The call to `f` creates a new environment E1 beginning with a frame in which `a`, the formal parameter of `f`, is bound to the argument 5. In E1, we evaluate the body of `f`:
+في [الشكل 3.5](#Figure-3_002e5) نرى بنية البيئة المُنشأة بتقييم التعبير `(f 5)`. فإنّ نداء `f` يُنشئ بيئةً جديدةً E1 تبدأ بإطارٍ يكون فيه `a`، الوسيط الشكليّ لـ`f`، مربوطًا بالمعطى 5. وداخل E1، نُقيّم جسم `f`:
 
 ```scheme
 (sum-of-squares (+ a 1) (* a 2))
@@ -611,17 +611,17 @@ In [Figure 3.5](#Figure-3_002e5) we see the environment structure created by eva
 
 ![](/images/sicp/c3-modularity-objects-and-state-4-Fig3.5b.std.webp)
 
-**Figure 3.5:** Environments created by evaluating `(f 5)` using the procedures in [Figure 3.4](#Figure-3_002e4).
+**الشكل 3.5:** البيئات المُنشأة بتقييم `(f 5)` باستخدام الإجراءات الواردة في [الشكل 3.4](#Figure-3_002e4).
 
-To evaluate this combination, we first evaluate the subexpressions. The first subexpression, `sum-of-squares`, has a value that is a procedure object. (Notice how this value is found: We first look in the first frame of E1, which contains no binding for `sum-of-squares`. Then we proceed to the enclosing environment, i.e. the global environment, and find the binding shown in [Figure 3.4](#Figure-3_002e4).) The other two subexpressions are evaluated by applying the primitive operations `+` and `*` to evaluate the two combinations `(+ a 1)` and `(* a 2)` to obtain 6 and 10, respectively.
+ولتقييم هذا التركيب، نُقيّم أوّلًا التعابير الجزئيّة. فالتعبير الجزئيّ الأوّل، `sum-of-squares`، له قيمةٌ هي كائن إجراء. (ولاحِظ كيف تُحصَل على هذه القيمة: ننظر أوّلًا في أوّل إطارٍ من E1، وهو لا يحتوي على ربطٍ لـ`sum-of-squares`. ثمّ ننتقل إلى البيئة المحيطة، أي البيئة العامّة، ونجد الربط المبيَّن في [الشكل 3.4](#Figure-3_002e4).) أمّا التعبيران الجزئيّان الآخران فيُقيَّمان بتطبيق العمليّتين الأوّليّتين `+` و`*` لتقييم التركيبين `(+ a 1)` و`(* a 2)` للحصول على 6 و10 على التوالي.
 
-Now we apply the procedure object `sum-of-squares` to the arguments 6 and 10. This results in a new environment E2 in which the formal parameters `x` and `y` are bound to the arguments. Within E2 we evaluate the combination `(+ (square x) (square y))`. This leads us to evaluate `(square x)`, where `square` is found in the global frame and `x` is 6. Once again, we set up a new environment, E3, in which `x` is bound to 6, and within this we evaluate the body of `square`, which is `(* x x)`. Also as part of applying `sum-of-squares`, we must evaluate the subexpression `(square y)`, where `y` is 10. This second call to `square` creates another environment, E4, in which `x`, the formal parameter of `square`, is bound to 10. And within E4 we must evaluate `(* x x)`.
+والآن نطبّق كائن الإجراء `sum-of-squares` على المعطيين 6 و10. ويُنتج ذلك بيئةً جديدةً E2 يُربَط فيها الوسيطان الشكليّان `x` و`y` بالمعطيات. وداخل E2 نُقيّم التركيب `(+ (square x) (square y))`. وهذا يُفضي بنا إلى تقييم `(square x)`، حيث `square` موجودٌ في الإطار العامّ و`x` هو 6. ومرةً أخرى، نُنشئ بيئةً جديدةً، E3، يكون `x` مرتبطًا فيها بـ6، وداخلها نُقيّم جسم `square`، وهو `(* x x)`. وأيضًا كجزءٍ من تطبيق `sum-of-squares`، يجب أن نُقيّم التعبير الجزئيّ `(square y)`، حيث `y` هو 10. وهذا النداء الثاني لـ`square` يُنشئ بيئةً أخرى، E4، يكون فيها `x`، الوسيط الشكليّ لـ`square`، مربوطًا بـ10. وداخل E4 يجب أن نُقيّم `(* x x)`.
 
-The important point to observe is that each call to `square` creates a new environment containing a binding for `x`. We can see here how the different frames serve to keep separate the different local variables all named `x`. Notice that each frame created by `square` points to the global environment, since this is the environment indicated by the `square` procedure object.
+والنقطة المهمّة التي ينبغي ملاحظتها هي أنّ كلّ نداءٍ لـ`square` يُنشئ بيئةً جديدةً تحتوي على ربطٍ لـ`x`. ونستطيع أن نرى هنا كيف تخدم الأُطُر المختلفة في إبقاء المتغيّرات المحليّة المختلفة المسمّاة جميعًا `x` منفصلة. ولاحِظ أنّ كلّ إطارٍ يُنشئه `square` يُشير إلى البيئة العامّة، لأنّها البيئة المُشار إليها في كائن الإجراء `square`.
 
-After the subexpressions are evaluated, the results are returned. The values generated by the two calls to `square` are added by `sum-of-squares`, and this result is returned by `f`. Since our focus here is on the environment structures, we will not dwell on how these returned values are passed from call to call; however, this is also an important aspect of the evaluation process, and we will return to it in detail in [Chapter 5](https://sarabander.github.io/sicp/html/Chapter-5.xhtml#Chapter-5).
+وبعد تقييم التعابير الجزئيّة، تُعاد النتائج. فالقيم المُولَّدة بالنداءين إلى `square` تُجمَع بـ`sum-of-squares`، وهذه النتيجة يُعيدها `f`. وبما أنّ تركيزنا هنا على بنى البيئة، فلن نُطِل الشرح في كيفيّة تمرير هذه القيم المُعادة من نداءٍ إلى نداء؛ غير أنّ هذا أيضًا جانبٌ مهمّ من عمليّة التقييم، وسنعود إليه بتفصيلٍ في [الفصل 5](https://sarabander.github.io/sicp/html/Chapter-5.xhtml#Chapter-5).
 
-**Exercise 3.9:** In [1.2.1](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e1) we used the substitution model to analyze two procedures for computing factorials, a recursive version
+**التمرين 3.9:** في [1.2.1](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e1) استخدمنا نموذج الاستبدال لتحليل إجراءين لاحتساب المضروب، إصدارٌ تعاوديّ
 
 ```scheme
 (define (factorial n)
@@ -630,7 +630,7 @@ After the subexpressions are evaluated, the results are returned. The values gen
       (* n (factorial (- n 1)))))
 ```
 
-and an iterative version
+وإصدارٌ تكراريّ
 
 ```scheme
 (define (factorial n)
@@ -646,11 +646,11 @@ and an iterative version
                  max-count)))
 ```
 
-Show the environment structures created by evaluating `(factorial 6)` using each version of the `factorial` procedure.[^14]
+أظهِر بنى البيئات المُنشأة بتقييم `(factorial 6)` باستخدام كلّ إصدارٍ من إجراء `factorial`.[^14]
 
-#### 3.2.3 Frames as the Repository of Local State
+#### 3.2.3 الأُطُر بوصفها مستودع الحالة المحليّة
 
-We can turn to the environment model to see how procedures and assignment can be used to represent objects with local state. As an example, consider the “withdrawal processor” from [3.1.1](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e1) created by calling the procedure
+نستطيع اللجوء إلى نموذج البيئة لنرى كيف يمكن استخدام الإجراءات والإحلال لتمثيل كائناتٍ ذات حالةٍ محليّة. فمثلًا، تأمّل «معالج السحب» الوارد في [3.1.1](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e1) والمُنشَأ بنداء الإجراء
 
 ```scheme
 (define (make-withdraw balance)
@@ -662,45 +662,45 @@ We can turn to the environment model to see how procedures and assignment can be
         "Insufficient funds")))
 ```
 
-Let us describe the evaluation of
+فلْنَصِف تقييم
 
 ```scheme
 (define W1 (make-withdraw 100))
 ```
 
-followed by
+تتبعه
 
 ```scheme
 (W1 50)
 50
 ```
 
-[Figure 3.6](#Figure-3_002e6) shows the result of defining the `make-withdraw` procedure in the global environment. This produces a procedure object that contains a pointer to the global environment. So far, this is no different from the examples we have already seen, except that the body of the procedure is itself a λ-expression.
+يُظهر [الشكل 3.6](#Figure-3_002e6) نتيجة تعريف إجراء `make-withdraw` في البيئة العامّة. وهذا يُنتج كائن إجراءٍ يحتوي على مؤشّر إلى البيئة العامّة. وحتّى الآن، لا يختلف هذا عن الأمثلة التي رأيناها سلفًا، إلّا في أنّ جسم الإجراء هو نفسه تعبير λ.
 
 ![](/images/sicp/c3-modularity-objects-and-state-5-Fig3.6c.std.webp)
 
-**Figure 3.6:** Result of defining `make-withdraw` in the global environment.
+**الشكل 3.6:** نتيجة تعريف `make-withdraw` في البيئة العامّة.
 
-The interesting part of the computation happens when we apply the procedure `make-withdraw` to an argument:
+ويقع الجزء المثير للاهتمام في الاحتساب حين نطبّق الإجراء `make-withdraw` على معطى:
 
 ```scheme
 (define W1 (make-withdraw 100))
 ```
 
-We begin, as usual, by setting up an environment E1 in which the formal parameter `balance` is bound to the argument 100. Within this environment, we evaluate the body of `make-withdraw`, namely the λ-expression. This constructs a new procedure object, whose code is as specified by the `lambda` and whose environment is E1, the environment in which the `lambda` was evaluated to produce the procedure. The resulting procedure object is the value returned by the call to `make-withdraw`. This is bound to `W1` in the global environment, since the `define` itself is being evaluated in the global environment. [Figure 3.7](#Figure-3_002e7) shows the resulting environment structure.
+نبدأ، كالعادة، بإنشاء بيئةٍ E1 يكون فيها الوسيط الشكليّ `balance` مرتبطًا بالمعطى 100. وداخل هذه البيئة، نُقيّم جسم `make-withdraw`، أي تعبير λ. وهذا يُنشئ كائن إجراءٍ جديد، شيفرته كما يُحدّدها `lambda` وبيئته هي E1، البيئة التي قُيِّم فيها `lambda` لإنتاج الإجراء. وكائن الإجراء الناتج هو القيمة المُعادة من نداء `make-withdraw`. وهذا يُربط بـ`W1` في البيئة العامّة، إذ إنّ `define` نفسه يُقيَّم في البيئة العامّة. يُظهر [الشكل 3.7](#Figure-3_002e7) بنية البيئة الناتجة.
 
 ![](/images/sicp/c3-modularity-objects-and-state-6-Fig3.7b.std.webp)
 
-**Figure 3.7:** Result of evaluating `(define W1 (make-withdraw 100))`.
+**الشكل 3.7:** نتيجة تقييم `(define W1 (make-withdraw 100))`.
 
-Now we can analyze what happens when `W1` is applied to an argument:
+والآن نستطيع تحليل ما يحدث حين يُطبَّق `W1` على معطى:
 
 ```scheme
 (W1 50)
 50
 ```
 
-We begin by constructing a frame in which `amount`, the formal parameter of `W1`, is bound to the argument 50. The crucial point to observe is that this frame has as its enclosing environment not the global environment, but rather the environment E1, because this is the environment that is specified by the `W1` procedure object. Within this new environment, we evaluate the body of the procedure:
+نبدأ ببناء إطارٍ يكون فيه `amount`، الوسيط الشكليّ لـ`W1`، مربوطًا بالمعطى 50. والنقطة الحاسمة التي ينبغي ملاحظتها هي أنّ بيئة هذا الإطار المحيطة ليست البيئة العامّة، بل البيئة E1، لأنّها البيئة التي يُحدّدها كائن الإجراء `W1`. وداخل هذه البيئة الجديدة، نُقيّم جسم الإجراء:
 
 ```scheme
 (if (>= balance amount)
@@ -709,31 +709,31 @@ We begin by constructing a frame in which `amount`, the formal parameter of `W1`
     "Insufficient funds")
 ```
 
-The resulting environment structure is shown in [Figure 3.8](#Figure-3_002e8). The expression being evaluated references both `amount` and `balance`. `Amount` will be found in the first frame in the environment, while `balance` will be found by following the enclosing-environment pointer to E1.
+وتُعرَض بنية البيئة الناتجة في [الشكل 3.8](#Figure-3_002e8). والتعبير الذي يُقيَّم يُشير إلى كلٍّ من `amount` و`balance`. وسيُعثَر على `amount` في أوّل إطارٍ في البيئة، بينما سيُعثَر على `balance` باتّباع مؤشّر البيئة المحيطة إلى E1.
 
 ![](/images/sicp/c3-modularity-objects-and-state-7-Fig3.8c.std.webp)
 
-**Figure 3.8:** Environments created by applying the procedure object `W1`.
+**الشكل 3.8:** البيئات المُنشأة بتطبيق كائن الإجراء `W1`.
 
-When the `set!` is executed, the binding of `balance` in E1 is changed. At the completion of the call to `W1`, `balance` is 50, and the frame that contains `balance` is still pointed to by the procedure object `W1`. The frame that binds `amount` (in which we executed the code that changed `balance`) is no longer relevant, since the procedure call that constructed it has terminated, and there are no pointers to that frame from other parts of the environment. The next time `W1` is called, this will build a new frame that binds `amount` and whose enclosing environment is E1. We see that E1 serves as the “place” that holds the local state variable for the procedure object `W1`. [Figure 3.9](#Figure-3_002e9) shows the situation after the call to `W1`.
+وحين يُنفَّذ `set!`، فإنّ ربط `balance` في E1 يتغيّر. وعند انتهاء نداء `W1`، يكون `balance` هو 50، والإطار الذي يحتوي على `balance` لا يزال كائن الإجراء `W1` يُشير إليه. أمّا الإطار الذي يربط `amount` (والذي نفّذنا فيه الشيفرة التي غيّرت `balance`) فلم يبقَ ذا صلة، لأنّ نداء الإجراء الذي بناه قد انتهى، ولا توجد مؤشّرات إلى ذلك الإطار من أجزاء البيئة الأخرى. وفي المرّة التالية التي يُندى فيها `W1`، سيُبنى إطارٌ جديد يربط `amount` وبيئته المحيطة هي E1. ونرى أنّ E1 يخدم بوصفه «المكان» الذي يحتفظ بمتغيّر الحالة المحليّة لكائن الإجراء `W1`. يُظهر [الشكل 3.9](#Figure-3_002e9) الوضع بعد نداء `W1`.
 
 ![](/images/sicp/c3-modularity-objects-and-state-8-Fig3.9b.std.webp)
 
-**Figure 3.9:** Environments after the call to `W1`.
+**الشكل 3.9:** البيئات بعد نداء `W1`.
 
-Observe what happens when we create a second “withdraw” object by making another call to `make-withdraw`:
+ولاحِظ ما يحدث حين نُنشئ كائن «سحب» ثانيًا بإجراء نداءٍ آخر إلى `make-withdraw`:
 
 ```scheme
 (define W2 (make-withdraw 100))
 ```
 
-This produces the environment structure of [Figure 3.10](#Figure-3_002e10), which shows that `W2` is a procedure object, that is, a pair with some code and an environment. The environment E2 for `W2` was created by the call to `make-withdraw`. It contains a frame with its own local binding for `balance`. On the other hand, `W1` and `W2` have the same code: the code specified by the λ-expression in the body of `make-withdraw`.[^15] We see here why `W1` and `W2` behave as independent objects. Calls to `W1` reference the state variable `balance` stored in E1, whereas calls to `W2` reference the `balance` stored in E2. Thus, changes to the local state of one object do not affect the other object.
+ويُنتج ذلك بنية البيئة الواردة في [الشكل 3.10](#Figure-3_002e10)، التي تُظهر أنّ `W2` كائنُ إجراء، أي زوجٌ فيه بعض الشيفرة وبيئة. وقد أُنشئت البيئة E2 الخاصّة بـ`W2` بنداء `make-withdraw`. وهي تحتوي على إطارٍ له ربطه المحليّ الخاصّ بـ`balance`. ومن جانبٍ آخر، فإنّ `W1` و`W2` لهما الشيفرة نفسها: الشيفرة التي يُحدّدها تعبير λ في جسم `make-withdraw`.[^15] ونرى هنا لماذا يتصرّف `W1` و`W2` بوصفهما كائنين مستقلّين. فإنّ نداءات `W1` تُشير إلى متغيّر الحالة `balance` المخزون في E1، بينما نداءات `W2` تُشير إلى `balance` المخزون في E2. وهكذا، فإنّ تغييرات الحالة المحليّة لأحد الكائنين لا تؤثّر في الكائن الآخر.
 
 ![](/images/sicp/c3-modularity-objects-and-state-9-Fig3.10b.std.webp)
 
-**Figure 3.10:** Using `(define W2 (make-withdraw 100))` to create a second object.
+**الشكل 3.10:** استخدام `(define W2 (make-withdraw 100))` لإنشاء كائنٍ ثانٍ.
 
-**Exercise 3.10:** In the `make-withdraw` procedure, the local variable `balance` is created as a parameter of `make-withdraw`. We could also create the local state variable explicitly, using `let`, as follows:
+**التمرين 3.10:** في إجراء `make-withdraw`، يُنشَأ المتغيّر المحليّ `balance` بوصفه وسيطًا لـ`make-withdraw`. ونستطيع أيضًا إنشاء متغيّر الحالة المحليّة صراحةً، باستخدام `let`، كما يلي:
 
 ```scheme
 (define (make-withdraw initial-amount)
@@ -746,19 +746,19 @@ This produces the environment structure of [Figure 3.10](#Figure-3_002e10), whic
           "Insufficient funds"))))
 ```
 
-Recall from [1.3.2](https://sarabander.github.io/sicp/html/1_002e3.xhtml#g_t1_002e3_002e2) that `let` is simply syntactic sugar for a procedure call:
+وتذكّر من [1.3.2](https://sarabander.github.io/sicp/html/1_002e3.xhtml#g_t1_002e3_002e2) أنّ `let` هو مجرّد سُكْرٌ صياغيّ لنداء إجراء:
 
 ```scheme
 (let ((⟨var⟩ ⟨exp⟩)) ⟨body⟩)
 ```
 
-is interpreted as an alternate syntax for
+يُفسَّر بوصفه صياغةً بديلةً لـ
 
 ```scheme
 ((lambda (⟨var⟩) ⟨body⟩) ⟨exp⟩)
 ```
 
-Use the environment model to analyze this alternate version of `make-withdraw`, drawing figures like the ones above to illustrate the interactions
+استخدم نموذج البيئة لتحليل هذا الإصدار البديل من `make-withdraw`، رسمًا أشكالًا شبيهةً بالأشكال أعلاه لتوضيح التفاعلات
 
 ```scheme
 (define W1 (make-withdraw 100))
@@ -766,11 +766,11 @@ Use the environment model to analyze this alternate version of `make-withdraw`, 
 (define W2 (make-withdraw 100))
 ```
 
-Show that the two versions of `make-withdraw` create objects with the same behavior. How do the environment structures differ for the two versions?
+أظهِر أنّ الإصدَرين من `make-withdraw` يُنشئان كائناتٍ لها السلوك نفسه. وكيف تختلف بنى البيئة بين الإصدَرين؟
 
-#### 3.2.4 Internal Definitions
+#### 3.2.4 التعريفات الداخليّة
 
-Section [1.1.8](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e8) introduced the idea that procedures can have internal definitions, thus leading to a block structure as in the following procedure to compute square roots:
+عرّف القسم [1.1.8](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e8) بفكرة أنّ الإجراءات يمكن أن يكون لها تعريفاتٌ داخليّة، الأمر الذي يؤدّي إلى بنيةٍ كتليّة (block structure) كما في الإجراء التالي لاحتساب الجذور التربيعيّة:
 
 ```scheme
 (define (sqrt x)
@@ -785,29 +785,29 @@ Section [1.1.8](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_
   (sqrt-iter 1.0))
 ```
 
-Now we can use the environment model to see why these internal definitions behave as desired. [Figure 3.11](#Figure-3_002e11) shows the point in the evaluation of the expression `(sqrt 2)` where the internal procedure `good-enough?` has been called for the first time with `guess` equal to 1.
+والآن نستطيع استخدام نموذج البيئة لنرى لماذا تتصرّف هذه التعريفات الداخليّة كما هو مطلوب. يُظهر [الشكل 3.11](#Figure-3_002e11) النقطة في تقييم التعبير `(sqrt 2)` حيث نُودي الإجراء الداخليّ `good-enough?` للمرّة الأولى و`guess` مساوٍ لـ1.
 
 ![](/images/sicp/c3-modularity-objects-and-state-10-Fig3.11b.std.webp)
 
-**Figure 3.11:** `Sqrt` procedure with internal definitions.
+**الشكل 3.11:** إجراء `sqrt` ذو تعريفاتٍ داخليّة.
 
-Observe the structure of the environment. `Sqrt` is a symbol in the global environment that is bound to a procedure object whose associated environment is the global environment. When `sqrt` was called, a new environment E1 was formed, subordinate to the global environment, in which the parameter `x` is bound to 2. The body of `sqrt` was then evaluated in E1. Since the first expression in the body of `sqrt` is
+لاحِظ بنية البيئة. فإنّ `sqrt` رمزٌ في البيئة العامّة مربوطٌ بكائن إجراءٍ بيئته المرتبطة به هي البيئة العامّة. وحين نُودي `sqrt`، تكوّنت بيئةٌ جديدة E1 تابعةٌ للبيئة العامّة، يكون فيها الوسيط `x` مرتبطًا بـ2. ثمّ قُيِّم جسم `sqrt` في E1. وبما أنّ التعبير الأوّل في جسم `sqrt` هو
 
 ```scheme
 (define (good-enough? guess)
   (< (abs (- (square guess) x)) 0.001))
 ```
 
-evaluating this expression defined the procedure `good-enough?` in the environment E1. To be more precise, the symbol `good-enough?` was added to the first frame of E1, bound to a procedure object whose associated environment is E1. Similarly, `improve` and `sqrt-iter` were defined as procedures in E1. For conciseness, [Figure 3.11](#Figure-3_002e11) shows only the procedure object for `good-enough?`.
+فإنّ تقييم هذا التعبير عرّف الإجراء `good-enough?` في البيئة E1. وبأكثر دقّة، أُضيف الرمز `good-enough?` إلى أوّل إطارٍ من E1، مربوطًا بكائن إجراءٍ بيئته المرتبطة به هي E1. وبالمثل، عُرِّف `improve` و`sqrt-iter` بوصفهما إجراءين في E1. وللإيجاز، يُظهر [الشكل 3.11](#Figure-3_002e11) كائن الإجراء الخاصّ بـ`good-enough?` فقط.
 
-After the local procedures were defined, the expression `(sqrt-iter 1.0)` was evaluated, still in environment E1. So the procedure object bound to `sqrt-iter` in E1 was called with 1 as an argument. This created an environment E2 in which `guess`, the parameter of `sqrt-iter`, is bound to 1. `Sqrt-iter` in turn called `good-enough?` with the value of `guess` (from E2) as the argument for `good-enough?`. This set up another environment, E3, in which `guess` (the parameter of `good-enough?`) is bound to 1. Although `sqrt-iter` and `good-enough?` both have a parameter named `guess`, these are two distinct local variables located in different frames. Also, E2 and E3 both have E1 as their enclosing environment, because the `sqrt-iter` and `good-enough?` procedures both have E1 as their environment part. One consequence of this is that the symbol `x` that appears in the body of `good-enough?` will reference the binding of `x` that appears in E1, namely the value of `x` with which the original `sqrt` procedure was called.
+وبعد تعريف الإجراءات المحليّة، قُيِّم التعبير `(sqrt-iter 1.0)`، لا يزال في البيئة E1. فقد نُودي كائن الإجراء المربوط بـ`sqrt-iter` في E1 بالمعطى 1. وخَلَق هذا بيئةً جديدةً E2 يكون فيها `guess`، وسيط `sqrt-iter`، مرتبطًا بـ1. و`sqrt-iter` بدوره نادى `good-enough?` بقيمة `guess` (من E2) بوصفها المعطى لـ`good-enough?`. وخَلَق هذا بيئةً أخرى، E3، يكون فيها `guess` (وسيط `good-enough?`) مرتبطًا بـ1. ومع أنّ `sqrt-iter` و`good-enough?` كلاهما له وسيطٌ اسمه `guess`، فهذان متغيّران محليّان متمايزان يقعان في إطارين مختلفين. وكذلك، فإنّ E2 وE3 كلتيهما لهما E1 بوصفها بيئتهما المحيطة، لأنّ إجراءَي `sqrt-iter` و`good-enough?` كلاهما له E1 بوصفها جزء بيئته. وإحدى نتائج ذلك أنّ الرمز `x` الذي يظهر في جسم `good-enough?` سيُشير إلى ربط `x` الظاهر في E1، أي قيمة `x` التي نُودي بها إجراء `sqrt` الأصليّ.
 
-The environment model thus explains the two key properties that make local procedure definitions a useful technique for modularizing programs:
+وهكذا، يفسّر نموذج البيئة الخاصّيتين الأساسّيتين اللتين تجعلان تعريفات الإجراءات المحليّة تقنيّةً مفيدةً لوحدنة البرامج:
 
-- The names of the local procedures do not interfere with names external to the enclosing procedure, because the local procedure names will be bound in the frame that the procedure creates when it is run, rather than being bound in the global environment.
-- The local procedures can access the arguments of the enclosing procedure, simply by using parameter names as free variables. This is because the body of the local procedure is evaluated in an environment that is subordinate to the evaluation environment for the enclosing procedure.
+- إنّ أسماء الإجراءات المحليّة لا تتداخل مع الأسماء الخارجيّة للإجراء المحيط، لأنّ أسماء الإجراءات المحليّة ستُربط في الإطار الذي يُنشئه الإجراء عند تشغيله، لا في البيئة العامّة.
+- إنّ الإجراءات المحليّة تستطيع الوصول إلى وسائط الإجراء المحيط، بمجرّد استخدام أسماء الوسائط بوصفها متغيّراتٍ حُرّة (free variables). ويعود ذلك إلى أنّ جسم الإجراء المحليّ يُقيَّم في بيئةٍ تابعةٍ لبيئة التقييم الخاصّة بالإجراء المحيط.
 
-**Exercise 3.11:** In [3.2.3](#g_t3_002e2_002e3) we saw how the environment model described the behavior of procedures with local state. Now we have seen how internal definitions work. A typical message-passing procedure contains both of these aspects. Consider the bank account procedure of [3.1.1](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e1):
+**التمرين 3.11:** في [3.2.3](#g_t3_002e2_002e3) رأينا كيف وصف نموذج البيئة سلوك الإجراءات ذات الحالة المحليّة. والآن رأينا كيف تعمل التعريفات الداخليّة. فإنّ إجراء تمرير الرسائل النموذجيّ يحتوي على هذين الجانبين معًا. تأمّل إجراء الحساب المصرفيّ الوارد في [3.1.1](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e1):
 
 ```scheme
 (define (make-account balance)
@@ -830,7 +830,7 @@ The environment model thus explains the two key properties that make local proce
   dispatch)
 ```
 
-Show the environment structure generated by the sequence of interactions
+أظهِر بنية البيئة المُولَّدة من تتالي التفاعلات
 
 ```scheme
 (define acc (make-account 50))
@@ -842,55 +842,55 @@ Show the environment structure generated by the sequence of interactions
 30
 ```
 
-Where is the local state for `acc` kept? Suppose we define another account
+فأين تُحفَظ الحالة المحليّة الخاصّة بـ`acc`؟ فلنفترض أنّنا نُعرّف حسابًا آخر
 
 ```scheme
 (define acc2 (make-account 100))
 ```
 
-How are the local states for the two accounts kept distinct? Which parts of the environment structure are shared between `acc` and `acc2`?
+وكيف تُحفَظ الحالة المحليّة للحسابين منفصلة؟ وأيّ أجزاء بنية البيئة مُشترَكة بين `acc` و`acc2`؟
 
-### 3.3 Modeling with Mutable Data
+### 3.3 النمذجة بالبيانات القابلة للتغيير
 
-[Chapter 2](https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2) dealt with compound data as a means for constructing computational objects that have several parts, in order to model real-world objects that have several aspects. In that chapter we introduced the discipline of data abstraction, according to which data structures are specified in terms of constructors, which create data objects, and selectors, which access the parts of compound data objects. But we now know that there is another aspect of data that chapter 2 did not address. The desire to model systems composed of objects that have changing state leads us to the need to modify compound data objects, as well as to construct and select from them. In order to model compound objects with changing state, we will design data abstractions to include, in addition to selectors and constructors, operations called *mutators*, which modify data objects. For instance, modeling a banking system requires us to change account balances. Thus, a data structure for representing bank accounts might admit an operation
+تناول [الفصل 2](https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2) البيانات المركّبة بوصفها وسيلةً لبناء كائناتٍ حسابيّةٍ لها عدّة أجزاء، بغية نمذجة كائنات العالم الواقعيّ التي لها عدّة جهات. وفي ذلك الفصل، قدّمنا انضباط تجريد البيانات، الذي بموجبه تُحدَّد بنى البيانات بدلالة البنّاءات (constructors)، التي تُنشئ كائنات البيانات، والمُحدِّدات (selectors)، التي تصل إلى أجزاء كائنات البيانات المركّبة. لكنّنا نعلم الآن أنّ هناك جانبًا آخر من البيانات لم يتناوله الفصل 2. فإنّ الرغبة في نمذجة أنظمةٍ مركّبةٍ من كائناتٍ لها حالة متغيّرة تدفعنا إلى الحاجة إلى تعديل كائنات البيانات المركّبة، إضافةً إلى بنائها والانتقاء منها. ولكي نمثّل الكائنات المركّبة ذات الحالة المتغيّرة، سنصمّم تجريدات بياناتٍ تتضمّن، إضافةً إلى المُحدِّدات والبنّاءات، عمليّاتٍ تُسمّى *مُبدِّلات (mutators)*، تُعدّل كائنات البيانات. فمثلًا، فإنّ نمذجة نظامٍ مصرفيّ تتطلّب منّا تغيير أرصدة الحسابات. وهكذا، فقد تقبل بنية بياناتٍ لتمثيل الحسابات المصرفيّة عمليّةً من شكل
 
 ```scheme
 (set-balance! ⟨account⟩ ⟨new-value⟩)
 ```
 
-that changes the balance of the designated account to the designated new value. Data objects for which mutators are defined are known as *mutable data objects*.
+تُغيِّر رصيد الحساب المُعيّن إلى القيمة الجديدة المُعيّنة. وكائنات البيانات التي تُعرّف لها مُبدِّلات تُعرف بـ*كائنات البيانات القابلة للتغيير (mutable data objects)*.
 
-Chapter 2 introduced pairs as a general-purpose “glue” for synthesizing compound data. We begin this section by defining basic mutators for pairs, so that pairs can serve as building blocks for constructing mutable data objects. These mutators greatly enhance the representational power of pairs, enabling us to build data structures other than the sequences and trees that we worked with in [2.2](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2). We also present some examples of simulations in which complex systems are modeled as collections of objects with local state.
+قدّم الفصل 2 الأزواج بوصفها «صمغًا» عامّ الغرض لتوليف البيانات المركّبة. ونبدأ هذا القسم بتعريف مُبدِّلات أساسيّة للأزواج، حتّى تستطيع الأزواج أن تخدم بوصفها كتل بناءٍ لإنشاء كائنات بياناتٍ قابلةٍ للتغيير. وهذه المُبدِّلات تعزّز القدرة التمثيليّة للأزواج تعزيزًا كبيرًا، ممّا يتيح لنا بناء بنى بياناتٍ غير السلاسل والأشجار التي عملنا معها في [2.2](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2). ونُقدّم أيضًا بعض الأمثلة على المحاكاة التي تمثَّلت فيها الأنظمة المعقّدة بوصفها مجموعاتٍ من الكائنات ذات الحالة المحليّة.
 
-#### 3.3.1 Mutable List Structure
+#### 3.3.1 بنية القائمة القابلة للتغيير
 
-The basic operations on pairs—`cons`, `car`, and `cdr`—can be used to construct list structure and to select parts from list structure, but they are incapable of modifying list structure. The same is true of the list operations we have used so far, such as `append` and `list`, since these can be defined in terms of `cons`, `car`, and `cdr`. To modify list structures we need new operations.
+إنّ العمليّات الأساسيّة على الأزواج —`cons` و`car` و`cdr`— يمكن استخدامها لبناء بنية القائمة ولانتقاء أجزاءً من بنية القائمة، لكنّها عاجزةٌ عن تعديل بنية القائمة. والشيء نفسه صحيحٌ بشأن عمليّات القوائم التي استخدمناها حتّى الآن، مثل `append` و`list`، إذ يمكن تعريف هذه بدلالة `cons` و`car` و`cdr`. ولكي نُعدّل بنى القوائم، نحتاج إلى عمليّاتٍ جديدة.
 
-The primitive mutators for pairs are `set-car!` and `set-cdr!`. `Set-car!` takes two arguments, the first of which must be a pair. It modifies this pair, replacing the `car` pointer by a pointer to the second argument of `set-car!`.[^16]
+والمُبدِّلات الأوّليّة للأزواج هي `set-car!` و`set-cdr!`. و`set-car!` تأخذ معطيين، يجب أن يكون الأوّل منهما زوجًا. وهي تُعدّل هذا الزوج، بتحويل مؤشّر `car` إلى مؤشّرٍ إلى المعطى الثاني لـ`set-car!`.[^16]
 
-As an example, suppose that `x` is bound to the list `((a b) c d)` and `y` to the list `(e f)` as illustrated in [Figure 3.12](#Figure-3_002e12). Evaluating the expression ` (set-car! x y)` modifies the pair to which `x` is bound, replacing its `car` by the value of `y`. The result of the operation is shown in [Figure 3.13](#Figure-3_002e13). The structure `x` has been modified and would now be printed as `((e f) c d)`. The pairs representing the list `(a b)`, identified by the pointer that was replaced, are now detached from the original structure.[^17]
+فمثلًا، لنفترض أنّ `x` مرتبطٌ بالقائمة `((a b) c d)` و`y` بالقائمة `(e f)` كما هو موضّح في [الشكل 3.12](#Figure-3_002e12). فإنّ تقييم التعبير ` (set-car! x y)` يُعدّل الزوج الذي `x` مرتبطٌ به، فيحلّ محلّ `car` فيه قيمة `y`. وتُعرَض نتيجة العمليّة في [الشكل 3.13](#Figure-3_002e13). وقد عُدّلت البنية `x` وستُطبَع الآن بالشكل `((e f) c d)`. أمّا الأزواج التي تمثّل القائمة `(a b)`، والتي يُعرَف بها بالمؤشّر الذي استُبدل، فهي مفصولةٌ الآن عن البنية الأصليّة.[^17]
 
 ![](/images/sicp/c3-modularity-objects-and-state-0-Fig3.12b.std.webp)
 
-**Figure 3.12:** Lists `x`: `((a b) c d)` and `y`: `(e f)`.
+**الشكل 3.12:** القائمتان `x`: `((a b) c d)` و`y`: `(e f)`.
 
 ![](/images/sicp/c3-modularity-objects-and-state-1-Fig3.13b.std.webp)
 
-**Figure 3.13:** Effect of `(set-car! x y)` on the lists in [Figure 3.12](#Figure-3_002e12).
+**الشكل 3.13:** أثر `(set-car! x y)` على القائمتين في [الشكل 3.12](#Figure-3_002e12).
 
-Compare [Figure 3.13](#Figure-3_002e13) with [Figure 3.14](#Figure-3_002e14), which illustrates the result of executing `(define z (cons y (cdr x)))` with `x` and `y` bound to the original lists of [Figure 3.12](#Figure-3_002e12). The variable `z` is now bound to a new pair created by the `cons` operation; the list to which `x` is bound is unchanged.
+قارِن [الشكل 3.13](#Figure-3_002e13) بـ[الشكل 3.14](#Figure-3_002e14)، الذي يُوضّح نتيجة تنفيذ `(define z (cons y (cdr x)))` و`x` و`y` مرتبطتين بالقائمتين الأصليّتين الواردتين في [الشكل 3.12](#Figure-3_002e12). والمتغيّر `z` مرتبطٌ الآن بزوجٍ جديد أنشأته عمليّة `cons`؛ والقائمة التي `x` مرتبطٌ بها لم تتغيّر.
 
 ![](/images/sicp/c3-modularity-objects-and-state-2-Fig3.14b.std.webp)
 
-**Figure 3.14:** Effect of `(define z (cons y (cdr x)))` on the lists in [Figure 3.12](#Figure-3_002e12).
+**الشكل 3.14:** أثر `(define z (cons y (cdr x)))` على القائمتين في [الشكل 3.12](#Figure-3_002e12).
 
-The `set-cdr!` operation is similar to `set-car!`. The only difference is that the `cdr` pointer of the pair, rather than the `car` pointer, is replaced. The effect of executing `(set-cdr! x y)` on the lists of [Figure 3.12](#Figure-3_002e12) is shown in [Figure 3.15](#Figure-3_002e15). Here the `cdr` pointer of `x` has been replaced by the pointer to `(e f)`. Also, the list `(c d)`, which used to be the `cdr` of `x`, is now detached from the structure.
+إنّ عمليّة `set-cdr!` شبيهةٌ بـ`set-car!`. والفرق الوحيد هو أنّ مؤشّر `cdr` للزوج، لا مؤشّر `car`، هو الذي يُستبدل. ويُعرَض أثر تنفيذ `(set-cdr! x y)` على قائمتَي [الشكل 3.12](#Figure-3_002e12) في [الشكل 3.15](#Figure-3_002e15). وهنا، استُبدل مؤشّر `cdr` الخاصّ بـ`x` بالمؤشّر إلى `(e f)`. وكذلك، فإنّ القائمة `(c d)`، التي كانت `cdr` الخاصّة بـ`x`، صارت مفصولةً عن البنية.
 
 ![](/images/sicp/c3-modularity-objects-and-state-3-Fig3.15b.std.webp)
 
-**Figure 3.15:** Effect of `(set-cdr! x y)` on the lists in [Figure 3.12](#Figure-3_002e12).
+**الشكل 3.15:** أثر `(set-cdr! x y)` على قائمتَي [الشكل 3.12](#Figure-3_002e12).
 
-`Cons` builds new list structure by creating new pairs, while `set-car!` and `set-cdr!` modify existing pairs. Indeed, we could implement `cons` in terms of the two mutators, together with a procedure `get-new-pair`, which returns a new pair that is not part of any existing list structure. We obtain the new pair, set its `car` and `cdr` pointers to the designated objects, and return the new pair as the result of the `cons`.[^18]
+يُبنِي `cons` بنية قائمةٍ جديدةً بإنشاء أزواجٍ جديدة، بينما `set-car!` و`set-cdr!` تُعدّلان الأزواج القائمة. ففي الحقيقة، نستطيع تنفيذ `cons` بدلالة المُبدِّلتين، مع إجراء `get-new-pair` يُعيد زوجًا جديدًا ليس جزءًا من أيّ بنية قائمةٍ قائمة. فنحن نحصُل على الزوج الجديد، ونضبط مؤشّرَي `car` و`cdr` فيه ليشيرا إلى الكائنات المُعيّنة، ونُعيد الزوج الجديد نتيجةً لـ`cons`.[^18]
 
 ```scheme
 (define (cons x y)
@@ -900,7 +900,7 @@ The `set-cdr!` operation is similar to `set-car!`. The only difference is that t
     new))
 ```
 
-**Exercise 3.12:** The following procedure for appending lists was introduced in [2.2.1](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e1):
+**التمرين 3.12:** عُرِّف الإجراء التالي لإلحاق القوائم في [2.2.1](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e1):
 
 ```scheme
 (define (append x y)
@@ -909,7 +909,7 @@ The `set-cdr!` operation is similar to `set-car!`. The only difference is that t
       (cons (car x) (append (cdr x) y))))
 ```
 
-`Append` forms a new list by successively `cons`ing the elements of `x` onto `y`. The procedure `append!` is similar to `append`, but it is a mutator rather than a constructor. It appends the lists by splicing them together, modifying the final pair of `x` so that its `cdr` is now `y`. (It is an error to call `append!` with an empty `x`.)
+يُشكّل `append` قائمةً جديدةً بإجراء `cons` لعناصر `x` على `y` تباعًا. وإجراء `append!` شبيهٌ بـ`append`، لكنّه مُبدِّلٌ لا بانٍّ. وهو يُلحق القوائم بوصلها معًا، مُعدِّلًا الزوج الأخير من `x` بحيث يصير `cdr` فيه هو `y`. (واستدعاء `append!` بـ`x` فارغة خطأ.)
 
 ```scheme
 (define (append! x y)
@@ -917,7 +917,7 @@ The `set-cdr!` operation is similar to `set-car!`. The only difference is that t
   x)
 ```
 
-Here `last-pair` is a procedure that returns the last pair in its argument:
+وهنا `last-pair` إجراءٌ يُعيد الزوج الأخير في معطاه:
 
 ```scheme
 (define (last-pair x)
@@ -926,7 +926,7 @@ Here `last-pair` is a procedure that returns the last pair in its argument:
       (last-pair (cdr x))))
 ```
 
-Consider the interaction
+تأمّل التفاعل
 
 ```scheme
 (define x (list 'a 'b))
@@ -948,9 +948,9 @@ w
 ⟨response⟩
 ```
 
-What are the missing `⟨`response`⟩`s? Draw box-and-pointer diagrams to explain your answer.
+ما هما الـ`⟨`response`⟩`ان الناقصان؟ ارسم مخطّطات الصناديق والمؤشّرات لتوضيح إجابتك.
 
-**Exercise 3.13:** Consider the following `make-cycle` procedure, which uses the `last-pair` procedure defined in [Exercise 3.12](#Exercise-3_002e12):
+**التمرين 3.13:** انظر في الإجراء `make-cycle` الآتي، الذي يستخدم الإجراء `last-pair` المعرَّف في [التمرين 3.12](#Exercise-3_002e12):
 
 ```scheme
 (define (make-cycle x)
@@ -958,15 +958,15 @@ What are the missing `⟨`response`⟩`s? Draw box-and-pointer diagrams to expla
   x)
 ```
 
-Draw a box-and-pointer diagram that shows the structure `z` created by
+ارسم مخطّط صناديق ومؤشّراتٍ يُظهر البنية `z` المُنشَأة بالتعريف الآتي
 
 ```scheme
 (define z (make-cycle (list 'a 'b 'c)))
 ```
 
-What happens if we try to compute `(last-pair z)`?
+ماذا يحدث إذا حاولنا احتساب `(last-pair z)`؟
 
-**Exercise 3.14:** The following procedure is quite useful, although obscure:
+**التمرين 3.14:** الإجراء الآتي مفيدٌ للغاية، وإن كان غامضًا:
 
 ```scheme
 (define (mystery x)
@@ -979,24 +979,24 @@ What happens if we try to compute `(last-pair z)`?
   (loop x '()))
 ```
 
-`Loop` uses the “temporary” variable `temp` to hold the old value of the `cdr` of `x`, since the `set-cdr!` on the next line destroys the `cdr`. Explain what `mystery` does in general. Suppose `v` is defined by `(define v (list 'a 'b 'c 'd))`. Draw the box-and-pointer diagram that represents the list to which `v` is bound. Suppose that we now evaluate `(define w (mystery v))`. Draw box-and-pointer diagrams that show the structures `v` and `w` after evaluating this expression. What would be printed as the values of `v` and `w`?
+يستخدم `Loop` المتغيّر «المؤقّت» `temp` لحفظ القيمة القديمة للـ`cdr` الخاصّ بـ`x`، إذ إنّ `set-cdr!` في السطر التالي يُدمّر الـ`cdr`. اشرح ما يفعله `mystery` بصورةٍ عامّة. لنفترض أنّ `v` معرَّفٌ بـ`(define v (list 'a 'b 'c 'd))`. ارسم مخطّط الصناديق والمؤشّرات الذي يمثّل القائمة المربوطة بـ`v`. ولنفترض أنّنا قيّنّا الآن `(define w (mystery v))`. ارسم مخطّطات الصناديق والمؤشّرات التي تُظهر البنيتين `v` و`w` بعد تقييم هذا التعبير. فما الذي سيُطبَع كقيمتَي `v` و`w`؟
 
-#### Sharing and identity
+#### المشاركة والهويّة
 
-We mentioned in [3.1.3](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e3) the theoretical issues of “sameness” and “change” raised by the introduction of assignment. These issues arise in practice when individual pairs are *shared* among different data objects. For example, consider the structure formed by
+ذكرنا في [3.1.3](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e3) المسائل النظريّة لـ«التماثل» و«التغيير» التي أثارها إدخال الإحلال. وهذه المسائل تنشأ عمليًّا حين تُشارَك أزواجٌ فرديّةٌ بين كائنات بياناتٍ مختلفة. فمثلًا، انظر في البنية المتشكّلة بـ
 
 ```scheme
 (define x (list 'a 'b))
 (define z1 (cons x x))
 ```
 
-As shown in [Figure 3.16](#Figure-3_002e16), `z1` is a pair whose `car` and `cdr` both point to the same pair `x`. This sharing of `x` by the `car` and `cdr` of `z1` is a consequence of the straightforward way in which `cons` is implemented. In general, using `cons` to construct lists will result in an interlinked structure of pairs in which many individual pairs are shared by many different structures.
+كما هو موضّح في [الشكل 3.16](#Figure-3_002e16)، فإنّ `z1` زوجٌ يشير كلٌّ من `car` و`cdr` فيه إلى الزوج ذاته `x`. وهذه المشاركة لـ`x` من قِبَل `car` و`cdr` الخاصّين بـ`z1` نتيجةٌ للطريقة المباشرة التي يُنفَّذ بها `cons`. وبصورةٍ عامّة، فإنّ استخدام `cons` لبناء القوائم سيُنتج بنيةً متشابكةً من الأزواج تتشارك فيها بنياتٌ كثيرةٌ مختلفةٌ في أزواجٍ فرديّةٍ كثيرة.
 
 ![](/images/sicp/c3-modularity-objects-and-state-4-Fig3.16b.std.webp)
 
-**Figure 3.16:** The list `z1` formed by `(cons x x)`.
+**الشكل 3.16:** القائمة `z1` المتشكّلة بـ`(cons x x)`.
 
-In contrast to [Figure 3.16](#Figure-3_002e16), [Figure 3.17](#Figure-3_002e17) shows the structure created by
+وبخلاف [الشكل 3.16](#Figure-3_002e16)، يُظهر [الشكل 3.17](#Figure-3_002e17) البنية المُنشَأة بالتعريف الآتي
 
 ```scheme
 (define z2 
@@ -1005,11 +1005,11 @@ In contrast to [Figure 3.16](#Figure-3_002e16), [Figure 3.17](#Figure-3_002e17) 
 
 ![](/images/sicp/c3-modularity-objects-and-state-5-Fig3.17b.std.webp)
 
-**Figure 3.17:** The list `z2` formed by `(cons (list 'a 'b) (list 'a 'b))`.
+**الشكل 3.17:** القائمة `z2` المتشكّلة بـ`(cons (list 'a 'b) (list 'a 'b))`.
 
-In this structure, the pairs in the two `(a b)` lists are distinct, although the actual symbols are shared.[^19]
+في هذه البنية، الأزواجُ في القائمتين `(a b)` متمايزةٌ، وإن كانت الرموزُ الفعليّةُ مُشارَكة.[^19]
 
-When thought of as a list, `z1` and `z2` both represent “the same” list, `((a b) a b)`. In general, sharing is completely undetectable if we operate on lists using only `cons`, `car`, and `cdr`. However, if we allow mutators on list structure, sharing becomes significant. As an example of the difference that sharing can make, consider the following procedure, which modifies the `car` of the structure to which it is applied:
+فكلا `z1` و`z2` يمثّل «القائمة ذاتها»، `((a b) a b)`، إذا فكّرنا فيهما بوصفهما قائمة. وبصورةٍ عامّة، فإنّ المشاركة غيرُ قابلةٍ للكشف إطلاقًا إذا عملنا على القوائم باستخدام `cons` و`car` و`cdr` وحدها. غير أنّها تصبح ذا أهمّيّةٍ إذا سمحنا بمغيّراتٍ على بنية القائمة. ومثالٌ على الفرق الذي يمكن أن تُحدِثه المشاركة، انظر في الإجراء الآتي، الذي يُعدّل `car` البنية التي تُطبَّق عليها:
 
 ```scheme
 (define (set-to-wow! x)
@@ -1017,7 +1017,7 @@ When thought of as a list, `z1` and `z2` both represent “the same” list, `((
   x)
 ```
 
-Even though `z1` and `z2` are “the same” structure, applying `set-to-wow!` to them yields different results. With `z1`, altering the `car` also changes the `cdr`, because in `z1` the `car` and the `cdr` are the same pair. With `z2`, the `car` and `cdr` are distinct, so `set-to-wow!` modifies only the `car`:
+حتّى وإن كانت `z1` و`z2` «البنية ذاتها»، فإنّ تطبيق `set-to-wow!` عليهما يُنتج نتائجَ مختلفة. فمع `z1`، يُغيّر تعديل `car` الـ`cdr` أيضًا، لأنّ `z1` يتّحد فيه `car` و`cdr` في الزوج ذاته. وأمّا مع `z2`، فإنّ `car` و`cdr` متمايزان، لذا يُعدّل `set-to-wow!` الـ`car` فقط:
 
 ```scheme
 z1
@@ -1033,13 +1033,13 @@ z2
 ((wow b) a b)
 ```
 
-One way to detect sharing in list structures is to use the predicate `eq?`, which we introduced in [2.3.1](https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e1) as a way to test whether two symbols are equal. More generally, `(eq? x y)` tests whether `x` and `y` are the same object (that is, whether `x` and `y` are equal as pointers). Thus, with `z1` and `z2` as defined in [Figure 3.16](#Figure-3_002e16) and [Figure 3.17](#Figure-3_002e17), `(eq? (car z1) (cdr z1))` is true and `(eq? (car z2) (cdr z2))` is false.
+إحدى طرائق كشف المشاركة في بنى القوائم هي استخدام المُسَيِّم `eq?`، الذي عرّفناه في [2.3.1](https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e1) بوصفه طريقةً لاختبار تساوي رمزين. وبأكثر عموميّةٍ، يختبر `(eq? x y)` ما إذا كان `x` و`y` هما الكائن ذاته (أي ما إذا كان `x` و`y` متساويين بوصفهما مؤشّرين). وهكذا، فبـ`z1` و`z2` المعرَّفين في [الشكل 3.16](#Figure-3_002e16) و[الشكل 3.17](#Figure-3_002e17)، فإنّ `(eq? (car z1) (cdr z1))` صحيحة و`(eq? (car z2) (cdr z2))` خاطئة.
 
-As will be seen in the following sections, we can exploit sharing to greatly extend the repertoire of data structures that can be represented by pairs. On the other hand, sharing can also be dangerous, since modifications made to structures will also affect other structures that happen to share the modified parts. The mutation operations `set-car!` and `set-cdr!` should be used with care; unless we have a good understanding of how our data objects are shared, mutation can have unanticipated results.[^20]
+وكما سنرى في الأقسام التالية، يمكننا استغلال المشاركة لتوسيع ذخيرة بنيات البيانات التي يمكن تمثيلها بالأزواج توسيعًا كبيرًا. ومن جانبٍ آخر، فإنّ المشاركة يمكن أن تكون خطيرةً أيضًا، إذ إنّ التعديلات المُجرَاة على البنيات ستؤثّر في بنياتٍ أخرى تتشارك الأجزاء المُعدَّلة صدفةً. وينبغي استخدام عمليّات التغيير `set-car!` و`set-cdr!` بحذر؛ فما لم يكن لدينا فهمٌ جيّدٌ لكيفيّة مشاركة كائنات بياناتنا، فقد يؤدّي التغيير إلى نتائجَ غير متوقّعة.[^20]
 
-> **Exercise 3.15:** Draw box-and-pointer diagrams to explain the effect of `set-to-wow!` on the structures `z1` and `z2` above.
+> **التمرين 3.15:** ارسم مخطّطات الصناديق والمؤشّرات لتوضيح أثر `set-to-wow!` على البنيتين `z1` و`z2` أعلاه.
 
-**Exercise 3.16:** Ben Bitdiddle decides to write a procedure to count the number of pairs in any list structure. “It’s easy,” he reasons. “The number of pairs in any structure is the number in the `car` plus the number in the `cdr` plus one more to count the current pair.” So Ben writes the following procedure:
+**التمرين 3.16:** يقرّر بن بيتدِل كتابة إجراءٍ لعدّ عدد الأزواج في أيّ بنية قوائم. «إنّه يسير»، يعلّل. «عدد الأزواج في أيّ بنيةٍ هو العدد في `car` زائد العدد في `cdr` زائد واحدٌ آخرُ لعدّ الزوج الحاليّ.» فيكتب بن الإجراء الآتي:
 
 ```scheme
 (define (count-pairs x)
@@ -1050,17 +1050,17 @@ As will be seen in the following sections, we can exploit sharing to greatly ext
          1)))
 ```
 
-Show that this procedure is not correct. In particular, draw box-and-pointer diagrams representing list structures made up of exactly three pairs for which Ben’s procedure would return 3; return 4; return 7; never return at all.
+أظهِر أنّ هذا الإجراء غيرُ صحيح. وبالتحديد، ارسم مخطّطات صناديق ومؤشّراتٍ تمثّل بنى قوائمٍ متكوّنةً من ثلاثة أزواجٍ بالضبط، يعيد إجراء بن بالنسبة إليها 3؛ ويعيد 4؛ ويعيد 7؛ ولا يعيد إطلاقًا.
 
-> **Exercise 3.17:** Devise a correct version of the `count-pairs` procedure of [Exercise 3.16](#Exercise-3_002e16) that returns the number of distinct pairs in any structure. (Hint: Traverse the structure, maintaining an auxiliary data structure that is used to keep track of which pairs have already been counted.)
+> **التمرين 3.17:** ابتكر نسخةً صحيحةً من الإجراء `count-pairs` الوارد في [التمرين 3.16](#Exercise-3_002e16)، يعيد عدد الأزواج المتمايزة في أيّ بنية. (تلميح: اجتلِ البنية، محتفظًا ببنية بياناتٍ مساعِدةٍ تُستخدم لتتبّع الأزواج التي تمّ عدُّها سلفًا.)
 
-> **Exercise 3.18:** Write a procedure that examines a list and determines whether it contains a cycle, that is, whether a program that tried to find the end of the list by taking successive `cdr`s would go into an infinite loop. [Exercise 3.13](#Exercise-3_002e13) constructed such lists.
+> **التمرين 3.18:** اكتب إجراءً يفحص قائمةً ويحدّد ما إذا كانت تحتوي دورةً، أي ما إذا كان برنامجٌ يحاول إيجاد نهاية القائمة بأخذ `cdr`اتٍ متعاقبة سيدخل في حلقةٍ لا نهائيّة. وقد بنَت مثل هذه القوائم [التمرين 3.13](#Exercise-3_002e13).
 
-> **Exercise 3.19:** Redo [Exercise 3.18](#Exercise-3_002e18) using an algorithm that takes only a constant amount of space. (This requires a very clever idea.)
+> **التمرين 3.19:** أعِد [التمرين 3.18](#Exercise-3_002e18) باستخدام خوارزميّةٍ لا تتطلّب إلّا مقدارًا ثابتًا من المكان. (وهذا يستلزم فكرةً ذكيّةً للغاية.)
 
-#### Mutation is just assignment
+#### التغيير ليس سوى إحلال
 
-When we introduced compound data, we observed in [2.1.3](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e3) that pairs can be represented purely in terms of procedures:
+حين عرّفنا البيانات المركّبة، لاحظنا في [2.1.3](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e3) أنّ الأزواج يمكن تمثيلها بدلالة الإجراءات تمثيلًا محضًا:
 
 ```scheme
 (define (cons x y)
@@ -1075,7 +1075,7 @@ When we introduced compound data, we observed in [2.1.3](https://sarabander.gith
 (define (cdr z) (z 'cdr))
 ```
 
-The same observation is true for mutable data. We can implement mutable data objects as procedures using assignment and local state. For instance, we can extend the above pair implementation to handle `set-car!` and `set-cdr!` in a manner analogous to the way we implemented bank accounts using `make-account` in [3.1.1](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e1):
+والملاحظة ذاتها صحيحةٌ بالنسبة للبيانات القابلة للتغيير. فيمكننا تنفيذ كائنات البيانات القابلة للتغيير بوصفها إجراءاتٍ باستخدام الإحلال والحالة المحليّة. فمثلًا، يمكننا توسيع تنفيذ الأزواج المعطى أعلاه لمعالجة `set-car!` و`set-cdr!` بأسلوبٍ نظيرٍ للأسلوب الذي نفّذنا به الحسابات المصرفيّة باستخدام `make-account` في [3.1.1](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e1):
 
 ```scheme
 (define (cons x y)
@@ -1102,9 +1102,9 @@ The same observation is true for mutable data. We can implement mutable data obj
   z)
 ```
 
-Assignment is all that is needed, theoretically, to account for the behavior of mutable data. As soon as we admit `set!` to our language, we raise all the issues, not only of assignment, but of mutable data in general.[^21]
+إنّ الإحلال هو كلّ ما يلزم، نظريًّا، لتفسير سلوك البيانات القابلة للتغيير. فمجرّد أن نُدخل `set!` إلى لغتنا، نُثير جميع المسائل، لا مسائل الإحلال فحسب، بل مسائل البيانات القابلة للتغيير عمومًا.[^21]
 
-**Exercise 3.20:** Draw environment diagrams to illustrate the evaluation of the sequence of expressions
+**التمرين 3.20:** ارسم مخطّطات البيئات لتوضيح تقييم تتالي التعابير
 
 ```scheme
 (define x (cons 1 2))
@@ -1116,59 +1116,59 @@ Assignment is all that is needed, theoretically, to account for the behavior of 
 17
 ```
 
-using the procedural implementation of pairs given above. (Compare [Exercise 3.11](https://sarabander.github.io/sicp/html/3_002e2.xhtml#Exercise-3_002e11).)
+باستخدام تنفيذ الأزواج الإجرائيّ المعطى أعلاه. (قارن [التمرين 3.11](https://sarabander.github.io/sicp/html/3_002e2.xhtml#Exercise-3_002e11).)
 
-#### 3.3.2 Representing Queues
+#### 3.3.2 تمثيل الطوابير
 
-The mutators `set-car!` and `set-cdr!` enable us to use pairs to construct data structures that cannot be built with `cons`, `car`, and `cdr` alone. This section shows how to use pairs to represent a data structure called a queue. Section [3.3.3](#g_t3_002e3_002e3) will show how to represent data structures called tables.
+إنّ المغيّرين `set-car!` و`set-cdr!` يمكّناننا من استخدام الأزواج لبناء بنيات بياناتٍ لا يمكن تشييدها بـ`cons` و`car` و`cdr` وحدها. ويُظهر هذا القسم كيف نستخدم الأزواج لتمثيل بنية بياناتٍ تُسمّى الطابور. وسيُظهر القسم [3.3.3](#g_t3_002e3_002e3) كيف نُمثّل بنيات بياناتٍ تُسمّى الجداول.
 
-A *queue* is a sequence in which items are inserted at one end (called the *rear* of the queue) and deleted from the other end (the *front*). [Figure 3.18](#Figure-3_002e18) shows an initially empty queue in which the items `a` and `b` are inserted. Then `a` is removed, `c` and `d` are inserted, and `b` is removed. Because items are always removed in the order in which they are inserted, a queue is sometimes called a *FIFO* (first in, first out) buffer.
+*الطابور (queue)* هو تسلسلٌ تُدرَج العناصر في أحد طرفيه (الذي يُسمّى *الخلفيّة* للطابور) وتُحذَف من الطرف الآخر (الذي يُسمّى *المقدّمة*). ويُظهر [الشكل 3.18](#Figure-3_002e18) طابورًا خاليًا في بادئ الأمر تُدرَج فيه العنصران `a` و`b`. ثمّ يُحذَف `a`، ويُدرَج `c` و`d`، ويُحذَف `b`. ولأنّ العناصر تُحذَف دائمًا بالترتيب الذي أُدرِجت به، فإنّ الطابور يُسمّى أحيانًا *مِخزَن FIFO* (أي «الأوّل داخلًا هو الأوّل خارجًا»).
 
 ![](/images/sicp/c3-modularity-objects-and-state-6-Fig3.18.std.webp)
 
-**Figure 3.18:** Queue operations.
+**الشكل 3.18:** عمليّات الطابور.
 
-In terms of data abstraction, we can regard a queue as defined by the following set of operations:
+من حيث تجريد البيانات، يمكننا اعتبار الطابور معرَّفًا بمجموعة العمليّات الآتية:
 
-a constructor: `(make-queue)` returns an empty queue (a queue containing no items). two selectors:
+بانٍ: `(make-queue)` يعيد طابورًا خاليًا (طابورًا لا يحتوي أيّ عناصر). محدِّدان:
 
 ```scheme
 (empty-queue? ⟨queue⟩)
 ```
 
-tests if the queue is empty.
+يختبر ما إذا كان الطابور خاليًا.
 
 ```scheme
 (front-queue ⟨queue⟩)
 ```
 
-returns the object at the front of the queue, signaling an error if the queue is empty; it does not modify the queue.
+يعيد الكائن الموجود في مقدّمة الطابور، مُعلنًا خطأً إذا كان خاليًا؛ ولا يُعدّل الطابور.
 
-two mutators:
+مغيّران:
 
 ```scheme
 (insert-queue! ⟨queue⟩ ⟨item⟩)
 ```
 
-inserts the item at the rear of the queue and returns the modified queue as its value.
+يُدرِج العنصر في خلفيّة الطابور ويعيد الطابور المُعدَّل قيمةً له.
 
 ```scheme
 (delete-queue! ⟨queue⟩)
 ```
 
-removes the item at the front of the queue and returns the modified queue as its value, signaling an error if the queue is empty before the deletion.
+يحذف العنصر الموجود في مقدّمة الطابور ويعيد الطابور المُعدَّل قيمةً له، مُعلنًا خطأً إذا كان الطابور خاليًا قبل الحذف.
 
-Because a queue is a sequence of items, we could certainly represent it as an ordinary list; the front of the queue would be the `car` of the list, inserting an item in the queue would amount to appending a new element at the end of the list, and deleting an item from the queue would just be taking the `cdr` of the list. However, this representation is inefficient, because in order to insert an item we must scan the list until we reach the end. Since the only method we have for scanning a list is by successive `cdr` operations, this scanning requires $Θ ( n )$ steps for a list of $n$ items. A simple modification to the list representation overcomes this disadvantage by allowing the queue operations to be implemented so that they require $Θ ( 1 )$ steps; that is, so that the number of steps needed is independent of the length of the queue.
+ولأنّ الطابور تسلسلٌ من العناصر، فيمكننا بكلّ تأكيدٍ تمثيله بقائمةٍ اعتياديّة؛ فمقدّمة الطابور هي `car` القائمة، وإدراج عنصرٍ في الطابور يعني إلحاق عنصرٍ جديدٍ في نهاية القائمة، وحذف عنصرٍ من الطابور ليس سوى أخذ `cdr` القائمة. غير أنّ هذا التمثيل غيرُ كفؤ، لأنّ إدراج عنصرٍ يتطلّب منّا مسح القائمة حتّى نبلغ نهايتها. وبما أنّ الطريقة الوحيدة المتاحة لمسح القائمة هي بعمليّات `cdr` متعاقبة، فإنّ هذا المسح يتطلّب $Θ ( n )$ خطوةً لقائمةٍ من $n$ عنصرًا. ويغلُب تعديلٌ بسيطٌ لتمثيل القائمة على هذا العيب بالسماح بتنفيذ عمليّات الطابور بحيث تتطلّب $Θ ( 1 )$ خطوة؛ أي بحيث يكون عدد الخطوات اللازم مستقلًّا عن طول الطابور.
 
-The difficulty with the list representation arises from the need to scan to find the end of the list. The reason we need to scan is that, although the standard way of representing a list as a chain of pairs readily provides us with a pointer to the beginning of the list, it gives us no easily accessible pointer to the end. The modification that avoids the drawback is to represent the queue as a list, together with an additional pointer that indicates the final pair in the list. That way, when we go to insert an item, we can consult the rear pointer and so avoid scanning the list.
+ينشأ الصّعب في تمثيل القائمة من الحاجة إلى المسح لإيجاد نهاية القائمة. وسبب حاجتنا إلى المسح هو أنّ الطريقة القياسيّة لتمثيل قائمةٍ بسلسلةٍ من الأزواج تُتيح لنا بسهولةٍ مؤشّرًا إلى بداية القائمة، لكنّها لا تُعطينا مؤشّرًا يسهل الوصولُ إليه إلى نهايتها. والتعديل الذي يتفادى هذا العيب هو تمثيل الطابور بقائمةٍ، مع مؤشّرٍ إضافيٍّ يُشير إلى الزوج الأخير في القائمة. وبذلك، حين نُدرِج عنصرًا، يمكننا الرجوع إلى مؤشّر الخلفيّة وتفادي مسح القائمة.
 
-A queue is represented, then, as a pair of pointers, `front-ptr` and `rear-ptr`, which indicate, respectively, the first and last pairs in an ordinary list. Since we would like the queue to be an identifiable object, we can use `cons` to combine the two pointers. Thus, the queue itself will be the `cons` of the two pointers. [Figure 3.19](#Figure-3_002e19) illustrates this representation.
+يُمثَّل الطابور، إذن، بزوجٍ من المؤشّرات، `front-ptr` و`rear-ptr`، التي تُشير، على التوالي، إلى الزوج الأوّل والزوج الأخير في قائمةٍ اعتياديّة. وبما أنّنا نودّ أن يكون الطابور كائنًا قابلًا للتمييز، فيمكننا استخدام `cons` لدمج المؤشّرين. وهكذا، سيكون الطابور نفسُه هو `cons` المؤشّرين. ويُوضيّح [الشكل 3.19](#Figure-3_002e19) هذا التمثيل.
 
 ![](/images/sicp/c3-modularity-objects-and-state-7-Fig3.19b.std.webp)
 
-**Figure 3.19:** Implementation of a queue as a list with front and rear pointers.
+**الشكل 3.19:** تنفيذ طابورٍ بوصفه قائمةً ذات مؤشّري مقدّمةٍ وخلفيّة.
 
-To define the queue operations we use the following procedures, which enable us to select and to modify the front and rear pointers of a queue:
+لتعريف عمليّات الطابور نستخدم الإجراءات الآتية، التي تُمكّننا من تحديد مؤشّري المقدّمة والخلفيّة للطابور وتعديلهما:
 
 ```scheme
 (define (front-ptr queue) (car queue))
@@ -1179,20 +1179,20 @@ To define the queue operations we use the following procedures, which enable us 
   (set-cdr! queue item))
 ```
 
-Now we can implement the actual queue operations. We will consider a queue to be empty if its front pointer is the empty list:
+يمكننا الآن تنفيذ عمليّات الطابور الفعليّة. وسنعتبر الطابور خاليًا إذا كان مؤشّر مقدّمتِه هو القائمة الخالية:
 
 ```scheme
 (define (empty-queue? queue) 
   (null? (front-ptr queue)))
 ```
 
-The `make-queue` constructor returns, as an initially empty queue, a pair whose `car` and `cdr` are both the empty list:
+يُعيد الباني `make-queue`، بوصفه طابورًا خاليًا في بادئ الأمر، زوجًا كلٌّ من `car` و`cdr` فيه هو القائمة الخالية:
 
 ```scheme
 (define (make-queue) (cons '() '()))
 ```
 
-To select the item at the front of the queue, we return the `car` of the pair indicated by the front pointer:
+لاتّخاذ العنصر الموجود في مقدّمة الطابور، نُعيد `car` الزوج الذي يُشير إليه مؤشّر المقدّمة:
 
 ```scheme
 (define (front-queue queue)
@@ -1202,11 +1202,11 @@ To select the item at the front of the queue, we return the `car` of the pair in
       (car (front-ptr queue))))
 ```
 
-To insert an item in a queue, we follow the method whose result is indicated in [Figure 3.20](#Figure-3_002e20). We first create a new pair whose `car` is the item to be inserted and whose `cdr` is the empty list. If the queue was initially empty, we set the front and rear pointers of the queue to this new pair. Otherwise, we modify the final pair in the queue to point to the new pair, and also set the rear pointer to the new pair.
+لإدراج عنصرٍ في طابور، نتبع الطريقة التي تُشير نتيجتها في [الشكل 3.20](#Figure-3_002e20). فنبدأ بإنشاء زوجٍ جديد، `car` فيه هو العنصر المُراد إدراجه و`cdr` فيه هو القائمة الخالية. فإن كان الطابور خاليًا في بادئ الأمر، نُعيّن مؤشّري مقدّمة الطابور وخلفيّته إلى هذا الزوج الجديد. وإلّا، نُعدّل الزوج الأخير في الطابور ليشير إلى الزوج الجديد، ونُعيّن مؤشّر الخلفيّة أيضًا إلى الزوج الجديد.
 
 ![](/images/sicp/c3-modularity-objects-and-state-8-Fig3.20c.std.webp)
 
-**Figure 3.20:** Result of using `(insert-queue! q 'd)` on the queue of [Figure 3.19](#Figure-3_002e19).
+**الشكل 3.20:** نتيجة استخدام `(insert-queue! q 'd)` على الطابور في [الشكل 3.19](#Figure-3_002e19).
 
 ```scheme
 (define (insert-queue! queue item)
@@ -1221,7 +1221,7 @@ To insert an item in a queue, we follow the method whose result is indicated in 
                 queue))))
 ```
 
-To delete the item at the front of the queue, we merely modify the front pointer so that it now points at the second item in the queue, which can be found by following the `cdr` pointer of the first item (see [Figure 3.21](#Figure-3_002e21)):[^22]
+ولحذف العنصر الموجود في مقدّمة الطابور، نُعدّل مؤشّر المقدّمة فحسب بحيث يُشير الآن إلى العنصر الثاني في الطابور، والذي يمكن إيجاده باتباع مؤشّر `cdr` للعنصر الأوّل (انظر [الشكل 3.21](#Figure-3_002e21)):[^22]
 
 ```scheme
 (define (delete-queue! queue)
@@ -1236,9 +1236,9 @@ To delete the item at the front of the queue, we merely modify the front pointer
 
 ![](/images/sicp/c3-modularity-objects-and-state-9-Fig3.21c.std.webp)
 
-**Figure 3.21:** Result of using `(delete-queue! q)` on the queue of [Figure 3.20](#Figure-3_002e20).
+**الشكل 3.21:** نتيجة استخدام `(delete-queue! q)` على الطابور في [الشكل 3.20](#Figure-3_002e20).
 
-**Exercise 3.21:** Ben Bitdiddle decides to test the queue implementation described above. He types in the procedures to the Lisp interpreter and proceeds to try them out:
+**التمرين 3.21:** يقرّر بن بيتدِل اختبار تنفيذ الطابور الموصوف أعلاه. فيُدخل الإجراءات إلى مفسّر Lisp ويبدأ بتجربتها:
 
 ```scheme
 (define q1 (make-queue))
@@ -1256,9 +1256,9 @@ To delete the item at the front of the queue, we merely modify the front pointer
 (() b)
 ```
 
-“It’s all wrong!” he complains. “The interpreter’s response shows that the last item is inserted into the queue twice. And when I delete both items, the second `b` is still there, so the queue isn’t empty, even though it’s supposed to be.” Eva Lu Ator suggests that Ben has misunderstood what is happening. “It’s not that the items are going into the queue twice,” she explains. “It’s just that the standard Lisp printer doesn’t know how to make sense of the queue representation. If you want to see the queue printed correctly, you’ll have to define your own print procedure for queues.” Explain what Eva Lu is talking about. In particular, show why Ben’s examples produce the printed results that they do. Define a procedure `print-queue` that takes a queue as input and prints the sequence of items in the queue.
+«كلّه خاطئ!» يشكو. «يُظهر ردّ المفسّر أنّ العنصر الأخير يُدرَج في الطابور مرّتين. وحين أحذف العنصرين كلَيهما، يبقى `b` الثاني موجودًا، فالطابور ليس خاليًا، مع أنّه من المفترض أن يكون كذلك.» وتقترح إيفا لو آتر أنّ بن قد أساء فهم ما يجري. «ليس الأمر أنّ العناصر تدخل الطابور مرّتين،» تشرح. «إنّه فقط أنّ الطابعة القياسيّة في Lisp لا تعرف كيف تُفسّر تمثيل الطابور. فإن أردت رؤية الطابور مطبوعًا بصورةٍ صحيحة، فسيلزمك تعريف إجراء طباعةٍ خاصّ بك للطوابير.» اشرح عمّا تتكلّم إيفا لو. وبالتحديد، أظهِر لماذا تُنتج أمثلة بن النتائج المطبوعة التي تُنتجها. وعرّف إجراءً `print-queue` يأخذ طابورًا مُدخَلًا ويطبع تسلسل العناصر في الطابور.
 
-**Exercise 3.22:** Instead of representing a queue as a pair of pointers, we can build a queue as a procedure with local state. The local state will consist of pointers to the beginning and the end of an ordinary list. Thus, the `make-queue` procedure will have the form
+**التمرين 3.22:** بدلًا من تمثيل الطابور بزوجٍ من المؤشّرات، يمكننا بناء طابورٍ بوصفه إجراءً ذا حالةٍ محلّيّة. وستتكوّن الحالة المحليّة من مؤشّرين إلى بداية قائمةٍ اعتياديّةٍ ونهايتها. وهكذا، سيكون الإجراء `make-queue` على الصورة
 
 ```scheme
 (define (make-queue)
@@ -1269,15 +1269,15 @@ To delete the item at the front of the queue, we merely modify the front pointer
     dispatch))
 ```
 
-Complete the definition of `make-queue` and provide implementations of the queue operations using this representation.
+أكمل تعريف `make-queue` وأعطِ تنفيذ عمليّات الطابور باستخدام هذا التمثيل.
 
-> **Exercise 3.23:** A *deque* (“double-ended queue”) is a sequence in which items can be inserted and deleted at either the front or the rear. Operations on deques are the constructor `make-deque`, the predicate `empty-deque?`, selectors `front-deque` and `rear-deque`, and mutators `front-insert-deque!`, `rear-insert-deque!`, `front-delete-deque!`, `rear-delete-deque!`. Show how to represent deques using pairs, and give implementations of the operations.[^23] All operations should be accomplished in $Θ ( 1 )$ steps.
+> **التمرين 3.23:** *الطابور ذو الطرفين (deque)* هو تسلسلٌ يمكن إدراج العناصر فيه وحذفها من المقدّمة أو من الخلفيّة. وعمليّات الطوابير ذوات الأطراف هي الباني `make-deque`، والمُسَيِّم `empty-deque?`، والمحدِّدات `front-deque` و`rear-deque`، والمغيّرات `front-insert-deque!` و`rear-insert-deque!` و`front-delete-deque!` و`rear-delete-deque!`. أظهِر كيف نُمثّل الطوابير ذوات الأطراف باستخدام الأزواج، وأعطِ تنفيذ العمليّات.[^23] وينبغي أن تُنجَز جميع العمليّات في $Θ ( 1 )$ خطوة.
 
-#### 3.3.3 Representing Tables
+#### 3.3.3 تمثيل الجداول
 
-When we studied various ways of representing sets in [Chapter 2](https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2), we mentioned in [2.3.3](https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e3) the task of maintaining a table of records indexed by identifying keys. In the implementation of data-directed programming in [2.4.3](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e3), we made extensive use of two-dimensional tables, in which information is stored and retrieved using two keys. Here we see how to build tables as mutable list structures.
+حين درسنا طرائق مختلفةً لتمثيل المجموعات في [الفصل 2](https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2)، ذكرنا في [2.3.3](https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e3) مهمّة صون جدولٍ من السجلّات مُفهرَسًا بمفاتيح تمييزٍ. وفي تنفيذ البرمجة الموجَّهة بالبيانات في [2.4.3](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e3)، استخدمنا جداول ثنائيّة الأبعاد استخدامًا واسعًا، تُخزَّن المعلومات فيها وتُستخرَجُ باستخدام مفتاحين. وهنا نرى كيف نبني الجداول بوصفها بنى قوائمَ قابلةً للتغيير.
 
-We first consider a one-dimensional table, in which each value is stored under a single key. We implement the table as a list of records, each of which is implemented as a pair consisting of a key and the associated value. The records are glued together to form a list by pairs whose `car`s point to successive records. These gluing pairs are called the *backbone* of the table. In order to have a place that we can change when we add a new record to the table, we build the table as a *headed list*. A headed list has a special backbone pair at the beginning, which holds a dummy “record”—in this case the arbitrarily chosen symbol `*table*`. [Figure 3.22](#Figure-3_002e22) shows the box-and-pointer diagram for the table
+نبدأ بالنظر في جدولٍ أحاديّ الأبعاد، تُخزَّن فيه كلّ قيمةٍ تحت مفتاحٍ واحدٍ. ونُنفّذ الجدول بوصفه قائمةً من السجلّات، يُنفَّذ كلٌّ منها بوصفه زوجٍ متكوّنٍ من مفتاحٍ ومن القيمة المرتبطة به. وتُلصَق السجلّات معًا لتشكيل قائمةٍ بأزواجٍ لاصقةٍ يشير `car` كلٍّ منها إلى السجلّ الذي يليه. وتُسمّى هذه الأزواج اللاصقة *العمود الفقريّ (backbone)* للجدول. ولكي يكون لدينا موضعٌ يمكننا تغييره حين نُضيف سجلًّا جديدًا إلى الجدول، نبني الجدول بوصفه *قائمةً مُترَأَسة (headed list)*. وللقائمة المُترَأَسة زوجٌ خاصٌّ في رأس عمودها الفقريّ يحمل «سجلًّا» وهميًّا - وهو في هذه الحالة الرمز `*table*` المُختار اعتباطيًّا. ويُظهر [الشكل 3.22](#Figure-3_002e22) مخطّط الصناديق والمؤشّرات للجدول
 
 ```scheme
 a:  1
@@ -1287,9 +1287,9 @@ c:  3
 
 ![](/images/sicp/c3-modularity-objects-and-state-10-Fig3.22c.std.webp)
 
-**Figure 3.22:** A table represented as a headed list.
+**الشكل 3.22:** جدولٌ مُمثَّلٌ بقائمةٍ مُترَأَسة.
 
-To extract information from a table we use the `lookup` procedure, which takes a key as argument and returns the associated value (or false if there is no value stored under that key). `Lookup` is defined in terms of the `assoc` operation, which expects a key and a list of records as arguments. Note that `assoc` never sees the dummy record. `Assoc` returns the record that has the given key as its `car`.[^24] `Lookup` then checks to see that the resulting record returned by `assoc` is not false, and returns the value (the `cdr`) of the record.
+لاستخراج المعلومات من جدولٍ نستخدم الإجراء `lookup`، الذي يأخذ مفتاحًا معطًى ويعيد القيمة المرتبطة به (أو القيمة false إن لم تُخزَّن أيّ قيمةٍ تحت ذلك المفتاح). ويُعرَّف `Lookup` بدلالة العمليّة `assoc`، التي تتوقّع مفتاحًا وقائمة سجلّاتٍ كمعطيّين. ولاحِظ أنّ `assoc` لا ترى السجلّ الوهميّ إطلاقًا. ويُعيد `Assoc` السجلّ الذي يكون المفتاح المعطى `car` فيه.[^24] ثمّ يتحقّق `Lookup` من أنّ السجلّ الناتج من `assoc` ليس false، ويعيد قيمة السجلّ (أي `cdr` فيه).
 
 ```scheme
 (define (lookup key table)
@@ -1305,7 +1305,7 @@ To extract information from a table we use the `lookup` procedure, which takes a
         (else (assoc key (cdr records)))))
 ```
 
-To insert a value in a table under a specified key, we first use `assoc` to see if there is already a record in the table with this key. If not, we form a new record by `cons`ing the key with the value, and insert this at the head of the table’s list of records, after the dummy record. If there already is a record with this key, we set the `cdr` of this record to the designated new value. The header of the table provides us with a fixed location to modify in order to insert the new record.[^25]
+لإدراج قيمةٍ في جدول تحت مفتاحٍ محدَّد، نستخدم `assoc` أوّلًا لنرى ما إذا كان هناك سجلٌّ في الجدول بهذا المفتاح سلفًا. فإن لم يكن، نُشكّل سجلًّا جديدًا بِـ`cons` المفتاح مع القيمة، ونُدرِج هذا في رأس قائمة سجلّات الجدول، بعد السجلّ الوهميّ. فإن كان هناك سجلٌّ بهذا المفتاح سلفًا، نُعيّن `cdr` هذا السجلّ إلى القيمة الجديدة المعيَّنة. ويُتيح لنا ترويسة الجدول موضعًا ثابتًا نُعدّله لإدراج السجلّ الجديد.[^25]
 
 ```scheme
 (define (insert! key value table)
@@ -1318,16 +1318,16 @@ To insert a value in a table under a specified key, we first use `assoc` to see 
   'ok)
 ```
 
-To construct a new table, we simply create a list containing the symbol `*table*`:
+لبناء جدول جديد، نُنشئ ببساطةٍ قائمةً تحتوي الرمز `*table*`:
 
 ```scheme
 (define (make-table)
   (list '*table*))
 ```
 
-#### Two-dimensional tables
+#### الجداول ثنائيّة الأبعاد
 
-In a two-dimensional table, each value is indexed by two keys. We can construct such a table as a one-dimensional table in which each key identifies a subtable. [Figure 3.23](#Figure-3_002e23) shows the box-and-pointer diagram for the table
+في الجدول ثنائيّ الأبعاد، تُفهرَس كلّ قيمةٍ بمفتاحين. فيمكننا تشييد جدولٍ كهذا بوصفه جدولًا أحاديّ الأبعاد يُحدّد كلّ مفتاحٍ فيه جدولًا فرعيًّا. ويُظهر [الشكل 3.23](#Figure-3_002e23) مخطّط الصناديق والمؤشّرات للجدول
 
 ```
 math:  +: 43    letters:  a: 97
@@ -1335,13 +1335,13 @@ math:  +: 43    letters:  a: 97
        *: 42
 ```
 
-which has two subtables. (The subtables don’t need a special header symbol, since the key that identifies the subtable serves this purpose.)
+الذي يحتوي على جدولين فرعيّين. (ولا تحتاج الجداول الفرعيّة إلى رمز ترويسةٍ خاصّ، إذ إنّ المفتاح الذي يُحدّد الجدول الفرعيّ يؤدّي هذا الغرض.)
 
 ![](/images/sicp/c3-modularity-objects-and-state-11-Fig3.23b.std.webp)
 
-**Figure 3.23:** A two-dimensional table.
+**الشكل 3.23:** جدولٌ ثنائيّ الأبعاد.
 
-When we look up an item, we use the first key to identify the correct subtable. Then we use the second key to identify the record within the subtable.
+حين نبحث عن عنصر، نستخدم المفتاح الأوّل لتحديد الجدول الفرعيّ الصحيح. ثمّ نستخدم المفتاح الثاني لتحديد السجلّ داخل الجدول الفرعيّ.
 
 ```scheme
 (define (lookup key-1 key-2 table)
@@ -1353,7 +1353,7 @@ When we look up an item, we use the first key to identify the correct subtable. 
         false)))
 ```
 
-To insert a new item under a pair of keys, we use `assoc` to see if there is a subtable stored under the first key. If not, we build a new subtable containing the single record (`key-2`, `value`) and insert it into the table under the first key. If a subtable already exists for the first key, we insert the new record into this subtable, using the insertion method for one-dimensional tables described above:
+لإدراج عنصرٍ جديدٍ تحت زوجٍ من المفاتيح، نستخدم `assoc` لمعرفة ما إذا كان هناك جدولٌ فرعيٌّ مخزَّنٌ تحت المفتاح الأوّل. فإن لم يكن، نبني جدولًا فرعيًّا جديدًا يحتوي السجلّ الوحيد (`key-2`، `value`) ونُدرِجه في الجدول تحت المفتاح الأوّل. فإن كان هناك جدولٌ فرعيٌّ للمفتاح الأوّل سلفًا، نُدرِج السجلّ الجديد في هذا الجدول الفرعيّ، باستخدام طريقة الإدراج للجداول أحاديّة الأبعاد الموصوفة أعلاه:
 
 ```scheme
 (define (insert! key-1 key-2 value table)
@@ -1374,9 +1374,9 @@ To insert a new item under a pair of keys, we use `assoc` to see if there is a s
   'ok)
 ```
 
-#### Creating local tables
+#### إنشاء جداول محلّيّة
 
-The `lookup` and `insert!` operations defined above take the table as an argument. This enables us to use programs that access more than one table. Another way to deal with multiple tables is to have separate `lookup` and `insert!` procedures for each table. We can do this by representing a table procedurally, as an object that maintains an internal table as part of its local state. When sent an appropriate message, this “table object” supplies the procedure with which to operate on the internal table. Here is a generator for two-dimensional tables represented in this fashion:
+تأخذ العمليّتان `lookup` و`insert!` المعرَّفتان أعلاه الجدول معطًى. وهذا يمكّننا من استخدام برامج تصل إلى أكثر من جدول. وهناك طريقة أخرى للتعامل مع عدّة جداول، وهي تخصيص إجراءَي `lookup` و`insert!` منفصلين لكلّ جدول. ويمكننا فعل ذلك بتمثيل الجدول إجرائيًّا، بوصفه كائنًا يحافظ على جدول داخليّ كجزءٍ من حالته المحليّة. وحين يُرسَل إليه رسالةٌ مناسبة، يُتيح «كائن الجدول» هذا الإجراء الذي يُعمل به على الجدول الداخليّ. وفيما يلي مولِّدٌ للجداول ثنائيّة الأبعاد المُمثَّلة بهذه الطريقة:
 
 ```scheme
 (define (make-table)
@@ -1417,7 +1417,7 @@ The `lookup` and `insert!` operations defined above take the table as an argumen
     dispatch))
 ```
 
-Using `make-table`, we could implement the `get` and `put` operations used in [2.4.3](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e3) for data-directed programming, as follows:
+وباستخدام `make-table`، يمكننا تنفيذ عمليّتَي `get` و`put` المستخدمتين في [2.4.3](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e3) لأجل البرمجة الموجَّهة بالبيانات، كما يلي:
 
 ```scheme
 (define operation-table (make-table))
@@ -1425,15 +1425,15 @@ Using `make-table`, we could implement the `get` and `put` operations used in [2
 (define put (operation-table 'insert-proc!))
 ```
 
-`Get` takes as arguments two keys, and `put` takes as arguments two keys and a value. Both operations access the same local table, which is encapsulated within the object created by the call to `make-table`.
+يأخذ `Get` كمعطياتٍ مفتاحين، ويأخذ `put` كمعطياتٍ مفتاحين وقيمة. وتصل العمليّتان إلى الجدول المحلّيّ نفسه، المُحاط داخل الكائن المنشأ بنداء `make-table`.
 
-> **Exercise 3.24:** In the table implementations above, the keys are tested for equality using `equal?` (called by `assoc`). This is not always the appropriate test. For instance, we might have a table with numeric keys in which we don’t need an exact match to the number we’re looking up, but only a number within some tolerance of it. Design a table constructor `make-table` that takes as an argument a `same-key?` procedure that will be used to test “equality” of keys. `Make-table` should return a `dispatch` procedure that can be used to access appropriate `lookup` and `insert!` procedures for a local table.
+> **التمرين 3.24:** في تنفيذَي الجدول المذكورين أعلاه، تُختبر مفاتيح التساوي باستخدام `equal?` (التي يناديها `assoc`). وهذا ليس الاختبار الملائم دائمًا. فإنّه قد يكون لدينا جدولٌ ذو مفاتيح عدديّة لا نحتاج فيه إلى مطابقة تامّة للعدد الذي نبحث عنه، بل فقط عددٌ يقع ضمن نطاق تحمّلٍ معيّن منه. صمّم بانِي جداول `make-table` يأخذ كمعطىً إجراء `same-key?` سيُستخدم لاختبار «تساوي» المفاتيح. وينبغي أن يُعيد `Make-table` إجراء `dispatch` يمكن استخدامه للوصول إلى إجراءَي `lookup` و`insert!` الملائمين لجدولٍ محلّيّ.
 
-> **Exercise 3.25:** Generalizing one- and two-dimensional tables, show how to implement a table in which values are stored under an arbitrary number of keys and different values may be stored under different numbers of keys. The `lookup` and `insert!` procedures should take as input a list of keys used to access the table.
+> **التمرين 3.25:** بتعميم الجداول أحاديّة وثنائيّة الأبعاد، أظهِر كيف يمكن تنفيذ جدولٍ تُخزَّن فيه القيم تحت عددٍ اعتباطيّ من المفاتيح، وقد تُخزَّن قيمٌ مختلفة تحت أعدادٍ مختلفة من المفاتيح. وينبغي أن يأخذ إجراءَا `lookup` و`insert!` كمدخلٍ قائمةً من المفاتيح تُستخدم للوصول إلى الجدول.
 
-> **Exercise 3.26:** To search a table as implemented above, one needs to scan through the list of records. This is basically the unordered list representation of [2.3.3](https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e3). For large tables, it may be more efficient to structure the table in a different manner. Describe a table implementation where the (key, value) records are organized using a binary tree, assuming that keys can be ordered in some way (e.g., numerically or alphabetically). (Compare [Exercise 2.66](https://sarabander.github.io/sicp/html/2_002e3.xhtml#Exercise-2_002e66) of [Chapter 2](https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2).)
+> **التمرين 3.26:** للبحث في جدولٍ منفَّذٍ كما هو أعلاه، يلزم المرء أن يمسح قائمة السجلّات. وهذا أساسًا هو تمثيل القائمة غير المرتّبة الوارد في [2.3.3](https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e3). فإنّ من الأنفع للجداول الكبيرة أن تُبنى بصيغةٍ مختلفة. صِف تنفيذًا لجدولٍ تُنظَّم فيه سجلّات (المفتاح، القيمة) باستخدام شجرةٍ ثنائيّة، بافتراض أنّ المفاتيح يمكن ترتيبها بطريقةٍ ما (عدديًّا أو أبجديًّا مثلًا). (قارن [التمرين 2.66](https://sarabander.github.io/sicp/html/2_002e3.xhtml#Exercise-2_002e66) من [الفصل 2](https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2).)
 
-**Exercise 3.27:** *Memoization* (also called *tabulation*) is a technique that enables a procedure to record, in a local table, values that have previously been computed. This technique can make a vast difference in the performance of a program. A memoized procedure maintains a table in which values of previous calls are stored using as keys the arguments that produced the values. When the memoized procedure is asked to compute a value, it first checks the table to see if the value is already there and, if so, just returns that value. Otherwise, it computes the new value in the ordinary way and stores this in the table. As an example of memoization, recall from [1.2.2](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e2) the exponential process for computing Fibonacci numbers:
+**التمرين 3.27:** *حفظ النتائج* (والمسمّى أيضًا *الجدولة*) تقنيّةٌ تمكّن إجراءً من تسجيل قيمٍ حُسبت سلفًا في جدولٍ محلّيّ. وهذه التقنيّة قادرةٌ على إحداث فرقٍ هائل في أداء البرنامج. فالإجراء ذو النتائج المحفوظة يحتفظ بجدولٍ تُخزَّن فيه قيم النداءات السابقة، مستخدمًا المعطيات التي أنتجت تلك القيم كمفاتيح لها. وحين يُطلَب من الإجراء ذي النتائج المحفوظة أن يحسب قيمةً، فإنّه يتحقّق أوّلًا من الجدول ليرى ما إذا كانت القيمة موجودةً فيه سلفًا، فإن كانت كذلك أعاد تلك القيمة فحسب. وإلّا، فإنّه يحسب القيمة الجديدة بالطريقة المعتادة ويخزّنها في الجدول. ومن أمثلة حفظ النتائج، تذكّر - من [1.2.2](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e2) - العمليّة الأسّيّة لاحتساب أعداد فيبوناتشي:
 
 ```scheme
 (define (fib n)
@@ -1443,7 +1443,7 @@ Using `make-table`, we could implement the `get` and `put` operations used in [2
                  (fib (- n 2))))))
 ```
 
-The memoized version of the same procedure is
+والنسخة ذات النتائج المحفوظة من الإجراء نفسه هي
 
 ```scheme
 (define memo-fib
@@ -1456,7 +1456,7 @@ The memoized version of the same procedure is
                (memo-fib (- n 2))))))))
 ```
 
-where the memoizer is defined as
+وحيث إنّ مُحفِظ النتائج معرَّفٌ كما يلي:
 
 ```scheme
 (define (memoize f)
@@ -1470,27 +1470,27 @@ where the memoizer is defined as
               result))))))
 ```
 
-Draw an environment diagram to analyze the computation of `(memo-fib 3)`. Explain why `memo-fib` computes the $n^{th}$ Fibonacci number in a number of steps proportional to $n$ . Would the scheme still work if we had simply defined `memo-fib` to be `(memoize fib)`?
+ارسم مخطط البيئة لتحليل احتساب `(memo-fib 3)`. فسّر لماذا يحسب `memo-fib` العدد الفيبوناتشيّ الـ$n^{th}$ بعددٍ من الخطوات يتناسب مع $n$ . فهل كان هذا المخطّط لا يزال يعمل لو كنّا قد عرّفنا `memo-fib` ببساطةٍ على أنّه `(memoize fib)`؟
 
-#### 3.3.4 A Simulator for Digital Circuits
+#### 3.3.4 محاكي الدوائر الرقميّة
 
-Designing complex digital systems, such as computers, is an important engineering activity. Digital systems are constructed by interconnecting simple elements. Although the behavior of these individual elements is simple, networks of them can have very complex behavior. Computer simulation of proposed circuit designs is an important tool used by digital systems engineers. In this section we design a system for performing digital logic simulations. This system typifies a kind of program called an *event-driven simulation*, in which actions (“events”) trigger further events that happen at a later time, which in turn trigger more events, and so on.
+تصميم النظم الرقميّة المعقّدة، كالحواسيب مثلًا، نشاطٌ هندسيٌّ مهمّ. وتُبنى النظم الرقميّة بربط عناصر بسيطة بعضها ببعض. وعلى رغم أنّ سلوك هذه العناصر الفرديّة بسيط، فإنّ الشبكات المكوّنة منها قد يكون لها سلوكٌ معقّدٌ جدًّا. ومحاكاة تصاميم الدوائر المقترحة بالحاسوب أداةٌ مهمّةٌ يستخدمها مهندسو النظم الرقميّة. وفي هذا القسم نصمّم نظامًا لأداء محاكاة المنطق الرقميّ. وهذا النظام يمثّل نموذجًا لنوعٍ من البرامج يُسمّى *محاكاة موجَّهة بالأحداث (event-driven simulation)*، وفيه تُطلق الأفعال («الأحداث») أحداثًا أخرى تجري في وقتٍ لاحق، وهي التي تُطلق بدورها أحداثًا أكثر، وهكذا دواليك.
 
-Our computational model of a circuit will be composed of objects that correspond to the elementary components from which the circuit is constructed. There are *wires*, which carry *digital signals*. A digital signal may at any moment have only one of two possible values, 0 and 1. There are also various types of digital *function boxes*, which connect wires carrying input signals to other output wires. Such boxes produce output signals computed from their input signals. The output signal is delayed by a time that depends on the type of the function box. For example, an *inverter* is a primitive function box that inverts its input. If the input signal to an inverter changes to 0, then one inverter-delay later the inverter will change its output signal to 1. If the input signal to an inverter changes to 1, then one inverter-delay later the inverter will change its output signal to 0. We draw an inverter symbolically as in [Figure 3.24](#Figure-3_002e24). An *and-gate*, also shown in figure 3.24, is a primitive function box with two inputs and one output. It drives its output signal to a value that is the *logical and* of the inputs. That is, if both of its input signals become 1, then one and-gate-delay time later the and-gate will force its output signal to be 1; otherwise the output will be 0. An *or-gate* is a similar two-input primitive function box that drives its output signal to a value that is the *logical or* of the inputs. That is, the output will become 1 if at least one of the input signals is 1; otherwise the output will become 0.
+سيتكوّن نموذجنا الحسابيّ للدائرة من كائناتٍ تقابل المكوّنات الأوّليّة التي تُبنى منها الدائرة. فهناك *الأسلاك (wires)*، التي تحمل *الإشارات الرقميّة (digital signals)*. وقد تحمل الإشارة الرقميّة في أيّ لحظةٍ إحدى قيمتين محتملتين فقط، هما 0 و1. وهناك أيضًا أنواعٌ متعدّدةٌ من *صناديق الدوالّ (function boxes)* الرقميّة، التي تربط الأسلاك الحاملة لإشارات الدخل بأسلاك أخرى حاملة لإشارات الخرج. وهذه الصناديق تُنتج إشارات خرجٍ محسوبةً من إشارات دخلها. وتتأخّر إشارة الخرج زمنًا يعتمد على نوع صندوق الدالّة. فإنّ *العاكس (inverter)* صندوقُ دالّةٍ أوّليّ يعكس مدخله. فإن تغيّرت إشارة دخل عاكسٍ إلى 0، فإنّه - بعد تأخير عاكسٍ واحد (inverter-delay) - سيغيّر العاكس إشارة خرجه إلى 1. وإن تغيّرت إشارة دخل عاكسٍ إلى 1، فإنّه - بعد تأخير عاكسٍ واحد - سيغيّر العاكس إشارة خرجه إلى 0. ونحن نرسم العاكس رمزيًّا كما في [الشكل 3.24](#Figure-3_002e24). أمّا *بوابة و (and-gate)*، الموضّحة أيضًا في الشكل 3.24، فهي صندوق دالّةٍ أوّليّ له مدخلان وخرجٌ واحد. فإنّها تضبط إشارة خرجها على قيمةٍ هي *الو المنطقيّ (logical and)* للمدخلين. أي أنّه إذا صارت إشارتا دخلها كلتاهما 1، فإنّها - بعد تأخير بوابة وٍ واحد (and-gate-delay) - ستُجبر إشارة خرجها على أن تصير 1؛ وإلّا فسيكون الخرج 0. و*بوابة أو (or-gate)* صندوق دالّةٍ أوّليّ مشابه ذو مدخلين يضبط إشارة خرجها على قيمةٍ هي *أو المنطقيّ* للمدخلين. أي أنّ الخرج سيصير 1 إذا كانت إحدى إشارتَي الدخل - على الأقلّ - تساوي 1؛ وإلّا فسيكون الخرج 0.
 
 ![](/images/sicp/c3-modularity-objects-and-state-12-Fig3.24a.std.webp)
 
-**Figure 3.24:** Primitive functions in the digital logic simulator.
+**الشكل 3.24:** الدوالّ الأوّليّة في محاكي المنطق الرقميّ.
 
-We can connect primitive functions together to construct more complex functions. To accomplish this we wire the outputs of some function boxes to the inputs of other function boxes. For example, the *half-adder* circuit shown in [Figure 3.25](#Figure-3_002e25) consists of an or-gate, two and-gates, and an inverter. It takes two input signals, A and B, and has two output signals, S and C. S will become 1 whenever precisely one of A and B is 1, and C will become 1 whenever A and B are both 1. We can see from the figure that, because of the delays involved, the outputs may be generated at different times. Many of the difficulties in the design of digital circuits arise from this fact.
+يمكننا وصل الدوالّ الأوّليّة بعضها ببعضٍ لبناء دوالّ أكثر تعقيدًا. ولإنجاز ذلك، نوصِل مخارج بعض صناديق الدوالّ بمداخلات صناديق أخرى. فإنّ دائرة *جامع النصف (half-adder)* - مثلًا - الموضّحة في [الشكل 3.25](#Figure-3_002e25) تتكوّن من بوابة أو وبوابتَي و وعاكس. وهي تأخذ إشارتَي دخل، A وB، ولها إشارتا خرج، S وC. وستصير S تساوي 1 متى كان واحدٌ فقط من A وB يساوي 1، وستصير C تساوي 1 متى كان A وB كلاهما يساوي 1. ونستطيع أن نرى من الشكل أنّ المخارج - بسبب التأخيرات الداخلة في الأمر - قد تُولَّد في أزمنةٍ مختلفة. والعديد من صعوبات تصميم الدوائر الرقميّة ينشأ من هذه الحقيقة.
 
 ![](/images/sicp/c3-modularity-objects-and-state-13-Fig3.25c.std.webp)
 
-**Figure 3.25:** A half-adder circuit.
+**الشكل 3.25:** دائرة جامع النصف.
 
-We will now build a program for modeling the digital logic circuits we wish to study. The program will construct computational objects modeling the wires, which will “hold” the signals. Function boxes will be modeled by procedures that enforce the correct relationships among the signals.
+سنبني الآن برنامجًا لنمذجة دوائر المنطق الرقميّ التي نريد دراستها. وسينشئ البرنامج كائناتٍ حسابيّةً تنمذج الأسلاك، وهي التي ستـ«تحتفظ» بالإشارات. وستُنمذج صناديق الدوالّ بإجراءاتٍ تفرض العلاقات الصحيحة بين الإشارات.
 
-One basic element of our simulation will be a procedure `make-wire`, which constructs wires. For example, we can construct six wires as follows:
+سيكون أحد العناصر الأساسيّة في محاكاتنا إجراءً اسمه `make-wire`، وهو الذي يبني الأسلاك. فإنّه يمكننا - مثلًا - بناء ستّة أسلاك كما يلي:
 
 ```scheme
 (define a (make-wire))
@@ -1501,7 +1501,7 @@ One basic element of our simulation will be a procedure `make-wire`, which const
 (define s (make-wire))
 ```
 
-We attach a function box to a set of wires by calling a procedure that constructs that kind of box. The arguments to the constructor procedure are the wires to be attached to the box. For example, given that we can construct and-gates, or-gates, and inverters, we can wire together the half-adder shown in [Figure 3.25](#Figure-3_002e25):
+نحن نُرفِق صندوق دالّةٍ بمجموعةٍ من الأسلاك بنداء إجراءٍ يبني ذلك النوع من الصناديق. ومعطيات إجراء الباني هي الأسلاك التي ستُرفَق بالصندوق. فإنّه إذا افترضنا أنّنا نستطيع بناء بوابات و وبوابات أو وعواكس، فيمكننا توصيل مكوّنات نصف الجامع الموضّح في [الشكل 3.25](#Figure-3_002e25) بعضها ببعض كما يلي:
 
 ```scheme
 (or-gate a b d)
@@ -1517,7 +1517,7 @@ ok
 ok
 ```
 
-Better yet, we can explicitly name this operation by defining a procedure `half-adder` that constructs this circuit, given the four external wires to be attached to the half-adder:
+والأفضل من ذلك، أنّنا نستطيع تسمية هذه العمليّة صراحةً بتعريف إجراءٍ اسمه `half-adder` يبني هذه الدائرة، إذا أُعطي الأسلاك الخارجيّة الأربعة التي ستُرفَق بنصف الجامع:
 
 ```scheme
 (define (half-adder a b s c)
@@ -1529,7 +1529,7 @@ Better yet, we can explicitly name this operation by defining a procedure `half-
     'ok))
 ```
 
-The advantage of making this definition is that we can use `half-adder` itself as a building block in creating more complex circuits. [Figure 3.26](#Figure-3_002e26), for example, shows a *full-adder* composed of two half-adders and an or-gate.[^26] We can construct a full-adder as follows:
+وفائدة هذا التعريف أنّنا نستطيع استخدام `half-adder` ذاته كوحدة بناءٍ في إنشاء دوائر أكثر تعقيدًا. فإنّ [الشكل 3.26](#Figure-3_002e26) - مثلًا - يُظهر *جامعًا كاملًا (full-adder)* مؤلّفًا من نصفَي جامعٍ وبوابة أو.[^26] ونستطيع بناء جامعٍ كاملٍ كما يلي:
 
 ```scheme
 (define (full-adder a b c-in sum c-out)
@@ -1544,23 +1544,23 @@ The advantage of making this definition is that we can use `half-adder` itself a
 
 ![](/images/sicp/c3-modularity-objects-and-state-14-Fig3.26.std.webp)
 
-**Figure 3.26:** A full-adder circuit.
+**الشكل 3.26:** دائرة جامع كامل.
 
-Having defined `full-adder` as a procedure, we can now use it as a building block for creating still more complex circuits. (For example, see [Exercise 3.30](#Exercise-3_002e30).)
+وبعد أن عرّفنا `full-adder` كإجراءٍ، يمكننا الآن استخدامه كوحدة بناءٍ لإنشاء دوائر أكثر تعقيدًا بعد. (انظر [التمرين 3.30](#Exercise-3_002e30) مثلًا.)
 
-In essence, our simulator provides us with the tools to construct a language of circuits. If we adopt the general perspective on languages with which we approached the study of Lisp in [1.1](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1), we can say that the primitive function boxes form the primitive elements of the language, that wiring boxes together provides a means of combination, and that specifying wiring patterns as procedures serves as a means of abstraction.
+في الجوهر، يزوّدنا محاكينا بالأدوات اللازمة لبناء لغة الدوائر. فإذا تبنّينا المنظور العامّ على اللغات الذي تناولنا به دراسة Lisp في [1.1](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1)، فإنّنا نستطيع القول إنّ صناديق الدوالّ الأوّليّة تُشكّل العناصر الأوّليّة للغة، وإنّ توصيل الصناديق بعضها ببعضٍ يُوفّر وسيلة تركيب، وإنّ تحديد أنماط التوصيل كإجراءاتٍ يؤدّي دور وسيلة تجريد.
 
-#### Primitive function boxes
+#### صناديق الدوالّ الأوّليّة
 
-The primitive function boxes implement the “forces” by which a change in the signal on one wire influences the signals on other wires. To build function boxes, we use the following operations on wires:
+تُنفّذ صناديق الدوالّ الأوّليّة «القوى» التي يؤثّر بوساطتها تغيّر الإشارة على سلكٍ واحدٍ في إشارات الأسلاك الأخرى. ولبناء صناديق الدوالّ، نستخدم العمليّات الآتية على الأسلاك:
 
-- `(get-signal ⟨wire⟩)` returns the current value of the signal on the wire.
-- `(set-signal! ⟨wire⟩ ⟨new value⟩)` changes the value of the signal on the wire to the new value.
-- `(add-action! ⟨wire⟩ ⟨procedure of no arguments⟩)` asserts that the designated procedure should be run whenever the signal on the wire changes value. Such procedures are the vehicles by which changes in the signal value on the wire are communicated to other wires.
+- `(get-signal ⟨wire⟩)` يعيد القيمة الحاليّة للإشارة على السلك.
+- `(set-signal! ⟨wire⟩ ⟨new value⟩)` يغيّر قيمة الإشارة على السلك إلى القيمة الجديدة.
+- `(add-action! ⟨wire⟩ ⟨procedure of no arguments⟩)` يُقرّر أنّ الإجراء المحدَّد ينبغي أن يُنفَّذ كلّما تغيّرت قيمة الإشارة على السلك. وهذه الإجراءات هي الوسيلة التي تُنقل بها تغيّرات قيمة الإشارة على السلك إلى الأسلاك الأخرى.
 
-In addition, we will make use of a procedure `after-delay` that takes a time delay and a procedure to be run and executes the given procedure after the given delay.
+وبالإضافة إلى ذلك، سنستفيد من إجراءٍ اسمه `after-delay` يأخذ تأخيرًا زمنيًّا وإجراءً يُنفَّذ، ثمّ ينفّذ الإجراء المعطى بعد التأخير المعطى.
 
-Using these procedures, we can define the primitive digital logic functions. To connect an input to an output through an inverter, we use `add-action!` to associate with the input wire a procedure that will be run whenever the signal on the input wire changes value. The procedure computes the `logical-not` of the input signal, and then, after one `inverter-delay`, sets the output signal to be this new value:
+وباستخدام هذه الإجراءات، يمكننا تعريف الدوالّ الأوّليّة للمنطق الرقميّ. ولوصْل مدخلٍ بخرجٍ بواسطة عاكس، نستخدم `add-action!` لربط سلك الدخل بإجراءٍ سيُنفَّذ كلّما تغيّرت قيمة الإشارة على سلك الدخل. وهذا الإجراء يحسب `logical-not` لإشارة الدخل، ثمّ - بعد تأخير عاكس واحد (`inverter-delay`) - يضبط إشارة الخرج لتكون هذه القيمة الجديدة:
 
 ```scheme
 (define (inverter input output)
@@ -1580,7 +1580,7 @@ Using these procedures, we can define the primitive digital logic functions. To 
         (else (error "Invalid signal" s))))
 ```
 
-An and-gate is a little more complex. The action procedure must be run if either of the inputs to the gate changes. It computes the `logical-and` (using a procedure analogous to `logical-not`) of the values of the signals on the input wires and sets up a change to the new value to occur on the output wire after one `and-gate-delay`.
+أمّا بوابة و فأكثر تعقيدًا بعض الشيء. فينبغي أن يُنفَّذ إجراء الفعل إذا تغيّر أيٌّ من مدخلي البوابة. وهو يحسب `logical-and` (باستخدام إجراءٍ نظير `logical-not`) قيمتَي الإشارتين على سلكَي الدخل، ويُعِدّ تغيّرًا إلى القيمة الجديدة ليجري على سلك الخرج بعد تأخير بوابة وٍ واحد (`and-gate-delay`).
 
 ```scheme
 (define (and-gate a1 a2 output)
@@ -1597,19 +1597,19 @@ An and-gate is a little more complex. The action procedure must be run if either
   'ok)
 ```
 
-> **Exercise 3.28:** Define an or-gate as a primitive function box. Your `or-gate` constructor should be similar to `and-gate`.
+> **التمرين 3.28:** عرّف بوابة أو كصندوق دالّةٍ أوّليّ. وينبغي أن يكون باني `or-gate` خاصّتك شبيهًا بـ`and-gate`.
 
-> **Exercise 3.29:** Another way to construct an or-gate is as a compound digital logic device, built from and-gates and inverters. Define a procedure `or-gate` that accomplishes this. What is the delay time of the or-gate in terms of `and-gate-delay` and `inverter-delay`?
+> **التمرين 3.29:** ثمّة طريقةٌ أخرى لبناء بوابة أو، وهي كجهاز منطقٍ رقميّ مركّب مبنيٍّ من بوابات و وعواكس. عرّف إجراءً `or-gate` يُنجز ذلك. فما مدّة تأخير بوابة أو بدلالة `and-gate-delay` و`inverter-delay`؟
 
-> **Exercise 3.30:** [Figure 3.27](#Figure-3_002e27) shows a *ripple-carry adder* formed by stringing together $n$ full-adders. This is the simplest form of parallel adder for adding two $n$ -bit binary numbers. The inputs $A_{1}$ , $A_{2}$ , $A_{3}$ , …, $A_{n}$ and $B_{1}$ , $B_{2}$ , $B_{3}$ , …, $B_{n}$ are the two binary numbers to be added (each $A_{k}$ and $B_{k}$ is a 0 or a 1). The circuit generates $S_{1}$ , $S_{2}$ , $S_{3}$ , …, $S_{n}$ , the $n$ bits of the sum, and $C$ , the carry from the addition. Write a procedure `ripple-carry-adder` that generates this circuit. The procedure should take as arguments three lists of $n$ wires each—the $A_{k}$ , the $B_{k}$ , and the $S_{k}$ —and also another wire $C$ . The major drawback of the ripple-carry adder is the need to wait for the carry signals to propagate. What is the delay needed to obtain the complete output from an $n$ -bit ripple-carry adder, expressed in terms of the delays for and-gates, or-gates, and inverters?
+> **التمرين 3.30:** يُظهر [الشكل 3.27](#Figure-3_002e27) *جامعًا تراكميّ الانتشار (ripple-carry adder)* متشكّلًا من ربط $n$ من الجامعات الكاملة بعضها في إثر بعض. وهذه هي أبسط صيغةٍ من الجامع المتوازي لجمع عددين ثنائيَّين كلٌّ منهما $n$ بِتّ. والمدخلان $A_{1}$ و$A_{2}$ و$A_{3}$ و… و$A_{n}$ و$B_{1}$ و$B_{2}$ و$B_{3}$ و… و$B_{n}$ هما العددان الثنائيّان اللذان يُجمعان (وكلٌّ من $A_{k}$ و$B_{k}$ هو 0 أو 1). والدائرة تُنتج $S_{1}$ و$S_{2}$ و$S_{3}$ و… و$S_{n}$ ، وهي بِتّات $n$ الخاصة بالمجموع، و$C$ ، وهي الحاملة الناتجة عن الجمع. اكتب إجراءً `ripple-carry-adder` يُولّد هذه الدائرة. وينبغي أن يأخذ الإجراء كمعطياتٍ ثلاث قوائم من $n$ سلكًا لكلٍّ منها - الـ$A_{k}$ والـ$B_{k}$ والـ$S_{k}$ - وسلكًا آخر $C$ . والعائق الرئيسيّ في الجامع التراكميّ الانتشار هو ضرورة انتظار انتشار إشارات الحمل. فما التأخير اللازم للحصول على الخرج الكامل من جامع تراكميّ الانتشار ذي $n$ بِتّ، معبَّرًا عنه بدلالة تأخيرات بوابات و وبوابات أو والعواكس؟
 
 ![](/images/sicp/c3-modularity-objects-and-state-15-Fig3.27b.std.webp)
 
-**Figure 3.27:** A ripple-carry adder for $n$ -bit numbers.
+**الشكل 3.27:** جامع تراكميّ الانتشار للأعداد ذات الـ$n$ بِتّ.
 
-#### Representing wires
+#### تمثيل الأسلاك
 
-A wire in our simulation will be a computational object with two local state variables: a `signal-value` (initially taken to be 0) and a collection of `action-procedures` to be run when the signal changes value. We implement the wire, using message-passing style, as a collection of local procedures together with a `dispatch` procedure that selects the appropriate local operation, just as we did with the simple bank-account object in [3.1.1](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e1):
+سيكون السلك في محاكاتنا كائنًا حسابيًّا له متغيّرا حالة محلّيّان: `signal-value` (يُفترض مبدئيًّا أنّه 0) ومجموعةٌ من `action-procedures` تُنفَّذ متى تغيّرت قيمة الإشارة. ونحن نُنفّذ السلك - مستخدمين أسلوب تمرير الرسائل - كمجموعةٍ من الإجراءات المحلّيّة إلى جانب إجراء `dispatch` ينتخب العمليّة المحلّيّة الملائمة، تمامًا كما فعلنا مع كائن الحساب المصرفيّ البسيط في [3.1.1](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e1):
 
 ```scheme
 (define (make-wire)
@@ -1637,7 +1637,7 @@ A wire in our simulation will be a computational object with two local state var
     dispatch))
 ```
 
-The local procedure `set-my-signal!` tests whether the new signal value changes the signal on the wire. If so, it runs each of the action procedures, using the following procedure `call-each`, which calls each of the items in a list of no-argument procedures:
+يختبر الإجراء المحلّيّ `set-my-signal!` ما إذا كانت قيمة الإشارة الجديدة تُغيّر الإشارة على السلك. فإن كان الأمر كذلك، فإنّه ينفّذ كلّ إجراءٍ من إجراءات الفعل، باستخدام الإجراء `call-each` الآتي، الذي ينادي كلّ عنصرٍ في قائمةٍ من الإجراءات عديمة المعطيات:
 
 ```scheme
 (define (call-each procedures)
@@ -1647,9 +1647,9 @@ The local procedure `set-my-signal!` tests whether the new signal value changes 
              (call-each (cdr procedures)))))
 ```
 
-The local procedure `accept-action-procedure!` adds the given procedure to the list of procedures to be run, and then runs the new procedure once. (See [Exercise 3.31](#Exercise-3_002e31).)
+والإجراء المحلّيّ `accept-action-procedure!` يُضيف الإجراء المعطى إلى قائمة الإجراءات التي ستُنفَّذ، ثمّ ينفّذ الإجراء الجديد مرّةً واحدة. (انظر [التمرين 3.31](#Exercise-3_002e31).)
 
-With the local `dispatch` procedure set up as specified, we can provide the following procedures to access the local operations on wires:[^27]
+وبعد إعداد إجراء `dispatch` المحلّيّ كما حُدِّد، فإنّنا نستطيع توفير الإجراءات الآتية للوصول إلى العمليّات المحلّيّة على الأسلاك:[^27]
 
 ```scheme
 (define (get-signal wire)
@@ -1660,22 +1660,22 @@ With the local `dispatch` procedure set up as specified, we can provide the foll
   ((wire 'add-action!) action-procedure))
 ```
 
-Wires, which have time-varying signals and may be incrementally attached to devices, are typical of mutable objects. We have modeled them as procedures with local state variables that are modified by assignment. When a new wire is created, a new set of state variables is allocated (by the `let` expression in `make-wire`) and a new `dispatch` procedure is constructed and returned, capturing the environment with the new state variables.
+والأسلاك - التي لها إشارات متغيّرة مع الزمن، وقد تُرفَق بالأجهزة تزايديًّا - نموذجيّة للكائنات القابلة للتغيير. ونحن نمذجناها كإجراءاتٍ ذات متغيّرات حالةٍ محلّيّةٍ تُعدَّل بالإحلال. وحين يُنشَأ سلكٌ جديد، فإنّ مجموعةً جديدةً من متغيّرات الحالة تُخصَّص (بتعبير `let` في `make-wire`)، ويُبنى إجراء `dispatch` جديد ويُعاد، ملتقطًا البيئة التي تحوي متغيّرات الحالة الجديدة.
 
-The wires are shared among the various devices that have been connected to them. Thus, a change made by an interaction with one device will affect all the other devices attached to the wire. The wire communicates the change to its neighbors by calling the action procedures provided to it when the connections were established.
+والأسلاك مشتركةٌ بين الأجهزة المتعدّدة التي رُبِطت بها. وهكذا، فإنّ التغيّر الذي يُحدثه تفاعلٌ مع جهازٍ واحدٍ سيؤثّر في جميع الأجهزة الأخرى الموصولة بالسلك. والسلك يُبلّغ التغيّر إلى جيرانه بنداء إجراءات الفعل المزوَّدة به عند إنشاء الوصلات.
 
-#### The agenda
+#### جدول الأعمال
 
-The only thing needed to complete the simulator is `after-delay`. The idea here is that we maintain a data structure, called an *agenda*, that contains a schedule of things to do. The following operations are defined for agendas:
+الشيء الوحيد اللازم لإكمال المحاكي هو `after-delay`. والفكرة هنا هي أنّنا نحفظ بنية بياناتٍ، تُسمّى *جدول الأعمال (agenda)*، تحتوي جدولًا بما ينبغي أداؤه. والعمليّات الآتية معرَّفةٌ لجداول الأعمال:
 
-- `(make-agenda)` returns a new empty agenda.
-- `(empty-agenda? ⟨agenda⟩)` is true if the specified agenda is empty.
-- `(first-agenda-item ⟨agenda⟩)` returns the first item on the agenda.
-- `(remove-first-agenda-item! ⟨agenda⟩)` modifies the agenda by removing the first item.
-- `(add-to-agenda! ⟨time⟩ ⟨action⟩ ⟨agenda⟩)` modifies the agenda by adding the given action procedure to be run at the specified time.
-- `(current-time ⟨agenda⟩)` returns the current simulation time.
+- `(make-agenda)` يعيد جدول أعمالٍ جديدًا خاليًا.
+- `(empty-agenda? ⟨agenda⟩)` يكون صادقًا إذا كان جدول الأعمال المحدَّد خاليًا.
+- `(first-agenda-item ⟨agenda⟩)` يعيد أوّل عنصرٍ في جدول الأعمال.
+- `(remove-first-agenda-item! ⟨agenda⟩)` يُعدّل جدول الأعمال بحذف أوّل عنصرٍ فيه.
+- `(add-to-agenda! ⟨time⟩ ⟨action⟩ ⟨agenda⟩)` يُعدّل جدول الأعمال بإضافة إجراء الفعل المعطى ليجري في الزمن المحدَّد.
+- `(current-time ⟨agenda⟩)` يعيد زمن المحاكاة الحاليّ.
 
-The particular agenda that we use is denoted by `the-agenda`. The procedure `after-delay` adds new elements to `the-agenda`:
+وجدول الأعمال الخاصّ الذي نستخدمه يُشار إليه بـ`the-agenda`. والإجراء `after-delay` يُضيف عناصر جديدة إلى `the-agenda`:
 
 ```scheme
 (define (after-delay delay action)
@@ -1685,7 +1685,7 @@ The particular agenda that we use is denoted by `the-agenda`. The procedure `aft
    the-agenda))
 ```
 
-The simulation is driven by the procedure `propagate`, which operates on `the-agenda`, executing each procedure on the agenda in sequence. In general, as the simulation runs, new items will be added to the agenda, and `propagate` will continue the simulation as long as there are items on the agenda:
+وتقود المحاكاة الإجراء `propagate`، الذي يعمل على `the-agenda` منفّذًا كلّ إجراءٍ في جدول الأعمال بالتتابع. وعمومًا، وبينما تجري المحاكاة، ستُضاف عناصر جديدة إلى جدول الأعمال، وسيواصل `propagate` المحاكاة ما دامت هناك عناصر في جدول الأعمال:
 
 ```scheme
 (define (propagate)
@@ -1698,9 +1698,9 @@ The simulation is driven by the procedure `propagate`, which operates on `the-ag
         (propagate))))
 ```
 
-#### A sample simulation
+#### محاكاة نموذجيّة
 
-The following procedure, which places a “probe” on a wire, shows the simulator in action. The probe tells the wire that, whenever its signal changes value, it should print the new signal value, together with the current time and a name that identifies the wire:
+والإجراء الآتي، الذي يضع «مسبارًا» على سلكٍ، يُظهر المحاكي في العمل. فالمسبار يخبر السلك بأنّه - كلّما تغيّرت قيمة إشارته - ينبغي أن يطبع قيمة الإشارة الجديدة، مع الزمن الحاليّ واسمٍ يُحدِّد السلك:
 
 ```scheme
 (define (probe name wire)
@@ -1715,7 +1715,7 @@ The following procedure, which places a “probe” on a wire, shows the simulat
      (display (get-signal wire)))))
 ```
 
-We begin by initializing the agenda and specifying delays for the primitive function boxes:
+نبدأ بتهيئة جدول الأعمال وتحديد التأخيرات الخاصة بصناديق الدوالّ الأوّليّة:
 
 ```scheme
 (define the-agenda (make-agenda))
@@ -1724,7 +1724,7 @@ We begin by initializing the agenda and specifying delays for the primitive func
 (define or-gate-delay 5)
 ```
 
-Now we define four wires, placing probes on two of them:
+والآن نُعرّف أربعة أسلاك، موضعين مسابير على اثنين منها:
 
 ```scheme
 (define input-1 (make-wire))
@@ -1739,7 +1739,7 @@ sum 0  New-value = 0
 carry 0  New-value = 0
 ```
 
-Next we connect the wires in a half-adder circuit (as in [Figure 3.25](#Figure-3_002e25)), set the signal on `input-1` to 1, and run the simulation:
+ثمّ نوصّل الأسلاك في دائرة نصف جامع (كما في [الشكل 3.25](#Figure-3_002e25))، ونضبط الإشارة على `input-1` لتكون 1، ثمّ نشغّل المحاكاة:
 
 ```scheme
 (half-adder input-1 input-2 sum carry)
@@ -1753,7 +1753,7 @@ sum 8  New-value = 1
 done
 ```
 
-The `sum` signal changes to 1 at time 8. We are now eight time units from the beginning of the simulation. At this point, we can set the signal on `input-2` to 1 and allow the values to propagate:
+وتتغيّر إشارة `sum` إلى 1 في الزمن 8. ونكون الآن على مباعدة ثماني وحدات زمنيّة من بداية المحاكاة. وعند هذه النقطة، يمكننا ضبط الإشارة على `input-2` لتكون 1 والسماح للقيم بالانتشار:
 
 ```scheme
 (set-signal! input-2 1)
@@ -1765,9 +1765,9 @@ sum 16  New-value = 0
 done
 ```
 
-The `carry` changes to 1 at time 11 and the `sum` changes to 0 at time 16.
+ويتغيّر `carry` إلى 1 في الزمن 11، وتتغيّر `sum` إلى 0 في الزمن 16.
 
-**Exercise 3.31:** The internal procedure `accept-action-procedure!` defined in `make-wire` specifies that when a new action procedure is added to a wire, the procedure is immediately run. Explain why this initialization is necessary. In particular, trace through the half-adder example in the paragraphs above and say how the system’s response would differ if we had defined `accept-action-procedure!` as
+**التمرين 3.31:** الإجراء الداخليّ `accept-action-procedure!` المعرَّف في `make-wire` ينصّ على أنّه - متى أُضيف إجراء فعلٍ جديد إلى سلكٍ - فإنّ الإجراء يُنفَّذ فورًا. فسّر لماذا هذه التهيئة ضروريّة. وخاصّةً، تتبّع مثال نصف الجامع في الفقرات أعلاه، وقل كيف كان ردّ النظام سيختلف لو كنّا قد عرّفنا `accept-action-procedure!` كما يلي:
 
 ```scheme
 (define (accept-action-procedure! proc)
@@ -1775,11 +1775,11 @@ The `carry` changes to 1 at time 11 and the `sum` changes to 0 at time 16.
         (cons proc action-procedures)))
 ```
 
-#### Implementing the agenda
+#### تنفيذ جدول الأعمال
 
-Finally, we give details of the agenda data structure, which holds the procedures that are scheduled for future execution.
+وأخيرًا، نُقدّم تفاصيل بنية بيانات جدول الأعمال، التي تحتفظ بالإجراءات المُقرَّر تنفيذها مستقبلًا.
 
-The agenda is made up of *time segments*. Each time segment is a pair consisting of a number (the time) and a queue (see [Exercise 3.32](#Exercise-3_002e32)) that holds the procedures that are scheduled to be run during that time segment.
+ويتكوّن جدول الأعمال من *قطاعاتٍ زمنيّة (time segments)*. وكلّ قطاعٍ زمنيٍّ زوجٌ يتألّف من عدد (الزمن) وطابور (انظر [التمرين 3.32](#Exercise-3_002e32)) يحتفظ بالإجراءات التي حُدِّد تنفيذها خلال ذلك القطاع الزمنيّ.
 
 ```scheme
 (define (make-time-segment time queue)
@@ -1788,9 +1788,9 @@ The agenda is made up of *time segments*. Each time segment is a pair consisting
 (define (segment-queue s) (cdr s))
 ```
 
-We will operate on the time-segment queues using the queue operations described in [3.3.2](#g_t3_002e3_002e2).
+وسنعمل على طوابير القطاعات الزمنيّة باستخدام عمليّات الطابور الموصوفة في [3.3.2](#g_t3_002e3_002e2).
 
-The agenda itself is a one-dimensional table of time segments. It differs from the tables described in [3.3.3](#g_t3_002e3_002e3) in that the segments will be sorted in order of increasing time. In addition, we store the *current time* (i.e., the time of the last action that was processed) at the head of the agenda. A newly constructed agenda has no time segments and has a current time of 0:[^28]
+وجدول الأعمال ذاته جدولٌ أحاديّ الأبعاد من القطاعات الزمنيّة. وهو يختلف عن الجداول الموصوفة في [3.3.3](#g_t3_002e3_002e3) في أنّ القطاعات ستكون مرتّبةً بترتيبٍ تصاعديّ للزمن. وبالإضافة إلى ذلك، نخزّن *الزمن الحاليّ* (أي زمن آخر فعلٍ جرىت معالجته) في رأس جدول الأعمال. وجدول الأعمال المُنشأ حديثًا لا يحتوي قطاعاتٍ زمنيّةً، وزمنه الحاليّ 0:[^28]
 
 ```scheme
 (define (make-agenda) (list 0))
@@ -1806,14 +1806,14 @@ The agenda itself is a one-dimensional table of time segments. It differs from t
   (cdr (segments agenda)))
 ```
 
-An agenda is empty if it has no time segments:
+ويكون جدول الأعمال خاليًا إذا لم يكن فيه قطاعاتٌ زمنيّة:
 
 ```scheme
 (define (empty-agenda? agenda)
   (null? (segments agenda)))
 ```
 
-To add an action to an agenda, we first check if the agenda is empty. If so, we create a time segment for the action and install this in the agenda. Otherwise, we scan the agenda, examining the time of each segment. If we find a segment for our appointed time, we add the action to the associated queue. If we reach a time later than the one to which we are appointed, we insert a new time segment into the agenda just before it. If we reach the end of the agenda, we must create a new time segment at the end.
+ولإضافة فعلٍ إلى جدول أعمالٍ، نتحقّق أوّلًا مما إذا كان جدول الأعمال خاليًا. فإن كان كذلك، نُنشئ قطاعًا زمنيًّا للفعل ونُثبّته في جدول الأعمال. وإلّا، فنحن نمسح جدول الأعمال، فاحصين زمن كلّ قطاع. فإن وجدنا قطاعًا للزمن الذي حُدِّد لنا، أضفنا الفعل إلى الطابور المرتبط به. وإذا وصلنا إلى زمنٍ متأخّرٍ عن الزمن الذي حُدِّد لنا، نُدرج قطاعًا زمنيًّا جديدًا في جدول الأعمال قبله مباشرة. وإذا وصلنا إلى نهاية جدول الأعمال، فيجب أن نُنشئ قطاعًا زمنيًّا جديدًا في نهايته.
 
 ```scheme
 (define (add-to-agenda! time action agenda)
@@ -1850,7 +1850,7 @@ To add an action to an agenda, we first check if the agenda is empty. If so, we 
         (add-to-segments! segments))))
 ```
 
-The procedure that removes the first item from the agenda deletes the item at the front of the queue in the first time segment. If this deletion makes the time segment empty, we remove it from the list of segments:[^29]
+والإجراء الذي يحذف أوّل بندٍ من جدول المواعيد يحذف البند الموجود في مقدّمة الطابور في المقطع الزمنيّ الأوّل. فإن جعل هذا الحذف المقطع الزمنيّ فارغًا، أزِلْناه من قائمة المقاطع:[^29]
 
 ```scheme
 (define (remove-first-agenda-item! agenda)
@@ -1863,7 +1863,7 @@ The procedure that removes the first item from the agenda deletes the item at th
          (rest-segments agenda)))))
 ```
 
-The first agenda item is found at the head of the queue in the first time segment. Whenever we extract an item, we also update the current time:[^30]
+ويُعثَر على أوّل بندٍ في جدول المواعيد في رأس الطابور في المقطع الزمنيّ الأوّل. وكلّما استخرجنا بندًا، نُحدّث أيضًا الزمن الحاليّ:[^30]
 
 ```scheme
 (define (first-agenda-item agenda)
@@ -1879,25 +1879,25 @@ The first agenda item is found at the head of the queue in the first time segmen
          (segment-queue first-seg)))))
 ```
 
-> **Exercise 3.32:** The procedures to be run during each time segment of the agenda are kept in a queue. Thus, the procedures for each segment are called in the order in which they were added to the agenda (first in, first out). Explain why this order must be used. In particular, trace the behavior of an and-gate whose inputs change from 0, 1 to 1, 0 in the same segment and say how the behavior would differ if we stored a segment’s procedures in an ordinary list, adding and removing procedures only at the front (last in, first out).
+> **التمرين 3.32:** الإجراءات التي ينبغي تنفيذها خلال كلّ مقطعٍ زمنيٍّ من جدول المواعيد محفوظةٌ في طابور. وبالتالي، فإنّ إجراءات كلّ مقطعٍ تُنادى بالترتيب الذي أُضيفت به إلى جدول المواعيد (الأوّل دخولًا أوّل خروجًا). فسّر لماذا ينبغي استخدام هذا الترتيب. وعلى وجه الخصوص، تتبّع سلوك بوابة and تتغيّر معطياتها من 0, 1 إلى 1, 0 في المقطع نفسه، وقُل كيف كان السلوك ليختلف لو كنّا خزّنّا إجراءات المقطع في قائمةٍ اعتياديّةٍ، نُضيف الإجراءات إليها ونحذفها من المقدّمة فقط (الأخير دخولًا أوّل خروجًا).
 
-#### 3.3.5 Propagation of Constraints
+#### 3.3.5 انتشار القيود
 
-Computer programs are traditionally organized as one-directional computations, which perform operations on prespecified arguments to produce desired outputs. On the other hand, we often model systems in terms of relations among quantities. For example, a mathematical model of a mechanical structure might include the information that the deflection $d$ of a metal rod is related to the force $F$ on the rod, the length $L$ of the rod, the cross-sectional area $A$ , and the elastic modulus $E$ via the equation $d A E = F L .$ Such an equation is not one-directional. Given any four of the quantities, we can use it to compute the fifth. Yet translating the equation into a traditional computer language would force us to choose one of the quantities to be computed in terms of the other four. Thus, a procedure for computing the area $A$ could not be used to compute the deflection $d$ , even though the computations of $A$ and $d$ arise from the same equation.[^31]
+تُنظَّم البرامج الحاسوبيّة تقليديًّا في صورة عمليّاتٍ حسابيّةٍ أحاديّة الاتجاه، تؤدّي عمليّاتٍ على معطياتٍ محدَّدةٍ سلفًا لإنتاج المخرجات المرغوبة. ومن جانبٍ آخر، فإنّنا نمثّل النظم غالبًا بدلالة العلاقات بين الكميّات. فمثلًا، قد يتضمّن نموذجٌ رياضيٌّ لبنيةٍ ميكانيكيّةٍ المعلومات القائلة إنّ الانحراف $d$ لقضيبٍ معدنيٍّ مرتبطٌ بالقوة $F$ على القضيب، والطول $L$ للقضيب، ومساحة المقطع العرضيّ $A$ ، ومعامل المرونة $E$ ، وذلك عبر المعادلة $d A E = F L .$ ومثل هذه المعادلة ليست أحاديّة الاتجاه. فبمعلوميّة أيّ أربعٍ من الكميّات، يمكننا استخدامها لاحتساب الخامسة. غير أنّ ترجمة المعادلة إلى لغة حاسوبٍ تقليديّةٍ ستُلزمنا باختيار واحدةٍ من الكميّات لتُحتسب بدلالة الأربع الأخرى. وبالتالي، فلن يكون إجراءٌ لاحتساب المساحة $A$ قابلًا للاستخدام في احتساب الانحراف $d$ ، رغم أنّ احتساب $A$ و$d$ ينبعان من المعادلة ذاتها.[^31]
 
-In this section, we sketch the design of a language that enables us to work in terms of relations themselves. The primitive elements of the language are *primitive constraints*, which state that certain relations hold between quantities. For example, `(adder a b c)` specifies that the quantities $a$ , $b$ , and $c$ must be related by the equation $a + b = c$ , `(multiplier x y z)` expresses the constraint $x y = z$ , and `(constant 3.14 x)` says that the value of $x$ must be 3.14.
+في هذا القسم، نرسم ملامح تصميم لغةٍ تُمكّننا من العمل بدلالة العلاقات ذاتها. فالعناصر الأوّليّة للغة هي *القيود الأوّليّة (primitive constraints)*، التي تنصّ على أنّ علاقاتٍ معيّنةٍ قائمةٌ بين الكميّات. فمثلًا، يحدّد `(adder a b c)` أنّ الكميّات $a$ و$b$ و$c$ ينبغي أن تكون مرتبطةً بالمعادلة $a + b = c$ ، ويعبّر `(multiplier x y z)` عن القيد $x y = z$ ، ويقول `(constant 3.14 x)` إنّ قيمة $x$ ينبغي أن تكون 3.14.
 
-Our language provides a means of combining primitive constraints in order to express more complex relations. We combine constraints by constructing *constraint networks*, in which constraints are joined by *connectors*. A connector is an object that “holds” a value that may participate in one or more constraints. For example, we know that the relationship between Fahrenheit and Celsius temperatures is $9 C = 5 ( F − 32 ) .$ Such a constraint can be thought of as a network consisting of primitive adder, multiplier, and constant constraints ([Figure 3.28](#Figure-3_002e28)). In the figure, we see on the left a multiplier box with three terminals, labeled $m 1$ , $m 2$ , and $p$ . These connect the multiplier to the rest of the network as follows: The $m 1$ terminal is linked to a connector $C$ , which will hold the Celsius temperature. The $m 2$ terminal is linked to a connector $w$ , which is also linked to a constant box that holds 9. The $p$ terminal, which the multiplier box constrains to be the product of $m 1$ and $m 2$ , is linked to the $p$ terminal of another multiplier box, whose $m 2$ is connected to a constant 5 and whose $m 1$ is connected to one of the terms in a sum.
+تُوفّر لغتنا وسيلةً لدمج القيود الأوّليّة للتعبير عن علاقاتٍ أكثر تعقيدًا. فنحن ندمج القيود ببناء *شبكات القيود (constraint networks)*، التي تُوصَل فيها القيود بـ*الموصّلات (connectors)*. والموصّل كائنٌ «يحتفظ» بقيمةٍ قد تشارك في قيدٍ واحدٍ أو أكثر. فمثلًا، نعلم أنّ العلاقة بين درجتَي الحرارة بالسيلسيوس وبالفهرنهايت هي $9 C = 5 ( F − 32 ) .$ ويمكن النظر إلى مثل هذا القيد على أنّه شبكةٌ متألّفةٌ من قيود جامعٍ ومضاعفٍ وثابتٍ أوّليّة ([الشكل 3.28](#Figure-3_002e28)). ففي الشكل، نرى على اليسار صندوق مضاعفةٍ له ثلاثة أطراف، موسومةً بـ$m 1$ و$m 2$ و$p$ . وهذه توصِل المضاعف ببقيّة الشبكة على النحو الآتي: الطرف $m 1$ مرتبطٌ بموصّل $C$ ، الذي سيحتفظ بدرجة الحرارة بالسيلسيوس. والطرف $m 2$ مرتبطٌ بموصّل $w$ ، وهو مرتبطٌ كذلك بصندوق ثابتٍ يحتفظ بالعدد 9. والطرف $p$ ، الذي يقيّده صندوق المضاعفة بأن يكون حاصل ضرب $m 1$ و$m 2$ ، مرتبطٌ بالطرف $p$ لصندوق مضاعفةٍ آخر، $m 2$ فيه موصولٌ بثابتٍ هو 5 و$m 1$ فيه موصولٌ بأحد حدَّي مجموعٍ.
 
 ![](/images/sicp/c3-modularity-objects-and-state-16-Fig3.28.std.webp)
 
-**Figure 3.28:** The relation $9 C = 5 ( F − 32 )$ expressed as a constraint network.
+**الشكل 3.28:** العلاقة $9 C = 5 ( F − 32 )$ معبَّرًا عنها كشبكة قيود.
 
-Computation by such a network proceeds as follows: When a connector is given a value (by the user or by a constraint box to which it is linked), it awakens all of its associated constraints (except for the constraint that just awakened it) to inform them that it has a value. Each awakened constraint box then polls its connectors to see if there is enough information to determine a value for a connector. If so, the box sets that connector, which then awakens all of its associated constraints, and so on. For instance, in conversion between Celsius and Fahrenheit, $w$ , $x$ , and $y$ are immediately set by the constant boxes to 9, 5, and 32, respectively. The connectors awaken the multipliers and the adder, which determine that there is not enough information to proceed. If the user (or some other part of the network) sets $C$ to a value (say 25), the leftmost multiplier will be awakened, and it will set $u$ to $25 ⋅ 9 = 225$ . Then $u$ awakens the second multiplier, which sets $v$ to 45, and $v$ awakens the adder, which sets $f$ to 77.
+يجري الاحتساب بمثل هذه الشبكة على النحو الآتي: حين يُعطى موصّلٌ قيمةً (من المستخدم أو من صندوق قيدٍ مرتبطٍ به)، فإنّه يُنبّه جميع القيود المرتبطة به (باستثناء القيد الذي أنبّهه للتوّ) ليُخبرها بأنّ له قيمة. ثمّ يستطلع كلّ صندوق قيدٍ مُنبَّهٍ موصّلاته ليرى ما إذا كانت هناك معلوماتٌ كافيّةٌ لتحديد قيمةٍ لأحد الموصّلات. فإن كان الأمر كذلك، ضبط الصندوق ذلك الموصّل، الذي يُنبّه بدوره جميع القيود المرتبطة به، وهكذا دواليْك. فمثلًا، في التحويل بين السيلسيوس والفهرنهايت، تُضبط $w$ و$x$ و$y$ فورًا بصناديق الثوابت على 9 و5 و32 على الترتيب. فتنبّه الموصّلات المضاعفات والجامع، التي تحدّد أنّه لا توجد معلوماتٌ كافيّةٍ للمضيّ قدمًا. فإن ضبط المستخدم (أو جزءٌ آخر من الشبكة) $C$ على قيمةٍ (25 مثلًا)، انبعث المضاعف الأيسر، فضبط $u$ على $25 ⋅ 9 = 225$ . ثمّ أنبّه $u$ المضاعف الثاني، فضبط $v$ على 45، وأنبّه $v$ الجامع، فضبط $f$ على 77.
 
-#### Using the constraint system
+#### استخدام نظام القيود
 
-To use the constraint system to carry out the temperature computation outlined above, we first create two connectors, `C` and `F`, by calling the constructor `make-connector`, and link `C` and `F` in an appropriate network:
+لاستخدام نظام القيود لأداء العمليّة الحسابيّة لدرجات الحرارة الموصوفة أعلاه، نُنشئ أوّلًا موصّلين، `C` و`F` ، بمناداة البانيّ `make-connector` ، ونربط `C` و`F` في شبكةٍ مناسبةٍ:
 
 ```scheme
 (define C (make-connector))
@@ -1906,7 +1906,7 @@ To use the constraint system to carry out the temperature computation outlined a
 ok
 ```
 
-The procedure that creates the network is defined as follows:
+والإجراء الذي يُنشئ الشبكة معرَّفٌ كما يلي:
 
 ```scheme
 (define (celsius-fahrenheit-converter c f)
@@ -1924,16 +1924,16 @@ The procedure that creates the network is defined as follows:
     'ok))
 ```
 
-This procedure creates the internal connectors `u`, `v`, `w`, `x`, and `y`, and links them as shown in [Figure 3.28](#Figure-3_002e28) using the primitive constraint constructors `adder`, `multiplier`, and `constant`. Just as with the digital-circuit simulator of [3.3.4](#g_t3_002e3_002e4), expressing these combinations of primitive elements in terms of procedures automatically provides our language with a means of abstraction for compound objects.
+ويُنشئ هذا الإجراء الموصّلات الداخليّة `u` و`v` و`w` و`x` و`y` ، ويربطها كما هو موضّح في [الشكل 3.28](#Figure-3_002e28) باستخدام بانيات القيود الأوّليّة `adder` و`multiplier` و`constant` . فكما هو الحال في محاكي الدارات الرقميّة في [3.3.4](#g_t3_002e3_002e4)، فإنّ التعبير عن هذه التركيبات من العناصر الأوّليّة بدلالة الإجراءات يُوفّر تلقائيًّا للغتنا وسيلةَ تجريدٍ للكائنات المركّبة.
 
-To watch the network in action, we can place probes on the connectors `C` and `F`, using a `probe` procedure similar to the one we used to monitor wires in [3.3.4](#g_t3_002e3_002e4). Placing a probe on a connector will cause a message to be printed whenever the connector is given a value:
+ولمراقبة الشبكة وهي تعمل، يمكننا وضع مسابير على الموصّلين `C` و`F` باستخدام إجراء `probe` شبيهٍ بالذي استخدمناه لمراقبة الأسلاك في [3.3.4](#g_t3_002e3_002e4). فإنّ وضع مِسبارٍ على موصّلٍ سيُسبّب طباعة رسالةٍ كلّما أُعطي الموصّل قيمةً:
 
 ```scheme
 (probe "Celsius temp" C)
 (probe "Fahrenheit temp" F)
 ```
 
-Next we set the value of `C` to 25. (The third argument to `set-value!` tells `C` that this directive comes from the `user`.)
+ثمّ نضبط قيمة `C` على 25. (والمعطى الثالث لـ`set-value!` يخبر `C` بأنّ هذا التوجيه قادم من `user` .)
 
 ```scheme
 (set-value! C 25 'user)
@@ -1942,16 +1942,16 @@ Probe: Fahrenheit temp = 77
 done
 ```
 
-The probe on `C` awakens and reports the value. `C` also propagates its value through the network as described above. This sets `F` to 77, which is reported by the probe on `F`.
+فينبعث المِسبار على `C` ويُبلّغ عن القيمة. وينتشر `C` بقيمته عبر الشبكة كما وُصف أعلاه. وهذا يضبط `F` على 77، وهو ما يُبلّغ عنه المِسبار على `F` .
 
-Now we can try to set `F` to a new value, say 212:
+ويمكننا الآن أن نحاول ضبط `F` على قيمةٍ جديدة، 212 مثلًا:
 
 ```scheme
 (set-value! F 212 'user)
 Error! Contradiction (77 212)
 ```
 
-The connector complains that it has sensed a contradiction: Its value is 77, and someone is trying to set it to 212. If we really want to reuse the network with new values, we can tell `C` to forget its old value:
+ويشتكي الموصّل من أنّه أحسّ بتناقض: قيمته 77، وأحدهم يحاول ضبطها على 212. فإذا أردنا حقًّا إعادة استخدام الشبكة بقيمٍ جديدة، فيمكننا أن نطلب من `C` أن ينسى قيمته القديمة:
 
 ```scheme
 (forget-value! C 'user)
@@ -1960,9 +1960,9 @@ Probe: Fahrenheit temp = ?
 done
 ```
 
-`C` finds that the `user`, who set its value originally, is now retracting that value, so `C` agrees to lose its value, as shown by the probe, and informs the rest of the network of this fact. This information eventually propagates to `F`, which now finds that it has no reason for continuing to believe that its own value is 77. Thus, `F` also gives up its value, as shown by the probe.
+فيجد `C` أنّ `user` ، الذي ضبط قيمته في الأصل، يسحبها الآن، فيوافق `C` على فقدان قيمته، كما يُظهره المِسبار، ويُخبر بقيّة الشبكة بهذه الحقيقة. وهذه المعلومة تنتشر في النهاية إلى `F` ، الذي يجد الآن أنّ ليس لديه سببٌ للاستمرار في الاعتقاد بأنّ قيمته 77. وبالتالي، يتخلّى `F` أيضًا عن قيمته، كما يُظهره المِسبار.
 
-Now that `F` has no value, we are free to set it to 212:
+وحيث إنّ `F` لم يعد له قيمةٌ الآن، صرنا أحرارًا في ضبطها على 212:
 
 ```scheme
 (set-value! F 212 'user)
@@ -1971,23 +1971,23 @@ Probe: Celsius temp = 100
 done
 ```
 
-This new value, when propagated through the network, forces `C` to have a value of 100, and this is registered by the probe on `C`. Notice that the very same network is being used to compute `C` given `F` and to compute `F` given `C`. This nondirectionality of computation is the distinguishing feature of constraint-based systems.
+وهذه القيمة الجديدة، حين تنتشر عبر الشبكة، تُلزم `C` بأن تكون له قيمة 100، وهذا ما يُسجّله المِسبار على `C` . ولاحِظ أنّ الشبكة ذاتها بالضبط تُستخدم لاحتساب `C` بمعلوميّة `F` ولاحتساب `F` بمعلوميّة `C` . وهذه اللّا اتجاهيّة للاحتساب هي السمة المميّزة للنظم المبنيّة على القيود.
 
-#### Implementing the constraint system
+#### تنفيذ نظام القيود
 
-The constraint system is implemented via procedural objects with local state, in a manner very similar to the digital-circuit simulator of [3.3.4](#g_t3_002e3_002e4). Although the primitive objects of the constraint system are somewhat more complex, the overall system is simpler, since there is no concern about agendas and logic delays.
+ويُنفَّذ نظام القيود بكائناتٍ إجرائيّةٍ ذات حالةٍ محلّيّةٍ، على نسقٍ يشبه إلى حدٍّ بعيدٍ محاكي الدارات الرقميّة في [3.3.4](#g_t3_002e3_002e4). فرغم أنّ الكائنات الأوّليّة لنظام القيود أكثر تعقيدًا بعض الشيء، فإنّ النظام الكلّيّ أبسط، إذ لا يوجد همٌّ بشأن جداول المواعيد وتأخيرات المنطق.
 
-The basic operations on connectors are the following:
+والعمليّات الأساسيّة على الموصّلات هي الآتية:
 
-- `(has-value? ⟨connector⟩)` tells whether the connector has a value.
-- `(get-value ⟨connector⟩)` returns the connector’s current value.
-- `(set-value! ⟨connector⟩ ⟨new-value⟩ ⟨informant⟩)` indicates that the informant is requesting the connector to set its value to the new value.
-- `(forget-value! ⟨connector⟩ ⟨retractor⟩)` tells the connector that the retractor is requesting it to forget its value.
-- `(connect ⟨connector⟩ ⟨new-constraint⟩)` tells the connector to participate in the new constraint.
+- `(has-value? ⟨connector⟩)` يقول ما إذا كان الموصّل يملك قيمةً.
+- `(get-value ⟨connector⟩)` يعيد القيمة الحاليّة للموصّل.
+- `(set-value! ⟨connector⟩ ⟨new-value⟩ ⟨informant⟩)` يشير إلى أنّ المُبلِّغ يطلب من الموصّل ضبط قيمته على القيمة الجديدة.
+- `(forget-value! ⟨connector⟩ ⟨retractor⟩)` يقول للموصّل إنّ الساحب يطلب منه نسيان قيمته.
+- `(connect ⟨connector⟩ ⟨new-constraint⟩)` يقول للموصّل أن يشارك في القيد الجديد.
 
-The connectors communicate with the constraints by means of the procedures `inform-about-value`, which tells the given constraint that the connector has a value, and `inform-about-no-value`, which tells the constraint that the connector has lost its value.
+وتتّصل الموصّلات بالقيود بواسطة الإجراءَين `inform-about-value` ، الذي يقول للقيد المعطى إنّ الموصّل يملك قيمةً، و`inform-about-no-value` ، الذي يقول للقيد إنّ الموصّل فقد قيمته.
 
-`Adder` constructs an adder constraint among summand connectors `a1` and `a2` and a `sum` connector. An adder is implemented as a procedure with local state (the procedure `me` below):
+ويُنشئ `Adder` قيدَ جمعٍ بين موصّلي حدَّي الجمع `a1` و`a2` وموصّل المجموع `sum` . ويُنفَّذ الجامع كإجراءٍ ذي حالةٍ محلّيّةٍ (الإجراء `me` أدناه):
 
 ```scheme
 (define (adder a1 a2 sum)
@@ -2028,7 +2028,7 @@ The connectors communicate with the constraints by means of the procedures `info
   me)
 ```
 
-`Adder` connects the new adder to the designated connectors and returns it as its value. The procedure `me`, which represents the adder, acts as a dispatch to the local procedures. The following “syntax interfaces” (see [Footnote 155](#Footnote-155) in [3.3.4](#g_t3_002e3_002e4)) are used in conjunction with the dispatch:
+ويربط `Adder` الجامع الجديد بالموصّلات المعيَّنة ويعيده قيمةً له. والإجراء `me` ، الذي يمثّل الجامع، يعمل بوصفه موزّعًا إلى الإجراءات المحليّة. وتُستخدم «واجهات الصياغة» (syntax interfaces) الآتية (انظر [الحاشية 155](#Footnote-155) في [3.3.4](#g_t3_002e3_002e4)) اقترانًا مع الموزّع:
 
 ```scheme
 (define (inform-about-value constraint)
@@ -2037,9 +2037,9 @@ The connectors communicate with the constraints by means of the procedures `info
   (constraint 'I-lost-my-value))
 ```
 
-The adder’s local procedure `process-new-value` is called when the adder is informed that one of its connectors has a value. The adder first checks to see if both `a1` and `a2` have values. If so, it tells `sum` to set its value to the sum of the two addends. The `informant` argument to `set-value!` is `me`, which is the adder object itself. If `a1` and `a2` do not both have values, then the adder checks to see if perhaps `a1` and `sum` have values. If so, it sets `a2` to the difference of these two. Finally, if `a2` and `sum` have values, this gives the adder enough information to set `a1`. If the adder is told that one of its connectors has lost a value, it requests that all of its connectors now lose their values. (Only those values that were set by this adder are actually lost.) Then it runs `process-new-value`. The reason for this last step is that one or more connectors may still have a value (that is, a connector may have had a value that was not originally set by the adder), and these values may need to be propagated back through the adder.
+يُنادى الإجراء المحليّ `process-new-value` حين يُبلَّغ الجامع بأنّ أحد موصّلاته يملك قيمةً. فيتحقّق الجامع أوّلًا من كون `a1` و`a2` يملكان قيمة. فإن كانا كذلك، طلب من `sum` ضبط قيمته على مجموع الحدَّين. والمعطى `informant` لـ`set-value!` هو `me` ، وهو كائن الجامع ذاته. فإن لم يكن `a1` و`a2` يملكان كلاهما قيمة، تحقّق الجامع حينئذٍ من كون `a1` و`sum` يملكان قيمة. فإن كانا كذلك، ضبط `a2` على فرق بين هذين. وأخيرًا، إذا كان `a2` و`sum` يملكان قيمة، أعطى هذا الجامع معلوماتٍ كافيّةً لضبط `a1` . وإذا قيل للجامع إنّ أحد موصّلاته فقد قيمته، فإنّه يطلب من جميع موصّلاته أن تفقد قيمتها الآن. (والقيم التي تُفقَد فعليًّا هي تلك التي ضبطها هذا الجامع فقط.) ثمّ يُشغّل `process-new-value` . وسبب هذه الخطوة الأخيرة أنّ موصّلًا واحدًا أو أكثر قد يزال يملك قيمة (أي أنّ موصّلًا قد تكون له قيمة لم يضبطها الجامع في الأصل)، وهذه القيم قد تحتاج إلى أن تنتشر رجعةً عبر الجامع.
 
-A multiplier is very similar to an adder. It will set its `product` to 0 if either of the factors is 0, even if the other factor is not known.
+أمّا المضاعف فيشبه الجامع إلى حدٍّ بعيدٍ. وسيضبط حاصل الضرب `product` على 0 إذا كان أحد العاملين 0، حتّى لو كان العامل الآخر غير معروف.
 
 ```scheme
 (define (multiplier m1 m2 product)
@@ -2087,7 +2087,7 @@ A multiplier is very similar to an adder. It will set its `product` to 0 if eith
   me)
 ```
 
-A `constant` constructor simply sets the value of the designated connector. Any `I-have-a-value` or `I-lost-my-value` message sent to the constant box will produce an error.
+أمّا بانيّ `constant` فيضبط ببساطةٍ قيمة الموصّل المعيَّن. وستُنتج أيّ رسالة `I-have-a-value` أو `I-lost-my-value` تُرسَل إلى صندوق الثابت خطأً.
 
 ```scheme
 (define (constant value connector)
@@ -2099,7 +2099,7 @@ A `constant` constructor simply sets the value of the designated connector. Any 
   me)
 ```
 
-Finally, a probe prints a message about the setting or unsetting of the designated connector:
+وأخيرًا، يطبع المِسبار رسالةً عن ضبط الموصّل المعيَّن أو إلغاء ضبطه:
 
 ```scheme
 (define (probe name connector)
@@ -2122,9 +2122,9 @@ Finally, a probe prints a message about the setting or unsetting of the designat
   me)
 ```
 
-#### Representing connectors
+#### تمثيل الموصّلات
 
-A connector is represented as a procedural object with local state variables `value`, the current value of the connector; `informant`, the object that set the connector’s value; and `constraints`, a list of the constraints in which the connector participates.
+ويُُمثَّل الموصّل بكائنٍ إجرائيٍّ ذي متغيّرات حالةٍ محلّيّةٍ هي `value` ، القيمة الحاليّة للموصّل؛ و`informant` ، الكائن الذي ضبط قيمة الموصّل؛ و`constraints` ، قائمة القيود التي يشارك فيها الموصّل.
 
 ```scheme
 (define (make-connector)
@@ -2175,7 +2175,7 @@ A connector is represented as a procedural object with local state variables `va
     me))
 ```
 
-The connector’s local procedure `set-my-value` is called when there is a request to set the connector’s value. If the connector does not currently have a value, it will set its value and remember as `informant` the constraint that requested the value to be set.[^32] Then the connector will notify all of its participating constraints except the constraint that requested the value to be set. This is accomplished using the following iterator, which applies a designated procedure to all items in a list except a given one:
+ويُنادى الإجراء المحليّ الخاصّ بالموصّل `set-my-value` حين يأتي طلبٌ لضبط قيمة الموصّل. فإن لم يكن الموصّل يملك قيمةً حاليًّا، فسيضبط قيمته ويتذكّر `informant` بوصفه القيد الذي طلب ضبط القيمة.[^32] ثمّ يُخطِر الموصّل جميع القيود المشاركة له، باستثناء القيد الذي طلب ضبط القيمة. ويُنجَز هذا باستخدام المُكَرِّر (iterator) الآتي، الذي يُطبّق إجراءً معيَّنًا على جميع بنود قائمةٍ باستثناء بندٍ معطًى واحدٍ:
 
 ```scheme
 (define (for-each-except exception 
@@ -2190,11 +2190,11 @@ The connector’s local procedure `set-my-value` is called when there is a reque
   (loop list))
 ```
 
-If a connector is asked to forget its value, it runs the local procedure `forget-my-value`, which first checks to make sure that the request is coming from the same object that set the value originally. If so, the connector informs its associated constraints about the loss of the value.
+وإذا طُلب من موصّلٍ أن ينسى قيمته، فإنّه يُشغّل الإجراء المحليّ `forget-my-value` ، الذي يتحقّق أوّلًا من أنّ الطلب قادم من الكائن ذاته الذي ضبط القيمة في الأصل. فإن كان الأمر كذلك، أَخْطَر الموصّل القيود المرتبطة به بفقدان القيمة.
 
-The local procedure `connect` adds the designated new constraint to the list of constraints if it is not already in that list. Then, if the connector has a value, it informs the new constraint of this fact.
+ويُضيف الإجراء المحليّ `connect` القيد الجديد المعيَّن إلى قائمة القيود إذا لم يكن موجودًا فيها من قبل. ثمّ، إذا كان الموصّل يملك قيمةً، يُخطِر القيد الجديد بهذه الحقيقة.
 
-The connector’s procedure `me` serves as a dispatch to the other internal procedures and also represents the connector as an object. The following procedures provide a syntax interface for the dispatch:
+ويعمل إجراء الموصّل `me` بوصفه موزّعًا إلى الإجراءات الداخليّة الأخرى، ويمثّل الموصّل أيضًا ككائن. والإجراءات الآتية تُوفّر واجهة صياغةٍ للموزّع:
 
 ```scheme
 (define (has-value? connector)
@@ -2213,17 +2213,17 @@ The connector’s procedure `me` serves as a dispatch to the other internal proc
   ((connector 'connect) new-constraint))
 ```
 
-> **Exercise 3.33:** Using primitive multiplier, adder, and constant constraints, define a procedure `averager` that takes three connectors `a`, `b`, and `c` as inputs and establishes the constraint that the value of `c` is the average of the values of `a` and `b`.
+> **التمرين 3.33:** باستخدام قيود المضاعف والجامع والثابت الأوّليّة، عرّف إجراءً `averager` يأخذ ثلاثة موصّلات `a` و`b` و`c` كمعطياتٍ ويُرسّخ القيد القاضي بأنّ قيمة `c` هي متوسّط قيمتَي `a` و`b` .
 
-**Exercise 3.34:** Louis Reasoner wants to build a squarer, a constraint device with two terminals such that the value of connector `b` on the second terminal will always be the square of the value `a` on the first terminal. He proposes the following simple device made from a multiplier:
+**التمرين 3.34:** يريد لويس ريزَنر أن يبني مربِّعًا، وهو جهاز قيدٍ ذو طرفين تتحقّق فيه أنّ قيمة الموصّل `b` على الطرف الثاني ستكون دائمًا مربّع القيمة `a` على الطرف الأوّل. وهو يقترح الجهاز البسيط الآتي المبنيّ على مضاعفٍ:
 
 ```scheme
 (define (squarer a b) (multiplier a a b))
 ```
 
-There is a serious flaw in this idea. Explain.
+وهناك خللٌ خطيرٌ في هذه الفكرة. فسّره.
 
-**Exercise 3.35:** Ben Bitdiddle tells Louis that one way to avoid the trouble in [Exercise 3.34](#Exercise-3_002e34) is to define a squarer as a new primitive constraint. Fill in the missing portions in Ben’s outline for a procedure to implement such a constraint:
+**التمرين 3.35:** يخبر بن بيتدِل لويس أنّ إحدى طرائق تجنّب المتعلّة الواردة في [التمرين 3.34](#Exercise-3_002e34) هي تعريف المربّع كقيدٍ أوّليٍّ جديد. فأكمل الأجزاء الناقصة في المخطّط الذي رسمه بن لإجراءٍ يُنفّذ مثل هذا القيد:
 
 ```scheme
 (define (squarer a b)
@@ -2241,7 +2241,7 @@ There is a serious flaw in this idea. Explain.
   me)
 ```
 
-**Exercise 3.36:** Suppose we evaluate the following sequence of expressions in the global environment:
+فلنفترض أنّنا قيّمنا التتالي الآتي من التعابير في البيئة العامّة:
 
 ```scheme
 (define a (make-connector))
@@ -2249,16 +2249,16 @@ There is a serious flaw in this idea. Explain.
 (set-value! a 10 'user)
 ```
 
-At some time during evaluation of the `set-value!`, the following expression from the connector’s local procedure is evaluated:
+في وقتٍ ما أثناء تقييم `set-value!`، يُقيَّم التعبير الآتي الوارد في الإجراء المحليّ الخاصّ بالموصّل:
 
 ```scheme
 (for-each-except 
   setter inform-about-value constraints)
 ```
 
-Draw an environment diagram showing the environment in which the above expression is evaluated.
+ارسم مخطّطًا للبيئة يُظهر البيئة التي يُقيَّم فيها التعبير الوارد أعلاه.
 
-**Exercise 3.37:** The `celsius-fahrenheit-converter` procedure is cumbersome when compared with a more expression-oriented style of definition, such as
+**التمرين 3.37:** إنّ إجراء `celsius-fahrenheit-converter` ثقيلُ الاستعمال بالمقارنة مع أسلوب تعريفٍ أكثر توجهًا نحو التعابير، مثل
 
 ```scheme
 (define (celsius-fahrenheit-converter x)
@@ -2270,7 +2270,7 @@ Draw an environment diagram showing the environment in which the above expressio
 (define F (celsius-fahrenheit-converter C))
 ```
 
-Here `c+`, `c*`, etc. are the “constraint” versions of the arithmetic operations. For example, `c+` takes two connectors as arguments and returns a connector that is related to these by an adder constraint:
+ها هنا `c+` و`c*` وهكذا هي صيغ «القيد» من العمليّات الحسابيّة. فمثلًا، يأخذ `c+` موصّلين كمعطيين ويعيد موصّلًا مرتبطًا بهذين بقيد جامع:
 
 ```scheme
 (define (c+ x y)
@@ -2279,13 +2279,13 @@ Here `c+`, `c*`, etc. are the “constraint” versions of the arithmetic operat
     z))
 ```
 
-Define analogous procedures `c-`, `c*`, `c/`, and `cv` (constant value) that enable us to define compound constraints as in the converter example above.[^33]
+عرِّف إجراءاتٍ نظيرةً `c-`، و`c*`، و`c/`، و`cv` (قيمة ثابتة) تُمكّننا من تعريف قيودَ مركّبةٍ كما في مثال المحوِّل أعلاه.[^33]
 
-### 3.4 Concurrency: Time Is of the Essence
+### 3.4 التزامن: الزمن أمرٌ جوهريّ
 
-We’ve seen the power of computational objects with local state as tools for modeling. Yet, as [3.1.3](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e3) warned, this power extracts a price: the loss of referential transparency, giving rise to a thicket of questions about sameness and change, and the need to abandon the substitution model of evaluation in favor of the more intricate environment model.
+لقد رأينا قوّة الكائنات الحسابيّة ذات الحالة المحليّة بوصفها أدواتٍ للنمذجة. لكنّ هذه القوّة تُجبى بثمن، كما حذّر [3.1.3](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e3): فقدان الشفافيّة بالرجوع، وما ينجم عن ذلك من أسئلةٍ كثيفةٍ حول التماثل والتغيّر، والحاجة إلى التخلّي عن نموذج الاستبدال للتقييم لصالح نموذج البيئة الأشدّ تعقيدًا.
 
-The central issue lurking beneath the complexity of state, sameness, and change is that by introducing assignment we are forced to admit *time* into our computational models. Before we introduced assignment, all our programs were timeless, in the sense that any expression that has a value always has the same value. In contrast, recall the example of modeling withdrawals from a bank account and returning the resulting balance, introduced at the beginning of [3.1.1](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e1):
+والمسألة المركزيّة الكامنة خلف تعقيد الحالة والتماثل والتغيّر هي أنّ إدخال الإحلال يُجبرنا على إدخال *الزمن* إلى نماذجنا الحسابيّة. فمن قبل أن نُدخل الإحلال، كانت جميع برامجنا بلا زمن، بمعنى أنّ أيّ تعبيرٍ له قيمة له دائمًا القيمة ذاتها. وعلى النقيض من ذلك، تذكّر مثال نمذجة السحب من حسابٍ مصرفيّ وإعادة الرصيد الناتج، المقدَّم في بداية [3.1.1](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e1):
 
 ```scheme
 (withdraw 25)
@@ -2295,21 +2295,21 @@ The central issue lurking beneath the complexity of state, sameness, and change 
 50
 ```
 
-Here successive evaluations of the same expression yield different values. This behavior arises from the fact that the execution of assignment statements (in this case, assignments to the variable `balance`) delineates *moments in time* when values change. The result of evaluating an expression depends not only on the expression itself, but also on whether the evaluation occurs before or after these moments. Building models in terms of computational objects with local state forces us to confront time as an essential concept in programming.
+فإنّ التقييمات المتعاقبة للتعبير ذاته تُنتج هنا قيمًا مختلفة. وهذا السلوك ناجمٌ عن أنّ تنفيذ عبارات الإحلال (في هذه الحالة، الإحلالات على المتغيّر `balance`) يُرسّم *لحظاتٍ في الزمن* تتغيّر عندها القيم. فإنّ نتيجة تقييم تعبيرٍ ما لا تتوقّف على التعبير ذاته فحسب، بل تتوقّف أيضًا على ما إذا كان التقييم يقع قبل هذه اللحظات أم بعدها. وبناءُ النماذج بدلالة كائناتٍ حسابيّةٍ ذات حالة محلّيّة يُجبرنا على مواجهة الزمن بوصفه مفهومًا جوهريًّا في البرمجة.
 
-We can go further in structuring computational models to match our perception of the physical world. Objects in the world do not change one at a time in sequence. Rather we perceive them as acting *concurrently*—all at once. So it is often natural to model systems as collections of computational processes that execute concurrently. Just as we can make our programs modular by organizing models in terms of objects with separate local state, it is often appropriate to divide computational models into parts that evolve separately and concurrently. Even if the programs are to be executed on a sequential computer, the practice of writing programs as if they were to be executed concurrently forces the programmer to avoid inessential timing constraints and thus makes programs more modular.
+ويمكننا أن نمضي أبعد من ذلك في بناء النماذج الحسابيّة بحيث تُطابق إدراكنا للعالم الماديّ. فإنّ الكائنات في العالم لا تتغيّر واحدًا تلو الآخر في تسلسل. بل نحن ندركها على أنّها تعمل *تزامنًا* — جميعها في وقتٍ واحد. ومن ثمّ، فكثيرًا ما يكون من الطبيعيّ نمذجة النظم بوصفها مجموعاتٍ من العمليّات الحسابيّة التي تُنفَّذ تزامنًا. فكما نستطيع أن نُزيد وحدانيّة برامجنا بتنظيم النماذج بدلالة كائناتٍ لها حالة محلّيّة منفصلة، فكثيرًا ما يكون من الملائم تقسيم النماذج الحسابيّة إلى أجزاءٍ تتطوّر كلٌّ على حدةٍ وتزامنًا. وحتّى لو كان مقدرًا للبرامج أن تُنفَّذ على حاسوبٍ تسلسليّ، فإنّ ممارسة كتابة البرامج كأنّها ستُنفَّذ تزامنًا تُجبر المبرمج على تجنّب القيود الزمنيّة غير الجوهريّة، وبذلك تجعل البرامج أكثر وحدانيّة.
 
-In addition to making programs more modular, concurrent computation can provide a speed advantage over sequential computation. Sequential computers execute only one operation at a time, so the amount of time it takes to perform a task is proportional to the total number of operations performed.[^34] However, if it is possible to decompose a problem into pieces that are relatively independent and need to communicate only rarely, it may be possible to allocate pieces to separate computing processors, producing a speed advantage proportional to the number of processors available.
+فبالإضافة إلى زيادة وحدانيّة البرامج، فإنّ الاحتساب المتزامن قد يُوفّر ميزةً في السرعة على الاحتساب التسلسليّ. فإنّ الحواسيب التسلسليّة تُنفّذ عمليّةً واحدةً فقط في كلّ مرّة، وبذلك فإنّ مقدار الوقت الذي يتطلّبه أداء مهمّةٍ ما يتناسب مع العدد الكلّيّ للعمليّات المُنفَّذة.[^34] لكن إذا أمكن تفكيك مسألةٍ إلى أجزاءٍ مستقلّةٍ نسبيًّا ولا تحتاج إلى التواصل إلّا نادرًا، فقد يكون من الممكن تخصيص الأجزاء لمعالجات حسابيّةٍ منفصلة، مما يُنتج ميزةً في السرعة تتناسب مع عدد المعالجات المتاحة.
 
-Unfortunately, the complexities introduced by assignment become even more problematic in the presence of concurrency. The fact of concurrent execution, either because the world operates in parallel or because our computers do, entails additional complexity in our understanding of time.
+وللأسف، فإنّ التعقيدات التي يُدخلها الإحلال تصير أكثر إشكاليّةً بحضور التزامن. فإنّ واقع التنفيذ المتزامن، سواءً لأنّ العالم يعمل بالتوازي أو لأنّ حواسيبنا تفعل ذلك، يستتبع تعقيدًا إضافيًّا في فهمنا للزمن.
 
-#### 3.4.1 The Nature of Time in Concurrent Systems
+#### 3.4.1 طبيعة الزمن في النظم المتزامنة
 
-On the surface, time seems straightforward. It is an ordering imposed on events.[^35] For any events $A$ and $B$ , either $A$ occurs before $B$ , $A$ and $B$ are simultaneous, or $A$ occurs after $B$ . For instance, returning to the bank account example, suppose that Peter withdraws $10 and Paul withdraws $25 from a joint account that initially contains $100, leaving $65 in the account. Depending on the order of the two withdrawals, the sequence of balances in the account is either $100 $→$ $90 $→$ $65 or $100 $→$ $75 $→$ $65. In a computer implementation of the banking system, this changing sequence of balances could be modeled by successive assignments to a variable `balance`.
+على السطح، يبدو الزمن واضحًا ومباشرًا. فهو ترتيبٌ مفروضٌ على الأحداث.[^35] فبالنسبة لأيّ حدثين $A$ و$B$ ، إمّا أن يقع $A$ قبل $B$ ، أو يكون $A$ و$B$ متزامنين، أو يقع $A$ بعد $B$ . فمثلًا، وبعودة إلى مثال الحساب المصرفيّ، لنفترض أنّ بيتر يسحب $10 وبول يسحب $25 من حسابٍ مشتركٍ يحتوي أوّلًا على $100، فيبقى في الحساب $65. وتبعًا لترتيب السحبين، يكون تتالي الأرصدة في الحساب إمّا $100 $→$ $90 $→$ $65 وإمّا $100 $→$ $75 $→$ $65. وفي تنفيذ حاسوبيٍّ للنظام المصرفيّ، يمكن نمذجة تتالي الأرصدة المتغيّر هذا بإحلالاتٍ متعاقبةٍ على متغيّر `balance`.
 
-In complex situations, however, such a view can be problematic. Suppose that Peter and Paul, and other people besides, are accessing the same bank account through a network of banking machines distributed all over the world. The actual sequence of balances in the account will depend critically on the detailed timing of the accesses and the details of the communication among the machines.
+غير أنّ مثل هذا النظر قد يكون مُشكِلًا في الحالات المعقّدة. فلنفترض أنّ بيتر وبول، وأناسًا آخرين كذلك، ينفذون إلى الحساب المصرفيّ ذاته عبر شبكةٍ من الأجهزة المصرفيّة الموزّعة في جميع أنحاء العالم. فإنّ تتالي الأرصدة الفعليّ في الحساب سيتوقّف بشكلٍ حاسمٍ على التوقيت المفصّل للنفاذ وعلى تفاصيل التواصل بين الأجهزة.
 
-This indeterminacy in the order of events can pose serious problems in the design of concurrent systems. For instance, suppose that the withdrawals made by Peter and Paul are implemented as two separate processes sharing a common variable `balance`, each process specified by the procedure given in [3.1.1](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e1):
+وإنّ عدم الحتميّة هذا في ترتيب الأحداث قد يُثير مسائل خطيرة في تصميم النظم المتزامنة. فمثلًا، لنفترض أنّ السحبين اللذين أجراهما بيتر وبول مُنفَّذان كعمليّتين منفصلتين تتشاركان متغيّرًا مشتركًا `balance`، وكلٌّ منهما محدَّدةٌ بالإجراء الوارد في [3.1.1](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e1):
 
 ```scheme
 (define (withdraw amount)
@@ -2321,39 +2321,39 @@ This indeterminacy in the order of events can pose serious problems in the desig
       "Insufficient funds"))
 ```
 
-If the two processes operate independently, then Peter might test the balance and attempt to withdraw a legitimate amount. However, Paul might withdraw some funds in between the time that Peter checks the balance and the time Peter completes the withdrawal, thus invalidating Peter’s test.
+فإذا عملت العمليّتان باستقلالٍ إحداهما عن الأخرى، فقد يختبر بيتر الرصيد ويحاول سحب مبلغٍ مشروع. غير أنّ بول قد يسحب بعض المال في الفترة بين زمن فحص بيتر للرصيد وزمن إتمام بيتر للسحب، مما يُبطِل اختبار بيتر.
 
-Things can be worse still. Consider the expression
+وقد تكون الأمور أسوأ من ذلك. تأمّل التعبير
 
 ```scheme
 (set! balance (- balance amount))
 ```
 
-executed as part of each withdrawal process. This consists of three steps: (1) accessing the value of the `balance` variable; (2) computing the new balance; (3) setting `balance` to this new value. If Peter and Paul’s withdrawals execute this statement concurrently, then the two withdrawals might interleave the order in which they access `balance` and set it to the new value.
+الذي يُنفَّذ كجزءٍ من كلّ عمليّة سحب. وهذا يتكوّن من ثلاث خطوات: (1) النفاذ إلى قيمة متغيّر `balance`؛ (2) احتساب الرصيد الجديد؛ (3) ضبط `balance` على هذه القيمة الجديدة. فإذا نفّذ سحبا بيتر وبول هذه العبارة تزامنًا، فإنّ السحبين قد يُشابكان الترتيب الذي ينفذان به إلى `balance` ويضبطانه على القيمة الجديدة.
 
-The timing diagram in [Figure 3.29](#Figure-3_002e29) depicts an order of events where `balance` starts at 100, Peter withdraws 10, Paul withdraws 25, and yet the final value of `balance` is 75. As shown in the diagram, the reason for this anomaly is that Paul’s assignment of 75 to `balance` is made under the assumption that the value of `balance` to be decremented is 100. That assumption, however, became invalid when Peter changed `balance` to 90. This is a catastrophic failure for the banking system, because the total amount of money in the system is not conserved. Before the transactions, the total amount of money was $100. Afterwards, Peter has $10, Paul has $25, and the bank has $75.[^36]
+يُصوّر المخطّط الزمنيّ الوارد في [الشكل 3.29](#Figure-3_002e29) ترتيبًا للأحداث يبدأ فيه `balance` من 100، ويسحب بيتر 10، ويسحب بول 25، ومع ذلك تكون القيمة النهائيّة لـ`balance` هي 75. وكما يظهر المخطّط، فإنّ سبب هذه الشاذّة هو أنّ إحلال بول القيمة 75 إلى `balance` يقع على افتراض أنّ قيمة `balance` التي سيُنقَص منها هي 100. غير أنّ هذا الافتراض أصبح باطلًا حين غيّر بيتر `balance` إلى 90. وهذا فشلٌ كارثيّ للنظام المصرفيّ، لأنّ المبلغ الكلّيّ للمال في النظام غير محفوظ. فقبل المعاملات، كان المبلغ الكلّيّ للمال $100. وبعدها، كان لدى بيتر $10، ولدى بول $25، ولدى المصرف $75.[^36]
 
 ![](/images/sicp/c3-modularity-objects-and-state-0-Fig3.29b.std.webp)
 
-**Figure 3.29:** Timing diagram showing how interleaving the order of events in two banking withdrawals can lead to an incorrect final balance.
+**الشكل 3.29:** مخطّط زمنيّ يُظهر كيف يمكن أن يُؤدّي تشابك ترتيب الأحداث في سحبين مصرفيّين إلى رصيدٍ نهائيٍّ غير صحيح.
 
-The general phenomenon illustrated here is that several processes may share a common state variable. What makes this complicated is that more than one process may be trying to manipulate the shared state at the same time. For the bank account example, during each transaction, each customer should be able to act as if the other customers did not exist. When a customer changes the balance in a way that depends on the balance, he must be able to assume that, just before the moment of change, the balance is still what he thought it was.
+والظاهرة العامّة التي يُوضيحها المثال هذا هي أنّ عدّة عمليّاتٍ قد تتشارك متغيّر حالةٍ مشتركًا. وما يجعل هذا معقّدًا هو أنّ أكثر من عمليّةٍ قد تحاول التلاعب بالحالة المشتركة في الوقت ذاته. فمثلًا في مثال الحساب المصرفيّ، ينبغي أثناء كلّ معاملةٍ أن يكون كلّ زبونٍ قادرًا على التصرّف كأنّ الزبائن الآخرين غير موجودين. وحين يُبدّل زبونٌ الرصيد بطريقةٍ تتوقّف على الرصيد، ينبغي أن يكون قادرًا على افتراض أنّ الرصيد، في اللحظة السابقة للتغيير مباشرةً، لا يزال على ما كان يعتقده.
 
-#### Correct behavior of concurrent programs
+#### السلوك الصحيح للبرامج المتزامنة
 
-The above example typifies the subtle bugs that can creep into concurrent programs. The root of this complexity lies in the assignments to variables that are shared among the different processes. We already know that we must be careful in writing programs that use `set!`, because the results of a computation depend on the order in which the assignments occur.[^37] With concurrent processes we must be especially careful about assignments, because we may not be able to control the order of the assignments made by the different processes. If several such changes might be made concurrently (as with two depositors accessing a joint account) we need some way to ensure that our system behaves correctly. For example, in the case of withdrawals from a joint bank account, we must ensure that money is conserved. To make concurrent programs behave correctly, we may have to place some restrictions on concurrent execution.
+إنّ المثال الوارد أعلاه نموذجٌ للعلل الخفيّة التي يمكن أن تتسرّب إلى البرامج المتزامنة. وجذر هذا التعقيد كائنٌ في الإحلالات على المتغيّرات المشتركة بين العمليّات المختلفة. ونحن نعلم بالفعل أنّ علينا أن نكون حذرين في كتابة البرامج التي تستخدم `set!`، لأنّ نتائج الاحتساب تتوقّف على الترتيب الذي تقع به الإحلالات.[^37] ومع العمليّات المتزامنة، ينبغي أن نكون حذرين على نحوٍ خاصّ حيال الإحلالات، لأنّنا قد لا نكون قادرين على التحكّم في ترتيب الإحلالات التي تجريها العمليّات المختلفة. فإذا كان من الممكن أن تقع عدّة تغييراتٍ كهذه تزامنًا (كما في حال مُودِعين ينفذان إلى حسابٍ مشترك)، فنحتاج إلى طريقةٍ ما لضمان أنّ نظامنا يسلك السلوك الصحيح. فمثلًا، في حال السحب من حسابٍ مصرفيٍّ مشترك، يجب أن نضمن حفظ المال. وحتّى تجعل البرامج المتزامنة تسلك السلوك الصحيح، قد يلزمنا أن نضع بعض القيود على التنفيذ المتزامن.
 
-One possible restriction on concurrency would stipulate that no two operations that change any shared state variables can occur at the same time. This is an extremely stringent requirement. For distributed banking, it would require the system designer to ensure that only one transaction could proceed at a time. This would be both inefficient and overly conservative. [Figure 3.30](#Figure-3_002e30) shows Peter and Paul sharing a bank account, where Paul has a private account as well. The diagram illustrates two withdrawals from the shared account (one by Peter and one by Paul) and a deposit to Paul’s private account.[^38] The two withdrawals from the shared account must not be concurrent (since both access and update the same account), and Paul’s deposit and withdrawal must not be concurrent (since both access and update the amount in Paul’s wallet). But there should be no problem permitting Paul’s deposit to his private account to proceed concurrently with Peter’s withdrawal from the shared account.
+أحد القيود الممكنة على التزامن يُقرّر أنّ لا عمليّتين تُبدّلان متغيّرات حالةٍ مشتركةٍ يمكن أن تقعا في الوقت ذاته. وهذا شرطٌ صارمٌ للغاية. فبالنسبة للمصرفيّة الموزّعة، فإنّه سيلزم مُصمّم النظام بضمان ألّا تسير إلّا معاملةٌ واحدة في كلّ مرّة. وهذا سيكون غير كفؤٍ ومتحفّظًا أكثر من اللازم على حدّ سواء. يُظهر [الشكل 3.30](#Figure-3_002e30) بيتر وبول يتشاركان حسابًا مصرفيًّا، حيث لدى بول أيضًا حسابٌ خاصّ. ويُوضيح المخطّط سحبين من الحساب المشترك (أحدهما لبيتر والآخر لبول) وإيداعًا في حساب بول الخاصّ.[^38] ولا يجوز أن يكون السحبان من الحساب المشترك متزامنين (إذ كلًّا منهما ينفذ إلى الحساب ذاته ويُحدّثه)، ولا يجوز أن يكون إيداع بول وسحبه متزامنين (إذ كلًّا منهما ينفذ إلى المبلغ في محفظة بول ويُحدّثه). لكن لا ينبغي أن تكون هناك مشكلة في السماح لإيداع بول في حسابه الخاصّ بأن يسير تزامنًا مع سحب بيتر من الحساب المشترك.
 
 ![](/images/sicp/c3-modularity-objects-and-state-1-Fig3.30c.std.webp)
 
-**Figure 3.30:** Concurrent deposits and withdrawals from a joint account in Bank1 and a private account in Bank2.
+**الشكل 3.30:** إيداعاتٌ وسحوباتٌ متزامنة من حسابٍ مشتركٍ في Bank1 وحسابٍ خاصٍّ في Bank2.
 
-A less stringent restriction on concurrency would ensure that a concurrent system produces the same result as if the processes had run sequentially in some order. There are two important aspects to this requirement. First, it does not require the processes to actually run sequentially, but only to produce results that are the same *as if* they had run sequentially. For the example in [Figure 3.30](#Figure-3_002e30), the designer of the bank account system can safely allow Paul’s deposit and Peter’s withdrawal to happen concurrently, because the net result will be the same as if the two operations had happened sequentially. Second, there may be more than one possible “correct” result produced by a concurrent program, because we require only that the result be the same as for *some* sequential order. For example, suppose that Peter and Paul’s joint account starts out with $100, and Peter deposits $40 while Paul concurrently withdraws half the money in the account. Then sequential execution could result in the account balance being either $70 or $90 (see [Exercise 3.38](#Exercise-3_002e38)).[^39]
+أمّا القيد الأقلّ صرامةً على التزامن فيضمن أنّ النظام المتزامن يُنتج النتيجة ذاتها كما لو كانت العمليّات قد سارت تسلسليًّا في ترتيبٍ ما. ولهذا الشرط جانبان مهمّان. أوّلًا، هو لا يشترط أن تسير العمليّات تسلسليًّا فعلًا، بل أن تُنتج نتيجةً هي ذاتها *كأنّما* كانت قد سارت تسلسليًّا. فمثلًا في المثال الوارد في [الشكل 3.30](#Figure-3_002e30)، يستطيع مُصمّم نظام الحساب المصرفيّ أن يسمح بأمانٍ بوقوع إيداع بول وسحب بيتر تزامنًا، لأنّ النتيجة الصافية ستكون هي ذاتها كما لو أنّ العمليّتين وقعتا تسلسليًّا. وثانيًا، قد يكون هناك أكثر من نتيجةٍ «صحيحة»ٍ واحدةٍ يُنتجها برنامجٌ متزامن، لأنّنا لا نشترط إلّا أن تكون النتيجة هي ذاتها كما لـ*ترتيبٍ* تسلسليٍّ ما. فمثلًا، لنفترض أنّ الحساب المشترك لبيتر وبول يبدأ بـ$100، وأنّ بيتر يُودع $40 بينما يسحب بول تزامنًا نصف المال في الحساب. فإنّ التنفيذ التسلسليّ قد يُنتج رصيدًا للحساب إمّا $70 وإمّا $90 (انظر [التمرين 3.38](#Exercise-3_002e38)).[^39]
 
-There are still weaker requirements for correct execution of concurrent programs. A program for simulating diffusion (say, the flow of heat in an object) might consist of a large number of processes, each one representing a small volume of space, that update their values concurrently. Each process repeatedly changes its value to the average of its own value and its neighbors’ values. This algorithm converges to the right answer independent of the order in which the operations are done; there is no need for any restrictions on concurrent use of the shared values.
+وهناك شروطٌ أضعفُ بعدُ للتنفيذ الصحيح للبرامج المتزامنة. فبرنامجٌ لمحاكاة الانتشار (كجريان الحرارة في جسمٍ مثلًا) قد يتكوّن من عددٍ كبيرٍ من العمليّات، تمثّل كلٌّ منها حجمًا صغيرًا من المكان، وتُحدّث قيمها تزامنًا. وكلّ عمليّةٍ تُغيَّر قيمتها مرارًا إلى متوسّط قيمتها وقيم جيرانها. وهذه الخوارزميّة تتقارب نحو الجواب الصحيح مستقلًّا عن الترتيب الذي تُنفَّذ به العمليّات؛ فلا حاجة إلى أيّ قيودٍ على الاستخدام المتزامن للقيم المشتركة.
 
-**Exercise 3.38:** Suppose that Peter, Paul, and Mary share a joint bank account that initially contains $100. Concurrently, Peter deposits $10, Paul withdraws $20, and Mary withdraws half the money in the account, by executing the following commands:
+**التمرين 3.38:** لنفترض أنّ بيتر وبول وماري يتشاركون حسابًا مصرفيًّا مشتركًا يحتوي أوّلًا على $100. فتزامنًا، يُودع بيتر $10، ويسحب بول $20، وتسحب ماري نصف المال في الحساب، بتنفيذ الأوامر الآتية:
 
 ```
 Peter: (set! balance (+ balance 10))
@@ -2362,12 +2362,12 @@ Mary:  (set! balance (- balance
                         (/ balance 2)))
 ```
 
-1. List all the different possible values for `balance` after these three transactions have been completed, assuming that the banking system forces the three processes to run sequentially in some order.
-2. What are some other values that could be produced if the system allows the processes to be interleaved? Draw timing diagrams like the one in [Figure 3.29](#Figure-3_002e29) to explain how these values can occur.
+1. اذكر جميع القيم الممكنة المختلفة لـ`balance` بعد إتمام هذه المعاملات الثلاث، بافتراض أنّ النظام المصرفيّ يُجبر العمليّات الثلاث على السير تسلسليًّا في ترتيبٍ ما.
+2. ما بعض القيم الأخرى التي يمكن أن تُنتَج إذا سمح النظام بتشابك العمليّات؟ ارسم مخطّطاتٍ زمنيّةً شبيهةً بالواردة في [الشكل 3.29](#Figure-3_002e29) لتشرح كيف يمكن أن تقع هذه القيم.
 
-#### 3.4.2 Mechanisms for Controlling Concurrency
+#### 3.4.2 آليّات التحكّم في التزامن
 
-We’ve seen that the difficulty in dealing with concurrent processes is rooted in the need to consider the interleaving of the order of events in the different processes. For example, suppose we have two processes, one with three ordered events $( a , b , c )$ and one with three ordered events $( x , y , z )$ . If the two processes run concurrently, with no constraints on how their execution is interleaved, then there are 20 different possible orderings for the events that are consistent with the individual orderings for the two processes:
+لقد رأينا أنّ الصعوبة في التعامل مع العمليّات المتزامنة متأصّلةٌ في الحاجة إلى النظر في تشابك ترتيب الأحداث في العمليّات المختلفة. فمثلًا، لنفترض أنّ لدينا عمليّتين، إحداهما بثلاثة أحداثٍ مرتّبة $( a , b , c )$ والأخرى بثلاثة أحداثٍ مرتّبة $( x , y , z )$ . فإذا سارت العمليّتان تزامنًا، دون قيودٍ على كيفيّة تشابك تنفيذهما، فهناك 20 ترتيبًا ممكنًا مختلفًا للأحداث تتّسق مع الترتيبات الفرديّة للعمليّتين:
 
 ```
 (a,b,c,x,y,z)  (a,x,b,y,c,z)  (x,a,b,c,y,z)  
@@ -2379,19 +2379,19 @@ We’ve seen that the difficulty in dealing with concurrent processes is rooted 
 (x,a,y,b,z,c)  (x,y,z,a,b,c)
 ```
 
-As programmers designing this system, we would have to consider the effects of each of these 20 orderings and check that each behavior is acceptable. Such an approach rapidly becomes unwieldy as the numbers of processes and events increase.
+وبصفتنا مبرمجين يُصمّمون هذا النظام، سيتعيّن علينا النظر في آثار كلّ واحدٍ من هذه الترتيبات العشرين والتحقّق من أنّ كلّ سلوكٍ منها مقبول. ومثل هذا المنهج يصير سريعًا عسيرَ التداول بازدياد أعداد العمليّات والأحداث.
 
-A more practical approach to the design of concurrent systems is to devise general mechanisms that allow us to constrain the interleaving of concurrent processes so that we can be sure that the program behavior is correct. Many mechanisms have been developed for this purpose. In this section, we describe one of them, the *serializer*.
+وأمّا المنهج الأكثر عمليّةً لتصميم النظم المتزامنة فهو ابتكار آليّاتٍ عامّة تسمح لنا بإخضاع تشابك العمليّات المتزامنة للقيود، حتّى نستطيع أن نكون على يقينٍ من أنّ سلوك البرنامج صحيح. وقد طُوّرت آليّاتٌ كثيرةٌ لهذا الغرض. وفي هذا القسم نصف واحدةً منها، وهي *المسلسل (serializer)*.
 
-#### Serializing access to shared state
+#### تسلسل النفاذ إلى الحالة المشتركة
 
-Serialization implements the following idea: Processes will execute concurrently, but there will be certain collections of procedures that cannot be executed concurrently. More precisely, serialization creates distinguished sets of procedures such that only one execution of a procedure in each serialized set is permitted to happen at a time. If some procedure in the set is being executed, then a process that attempts to execute any procedure in the set will be forced to wait until the first execution has finished.
+يُحقّق التسلسُل (serialization) الفكرة الآتية: ستُنفَّذ العمليّات تزامنًا، لكن ستكون هناك مجموعاتٌ معيّنةٌ من الإجراءات لا يمكن تنفيذها تزامنًا. وبأكثر دقّة، يُنشئ التسلسُل مجموعاتٍ مميّزةً من الإجراءات بحيث لا يُسمح إلّا بتنفيذٍ واحدٍ لإجراءٍ في كلّ مجموعةٍ مسلسَلةٍ في كلّ مرّة. فإذا كان إجراءٌ ما في المجموعة قيد التنفيذ، فإنّ عمليّةً تحاول تنفيذ أيّ إجراءٍ في المجموعة ستُجبر على الانتظار حتّى ينتهي التنفيذ الأوّل.
 
-We can use serialization to control access to shared variables. For example, if we want to update a shared variable based on the previous value of that variable, we put the access to the previous value of the variable and the assignment of the new value to the variable in the same procedure. We then ensure that no other procedure that assigns to the variable can run concurrently with this procedure by serializing all of these procedures with the same serializer. This guarantees that the value of the variable cannot be changed between an access and the corresponding assignment.
+ويمكننا استخدام التسلسُل للتحكّم في النفاذ إلى المتغيّرات المشتركة. فمثلًا، إذا أردنا تحديث متغيّرٍ مشتركٍ بناءً على القيمة السابقة لذلك المتغيّر، فإنّا نضع النفاذ إلى القيمة السابقة للمتغيّر وإحلال القيمة الجديدة إلى المتغيّر في الإجراء ذاته. ثمّ نضمن أنّ لا إجراءً آخر يُحيل إلى المتغيّر يمكن أن يسير تزامنًا مع هذا الإجراء، بتسلسُل جميع هذه الإجراءات بالمسلسل ذاته. وهذا يضمن أنّ قيمة المتغيّر لا يمكن أن تُغيَّر بين نفاذٍ وإحلالٍ يقابله.
 
-#### Serializers in Scheme
+#### المسلسلات في Scheme
 
-To make the above mechanism more concrete, suppose that we have extended Scheme to include a procedure called `parallel-execute`:
+ولنجعل الآليّة الواردة أعلاه أكثر تحديدًا، لنفترض أنّنا مددنا Scheme لتشمل إجراءً يُسمّى `parallel-execute`:
 
 ```scheme
 (parallel-execute ⟨p₁⟩ 
@@ -2400,9 +2400,9 @@ To make the above mechanism more concrete, suppose that we have extended Scheme 
                   ⟨pₖ⟩)
 ```
 
-Each `⟨`p`⟩` must be a procedure of no arguments. `Parallel-execute` creates a separate process for each `⟨`p`⟩`, which applies `⟨`p`⟩` (to no arguments). These processes all run concurrently.[^40]
+ينبغي أن يكون كلّ `⟨`p`⟩` إجراءً بلا معطيات. يُنشئ `parallel-execute` عمليّةً منفصلةً لكلّ `⟨`p`⟩`، تُطبّق `⟨`p`⟩` (بلا معطيات). وتسير جميع هذه العمليّات تزامنًا.[^40]
 
-As an example of how this is used, consider
+وكمثالٍ على كيفيّة استخدام ذلك، تأمّل
 
 ```scheme
 (define x 10)
@@ -2410,7 +2410,7 @@ As an example of how this is used, consider
                   (lambda () (set! x (+ x 1))))
 ```
 
-This creates two concurrent processes— $P_{1}$ , which sets `x` to `x` times `x`, and $P_{2}$ , which increments `x`. After execution is complete, `x` will be left with one of five possible values, depending on the interleaving of the events of $P_{1}$ and $P_{2}$ :
+وهذا يُنشئ عمليّتين متزامنتين— $P_{1}$ ، التي تضبط `x` على `x` مضروبًا في `x`، و$P_{2}$ ، التي تزيد `x` بواحد. وبعد تمام التنفيذ، سيبقى `x` بأحد خمس قيمٍ ممكنة، تبعًا لتشابك أحداث $P_{1}$ و$P_{2}$ :
 
 ```python
 101:  $P_{1}$  sets x to 100 and then  $P_{2}$  increments
@@ -2426,9 +2426,9 @@ This creates two concurrent processes— $P_{1}$ , which sets `x` to `x` times `
      x to 11, then  $P_{1}$  sets x.
 ```
 
-We can constrain the concurrency by using serialized procedures, which are created by *serializers*. Serializers are constructed by `make-serializer`, whose implementation is given below. A serializer takes a procedure as argument and returns a serialized procedure that behaves like the original procedure. All calls to a given serializer return serialized procedures in the same set.
+ويمكننا إخضاع التزامن للقيود باستخدام إجراءاتٍ مسلسَلة، وهي التي تُنشَأ بواسطة *المسلسلات*. وتُبنى المسلسلات بـ`make-serializer`، الذي تنفيذه معطىٌ أدناه. ويأخذ المسلسل إجراءً كمعطىً ويعيد إجراءً مسلسَلًا يتصرّف كالإجراء الأصليّ. وجميع النداءات لمسلسلٍ معطًى تُعيد إجراءاتٍ مسلسَلةً في المجموعة ذاتها.
 
-Thus, in contrast to the example above, executing
+وبذلك، وعلى خلاف المثال الوارد أعلاه، فإنّ تنفيذ
 
 ```scheme
 (define x 10)
@@ -2438,9 +2438,9 @@ Thus, in contrast to the example above, executing
  (s (lambda () (set! x (+ x 1)))))
 ```
 
-can produce only two possible values for `x`, 101 or 121. The other possibilities are eliminated, because the execution of $P_{1}$ and $P_{2}$ cannot be interleaved.
+لا يُنتج إلّا قيمتين ممكنتين لـ`x`، هما 101 أو 121. أمّا الاحتمالات الأخرى فمُستَبعدة، لأنّ تنفيذ $P_{1}$ و$P_{2}$ لا يمكن تشابكه.
 
-Here is a version of the `make-account` procedure from [3.1.1](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e1), where the deposits and withdrawals have been serialized:
+وها هو ذا إصدارٌ من إجراء `make-account` الوارد في [3.1.1](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e1)، حيث الإيداعات والسحوبات مُسلسَلة:
 
 ```scheme
 (define (make-account balance)
@@ -2467,9 +2467,9 @@ Here is a version of the `make-account` procedure from [3.1.1](https://sarabande
     dispatch))
 ```
 
-With this implementation, two processes cannot be withdrawing from or depositing into a single account concurrently. This eliminates the source of the error illustrated in [Figure 3.29](#Figure-3_002e29), where Peter changes the account balance between the times when Paul accesses the balance to compute the new value and when Paul actually performs the assignment. On the other hand, each account has its own serializer, so that deposits and withdrawals for different accounts can proceed concurrently.
+وبهذا التنفيذ، لا يمكن لعمليّتين أن تسحبا من حسابٍ واحدٍ أو تُودعا فيه تزامنًا. وهذا يُستبعد مصدر الخطأ الموضّح في [الشكل 3.29](#Figure-3_002e29)، حيث يُغيِّر بيتر رصيد الحساب بين الحين الذي ينفذ فيه بول إلى الرصيد لاحتساب القيمة الجديدة والحين الذي يُجري فيه بول الإحلال فعلًا. ومن جهةٍ أخرى، فإنّ لكلّ حسابٍ مسلسلَه الخاصّ، بحيث يمكن للإيداعات والسحوبات في حساباتٍ مختلفةٍ أن تسير تزامنًا.
 
-**Exercise 3.39:** Which of the five possibilities in the parallel execution shown above remain if we instead serialize execution as follows:
+**التمرين 3.39:** أيّ الاحتمالات الخمسة الواردة في التنفيذ بالتوازي الموضّح أعلاه تبقى إذا سلّسنا التنفيذ على النحو الآتي:
 
 ```scheme
 (define x 10)
@@ -2480,7 +2480,7 @@ With this implementation, two processes cannot be withdrawing from or depositing
   (s (lambda () (set! x (+ x 1)))))
 ```
 
-**Exercise 3.40:** Give all possible values of `x` that can result from executing
+**التمرين 3.40:** أعطِ جميع القيم الممكنة لـ`x` التي يمكن أن تنتج عن تنفيذ
 
 ```scheme
 (define x 10)
@@ -2489,7 +2489,7 @@ With this implementation, two processes cannot be withdrawing from or depositing
  (lambda () (set! x (* x x x))))
 ```
 
-Which of these possibilities remain if we instead use serialized procedures:
+أيّ هذه الاحتمالات يبقى إذا استخدمنا بدلًا من ذلك إجراءاتٍ مسلسَلة:
 
 ```scheme
 (define x 10)
@@ -2499,7 +2499,7 @@ Which of these possibilities remain if we instead use serialized procedures:
  (s (lambda () (set! x (* x x x)))))
 ```
 
-**Exercise 3.41:** Ben Bitdiddle worries that it would be better to implement the bank account as follows (where the commented line has been changed):
+**التمرين 3.41:** يقلق بن بيتدِل من أنّ تنفيذ الحساب المصرفيّ على النحو الآتي (حيث السطر المُعلَّق عليه قد تغيّر) سيكون أفضل:
 
 ```scheme
 (define (make-account balance)
@@ -2531,9 +2531,9 @@ Which of these possibilities remain if we instead use serialized procedures:
     dispatch))
 ```
 
-because allowing unserialized access to the bank balance can result in anomalous behavior. Do you agree? Is there any scenario that demonstrates Ben’s concern?
+لأنّ السماح بنفاذٍ غير مسلسَلٍ إلى رصيد الحساب يمكن أن يُؤدّي إلى سلوكٍ شاذّ. فهل توافق على ذلك؟ وهل هناك أيّ سيناريو يُظهر قلق بن؟
 
-**Exercise 3.42:** Ben Bitdiddle suggests that it’s a waste of time to create a new serialized procedure in response to every `withdraw` and `deposit` message. He says that `make-account` could be changed so that the calls to `protected` are done outside the `dispatch` procedure. That is, an account would return the same serialized procedure (which was created at the same time as the account) each time it is asked for a withdrawal procedure.
+**التمرين 3.42:** يقترح بن بيتدِل أنّ إنشاء إجراءٍ مسلسَلٍ جديدٍ استجابةً لكلّ رسالة `withdraw` و`deposit` مضيعةٌ للوقت. وهو يقول إنّه يمكن تعديل `make-account` بحيث تُجرى نداءات `protected` خارج إجراء `dispatch`. أي أنّ الحساب سيُعيد الإجراء المسلسَل ذاته (الذي أُنشئ في الوقت ذاته مع الحساب) في كلّ مرّةٍ يُطلب منه فيها إجراء السحب.
 
 ```scheme
 (define (make-account balance)
@@ -2565,13 +2565,13 @@ because allowing unserialized access to the bank balance can result in anomalous
       dispatch)))
 ```
 
-Is this a safe change to make? In particular, is there any difference in what concurrency is allowed by these two versions of `make-account`?
+فهل هذا تغييرٌ آمن؟ وعلى وجه الخصوص، فهل هناك أيّ فرقٍ في التزامن الذي تسمح به هاتان النسختان من `make-account`؟
 
-#### Complexity of using multiple shared resources
+#### تعقيد استخدام موارد مشتركةٍ متعدّدة
 
-Serializers provide a powerful abstraction that helps isolate the complexities of concurrent programs so that they can be dealt with carefully and (hopefully) correctly. However, while using serializers is relatively straightforward when there is only a single shared resource (such as a single bank account), concurrent programming can be treacherously difficult when there are multiple shared resources.
+تُوفّر المسلسلات تجريدًا قويًّا يساعد على عزل تعقيدات البرامج المتزامنة بحيث يمكن التعامل معها بحذرٍ و(نأمل) بصورةٍ صحيحة. لكن، مع أنّ استخدام المسلسلات مباشرٌ نسبيًّا حين لا يكون هناك إلّا موردٌ مشتركٌ واحد (كحسابٍ مصرفيٍّ واحد)، فإنّ برمجة التزامن قد تكون صعبةً بصورةٍ خادعةٍ حين تكون هناك مواردٌ مشتركةٌ متعدّدة.
 
-To illustrate one of the difficulties that can arise, suppose we wish to swap the balances in two bank accounts. We access each account to find the balance, compute the difference between the balances, withdraw this difference from one account, and deposit it in the other account. We could implement this as follows:[^41]
+ولتوضيح إحدى الصعوبات التي يمكن أن تنشأ، لنفترض أنّنا نرغب في مبادلة رصيدَي حسابين مصرفيّين. فنحن ننفذ إلى كلّ حسابٍ لإيجاد الرصيد، ونحتسب الفرق بين الرصيدين، ونسحب هذا الفرق من أحد الحسابين، ونُودعه في الحساب الآخر. ويمكننا تنفيذ ذلك على النحو الآتي:[^41]
 
 ```scheme
 (define (exchange account1 account2)
@@ -2581,9 +2581,9 @@ To illustrate one of the difficulties that can arise, suppose we wish to swap th
     ((account2 'deposit) difference)))
 ```
 
-This procedure works well when only a single process is trying to do the exchange. Suppose, however, that Peter and Paul both have access to accounts $a 1$ , $a 2$ , and $a 3$ , and that Peter exchanges $a 1$ and $a 2$ while Paul concurrently exchanges $a 1$ and $a 3$ . Even with account deposits and withdrawals serialized for individual accounts (as in the `make-account` procedure shown above in this section), `exchange` can still produce incorrect results. For example, Peter might compute the difference in the balances for $a 1$ and $a 2$ , but then Paul might change the balance in $a 1$ before Peter is able to complete the exchange.[^42] For correct behavior, we must arrange for the `exchange` procedure to lock out any other concurrent accesses to the accounts during the entire time of the exchange.
+يعمل هذا الإجراء حسنًا حين لا تكون إلّا عمليّةٌ واحدةٌ تحاول أداء المبادلة. لكن لنفترض أنّ بيتر وبول كلًّا منهما يستطيع النفاذ إلى الحسابات $a 1$ و$a 2$ و$a 3$ ، وأنّ بيتر يبادل $a 1$ و$a 2$ بينما يبادل بول $a 1$ و$a 3$ تزامنًا. فحتّى مع تسلسُل إيداعات الحسابات وسحوباتها للحسابات الفرديّة (كما في إجراء `make-account` الموضّح أعلاه في هذا القسم)، فإنّ `exchange` لا يزال يستطيع أن يُنتج نتائج غير صحيحة. فمثلًا، قد يحتسب بيتر الفرق بين رصيدَي $a 1$ و$a 2$ ، لكنّ بول قد يُغيّر الرصيد في $a 1$ قبل أن يتمكّن بيتر من إتمام المبادلة.[^42] ومن أجل السلوك الصحيح، يجب أن نُرتّب لأن يُقصيَ إجراءُ `exchange` أيّ نفاذٍ متزامنٍ آخر إلى الحسابات طيلة مدّة المبادلة.
 
-One way we can accomplish this is by using both accounts’ serializers to serialize the entire `exchange` procedure. To do this, we will arrange for access to an account’s serializer. Note that we are deliberately breaking the modularity of the bank-account object by exposing the serializer. The following version of `make-account` is identical to the original version given in [3.1.1](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e1), except that a serializer is provided to protect the balance variable, and the serializer is exported via message passing:
+إحدى الطرائق التي نستطيع بها تحقيق ذلك هي استخدام مسلسَلَي الحسابين لتسلسُل إجراء `exchange` بأكمله. ولفعل ذلك، سنُرتّب لإتاحة النفاذ إلى مسلسل الحساب. ولاحِظ أنّنا نكسر وحدانيّة كائن الحساب المصرفيّ بشكلٍ مقصودٍ بالكشف عن المسلسل. فإنّ النسخة الآتية من `make-account` مطابقةٌ للنسخة الأصليّة الواردة في [3.1.1](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e1)، إلّا أنّ هنا يُوفَّر مسلسلٌ لحماية متغيّر الرصيد، ويُصدَّر المسلسل عبر تمرير الرسائل:
 
 ```scheme
 (define (make-account-and-serializer balance)
@@ -2610,7 +2610,7 @@ One way we can accomplish this is by using both accounts’ serializers to seria
     dispatch))
 ```
 
-We can use this to do serialized deposits and withdrawals. However, unlike our earlier serialized account, it is now the responsibility of each user of bank-account objects to explicitly manage the serialization, for example as follows:[^43]
+يمكننا استخدام ذلك لأداء إيداعاتٍ وسحوباتٍ مسلسَلة. لكن، وعلى خلاف حسابنا المسلسَل السابق، فإنّ مسؤوليّة إدارة التسلسُل صراحةً تقع الآن على عاتق كلّ مستخدمٍ لكائنات الحساب المصرفيّ، كما يلي مثلًا:[^43]
 
 ```scheme
 (define (deposit account amount)
@@ -2619,7 +2619,7 @@ We can use this to do serialized deposits and withdrawals. However, unlike our e
     ((s d) amount)))
 ```
 
-Exporting the serializer in this way gives us enough flexibility to implement a serialized exchange program. We simply serialize the original `exchange` procedure with the serializers for both accounts:
+إنّ تصدير المسلسل بهذه الطريقة يمنحنا مرونةً كافيةً لتنفيذ برنامج مبادلةٍ مسلسَل. فنحن ببساطةٍ نُسلْسِل إجراء `exchange` الأصليّ بمسلسَلَي الحسابين:
 
 ```scheme
 (define (serialized-exchange account1 account2)
@@ -2630,9 +2630,9 @@ Exporting the serializer in this way gives us enough flexibility to implement a 
      account2)))
 ```
 
-> **Exercise 3.43:** Suppose that the balances in three accounts start out as $10, $20, and $30, and that multiple processes run, exchanging the balances in the accounts. Argue that if the processes are run sequentially, after any number of concurrent exchanges, the account balances should be $10, $20, and $30 in some order. Draw a timing diagram like the one in [Figure 3.29](#Figure-3_002e29) to show how this condition can be violated if the exchanges are implemented using the first version of the account-exchange program in this section. On the other hand, argue that even with this `exchange` program, the sum of the balances in the accounts will be preserved. Draw a timing diagram to show how even this condition would be violated if we did not serialize the transactions on individual accounts.
+> **التمرين 3.43:** لنفترض أنّ أرصدة ثلاثة حسابات تبدأ بقيم $10 و$20 و$30، وأنّ عمليّاتٍ متعدّدةً تسير، مبادلةً أرصدة الحسابات. ناقش أنّ العمليّات إذا سارت تسلسليًّا، فإنّه بعد أيّ عددٍ من المبادلات المتزامنة، ينبغي أن تكون أرصدة الحسابات $10 و$20 و$30 بترتيبٍ ما. وارسم مخطّطًا زمنيًّا شبيهًا بالوارد في [الشكل 3.29](#Figure-3_002e29) لتُظهر كيف يمكن أن يُخالَف هذا الشرط إذا نُفّذت المبادلات باستخدام النسخة الأولى من برنامج مبادلة الحسابات الوارد في هذا القسم. ومن جهةٍ أخرى، ناقش أنّ حتّى مع برنامج `exchange` هذا، فإنّ مجموع أرصدة الحسابات سيبقى محفوظًا. وارسم مخطّطًا زمنيًّا لتُظهر كيف يمكن أن يُخالَف حتّى هذا الشرط لو أنّنا لم نُسلْسِل المعاملات على الحسابات الفرديّة.
 
-**Exercise 3.44:** Consider the problem of transferring an amount from one account to another. Ben Bitdiddle claims that this can be accomplished with the following procedure, even if there are multiple people concurrently transferring money among multiple accounts, using any account mechanism that serializes deposit and withdrawal transactions, for example, the version of `make-account` in the text above.
+**التمرين 3.44:** تأمّل مسألة تحويل مبلغٍ من حسابٍ إلى آخر. يدّعي بن بيتدِل أنّ ذلك يمكن إنجازه بالإجراء الآتي، حتّى إذا كان هناك أشخاصٌ متعدّدون ينقلون مالًا بين حساباتٍ متعدّدةٍ تزامنًا، باستخدام أيّ آليّة حسابٍ تُسلْسِل معاملات الإيداع والسحب، مثل إصدار `make-account` الوارد في النصّ أعلاه.
 
 ```scheme
 (define 
@@ -2641,9 +2641,9 @@ Exporting the serializer in this way gives us enough flexibility to implement a 
   ((to-account 'deposit) amount))
 ```
 
-Louis Reasoner claims that there is a problem here, and that we need to use a more sophisticated method, such as the one required for dealing with the exchange problem. Is Louis right? If not, what is the essential difference between the transfer problem and the exchange problem? (You should assume that the balance in `from-account` is at least `amount`.)
+يدّعي لويس ريزنر أنّ هناك مشكلةً هنا، وأنّنا نحتاج إلى استخدام منهجٍ أكثر تطوّرًا، كالذي يلزم للتعامل مع مسألة المبادلة. فهل لويس محقّ؟ وإذا لم يكن كذلك، فما الفرق الجوهريّ بين مسألة التحويل ومسألة المبادلة؟ (وعليك أن تفترض أنّ الرصيد في `from-account` لا يقلّ عن `amount`.)
 
-**Exercise 3.45:** Louis Reasoner thinks our bank-account system is unnecessarily complex and error-prone now that deposits and withdrawals aren’t automatically serialized. He suggests that `make-account-and-serializer` should have exported the serializer (for use by such procedures as `serialized-exchange`) in addition to (rather than instead of) using it to serialize accounts and deposits as `make-account` did. He proposes to redefine accounts as follows:
+**التمرين 3.45:** يعتقد لويس ريزنر أنّ نظامنا المصرفيّ معقّدٌ وعرضةٌ للأخطاء بلا داعٍ الآن، بما أنّ الإيداعات والسحوبات لم تبقَ مُسلسَلةً تلقائيًّا. وهو يقترح أنّ `make-account-and-serializer` كان ينبغي أن يُصدّر المسلسل (لاستخدامه في إجراءاتٍ مثل `serialized-exchange`) بالإضافة إلى (بدلًا من) استخدامه لتسلسُل الحسابات والإيداعات كما فعل `make-account`. وهو يقترح إعادة تعريف الحسابات على النحو الآتي:
 
 ```scheme
 (define 
@@ -2674,18 +2674,18 @@ Louis Reasoner claims that there is a problem here, and that we need to use a mo
     dispatch))
 ```
 
-Then deposits are handled as with the original `make-account`:
+ثمّ تُعالَج الإيداعات كما في `make-account` الأصليّ:
 
 ```scheme
 (define (deposit account amount)
   ((account 'deposit) amount))
 ```
 
-Explain what is wrong with Louis’s reasoning. In particular, consider what happens when `serialized-exchange` is called.
+اشرح ما الخطأ في استدلال لويس. وعلى وجه الخصوص، تأمّل ما يقع حين يُنادى `serialized-exchange`.
 
-#### Implementing serializers
+#### تنفيذ المسلسلات
 
-We implement serializers in terms of a more primitive synchronization mechanism called a *mutex*. A mutex is an object that supports two operations—the mutex can be *acquired*, and the mutex can be *released*. Once a mutex has been acquired, no other acquire operations on that mutex may proceed until the mutex is released.[^44] In our implementation, each serializer has an associated mutex. Given a procedure `p`, the serializer returns a procedure that acquires the mutex, runs `p`, and then releases the mutex. This ensures that only one of the procedures produced by the serializer can be running at once, which is precisely the serialization property that we need to guarantee.
+نحن نُنفّذ المسلسلات بدلالة آليّة مزامنةٍ أوّليّةٍ أكثر تُسمّى *القفل الثنائيّ (mutex)*. والقفل الثنائيّ كائنٌ يدعم عمليّتين— يمكن *اكتساب (acquired)* القفل الثنائيّ، ويمكن *إطلاقه (released)*. ومتى اكتُسب قفلٌ ثنائيّ، فلا يجوز لأيّ عمليّات اكتسابٍ أخرى على ذلك القفل أن تُواصل حتّى يُطلَق القفل.[^44] وفي تنفيذنا، لكلّ مسلسلٍ قفلٌ ثنائيّ مرافق له. وبإعطائنا إجراءً `p`، يُعيد المسلسل إجراءً يكتسب القفل الثنائيّ، ويُشغّل `p`، ثمّ يُطلق القفل. وهذا يضمن أنّ إجراءً واحدًا فقط من الإجراءات التي يُنتجها المسلسل يمكن أن يكون قيد التشغيل في مرّةٍ واحدة، وهو بالضبط خاصّيّة التسلسُل التي يلزمنا أن نضمنها.
 
 ```scheme
 (define (make-serializer)
@@ -2699,9 +2699,9 @@ We implement serializers in terms of a more primitive synchronization mechanism 
       serialized-p)))
 ```
 
-The mutex is a mutable object (here we’ll use a one-element list, which we’ll refer to as a *cell*) that can hold the value true or false. When the value is false, the mutex is available to be acquired. When the value is true, the mutex is unavailable, and any process that attempts to acquire the mutex must wait.
+والقفل الثنائيّ كائنٌ قابلٌ للتغيير (ها هنا سنستخدم قائمةً ذات عنصرٍ واحد، سنُشير إليها بـ*خليّة*) يمكن أن تحتفظ بالقيمة true أو false. وحين تكون القيمة false، يكون القفل الثنائيّ متاحًا لاكتسابه. وحين تكون القيمة true، يكون القفل الثنائيّ غير متاح، وأيّ عمليّةٍ تحاول اكتساب القفل يجب أن تنتظر.
 
-Our mutex constructor `make-mutex` begins by initializing the cell contents to false. To acquire the mutex, we test the cell. If the mutex is available, we set the cell contents to true and proceed. Otherwise, we wait in a loop, attempting to acquire over and over again, until we find that the mutex is available.[^45] To release the mutex, we set the cell contents to false.
+يبدأ بانٍ القفل الثنائيّ `make-mutex` بتهيئة محتويات الخليّة إلى false. ولاكتساب القفل الثنائيّ، نختبر الخليّة. فإذا كان القفل الثنائيّ متاحًا، نضبط محتويات الخليّة على true ونواصل. وإلّا، فنحن ننتظر في حلقة، محاولين الاكتساب مرارًا وتكرارًا، حتّى نجد أنّ القفل الثنائيّ متاح.[^45] ولإطلاق القفل الثنائيّ، نضبط محتويات الخليّة على false.
 
 ```scheme
 (define (make-mutex)
@@ -2715,7 +2715,7 @@ Our mutex constructor `make-mutex` begins by initializing the cell contents to f
 (define (clear! cell) (set-car! cell false))
 ```
 
-`Test-and-set!` tests the cell and returns the result of the test. In addition, if the test was false, `test-and-set!` sets the cell contents to true before returning false. We can express this behavior as the following procedure:
+تختبر الدالّة `test-and-set!` الخليّة وتُعيد نتيجة الاختبار. فضلًا عن ذلك، إذا كان الاختبار خاطئًا، تضبط `test-and-set!` محتويات الخليّة على القيمة true قبل إعادة القيمة false. ويمكننا التعبير عن هذا السلوك بالإجراء الآتي:
 
 ```scheme
 (define (test-and-set! cell)
@@ -2725,55 +2725,55 @@ Our mutex constructor `make-mutex` begins by initializing the cell contents to f
              false)))
 ```
 
-However, this implementation of `test-and-set!` does not suffice as it stands. There is a crucial subtlety here, which is the essential place where concurrency control enters the system: The `test-and-set!` operation must be performed *atomically*. That is, we must guarantee that, once a process has tested the cell and found it to be false, the cell contents will actually be set to true before any other process can test the cell. If we do not make this guarantee, then the mutex can fail in a way similar to the bank-account failure in [Figure 3.29](#Figure-3_002e29). (See [Exercise 3.46](#Exercise-3_002e46).)
+غير أنّ هذا التنفيذ لـ`test-and-set!` لا يكفي كما هو. فهناك دقّةٌ حاسمةٌ هنا، وهي الموضع الجوهريّ الذي يدخل منه التحكّم في التزامن إلى النظام: ينبغي أن تُنفَّذ العمليّة `test-and-set!` *ذرّيًّا*. أي أنّه ينبغي لنا أن نضمن أنّ الخليّة، متى اختبرتها عمليّةٌ ما فوجدتها false، ستُضبط محتوياتها فعلًا على true قبل أن تستطيع أيّ عمليّةٍ أخرى اختبارها. فإن لم نتّخذ هذا الضمان، فقد يفشل القفل الثنائيّ (mutex) على نحوٍ مشابهٍ لفشل الحساب المصرفيّ الوارد في [الشكل 3.29](#Figure-3_002e29). (انظر [التمرين 3.46](#Exercise-3_002e46).)
 
-The actual implementation of `test-and-set!` depends on the details of how our system runs concurrent processes. For example, we might be executing concurrent processes on a sequential processor using a time-slicing mechanism that cycles through the processes, permitting each process to run for a short time before interrupting it and moving on to the next process. In that case, `test-and-set!` can work by disabling time slicing during the testing and setting.[^46] Alternatively, multiprocessing computers provide instructions that support atomic operations directly in hardware.[^47]
+إنّ التنفيذ الفعليّ لـ`test-and-set!` يعتمد على تفاصيل كيفيّة تشغيل نظامنا للعمليّات المتزامنة. فقد نكون، مثلًا، نُنفّذ عمليّاتٍ متزامنةً على معالجٍ تسلسليّ باستخدام آليّة تقسيمٍ زمنيّ تتداور بين العمليّات، فتسمح لكلّ عمليّةٍ بالعمل مدّةً قصيرة قبل مقاطعتها والانتقال إلى العمليّة التالية. وفي هذه الحالة، يستطيع `test-and-set!` أن يعمل بتعطيل تقسيم الوقت أثناء الاختبار والضبط.[^46] وعلى البديل، توفّر الحواسيب متعدّدة المعالجات تعليماتٍ تدعم العمليّات الذرّيّة مباشرةً في العتاد.[^47]
 
-> **Exercise 3.46:** Suppose that we implement `test-and-set!` using an ordinary procedure as shown in the text, without attempting to make the operation atomic. Draw a timing diagram like the one in [Figure 3.29](#Figure-3_002e29) to demonstrate how the mutex implementation can fail by allowing two processes to acquire the mutex at the same time.
+> **التمرين 3.46:** لنفترض أنّنا نفّذنا `test-and-set!` بإجراءٍ اعتياديٍّ كما هو موضّح في النصّ، دون محاولةٍ لجعل العمليّة ذرّيّة. فارسم مخطّطًا زمنيًّا شبيهًا بالوارد في [الشكل 3.29](#Figure-3_002e29) لتُبيّن كيف يمكن أن يفشل تنفيذ القفل الثنائيّ (mutex) بالسماح لعمليّتين باكتساب القفل في الوقت ذاته.
 
-> **Exercise 3.47:** A semaphore (of size $n$ ) is a generalization of a mutex. Like a mutex, a semaphore supports acquire and release operations, but it is more general in that up to $n$ processes can acquire it concurrently. Additional processes that attempt to acquire the semaphore must wait for release operations. Give implementations of semaphores in terms of mutexes
-> > in terms of atomic `test-and-set!` operations.
+> **التمرين 3.47:** السيمانة (semaphore) التي حجمها $n$ تعميمٌ للقفل الثنائيّ. فمثل القفل الثنائيّ، تدعم السيمانة عمليّتَي الاكتساب والإطلاق، لكنّها أعمّ من حيث أنّ حتّى $n$ عمليّةً تستطيع اكتسابها تزامنًا. والعمليّات الإضافيّة التي تحاول اكتساب السيمانة ينبغي أن تنتظر عمليّات الإطلاق. أعطِ تنفيذاتٍ للسيمانات بدلالة الأقفال الثنائيّة
+> > وبدلالة عمليّات `test-and-set!` الذرّيّة.
 > > 
 
-#### Deadlock
+#### الجمود (deadlock)
 
-Now that we have seen how to implement serializers, we can see that account exchanging still has a problem, even with the `serialized-exchange` procedure above. Imagine that Peter attempts to exchange $a 1$ with $a 2$ while Paul concurrently attempts to exchange $a 2$ with $a 1$ . Suppose that Peter’s process reaches the point where it has entered a serialized procedure protecting $a 1$ and, just after that, Paul’s process enters a serialized procedure protecting $a 2$ . Now Peter cannot proceed (to enter a serialized procedure protecting $a 2$ ) until Paul exits the serialized procedure protecting $a 2$ . Similarly, Paul cannot proceed until Peter exits the serialized procedure protecting $a 1$ . Each process is stalled forever, waiting for the other. This situation is called a *deadlock*. Deadlock is always a danger in systems that provide concurrent access to multiple shared resources.
+والآن، بعد أن رأينا كيف تُنفَّذ المسلسلات (serializers)، نستطيع أن نرى أنّ تبادل الحسابات لا يزال يعاني من مشكلةٍ، حتّى مع الإجراء `serialized-exchange` أعلاه. فتخيّل أنّ بيتر يحاول مبادلة $a 1$ بـ$a 2$ بينما يحاول بول تزامنًا مبادلة $a 2$ بـ$a 1$ . ولنفترض أنّ عمليّة بيتر تبلغ النقطة التي تكون قد دخلت فيها إجراءً مسلسَلًا يحمي $a 1$ وأنّ عمليّة بول، عقب ذلك على الفور، تدخل إجراءً مسلسَلًا يحمي $a 2$ . فبيتر الآن لا يستطيع المواصلة (بدخول إجراءٍ مسلسَلٍ يحمي $a 2$ ) حتّى يخرج بول من الإجراء المسلسل الذي يحمي $a 2$ . وبالمثل، لا يستطيع بول المواصلة حتّى يخرج بيتر من الإجراء المسلسل الذي يحمي $a 1$ . فكلّ عمليّةٍ متوقّفةٌ إلى الأبد، تنتظر الأخرى. وتُسمّى هذه الحالَة *جمودًا*. والجمود خطرٌ دائمٌ في النظم التي تتيح وصولًا متزامنًا إلى موارد مشتركةٍ متعدّدة.
 
-One way to avoid the deadlock in this situation is to give each account a unique identification number and rewrite `serialized-exchange` so that a process will always attempt to enter a procedure protecting the lowest-numbered account first. Although this method works well for the exchange problem, there are other situations that require more sophisticated deadlock-avoidance techniques, or where deadlock cannot be avoided at all. (See [Exercise 3.48](#Exercise-3_002e48) and [Exercise 3.49](#Exercise-3_002e49).)[^48]
+وإحدى طرائق تجنّب الجمود في هذه الحالة هي إعطاء كلّ حسابٍ رقم تعريفٍ فريدٍ وإعادة كتابة `serialized-exchange` بحيث تحاول كلّ عمليّةٍ دائمًا دخول إجراءٍ يحمي الحساب ذا الرقم الأدنى أوّلًا. وعلى الرغم من أنّ هذه الطريقة تعمل حسنًا في مسألة التبادل، فهناك حالاتٌ أخرى تتطلّب تقنيّاتٍ أكثر تطوّرًا لتجنّب الجمود، أو حيث لا يمكن تجنّب الجمود إطلاقًا. (انظر [التمرين 3.48](#Exercise-3_002e48) و[التمرين 3.49](#Exercise-3_002e49).)[^48]
 
-> **Exercise 3.48:** Explain in detail why the deadlock-avoidance method described above, (i.e., the accounts are numbered, and each process attempts to acquire the smaller-numbered account first) avoids deadlock in the exchange problem. Rewrite `serialized-exchange` to incorporate this idea. (You will also need to modify `make-account` so that each account is created with a number, which can be accessed by sending an appropriate message.)
+> **التمرين 3.48:** اشرح بتفصيلٍ لماذا يتجنّب أسلوب تجنّب الجمود الموصوف أعلاه (أي أنّ الحسابات مُرقَّمة، وأنّ كلّ عمليّةٍ تحاول اكتساب الحساب ذي الرقم الأصغر أوّلًا) الجمودَ في مسألة التبادل. وأعِد كتابة `serialized-exchange` لتُدرج هذه الفكرة. (وأنت أيضًا محتاجٌ إلى تعديل `make-account` بحيث يُنشأ كلّ حسابٍ برقمٍ يمكن النفاذ إليه بإرسال رسالةٍ مناسبة.)
 
-> **Exercise 3.49:** Give a scenario where the deadlock-avoidance mechanism described above does not work. (Hint: In the exchange problem, each process knows in advance which accounts it will need to get access to. Consider a situation where a process must get access to some shared resources before it can know which additional shared resources it will require.)
+> **التمرين 3.49:** أعطِ سيناريو حيث لا تعمل آليّة تجنّب الجمود الموصوفة أعلاه. (تلميح: في مسألة التبادل، تعرف كلّ عمليّةٍ مسبقًا الحساباتَ التي سيَلزمها النفاذ إليها. فتأمّل حالَة يجب أن تنال فيها عمليّةٌ النفاذ إلى بعض الموارد المشتركة قبل أن تستطيع معرفة أيّ موارد مشتركةٍ إضافيّةٍ ستلزمها.)
 
-#### Concurrency, time, and communication
+#### التزامن والزمن والتواصل
 
-We’ve seen how programming concurrent systems requires controlling the ordering of events when different processes access shared state, and we’ve seen how to achieve this control through judicious use of serializers. But the problems of concurrency lie deeper than this, because, from a fundamental point of view, it’s not always clear what is meant by “shared state.”
+لقد رأينا كيف أنّ برمجة النظم المتزامنة تتطلّب ضبط ترتيب الأحداث حين تصل عمليّاتٌ مختلفة إلى حالةٍ مشتركة، ورأينا كيف يمكن تحقيق هذا الضبط باستخدامٍ حصيفٍ للمسلسلات (serializers). لكنّ مشاكل التزامن أعمق من ذلك، لأنّه - من وجهة نظرٍ أساسيّةٍ - ليس واضحًا دائمًا ما يُقصد بـ«الحالة المشتركة».
 
-Mechanisms such as `test-and-set!` require processes to examine a global shared flag at arbitrary times. This is problematic and inefficient to implement in modern high-speed processors, where due to optimization techniques such as pipelining and cached memory, the contents of memory may not be in a consistent state at every instant. In contemporary multiprocessing systems, therefore, the serializer paradigm is being supplanted by new approaches to concurrency control.[^49]
+تتطلّب آليّاتٌ مثل `test-and-set!` أن تفحص العمليّات رايةً (flag) مشتركةً عامّةً في أزمنةٍ اعتباطيّة. وهذا مُشكِلٌ وغير كفؤٍ في التنفيذ في المعالجات الحديثة السريعة، حيث - بسبب تقنيّات التحسين كالتقسيم إلى مراحل (pipelining) والذاكرة المخبئيّة (cached memory) - قد لا تكون محتويات الذاكرة في حالةٍ متّسقةٍ في كلّ لحظة. ولذلك، في النظم متعدّدة المعالجات المعاصرة، يحلّ نموذج المسلسلات بديلًا عنها مقارباتٌ جديدة للتحكّم في التزامن.[^49]
 
-The problematic aspects of shared state also arise in large, distributed systems. For instance, imagine a distributed banking system where individual branch banks maintain local values for bank balances and periodically compare these with values maintained by other branches. In such a system the value of “the account balance” would be undetermined, except right after synchronization. If Peter deposits money in an account he holds jointly with Paul, when should we say that the account balance has changed—when the balance in the local branch changes, or not until after the synchronization? And if Paul accesses the account from a different branch, what are the reasonable constraints to place on the banking system such that the behavior is “correct”? The only thing that might matter for correctness is the behavior observed by Peter and Paul individually and the “state” of the account immediately after synchronization. Questions about the “real” account balance or the order of events between synchronizations may be irrelevant or meaningless.[^50]
+وتنشأ الجوانب المُشكِلة للحالة المشتركة أيضًا في النظم الموزعة الكبيرة. فتخيّل، مثلًا، نظامًا مصرفيًّا موزّعًا تحفظ فيه المصارف الفرعيّة الفرديّة قيمًا محلّيّةً للأرصدة وتقارنها دوريًّا بالقيم التي تحفظها الفروع الأخرى. في مثل هذا النظام، ستكون قيمة «رصيد الحساب» غير محدّدة، إلّا في الحال التي تلي المزامنة مباشرةً. فإن أودع بيتر مالًا في حسابٍ يملكه مشتركًا مع بول، فمتى ينبغي لنا أن نقول إنّ رصيد الحساب قد تغيّر — عندما يتغيّر الرصيد في الفرع المحلّيّ، أم لا إلّا بعد المزامنة؟ وإذا نال بول الحساب من فرعٍ مختلف، فما القيود المعقولة التي يلزم فرضها على النظام المصرفيّ بحيث يكون السلوك «صحيحًا»؟ والشيء الوحيد الذي قد يهمّ في الصحّة هو السلوك الذي يرصده بيتر وبول كلٌّ على حدة، و«حالة» الحساب في الحال التي تلي المزامنة مباشرةً. أمّا الأسئلة عن رصيد الحساب «الحقيقيّ» أو عن ترتيب الأحداث بين المزامنات فقد تكون بلا صلةٍ أو بلا معنى.[^50]
 
-The basic phenomenon here is that synchronizing different processes, establishing shared state, or imposing an order on events requires communication among the processes. In essence, any notion of time in concurrency control must be intimately tied to communication.[^51] It is intriguing that a similar connection between time and communication also arises in the Theory of Relativity, where the speed of light (the fastest signal that can be used to synchronize events) is a fundamental constant relating time and space. The complexities we encounter in dealing with time and state in our computational models may in fact mirror a fundamental complexity of the physical universe.
+والظاهرة الأساسيّة هنا هي أنّ مزامنة العمليّات المختلفة، أو إقامة حالةٍ مشتركة، أو فرض ترتيبٍ على الأحداث، تتطلّب تواصلًا بين العمليّات. وفي الجوهر، ينبغي أن يكون أيّ مفهومٍ للزمن في التحكّم في التزامن مرتبطًا ارتباطًا وثيقًا بالتواصل.[^51] ومن المثير للإعجاب أنّ ارتباطًا مماثلاً بين الزمن والتواصل ينشأ أيضًا في النظريّة النسبيّة، حيث سرعة الضوء (أسرع إشارةٍ يمكن استخدامها لمزامنة الأحداث) ثابتٌ أساسيٌّ يربط الزمن بالمكان. والتعقيدات التي نواجهها في التعامل مع الزمن والحالة في نماذجنا الحسابيّة قد تعكس في الواقع تعقيدًا أساسيًّا في الكون الفيزيائيّ.
 
-### 3.5 Streams
+### 3.5 المجاري
 
-We’ve gained a good understanding of assignment as a tool in modeling, as well as an appreciation of the complex problems that assignment raises. It is time to ask whether we could have gone about things in a different way, so as to avoid some of these problems. In this section, we explore an alternative approach to modeling state, based on data structures called *streams*. As we shall see, streams can mitigate some of the complexity of modeling state.
+لقد اكتسبنا فهمًا حسنًا للإحلال بوصفه أداةً في النمذجة، وإدراكًا للمشاكل المعقّدة التي يُثيرها الإحلال. وحان وقت التساؤل عمّا إذا كان في وسعنا أن نسير في الأمور سيرًا مختلفًا، حتّى نتجنّب بعض هذه المشاكل. وفي هذا القسم، نستكشف مقاربةً بديلةً لنمذجة الحالة، قائمةً على بنى بياناتٍ تُسمّى *المجاري (streams)*. وكما سنرى، فالمجاري قادرةٌ على تخفيف بعض تعقيد نمذجة الحالة.
 
-Let’s step back and review where this complexity comes from. In an attempt to model real-world phenomena, we made some apparently reasonable decisions: We modeled real-world objects with local state by computational objects with local variables. We identified time variation in the real world with time variation in the computer. We implemented the time variation of the states of the model objects in the computer with assignments to the local variables of the model objects.
+دعنا نتراجع خطوةً ولنراجع من أين يأتي هذا التعقيد. ففي محاولتنا نمذجة ظواهر العالم الواقعيّ، اتّخذنا بعض القرارات التي تبدو معقولةً ظاهريًّا: فنمذّينا الأشياء الواقعيّة ذات الحالة المحلّيّة بكائناتٍ حسابيّةٍ محلّيّة المتغيّرات. وربطنا التغيّر الزمنيّ في العالم الواقعيّ بالتغيّر الزمنيّ في الحاسوب. ونفّذنا التغيّر الزمنيّ لحالات الكائنات النموذجيّة في الحاسوب بإحلالاتٍ على المتغيّرات المحلّيّة للكائنات النموذجيّة.
 
-Is there another approach? Can we avoid identifying time in the computer with time in the modeled world? Must we make the model change with time in order to model phenomena in a changing world? Think about the issue in terms of mathematical functions. We can describe the time-varying behavior of a quantity $x$ as a function of time $x ( t )$ . If we concentrate on $x$ instant by instant, we think of it as a changing quantity. Yet if we concentrate on the entire time history of values, we do not emphasize change—the function itself does not change.[^52]
+أهناك مقاربةٌ أخرى؟ أفيمكننا تجنّب ربط الزمن في الحاسوب بالزمن في العالم النموذجيّ؟ أينبغي لنا أن نجعل النموذج يتغيّر مع الزمن حتّى نمذّج ظواهرَ في عالمٍ متغيّر؟ فكّر في المسألة بدلالة الدوالّ الرياضيّة. فيمكننا وصف السلوك المتغيّر زمنيًّا لكمّيّةٍ $x$ كدالّ في الزمن $x ( t )$ . فإن تركّزنا على $x$ لحظةً بلحظة، فإنّا نعتبرها كمّيّةً متغيّرة. لكنّنا إن تركّزنا على التاريخ الزمنيّ الكامل للقيم، فإنّا لا نُبرز التغيّر — فإنّ الدالّ ذاتها لا تتغيّر.[^52]
 
-If time is measured in discrete steps, then we can model a time function as a (possibly infinite) sequence. In this section, we will see how to model change in terms of sequences that represent the time histories of the systems being modeled. To accomplish this, we introduce new data structures called *streams*. From an abstract point of view, a stream is simply a sequence. However, we will find that the straightforward implementation of streams as lists (as in [2.2.1](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e1)) doesn’t fully reveal the power of stream processing. As an alternative, we introduce the technique of *delayed evaluation*, which enables us to represent very large (even infinite) sequences as streams.
+فإن قُيس الزمن بخطواتٍ منفصلة، أمكننا نمذجة دالّ الزمن كتسلسلٍ (قد يكون غير منتهٍ). وفي هذا القسم، سنرى كيف ننمذج التغيّر بدلالة تسلسلاتٍ تمثّل التواريخ الزمنيّة للنظم التي نمذّجها. ولإنجاز ذلك، نُقدّم بنى بياناتٍ جديدةً تُسمّى *المجاري*. فمن وجهة نظرٍ مجرّدة، إنّ المجرى تسلسلٌ لا غير. لكنّنا سنجد أنّ التنفيذ المباشر للمجاري كقوائمَ (كما في [2.2.1](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e1)) لا يكشف كاملًا عن قوّة معالجة المجاري. وكبديل، نُقدّم تقنيّة *التقييم المتأخّر (delayed evaluation)*، التي تُمكّننا من تمثيل تسلسلاتٍ ضخمةٍ جدًّا (حتّى غير منتهية) كمجاري.
 
-Stream processing lets us model systems that have state without ever using assignment or mutable data. This has important implications, both theoretical and practical, because we can build models that avoid the drawbacks inherent in introducing assignment. On the other hand, the stream framework raises difficulties of its own, and the question of which modeling technique leads to more modular and more easily maintained systems remains open.
+تُتيح لنا معالجة المجاري نمذجة نظمٍ لها حالةٌ دون استخدام الإحلال أو البيانات القابلة للتغيير مطلقًا. ولهذا تبعاتٌ مهمّة، نظريّةٌ وعمليّةٌ، إذ نستطيع بناء نماذج تتجنّب العيوب الكامنة في إدخال الإحلال. ومن الجهة الأخرى، يُثير إطار المجاري صعوباتٍ خاصّةً به، والمسألةُ القائلة بأيّ تقنيّة نمذجةٍ تؤدّي إلى نظمٍ أكثر وحدانيّةً وأسهل صيانةً لا تزال مفتوحة.
 
-#### 3.5.1 Streams Are Delayed Lists
+#### 3.5.1 المجاري قوائمٌ متأخّرة
 
-As we saw in [2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3), sequences can serve as standard interfaces for combining program modules. We formulated powerful abstractions for manipulating sequences, such as `map`, `filter`, and `accumulate`, that capture a wide variety of operations in a manner that is both succinct and elegant.
+وكما رأينا في [2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3)، فإنّ التسلسلات يمكن أن تخدم بوصفها واجهاتٍ متعارف عليها لجمع وحدات البرنامج. وقد صغنا تجريداتٍ قويّةً للتلاعب بالتسلسلات، مثل `map` و`filter` و`accumulate`، التي تستوعب تنوّعًا واسعًا من العمليّات بصورةٍ موجزةٍ وأنيقةٍ معًا.
 
-Unfortunately, if we represent sequences as lists, this elegance is bought at the price of severe inefficiency with respect to both the time and space required by our computations. When we represent manipulations on sequences as transformations of lists, our programs must construct and copy data structures (which may be huge) at every step of a process.
+وللأسف، فإن مثّلنا التسلسلات كقوائمَ، فإنّ هذه الأناقة تُشترى بثمن اللّاكفاءة الشديدة، فيما يتعلّق بالزمن والمكان اللذين تتطلّبهما احتساباتنا. فحين نمثّل التلاعبات على التسلسلات كتحويلاتٍ للقوائم، ينبغي لبرامجنا أن تبني بنى بياناتٍ (قد تكون ضخمة) وتنسخها عند كلّ خطوةٍ من العمليّة.
 
-To see why this is true, let us compare two programs for computing the sum of all the prime numbers in an interval. The first program is written in standard iterative style:[^53]
+ولنرَ لماذا هذا صحيح، دعنا نقارن برنامجين لاحتساب مجموع جميع الأعداد الأوّليّة في فاصلٍ. والبرنامج الأوّل مكتوبٌ بالأسلوب التكراريّ المعياريّ:[^53]
 
 ```scheme
 (define (sum-primes a b)
@@ -2786,7 +2786,7 @@ To see why this is true, let us compare two programs for computing the sum of al
   (iter a 0))
 ```
 
-The second program performs the same computation using the sequence operations of [2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3):
+وأمّا البرنامج الثاني فيؤدّي الاحتساب نفسه باستخدام عمليّات التسلسل الواردة في [2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3):
 
 ```scheme
 (define (sum-primes a b)
@@ -2796,9 +2796,9 @@ The second program performs the same computation using the sequence operations o
    (filter prime? (enumerate-interval a b))))
 ```
 
-In carrying out the computation, the first program needs to store only the sum being accumulated. In contrast, the filter in the second program cannot do any testing until `enumerate-interval` has constructed a complete list of the numbers in the interval. The filter generates another list, which in turn is passed to `accumulate` before being collapsed to form a sum. Such large intermediate storage is not needed by the first program, which we can think of as enumerating the interval incrementally, adding each prime to the sum as it is generated.
+وفي أثناء أداء الاحتساب، لا يحتاج البرنامج الأوّل إلّا إلى تخزين المجموع المتراكم. وعلى النقيض، لا يستطيع المُرَشِّح (filter) في البرنامج الثاني إجراء أيّ اختبارٍ حتّى يكون `enumerate-interval` قد بنى قائمةً كاملةً بأعداد الفاصل. ويُنتج المُرَشِّح قائمةً أخرى، تُمرَّر بدورها إلى `accumulate` قبل أن تُختزل لتكوين مجموع. ومثل هذا التخزين الوسيط الضخم غير مطلوبٍ للبرنامج الأوّل، الذي يمكننا اعتباره يعدّد الفاصل تزايديًّا، مضيفًا كلّ عددٍ أوّليّ إلى المجموع حالما يُولَّد.
 
-The inefficiency in using lists becomes painfully apparent if we use the sequence paradigm to compute the second prime in the interval from 10,000 to 1,000,000 by evaluating the expression
+وإنّ ظهور اللّاكفاءة في استخدام القوائم يصير بيّنًا بمقدارٍ مؤلمٍ إن استخدمنا نموذج التسلسل لاحتساب العدد الأوّليّ الثاني في الفاصل من 10,000 إلى 1,000,000 بتقييم التعبير
 
 ```scheme
 (car (cdr 
@@ -2807,18 +2807,18 @@ The inefficiency in using lists becomes painfully apparent if we use the sequenc
        (enumerate-interval 10000 1000000))))
 ```
 
-This expression does find the second prime, but the computational overhead is outrageous. We construct a list of almost a million integers, filter this list by testing each element for primality, and then ignore almost all of the result. In a more traditional programming style, we would interleave the enumeration and the filtering, and stop when we reached the second prime.
+وهذا التعبير يجد العدد الأوّليّ الثاني فعلًا، لكنّ عبء الاحتساب فادح. فنحن نبني قائمةً بما يقارب مليون عددٍ صحيحٍ، ونُرَشِّح هذه القائمة باختبار كلّ عنصرٍ لأوّليّته، ثمّ نتجاهل كلّ النتيجة تقريبًا. وفي أسلوب برمجةٍ أكثر تقليديّةً، كنّا سنُشابك العدّ بالترشيح، ونتوقّف عند بلوغ العدد الأوّليّ الثاني.
 
-Streams are a clever idea that allows one to use sequence manipulations without incurring the costs of manipulating sequences as lists. With streams we can achieve the best of both worlds: We can formulate programs elegantly as sequence manipulations, while attaining the efficiency of incremental computation. The basic idea is to arrange to construct a stream only partially, and to pass the partial construction to the program that consumes the stream. If the consumer attempts to access a part of the stream that has not yet been constructed, the stream will automatically construct just enough more of itself to produce the required part, thus preserving the illusion that the entire stream exists. In other words, although we will write programs as if we were processing complete sequences, we design our stream implementation to automatically and transparently interleave the construction of the stream with its use.
+والمجاري فكرةٌ بارعةٌ تتيح للمرء أن يستخدم التلاعبات التسلسليّة دون تحمّل تكاليف التلاعب بالتسلسلات كقوائمَ. فبالمجاري نستطيع إحراز أفضل ما في العالمين: فيمكننا صياغة البرامج صياغةً أنيقةً كتلاعباتٍ تسلسليّة، مع بلوغ كفاءة الاحتساب التزايديّ. والفكرة الأساسيّة هي الترتيب لبناء المجرى بناءً جزئيًّا فقط، وتمرير البناء الجزئيّ إلى البرنامج الذي يستهلك المجرى. فإن حاول المستهلك الوصول إلى جزءٍ من المجرى لم يُبنَ بعد، فإنّ المجرى يبني تلقائيًّا ما يكفي من نفسه زيادةً على ذلك لإنتاج الجزء المطلوب، محافظًا بذلك على الوهم بأنّ المجرى كلّه موجود. وبعبارة أخرى، وعلى الرغم من أنّنا سنكتب البرامج كأنّا نعالج تسلسلاتٍ كاملةً، فإنّا نُصمّم تنفيذ المجاري بحيث يُشابك تلقائيًّا وبشفافيّةٍ بناء المجرى مع استخدامه.
 
-On the surface, streams are just lists with different names for the procedures that manipulate them. There is a constructor, `cons-stream`, and two selectors, `stream-car` and `stream-cdr`, which satisfy the constraints
+وعلى السطح، إنّ المجاري مجرّد قوائمَ بأسماءٍ مختلفةٍ للإجراءات التي تتلاعب بها. فهناك بانٍ، `cons-stream`، ومحدِّدان، `stream-car` و`stream-cdr`، يحقّقان القيود
 
 ```
 (stream-car (cons-stream x y)) = x
 (stream-cdr (cons-stream x y)) = y
 ```
 
-There is a distinguishable object, `the-empty-stream`, which cannot be the result of any `cons-stream` operation, and which can be identified with the predicate `stream-null?`.[^54] Thus we can make and use streams, in just the same way as we can make and use lists, to represent aggregate data arranged in a sequence. In particular, we can build stream analogs of the list operations from [Chapter 2](https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2), such as `list-ref`, `map`, and `for-each`:[^55]
+وهناك كائنٌ قابلٌ للتمييز، `the-empty-stream`، لا يمكن أن يكون نتيجة أيّ عمليّة `cons-stream`، ويمكن التعرّف عليه بالمسيّم `stream-null?`.[^54] وبذلك نستطيع صنع المجاري واستخدامها، بالطريقة ذاتها التي نستطيع بها صنع القوائم واستخدامها، لتمثيل بياناتٍ مجمّعةٍ مرتّبةٍ في تسلسل. وعلى وجه الخصوص، نستطيع بناء نظائر مجاري لعمليّات القوائم الواردة في [الفصل 2](https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2)، مثل `list-ref` و`map` و`for-each`:[^55]
 
 ```scheme
 (define (stream-ref s n)
@@ -2842,7 +2842,7 @@ There is a distinguishable object, `the-empty-stream`, which cannot be the resul
                          (stream-cdr s)))))
 ```
 
-`Stream-for-each` is useful for viewing streams:
+`Stream-for-each` مفيدٌ لعرض المجاري:
 
 ```scheme
 (define (display-stream s)
@@ -2853,23 +2853,23 @@ There is a distinguishable object, `the-empty-stream`, which cannot be the resul
   (display x))
 ```
 
-To make the stream implementation automatically and transparently interleave the construction of a stream with its use, we will arrange for the `cdr` of a stream to be evaluated when it is accessed by the `stream-cdr` procedure rather than when the stream is constructed by `cons-stream`. This implementation choice is reminiscent of our discussion of rational numbers in [2.1.2](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e2), where we saw that we can choose to implement rational numbers so that the reduction of numerator and denominator to lowest terms is performed either at construction time or at selection time. The two rational-number implementations produce the same data abstraction, but the choice has an effect on efficiency. There is a similar relationship between streams and ordinary lists. As a data abstraction, streams are the same as lists. The difference is the time at which the elements are evaluated. With ordinary lists, both the `car` and the `cdr` are evaluated at construction time. With streams, the `cdr` is evaluated at selection time.
+ولجعل تنفيذ المجاري يُشابك تلقائيًّا وبشفافيّةٍ بناء المجرى مع استخدامه، سنرَتّب لأن يُقيَّم `cdr` المجرى حين يُنال به بواسطة الإجراء `stream-cdr` بدلًا من حين يُبنى المجرى بـ`cons-stream`. وهذا الخيار التنفيذيّ يذكّرنا بمناقشتنا للأعداد الكسريّة في [2.1.2](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e2)، حيث رأينا أنّنا نستطيع أن نختار تنفيذ الأعداد الكسريّة بحيث يُجرى اختزال البسط والمقام إلى أبسط صورهما إمّا في وقت البناء وإمّا في وقت التحديد. وإنّ التنفيذين للأعداد الكسريّة يُنتجان تجريد البيانات ذاته، لكنّ الخيار يؤثّر في الكفاءة. وهناك علاقةٌ مماثلةٌ بين المجاري والقوائم الاعتياديّة. فبوصفها تجريد بيانات، إنّ المجاري هي القوائم عينها. والفرق هو الوقت الذي تُقيَّم فيه العناصر. ففي القوائم الاعتياديّة، يُقيَّم كلٌّ من `car` و`cdr` في وقت البناء. وفي المجاري، يُقيَّم `cdr` في وقت التحديد.
 
-Our implementation of streams will be based on a special form called `delay`. Evaluating `(delay ⟨exp⟩)` does not evaluate the expression `⟨`exp`⟩`, but rather returns a so-called *delayed object*, which we can think of as a “promise” to evaluate `⟨`exp`⟩` at some future time. As a companion to `delay`, there is a procedure called `force` that takes a delayed object as argument and performs the evaluation—in effect, forcing the `delay` to fulfill its promise. We will see below how `delay` and `force` can be implemented, but first let us use these to construct streams.
+وسيستند تنفيذنا للمجاري إلى صيغةٍ خاصّةٍ تُسمّى `delay`. فإنّ تقييم `(delay ⟨exp⟩)` لا يُقيّم التعبير `⟨`exp`⟩`، بل يُعيد ما يُسمّى *كائنًا متأخّرًا*، نستطيع اعتباره «وعدًا» بتقييم `⟨`exp`⟩` في وقتٍ مستقبليّ. وكرفيقٍ لـ`delay`، هناك إجراءٌ يُسمّى `force` يأخذ كائنًا متأخّرًا كمعطىً ويؤدّي التقييم — مُجبرًا في الفعل `delay` على الوفاء بوعده. وسنرى أدناه كيف يمكن تنفيذ `delay` و`force`، لكنّ دعنا أوّلًا نستخدمهما في بناء المجاري.
 
-`Cons-stream` is a special form defined so that
+`Cons-stream` صيغةٌ خاصّةٌ مُعرَّفةٌ بحيث
 
 ```scheme
 (cons-stream ⟨a⟩ ⟨b⟩)
 ```
 
-is equivalent to
+فهي مكافئةٌ لـ
 
 ```scheme
 (cons ⟨a⟩ (delay ⟨b⟩))
 ```
 
-What this means is that we will construct streams using pairs. However, rather than placing the value of the rest of the stream into the `cdr` of the pair we will put there a promise to compute the rest if it is ever requested. `Stream-car` and `stream-cdr` can now be defined as procedures:
+ومعنى هذا أنّنا سنبني المجاري باستخدام الأزواج. لكنّنا، بدلًا من وضع قيمة بقيّة المجرى في `cdr` الزوج، سنضع هناك وعدًا باحتساب البقيّة إن طُلبت يومًا. ويمكن الآن تعريف `stream-car` و`stream-cdr` كإجراءين:
 
 ```scheme
 (define (stream-car stream) 
@@ -2879,11 +2879,11 @@ What this means is that we will construct streams using pairs. However, rather t
   (force (cdr stream)))
 ```
 
-`Stream-car` selects the `car` of the pair; `stream-cdr` selects the `cdr` of the pair and evaluates the delayed expression found there to obtain the rest of the stream.[^56]
+يختار `stream-car` الجزء `car` من الزوج، و`stream-cdr` يختار الجزء `cdr` من الزوج ويُقيّم التعبير المتأخّر الموجود هناك للحصول على بقيّة المجرى.[^56]
 
-#### The stream implementation in action
+#### تنفيذ المجاري أثناء العمل
 
-To see how this implementation behaves, let us analyze the “outrageous” prime computation we saw above, reformulated in terms of streams:
+ولنرى كيف يسلك هذا التنفيذ، دعنا نحلّل الاحتساب الأوّليّ «الفادح» الذي رأيناه أعلاه، مُعادًا صياغته بدلالة المجاري:
 
 ```scheme
 (stream-car 
@@ -2893,9 +2893,9 @@ To see how this implementation behaves, let us analyze the “outrageous” prim
            10000 1000000))))
 ```
 
-We will see that it does indeed work efficiently.
+وسنرى أنّه يعمل بكفاءةٍ فعلًا.
 
-We begin by calling `stream-enumerate-interval` with the arguments 10,000 and 1,000,000. `Stream-enumerate-interval` is the stream analog of `enumerate-interval` ([2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3)):
+نبدأ بنداء `stream-enumerate-interval` بالمعطيين 10,000 و1,000,000. فـ`stream-enumerate-interval` نظير `enumerate-interval` في المجاري ([2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3)):
 
 ```scheme
 (define (stream-enumerate-interval low high)
@@ -2907,7 +2907,7 @@ We begin by calling `stream-enumerate-interval` with the arguments 10,000 and 1,
                                   high))))
 ```
 
-and thus the result returned by `stream-enumerate-interval`, formed by the `cons-stream`, is[^57]
+وبذلك، فإنّ النتيجة التي يُعيدها `stream-enumerate-interval`، والمكوَّنة بـ`cons-stream`، هي[^57]
 
 ```scheme
 (cons 10000
@@ -2917,7 +2917,7 @@ and thus the result returned by `stream-enumerate-interval`, formed by the `cons
          1000000)))
 ```
 
-That is, `stream-enumerate-interval` returns a stream represented as a pair whose `car` is 10,000 and whose `cdr` is a promise to enumerate more of the interval if so requested. This stream is now filtered for primes, using the stream analog of the `filter` procedure ([2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3)):
+أي أنّ `stream-enumerate-interval` يُعيد مجرى ممثَّلًا بزوجٍ `car` هو 10,000 و`cdr` هو وعدٌ بعدّ المزيد من الفاصل إن طُلب ذلك. وهذا المجرى يُرشَّح الآن للأوليّين، باستخدام نظير الإجراء `filter` في المجاري ([2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3)):
 
 ```scheme
 (define (stream-filter pred stream)
@@ -2934,7 +2934,7 @@ That is, `stream-enumerate-interval` returns a stream represented as a pair whos
                (stream-cdr stream)))))
 ```
 
-`Stream-filter` tests the `stream-car` of the stream (the `car` of the pair, which is 10,000). Since this is not prime, `stream-filter` examines the `stream-cdr` of its input stream. The call to `stream-cdr` forces evaluation of the delayed `stream-enumerate-interval`, which now returns
+يختبر `stream-filter` الجزء `stream-car` من المجرى (أي `car` الزوج، وهو 10,000). وبما أنّ هذا ليس أوّليًّا، فإنّ `stream-filter` يفحص الجزء `stream-cdr` من مجرى دخلته. ونداء `stream-cdr` يُجبر تقييم `stream-enumerate-interval` المتأخّر، الذي يُعيد الآن
 
 ```scheme
 (cons 10001
@@ -2944,7 +2944,7 @@ That is, `stream-enumerate-interval` returns a stream represented as a pair whos
          1000000)))
 ```
 
-`Stream-filter` now looks at the `stream-car` of this stream, 10,001, sees that this is not prime either, forces another `stream-cdr`, and so on, until `stream-enumerate-interval` yields the prime 10,007, whereupon `stream-filter`, according to its definition, returns
+ينظر `stream-filter` الآن إلى `stream-car` هذا المجرى، 10,001، فيرى أنّه ليس أوّليًّا هو الآخر، فيُجبر `stream-cdr` آخر، وهكذا، حتّى يُنتج `stream-enumerate-interval` العدد الأوّليّ 10,007، وعندها يُعيد `stream-filter`، وفقًا لتعريفه،
 
 ```scheme
 (cons-stream 
@@ -2952,7 +2952,7 @@ That is, `stream-enumerate-interval` returns a stream represented as a pair whos
  (stream-filter pred (stream-cdr stream)))
 ```
 
-which in this case is
+وهو في هذه الحالة
 
 ```scheme
 (cons 10007
@@ -2965,7 +2965,7 @@ which in this case is
                   10009 1000000))))))
 ```
 
-This result is now passed to `stream-cdr` in our original expression. This forces the delayed `stream-filter`, which in turn keeps forcing the delayed `stream-enumerate-interval` until it finds the next prime, which is 10,009. Finally, the result passed to `stream-car` in our original expression is
+وهذه النتيجة تُمرَّر الآن إلى `stream-cdr` في تعبيرنا الأصليّ. وهذا يُجبر `stream-filter` المتأخّر، الذي يُجبر بدوره باستمرار `stream-enumerate-interval` المتأخّر حتّى يجد العدد الأوّليّ التالي، وهو 10,009. وأخيرًا، فإنّ النتيجة الممرَّرة إلى `stream-car` في تعبيرنا الأصليّ هي
 
 ```scheme
 (cons 10009
@@ -2978,32 +2978,32 @@ This result is now passed to `stream-cdr` in our original expression. This force
                   10011 1000000))))))
 ```
 
-`Stream-car` returns 10,009, and the computation is complete. Only as many integers were tested for primality as were necessary to find the second prime, and the interval was enumerated only as far as was necessary to feed the prime filter.
+يُعيد `stream-car` العدد 10,009، والاحتساب يكتمل. وقد اختُبر من الأعداد الصحيحة عددٌ لا يزيد على الضروريّ لإيجاد العدد الأوّليّ الثاني، وأُعدّد الفاصل بقدر ما لا يزيد على الضروريّ لإطعام المُرَشِّح الأوّليّ.
 
-In general, we can think of delayed evaluation as “demand-driven” programming, whereby each stage in the stream process is activated only enough to satisfy the next stage. What we have done is to decouple the actual order of events in the computation from the apparent structure of our procedures. We write procedures as if the streams existed “all at once” when, in reality, the computation is performed incrementally, as in traditional programming styles.
+وبصورةٍ عامّة، نستطيع اعتبار التقييم المتأخّر برمجةً «مدفوعة بالطلب»، بحيث تُنشَّط كلّ مرحلةٍ في عمليّة المجرى بقدر ما يكفي لإشباع المرحلة التالية فقط. وما فعلناه هو فصل الترتيب الفعليّ للأحداث في الاحتساب عن البنية الظاهرة لإجراءاتنا. فنحن نكتب الإجراءات كأنّ المجاري موجودة «كلّها في وقتٍ واحد»، بينما يُؤدّى الاحتساب في الواقع تزايديًّا، كما في أساليب البرمجة التقليديّة.
 
-#### Implementing `delay` and `force`
+#### تنفيذ `delay` و`force`
 
-Although `delay` and `force` may seem like mysterious operations, their implementation is really quite straightforward. `Delay` must package an expression so that it can be evaluated later on demand, and we can accomplish this simply by treating the expression as the body of a procedure. `Delay` can be a special form such that
+وعلى الرغم من أنّ `delay` و`force` قد يبدوان عمليّتين غامضتين، فإنّ تنفيذهما واضحٌ ومباشرٌ حقًّا. فينبغي لـ`delay` أن يحزّم تعبيرًا بحيث يمكن تقييمه لاحقًا عند الطلب، ونستطيع إنجاز ذلك ببساطةٍ بمعاملة التعبير كجسمٍ لإجراء. ويمكن أن تكون `delay` صيغةً خاصّةً بحيث
 
 ```scheme
 (delay ⟨exp⟩)
 ```
 
-is syntactic sugar for
+فهي سكّر نحويّ لـ
 
 ```scheme
 (lambda () ⟨exp⟩)
 ```
 
-`Force` simply calls the procedure (of no arguments) produced by `delay`, so we can implement `force` as a procedure:
+يستدعي `force` ببساطةٍ الإجراء (الخالي من الوسائط) الذي يُنتجه `delay`، فيمكننا تنفيذ `force` كإجراءٍ:
 
 ```scheme
 (define (force delayed-object)
   (delayed-object))
 ```
 
-This implementation suffices for `delay` and `force` to work as advertised, but there is an important optimization that we can include. In many applications, we end up forcing the same delayed object many times. This can lead to serious inefficiency in recursive programs involving streams. (See [Exercise 3.57](#Exercise-3_002e57).) The solution is to build delayed objects so that the first time they are forced, they store the value that is computed. Subsequent forcings will simply return the stored value without repeating the computation. In other words, we implement `delay` as a special-purpose memoized procedure similar to the one described in [Exercise 3.27](https://sarabander.github.io/sicp/html/3_002e3.xhtml#Exercise-3_002e27). One way to accomplish this is to use the following procedure, which takes as argument a procedure (of no arguments) and returns a memoized version of the procedure. The first time the memoized procedure is run, it saves the computed result. On subsequent evaluations, it simply returns the result.
+وهذا التنفيذ يكفي لعمل `delay` و`force` كما هو معلن، لكنّ هناك تحسينًا مهمًّا يمكننا إدراجه. ففي تطبيقاتٍ كثيرة، ننتهي إلى إجبار الكائن المتأخّر عينه مرّاتٍ كثيرة. وهذا يمكن أن يؤدّي إلى لّاكفاءةٍ خطيرةٍ في البرامج التعاوديّة التي تشتمل على مجاري. (انظر [التمرين 3.57](#Exercise-3_002e57).) والحلّ هو بناء الكائنات المتأخّرة بحيث تخزّن، في أوّل مرّةٍ تُجبر فيها، القيمة التي تُحتسب. فإنّ الإجبارات اللاحقة ستُعيد ببساطةٍ القيمة المخزّنة دون إعادة الاحتساب. وبعبارة أخرى، ننفّذ `delay` كإجراءٍ مُحفَّظ النتائج (memoized) ذي غرضٍ خاصّ، شبيهٌ بالوارد في [التمرين 3.27](https://sarabander.github.io/sicp/html/3_002e3.xhtml#Exercise-3_002e27). وإحدى طرائق إنجاز ذلك هي استخدام الإجراء الآتي، الذي يأخذ كمعطىً إجراءً (خاليًا من الوسائط) ويُعيد نسخةً مُحفَّظة النتائج منه. فحين يُشغَّل الإجراء المُحفَّظ النتائج أوّل مرّةٍ، يحفظ النتيجة المحسوبة. وفي التقييمات اللاحقة، يُعيدها ببساطةٍ.
 
 ```scheme
 (define (memo-proc proc)
@@ -3016,15 +3016,15 @@ This implementation suffices for `delay` and `force` to work as advertised, but 
           result))))
 ```
 
-`Delay` is then defined so that `(delay ⟨exp⟩)` is equivalent to
+ثمّ تُعرَّف `delay` بحيث يكون `(delay ⟨exp⟩)` مكافئًا لـ
 
 ```scheme
 (memo-proc (lambda () ⟨exp⟩))
 ```
 
-and `force` is as defined previously.[^58]
+و`force` كما عُرِّف سابقًا.[^58]
 
-**Exercise 3.50:** Complete the following definition, which generalizes `stream-map` to allow procedures that take multiple arguments, analogous to `map` in [2.2.1](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e1), [Footnote 78](https://sarabander.github.io/sicp/html/2_002e2.xhtml#Footnote-78).
+**التمرين 3.50:** أكمل التعريف الآتي، الذي يُعمّم `stream-map` للسماح بإجراءاتٍ تأخذ معطياتٍ متعدّدة، على غرار `map` في [2.2.1](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e1)، [حاشية 78](https://sarabander.github.io/sicp/html/2_002e2.xhtml#Footnote-78).
 
 ```scheme
 (define (stream-map proc . argstreams)
@@ -3038,7 +3038,7 @@ and `force` is as defined previously.[^58]
                          argstreams))))))
 ```
 
-**Exercise 3.51:** In order to take a closer look at delayed evaluation, we will use the following procedure, which simply returns its argument after printing it:
+**التمرين 3.51:** ولإلقاء نظرةٍ أدقّ على التقييم المتأخّر، سنستخدم الإجراء الآتي، الذي يُعيد معطاه ببساطةٍ بعد طبعه:
 
 ```scheme
 (define (show x)
@@ -3046,7 +3046,7 @@ and `force` is as defined previously.[^58]
   x)
 ```
 
-What does the interpreter print in response to evaluating each expression in the following sequence?[^59]
+فماذا يطبع المفسّر استجابةً لتقييم كلّ تعبيرٍ في التتالي الآتي؟[^59]
 
 ```scheme
 (define x 
@@ -3058,7 +3058,7 @@ What does the interpreter print in response to evaluating each expression in the
 (stream-ref x 7)
 ```
 
-**Exercise 3.52:** Consider the sequence of expressions
+**التمرين 3.52:** تأمّل تتاليَ التعبيرات
 
 ```scheme
 (define sum 0)
@@ -3083,11 +3083,11 @@ What does the interpreter print in response to evaluating each expression in the
 (display-stream z)
 ```
 
-What is the value of `sum` after each of the above expressions is evaluated? What is the printed response to evaluating the `stream-ref` and `display-stream` expressions? Would these responses differ if we had implemented `(delay ⟨exp⟩)` simply as `(lambda () ⟨exp⟩)` without using the optimization provided by `memo-proc`? Explain.
+فما قيمة `sum` بعد تقييم كلّ واحدٍ من التعبيرات أعلاه؟ وما الاستجابة المطبوعة لتقييم تعبيرَي `stream-ref` و`display-stream`؟ أفكانت هذه الاستجابات ستختلف لو كنّا نفّذنا `(delay ⟨exp⟩)` ببساطةٍ كـ`(lambda () ⟨exp⟩)` دون استخدام التحسين الذي يوفّره `memo-proc`؟ فسّر.
 
-#### 3.5.2 Infinite Streams
+#### 3.5.2 المجاري غير المنتهية
 
-We have seen how to support the illusion of manipulating streams as complete entities even though, in actuality, we compute only as much of the stream as we need to access. We can exploit this technique to represent sequences efficiently as streams, even if the sequences are very long. What is more striking, we can use streams to represent sequences that are infinitely long. For instance, consider the following definition of the stream of positive integers:
+لقد رأينا كيف ندعم وهم التلاعب بالمجاري ككياناتٍ كاملةٍ، مع أنّنا في الحقيقة لا نحتسب من المجرى إلّا بقدر ما نحتاج إليه للوصول. ونستطيع استثمار هذه التقنيّة لتمثيل التسلسلات بكفاءةٍ على هيئة مجارٍ، حتّى إن كانت التسلسلات طويلةً جدًّا. والأكثر إثارةً للإعجاب أنّنا نستطيع استخدام المجاري لتمثيل تسلسلاتٍ غير منتهية الطول. فتأمّل، مثلًا، التعريف الآتي لمجرى الأعداد الصحيحة الموجبة:
 
 ```scheme
 (define (integers-starting-from n)
@@ -3096,9 +3096,9 @@ We have seen how to support the illusion of manipulating streams as complete ent
 (define integers (integers-starting-from 1))
 ```
 
-This makes sense because `integers` will be a pair whose `car` is 1 and whose `cdr` is a promise to produce the integers beginning with 2. This is an infinitely long stream, but in any given time we can examine only a finite portion of it. Thus, our programs will never know that the entire infinite stream is not there.
+وهذا ذو معنىً لأنّ `integers` سيكون زوجًا `car` هو 1 و`cdr` هو وعدٌ بإنتاج الأعداد الصحيحة ابتداءً من 2. وهذا مجرى غير منتهي الطول، لكنّا في أيّ وقتٍ معطًى نستطيع فحص جزءٍ منتهٍ منه فقط. ولذلك، فلن تعرف برامجنا يومًا أنّ المجرى اللانهائيّ كلّه غير موجود.
 
-Using `integers` we can define other infinite streams, such as the stream of integers that are not divisible by 7:
+وباستخدام `integers` نستطيع تعريف مجاري غير منتهيةٍ أخرى، مثل مجرى الأعداد الصحيحة غير القابلة للقسمة على 7:
 
 ```scheme
 (define (divisible? x y) (= (remainder x y) 0))
@@ -3108,14 +3108,14 @@ Using `integers` we can define other infinite streams, such as the stream of int
                  integers))
 ```
 
-Then we can find integers not divisible by 7 simply by accessing elements of this stream:
+فيمكننا إيجاد الأعداد غير القابلة للقسمة على 7 بمجرّد النفاذ إلى عناصر هذا المجرى:
 
 ```scheme
 (stream-ref no-sevens 100)
 117
 ```
 
-In analogy with `integers`, we can define the infinite stream of Fibonacci numbers:
+وبتناظرٍ مع `integers`، نستطيع تعريف المجرى غير المنتهيّ لأعداد فيبوناتشي:
 
 ```scheme
 (define (fibgen a b)
@@ -3123,9 +3123,9 @@ In analogy with `integers`, we can define the infinite stream of Fibonacci numbe
 (define fibs (fibgen 0 1))
 ```
 
-`Fibs` is a pair whose `car` is 0 and whose `cdr` is a promise to evaluate `(fibgen 1 1)`. When we evaluate this delayed `(fibgen 1 1)`, it will produce a pair whose `car` is 1 and whose `cdr` is a promise to evaluate `(fibgen 1 2)`, and so on.
+إنّ `fibs` زوجٌ `car` هو 0 و`cdr` هو وعدٌ بتقييم `(fibgen 1 1)`. وحين نُقيّم هذا `(fibgen 1 1)` المتأخّر، فإنّه سيُنتج زوجًا `car` هو 1 و`cdr` هو وعدٌ بتقييم `(fibgen 1 2)`، وهكذا.
 
-For a look at a more exciting infinite stream, we can generalize the `no-sevens` example to construct the infinite stream of prime numbers, using a method known as the *sieve of Eratosthenes*.[^60] We start with the integers beginning with 2, which is the first prime. To get the rest of the primes, we start by filtering the multiples of 2 from the rest of the integers. This leaves a stream beginning with 3, which is the next prime. Now we filter the multiples of 3 from the rest of this stream. This leaves a stream beginning with 5, which is the next prime, and so on. In other words, we construct the primes by a sieving process, described as follows: To sieve a stream `S`, form a stream whose first element is the first element of `S` and the rest of which is obtained by filtering all multiples of the first element of `S` out of the rest of `S` and sieving the result. This process is readily described in terms of stream operations:
+ولنُلْقِ نظرةً على مجرى غير منتهٍ أكثر إثارةً، نستطيع تعميم مثال `no-sevens` لبناء المجرى غير المنتهيّ للأعداد الأوّليّة، باستخدام طريقةٍ تُعرف بـ*غربال إراتوستينس*.[^60] نبدأ بالأعداد الصحيحة ابتداءً من 2، وهو أوّل عددٍ أوّليّ. وللباقي من الأعداد الأوّليّة، نبدأ بترشيح مضاعفات 2 من بقيّة الأعداد الصحيحة. وهذا يُخلي مجرى يبدأ بـ3، وهو العدد الأوّليّ التالي. والآن نُرَشِّح مضاعفات 3 من بقيّة هذا المجرى. وهذا يُخلي مجرى يبدأ بـ5، وهو العدد الأوّليّ التالي، وهكذا. وبعبارة أخرى، نبني الأعداد الأوّليّة بعمليّة غربلةٍ، موصوفةٍ على النحو الآتي: لغربلة مجرى `S`، شكّل مجرى أوّلُ عنصرٍ فيه هو أوّل عنصرٍ من `S` وبقيّته مُحصَلةٌ بترشيح جميع مضاعفات أوّل عنصرٍ من `S` خارجًا من بقيّة `S` ثمّ غربلة النتيجة. وهذه العمليّة تُوصف بسهولةٍ بدلالة عمليّات المجاري:
 
 ```scheme
 (define (sieve stream)
@@ -3141,46 +3141,46 @@ For a look at a more exciting infinite stream, we can generalize the `no-sevens`
   (sieve (integers-starting-from 2)))
 ```
 
-Now to find a particular prime we need only ask for it:
+والآن، لإيجاد عددٍ أوّليّ معيّن، لا يحتاج الأمر إلّا إلى طلبه:
 
 ```scheme
 (stream-ref primes 50)
 233
 ```
 
-It is interesting to contemplate the signal-processing system set up by `sieve`, shown in the “Henderson diagram” in [Figure 3.31](#Figure-3_002e31).[^61] The input stream feeds into an “un`cons`er” that separates the first element of the stream from the rest of the stream. The first element is used to construct a divisibility filter, through which the rest is passed, and the output of the filter is fed to another sieve box. Then the original first element is `cons`ed onto the output of the internal sieve to form the output stream. Thus, not only is the stream infinite, but the signal processor is also infinite, because the sieve contains a sieve within it.
+من المثير للتأمّل نظام معالجة الإشارات الذي يُنشئه `sieve`، الموضّح في «مخطّط هندرسون» في [الشكل 3.31](#Figure-3_002e31).[^61] إنّ مجرى الدخل يغذّي مُفَكِّكَ `cons` الذي يفصل أوّل عنصرٍ من المجرى عن بقيّة المجرى. وأوّل عنصرٍ يُستخدم لبناء مُرَشِّح قابلية قسمةٍ، يُمرَّر من خلاله الباقي، ومُخرَج المُرَشِّح يُغذّي صندوق غربلةٍ آخر. ثمّ يُركَّب أوّل عنصرٍ الأصليّ (`cons`) على مُخرَج الغربلة الداخليّة لتكوين مجرى المُخرَج. وهكذا، فليس المجرى وحده غير منتهٍ، بل معالج الإشارات غير منتهيّ أيضًا، لأنّ الغربال يحتوي غربالًا داخله.
 
 ![](/images/sicp/c3-modularity-objects-and-state-0-Fig3.31a.std.webp)
 
-**Figure 3.31:** The prime sieve viewed as a signal-processing system.
+**الشكل 3.31:** الغربال الأوّليّ منظورًا إليه كنظامٍ لمعالجة الإشارات.
 
-#### Defining streams implicitly
+#### تعريف المجاري ضمنيًّا
 
-The `integers` and `fibs` streams above were defined by specifying “generating” procedures that explicitly compute the stream elements one by one. An alternative way to specify streams is to take advantage of delayed evaluation to define streams implicitly. For example, the following expression defines the stream `ones` to be an infinite stream of ones:
+إنّ مجرْيَي `integers` و`fibs` أعلاه عُرِّفا بتحديد إجراءاتٍ «مولِّدة» تحتسب عناصر المجرى واحدًا واحدًا صراحةً. وطريقةٌ بديلةٌ لتحديد المجاري هي استغلال التقييم المتأخّر لتعريف المجاري ضمنيًّا. فالمثال الآتي، مثلًا، يعرّف المجرى `ones` كمجرى غير منتهٍ من الآحاد:
 
 ```scheme
 (define ones (cons-stream 1 ones))
 ```
 
-This works much like the definition of a recursive procedure: `ones` is a pair whose `car` is 1 and whose `cdr` is a promise to evaluate `ones`. Evaluating the `cdr` gives us again a 1 and a promise to evaluate `ones`, and so on.
+وهذا يعمل كثيرًا مثل تعريف إجراءٍ تعاوديّ: فـ`ones` زوجٌ `car` هو 1 و`cdr` هو وعدٌ بتقييم `ones`. وتقييم `cdr` يُعطينا من جديد 1 ووعدًا بتقييم `ones`، وهكذا.
 
-We can do more interesting things by manipulating streams with operations such as `add-streams`, which produces the elementwise sum of two given streams:[^62]
+ونستطيع فعل أشياء أكثر إثارةً للاهتمام بالتلاعب بالمجاري بعمليّاتٍ مثل `add-streams`، التي تُنتج مجموعًا عنصرًا بعنصرٍ لمجرَيين معطيين:[^62]
 
 ```scheme
 (define (add-streams s1 s2) 
   (stream-map + s1 s2))
 ```
 
-Now we can define the integers as follows:
+ويمكننا الآن تعريف *مجرى (stream)* الأعداد الصحيحة كما يلي:
 
 ```scheme
 (define integers 
   (cons-stream 1 (add-streams ones integers)))
 ```
 
-This defines `integers` to be a stream whose first element is 1 and the rest of which is the sum of `ones` and `integers`. Thus, the second element of `integers` is 1 plus the first element of `integers`, or 2; the third element of `integers` is 1 plus the second element of `integers`, or 3; and so on. This definition works because, at any point, enough of the `integers` stream has been generated so that we can feed it back into the definition to produce the next integer.
+يعرّف هذا `integers` بوصفه مجرىً أوّله هو 1 وبقيّته هي مجموع `ones` و`integers`. وعليه، فإنّ العنصر الثاني من `integers` هو 1 زائد أوّل عنصر من `integers`، أي 2؛ والعنصر الثالث من `integers` هو 1 زائد العنصر الثاني من `integers`، أي 3؛ وهكذا. ويعمل هذا التعريف لأنّه، في أيّ نقطةٍ، قد أُنشئ من مجرى `integers` ما يكفي حتّى نتمكّن من إعادة إدخاله في التعريف لإنتاج العدد الصحيح التالي.
 
-We can define the Fibonacci numbers in the same style:
+ويمكننا تعريف أعداد فيبوناتشي بالنمط نفسه:
 
 ```scheme
 (define fibs 
@@ -3190,7 +3190,7 @@ We can define the Fibonacci numbers in the same style:
          (stream-cdr fibs) fibs))))
 ```
 
-This definition says that `fibs` is a stream beginning with 0 and 1, such that the rest of the stream can be generated by adding `fibs` to itself shifted by one place:
+يقول هذا التعريف إنّ `fibs` مجرىٌ يبدأ بـ0 و1، بحيث يمكن توليد بقيّة المجرى بجمع `fibs` إلى نفسه بعد إزاحته بمقدار مكانٍ واحد:
 
 ```
     1 1 2 3 5  8 13 21 … = (stream-cdr fibs)
@@ -3198,7 +3198,7 @@ This definition says that `fibs` is a stream beginning with 0 and 1, such that t
 0 1 1 2 3 5 8 13 21 34 … = fibs
 ```
 
-`Scale-stream` is another useful procedure in formulating such stream definitions. This multiplies each item in a stream by a given constant:
+`Scale-stream` إجراءٌ مفيدٌ آخر في صياغة تعريفات المجرى كهذه. وهو يضرب كلّ عنصرٍ في مجرىً بثابتٍ معطًى:
 
 ```scheme
 (define (scale-stream stream factor)
@@ -3207,16 +3207,16 @@ This definition says that `fibs` is a stream beginning with 0 and 1, such that t
    stream))
 ```
 
-For example,
+فعلى سبيل المثال،
 
 ```scheme
 (define double 
   (cons-stream 1 (scale-stream double 2)))
 ```
 
-produces the stream of powers of 2: 1, 2, 4, 8, 16, 32, ….
+يُنتج مجرى قوى العدد 2: 1، 2، 4، 8، 16، 32، ....
 
-An alternate definition of the stream of primes can be given by starting with the integers and filtering them by testing for primality. We will need the first prime, 2, to get started:
+ويمكن إعطاء تعريفٍ بديلٍ لمجرى الأعداد الأوّليّة بالبدء بالأعداد الصحيحة وتصفيتها باختبار كونها أوّليّة. وسنحتاج إلى أوّل عددٍ أوّليّ، وهو 2، للانطلاق:
 
 ```scheme
 (define primes
@@ -3225,7 +3225,7 @@ An alternate definition of the stream of primes can be given by starting with th
       prime? (integers-starting-from 3))))
 ```
 
-This definition is not so straightforward as it appears, because we will test whether a number $n$ is prime by checking whether $n$ is divisible by a prime (not by just any integer) less than or equal to $\sqrt{n}$ :
+وهذا التعريف ليس مباشرًا إلى الحدّ الذي يبدو عليه، لأنّنا سنختبر ما إذا كان عددٌ $n$ أوّليًّا بفحص ما إذا كان $n$ قابلًا للقسمة على عددٍ أوّليّ (لا على أيّ عددٍ صحيحٍ فحسب) أصغر من أو يساوي $\sqrt{n}$ :
 
 ```scheme
 (define (prime? n)
@@ -3236,31 +3236,31 @@ This definition is not so straightforward as it appears, because we will test wh
   (iter primes))
 ```
 
-This is a recursive definition, since `primes` is defined in terms of the `prime?` predicate, which itself uses the `primes` stream. The reason this procedure works is that, at any point, enough of the `primes` stream has been generated to test the primality of the numbers we need to check next. That is, for every $n$ we test for primality, either $n$ is not prime (in which case there is a prime already generated that divides it) or $n$ is prime (in which case there is a prime already generated—i.e., a prime less than $n$ —that is greater than $\sqrt{n}$ ).[^63]
+هذا تعريفٌ تعاوديّ، إذ يُعرَّف `primes` من حيث المُسَيِّم `prime?`، الذي يستخدم هو نفسه مجرى `primes`. وسبب عمل هذا الإجراء أنّه، في أيّ نقطةٍ، قد أُنشئ من مجرى `primes` ما يكفي لاختبار أوّليّة الأعداد التي نحتاج إلى فحصها تاليًا. أي أنّك، لكلّ $n$ نختبر أوّليّته، إمّا أن $n$ غير أوّليّ (وفي هذه الحالة هناك عددٌ أوّليّ أُنشئ سابقًا يقسمه) أو أنّ $n$ أوّليّ (وفي هذه الحالة هناك عددٌ أوّليّ أُنشئ سابقًا — أي عددٌ أوّليّ أصغر من $n$ — أكبر من $\sqrt{n}$ ).[^63]
 
-**Exercise 3.53:** Without running the program, describe the elements of the stream defined by
+**التمرين 3.53:** دون تشغيل البرنامج، صِف عناصر المجرى المعرَّف بـ
 
 ```scheme
 (define s (cons-stream 1 (add-streams s s)))
 ```
 
-**Exercise 3.54:** Define a procedure `mul-streams`, analogous to `add-streams`, that produces the elementwise product of its two input streams. Use this together with the stream of `integers` to complete the following definition of the stream whose $n^{th}$ element (counting from 0) is $n + 1$ factorial:
+**التمرين 3.54:** عرّف إجراءً `mul-streams`، مماثلًا لـ`add-streams`، يُنتج الجداء العنصريّ لمجريي مدخليه. واستخدم هذا مع مجرى `integers` لإتمام التعريف الآتي للمجرى الذي عنصره $n^{th}$ (بحساب البداية من 0) هو $n + 1$ مضروبًا:
 
 ```scheme
 (define factorials 
   (cons-stream 1 (mul-streams ⟨??⟩ ⟨??⟩)))
 ```
 
-> **Exercise 3.55:** Define a procedure `partial-sums` that takes as argument a stream $S$ and returns the stream whose elements are $S_{0}$ , $S_{0} + S_{1}$ , $S_{0} + S_{1} + S_{2} , …$ . For example, `(partial-sums integers)` should be the stream 1, 3, 6, 10, 15, ….
+> **التمرين 3.55:** عرّف إجراءً `partial-sums` يأخذ مجرىً $S$ معطًى ويعيد المجرى الذي عناصره هي $S_{0}$ ، $S_{0} + S_{1}$ ، $S_{0} + S_{1} + S_{2} , …$ . فعلى سبيل المثال، ينبغي أن يكون `(partial-sums integers)` هو المجرى 1، 3، 6، 10، 15، ....
 
-**Exercise 3.56:** A famous problem, first raised by R. Hamming, is to enumerate, in ascending order with no repetitions, all positive integers with no prime factors other than 2, 3, or 5. One obvious way to do this is to simply test each integer in turn to see whether it has any factors other than 2, 3, and 5. But this is very inefficient, since, as the integers get larger, fewer and fewer of them fit the requirement. As an alternative, let us call the required stream of numbers `S` and notice the following facts about it.
+**التمرين 3.56:** مسألةٌ شهيرةٌ، طرحها أوّلًا ر. هامينغ، هي عدّ جميع الأعداد الصحيحة الموجبة التي لا عوامل أوّليّة لها غير 2، و3، و5، بترتيبٍ تصاعديٍّ ودون تكرار. وإحدى الطرق الواضحة لفعل ذلك هي ببساطةٍ اختبار كلّ عددٍ صحيحٍ بدوره لمعرفة ما إذا كان له أيّ عوامل غير 2، و3، و5. لكنّ هذا غير كفؤٍ على الإطلاق، إذ إنّه، مع كبر الأعداد الصحيحة، يقلّ عدد تلك التي تستوفيّ الشرط تدريجيًّا. وكبديلٍ، فلنُسمّ مجرى الأعداد المطلوب `S` ولنلاحِظ الحقائق الآتية عنه:
 
-- `S` begins with 1.
-- The elements of `(scale-stream S 2)` are also elements of `S`.
-- The same is true for `(scale-stream S 3)` and `(scale-stream S 5)`.
-- These are all the elements of `S`.
+- `S` يبدأ بالعدد 1.
+- عناصر `(scale-stream S 2)` هي أيضًا عناصر من `S`.
+- والأمر ذاته صحيح بالنسبة إلى `(scale-stream S 3)` و`(scale-stream S 5)`.
+- وهذه هي جميع عناصر `S`.
 
-Now all we have to do is combine elements from these sources. For this we define a procedure `merge` that combines two ordered streams into one ordered result stream, eliminating repetitions:
+وكلّ ما علينا فعله الآن هو دمج العناصر القادمة من هذه المصادر. ولهذا الغرض نُعرّف إجراءً `merge` يدمج مجريين مرتّبين في مجرى نتائجٍ مرتّبٍ واحد، مُقصِيًا التكرارات:
 
 ```scheme
 (define (merge s1 s2)
@@ -3287,17 +3287,17 @@ Now all we have to do is combine elements from these sources. For this we define
                     (stream-cdr s2)))))))))
 ```
 
-Then the required stream may be constructed with `merge`, as follows:
+ثمّ يمكن بناء *المجرى (stream)* المطلوب بـ`merge`، كما يلي:
 
 ```scheme
 (define S (cons-stream 1 (merge ⟨??⟩ ⟨??⟩)))
 ```
 
-Fill in the missing expressions in the places marked `⟨??⟩` above.
+املأ التعابير الناقصة في المواضع المشار إليها بـ`⟨??⟩` أعلاه.
 
-> **Exercise 3.57:** How many additions are performed when we compute the $n^{th}$ Fibonacci number using the definition of `fibs` based on the `add-streams` procedure? Show that the number of additions would be exponentially greater if we had implemented `(delay ⟨exp⟩)` simply as `(lambda () ⟨exp⟩)`, without using the optimization provided by the `memo-proc` procedure described in [3.5.1](#g_t3_002e5_002e1).[^64]
+> **التمرين 3.57:** كم عمليّة جمع تُجرى حين نحتسب العدد $n^{th}$ من أعداد فيبوناتشي باستخدام تعريف `fibs` المستند إلى الإجراء `add-streams`؟ أظهر أنّ عدد عمليّات الجمع سيكون أكبر أسّيًّا لو كنّا قد نفّذنا `(delay ⟨exp⟩)` ببساطةٍ كـ`(lambda () ⟨exp⟩)`، دون استخدام التحسين الذي يوفّره الإجراء `memo-proc` الموصوف في [3.5.1](#g_t3_002e5_002e1).[^64]
 
-**Exercise 3.58:** Give an interpretation of the stream computed by the following procedure:
+**التمرين 3.58:** أعطِ تفسيرًا للمجرى الذي يحسبه الإجراء الآتي:
 
 ```scheme
 (define (expand num den radix)
@@ -3308,11 +3308,11 @@ Fill in the missing expressions in the places marked `⟨??⟩` above.
            radix)))
 ```
 
-(`Quotient` is a primitive that returns the integer quotient of two integers.) What are the successive elements produced by `(expand 1 7 10)`? What is produced by `(expand 3 8 10)`?
+(`Quotient` أوّليّ يُعيد ناتج القسمة الصحيح لعددين صحيحين.) فما العناصر المتعاقبة التي يُنتجها `(expand 1 7 10)`؟ وما الذي يُنتجه `(expand 3 8 10)`؟
 
-**Exercise 3.59:** In [2.5.3](https://sarabander.github.io/sicp/html/2_002e5.xhtml#g_t2_002e5_002e3) we saw how to implement a polynomial arithmetic system representing polynomials as lists of terms. In a similar way, we can work with *power series*, such as $e^{x} = 1 + x + \frac{1}{2} x^{2} + \frac{1}{3 ⋅ 2} x^{3} + \frac{1}{4 ⋅ 3 ⋅ 2} x^{4} + … , cos ⁡ x = 1 − \frac{1}{2} x^{2} + \frac{1}{4 ⋅ 3 ⋅ 2} x^{4} − … , sin ⁡ x = x − \frac{1}{3 ⋅ 2} x^{3} + \frac{1}{5 ⋅ 4 ⋅ 3 ⋅ 2} x^{5} − …$ represented as infinite streams. We will represent the series $a_{0} + a_{1} x + a_{2} x^{2} + a_{3} x^{3} + …$ as the stream whose elements are the coefficients $a_{0}$ , $a_{1}$ , $a_{2}$ , $a_{3}$ , ….
+**التمرين 3.59:** في [2.5.3](https://sarabander.github.io/sicp/html/2_002e5.xhtml#g_t2_002e5_002e3) رأينا كيف نُنفّئ نظامًا للحساب على كثيرات الحدود يمثّل كثيرات الحدود كقوائم من الحدود. وبطريقةٍ مشابهة، يمكننا العمل مع *متسلسلات القوى (power series)*، مثل $e^{x} = 1 + x + \frac{1}{2} x^{2} + \frac{1}{3 ⋅ 2} x^{3} + \frac{1}{4 ⋅ 3 ⋅ 2} x^{4} + … , cos ⁡ x = 1 − \frac{1}{2} x^{2} + \frac{1}{4 ⋅ 3 ⋅ 2} x^{4} − … , sin ⁡ x = x − \frac{1}{3 ⋅ 2} x^{3} + \frac{1}{5 ⋅ 4 ⋅ 3 ⋅ 2} x^{5} − …$ الممثّلة كمجاري لا نهائيّة. وسنمثّل المتسلسلة $a_{0} + a_{1} x + a_{2} x^{2} + a_{3} x^{3} + …$ بالمجرى الذي عناصره هي المعاملات $a_{0}$ ، $a_{1}$ ، $a_{2}$ ، $a_{3}$ ، ....
 
-The integral of the series $a_{0} + a_{1} x + a_{2} x^{2} + a_{3} x^{3} + …$ is the series $c + a_{0} x + \frac{1}{2} a_{1} x^{2} + \frac{1}{3} a_{2} x^{3} + \frac{1}{4} a_{3} x^{4} + … ,$ where $c$ is any constant. Define a procedure `integrate-series` that takes as input a stream $a_{0}$ , $a_{1}$ , $a_{2}$ , … representing a power series and returns the stream $a_{0}$ , $\frac{1}{2} a_{1}$ , $\frac{1}{3} a_{2}$ , … of coefficients of the non-constant terms of the integral of the series. (Since the result has no constant term, it doesn’t represent a power series; when we use `integrate-series`, we will `cons` on the appropriate constant.) The function $x ↦ e^{x}$ is its own derivative. This implies that $e^{x}$ and the integral of $e^{x}$ are the same series, except for the constant term, which is $e^{0} = 1$ . Accordingly, we can generate the series for $e^{x}$ as
+تكامل المتسلسلة $a_{0} + a_{1} x + a_{2} x^{2} + a_{3} x^{3} + …$ هو المتسلسلة $c + a_{0} x + \frac{1}{2} a_{1} x^{2} + \frac{1}{3} a_{2} x^{3} + \frac{1}{4} a_{3} x^{4} + … ,$ حيث $c$ ثابتٌ اعتباطيّ. عرّف إجراءً `integrate-series` يأخذ مدخلًا مجرىً $a_{0}$ ، $a_{1}$ ، $a_{2}$ ، … يمثّل متسلسلة قوى، ويعيد المجرى $a_{0}$ ، $\frac{1}{2} a_{1}$ ، $\frac{1}{3} a_{2}$ ، … من معاملات الحدود غير الثابتة لتكامل المتسلسلة. (وحيث أنّ النتيجة لا حدّ ثابت لها، فإنّها لا تمثّل متسلسلة قوى؛ وحين نستخدم `integrate-series`، فإنّنا سنُلحق (`cons`) بالثابت المناسب.) الدالّة $x ↦ e^{x}$ هي مشتقّها نفسها. وهذا يعني أنّ $e^{x}$ وتكامل $e^{x}$ هما المتسلسلة ذاتها، عدا الحدّ الثابت، وهو $e^{0} = 1$ . وبناءً على ذلك، فيمكننا توليد المتسلسلة الخاصة بـ$e^{x}$ كما يلي
 
 ```scheme
 (define exp-series
@@ -3320,7 +3320,7 @@ The integral of the series $a_{0} + a_{1} x + a_{2} x^{2} + a_{3} x^{3} + …$ i
    1 (integrate-series exp-series)))
 ```
 
-Show how to generate the series for sine and cosine, starting from the facts that the derivative of sine is cosine and the derivative of cosine is the negative of sine:
+أظهر كيف نولّد متسلسلتي الجيب وجيب التمام، بدءًا من الحقيقة القائلة إنّ مشتقّ الجيب هو جيب التمام وإنّ مشتقّ جيب التمام هو سالب الجيب:
 
 ```scheme
 (define cosine-series 
@@ -3330,35 +3330,35 @@ Show how to generate the series for sine and cosine, starting from the facts tha
   (cons-stream 0 ⟨??⟩))
 ```
 
-**Exercise 3.60:** With power series represented as streams of coefficients as in [Exercise 3.59](#Exercise-3_002e59), adding series is implemented by `add-streams`. Complete the definition of the following procedure for multiplying series:
+**التمرين 3.60:** بتمثيل متسلسلات القوى كمجاري من المعاملات كما في [التمرين 3.59](#Exercise-3_002e59)، فإنّ جمع المتسلسلات يُنفَّذ بـ`add-streams`. أكمل تعريف الإجراء الآتي لضرب المتسلسلات:
 
 ```scheme
 (define (mul-series s1 s2)
   (cons-stream ⟨??⟩ (add-streams ⟨??⟩ ⟨??⟩)))
 ```
 
-You can test your procedure by verifying that $sin^{2} ⁡ x + cos^{2} ⁡ x = 1 ,$ using the series from [Exercise 3.59](#Exercise-3_002e59).
+يمكنك اختبار إجارتك بالتحقّق من أنّ $sin^{2} ⁡ x + cos^{2} ⁡ x = 1 ,$ باستخدام المتسلسلتين من [التمرين 3.59](#Exercise-3_002e59).
 
-> **Exercise 3.61:** Let $S$ be a power series ([Exercise 3.59](#Exercise-3_002e59)) whose constant term is 1. Suppose we want to find the power series $1 / S$ , that is, the series $X$ such that $S X = 1$ . Write $S = 1 + S_{R}$ where $S_{R}$ is the part of $S$ after the constant term. Then we can solve for $X$ as follows: $S ⋅ X = 1 , ( 1 + S_{R} ) ⋅ X = 1 , X + S_{R} ⋅ X = 1 , X = 1 − S_{R} ⋅ X .$ In other words, $X$ is the power series whose constant term is 1 and whose higher-order terms are given by the negative of $S_{R}$ times $X$ . Use this idea to write a procedure `invert-unit-series` that computes $1 / S$ for a power series $S$ with constant term 1. You will need to use `mul-series` from [Exercise 3.60](#Exercise-3_002e60).
+> **التمرين 3.61:** لتكن $S$ متسلسلة قوى ([التمرين 3.59](#Exercise-3_002e59)) حدّها الثابت هو 1. ولنفترض أنّنا نريد إيجاد متسلسلة القوى $1 / S$ ، أي المتسلسلة $X$ بحيث $S X = 1$ . اكتب $S = 1 + S_{R}$ حيث $S_{R}$ هو الجزء من $S$ الواقع بعد الحدّ الثابت. وبعد ذلك يمكننا حلّ المعادلة لإيجاد $X$ كما يلي: $S ⋅ X = 1 , ( 1 + S_{R} ) ⋅ X = 1 , X + S_{R} ⋅ X = 1 , X = 1 − S_{R} ⋅ X .$ وبعبارةٍ أخرى، فإنّ $X$ هي متسلسلة القوى التي حدّها الثابت هو 1 وحدودها من الرتب الأعلى تساوي سالب $S_{R}$ مضروبًا في $X$ . استخدم هذه الفكرة لكتابة إجراءٍ `invert-unit-series` يحسب $1 / S$ لمتسلسلة قوى $S$ حدّها الثابت هو 1. وسوف تحتاج إلى استخدام `mul-series` من [التمرين 3.60](#Exercise-3_002e60).
 
-> **Exercise 3.62:** Use the results of [Exercise 3.60](#Exercise-3_002e60) and [Exercise 3.61](#Exercise-3_002e61) to define a procedure `div-series` that divides two power series. `Div-series` should work for any two series, provided that the denominator series begins with a nonzero constant term. (If the denominator has a zero constant term, then `div-series` should signal an error.) Show how to use `div-series` together with the result of [Exercise 3.59](#Exercise-3_002e59) to generate the power series for tangent.
+> **التمرين 3.62:** استخدم نتائج [التمرين 3.60](#Exercise-3_002e60) و[التمرين 3.61](#Exercise-3_002e61) لتعريف إجراءٍ `div-series` يقسم متسلسلتي قوى. وينبغي أن يعمل `div-series` مع أيّ متسلسلتين، شريطة أن تبدأ متسلسلة المقام بحدٍّ ثابتٍ لا يساوي صفرًا. (وإذا كان للمقام حدٌّ ثابتٌ يساوي صفرًا، فإنّ `div-series` ينبغي أن يُشير إلى خطأ.) وأظهر كيف تستخدم `div-series` مع نتيجة [التمرين 3.59](#Exercise-3_002e59) لتوليد متسلسلة قوى الدالّة المماسيّة (tangent).
 
-#### 3.5.3 Exploiting the Stream Paradigm
+#### 3.5.3 استثمار نمط المجاري
 
-Streams with delayed evaluation can be a powerful modeling tool, providing many of the benefits of local state and assignment. Moreover, they avoid some of the theoretical tangles that accompany the introduction of assignment into a programming language.
+ويمكن أن تكون *المجاري (streams)* المزوّدة بالتقييم المتأخّر أداةَ نمذجةٍ قويّة، إذ توفّر العديد من فوائد الحالة المحليّة والإحلال. وهي تتجنّب، فضلًا عن ذلك، بعض التعقيدات النظريّة التي ترافق إدخال الإحلال إلى لغة البرمجة.
 
-The stream approach can be illuminating because it allows us to build systems with different module boundaries than systems organized around assignment to state variables. For example, we can think of an entire time series (or signal) as a focus of interest, rather than the values of the state variables at individual moments. This makes it convenient to combine and compare components of state from different moments.
+ويمكن أن يكون منهج المجاري مُفصِحًا لأنّه يتيح لنا بناء أنظمةٍ بحدود وحداتٍ مختلفةٍ عن تلك التي تقيمها الأنظمة المنظّمة حول إحلال القيم في متغيّرات الحالة. فنحن نستطيع مثلًا اعتبار متسلسلةً زمنيّةً كاملة (أو إشارة) محطّ اهتمامنا، بدلًا من قيم متغيّرات الحالة في لحظاتٍ مفردة. وهذا يجعل من المناسب جمع مكوّنات الحالة من لحظاتٍ مختلفةٍ ومقارنتها.
 
-#### Formulating iterations as stream processes
+#### صياغة التكرارات كعمليّات مجاري
 
-In section [1.2.1](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e1), we introduced iterative processes, which proceed by updating state variables. We know now that we can represent state as a “timeless” stream of values rather than as a set of variables to be updated. Let’s adopt this perspective in revisiting the square-root procedure from [1.1.7](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e7). Recall that the idea is to generate a sequence of better and better guesses for the square root of $x$ by applying over and over again the procedure that improves guesses:
+في القسم [1.2.1](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e1)، عرّفنا العمليّات التكراريّة، التي تسير بتحديث متغيّرات الحالة. ونحن نعلم الآن أنّنا نستطيع تمثيل الحالة كمجرى قيمٍ «خالٍ من الزمن» بدلًا من تمثيلها كمجموعةٍ من المتغيّرات التي يُحدَّث قيمها. فلتكن لنا هذه النظرة في إعادة النظر في إجراء الجذر التربيعيّ من [1.1.7](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e7). واذكر أنّ الفكرة هي توليد تسلسلٍ من التخمينات الأفضل فأفضل للجذر التربيعيّ لـ$x$ بتطبيق الإجراء الذي يحسّن التخمينات مرّةً بعد مرّة:
 
 ```scheme
 (define (sqrt-improve guess x)
   (average guess (/ x guess)))
 ```
 
-In our original `sqrt` procedure, we made these guesses be the successive values of a state variable. Instead we can generate the infinite stream of guesses, starting with an initial guess of 1:[^65]
+في إجراء `sqrt` الأصليّ لدينا، جعلنا هذه التخمينات هي القيم المتعاقبة لمتغيّر حالةٍ واحد. وبدلًا من ذلك، فيمكننا توليد مجرى التخمينات اللا نهائيّ، بدءًا بتخمينٍ أوّليٍّ قيمته 1:[^65]
 
 ```scheme
 (define (sqrt-stream x)
@@ -3379,9 +3379,9 @@ In our original `sqrt` procedure, we made these guesses be the successive values
 …
 ```
 
-We can generate more and more terms of the stream to get better and better guesses. If we like, we can write a procedure that keeps generating terms until the answer is good enough. (See [Exercise 3.64](#Exercise-3_002e64).)
+ويمكننا توليد المزيد من حدود المجرى للحصول على تخميناتٍ أفضل فأفضل. وإن شئنا، فيمكننا كتابة إجراءٍ يتواصل في توليد الحدود حتّى تصبح الإجابة جيّدةً بما يكفي. (انظر [التمرين 3.64](#Exercise-3_002e64).)
 
-Another iteration that we can treat in the same way is to generate an approximation to $π$ , based upon the alternating series that we saw in [1.3.1](https://sarabander.github.io/sicp/html/1_002e3.xhtml#g_t1_002e3_002e1): $\frac{π}{4} = 1 − \frac{1}{3} + \frac{1}{5} − \frac{1}{7} + … .$ We first generate the stream of summands of the series (the reciprocals of the odd integers, with alternating signs). Then we take the stream of sums of more and more terms (using the `partial-sums` procedure of [Exercise 3.55](#Exercise-3_002e55)) and scale the result by 4:
+وهناك تكرارٌ آخر يمكننا معالجته بالطريقة ذاتها، وهو توليد تقريبٍ لـ$π$ ، استنادًا إلى المتسلسلة المتبادلة الإشارات التي رأيناها في [1.3.1](https://sarabander.github.io/sicp/html/1_002e3.xhtml#g_t1_002e3_002e1): $\frac{π}{4} = 1 − \frac{1}{3} + \frac{1}{5} − \frac{1}{7} + … .$ فنولّد أوّلًا مجرى حدود المتسلسلة (مقلوب الأعداد الفرديّة، بإشاراتٍ متبادلة). ثمّ نأخذ مجرى مجاميع عددٍ متزايدٍ من الحدود (باستخدام الإجراء `partial-sums` من [التمرين 3.55](#Exercise-3_002e55)) ونضرب النتيجة في 4:
 
 ```scheme
 (define (pi-summands n)
@@ -3405,11 +3405,11 @@ Another iteration that we can treat in the same way is to generate an approximat
 …
 ```
 
-This gives us a stream of better and better approximations to $π$ , although the approximations converge rather slowly. Eight terms of the sequence bound the value of $π$ between 3.284 and 3.017.
+وهذا يعطينا مجرى تقريباتٍ أفضل فأفضل لـ$π$ ، مع أنّ التقريبات تتقارب ببطءٍ شديد. إنّ ثمانية حدودٍ من التسلسل تحدّ قيمة $π$ بين 3.284 و3.017.
 
-So far, our use of the stream of states approach is not much different from updating state variables. But streams give us an opportunity to do some interesting tricks. For example, we can transform a stream with a *sequence accelerator* that converts a sequence of approximations to a new sequence that converges to the same value as the original, only faster.
+حتّى الآن، فإنّ استخدامنا لمنهج *مجرى (stream)* الحالات لا يختلف كثيرًا عن تحديث متغيّرات الحالة. لكنّ المجاري تُتيح لنا فرصةَ أداء بعض الحيل الممتعة. فنحن نستطيع مثلًا تحويل مجرىٍ بـ*مسرّع تسلسلٍ (sequence accelerator)* يحوّل تسلسل التقريبات إلى تسلسلٍ جديدٍ يتقارب إلى القيمة ذاتها التي يتقارب إليها التسلسل الأصليّ، لكن بسرعةٍ أكبر.
 
-One such accelerator, due to the eighteenth-century Swiss mathematician Leonhard Euler, works well with sequences that are partial sums of alternating series (series of terms with alternating signs). In Euler’s technique, if $S_{n}$ is the $n^{th}$ term of the original sum sequence, then the accelerated sequence has terms $S_{n + 1} − \frac{( S_{n + 1} − S_{n} )^{2}}{S_{n − 1} − 2 S_{n} + S_{n + 1}} .$ Thus, if the original sequence is represented as a stream of values, the transformed sequence is given by
+وأحد هذه المسرّعات، الذي يعود إلى الرياضيّ السويسري ليونهارت أويلر في القرن الثامن عشر، يعمل حسنًا مع التسلسلات التي هي مجاميع جزئيّة لمتسلسلاتٍ متبادلة الإشارات (أي متسلسلات حدودها بإشاراتٍ متبادلة). وفي تقنيّة أويلر، إذا كان $S_{n}$ هو الحدّ $n^{th}$ من تسلسل المجموع الأصليّ، فإنّ التسلسل المسرَّع حدودُه هي $S_{n + 1} − \frac{( S_{n + 1} − S_{n} )^{2}}{S_{n − 1} − 2 S_{n} + S_{n + 1}} .$ وعليه، إذا مُثِّل التسلسل الأصليّ كمجرى من القيم، فإنّ التسلسل المتحوَّل يُعطى بـ
 
 ```scheme
 (define (euler-transform s)
@@ -3422,7 +3422,7 @@ One such accelerator, due to the eighteenth-century Swiss mathematician Leonhard
      (euler-transform (stream-cdr s)))))
 ```
 
-We can demonstrate Euler acceleration with our sequence of approximations to $π$ :
+ويمكننا إيضاح تسريع أويلر بتسلسل تقريباتنا لـ$π$ :
 
 ```scheme
 (display-stream 
@@ -3438,7 +3438,7 @@ We can demonstrate Euler acceleration with our sequence of approximations to $π
 …
 ```
 
-Even better, we can accelerate the accelerated sequence, and recursively accelerate that, and so on. Namely, we create a stream of streams (a structure we’ll call a *tableau*) in which each stream is the transform of the preceding one:
+والأفضل من ذلك، أنّنا نستطيع تسريع التسلسل المسرَّع، ومن ثمّ تسريع المسرَّع تسريعًا تعاوديًّا، وهكذا. أي أنّنا نُنشئ مجرى مجاري (بنيةً سنُسمّيها *جدولًا (tableau)*) كلّ مجرىٍ منها هو تحوّل الذي يسبقه:
 
 ```scheme
 (define (make-tableau transform s)
@@ -3449,7 +3449,7 @@ Even better, we can accelerate the accelerated sequence, and recursively acceler
     (transform s))))
 ```
 
-The tableau has the form $s_{00} s_{01} s_{02} s_{03} s_{04} … s_{10} s_{11} s_{12} s_{13} … s_{20} s_{21} s_{22} … …$ Finally, we form a sequence by taking the first term in each row of the tableau:
+وللجدول الشكل $s_{00} s_{01} s_{02} s_{03} s_{04} … s_{10} s_{11} s_{12} s_{13} … s_{20} s_{21} s_{22} … …$ وأخيرًا، نُشكّل تسلسلًا بأخذ الحدّ الأوّل في كلّ صفٍّ من الجدول:
 
 ```scheme
 (define (accelerated-sequence transform s)
@@ -3457,7 +3457,7 @@ The tableau has the form $s_{00} s_{01} s_{02} s_{03} s_{04} … s_{10} s_{11} s
               (make-tableau transform s)))
 ```
 
-We can demonstrate this kind of “super-acceleration” of the $π$ sequence:
+ويمكننا إيضاح هذا النوع من «التسريع الفائق» لتسلسل $π$ :
 
 ```scheme
 (display-stream 
@@ -3474,11 +3474,11 @@ We can demonstrate this kind of “super-acceleration” of the $π$ sequence:
 …
 ```
 
-The result is impressive. Taking eight terms of the sequence yields the correct value of $π$ to 14 decimal places. If we had used only the original $π$ sequence, we would need to compute on the order of $10^{13}$ terms (i.e., expanding the series far enough so that the individual terms are less than $10^{− 13}$ ) to get that much accuracy!
+والنتيجة مذهلة. فإنّ أخذ ثمانية حدودٍ من التسلسل يُعطي القيمة الصحيحة لـ$π$ حتّى 14 منزلةً عشريّة. ولو كنّا قد استخدمنا تسلسل $π$ الأصليّ وحده، لكنّا بحاجةٍ إلى احتساب حوالي $10^{13}$ حدًّا (أي توسيع المتسلسلة إلى المدى الكافي لجعل الحدود المفردة أصغرّ من $10^{− 13}$ ) للحصول على هذا القدر من الدقّة!
 
-We could have implemented these acceleration techniques without using streams. But the stream formulation is particularly elegant and convenient because the entire sequence of states is available to us as a data structure that can be manipulated with a uniform set of operations.
+وكان يمكننا تنفيذ تقنيّات التسريع هذه دون استخدام المجاري. لكنّ الصياغة بصيغة المجاري أنيقة ومناسبة على وجه الخصوص، لأنّ تسلسل الحالات بكامله يصبح متاحًا لنا بوصفه بنية بياناتٍ يمكن التلاعب بها بمجموعةٍ موحّدةٍ من العمليّات.
 
-**Exercise 3.63:** Louis Reasoner asks why the `sqrt-stream` procedure was not written in the following more straightforward way, without the local variable `guesses`:
+**التمرين 3.63:** يسأل لويس ريزنر لماذا لم يُكتَب الإجراء `sqrt-stream` بالطريقة الأكثر مباشرةً الآتية، دون المتغيّر المحليّ `guesses`:
 
 ```scheme
 (define (sqrt-stream x)
@@ -3489,22 +3489,22 @@ We could have implemented these acceleration techniques without using streams. B
                (sqrt-stream x))))
 ```
 
-Alyssa P. Hacker replies that this version of the procedure is considerably less efficient because it performs redundant computation. Explain Alyssa’s answer. Would the two versions still differ in efficiency if our implementation of `delay` used only `(lambda () ⟨exp⟩)` without using the optimization provided by `memo-proc` ([3.5.1](#g_t3_002e5_002e1))?
+تردّ أليسّا هاكر بأنّ هذه النسخة من الإجراء أقلّ كفاءةً بدرجةٍ ملحوظةٍ لأنّها تؤدّي احتسابًا زائدًا. اشرح جواب أليسّا. فهل كانت النسختان ستختلفان في الكفاءة لو كان تنفيذنا لـ`delay` يستخدم `(lambda () ⟨exp⟩)` وحده دون استخدام التحسين الذي يوفّره `memo-proc` ([3.5.1](#g_t3_002e5_002e1))؟
 
-**Exercise 3.64:** Write a procedure `stream-limit` that takes as arguments a stream and a number (the tolerance). It should examine the stream until it finds two successive elements that differ in absolute value by less than the tolerance, and return the second of the two elements. Using this, we could compute square roots up to a given tolerance by
+**التمرين 3.64:** اكتب إجراءً `stream-limit` يأخذ معطيين هما مجرى وعدد (التسامح). وينبغي له أن يفحص المجرى حتّى يجد عنصرين متعاقبين يختلفان في القيمة المطلقة بأقلّ من التسامح، وأن يعيد الثاني منهما. وباستخدام هذا، يمكننا احتساب الجذور التربيعيّة حتّى تسامحٍ معطًى بـ
 
 ```scheme
 (define (sqrt x tolerance)
   (stream-limit (sqrt-stream x) tolerance))
 ```
 
-> **Exercise 3.65:** Use the series $ln ⁡ 2 = 1 − \frac{1}{2} + \frac{1}{3} − \frac{1}{4} + …$ to compute three sequences of approximations to the natural logarithm of 2, in the same way we did above for $π$ . How rapidly do these sequences converge?
+> **التمرين 3.65:** استخدم المتسلسلة $ln ⁡ 2 = 1 − \frac{1}{2} + \frac{1}{3} − \frac{1}{4} + …$ لاحتساب ثلاثة تسلسلاتٍ من التقريبات للوغاريتم الطبيعيّ للعدد 2، بالطريقة ذاتها التي فعلناها أعلاه لـ$π$ . فما سرعة تقارب هذه التسلسلات؟
 
-#### Infinite streams of pairs
+#### مجاري الأزواج اللانهائيّة
 
-In [2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3), we saw how the sequence paradigm handles traditional nested loops as processes defined on sequences of pairs. If we generalize this technique to infinite streams, then we can write programs that are not easily represented as loops, because the “looping” must range over an infinite set.
+في [2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3)، رأينا كيف يتعامل نمط التسلسل مع حلقات التكرار المتداخلة التقليديّة بوصفها عمليّاتٍ معرَّفةً على تسلسلاتٍ من الأزواج. فإن عمّمنا هذه التقنيّة على مجاري لا نهائيّة، أمكننا إذن كتابة برامجٍ لا يسهل تمثيلها كحلقات تكرار، لأنّ «الحلقة» ينبغي أن تمتدّ على مجموعةٍ لا نهائيّة.
 
-For example, suppose we want to generalize the `prime-sum-pairs` procedure of [2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3) to produce the stream of pairs of *all* integers $( i , j )$ with $i ≤ j$ such that $i + j$ is prime. If `int-pairs` is the sequence of all pairs of integers $( i , j )$ with $i ≤ j$ , then our required stream is simply[^66]
+فمثلًا، لنفترض أنّنا نرغب في تعميم الإجراء `prime-sum-pairs` من [2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3) لإنتاج مجرى أزواج *جميع* الأعداد الصحيحة $( i , j )$ حيث $i ≤ j$ بحيث يكون $i + j$ أوّليًّا. فإذا كان `int-pairs` هو تسلسل جميع أزواج الأعداد الصحيحة $( i , j )$ حيث $i ≤ j$ ، فإنّ مجرنا المطلوب هو ببساطةٍ[^66]
 
 ```scheme
 (stream-filter 
@@ -3513,9 +3513,9 @@ For example, suppose we want to generalize the `prime-sum-pairs` procedure of [2
  int-pairs)
 ```
 
-Our problem, then, is to produce the stream `int-pairs`. More generally, suppose we have two streams $S = ( S_{i} )$ and $T = ( T_{j} )$ , and imagine the infinite rectangular array $( S_{0} , T_{0} ) ( S_{0} , T_{1} ) ( S_{0} , T_{2} ) … ( S_{1} , T_{0} ) ( S_{1} , T_{1} ) ( S_{1} , T_{2} ) … ( S_{2} , T_{0} ) ( S_{2} , T_{1} ) ( S_{2} , T_{2} ) … …$ We wish to generate a stream that contains all the pairs in the array that lie on or above the diagonal, i.e., the pairs $( S_{0} , T_{0} ) ( S_{0} , T_{1} ) ( S_{0} , T_{2} ) … ( S_{1} , T_{1} ) ( S_{1} , T_{2} ) … ( S_{2} , T_{2} ) … …$ (If we take both $S$ and $T$ to be the stream of integers, then this will be our desired stream `int-pairs`.)
+ومشكلتنا إذن هي إنتاج المجرى `int-pairs`. وبصورةٍ أعمّ، لنفترض أنّ لدينا مجريين $S = ( S_{i} )$ و$T = ( T_{j} )$ ، وتخيّل المصفوفة المستطيلة اللانهائيّة $( S_{0} , T_{0} ) ( S_{0} , T_{1} ) ( S_{0} , T_{2} ) … ( S_{1} , T_{0} ) ( S_{1} , T_{1} ) ( S_{1} , T_{2} ) … ( S_{2} , T_{0} ) ( S_{2} , T_{1} ) ( S_{2} , T_{2} ) … …$ ونرغب في توليد مجرى يحتوي جميع الأزواج في المصفوفة الواقعة على القطر أو فوقه، أي الأزواج $( S_{0} , T_{0} ) ( S_{0} , T_{1} ) ( S_{0} , T_{2} ) … ( S_{1} , T_{1} ) ( S_{1} , T_{2} ) … ( S_{2} , T_{2} ) … …$ (وإذا أخذنا كلًّا من $S$ و$T$ مجرى الأعداد الصحيحة، فإنّ ذلك سيُعطينا المجرى `int-pairs` المطلوب.)
 
-Call the general stream of pairs `(pairs S T)`, and consider it to be composed of three parts: the pair $( S_{0} , T_{0} )$ , the rest of the pairs in the first row, and the remaining pairs:[^67] $( S_{0} , T_{0} ) ( S_{0} , T_{1} ) ( S_{0} , T_{2} ) … ( S_{1} , T_{1} ) ( S_{1} , T_{2} ) … ( S_{2} , T_{2} ) … …$ Observe that the third piece in this decomposition (pairs that are not in the first row) is (recursively) the pairs formed from `(stream-cdr S)` and `(stream-cdr T)`. Also note that the second piece (the rest of the first row) is
+وسمّ مجرى الأزواج العامّ `(pairs S T)`، واعتبره مؤلفًا من ثلاثة أجزاء: الزوج $( S_{0} , T_{0} )$ ، وبقيّة الأزواج في الصفّ الأوّل، والأزواج الباقية:[^67] $( S_{0} , T_{0} ) ( S_{0} , T_{1} ) ( S_{0} , T_{2} ) … ( S_{1} , T_{1} ) ( S_{1} , T_{2} ) … ( S_{2} , T_{2} ) … …$ لاحِظ أنّ الجزء الثالث في هذا التفكيك (الأزواج التي ليست في الصفّ الأوّل) هو (تعاوديًّا) الأزواج المتكوّنة من `(stream-cdr S)` و`(stream-cdr T)`. ولاحِظ أيضًا أنّ الجزء الثاني (بقيّة الصفّ الأوّل) هو
 
 ```scheme
 (stream-map (lambda (x) 
@@ -3523,7 +3523,7 @@ Call the general stream of pairs `(pairs S T)`, and consider it to be composed o
             (stream-cdr t))
 ```
 
-Thus we can form our stream of pairs as follows:
+وهكذا يمكننا تشكيل مجرى الأزواج خاصّتنا كما يلي
 
 ```scheme
 (define (pairs s t)
@@ -3537,7 +3537,7 @@ Thus we can form our stream of pairs as follows:
            (stream-cdr t)))))
 ```
 
-In order to complete the procedure, we must choose some way to combine the two inner streams. One idea is to use the stream analog of the `append` procedure from [2.2.1](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e1):
+ولإتمام الإجراء، ينبغي أن نختار نوعًا ما لدمج المجريين (streams) الداخليّين. وإحدى الأفكار هي استخدام مقابِل المجرى للإجراء `append` من [2.2.1](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e1):
 
 ```scheme
 (define (stream-append s1 s2)
@@ -3548,15 +3548,15 @@ In order to complete the procedure, we must choose some way to combine the two i
        (stream-append (stream-cdr s1) s2))))
 ```
 
-This is unsuitable for infinite streams, however, because it takes all the elements from the first stream before incorporating the second stream. In particular, if we try to generate all pairs of positive integers using
+لكن هذا غير ملائمٍ للمجاري اللا نهائيّة، لأنّه يأخذ جميع العناصر من المجرى الأوّل قبل إدماج المجرى الثاني. وعلى وجه الخصوص، إذا حاولنا توليد جميع أزواج الأعداد الصحيحة الموجبة بـ
 
 ```scheme
 (pairs integers integers)
 ```
 
-our stream of results will first try to run through all pairs with the first integer equal to 1, and hence will never produce pairs with any other value of the first integer.
+فإنّ مجرى نتائجنا سيحاول أوّلًا أن يمرّ بجميع الأزواج التي أوّل عددٍ صحيحٍ فيها يساوي 1، ومن ثمّ فلن يُنتج أبدًا أزواجًا بأيّ قيمةٍ أخرى للعدد الأوّل.
 
-To handle infinite streams, we need to devise an order of combination that ensures that every element will eventually be reached if we let our program run long enough. An elegant way to accomplish this is with the following `interleave` procedure:[^68]
+ولمعالجة المجاري اللا نهائيّة، ينبغي أن نبتكر ترتيبًا للدمج يضمن أنّ كلّ عنصرٍ سيُبلَغ في النهاية إذا تركنّا برنامجنا يعمل مدّةً طويلةً كافية. وطريقةٌ أنيقةٌ لتحقيق ذلك هي بالإجراء `interleave` الآتي:[^68]
 
 ```scheme
 (define (interleave s1 s2)
@@ -3567,9 +3567,9 @@ To handle infinite streams, we need to devise an order of combination that ensur
        (interleave s2 (stream-cdr s1)))))
 ```
 
-Since `interleave` takes elements alternately from the two streams, every element of the second stream will eventually find its way into the interleaved stream, even if the first stream is infinite.
+وحيث إنّ `interleave` يأخذ العناصر بالتبادل من المجريين، فإنّ كلّ عنصرٍ من المجرى الثاني سيصل في النهاية إلى المجرى المدموج، حتّى لو كان المجرى الأوّل لا نهائيًّا.
 
-We can thus generate the required stream of pairs as
+وهكذا يمكننا توليد مجرى الأزواج المطلوب كما يلي
 
 ```scheme
 (define (pairs s t)
@@ -3582,11 +3582,11 @@ We can thus generate the required stream of pairs as
     (pairs (stream-cdr s) (stream-cdr t)))))
 ```
 
-> **Exercise 3.66:** Examine the stream `(pairs integers integers)`. Can you make any general comments about the order in which the pairs are placed into the stream? For example, approximately how many pairs precede the pair (1, 100)? the pair (99, 100)? the pair (100, 100)? (If you can make precise mathematical statements here, all the better. But feel free to give more qualitative answers if you find yourself getting bogged down.)
+> **التمرين 3.66:** افحص المجرى `(pairs integers integers)`. فهل يمكنك إبداء أيّ ملاحظاتٍ عامّة عن الترتيب الذي تُوضَع به الأزواج في المجرى؟ فعلى سبيل المثال، كم زوجًا تقريبًا يسبق الزوج (1, 100)؟ والزوج (99, 100)؟ والزوج (100, 100)؟ (وإذا استطعت إبداء عباراتٍ رياضيّةٍ دقيقة هنا، فذلك أفضل. لكن لا تتردّد في إعطاء إجاباتٍ أكثر كيفيّةً إذا وجدت نفسك متورّطًا في التفاصيل.)
 
-> **Exercise 3.67:** Modify the `pairs` procedure so that `(pairs integers integers)` will produce the stream of *all* pairs of integers $( i , j )$ (without the condition $i ≤ j$ ). Hint: You will need to mix in an additional stream.
+> **التمرين 3.67:** عدّل الإجراء `pairs` حتّى يُنتج `(pairs integers integers)` مجرى *جميع* أزواج الأعداد الصحيحة $( i , j )$ (دون شرط $i ≤ j$ ). تلميح: سوف تحتاج إلى مزج مجرى إضافيّ.
 
-**Exercise 3.68:** Louis Reasoner thinks that building a stream of pairs from three parts is unnecessarily complicated. Instead of separating the pair $( S_{0} , T_{0} )$ from the rest of the pairs in the first row, he proposes to work with the whole first row, as follows:
+**التمرين 3.68:** يظنّ لويس ريزنر أنّ بناء مجرى الأزواج من ثلاثة أجزاء أمرٌ معقّدٌ بلا داعٍ. فبدلًا من فصل الزوج $( S_{0} , T_{0} )$ عن بقيّة أزواج الصفّ الأوّل، يقترح العمل مع الصفّ الأوّل بكامله، كما يلي:
 
 ```scheme
 (define (pairs s t)
@@ -3599,21 +3599,21 @@ We can thus generate the required stream of pairs as
           (stream-cdr t))))
 ```
 
-Does this work? Consider what happens if we evaluate `(pairs integers integers)` using Louis’s definition of `pairs`.
+أفيعمل هذا؟ فكّر في ما يحدث إذا قيّمنا `(pairs integers integers)` باستخدام تعريف لويس لـ`pairs`.
 
-> **Exercise 3.69:** Write a procedure `triples` that takes three infinite streams, $S$ , $T$ , and $U$ , and produces the stream of triples $( S_{i} , T_{j} , U_{k} )$ such that $i ≤ j ≤ k$ . Use `triples` to generate the stream of all Pythagorean triples of positive integers, i.e., the triples $( i , j , k )$ such that $i ≤ j$ and $i^{2} + j^{2} = k^{2}$ .
+> **التمرين 3.69:** اكتب إجراءً `triples` يأخذ ثلاثة مجاري لا نهائيّة، $S$ و$T$ و$U$ ، ويُنتج مجرى الثلاثيّات $( S_{i} , T_{j} , U_{k} )$ بحيث $i ≤ j ≤ k$ . واستخدم `triples` لتوليد مجرى جميع الثلاثيّات الفيثاغورسيّة من الأعداد الصحيحة الموجبة، أي الثلاثيّات $( i , j , k )$ بحيث $i ≤ j$ و$i^{2} + j^{2} = k^{2}$ .
 
-> **Exercise 3.70:** It would be nice to be able to generate streams in which the pairs appear in some useful order, rather than in the order that results from an *ad hoc* interleaving process. We can use a technique similar to the `merge` procedure of [Exercise 3.56](#Exercise-3_002e56), if we define a way to say that one pair of integers is “less than” another. One way to do this is to define a “weighting function” $W ( i , j )$ and stipulate that $( i_{1} , j_{1} )$ is less than $( i_{2} , j_{2} )$ if $W ( i_{1} , j_{1} ) < W ( i_{2} , j_{2} )$ . Write a procedure `merge-weighted` that is like `merge`, except that `merge-weighted` takes an additional argument `weight`, which is a procedure that computes the weight of a pair, and is used to determine the order in which elements should appear in the resulting merged stream.[^69] Using this, generalize `pairs` to a procedure `weighted-pairs` that takes two streams, together with a procedure that computes a weighting function, and generates the stream of pairs, ordered according to weight. Use your procedure to generate the stream of all pairs of positive integers $( i , j )$ with $i ≤ j$ ordered according to the sum $i + j$ ,
-> > the stream of all pairs of positive integers $( i , j )$ with $i ≤ j$ , where neither $i$ nor $j$ is divisible by 2, 3, or 5, and the pairs are ordered according to the sum $2 i + 3 j + 5 i j$ .
+> **التمرين 3.70:** لَكان من الجميل أن نكون قادرين على توليد مجاري تظهر فيها الأزواج بترتيبٍ مفيدٍ ما، بدلًا من الترتيب الناتج عن عمليّة تشبيكٍ *ارتجاليّة (ad hoc)* . ونحن نستطيع استخدام تقنيّةٍ مشابهة للإجراء `merge` من [التمرين 3.56](#Exercise-3_002e56)، إذا عرّفنا طريقةً للقول إنّ زوجًا من الأعداد الصحيحة «أصغرّ» من آخر. وإحدى طرائق فعل ذلك هي تعريف «دالّاة وزن» $W ( i , j )$ والنصّ على أنّ $( i_{1} , j_{1} )$ أصغرّ من $( i_{2} , j_{2} )$ إذا كان $W ( i_{1} , j_{1} ) < W ( i_{2} , j_{2} )$ . اكتب إجراءً `merge-weighted` شبيهًا بـ`merge`، باستثناء أنّ `merge-weighted` يأخذ معطًى إضافيًّا هو `weight`، وهو إجراءٌ يحسب وزن الزوج، ويُستخدم لتحديد الترتيب الذي ينبغي أن تظهر به العناصر في المجرى المدموج الناتج.[^69] وباستخدام هذا، عُمّم `pairs` إلى إجراءٍ `weighted-pairs` يأخذ مجريين، مع إجراءٍ يحسب دالّاة الأوزان، ويولّد مجرى الأزواج، مرتّبًا تبعًا للوزن. واستخدم إجارتك لتوليد مجرى جميع أزواج الأعداد الصحيحة الموجبة $( i , j )$ حيث $i ≤ j$ مرتّبةً تبعًا للمجموع $i + j$ ،
+> > ومجرى جميع أزواج الأعداد الصحيحة الموجبة $( i , j )$ حيث $i ≤ j$ ، حيث لا $i$ ولا $j$ قابلٌ للقسمة على 2، أو 3، أو 5، والأزواج مرتّبةٌ تبعًا للمجموع $2 i + 3 j + 5 i j$ .
 > > 
 
-> **Exercise 3.71:** Numbers that can be expressed as the sum of two cubes in more than one way are sometimes called *Ramanujan numbers*, in honor of the mathematician Srinivasa Ramanujan.[^70] Ordered streams of pairs provide an elegant solution to the problem of computing these numbers. To find a number that can be written as the sum of two cubes in two different ways, we need only generate the stream of pairs of integers $( i , j )$ weighted according to the sum $i^{3} + j^{3}$ (see [Exercise 3.70](#Exercise-3_002e70)), then search the stream for two consecutive pairs with the same weight. Write a procedure to generate the Ramanujan numbers. The first such number is 1,729. What are the next five?
+> **التمرين 3.71:** الأعداد التي يمكن التعبير عنها بمجموع مكعّبين بأكثر من طريقةٍ واحدة تُسمّى أحيانًا *أعداد رامانوجان (Ramanujan numbers)*، تكريمًا للرياضيّ سرينيفاسا رامانوجان.[^70] وإنّ مجاري الأزواج المرتّبة تُوفّر حلًّا أنيقًا لمسألة احتساب هذه الأعداد. فلكي نجد عددًا يمكن كتابته مجموع مكعّبين بطريقتين مختلفتين، لا نحتاج إلّا إلى توليد مجرى أزواج الأعداد الصحيحة $( i , j )$ موزونًا تبعًا للمجموع $i^{3} + j^{3}$ (انظر [التمرين 3.70](#Exercise-3_002e70))، ثمّ البحث في المجرى عن زوجين متعاقبين بالوزن ذاته. اكتب إجراءً لتوليد أعداد رامانوجان. أوّل هذه الأعداد هو 1,729. فما الأعداد الخمسة التالية؟
 
-> **Exercise 3.72:** In a similar way to [Exercise 3.71](#Exercise-3_002e71) generate a stream of all numbers that can be written as the sum of two squares in three different ways (showing how they can be so written).
+> **التمرين 3.72:** بطريقةٍ مشابهة لـ[التمرين 3.71](#Exercise-3_002e71)، ولّد مجرى جميع الأعداد التي يمكن كتابتها مجموع مربّعين بثلاث طرائق مختلفة (مُظهرًا كيف يمكن كتابتها كذلك).
 
-#### Streams as signals
+#### المجاري كإشارات
 
-We began our discussion of streams by describing them as computational analogs of the “signals” in signal-processing systems. In fact, we can use streams to model signal-processing systems in a very direct way, representing the values of a signal at successive time intervals as consecutive elements of a stream. For instance, we can implement an *integrator* or *summer* that, for an input stream $x = ( x_{i} )$ , an initial value $C$ , and a small increment $d t$ , accumulates the sum $S_{i} = C + ∑ j = 1 i x_{j} d t$ and returns the stream of values $S = ( S_{i} )$ . The following `integral` procedure is reminiscent of the “implicit style” definition of the stream of integers ([3.5.2](#g_t3_002e5_002e2)):
+بدأنا مناقشتنا للمجاري بوصفها مقابِلاتٍ حسابيّةٍ لـ«الإشارات» في نظم معالجة الإشارات. وفي الحقيقة، فإنّنا نستطيع استخدام المجاري لنمذجة نظم معالجة الإشارات بطريقةٍ مباشرةٍ جدًّا، بتمثيل قيم إشارةٍ في فتراتٍ زمنيّةٍ متعاقبة كعناصر متتاليّةٍ في مجرى. فنحن نستطيع مثلًا تنفيذ *مُكامِل (integrator)* أو *جامع (summer)* يُجمِّع، لمجرى مدخل $x = ( x_{i} )$ وقيمة أوّليّة $C$ ، وزيادةً صغيرة $d t$ ، المجموع $S_{i} = C + ∑ j = 1 i x_{j} d t$ ويعيد مجرى القيم $S = ( S_{i} )$ . والإجراء `integral` الآتي يُذكّرنا بتعريف مجرى الأعداد الصحيحة «بالنمط الضمنيّ» ([3.5.2](#g_t3_002e5_002e2)):
 
 ```scheme
 (define (integral integrand initial-value dt)
@@ -3625,25 +3625,25 @@ We began our discussion of streams by describing them as computational analogs o
   int)
 ```
 
-[Figure 3.32](#Figure-3_002e32) is a picture of a signal-processing system that corresponds to the `integral` procedure. The input stream is scaled by $d t$ and passed through an adder, whose output is passed back through the same adder. The self-reference in the definition of `int` is reflected in the figure by the feedback loop that connects the output of the adder to one of the inputs.
+[الشكل 3.32](#Figure-3_002e32) صورةٌ لنظام معالجة إشاراتٍ يقابل الإجراء `integral`. ويُضرب مجرى الدخل في $d t$ ويمرّ عبر جامعٍ، يُغذّى خرجه مرجعيًّا إلى الجامع ذاته. والمرجعيّة الذاتيّة في تعريف `int` تنعكس في الشكل بحلقة التغذية الراجعة التي تصل خرج الجامع بأحد مدخليه.
 
 ![](/images/sicp/c3-modularity-objects-and-state-1-Fig3.32a.std.webp)
 
-**Figure 3.32:** The `integral` procedure viewed as a signal-processing system.
+**الشكل 3.32:** الإجراء `integral` منظورًا إليه بوصفه نظام معالجة إشارات.
 
-> **Exercise 3.73:** We can model electrical circuits using streams to represent the values of currents or voltages at a sequence of times. For instance, suppose we have an *RC circuit* consisting of a resistor of resistance $R$ and a capacitor of capacitance $C$ in series. The voltage response $v$ of the circuit to an injected current $i$ is determined by the formula in [Figure 3.33](#Figure-3_002e33), whose structure is shown by the accompanying signal-flow diagram.
+> **التمرين 3.73:** نستطيع نمذجة الدوائر الكهربائيّة باستخدام المجاري لتمثيل قيم التيّارات أو الجهود في تسلسلٍ من الأزمنة. فمثلًا، لنفترض أنّ لدينا *دائرة RC* تتكوّن من مقاومةٍ مقاومتُها $R$ ومكثّفٍ سعتُه $C$ على التوالي. وتُحدَّد استجابة الجهد $v$ للدائرة تجاه تيّارٍ محقون $i$ بالصيغة الواردة في [الشكل 3.33](#Figure-3_002e33)، التي تُظهر بنيتها المخطّط المصاحب لتدفّق الإشارات.
 > > ![](/images/sicp/c3-modularity-objects-and-state-2-Fig3.33a.std.webp)
-> > **Figure 3.33:** An RC circuit and the associated signal-flow diagram.
-> > Write a procedure `RC` that models this circuit. `RC` should take as inputs the values of $R$ , $C$ , and $d t$ and should return a procedure that takes as inputs a stream representing the current $i$ and an initial value for the capacitor voltage $v_{0}$ and produces as output the stream of voltages $v$ . For example, you should be able to use `RC` to model an RC circuit with $R$ = 5 ohms, $C$ = 1 farad, and a 0.5-second time step by evaluating `(define RC1 (RC 5 1 0.5))`. This defines `RC1` as a procedure that takes a stream representing the time sequence of currents and an initial capacitor voltage and produces the output stream of voltages.
+> > **الشكل 3.33:** دائرة RC ومخطّط تدفّق الإشارات المرافق.
+> > اكتب إجراءً `RC` يُمثّل هذه الدائرة. وينبغي أن يأخذ `RC` مدخلاتٍ هي قيم $R$ و$C$ و$d t$ وأن يعيد إجراءً يأخذ مدخلاتٍ هي مجرىٌ يمثّل التيّار $i$ وقيمة أوّليّة لجهد المكثّف $v_{0}$ ويُنتج مخرجًا مجرى الجهود $v$ . فعلى سبيل المثال، ينبغي أن تكون قادرًا على استخدام `RC` لنمذجة دائرة RC بمقدار $R$ = 5 أوم، و$C$ = 1 فاراد، وخطوةٍ زمنيّةٍ قيمتها 0.5 ثانيةٍ بتقييم `(define RC1 (RC 5 1 0.5))`. وهذا يُعرّف `RC1` بوصفه إجراءً يأخذ مجرىً يمثّل التسلسل الزمنيّ للتيّارات وجهد مكثّفٍ أوّليٍّ ويُنتج مجرى خرج الجهود.
 
-**Exercise 3.74:** Alyssa P. Hacker is designing a system to process signals coming from physical sensors. One important feature she wishes to produce is a signal that describes the *zero crossings* of the input signal. That is, the resulting signal should be $+ 1$ whenever the input signal changes from negative to positive, $− 1$ whenever the input signal changes from positive to negative, and $0$ otherwise. (Assume that the sign of a $0$ input is positive.) For example, a typical input signal with its associated zero-crossing signal would be
+**التمرين 3.74:** تُصمّم أليسّا هاكر نظامًا لمعالجة الإشارات الواردة من مستشعراتٍ فيزيائيّة. والميزة المهمّة التي ترغب في إنتاجها هي إشارةٌ تصف *تقاطعات الصفر (zero crossings)* لإشارة الدخل. أي أنّ الإشارة الناتجة ينبغي أن تكون $+ 1$ كلّما انتقلت إشارة الدخل من السالب إلى الموجب، و$− 1$ كلّما انتقلت من الموجب إلى السالب، و$0$ فيما عدا ذلك. (وافترض أنّ إشارة الدخل $0$ موجبة.) فمثلًا، ستبدو إشارة دخلٍ نموذجيّة مع إشارة تقاطعات الصفر المرافقة لها كما يلي
 
 ```scheme
 … 1 2 1.5 1 0.5 -0.1 -2 -3 -2 -0.5 0.2 3 4 …
 … 0 0  0  0  0   -1   0  0  0   0   1  0 0 …
 ```
 
-In Alyssa’s system, the signal from the sensor is represented as a stream `sense-data` and the stream `zero-crossings` is the corresponding stream of zero crossings. Alyssa first writes a procedure `sign-change-detector` that takes two values as arguments and compares the signs of the values to produce an appropriate $0$ , $1$ , or $− 1$ . She then constructs her zero-crossing stream as follows:
+وفي نظام أليسّا، تُُمثَّل الإشارة القادمة من المستشعر كمجرى `sense-data` ، ومجرى `zero-crossings` هو مجرى تقاطعات الصفر المقابل. وتكتب أليسّا أوّلًا إجراءً `sign-change-detector` يأخذ قيمتين كمعطيين ويقارن إشارات القيمتين لإنتاج $0$ ، أو $1$ ، أو $− 1$ المناسب. ثمّ تبني مجرى تقاطعات الصفر خاصّتها كما يلي
 
 ```scheme
 (define (make-zero-crossings
@@ -3660,7 +3660,7 @@ In Alyssa’s system, the signal from the sensor is represented as a stream `sen
   (make-zero-crossings sense-data 0))
 ```
 
-Alyssa’s boss, Eva Lu Ator, walks by and suggests that this program is approximately equivalent to the following one, which uses the generalized version of `stream-map` from [Exercise 3.50](#Exercise-3_002e50):
+يمرّ رئيس أليسا في العمل، إيفا لو أتور، ويقترح أنّ هذا البرنامج مكافئٌ تقريبًا للبرنامج التالي، الذي يستخدم النسخة المعمّمة من `stream-map` الواردة في [التمرين 3.50](#Exercise-3_002e50):
 
 ```scheme
 (define zero-crossings
@@ -3669,9 +3669,9 @@ Alyssa’s boss, Eva Lu Ator, walks by and suggests that this program is approxi
               ⟨expression⟩))
 ```
 
-Complete the program by supplying the indicated `⟨`expression`⟩`.
+أكمل البرنامج بتزويد `⟨`التعبير`⟩` المُشار إليه.
 
-**Exercise 3.75:** Unfortunately, Alyssa’s zero-crossing detector in [Exercise 3.74](#Exercise-3_002e74) proves to be insufficient, because the noisy signal from the sensor leads to spurious zero crossings. Lem E. Tweakit, a hardware specialist, suggests that Alyssa smooth the signal to filter out the noise before extracting the zero crossings. Alyssa takes his advice and decides to extract the zero crossings from the signal constructed by averaging each value of the sense data with the previous value. She explains the problem to her assistant, Louis Reasoner, who attempts to implement the idea, altering Alyssa’s program as follows:
+**التمرين 3.75:** للأسف، يتبيّن أنّ كاشف عبور الصفر الذي كتبته أليسا في [التمرين 3.74](#Exercise-3_002e74) غير كافٍ، لأنّ الإشارة المزعجة القادمة من المستشعر تُفضي إلى عبورٍ زائف للصفر. يقترح ليم إي. تويكيت، المتخصّص في العتاد، أن تُنعّم أليسا الإشارة لترشيح الضجيج قبل استخلاص مواضع عبور الصفر. تأخذ أليسا بنصيحته وتقرّر استخلاص عبور الصفر من الإشارة المبنيّة على حساب متوسّط كل قيمة من بيانات الاستشعار مع القيمة السابقة لها. تشرح المشكلة للويReasonير مساعدها، لويس ريزنر، الذي يحاول تنفيذ الفكرة معدِّلًا برنامج أليسا كما يلي:
 
 ```scheme
 (define (make-zero-crossings 
@@ -3686,13 +3686,13 @@ Complete the program by supplying the indicated `⟨`expression`⟩`.
       (stream-cdr input-stream) avpt))))
 ```
 
-This does not correctly implement Alyssa’s plan. Find the bug that Louis has installed and fix it without changing the structure of the program. (Hint: You will need to increase the number of arguments to `make-zero-crossings`.)
+لا ينفّذ هذا خطّة أليسا على نحوٍ صحيح. اعثر على الخلل الذي أدخله لويس وأصلحه دون تغيير بنية البرنامج. (تلميح: ستحتاج إلى زيادة عدد وسطاء `make-zero-crossings`.)
 
-> **Exercise 3.76:** Eva Lu Ator has a criticism of Louis’s approach in [Exercise 3.75](#Exercise-3_002e75). The program he wrote is not modular, because it intermixes the operation of smoothing with the zero-crossing extraction. For example, the extractor should not have to be changed if Alyssa finds a better way to condition her input signal. Help Louis by writing a procedure `smooth` that takes a stream as input and produces a stream in which each element is the average of two successive input stream elements. Then use `smooth` as a component to implement the zero-crossing detector in a more modular style.
+> **التمرين 3.76:** لدى إيفا لو أتور ملاحظة على أسلوب لويس في [التمرين 3.75](#Exercise-3_002e75). البرنامج الذي كتبه غير وحدانيّ، لأنّه يمزج عملية التنعيم مع عملية استخلاص عبور الصفر. فعلى سبيل المثال، لا ينبغي أن يضطرّ المُستخرِج إلى التغيير إذا وجدت أليسا طريقة أفضل لتحسين إشارة دخلها. ساعد لويس بكتابة إجراء `smooth` يأخذ مجرىً كدخل وينتج مجرىً يكون كل عنصر فيه متوسّط عنصرين متتاليين من مجرى الدخل. ثم استخدم `smooth` كمكوّنٍ لتنفيذ كاشف عبور الصفر بأسلوبٍ أكثر وحدانيةً.
 
-#### 3.5.4 Streams and Delayed Evaluation
+#### 3.5.4 المجاري والتقييم المؤجَّل
 
-The `integral` procedure at the end of the preceding section shows how we can use streams to model signal-processing systems that contain feedback loops. The feedback loop for the adder shown in [Figure 3.32](#Figure-3_002e32) is modeled by the fact that `integral`’s internal stream `int` is defined in terms of itself:
+يُظهر إجراء `integral` في نهاية القسم السابق كيف يمكننا استخدام المجاري لنمذجة أنظمة معالجة الإشارات التي تحتوي حلقات ارتجاع. حَلْقة الارتجاع الخاصة بالجامع والمُجمِّع المُبيَّنة في [الشكل 3.32](#Figure-3_002e32) مُنمذَجة بحقيقة أنّ مجرى `integral` الداخلي `int` مُعرَّفٌ بدلالة نفسه:
 
 ```scheme
 (define int
@@ -3702,15 +3702,15 @@ The `integral` procedure at the end of the preceding section shows how we can us
     (scale-stream integrand dt) int)))
 ```
 
-The interpreter’s ability to deal with such an implicit definition depends on the `delay` that is incorporated into `cons-stream`. Without this `delay`, the interpreter could not construct `int` before evaluating both arguments to `cons-stream`, which would require that `int` already be defined. In general, `delay` is crucial for using streams to model signal-processing systems that contain loops. Without `delay`, our models would have to be formulated so that the inputs to any signal-processing component would be fully evaluated before the output could be produced. This would outlaw loops.
+تعتمد قدرة المفسّر على التصرّف مع تعريفٍ ضمنيّ من هذا القبيل على التأخير `delay` المُدمَج في `cons-stream`. فبدون هذا `delay`، لم يكن المفسّر ليتمكّن من بناء `int` قبل تقييم كلا وسطي `cons-stream`، وهو ما كان سيستلزم أن يكون `int` مُعرَّفًا مسبقًا. وبشكلٍ عام، فإنّ التأخير `delay` حاسمٌ لاستخدام المجاري في نمذجة أنظمة معالجة الإشارات التي تحتوي حلقات. وبدون التأخير `delay`، لاضطرّت نماذجنا إلى الصياغة بحيث تُقيَّم مُدخلات أي مكوّن معالجة إشارات تقييمًا كاملًا قبل إمكان إنتاج المُخرج. وهذا يعني منع الحلقات.
 
-Unfortunately, stream models of systems with loops may require uses of `delay` beyond the “hidden” `delay` supplied by `cons-stream`. For instance, [Figure 3.34](#Figure-3_002e34) shows a signal-processing system for solving the differential equation $d y / d t = f ( y )$ where $f$ is a given function. The figure shows a mapping component, which applies $f$ to its input signal, linked in a feedback loop to an integrator in a manner very similar to that of the analog computer circuits that are actually used to solve such equations.
+للأسف، قد تستلزم نماذج المجاري للأنظمة ذات الحلقات استخدامات للتأخير `delay` تتجاووز التأخير `delay` «المُخفِي» الذي يُوفّره `cons-stream`. فعلى سبيل المثال، يُظهر [الشكل 3.34](#Figure-3_002e34) نظام معالجة إشارات لحلّ المعادلة التفاضلية $d y / d t = f ( y )$ حيث $f$ دالّة معطاة. يُظهر الشكل مكوّن تعيين يُطبّق $f$ على إشارة دخله، موصولًا في حَلْقة ارتجاع بمُكمِّل تكامليّ بطريقة تشبه إلى حدٍّ كبير دوائر الحاسوب التناظريّة (analog computer) التي تُستخدم فعلًا لحلّ مثل هذه المعادلات.
 
 ![](/images/sicp/c3-modularity-objects-and-state-3-Fig3.34.std.webp)
 
-**Figure 3.34:** An “analog computer circuit” that solves the equation $d y / d t = f ( y )$ .
+**الشكل 3.34:** «دائرة حاسوب تناظريّة» تحلّ المعادلة $d y / d t = f ( y )$ .
 
-Assuming we are given an initial value $y_{0}$ for $y$ , we could try to model this system using the procedure
+إذا افترضنا أنّنا أُعطينا قيمةً أوّليّة $y_{0}$ لـ $y$ ، فيمكننا أن نحاول نمذجة هذا النظام باستخدام الإجراء
 
 ```scheme
 (define (solve f y0 dt)
@@ -3719,11 +3719,11 @@ Assuming we are given an initial value $y_{0}$ for $y$ , we could try to model t
   y)
 ```
 
-This procedure does not work, because in the first line of `solve` the call to `integral` requires that the input `dy` be defined, which does not happen until the second line of `solve`.
+لا يعمل هذا الإجراء، لأنّه في السطر الأوّل من `solve` يتطلّب النداء إلى `integral` أن يكون الدخل `dy` مُعرَّفًا، وهذا لا يحدث إلّا في السطر الثاني من `solve`.
 
-On the other hand, the intent of our definition does make sense, because we can, in principle, begin to generate the `y` stream without knowing `dy`. Indeed, `integral` and many other stream operations have properties similar to those of `cons-stream`, in that we can generate part of the answer given only partial information about the arguments. For `integral`, the first element of the output stream is the specified `initial-value`. Thus, we can generate the first element of the output stream without evaluating the integrand `dy`. Once we know the first element of `y`, the `stream-map` in the second line of `solve` can begin working to generate the first element of `dy`, which will produce the next element of `y`, and so on.
+من ناحية أخرى، فإنّ مقصد تعريفنا وجيهٌ في الحقيقة، لأنّنا نستطيع، مبدئيًا، البدء في توليد مجرى `y` دون معرفة `dy`. وبالفعل، فإنّ `integral` وكثيرًا من عمليّات المجاري الأخرى تتمتّع بخصائص تشبه خصائص `cons-stream`، إذ نُمكنها توليد جزءٍ من الإجابة بمُجرّد معرفة جزئيّة عن الوسطاء. أمّا `integral`، فأوّل عنصر في مجرى الخرج هو `initial-value` المُحدَّد. بالتالي، نستطيع توليد أوّل عنصر من مجرى الخرج دون تقييم المكمّم `dy`. وما إن نعرف أوّل عنصر من `y`، حتّى يتمكّن `stream-map` في السطر الثاني من `solve` من البدء في العمل لتوليد أوّل عنصر من `dy`، وهو ما سيُنتج العنصر التالي من `y`، وهكذا.
 
-To take advantage of this idea, we will redefine `integral` to expect the integrand stream to be a *delayed argument*. `Integral` will `force` the integrand to be evaluated only when it is required to generate more than the first element of the output stream:
+للانتفاع من هذه الفكرة، سنُعيد تعريف `integral` ليتوقّع أن يكون مكمّم المجرى *وسيطًا مؤجَّلًا*. وسيقوم `integral` بإجبار `force` تقييم المكمّم فقط عندما يُطلَب توليد أكثر من أوّل عنصر من مجرى الخرج:
 
 ```scheme
 (define (integral
@@ -3739,7 +3739,7 @@ To take advantage of this idea, we will redefine `integral` to expect the integr
   int)
 ```
 
-Now we can implement our `solve` procedure by delaying the evaluation of `dy` in the definition of `y`:[^71]
+صار بوسعنا الآن تنفيذ إجراء `solve` بتأخير تقييم `dy` في تعريف `y`:[^71]
 
 ```scheme
 (define (solve f y0 dt)
@@ -3748,7 +3748,7 @@ Now we can implement our `solve` procedure by delaying the evaluation of `dy` in
   y)
 ```
 
-In general, every caller of `integral` must now `delay` the integrand argument. We can demonstrate that the `solve` procedure works by approximating $e ≈ 2.718$ by computing the value at $y = 1$ of the solution to the differential equation $d y / d t = y$ with initial condition $y ( 0 ) = 1$ :
+وبشكلٍ عام، يجب على كل مُنادٍ لـ `integral` الآن أن يُؤخّر `delay` وسيط المكمّم. ونستطيع إثبات أنّ إجراء `solve` يعمل بتقريب $e ≈ 2.718$ عبر حساب القيمة عند $y = 1$ من حلّ المعادلة التفاضلية $d y / d t = y$ بالشرط الأوّلي $y ( 0 ) = 1$ :
 
 ```scheme
 (stream-ref 
@@ -3756,7 +3756,7 @@ In general, every caller of `integral` must now `delay` the integrand argument. 
 2.716924
 ```
 
-**Exercise 3.77:** The `integral` procedure used above was analogous to the “implicit” definition of the infinite stream of integers in [3.5.2](#g_t3_002e5_002e2). Alternatively, we can give a definition of `integral` that is more like `integers-starting-from` (also in [3.5.2](#g_t3_002e5_002e2)):
+**التمرين 3.77:** كان إجراء `integral` المُستخدم أعلاه مُشابهًا للتعريف «الضمنيّ» لمجرى الأعداد الصحيحة اللانهائيّ في [3.5.2](#g_t3_002e5_002e2). وبدلًا من ذلك، نستطيع إعطاء تعريف لـ `integral` أقرب إلى `integers-starting-from` (أيضًا في [3.5.2](#g_t3_002e5_002e2)):
 
 ```scheme
 (define (integral
@@ -3772,39 +3772,39 @@ In general, every caller of `integral` must now `delay` the integrand argument. 
         dt))))
 ```
 
-When used in systems with loops, this procedure has the same problem as does our original version of `integral`. Modify the procedure so that it expects the `integrand` as a delayed argument and hence can be used in the `solve` procedure shown above.
+عند استخدام هذا الإجراء في أنظمة ذات حلقات، يعاني من المشكلة ذاتها التي يعاني منها إصدارنا الأصلي من `integral`. عدّل الإجراء ليصبح توقّعه `integrand` كوسيطٍ مؤجَّل، ليُمكن استخدامه بالتالي في إجراء `solve` المُبيَّن أعلاه.
 
-> **Exercise 3.78:** Consider the problem of designing a signal-processing system to study the homogeneous second-order linear differential equation $\frac{d^{2} y}{d t^{2}} − a \frac{d y}{d t} − b y = 0.$ The output stream, modeling $y$ , is generated by a network that contains a loop. This is because the value of $d^{2} y / d t^{2}$ depends upon the values of $y$ and $d y / d t$ and both of these are determined by integrating $d^{2} y / d t^{2}$ . The diagram we would like to encode is shown in [Figure 3.35](#Figure-3_002e35). Write a procedure `solve-2nd` that takes as arguments the constants $a$ , $b$ , and $d t$ and the initial values $y_{0}$ and $d y_{0}$ for $y$ and $d y / d t$ and generates the stream of successive values of $y$ .
+> **التمرين 3.78:** تأمّل مشكلة تصميم نظام معالجة إشارات لدراسة المعادلة التفاضلية الخطية المتجانسة من الرتبة الثانية $\frac{d^{2} y}{d t^{2}} − a \frac{d y}{d t} − b y = 0.$ يُولَّد مجرى الخرج، الذي ينمذج $y$ ، بواسطة شبكة تحتوي حَلْقة. وسبب ذلك أنّ قيمة $d^{2} y / d t^{2}$ تعتمد على قيمتي $y$ و $d y / d t$ ، وكلٌّ منهما تتحدّد بالتكامل على $d^{2} y / d t^{2}$ . والمخطّط الذي نودّ ترميزه مُبيَّنٌ في [الشكل 3.35](#Figure-3_002e35). اكتب إجراء `solve-2nd` يأخذ كوسطاء الثوابت $a$ و $b$ و $d t$ والقيم الأوّليّة $y_{0}$ و $d y_{0}$ لـ $y$ و $d y / d t$ ، ويُولّد مجرى القيم المتعاقبة لـ $y$ .
 
 ![](/images/sicp/c3-modularity-objects-and-state-4-Fig3.35b.std.webp)
 
-**Figure 3.35:** Signal-flow diagram for the solution to a second-order linear differential equation.
+**الشكل 3.35:** مخطّط سريان الإشارات لحلّ معادلة تفاضلية خطية من الرتبة الثانية.
 
-> **Exercise 3.79:** Generalize the `solve-2nd` procedure of [Exercise 3.78](#Exercise-3_002e78) so that it can be used to solve general second-order differential equations $d^{2} y / d t^{2} = f ( d y / d t , y )$ .
+> **التمرين 3.79:** عمّم إجراء `solve-2nd` من [التمرين 3.78](#Exercise-3_002e78) ليُمكن استخدامه في حلّ المعادلات التفاضلية العامة من الرتبة الثانية $d^{2} y / d t^{2} = f ( d y / d t , y )$ .
 
 ![](/images/sicp/c3-modularity-objects-and-state-5-Fig3.36.std.webp)
 
-**Figure 3.36:** A series RLC circuit.
+**الشكل 3.36:** دائرة RLC على التسلسل.
 
-> **Exercise 3.80:** A *series RLC circuit* consists of a resistor, a capacitor, and an inductor connected in series, as shown in [Figure 3.36](#Figure-3_002e36). If $R$ , $L$ , and $C$ are the resistance, inductance, and capacitance, then the relations between voltage $( v )$ and current $( i )$ for the three components are described by the equations $v_{R} = i_{R} R , v_{L} = L \frac{d i_{L}}{d t} , i_{C} = C \frac{d v_{C}}{d t} ,$ and the circuit connections dictate the relations $i_{R} = i_{L} = − i_{C} , v_{C} = v_{L} + v_{R} .$ Combining these equations shows that the state of the circuit (summarized by $v_{C}$ , the voltage across the capacitor, and $i_{L}$ , the current in the inductor) is described by the pair of differential equations $\frac{d v_{C}}{d t} = − \frac{i_{L}}{C} , \frac{d i_{L}}{d t} = \frac{1}{L} v_{C} − \frac{R}{L} i_{L} .$ The signal-flow diagram representing this system of differential equations is shown in [Figure 3.37](#Figure-3_002e37).
+> **التمرين 3.80:** تتألّف *دائرة RLC على التسلسل* من مقاومة ومكثّف ومُحثٍّ موصولين على التسلسل، كما هو مُبيَّنٌ في [الشكل 3.36](#Figure-3_002e36). فإذا كانت $R$ و $L$ و $C$ هي المقاومة والحَثّ والسعة على التوالي، فإنّ العلاقات بين الجهد $( v )$ والتيّار $( i )$ في المكوّنات الثلاثة توصف بالمعادلات $v_{R} = i_{R} R , v_{L} = L \frac{d i_{L}}{d t} , i_{C} = C \frac{d v_{C}}{d t} ,$ كما تفرض أوصال الدائرة العلاقات $i_{R} = i_{L} = − i_{C} , v_{C} = v_{L} + v_{R} .$ ويُظهر الجمع بين هذه المعادلات أنّ حالة الدائرة (المتلخّصة في $v_{C}$ ، الجهد عبر المكثّف، و $i_{L}$ ، التيّار في المُحثِّ) توصف بزوج المعادلات التفاضلية $\frac{d v_{C}}{d t} = − \frac{i_{L}}{C} , \frac{d i_{L}}{d t} = \frac{1}{L} v_{C} − \frac{R}{L} i_{L} .$ ومخطّط سريان الإشارات الذي يمثّل هذا النظام من المعادلات التفاضلية مُبيَّنٌ في [الشكل 3.37](#Figure-3_002e37).
 
 ![](/images/sicp/c3-modularity-objects-and-state-6-Fig3.37.std.webp)
 
-**Figure 3.37:** A signal-flow diagram for the solution to a series RLC circuit.
+**الشكل 3.37:** مخطّط سريان إشارات لحلّ دائرة RLC على التسلسل.
 
-> Write a procedure `RLC` that takes as arguments the parameters $R$ , $L$ , and $C$ of the circuit and the time increment $d t$ . In a manner similar to that of the `RC` procedure of [Exercise 3.73](#Exercise-3_002e73), `RLC` should produce a procedure that takes the initial values of the state variables, $v_{C_{0}}$ and $i_{L_{0}}$ , and produces a pair (using `cons`) of the streams of states $v_{C}$ and $i_{L}$ . Using `RLC`, generate the pair of streams that models the behavior of a series RLC circuit with $R$ = 1 ohm, $C$ = 0.2 farad, $L$ = 1 henry, $d t$ = 0.1 second, and initial values $i_{L_{0}}$ = 0 amps and $v_{C_{0}}$ = 10 volts.
+> اكتب إجراء `RLC` يأخذ كوسطاء مُعامِلات الدائرة $R$ و $L$ و $C$ وفرق الزمن $d t$ . وعلى غرار ما فعله إجراء `RC` في [التمرين 3.73](#Exercise-3_002e73)، يجب أن يُنتج `RLC` إجراءً يأخذ القيم الأوّليّة لمتغيّرات الحالة، $v_{C_{0}}$ و $i_{L_{0}}$ ، ويُنتاج زوجًا (باستخدام `cons`) من مجرىَي الحالتين $v_{C}$ و $i_{L}$ . وباستخدام `RLC`، ولّد زوج المجاري الذي ينمذج سلوك دائرة RLC على التسلسل بـ $R$ = 1 أوم، و $C$ = 0.2 فاراد، و $L$ = 1 هنري، و $d t$ = 0.1 ثانية، وقيمتين أوّليّتين $i_{L_{0}}$ = 0 أمبير و $v_{C_{0}}$ = 10 فولت.
 
-#### Normal-order evaluation
+#### التقييم بالترتيب الاعتيادي
 
-The examples in this section illustrate how the explicit use of `delay` and `force` provides great programming flexibility, but the same examples also show how this can make our programs more complex. Our new `integral` procedure, for instance, gives us the power to model systems with loops, but we must now remember that `integral` should be called with a delayed integrand, and every procedure that uses `integral` must be aware of this. In effect, we have created two classes of procedures: ordinary procedures and procedures that take delayed arguments. In general, creating separate classes of procedures forces us to create separate classes of higher-order procedures as well.[^72]
+تُبيّن الأمثلة في هذا القسم كيف أنّ الاستخدام الصريح للتأخير `delay` والإجبار `force` يُوفّر مرونةً كبيرة في البرمجة، لكنّ الأمثلة نفسها تُظهر أيضًا كيف يُمكن أن يُزيد هذا من تعقيد برامجنا. فإجراءنا الجديد `integral`، على سبيل المثال، يمنحنا القدرة على نمذجة أنظمة ذات حلقات، لكن يتعيّن علينا الآن أن نتذكّر أنّ `integral` يجب أن يُنادى بمكمّمٍ مؤجَّل، وأنّ كل إجراء يستخدم `integral` يجب أن يكون عالمًا بذلك. في الواقع، لقد أنشأنا صِنفين من الإجراءات: الإجراءات الاعتيادية والإجراءات التي تأخذ وسطاء مؤجَّلين. وبشكلٍ عام، فإنّ إنشاء أصناف منفصلة من الإجراءات يُرغمنا على إنشاء أصناف منفصلة من الإجراءات ذات الرتبة العليا أيضًا.[^72]
 
-One way to avoid the need for two different classes of procedures is to make all procedures take delayed arguments. We could adopt a model of evaluation in which all arguments to procedures are automatically delayed and arguments are forced only when they are actually needed (for example, when they are required by a primitive operation). This would transform our language to use normal-order evaluation, which we first described when we introduced the substitution model for evaluation in [1.1.5](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e5). Converting to normal-order evaluation provides a uniform and elegant way to simplify the use of delayed evaluation, and this would be a natural strategy to adopt if we were concerned only with stream processing. In [4.2](https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2), after we have studied the evaluator, we will see how to transform our language in just this way. Unfortunately, including delays in procedure calls wreaks havoc with our ability to design programs that depend on the order of events, such as programs that use assignment, mutate data, or perform input or output. Even the single `delay` in `cons-stream` can cause great confusion, as illustrated by [Exercise 3.51](#Exercise-3_002e51) and [Exercise 3.52](#Exercise-3_002e52). As far as anyone knows, mutability and delayed evaluation do not mix well in programming languages, and devising ways to deal with both of these at once is an active area of research.
+إحدى طرق تجنّب الحاجة إلى صِنفين مختلفين من الإجراءات هي جعل جميع الإجراءات تأخذ وسطاء مؤجَّلين. فيُمكننا اعتماد نموذج تقييم تُؤخَّل فيه جميع وسطاء الإجراءات تلقائيًا، ولا تُجبَر إلّا عند الحاجة الفعلية إليها (على سبيل المثال، عندما تشترطها عملية أوّليّة). وهذا من شأنه تحويل لغتنا إلى استخدام التقييم بالترتيب الاعتيادي (normal-order evaluation)، الذي وصفناه أوّل مرّة عندما عرّفنا نموذج الإحلال للتقييم في [1.1.5](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e5). والتحوّل إلى التقييم بالترتيب الاعتيادي يُوفّر طريقةً موحّدة وأنيقة لتبسيط استخدام التقييم المؤجَّل، وكانت هذه لتكون استراتيجيّة طبيعية نعتمدها لو كانت همّنا معالجة المجاري وحدها. وفي [4.2](https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2)، بعد أن ندرس المقيّم، سنرى كيف نحوّل لغتنا بهذه الطريقة بالضبط. وللأسف، فإنّ إدراج التأجيلات في نداءات الإجراءات يُحدث فوضى عارمة في قدرتنا على تصميم برامج تعتمد على ترتيب الأحداث، كالبرامج التي تستخدم الإحلال، أو تُغيّر بيانات، أو تُنفّذ إدخالًا أو إخراجًا. وحتّى التأخير `delay` الوحيد في `cons-stream` يُمكن أن يُحدث بلبلةً كبيرة، كما تُوضّح [التمرين 3.51](#Exercise-3_002e51) و[التمرين 3.52](#Exercise-3_002e52). وعلى حدّ علم أيّ إنسان، فإنّ القابلية للتغيير والتقييم المؤجَّل لا يتناغمان جيّدًا في لغات البرمجة، وإنّ ابتكار سُبل للتصرّف معهما معًا في وقتٍ واحد مجالٌ بحثيّ نشط.
 
-#### 3.5.5 Modularity of Functional Programs and Modularity of Objects
+#### 3.5.5 وحدانية البرامج الوظيفية ووحدانية الكائنات
 
-As we saw in [3.1.2](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e2), one of the major benefits of introducing assignment is that we can increase the modularity of our systems by encapsulating, or “hiding,” parts of the state of a large system within local variables. Stream models can provide an equivalent modularity without the use of assignment. As an illustration, we can reimplement the Monte Carlo estimation of $π$ , which we examined in [3.1.2](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e2), from a stream-processing point of view.
+كما رأينا في [3.1.2](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e2)، فإنّ إحدى الفوائد الكبرى لإدخال الإحلال هي قدرتنا على زيادة وحدانية أنظمتنا بتغليف أجزاء من حالة نظام كبير، أو «إخفائها»، داخل متغيّرات محلّية. وتستطيع نماذج المجاري أن تُوفّر وحدانيةً مكافئة دون استخدام الإحلال. وللتوضيح، يُمكننا إعادة تنفيذ تقدير مونت كارلو لـ $π$ ، الذي فحصناه في [3.1.2](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e2)، من منظور معالجة المجاري.
 
-The key modularity issue was that we wished to hide the internal state of a random-number generator from programs that used random numbers. We began with a procedure `rand-update`, whose successive values furnished our supply of random numbers, and used this to produce a random-number generator:
+تكمن مسألة الوحدانية الجوهريّة في أنّنا أردنا إخفاء الحالة الداخلية لمُولِّد الأعداد العشوائية عن البرامج التي تستخدم الأعداد العشوائية. بدأنا بإجراء `rand-update`، الذي كانت قيمته المتعاقبة تُزوّدنا بمخزوننا من الأعداد العشوائية، واستخدمناه لإنتاج مُولِّد أعداد عشوائية:
 
 ```scheme
 (define rand
@@ -3814,7 +3814,7 @@ The key modularity issue was that we wished to hide the internal state of a rand
       x)))
 ```
 
-In the stream formulation there is no random-number generator *per se*, just a stream of random numbers produced by successive calls to `rand-update`:
+في الصياغة المجريّة لا يوجد مُولِّد أعداد عشوائية *في ذاته*، بل مجرّد مجرى من الأعداد العشوائية يُنتَج بنداءات متعاقبة إلى `rand-update`:
 
 ```scheme
 (define random-numbers
@@ -3823,7 +3823,7 @@ In the stream formulation there is no random-number generator *per se*, just a s
                            random-numbers)))
 ```
 
-We use this to construct the stream of outcomes of the Cesàro experiment performed on consecutive pairs in the `random-numbers` stream:
+نستخدم هذا لبناء مجرى نتائج تجربة تشيزارو (Cesàro) المُنفَّذة على الأزواج المتتالية في مجرى `random-numbers`:
 
 ```scheme
 (define cesaro-stream
@@ -3839,7 +3839,7 @@ We use this to construct the stream of outcomes of the Cesàro experiment perfor
     f (stream-cdr (stream-cdr s)))))
 ```
 
-The `cesaro-stream` is now fed to a `monte-carlo` procedure, which produces a stream of estimates of probabilities. The results are then converted into a stream of estimates of $π$ . This version of the program doesn’t need a parameter telling how many trials to perform. Better estimates of $π$ (from performing more experiments) are obtained by looking farther into the `pi` stream:
+يُغذّى الآن مجرى `cesaro-stream` إلى إجراء `monte-carlo`، الذي يُنتج مجرى تقديرات للاحتمالات. ثم تُحوَّل النتائج إلى مجرى تقديرات لـ $π$ . ولا يحتاج هذا الإصدار من البرنامج إلى وسيط يُخبره بعدد التجارب التي يجب تنفيذها. إذ تُحصَل على تقديرات أفضل لـ $π$ (من تنفيذ تجارب أكثر) بالنظر أبعد في مجرى `pi` :
 
 ```scheme
 (define (monte-carlo experiment-stream 
@@ -3862,19 +3862,19 @@ The `cesaro-stream` is now fed to a `monte-carlo` procedure, which produces a st
    (monte-carlo cesaro-stream 0 0)))
 ```
 
-There is considerable modularity in this approach, because we still can formulate a general `monte-carlo` procedure that can deal with arbitrary experiments. Yet there is no assignment or local state.
+هناك وحدانيةٌ معتبَرة في هذا الأسلوب، لأنّنا نستطيع مع ذلك صياغة إجراء `monte-carlo` عامّ يُمكنه التصرّف مع تجارب اعتباطيّة. ومع ذلك، لا يوجد إحلالٌ ولا حالة محلّية.
 
-> **Exercise 3.81:** [Exercise 3.6](https://sarabander.github.io/sicp/html/3_002e1.xhtml#Exercise-3_002e6) discussed generalizing the random-number generator to allow one to reset the random-number sequence so as to produce repeatable sequences of “random” numbers. Produce a stream formulation of this same generator that operates on an input stream of requests to `generate` a new random number or to `reset` the sequence to a specified value and that produces the desired stream of random numbers. Don’t use assignment in your solution.
+> **التمرين 3.81:** ناقش [التمرين 3.6](https://sarabander.github.io/sicp/html/3_002e1.xhtml#Exercise-3_002e6) تعميم مُولِّد الأعداد العشوائية للسماح بإعادة ضبط تسلسل الأعداد العشوائية لإنتاج تسلسلات قابلة للتكرار من الأعداد «العشوائية». أنتج صياغةً مجريّة لهذا المولّد نفسه تعمل على مجرى دخل من الطلبات لـ `generate` عدد عشوائي جديد أو لـ `reset` التسلسل إلى قيمة مُحدَّدة، والتي تُنتج مجرى الأعداد العشوائية المرغوب. لا تستخدم الإحلال في حلّك.
 
-> **Exercise 3.82:** Redo [Exercise 3.5](https://sarabander.github.io/sicp/html/3_002e1.xhtml#Exercise-3_002e5) on Monte Carlo integration in terms of streams. The stream version of `estimate-integral` will not have an argument telling how many trials to perform. Instead, it will produce a stream of estimates based on successively more trials.
+> **التمرين 3.82:** أعد تنفيذ [التمرين 3.5](https://sarabander.github.io/sicp/html/3_002e1.xhtml#Exercise-3_002e5) حول تكامل مونت كارلو بدلالة المجاري. فلن يحتوي إصدار `estimate-integral` المجريّ إلى وسيط يُخبره بعدد التجارب التي يجب تنفيذها. وبدلًا من ذلك، سيُنتج مجرى تقديرات قائمة على تجارب أكثر تباعًا.
 
-#### A functional-programming view of time
+#### منظور البرمجة الوظيفية للزمن
 
-Let us now return to the issues of objects and state that were raised at the beginning of this chapter and examine them in a new light. We introduced assignment and mutable objects to provide a mechanism for modular construction of programs that model systems with state. We constructed computational objects with local state variables and used assignment to modify these variables. We modeled the temporal behavior of the objects in the world by the temporal behavior of the corresponding computational objects.
+لنَعُد الآن إلى مسائل الكائنات والحالة التي طُرحت في بداية هذا الفصل ونفحصها في ضوءٍ جديد. لقد أدخلنا الإحلال والكائنات القابلة للتغيير لتوفير آلية للبناء الوحدانيّ للبرامج التي تنمذج أنظمة ذات حالة. وبنينا كائنات حسابيّة بمتغيّرات حالة محلّية، واستخدمنا الإحلال لتعديل هذه المتغيّرات. ونمذجنا السلوك الزمانيّ للكائنات في العالم بالسلوك الزمانيّ للكائنات الحسابيّة المقابلة لها.
 
-Now we have seen that streams provide an alternative way to model objects with local state. We can model a changing quantity, such as the local state of some object, using a stream that represents the time history of successive states. In essence, we represent time explicitly, using streams, so that we decouple time in our simulated world from the sequence of events that take place during evaluation. Indeed, because of the presence of `delay` there may be little relation between simulated time in the model and the order of events during the evaluation.
+والآن قد رأينا أنّ المجاري تُوفّر سبيلًا بديلًا لنمذجة الكائنات ذات الحالة المحلّية. فيُمكننا نمذجة كمّيّة متغيّرة، كالحالة المحلّية لبعض الكائنات، باستخدام مجرى يمثّل التاريخ الزمانيّ للحالات المتعاقبة. في الجوهر، نحن نمثّل الزمن صراحةً، باستخدام المجاري، بحيث نفصل الزمن في عالمنا المُحاكى عن تسلسل الأحداث التي تقع أثناء التقييم. وبالفعل، فبسبب وجود التأخير `delay`، قد تكون هناك علاقة ضئيلة بين الزمن المُحاكى في النموذج وبين ترتيب الأحداث أثناء التقييم.
 
-In order to contrast these two approaches to modeling, let us reconsider the implementation of a “withdrawal processor” that monitors the balance in a bank account. In [3.1.3](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e3) we implemented a simplified version of such a processor:
+وللمقارنة بين هذين الأسلوبين في النمذجة، لِنُعد النظر في تنفيذ «معالج سحب» يراقب الرصيد في حساب مصرفيّ. ففي [3.1.3](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e3) نفّذنا نسخةً مبسّطة من such a processor:
 
 ```scheme
 (define (make-simplified-withdraw balance)
@@ -3883,9 +3883,9 @@ In order to contrast these two approaches to modeling, let us reconsider the imp
     balance))
 ```
 
-Calls to `make-simplified-withdraw` produce computational objects, each with a local state variable `balance` that is decremented by successive calls to the object. The object takes an `amount` as an argument and returns the new balance. We can imagine the user of a bank account typing a sequence of inputs to such an object and observing the sequence of returned values shown on a display screen.
+تُنتج نداءات `make-simplified-withdraw` كائنات حسابيّة، لكلٍّ منها متغيّر حالة محلّي `balance` يتمّ إنقاصه بنداءات متعاقبة على الكائن. يأخذ الكائن وسيط `amount` ويُعيد الرصيد الجديد. ويُمكننا تخيّل مُستخدِم حساب مصرفيّ يطبع تسلسلًا من المُدخلات إلى مثل هذا الكائن، ويراقب تسلسل القيم المُعادة المُبيَّن على شاشة العرض.
 
-Alternatively, we can model a withdrawal processor as a procedure that takes as input a balance and a stream of amounts to withdraw and produces the stream of successive balances in the account:
+و بدلًا من ذلك، يُمكننا نمذجة معالج سحب كإجراء يأخذ كدخل رصيدًا ومجرى من المبالغ المطلوب سحبها، ويُنتج مجرى الأرصدة المتعاقبة في الحساب:
 
 ```scheme
 (define (stream-withdraw balance amount-stream)
@@ -3896,23 +3896,23 @@ Alternatively, we can model a withdrawal processor as a procedure that takes as 
     (stream-cdr amount-stream))))
 ```
 
-`Stream-withdraw` implements a well-defined mathematical function whose output is fully determined by its input. Suppose, however, that the input `amount-stream` is the stream of successive values typed by the user and that the resulting stream of balances is displayed. Then, from the perspective of the user who is typing values and watching results, the stream process has the same behavior as the object created by `make-simplified-withdraw`. However, with the stream version, there is no assignment, no local state variable, and consequently none of the theoretical difficulties that we encountered in [3.1.3](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e3). Yet the system has state!
+يُنفّذ `stream-withdraw` دالّة رياضية محدَّدة تعريفًا جيّدًا، يَتْبَعُ ناتجها كليًّا من دخلها. لكن افترض، مع ذلك، أنّ الدخل `amount-stream` هو مجرى القيم المتعاقبة التي يطبعها المُستخدِم، وأنّ مجرى الأرصدة الناتج يُعرَض. فمن منظور المُستخدِم الذي يطبع القيم ويراقب النتائج، تكون للعمليّة المجريّة السلوك عينه الذي للكائن المُنشَأ بواسطة `make-simplified-withdraw`. غير أنّ في الإصدار المجريّ لا يوجد إحلال، ولا متغيّر حالة محلّي، ومن ثمّ لا شيء من الصعوبات النظريّة التي واجهناها في [3.1.3](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e3). ومع ذلك، فللنظام حالة!
 
-This is really remarkable. Even though `stream-withdraw` implements a well-defined mathematical function whose behavior does not change, the user’s perception here is one of interacting with a system that has a changing state. One way to resolve this paradox is to realize that it is the user’s temporal existence that imposes state on the system. If the user could step back from the interaction and think in terms of streams of balances rather than individual transactions, the system would appear stateless.[^73]
+هذا لأمرٌ يُثير الدهشة حقًا. فمع أنّ `stream-withdraw` يُنفّذ دالّة رياضية محدَّدة تعريفًا جيّدًا لا يتغيّر سلوكها، فإنّ إدراك المُستخدِم هنا هو إدراك مُتفاعل مع نظام ذي حالة متغيّرة. وإحدى طرق حلّ هذا التناقض هي إدراك أنّ الوجود الزمانيّ للمُستخدِم هو الذي يفرض الحالة على النظام. فلو أمكن المُستخدِم أن يتراجع عن التفاعل ويفكّر بدلالة مجاري الأرصدة بدلًا من المعاملات الفرديّة، لبدا النظام بلا حالة.[^73]
 
-From the point of view of one part of a complex process, the other parts appear to change with time. They have hidden time-varying local state. If we wish to write programs that model this kind of natural decomposition in our world (as we see it from our viewpoint as a part of that world) with structures in our computer, we make computational objects that are not functional—they must change with time. We model state with local state variables, and we model the changes of state with assignments to those variables. By doing this we make the time of execution of a computation model time in the world that we are part of, and thus we get “objects” in our computer.
+ومن وجهة نظر جزءٍ واحد من عمليّة معقّدة، تبدو الأجزاء الأخرى وكأنّها تتغيّر مع الزمن. فلديها حالة محلّية زمنيّة متغيّرة مخفيّة. وإذا أردنا كتابة برامج تنمذج هذا النوع من التفكيك الطبيعيّ في عالمنا (كما نراه من منظورنا بوصفنا جزءًا من ذلك العالم) ببُنى في حاسوبنا، فإنّنا نُنشئ كائنات حسابيّة غير وظيفيّة — إذ لا بدّ لها أن تتغيّر مع الزمن. فنحن نمثّل الحالة بمتغيّرات حالة محلّية، ونمثّل تغيّرات الحالة بإحلالاتٍ على تلك المتغيّرات. وبفعلنا هذا، نجعل زمن تنفيذ حسبةٍ ما ينمذج الزمن في العالم الذي نحن جزء منه، ونحصل بذلك على «كائنات» في حاسوبنا.
 
-Modeling with objects is powerful and intuitive, largely because this matches the perception of interacting with a world of which we are part. However, as we’ve seen repeatedly throughout this chapter, these models raise thorny problems of constraining the order of events and of synchronizing multiple processes. The possibility of avoiding these problems has stimulated the development of *functional programming languages*, which do not include any provision for assignment or mutable data. In such a language, all procedures implement well-defined mathematical functions of their arguments, whose behavior does not change. The functional approach is extremely attractive for dealing with concurrent systems.[^74]
+إنّ النمذجة بالكائنات قويّة وبديهيّة، إلى حدٍّ كبير لأنّها تُطابق إدراكنا للتفاعل مع عالمٍ نحن جزء منه. لكن كما رأينا مرارًا طوال هذا الفصل، فإنّ هذه النماذج تُثير مشكلات شائكة في تقييد ترتيب الأحداث ومزامنة عمليّات متعدّدة. وقد حفّزت إمكانيّة تجنّب هذه المشكلات تطوير *لغات البرمجة الوظيفيّة*، التي لا تتضمّن أيّ إمكان للإحلال أو البيانات القابلة للتغيير. وفي مثل هذه اللغة، تُنفّذ جميع الإجراءات دوالّ رياضية محدَّدة تعريفًا جيّدًا لوسطائها، لا يتغيّر سلوكها. والأسلوب الوظيفيّ جذّاب للغاية للتصرّف مع الأنظمة المتزامنة.[^74]
 
-On the other hand, if we look closely, we can see time-related problems creeping into functional models as well. One particularly troublesome area arises when we wish to design interactive systems, especially ones that model interactions between independent entities. For instance, consider once more the implementation of a banking system that permits joint bank accounts. In a conventional system using assignment and objects, we would model the fact that Peter and Paul share an account by having both Peter and Paul send their transaction requests to the same bank-account object, as we saw in [3.1.3](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e3). From the stream point of view, where there are no “objects” *per se*, we have already indicated that a bank account can be modeled as a process that operates on a stream of transaction requests to produce a stream of responses. Accordingly, we could model the fact that Peter and Paul have a joint bank account by merging Peter’s stream of transaction requests with Paul’s stream of requests and feeding the result to the bank-account stream process, as shown in [Figure 3.38](#Figure-3_002e38).
+من ناحية أخرى، إذا نظرنا عن كثب، نستطيع أن نرى مشكلات مرتبطة بالزمن تتسرّب إلى النماذج الوظيفيّة أيضًا. ومجالٌ مُسبِّب للمتاعب بشكل خاص يظهر عندما نرغب في تصميم أنظمة تفاعليّة، لا سيّما تلك التي تنمذج التفاعلات بين كيانات مستقلّة. فعلى سبيل المثال، تأمّل مرّة أخرى تنفيذ نظام مصرفيّ يسمح بالحسابات المصرفيّة المشتركة. ففي نظام تقليديّ يستخدم الإحلال والكائنات، كنّا لننمذج حقيقة أنّ بطرس وبولس يتشاركان حسابًا بدفع كلٍّ منهما طلبات معاملاته إلى كائن الحساب المصرفيّ نفسه، كما رأينا في [3.1.3](https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e3). أمّا من منظور المجاري، حيث لا توجد «كائنات» *في ذاتها*، فقد أشرنا سابقًا إلى أنّ الحساب المصرفيّ يُمكن نمذجته كعمليّة تعمل على مجرى طلبات المعاملات لإنتاج مجرى الاستجابات. وتبعًا لذلك، يُمكننا نمذجة حقيقة أنّ لبطرس وبولس حسابًا مصرفيًّا مشتركًا بدمج مجرى طلبات معاملات بطرس مع مجرى طلبات بولس، وتغذية الناتج إلى عمليّة مجرى الحساب المصرفيّ، كما هو مُبيَّنٌ في [الشكل 3.38](#Figure-3_002e38).
 
 ![](/images/sicp/c3-modularity-objects-and-state-7-Fig3.38a.std.webp)
 
-**Figure 3.38:** A joint bank account, modeled by merging two streams of transaction requests.
+**الشكل 3.38:** حساب مصرفيّ مشترك، مُنمذَج بدمج مجرىَي طلبات معاملات.
 
-The trouble with this formulation is in the notion of *merge*. It will not do to merge the two streams by simply taking alternately one request from Peter and one request from Paul. Suppose Paul accesses the account only very rarely. We could hardly force Peter to wait for Paul to access the account before he could issue a second transaction. However such a merge is implemented, it must interleave the two transaction streams in some way that is constrained by “real time” as perceived by Peter and Paul, in the sense that, if Peter and Paul meet, they can agree that certain transactions were processed before the meeting, and other transactions were processed after the meeting.[^75] This is precisely the same constraint that we had to deal with in [3.4.1](https://sarabander.github.io/sicp/html/3_002e4.xhtml#g_t3_002e4_002e1), where we found the need to introduce explicit synchronization to ensure a “correct” order of events in concurrent processing of objects with state. Thus, in an attempt to support the functional style, the need to merge inputs from different agents reintroduces the same problems that the functional style was meant to eliminate.
+تكمُن مشكلة هذه الصياغة في فكرة *الدمج*. فلن يصلح الأمر بدمج المجريَيْن بأخذ طلب من بطرس وطلب من بولس بالتبادل ببساطة. فلنفترض أنّ بولس يصل إلى الحساب نادرًا جدًا. فهل يُعقل أن نُحتّم على بطرس الانتظار حتّى يصل بولس إلى الحساب قبل أن يُصدر معاملته الثانية؟ ومع ذلك، فأيًّا كانت طريقة تنفيذ هذا الدمج، فلا بدّ أن يشابك مجرىَي المعاملات بطريقةٍ ما مُقيَّدةٍ بـ«الزمن الحقيقيّ» كما يُدركه بطرس وبولس، بمعنى أنّ بطرس وبولس، إذا التقيا، يستطيعان الاتّفاق على أنّ معاملات مُعيَّنة عُنِيَ بمعالجتها قبل اللقاء، ومعاملات أخرى عُنِيَ بمعالجتها بعد اللقاء.[^75] وهذا هو عينُ ذلك القيد الذي اضطررنا إلى التصرّف معه في [3.4.1](https://sarabander.github.io/sicp/html/3_002e4.xhtml#g_t3_002e4_002e1)، حيث وجدنا الحاجة إلى إدخال مزامنة صريحة لضمان ترتيب «صحيح» للأحداث في المعالجة المتزامنة للكائنات ذات الحالة. وهكذا، ومحاولةً لدعم الأسلوب الوظيفيّ، فإنّ الحاجة إلى دمج المُدخلات القادمة من عملاء مختلفين تُعيد إحداث المشكلات عينها التي قصد الأسلوب الوظيفيّ إزالتها.
 
-We began this chapter with the goal of building computational models whose structure matches our perception of the real world we are trying to model. We can model the world as a collection of separate, time-bound, interacting objects with state, or we can model the world as a single, timeless, stateless unity. Each view has powerful advantages, but neither view alone is completely satisfactory. A grand unification has yet to emerge.[^76]
+بدأنا هذا الفصل بهدف بناء نماذج حسابيّة تُطابق بنيتها إدراكنا للعالم الحقيقيّ الذي نحاول نمذجته. فيُمكننا نمذجة العالم كمُجمَّع من كائنات منفصلة، مُقيَّدةٍ بالزمن، متفاعلة وذات حالة، أو يُمكننا نمذجة العالم كوحدة واحدة، خالدة، بلا حالة. ولكلّ من المنظورين مزايا قويّة، لكن لا يكفي أيٌّ منهما وحده إرضاءً تامًا. ولم يظهر بعد توحيدٌ كبرى.[^76]
 
 [^1]: Actually, this is not quite true. One exception was the random-number generator in [1.2.6](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e6). Another exception involved the operation/type tables we introduced in [2.4.3](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e3), where the values of two calls to `get` with the same arguments depended on intervening calls to `put`. On the other hand, until we introduce assignment, we have no way to create such procedures ourselves.
 
@@ -3996,72 +3996,72 @@ We began this chapter with the goal of building computational models whose struc
 
 [^41]: We have simplified `exchange` by exploiting the fact that our `deposit` message accepts negative amounts. (This is a serious bug in our banking system!)
 
-[^42]: If the account balances start out as $10, $20, and $30, then after any number of concurrent exchanges, the balances should still be $10, $20, and $30 in some order. Serializing the deposits to individual accounts is not sufficient to guarantee this. See [Exercise 3.43](#Exercise-3_002e43).
+[^42]: إذا كانت أرصدة الحساب في البداية $10 و $20 و $30، فبعد أي عدد من عمليات التبادل المتزامنة، يجب أن تبقى الأرصدة $10 و $20 و $30 بترتيبٍ ما. وترتيب إيداعات الحسابات الفرديّة على التسلسل لا يكفي لضمان ذلك. انظر [التمرين 3.43](#Exercise-3_002e43).
 
-[^43]: [Exercise 3.45](#Exercise-3_002e45) investigates why deposits and withdrawals are no longer automatically serialized by the account.
+[^43]: يفحص [التمرين 3.45](#Exercise-3_002e45) سبب عدم ترتيب الإيداعات والسحوبات تلقائيًا على التسلسل بواسطة الحساب.
 
-[^44]: The term “mutex” is an abbreviation for *mutual exclusion*. The general problem of arranging a mechanism that permits concurrent processes to safely share resources is called the mutual exclusion problem. Our mutex is a simple variant of the *semaphore* mechanism (see [Exercise 3.47](#Exercise-3_002e47)), which was introduced in the “THE” Multiprogramming System developed at the Technological University of Eindhoven and named for the university’s initials in Dutch ([Dijkstra 1968a](https://sarabander.github.io/sicp/html/References.xhtml#Dijkstra-1968a)). The acquire and release operations were originally called P and V, from the Dutch words *passeren* (to pass) and *vrijgeven* (to release), in reference to the semaphores used on railroad systems. Dijkstra’s classic exposition ([1968b](https://sarabander.github.io/sicp/html/References.xhtml#g_t1968b)) was one of the first to clearly present the issues of concurrency control, and showed how to use semaphores to handle a variety of concurrency problems.
+[^44]: مصطلح «mutex» اختصارٌ لـ *mutual exclusion* (الإقصاء المتبادل). وتُسمّى المسألة العامّة المتمثّلة في ترتيب آليّة تسمح للعمليّات المتزامنة بمشاركة الموارد بأمان مسألة الإقصاء المتبادل. ومِرفَقُنا نسخةٌ بسيطة من آليّة *semaphore* (العَلَم) (انظر [التمرين 3.47](#Exercise-3_002e47))، التي طُرِحَت في نظام التعدّد البرمجيّ «THE» المُطوَّر في الجامعة التقنيّة في أيندهوفن وسُمّي بأحرف أوّل اسم الجامعة بالهولنديّة ([Dijkstra 1968a](https://sarabander.github.io/sicp/html/References.xhtml#Dijkstra-1968a)). وكانت عمليّتا الاكتساب والإطلاق تُسمّيان أصلاً P وV، من الكلمتين الهولنديّتين *passeren* (عبور) و *vrijgeven* (إطلاق)، إشارةً إلى الأعلام المُستخدمة في منظومات السكك الحديديّة. وكان عرض ديكسترا الكلاسيكيّ ([1968b](https://sarabander.github.io/sicp/html/References.xhtml#g_t1968b)) من أوائل ما عرض مسائل التحكّم في التزامن عرضًا واضحًا، وأظهر كيف يُمكن استخدام الأعلام للتصرّف مع مجموعة متنوّعة من مشكلات التزامن.
 
-[^45]: In most time-shared operating systems, processes that are blocked by a mutex do not waste time “busy-waiting” as above. Instead, the system schedules another process to run while the first is waiting, and the blocked process is awakened when the mutex becomes available.
+[^45]: في معظم منظومات التشغيل مُقسَّمة الزمن، لا تُهدر العمليّات التي يحجبها مِرفَق وقتًا في «الانتظار المشغول» كما سبق. وبدلًا من ذلك، يجعل النظام عمليّة أخرى تعمل في أثناء انتظار الأولى، وتُوقَظ العمليّة المحجوبة عندما يصبح المِرفَق متاحًا.
 
-[^46]: In MIT Scheme for a single processor, which uses a time-slicing model, `test-and-set!` can be implemented as follows: ```scheme (define (test-and-set! cell) (without-interrupts (lambda () (if (car cell) true (begin (set-car! cell true) false))))) ```
+[^46]: في MIT Scheme على معالج واحد، الذي يستخدم نموذج تقطيع الوقت، يُمكن تنفيذ `test-and-set!` كما يلي: ```scheme (define (test-and-set! cell) (without-interrupts (lambda () (if (car cell) true (begin (set-car! cell true) false))))) ```
 
-[^47]: There are many variants of such instructions—including test-and-set, test-and-clear, swap, compare-and-exchange, load-reserve, and store-conditional—whose design must be carefully matched to the machine’s processor-memory interface. One issue that arises here is to determine what happens if two processes attempt to acquire the same resource at exactly the same time by using such an instruction. This requires some mechanism for making a decision about which process gets control. Such a mechanism is called an *arbiter*. Arbiters usually boil down to some sort of hardware device. Unfortunately, it is possible to prove that one cannot physically construct a fair arbiter that works 100% of the time unless one allows the arbiter an arbitrarily long time to make its decision. The fundamental phenomenon here was originally observed by the fourteenth-century French philosopher Jean Buridan in his commentary on Aristotle’s *De caelo*. Buridan argued that a perfectly rational dog placed between two equally attractive sources of food will starve to death, because it is incapable of deciding which to go to first.
+[^47]: هناك تنويعات عديدة لمثل هذه التعليمات — منها test-and-set و test-and-clear و swap و compare-and-exchange و load-reserve و store-conditional — يجب مواءمة تصميمها بعناية مع واجهة المعالج–الذاكرة في الآلة. وإحدى المسائل التي تظهر هنا هي تحديد ما يحدث إذا حاولت عمليّتان اكتساب المورد نفسه في اللحظة ذاتها بالضبط باستخدام مثل هذا التعليم. وهذا يستلزم آليةً ما لاتّخاذ قرار بشأن العمليّة التي تحصل على التحكّم. وتُسمّى مثل هذه الآليّة *arbiter* (حَكَم). والحُكّام تُختصر عادةً في نوعٍ من جهاز عتاديّ. وللأسف، يُمكن إثبات استحالة بناء حَكَمٍ عادل فيزيائيًا يعمل 100% من الوقت، إلّا إذا سمحنا للحَكَم بوقت طويل اعتباطيًّا لاتّخاذ قراره. وقد لُوحظت الظاهرة الأساسيّة هنا أوّل مرّة على يد الفيلسوف الفرنسيّ في القرن الرابع عشر جان بوريدان في تعليقه على كتاب أرسطو *De caelo*. وقد argued بوريدان أنّ أنّ كلبًا عاقلًا تمامًا موضوع بين مصدرين للطعام جذّابين بالقدر نفسه سيموت جوعًا، لأنّه عاجز عن تقرير أيّهما يتوجّه إليه أوّلًا.
 
-[^48]: The general technique for avoiding deadlock by numbering the shared resources and acquiring them in order is due to [Havender (1968)](https://sarabander.github.io/sicp/html/References.xhtml#Havender-_00281968_0029). Situations where deadlock cannot be avoided require *deadlock-recovery* methods, which entail having processes “back out” of the deadlocked state and try again. Deadlock-recovery mechanisms are widely used in database management systems, a topic that is treated in detail in [Gray and Reuter 1993](https://sarabander.github.io/sicp/html/References.xhtml#Gray-and-Reuter-1993).
+[^48]: تعود التقنيّة العامّة لتجنّب الجمود بترقيم الموارد المشتركة واكتسابها بالترتيب إلى [Havender (1968)](https://sarabander.github.io/sicp/html/References.xhtml#Havender-_00281968_0029). والحالات التي لا يُمكن فيها تجنّب الجمود تستلزم طرائق *استعادة من الجمود*، التي تقتضي أن تتراجع العمليّات «خلفًا» عن حالة الجمود وتحاول مرّة أخرى. وآليّات الاستعادة من الجمود مُستخدمة على نطاق واسع في منظومات إدارة قواعد البيانات، وهو موضوع يُعالَج بالتفصيل في [Gray and Reuter 1993](https://sarabander.github.io/sicp/html/References.xhtml#Gray-and-Reuter-1993).
 
-[^49]: One such alternative to serialization is called *barrier synchronization*. The programmer permits concurrent processes to execute as they please, but establishes certain synchronization points (“barriers”) through which no process can proceed until all the processes have reached the barrier. Modern processors provide machine instructions that permit programmers to establish synchronization points at places where consistency is required. The PowerPC, for example, includes for this purpose two instructions called SYNC and EIEIO (Enforced In-order Execution of Input/Output).
+[^49]: إحدى هذه البدائل عن الترتيب على التسلسل تُسمّى *مزامنة الحواجز*. إذ يُتيح المبرمج للعمليّات المتزامنة أن تنفّذ كما تشاء، لكنّه يُنشئ نقاط مزامنة مُعيَّنة («حواجز») لا تستطيع أيّ عمليّة العبور عبرها حتّى تكون جميع العمليّات قد وصلت إلى الحاجز. وتُوفّر المعالجات الحديثة تعليمات آليّة تسمح للمبرمجين بإنشاء نقاط مزامنة في الأماكن التي تكون فيها الاتّساقيّة مطلوبة. فـ PowerPC مثلًا يتضمّن لهذا الغرض تعليمين يُسمّيان SYNC و EIEIO (Enforced In-order Execution of Input/Output).
 
-[^50]: This may seem like a strange point of view, but there are systems that work this way. International charges to credit-card accounts, for example, are normally cleared on a per-country basis, and the charges made in different countries are periodically reconciled. Thus the account balance may be different in different countries.
+[^50]: قد يبدو هذا وجهة نظر غريبة، لكن هناك منظومات تعمل بهذه الطريقة. فالرسوم الدوليّة على حسابات بطاقات الائتمان، على سبيل المثال، تُسوّى عادةً على أساس كل دولة، وتُطابَق الرسوم المُسجَّلة في الدول المختلفة دوريًّا. بالتالي، قد يختلف رصيد الحساب من دولة إلى أخرى.
 
-[^51]: For distributed systems, this perspective was pursued by [Lamport (1978)](https://sarabander.github.io/sicp/html/References.xhtml#Lamport-_00281978_0029), who showed how to use communication to establish “global clocks” that can be used to establish orderings on events in distributed systems.
+[^51]: بالنسبة للأنظمة الموزّعة، دُفِعَ بهذا المنظور على يد [Lamport (1978)](https://sarabander.github.io/sicp/html/References.xhtml#Lamport-_00281978_0029)، الذي أظهر كيف يُمكن استخدام الاتّصال لإنشاء «ساعات عالميّة» يُمكن استخدامها لإقامة ترتيبات على الأحداث في الأنظمة الموزّعة.
 
-[^52]: Physicists sometimes adopt this view by introducing the “world lines” of particles as a device for reasoning about motion. We’ve also already mentioned ([2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3)) that this is the natural way to think about signal-processing systems. We will explore applications of streams to signal processing in [3.5.3](#g_t3_002e5_002e3).
+[^52]: يتبنّى الفيزيائيّون هذه النظرة أحيانًا بإدخال «خطوط العالم» للجسيمات كوسيلة للاستدلال على الحركة. وقد ذكرنا أيضًا ([2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3)) أنّ هذه هي الطريقة الطبيعيّة للتفكير في أنظمة معالجة الإشارات. وسنستكشف تطبيقات المجاري في معالجة الإشارات في [3.5.3](#g_t3_002e5_002e3).
 
-[^53]: Assume that we have a predicate `prime?` (e.g., as in [1.2.6](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e6)) that tests for primality.
+[^53]: افترض أنّ لدينا مُسَيِّمًا `prime?` (مثلًا كما في [1.2.6](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e6)) يختبر الأوليّة.
 
-[^54]: In the MIT implementation, `the-empty-stream` is the same as the empty list `'()`, and `stream-null?` is the same as `null?`.
+[^54]: في تنفيذ MIT، يكون `the-empty-stream` هو القائمة الفارغة `'()` عينها، ويكون `stream-null?` هو `null?` عينه.
 
-[^55]: This should bother you. The fact that we are defining such similar procedures for streams and lists indicates that we are missing some underlying abstraction. Unfortunately, in order to exploit this abstraction, we will need to exert finer control over the process of evaluation than we can at present. We will discuss this point further at the end of [3.5.4](#g_t3_002e5_002e4). In [4.2](https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2), we’ll develop a framework that unifies lists and streams.
+[^55]: لا بدّ أن يُزعجك هذا. فحقيقة أنّنا نُعرّف إجراءات بهذه الشبهة لتعمل على المجاري والقوائم تدلّ على أنّنا نفتقر إلى تجريدٍ أساسيّ. وللأسف، ولكي نستغلّ هذا التجريد، سنحتاج إلى ممارسة تحكّم أدقّ في عمليّة التقييم ممّا يُمكننا فعله الآن. وسنناقش هذه النقطة أكثر في نهاية [3.5.4](#g_t3_002e5_002e4). وفي [4.2](https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2)، سنُطوّر إطارًا يُوحّد القوائم والمجاري.
 
-[^56]: Although `stream-car` and `stream-cdr` can be defined as procedures, `cons-stream` must be a special form. If `cons-stream` were a procedure, then, according to our model of evaluation, evaluating `(cons-stream ⟨a⟩ ⟨b⟩)` would automatically cause `⟨`b`⟩` to be evaluated, which is precisely what we do not want to happen. For the same reason, `delay` must be a special form, though `force` can be an ordinary procedure.
+[^56]: مع أنّ `stream-car` و `stream-cdr` يُمكن تعريفهما كإجراءات، فلا بدّ أن تكون `cons-stream` صيغةً خاصّة. فلو كانت `cons-stream` إجراءً، لكان تقييم `(cons-stream ⟨a⟩ ⟨b⟩)` `⟨`b`⟩` وفقًا لنموذج تقييمنا سيُسبّب تلقائيًا تقييم ⟨b⟩، وهو عين ما لا نرغب في حدوثه. وللسبب عينه، يجب أن يكون `delay` صيغةً خاصّة، مع أنّ `force` يُمكن أن يكون إجراءً اعتياديًّا.
 
-[^57]: The numbers shown here do not really appear in the delayed expression. What actually appears is the original expression, in an environment in which the variables are bound to the appropriate numbers. For example, `(+ low 1)` with `low` bound to 10,000 actually appears where `10001` is shown.
+[^57]: الأرقام المُبيَّنة هنا لا تظهر فعلًا في التعبير المؤجَّل. وما يظهر فعلًا هو التعبير الأصليّ، في بيئةٍ تكون فيها المتغيّرات مربوطة بالأرقام المناسبة. فعلى سبيل المثال، `(+ low 1)` مع ربط `low` بـ 10,000 يظهر فعلًا في الموضع الذي يظهر فيه `10001`.
 
-[^58]: There are many possible implementations of streams other than the one described in this section. Delayed evaluation, which is the key to making streams practical, was inherent in Algol 60’s *call-by-name* parameter-passing method. The use of this mechanism to implement streams was first described by [Landin (1965)](https://sarabander.github.io/sicp/html/References.xhtml#Landin-_00281965_0029). Delayed evaluation for streams was introduced into Lisp by [Friedman and Wise (1976)](https://sarabander.github.io/sicp/html/References.xhtml#Friedman-and-Wise-_00281976_0029). In their implementation, `cons` always delays evaluating its arguments, so that lists automatically behave as streams. The memoizing optimization is also known as *call-by-need*. The Algol community would refer to our original delayed objects as *call-by-name thunks* and to the optimized versions as *call-by-need thunks*.
+[^58]: هناك تنفيذات كثيرة ممكنة للمجاري بخلاف الذي وُصف في هذا القسم. فالتقييم المؤجَّل، الذي هو مفتاح جعل المجاري عمليّة، كان كامنًا في طريقة تمرير المُعامِلات بالاسم *call-by-name* في Algol 60. وقد وُصِف استخدام هذه الآليّة لتنفيذ المجاري أوّل مرّة على يد [Landin (1965)](https://sarabander.github.io/sicp/html/References.xhtml#Landin-_00281965_0029). وأُدخِل التقييم المؤجَّل للمجاري إلى Lisp على يد [Friedman and Wise (1976)](https://sarabander.github.io/sicp/html/References.xhtml#Friedman-and-Wise-_00281976_0029). ففي تنفيذهما، يؤخّر `cons` تقييم وسيطه دائمًا، بحيث تتحوّل القوائم تلقائيًا إلى مجاري. ويُعرَف تحسين حفظ النتائج أيضًا بـ *call-by-need*. وكان مُجتمَع Algol سيُطلِق على كائناتنا المؤجَّلة الأصليّة اسم *call-by-name thunks* وعلى الإصدارات المُحسَّنة اسم *call-by-need thunks*.
 
-[^59]: Exercises such as [Exercise 3.51](#Exercise-3_002e51) and [Exercise 3.52](#Exercise-3_002e52) are valuable for testing our understanding of how `delay` works. On the other hand, intermixing delayed evaluation with printing—and, even worse, with assignment—is extremely confusing, and instructors of courses on computer languages have traditionally tormented their students with examination questions such as the ones in this section. Needless to say, writing programs that depend on such subtleties is odious programming style. Part of the power of stream processing is that it lets us ignore the order in which events actually happen in our programs. Unfortunately, this is precisely what we cannot afford to do in the presence of assignment, which forces us to be concerned with time and change.
+[^59]: تمرينات مثل [التمرين 3.51](#Exercise-3_002e51) و[التمرين 3.52](#Exercise-3_002e52) قيّمة لاختبار فهمنا لكيف عمل `delay`. من ناحية أخرى، فإنّ خلط التقييم المؤجَّل بالطباعة — والأسوأ من ذلك، بالإحلال — مُربِك للغاية، وقد تعوّد مُعلّمو مقرّرات لغات الحاسوب تعذيب طلّابهم بأسئلة امتحانيّة مثل الأسئلة الواردة في هذا القسم. وحاجةً للقول، فإنّ كتابة برامج تعتمد على مثل هذه الفروق الدقيقة أسلوبٌ بغيض في البرمجة. وجزء من قوة معالجة المجاري هو أنّها تسمح لنا بتجاهل الترتيب الذي تحدث فيه الأحداث فعلًا في برامجنا. وللأسف، هذا هو precisely ما لا يُمكننا تحمّل تجاوزه في وجود الإحلال، الذي يُرغمنا على الاهتمام بالزمن والتغيّر.
 
-[^60]: Eratosthenes, a third-century B.C. Alexandrian Greek philosopher, is famous for giving the first accurate estimate of the circumference of the Earth, which he computed by observing shadows cast at noon on the day of the summer solstice. Eratosthenes’s sieve method, although ancient, has formed the basis for special-purpose hardware “sieves” that, until recently, were the most powerful tools in existence for locating large primes. Since the 70s, however, these methods have been superseded by outgrowths of the probabilistic techniques discussed in [1.2.6](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e6).
+[^60]: إراتوستينس، الفيلسوف اليونانيّ الإسكندريّ في القرن الثالث قبل الميلاد، مشهور بتقديمه أوّل تقدير دقيق لمحيط الأرض، والذي حسبه بمراقبة الظلال المُسقَطة في الظهيرة في يوم الانقلاب الصيفيّ. وعلى الرغم من قِدَم طريقة إراتوستينس للمناخل، فقد شكّلت الأساس لأجهزة «مناخل» عتاديّة خاصّة بالأغراض، كانت حتّى وقت قريب أقوى الأدوات الموجودة لتحديد الأعداد الأوّليّة الكبيرة. غير أنّ هذه الطرق قد تجاوزتها منذ السبعينيّات نتائج التقنيّات الاحتماليّة المناقَشة في [1.2.6](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e6).
 
-[^61]: We have named these figures after Peter Henderson, who was the first person to show us diagrams of this sort as a way of thinking about stream processing. Each solid line represents a stream of values being transmitted. The dashed line from the `car` to the `cons` and the `filter` indicates that this is a single value rather than a stream.
+[^61]: لقد سمّينا هذه الأشكال على اسم بيتر هندرسون، الذي كان أوّل من يُظهر لنا مخطّطات من هذا النوع كطريقة للتفكير في معالجة المجاري. وكل خطٍّ متصل يمثّل مجرى قيمٍ يُرسَل. والخطّ المتقطّع الممتدّ من `car` إلى `cons` و`filter` يدلّ على أنّ هذه قيمة واحدة لا مجرى.
 
-[^62]: This uses the generalized version of `stream-map` from [Exercise 3.50](#Exercise-3_002e50).
+[^62]: يستخدم هذا النسخة المعمّمة من `stream-map` الواردة في [التمرين 3.50](#Exercise-3_002e50).
 
-[^63]: This last point is very subtle and relies on the fact that $undefined$ (Here, $undefined$ denotes the $undefined$ prime.) Estimates such as these are very difficult to establish. The ancient proof by Euclid that there are an infinite number of primes shows that $undefined$ , and no substantially better result was proved until 1851, when the Russian mathematician P. L. Chebyshev established that $undefined$ for all $undefined$ . This result, originally conjectured in 1845, is known as *Bertrand’s hypothesis*. A proof can be found in section 22.3 of [Hardy and Wright 1960](https://sarabander.github.io/sicp/html/References.xhtml#Hardy-and-Wright-1960).
+[^63]: هذه النقطة الأخيرة بالغة الدقّة وتعتمد على حقيقة أنّ $undefined$ (هنا، يَدُلّ $undefined$ على العدد الأوّليّ $undefined$ .) وتقديرات من هذا القبيل بالغة الصعوبة في الإثبات. ويُظهر البرهان القديم لأقليدس على لانهائيّة عدد الأعداد الأوّليّة أنّ $undefined$ ، ولم يُثبَت نتيجة أفضل جوهريًّا حتّى عام 1851، عندما أثبت الرياضيّ الروسيّ ب. ل. تشيبيشيف أنّ $undefined$ لجميع $undefined$ . وهذه النتيجة، التي خُمِنَت أصلًا في عام 1845، تُعرَف بـ *فرضية برتراند*. ويُمكن العثور على برهان لها في القسم 22.3 من [Hardy and Wright 1960](https://sarabander.github.io/sicp/html/References.xhtml#Hardy-and-Wright-1960).
 
-[^64]: This exercise shows how call-by-need is closely related to ordinary memoization as described in [Exercise 3.27](https://sarabander.github.io/sicp/html/3_002e3.xhtml#Exercise-3_002e27). In that exercise, we used assignment to explicitly construct a local table. Our call-by-need stream optimization effectively constructs such a table automatically, storing values in the previously forced parts of the stream.
+[^64]: يُظهر هذا التمرين كيف يرتبط الاستدعاء بالحاجة ارتباطًا وثيقًا بالحفظ الاعتياديّ للنتائج كما وُصِف في [التمرين 3.27](https://sarabander.github.io/sicp/html/3_002e3.xhtml#Exercise-3_002e27). ففي ذلك التمرين، استخدمنا الإحلال لبناء جدول محلّي صراحةً. أمّا تحسيننا المجريّ بالاستدعاء بالحاجة، فيبني مثل هذا الجدول تلقائيًا، إذ يخزّن القيم في أجزاء المجرى التي أُجبِرت سابقًا.
 
-[^65]: We can’t use `let` to bind the local variable `guesses`, because the value of `guesses` depends on `guesses` itself. [Exercise 3.63](#Exercise-3_002e63) addresses why we want a local variable here.
+[^65]: لا يُمكننا استخدام `let` لربط المتغيّر المحلّي `guesses`، لأنّ قيمة `guesses` تعتمد على `guesses` نفسها. ويتناول [التمرين 3.63](#Exercise-3_002e63) سبب رغبتنا في متغيّر محلّي هنا.
 
-[^66]: As in [2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3), we represent a pair of integers as a list rather than a Lisp pair.
+[^66]: كما في [2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3)، نمثّل زوجًا من عددين صحيحين كقائمة لا كزوج Lisp.
 
-[^67]: See [Exercise 3.68](#Exercise-3_002e68) for some insight into why we chose this decomposition.
+[^67]: انظر [التمرين 3.68](#Exercise-3_002e68) لبعض الإفهام عن سبب اختيارنا هذا التفكيك.
 
-[^68]: The precise statement of the required property on the order of combination is as follows: There should be a function $undefined$ of two arguments such that the pair corresponding to element $undefined$ of the first stream and element $undefined$ of the second stream will appear as element number $undefined$ of the output stream. The trick of using `interleave` to accomplish this was shown to us by David Turner, who employed it in the language KRC ([Turner 1981](https://sarabander.github.io/sicp/html/References.xhtml#Turner-1981)).
+[^68]: الصياغة الدقيقة للخاصيّة المطلوبة على ترتيب الدمج هي كما يلي: يجب أن تكون هناك دالّة $undefined$ لوسيطين، بحيث يظهر الزوج المُقابِل للعنصر $undefined$ من المجرى الأوّل والعنصر $undefined$ من المجرى الثاني كعنصر رقم $undefined$ في مجرى الخرج. وقد أُوحيَت إلينا خدعة استخدام `interleave` لإنجاز هذا على يد ديفيد تيرنر، الذي استخدمها في لغة KRC ([Turner 1981](https://sarabander.github.io/sicp/html/References.xhtml#Turner-1981)).
 
-[^69]: We will require that the weighting function be such that the weight of a pair increases as we move out along a row or down along a column of the array of pairs.
+[^69]: سنشترط أن تكون دالّة الترجيح بحيث يزيد وزن الزوج كلما تحرّكنا خارجًا على طول صفٍّ أو أسفل عمود في مصفوفة الأزواج.
 
-[^70]: To quote from G. H. Hardy’s obituary of Ramanujan ([Hardy 1921](https://sarabander.github.io/sicp/html/References.xhtml#Hardy-1921)): “It was Mr. Littlewood (I believe) who remarked that ‘every positive integer was one of his friends.’ I remember once going to see him when he was lying ill at Putney. I had ridden in taxi-cab No. 1729, and remarked that the number seemed to me a rather dull one, and that I hoped it was not an unfavorable omen. ‘No,’ he replied, ‘it is a very interesting number; it is the smallest number expressible as the sum of two cubes in two different ways.’ ” The trick of using weighted pairs to generate the Ramanujan numbers was shown to us by Charles Leiserson.
+[^70]: نقلاً عن نعي ج. ه. هاردي لرامانجن ([Hardy 1921](https://sarabander.github.io/sicp/html/References.xhtml#Hardy-1921)): «كان السيد ليتلوود (على ما أعتقد) هو من لاحظ أنّ "كل عدد صحيح موجب كان أحد أصدقائه." وأتذكّر مرّة ذهابي لزيارته حين كان مريضًا في پوتني. وقد ركبتُ في سيارة أجرة رقم 1729، ولاحظتُ أنّ العدد بدا لي مملًا إلى حدٍّ ما، ورجوتُ أن لا يكون نذيرَ شؤم. "لا،" أجاب، "إنّه عدد بالغ الأهمّيّة؛ إنّه أصغر عدد يُمكن التعبير عنه بصورتَي مجموع مكعّبين مختلفتين." » وقد أُوحيَت إلينا خدعة استخدام الأزواج الموزونة لتوليد أعداد رامانجن على يد تشارلز ليسيرسون.
 
-[^71]: This procedure is not guaranteed to work in all Scheme implementations, although for any implementation there is a simple variation that will work. The problem has to do with subtle differences in the ways that Scheme implementations handle internal definitions. (See [4.1.6](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e6).)
+[^71]: هذا الإجراء غير مضمون العمل في جميع تنفيذات Scheme، مع أنّ في أي تنفيذ ثمة تنويعة بسيطة ستعمل. وتتعلّق المشكلة بفروق دقيقة في الطرق التي تتصرّف بها تنفيذات Scheme مع التعريفات الداخليّة. (انظر [4.1.6](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e6).)
 
-[^72]: This is a small reflection, in Lisp, of the difficulties that conventional strongly typed languages such as Pascal have in coping with higher-order procedures. In such languages, the programmer must specify the data types of the arguments and the result of each procedure: number, logical value, sequence, and so on. Consequently, we could not express an abstraction such as “map a given procedure `proc` over all the elements in a sequence” by a single higher-order procedure such as `stream-map`. Rather, we would need a different mapping procedure for each different combination of argument and result data types that might be specified for a `proc`. Maintaining a practical notion of “data type” in the presence of higher-order procedures raises many difficult issues. One way of dealing with this problem is illustrated by the language ML ([Gordon et al. 1979](https://sarabander.github.io/sicp/html/References.xhtml#Gordon-et-al_002e-1979)), whose “polymorphic data types” include templates for higher-order transformations between data types. Moreover, data types for most procedures in ML are never explicitly declared by the programmer. Instead, ML includes a *type-inferencing* mechanism that uses information in the environment to deduce the data types for newly defined procedures.
+[^72]: هذه انعكاسٌ صغير، في Lisp، للصعوبات التي تجدها اللغات التقليديّة شديدة التصنيع مثل باسكال في التعامل مع الإجراءات ذات الرتبة العليا. ففي مثل هذه اللغات، يجب على المبرمج أن يُحدّد أنواع بيانات وسطاء كل إجراء وناتجه: عدد، قيمة منطقيّة، تسلسل، وهكذا. وبالتالي، لم نكن لنُعبّر عن تجريدٍ مثل «طبّق إجراءً معطى `proc` على جميع العناصر في تسلسل» بإجراء واحد ذي رتبة عليا مثل `stream-map`. بل كنّا سنحتاج إلى إجراء تعيين مختلف لكل توليفة مختلفة من أنواع بيانات الوسيط والناتج التي يُمكن تحديدها لـ `proc`. وإنّ الحفاظ على مفهوم عمليّيّ لـ«نوع البيانات» في وجود الإجراءات ذات الرتبة العليا يُثير مسائل عديدة صعبة. وإحدى طرق التصرّف مع هذه المشكلة توضّحها لغة ML ([Gordon et al. 1979](https://sarabander.github.io/sicp/html/References.xhtml#Gordon-et-al_002e-1979))، التي تتضمّن «أنواع بيانات متعدّدة الأشكال» تشمل قوالب للتحوّلات ذات الرتبة العليا بين أنواع البيانات. بل إنّ أنواع بيانات معظم الإجراءات في ML لا يُصرّح عنها المبرمج صراحةً أبدًا. وبدلًا من ذلك، تتضمّن ML آليّة *استنتاج الأنواع* تستخدم المعلومات في البيئة لاستنتاج أنواع بيانات الإجراءات المُعرَّفة حديثًا.
 
-[^73]: Similarly in physics, when we observe a moving particle, we say that the position (state) of the particle is changing. However, from the perspective of the particle’s world line in space-time there is no change involved.
+[^73]: وبالمثل في الفيزياء، عندما نُلاحظ جسيمًا متحرّكًا، نقول إنّ موضع (حالة) الجسيم تتغيّر. غير أنه من منظور خطّ العالم للجسيم في الزمكان، لا يوجد تغيّر مُشار إليه.
 
-[^74]: John Backus, the inventor of Fortran, gave high visibility to functional programming when he was awarded the ACM Turing award in 1978. His acceptance speech ([Backus 1978](https://sarabander.github.io/sicp/html/References.xhtml#Backus-1978)) strongly advocated the functional approach. A good overview of functional programming is given in [Henderson 1980](https://sarabander.github.io/sicp/html/References.xhtml#Henderson-1980) and in [Darlington et al. 1982](https://sarabander.github.io/sicp/html/References.xhtml#Darlington-et-al_002e-1982).
+[^74]: جون باكوس، مُخترِع فورتران، أعطى البرمجة الوظيفيّة ظهورًا بارزًا عندما مُنِح جائزة ACM تورينغ عام 1978. وقد دَعَم خطاب قبوله ([Backus 1978](https://sarabander.github.io/sicp/html/References.xhtml#Backus-1978)) الأسلوب الوظيفيّ دعمةً قويّة. ويُوجد عرضٌ جيّد للبرمجة الوظيفيّة في [Henderson 1980](https://sarabander.github.io/sicp/html/References.xhtml#Henderson-1980) و في [Darlington et al. 1982](https://sarabander.github.io/sicp/html/References.xhtml#Darlington-et-al_002e-1982).
 
-[^75]: Observe that, for any two streams, there is in general more than one acceptable order of interleaving. Thus, technically, “merge” is a relation rather than a function—the answer is not a deterministic function of the inputs. We already mentioned ([Footnote 167](https://sarabander.github.io/sicp/html/3_002e4.xhtml#Footnote-167)) that nondeterminism is essential when dealing with concurrency. The merge relation illustrates the same essential nondeterminism, from the functional perspective. In [4.3](https://sarabander.github.io/sicp/html/4_002e3.xhtml#g_t4_002e3), we will look at nondeterminism from yet another point of view.
+[^75]: لاحِظ أنّ لأيّ مجريَيْن، هناك عمومًا أكثر من ترتيب تشابكٍ مقبول. بالتالي، من الناحية التقنيّة، «الدمج» علاقة لا دالّة — فالجواب ليس دالّة محدَّدة من المُدخلات. وقد ذكرنا سابقًا ([الحاشية 167](https://sarabander.github.io/sicp/html/3_002e4.xhtml#Footnote-167)) أنّ عدم الحتميّة جوهريّ عند التصرّف مع التزامن. وعلاقة الدمج تُوضيح عدم الحتميّة الأساسيّ عينه، من المنظور الوظيفيّ. وفي [4.3](https://sarabander.github.io/sicp/html/4_002e3.xhtml#g_t4_002e3)، سننظر إلى عدم الحتميّة من وجهة نظر أخرى أيضًا.
 
-[^76]: The object model approximates the world by dividing it into separate pieces. The functional model does not modularize along object boundaries. The object model is useful when the unshared state of the “objects” is much larger than the state that they share. An example of a place where the object viewpoint fails is quantum mechanics, where thinking of things as individual particles leads to paradoxes and confusions. Unifying the object view with the functional view may have little to do with programming, but rather with fundamental epistemological issues.
+[^76]: نموذج الكائنات يقارب العالم بتقسيمه إلى قطع منفصلة. أمّا النموذج الوظيفيّ فلا يُوحد على حدود الكائنات. ونموذج الكائنات مفيد عندما تكون الحالة غير المشتركة «للكائنات» أكبر بكثير من الحالة التي تتقاسمها. ومثال على مكان تسقط فيه وجهة نظر الكائنات هو ميكانيكا الكمّ، حيث يُفضي التفكير في الأشياء كجسيمات فرديّة إلى تناقضات والتباسات. وقد يكون توحيد وجهة نظر الكائنات مع وجهة نظر الوظيفيّة لا علاقة له بالبرمجة، بل يتعلّق بمسائل إبستيمولوجيّة أساسيّة.
