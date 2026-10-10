@@ -1,76 +1,76 @@
 ---
-title: "Metalinguistic Abstraction"
-lang: en
+title: "التجريد فوق اللغوي"
+lang: ar
 ---
 
-> … It’s in words that the magic is—Abracadabra, Open Sesame, and the rest—but the magic words in one story aren’t magical in the next. The real magic is to understand which words work, and when, and for what; the trick is to learn the trick. … And those words are made from the letters of our alphabet: a couple-dozen squiggles we can draw with the pen. This is the key! And the treasure, too, if we can only get our hands on it! It’s as if—as if the key to the treasure *is* the treasure! —John Barth, Chimera
+> … إنّ السحر في الكلمات: أبرا كدابرا، وافتح يا سمسم، وغيرها — لكنّ الكلمات السحريّة في حكايةٍ لا تكون سحريّةً في الحكاية التالية. والسحر الحقيقيّ هو أن تفهم أيّ الكلمات تنفع، ومتى، ولأيّ شيء؛ والخدعة هي أن تتعلّم الخدعة. … وهذه الكلمات مصنوعةٌ من حروف أبجديتنا: عشراتٌ قليلةٌ من التعرّجات التي نستطيع رسمها بالقلم. هذا هو المفتاح! والكنز أيضًا، إن استطعنا الحصول عليه بأيدينا! إنّه كأنّ — كأنّ مفتاح الكنز *هو* الكنز! — جون بارث، كيميرا
 
-In our study of program design, we have seen that expert programmers control the complexity of their designs with the same general techniques used by designers of all complex systems. They combine primitive elements to form compound objects, they abstract compound objects to form higher-level building blocks, and they preserve modularity by adopting appropriate large-scale views of system structure. In illustrating these techniques, we have used Lisp as a language for describing processes and for constructing computational data objects and processes to model complex phenomena in the real world. However, as we confront increasingly complex problems, we will find that Lisp, or indeed any fixed programming language, is not sufficient for our needs. We must constantly turn to new languages in order to express our ideas more effectively. Establishing new languages is a powerful strategy for controlling complexity in engineering design; we can often enhance our ability to deal with a complex problem by adopting a new language that enables us to describe (and hence to think about) the problem in a different way, using primitives, means of combination, and means of abstraction that are particularly well suited to the problem at hand.[^1]
+لقد رأينا في دراستنا لتصميم البرامج أنّ المبرمجين الخبيرين يضبطون تعقيد تصاميمهم بالتقنيّات العامّة ذاتها التي يستخدمها مصمّمو جميع النظم المعقّدة. فهم يجمعون العناصر الأوّليّة لتكوين كائناتٍ مركّبة، ويجرّدون الكائنات المركّبة لتكوين وحدات بناءٍ على مستوى أعلى، ويحفظون وحدانيّة تصاميمهم بتبنّي نظراتٍ واسعة النطاق مناسبةٍ لبنية النظام. ولتوضيح هذه التقنيّات، استخدمنا Lisp لغةً لوصف العمليّات ولبناء كائنات البيانات الحسابيّة والعمليّات لنمذجة الظواهر المعقّدة في العالم الواقعيّ. غير أنّنا، في مواجهتنا مسائل متزايدة التعقيد، سنجد أنّ Lisp — أو أيّ لغة برمجةٍ ثابتةٍ في الحقيقة — غير كافيةٍ لحاجاتنا. فيجب أن نلجأ باستمرارٍ إلى لغاتٍ جديدةٍ كي نُعبّر عن أفكارنا بفعّيّةٍ أكبر. وإرساء لغاتٍ جديدةٍ استراتيجيّةٌ قويّةٌ لضبط التعقيد في التصميم الهندسيّ؛ فيمكننا غالبًا أن نعزّز قدرتنا على التعامل مع مسألةٍ معقّدةٍ بتبنّي لغةٍ جديدةٍ تمكّننا من وصف المسألة (ومن ثمّ التفكير فيها) بطريقةٍ مختلفة، باستخدام أوّليّاتٍ ووسائل تركيبٍ ووسائل تجريدٍ تصلح خصوصًا للمسألة المطروحة.[^1]
 
-Programming is endowed with a multitude of languages. There are physical languages, such as the machine languages for particular computers. These languages are concerned with the representation of data and control in terms of individual bits of storage and primitive machine instructions. The machine-language programmer is concerned with using the given hardware to erect systems and utilities for the efficient implementation of resource-limited computations. High-level languages, erected on a machine-language substrate, hide concerns about the representation of data as collections of bits and the representation of programs as sequences of primitive instructions. These languages have means of combination and abstraction, such as procedure definition, that are appropriate to the larger-scale organization of systems.
+البرمجة مكسوّةٌ بجموحٍ كبيرٍ من اللغات. فهناك لغات مادّيّة، كاللغات الآليّة لأجهزة حاسوبٍ معيّنة. وهذه اللغات تعنى بتمثيل البيانات والتحكّم من حيث بتّات التخزين الفرديّة وتعليمات الآلة الأوّليّة. ومبرمج اللغة الآليّة يعنى باستخدام العتاد المعطى لإقامة نظمٍ وأدواتٍ لتنفيذ الاحتسابات محدودة الموارد بكفاءة. واللغات العالية المستوى، المُقامة على أساسٍ من اللغة الآليّة، تُخفي الهموم المتعلّقة بتمثيل البيانات على أنّه مجموعاتٌ من البتّات وتمثيل البرامج على أنّه تتابعاتٌ من التعليمات الأوّليّة. وهذه اللغات لها وسائل تركيبٍ وتجريد، كتعريف الإجراءات، تصلح للتنظيم الأوسع نطاقًا للنُظم.
 
-*Metalinguistic abstraction*—establishing new languages—plays an important role in all branches of engineering design. It is particularly important to computer programming, because in programming not only can we formulate new languages but we can also implement these languages by constructing evaluators. An *evaluator* (or *interpreter*) for a programming language is a procedure that, when applied to an expression of the language, performs the actions required to evaluate that expression.
+*التجريد فوق اللغوي (metalinguistic abstraction)* — إرساء لغاتٍ جديدةٍ — يلعب دورًا مهمًّا في جميع فروع التصميم الهندسيّ. وهو مهمٌّ بشكلٍ خاصٍّ في البرمجة الحاسوبيّة، لأنّه في البرمجة لا نستطيع صياغة لغاتٍ جديدةٍ فحسب، بل نستطيع أيضًا تنفيذ هذه اللغات ببناء مُقيّمات. و*المُقيِّم (evaluator)* (أو *المفسّر (interpreter)*) للغة برمجةٍ ما هو إجراءٌ يؤدّي، حين يُطبَّق على تعبيرٍ من اللغة، الأفعال المطلوبة لتقييم ذلك التعبير.
 
-It is no exaggeration to regard this as the most fundamental idea in programming:
+ولا مبالغة في اعتبار هذه أهمّ فكرةٍ في البرمجة:
 
-> The evaluator, which determines the meaning of expressions in a programming language, is just another program.
+> إنّ المُقيِّم، الذي يحدّد معنى التعابير في لغة برمجةٍ ما، هو بمثابة برنامجٍ آخر.
 
-To appreciate this point is to change our images of ourselves as programmers. We come to see ourselves as designers of languages, rather than only users of languages designed by others.
+وإدراك هذه النقطة يغيّر صورنا عن أنفسنا بوصفنا مبرمجين. فنحن نأتي لأن نرى أنفسنا مصمّمين للغات، لا مستخدمين للغاتٍ يصمّمها الآخرين فحسب.
 
-In fact, we can regard almost any program as the evaluator for some language. For instance, the polynomial manipulation system of [2.5.3](https://sarabander.github.io/sicp/html/2_002e5.xhtml#g_t2_002e5_002e3) embodies the rules of polynomial arithmetic and implements them in terms of operations on list-structured data. If we augment this system with procedures to read and print polynomial expressions, we have the core of a special-purpose language for dealing with problems in symbolic mathematics. The digital-logic simulator of [3.3.4](https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e4) and the constraint propagator of [3.3.5](https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e5) are legitimate languages in their own right, each with its own primitives, means of combination, and means of abstraction. Seen from this perspective, the technology for coping with large-scale computer systems merges with the technology for building new computer languages, and computer science itself becomes no more (and no less) than the discipline of constructing appropriate descriptive languages.
+في الحقيقة، فإنّا نستطيع اعتبار أيّ برنامجٍ تقريبًا مُقيّمًا لغةٍ ما. فإنّ نظام معالجة كثيرات الحدود الوارد في [2.5.3](https://sarabander.github.io/sicp/html/2_002e5.xhtml#g_t2_002e5_002e3) يجسّد قواعد الحساب على كثيرات الحدود وينفّذها من حيث عمليّاتٍ على بياناتٍ مبنيّةٍ على القوائم. فإذا زُدنا هذا النظام إجراءاتٍ لقراءة تعابير كثيرات الحدود وطبعها، صار لدينا لبّ لغةٍ خاصّةٍ بالأغراض الخاصّة للتعامل مع مسائل الرياضيّات الرمزيّة. ومحاكي المنطق الرقميّ الوارد في [3.3.4](https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e4) وناشر القيود الوارد في [3.3.5](https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e5) لغتان مشروعتان بحقّ، لكلٍّ منهما أوّليّاتها ووسائل تركيبها ووسائل تجريدها الخاصّة بها. ورؤيةً من هذا المنظور، تتّحد تقنيّة التعامل مع النُظم الحاسوبيّة واسعة النطاق مع تقنيّة بناء لغات حاسوبيّةٍ جديدة، ويصبح علم الحاسوب نفسه لا أكثر (ولا أقلّ) من انضباط بناء اللغات الوصفيّة الملائمة.
 
-We now embark on a tour of the technology by which languages are established in terms of other languages. In this chapter we shall use Lisp as a base, implementing evaluators as Lisp procedures. Lisp is particularly well suited to this task, because of its ability to represent and manipulate symbolic expressions. We will take the first step in understanding how languages are implemented by building an evaluator for Lisp itself. The language implemented by our evaluator will be a subset of the Scheme dialect of Lisp that we use in this book. Although the evaluator described in this chapter is written for a particular dialect of Lisp, it contains the essential structure of an evaluator for any expression-oriented language designed for writing programs for a sequential machine. (In fact, most language processors contain, deep within them, a little “Lisp” evaluator.) The evaluator has been simplified for the purposes of illustration and discussion, and some features have been left out that would be important to include in a production-quality Lisp system. Nevertheless, this simple evaluator is adequate to execute most of the programs in this book.[^2]
+نبدأ الآن جولةً في التقنيّة التي تُرسى بها اللغات من حيث لغاتٍ أخرى. وسنستخدم في هذا الفصل Lisp أساسًا، منفّذين المُقيّمات كإجراءات Lisp. وLisp تصلح خصوصًا لهذه المهمّة، بسبب قدرتها على تمثيل التعابير الرمزيّة والتلاعب بها. وسنخطو الخطوة الأولى في فهم كيف تُنفَّذ اللغات ببناء مُقيّمٍ لـLisp نفسها. واللغة التي ينفّذها مُقيّمنا ستكون مجموعةً جزئيّةً من لهجة Scheme من Lisp التي نستخدمها في هذا الكتاب. ورغم أنّ المُقيّم الموصوف في هذا الفصل مكتوبٌ للهجة Lisp معيّنة، فإنّه يحتوي البنية الأساسيّة لمُقيّم أيّ لغةٍ موجّهةٍ بالتعبيرات ومصمَّمةٍ لكتابة البرامج لآلةٍ تسلسليّة. (في الحقيقة، تحتوي معظم معالجات اللغات في أعماقها على مُقيّم Lisp صغير.) وقد بُسِّط المُقيّم لأغراض التوضيح والمناقشة، وحُذفت بعض الخصائص التي يكون من المهمّ تضمينها في نظام Lisp ذي جودةٍ إنتاجيّة. ومع ذلك، فإنّ هذا المُقيّم البسيط كافٍ لتنفيذ معظم البرامج في هذا الكتاب.[^2]
 
-An important advantage of making the evaluator accessible as a Lisp program is that we can implement alternative evaluation rules by describing these as modifications to the evaluator program. One place where we can use this power to good effect is to gain extra control over the ways in which computational models embody the notion of time, which was so central to the discussion in [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3). There, we mitigated some of the complexities of state and assignment by using streams to decouple the representation of time in the world from time in the computer. Our stream programs, however, were sometimes cumbersome, because they were constrained by the applicative-order evaluation of Scheme. In [4.2](https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2), we’ll change the underlying language to provide for a more elegant approach, by modifying the evaluator to provide for *normal-order evaluation*.
+إحدى المزايا المهمّة لجعل المُقيّم متاحًا بوصفه برنامج Lisp هي أنّنا نستطيع تنفيذ قواعد تقييمٍ بديلةٍ بوصفها على أنّها تعديلاتٌ على برنامج المُقيّم. وأحد المواضع التي نستطيع فيها استخدام هذه القوّة على نحوٍ مفيدٍ هو كسب تحكّمٍ إضافيٍّ في الطرق التي تجسّد بها النماذج الحسابيّة مفهوم الزمن، الذي كان محوريًّا للنقاش في [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3). فهناك، خفّفنا من بعض تعقيدات الحالة والإحلال باستخدام المجاري لفصل تمثيل الزمن في العالم عن الزمن في الحاسوب. وسنغيّر في [4.2](https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2) اللغة الأساسيّة لتوفير نهجٍ أكثر أناقة، وذلك بتعديل المُقيّم ليوفّر *التقييم بالترتيب الاعتياديّ (normal-order evaluation)*.
 
-Section [4.3](https://sarabander.github.io/sicp/html/4_002e3.xhtml#g_t4_002e3) implements a more ambitious linguistic change, whereby expressions have many values, rather than just a single value. In this language of *nondeterministic computing*, it is natural to express processes that generate all possible values for expressions and then search for those values that satisfy certain constraints. In terms of models of computation and time, this is like having time branch into a set of “possible futures” and then searching for appropriate time lines. With our nondeterministic evaluator, keeping track of multiple values and performing searches are handled automatically by the underlying mechanism of the language.
+يُنفّذ القسم [4.3](https://sarabander.github.io/sicp/html/4_002e3.xhtml#g_t4_002e3) تغييرًا لغويًّا أكثر طموحًا، تصبح بموجبه التعابير متعدّدةَ القيم، لا ذاتَ قيمةٍ واحدةٍ فحسب. وفي لغة *الحوسبة غير الحتميّة (nondeterministic computing)* هذه، من الطبيعيّ التعبير عن عمليّاتٍ تولّد جميع القيم الممكنة للتعبيرات ثمّ تبحث عن القيم التي تُحقّق قيودًا معيّنة. ومن حيث نماذج الاحتساب والزمن، يشبه هذا أن يتشعّب الزمن إلى مجموعةٍ من «المستقبلات الممكنة» ثمّ يُبحث عن الخطوط الزمنيّة المناسبة. وباستخدام مُقيّمنا غير الحتميّ، فإنّ تتبّع القيم المتعدّدة وإجراء عمليّات البحث يُتعامل معهما تلقائيًّا بآليّة اللغة الأساسيّة.
 
-In [4.4](https://sarabander.github.io/sicp/html/4_002e4.xhtml#g_t4_002e4) we implement a *logic-programming* language in which knowledge is expressed in terms of relations, rather than in terms of computations with inputs and outputs. Even though this makes the language drastically different from Lisp, or indeed from any conventional language, we will see that the logic-programming evaluator shares the essential structure of the Lisp evaluator.
+نُنفّذ في [4.4](https://sarabander.github.io/sicp/html/4_002e4.xhtml#g_t4_002e4) لغة *برمجة منطقيّة (logic programming)* تُعبَّر فيها المعرفة من حيث العلاقات، لا من حيث الاحتسابات ذات المداخل والمخارج. ورغم أنّ هذا يجعل اللغة مختلفةً اختلافًا جذريًّا عن Lisp، أو عن أيّ لغةٍ تقليديّةٍ في الحقيقة، فإنّا سنرى أنّ مُقيّم البرمجة المنطقيّة يتشارك البنية الأساسيّة لمُقيّم Lisp.
 
-### 4.1 The Metacircular Evaluator
+### 4.1 المُقيّم التعاكسيّ
 
-Our evaluator for Lisp will be implemented as a Lisp program. It may seem circular to think about evaluating Lisp programs using an evaluator that is itself implemented in Lisp. However, evaluation is a process, so it is appropriate to describe the evaluation process using Lisp, which, after all, is our tool for describing processes.[^3] An evaluator that is written in the same language that it evaluates is said to be *metacircular*.
+سيكون مُقيّمنا لـLisp منفَّذًا بوصفه برنامج Lisp. وقد يبدو الأمر دورانيًّا — التفكير في تقييم برامج Lisp باستخدام مُقيّمٍ هو نفسه منفَّذٌ بـLisp. غير أنّ التقييم عمليّةٌ، فلذا فإنّ وصف عمليّة التقييم باستخدام Lisp أمرٌ ملائم، وهي التي هي أداتنا لوصف العمليّات في النهاية.[^3] ويُقال عن المُقيّم المكتوب باللغة ذاتها التي يقيّمها إنّه *تعاكسيّ (metacircular)*.
 
-The metacircular evaluator is essentially a Scheme formulation of the environment model of evaluation described in [3.2](https://sarabander.github.io/sicp/html/3_002e2.xhtml#g_t3_002e2). Recall that the model has two basic parts:
+والمُقيّم التعاكسيّ هو في جوهره صياغةٌ بـScheme لنموذج البيئة للتقييم الموصوف في [3.2](https://sarabander.github.io/sicp/html/3_002e2.xhtml#g_t3_002e2). وأذكّر أنّ النموذج له جزءان أساسيّان:
 
-1. To evaluate a combination (a compound expression other than a special form), evaluate the subexpressions and then apply the value of the operator subexpression to the values of the operand subexpressions.
-2. To apply a compound procedure to a set of arguments, evaluate the body of the procedure in a new environment. To construct this environment, extend the environment part of the procedure object by a frame in which the formal parameters of the procedure are bound to the arguments to which the procedure is applied.
+1. ولتقييم تركيبةٍ (تعبيرٌ مركّبٌ غيرُ صيغةٍ خاصّة)، قيّم التعابير الجزئيّة ثمّ طبّق قيمة التعبير الجزئيّ للمشغّل على قيم التعابير الجزئيّة للعوامل.
+2. ولتطبيق إجراءٍ مركّبٍ على مجموعةٍ من المعطيات، قيّم جسم الإجراء في بيئةٍ جديدة. ولتكوين هذه البيئة، وسّع جزء البيئة من كائن الإجراء بإطارٍ تُربط فيه الوسائط الشكليّة للإجراء بالمعطيات التي يُطبَّق عليها الإجراء.
 
-These two rules describe the essence of the evaluation process, a basic cycle in which expressions to be evaluated in environments are reduced to procedures to be applied to arguments, which in turn are reduced to new expressions to be evaluated in new environments, and so on, until we get down to symbols, whose values are looked up in the environment, and to primitive procedures, which are applied directly (see [Figure 4.1](#Figure-4_002e1)).[^4] This evaluation cycle will be embodied by the interplay between the two critical procedures in the evaluator, `eval` and `apply`, which are described in [4.1.1](#g_t4_002e1_002e1) (see [Figure 4.1](#Figure-4_002e1)).
+يصف هذان العصران جوهر عمليّة التقييم، دورةً أساسيّةً تُختزل فيها التعابير المطلوب تقييمها في بيئاتٍ إلى إجراءاتٍ تُطبَّق على معطيات، تُختزل بدورها إلى تعابير جديدةٍ تُقيَّم في بيئاتٍ جديدة، وهكذا، حتّى ننزل إلى رموزَ تُبحث قيمُها في البيئة، وإلى إجراءاتٍ أوّليّةٍ تُطبَّق مباشرةً (انظر [الشكل 4.1](#Figure-4_002e1)).[^4] وستتجسّد دورة التقييم هذه بتفاعل الإجراءين الحرجيّين في المُقيّم، وهما `eval` و`apply`، الموصوفين في [4.1.1](#g_t4_002e1_002e1) (انظر [الشكل 4.1](#Figure-4_002e1)).
 
 ![](/images/sicp/c4-metalinguistic-abstraction-0-Fig4.1a.std.webp)
 
-**Figure 4.1:** The `eval`-`apply` cycle exposes the essence of a computer language.
+**الشكل 4.1:** تكشف دورة `eval`-`apply` عن جوهر لغة الحاسوب.
 
-The implementation of the evaluator will depend upon procedures that define the *syntax* of the expressions to be evaluated. We will use data abstraction to make the evaluator independent of the representation of the language. For example, rather than committing to a choice that an assignment is to be represented by a list beginning with the symbol `set!` we use an abstract predicate `assignment?` to test for an assignment, and we use abstract selectors `assignment-variable` and `assignment-value` to access the parts of an assignment. Implementation of expressions will be described in detail in [4.1.2](#g_t4_002e1_002e2). There are also operations, described in [4.1.3](#g_t4_002e1_002e3), that specify the representation of procedures and environments. For example, `make-procedure` constructs compound procedures, `lookup-variable-value` accesses the values of variables, and `apply-primitive-procedure` applies a primitive procedure to a given list of arguments.
+سيعتمد تنفيذ المُقيّم على إجراءاتٍ تُعرّف *الصياغة (syntax)* للتعبيرات المطلوب تقييمها. وسنستخدم تجريد البيانات لجعل المُقيّم مستقلًّا عن تمثيل اللغة. فإنّا، مثلًا، بدلًا من الالتزام بخيارٍ يقضي بأنّ الإحلال يُُمثَّل بقائمةٍ تبدأ بالرمز `set!` نستخدم مُسَيِّمًا مجرّدًا `assignment?` لاختبار الإحلال، ونستخدم محدِّدين مجرّدين `assignment-variable` و`assignment-value` للنفاذ إلى أجزاء الإحلال. وسيُوصف تنفيذ التعابير بالتفصيل في [4.1.2](#g_t4_002e1_002e2). وهناك أيضًا عمليّات، موصوفةٌ في [4.1.3](#g_t4_002e1_002e3)، تُحدّد تمثيل الإجراءات والبيئات. فإنّ `make-procedure` مثلًا يبني الإجراءات المركّبة، و`lookup-variable-value` ينفذ إلى قيم المتغيّرات، و`apply-primitive-procedure` يطبّق إجراءً أوّليًّا على قائمةٍ معطاةٍ من المعطيات.
 
-#### 4.1.1 The Core of the Evaluator
+#### 4.1.1 لبّ المُقيّم
 
-The evaluation process can be described as the interplay between two procedures: `eval` and `apply`.
+يمكن وصف عمليّة التقييم على أنّها تفاعلٌ بين إجراءين: `eval` و`apply`.
 
-#### Eval
+#### التقييم (eval)
 
-`Eval` takes as arguments an expression and an environment. It classifies the expression and directs its evaluation. `Eval` is structured as a case analysis of the syntactic type of the expression to be evaluated. In order to keep the procedure general, we express the determination of the type of an expression abstractly, making no commitment to any particular representation for the various types of expressions. Each type of expression has a predicate that tests for it and an abstract means for selecting its parts. This *abstract syntax* makes it easy to see how we can change the syntax of the language by using the same evaluator, but with a different collection of syntax procedures.
+يأخذ `eval` تعبيرًا وبيئةً كمعطيين. وهو يُصنّف التعبير ويوجّه تقييمه. و`eval` مبنيٌّ على هيئة تحليل حالاتٍ للنوع الصياغيّ للتعبير المطلوب تقييمه. ولكي نحفظ الإجراء عامًّا، نُعبّر عن تحديد نوع التعبير تجريدًا، دون التزامٍ بأيّ تمثيلٍ معيّنٍ لأنواع التعبيرات المختلفة. ولكلّ نوعٍ من التعبيرات مُسَيِّمٌ يختبره ووسيلةٌ مجرّدةٌ لتحديد أجزائه. وهذه *الصياغة المجرّدة (abstract syntax)* تجعل من السهل رؤية كيف نستطيع تغيير صياغة اللغة باستخدام المُقيّم نفسه، لكن مع مجموعةٍ مختلفةٍ من إجراءات الصياغة.
 
-**Primitive expressions**
+**التعابير الأوّليّة**
 
-- For self-evaluating expressions, such as numbers, `eval` returns the expression itself.
-- `Eval` must look up variables in the environment to find their values.
+- فبالنسبة للتعابير ذاتيّة التقييم، كالأعداد، يُعيد `eval` التعبير نفسه.
+- ويجب على `eval` البحث عن المتغيّرات في البيئة لإيجاد قيمها.
 
-**Special forms**
+**الصيغ الخاصّة**
 
-- For quoted expressions, `eval` returns the expression that was quoted.
-- An assignment to (or a definition of) a variable must recursively call `eval` to compute the new value to be associated with the variable. The environment must be modified to change (or create) the binding of the variable.
-- An `if` expression requires special processing of its parts, so as to evaluate the consequent if the predicate is true, and otherwise to evaluate the alternative.
-- A `lambda` expression must be transformed into an applicable procedure by packaging together the parameters and body specified by the `lambda` expression with the environment of the evaluation.
-- A `begin` expression requires evaluating its sequence of expressions in the order in which they appear.
-- A case analysis (`cond`) is transformed into a nest of `if` expressions and then evaluated.
+- فبالنسبة للتعابير المُقتبسة، يُعيد `eval` التعبير الذي كان مُقتبَسًا.
+- والإحلال إلى متغيّر (أو تعريفه) يجب أن يستدعي `eval` تعاوديًّا لحساب القيمة الجديدة التي تُربط بالمتغيّر. ويجب تعديل البيئة لتغيير (أو إنشاء) ربط المتغيّر.
+- وتعبير `if` يتطلّب معالجةً خاصّةً لأجزائه، بحيث يُقيَّم الناتج إذا كان المُسَيِّم صحيحًا، ويُقيَّم البديل خلافًا لذلك.
+- وتعبير `lambda` يجب أن يُحوَّل إلى إجراءٍ قابلٍ للتطبيق بحزم الوسائط والجسم اللذين يُحدّدهما تعبير `lambda` مع بيئة التقييم معًا.
+- وتعبير `begin` يتطلّب تقييم تتابع تعابيره بالترتيب الذي تظهر به.
+- وتحليل الحالات (`cond`) يُحوَّل إلى عشٍّ من تعابير `if` ثمّ يُقيَّم.
 
-**Combinations**
+**التركيبات**
 
-- For a procedure application, `eval` must recursively evaluate the operator part and the operands of the combination. The resulting procedure and arguments are passed to `apply`, which handles the actual procedure application.
+- وبالنسبة لتطبيق إجراءٍ، يجب على `eval` تقييم جزء المشغّل وعوامل التركيبة تعاوديًّا. والإجراء والمعطيات الناتجان يُمرَّران إلى `apply`، الذي يتعامل مع تطبيق الإجراء الفعليّ.
 
-Here is the definition of `eval`:
+وها هو تعريف `eval`:
 
 ```scheme
 (define (eval exp env)
@@ -107,11 +107,11 @@ Here is the definition of `eval`:
                  type: EVAL" exp))))
 ```
 
-For clarity, `eval` has been implemented as a case analysis using `cond`. The disadvantage of this is that our procedure handles only a few distinguishable types of expressions, and no new ones can be defined without editing the definition of `eval`. In most Lisp implementations, dispatching on the type of an expression is done in a data-directed style. This allows a user to add new types of expressions that `eval` can distinguish, without modifying the definition of `eval` itself. (See [Exercise 4.3](#Exercise-4_002e3).)
+وللتّوضيح، نُفّذ `eval` على هيئة تحليل حالاتٍ باستخدام `cond`. وعيب هذا أنّ إجراءنا يتعامل مع أنواعٍ قليلةٍ فقط من التعابير القابلة للتمييز، ولا يمكن تعريف أنواعٍ جديدةٍ دون تعديل تعريف `eval`. وفي معظم تنفيذات Lisp، يُجرى التوجيه بحسب نوع التعبير بأسلوبٍ موجَّهٍ بالبيانات. وهذا يسمح للمستخدم بإضافة أنواعٍ جديدةٍ من التعابير يستطيع `eval` تمييزها، دون تعديل تعريف `eval` نفسه. (انظر [التمرين 4.3](#Exercise-4_002e3).)
 
-#### Apply
+#### التطبيق (apply)
 
-`Apply` takes two arguments, a procedure and a list of arguments to which the procedure should be applied. `Apply` classifies procedures into two kinds: It calls `apply-primitive-procedure` to apply primitives; it applies compound procedures by sequentially evaluating the expressions that make up the body of the procedure. The environment for the evaluation of the body of a compound procedure is constructed by extending the base environment carried by the procedure to include a frame that binds the parameters of the procedure to the arguments to which the procedure is to be applied. Here is the definition of `apply`:
+يأخذ `apply` معطيين، إجراءً وقائمةً من المعطيات التي يجب أن يُطبَّق عليها الإجراء. و`apply` يُصنّف الإجراءات إلى نوعين: فهو يستدعي `apply-primitive-procedure` لتطبيق الأوّليّات؛ ويطبّق الإجراءات المركّبة بتقييم التعابير التي تكوّن جسم الإجراء تِباعًا. وتُبنى البيئة لتقييم جسم إجراءٍ مركّبٍ بتوسيع البيئة الأساسيّة التي يحملها الإجراء لتضمّ إطارًا يربط وسائط الإجراء بالمعطيات التي سيُطبَّق عليها الإجراء. وها هو تعريف `apply`:
 
 ```scheme
 (define (apply procedure arguments)
@@ -134,9 +134,9 @@ For clarity, `eval` has been implemented as a case analysis using `cond`. The di
                 procedure))))
 ```
 
-#### Procedure arguments
+#### معطيات الإجراء
 
-When `eval` processes a procedure application, it uses `list-of-values` to produce the list of arguments to which the procedure is to be applied. `List-of-values` takes as an argument the operands of the combination. It evaluates each operand and returns a list of the corresponding values:[^5]
+حين يعالج `eval` تطبيق إجراءٍ، فإنّه يستخدم `list-of-values` لإنتاج قائمة المعطيات التي سيُطبَّق عليها الإجراء. و`list-of-values` تأخذ عوامل التركيبة معطىً واحدًا. وهي تُقيّم كلّ عاملٍ وتُعيد قائمة القيم المقابلة:[^5]
 
 ```scheme
 (define (list-of-values exps env)
@@ -148,9 +148,9 @@ When `eval` processes a procedure application, it uses `list-of-values` to produ
              env))))
 ```
 
-#### Conditionals
+#### التعابير الشرطيّة
 
-`Eval-if` evaluates the predicate part of an `if` expression in the given environment. If the result is true, `eval-if` evaluates the consequent, otherwise it evaluates the alternative:
+يُقيّم `eval-if` جزء المُسَيِّم من تعبير `if` في البيئة المعطاة. فإن كانت النتيجة صحيحة، قيّم `eval-if` الناتج، ويُقيّم البديل خلافًا ذلك:
 
 ```scheme
 (define (eval-if exp env)
@@ -159,11 +159,11 @@ When `eval` processes a procedure application, it uses `list-of-values` to produ
       (eval (if-alternative exp) env)))
 ```
 
-The use of `true?` in `eval-if` highlights the issue of the connection between an implemented language and an implementation language. The `if-predicate` is evaluated in the language being implemented and thus yields a value in that language. The interpreter predicate `true?` translates that value into a value that can be tested by the `if` in the implementation language: The metacircular representation of truth might not be the same as that of the underlying Scheme.[^6]
+يُبرز استخدام `true?` في `eval-if` مسألة الصلة بين لغةٍ منفَّذةٍ ولغة تنفيذٍ. فـ`if-predicate` يُقيَّم في اللغة التي يجري تنفيذها، لذا يُنتج قيمةً في تلك اللغة. ومُسَيِّم المفسّر `true?` يترجم تلك القيمة إلى قيمةٍ يمكن اختبارها بـ`if` في لغة التنفيذ: فإنّ تمثيل الصّحاح في المُقيّم التعاكسيّ قد لا يكون هو نفسه تمثيله في Scheme الأساسيّة.[^6]
 
-#### Sequences
+#### التتابعات
 
-`Eval-sequence` is used by `apply` to evaluate the sequence of expressions in a procedure body and by `eval` to evaluate the sequence of expressions in a `begin` expression. It takes as arguments a sequence of expressions and an environment, and evaluates the expressions in the order in which they occur. The value returned is the value of the final expression.
+إنّ `eval-sequence` يُستخدم من `apply` لتقييم تتابع التعابير في جسم الإجراء، ومن `eval` لتقييم تتابع التعابير في تعبير `begin`. وهو يأخذ تتابع تعابيرٍ وبيئةً كمعطيين، ويُقيّم التعابير بالترتيب الذي تقع به. والقيمة المُعادة هي قيمة التعبير الأخير.
 
 ```scheme
 (define (eval-sequence exps env)
@@ -175,9 +175,9 @@ The use of `true?` in `eval-if` highlights the issue of the connection between a
                         env))))
 ```
 
-#### Assignments and definitions
+#### الإحلالات والتعريفات
 
-The following procedure handles assignments to variables. It calls `eval` to find the value to be assigned and transmits the variable and the resulting value to `set-variable-value!` to be installed in the designated environment.
+يتعامل الإجراء التالي مع الإحلالات إلى المتغيّرات. فهو يستدعي `eval` لإيجاد القيمة التي سيُحَلّ محلًّا، وينقل المتغيّر والقيمة الناتجة إلى `set-variable-value!` ليُثبَّتا في البيئة المعيَّنة.
 
 ```scheme
 (define (eval-assignment exp env)
@@ -188,7 +188,7 @@ The following procedure handles assignments to variables. It calls `eval` to fin
   'ok)
 ```
 
-Definitions of variables are handled in a similar manner.[^7]
+وتُعالَج تعريفات المتغيّرات بالطريقة ذاتها.[^7]
 
 ```scheme
 (define (eval-definition exp env)
@@ -199,17 +199,17 @@ Definitions of variables are handled in a similar manner.[^7]
   'ok)
 ```
 
-We have chosen here to return the symbol `ok` as the value of an assignment or a definition.[^8]
+اخترنا هنا إعادة الرمز `ok` قيمةً للإحلال أو للتعريف.[^8]
 
-> **Exercise 4.1:** Notice that we cannot tell whether the metacircular evaluator evaluates operands from left to right or from right to left. Its evaluation order is inherited from the underlying Lisp: If the arguments to `cons` in `list-of-values` are evaluated from left to right, then `list-of-values` will evaluate operands from left to right; and if the arguments to `cons` are evaluated from right to left, then `list-of-values` will evaluate operands from right to left. Write a version of `list-of-values` that evaluates operands from left to right regardless of the order of evaluation in the underlying Lisp. Also write a version of `list-of-values` that evaluates operands from right to left.
+> **التمرين 4.1:** لاحِظ أنّنا لا نستطيع معرفة ما إذا كان المُقيّم التعاكسيّ يقيّم العوامل من اليسار إلى اليمين أم من اليمين إلى اليسار. فإنّ ترتيب تقييمه موروثٌ من Lisp الأساسيّة: فإن قُيّمت المعطيات الممرَّرة إلى `cons` في `list-of-values` من اليسار إلى اليمين، قيّم `list-of-values` العوامل من اليسار إلى اليمين؛ وإن قُيّمت معطيات `cons` من اليمين إلى اليسار، قيّم `list-of-values` العوامل من اليمين إلى اليسار. اكتب نسخةً من `list-of-values` تُقيّم العوامل من اليسار إلى اليمين بصرف النظر عن ترتيب التقييم في Lisp الأساسيّة. واكتب أيضًا نسخةً من `list-of-values` تُقيّم العوامل من اليمين إلى اليسار.
 
-#### 4.1.2 Representing Expressions
+#### 4.1.2 تمثيل التعابير
 
-The evaluator is reminiscent of the symbolic differentiation program discussed in [2.3.2](https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e2). Both programs operate on symbolic expressions. In both programs, the result of operating on a compound expression is determined by operating recursively on the pieces of the expression and combining the results in a way that depends on the type of the expression. In both programs we used data abstraction to decouple the general rules of operation from the details of how expressions are represented. In the differentiation program this meant that the same differentiation procedure could deal with algebraic expressions in prefix form, in infix form, or in some other form. For the evaluator, this means that the syntax of the language being evaluated is determined solely by the procedures that classify and extract pieces of expressions.
+يُشبه المُقيّم برنامج التفاضل الرمزيّ المناقَش في [2.3.2](https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e2). فكلاهما يعمل على تعابير رمزيّة. وفي كلٍّ من البرنامجين، تحديدُ نتيجة العمل على تعبيرٍ مركّبٍ يكون بالعمل تعاوديًّا على أجزاء التعبير ودمج النتائج بطريقةٍ تتوقّف على نوع التعبير. وفي كلٍّ من البرنامجين استخدمنا تجريد البيانات لفصل القواعد العامّة للعمل عن تفاصيل كيفيّة تمثيل التعابير. وفي برنامج التفاضل عنى هذا أنّ إجراء التفاضل نفسه يستطيع التعامل مع التعابير الجبريّة في الصيغة البادئة، أو في الصيغة الواسطة، أو في أيّ صيغةٍ أخرى. وبالنسبة للمُقيّم، فإنّ هذا يعني أنّ صياغة اللغة التي يجري تقييمها تُحدَّد حصرًا بالإجراءات التي تُصنّف التعابير وتستخرج أجزاءها.
 
-Here is the specification of the syntax of our language:
+وها هو توصيف صياغة لغتنا:
 
-The only self-evaluating items are numbers and strings:
+والعناصر ذاتيّة التقييم الوحيدة هي الأعداد والسلاسل المحرفيّة:
 
 ```scheme
 (define (self-evaluating? exp)
@@ -218,13 +218,13 @@ The only self-evaluating items are numbers and strings:
         (else false)))
 ```
 
-Variables are represented by symbols:
+والمتغيّرات يمثّلها الرموز:
 
 ```scheme
 (define (variable? exp) (symbol? exp))
 ```
 
-Quotations have the form `(quote ⟨text-of-quotation⟩)`:[^9]
+والتعبيرات المُقتبسة لها الصيغة `(quote ⟨text-of-quotation⟩)`:[^9]
 
 ```scheme
 (define (quoted? exp)
@@ -234,7 +234,7 @@ Quotations have the form `(quote ⟨text-of-quotation⟩)`:[^9]
   (cadr exp))
 ```
 
-`Quoted?` is defined in terms of the procedure `tagged-list?`, which identifies lists beginning with a designated symbol:
+يُعرَّف `Quoted?` من حيث الإجراء `tagged-list?`، الذي يحدّد القوائم التي تبدأ برمزٍ معيَّن:
 
 ```scheme
 (define (tagged-list? exp tag)
@@ -243,7 +243,7 @@ Quotations have the form `(quote ⟨text-of-quotation⟩)`:[^9]
       false))
 ```
 
-Assignments have the form `(set! ⟨var⟩ ⟨value⟩)`:
+تأخذ الإحلالات الصيغة `(set! ⟨var⟩ ⟨value⟩)`:
 
 ```scheme
 (define (assignment? exp)
@@ -255,20 +255,20 @@ Assignments have the form `(set! ⟨var⟩ ⟨value⟩)`:
 (define (assignment-value exp) (caddr exp))
 ```
 
-Definitions have the form
+وللتعريفات الصيغة
 
 ```scheme
 (define ⟨var⟩ ⟨value⟩)
 ```
 
-or the form
+أو الصيغة
 
 ```scheme
 (define (⟨var⟩ ⟨param₁⟩ … ⟨paramₙ⟩)
   ⟨body⟩)
 ```
 
-The latter form (standard procedure definition) is syntactic sugar for
+أمّا الصيغة الأخيرة (تعريف الإجراء القياسيّ) فهي سكّرٌ نحويٌّ (syntactic sugar) لِـ
 
 ```scheme
 (define ⟨var⟩
@@ -276,7 +276,7 @@ The latter form (standard procedure definition) is syntactic sugar for
     ⟨body⟩))
 ```
 
-The corresponding syntax procedures are the following:
+وأمّا إجراءات الصياغة المقابلة فهي الآتية:
 
 ```scheme
 (define (definition? exp)
@@ -295,7 +295,7 @@ The corresponding syntax procedures are the following:
        (cddr exp)))) ; body
 ```
 
-`Lambda` expressions are lists that begin with the symbol `lambda`:
+وتعبيرات `lambda` قوائمٌ تبدأ بالرمز `lambda`:
 
 ```scheme
 (define (lambda? exp) 
@@ -304,14 +304,14 @@ The corresponding syntax procedures are the following:
 (define (lambda-body exp) (cddr exp))
 ```
 
-We also provide a constructor for `lambda` expressions, which is used by `definition-value`, above:
+ونُوفّر أيضًا بانيًا لتعبيرات `lambda`، يُستخدم من `definition-value` الوارد أعلاه:
 
 ```scheme
 (define (make-lambda parameters body)
   (cons 'lambda (cons parameters body)))
 ```
 
-Conditionals begin with `if` and have a predicate, a consequent, and an (optional) alternative. If the expression has no alternative part, we provide `false` as the alternative.[^10]
+وتبدأ التعابير الشرطيّة بـ`if`، ولها مُسَيِّمٌ ونتيجةٌ وبديلٌ (اختياريّ). فإن لم يكن للتعبير جزءٌ بديلٌ، فإنّنا نُوفّر `false` بديلًا.[^10]
 
 ```scheme
 (define (if? exp) (tagged-list? exp 'if))
@@ -323,7 +323,7 @@ Conditionals begin with `if` and have a predicate, a consequent, and an (optiona
       'false))
 ```
 
-We also provide a constructor for `if` expressions, to be used by `cond->if` to transform `cond` expressions into `if` expressions:
+ونُوفّر أيضًا بانيًا لتعبيرات `if`، ليُستخدم من `cond->if` في تحويل تعابير `cond` إلى تعابير `if`:
 
 ```scheme
 (define (make-if predicate 
@@ -335,7 +335,7 @@ We also provide a constructor for `if` expressions, to be used by `cond->if` to 
         alternative))
 ```
 
-`Begin` packages a sequence of expressions into a single expression. We include syntax operations on `begin` expressions to extract the actual sequence from the `begin` expression, as well as selectors that return the first expression and the rest of the expressions in the sequence.[^11]
+ويحزم `begin` تتابع التعابير في تعبيرٍ واحد. ونحن نُدرج عمليّات صياغةٍ على تعابير `begin` لاستخراج التتابع الفعليّ من تعبير `begin`، فضلًا عن محدِّداتٍ تُعيد أوّل تعبيرٍ في التتابع وبقيّة تعابيره.[^11]
 
 ```scheme
 (define (begin? exp) 
@@ -346,7 +346,7 @@ We also provide a constructor for `if` expressions, to be used by `cond->if` to 
 (define (rest-exps seq) (cdr seq))
 ```
 
-We also include a constructor `sequence->exp` (for use by `cond->if`) that transforms a sequence into a single expression, using `begin` if necessary:
+ونُدرج أيضًا بانيًا `sequence->exp` (لاستخدامه من `cond->if`) يحوّل تتابعًا إلى تعبيرٍ واحد، مستخدمًا `begin` عند الضرورة:
 
 ```scheme
 (define (sequence->exp seq)
@@ -357,7 +357,7 @@ We also include a constructor `sequence->exp` (for use by `cond->if`) that trans
 (define (make-begin seq) (cons 'begin seq))
 ```
 
-A procedure application is any compound expression that is not one of the above expression types. The `car` of the expression is the operator, and the `cdr` is the list of operands:
+تطبيق الإجراء هو أيّ تعبيرٍ مركّبٍ ليس من أنواع التعابير المذكورة أعلاه. فإنّ `car` التعبير هو المشغّل، و`cdr` هو قائمة العوامل:
 
 ```scheme
 (define (application? exp) (pair? exp))
@@ -368,9 +368,9 @@ A procedure application is any compound expression that is not one of the above 
 (define (rest-operands ops) (cdr ops))
 ```
 
-#### Derived expressions
+#### التعابير المشتقّة
 
-Some special forms in our language can be defined in terms of expressions involving other special forms, rather than being implemented directly. One example is `cond`, which can be implemented as a nest of `if` expressions. For example, we can reduce the problem of evaluating the expression
+بعض الصيغ الخاصّة في لغتنا يمكن تعريفها بدلالة تعابير تتضمّن صيغًا خاصّةً أخرى، بدلًا من تنفيذها مباشرةً. وأحد الأمثلة على ذلك `cond`، الذي يمكن تنفيذه كعشٍّ من تعابير `if`. فمثلًا، يمكننا اختزال مسألة تقييم التعبير
 
 ```scheme
 (cond ((> x 0) x)
@@ -378,7 +378,7 @@ Some special forms in our language can be defined in terms of expressions involv
       (else (- x)))
 ```
 
-to the problem of evaluating the following expression involving `if` and `begin` expressions:
+إلى مسألة تقييم التعبير الآتي الذي يتضمّن تعابير `if` و`begin`:
 
 ```scheme
 (if (> x 0)
@@ -388,9 +388,9 @@ to the problem of evaluating the following expression involving `if` and `begin`
         (- x)))
 ```
 
-Implementing the evaluation of `cond` in this way simplifies the evaluator because it reduces the number of special forms for which the evaluation process must be explicitly specified.
+إنّ تنفيذ تقييم `cond` على هذا النحو يُبسّط المُقيّم لأنّه يُنقص عدد الصيغ الخاصّة التي يلزم تحديد عمليّة تقييمها صراحةً.
 
-We include syntax procedures that extract the parts of a `cond` expression, and a procedure `cond->if` that transforms `cond` expressions into `if` expressions. A case analysis begins with `cond` and has a list of predicate-action clauses. A clause is an `else` clause if its predicate is the symbol `else`.[^12]
+نحن نُدرج إجراءات صياغةٍ تستخرج أجزاء تعبير `cond`، وإجراءًا `cond->if` يحوّل تعابير `cond` إلى تعابير `if`. ويبدأ تحليل الحالات بـ`cond` وله قائمةٌ من بنود المسيّم والإجراء. والبند بندُ `else` إذا كان مُسَيِّمه هو الرمز `else`.[^12]
 
 ```scheme
 (define (cond? exp) 
@@ -423,36 +423,36 @@ We include syntax procedures that extract the parts of a `cond` expression, and 
                       rest))))))
 ```
 
-Expressions (such as `cond`) that we choose to implement as syntactic transformations are called *derived expressions*. `Let` expressions are also derived expressions (see [Exercise 4.6](#Exercise-4_002e6)).[^13]
+تُسمّى التعابير (كـ`cond`) التي نختار تنفيذها بوصفها تحويلاتٍ صياغيّةً *التعابير المشتقّة (derived expressions)*. وتعبيرات `let` مشتقّةٌ هي أيضًا (انظر [التمرين 4.6](#Exercise-4_002e6)).[^13]
 
-> **Exercise 4.2:** Louis Reasoner plans to reorder the `cond` clauses in `eval` so that the clause for procedure applications appears before the clause for assignments. He argues that this will make the interpreter more efficient: Since programs usually contain more applications than assignments, definitions, and so on, his modified `eval` will usually check fewer clauses than the original `eval` before identifying the type of an expression. What is wrong with Louis’s plan? (Hint: What will Louis’s evaluator do with the expression `(define x 3)`?)
-> > Louis is upset that his plan didn’t work. He is willing to go to any lengths to make his evaluator recognize procedure applications before it checks for most other kinds of expressions. Help him by changing the syntax of the evaluated language so that procedure applications start with `call`. For example, instead of `(factorial 3)` we will now have to write `(call factorial 3)` and instead of `(+ 1 2)` we will have to write `(call + 1 2)`.
+> **التمرين 4.2:** يخطط لويس ريزونر لإعادة ترتيب بنود `cond` في `eval` بحيث يظهر بند تطبيقات الإجراءات قبل بند الإحلالات. وهو يُحاجّ أنّ ذلك سيجعل المفسّر أكثر كفاءة: فإنّ البرامج تحتوي عادةً على تطبيقاتَ أكثرَ من الإحلالات والتعريفات وغيرها، وممّا يعني أنّ `eval` المعدّل سيفحص بنودًا أقلّ عادةً من `eval` الأصليّ قبل تحديد نوع التعبير. فما الخطأ في خطة لويس؟ (تلميح: ماذا سيفعل مُقيّم لويس بالتعبير `(define x 3)`؟)
+> > لويس مستاءٌ لأنّ خطته لم تُجْدِ نفعًا. وهو على استعدادٍ لأن يبذل أيّ جهدٍ لجعل مُقيّمه يتعرّف على تطبيقات الإجراءات قبل أن يفحص معظم الأنواع الأخرى من التعابير. ساعده بتغيير صياغة اللغة المقيَّمة بحيث تبدأ تطبيقات الإجراءات بـ`call`. فمثلًا، بدلًا من `(factorial 3)` سنكتب الآن `(call factorial 3)`، وبدلًا من `(+ 1 2)` سنكتب `(call + 1 2)`.
 > > 
 
-> **Exercise 4.3:** Rewrite `eval` so that the dispatch is done in data-directed style. Compare this with the data-directed differentiation procedure of [Exercise 2.73](https://sarabander.github.io/sicp/html/2_002e4.xhtml#Exercise-2_002e73). (You may use the `car` of a compound expression as the type of the expression, as is appropriate for the syntax implemented in this section.)
+> **التمرين 4.3:** أعِد كتابة `eval` بحيث يُجرى التوجيه بحسب نوع التعبير بأسلوبٍ موجَّهٍ بالبيانات. قارن ذلك بإجراء التفاضل الموجَّه بالبيانات الوارد في [التمرين 2.73](https://sarabander.github.io/sicp/html/2_002e4.xhtml#Exercise-2_002e73). (ويجوز لك استخدام `car` التعبير المركّب بوصفه نوع التعبير، كما يليق بالصياغة المنفّذة في هذا القسم.)
 
-> **Exercise 4.4:** Recall the definitions of the special forms `and` and `or` from [Chapter 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1): `and`: The expressions are evaluated from left to right. If any expression evaluates to false, false is returned; any remaining expressions are not evaluated. If all the expressions evaluate to true values, the value of the last expression is returned. If there are no expressions then true is returned.
-> > `or`: The expressions are evaluated from left to right. If any expression evaluates to a true value, that value is returned; any remaining expressions are not evaluated. If all expressions evaluate to false, or if there are no expressions, then false is returned.
+> **التمرين 4.4:** تذكّر تعريفات الصيغتين الخاصّتين `and` و`or` الواردة في [الفصل 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1): `and`: تُقيَّم التعابير من اليسار إلى اليمين. فإن قُيِّم أيّ تعبيرٍ إلى القيمة خاطئة، أُعيدت خاطئة؛ ولا تُقيَّم أيّ من التعابير الباقية. فإن قُيِّمت جميع التعابير إلى قيمٍ صحيحة، أُعيدت قيمة التعبير الأخير. فإن لم تكن هناك تعابيرٌ، أُعيدت صحيحة.
+> > `or`: تُقيَّم التعابير من اليسار إلى اليمين. فإن قُيِّم أيّ تعبيرٍ إلى قيمةٍ صحيحة، أُعيدت تلك القيمة؛ ولا تُقيَّم أيّ من التعابير الباقية. فإن قُيِّمت جميع التعابير إلى خاطئة، أو إن لم تكن هناك تعابيرٌ، أُعيدت خاطئة.
 > > 
-> > Install `and` and `or` as new special forms for the evaluator by defining appropriate syntax procedures and evaluation procedures `eval-and` and `eval-or`. Alternatively, show how to implement `and` and `or` as derived expressions.
+> > ثبِّت `and` و`or` بوصفهما صيغتين خاصّتين جديدتين للمقيّم، بتعريف إجراءات صياغةٍ مناسبةٍ وإجراءَي تقييمٍ `eval-and` و`eval-or`. وبدلًا من ذلك، أظهِر كيف يمكن تنفيذ `and` و`or` بوصفهما تعبيرين مشتقّين.
 
-**Exercise 4.5:** Scheme allows an additional syntax for `cond` clauses, `(⟨test⟩ => ⟨recipient⟩)`. If `⟨`test`⟩` evaluates to a true value, then `⟨`recipient`⟩` is evaluated. Its value must be a procedure of one argument; this procedure is then invoked on the value of the `⟨`test`⟩`, and the result is returned as the value of the `cond` expression. For example
+تسمح Scheme بصياغةٍ إضافيّةٍ لبنود `cond`، وهي `(⟨test⟩ => ⟨recipient⟩)`. فإن قُيِّم `⟨`الاختبار`⟩` إلى قيمةٍ صحيحة، قُيِّم `⟨`المستلم`⟩`. ويلزم أن تكون قيمته إجراءً بوسيطٍ واحد؛ ثمّ يُستدعى هذا الإجراء على قيمة `⟨`الاختبار`⟩`، وتُعاد النتيجة قيمةً لتعبير `cond`. فمثلًا
 
 ```scheme
 (cond ((assoc 'b '((a 1) (b 2))) => cadr)
       (else false))
 ```
 
-returns 2. Modify the handling of `cond` so that it supports this extended syntax.
+تُعيد 2. عدّل معالجة `cond` بحيث تدعم هذه الصياغة الممتدّة.
 
-**Exercise 4.6:** `Let` expressions are derived expressions, because
+تعبيرات `let` تعبيراتٌ مشتقّة، لأنّ
 
 ```scheme
 (let ((⟨var₁⟩ ⟨exp₁⟩) … (⟨varₙ⟩ ⟨expₙ⟩))
   ⟨body⟩)
 ```
 
-is equivalent to
+مكافئٌ لِـ
 
 ```scheme
 ((lambda (⟨var₁⟩ … ⟨varₙ⟩)
@@ -462,9 +462,9 @@ is equivalent to
  ⟨expₙ⟩)
 ```
 
-Implement a syntactic transformation `let->combination` that reduces evaluating `let` expressions to evaluating combinations of the type shown above, and add the appropriate clause to `eval` to handle `let` expressions.
+نفّذ تحويلًا صياغيًّا `let->combination` يُختزل به تقييم تعابير `let` إلى تقييم تركيباتٍ من النوع الموضّح أعلاه، وأضِف البند المناسب إلى `eval` ليتعامل مع تعابير `let`.
 
-**Exercise 4.7:** `Let*` is similar to `let`, except that the bindings of the `let*` variables are performed sequentially from left to right, and each binding is made in an environment in which all of the preceding bindings are visible. For example
+الـ`let*` شبيهٌ بـ`let`، إلّا أنّ روابط متغيّرات `let*` تُنفَّذ تتابعيًّا من اليسار إلى اليمين، وأنّ كلّ ربطٍ يُجرى في بيئةٍ تكون فيها جميع الروابط السابقة مرئيّةً. فمثلًا
 
 ```scheme
 (let* ((x 3)
@@ -473,21 +473,21 @@ Implement a syntactic transformation `let->combination` that reduces evaluating 
   (* x z))
 ```
 
-returns 39. Explain how a `let*` expression can be rewritten as a set of nested `let` expressions, and write a procedure `let*->nested-lets` that performs this transformation. If we have already implemented `let` ([Exercise 4.6](#Exercise-4_002e6)) and we want to extend the evaluator to handle `let*`, is it sufficient to add a clause to `eval` whose action is
+فإنّه يُعيد 39. اشرح كيف يمكن إعادة كتابة تعبير `let*` مجموعةً من تعابير `let` متداخلة، واكتب إجراءً `let*->nested-lets` يُجرِي هذا التحويل. فإن كنّا قد نفّذنا `let` بالفعل ([التمرين 4.6](#Exercise-4_002e6)) وأردنا توسيع المقيّم ليتعامل مع `let*`، فهل يكفي إضافةُ بندٍ إلى `eval` يكون فعله
 
 ```scheme
 (eval (let*->nested-lets exp) env)
 ```
 
-or must we explicitly expand `let*` in terms of non-derived expressions?
+أم يلزمنا أن نوسّع `let*` صراحةً بدلالة تعابيرَ غير مشتقّة؟
 
-**Exercise 4.8:** “Named `let`” is a variant of `let` that has the form
+**التمرين 4.8:** الـ`let` المسمّى (named let) صيغةٌ بديلةٌ من `let` له الشكل
 
 ```scheme
 (let ⟨var⟩ ⟨bindings⟩ ⟨body⟩)
 ```
 
-The `⟨`bindings`⟩` and `⟨`body`⟩` are just as in ordinary `let`, except that `⟨`var`⟩` is bound within `⟨`body`⟩` to a procedure whose body is `⟨`body`⟩` and whose parameters are the variables in the `⟨`bindings`⟩`. Thus, one can repeatedly execute the `⟨`body`⟩` by invoking the procedure named `⟨`var`⟩`. For example, the iterative Fibonacci procedure ([1.2.2](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e2)) can be rewritten using named `let` as follows:
+أمّا `⟨`الروابط`⟩` و`⟨`الجسم`⟩` فهما كما في `let` الاعتياديّ، إلّا أنّ `⟨`المتغيّر`⟩` يُقيَّد داخل `⟨`الجسم`⟩` بإجراءٍ جسمه هو `⟨`الجسم`⟩` ووسائطه الشكليّة هي المتغيّرات الواردة في `⟨`الروابط`⟩`. وبذلك، يمكن للمرء أن ينفّذ `⟨`الجسم`⟩` مرّاتٍ متعدّدةً بنداء الإجراء المسمّى `⟨`المتغيّر`⟩`. فعلى سبيل المثال، يمكن إعادة كتابة إجراء فيبوناتشي التكراريّ ([1.2.2](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e2)) بـ`let` المسمّى كما يلي:
 
 ```scheme
 (define (fib n)
@@ -499,19 +499,19 @@ The `⟨`bindings`⟩` and `⟨`body`⟩` are just as in ordinary `let`, except 
                   (- count 1)))))
 ```
 
-Modify `let->combination` of [Exercise 4.6](#Exercise-4_002e6) to also support named `let`.
+عدّل `let->combination` الوارد في [التمرين 4.6](#Exercise-4_002e6) ليدعم `let` المسمّى أيضًا.
 
-> **Exercise 4.9:** Many languages support a variety of iteration constructs, such as `do`, `for`, `while`, and `until`. In Scheme, iterative processes can be expressed in terms of ordinary procedure calls, so special iteration constructs provide no essential gain in computational power. On the other hand, such constructs are often convenient. Design some iteration constructs, give examples of their use, and show how to implement them as derived expressions.
+> **التمرين 4.9:** تدعم لغاتٌ كثيرةٌ أصنافًا متنوّعةً من بنى التكرار، كـ`do` و`for` و`while` و`until`. وفي Scheme، يمكن التعبير عن العمليّات التكراريّة بدلالة نداءات إجراءاتٍ اعتياديّة، لذا فإنّ بنى التكرار الخاصّة لا تُقدّم أيّ مكسبٍ جوهريّ في القوّة الحسابيّة. ومن جهةٍ أخرى، فإنّ مثل هذه البنى ملائمةٌ غالبًا. صمّم بعض بنى التكرار، وأعطِ أمثلةً على استخدامها، وبيّن كيف يمكن تنفيذها تعابيرَ مشتقّة.
 
-> **Exercise 4.10:** By using data abstraction, we were able to write an `eval` procedure that is independent of the particular syntax of the language to be evaluated. To illustrate this, design and implement a new syntax for Scheme by modifying the procedures in this section, without changing `eval` or `apply`.
+> **التمرين 4.10:** باستخدامنا تجريد البيانات، استطعنا كتابة إجراء `eval` مستقلًّا عن الصياغة الخاصّة للغة التي ستُقيَّم. ولتوضيح هذا، صمّم ونفّذ صياغةً جديدةً لـScheme بتعديل الإجراءات الواردة في هذا القسم، دون تغيير `eval` أو `apply`.
 
-#### 4.1.3 Evaluator Data Structures
+#### 4.1.3 بنيات بيانات المقيّم
 
-In addition to defining the external syntax of expressions, the evaluator implementation must also define the data structures that the evaluator manipulates internally, as part of the execution of a program, such as the representation of procedures and environments and the representation of true and false.
+فضلًا عن تحديد الصياغة الخارجيّة للتعابير، يلزم أن يحدّد تنفيذ المقيّم أيضًا بنيات البيانات التي يتلاعب بها المقيّم داخليًّا، كجزءٍ من تنفيذ البرنامج، كتمثيل الإجراءات والبيئات وتمثيل الصحيح والخاطئ.
 
-#### Testing of predicates
+#### اختبار المُسَيِّمات
 
-For conditionals, we accept anything to be true that is not the explicit `false` object.
+وأمّا في التعابير الشرطيّة، فنحن نقبل بوصفها صحيحةً أيّ شيءٍ ليس هو الكائن `false` الصريح.
 
 ```scheme
 (define (true? x)
@@ -521,16 +521,16 @@ For conditionals, we accept anything to be true that is not the explicit `false`
   (eq? x false))
 ```
 
-#### Representing procedures
+#### تمثيل الإجراءات
 
-To handle primitives, we assume that we have available the following procedures:
+ولكي نتعامل مع الإجراءات الأوّليّة، نفترض أنّ الإجراءات الآتية متاحةٌ لدينا:
 
-- `(apply-primitive-procedure ⟨proc⟩ ⟨args⟩)` applies the given primitive procedure to the argument values in the list `⟨`args`⟩` and returns the result of the application.
-- `(primitive-procedure? ⟨proc⟩)` tests whether `⟨`proc`⟩` is a primitive procedure.
+- يُطبّق `(apply-primitive-procedure ⟨proc⟩ ⟨args⟩)` الإجراء الأوّليّ المعطى على قيم المعطيات الواردة في القائمة `⟨`args`⟩` ويُعيد نتيجة التطبيق.
+- يختبر `(primitive-procedure? ⟨proc⟩)` ما إذا كان `⟨`proc`⟩` إجراءً أوّليًّا.
 
-These mechanisms for handling primitives are further described in [4.1.4](#g_t4_002e1_002e4).
+وتوصف هذه الآليّات للتعامل مع الأوّليّات بتوسّعٍ أكثر في [4.1.4](#g_t4_002e1_002e4).
 
-Compound procedures are constructed from parameters, procedure bodies, and environments using the constructor `make-procedure`:
+وتُبنى الإجراءات المركّبة من الوسائط الشكليّة وأجساد الإجراءات والبيئات باستخدام البانيّ `make-procedure`:
 
 ```scheme
 (define (make-procedure parameters body env)
@@ -542,16 +542,16 @@ Compound procedures are constructed from parameters, procedure bodies, and envir
 (define (procedure-environment p) (cadddr p))
 ```
 
-#### Operations on Environments
+#### العمليّات على البيئات
 
-The evaluator needs operations for manipulating environments. As explained in [3.2](https://sarabander.github.io/sicp/html/3_002e2.xhtml#g_t3_002e2), an environment is a sequence of frames, where each frame is a table of bindings that associate variables with their corresponding values. We use the following operations for manipulating environments:
+يحتاج المقيّم إلى عمليّاتٍ للتلاعب بالبيئات. فكما هو موضّح في [3.2](https://sarabander.github.io/sicp/html/3_002e2.xhtml#g_t3_002e2)، البيئة تسلسلٌ من الإطارات، حيث كلّ إطارٍ جدولٌ من الروابط التي تربط المتغيّرات بقيمها المقابلة. ونحن نستخدم العمليّات الآتية للتلاعب بالبيئات:
 
-- `(lookup-variable-value ⟨var⟩ ⟨env⟩)` returns the value that is bound to the symbol `⟨`var`⟩` in the environment `⟨`env`⟩`, or signals an error if the variable is unbound.
-- `(extend-environment ⟨variables⟩ ⟨values⟩ ⟨base-env⟩)` returns a new environment, consisting of a new frame in which the symbols in the list `⟨`variables`⟩` are bound to the corresponding elements in the list `⟨`values`⟩`, where the enclosing environment is the environment `⟨`base-env`⟩`.
-- `(define-variable! ⟨var⟩ ⟨value⟩ ⟨env⟩)` adds to the first frame in the environment `⟨`env`⟩` a new binding that associates the variable `⟨`var`⟩` with the value `⟨`value`⟩`.
-- `(set-variable-value! ⟨var⟩ ⟨value⟩ ⟨env⟩)` changes the binding of the variable `⟨`var`⟩` in the environment `⟨`env`⟩` so that the variable is now bound to the value `⟨`value`⟩`, or signals an error if the variable is unbound.
+- تُعيد `(lookup-variable-value ⟨var⟩ ⟨env⟩)` القيمة المربوطة بالرمز `⟨`var`⟩` في البيئة `⟨`env`⟩`، أو تشير إلى خطأٍ إذا كان المتغيّر غير مقيَّد.
+- تُعيد `(extend-environment ⟨variables⟩ ⟨values⟩ ⟨base-env⟩)` بيئةً جديدةً، تتألّف من إطارٍ جديدٍ تُربط فيه الرموز الواردة في القائمة `⟨`variables`⟩` بالعناصر المقابلة في القائمة `⟨`values`⟩`، حيث البيئة المحيطة هي البيئة `⟨`base-env`⟩`.
+- تُضيف `(define-variable! ⟨var⟩ ⟨value⟩ ⟨env⟩)` إلى أوّل إطارٍ في البيئة `⟨`env`⟩` ربطًا جديدًا يربط المتغيّر `⟨`var`⟩` بالقيمة `⟨`value`⟩`.
+- تُغيّر `(set-variable-value! ⟨var⟩ ⟨value⟩ ⟨env⟩)` ربط المتغيّر `⟨`var`⟩` في البيئة `⟨`env`⟩` بحيث يصبح المتغيّر مقيَّدًا الآن بالقيمة `⟨`value`⟩`، أو تشير إلى خطأٍ إذا كان المتغيّر غير مقيَّد.
 
-To implement these operations we represent an environment as a list of frames. The enclosing environment of an environment is the `cdr` of the list. The empty environment is simply the empty list.
+ولتنفيذ هذه العمليّات نُمثّل البيئة قائمةً من الإطارات. والبيئة المحيطة ببيئةٍ ما هي `cdr` القائمة. والبيئة الخالية هي ببساطةٍ القائمة الخالية.
 
 ```scheme
 (define (enclosing-environment env) (cdr env))
@@ -559,7 +559,7 @@ To implement these operations we represent an environment as a list of frames. T
 (define the-empty-environment '())
 ```
 
-Each frame of an environment is represented as a pair of lists: a list of the variables bound in that frame and a list of the associated values.[^14]
+ويُمثَّل كلّ إطارٍ من إطارات البيئة بزوجٍ من القوائم: قائمة المتغيّرات المقيَّدة في ذلك الإطار وقائمة القيم المرتبطة بها.[^14]
 
 ```scheme
 (define (make-frame variables values)
@@ -571,7 +571,7 @@ Each frame of an environment is represented as a pair of lists: a list of the va
   (set-cdr! frame (cons val (cdr frame))))
 ```
 
-To extend an environment by a new frame that associates variables with values, we make a frame consisting of the list of variables and the list of values, and we adjoin this to the environment. We signal an error if the number of variables does not match the number of values.
+ولتوسيع بيئةٍ بإطارٍ جديدٍ يربط المتغيّرات بقيم، نصنع إطارًا متألّفًا من قائمة المتغيّرات وقائمة القيم، ونُضيفه إلى البيئة. ونشير إلى خطأٍ إذا كان عدد المتغيّرات لا يطابق عدد القيم.
 
 ```scheme
 (define (extend-environment vars vals base-env)
@@ -586,7 +586,7 @@ To extend an environment by a new frame that associates variables with values, w
                  vals))))
 ```
 
-To look up a variable in an environment, we scan the list of variables in the first frame. If we find the desired variable, we return the corresponding element in the list of values. If we do not find the variable in the current frame, we search the enclosing environment, and so on. If we reach the empty environment, we signal an “unbound variable” error.
+وللنفاذ إلى متغيّرٍ في بيئةٍ، نمسح قائمة المتغيّرات في الإطار الأوّل. فإن نجد المتغيّر المطلوب، نُعِد العنصر المقابل في قائمة القيم. فإن لم نجد المتغيّر في الإطار الحاليّ، نبحث في البيئة المحيطة، وهكذا. فإن بلغنا البيئة الخالية، نشير إلى خطأ «متغيّر غير مقيَّد».
 
 ```scheme
 (define (lookup-variable-value var env)
@@ -607,7 +607,7 @@ To look up a variable in an environment, we scan the list of variables in the fi
   (env-loop env))
 ```
 
-To set a variable to a new value in a specified environment, we scan for the variable, just as in `lookup-variable-value`, and change the corresponding value when we find it.
+ولضبط متغيّرٍ على قيمةٍ جديدةٍ في بيئةٍ محدَّدةٍ، نبحث عن المتغيّر، تمامًا كما في `lookup-variable-value`، ونُغيّر القيمة المقابلة حين نجده.
 
 ```scheme
 (define (set-variable-value! var val env)
@@ -628,7 +628,7 @@ To set a variable to a new value in a specified environment, we scan for the var
   (env-loop env))
 ```
 
-To define a variable, we search the first frame for a binding for the variable, and change the binding if it exists (just as in `set-variable-value!`). If no such binding exists, we adjoin one to the first frame.
+ولتقييد متغيّرٍ، نبحث في الإطار الأوّل عن ربطٍ للمتغيّر، ونُغيّر الربط إذا كان موجودًا (تمامًا كما في `set-variable-value!`). فإن لم يوجد ربطٌ كهذا، نُضيف واحدًا إلى الإطار الأوّل.
 
 ```scheme
 (define (define-variable! var val env)
@@ -645,21 +645,21 @@ To define a variable, we search the first frame for a binding for the variable, 
           (frame-values frame))))
 ```
 
-The method described here is only one of many plausible ways to represent environments. Since we used data abstraction to isolate the rest of the evaluator from the detailed choice of representation, we could change the environment representation if we wanted to. (See [Exercise 4.11](#Exercise-4_002e11).) In a production-quality Lisp system, the speed of the evaluator’s environment operations—especially that of variable lookup—has a major impact on the performance of the system. The representation described here, although conceptually simple, is not efficient and would not ordinarily be used in a production system.[^15]
+إنّ الطريقة الموصوفة هنا ليست إلّا واحدةً من طرائق متعدّدةٍ معقولةٍ لتمثيل البيئات. وبما أنّنا استخدمنا تجريد البيانات لعزل بقيّة المقيّم عن اختيار التمثيل التفصيليّ، فبوسعنا تغيير تمثيل البيئة إن أردنا. (انظر [التمرين 4.11](#Exercise-4_002e11).) ففي نظام Lisp ذي جودةٍ إنتاجيّة، يكون لسرعة عمليّات البيئة في المقيّم - وخاصّةً عمليّة النفاذ إلى المتغيّرات - أثرٌ كبيرٌ في أداء النظام. والتمثيل الموصوف هنا، على الرغم من بساطته المفاهيميّة، غير كفؤٍ ولا يُستخدم عادةً في نظامٍ إنتاجيّ.[^15]
 
-> **Exercise 4.11:** Instead of representing a frame as a pair of lists, we can represent a frame as a list of bindings, where each binding is a name-value pair. Rewrite the environment operations to use this alternative representation.
+> **التمرين 4.11:** بدلًا من تمثيل الإطار بزوجٍ من القوائم، نستطيع تمثيله قائمةً من الروابط، حيث كلّ رابطٍ زوجٌ من الاسم والقيمة. أعِد كتابة عمليّات البيئة لتستخدم هذا التمثيل البديل.
 
-> **Exercise 4.12:** The procedures `define-variable!`, `set-variable-value!` and `lookup-variable-value` can be expressed in terms of more abstract procedures for traversing the environment structure. Define abstractions that capture the common patterns and redefine the three procedures in terms of these abstractions.
+> **التمرين 4.12:** يمكن التعبير عن الإجراءات `define-variable!` و`set-variable-value!` و`lookup-variable-value` بدلالة إجراءاتٍ أكثر تجريدًا لاجتياز بنية البيئة. عرّف تجريداتٍ تُلخّص الأنماط المشتركة، وأعِد تعريف الإجراءات الثلاثة بدلالة هذه التجريدات.
 
-> **Exercise 4.13:** Scheme allows us to create new bindings for variables by means of `define`, but provides no way to get rid of bindings. Implement for the evaluator a special form `make-unbound!` that removes the binding of a given symbol from the environment in which the `make-unbound!` expression is evaluated. This problem is not completely specified. For example, should we remove only the binding in the first frame of the environment? Complete the specification and justify any choices you make.
+> **التمرين 4.13:** تسمح لنا Scheme بإنشاء روابط جديدة للمتغيّرات بواسطة `define`، لكنّها لا توفّر أيّ وسيلةٍ للتخلّص من الروابط. نفّذ للمقيّم صيغةً خاصّةً `make-unbound!` تُزيل ربط رمزٍ معطىً من البيئة التي يُقيَّم فيها تعبير `make-unbound!`. وهذه المسألة غير محدَّدةٍ تمامًا. فعلى سبيل المثال، هل ينبغي لنا أن نُزيل الربط الواقع في الإطار الأوّل من البيئة فقط؟ أكمل التحديد وبرّر أيّ خياراتٍ تتّخذها.
 
-#### 4.1.4 Running the Evaluator as a Program
+#### 4.1.4 تشغيل المقيّم بوصفه برنامجًا
 
-Given the evaluator, we have in our hands a description (expressed in Lisp) of the process by which Lisp expressions are evaluated. One advantage of expressing the evaluator as a program is that we can run the program. This gives us, running within Lisp, a working model of how Lisp itself evaluates expressions. This can serve as a framework for experimenting with evaluation rules, as we shall do later in this chapter.
+بفضل المقيّم، صار بين أيدينا وصفٌ (مُعبَّرٌ عنه بـLisp) للعمليّة التي تُقيَّم بها تعابير Lisp. وإحدى مزايا التعبير عن المقيّم بوصفه برنامجًا أنّ بوسعنا تشغيل البرنامج. وهذا يُعطينا - ونحن نعمل داخل Lisp - نموذجًا عاملًا لكيفيّة تقييم Lisp ذاتها للتعابير. ويمكن أن يخدم هذا بوصفه إطارًا للتجريب بقواعد التقييم، كما سنفعل لاحقًا في هذا الفصل.
 
-Our evaluator program reduces expressions ultimately to the application of primitive procedures. Therefore, all that we need to run the evaluator is to create a mechanism that calls on the underlying Lisp system to model the application of primitive procedures.
+يُردّ برنامج المقيّم التعابير في آخر الأمر إلى تطبيق الإجراءات الأوّليّة. لذلك، فإنّ كلّ ما يلزمنا لتشغيل المقيّم هو خلق آليّةٍ تستدعي نظام Lisp الكامن لتحاكي تطبيق الإجراءات الأوّليّة.
 
-There must be a binding for each primitive procedure name, so that when `eval` evaluates the operator of an application of a primitive, it will find an object to pass to `apply`. We thus set up a global environment that associates unique objects with the names of the primitive procedures that can appear in the expressions we will be evaluating. The global environment also includes bindings for the symbols `true` and `false`, so that they can be used as variables in expressions to be evaluated.
+ينبغي أن يكون هناك ربطٌ لكلّ اسم إجراءٍ أوّليّ، حتّى إذا قيّم `eval` مشغّل تطبيقٍ لأوّليّةٍ، يجد كائنًا ليمرّره إلى `apply`. وهكذا، نُقيم بيئةً عامّةً تربط كائناتٍ فريدةً بأسماء الإجراءات الأوّليّة التي يمكن أن تظهر في التعابير التي سنُقيّمها. وتتضمّن البيئة العامّة أيضًا روابط للرمزين `true` و`false`، حتّى يمكن استخدامهما متغيّرين في التعابير التي ستُقيَّم.
 
 ```scheme
 (define (setup-environment)
@@ -676,7 +676,7 @@ There must be a binding for each primitive procedure name, so that when `eval` e
   (setup-environment))
 ```
 
-It does not matter how we represent the primitive procedure objects, so long as `apply` can identify and apply them by using the procedures `primitive-procedure?` and `apply-primitive-procedure`. We have chosen to represent a primitive procedure as a list beginning with the symbol `primitive` and containing a procedure in the underlying Lisp that implements that primitive.
+لا يهمّ كيف نُمثّل كائنات الإجراءات الأوّليّة، ما دام `apply` قادرًا على تمييزها وتطبيقها باستخدام الإجراءين `primitive-procedure?` و`apply-primitive-procedure`. وقد اخترنا تمثيل الإجراء الأوّليّ قائمةً تبدأ بالرمز `primitive` وتحتوي إجراءً في Lisp الكامنة يُنفّذ ذلك الأوّليّ.
 
 ```scheme
 (define (primitive-procedure? proc)
@@ -686,7 +686,7 @@ It does not matter how we represent the primitive procedure objects, so long as 
   (cadr proc))
 ```
 
-`Setup-environment` will get the primitive names and implementation procedures from a list:[^16]
+وسيحصل `setup-environment` على أسماء الأوّليّات وإجراءات التنفيذ من قائمة:[^16]
 
 ```scheme
 (define primitive-procedures
@@ -705,7 +705,7 @@ It does not matter how we represent the primitive procedure objects, so long as 
        primitive-procedures))
 ```
 
-To apply a primitive procedure, we simply apply the implementation procedure to the arguments, using the underlying Lisp system:[^17]
+ولتطبيق إجراءٍ أوّليّ، نُطبّق ببساطةٍ إجراء التنفيذ على المعطيات، باستخدام نظام Lisp الكامن:[^17]
 
 ```scheme
 (define (apply-primitive-procedure proc args)
@@ -713,7 +713,7 @@ To apply a primitive procedure, we simply apply the implementation procedure to 
    (primitive-implementation proc) args))
 ```
 
-For convenience in running the metacircular evaluator, we provide a *driver loop* that models the read-eval-print loop of the underlying Lisp system. It prints a *prompt*, reads an input expression, evaluates this expression in the global environment, and prints the result. We precede each printed result by an *output prompt* so as to distinguish the value of the expression from other output that may be printed.[^18]
+ولتسهيل تشغيل المقيّم الدائريّ (metacircular evaluator)، نُوفّر *حلقة قيادة (driver loop)* تحاكي حلقة القراءة والتقييم والطباعة (read-eval-print loop) في نظام Lisp الكامن. فهي تطبع *طلبًا (prompt)*، وتقرأ تعبيرَ إدخالٍ، وتُقيّم هذا التعبير في البيئة العامّة، وتطبع النتيجة. ونحن نُسبق كلّ نتيجةٍ مطبوعةٍ *بطلب إخراج (output prompt)* حتّى نُميّز قيمة التعبير عن أيّ مخرجاتٍ أخرى قد تُطبَع.[^18]
 
 ```scheme
 (define input-prompt  ";;; M-Eval input:")
@@ -737,7 +737,7 @@ For convenience in running the metacircular evaluator, we provide a *driver loop
   (newline) (display string) (newline))
 ```
 
-We use a special printing procedure, `user-print`, to avoid printing the environment part of a compound procedure, which may be a very long list (or may even contain cycles).
+نستخدم إجراء طبعٍ خاصّ، `user-print`، لتجنّب طبع جزء البيئة من إجراءٍ مركّب، الذي قد يكون قائمةً طويلةً جدًّا (أو قد يحتوي حتّى دورات).
 
 ```scheme
 (define (user-print object)
@@ -750,7 +750,7 @@ We use a special printing procedure, `user-print`, to avoid printing the environ
       (display object)))
 ```
 
-Now all we need to do to run the evaluator is to initialize the global environment and start the driver loop. Here is a sample interaction:
+والآن، فإنّ كلّ ما يلزمنا لتشغيل المقيّم هو تهيئة البيئة العامّة وبدء حلقة القيادة. وإليك تفاعلًا نموذجيًّا:
 
 ```scheme
 (define the-global-environment 
@@ -774,11 +774,11 @@ ok
 (a b c d e f)
 ```
 
-> **Exercise 4.14:** Eva Lu Ator and Louis Reasoner are each experimenting with the metacircular evaluator. Eva types in the definition of `map`, and runs some test programs that use it. They work fine. Louis, in contrast, has installed the system version of `map` as a primitive for the metacircular evaluator. When he tries it, things go terribly wrong. Explain why Louis’s `map` fails even though Eva’s works.
+> **التمرين 4.14:** تُجرّب إيفا لو أتور ولويس ريزونر المقيّم الدائريّ كلٌّ منهما على حدة. تكتب إيفا تعريف `map`، وتُشغّل بعض البرامج الاختباريّة التي تستخدمه. وهي تعمل حسنًا. أمّا لويس، فعلى النقيض، فقد ثبّت نسخة النظام من `map` بوصفها أوّليّةً للمقيّم الدائريّ. وحين يُجرّبه، تسوء الأمور بدرجةٍ فظيعة. اشرح لماذا يفشل `map` عند لويس مع أنّه يعمل عند إيفا.
 
-#### 4.1.5 Data as Programs
+#### 4.1.5 البيانات بوصفها برامج
 
-In thinking about a Lisp program that evaluates Lisp expressions, an analogy might be helpful. One operational view of the meaning of a program is that a program is a description of an abstract (perhaps infinitely large) machine. For example, consider the familiar program to compute factorials:
+عند التفكير في برنامج Lisp يُقيّم تعابير Lisp، قد يكون التشبيه مفيدًا. فأحدُ وجهات النظر التشغيليّة في معنى البرنامج أنّ البرنامج وصفٌ لآلةٍ مجرّدةٍ (كبيرةٌ إلى حدّ اللانهائية ربّما). فعلى سبيل المثال، تأمّل البرنامج المألوف لحساب العامليّات:
 
 ```scheme
 (define (factorial n)
@@ -787,38 +787,38 @@ In thinking about a Lisp program that evaluates Lisp expressions, an analogy mig
       (* (factorial (- n 1)) n)))
 ```
 
-We may regard this program as the description of a machine containing parts that decrement, multiply, and test for equality, together with a two-position switch and another factorial machine. (The factorial machine is infinite because it contains another factorial machine within it.) [Figure 4.2](#Figure-4_002e2) is a flow diagram for the factorial machine, showing how the parts are wired together.
+يمكننا اعتبار هذا البرنامج وصفًا لآلةٍ تحتوي أجزاءً تُنقّص وتضرب وتختبر المساواة، إلى جانب مفتاحٍ ثنائيّ الموضع وآلة عامليّاتٍ أخرى. (وآلة العامليّات لا نهائيّةٌ لأنّها تحتوي آلة عامليّاتٍ أخرى داخلها.) و[الشكل 4.2](#Figure-4_002e2) مخطّط انسيابيّ لآلة العامليّات، يُظهر كيف تُوصَل الأجزاء بعضها ببعض.
 
 ![](/images/sicp/c4-metalinguistic-abstraction-1-Fig4.2a.std.webp)
 
-**Figure 4.2:** The factorial program, viewed as an abstract machine.
+**الشكل 4.2:** برنامج العامليّات، منظورًا إليه بوصفه آلةً مجرّدة.
 
-In a similar way, we can regard the evaluator as a very special machine that takes as input a description of a machine. Given this input, the evaluator configures itself to emulate the machine described. For example, if we feed our evaluator the definition of `factorial`, as shown in [Figure 4.3](#Figure-4_002e3), the evaluator will be able to compute factorials.
+وبطريقةٍ مماثلة، نستطيع اعتبار المقيّم آلةً خاصّةً جدًّا تأخذ وصفَ آلةٍ إدخالًا. وبإعطائها هذا الإدخال، يُهيّئ المقيّم نفسه ليحاكي الآلة الموصوفة. فعلى سبيل المثال، إذا زوّدنا مقيّمنا بتعريف `factorial`، كما هو موضّح في [الشكل 4.3](#Figure-4_002e3)، فسيصير المقيّم قادرًا على حساب العامليّات.
 
 ![](/images/sicp/c4-metalinguistic-abstraction-2-Fig4.3.std.webp)
 
-**Figure 4.3:** The evaluator emulating a factorial machine.
+**الشكل 4.3:** المقيّم يحاكي آلة العامليّات.
 
-From this perspective, our evaluator is seen to be a *universal machine*. It mimics other machines when these are described as Lisp programs.[^19] This is striking. Try to imagine an analogous evaluator for electrical circuits. This would be a circuit that takes as input a signal encoding the plans for some other circuit, such as a filter. Given this input, the circuit evaluator would then behave like a filter with the same description. Such a universal electrical circuit is almost unimaginably complex. It is remarkable that the program evaluator is a rather simple program.[^20]
+من هذا المنظور، يتبيّن أنّ مقيّمنا *آلةٌ عامّة (universal machine)*. فهو يُحاكي آلاتٍ أخرى حين تُوصَف هذه الآلات ببرامج Lisp.[^19] وهذا مدهش. فحاوِل أن تتخيّل مقيّمًا مماثلاً للدوائر الكهربائيّة. سيكون هذا دائرةً تأخذ إشارةً تُرمّز مخططات دائرةٍ أخرى، كالمرشّح مثلًا، إدخالًا. فبإعطائها هذا الإدخال، سيتصرّف مقيّم الدوائر بسلوك المرشّح ذي الوصف نفسه. ومثل هذه الدائرة الكهربائيّة العامّة مركّبةٌ إلى حدّ لا يكاد يُتصوّر. ومن الجدير بالدهشة أنّ مقيّم البرامج برنامجٌ بسيطٌ إلى حدٍّ ما.[^20]
 
-Another striking aspect of the evaluator is that it acts as a bridge between the data objects that are manipulated by our programming language and the programming language itself. Imagine that the evaluator program (implemented in Lisp) is running, and that a user is typing expressions to the evaluator and observing the results. From the perspective of the user, an input expression such as `(* x x)` is an expression in the programming language, which the evaluator should execute. From the perspective of the evaluator, however, the expression is simply a list (in this case, a list of three symbols: `*`, `x`, and `x`) that is to be manipulated according to a well-defined set of rules.
+وجانبٌ آخر مدهش في المقيّم أنّه يعمل بوصفه جسرًا بين كائنات البيانات التي تتلاعب بها لغة البرمجة لدينا ولغة البرمجة ذاتها. فتخيّل أنّ برنامج المقيّم (المنفّذ بـLisp) يعمل، وأنّ مستخدمًا يكتب تعابير للمقيّم ويراقب النتائج. فمن منظور المستخدم، تعبيرُ إدخالٍ كـ`(* x x)` هو تعبيرٌ في لغة البرمجة، ينبغي للمقيّم أن ينفّذه. وأمّا من منظور المقيّم، فالتعبير ليس إلّا قائمةً (في هذه الحالة، قائمةً من ثلاثة رموز: `*` و`x` و`x`) يُتلاعب بها وفقًا لمجموعةٍ محدَّدةٍ بدقّةٍ من القواعد.
 
-That the user’s programs are the evaluator’s data need not be a source of confusion. In fact, it is sometimes convenient to ignore this distinction, and to give the user the ability to explicitly evaluate a data object as a Lisp expression, by making `eval` available for use in programs. Many Lisp dialects provide a primitive `eval` procedure that takes as arguments an expression and an environment and evaluates the expression relative to the environment.[^21] Thus,
+وكون برامج المستخدم بياناتِ المقيّم لا يلزم أن يكون مصدرًا للالتباس. ففي الحقيقة، يكون إهمال هذا التمييز ملائمًا أحيانًا، ومنح المستخدم القدرة على تقييم كائن بيانات صراحةً بوصفه تعبير Lisp، وذلك بجعل `eval` متاحًا للاستخدام في البرامج. فلهجات Lisp كثيرةٌ تُوفّر إجراء `eval` أوّليًّا يأخذ تعبيرًا وبيئةً معطيين ويُقيّم التعبير نسبةً إلى البيئة.[^21] وهكذا،
 
 ```scheme
 (eval '(* 5 5) user-initial-environment)
 ```
 
-and
+و
 
 ```scheme
 (eval (cons '* (list 5 5)) 
       user-initial-environment)
 ```
 
-will both return 25.[^22]
+فكلاهما سيُعيد 25.[^22]
 
-**Exercise 4.15:** Given a one-argument procedure `p` and an object `a`, `p` is said to “halt” on `a` if evaluating the expression `(p a)` returns a value (as opposed to terminating with an error message or running forever). Show that it is impossible to write a procedure `halts?` that correctly determines whether `p` halts on `a` for any procedure `p` and object `a`. Use the following reasoning: If you had such a procedure `halts?`, you could implement the following program:
+**التمرين 4.15:** إذا أُعطي إجراءٌ ذو وسيطٍ واحدٍ `p` وكائنٌ `a`، فإنّه يُقال إنّ `p` «يتوقّف» على `a` إذا أعاد تقييم التعبير `(p a)` قيمةً (بخلاف الانتهاء برسالة خطأٍ أو الدوران إلى الأبد). أظهر أنّ من المحال كتابة إجراءٍ `halts?` يحسم بصورةٍ صحيحةٍ ما إذا كان `p` يتوقّف على `a` لأيّ إجراءٍ `p` وأيّ كائنٍ `a`. واستخدم الاستدلال الآتي: لو كان لديك إجراءٌ `halts?` كهذا، لأمكنك تنفيذ البرنامج الآتي:
 
 ```scheme
 (define (run-forever)
@@ -830,13 +830,13 @@ will both return 25.[^22]
       'halted))
 ```
 
-Now consider evaluating the expression `(try try)` and show that any possible outcome (either halting or running forever) violates the intended behavior of `halts?`.[^23]
+والآن، تأمّل تقييم التعبير `(try try)` وأظهر أنّ أيّ نتيجةٍ ممكنةٍ (سواءً التوقّف أو الدوران إلى الأبد) تُخالف السلوك المقصود من `halts?`.[^23]
 
-#### 4.1.6 Internal Definitions
+#### 4.1.6 التعريفات الداخليّة
 
-Our environment model of evaluation and our metacircular evaluator execute definitions in sequence, extending the environment frame one definition at a time. This is particularly convenient for interactive program development, in which the programmer needs to freely mix the application of procedures with the definition of new procedures. However, if we think carefully about the internal definitions used to implement block structure (introduced in [1.1.8](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e8)), we will find that name-by-name extension of the environment may not be the best way to define local variables.
+يُنفّذ نموذج البيئة للتقييم ومقيّمنا الدائريّ التعريفات بالتسلسل، موسِعَين إطار البيئة تعريفًا واحدًا في كلّ مرّة. وهذا ملائمٌ بوجهٍ خاصّ لتطوير البرامج التفاعليّ، حيث يلزم المبرمجَ أن يمزج بحرّيّةٍ بين تطبيق الإجراءات وبين تعريف إجراءاتٍ جديدة. غير أنّنا، إذا فكّرنا بعنايةٍ في التعريفات الداخليّة المستخدمة لتنفيذ البنية الكتليّة (المُقدَّمة في [1.1.8](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e8))، سنجد أنّ توسيع البيئة اسمًا باسمٍ قد لا يكون أفضلَ وسيلةٍ لتقييد المتغيّرات المحلّيّة.
 
-Consider a procedure with internal definitions, such as
+تأمّل إجراءً له تعريفاتٌ داخليّة، كالآتي:
 
 ```scheme
 (define (f x)
@@ -851,11 +851,11 @@ Consider a procedure with internal definitions, such as
   ⟨rest of body of f⟩)
 ```
 
-Our intention here is that the name `odd?` in the body of the procedure `even?` should refer to the procedure `odd?` that is defined after `even?`. The scope of the name `odd?` is the entire body of `f`, not just the portion of the body of `f` starting at the point where the `define` for `odd?` occurs. Indeed, when we consider that `odd?` is itself defined in terms of `even?`—so that `even?` and `odd?` are mutually recursive procedures—we see that the only satisfactory interpretation of the two `define`s is to regard them as if the names `even?` and `odd?` were being added to the environment simultaneously. More generally, in block structure, the scope of a local name is the entire procedure body in which the `define` is evaluated.
+وقصدنا هنا أنّ الاسم `odd?` في جسم الإجراء `even?` ينبغي أن يُشير إلى الإجراء `odd?` المُعرَّف بعد `even?`. ونطاق الاسم `odd?` هو جسم `f` كلّه، لا القسم من جسم `f` الذي يبدأ من الموضع الذي يقع فيه `define` الخاصّ بـ`odd?` فحسب. ففي الحقيقة، حين نعتبر أنّ `odd?` مُعرَّفٌ بدوره بدلالة `even?` - بحيث إنّ `even?` و`odd?` إجراءان تعاوديّان متبادلان - نرى أنّ التفسير المرضيّ الوحيد للتعريفين `define` هو اعتبارهما كأنّ الاسمين `even?` و`odd?` يُضافان إلى البيئة تزامنًا. وبصورةٍ أعمّ، في البنية الكتليّة، نطاق الاسم المحلّيّ هو جسم الإجراء كلّه الذي يُقيَّم فيه `define`.
 
-As it happens, our interpreter will evaluate calls to `f` correctly, but for an “accidental” reason: Since the definitions of the internal procedures come first, no calls to these procedures will be evaluated until all of them have been defined. Hence, `odd?` will have been defined by the time `even?` is executed. In fact, our sequential evaluation mechanism will give the same result as a mechanism that directly implements simultaneous definition for any procedure in which the internal definitions come first in a body and evaluation of the value expressions for the defined variables doesn’t actually use any of the defined variables. (For an example of a procedure that doesn’t obey these restrictions, so that sequential definition isn’t equivalent to simultaneous definition, see [Exercise 4.19](#Exercise-4_002e19).)[^24]
+وقد صف أنّ مفسّرنا سيُقيّم نداءات `f` بصورةٍ صحيحة، لكن لسببٍ «عرضيّ»: وذلك بأنّ تعريفات الإجراءات الداخليّة تأتي أوّلًا، فلن تُقيَّم أيّ نداءاتٍ لهذه الإجراءات حتّى تُعرَّف جميعها. ومن ثمّ، سيكون `odd?` قد عُرِّف بحين تُنفَّذ `even?`. في الواقع، وستُعطي آليّة التقييم التسلسليّ لدينا النتيجة ذاتها التي تُعطيها آليّةٌ تُنفّذ التعريف المتزامن مباشرةً، لأيّ إجراءٍ تأتي فيه التعريفات الداخليّة أوّلًا في الجسم، وحيث لا يستخدم تقييم تعابير قيم المتغيّرات المُعرَّفة أيًّا من المتغيّرات المُعرَّفة فعلًا. (ولمثالٍ على إجراءٍ لا يتّبع هذه القيود، بحيث لا يكون التعريف التسلسليّ مكافئًا للتعريف المتزامن، انظر [التمرين 4.19](#Exercise-4_002e19).)[^24]
 
-There is, however, a simple way to treat definitions so that internally defined names have truly simultaneous scope—just create all local variables that will be in the current environment before evaluating any of the value expressions. One way to do this is by a syntax transformation on `lambda` expressions. Before evaluating the body of a `lambda` expression, we “scan out” and eliminate all the internal definitions in the body. The internally defined variables will be created with a `let` and then set to their values by assignment. For example, the procedure
+ثمّة، مع ذلك، طريقةٌ بسيطةٌ لمعاملة التعريفات بحيث يكون للأسماء المُعرَّفة داخليًّا نطاقٌ متزامنٌ حقًّا - وذلك ببساطةٍ بإنشاء جميع المتغيّرات المحلّيّة التي ستكون في البيئة الحاليّة قبل تقييم أيّ من تعابير القيم. وإحدى وسائل فعل ذلك هي التحويل الصياغيّ على تعابير `lambda`. فقبل تقييم جسم تعبير `lambda`، نمسح ونُزيل جميع التعريفات الداخليّة في الجسم. وسيُنشأ المتغيّرات المُعرَّفة داخليًّا بـ`let` ثمّ تُضبط على قيمها بالإحلال. فعلى سبيل المثال، الإجراء
 
 ```scheme
 (lambda ⟨vars⟩
@@ -864,7 +864,7 @@ There is, however, a simple way to treat definitions so that internally defined 
   ⟨e3⟩)
 ```
 
-would be transformed into
+سيُحوَّل إلى
 
 ```scheme
 (lambda ⟨vars⟩
@@ -875,18 +875,18 @@ would be transformed into
     ⟨e3⟩))
 ```
 
-where `*unassigned*` is a special symbol that causes looking up a variable to signal an error if an attempt is made to use the value of the not-yet-assigned variable.
+حيث `*unassigned*` رمزٌ خاصّ يجعل النفاذ إلى متغيّرٍ يُشير إلى خطأٍ إذا حُول استخدام قيمة المتغيّر الذي لم يُحلَّ بعد.
 
-An alternative strategy for scanning out internal definitions is shown in [Exercise 4.18](#Exercise-4_002e18). Unlike the transformation shown above, this enforces the restriction that the defined variables’ values can be evaluated without using any of the variables’ values.[^25]
+وتُبيّن [التمرين 4.18](#Exercise-4_002e18) استراتيجيّةً بديلةً لمسح التعريفات الداخليّة. وبخلاف التحويل الموضّح أعلاه، فإنّ هذا التحويل يفرض القيد القائل إنّه يمكن تقييم قيم المتغيّرات المُعرَّفة دون استخدام أيّ من قيم المتغيّرات.[^25]
 
-> **Exercise 4.16:** In this exercise we implement the method just described for interpreting internal definitions. We assume that the evaluator supports `let` (see [Exercise 4.6](#Exercise-4_002e6)). Change `lookup-variable-value` ([4.1.3](#g_t4_002e1_002e3)) to signal an error if the value it finds is the symbol `*unassigned*`.
-> > Write a procedure `scan-out-defines` that takes a procedure body and returns an equivalent one that has no internal definitions, by making the transformation described above.
-> > Install `scan-out-defines` in the interpreter, either in `make-procedure` or in `procedure-body` (see [4.1.3](#g_t4_002e1_002e3)). Which place is better? Why?
+> **التمرين 4.16:** في هذا التمرين نُنفّذ الطريقة الموصوفة للتوّ لتفسير التعريفات الداخليّة. ونفترض أنّ المقيّم يدعم `let` (انظر [التمرين 4.6](#Exercise-4_002e6)). عدّل `lookup-variable-value` ([4.1.3](#g_t4_002e1_002e3)) ليُشير إلى خطأٍ إذا كانت القيمة التي يجدها هي الرمز `*unassigned*`.
+> > اكتب إجراءً `scan-out-defines` يأخذ جسم إجراءٍ ويُعيد جسمًا مكافئًا له لا يحتوي تعريفاتٍ داخليّةً، بإجراء التحويل الموصوف أعلاه.
+> > ثبّت `scan-out-defines` في المفسّر، إمّا في `make-procedure` وإمّا في `procedure-body` (انظر [4.1.3](#g_t4_002e1_002e3)). فأيّ الموضعين أفضل؟ ولماذا؟
 > > 
 
-> **Exercise 4.17:** Draw diagrams of the environment in effect when evaluating the expression `⟨`e3`⟩` in the procedure in the text, comparing how this will be structured when definitions are interpreted sequentially with how it will be structured if definitions are scanned out as described. Why is there an extra frame in the transformed program? Explain why this difference in environment structure can never make a difference in the behavior of a correct program. Design a way to make the interpreter implement the “simultaneous” scope rule for internal definitions without constructing the extra frame.
+> **التمرين 4.17:** ارسم مخطّطات للبيئة السائدة عند تقييم التعبير `⟨`e3`⟩` في الإجراء الوارد في النصّ، مقارنًا كيف ستُنظَّم حين تُفسَّر التعريفات تسلسليًّا وكيف ستُنظَّم إذا مُسِحَت التعريفات كما هو موضّح. فلماذا هناك إطارٌ إضافيّ في البرنامج المحوَّل؟ واشرح لماذا لا يمكن لهذا الفرق في بنية البيئة أن يُحدِث فرقًا في سلوك برنامجٍ صحيحٍ أبدًا. وصمّم طريقةً تجعل المفسّر يُنفّذ قاعدة النطاق «المتزامن» للتعريفات الداخليّة دون بناء الإطار الإضافيّ.
 
-**Exercise 4.18:** Consider an alternative strategy for scanning out definitions that translates the example in the text to
+**التمرين 4.18:** تأمّل استراتيجيّةً بديلةً لمسح التعريفات تُترجم المثال الوارد في النصّ إلى
 
 ```scheme
 (lambda ⟨vars⟩
@@ -899,7 +899,7 @@ An alternative strategy for scanning out internal definitions is shown in [Exerc
     ⟨e3⟩))
 ```
 
-Here `a` and `b` are meant to represent new variable names, created by the interpreter, that do not appear in the user’s program. Consider the `solve` procedure from [3.5.4](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e4):
+ويهدف `a` و`b` هنا إلى تمثيل أسماء متغيّراتٍ جديدة، يخلقها المفسّر، لا تظهر في برنامج المستخدم. وتأمّل الإجراء `solve` الوارد في [3.5.4](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e4):
 
 ```scheme
 (define (solve f y0 dt)
@@ -908,9 +908,9 @@ Here `a` and `b` are meant to represent new variable names, created by the inter
   y)
 ```
 
-Will this procedure work if internal definitions are scanned out as shown in this exercise? What if they are scanned out as shown in the text? Explain.
+فهل يعمل هذا الإجراء إذا مُسِحَت التعريفات الداخليّة كما هو موضّح في هذا التمرين؟ وماذا لو مُسِحَت كما هو موضّح في النصّ؟ اشرح.
 
-**Exercise 4.19:** Ben Bitdiddle, Alyssa P. Hacker, and Eva Lu Ator are arguing about the desired result of evaluating the expression
+**التمرين 4.19:** يختلف بن بِتدل وأليسا ب. هاكر وإيفا لو أتور في النتيجة المرغوبة لتقييم التعبير
 
 ```scheme
 (let ((a 1))
@@ -921,9 +921,9 @@ Will this procedure work if internal definitions are scanned out as shown in thi
   (f 10))
 ```
 
-Ben asserts that the result should be obtained using the sequential rule for `define`: `b` is defined to be 11, then `a` is defined to be 5, so the result is 16. Alyssa objects that mutual recursion requires the simultaneous scope rule for internal procedure definitions, and that it is unreasonable to treat procedure names differently from other names. Thus, she argues for the mechanism implemented in [Exercise 4.16](#Exercise-4_002e16). This would lead to `a` being unassigned at the time that the value for `b` is to be computed. Hence, in Alyssa’s view the procedure should produce an error. Eva has a third opinion. She says that if the definitions of `a` and `b` are truly meant to be simultaneous, then the value 5 for `a` should be used in evaluating `b`. Hence, in Eva’s view `a` should be 5, `b` should be 15, and the result should be 20. Which (if any) of these viewpoints do you support? Can you devise a way to implement internal definitions so that they behave as Eva prefers?[^26]
+يؤكّد بن أنّ النتيجة ينبغي أن تُحصَل باستخدام القاعدة التسلسليّة لـ`define`: إذ يُعرَّف `b` بأنّه 11، ثمّ يُعرَّف `a` بأنّه 5، فالنتيجة 16. وتاعتراض أليسا أنّ التعاوب المتبادل يتطلّب قاعدة النطاق المتزامن للتعريفات الإجرائيّة الداخليّة، وأنّه من غير المعقول معاملة أسماء الإجراءات معاملةً مختلفةً عن الأسماء الأخرى. وبالتالي، فهي تُؤيّد الآليّة المنفّذة في [التمرين 4.16](#Exercise-4_002e16). وهذا سيؤدّي إلى أنّ `a` غير مُحلًّ حين يُحتسب قيمة `b`. ومن ثمّ، ففي رأي أليسا ينبغي للإجراء أن يُنتج خطأً. وإلى إيفا رأيٌ ثالث. فهي تقول إنّه إذا كان المقصود من تعريفي `a` و`b` أن يكونا متزامنين حقًّا، فينبغي استخدام القيمة 5 لـ`a` في تقييم `b`. ومن ثمّ، ففي رأي إيفا ينبغي أن يكون `a` هو 5 و`b` هو 15، وأن تكون النتيجة 20. فأيّ هذه الآراء تؤيّده (إن أُيّد أيٌّ منها)؟ وهل تستطيع ابتكار طريقةٍ لتنفيذ التعريفات الداخليّة بحيث تتصرف كما تفضّل إيفا؟[^26]
 
-**Exercise 4.20:** Because internal definitions look sequential but are actually simultaneous, some people prefer to avoid them entirely, and use the special form `letrec` instead. `Letrec` looks like `let`, so it is not surprising that the variables it binds are bound simultaneously and have the same scope as each other. The sample procedure `f` above can be written without internal definitions, but with exactly the same meaning, as
+**التمرين 4.20:** لأنّ التعريفات الداخليّة تبدو تسلسليّة لكنّها متزامنةٌ في الحقيقة، يفضّل بعض الناس تجنّبها كلّيًّا، واستخدام الصيغة الخاصّة `letrec` بدلًا منها. و`letrec` تُشبه `let`، فليس من المفاجئ أنّ المتغيّرات التي تربطها مربوطةٌ تزامنًا وأنّ نطاق كلٍّ منها هو النطاق ذاته. ويمكن كتابة الإجراء النموذجيّ `f` أعلاه دون تعريفاتٍ داخليّة، ولكن بالمعنى ذاته تمامًا، كما يلي:
 
 ```scheme
 (define (f x)
@@ -941,14 +941,14 @@ Ben asserts that the result should be obtained using the sequential rule for `de
     ⟨rest of body of f⟩))
 ```
 
-`Letrec` expressions, which have the form
+تعبيرات `Letrec`، التي لها الصيغة
 
 ```scheme
 (letrec ((⟨var₁⟩ ⟨exp₁⟩) … (⟨varₙ⟩ ⟨expₙ⟩))
   ⟨body⟩)
 ```
 
-are a variation on `let` in which the expressions $⟨ e x p_{k} ⟩$ that provide the initial values for the variables $⟨ v a r_{k} ⟩$ are evaluated in an environment that includes all the `letrec` bindings. This permits recursion in the bindings, such as the mutual recursion of `even?` and `odd?` in the example above, or the evaluation of 10 factorial with
+هي تنويعٌ على `let` تُقيَّم فيه التعابير $⟨ e x p_{k} ⟩$ التي تُوفّر القيم الأوّليّة للمتغيّرات $⟨ v a r_{k} ⟩$ في بيئةٍ تتضمّن جميع روابط `letrec`. وهذا يسمح بالتعاود في الروابط، كالتعاود المتبادل بين `even?` و`odd?` في المثال أعلاه، أو بتقييم عامليّ العدد 10 بـ
 
 ```scheme
 (letrec
@@ -960,10 +960,10 @@ are a variation on `let` in which the expressions $⟨ e x p_{k} ⟩$ that provi
   (fact 10))
 ```
 
-1. Implement `letrec` as a derived expression, by transforming a `letrec` expression into a `let` expression as shown in the text above or in [Exercise 4.18](#Exercise-4_002e18). That is, the `letrec` variables should be created with a `let` and then be assigned their values with `set!`.
-2. Louis Reasoner is confused by all this fuss about internal definitions. The way he sees it, if you don’t like to use `define` inside a procedure, you can just use `let`. Illustrate what is loose about his reasoning by drawing an environment diagram that shows the environment in which the `⟨`rest of body of `f``⟩` is evaluated during evaluation of the expression `(f 5)`, with `f` defined as in this exercise. Draw an environment diagram for the same evaluation, but with `let` in place of `letrec` in the definition of `f`.
+1. نفّذ `letrec` بوصفه تعبيرًا مشتقًّا، بتحويل تعبير `letrec` إلى تعبير `let` كما هو موضّحٌ في النصّ أعلاه أو في [التمرين 4.18](#Exercise-4_002e18). أي أنّه ينبغي إنشاء متغيّرات `letrec` بـ`let` ثم إسناد قيمها إليها بـ`set!`.
+2. لويس ريزونر في حيرةٍ من كلّ هذه الضجّة حول التعريفات الداخليّة. فكما يرى الأمر، إن كنت لا تحبّ استخدام `define` داخل إجراءٍ، فيمكنك استخدام `let` فحسب. أوضح ما هو الفضفاض في استدلاله برسم مخطّط بيئةٍ يُظهر البيئة التي يُقيَّم فيها `⟨`بقية جسم `f``⟩` أثناء تقييم التعبير `(f 5)`، إذ عُرِّف `f` كما في هذا التمرين. وارسم مخطّط بيئةٍ للتقييم ذاته، لكن باستخدام `let` بدلًا من `letrec` في تعريف `f`.
 
-**Exercise 4.21:** Amazingly, Louis’s intuition in [Exercise 4.20](#Exercise-4_002e20) is correct. It is indeed possible to specify recursive procedures without using `letrec` (or even `define`), although the method for accomplishing this is much more subtle than Louis imagined. The following expression computes 10 factorial by applying a recursive factorial procedure:[^27]
+**التمرين 4.21:** من المدهون أنّ حدس لويس في [التمرين 4.20](#Exercise-4_002e20) صحيح. فمن الممكن فعلًا تحديد إجراءاتٍ متعاودةٍ دون استخدام `letrec` (أو حتّى `define`)، مع أنّ طريقة إنجاز هذا أدقّ بكثيرٍ ممّا تصوّره لويس. والتعبير التالي يحتسب عامليّ العدد 10 بتطبيق إجراء عامليّ متعاود:[^27]
 
 ```scheme
 ((lambda (n)
@@ -975,7 +975,7 @@ are a variation on `let` in which the expressions $⟨ e x p_{k} ⟩$ that provi
  10)
 ```
 
-Check (by evaluating the expression) that this really does compute factorials. Devise an analogous expression for computing Fibonacci numbers. Consider the following procedure, which includes mutually recursive internal definitions:
+تحقّق (بتقييم التعبير) من أنّ هذا يحتسب العامليّات فعلًا. وابتكر تعبيرًا مماثلًا لاحتساب أعداد فيبوناتشي. وتأمّل الإجراء التالي، الذي يتضمّن تعريفاتٍ داخليّةً متعاودةً متبادلةً:
 
 ```scheme
 (define (f x)
@@ -990,7 +990,7 @@ Check (by evaluating the expression) that this really does compute factorials. D
   (even? x))
 ```
 
-Fill in the missing expressions to complete an alternative definition of `f`, which uses neither internal definitions nor `letrec`:
+املأ التعابير الناقصة لإتمام تعريفٍ بديلٍ لـ`f` لا يستخدم تعريفاتٍ داخليّةً ولا `letrec`:
 
 ```scheme
 (define (f x)
@@ -1006,9 +1006,9 @@ Fill in the missing expressions to complete an alternative definition of `f`, wh
          (ev? ⟨??⟩ ⟨??⟩ ⟨??⟩)))))
 ```
 
-#### 4.1.7 Separating Syntactic Analysis from Execution
+#### 4.1.7 فصل تحليل الصياغة عن التنفيذ
 
-The evaluator implemented above is simple, but it is very inefficient, because the syntactic analysis of expressions is interleaved with their execution. Thus if a program is executed many times, its syntax is analyzed many times. Consider, for example, evaluating `(factorial 4)` using the following definition of `factorial`:
+المقيّم المنفّذ أعلاه بسيط، لكنه غير كفؤٍ على الإطلاق، لأنّ تحليل صياغة التعابير متشابكٌ مع تنفيذها. لذا فإذا نُفّذ برنامجٌ مرّاتٍ كثيرة، تُحلَّل صياغته مرّاتٍ كثيرة. فتأمّل، مثلًا، تقييم `(factorial 4)` باستخدام تعريف `factorial` التالي:
 
 ```scheme
 (define (factorial n)
@@ -1017,17 +1017,17 @@ The evaluator implemented above is simple, but it is very inefficient, because t
       (* (factorial (- n 1)) n)))
 ```
 
-Each time `factorial` is called, the evaluator must determine that the body is an `if` expression and extract the predicate. Only then can it evaluate the predicate and dispatch on its value. Each time it evaluates the expression `(* (factorial (- n 1)) n)`, or the subexpressions `(factorial (- n 1))` and `(- n 1)`, the evaluator must perform the case analysis in `eval` to determine that the expression is an application, and must extract its operator and operands. This analysis is expensive. Performing it repeatedly is wasteful.
+في كلّ مرّةٍ يُنادى فيها `factorial`، ينبغي للمقيّم أن يحدّد أنّ الجسم تعبير `if` وأن يستخرج المسيّم. وحينئذٍ فقط يستطيع تقييم المسيّم والتصرّف بحسب قيمته. وفي كلّ مرّةٍ يقيّم فيها التعبير `(* (factorial (- n 1)) n)`، أو التعبيران الجزئيّان `(factorial (- n 1))` و`(- n 1)`، ينبغي للمقيّم أن يُجري تحليل الحالات في `eval` لتحديد أنّ التعبير تطبيق، وأن يستخرج مشغّله وعوامله. وهذا التحليل مكلف. وأداؤه مُكرَّرًا مُهدر.
 
-We can transform the evaluator to be significantly more efficient by arranging things so that syntactic analysis is performed only once.[^28] We split `eval`, which takes an expression and an environment, into two parts. The procedure `analyze` takes only the expression. It performs the syntactic analysis and returns a new procedure, the *execution procedure*, that encapsulates the work to be done in executing the analyzed expression. The execution procedure takes an environment as its argument and completes the evaluation. This saves work because `analyze` will be called only once on an expression, while the execution procedure may be called many times.
+يمكننا تحويل المقيّم ليكون أكفأَ بشكلٍ ملحوظٍ بترتيب الأمور بحيث لا يُجرى تحليل الصياغة إلّا مرّةً واحدة.[^28] فنحن نقسّم `eval` - الذي يأخذ تعبيرًا وبيئةً - إلى جزأين. والإجراء `analyze` يأخذ التعبير وحده، فيُجري تحليل الصياغة ويُعيد إجراءً جديدًا، هو *إجراء التنفيذ (execution procedure)*، الذي يغلّف العمل الواجب أداؤه في تنفيذ التعبير المحلَّل. وإجراء التنفيذ يأخذ بيئةً كمعطىً ويُكمل التقييم. وهذا يوفّر عملًا لأنّ `analyze` سيُنادى مرّةً واحدةً فقط على تعبيرٍ، بينما قد يُنادى إجراء التنفيذ مرّاتٍ كثيرة.
 
-With the separation into analysis and execution, `eval` now becomes
+وبالفصل بين التحليل والتنفيذ، يصبح `eval` الآن
 
 ```scheme
 (define (eval exp env) ((analyze exp) env))
 ```
 
-The result of calling `analyze` is the execution procedure to be applied to the environment. The `analyze` procedure is the same case analysis as performed by the original `eval` of [4.1.1](#g_t4_002e1_002e1), except that the procedures to which we dispatch perform only analysis, not full evaluation:
+إنّ نتيجة نداء `analyze` هي إجراء التنفيذ الواجب تطبيقه على البيئة. والإجراء `analyze` هو تحليل الحالات ذاته الذي يؤدّيه `eval` الأصليّ الوارد في [4.1.1](#g_t4_002e1_002e1)، إلّا أنّ الإجراءات التي نُوزّع إليها تؤدّي التحليل فحسب، لا التقييم الكامل:
 
 ```scheme
 (define (analyze exp)
@@ -1058,14 +1058,14 @@ The result of calling `analyze` is the execution procedure to be applied to the 
                 exp))))
 ```
 
-Here is the simplest syntactic analysis procedure, which handles self-evaluating expressions. It returns an execution procedure that ignores its environment argument and just returns the expression:
+وها هو أبسط إجراءات تحليل الصياغة، وهو الذي يتعامل مع التعابير ذاتيّة التقييم. وهو يُعيد إجراء تنفيذٍ يتجاهل معطاه البيئيّ ويُعيد التعبير فحسب:
 
 ```scheme
 (define (analyze-self-evaluating exp)
   (lambda (env) exp))
 ```
 
-For a quoted expression, we can gain a little efficiency by extracting the text of the quotation only once, in the analysis phase, rather than in the execution phase.
+وبالنسبة لتعبيرٍ مُقتبَس، فيمكننا أن نكسب قليلًا من الكفاءة باستخراج نصّ الاقتباس مرّةً واحدةً فقط، في مرحلة التحليل، بدلًا من مرحلة التنفيذ.
 
 ```scheme
 (define (analyze-quoted exp)
@@ -1073,7 +1073,7 @@ For a quoted expression, we can gain a little efficiency by extracting the text 
     (lambda (env) qval)))
 ```
 
-Looking up a variable value must still be done in the execution phase, since this depends upon knowing the environment.[^29]
+أمّا البحث عن قيمة متغيّرٍ فينبغي أن يظلّ يجري في مرحلة التنفيذ، لأنّ ذلك يعتمد على معرفة البيئة.[^29]
 
 ```scheme
 (define (analyze-variable exp)
@@ -1081,7 +1081,7 @@ Looking up a variable value must still be done in the execution phase, since thi
     (lookup-variable-value exp env)))
 ```
 
-`Analyze-assignment` also must defer actually setting the variable until the execution, when the environment has been supplied. However, the fact that the `assignment-value` expression can be analyzed (recursively) during analysis is a major gain in efficiency, because the `assignment-value` expression will now be analyzed only once. The same holds true for definitions.
+وينبغي لـ`analyze-assignment` أن يؤجّل إسناد المتغيّر فعلًا حتّى التنفيذ، حين تكون البيئة قد قُدّمت. لكنّ حقيقة أنّ تعبير `assignment-value` يمكن تحليله (تعاوديًّا) أثناء التحليل هي مكسبٌ كبيرٌ في الكفاءة، لأنّ تعبير `assignment-value` سيُحلَّل الآن مرّةً واحدةً فقط. والشيء ذاته يصدق على التعريفات.
 
 ```scheme
 (define (analyze-assignment exp)
@@ -1102,7 +1102,7 @@ Looking up a variable value must still be done in the execution phase, since thi
       'ok)))
 ```
 
-For `if` expressions, we extract and analyze the predicate, consequent, and alternative at analysis time.
+وبالنسبة لتعبيرات `if`، نستخرج المسيّم والناتج والبديل ونحلّلها في وقت التحليل.
 
 ```scheme
 (define (analyze-if exp)
@@ -1115,7 +1115,7 @@ For `if` expressions, we extract and analyze the predicate, consequent, and alte
           (aproc env)))))
 ```
 
-Analyzing a `lambda` expression also achieves a major gain in efficiency: We analyze the `lambda` body only once, even though procedures resulting from evaluation of the `lambda` may be applied many times.
+ويُحقّق تحليل تعبير `lambda` مكسبًا كبيرًا في الكفاءة أيضًا: فنحن نحلّل جسم `lambda` مرّةً واحدةً فقط، مع أنّ الإجراءات الناتجة عن تقييم `lambda` قد تُطبَّق مرّاتٍ كثيرة.
 
 ```scheme
 (define (analyze-lambda exp)
@@ -1126,7 +1126,7 @@ Analyzing a `lambda` expression also achieves a major gain in efficiency: We ana
       (make-procedure vars bproc env))))
 ```
 
-Analysis of a sequence of expressions (as in a `begin` or the body of a `lambda` expression) is more involved.[^30] Each expression in the sequence is analyzed, yielding an execution procedure. These execution procedures are combined to produce an execution procedure that takes an environment as argument and sequentially calls each individual execution procedure with the environment as argument.
+أمّا تحليل تسلسل تعابير (كما في `begin` أو جسم تعبير `lambda`) فهو أكثر تعقيدًا.[^30] فكلّ تعبيرٍ في التسلسل يُحلَّل، مُنتجًا إجراء تنفيذ. وهذه الإجراءات تُدمج لإنتاج إجراء تنفيذٍ يأخذ بيئةً كمعطىً وينادي كلّ إجراء تنفيذٍ منفردٍ، بالبيئة معطىً له، تتاليًّا.
 
 ```scheme
 (define (analyze-sequence exps)
@@ -1144,7 +1144,7 @@ Analysis of a sequence of expressions (as in a `begin` or the body of a `lambda`
     (loop (car procs) (cdr procs))))
 ```
 
-To analyze an application, we analyze the operator and operands and construct an execution procedure that calls the operator execution procedure (to obtain the actual procedure to be applied) and the operand execution procedures (to obtain the actual arguments). We then pass these to `execute-application`, which is the analog of `apply` in [4.1.1](#g_t4_002e1_002e1). `Execute-application` differs from `apply` in that the procedure body for a compound procedure has already been analyzed, so there is no need to do further analysis. Instead, we just call the execution procedure for the body on the extended environment.
+ولتحليل تطبيق، نُحلّل المشغّل والعوامل ونبني إجراء تنفيذٍ ينادي إجراء تنفيذ المشغّل (للحصول على الإجراء الفعليّ الواجب تطبيقه) وإجراءات تنفيذ العوامل (للحصول على المعطيات الفعليّة). ثمّ نُمرّر هذه إلى `execute-application`، وهو نظير `apply` في [4.1.1](#g_t4_002e1_002e1). ويختلف `execute-application` عن `apply` في أنّ جسم الإجراء المركّب قد حُلِّل بالفعل، فلا حاجة إلى مزيدٍ من التحليل. وبدلًا من ذلك، ننادي إجراء تنفيذ الجسم على البيئة الممتدّة فحسب.
 
 ```scheme
 (define (analyze-application exp)
@@ -1170,11 +1170,11 @@ To analyze an application, we analyze the operator and operands and construct an
                      proc))))
 ```
 
-Our new evaluator uses the same data structures, syntax procedures, and run-time support procedures as in [4.1.2](#g_t4_002e1_002e2), [4.1.3](#g_t4_002e1_002e3), and [4.1.4](#g_t4_002e1_002e4).
+ويستخدم مقيّمنا الجديد بنى البيانات ذاتها وإجراءات الصياغة وإجراءات دعم وقت التشغيل الواردة في [4.1.2](#g_t4_002e1_002e2)، و[4.1.3](#g_t4_002e1_002e3)، و[4.1.4](#g_t4_002e1_002e4).
 
-> **Exercise 4.22:** Extend the evaluator in this section to support the special form `let`. (See [Exercise 4.6](#Exercise-4_002e6).)
+> **التمرين 4.22:** وسّع المقيّم الوارد في هذا القسم ليدعم الصيغة الخاصّة `let`. (انظر [التمرين 4.6](#Exercise-4_002e6).)
 
-**Exercise 4.23:** Alyssa P. Hacker doesn’t understand why `analyze-sequence` needs to be so complicated. All the other analysis procedures are straightforward transformations of the corresponding evaluation procedures (or `eval` clauses) in [4.1.1](#g_t4_002e1_002e1). She expected `analyze-sequence` to look like this:
+**التمرين 4.23:** أليسا ب. هاكر لا تفهم لماذا يلزم أن يكون `analyze-sequence` بهذا التعقيد. فجميع إجراءات التحليل الأخرى تحويلاتٌ مباشرةٌ لإجراءات التقييم المقابلة (أو بنود `eval`) في [4.1.1](#g_t4_002e1_002e1). وقد توقّعت أن يكون `analyze-sequence` على هذه الصورة:
 
 ```scheme
 (define (analyze-sequence exps)
@@ -1192,28 +1192,28 @@ Our new evaluator uses the same data structures, syntax procedures, and run-time
       (execute-sequence procs env))))
 ```
 
-Eva Lu Ator explains to Alyssa that the version in the text does more of the work of evaluating a sequence at analysis time. Alyssa’s sequence-execution procedure, rather than having the calls to the individual execution procedures built in, loops through the procedures in order to call them: In effect, although the individual expressions in the sequence have been analyzed, the sequence itself has not been.
+تشرح إيفا لو أتور لأليسا أنّ النسخة الواردة في النصّ تؤدّي المزيد من عمل تقييم التسلسل في وقت التحليل. فأمّا إجراء تنفيذ التسلسل عند أليسا، فبدلًا من أن تكون نداءات إجراءات التنفيذ المنفردة مدمجةً فيه، فإنّه يتنقّل بين الإجراءات ليناديها بالترتيب: في واقع الأمر، مع أنّ التعابير المنفردة في التسلسل قد حُلِّلَت، فإنّ التسلسل ذاته لم يُحلَّل.
 
-Compare the two versions of `analyze-sequence`. For example, consider the common case (typical of procedure bodies) where the sequence has just one expression. What work will the execution procedure produced by Alyssa’s program do? What about the execution procedure produced by the program in the text above? How do the two versions compare for a sequence with two expressions?
+قارن بين النسختين من `analyze-sequence`. فتأمّل، مثلًا، الحالة الشائعة (النموذجيّة في أجسام الإجراءات) التي يكون التسلسل فيها تعبيرًا واحدًا فحسب. فأيّ عمل سيؤدّيه إجراء التنفيذ الذي يُنتجه برنامج أليسا؟ وماذا عن إجراء التنفيذ الذي يُنتجه البرنامج الوارد في النصّ أعلاه؟ وكيف تقارن النسختان بالنسبة لتسلسلٍ من تعبيرين؟
 
-> **Exercise 4.24:** Design and carry out some experiments to compare the speed of the original metacircular evaluator with the version in this section. Use your results to estimate the fraction of time that is spent in analysis versus execution for various procedures.
+> **التمرين 4.24:** صمّم ونفّذ بعض التجارب لمقارنة سرعة المقيّم الحَلْقيّ المُحيط (metacircular evaluator) الأصليّ بالنسخة الواردة في هذا القسم. واستخدم نتائجك لتقدير نسبة الوقت التي يُقضى في التحليل مقابل التنفيذ بالنسبة لمختلف الإجراءات.
 
-### 4.2 Variations on a Scheme — Lazy Evaluation
+### 4.2 تنويعات على Scheme — التقييم المتأخّر
 
-Now that we have an evaluator expressed as a Lisp program, we can experiment with alternative choices in language design simply by modifying the evaluator. Indeed, new languages are often invented by first writing an evaluator that embeds the new language within an existing high-level language. For example, if we wish to discuss some aspect of a proposed modification to Lisp with another member of the Lisp community, we can supply an evaluator that embodies the change. The recipient can then experiment with the new evaluator and send back comments as further modifications. Not only does the high-level implementation base make it easier to test and debug the evaluator; in addition, the embedding enables the designer to snarf[^31] features from the underlying language, just as our embedded Lisp evaluator uses primitives and control structure from the underlying Lisp. Only later (if ever) need the designer go to the trouble of building a complete implementation in a low-level language or in hardware. In this section and the next we explore some variations on Scheme that provide significant additional expressive power.
+والآن، بعد أن أصبح لدينا مقيّمٌ معبَّرٌ عنه كبرنامج Lisp، فبوسعنا أن نجرّب خياراتٍ بديلةً في تصميم اللغات بتعديل المقيّم تعديلًا بسيطًا. فلا ريب في أنّ اللغات الجديدة تُبتكر غالبًا بكتابة مقيّمٍ يضمّن اللغة الجديدة داخل لغةٍ عالية المستوى قائمة. فمثلًا، إذا أردنا مناقشة جانبٍ ما من تعديلٍ مقترحٍ على Lisp مع عضوٍ آخر في مجتمع Lisp، فبوسعنا أن نُزوّده بمقيّمٍ يجسّد التغيير. وبوسع متلقّيه حينئذٍ أن يجرّب المقيّم الجديد وأن يُرسل ملاحظاته في هيئة تعديلاتٍ إضافيّة. فإنّ أساس التنفيذ عالي المستوى لا يجعل اختبار المقيّم وتنقيحه أسهلَ فحسب؛ بل إنّ الضمّ أيضًا يُتيح للمصمّم أن يستعير[^31] خصائص من اللغة الأساس، تمامًا كما يستخدم مقيّم Lisp المضمَّن لدينا الأوّليّات وبنية التحكّم من Lisp الأساس. ولا يلزم المصمّم أن يتكلّف عناء بناء تنفيذٍ كاملٍ بلغةٍ منخفضة المستوى أو في عتادٍ إلّا لاحقًا (إن لزم الأمر). وفي هذا القسم والقسم التالي نستكشف بعض التنويعات على Scheme التي توفّر قوّةً تعبيريّةً إضافيّةً كبيرة.
 
-#### 4.2.1 Normal Order and Applicative Order
+#### 4.2.1 الترتيب الاعتياديّ والترتيب التطبيقيّ
 
-In [1.1](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1), where we began our discussion of models of evaluation, we noted that Scheme is an *applicative-order* language, namely, that all the arguments to Scheme procedures are evaluated when the procedure is applied. In contrast, *normal-order* languages delay evaluation of procedure arguments until the actual argument values are needed. Delaying evaluation of procedure arguments until the last possible moment (e.g., until they are required by a primitive operation) is called *lazy evaluation*.[^32] Consider the procedure
+في [1.1](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1)، حيث بدأنا مناقشتنا لنماذج التقييم، لاحظنا أنّ Scheme لغةٌ *تطبيقيّة الترتيب*، أي أنّ جميع معطيات إجراءات Scheme تُقيَّم حين يُطبَّق الإجراء. وبالمقابل، فإنّ لغات *الترتيب الاعتياديّ* تؤخّر تقييم معطيات الإجراءات حتّى تحتاج قيم المعطيات الفعليّة. ويُسمّى تأخير تقييم معطيات الإجراءات حتّى اللحظة الأخيرة الممكنة (كاللحظة التي تتطلّبها عمليّة أوّليّة مثلًا) *التقييم المتأخّر (lazy evaluation)*.[^32] وتأمّل الإجراء
 
 ```scheme
 (define (try a b)
   (if (= a 0) 1 b))
 ```
 
-Evaluating `(try 0 (/ 1 0))` generates an error in Scheme. With lazy evaluation, there would be no error. Evaluating the expression would return 1, because the argument `(/ 1 0)` would never be evaluated.
+إنّ تقييم `(try 0 (/ 1 0))` يُطلق خطأً في Scheme. أمّا مع التقييم المتأخّر، فلن يقع خطأ. وكان تقييم التعبير سيُعيد 1، لأنّ المعطى `(/ 1 0)` لم يكن ليُقيَّم قطّ.
 
-An example that exploits lazy evaluation is the definition of a procedure `unless`
+ومثالٌ يستثمر التقييم المتأخّر هو تعريف إجراءٍ يُدعى `unless`
 
 ```scheme
 (define (unless condition 
@@ -1224,7 +1224,7 @@ An example that exploits lazy evaluation is the definition of a procedure `unles
       usual-value))
 ```
 
-that can be used in expressions such as
+يمكن استخدامه في تعابيرَ مثل
 
 ```scheme
 (unless (= b 0)
@@ -1234,13 +1234,13 @@ that can be used in expressions such as
           0))
 ```
 
-This won’t work in an applicative-order language because both the usual value and the exceptional value will be evaluated before `unless` is called (compare [Exercise 1.6](https://sarabander.github.io/sicp/html/1_002e1.xhtml#Exercise-1_002e6)). An advantage of lazy evaluation is that some procedures, such as `unless`, can do useful computation even if evaluation of some of their arguments would produce errors or would not terminate.
+وهذا لن يعمل في لغةٍ تطبيقيّة الترتيب، لأنّ القيمة الاعتياديّة والقيمة الاستثنائيّة ستُقيَّمان كلتاهما قبل نداء `unless` (قارن [التمرين 1.6](https://sarabander.github.io/sicp/html/1_002e1.xhtml#Exercise-1_002e6)). ومن مزايا التقييم المتأخّر أنّ بعض الإجراءات، كـ`unless`، تستطيع أداء احتسابٍ نافعٍ حتّى لو كان تقييم بعض معطياتها سيُنتج أخطاءً أو لم يكن لينتهي.
 
-If the body of a procedure is entered before an argument has been evaluated we say that the procedure is *non-strict* in that argument. If the argument is evaluated before the body of the procedure is entered we say that the procedure is *strict* in that argument.[^33] In a purely applicative-order language, all procedures are strict in each argument. In a purely normal-order language, all compound procedures are non-strict in each argument, and primitive procedures may be either strict or non-strict. There are also languages (see [Exercise 4.31](#Exercise-4_002e31)) that give programmers detailed control over the strictness of the procedures they define.
+إذا دُخل جسم الإجراء قبل تقييم معطىً ما فإنّا نقول إنّ الإجراء *غير صارم (non-strict)* في ذلك المعطى. وإذا قُيِّم المعطى قبل الدخول إلى جسم الإجراء فإنّا نقول إنّ الإجراء *صارم (strict)* في ذلك المعطى.[^33] ففي لغةٍ تطبيقيّة الترتيب خالصة، تكون جميع الإجراءات صارمةً في كلّ معطى. وفي لغةٍ اعتياديّة الترتيب خالصة، تكون جميع الإجراءات المركّبة غير صارمةٍ في كلّ معطى، وقد تكون الإجراءات الأوّليّة صارمةً أو غير صارمةٍ. وهناك أيضًا لغات (انظر [التمرين 4.31](#Exercise-4_002e31)) تمنح المبرمجين تحكّمًا مفصّلًا في صرامة الإجراءات التي يُعرّفونها.
 
-A striking example of a procedure that can usefully be made non-strict is `cons` (or, in general, almost any constructor for data structures). One can do useful computation, combining elements to form data structures and operating on the resulting data structures, even if the values of the elements are not known. It makes perfect sense, for instance, to compute the length of a list without knowing the values of the individual elements in the list. We will exploit this idea in [4.2.3](#g_t4_002e2_002e3) to implement the streams of [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) as lists formed of non-strict `cons` pairs.
+ومثالٌ بليغٌ على إجراءٍ يمكن جعله غير صارمٍ جعلًا نافعًا هو `cons` (أو، بصورةٍ عامّة، أيّ بانيّ لبنيات البيانات تقريبًا). فبوسع المرء أن يؤدّي احتسابًا نافعًا بدمج العناصر لتكوين بنيات بياناتٍ وبالتشغيل على بنيات البيانات الناتجة، حتّى لو كانت قيم العناصر مجهولة. فمن المنطقيّ تمامًا، مثلًا، احتساب طول قائمةٍ دون معرفة قيم عناصرها المنفردة. وسنستثمر هذه الفكرة في [4.2.3](#g_t4_002e2_002e3) لتنفيذ مجاري [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) بوصفها قوائمَ متشكّلةً من أزواج `cons` غير صارمة.
 
-**Exercise 4.25:** Suppose that (in ordinary applicative-order Scheme) we define `unless` as shown above and then define `factorial` in terms of `unless` as
+**التمرين 4.25:** افترض أنّنا (في Scheme التطبيقيّة الترتيب الاعتياديّة) نُعرّف `unless` كما هو موضّحٌ أعلاه، ثم نُعرّف `factorial` بدلالة `unless` كما يلي
 
 ```scheme
 (define (factorial n)
@@ -1249,23 +1249,23 @@ A striking example of a procedure that can usefully be made non-strict is `cons`
           1))
 ```
 
-What happens if we attempt to evaluate `(factorial 5)`? Will our definitions work in a normal-order language?
+فماذا يحدث إذا حاولنا تقييم `(factorial 5)`؟ وهل ستعمل تعريفاتنا في لغةٍ اعتياديّة الترتيب؟
 
-> **Exercise 4.26:** Ben Bitdiddle and Alyssa P. Hacker disagree over the importance of lazy evaluation for implementing things such as `unless`. Ben points out that it’s possible to implement `unless` in applicative order as a special form. Alyssa counters that, if one did that, `unless` would be merely syntax, not a procedure that could be used in conjunction with higher-order procedures. Fill in the details on both sides of the argument. Show how to implement `unless` as a derived expression (like `cond` or `let`), and give an example of a situation where it might be useful to have `unless` available as a procedure, rather than as a special form.
+> **التمرين 4.26:** يختلف بن بِتدل وأليسا ب. هاكر حول أهمّيّة التقييم المتأخّر لتنفيذ أشياءَ مثل `unless`. ويشير بن إلى أنّ من الممكن تنفيذ `unless` بالترتيب التطبيقيّ بوصفه صيغةً خاصّة. وتُجيب أليسا بأنّه لو فُعل ذلك، لصار `unless` صياغةً فحسب، لا إجراءً يمكن استخدامه بالاشتراك مع الإجراءات ذات الرتبة العليا. فأكمل التفاصيل على جانبي الحجّة. وأُظهر كيف يُنفَّذ `unless` بوصفه تعبيرًا مشتقًّا (مثل `cond` أو `let`)، وأعطِ مثالًا على موقفٍ قد يكون من المفيد فيه توفّر `unless` بوصفه إجراءً، بدلًا من صيغةٍ خاصّة.
 
-#### 4.2.2 An Interpreter with Lazy Evaluation
+#### 4.2.2 مفسّرٌ بالتقييم المتأخّر
 
-In this section we will implement a normal-order language that is the same as Scheme except that compound procedures are non-strict in each argument. Primitive procedures will still be strict. It is not difficult to modify the evaluator of [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1) so that the language it interprets behaves this way. Almost all the required changes center around procedure application.
+سنُنفّذ في هذا القسم لغةً اعتياديّة الترتيب هي ذاتها Scheme إلّا أنّ الإجراءات المركّبة فيها غير صارمةٍ في كلّ معطى. أمّا الإجراءات الأوّليّة فستظلّ صارمة. وليس من العسير تعديل المقيّم الوارد في [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1) بحيث تتصرّف اللغة التي يُفسّرها على هذا النحو. فإنّ جميع التغييرات المطلوبة تقريبًا تتمركز حول تطبيق الإجراءات.
 
-The basic idea is that, when applying a procedure, the interpreter must determine which arguments are to be evaluated and which are to be delayed. The delayed arguments are not evaluated; instead, they are transformed into objects called *thunks*.[^34] The thunk must contain the information required to produce the value of the argument when it is needed, as if it had been evaluated at the time of the application. Thus, the thunk must contain the argument expression and the environment in which the procedure application is being evaluated.
+والفكرة الأساسيّة هي أنّ المفسّر، عند تطبيق إجراءٍ ما، ينبغي أن يُحدّد أيّ المعطيات ستُقيَّم وأيّها ستُؤخَّر. والمعطيات المؤجَّلة لا تُقيَّم؛ بل تتحوّل إلى كائناتٍ تُسمّى *المؤجّلات (thunks)*.[^34] وينبغي للمؤجَّل أن يحتوي المعلومات المطلوبة لإنتاج قيمة المعطى عند الحاجة إليها، كأنّه قُيِّمَ في وقت التطبيق. ومن ثمّ، ينبغي للمؤجَّل أن يحتوي تعبير المعطى والبيئة التي يجري فيها تقييم تطبيق الإجراء.
 
-The process of evaluating the expression in a thunk is called *forcing*.[^35] In general, a thunk will be forced only when its value is needed: when it is passed to a primitive procedure that will use the value of the thunk; when it is the value of a predicate of a conditional; and when it is the value of an operator that is about to be applied as a procedure. One design choice we have available is whether or not to *memoize* thunks, as we did with delayed objects in [3.5.1](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e1). With memoization, the first time a thunk is forced, it stores the value that is computed. Subsequent forcings simply return the stored value without repeating the computation. We’ll make our interpreter memoize, because this is more efficient for many applications. There are tricky considerations here, however.[^36]
+ويُسمّى عمليّة تقييم التعبير في مؤجَّلٍ ما *الإجبار (forcing)*.[^35] وبصورةٍ عامّة، لن يُجبَر مؤجَّلٌ إلّا عندما تُحتاج قيمته: عندما يُمرَّر إلى إجراءٍ أوّليّ سيستخدم قيمة المؤجَّل؛ وعندما يكون هو قيمة مسيّمٍ في تعبير شرطيّ؛ وعندما يكون هو قيمة مشغّلٍ على وشك أن يُطبَّق بوصفه إجراءً. ومن الخيارات التصميميّة المتاحة لنا أن نُحقّق *حفظ النتائج (memoization)* للمؤجّلات أم لا، كما فعلنا مع الكائنات المؤجّلة في [3.5.1](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e1). وبحفظ النتائج، فإنّ المؤجَّل يخزّن القيمة التي تُحتسب أوّل مرّةٍ يُجبَر فيها. والإجبارات اللاحقة تُعيد القيمة المخزّونة فحسب دون تكرار الاحتساب. وسنجعل مفسّرنا يحفظ النتائج، لأنّ ذلك أكفأُ لتطبيقاتٍ كثيرة. غير أنّ هناك اعتباراتٍ خفيّة هنا.[^36]
 
-#### Modifying the evaluator
+#### تعديل المقيّم
 
-The main difference between the lazy evaluator and the one in [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1) is in the handling of procedure applications in `eval` and `apply`.
+ويتمثّل الفرق الرئيسيّ بين المقيّم المتأخّر والوارد في [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1) في التعامل مع تطبيقات الإجراءات في `eval` و`apply`.
 
-The `application?` clause of `eval` becomes
+ويصبح بند `application?` في `eval`
 
 ```scheme
 ((application? exp)
@@ -1274,18 +1274,18 @@ The `application?` clause of `eval` becomes
         env))
 ```
 
-This is almost the same as the `application?` clause of `eval` in [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1). For lazy evaluation, however, we call `apply` with the operand expressions, rather than the arguments produced by evaluating them. Since we will need the environment to construct thunks if the arguments are to be delayed, we must pass this as well. We still evaluate the operator, because `apply` needs the actual procedure to be applied in order to dispatch on its type (primitive versus compound) and apply it.
+وهذا هو ذاته تقريبًا بند `application?` في `eval` في [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1). لكنّنا، من أجل التقييم المتأخّر، ننادي `apply` بتعبيرات العوامل، بدلًا من المعطيات التي تُنتج بتقييمها. ولأنّنا سنحتاج إلى البيئة لبناء المؤجّلات إذا كانت المعطيات ستُؤخَّر، فعلينا أن نُمرّرها أيضًا. ونحن لا نزال نُقيّم المشغّل، لأنّ `apply` يحتاج الإجراء الفعليّ الواجب تطبيقه حتّى يتوزّع بحسب نوعه (أوّليّ مقابل مركّب) ويطبّقه.
 
-Whenever we need the actual value of an expression, we use
+وكلّما احتجنا إلى القيمة الفعليّة لتعبيرٍ، فإنّا نستخدم
 
 ```scheme
 (define (actual-value exp env)
   (force-it (eval exp env)))
 ```
 
-instead of just `eval`, so that if the expression’s value is a thunk, it will be forced.
+بدلًا من `eval` فحسب، حتّى إن كانت قيمة التعبير مؤجَّلًا، فإنّه سيُجبَر.
 
-Our new version of `apply` is also almost the same as the version in [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1). The difference is that `eval` has passed in unevaluated operand expressions: For primitive procedures (which are strict), we evaluate all the arguments before applying the primitive; for compound procedures (which are non-strict) we delay all the arguments before applying the procedure.
+وإصدارنا الجديد من `apply` هو أيضًا ذاته تقريبًا الإصدار الوارد في [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1). والفرق هو أنّ `eval` يمرّر تعبيرات عوامل غير مُقيَّمة: فبالنسبة للإجراءات الأوّليّة (التي هي صارمة)، نُقيّم جميع المعطيات قبل تطبيق الإجراء الأوّليّ؛ وبالنسبة للإجراءات المركّبة (التي هي غير صارمة) نؤخّر جميع المعطيات قبل تطبيق الإجراء.
 
 ```scheme
 (define (apply procedure arguments env)
@@ -1309,7 +1309,7 @@ Our new version of `apply` is also almost the same as the version in [4.1.1](htt
                      procedure))))
 ```
 
-The procedures that process the arguments are just like `list-of-values` from [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1), except that `list-of-delayed-args` delays the arguments instead of evaluating them, and `list-of-arg-values` uses `actual-value` instead of `eval`:
+والإجراءات التي تُعالج المعطيات هي تمامًا مثل `list-of-values` الوارد في [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1)، إلّا أنّ `list-of-delayed-args` يؤخّر المعطيات بدلًا من تقييمها، وأنّ `list-of-arg-values` يستخدم `actual-value` بدلًا من `eval`:
 
 ```scheme
 (define (list-of-arg-values exps env)
@@ -1333,7 +1333,7 @@ The procedures that process the arguments are just like `list-of-values` from [4
              env))))
 ```
 
-The other place we must change the evaluator is in the handling of `if`, where we must use `actual-value` instead of `eval` to get the value of the predicate expression before testing whether it is true or false:
+والموضع الآخر الذي ينبغي أن نُغيّر فيه المقيّم هو التعامل مع `if`، حيث ينبغي لنا أن نستخدم `actual-value` بدلًا من `eval` للحصول على قيمة تعبير المسيّم قبل اختبار ما إذا كانت صحيحة أو خاطئة:
 
 ```scheme
 (define (eval-if exp env)
@@ -1343,7 +1343,7 @@ The other place we must change the evaluator is in the handling of `if`, where w
       (eval (if-alternative exp) env)))
 ```
 
-Finally, we must change the `driver-loop` procedure ([4.1.4](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e4)) to use `actual-value` instead of `eval`, so that if a delayed value is propagated back to the read-eval-print loop, it will be forced before being printed. We also change the prompts to indicate that this is the lazy evaluator:
+وأخيرًا، ينبغي لنا تغيير إجراء `driver-loop` ([4.1.4](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e4)) لاستخدام `actual-value` بدلًا من `eval`، حتّى إن انتقلت قيمةٌ مؤجَّلةٌ إلى حلقة القراءة والتقييم والطباعة، فإنّها ستُجبَر قبل طباعتها. ونحن نغيّر أيضًا المُحفّزات للإشارة إلى أنّ هذا هو المقيّم المتأخّر:
 
 ```scheme
 (define input-prompt  ";;; L-Eval input:")
@@ -1360,7 +1360,7 @@ Finally, we must change the `driver-loop` procedure ([4.1.4](https://sarabander.
   (driver-loop))
 ```
 
-With these changes made, we can start the evaluator and test it. The successful evaluation of the `try` expression discussed in [4.2.1](#g_t4_002e2_002e1) indicates that the interpreter is performing lazy evaluation:
+وبعد إجراء هذه التغييرات، بوسعنا تشغيل المقيّم واختباره. فإنّ التقييم الناجح لتعبير `try` المناقَش في [4.2.1](#g_t4_002e2_002e1) يدلّ على أنّ المفسّر يؤدّي تقييمًا متأخّرًا:
 
 ```scheme
 (define the-global-environment 
@@ -1381,9 +1381,9 @@ ok
 1
 ```
 
-#### Representing thunks
+#### تمثيل المؤجّلات
 
-Our evaluator must arrange to create thunks when procedures are applied to arguments and to force these thunks later. A thunk must package an expression together with the environment, so that the argument can be produced later. To force the thunk, we simply extract the expression and environment from the thunk and evaluate the expression in the environment. We use `actual-value` rather than `eval` so that in case the value of the expression is itself a thunk, we will force that, and so on, until we reach something that is not a thunk:
+وينبغي لمقيّمنا أن يُرتّب لإنشاء المؤجّلات عندما تُطبَّق الإجراءات على معطيات، ولإجبار هذه المؤجّلات لاحقًا. وينبغي للمؤجَّل أن يحزم تعبيرًا مع البيئة، حتّى يمكن إنتاج المعطى لاحقًا. ولإجبار المؤجَّل، نستخرج التعبير والبيئة من المؤجَّل ببساطةٍ ونُقيّم التعبير في البيئة. ونستخدم `actual-value` بدلًا من `eval` حتّى إن كانت قيمة التعبير مؤجَّلًا بذاته، فإنّنا سنُجبَر ذلك، وهكذا، حتّى نصل إلى شيءٍ ليس مؤجَّلًا:
 
 ```scheme
 (define (force-it obj)
@@ -1393,7 +1393,7 @@ Our evaluator must arrange to create thunks when procedures are applied to argum
       obj))
 ```
 
-One easy way to package an expression with an environment is to make a list containing the expression and the environment. Thus, we create a thunk as follows:
+وإحدى الطرائق السهلة لحزم تعبيرٍ ببيئةٍ هي جعل قائمةٍ تحتوي التعبير والبيئة. وبذلك، نُنشئ مؤجَّلًا كما يلي:
 
 ```scheme
 (define (delay-it exp env)
@@ -1403,7 +1403,7 @@ One easy way to package an expression with an environment is to make a list cont
 (define (thunk-env thunk) (caddr thunk))
 ```
 
-Actually, what we want for our interpreter is not quite this, but rather thunks that have been memoized. When a thunk is forced, we will turn it into an evaluated thunk by replacing the stored expression with its value and changing the `thunk` tag so that it can be recognized as already evaluated.[^37]
+في واقع الأمر، ما نريده لمفسّرنا ليس هذا تمامًا، بل مؤجّلاتٌ حُفِظت نتائجها. وحين يُجبَر مؤجَّلٌ، فإنّا سنُحوّله إلى مؤجَّلٍ مُقيَّمٍ باستبدال التعبير المخزّون بقيمته وتغيير وسم `thunk` حتّى يمكن التعرّف عليه بوصفه مُقيَّمًا بالفعل.[^37]
 
 ```scheme
 (define (evaluated-thunk? obj)
@@ -1429,16 +1429,16 @@ Actually, what we want for our interpreter is not quite this, but rather thunks 
         (else obj)))
 ```
 
-Notice that the same `delay-it` procedure works both with and without memoization.
+لاحِظ أنّ الإجراء `delay-it` ذاته يعمل مع حفظ النتائج (memoization) ودونه.
 
-**Exercise 4.27:** Suppose we type in the following definitions to the lazy evaluator:
+**التمرين 4.27:** لنفترض أنّنا أدخلنا التعريفات الآتية إلى المقيّم الكسول:
 
 ```scheme
 (define count 0)
 (define (id x) (set! count (+ count 1)) x)
 ```
 
-Give the missing values in the following sequence of interactions, and explain your answers.[^38]
+أعطِ القيم الناقصة في تسلسل التفاعلات الآتي، ووضّح إجاباتك.[^38]
 
 ```scheme
 (define w (id (id 10)))
@@ -1462,9 +1462,9 @@ count
 ⟨response⟩
 ```
 
-**Exercise 4.28:** `Eval` uses `actual-value` rather than `eval` to evaluate the operator before passing it to `apply`, in order to force the value of the operator. Give an example that demonstrates the need for this forcing.
+**التمرين 4.28:** يستخدم `eval` الإجراء `actual-value` بدلًا من `eval` لتقييم المشغّل قبل تمريره إلى `apply`، بغية إجبار قيمة المشغّل. أعطِ مثالًا يُظهر الحاجة إلى هذا الإجبار.
 
-**Exercise 4.29:** Exhibit a program that you would expect to run much more slowly without memoization than with memoization. Also, consider the following interaction, where the `id` procedure is defined as in [Exercise 4.27](#Exercise-4_002e27) and `count` starts at 0:
+**التمرين 4.29:** اعرض برنامجًا يتوقّع المرء أن يعمل أبطأَ كثيرًا دون حفظ النتائج مقارنةً به معه. وفكّر أيضًا في التفاعل الآتي، حيث الإجراء `id` معرَّفٌ كما في [التمرين 4.27](#Exercise-4_002e27) و`count` يبدأ من 0:
 
 ```scheme
 (define (square x) (* x x))
@@ -1482,9 +1482,9 @@ count
 ⟨response⟩
 ```
 
-Give the responses both when the evaluator memoizes and when it does not.
+أعطِ الإجابتين في الحالتين: حين يحفظ المقيّم النتائج وحين لا يحفظها.
 
-**Exercise 4.30:** Cy D. Fect, a reformed C programmer, is worried that some side effects may never take place, because the lazy evaluator doesn’t force the expressions in a sequence. Since the value of an expression in a sequence other than the last one is not used (the expression is there only for its effect, such as assigning to a variable or printing), there can be no subsequent use of this value (e.g., as an argument to a primitive procedure) that will cause it to be forced. Cy thus thinks that when evaluating sequences, we must force all expressions in the sequence except the final one. He proposes to modify `eval-sequence` from [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1) to use `actual-value` rather than `eval`:
+**التمرين 4.30:** سي دي. فيكت، وهو مبرمج C سابق، قلقٌ من أن بعض التأثيرات الجانبيّة قد لا تحدث أبدًا، لأنّ المقيّم الكسول لا يُجبر التعابير في تسلسل. فإنّ قيمة تعبيرٍ في تسلسل غير الأخير لا تُستخدم (والتعبير موجودٌ هناك لأجل أثره فحسب، كالإحلال في متغيّر أو الطباعة)، فلا يمكن أن يكون هناك استخدامٌ لاحقٌ لتلك القيمة (كتمريرها معطىً إلى إجراء أوّليّ، مثلًا) يُسبّب إجبارها. ولهذا يظنّ سي أنّنا حين نُقيّم التسلسلات، ينبغي أن نُجبر جميع التعابير في التسلسل عدا الأخير. وهو يقترح تعديل `eval-sequence` الوارد في [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1) ليستخدم `actual-value` بدلًا من `eval`:
 
 ```scheme
 (define (eval-sequence exps env)
@@ -1497,7 +1497,7 @@ Give the responses both when the evaluator memoizes and when it does not.
                         env))))
 ```
 
-Ben Bitdiddle thinks Cy is wrong. He shows Cy the `for-each` procedure described in [Exercise 2.23](https://sarabander.github.io/sicp/html/2_002e2.xhtml#Exercise-2_002e23), which gives an important example of a sequence with side effects:
+يرى بن بِتدل أنّ سي مخطئ. وهو يُري سي الإجراء `for-each` الموصوف في [التمرين 2.23](https://sarabander.github.io/sicp/html/2_002e2.xhtml#Exercise-2_002e23)، الذي يُعطي مثالًا مهمًّا على تسلسلٍ ذي تأثيراتٍ جانبيّة:
 
 ```scheme
 (define (for-each proc items)
@@ -1508,7 +1508,7 @@ Ben Bitdiddle thinks Cy is wrong. He shows Cy the `for-each` procedure described
                        (cdr items)))))
 ```
 
-He claims that the evaluator in the text (with the original `eval-sequence`) handles this correctly:
+وهو يدّعي أنّ المقيّم الوارد في النصّ (مع `eval-sequence` الأصليّ) يتعامل مع هذا تعاملًا صحيحًا:
 
 ```scheme
 ;;; L-Eval input:
@@ -1523,9 +1523,9 @@ He claims that the evaluator in the text (with the original `eval-sequence`) han
 done
 ```
 
-Explain why Ben is right about the behavior of `for-each`.
+وضّح لماذا بن مُحقّ في ما يقولُه عن سلوك `for-each`.
 
-Cy agrees that Ben is right about the `for-each` example, but says that that’s not the kind of program he was thinking about when he proposed his change to `eval-sequence`. He defines the following two procedures in the lazy evaluator:
+يتّفق سي مع أنّ بن مُحقّ في مثال `for-each`، لكنّه يقول إنّ ذلك ليس نوع البرنامج الذي كان يفكّر فيه حين اقترح تغييره على `eval-sequence`. وهو يُعرِّف الإجراءين الآتيين في المقيّم الكسول:
 
 ```scheme
 (define (p1 x)
@@ -1536,24 +1536,24 @@ Cy agrees that Ben is right about the `for-each` example, but says that that’s
   (p (set! x (cons x '(2)))))
 ```
 
-What are the values of `(p1 1)` and `(p2 1)` with the original `eval-sequence`? What would the values be with Cy’s proposed change to `eval-sequence`?
+ما قيمتا `(p1 1)` و`(p2 1)` مع `eval-sequence` الأصليّ؟ وما كانت القيمتان ستكونان مع التغيير الذي اقترحه سي على `eval-sequence`؟
 
-Cy also points out that changing `eval-sequence` as he proposes does not affect the behavior of the example in part a. Explain why this is true. How do you think sequences ought to be treated in the lazy evaluator? Do you like Cy’s approach, the approach in the text, or some other approach?
+ويُشير سي أيضًا إلى أنّ تغيير `eval-sequence` على النحو الذي يقترحه لا يؤثّر في سلوك المثال الوارد في الجزء (أ). فوضّح لماذا هذا صحيح. وكيف تظنّ أنّ التسلسلات ينبغي أن تُعالَج في المقيّم الكسول؟ فأيّّ نهجٍ ترتاح له: نهج سي، أم النهج الوارد في النصّ، أم نهجٌ آخر؟
 
-**Exercise 4.31:** The approach taken in this section is somewhat unpleasant, because it makes an incompatible change to Scheme. It might be nicer to implement lazy evaluation as an *upward-compatible extension*, that is, so that ordinary Scheme programs will work as before. We can do this by extending the syntax of procedure declarations to let the user control whether or not arguments are to be delayed. While we’re at it, we may as well also give the user the choice between delaying with and without memoization. For example, the definition
+**التمرين 4.31:** النهج المتّخذ في هذا القسم غير مريحٍ إلى حدّ ما، لأنّه يُحدث تغييرًا غير متوافق في Scheme. وقد يكون من الأجمل تنفيذ التقييم الكسول بوصفه *توسعةً متوافقة صعودًا (upward-compatible extension)*، أي بحيث تعمل برامج Scheme العاديّة كما كانت تعمل سابقًا. ويمكننا فعل ذلك بتوسيع صياغة تصريحات الإجراءات للسماح للمستخدم بالتحكّم في تأخير الوسائط أو عدمه. وبينما نحن في ذلك، فلا بأس من أن نمنح المستخدم أيضًا الخيار بين التأخير مع حفظ النتائج ودونه. فمثلًا، التعريف
 
 ```scheme
 (define (f a (b lazy) c (d lazy-memo))
   …)
 ```
 
-would define `f` to be a procedure of four arguments, where the first and third arguments are evaluated when the procedure is called, the second argument is delayed, and the fourth argument is both delayed and memoized. Thus, ordinary procedure definitions will produce the same behavior as ordinary Scheme, while adding the `lazy-memo` declaration to each parameter of every compound procedure will produce the behavior of the lazy evaluator defined in this section. Design and implement the changes required to produce such an extension to Scheme. You will have to implement new syntax procedures to handle the new syntax for `define`. You must also arrange for `eval` or `apply` to determine when arguments are to be delayed, and to force or delay arguments accordingly, and you must arrange for forcing to memoize or not, as appropriate.
+سيُعرِّف `f` بأنّه إجراءٌ من أربعة وسائط، حيث يُقيّم الوسيط الأوّل والثالث حين يُستدعى الإجراء، ويُؤخَّر الوسيط الثاني، ويُؤخَّر الوسيط الرابع ويُحفَظ نتيجته. وبذلك، ستُنتج تعاريف الإجراءات العاديّة السلوك ذاته الذي تُنتجه برامج Scheme العاديّة، بينما ستُنتج إضافة تصريح `lazy-memo` إلى كلّ وسيطٍ من وسائط كلّ إجراءٍ مركّبٍ سلوك المقيّم الكسول المعرَّف في هذا القسم. وصمّم ونفّذ التغييرات المطلوبة لإنتاج توسعةٍ كهذه على Scheme. وسيلزمك تنفيذ إجراءات صياغةٍ جديدةٍ للتعامل مع الصياغة الجديدة لـ`define`. وينبغي لك أيضًا أن تُرتّب لما يجعل `eval` أو `apply` يحدّد متى تُؤخَّر الوسائط، ويكون إجبارها أو تأخيرها وفقًا لذلك، كما ينبغي أن تُرتّب لما يجعل الإجبار يحفظ النتائج أو لا، بحسب الحالة.
 
-#### 4.2.3 Streams as Lazy Lists
+#### 4.2.3 المجاري بوصفها قوائم كسولة
 
-In [3.5.1](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e1), we showed how to implement streams as delayed lists. We introduced special forms `delay` and `cons-stream`, which allowed us to construct a “promise” to compute the `cdr` of a stream, without actually fulfilling that promise until later. We could use this general technique of introducing special forms whenever we need more control over the evaluation process, but this is awkward. For one thing, a special form is not a first-class object like a procedure, so we cannot use it together with higher-order procedures.[^39] Additionally, we were forced to create streams as a new kind of data object similar but not identical to lists, and this required us to reimplement many ordinary list operations (`map`, `append`, and so on) for use with streams.
+في [3.5.1](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e1)، أظهرنا كيف نُنفّذ المجاري بوصفها قوائم مؤخّرة. وقد أدخلنا صيغتين خاصّتين هما `delay` و`cons-stream`، وتسمحان لنا ببناء «وعد» بحساب الـ`cdr` لمجرى، دون الوفاء بذلك الوعد فعلًا إلّا لاحقًا. وكان بإمكاننا استخدام هذه التقنيّة العامّة المتمثّلة في إدخال صيغٍ خاصّةٍ كلّما احتجنا إلى مزيدٍ من التحكّم في عمليّة التقييم، لكنّ ذلك عسير. فأوّلًا، الصيغة الخاصّة ليست كائنًا من الرتبة الأولى (first-class) كالإجراء، فلا نستطيع استخدامها مع الإجراءات من الرتبة العليا.[^39] وفضلًا عن ذلك، فقد أُجبرنا على إنشاء المجاري كنوعٍ جديدٍ من كائنات البيانات شبيهٍ بالقوائم غير مطابقٍ لها، وهذا استدعى منّا إعادة تنفيذ عمليّات قائمةٍ عاديّةٍ كثيرة (`map`، و`append`، وما شابه) للاستخدام مع المجاري.
 
-With lazy evaluation, streams and lists can be identical, so there is no need for special forms or for separate list and stream operations. All we need to do is to arrange matters so that `cons` is non-strict. One way to accomplish this is to extend the lazy evaluator to allow for non-strict primitives, and to implement `cons` as one of these. An easier way is to recall ([2.1.3](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e3)) that there is no fundamental need to implement `cons` as a primitive at all. Instead, we can represent pairs as procedures:[^40]
+وبالتقييم الكسول، يمكن أن تكون المجاري والقوائم متطابقة، فلا حاجة إلى صيغٍ خاصّةٍ ولا إلى عمليّاتٍ منفصلةٍ للقوائم والمجاري. وكلّ ما يلزمنا هو ترتيب الأمور بحيث يكون `cons` غير صارم. وإحدى طرق تحقيق ذلك توسيع المقيّم الكسول للسماح بأوّليّاتٍ غير صارمة، وتنفيذ `cons` بأحدها. وأمّا الطريقة الأسهل فهي التذكّر ([2.1.3](https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e3)) بأنّه لا حاجة جوهريّة إلى تنفيذ `cons` كإجراءٍ أوّليّ أصلًا. وبدلًا من ذلك، يمكننا تمثيل الأزواج بإجراءات:[^40]
 
 ```scheme
 (define (cons x y) (lambda (m) (m x y)))
@@ -1561,7 +1561,7 @@ With lazy evaluation, streams and lists can be identical, so there is no need fo
 (define (cdr z) (z (lambda (p q) q)))
 ```
 
-In terms of these basic operations, the standard definitions of the list operations will work with infinite lists (streams) as well as finite ones, and the stream operations can be implemented as list operations. Here are some examples:
+وبصدد هذه العمليّات الأساسيّة، فإنّ التعريفات القياسيّة لعمليّات القوائم ستعمل مع القوائم اللاّنهائيّة (المجاري) كما تعمل مع المنتهيّة، ويمكن تنفيذ عمليّات المجاري بوصفها عمليّات قائمة. وهاك بعض الأمثلة:
 
 ```scheme
 (define (list-ref items n)
@@ -1600,9 +1600,9 @@ In terms of these basic operations, the standard definitions of the list operati
 18
 ```
 
-Note that these lazy lists are even lazier than the streams of [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3): The `car` of the list, as well as the `cdr`, is delayed.[^41] In fact, even accessing the `car` or `cdr` of a lazy pair need not force the value of a list element. The value will be forced only when it is really needed—e.g., for use as the argument of a primitive, or to be printed as an answer.
+لاحِظ أنّ هذه القوائم الكسولة أكسلُ حتّى من مجاري [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3): فالـ`car` للقائمة، كما الـ`cdr`، مؤخَّر.[^41] وفي الحقيقة، فإنّ مجرّد الوصول إلى `car` أو `cdr` زوجٍ كسولٍ لا يستلزم إجبار قيمة عنصر القائمة. فلن تُجبَر القيمة إلّا حين تحتاج إليها فعلًا—مثلًا للاستخدام معطىً إلى أوّليّة، أو لتُطبَع جوابًا.
 
-Lazy pairs also help with the problem that arose with streams in [3.5.4](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e4), where we found that formulating stream models of systems with loops may require us to sprinkle our programs with explicit `delay` operations, beyond the ones supplied by `cons-stream`. With lazy evaluation, all arguments to procedures are delayed uniformly. For instance, we can implement procedures to integrate lists and solve differential equations as we originally intended in [3.5.4](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e4):
+كما تُساعد الأزواج الكسولة في المسألة التي نشأت مع المجاري في [3.5.4](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e4)، حيث وجدنا أنّ صياغة نماذج المجاري لأنظمةٍ ذات حلقاتٍ قد تستدعي منّا أن نُنثّر برامجنا بعمليّات `delay` صريحة، تتجاوز تلك التي يوفّرها `cons-stream`. وبالتقييم الكسول، تُؤخَّر جميع الوسائط الممرّرة إلى الإجراءات تأخيرًا منتظمًا. فنستطيع، مثلًا، تنفيذ إجراءاتٍ لتكامل القوائم ولحلّ المعادلات التفاضليّة كما قصدنا أصلًا في [3.5.4](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e4):
 
 ```scheme
 (define (integral integrand initial-value dt)
@@ -1624,25 +1624,25 @@ Lazy pairs also help with the problem that arose with streams in [3.5.4](https:/
 2.716924
 ```
 
-> **Exercise 4.32:** Give some examples that illustrate the difference between the streams of [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) and the “lazier” lazy lists described in this section. How can you take advantage of this extra laziness?
+> **التمرين 4.32:** أعطِ بعض الأمثلة التي توضّح الفرق بين مجاري [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) والقوائم الكسولة «الأكسل» الموصوفة في هذا القسم. فكيف يمكنك استثمار هذا الكسل الإضافيّ؟
 
-**Exercise 4.33:** Ben Bitdiddle tests the lazy list implementation given above by evaluating the expression
+**التمرين 4.33:** يختبر بن بِتدل تنفيذ القائمة الكسولة المعطى أعلاه بتقييم التعبير
 
 ```scheme
 (car '(a b c))
 ```
 
-To his surprise, this produces an error. After some thought, he realizes that the “lists” obtained by reading in quoted expressions are different from the lists manipulated by the new definitions of `cons`, `car`, and `cdr`. Modify the evaluator’s treatment of quoted expressions so that quoted lists typed at the driver loop will produce true lazy lists.
+فإذا بذلك يُنتج خطأً، على غير ما توقّع. وبعد بعض التفكير، يدرك أنّ «القوائم» المتحصّلة من قراءة التعابير المُقتبَسة مختلفةٌ عن القوائم التي تتلاعب بها التعريفات الجديدة لـ`cons` و`car` و`cdr`. فعدّل تعامل المقيّم مع التعابير المُقتبَسة بحيث تُنتج القوائم المُقتبَسة المكتوبة في حلقة المُشغّل قوائم كسولةً حقيقيّة.
 
-> **Exercise 4.34:** Modify the driver loop for the evaluator so that lazy pairs and lists will print in some reasonable way. (What are you going to do about infinite lists?) You may also need to modify the representation of lazy pairs so that the evaluator can identify them in order to print them.
+> **التمرين 4.34:** عدّل حلقة المُشغّل للمقيّم بحيث تُطبَع الأزواج الكسولة والقوائم الكسولة على نحوٍ معقول. (فماذا ستفعل حيال القوائم اللاّنهائيّة؟) وقد يلزمك أيضًا تعديل تمثيل الأزواج الكسولة حتّى يتمكّن المقيّم من التعرّف عليها بغرض طبعها.
 
-### 4.3 Variations on a Scheme — Nondeterministic Computing
+### 4.3 تنويعات على Scheme — الحوسبة غير الحتميّة
 
-In this section, we extend the Scheme evaluator to support a programming paradigm called *nondeterministic computing* by building into the evaluator a facility to support automatic search. This is a much more profound change to the language than the introduction of lazy evaluation in [4.2](https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2).
+في هذا القسم، نوسّع مقيّم Scheme لدعم نموذج برمجةٍ يُسمّى *الحوسبة غير الحتميّة (nondeterministic computing)*، وذلك ببناء تسهيلٍ داخل المقيّم لدعم البحث الآليّ. وهذا تغييرٌ في اللغة أعمقُ بكثيرٍ من إدخال التقييم الكسول في [4.2](https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2).
 
-Nondeterministic computing, like stream processing, is useful for “generate and test” applications. Consider the task of starting with two lists of positive integers and finding a pair of integers—one from the first list and one from the second list—whose sum is prime. We saw how to handle this with finite sequence operations in [2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3) and with infinite streams in [3.5.3](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e3). Our approach was to generate the sequence of all possible pairs and filter these to select the pairs whose sum is prime. Whether we actually generate the entire sequence of pairs first as in [Chapter 2](https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2), or interleave the generating and filtering as in [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3), is immaterial to the essential image of how the computation is organized.
+والحوسبة غير الحتميّة، كمعالجة المجاري، مفيدةٌ في تطبيقات «التوليد والاختبار». فتأمّل مهمّة الانطلاق بقائمتَي أعدادٍ صحيحةٍ موجبةٍ وإيجاد زوجٍ من الأعداد—واحدٍ من القائمة الأولى وآخر من القائمة الثانية—مجموعه أوّليّ. وقد رأينا كيف نتعامل مع هذا باستخدام عمليّات التسلسلات المنتهيّة في [2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3) وباستخدام المجاري اللاّنهائيّة في [3.5.3](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e3). وكان نهجنا توليد تسلسل جميع الأزواج الممكنة وترشيحها لاختيار الأزواج التي مجموعها أوّليّ. وسواءٌ كنّا نُولّد تسلسل الأزواج كلّه أوّلًا كما في [الفصل 2](https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2)، أو نُشابك التوليد والترشيح كما في [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3)، فذلك لا يمسّ الصورة الجوهريّة لكيفيّة تنظيم الاحتساب.
 
-The nondeterministic approach evokes a different image. Imagine simply that we choose (in some way) a number from the first list and a number from the second list and require (using some mechanism) that their sum be prime. This is expressed by following procedure:
+والنهج غير الحتميّ يستحضر صورةً مختلفة. فتخيّل ببساطةٍ أنّنا نختار (بصورةٍ ما) عددًا من القائمة الأولى وعددًا من القائمة الثانية، ونُقتضى (باستخدام آليّةٍ ما) أن يكون مجموعهما أوّلِيًّا. ويُعبَّر عن هذا بالإجراء الآتي:
 
 ```scheme
 (define (prime-sum-pair list1 list2)
@@ -1652,13 +1652,13 @@ The nondeterministic approach evokes a different image. Imagine simply that we c
     (list a b)))
 ```
 
-It might seem as if this procedure merely restates the problem, rather than specifying a way to solve it. Nevertheless, this is a legitimate nondeterministic program.[^42]
+قد يبدو كأنّ هذا الإجراء لا يفعل سوى إعادة صياغة المسألة، بدلًا من تحديد طريقةٍ لحلّها. ومع ذلك، فهذا برنامجٌ غير حتميّ مشروع.[^42]
 
-The key idea here is that expressions in a nondeterministic language can have more than one possible value. For instance, `an-element-of` might return any element of the given list. Our nondeterministic program evaluator will work by automatically choosing a possible value and keeping track of the choice. If a subsequent requirement is not met, the evaluator will try a different choice, and it will keep trying new choices until the evaluation succeeds, or until we run out of choices. Just as the lazy evaluator freed the programmer from the details of how values are delayed and forced, the nondeterministic program evaluator will free the programmer from the details of how choices are made.
+والفكرة المفتاحيّة هنا هي أنّ التعابير في لغةٍ غير حتميّةٍ قد يكون لها أكثر من قيمة ممكنة. فمثلًا، قد يُعيد `an-element-of` أيّ عنصر من القائمة المعطاة. وسيعمل مقيّم البرامج غير الحتميّة باختيار قيمةٍ ممكنةٍ آليًّا ومتابعة الخيار. فإن لم يُستوفَ مقتضى لاحق، جرّب المقيّم خيارًا مختلفًا، واستمرّ في تجربة خياراتٍ جديدة حتّى ينجح التقييم، أو حتّى تنفد الخيارات. فكما حرّر المقيّم الكسول المبرمجَ من تفاصيل كيفيّة تأخير القيم وإجبارها، سيحرّر مقيّم البرامج غير الحتميّة المبرمجَ من تفاصيل كيفيّة إجراء الاختيارات.
 
-It is instructive to contrast the different images of time evoked by nondeterministic evaluation and stream processing. Stream processing uses lazy evaluation to decouple the time when the stream of possible answers is assembled from the time when the actual stream elements are produced. The evaluator supports the illusion that all the possible answers are laid out before us in a timeless sequence. With nondeterministic evaluation, an expression represents the exploration of a set of possible worlds, each determined by a set of choices. Some of the possible worlds lead to dead ends, while others have useful values. The nondeterministic program evaluator supports the illusion that time branches, and that our programs have different possible execution histories. When we reach a dead end, we can revisit a previous choice point and proceed along a different branch.
+ومن المفيد تقابل صور الوقت المختلفة التي تستحضرها العمليّتان: التقييم غير الحتميّ ومعالجة المجاري. فمعالجة المجاري تستخدم التقييم الكسول لفصل الوقت الذي تُجمَّع فيه مجاري الأجوبة الممكنة عن الوقت الذي تُنتَج فيه عناصر المجرى فعلًا. ويدعم المقيّم الوهم القائل إنّ جميع الأجوبة الممكنة مبسوطةٌ أمامنا في تسلسلٍ خارج الزمن. وبالتقييم غير الحتميّ، يمثّل التعبير استكشافًا لمجموعةٍ من العوالم الممكنة، يحدّدها كلٌّ منها مجموعةٌ من الاختيارات. وبعض العوالم الممكنة يؤدّي إلى طرقٍ مسدودة، بينما لبعضها الآخر قيم مفيدة. ويدعم مقيّم البرامج غير الحتميّة الوهم القائل إنّ الزمن يتفرّع، وإنّ لبرامجنا تواريخ تنفيذٍ مختلفةً ممكنة. وحين نصل إلى طريقٍ مسدود، نستطيع العودة إلى نقطة اختيارٍ سابقةٍ والمواصلة على فرعٍ مختلف.
 
-The nondeterministic program evaluator implemented below is called the `amb` evaluator because it is based on a new special form called `amb`. We can type the above definition of `prime-sum-pair` at the `amb` evaluator driver loop (along with definitions of `prime?`, `an-element-of`, and `require`) and run the procedure as follows:
+ويُسمّى مقيّم البرامج غير الحتميّة المنفّذ أدناه مقيّم `amb` لأنّه مبنيٌّ على صيغةٍ خاصّةٍ جديدةٍ تُسمّى `amb`. ويمكننا كتابة تعريف `prime-sum-pair` المعطى أعلاه في حلقة مُشغّل مقيّم `amb` (مع تعاريف `prime?` و`an-element-of` و`require`) وتشغيل الإجراء على النحو الآتي:
 
 ```scheme
 ;;; Amb-Eval input:
@@ -1669,40 +1669,40 @@ The nondeterministic program evaluator implemented below is called the `amb` eva
 (3 20)
 ```
 
-The value returned was obtained after the evaluator repeatedly chose elements from each of the lists, until a successful choice was made.
+والقيمة المُعادة تحقّقت بعد أن اختار المقيّم عناصر من كلٍّ من القائمتين تكرارًا، حتّى أُجري اختيارٌ ناجح.
 
-Section [4.3.1](#g_t4_002e3_002e1) introduces `amb` and explains how it supports nondeterminism through the evaluator’s automatic search mechanism. [4.3.2](#g_t4_002e3_002e2) presents examples of nondeterministic programs, and [4.3.3](#g_t4_002e3_002e3) gives the details of how to implement the `amb` evaluator by modifying the ordinary Scheme evaluator.
+يُقدّم القسم [4.3.1](#g_t4_002e3_002e1) الصيغة `amb` ويشرح كيف تدعم عدم الحتميّة من خلال آليّة البحث الآليّ في المقيّم. ويعرض القسم [4.3.2](#g_t4_002e3_002e2) أمثلةً على البرامج غير الحتميّة، ويعطي القسم [4.3.3](#g_t4_002e3_002e3) تفاصيل كيفيّة تنفيذ مقيّم `amb` بتعديل مقيّم Scheme العاديّ.
 
-#### 4.3.1 Amb and Search
+#### 4.3.1 Amb والبحث
 
-To extend Scheme to support nondeterminism, we introduce a new special form called `amb`.[^43] The expression
+لتمديد Scheme لدعم عدم الحتميّة، نُدخل صيغةً خاصّةً جديدةً تُسمّى `amb`.[^43] فالتعبير
 
 ```scheme
 (amb ⟨e₁⟩ ⟨e₂⟩ … ⟨eₙ⟩)
 ```
 
-returns the value of one of the $n$ expressions $⟨ e_{i} ⟩$ “ambiguously.” For example, the expression
+يُعيد قيمة أحد التعابير الـ$n$ $⟨ e_{i} ⟩$ «على نحوٍ غامض». فمثلًا، التعبير
 
 ```scheme
 (list (amb 1 2 3) (amb 'a 'b))
 ```
 
-can have six possible values:
+قد يكون له ستّ قيم ممكنة:
 
 ```
 (1 a) (1 b) (2 a) (2 b) (3 a) (3 b)
 ```
 
-`Amb` with a single choice produces an ordinary (single) value.
+إنّ `Amb` مع اختيارٍ واحدٍ يُنتج قيمةً عاديّةً (وحيدة).
 
-`Amb` with no choices—the expression `(amb)`—is an expression with no acceptable values. Operationally, we can think of `(amb)` as an expression that when evaluated causes the computation to “fail”: The computation aborts and no value is produced. Using this idea, we can express the requirement that a particular predicate expression `p` must be true as follows:
+إنّ `Amb` دون اختيارات—التعبير `(amb)`—تعبيرٌ لا قيمة مقبولة له. وتشغيليًّا، يمكننا التفكير في `(amb)` كتعبيرٍ يُسبّب «فشل» الاحتساب عند تقييمه: فيُنقطع الاحتساب ولا تُنتَج أيّ قيمة. وباستخدام هذه الفكرة، نستطيع التعبير عن المقتضى القائل إنّ تعبير مُسَيِّمٍ معيَّن `p` لا بدّ أن يكون صحيحًا، على النحو الآتي:
 
 ```scheme
 (define (require p)
   (if (not p) (amb)))
 ```
 
-With `amb` and `require`, we can implement the `an-element-of` procedure used above:
+وباستخدام `amb` و`require`، نستطيع تنفيذ إجراء `an-element-of` المستخدم أعلاه:
 
 ```scheme
 (define (an-element-of items)
@@ -1711,24 +1711,24 @@ With `amb` and `require`, we can implement the `an-element-of` procedure used ab
        (an-element-of (cdr items))))
 ```
 
-`An-element-of` fails if the list is empty. Otherwise it ambiguously returns either the first element of the list or an element chosen from the rest of the list.
+يفشل `an-element-of` إذا كانت القائمة فارغة. وإلّا فهو يُعيد إمّا أوّل عنصر من القائمة وإمّا عنصرًا مختارًا من بقيّة القائمة، على نحوٍ غامض.
 
-We can also express infinite ranges of choices. The following procedure potentially returns any integer greater than or equal to some given $n$ :
+ويمكننا أيضًا التعبير عن مدىاتٍ لاّنهائيّةٍ من الخيارات. فالإجراء الآتي يُعيد مُحتمَلًا أيّ عددٍ صحيحٍ أكبر أو مساوٍ لعددٍ معطى $n$ :
 
 ```scheme
 (define (an-integer-starting-from n)
   (amb n (an-integer-starting-from (+ n 1))))
 ```
 
-This is like the stream procedure `integers-starting-from` described in [3.5.2](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e2), but with an important difference: The stream procedure returns an object that represents the sequence of all integers beginning with $n$ , whereas the `amb` procedure returns a single integer.[^44]
+وهذا شبيهٌ بإجراء المجرى `integers-starting-from` الموصوف في [3.5.2](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e2)، لكن بفرقٍ مهمّ: فإجراء المجرى يُعيد كائنًا يمثّل تسلسل جميع الأعداد الصحيحة التي تبدأ من $n$ ، بينما يُعيد إجراء `amb` عددًا صحيحًا واحدًا.[^44]
 
-Abstractly, we can imagine that evaluating an `amb` expression causes time to split into branches, where the computation continues on each branch with one of the possible values of the expression. We say that `amb` represents a *nondeterministic choice point*. If we had a machine with a sufficient number of processors that could be dynamically allocated, we could implement the search in a straightforward way. Execution would proceed as in a sequential machine, until an `amb` expression is encountered. At this point, more processors would be allocated and initialized to continue all of the parallel executions implied by the choice. Each processor would proceed sequentially as if it were the only choice, until it either terminates by encountering a failure, or it further subdivides, or it finishes.[^45]
+وبصورةٍ مجرّدة، يمكننا أن نتخيّل أنّ تقييم تعبير `amb` يُسبّب انقسام الزمن إلى فروع، حيث يستمرّ الاحتساب في كلّ فرعٍ بإحدى القيم الممكنة للتعبير. ونقول إنّ `amb` يُمثّل *نقطة اختيارٍ غير حتميّة (nondeterministic choice point)*. فلو كانت لدينا آلةٌ بعددٍ كافٍ من المعالجات القابلة للتخصيص ديناميكيًّا، لأمكننا تنفيذ البحث تنفيذًا مباشرًا. فيسير التنفيذ كما في آلةٍ تسلسليّةٍ، حتّى يُصادَف تعبير `amb`، وعند تلك النقطة تُخصَّص معالجاتٌ إضافيّةٌ وتُهيّأ لمواصلة جميع التنفيذات المتوازية التي يستلزمها الاختيار. ويسير كلّ معالجٍ تسلسليًّا كأنّه الاختيار الوحيد، حتّى إمّا أن ينتهي بمصادفة فشل، أو أن يتفرّع أكثر، أو أن يُكمل.[^45]
 
-On the other hand, if we have a machine that can execute only one process (or a few concurrent processes), we must consider the alternatives sequentially. One could imagine modifying an evaluator to pick at random a branch to follow whenever it encounters a choice point. Random choice, however, can easily lead to failing values. We might try running the evaluator over and over, making random choices and hoping to find a non-failing value, but it is better to *systematically search* all possible execution paths. The `amb` evaluator that we will develop and work with in this section implements a systematic search as follows: When the evaluator encounters an application of `amb`, it initially selects the first alternative. This selection may itself lead to a further choice. The evaluator will always initially choose the first alternative at each choice point. If a choice results in a failure, then the evaluator automagically[^46] *backtracks* to the most recent choice point and tries the next alternative. If it runs out of alternatives at any choice point, the evaluator will back up to the previous choice point and resume from there. This process leads to a search strategy known as *depth-first search* or *chronological backtracking*.[^47]
+ومن جهةٍ أخرى، فإن كانت لدينا آلةٌ لا تستطيع تنفيذ إلّا عمليّةً واحدة (أو عدّة عمليّاتٍ متزامنةٍ قليلة)، فلا بدّ من النظر في البدائل تسلسليًّا. ويمكن للمرء أن يتخيّل تعديل مقيّم ليتخيّر فرعًا عشوائيًّا ليتبعه كلّما صادف نقطة اختيار. غير أنّ الاختيار العشوائيّ قد يؤدّي بسهولةٍ إلى قيمٍ فاشلة. وقد نجرّب تشغيل المقيّم مرّةً بعد أخرى، باختياراتٍ عشوائيّةٍ وعلى أمل العثور على قيمةٍ غير فاشلة، لكنّ الأفضلَ *البحث المنهجيّ (systematic search)* في جميع مسارات التنفيذ الممكنة. ومقيّم `amb` الذي سنطوّره ونعمل به في هذا القسم يُنفّذ بحثًا منهجيًّا على النحو الآتي: حين يصادف المقيّم تطبيقًا لـ`amb`، فهو يختار أوّلًا البديل الأوّل. وهذا الاختيار قد يؤدّي بذاته إلى اختيارٍ لاحق. وسيختار المقيّم دائمًا البديل الأوّل في كلّ نقطة اختيار. فإن أفضى اختيارٌ إلى فشل، فإنّ المقيّم *يتراجع رجعيًّا (backtracks)* تلقائيًّا[^46] إلى أحدث نقطة اختيار ويجرّب البديل التالي. فإن نفدت البدائل في أيّ نقطة اختيار، رجع المقيّم إلى نقطة الاختيار السابقة واستأنف من هناك. وتؤدّي هذه العمليّة إلى استراتيجيّة بحثٍ تُعرف بـ*البحث بالعمق أوّلًا (depth-first search)* أو *التتبّع الرجعيّ الزمنيّ (chronological backtracking)*.[^47]
 
-#### Driver loop
+#### حلقة المُشغّل
 
-The driver loop for the `amb` evaluator has some unusual properties. It reads an expression and prints the value of the first non-failing execution, as in the `prime-sum-pair` example shown above. If we want to see the value of the next successful execution, we can ask the interpreter to backtrack and attempt to generate a second non-failing execution. This is signaled by typing the symbol `try-again`. If any expression except `try-again` is given, the interpreter will start a new problem, discarding the unexplored alternatives in the previous problem. Here is a sample interaction:
+ولحلقة مُشغّل مقيّم `amb` بعض الخصائص غير المعتادة. فهي تقرأ تعبيرًا وتطبع قيمة أوّل تنفيذٍ غير فاشل، كما في مثال `prime-sum-pair` المعروض أعلاه. فإن أردنا رؤية قيمة التنفيذ الناجح التالي، فبوسعنا أن نطلب من المفسّر أن يتراجع رجعيًّا ويحاول توليد تنفيذٍ ثانٍ غير فاشل. ويُشار إلى ذلك بكتابة الرمز `try-again`. فلو أُعطي أيّ تعبيرٍ غير `try-again`، سيبدأ المفسّر مسألةً جديدةً، مُتخلّيًا عن البدائل غير المستكشفة في المسألة السابقة. وهاك مثالًا على تفاعل:
 
 ```scheme
 ;;; Amb-Eval input:
@@ -1766,7 +1766,7 @@ try-again
 (30 11)
 ```
 
-**Exercise 4.35:** Write a procedure `an-integer-between` that returns an integer between two given bounds. This can be used to implement a procedure that finds Pythagorean triples, i.e., triples of integers $( i , j , k )$ between the given bounds such that $i ≤ j$ and $i^{2} + j^{2} = k^{2}$ , as follows:
+**التمرين 4.35:** اكتب إجراءً `an-integer-between` يُعيد عددًا صحيحًا بين حدّين معطيين. ويمكن استخدام ذلك لتنفيذ إجراءٍ يجد الثلاثيات الفيثاغورسيّة، أي ثلاثيات من الأعداد الصحيحة $( i , j , k )$ بين الحدّين المعطيين بحيثُ $i ≤ j$ و$i^{2} + j^{2} = k^{2}$ ، على النحو الآتي:
 
 ```scheme
 (define (a-pythagorean-triple-between low high)
@@ -1778,9 +1778,9 @@ try-again
         (list i j k)))))
 ```
 
-> **Exercise 4.36:** [Exercise 3.69](https://sarabander.github.io/sicp/html/3_002e5.xhtml#Exercise-3_002e69) discussed how to generate the stream of *all* Pythagorean triples, with no upper bound on the size of the integers to be searched. Explain why simply replacing `an-integer-between` by `an-integer-starting-from` in the procedure in [Exercise 4.35](#Exercise-4_002e35) is not an adequate way to generate arbitrary Pythagorean triples. Write a procedure that actually will accomplish this. (That is, write a procedure for which repeatedly typing `try-again` would in principle eventually generate all Pythagorean triples.)
+> **التمرين 4.36:** ناقش [التمرين 3.69](https://sarabander.github.io/sicp/html/3_002e5.xhtml#Exercise-3_002e69) كيف تُولَّد مجرة *جميع* الثلاثيات الفيثاغورسيّة، دون حدٍّ أعلى لحجم الأعداد الصحيحة التي تُبحث. فوضّح لماذا لا يصلح مجرّد استبدال `an-integer-between` بـ`an-integer-starting-from` في الإجراء الوارد في [التمرين 4.35](#Exercise-4_002e35) سبيلًا مناسبًا لتوليد ثلاثياتٍ فيثاغورسيّةٍ اعتراضيّة. واكتب إجراءً يُنجز ذلك فعلًا. (أي اكتب إجراءً يجعل تكرار كتابة `try-again` يُولّد من حيث المبدأ جميع الثلاثيات الفيثاغورسيّة في النهاية.)
 
-**Exercise 4.37:** Ben Bitdiddle claims that the following method for generating Pythagorean triples is more efficient than the one in [Exercise 4.35](#Exercise-4_002e35). Is he correct? (Hint: Consider the number of possibilities that must be explored.)
+**التمرين 4.37:** يدّعي بن بِتدل أنّ الطريقة الآتية لتوليد الثلاثيات الفيثاغورسيّة أكفأُ من تلك الواردة في [التمرين 4.35](#Exercise-4_002e35). فأهل مُحقّ؟ (تلميح: فكّر في عدد الاحتمالات التي يجب استكشافها.)
 
 ```scheme
 (define (a-pythagorean-triple-between low high)
@@ -1794,17 +1794,17 @@ try-again
           (list i j k))))))
 ```
 
-#### 4.3.2 Examples of Nondeterministic Programs
+#### 4.3.2 أمثلة على البرامج غير الحتميّة
 
-Section [4.3.3](#g_t4_002e3_002e3) describes the implementation of the `amb` evaluator. First, however, we give some examples of how it can be used. The advantage of nondeterministic programming is that we can suppress the details of how search is carried out, thereby expressing our programs at a higher level of abstraction.
+يصف القسم [4.3.3](#g_t4_002e3_002e3) تنفيذ مقيّم `amb`. غير أنّنا، أوّلًا، نُعطي بعض الأمثلة على كيفيّة استخدامه. وميزة البرمجة غير الحتميّة هي أنّنا نستطيع إخفاء تفاصيل كيفيّة إجراء البحث، وبذلك التعبير عن برامجنا على مستوى أعلى من التجريد.
 
-#### Logic Puzzles
+#### ألغاز منطقيّة
 
-The following puzzle (taken from [Dinesman 1968](https://sarabander.github.io/sicp/html/References.xhtml#Dinesman-1968)) is typical of a large class of simple logic puzzles:
+اللغز الآتي (مأخوذٌ من [دينسمان 1968](https://sarabander.github.io/sicp/html/References.xhtml#Dinesman-1968)) يمثّل نموذجًا لصنفٍ كبيرٍ من الألغاز المنطقيّة البسيطة:
 
-> Baker, Cooper, Fletcher, Miller, and Smith live on different floors of an apartment house that contains only five floors. Baker does not live on the top floor. Cooper does not live on the bottom floor. Fletcher does not live on either the top or the bottom floor. Miller lives on a higher floor than does Cooper. Smith does not live on a floor adjacent to Fletcher’s. Fletcher does not live on a floor adjacent to Cooper’s. Where does everyone live?
+> يسكن بيكر، وكوبر، وفلتشر، وميلر، وسميث في طوابق مختلفةٍ من عمارةٍ سكنيّةٍ لا تحتوي إلّا خمسة طوابق. ولا يسكن بيكر في الطابق العلويّ. ولا يسكن كوبر في الطابق السفليّ. ولا يسكن فلتشر في الطابق العلويّ ولا في السفليّ. ويسكن ميلر في طابقٍ أعلى من طابق كوبر. ولا يسكن سميث في طابقٍ مجاور لطابق فلتشر. ولا يسكن فلتشر في طابقٍ مجاور لطابق كوبر. فأين يسكن كلٌّ منهم؟
 
-We can determine who lives on each floor in a straightforward way by enumerating all the possibilities and imposing the given restrictions:[^48]
+ويمكننا تحديد من يسكن في كلّ طابقٍ على سبيلٍ مباشرٍ بحصر جميع الاحتمالات وفرض القيود المعطاة:[^48]
 
 ```scheme
 (define (multiple-dwelling)
@@ -1832,40 +1832,40 @@ We can determine who lives on each floor in a straightforward way by enumerating
           (list 'smith smith))))
 ```
 
-Evaluating the expression `(multiple-dwelling)` produces the result
+وإنّ تقييم التعبير `(multiple-dwelling)` يُنتج النتيجة
 
 ```scheme
 ((baker 3) (cooper 2) (fletcher 4)
  (miller 5) (smith 1))
 ```
 
-Although this simple procedure works, it is very slow. [Exercise 4.39](#Exercise-4_002e39) and [Exercise 4.40](#Exercise-4_002e40) discuss some possible improvements.
+وعلى الرغم من أنّ هذا الإجراء البسيط يعمل، فهو بطيءٌ جدًّا. ويناقش [التمرين 4.39](#Exercise-4_002e39) و[التمرين 4.40](#Exercise-4_002e40) بعض التحسينات الممكنة.
 
-> **Exercise 4.38:** Modify the multiple-dwelling procedure to omit the requirement that Smith and Fletcher do not live on adjacent floors. How many solutions are there to this modified puzzle?
+> **التمرين 4.38:** عدّل إجراء multiple-dwelling لإسقاط المقتضى القائل إنّ سميث وفلتشر لا يسكنان في طابقين متجاورين. فكم حلًّا يوجد لهذا اللغز المعدّل؟
 
-> **Exercise 4.39:** Does the order of the restrictions in the multiple-dwelling procedure affect the answer? Does it affect the time to find an answer? If you think it matters, demonstrate a faster program obtained from the given one by reordering the restrictions. If you think it does not matter, argue your case.
+> **التمرين 4.39:** فهل يؤثّر ترتيب القيود في إجراء multiple-dwelling في الجواب؟ وهل يؤثّر في الوقت اللازم لإيجاد جواب؟ فإن كنت تظنّ أنّه يؤثّر، فأظهِر برنامجًا أسرع متحصّلٌ من المعطى بإعادة ترتيب القيود. وإن كنت تظنّ أنّه لا يؤثّر، فحاجج قضيّتك.
 
-> **Exercise 4.40:** In the multiple dwelling problem, how many sets of assignments are there of people to floors, both before and after the requirement that floor assignments be distinct? It is very inefficient to generate all possible assignments of people to floors and then leave it to backtracking to eliminate them. For example, most of the restrictions depend on only one or two of the person-floor variables, and can thus be imposed before floors have been selected for all the people. Write and demonstrate a much more efficient nondeterministic procedure that solves this problem based upon generating only those possibilities that are not already ruled out by previous restrictions. (Hint: This will require a nest of `let` expressions.)
+> **التمرين 4.40:** في مسألة العمارة السكنيّة، فكم مجموعةً من الإحلالات للأشخاص في الطوابق، قبل المقتضى القاضي بأن تكون إحلالات الطوابق متمايزةً وبعده؟ إنّ توليد جميع الإحلالات الممكنة للأشخاص في الطوابق وترك الأمر بعد ذلك للتتبّع الرجعيّ ليستنفدها أمرٌ غير كفؤٍ على الإطلاق. فمثلًا، أكثر القيود يعتمد على متغيّرٍ أو متغيّرَي شخص-طابق فحسب، وبوسعه بالتالي أن يُفرض قبل أن تُختار طوابقٌ لجميع الأشخاص. واكتب وأظهِر إجراءً غير حتميًّ أكفأُ بكثيرٍ يحلّ هذه المسألة بناءً على توليد تلك الاحتمالات غير المستنفدة بحكم قيودٍ سابقةٍ فحسب. (تلميح: سيستلزم هذا عشًّا من تعابير `let`.)
 
-> **Exercise 4.41:** Write an ordinary Scheme program to solve the multiple dwelling puzzle.
+> **التمرين 4.41:** اكتب برنامج Scheme عاديًّا لحلّ لغز العمارة السكنيّة.
 
-> **Exercise 4.42:** Solve the following “Liars” puzzle (from [Phillips 1934](https://sarabander.github.io/sicp/html/References.xhtml#Phillips-1934)): Five schoolgirls sat for an examination. Their parents—so they thought—showed an undue degree of interest in the result. They therefore agreed that, in writing home about the examination, each girl should make one true statement and one untrue one. The following are the relevant passages from their letters: Betty: “Kitty was second in the examination. I was only third.”
-> > Ethel: “You’ll be glad to hear that I was on top. Joan was second.”
-> > Joan: “I was third, and poor old Ethel was bottom.”
-> > Kitty: “I came out second. Mary was only fourth.”
-> > Mary: “I was fourth. Top place was taken by Betty.”
+> **التمرين 4.42:** حُلّ لغز «الكاذبات» الآتي (مأخوذٌ من [فيليبس 1934](https://sarabander.github.io/sicp/html/References.xhtml#Phillips-1934)): جلست خمسُ تلميذاتٍ لامتحانٍ. وقد أظهر والدا هنّ - بحسب ما ظنّن - اهتمامًا مفرطًا بالنتيجة. ولذلك اتّفقن على أنّ كلَّ واحدةٍ منهنّ، حين تكتب إلى أهلها عن الامتحان، تصدر عبارةً صحيحةً واحدةً وعبارةً غير صحيحةٍ واحدة. والآتي هي المقاطع ذات الصلة من رسائلهنّ: بيتي: «كانت كيتي الثانية في الامتحان. وأنا لم أكن سوى الثالثة.»
+> > إثيل: «سيسرّك أن تسمعي أنّي كنت الأولى. وكانت جوان الثانية.»
+> > جوان: «كنتُ الثالثة، وإثيل المسكينة كانت الأخيرة.»
+> > كيتي: «كنتُ الثانية. وكانت ماري الرابعة فقط.»
+> > ماري: «كنتُ الرابعة. وقد نالت بيتي الصدارة.»
 > > 
-> > What in fact was the order in which the five girls were placed?
+> > فما هو الترتيب الذي جاءت به التلميذات الخمس فعلًا؟
 
-> **Exercise 4.43:** Use the `amb` evaluator to solve the following puzzle:[^49] Mary Ann Moore’s father has a yacht and so has each of his four friends: Colonel Downing, Mr. Hall, Sir Barnacle Hood, and Dr. Parker. Each of the five also has one daughter and each has named his yacht after a daughter of one of the others. Sir Barnacle’s yacht is the Gabrielle, Mr. Moore owns the Lorna; Mr. Hall the Rosalind. The Melissa, owned by Colonel Downing, is named after Sir Barnacle’s daughter. Gabrielle’s father owns the yacht that is named after Dr. Parker’s daughter. Who is Lorna’s father?
+> **التمرين 4.43:** استخدم مقيّم `amb` لحلّ اللغز الآتي:[^49] يملك والد ماري آن مور يختًا، وكذلك يفعل كلٌّ من أصحابه الأربعة: العقيد داونينغ، والسيد هال، والسير بارناكِل هود، والدكتور باركر. ولكلٍّ من الخمسة أيضًا ابنةٌ واحدة، وقد سمّى كلٌّ منهم يخته باسم ابنةٍ لأحد الآخرين. فاليخت المسمّى Gabrielle هو يخت السير بارناكِل، والسيد مور يملك Lorna؛ أمّا السيد هال فيملك Rosalind. واليخت Melissa، المملوك للعقيد داونينغ، مسمّىً باسم ابنة السير بارناكِل. وأبو Gabrielle يملك اليخت المسمّى باسم ابنة الدكتور باركر. فمن هو أبو Lorna؟
 
-Try to write the program so that it runs efficiently (see [Exercise 4.40](#Exercise-4_002e40)). Also determine how many solutions there are if we are not told that Mary Ann’s last name is Moore.
+حاول كتابة البرنامج بحيث يعمل بكفاءةٍ (انظر [التمرين 4.40](#Exercise-4_002e40)). وحدّد أيضًا عدد الحلول الموجودة إذا لم يُقَل لنا إنّ اسم عائلة ماري آن هو مور.
 
-> **Exercise 4.44:** [Exercise 2.42](https://sarabander.github.io/sicp/html/2_002e2.xhtml#Exercise-2_002e42) described the “eight-queens puzzle” of placing queens on a chessboard so that no two attack each other. Write a nondeterministic program to solve this puzzle.
+> **التمرين 4.44:** لقد وصف [التمرين 2.42](https://sarabander.github.io/sicp/html/2_002e2.xhtml#Exercise-2_002e42) «لغز الملكات الثماني»، وهو وضع ملكاتٍ على رقعة شطرنجٍ بحيث لا يهاجم بعضهنّ بعضًا. اكتب برنامجًا غير حتميٍّ لحلّ هذا اللغز.
 
-#### Parsing natural language
+#### تحليل اللغة الطبيعيّة
 
-Programs designed to accept natural language as input usually start by attempting to *parse* the input, that is, to match the input against some grammatical structure. For example, we might try to recognize simple sentences consisting of an article followed by a noun followed by a verb, such as “The cat eats.” To accomplish such an analysis, we must be able to identify the parts of speech of individual words. We could start with some lists that classify various words:[^50]
+تبدأ البرامج المصمّمة لقبول اللغة الطبيعيّة كدخل (input) عادةً بمحاولة *تحليل (parse)* الدخل، أي مطابقته مع بنيةٍ نحويّةٍ ما. فمثلًا، قد نحاول التعرّف على جملٍ بسيطةٍ تتكوّن من أداة تعريفٍ تليها اسمٌ يليه فعل، مثل «القطّ يأكل». ولإنجاز تحليلٍ كهذا، ينبغي أن نكون قادرين على تحديد أقسام كلام الكلمات المفردة. ويستطيع المرء البدء ببعض القوائم التي تصنّف كلماتٍ متنوّعة:[^50]
 
 ```scheme
 (define nouns 
@@ -1877,7 +1877,7 @@ Programs designed to accept natural language as input usually start by attemptin
 (define articles '(article the a))
 ```
 
-We also need a *grammar*, that is, a set of rules describing how grammatical elements are composed from simpler elements. A very simple grammar might stipulate that a sentence always consists of two pieces—a noun phrase followed by a verb—and that a noun phrase consists of an article followed by a noun. With this grammar, the sentence “The cat eats” is parsed as follows:
+ونحتاج أيضًا إلى *نحوٍ (grammar)*، أي مجموعةٍ من القواعد تصف كيف تُركّب العناصر النحويّة من عناصر أبسط. فقد ينصّ نحوٌ بسيطٌ جدًّا على أنّ الجملة تتكوّن دائمًا من قطعتين - *عبارةٌ اسميّةٌ (noun phrase)* تليها فعل - وعلى أنّ العبارة الاسميّة تتكوّن من أداة تعريفٍ تليها اسمٌ. وبهذا النحو، تُحلَّل الجملة «القطّ يأكل» على النحو الآتي:
 
 ```scheme
 (sentence
@@ -1885,7 +1885,7 @@ We also need a *grammar*, that is, a set of rules describing how grammatical ele
  (verb eats))
 ```
 
-We can generate such a parse with a simple program that has separate procedures for each of the grammatical rules. To parse a sentence, we identify its two constituent pieces and return a list of these two elements, tagged with the symbol `sentence`:
+ويستطيع المرء أن يولّد تحليلًا كهذا ببرنامجٍ بسيطٍ له إجراءاتٌ منفصلةٌ لكلّ قاعدةٍ من القواعد النحويّة. فلتحليل جملةٍ، نحدّد قطعتَيها المكوّنتين ونعيد قائمةً بهذين العنصرين، موسومةً بالرمز `sentence`:
 
 ```scheme
 (define (parse-sentence)
@@ -1894,7 +1894,7 @@ We can generate such a parse with a simple program that has separate procedures 
          (parse-word verbs)))
 ```
 
-A noun phrase, similarly, is parsed by finding an article followed by a noun:
+وتُحلَّل العبارة الاسميّة، بالمثل، بإيجاد أداة تعريفٍ تليها اسمٌ:
 
 ```scheme
 (define (parse-noun-phrase)
@@ -1903,7 +1903,7 @@ A noun phrase, similarly, is parsed by finding an article followed by a noun:
         (parse-word nouns)))
 ```
 
-At the lowest level, parsing boils down to repeatedly checking that the next unparsed word is a member of the list of words for the required part of speech. To implement this, we maintain a global variable `*unparsed*`, which is the input that has not yet been parsed. Each time we check a word, we require that `*unparsed*` must be non-empty and that it should begin with a word from the designated list. If so, we remove that word from `*unparsed*` and return the word together with its part of speech (which is found at the head of the list):[^51]
+وفي أدنى مستوى، ينحصر التحليل في التحقّق المتكرّر من أنّ الكلمة التالية غير المحلَّلة هي عضوٌ في قائمة كلمات قسم الكلام المطلوب. ولتنفيذ هذا، نحافظ على متغيّرٍ شاملٍ `*unparsed*`، وهو الدخل الذي لم يُحلَّل بعد. وكلّما فحصنا كلمةً، نقتضي أن يكون `*unparsed*` غير فارغٍ وأن يبدأ بكلمةٍ من القائمة المعيَّنة. فإن كان الأمر كذلك، نحذف تلك الكلمة من `*unparsed*` ونعيدها مع قسم كلامها (الذي يُوجد في رأس القائمة):[^51]
 
 ```scheme
 (define (parse-word word-list)
@@ -1915,7 +1915,7 @@ At the lowest level, parsing boils down to repeatedly checking that the next unp
     (list (car word-list) found-word)))
 ```
 
-To start the parsing, all we need to do is set `*unparsed*` to be the entire input, try to parse a sentence, and check that nothing is left over:
+ولابتداء التحليل، كلّ ما علينا فعله هو ضبط `*unparsed*` ليكون الدخل بأكمله، ومحاولة تحليل جملةٍ، والتحقّق من أنّ لا شيء بقيَ:
 
 ```scheme
 (define *unparsed* '())
@@ -1926,7 +1926,7 @@ To start the parsing, all we need to do is set `*unparsed*` to be the entire inp
     sent))
 ```
 
-We can now try the parser and verify that it works for our simple test sentence:
+ويستطيع المرء الآن تجربة المحلّل والتحقّق من أنّه يعمل من أجل جملة اختبارنا البسيطة:
 
 ```scheme
 ;;; Amb-Eval input:
@@ -1939,16 +1939,16 @@ We can now try the parser and verify that it works for our simple test sentence:
  (verb eats))
 ```
 
-The `amb` evaluator is useful here because it is convenient to express the parsing constraints with the aid of `require`. Automatic search and backtracking really pay off, however, when we consider more complex grammars where there are choices for how the units can be decomposed.
+ومقيّم `amb` مفيدٌ هنا لأنّه ملائمٌ للتعبير عن قيود التحليل بمعونة `require`. أمّا البحث الآليّ والتتبّع الرجعيّ فيُجدِيان ثمارهما حقًّا حين ننظر في قواعد نحويّةٍ أكثر تعقيدًا، حيث تكون هناك خياراتٌ لكيفيّة تفكيك الوحدات.
 
-Let’s add to our grammar a list of prepositions:
+فلنُضِف إلى نحوّنا قائمةً بحروف الجرّ:
 
 ```scheme
 (define prepositions 
   '(prep for to in by with))
 ```
 
-and define a prepositional phrase (e.g., “for the cat”) to be a preposition followed by a noun phrase:
+ولنُعرّف *عبارة حرف الجرّ (prepositional phrase)* (مثلًا «للقطّ») على أنّها حرف جرٍّ يتبعه عبارةٌ اسميّةٌ:
 
 ```scheme
 (define (parse-prepositional-phrase)
@@ -1957,7 +1957,7 @@ and define a prepositional phrase (e.g., “for the cat”) to be a preposition 
         (parse-noun-phrase)))
 ```
 
-Now we can define a sentence to be a noun phrase followed by a verb phrase, where a verb phrase can be either a verb or a verb phrase extended by a prepositional phrase:[^52]
+ويسعنا الآن تعريف الجملة على أنّها عبارةٌ اسميّةٌ تليها *عبارةٌ فعليّة (verb phrase)*، حيث يمكن أن تكون العبارة الفعليّة إمّا فعلًا وإمّا عبارةً فعليّةً موسّعةً بعبارة حرف جرٍّ:[^52]
 
 ```scheme
 (define (parse-sentence)
@@ -1976,7 +1976,7 @@ Now we can define a sentence to be a noun phrase followed by a verb phrase, wher
   (maybe-extend (parse-word verbs)))
 ```
 
-While we’re at it, we can also elaborate the definition of noun phrases to permit such things as “a cat in the class.” What we used to call a noun phrase, we’ll now call a simple noun phrase, and a noun phrase will now be either a simple noun phrase or a noun phrase extended by a prepositional phrase:
+وبمناسبة الحديث، يستطيع المرء أيضًا أن يُفصّل تعريف العبارات الاسميّة للسماح بأمورٍ مثل «قطةٍ في الصفّ». فما كنّا نسمّيه عبارةً اسميّةً، سنسمّيه الآن عبارةً اسميّةً بسيطة، وستكون العبارة الاسميّة إمّا عبارةً اسميّةً بسيطةً وإمّا عبارةً اسميّةً موسّعةً بعبارة حرف جرٍّ:
 
 ```scheme
 (define (parse-simple-noun-phrase)
@@ -1995,14 +1995,14 @@ While we’re at it, we can also elaborate the definition of noun phrases to per
   (maybe-extend (parse-simple-noun-phrase)))
 ```
 
-Our new grammar lets us parse more complex sentences. For example
+ويسمح لنا نحوّنا الجديد بتحليل جملٍ أكثر تعقيدًا. فمثلًا
 
 ```scheme
 (parse '(the student with the cat 
          sleeps in the class))
 ```
 
-produces
+يُنتج
 
 ```scheme
 (sentence
@@ -2021,14 +2021,14 @@ produces
                 (noun class)))))
 ```
 
-Observe that a given input may have more than one legal parse. In the sentence “The professor lectures to the student with the cat,” it may be that the professor is lecturing with the cat, or that the student has the cat. Our nondeterministic program finds both possibilities:
+لاحِظ أنّ دخلًا معيَّنًا قد يكون له أكثر من تحليلٍ مشروع. ففي الجملة «الأستاذ يلقي محاضرةً للطالب مع القطّ»، قد يكون الأستاذ يُحاضر ومعه القطّ، وقد يكون الطالب هو الذي معه القطّ. وبرنامجنا غير الحتميّ يجد كلا الاحتمالين:
 
 ```scheme
 (parse '(the professor lectures to 
          the student with the cat))
 ```
 
-produces
+يُنتج
 
 ```scheme
 (sentence
@@ -2047,7 +2047,7 @@ produces
                 (noun cat)))))
 ```
 
-Asking the evaluator to try again yields
+وطلب المحاولة مرّةً أخرى من المقيّم يُنتج
 
 ```scheme
 (sentence
@@ -2067,11 +2067,11 @@ Asking the evaluator to try again yields
                   (noun cat)))))))
 ```
 
-> **Exercise 4.45:** With the grammar given above, the following sentence can be parsed in five different ways: “The professor lectures to the student in the class with the cat.” Give the five parses and explain the differences in shades of meaning among them.
+> **التمرين 4.45:** بالنحو المعطى أعلاه، يمكن تحليل الجملة الآتية بخمس طرائق مختلفة: «الأستاذ يلقي محاضرةً للطالب في الصفّ مع القطّ». أعطِ التحليلات الخمس، واشرح الفروق في ظلال المعنى بينها.
 
-> **Exercise 4.46:** The evaluators in [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1) and [4.2](https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2) do not determine what order operands are evaluated in. We will see that the `amb` evaluator evaluates them from left to right. Explain why our parsing program wouldn’t work if the operands were evaluated in some other order.
+> **التمرين 4.46:** إنّ المقيّمين في [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1) و[4.2](https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2) لا يحدّدان الترتيب الذي تُقيَّم به العوامل. وسنرى أنّ مقيّم `amb` يقيّمها من اليسار إلى اليمين. فسرح لماذا لن يعمل برنامج التحليل لدينا لو قُيِّمت العوامل بترتيبٍ آخر.
 
-**Exercise 4.47:** Louis Reasoner suggests that, since a verb phrase is either a verb or a verb phrase followed by a prepositional phrase, it would be much more straightforward to define the procedure `parse-verb-phrase` as follows (and similarly for noun phrases):
+**التمرين 4.47:** يقترح لويس ريزنر أنّهُ، إذ كانت العبارة الفعليّة إمّا فعلًا وإمّا عبارةً فعليّةً تليها عبارة حرف جرٍّ، فسيكون تعريف إجراء `parse-verb-phrase` أبسطَ كثيرًا على النحو الآتي (وبالمثل بالنسبة للعبارات الاسميّة):
 
 ```scheme
 (define (parse-verb-phrase)
@@ -2082,69 +2082,69 @@ Asking the evaluator to try again yields
         (parse-prepositional-phrase))))
 ```
 
-Does this work? Does the program’s behavior change if we interchange the order of expressions in the `amb`?
+فهل يعمل هذا؟ وهل يتغيّر سلوك البرنامج إذا بدّلنا ترتيب التعابير في الـ`amb`؟
 
-> **Exercise 4.48:** Extend the grammar given above to handle more complex sentences. For example, you could extend noun phrases and verb phrases to include adjectives and adverbs, or you could handle compound sentences.[^53]
+> **التمرين 4.48:** وسّع النحو المعطى أعلاه ليتعامل مع جملٍ أكثر تعقيدًا. فمثلًا، يستطيع المرء توسيع العبارات الاسميّة والعبارات الفعليّة لتشمل الصفات والظروف، أو التعامل مع الجمل المركّبة.[^53]
 
-> **Exercise 4.49:** Alyssa P. Hacker is more interested in generating interesting sentences than in parsing them. She reasons that by simply changing the procedure `parse-word` so that it ignores the “input sentence” and instead always succeeds and generates an appropriate word, we can use the programs we had built for parsing to do generation instead. Implement Alyssa’s idea, and show the first half-dozen or so sentences generated.[^54]
+> **التمرين 4.49:** أليسا ب. هاكر أكثر اهتمامًا بتوليد جملٍ مثيرةٍ للاهتمامٍ من اهتمامها بتحليلها. وهي تستدلّ بأنّه بمجرّد تغيير إجراء `parse-word` بحيث يتجاهل «جملة الدخل» ويكون ناجحًا دائمًا ويولّد كلمةً مناسبةً بدلًا من ذلك، فسيمكننا استخدام البرامج التي بنيناها للتحليل لأداء التوليد بدلًا منه. نفّذ فكرة أليسا، وأظهِر أوّل نصف دستةٍ أو نحوه من الجمل المولّدة.[^54]
 
-#### 4.3.3 Implementing the `Amb` Evaluator
+#### 4.3.3 تنفيذ مقيّم `Amb`
 
-The evaluation of an ordinary Scheme expression may return a value, may never terminate, or may signal an error. In nondeterministic Scheme the evaluation of an expression may in addition result in the discovery of a dead end, in which case evaluation must backtrack to a previous choice point. The interpretation of nondeterministic Scheme is complicated by this extra case.
+فإنّ تقييم تعبير Scheme عاديٍّ قد يُعيد قيمةً، وقد لا ينتهي أبدًا، وقد يُشير إلى خطأٍ. أمّا في Scheme غير الحتميّة، فقد يؤدّي تقييم تعبيرٍ - بالإضافة إلى ذلك - إلى اكتشاف طريقٍ مسدود، وفي هذه الحالة ينبغي أن يتراجع التقييم رجعيًّا إلى نقطة اختيارٍ سابقة. وتأويل Scheme غير الحتميّة معقّدٌ بحكم هذه الحالة الإضافيّة.
 
-We will construct the `amb` evaluator for nondeterministic Scheme by modifying the analyzing evaluator of [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7).[^55] As in the analyzing evaluator, evaluation of an expression is accomplished by calling an execution procedure produced by analysis of that expression. The difference between the interpretation of ordinary Scheme and the interpretation of nondeterministic Scheme will be entirely in the execution procedures.
+وسنبني مقيّم `amb` من أجل Scheme غير الحتميّة بتعديل المقيّم المُحلِّل الوارد في [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7).[^55] فكما في المقيّم المُحلِّل، يُنجَز تقييم التعبير بنداء إجراءٍ تنفيذيٍّ يُنتَج بتحليل ذلك التعبير. وسيكون الفرق بين تأويل Scheme العاديّة وتأويل Scheme غير الحتميّة كلَّه في الإجراءات التنفيذيّة.
 
-#### Execution procedures and continuations
+#### الإجراءات التنفيذيّة وإجراءات الاستمرار
 
-Recall that the execution procedures for the ordinary evaluator take one argument: the environment of execution. In contrast, the execution procedures in the `amb` evaluator take three arguments: the environment, and two procedures called *continuation procedures*. The evaluation of an expression will finish by calling one of these two continuations: If the evaluation results in a value, the *success continuation* is called with that value; if the evaluation results in the discovery of a dead end, the *failure continuation* is called. Constructing and calling appropriate continuations is the mechanism by which the nondeterministic evaluator implements backtracking.
+تذكّر أنّ الإجراءات التنفيذيّة في المقيّم العاديّ تأخذ معطىً واحدًا: بيئة التنفيذ. أمّا الإجراءات التنفيذيّة في مقيّم `amb` فتأخذ ثلاثة معطيات: البيئة، وإجراءين يُسمّيان *استمرارين (continuation procedures)*. وسينتهي تقييم التعبير بنداء أحد هذين الاستمرارين: فإن أدّى التقييم إلى قيمة، دُعي *استمرار النجاح (success continuation)* بتلك القيمة؛ وإن أدّى التقييم إلى اكتشاف طريقٍ مسدود، دُعي *استمرار الفشل (failure continuation)*. وبناء الاستمرارات الملائمة ونداؤها هي الآليّة التي يُنفّذ بها المقيّم غير الحتميّ التتبّع الرجعيّ.
 
-It is the job of the success continuation to receive a value and proceed with the computation. Along with that value, the success continuation is passed another failure continuation, which is to be called subsequently if the use of that value leads to a dead end.
+ومهمّة استمرار النجاح هي تلقّي قيمةٍ ومتابعة الاحتساب. فمع تلك القيمة، يُمرَّر إلى استمرار النجاح استمرارُ فشلٍ آخر، يُدعى لاحقًا إذا أدّى استخدام تلك القيمة إلى طريقٍ مسدود.
 
-It is the job of the failure continuation to try another branch of the nondeterministic process. The essence of the nondeterministic language is in the fact that expressions may represent choices among alternatives. The evaluation of such an expression must proceed with one of the indicated alternative choices, even though it is not known in advance which choices will lead to acceptable results. To deal with this, the evaluator picks one of the alternatives and passes this value to the success continuation. Together with this value, the evaluator constructs and passes along a failure continuation that can be called later to choose a different alternative.
+ومهمّة استمرار الفشل هي تجربة فرعٍ آخر من العمليّة غير الحتميّة. وجوهر اللغة غير الحتميّة يكمن في أنّ التعابير قد تمثّل اختياراتٍ بين بدائل. فينبغي لتقييم تعبيرٍ كهذا أن يمضي بأحد الاختيارات البديلة المشار إليها، وإن لم يكن معروفًا مقدّمًا أيّ الاختيارات سيؤدّي إلى نتائج مقبولة. وللتعامل مع هذا، يختار المقيّم أحد البدائل ويمرّر هذه القيمة إلى استمرار النجاح. ومع هذه القيمة، يبني المقيّم استمرارَ فشلٍ ويمرّره معها، يمكن نداؤه لاحقًا لاختيار بديلٍ مختلف.
 
-A failure is triggered during evaluation (that is, a failure continuation is called) when a user program explicitly rejects the current line of attack (for example, a call to `require` may result in execution of `(amb)`, an expression that always fails—see [4.3.1](#g_t4_002e3_002e1)). The failure continuation in hand at that point will cause the most recent choice point to choose another alternative. If there are no more alternatives to be considered at that choice point, a failure at an earlier choice point is triggered, and so on. Failure continuations are also invoked by the driver loop in response to a `try-again` request, to find another value of the expression.
+ويُثار فشلٌ أثناء التقييم (أي يُدعى استمرار الفشل) حين يرفض برنامج المستخدم خطّ الهجوم الحالي رفضًا صريحًا (فمثلًا، قد يؤدّي نداء `require` إلى تنفيذ `(amb)`، وهو تعبيرٌ يفشل دائمًا - انظر [4.3.1](#g_t4_002e3_002e1)). واستمرار الفشل المتاح عند تلك النقطة سيؤدّي إلى أن تختار أحدث نقطة اختيارٍ بديلًا آخر. فإن لم تكن هناك بدائل أخرى يُنظر فيها عند تلك النقطة، أُثير فشلٌ عند نقطة اختيارٍ سابقة، وهكذا. وتُستدعى استمرارات الفشل أيضًا من حلقة المُشغّل استجابةً لطلب `try-again`، لإيجاد قيمةٍ أخرى للتعبير.
 
-In addition, if a side-effect operation (such as assignment to a variable) occurs on a branch of the process resulting from a choice, it may be necessary, when the process finds a dead end, to undo the side effect before making a new choice. This is accomplished by having the side-effect operation produce a failure continuation that undoes the side effect and propagates the failure.
+وبالإضافة إلى ذلك، فإن حدثت عمليّةٌ ذات أثرٍ جانبيّ (كإحلال قيمةٍ في متغيّر) على فرعٍ من العمليّة الناشئ عن اختيارٍ، فقد يلزم، حين تجد العمليّة طريقًا مسدودًا، التراجع عن الأثر الجانبيّ قبل إجراء اختيارٍ جديد. ويُنجَز هذا بجعل العمليّة ذات الأثر الجانبيّ تُنتج استمرارَ فشلٍ يتراجع عن الأثر الجانبيّ وينشر الفشل.
 
-In summary, failure continuations are constructed by
+وباختصار، تُبنى استمرارات الفشل بواسطة
 
-- `amb` expressions—to provide a mechanism to make alternative choices if the current choice made by the `amb` expression leads to a dead end;
-- the top-level driver—to provide a mechanism to report failure when the choices are exhausted;
-- assignments—to intercept failures and undo assignments during backtracking.
+- تعابير `amb` - لتوفير آليّةٍ لإجراء اختياراتٍ بديلةٍ إذا أدّى الاختيار الحالي الذي أجراه تعبير `amb` إلى طريقٍ مسدود؛
+- مُشغّل المستوى الأعلى - لتوفير آليّةٍ للإبلاغ عن الفشل حين تنفد الاختيارات؛
+- الإحلالات - لاعتراض الفشل والتراجع عن الإحلالات أثناء التتبّع الرجعيّ.
 
-Failures are initiated only when a dead end is encountered. This occurs
+ولا تُبدأ الفشل إلّا عند مصادفة طريقٍ مسدود. ويقع ذلك
 
-- if the user program executes `(amb)`;
-- if the user types `try-again` at the top-level driver.
+- إذا نفّذ برنامج المستخدم `(amb)`؛
+- إذا كتب المستخدم `try-again` عند مُشغّل المستوى الأعلى.
 
-Failure continuations are also called during processing of a failure:
+وتُدعى استمرارات الفشل أيضًا أثناء معالجة فشلٍ:
 
-- When the failure continuation created by an assignment finishes undoing a side effect, it calls the failure continuation it intercepted, in order to propagate the failure back to the choice point that led to this assignment or to the top level.
-- When the failure continuation for an `amb` runs out of choices, it calls the failure continuation that was originally given to the `amb`, in order to propagate the failure back to the previous choice point or to the top level.
+- حين ينتهي استمرار الفشل الذي أنشأه إحلالٌ من التراجع عن أثرٍ جانبيّ، فإنّه يدعو استمرار الفشل الذي اعترضه، بغية نشر الفشل راجعًا إلى نقطة الاختيار التي أوصلت إلى هذا الإحلال أو إلى المستوى الأعلى.
+- حين ينفد اختيارات استمرار الفشل الخاصّ بتعبير `amb`، فإنّه يدعو استمرار الفشل المُعطى أصلًا لتعبير `amb`، بغية نشر الفشل راجعًا إلى نقطة الاختيار السابقة أو إلى المستوى الأعلى.
 
-#### Structure of the evaluator
+#### بنية المقيّم
 
-The syntax- and data-representation procedures for the `amb` evaluator, and also the basic `analyze` procedure, are identical to those in the evaluator of [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7), except for the fact that we need additional syntax procedures to recognize the `amb` special form:[^56]
+إنّ إجراءات الصياغة وتمثيل البيانات الخاصّة بمقيّم `amb`، وكذلك إجراء `analyze` الأساسيّ، مطابقةٌ لتلك الواردة في مقيّم [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7)، إلّا في كوننا نحتاج إلى إجراءات صياغةٍ إضافيّةٍ للتعرّف على الصيغة الخاصّة `amb`:[^56]
 
 ```scheme
 (define (amb? exp) (tagged-list? exp 'amb))
 (define (amb-choices exp) (cdr exp))
 ```
 
-We must also add to the dispatch in `analyze` a clause that will recognize this special form and generate an appropriate execution procedure:
+وينبغي لنا أيضًا أن نُضيف إلى التوزيع في `analyze` بندًا يتعرّف على هذه الصيغة الخاصّة ويولّد إجراءً تنفيذيًّا ملائمًا:
 
 ```scheme
 ((amb? exp) (analyze-amb exp))
 ```
 
-The top-level procedure `ambeval` (similar to the version of `eval` given in [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7)) analyzes the given expression and applies the resulting execution procedure to the given environment, together with two given continuations:
+وإجراء المستوى الأعلى `ambeval` (الشبيه بإصدار `eval` المعطى في [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7)) يحلّل التعبير المعطى ويطبّق إجراء التنفيذ الناتج على البيئة المعطاة، مع استمرارين معطيين:
 
 ```scheme
 (define (ambeval exp env succeed fail)
   ((analyze exp) env succeed fail))
 ```
 
-A success continuation is a procedure of two arguments: the value just obtained and another failure continuation to be used if that value leads to a subsequent failure. A failure continuation is a procedure of no arguments. So the general form of an execution procedure is
+واستمرار النجاح إجراءٌ بمعطيين: القيمة التي حُصِل عليها لتوّها، واستمرار فشلٍ آخر يُستخدم إذا أدّت تلك القيمة إلى فشلٍ لاحق. وأمّا استمرار الفشل فإجراءٌ بلا معطيات. وبذلك، فالصورة العامّة لإجراء تنفيذيّ هي
 
 ```scheme
 (lambda (env succeed fail)
@@ -2153,7 +2153,7 @@ A success continuation is a procedure of two arguments: the value just obtained 
   …)
 ```
 
-For example, executing
+فمثلًا، تنفيذ
 
 ```scheme
 (ambeval ⟨exp⟩
@@ -2162,13 +2162,13 @@ For example, executing
          (lambda () 'failed))
 ```
 
-will attempt to evaluate the given expression and will return either the expression’s value (if the evaluation succeeds) or the symbol `failed` (if the evaluation fails). The call to `ambeval` in the driver loop shown below uses much more complicated continuation procedures, which continue the loop and support the `try-again` request.
+سيحاول تقييم التعبير المعطى وسيعيد إمّا قيمة التعبير (إذا نجح التقييم) وإمّا الرمز `failed` (إذا فشل التقييم). أمّا نداء `ambeval` في حلقة المُشغّل المعروضة أدناه فيستخدم إجراءات استمرارٍ أعقدَ بكثيرٍ، تواصل الحلقة وتدعم طلب `try-again`.
 
-Most of the complexity of the `amb` evaluator results from the mechanics of passing the continuations around as the execution procedures call each other. In going through the following code, you should compare each of the execution procedures with the corresponding procedure for the ordinary evaluator given in [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7).
+ويَنشأ معظم تعقيد مقيّم `amb` من ميكانيكا تمرير الاستمرارات فيما تنداي الإجراءات التنفيذيّة بعضها بعضًا. وعند المرور على الشيفرة الآتية، ينبغي أن تقارن كلّ إجراءٍ تنفيذيٍّ بالإجراء المقابل له في المقيّم العاديّ المعطى في [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7).
 
-#### Simple expressions
+#### التعابير البسيطة
 
-The execution procedures for the simplest kinds of expressions are essentially the same as those for the ordinary evaluator, except for the need to manage the continuations. The execution procedures simply succeed with the value of the expression, passing along the failure continuation that was passed to them.
+والإجراءات التنفيذيّة الخاصّة بأبسط أنواع التعابير هي في أساسها ذاتها تلك الخاصّة بالمقيّم العاديّ، إلّا في الحاجة إلى إدارة الاستمرارات. فالإجراءات التنفيذيّة تنجح ببساطةٍ بقيمة التعبير، ممرّرةً استمرار الفشل الذي مُرِّر إليها.
 
 ```scheme
 (define (analyze-self-evaluating exp)
@@ -2194,11 +2194,11 @@ The execution procedures for the simplest kinds of expressions are essentially t
                fail))))
 ```
 
-Notice that looking up a variable always ‘succeeds.’ If `lookup-variable-value` fails to find the variable, it signals an error, as usual. Such a “failure” indicates a program bug—a reference to an unbound variable; it is not an indication that we should try another nondeterministic choice instead of the one that is currently being tried.
+لاحِظ أنّ البحث عن قيمة متغيّرٍ «ينجح» دائمًا. فإن فشل `lookup-variable-value` في العثور على المتغيّر، فإنّه يُشير إلى خطأٍ، كالعادة. و«فشلٌ» كهذا يدلّ على علةٍ في البرنامج - إشارةٌ إلى متغيّرٍ غير مقيّد؛ وهو ليس دلالةً على وجوب تجربة اختيارٍ غير حتميٍّ آخر بدلًا من الاختيار المُجرَّب حاليًّا.
 
-#### Conditionals and sequences
+#### التعابير الشرطيّة والتسلسلات
 
-Conditionals are also handled in a similar way as in the ordinary evaluator. The execution procedure generated by `analyze-if` invokes the predicate execution procedure `pproc` with a success continuation that checks whether the predicate value is true and goes on to execute either the consequent or the alternative. If the execution of `pproc` fails, the original failure continuation for the `if` expression is called.
+والتعابير الشرطيّة تُعالَج أيضًا بطريقةٍ مشابهةٍ لطريق معالجتها في المقيّم العاديّ. فإجراء التنفيذ الذي يولّده `analyze-if` يستدعي إجراء التنفيذ المُسَيِّم `pproc` باستمرار نجاحٍ يفحص ما إذا كانت قيمة المُسَيِّم صحيحة ثم يمضي لتنفيذ الفرع المترتّب أو الفرع البديل. فإن فشل تنفيذ `pproc`، دُعي استمرار الفشل الأصليّ الخاصّ بتعبير `if`.
 
 ```scheme
 (define (analyze-if exp)
@@ -2218,7 +2218,7 @@ Conditionals are also handled in a similar way as in the ordinary evaluator. The
              fail))))
 ```
 
-Sequences are also handled in the same way as in the previous evaluator, except for the machinations in the subprocedure `sequentially` that are required for passing the continuations. Namely, to sequentially execute `a` and then `b`, we call `a` with a success continuation that calls `b`.
+والتسلسلات تُعالَج أيضًا بالطريقة ذاتها كما في المقيّم السابق، إلّا في المناورات التي تلزم في الإجراء الفرعيّ `sequentially` لتمرير الاستمرارات. أي أنّنا، لتنفيذ `a` تتابعيًّا ثم `b`، ندعو `a` باستمرار نجاحٍ يدعو `b`.
 
 ```scheme
 (define (analyze-sequence exps)
@@ -2242,9 +2242,9 @@ Sequences are also handled in the same way as in the previous evaluator, except 
     (loop (car procs) (cdr procs))))
 ```
 
-#### Definitions and assignments
+#### التعريفات والإحلالات
 
-Definitions are another case where we must go to some trouble to manage the continuations, because it is necessary to evaluate the definition-value expression before actually defining the new variable. To accomplish this, the definition-value execution procedure `vproc` is called with the environment, a success continuation, and the failure continuation. If the execution of `vproc` succeeds, obtaining a value `val` for the defined variable, the variable is defined and the success is propagated:
+والتعريفات حالةٌ أخرى يلزم فيها أن نتكلّف بعض المشقّة لإدارة الاستمرارات، إذ من الضروريّ تقييم تعبير قيمة التعريف قبل تعريف المتغيّر الجديد فعلًا. ولكي يُنجَز هذا، يُدعى إجراء تنفيذ قيمة التعريف `vproc` بالبيئة، وباستمرار نجاحٍ، وباستمرار الفشل. فإن نجح تنفيذ `vproc` فحصل على قيمة `val` للمتغيّر المعرَّف، عُرِّف المتغيّر ونُشِر النجاح:
 
 ```scheme
 (define (analyze-definition exp)
@@ -2259,11 +2259,11 @@ Definitions are another case where we must go to some trouble to manage the cont
              fail))))
 ```
 
-Assignments are more interesting. This is the first place where we really use the continuations, rather than just passing them around. The execution procedure for assignments starts out like the one for definitions. It first attempts to obtain the new value to be assigned to the variable. If this evaluation of `vproc` fails, the assignment fails.
+والإحلالات أكثر إمتاعًا. فهذا أوّل موضعٍ نستخدم فيه الاستمرارات استخدامًا حقيقيًّا، لا مجرّد تمريرها من هنا إلى هناك. فيبدأ إجراء التنفيذ الخاصّ بالإحلالات كما يبدأ إجراء التعريفات. فهو يحاول أوّلًا الحصول على القيمة الجديدة التي ستُحَلّ في المتغيّر. فإن فشل تقييم `vproc` هذا، فشل الإحلال.
 
-If `vproc` succeeds, however, and we go on to make the assignment, we must consider the possibility that this branch of the computation might later fail, which will require us to backtrack out of the assignment. Thus, we must arrange to undo the assignment as part of the backtracking process.[^57]
+أمّا إذا نجح `vproc`، ومضينا في إجراء الإحلال، فينبغي أن ننظر في احتمال أن يفشل هذا الفرع من الاحتساب لاحقًا، ممّا سيقتضي منّا التراجع رجعيًّا خارج الإحلال. وبذلك، ينبغي لنا أن نُرتّب للتراجع عن الإحلال كجزءٍ من عمليّة التتبّع الرجعيّ.[^57]
 
-This is accomplished by giving `vproc` a success continuation (marked with the comment “*1*” below) that saves the old value of the variable before assigning the new value to the variable and proceeding from the assignment. The failure continuation that is passed along with the value of the assignment (marked with the comment “*2*” below) restores the old value of the variable before continuing the failure. That is, a successful assignment provides a failure continuation that will intercept a subsequent failure; whatever failure would otherwise have called `fail2` calls this procedure instead, to undo the assignment before actually calling `fail2`.
+ويُنجَز هذا بإعطاء `vproc` استمرار نجاحٍ (مُعلَّمٍ بالتعليق «*1*» أدناه) يحفظ القيمة القديمة للمتغيّر قبل إحلال القيمة الجديدة فيه والمواصلة انطلاقًا من الإحلال. وأمّا استمرار الفشل الممرَّر مع قيمة الإحلال (المُعلَّم بالتعليق «*2*» أدناه) فيستعيد القيمة القديمة للمتغيّر قبل مواصلة الفشل. أي أنّ الإحلال الناجح يُوفّر استمرارَ فشلٍ يعترض فشلًا لاحقًا؛ فأيّ فشلٍ كان سيدعو `fail2` لولا ذلك، يدعو هذا الإجراء بدلًا منه، للتراجع عن الإحلال قبل دعاء `fail2` فعلًا.
 
 ```scheme
 (define (analyze-assignment exp)
@@ -2292,9 +2292,9 @@ This is accomplished by giving `vproc` a success continuation (marked with the c
                fail))))
 ```
 
-#### Procedure applications
+#### تطبيقات الإجراءات
 
-The execution procedure for applications contains no new ideas except for the technical complexity of managing the continuations. This complexity arises in `analyze-application`, due to the need to keep track of the success and failure continuations as we evaluate the operands. We use a procedure `get-args` to evaluate the list of operands, rather than a simple `map` as in the ordinary evaluator.
+وإجراء التنفيذ الخاصّ بالتطبيقات لا يحتوي على أفكارٍ جديدة، إلّا التعقيد الفنّيّ في إدارة الاستمرارات. وينشأ هذا التعقيد في `analyze-application`، نظرًا للحاجة إلى متابعة استمراري النجاح والفشل بينما نقيّم العوامل. ونستخدم إجراء `get-args` لتقييم قائمة العوامل، بدلًا من `map` البسيط كما في المقيّم العاديّ.
 
 ```scheme
 (define (analyze-application exp)
@@ -2313,7 +2313,7 @@ The execution procedure for applications contains no new ideas except for the te
              fail))))
 ```
 
-In `get-args`, notice how `cdr`-ing down the list of `aproc` execution procedures and `cons`ing up the resulting list of `args` is accomplished by calling each `aproc` in the list with a success continuation that recursively calls `get-args`. Each of these recursive calls to `get-args` has a success continuation whose value is the `cons` of the newly obtained argument onto the list of accumulated arguments:
+وفي `get-args`، لاحِظ كيف يُنجَز النزول بـ`cdr` في قائمة إجراءات التنفيذ `aproc` والبناء بـ`cons` لقائمة `args` الناتجة، بدعاء كلّ `aproc` في القائمة باستمرار نجاحٍ يدعو `get-args` تعاوديًّا. ولكلّ نداءٍ من هذه النداءات التعاوديّة لـ`get-args` استمرارُ نجاحٍ قيمتُه `cons` للمعطى المحصَل عليه حديثًا على قائمة المعطيات المتراكمة:
 
 ```scheme
 (define (get-args aprocs env succeed fail)
@@ -2335,7 +2335,7 @@ In `get-args`, notice how `cdr`-ing down the list of `aproc` execution procedure
        fail)))
 ```
 
-The actual procedure application, which is performed by `execute-application`, is accomplished in the same way as for the ordinary evaluator, except for the need to manage the continuations.
+يَتمّ تطبيق الإجراء الفعليّ، الذي يؤدّاه `execute-application`، بالطريقة ذاتها كما في المقيّم الاعتياديّ، باستثناء ضرورة إدارة الاستمراريّات (continuations).
 
 ```scheme
 (define (execute-application 
@@ -2358,9 +2358,9 @@ The actual procedure application, which is performed by `execute-application`, i
                      proc))))
 ```
 
-#### Evaluating `amb` expressions
+#### تقييم تعابير `amb`
 
-The `amb` special form is the key element in the nondeterministic language. Here we see the essence of the interpretation process and the reason for keeping track of the continuations. The execution procedure for `amb` defines a loop `try-next` that cycles through the execution procedures for all the possible values of the `amb` expression. Each execution procedure is called with a failure continuation that will try the next one. When there are no more alternatives to try, the entire `amb` expression fails.
+صيغة `amb` الخاصّة هي العنصر الأساسيّ في اللغة غير الحتميّة (nondeterministic). وهنا نرى جوهر عمليّة التفسير وسبب تتبّع الاستمراريّات. فإنّ إجراء التنفيذ الخاص بـ`amb` يُعرّف حلقةً `try-next` تتنقّل بين إجراءات التنفيذ لجميع القيم الممكنة لتعبير `amb`. ويُستدعى كلّ إجراء تنفيذٍ مع استمراريّة فشلٍ تُجرّب التالي منها. وعندما لا تعود هناك بدائلٌ لتُجرَّب، يفشل تعبير `amb` كلَّه.
 
 ```scheme
 (define (analyze-amb exp)
@@ -2378,13 +2378,13 @@ The `amb` special form is the key element in the nondeterministic language. Here
       (try-next cprocs))))
 ```
 
-#### Driver loop
+#### حلقة المشغّل
 
-The driver loop for the `amb` evaluator is complex, due to the mechanism that permits the user to try again in evaluating an expression. The driver uses a procedure called `internal-loop`, which takes as argument a procedure `try-again`. The intent is that calling `try-again` should go on to the next untried alternative in the nondeterministic evaluation. `Internal-loop` either calls `try-again` in response to the user typing `try-again` at the driver loop, or else starts a new evaluation by calling `ambeval`.
+حلقة المشغّل (driver loop) لمقيّم `amb` معقّدة، بسبب الآليّة التي تسمح للمستخدم بأن يُعيد المحاولة في تقييم تعبيرٍ ما. ويستخدم المشغّل إجراءً يُسمّى `internal-loop`، يأخذ كمعطىً إجراءً `try-again`. والمقصود أنّ نداء `try-again` ينبغي أن يمضي إلى البديل غير المُجرَّب التالي في التقييم غير الحتميّ. وإجراء `Internal-loop` إمّا أن يستدعي `try-again` استجابةً لكتابة المستخدم `try-again` في حلقة المشغّل، وإلّا فيبدأ تقييمًا جديدًا بنداء `ambeval`.
 
-The failure continuation for this call to `ambeval` informs the user that there are no more values and re-invokes the driver loop.
+تبلّغ استمراريّة الفشل الخاصة بهذا النداء لـ`ambeval` المستخدمَ بأنّه لا تعود هناك قيم، وتستدعي حلقة المشغّل من جديد.
 
-The success continuation for the call to `ambeval` is more subtle. We print the obtained value and then invoke the internal loop again with a `try-again` procedure that will be able to try the next alternative. This `next-alternative` procedure is the second argument that was passed to the success continuation. Ordinarily, we think of this second argument as a failure continuation to be used if the current evaluation branch later fails. In this case, however, we have completed a successful evaluation, so we can invoke the “failure” alternative branch in order to search for additional successful evaluations.
+أمّا استمراريّة النجاح الخاصة بنداء `ambeval` فأخفى أثرًا. فنحن نطبع القيمة المتحصّلة ثمّ نستدعي الحلقة الداخليّة من جديد مع إجراء `try-again` يكون قادرًا على تجريب البديل التالي. وهذا الإجراء `next-alternative` هو الوسيط الثاني الذي مُرِّر إلى استمراريّة النجاح. واعتياديًّا، نفكّر في هذا الوسيط الثاني بوصفه استمراريّة فشلٍ تُستخدَم إن فشل فرع التقييم الحاليّ لاحقًا. لكن في هذه الحالة، يكون قد أُتمّ تقييمٌ ناجح، فيمكننا استدعاء فرع البديل «الفاشل» باحثين عن تقييماتٍ ناجحةٍ إضافيّة.
 
 ```scheme
 (define input-prompt  ";;; Amb-Eval input:")
@@ -2425,11 +2425,11 @@ The success continuation for the call to `ambeval` is more subtle. We print the 
      (driver-loop))))
 ```
 
-The initial call to `internal-loop` uses a `try-again` procedure that complains that there is no current problem and restarts the driver loop. This is the behavior that will happen if the user types `try-again` when there is no evaluation in progress.
+يستخدم النداء الأوّل لـ`internal-loop` إجراء `try-again` يشتكي من عدم وجود مسألةٍ جارية، ويعيد تشغيل حلقة المشغّل. وهذا هو السلوك الذي سيحدث إن كتب المستخدم `try-again` حين لا يكون هناك تقييمٌ جارٍ.
 
-> **Exercise 4.50:** Implement a new special form `ramb` that is like `amb` except that it searches alternatives in a random order, rather than from left to right. Show how this can help with Alyssa’s problem in [Exercise 4.49](#Exercise-4_002e49).
+> **التمرين 4.50:** نفّذ صيغةً خاصّةً جديدةً تُسمّى `ramb` تشبه `amb` إلّا في أنّها تبحث في البدائل بترتيبٍ عشوائيّ، بدلًا من ترتيبها من اليسار إلى اليمين. وأظهر كيف يمكن أن يساعد هذا في مسألة أليسا الواردة في [التمرين 4.49](#Exercise-4_002e49).
 
-**Exercise 4.51:** Implement a new kind of assignment called `permanent-set!` that is not undone upon failure. For example, we can choose two distinct elements from a list and count the number of trials required to make a successful choice as follows:
+**التمرين 4.51:** نفّذ نوعًا جديدًا من الإحلال يُسمّى `permanent-set!` لا يُتراجع عنه عند الفشل. فمثلًا، يمكننا اختيار عنصرين متمايزين من قائمةٍ وعدّ عدد المحاولات اللازمة لإتيان اختيارٍ ناجح على النحو الآتي:
 
 ```scheme
 (define count 0)
@@ -2450,9 +2450,9 @@ try-again
 (a c 3)
 ```
 
-What values would have been displayed if we had used `set!` here rather than `permanent-set!`?
+ما القيم التي كانت ستُعرَض لو كنّا قد استخدمنا `set!` هنا بدلًا من `permanent-set!`؟
 
-**Exercise 4.52:** Implement a new construct called `if-fail` that permits the user to catch the failure of an expression. `If-fail` takes two expressions. It evaluates the first expression as usual and returns as usual if the evaluation succeeds. If the evaluation fails, however, the value of the second expression is returned, as in the following example:
+**التمرين 4.52:** نفّذ بنيةً جديدةً تُسمّى `if-fail` تسمح للمستخدم بالإمساك بفشل تعبيرٍ ما. يأخذ `If-fail` تعبيرين. فهو يقيّم التعبير الأوّل كما هو معتاد ويعيد كما هو معتاد إن نجح التقييم. لكن إن فشل التقييم، فتُعاد قيمة التعبير الثاني، كما في المثال التالي:
 
 ```scheme
 ;;; Amb-Eval input:
@@ -2478,7 +2478,7 @@ all-odd
 8
 ```
 
-**Exercise 4.53:** With `permanent-set!` as described in [Exercise 4.51](#Exercise-4_002e51) and `if-fail` as in [Exercise 4.52](#Exercise-4_002e52), what will be the result of evaluating
+**التمرين 4.53:** باستخدام `permanent-set!` كما هو موصوف في [التمرين 4.51](#Exercise-4_002e51) و`if-fail` كما في [التمرين 4.52](#Exercise-4_002e52)، فما ستكون عليه نتيجة تقييم
 
 ```scheme
 (let ((pairs '()))
@@ -2492,7 +2492,7 @@ all-odd
    pairs))
 ```
 
-**Exercise 4.54:** If we had not realized that `require` could be implemented as an ordinary procedure that uses `amb`, to be defined by the user as part of a nondeterministic program, we would have had to implement it as a special form. This would require syntax procedures
+**التمرين 4.54:** لو كنّا لم نُدرك أنّ `require` يمكن تنفيذه كإجراءٍ اعتياديّ يستخدم `amb`، يُعرَّف من قِبل المستخدم كجزءٍ من برنامجٍ غير حتميّ، لَكُنّا اضطررنا إلى تنفيذه كصيغةٍ خاصّة. وهذا كان سيتطلّب إجراءات صياغة
 
 ```scheme
 (define (require? exp) 
@@ -2502,13 +2502,13 @@ all-odd
   (cadr exp))
 ```
 
-and a new clause in the dispatch in `analyze`
+وبندًا جديدًا في التوزيع داخل `analyze`
 
 ```scheme
 ((require? exp) (analyze-require exp))
 ```
 
-as well the procedure `analyze-require` that handles `require` expressions. Complete the following definition of `analyze-require`.
+وكذلك الإجراء `analyze-require` الذي يعالج تعابير `require`. أكمل التعريف التالي لـ`analyze-require`.
 
 ```scheme
 (define (analyze-require exp)
@@ -2523,15 +2523,15 @@ as well the procedure `analyze-require` that handles `require` expressions. Comp
              fail))))
 ```
 
-### 4.4 Logic Programming
+### 4.4 البرمجة المنطقيّة
 
-In [Chapter 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1) we stressed that computer science deals with imperative (how to) knowledge, whereas mathematics deals with declarative (what is) knowledge. Indeed, programming languages require that the programmer express knowledge in a form that indicates the step-by-step methods for solving particular problems. On the other hand, high-level languages provide, as part of the language implementation, a substantial amount of methodological knowledge that frees the user from concern with numerous details of how a specified computation will progress.
+في [الفصل 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1) شدّدنا على أنّ علم الحاسوب يتعامل مع المعرفة الإجرائيّة (الكيفيّة)، بينما تتعرّض الرياضيّات مع المعرفة التصريحيّة (الما هو). فإنّ لغات البرمجة تتطلّب من المبرمج أن يُعبّر عن المعرفة بشكلٍ يشير إلى الطرائق الخطوة بخطوة لحلّ مسائل معيّنة. ومن جهةٍ أخرى، توفّر اللغات عالية المستوى، كجزءٍ من تنفيذ اللغة، قدرًا كبيرًا من المعرفة المنهجيّة تُحرّر المستخدم من الاهتمام بالعديد من تفاصيل كيف ستسير عمليّةٌ حسابيّةٌ محدَّدة.
 
-Most programming languages, including Lisp, are organized around computing the values of mathematical functions. Expression-oriented languages (such as Lisp, Fortran, and Algol) capitalize on the “pun” that an expression that describes the value of a function may also be interpreted as a means of computing that value. Because of this, most programming languages are strongly biased toward unidirectional computations (computations with well-defined inputs and outputs). There are, however, radically different programming languages that relax this bias. We saw one such example in [3.3.5](https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e5), where the objects of computation were arithmetic constraints. In a constraint system the direction and the order of computation are not so well specified; in carrying out a computation the system must therefore provide more detailed “how to” knowledge than would be the case with an ordinary arithmetic computation. This does not mean, however, that the user is released altogether from the responsibility of providing imperative knowledge. There are many constraint networks that implement the same set of constraints, and the user must choose from the set of mathematically equivalent networks a suitable network to specify a particular computation.
+معظم لغات البرمجة، بما في ذلك Lisp، مُنظّمةٌ حول احتساب قيم الدوالّ الرياضيّة. واللغات الموجَّهة بالتعابير (كالـLisp وFortran وAlgol) تستثمر «المجاز» القائل إنّ تعبيرًا يصف قيمة دالّةٍ يمكن تفسيره أيضًا بوصفه وسيلةً لاحتساب تلك القيمة. وبسبب هذا، فإنّ معظم لغات البرمجة منحازةٌ انحيازًا شديدًا نحو الاحتسابات أحاديّة الاتجاه (الاحتسابات ذات المدخلات والمخرجات المحدَّدة تحديدًا جيّدًا). ولكن ثمّة لغات برمجةٍ مختلفةٌ جذريًّا تُرخِي هذا الانحياز. وقد رأينا مثالًا على ذلك في [3.3.5](https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e5)، حيث كانت كائنات الاحتساب قيودًا حسابيّة. ففي نظام القيود، لا يكون اتجاه الاحتساب وترتيبه محدَّدين تحديدًا جيّدًا؛ وعند أداء عمليّةٍ حسابيّةٍ ينبغي إذاً للنظام أن يوفّر معرفة «كيفيّة» أكثر تفصيلًا ممّا سيكون عليه الأمر في احتسابٍ حسابيٍّ اعتياديّ. لكن هذا لا يعني أنّ المستخدم مُخَلَّصٌ كلّيًّا من مسؤوليّة توفير المعرفة الإجرائيّة. فثمّة شبكات قيودٍ كثيرةٌ تُنفّذ المجموعة ذاتها من القيود، وعلى المستخدم أن يختار من مجموعة الشبكات المتكافئة رياضيًّا شبكةً مناسبةً لتحديد عمليّةٍ حسابيّةٍ معيّنة.
 
-The nondeterministic program evaluator of [4.3](https://sarabander.github.io/sicp/html/4_002e3.xhtml#g_t4_002e3) also moves away from the view that programming is about constructing algorithms for computing unidirectional functions. In a nondeterministic language, expressions can have more than one value, and, as a result, the computation is dealing with relations rather than with single-valued functions. Logic programming extends this idea by combining a relational vision of programming with a powerful kind of symbolic pattern matching called *unification*.[^58]
+إنّ مقيّم البرامج غير الحتميّ الوارد في [4.3](https://sarabander.github.io/sicp/html/4_002e3.xhtml#g_t4_002e3) يبتعد أيضًا عن الرأي القائل إنّ البرمجة تتمحور حول بناء خوارزميّاتٍ لاحتساب دوالّ أحاديّة الاتجاه. ففي لغةٍ غير حتميّةٍ، يمكن أن يكون للتعبيرات أكثر من قيمةٍ واحدة، ونتيجةً لذلك، فإنّ الاحتساب يتعامل مع العلاقات بدلًا من الدوالّ أحاديّة القيمة. وتوسّع البرمجة المنطقيّة هذه الفكرة بجمع رؤية علائقيّةٍ للبرمجة مع نوعٍ قويّ من مطابقة الأنماط الرمزيّة يُسمّى *التوحيد (unification)*.[^58]
 
-This approach, when it works, can be a very powerful way to write programs. Part of the power comes from the fact that a single “what is” fact can be used to solve a number of different problems that would have different “how to” components. As an example, consider the `append` operation, which takes two lists as arguments and combines their elements to form a single list. In a procedural language such as Lisp, we could define `append` in terms of the basic list constructor `cons`, as we did in [2.2.1](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e1):
+فمثلًا، تأمّل العمليّة `append`، التي تأخذ قائمتين كمعطيين وتجمع عناصرها لتشكيل قائمةٍ واحدة. وفي لغةٍ إجرائيّةٍ مثل Lisp، كان بوسعنا تعريف `append` بدلالة بانٍ القائمة الأساسيّ `cons`، كما فعلنا في [2.2.1](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e1):
 
 ```scheme
 (define (append x y)
@@ -2540,34 +2540,34 @@ This approach, when it works, can be a very powerful way to write programs. Part
       (cons (car x) (append (cdr x) y))))
 ```
 
-This procedure can be regarded as a translation into Lisp of the following two rules, the first of which covers the case where the first list is empty and the second of which handles the case of a nonempty list, which is a `cons` of two parts:
+يمكن اعتبار هذا الإجراء ترجمةً إلى Lisp للقاعدتين التاليتين، تغطّي الأولى منهما حالة كون القائمة الأوّل فارغة، وتتولّى الثانية حالة كون القائمة غير فارغة، وهي `cons` من جزءين:
 
-- For any list `y`, the empty list and `y` `append` to form `y`.
-- For any `u`, `v`, `y`, and `z`, `(cons u v)` and `y` `append` to form `(cons u z)` if `v` and `y` `append` to form `z`.[^59]
+- لأيّ قائمة `y`، فإنّ القائمة الفارغة و`y` تُنتجان بـ`append` القائمة `y`.
+- لأيّ `u` و`v` و`y` و`z`، فإنّ `(cons u v)` و`y` تُنتجان بـ`append` القائمة `(cons u z)` إذا كانت `v` و`y` تُنتجان بـ`append` القائمة `z`.[^59]
 
-Using the `append` procedure, we can answer questions such as
+وباستخدام إجراء `append`، يمكننا الإجابة عن أسئلةَ مثل
 
-> Find the `append` of `(a b)` and `(c d)`.
+> أوجد الحاصل من `append` لقائمتَي `(a b)` و`(c d)`.
 
-But the same two rules are also sufficient for answering the following sorts of questions, which the procedure can’t answer:
+لكنّ القاعدتين ذاتهما كافيتان أيضًا للإجابة عن الأنواع التالية من الأسئلة، التي لا يستطيع الإجابة عنها:
 
-> Find a list `y` that `append`s with `(a b)` to produce `(a b c d)`. Find all `x` and `y` that `append` to form `(a b c d)`.
+> أوجد قائمةً `y` يُلحِقها `append` مع `(a b)` لإنتاج `(a b c d)`. أوجد جميع `x` و`y` التي يُنتج `append` عليها القائمة `(a b c d)`.
 
-In a logic programming language, the programmer writes an `append` “procedure” by stating the two rules about `append` given above. “How to” knowledge is provided automatically by the interpreter to allow this single pair of rules to be used to answer all three types of questions about `append`.[^60]
+في لغة البرمجة المنطقيّة، يكتب المبرمج «إجراء» `append` بالنصّ على القاعدتين المتعلّقتين بـ`append` الواردتين أعلاه. وتُوفَّر معرفة «الكيفيّة» تلقائيًّا بواسطة المفسّر للسماح باستخدام هذا الزوج الوحيد من القواعد في الإجابة عن جميع الأنواع الثلاثة من الأسئلة حول `append`.[^60]
 
-Contemporary logic programming languages (including the one we implement here) have substantial deficiencies, in that their general “how to” methods can lead them into spurious infinite loops or other undesirable behavior. Logic programming is an active field of research in computer science.[^61]
+للّغات البرمجة المنطقيّة المعاصرة (بما في ذلك اللغة التي نُنفّذها هنا) قصورٌ جوهريّ، إذ إنّ طرائقها العامّة في «الكيفيّة» قد تقودها إلى حلقاتٍ لانهائيّةٍ زائفة أو إلى سلوكيّاتٍ غير مرغوبةٍ أخرى. والبرمجة المنطقيّة مجالٌ نشطٌ للبحث في علم الحاسوب.[^61]
 
-Earlier in this chapter we explored the technology of implementing interpreters and described the elements that are essential to an interpreter for a Lisp-like language (indeed, to an interpreter for any conventional language). Now we will apply these ideas to discuss an interpreter for a logic programming language. We call this language the *query language*, because it is very useful for retrieving information from data bases by formulating *queries*, or questions, expressed in the language. Even though the query language is very different from Lisp, we will find it convenient to describe the language in terms of the same general framework we have been using all along: as a collection of primitive elements, together with means of combination that enable us to combine simple elements to create more complex elements and means of abstraction that enable us to regard complex elements as single conceptual units. An interpreter for a logic programming language is considerably more complex than an interpreter for a language like Lisp. Nevertheless, we will see that our query-language interpreter contains many of the same elements found in the interpreter of [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1). In particular, there will be an “eval” part that classifies expressions according to type and an “apply” part that implements the language’s abstraction mechanism (procedures in the case of Lisp, and *rules* in the case of logic programming). Also, a central role is played in the implementation by a frame data structure, which determines the correspondence between symbols and their associated values. One additional interesting aspect of our query-language implementation is that we make substantial use of streams, which were introduced in [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3).
+سبق لنا في هذا الفصل أن استكشفنا تقنيّة تنفيذ المفسّرات ووصفنا العناصر الأساسيّة لأيّ مفسّرٍ للغة شبيهة بـLisp (وبالحريّ، لأيّ مفسّرٍ لأيّ لغةٍ تقليديّة). والآن سنطبّق هذه الأفكار لمناقشة مفسّرٍ للغة البرمجة المنطقيّة. ونُسمّي هذه اللغة *لغة الاستفسار (query language)*، لأنّها مفيدةٌ للغايةٍ في استرجاع المعلومات من قواعد البيانات بصياغة *استفسارات*، أي أسئلة، معبَّرًا عنها باللغة. وحتّى وإن كانت لغة الاستفسار مختلفةً جدًّا عن Lisp، فسنرى أنّ من الملائم وصف اللغة بدلالة الإطار العامّ ذاته الذي استخدمناه طوال الوقت: كمجموعةٍ من العناصر الأوّليّة، جنبًا إلى جنبٍ مع وسائل تركيبٍ تُمكّننا من دمج عناصر بسيطةٍ لإنشاء عناصر أكثر تعقيدًا، ووسائل تجريدٍ تُمكّننا من اعتبار العناصر المعقّدة وحداتٍ مفاهيميّةً واحدة. ومفسّر لغة البرمجة المنطقيّة أعقدّ بكثيرٍ من مفسّر لغةٍ مثل Lisp. ومع ذلك، فسنرى أنّ مفسّر لغة الاستفسار لدينا يحتوي على العديد من العناصر ذاتها الموجودة في مفسّر [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1). وعلى وجه الخصوص، فسيكون هناك جزء «eval» يُصنّف التعابير بحسب النوع، وجزء «apply» يُنفّذ آليّة تجريد اللغة (الإجراءات في حالة Lisp، و*القواعد* في حالة البرمجة المنطقيّة). وتلعب أيضًا دورًا مركزيًّا في التنفيذ بنية بيانات الإطار، التي تُحدّد التطابق بين الرموز وقيمها المرتبطة. وجانب آخر مثيرٌ للاهتمام في تنفيذنا للغة الاستفسار هو أنّنا نستخدم المجاري استخدامًا كبيرًا، وهي التي قُدِّمت في [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3).
 
-#### 4.4.1 Deductive Information Retrieval
+#### 4.4.1 الاسترجاع الاستنباطيّ للمعلومات
 
-Logic programming excels in providing interfaces to data bases for information retrieval. The query language we shall implement in this chapter is designed to be used in this way.
+تتفوّق البرمجة المنطقيّة في توفير واجهاتٍ لقواعد البيانات لاسترجاع المعلومات. ولغة الاستفسار التي سنُنفّذها في هذا الفصل مصمّمةٌ للاستخدام على هذا النحو.
 
-In order to illustrate what the query system does, we will show how it can be used to manage the data base of personnel records for Microshaft, a thriving high-technology company in the Boston area. The language provides pattern-directed access to personnel information and can also take advantage of general rules in order to make logical deductions.
+ولتوضيح ما يفعله نظام الاستفسار، سنُظهر كيف يمكن استخدامه لإدارة قاعدة بيانات سجلّات الموظّفين لشركة Microshaft، شركةٌ مزدهرةٌ عالية التقنيّة في منطقة بوسطن. وتوفّر اللغة وصولًا موجَّهًا بالأنماط إلى معلومات الموظّفين، ويمكنها أيضًا الاستفادة من القواعد العامّة لإجراء استنباطاتٍ منطقيّة.
 
-#### A sample data base
+#### نموذج من قاعدة بيانات
 
-The personnel data base for Microshaft contains *assertions* about company personnel. Here is the information about Ben Bitdiddle, the resident computer wizard:
+تحتوي قاعدة بيانات الموظّفين لشركة Microshaft على *تأكيدات (assertions)* حول موظّفي الشركة. وهذه معلومات عن بن بِتدل، ساحر الحاسوب المقيم:
 
 ```scheme
 (address (Bitdiddle Ben) 
@@ -2576,9 +2576,9 @@ The personnel data base for Microshaft contains *assertions* about company perso
 (salary (Bitdiddle Ben) 60000)
 ```
 
-Each assertion is a list (in this case a triple) whose elements can themselves be lists.
+كلّ تأكيدٍ قائمةٌ (ثلاثيّة في هذه الحالة) عناصرها قد تكون هي نفسها قوائم.
 
-As resident wizard, Ben is in charge of the company’s computer division, and he supervises two programmers and one technician. Here is the information about them:
+وبوصفه ساحرًا مقيمًا، يتولّى بن مسؤولية قسم الحاسوب في الشركة، وهو يشرف على مبرمجَين وفنّيٍّ واحد. وهذه معلومات عنهم:
 
 ```scheme
 (address (Hacker Alyssa P) 
@@ -2600,7 +2600,7 @@ As resident wizard, Ben is in charge of the company’s computer division, and h
 (supervisor (Tweakit Lem E) (Bitdiddle Ben))
 ```
 
-There is also a programmer trainee, who is supervised by Alyssa:
+وهناك أيضًا مبرمجٌ متدرّب، تشرف عليه أليسا:
 
 ```scheme
 (address (Reasoner Louis) 
@@ -2612,9 +2612,9 @@ There is also a programmer trainee, who is supervised by Alyssa:
             (Hacker Alyssa P))
 ```
 
-All of these people are in the computer division, as indicated by the word `computer` as the first item in their job descriptions.
+كلّ هؤلاء الناس في قسم الحاسوب، كما تشير إلى ذلك كلمة `computer` كونها أوّل عنصرٍ في أوصاف وظائفهم.
 
-Ben is a high-level employee. His supervisor is the company’s big wheel himself:
+بن موظّفٌ عالي المستوى. ومشرفُه هو كبير الشركة نفسه:
 
 ```scheme
 (supervisor (Bitdiddle Ben) (Warbucks Oliver))
@@ -2625,7 +2625,7 @@ Ben is a high-level employee. His supervisor is the company’s big wheel himsel
 (salary (Warbucks Oliver) 150000)
 ```
 
-Besides the computer division supervised by Ben, the company has an accounting division, consisting of a chief accountant and his assistant:
+وإضافةً إلى قسم الحاسوب الذي يشرف عليه بن، فإنّ للشركة قسمًا للمحاسبة، يتألّف من كبير محاسبين ومساعده:
 
 ```scheme
 (address (Scrooge Eben) 
@@ -2642,7 +2642,7 @@ Besides the computer division supervised by Ben, the company has an accounting d
 (supervisor (Cratchet Robert) (Scrooge Eben))
 ```
 
-There is also a secretary for the big wheel:
+وهناك أيضًا سكرتيرة لكبير الشركة:
 
 ```scheme
 (address (Aull DeWitt) 
@@ -2652,7 +2652,7 @@ There is also a secretary for the big wheel:
 (supervisor (Aull DeWitt) (Warbucks Oliver))
 ```
 
-The data base also contains assertions about which kinds of jobs can be done by people holding other kinds of jobs. For instance, a computer wizard can do the jobs of both a computer programmer and a computer technician:
+وتحتوي قاعدة البيانات أيضًا على تأكيداتٍ حول أنواع الوظائف التي يمكن أن يؤدّيها أشخاصٌ يشغلون أنواعًا أخرى من الوظائف. فمثلًا، يمكن لساحر الحاسوب أن يؤدّي وظيفتَي مبرمج الحاسوب وفنّيّ الحاسوب كليهما:
 
 ```scheme
 (can-do-job (computer wizard) 
@@ -2662,30 +2662,30 @@ The data base also contains assertions about which kinds of jobs can be done by 
             (computer technician))
 ```
 
-A computer programmer could fill in for a trainee:
+يمكن لمبرمج الحاسوب أن يحلّ محلّ متدرّب:
 
 ```scheme
 (can-do-job (computer programmer)
             (computer programmer trainee))
 ```
 
-Also, as is well known,
+وكذلك، كما هو معروفٌ جيّدًا،
 
 ```scheme
 (can-do-job (administration secretary)
             (administration big wheel))
 ```
 
-#### Simple queries
+#### الاستفسارات البسيطة
 
-The query language allows users to retrieve information from the data base by posing queries in response to the system’s prompt. For example, to find all computer programmers one can say
+تسمح لغة الاستفسار (query language) للمستخدمين باسترجاع المعلومات من قاعدة البيانات بطرح استفساراتٍ استجابةً لإشارة النظام. فمثلًا، للعثور على جميع مبرمجي الحاسوب، يمكن للمرء أن يقول
 
 ```scheme
 ;;; Query input:
 (job ?x (computer programmer))
 ```
 
-The system will respond with the following items:
+سيستجيب النظام بالعناصر التالية:
 
 ```scheme
 ;;; Query results:
@@ -2693,33 +2693,33 @@ The system will respond with the following items:
 (job (Fect Cy D) (computer programmer))
 ```
 
-The input query specifies that we are looking for entries in the data base that match a certain *pattern*. In this example, the pattern specifies entries consisting of three items, of which the first is the literal symbol `job`, the second can be anything, and the third is the literal list `(computer programmer)`. The “anything” that can be the second item in the matching list is specified by a *pattern variable*, `?x`. The general form of a pattern variable is a symbol, taken to be the name of the variable, preceded by a question mark. We will see below why it is useful to specify names for pattern variables rather than just putting `?` into patterns to represent “anything.” The system responds to a simple query by showing all entries in the data base that match the specified pattern.
+يُحدّد الاستفسار المُدخَل أنّنا نبحث عن مدخلاتٍ في قاعدة البيانات تطابق *نمطًا* معيّنًا. وفي هذا المثال، يُحدّد النمط مدخلاتٍ متألّفة من ثلاثة عناصر، أوّلها الرمز الحرفيّ `job`، والثاني يمكن أن يكون أيّ شيء، والثالث هو القائمة الحرفيّة `(computer programmer)`. و«أيّ شيء» الذي يمكن أن يكون العنصر الثاني في القائمة المطابَقة يُحدَّد بـ*متغيّر نمط*، `?x`. والصورة العامّة لمتغيّر النمط هي رمزٌ، يُعتبر اسم المتغيّر، يسبقه علامة استفهام. وسنرى أدناه لماذا يكون من المفيد تحديد أسماء لمتغيّرات الأنماط بدلًا من مجرّد وضع `?` في الأنماط لتمثيل «أيّ شيء». ويستجيب النظام لاستفسارٍ بسيطٍ بعرض جميع المدخلات في قاعدة البيانات التي تطابق النمط المحدَّد.
 
-A pattern can have more than one variable. For example, the query
+ويمكن أن يكون للنمط أكثر من متغيّرٍ واحد. فمثلًا، الاستفسار
 
 ```scheme
 (address ?x ?y)
 ```
 
-will list all the employees’ addresses.
+سيسرد عناوين جميع الموظّفين.
 
-A pattern can have no variables, in which case the query simply determines whether that pattern is an entry in the data base. If so, there will be one match; if not, there will be no matches.
+ويمكن ألّا يحتوي النمط على أيّ متغيّرات، وفي هذه الحالة يحدّد الاستفسار ببساطة ما إذا كان ذلك النمط مدخلًا في قاعدة البيانات. فإن كان كذلك، فستكون هناك مطابقةٌ واحدة؛ وإلّا فلن تكون هناك أيّ مطابقات.
 
-The same pattern variable can appear more than once in a query, specifying that the same “anything” must appear in each position. This is why variables have names. For example,
+ويمكن للمتغيّر النمطيّ ذاته أن يظهر أكثر من مرّةٍ واحدة في استفسارٍ ما، مُحدّدًا أنّ «أيّ شيء» ذاته يجب أن يظهر في كلّ موضع. وهذا سبب تسمية المتغيّرات. فمثلًا،
 
 ```scheme
 (supervisor ?x ?x)
 ```
 
-finds all people who supervise themselves (though there are no such assertions in our sample data base).
+يجد جميع الناس الذين يشرفون على أنفسهم (وإن لم يكن هناك أيّ تأكيدٍ كهذا في نموذج قاعدة بياناتنا).
 
-The query
+الاستفسار
 
 ```scheme
 (job ?x (computer ?type))
 ```
 
-matches all job entries whose third item is a two-element list whose first item is `computer`:
+فإنّه يطابق جميع مدخلات الوظائف التي عنصرها الثالث قائمةٌ ثنائيّة العناصر أوّلها `computer`:
 
 ```scheme
 (job (Bitdiddle Ben) (computer wizard))
@@ -2728,69 +2728,69 @@ matches all job entries whose third item is a two-element list whose first item 
 (job (Tweakit Lem E) (computer technician))
 ```
 
-This same pattern does *not* match
+وهذا النمط ذاته *لا* يطابق
 
 ```scheme
 (job (Reasoner Louis) 
      (computer programmer trainee))
 ```
 
-because the third item in the entry is a list of three elements, and the pattern’s third item specifies that there should be two elements. If we wanted to change the pattern so that the third item could be any list beginning with `computer`, we could specify[^62]
+لأنّ العنصر الثالث في المدخل قائمةٌ من ثلاثة عناصر، أمّا العنصر الثالث في النمط فيُحدّد أنّه ينبغي أن يكون هناك عنصران. فلو أردنا تغيير النمط بحيث يمكن أن يكون العنصر الثالث أيّ قائمةٍ تبدأ بـ`computer`، فبوسعنا أن نُحدّد[^62]
 
 ```scheme
 (job ?x (computer . ?type))
 ```
 
-For example,
+فمثلًا،
 
 ```scheme
 (computer . ?type)
 ```
 
-matches the data
+يطابق البيان
 
 ```scheme
 (computer programmer trainee)
 ```
 
-with `?type` as the list `(programmer trainee)`. It also matches the data
+بحيث يكون `?type` هو القائمة `(programmer trainee)`. وهو يطابق أيضًا البيان
 
 ```scheme
 (computer programmer)
 ```
 
-with `?type` as the list `(programmer)`, and matches the data
+بحيث يكون `?type` هو القائمة `(programmer)`، ويطابق البيان
 
 ```scheme
 (computer)
 ```
 
-with `?type` as the empty list `()`.
+بحيث يكون `?type` هو القائمة الفارغة `()`.
 
-We can describe the query language’s processing of simple queries as follows:
+ويمكننا وصف معالجة لغة الاستفسار للاستفسارات البسيطة على النحو الآتي:
 
-- The system finds all assignments to variables in the query pattern that *satisfy* the pattern—that is, all sets of values for the variables such that if the pattern variables are *instantiated with* (replaced by) the values, the result is in the data base.
-- The system responds to the query by listing all instantiations of the query pattern with the variable assignments that satisfy it.
+- يجد النظام جميع الإحالات إلى متغيّرات نمط الاستفسار التي *تُحقّق* النمط—أي جميع مجموعات القيم للمتغيّرات بحيث إنّ *جُسِّمت* متغيّرات النماط بالقيم (أي استُبدلت بها)، كانت النتيجة في قاعدة البيانات.
+- يستجيب النظام للاستفسار بسرد جميع تجسيدات نمط الاستفسار مصحوبةً بإحالات المتغيّرات التي تُحقّقه.
 
-Note that if the pattern has no variables, the query reduces to a determination of whether that pattern is in the data base. If so, the empty assignment, which assigns no values to variables, satisfies that pattern for that data base.
+لاحِظ أنّ النمط إن لم يكن له متغيّرات، فإنّ الاستفسار يَنزل إلى تحديد ما إذا كان ذلك النمط في قاعدة البيانات. فإن كان كذلك، فإنّ الإحالة الفارغة، التي لا تُحيل أيّ قيمٍ إلى متغيّرات، تُحقّق ذلك النمط لتلك قاعدة البيانات.
 
-> **Exercise 4.55:** Give simple queries that retrieve the following information from the data base: all people supervised by Ben Bitdiddle;
-> > the names and jobs of all people in the accounting division;
-> > the names and addresses of all people who live in Slumerville.
+> **التمرين 4.55:** أعطِ استفساراتٍ بسيطةً تسترجع المعلومات التالية من قاعدة البيانات: جميع الناس الذين يشرف عليهم بن بِتدل؛
+> > أسماء ووظائف جميع الناس في قسم المحاسبة؛
+> > أسماء وعناوين جميع الناس الذين يسكنون في سلومرفيل.
 > > 
 
-#### Compound queries
+#### الاستفسارات المركّبة
 
-Simple queries form the primitive operations of the query language. In order to form compound operations, the query language provides means of combination. One thing that makes the query language a logic programming language is that the means of combination mirror the means of combination used in forming logical expressions: `and`, `or`, and `not`. (Here `and`, `or`, and `not` are not the Lisp primitives, but rather operations built into the query language.)
+تُشكّل الاستفسارات البسيطة العمليّات الأوّليّة للغة الاستفسار. ولكي تُشكَّل عمليّاتٌ مركّبة، توفّر لغة الاستفسار وسائل تركيب. وأحد ما يجعل لغة الاستفسار لغةً للبرمجة المنطقيّة هو أنّ وسائل التركيب تُعاكس وسائل التركيب المستخدمة في تشكيل التعابير المنطقيّة: `and` و`or` و`not`. (وهنا `and` و`or` و`not` ليست أوّليّات Lisp، بل عمليّاتٌ مدمجةٌ في لغة الاستفسار.)
 
-We can use `and` as follows to find the addresses of all the computer programmers:
+ويمكننا استخدام `and` على النحو الآتي للعثور على عناوين جميع مبرمجي الحاسوب:
 
 ```scheme
 (and (job ?person (computer programmer))
      (address ?person ?where))
 ```
 
-The resulting output is
+والناتج الخارج هو
 
 ```scheme
 (and (job (Hacker Alyssa P) 
@@ -2803,24 +2803,24 @@ The resulting output is
               (Cambridge (Ames Street) 3)))
 ```
 
-In general,
+وبصورةٍ عامّة،
 
 ```scheme
 (and ⟨query₁⟩ ⟨query₂⟩ … ⟨queryₙ⟩)
 ```
 
-is satisfied by all sets of values for the pattern variables that simultaneously satisfy $⟨ q u e r y_{1} ⟩$ … $⟨ q u e r y_{n} ⟩$ .
+تتحقّقه جميع مجموعات القيم لمتغيّرات النمط التي تُحقّق $⟨ q u e r y_{1} ⟩$ … $⟨ q u e r y_{n} ⟩$ في الوقت ذاته.
 
-As for simple queries, the system processes a compound query by finding all assignments to the pattern variables that satisfy the query, then displaying instantiations of the query with those values.
+أمّا بالنسبة للاستعلامات البسيطة، فإنّ النظام يعالج الاستعلام المركّب بإيجاد جميع الإحالات على متغيّرات النمط التي تُحقّق الاستعلام، ثم يعرض إنشاءات الاستعلام بتلك القيم.
 
-Another means of constructing compound queries is through `or`. For example,
+وثمة وسيلة أخرى لبناء استعلاماتٍ مركّبة، وهي باستخدام `or`. فمثلًا،
 
 ```scheme
 (or (supervisor ?x (Bitdiddle Ben))
     (supervisor ?x (Hacker Alyssa P)))
 ```
 
-will find all employees supervised by Ben Bitdiddle or Alyssa P. Hacker:
+وسيجد جميع الموظفين الذين يشرف عليهم بن بِتدل أو أليسا بي. هاكر:
 
 ```scheme
 (or (supervisor (Hacker Alyssa P) 
@@ -2844,50 +2844,50 @@ will find all employees supervised by Ben Bitdiddle or Alyssa P. Hacker:
                 (Hacker Alyssa P)))
 ```
 
-In general,
+وبصورةٍ عامّة،
 
 ```scheme
 (or ⟨query₁⟩ ⟨query₂⟩ … ⟨queryₙ⟩)
 ```
 
-is satisfied by all sets of values for the pattern variables that satisfy at least one of $⟨ q u e r y_{1} ⟩$ … $⟨ q u e r y_{n} ⟩$ .
+تتحقّقه جميع مجموعات القيم لمتغيّرات النمط التي تُحقّق واحدًا على الأقلّ من $⟨ q u e r y_{1} ⟩$ … $⟨ q u e r y_{n} ⟩$ .
 
-Compound queries can also be formed with `not`. For example,
+ويمكن أيضًا تكوين استعلاماتٍ مركّبةً بـ`not`. فمثلًا،
 
 ```scheme
 (and (supervisor ?x (Bitdiddle Ben))
      (not (job ?x (computer programmer))))
 ```
 
-finds all people supervised by Ben Bitdiddle who are not computer programmers. In general,
+فيجد جميع الأشخاص الذين يشرف عليهم بن بِتدل وليسوا مبرمجي حاسوب. وبصورةٍ عامّة،
 
 ```scheme
 (not ⟨query₁⟩)
 ```
 
-is satisfied by all assignments to the pattern variables that do not satisfy $⟨ q u e r y_{1} ⟩$ .[^63]
+تتحقّقه جميع الإحالات على متغيّرات النمط التي لا تُحقّق $⟨ q u e r y_{1} ⟩$ .[^63]
 
-The final combining form is called `lisp-value`. When `lisp-value` is the first element of a pattern, it specifies that the next element is a Lisp predicate to be applied to the rest of the (instantiated) elements as arguments. In general,
+أمّا الشكل الأخير من أشكال التركيب فيُسمّى `lisp-value`. وعندما يكون `lisp-value` العنصر الأوّل في نمط، فإنّه يُحدّد أنّ العنصر التالي مُسَيِّم Lisp يُطبَّق على بقيّة العناصر (المنشأة) كمعطياتٍ. وبصورةٍ عامّة،
 
 ```scheme
 (lisp-value ⟨predicate⟩ ⟨arg₁⟩ … ⟨argₙ⟩)
 ```
 
-will be satisfied by assignments to the pattern variables for which the `⟨`predicate`⟩` applied to the instantiated $⟨ a r g_{1} ⟩$ … $⟨ a r g_{n} ⟩$ is true. For example, to find all people whose salary is greater than $30,000 we could write[^64]
+تتحقّقه الإحالات على متغيّرات النمط التي يكون فيها تطبيق `⟨`predicate`⟩` على $⟨ a r g_{1} ⟩$ … $⟨ a r g_{n} ⟩$ المنشأة صحيحًا. فمثلًا، لإيجاد جميع الأشخاص الذين راتبهم أكبر من $30,000 نستطيع كتابة[^64]
 
 ```scheme
 (and (salary ?person ?amount)
      (lisp-value > ?amount 30000))
 ```
 
-> **Exercise 4.56:** Formulate compound queries that retrieve the following information: the names of all people who are supervised by Ben Bitdiddle, together with their addresses;
-> > all people whose salary is less than Ben Bitdiddle’s, together with their salary and Ben Bitdiddle’s salary;
-> > all people who are supervised by someone who is not in the computer division, together with the supervisor’s name and job.
+> **التمرين 4.56:** صِغ استعلاماتٍ مركّبةً تسترجع المعلومات التالية: أسماء جميع الأشخاص الذين يشرف عليهم بن بِتدل، مع عناوينهم؛
+> > جميع الأشخاص الذين راتبهم أقلّ من راتب بن بِتدل، مع راتبهم وراتب بن بِتدل؛
+> > جميع الأشخاص الذين يشرف عليهم شخصٌ ليس في قسم الحاسوب، مع اسم المشرف ومهمّته.
 > > 
 
-#### Rules
+#### القواعد
 
-In addition to primitive queries and compound queries, the query language provides means for abstracting queries. These are given by *rules*. The rule
+إلى جانب الاستعلامات الأوّليّة والاستعلامات المركّبة، توفّر لغة الاستعلامات وسائلَ لتجريد الاستعلامات. وهذه تُعطى بـ*القواعد*. والقاعدة
 
 ```scheme
 (rule (lives-near ?person-1 ?person-2)
@@ -2898,13 +2898,13 @@ In addition to primitive queries and compound queries, the query language provid
            (not (same ?person-1 ?person-2))))
 ```
 
-specifies that two people live near each other if they live in the same town. The final `not` clause prevents the rule from saying that all people live near themselves. The `same` relation is defined by a very simple rule:[^65]
+تُحدّد أنّ شخصين يعيشان قريبًا من بعضهما إذا كانا يعيشان في البلدة نفسها. والبند `not` الأخير يمنع القاعدة من القول إنّ جميع الناس يعيشون قريبين من ذواتهم. أمّا علاقة `same` فمعرَّفةٌ بقاعدةٍ بسيطةٍ جدًّا:[^65]
 
 ```scheme
 (rule (same ?x ?x))
 ```
 
-The following rule declares that a person is a “wheel” in an organization if he supervises someone who is in turn a supervisor:
+والقاعدة الآتية تُصرّح أنّ الشخص "عجلة" (wheel) في تنظيمٍ إذا كان يُشرف على شخصٍ ما هو بدوره مشرف:
 
 ```scheme
 (rule (wheel ?person)
@@ -2913,33 +2913,33 @@ The following rule declares that a person is a “wheel” in an organization if
            (supervisor ?x ?middle-manager)))
 ```
 
-The general form of a rule is
+الصورة العامّة للقاعدة هي
 
 ```scheme
 (rule ⟨conclusion⟩ ⟨body⟩)
 ```
 
-where `⟨`conclusion`⟩` is a pattern and `⟨`body`⟩` is any query.[^66] We can think of a rule as representing a large (even infinite) set of assertions, namely all instantiations of the rule conclusion with variable assignments that satisfy the rule body. When we described simple queries (patterns), we said that an assignment to variables satisfies a pattern if the instantiated pattern is in the data base. But the pattern needn’t be explicitly in the data base as an assertion. It can be an implicit assertion implied by a rule. For example, the query
+حيث `⟨`الخلاصة`⟩` نمطٌ و`⟨`الجسم`⟩` أيّ استعلام.[^66] ونستطيع أن نفكّر في القاعدة بوصفها تمثّل مجموعةً كبيرةً (حتّى غير منتهيةٍ) من التأكيدات، وهي جميع إنشاءات خلاصة القاعدة بإحالاتٍ على المتغيّرات تُحقّق جسم القاعدة. وحين وصفنا الاستعلامات البسيطة (الأنماط)، قلنا إنّ إحلالًا على المتغيّرات يُحقّق نمطًا إذا كان النمط المنشأ موجودًا في قاعدة البيانات. لكن ليس ضروريًّا أن يكون النمط موجودًا في قاعدة البيانات صراحةً بوصفه تأكيدًا. فقد يكون تأكيدًا ضمنيًّا تستتبعه قاعدة. فمثلًا، الاستعلام
 
 ```scheme
 (lives-near ?x (Bitdiddle Ben))
 ```
 
-results in
+يُنتج
 
 ```scheme
 (lives-near (Reasoner Louis) (Bitdiddle Ben))
 (lives-near (Aull DeWitt) (Bitdiddle Ben))
 ```
 
-To find all computer programmers who live near Ben Bitdiddle, we can ask
+ولإيجاد جميع مبرمجي الحاسوب الذين يعيشون قريبين من بن بِتدل، نستطيع أن نسأل
 
 ```scheme
 (and (job ?x (computer programmer))
      (lives-near ?x (Bitdiddle Ben)))
 ```
 
-As in the case of compound procedures, rules can be used as parts of other rules (as we saw with the `lives-near` rule above) or even be defined recursively. For instance, the rule
+وكما في حالة الإجراءات المركّبة، يمكن استخدام القواعد أجزاءً من قواعد أخرى (كما رأينا مع القاعدة `lives-near` أعلاه) أو حتّى تعريفها تعاوديًّا. فمثلًا، القاعدة
 
 ```scheme
 (rule (outranked-by ?staff-person ?boss)
@@ -2950,15 +2950,15 @@ As in the case of compound procedures, rules can be used as parts of other rules
                              ?boss))))
 ```
 
-says that a staff person is outranked by a boss in the organization if the boss is the person’s supervisor or (recursively) if the person’s supervisor is outranked by the boss.
+تقول إنّ أحد أفراد الطاقم يعلوه رئيسٌ في التنظيم إذا كان الرئيس هو مشرف الشخص، أو (تعاوديًّا) إذا كان مشرف الشخص معلوًا بالرئيس.
 
-> **Exercise 4.57:** Define a rule that says that person 1 can replace person 2 if either person 1 does the same job as person 2 or someone who does person 1’s job can also do person 2’s job, and if person 1 and person 2 are not the same person. Using your rule, give queries that find the following: all people who can replace Cy D. Fect;
-> > all people who can replace someone who is being paid more than they are, together with the two salaries.
+> **التمرين 4.57:** عرّف قاعدةً تقول إنّ الشخص 1 يمكن أن يحلّ محلّ الشخص 2 إذا كان الشخص 1 يؤدّي المهمّة نفسها التي يؤدّيها الشخص 2، أو إذا كان من يؤدّي مهمّة الشخص 1 يستطيع أداء مهمّة الشخص 2 أيضًا، وإذا لم يكن الشخص 1 والشخص 2 الشخص نفسه. وباستخدام قاعدتك، أعطِ استعلاماتٍ تجد ما يلي: جميع الأشخاص الذين يمكنهم حلّ محلّ ساي دي. فيكت؛
+> > جميع الأشخاص الذين يمكنهم حلّ محلّ شخصٍ يُدفع له أكثر مما يُدفع لهم، مع الراتبين.
 > > 
 
-> **Exercise 4.58:** Define a rule that says that a person is a “big shot” in a division if the person works in the division but does not have a supervisor who works in the division.
+> **التمرين 4.58:** عرّف قاعدةً تقول إنّ الشخص "شخصية كبيرة" (big shot) في قسمٍ إذا كان يعمل في القسم لكن ليس له مشرف يعمل في القسم.
 
-**Exercise 4.59:** Ben Bitdiddle has missed one meeting too many. Fearing that his habit of forgetting meetings could cost him his job, Ben decides to do something about it. He adds all the weekly meetings of the firm to the Microshaft data base by asserting the following:
+**التمرين 4.59:** فات بن بِتدل اجتماعٌ واحد أكثر من اللازم. وخشيةً من أن تُكلّفه عادته في نسيان الاجتماعات وظيفته، قرّر بن أن يفعل شيئًا حيال ذلك. فهو يضيف جميع الاجتماعات الأسبوعيّة للشركة إلى قاعدة بيانات Microshaft بتأكيد ما يلي:
 
 ```scheme
 (meeting accounting (Monday 9am))
@@ -2967,56 +2967,56 @@ says that a staff person is outranked by a boss in the organization if the boss 
 (meeting administration (Friday 1pm))
 ```
 
-Each of the above assertions is for a meeting of an entire division. Ben also adds an entry for the company-wide meeting that spans all the divisions. All of the company’s employees attend this meeting.
+كلٌّ من التأكيدات أعلاه يخصّ اجتماع قسمٍ بكامله. ويضيف بن أيضًا مُدخلًا للاجتماع على مستوى الشركة كلّها الذي يمتدّ عبر جميع الأقسام. وجميع موظّفي الشركة يحضرون هذا الاجتماع.
 
 ```scheme
 (meeting whole-company (Wednesday 4pm))
 ```
 
-On Friday morning, Ben wants to query the data base for all the meetings that occur that day. What query should he use? Alyssa P. Hacker is unimpressed. She thinks it would be much more useful to be able to ask for her meetings by specifying her name. So she designs a rule that says that a person’s meetings include all `whole-company` meetings plus all meetings of that person’s division. Fill in the body of Alyssa’s rule.
+في صباح الجمعة، يريد بن الاستعلام من قاعدة البيانات عن جميع الاجتماعات التي تجري في ذلك اليوم. فما الاستعلام الذي ينبغي أن يستخدمه؟ أمّا أليسا بي. هاكر فغير مقتنعة. فهي تعتقد أنّه سيكون من الأنفع بكثيرٍ القدرة على السؤال عن اجتماعاتها بتحديد اسمها. ولذلك تُصمّم قاعدةً تقول إنّ اجتماعات الشخص تتضمّن جميع اجتماعات `whole-company` بالإضافة إلى جميع اجتماعات قسم ذلك الشخص. فاملأ جسم قاعدة أليسا.
 
 ```scheme
 (rule (meeting-time ?person ?day-and-time)
       ⟨rule-body⟩)
 ```
 
-Alyssa arrives at work on Wednesday morning and wonders what meetings she has to attend that day. Having defined the above rule, what query should she make to find this out?
+تصل أليسا إلى العمل صباح الأربعاء وتتساءل عن الاجتماعات التي عليها حضورها في ذلك اليوم. فبعد تعريف القاعدة أعلاه، ما الاستعلام الذي ينبغي أن تضعه لمعرفة ذلك؟
 
-**Exercise 4.60:** By giving the query
+**التمرين 4.60:** بإعطاء الاستعلام
 
 ```scheme
 (lives-near ?person (Hacker Alyssa P))
 ```
 
-Alyssa P. Hacker is able to find people who live near her, with whom she can ride to work. On the other hand, when she tries to find all pairs of people who live near each other by querying
+تستطيع أليسا بي. هاكر إيجاد الأشخاص الذين يعيشون قريبين منها، والذين يمكنها أن تركب معهم إلى العمل. ومن جانبٍ آخر، حين تحاول إيجاد جميع أزواج الأشخاص الذين يعيشون قريبين من بعضهم بالاستعلام عن
 
 ```scheme
 (lives-near ?person-1 ?person-2)
 ```
 
-she notices that each pair of people who live near each other is listed twice; for example,
+تلاحِظ أنّ كلّ زوجٍ من الأشخاص الذين يعيشون قريبين من بعضهم يُسجَّل مرّتين؛ فمثلًا،
 
 ```scheme
 (lives-near (Hacker Alyssa P) (Fect Cy D))
 (lives-near (Fect Cy D) (Hacker Alyssa P))
 ```
 
-Why does this happen? Is there a way to find a list of people who live near each other, in which each pair appears only once? Explain.
+لماذا يحدث هذا؟ فهل ثمّة طريقةٌ لإيجاد قائمةٍ بالأشخاص الذين يعيشون قريبين من بعضهم، تظهر فيها كلّ زوجٍ مرّةً واحدةً فقط؟ فسّر.
 
-#### Logic as programs
+#### المنطق كبرامج
 
-We can regard a rule as a kind of logical implication: *If* an assignment of values to pattern variables satisfies the body, *then* it satisfies the conclusion. Consequently, we can regard the query language as having the ability to perform *logical deductions* based upon the rules. As an example, consider the `append` operation described at the beginning of [4.4](#g_t4_002e4). As we said, `append` can be characterized by the following two rules:
+ونستطيع اعتبار القاعدة نوعًا من الاستتباع المنطقيّ: *إذا* إحلالٌ للقيم على متغيّرات النمط يُحقّق الجسم، *فإنّه* يُحقّق الخلاصة. وبناءً على ذلك، نستطيع اعتبار لغة الاستعلامات ذات القدرة على أداء *الاستنتاجات المنطقيّة* استنادًا إلى القواعد. ومثالٌ على ذلك، تأمّل عمليّة `append` الموصوفة في بداية [4.4](#g_t4_002e4). وكما قلنا، فإنّ `append` يمكن توصيفها بالقاعدتين الآتيتين:
 
-- For any list `y`, the empty list and `y` `append` to form `y`.
-- For any `u`, `v`, `y`, and `z`, `(cons u v)` and `y` `append` to form `(cons u z)` if `v` and `y` `append` to form `z`.
+- لأيّ قائمة `y`، فإنّ القائمة الفارغة و`y` تُلحَقَان بـ`append` لتكوين `y`.
+- لأيّ `u` و`v` و`y` و`z`، فإنّ `(cons u v)` و`y` تُلحَقَان بـ`append` لتكوين `(cons u z)` إذا كانت `v` و`y` تُلحَقَان بـ`append` لتكوين `z`.
 
-To express this in our query language, we define two rules for a relation
+وللتعبير عن هذا في لغة الاستعلامات، نُعرّف قاعدتين لعلاقة
 
 ```scheme
 (append-to-form x y z)
 ```
 
-which we can interpret to mean “`x` and `y` `append` to form `z`”:
+التي نستطيع تفسيرها بمعنى أنّ `x` و`y` تُلحَقَان بـ`append` لتكوين `z`:
 
 ```scheme
 (rule (append-to-form () ?y ?y))
@@ -3024,9 +3024,9 @@ which we can interpret to mean “`x` and `y` `append` to form `z`”:
       (append-to-form ?v ?y ?z))
 ```
 
-The first rule has no body, which means that the conclusion holds for any value of `?y`. Note how the second rule makes use of dotted-tail notation to name the `car` and `cdr` of a list.
+القاعدة الأولى ليس لها جسم، ما يعني أنّ الخلاصة تتحقّق لأيّ قيمة لـ`?y`. ولاحِظ كيف تستخدم القاعدة الثانية ترميز الذيل المنقّط لتسمية `car` و`cdr` لقائمة.
 
-Given these two rules, we can formulate queries that compute the `append` of two lists:
+وبوجود هاتين القاعدتين، نستطيع صياغة استعلاماتٍ تحتسب `append` قائمتين:
 
 ```scheme
 ;;; Query input:
@@ -3036,7 +3036,7 @@ Given these two rules, we can formulate queries that compute the `append` of two
 (append-to-form (a b) (c d) (a b c d))
 ```
 
-What is more striking, we can use the same rules to ask the question “Which list, when `append`ed to `(a b)`, yields `(a b c d)`?” This is done as follows:
+والأكثر إدهاشًا، أنّنا نستطيع استخدام القواعد ذاتها لطرح السؤال: «أيّ قائمة، حين تُلحَق بـ`append` بـ`(a b)`، تُنتج `(a b c d)`؟» وهذا يُجرى على النحو الآتي:
 
 ```scheme
 ;;; Query input:
@@ -3046,7 +3046,7 @@ What is more striking, we can use the same rules to ask the question “Which li
 (append-to-form (a b) (c d) (a b c d))
 ```
 
-We can also ask for all pairs of lists that `append` to form `(a b c d)`:
+ونستطيع أيضًا السؤال عن جميع أزواج القوائم التي تُلحَق بـ`append` لتكوين `(a b c d)`:
 
 ```scheme
 ;;; Query input:
@@ -3060,9 +3060,9 @@ We can also ask for all pairs of lists that `append` to form `(a b c d)`:
 (append-to-form (a b c d) () (a b c d))
 ```
 
-The query system may seem to exhibit quite a bit of intelligence in using the rules to deduce the answers to the queries above. Actually, as we will see in the next section, the system is following a well-determined algorithm in unraveling the rules. Unfortunately, although the system works impressively in the `append` case, the general methods may break down in more complex cases, as we will see in [4.4.3](#g_t4_002e4_002e3).
+قد يبدو نظام الاستعلامات وكأنّه يُظهر قدرًا لا بأس به من الذكاء في استخدامه القواعد لاستنتاج أجوبة الاستعلامات أعلاه. في الحقيقة، كما سنرى في القسم التالي، فإنّ النظام يتبع خوارزميّة محدّدة تحديدًا حسنًا في تفكيك القواعد. ولسوء الحظّ، على الرغم من أنّ النظام يعمل عملًا مُبهرًا في حالة `append`، فإنّ الطرائق العامّة قد تتعطّل في الحالات الأكثر تعقيدًا، كما سنرى في [4.4.3](#g_t4_002e4_002e3).
 
-**Exercise 4.61:** The following rules implement a `next-to` relation that finds adjacent elements of a list:
+**التمرين 4.61:** تُنفّذ القواعد الآتية علاقة `next-to` التي تجد العناصر المتجاورة في قائمة:
 
 ```scheme
 (rule (?x next-to ?y in (?x ?y . ?u)))
@@ -3070,16 +3070,16 @@ The query system may seem to exhibit quite a bit of intelligence in using the ru
       (?x next-to ?y in ?z))
 ```
 
-What will the response be to the following queries?
+فما ستكون الاستجابة للاستعلامات الآتية؟
 
 ```scheme
 (?x next-to ?y in (1 (2 3) 4))
 (?x next-to 1 in (2 1 3 1))
 ```
 
-> **Exercise 4.62:** Define rules to implement the `last-pair` operation of [Exercise 2.17](https://sarabander.github.io/sicp/html/2_002e2.xhtml#Exercise-2_002e17), which returns a list containing the last element of a nonempty list. Check your rules on queries such as `(last-pair (3) ?x)`, `(last-pair (1 2 3) ?x)` and `(last-pair (2 ?x) (3))`. Do your rules work correctly on queries such as `(last-pair ?x (3))`?
+> **التمرين 4.62:** عرّف قواعد تُنفّذ عمليّة `last-pair` الواردة في [التمرين 2.17](https://sarabander.github.io/sicp/html/2_002e2.xhtml#Exercise-2_002e17)، والتي تُعيد قائمةً تحتوي العنصر الأخير لقائمةٍ غير فارغة. افحص قواعدك على استعلامات مثل `(last-pair (3) ?x)` و`(last-pair (1 2 3) ?x)` و`(last-pair (2 ?x) (3))`. فهل تعمل قواعدك بصورةٍ صحيحةٍ على استعلامات مثل `(last-pair ?x (3))`؟
 
-**Exercise 4.63:** The following data base (see Genesis 4) traces the genealogy of the descendants of Ada back to Adam, by way of Cain:
+**التمرين 4.63:** قاعدة البيانات الآتية (انظر سفر التكوين 4) تتتبّع أنساب نسْل آدا رجوعًا إلى آدم، عن طريق قابيل:
 
 ```scheme
 (son Adam Cain) (son Cain Enoch)
@@ -3090,47 +3090,47 @@ What will the response be to the following queries?
 (son Ada Jubal)
 ```
 
-Formulate rules such as “If $S$ is the son of $f$ , and $f$ is the son of $G$ , then $S$ is the grandson of $G$ ” and “If $W$ is the wife of $M$ , and $S$ is the son of $W$ , then $S$ is the son of $M$ ” (which was supposedly more true in biblical times than today) that will enable the query system to find the grandson of Cain; the sons of Lamech; the grandsons of Methushael. (See [Exercise 4.69](#Exercise-4_002e69) for some rules to deduce more complicated relationships.)
+صِغ قواعدً مثل «إذا كان $S$ ابنًا لـ$f$ ، وكان $f$ ابنًا لـ$G$ ، فإنّ $S$ هو حفيد $G$ » و«إذا كانت $W$ زوجةً لـ$M$ ، وكان $S$ ابنًا لـ$W$ ، فإنّ $S$ هو ابن $M$ » (وهو ما كان أكثر صدقًا في الأزمنة التوراتيّة ممّا هو عليه اليوم) ممّا يُتيح لنظام الاستعلامات إيجاد حفيد قابيل، وأبناء لامك، وأحفاد متوشائيل. (انظر [التمرين 4.69](#Exercise-4_002e69) لقواعدَ تستنبط علاقاتٍ أكثر تعقيدًا.)
 
-#### 4.4.2 How the Query System Works
+#### 4.4.2 كيف يعمل نظام الاستعلامات
 
-In section [4.4.4](#g_t4_002e4_002e4) we will present an implementation of the query interpreter as a collection of procedures. In this section we give an overview that explains the general structure of the system independent of low-level implementation details. After describing the implementation of the interpreter, we will be in a position to understand some of its limitations and some of the subtle ways in which the query language’s logical operations differ from the operations of mathematical logic.
+في القسم [4.4.4](#g_t4_002e4_002e4) سنُقدّم تنفيذًا لمفسّر الاستعلامات كمجموعةٍ من الإجراءات. وفي هذا القسم نُقدّم نظرةً عامّةً تشرح البنية العامّة للنظام مستقلّةً عن تفاصيل التنفيذ منخفضة المستوى. وبعد وصف تنفيذ المفسّر، سنكون في موضعٍ يسمح لنا بفهم بعض حدوده وبعض الطرق الدقيقة التي تختلف بها عمليّات لغة الاستعلامات المنطقيّة عن عمليّات المنطق الرياضيّ.
 
-It should be apparent that the query evaluator must perform some kind of search in order to match queries against facts and rules in the data base. One way to do this would be to implement the query system as a nondeterministic program, using the `amb` evaluator of [4.3](https://sarabander.github.io/sicp/html/4_002e3.xhtml#g_t4_002e3) (see [Exercise 4.78](#Exercise-4_002e78)). Another possibility is to manage the search with the aid of streams. Our implementation follows this second approach.
+ينبغي أن يكون واضحًا أنّ مُقيّم الاستعلامات لا بدّ أن يجري نوعًا من البحث لكي يُطابق الاستعلامات ضدّ الحقائق والقواعد في قاعدة البيانات. وإحدى طرائق فعل ذلك هي تنفيذ نظام الاستعلامات برنامجًا غير حتميّ، باستخدام مُقيّم `amb` الخاصّ بـ[4.3](https://sarabander.github.io/sicp/html/4_002e3.xhtml#g_t4_002e3) (انظر [التمرين 4.78](#Exercise-4_002e78)). وهناك احتمالٌ آخر وهو إدارة البحث بمساعدة المجاري. وتنفيذنا يتبع هذا الأسلوب الثاني.
 
-The query system is organized around two central operations called *pattern matching* and *unification*. We first describe pattern matching and explain how this operation, together with the organization of information in terms of streams of frames, enables us to implement both simple and compound queries. We next discuss unification, a generalization of pattern matching needed to implement rules. Finally, we show how the entire query interpreter fits together through a procedure that classifies expressions in a manner analogous to the way `eval` classifies expressions for the interpreter described in [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1).
+ينظّم نظام الاستعلامات حول عمليّتين مركزيّتين تُسمّيان *مطابقة الأنماط* و*التوحيد*. فنحن نُصف مطابقة الأنماط أوّلًا ونشرح كيف تُتيح لنا هذه العمليّة، مع تنظيم المعلومات من حيث مجاري الإطارات، تنفيذ الاستعلامات البسيطة والمركّبة على حدٍّ سواء. ثم نناقش التوحيد، وهو تعميمٌ لمطابقة الأنماط يلزم لتنفيذ القواعد. وأخيرًا، نُبيّن كيف يتركّب مفسّر الاستعلامات كلَّه عبر إجراءٍ يُصنّف التعابير على نحوٍ يماثل ما يفعله `eval` من تصنيفٍ للتعابير من أجل المفسّر الموصوف في [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1).
 
-#### Pattern matching
+#### مطابقة الأنماط
 
-A *pattern matcher* is a program that tests whether some datum fits a specified pattern. For example, the data list `((a b) c (a b))` matches the pattern `(?x c ?x)` with the pattern variable `?x` bound to `(a b)`. The same data list matches the pattern `(?x ?y ?z)` with `?x` and `?z` both bound to `(a b)` and `?y` bound to `c`. It also matches the pattern `((?x ?y) c (?x ?y))` with `?x` bound to `a` and `?y` bound to `b`. However, it does not match the pattern `(?x a ?y)`, since that pattern specifies a list whose second element is the symbol `a`.
+*مُطابِق الأنماط* برنامجٌ يختبر ما إذا كان معطًى ما يلائم نمطًا محدّدًا. فمثلًا، فإنّ قائمة البيانات `((a b) c (a b))` تُطابق النمط `(?x c ?x)` بمتغيّر النمط `?x` مربوطًا بـ`(a b)`. وقائمة البيانات نفسها تُطابق النمط `(?x ?y ?z)` بحيث `?x` و`?z` كلاهما مربوط بـ`(a b)` و`?y` مربوط بـ`c`. وهي تُطابق أيضًا النمط `((?x ?y) c (?x ?y))` بحيث `?x` مربوط بـ`a` و`?y` مربوط بـ`b`. لكنها لا تُطابق النمط `(?x a ?y)`، لأنّ ذلك النمط يُحدّد قائمةً عنصرها الثاني هو الرمز `a`.
 
-The pattern matcher used by the query system takes as inputs a pattern, a datum, and a *frame* that specifies bindings for various pattern variables. It checks whether the datum matches the pattern in a way that is consistent with the bindings already in the frame. If so, it returns the given frame augmented by any bindings that may have been determined by the match. Otherwise, it indicates that the match has failed.
+يأخذ مُطابِق الأنماط المستخدم في نظام الاستعلامات كمعطياتٍ نمطًا، ومعطًى، و*إطارًا* يُحدّد روابط لمتغيّرات أنماطٍ مختلفة. وهو يفحص ما إذا كان المعطى يُطابق النمط على نحوٍ متّسقٍ مع الروابط الموجودة في الإطار أصلًا. فإن كان كذلك، أعاد الإطار المعطى مُوسَّعًا بأيّ روابطٍ قد تكون تحديدًا عن طريق المطابقة. وإلّا، أفاد بأنّ المطابقة قد فشلت.
 
-For example, using the pattern `(?x ?y ?x)` to match `(a b a)` given an empty frame will return a frame specifying that `?x` is bound to `a` and `?y` is bound to `b`. Trying the match with the same pattern, the same datum, and a frame specifying that `?y` is bound to `a` will fail. Trying the match with the same pattern, the same datum, and a frame in which `?y` is bound to `b` and `?x` is unbound will return the given frame augmented by a binding of `?x` to `a`.
+فمثلًا، استخدام النمط `(?x ?y ?x)` لمطابقة `(a b a)` مع إطارٍ فارغ سيُعيد إطارًا يُحدّد أنّ `?x` مربوط بـ`a` و`?y` مربوط بـ`b`. ومحاولة المطابقة بالنمط نفسه، والمعطى نفسه، وإطارٌ يُحدّد أنّ `?y` مربوط بـ`a` ستفشل. ومحاولة المطابقة بالنمط نفسه، والمعطى نفسه، وإطارٌ `?y` فيه مربوط بـ`b` و`?x` غير مربوط ستُعيد الإطار المعطى مُوسَّعًا بربط `?x` بـ`a`.
 
-The pattern matcher is all the mechanism that is needed to process simple queries that don’t involve rules. For instance, to process the query
+إنّ مُطابِق الأنماط هو كلّ الآليّة اللازمة لمعالجة الاستعلامات البسيطة التي لا تشمل القواعد. فمثلًا، لمعالجة الاستعلام
 
 ```scheme
 (job ?x (computer programmer))
 ```
 
-we scan through all assertions in the data base and select those that match the pattern with respect to an initially empty frame. For each match we find, we use the frame returned by the match to instantiate the pattern with a value for `?x`.
+فإنّا نمسح جميع التأكيدات في قاعدة البيانات ونختار تلك التي تُطابق النمط بالنسبة إلى إطارٍ فارغ ابتداءً. ولكلّ مطابقةٍ نجدها، نستخدم الإطار المُعاد من المطابقة لإنشاء النمط بقيمةٍ لـ`?x`.
 
-#### Streams of frames
+#### مجاري الإطارات
 
-The testing of patterns against frames is organized through the use of streams. Given a single frame, the matching process runs through the data-base entries one by one. For each data-base entry, the matcher generates either a special symbol indicating that the match has failed or an extension to the frame. The results for all the data-base entries are collected into a stream, which is passed through a filter to weed out the failures. The result is a stream of all the frames that extend the given frame via a match to some assertion in the data base.[^67]
+يُنظَّم اختبار الأنماط ضدّ الإطارات باستخدام المجاري. وبإعطاء إطارٍ مفرد، تجري عمليّة المطابقة على مُدخلات قاعدة البيانات واحدًا واحدًا. ولكلّ مُدخلٍ في قاعدة البيانات، يُنتج المُطابِق إمّا رمزًا خاصًّا يُشير إلى أنّ المطابقة قد فشلت، وإمّا امتدادًا للإطار. وتُجمع النتائج الخاصّة بجميع مُدخلات قاعدة البيانات في مجرى، يُمرَّر عبر مُرشِّحٍ لتنقية الإخفاقات. والنتيجة مجرىٌ بجميع الإطارات التي تُوسّع الإطار المعطى عبر مطابقةٍ لتأكيدٍ ما في قاعدة البيانات.[^67]
 
-In our system, a query takes an input stream of frames and performs the above matching operation for every frame in the stream, as indicated in [Figure 4.4](#Figure-4_002e4). That is, for each frame in the input stream, the query generates a new stream consisting of all extensions to that frame by matches to assertions in the data base. All these streams are then combined to form one huge stream, which contains all possible extensions of every frame in the input stream. This stream is the output of the query.
+في نظامنا، يأخذ الاستعلام مجرى إطاراتٍ مدخلًا ويؤدّي عمليّة المطابقة أعلاه لكلّ إطارٍ في المجرى، كما هو موضّح في [الشكل 4.4](#Figure-4_002e4). أي أنّ الاستعلام، لكلّ إطارٍ في مجرى الدخل، يُنتج مجرى جديدًا يتألّف من جميع امتدادات ذلك الإطار بواسطة مطابقاتٍ لتأكيداتٍ في قاعدة البيانات. ثم تُدمَج جميع هذه المجاري لتكوين مجرى واحدٍ هائل، يحتوي جميع الامتدادات الممكنة لكلّ إطارٍ في مجرى الدخل. وهذا المجرى هو مخرج الاستعلام.
 
 ![](/images/sicp/c4-metalinguistic-abstraction-0-Fig4.4a.std.webp)
 
-**Figure 4.4:** A query processes a stream of frames.
+**الشكل 4.4:** يعالج الاستعلام مجرى إطاراتٍ.
 
-To answer a simple query, we use the query with an input stream consisting of a single empty frame. The resulting output stream contains all extensions to the empty frame (that is, all answers to our query). This stream of frames is then used to generate a stream of copies of the original query pattern with the variables instantiated by the values in each frame, and this is the stream that is finally printed.
+للإجابة عن استعلامٍ بسيط، نستخدم الاستعلام مع مجرى دخلٍ يتألّف من إطارٍ فارغٍ مفرد. ومجرى المخرج الناتج يحتوي جميع امتدادات الإطار الفارغ (أي جميع أجوبة استعلامنا). ثم يُستخدم مجرى الإطارات هذا لتوليد مجرى نسخٍ من نمط الاستعلام الأصليّ بالمتغيّرات منشأةً بالقيم في كلّ إطار، وهذا هو المجرى الذي يُطبع في النهاية.
 
-#### Compound queries
+#### الاستعلامات المركّبة
 
-The real elegance of the stream-of-frames implementation is evident when we deal with compound queries. The processing of compound queries makes use of the ability of our matcher to demand that a match be consistent with a specified frame. For example, to handle the `and` of two queries, such as
+يبدو الأناقة الحقيقيّة لتنفيذ مجرى الإطارات واضحةً حين نتعامل مع الاستعلامات المركّبة. فمعالجة الاستعلامات المركّبة تستفيد من قدرة مُطابِقنا على المطالبة بأن تكون المطابقة متّسقةً مع إطارٍ محدّدًا. فمثلًا، للتعامل مع `and` استعلامين، مثل
 
 ```scheme
 (and (can-do-job 
@@ -3139,93 +3139,93 @@ The real elegance of the stream-of-frames implementation is evident when we deal
      (job ?person ?x))
 ```
 
-(informally, “Find all people who can do the job of a computer programmer trainee”), we first find all entries that match the pattern
+(بصورةٍ غير رسميّة، «ابحث عن جميع الأشخاص الذين يستطيعون أداء مهمّة متدرّب مبرمج حاسوب»)، نجد أوّلًا جميع المُدخلات التي تُطابق النمط
 
 ```scheme
 (can-do-job ?x (computer programmer trainee))
 ```
 
-This produces a stream of frames, each of which contains a binding for `?x`. Then for each frame in the stream we find all entries that match
+يُنتج هذا مجرى إطاراتٍ، يحتوي كلٌّ منها ربطًا لـ`?x`. ثم نجد، لكلّ إطارٍ في المجرى، جميع المُدخلات التي تُطابق
 
 ```scheme
 (job ?person ?x)
 ```
 
-in a way that is consistent with the given binding for `?x`. Each such match will produce a frame containing bindings for `?x` and `?person`. The `and` of two queries can be viewed as a series combination of the two component queries, as shown in [Figure 4.5](#Figure-4_002e5). The frames that pass through the first query filter are filtered and further extended by the second query.
+على نحوٍ متّسقٍ مع الربط المعطى لـ`?x`. وكلّ مطابقةٍ من هذه المطابقات ستُنتج إطارًا يحتوي روابط لـ`?x` و`?person`. ويمكن النظر إلى `and` استعلامَين بوصفه تركيبًا تواليًّا للاستعلامين المركّبين، كما هو موضّح في [الشكل 4.5](#Figure-4_002e5). فالإطارات التي تمرّ عبر مرشّح الاستعلام الأوّل تُرشَّح وتُوسَّع بعدُ بالاستعلام الثاني.
 
 ![](/images/sicp/c4-metalinguistic-abstraction-1-Fig4.5a.std.webp)
 
-**Figure 4.5:** The `and` combination of two queries is produced by operating on the stream of frames in series.
+**الشكل 4.5:** يُنتَج تركيب `and` لاستعلامَين بالعمل على مجرى الإطارات تواليًّا.
 
-[Figure 4.6](#Figure-4_002e6) shows the analogous method for computing the `or` of two queries as a parallel combination of the two component queries. The input stream of frames is extended separately by each query. The two resulting streams are then merged to produce the final output stream.
+يُظهر [الشكل 4.6](#Figure-4_002e6) الطريقة المماثلة لاحتساب `or` استعلامَين تركيبًا توازيًّا للاستعلامين المركّبين. فمجرى الإطارات الداخل يُوسَّع على حدةٍ بواسطة كلّ استعلام. ثم يُدمَج المجريان الناتجان لإنتاج مجرى المخرج النهائيّ.
 
 ![](/images/sicp/c4-metalinguistic-abstraction-2-Fig4.6a.std.webp)
 
-**Figure 4.6:** The `or` combination of two queries is produced by operating on the stream of frames in parallel and merging the results.
+**الشكل 4.6:** يُنتَج تركيب `or` لاستعلامَين بالعمل على مجرى الإطارات توازيًّا ودمج النتائج.
 
-Even from this high-level description, it is apparent that the processing of compound queries can be slow. For example, since a query may produce more than one output frame for each input frame, and each query in an `and` gets its input frames from the previous query, an `and` query could, in the worst case, have to perform a number of matches that is exponential in the number of queries (see [Exercise 4.76](#Exercise-4_002e76)).[^68] Though systems for handling only simple queries are quite practical, dealing with complex queries is extremely difficult.[^69]
+وحتّى من هذا الوصف عالي المستوى، فمن الواضح أنّ معالجة الاستعلامات المركّبة قد تكون بطيئة. فحين قد يُنتج الاستعلام أكثر من إطار مخرجٍ واحدٍ لكلّ إطار دخل، وحين يحصل كلّ استعلامٍ في `and` على إطارات دخله من الاستعلام السابق، فقد يضطرّ استعلام `and`، في أسوأ الحالات، إلى أداء عددٍ من المطابقات أُسّيّ في عدد الاستعلامات (انظر [التمرين 4.76](#Exercise-4_002e76)).[^68] فمع أنّ النظم التي تتعامل مع الاستعلامات البسيطة وحدها عمليّةٌ إلى حدٍّ بعيد، فإنّ التعامل مع الاستعلامات المعقّدة عسيرٌ للغاية.[^69]
 
-From the stream-of-frames viewpoint, the `not` of some query acts as a filter that removes all frames for which the query can be satisfied. For instance, given the pattern
+ومن منظور مجرى الإطارات، يعمل `not` استعلامٍ ما بوصفه مرشّحًا يُزيل جميع الإطارات التي يمكن إشباع الاستعلام بالنسبة لها. فمثلًا، بالنظر إلى النمط
 
 ```scheme
 (not (job ?x (computer programmer)))
 ```
 
-we attempt, for each frame in the input stream, to produce extension frames that satisfy `(job ?x (computer programmer))`. We remove from the input stream all frames for which such extensions exist. The result is a stream consisting of only those frames in which the binding for `?x` does not satisfy `(job ?x (computer programmer))`. For example, in processing the query
+فنحن نحاول، لكلّ إطارٍ في مجرى الدخل، إنتاج إطارات امتدادٍ تُشبع `(job ?x (computer programmer))`. ونُزيل من مجرى الدخل جميع الإطارات التي توجد لها امتداداتٌ كهذه. والنتيجة مجرىٌ يتألّف من الإطارات التي فيها وحدها لا يُشبع ربط `?x` الشرط `(job ?x (computer programmer))`. فمثلًا، عند معالجة الاستعلام
 
 ```scheme
 (and (supervisor ?x ?y)
      (not (job ?x (computer programmer))))
 ```
 
-the first clause will generate frames with bindings for `?x` and `?y`. The `not` clause will then filter these by removing all frames in which the binding for `?x` satisfies the restriction that `?x` is a computer programmer.[^70]
+فسيُنتج البند الأوّل إطاراتٍ بروابط لـ`?x` و`?y`. ثم سيُرشّح البند `not` هذه الإطارات بإزالة جميع الإطارات التي يُشبع فيها ربط `?x` القيد القائل إنّ `?x` مبرمج حاسوب.[^70]
 
-The `lisp-value` special form is implemented as a similar filter on frame streams. We use each frame in the stream to instantiate any variables in the pattern, then apply the Lisp predicate. We remove from the input stream all frames for which the predicate fails.
+وتُنفَّذ الصيغة الخاصّة `lisp-value` بوصفها مرشّحًا مماثلًا على مجاري الإطارات. فنستخدم كلّ إطارٍ في المجرى لإنشاء أيّ متغيّراتٍ في النمط، ثم نُطبّق المُسَيِّم Lisp. ونُزيل من مجرى الدخل جميع الإطارات التي يفشل فيها المُسَيِّم.
 
-#### Unification
+#### التوحيد
 
-In order to handle rules in the query language, we must be able to find the rules whose conclusions match a given query pattern. Rule conclusions are like assertions except that they can contain variables, so we will need a generalization of pattern matching—called *unification*—in which both the “pattern” and the “datum” may contain variables.
+لكي نتعامل مع القواعد في لغة الاستعلامات، ينبغي أن نكون قادرين على إيجاد القواعد التي تُطابق استنتاجاتها نمط استعلامٍ معطًى. واستنتاجات القواعد تشبه التأكيدات إلّا في أنها قد تحتوي متغيّرات، لذا سنحتاج إلى تعميمٍ لمطابقة الأنماط - يُسمّى *التوحيد* - يكون فيه كلٌّ من «النمط» و«المعطى» قد يحتوي على متغيّرات.
 
-A unifier takes two patterns, each containing constants and variables, and determines whether it is possible to assign values to the variables that will make the two patterns equal. If so, it returns a frame containing these bindings. For example, unifying `(?x a ?y)` and `(?y ?z a)` will specify a frame in which `?x`, `?y`, and `?z` must all be bound to `a`. On the other hand, unifying `(?x ?y a)` and `(?x b ?y)` will fail, because there is no value for `?y` that can make the two patterns equal. (For the second elements of the patterns to be equal, `?y` would have to be `b`; however, for the third elements to be equal, `?y` would have to be `a`.) The unifier used in the query system, like the pattern matcher, takes a frame as input and performs unifications that are consistent with this frame.
+يأخذ *الموحِّد* نمطين، كلٌّ منهما يحتوي ثوابت ومتغيّرات، ويُحدّد ما إذا كان من الممكن إحلال قيمٍ بالمتغيّرات تجعل النمطين متساويين. فإن كان ذلك ممكنًا، أعاد إطارًا يحتوي هذه الروابط. فمثلًا، توحيد `(?x a ?y)` و`(?y ?z a)` سيُحدّد إطارًا يجِب فيه ربط `?x` و`?y` و`?z` جميعًا بـ`a`. ومن الجهة الأخرى، سيُخفِق توحيد `(?x ?y a)` و`(?x b ?y)`، لأنّه لا توجد قيمة لـ`?y` تستطيع أن تجعل النمطين متساويين. (فلتساوي عنصري النمطين الثانيين، يلزم أن يكون `?y` هو `b`؛ غير أنّ تساوي عنصريهما الثالثين يقتضي أن يكون `?y` هو `a`.) والموحِّد المستخدم في نظام الاستعلامات، شأنه شأن مُطابِق الأنماط، يأخذ إطارًا مدخلًا ويُجرى توحيداتٍ متّسقةٍ مع هذا الإطار.
 
-The unification algorithm is the most technically difficult part of the query system. With complex patterns, performing unification may seem to require deduction. To unify `(?x ?x)` and `((a ?y c) (a b ?z))`, for example, the algorithm must infer that `?x` should be `(a b c)`, `?y` should be `b`, and `?z` should be `c`. We may think of this process as solving a set of equations among the pattern components. In general, these are simultaneous equations, which may require substantial manipulation to solve.[^71] For example, unifying `(?x ?x)` and `((a ?y c) (a b ?z))` may be thought of as specifying the simultaneous equations
+وخوارزميّة التوحيد هي أكثر أجزاء نظام الاستعلامات صعوبةً من الناحية الفنّيّة. ومع الأنماط المعقّدة، قد يبدو أنّ أداء التوحيد يقتضي استنباطًا. فتوحيد `(?x ?x)` و`((a ?y c) (a b ?z))`، مثلًا، يقتضي من الخوارزميّة أن تستنبط أنّ `?x` ينبغي أن يكون `(a b c)`، و`?y` ينبغي أن يكون `b`، و`?z` ينبغي أن يكون `c`. ويمكننا اعتبار هذه العمليّة حلًّا لمجموعةٍ من المعادلات بين مركّبات النمط. وبصورةٍ عامّة، هذه معادلات آنيّة، وقد تقتضي معالجةً جوهريّة للحل.[^71] فمثلًا، يمكن النظر إلى توحيد `(?x ?x)` و`((a ?y c) (a b ?z))` على أنّه تحديدٌ لمعادلات آنيّة
 
 ```scheme
 ?x = (a ?y c)
 ?x = (a b ?z)
 ```
 
-These equations imply that
+وهذه المعادلات تقتضي أنّ
 
 ```scheme
 (a ?y c) = (a b ?z)
 ```
 
-which in turn implies that
+مما يقتضي أدواره أنّ
 
 ```scheme
 a = a, ?y = b, c = ?z,
 ```
 
-and hence that
+ومن ثمّ أنّ
 
 ```scheme
 ?x = (a b c)
 ```
 
-In a successful pattern match, all pattern variables become bound, and the values to which they are bound contain only constants. This is also true of all the examples of unification we have seen so far. In general, however, a successful unification may not completely determine the variable values; some variables may remain unbound and others may be bound to values that contain variables.
+في مطابقة الأنماط الناجحة، تصبح جميع متغيّرات النمط مربوطة، والقيم التي تُربط بها لا تحتوي إلّا ثوابت. وهذا صحيحٌ أيضًا في جميع أمثلة التوحيد التي رأيناها حتّى الآن. وبصورةٍ عامّة، مع ذلك، قد لا يُحدّد التوحيد الناجح قيم المتغيّرات تحديدًا تامًّا؛ فقد تبقى بعض المتغيّرات غير مربوطة، وقد يُربط بعضها الآخر بقيمٍ تحتوي متغيّرات.
 
-Consider the unification of `(?x a)` and `((b ?y) ?z)`. We can deduce that `?x = (b ?y)` and `a = ?z`, but we cannot further solve for `?x` or `?y`. The unification doesn’t fail, since it is certainly possible to make the two patterns equal by assigning values to `?x` and `?y`. Since this match in no way restricts the values `?y` can take on, no binding for `?y` is put into the result frame. The match does, however, restrict the value of `?x`. Whatever value `?y` has, `?x` must be `(b ?y)`. A binding of `?x` to the pattern `(b ?y)` is thus put into the frame. If a value for `?y` is later determined and added to the frame (by a pattern match or unification that is required to be consistent with this frame), the previously bound `?x` will refer to this value.[^72]
+تأمّل توحيد `(?x a)` و`((b ?y) ?z)`. فبوسعنا أن نستنبط أنّ `?x = (b ?y)` وأنّ `a = ?z`، لكنّنا لا نستطيع الاستنباط أكثر من ذلك من أجل `?x` أو `?y`. ولا يُخفِق التوحيد، إذ من الممكن بيقينٍ جعل النمطين متساويين بإحلال قيمٍ في `?x` و`?y`. وحين لا تُقيّد هذه المطابقة بأيّ نحوٍ القيم التي يمكن أن تتّخذها `?y`، فلا يُوضع أيّ ربطٍ لـ`?y` في الإطار الناتج. غير أنّ المطابقة تُقيّد قيمة `?x`. فأيًّا كانت قيمة `?y`، ينبغي أن يكون `?x` هو `(b ?y)`. وبذلك، يُوضع في الإطار ربطٌ لـ`?x` بالنمط `(b ?y)`. وإذا حُدّدت قيمة `?y` لاحقًا وأُضيفت إلى الإطار (بمطابقة أنماطٍ أو بتوحيدٍ يلزم أن يكون متّسقًا مع هذا الإطار)، فإنّ `?x` المربوط سابقًا سيُشير إلى هذه القيمة.[^72]
 
-#### Applying rules
+#### تطبيق القواعد
 
-Unification is the key to the component of the query system that makes inferences from rules. To see how this is accomplished, consider processing a query that involves applying a rule, such as
+والتوحيد هو مفتاح المكوّن من نظام الاستعلامات الذي يقوم بالاستنباط من القواعد. ولنرَ كيف يُنجَز هذا، تأمّل معالجة استعلامٍ يشتمل على تطبيق قاعدةٍ، مثل
 
 ```scheme
 (lives-near ?x (Hacker Alyssa P))
 ```
 
-To process this query, we first use the ordinary pattern-match procedure described above to see if there are any assertions in the data base that match this pattern. (There will not be any in this case, since our data base includes no direct assertions about who lives near whom.) The next step is to attempt to unify the query pattern with the conclusion of each rule. We find that the pattern unifies with the conclusion of the rule
+ولمعالجة هذا الاستعلام، نستخدم أوّلًا إجراء مطابقة الأنماط الاعتياديّ الموصوف أعلاه لنرى ما إذا كانت هناك تأكيداتٌ في قاعدة البيانات تُطابق هذا النمط. (ولن تكون هناك أيٌّا منها في هذه الحالة، إذ إنّ قاعدة بياناتنا لا تتضمّن أيّ تأكيداتٍ مباشرةٍ عن من يسكن قرب من.) والخطوة التالية هي محاولة توحيد نمط الاستعلام مع استنتاج كلّ قاعدة. فنجد أنّ النمط يتوحّد مع استنتاج القاعدة
 
 ```scheme
 (rule (lives-near ?person-1 ?person-2)
@@ -3236,38 +3236,38 @@ To process this query, we first use the ordinary pattern-match procedure describ
            (not (same ?person-1 ?person-2))))
 ```
 
-resulting in a frame specifying that `?person-2` is bound to `(Hacker Alyssa P)` and that `?x` should be bound to (have the same value as) `?person-1`. Now, relative to this frame, we evaluate the compound query given by the body of the rule. Successful matches will extend this frame by providing a binding for `?person-1`, and consequently a value for `?x`, which we can use to instantiate the original query pattern.
+مما يُنتج إطارًا يُحدّد أنّ `?person-2` مربوط بـ`(Hacker Alyssa P)` وأنّ `?x` ينبغي أن يُربط بـ`?person-1` (أي أن تكون له القيمة ذاتها). والآن، بالنسبة إلى هذا الإطار، نُقيّم الاستعلام المركّب المعطى من جسم القاعدة. والمطابقات الناجحة ستُوسّع هذا الإطار بتوفير ربطٍ لـ`?person-1`، ومن ثمّ قيمةً لـ`?x`، نستطيع استخدامها لإنشاء نمط الاستعلام الأصليّ.
 
-In general, the query evaluator uses the following method to apply a rule when trying to establish a query pattern in a frame that specifies bindings for some of the pattern variables:
+وبصورةٍ عامّة، يستخدم مُقيّم الاستعلامات الطريقة الآتية لتطبيق قاعدةٍ حين يحاول إثبات نمط استعلامٍ في إطارٍ يُحدّد روابط بعض متغيّرات النمط:
 
-- Unify the query with the conclusion of the rule to form, if successful, an extension of the original frame.
-- Relative to the extended frame, evaluate the query formed by the body of the rule.
+- وحّد الاستعلام مع استنتاج القاعدة لتُشكَّل، في حال النجاح، امتدادٌ للإطار الأصليّ.
+- وبالنسبة إلى الإطار المُوسَّع، قيّم الاستعلام المشكّل من جسم القاعدة.
 
-Notice how similar this is to the method for applying a procedure in the `eval`/`apply` evaluator for Lisp:
+لاحِظ مدى تشابه هذا مع طريقة تطبيق إجراءٍ في مُقيّم `eval`/`apply` الخاصّ بـLisp:
 
-- Bind the procedure’s parameters to its arguments to form a frame that extends the original procedure environment.
-- Relative to the extended environment, evaluate the expression formed by the body of the procedure.
+- اربط وسائط الإجراء بمعطياته لتُشكَّل إطارًا يُوسّع بيئة الإجراء الأصليّة.
+- وبالنسبة إلى البيئة المُوسَّعة، قيّم التعبير المشكّل من جسم الإجراء.
 
-The similarity between the two evaluators should come as no surprise. Just as procedure definitions are the means of abstraction in Lisp, rule definitions are the means of abstraction in the query language. In each case, we unwind the abstraction by creating appropriate bindings and evaluating the rule or procedure body relative to these.
+وينبغي ألّا يكون التشابه بين المُقيّمين مُفاجئًا. فكما أنّ تعريفات الإجراءات هي وسائل التجريد في Lisp، فإنّ تعريفات القواعد هي وسائل التجريد في لغة الاستعلامات. وفي كلّ حالة، نُفكّك التجريد بإنشاء روابطَ مناسبةٍ وتقييم جسم القاعدة أو الإجراء بالنسبة إليها.
 
-#### Simple queries
+#### الاستعلامات البسيطة
 
-We saw earlier in this section how to evaluate simple queries in the absence of rules. Now that we have seen how to apply rules, we can describe how to evaluate simple queries by using both rules and assertions.
+رأينا سابقًا في هذا القسم كيف نُقيّم الاستعلامات البسيطة في غياب القواعد. والآن، بعد أن رأينا كيف نُطبّق القواعد، نستطيع أن نُصف كيف نُقيّم الاستعلامات البسيطة باستخدام القواعد والتأكيدات معًا.
 
-Given the query pattern and a stream of frames, we produce, for each frame in the input stream, two streams:
+فبالنظر إلى نمط الاستعلام ومجرى إطاراتٍ، نُنتج، لكلّ إطارٍ في مجرى الدخل، مجريين:
 
-- a stream of extended frames obtained by matching the pattern against all assertions in the data base (using the pattern matcher), and
-- a stream of extended frames obtained by applying all possible rules (using the unifier).[^73]
+- مجرى إطاراتٍ مُوسَّعةٍ يُحصَل عليها بمطابقة النمط ضدّ جميع التأكيدات في قاعدة البيانات (باستخدام مُطابِق الأنماط)، و
+- مجرى إطاراتٍ مُوسَّعةٍ يُحصَل عليها بتطبيق جميع القواعد الممكنة (باستخدام الموحِّد).[^73]
 
-Appending these two streams produces a stream that consists of all the ways that the given pattern can be satisfied consistent with the original frame. These streams (one for each frame in the input stream) are now all combined to form one large stream, which therefore consists of all the ways that any of the frames in the original input stream can be extended to produce a match with the given pattern.
+وإلحاق هذين المجريين يُنتج مجرىً يتألّف من جميع الطرق التي يمكن بها إشباع النمط المعطى اتّساقًا مع الإطار الأصليّ. وهذه المجاري (واحدٌ لكلّ إطارٍ في مجرى الدخل) تُدمَج الآن جميعُها لتشكيل مجرى واحدٍ هائل، يتألّف بالتالي من جميع الطرق التي يمكن بها توسيع أيّ إطارٍ من مجرى الدخل الأصليّ لإنتاج مطابقةٍ مع النمط المعطى.
 
-#### The query evaluator and the driver loop
+#### مُقيّم الاستعلامات وحلقة المُشغّل
 
-Despite the complexity of the underlying matching operations, the system is organized much like an evaluator for any language. The procedure that coordinates the matching operations is called `qeval`, and it plays a role analogous to that of the `eval` procedure for Lisp. `Qeval` takes as inputs a query and a stream of frames. Its output is a stream of frames, corresponding to successful matches to the query pattern, that extend some frame in the input stream, as indicated in [Figure 4.4](#Figure-4_002e4). Like `eval`, `qeval` classifies the different types of expressions (queries) and dispatches to an appropriate procedure for each. There is a procedure for each special form (`and`, `or`, `not`, and `lisp-value`) and one for simple queries.
+ومع تعقيد عمليّات المطابقة الكامنة، فإنّ النظام مُنظَّمٌ على نحوٍ يُشبه إلى حدٍّ كبيرٍ مُقيّمًا لأيّ لغة. والإجراء الذي ينسّق عمليّات المطابقة يُسمّى `qeval`، وهو يلعب دورًا يماثل دور إجراء `eval` في Lisp. و`qeval` يأخذ كمدخلاتٍ استعلامًا ومجرى إطارات. ومخرجه مجرى إطارات، يقابل المطابقات الناجحة لنمط الاستعلام، يُوسّع إطارًا ما في مجرى الدخل، كما هو موضّح في [الشكل 4.4](#Figure-4_002e4). وشأنه شأن `eval`، يُصنّف `qeval` أنواعًا مختلفةً من التعابير (الاستعلامات) ويُرسل إلى إجراءٍ مناسبٍ لكلٍّ منها. فهناك إجراءٌ لكلّ صيغةٍ خاصّة (`and` و`or` و`not` و`lisp-value`) وآخرٌ للاستعلامات البسيطة.
 
-The driver loop, which is analogous to the `driver-loop` procedure for the other evaluators in this chapter, reads queries from the terminal. For each query, it calls `qeval` with the query and a stream that consists of a single empty frame. This will produce the stream of all possible matches (all possible extensions to the empty frame). For each frame in the resulting stream, it instantiates the original query using the values of the variables found in the frame. This stream of instantiated queries is then printed.[^74]
+وحلقة المُشغّل، التي تماثل إجراء `driver-loop` الخاصّ ببقيّة المُقيّمات في هذا الفصل، تقرأ الاستعلامات من الطرفيّة. وبالنسبة إلى كلّ استعلام، تستدعي `qeval` بالاستعلام وبمجرى يتألّف من إطارٍ فارغٍ مفرد. وهذا سيُنتج مجرى جميع المطابقات الممكنة (جميع الامتدادات الممكنة للإطار الفارغ). وبالنسبة إلى كلّ إطارٍ في المجرى الناتج، تُنشئ الاستعلام الأصليّ باستخدام قيم المتغيّرات الموجودة في الإطار. ثم يُطبع مجرى الاستعلامات المنشأة هذا.[^74]
 
-The driver also checks for the special command `assert!`, which signals that the input is not a query but rather an assertion or rule to be added to the data base. For instance,
+يتحقّق المُشغّل أيضًا من الأمر الخاصّ `assert!`، الذي يُشير إلى أنّ الدخل ليس استعلامًا بل هو تأكيدٌ أو قاعدةٌ يجب إضافتها إلى قاعدة البيانات. فمثلًا،
 
 ```scheme
 (assert!
@@ -3282,66 +3282,66 @@ The driver also checks for the special command `assert!`, which signals that the
              ?x ?middle-manager))))
 ```
 
-#### 4.4.3 Is Logic Programming Mathematical Logic?
+#### 4.4.3 هل البرمجة المنطقيّة منطقٌ رياضيّ؟
 
-The means of combination used in the query language may at first seem identical to the operations `and`, `or`, and `not` of mathematical logic, and the application of query-language rules is in fact accomplished through a legitimate method of inference.[^75] This identification of the query language with mathematical logic is not really valid, though, because the query language provides a *control structure* that interprets the logical statements procedurally. We can often take advantage of this control structure. For example, to find all of the supervisors of programmers we could formulate a query in either of two logically equivalent forms:
+وسائل التركيب المستخدمة في لغة الاستعلامات قد تبدو ابتداءً مطابقةً للعمليّات `and` و`or` و`not` في المنطق الرياضيّ، وتطبيق قواعد لغة الاستعلامات يُنجَز في الحقيقة بطريقةٍ مشروعةٍ للاستنباط.[^75] غير أنّ هذا التطبيع للغة الاستعلامات على المنطق الرياضيّ ليس صالحًا حقًّا، لأنّ لغة الاستعلامات توفّر *بنية تحكّم* تفسّر العبارات المنطقيّة إجرائيًّا. ويمكننا غالبًا استثمار بنية التحكّم هذه. فمثلًا، لإيجاد جميع مشرفي المبرمجين، يمكننا صياغة استعلامٍ بأيّ من شكلين متكافئين منطقيًّا:
 
 ```scheme
 (and (job ?x (computer programmer))
      (supervisor ?x ?y))
 ```
 
-or
+أو
 
 ```scheme
 (and (supervisor ?x ?y)
      (job ?x (computer programmer)))
 ```
 
-If a company has many more supervisors than programmers (the usual case), it is better to use the first form rather than the second because the data base must be scanned for each intermediate result (frame) produced by the first clause of the `and`.
+فإذا كانت الشركة تضمّ مشرفين أكثر كثيرًا من المبرمجين (وهي الحالة المعتادة)، فالأفضل استخدام الشكل الأوّل بدلًا من الثاني لأنّ قاعدة البيانات يجب أن تُمسح لكلّ نتيجةٍ وسيطةٍ (إطار) يُنتجها البند الأوّل من `and`.
 
-The aim of logic programming is to provide the programmer with techniques for decomposing a computational problem into two separate problems: “what” is to be computed, and “how” this should be computed. This is accomplished by selecting a subset of the statements of mathematical logic that is powerful enough to be able to describe anything one might want to compute, yet weak enough to have a controllable procedural interpretation. The intention here is that, on the one hand, a program specified in a logic programming language should be an effective program that can be carried out by a computer. Control (“how” to compute) is effected by using the order of evaluation of the language. We should be able to arrange the order of clauses and the order of subgoals within each clause so that the computation is done in an order deemed to be effective and efficient. At the same time, we should be able to view the result of the computation (“what” to compute) as a simple consequence of the laws of logic.
+ويهدف المنهج البرمجة المنطقيّة إلى تزويد المبرمج بتقنيّاتٍ لتفكيك مسألةٍ حسابيّةٍ إلى مسألتين منفصلتين: «ما» الذي يُحتسب، و«كيف» ينبغي أن يُحتسب. ويتحقّق ذلك باختيار مجموعةٍ جزئيّةٍ من عبارات المنطق الرياضيّ، قويّةٌ بقدرٍ يكفي لوصف أيّ شيءٍ قد يُراد احتسابه، ومع ذلك ضعيفةٌ بقدرٍ يكفي لتكون لها تفسيرٌ إجرائيٌّ قابلٌ للتحكّم. والنيّة هنا هي أنّ البرنامج المكتوب بلغة برمجةٍ منطقيّةٍ ينبغي، من جهةٍ، أن يكون برنامجًا فعّالًا يستطيع الحاسوب تنفيذه. والتحكّم («كيف» الاحتساب) يُحدث باستخدام ترتيب التقييم في اللغة. وينبغي أن نكون قادرين على ترتيب البنود وترتيب الأهداف الفرعيّة داخل كلّ بند، بحيث يُنجَز الاحتساب بترتيبٍ يُعتبر فعّالًا وكفءًا. وفي الوقت ذاته، ينبغي أن نكون قادرين على النظر إلى نتيجة الاحتساب («ما» يُحتسب) بوصفها نتيجةً بسيطةً لقوانين المنطق.
 
-Our query language can be regarded as just such a procedurally interpretable subset of mathematical logic. An assertion represents a simple fact (an atomic proposition). A rule represents the implication that the rule conclusion holds for those cases where the rule body holds. A rule has a natural procedural interpretation: To establish the conclusion of the rule, establish the body of the rule. Rules, therefore, specify computations. However, because rules can also be regarded as statements of mathematical logic, we can justify any “inference” accomplished by a logic program by asserting that the same result could be obtained by working entirely within mathematical logic.[^76]
+ويمكن اعتبار لغة الاستعلامات خاصّنا مجموعةً جزئيّةً كهذه من المنطق الرياضيّ، قابلةً للتفسير إجرائيًّا. فالتأكيد يمثّل حقيقةً بسيطةً (قضيّةٌ أوّليّة). والقاعدة تمثّل استلزامًا مفاده أنّ استنتاج القاعدة يصدق في الحالات التي يصدق فيها جسم القاعدة. وللقاعدة تفسيرٌ إجرائيٌّ طبيعيّ: لإثبات استنتاج القاعدة، أثبِت جسم القاعة. وبذلك، تُحدّد القواعد الاحتسابات. غير أنّّه، إذ يمكن اعتبار القواعد أيضًا عباراتٍ في المنطق الرياضيّ، فبوسعنا تبرير أيّ «استنباط» ينجزه برنامجٌ منطقيّ بالادّعاء بأنّ النتيجة ذاتها كان من الممكن الحصول عليها بالعمل كلّيًّا داخل المنطق الرياضيّ.[^76]
 
-#### Infinite loops
+#### الحلقات اللانهائيّة
 
-A consequence of the procedural interpretation of logic programs is that it is possible to construct hopelessly inefficient programs for solving certain problems. An extreme case of inefficiency occurs when the system falls into infinite loops in making deductions. As a simple example, suppose we are setting up a data base of famous marriages, including
+ومن تبعات التفسير الإجرائيّ للبرامج المنطقيّة أنّه من الممكن بناء برامج عديمة الكفاءة بصورةٍ ميؤوس منها لحلّ مسائل معيّنة. وحالةٌ قصوى من انعدام الكفاءة تقع حين يسقط النظام في حلقاتٍ لا نهائيّةٍ أثناء إجراء الاستنباطات. ففي مثالٍ بسيط، لنفترض أنّنا نُنشئ قاعدة بياناتٍ للزواجات المشهورة، تتضمّن
 
 ```scheme
 (assert! (married Minnie Mickey))
 ```
 
-If we now ask
+وإذا سألنا الآن
 
 ```scheme
 (married Mickey ?who)
 ```
 
-we will get no response, because the system doesn’t know that if $A$ is married to $B$ , then $B$ is married to $A$ . So we assert the rule
+فلن نحصل على أيّ ردّ، لأنّ النظام لا يعلم أنّ كوْن $A$ متزوّجًا بـ$B$ ، يقتضي أنّ $B$ متزوّج بـ$A$ . لذا نُثبّت القاعدة
 
 ```scheme
 (assert! (rule (married ?x ?y)
                (married ?y ?x)))
 ```
 
-and again query
+ونستعلم مرّةً أخرى
 
 ```scheme
 (married Mickey ?who)
 ```
 
-Unfortunately, this will drive the system into an infinite loop, as follows:
+وللأسف، فهذا سيدفع النظام إلى حلقةٍ لا نهائيّة، على النحو الآتي:
 
-- The system finds that the `married` rule is applicable; that is, the rule conclusion `(married ?x ?y)` successfully unifies with the query pattern `(married Mickey ?who)` to produce a frame in which `?x` is bound to `Mickey` and `?y` is bound to `?who`. So the interpreter proceeds to evaluate the rule body `(married ?y ?x)` in this frame—in effect, to process the query `(married ?who Mickey)`.
-- One answer appears directly as an assertion in the data base: `(married Minnie Mickey)`.
-- The `married` rule is also applicable, so the interpreter again evaluates the rule body, which this time is equivalent to `(married Mickey ?who)`.
+- يجد النظام أنّ القاعدة `married` قابلةٌ للتطبيق؛ أي أنّ استنتاج القاعدة `(married ?x ?y)` يتوحّد بنجاحٍ مع نمط الاستعلام `(married Mickey ?who)` لإنتاج إطارٍ يُربط فيه `?x` بـ`Mickey` و`?y` بـ`?who`. فيمضي المفسّر في تقييم جسم القاعدة `(married ?y ?x)` في هذا الإطار - أي في معالجة الاستعلام `(married ?who Mickey)` في الواقع.
+- ويظهر جوابٌ واحدٌ مباشرةً بوصفه تأكيدًا في قاعدة البيانات: `(married Minnie Mickey)`.
+- والقاعدة `married` قابلةٌ للتطبيق أيضًا، فيُقيّم المفسّر جسم القاعدة مرّةً أخرى، وهو المكافئ هذه المرّة لـ`(married Mickey ?who)`.
 
-The system is now in an infinite loop. Indeed, whether the system will find the simple answer `(married Minnie Mickey)` before it goes into the loop depends on implementation details concerning the order in which the system checks the items in the data base. This is a very simple example of the kinds of loops that can occur. Collections of interrelated rules can lead to loops that are much harder to anticipate, and the appearance of a loop can depend on the order of clauses in an `and` (see [Exercise 4.64](#Exercise-4_002e64)) or on low-level details concerning the order in which the system processes queries.[^77]
+وإنّ النظام الآن في حلقةٍ لا نهائيّة. والحقيقة أنّ عثور النظام على الجواب البسيط `(married Minnie Mickey)` قبل سقوطه في هذه الحالة أم لا، يتوقّف على تفاصيل التنفيذ المتعلّقة بالترتيب الذي يفحص به النظام العناصر في قاعدة البيانات. وهذا مثالٌ في غاية البساطة على أنواع الحلقات التي يمكن أن تقع. ومجموعاتٌ من القواعد المترابطة قد تؤدّي إلى حلقاتٍ يصعب استباقها بدرجةٍ أكبر بكثير، وقد يتوقّف ظهور حلقةٍ على ترتيب البنود في `and` (انظر [التمرين 4.64](#Exercise-4_002e64)) أو على تفاصيل منخفضة المستوى تتعلّق بالترتيب الذي يعالج به النظام الاستعلامات.[^77]
 
-#### Problems with `not`
+#### مشاكل `not`
 
-Another quirk in the query system concerns `not`. Given the data base of [4.4.1](#g_t4_002e4_002e1), consider the following two queries:
+وهناك مثيلةٌ أخرى في نظام الاستعلامات تتعلّق بـ`not`. فبالنظر إلى قاعدة البيانات الواردة في [4.4.1](#g_t4_002e4_002e1)، تأمّل الاستعلامَين الآتيين:
 
 ```scheme
 (and (supervisor ?x ?y)
@@ -3351,13 +3351,13 @@ Another quirk in the query system concerns `not`. Given the data base of [4.4.1]
      (supervisor ?x ?y))
 ```
 
-These two queries do not produce the same result. The first query begins by finding all entries in the data base that match `(supervisor ?x ?y)`, and then filters the resulting frames by removing the ones in which the value of `?x` satisfies `(job ?x (computer programmer))`. The second query begins by filtering the incoming frames to remove those that can satisfy `(job ?x (computer programmer))`. Since the only incoming frame is empty, it checks the data base to see if there are any patterns that satisfy `(job ?x (computer programmer))`. Since there generally are entries of this form, the `not` clause filters out the empty frame and returns an empty stream of frames. Consequently, the entire compound query returns an empty stream.
+وهذان الاستعلامان لا يُنتجان النتيجة ذاتها. فالاستعلام الأوّل يبدأ بإيجاد جميع المُدخلات في قاعدة البيانات التي تُطابق `(supervisor ?x ?y)`، ثم يُرشّح الإطارات الناتجة بإزالة تلك التي تُشبع فيها قيمة `?x` الشرط `(job ?x (computer programmer))`. والاستعلام الثاني يبدأ بترشيح الإطارات الداخلة لإزالة تلك التي تستطيع إشباع `(job ?x (computer programmer))`. وحين الإطار الداخل الوحيد فارغ، يفحص قاعدة البيانات ليرى ما إذا كانت هناك أنماطٌ تُشبع `(job ?x (computer programmer))`. وبما أنّ هناك عادةً مُدخلاتٍ من هذا الشكل، فإنّ البند `not` يُزيل الإطار الفارغ ويُعيد مجرى إطارات فارغ. ونتيجةً لذلك، فإنّ الاستعلام المركّب كلّه يُعيد مجرى فارغ.
 
-The trouble is that our implementation of `not` really is meant to serve as a filter on values for the variables. If a `not` clause is processed with a frame in which some of the variables remain unbound (as does `?x` in the example above), the system will produce unexpected results. Similar problems occur with the use of `lisp-value`—the Lisp predicate can’t work if some of its arguments are unbound. See [Exercise 4.77](#Exercise-4_002e77).
+والمشكلة أنّ تنفيذنا لـ`not` إنّما يُقصد به حقًّا أن يكون مرشّحًا على قيم المتغيّرات. فإذا عُومل بند `not` بإطارٍ تبقى فيه بعض المتغيّرات غير مربوطة (كما هو الحال بالنسبة إلى `?x` في المثال أعلاه)، فإنّ النظام سيُنتج نتائج غير متوقّعة. ومشاكلٌ مماثلة تقع مع استخدام `lisp-value` - إذ إنّ المُسَيِّم Lisp لا يستطيع العمل إذا كانت بعض معطيته غير مربوطة. انظر [التمرين 4.77](#Exercise-4_002e77).
 
-There is also a much more serious way in which the `not` of the query language differs from the `not` of mathematical logic. In logic, we interpret the statement “not $P$ ” to mean that $P$ is not true. In the query system, however, “not $P$ ” means that $P$ is not deducible from the knowledge in the data base. For example, given the personnel data base of [4.4.1](#g_t4_002e4_002e1), the system would happily deduce all sorts of `not` statements, such as that Ben Bitdiddle is not a baseball fan, that it is not raining outside, and that 2 + 2 is not 4.[^78] In other words, the `not` of logic programming languages reflects the so-called *closed world assumption* that all relevant information has been included in the data base.[^79]
+وهناك أيضًا طريقةٌ أخطرُ كثيرًا يختلف بها `not` لغة الاستعلامات عن `not` المنطق الرياضيّ. ففي المنطق، نُفسّر العبارة «not $P$ » على أنّها تعني أنّ $P$ ليست صحيحة. غير أنّ «not $P$ » في نظام الاستعلامات تعني أنّ $P$ غير قابلةٍ للاستنباط من المعرفة في قاعدة البيانات. فمثلًا، بالنظر إلى قاعدة البيانات الخاصّة بالموظفين الواردة في [4.4.1](#g_t4_002e4_002e1)، فإنّ النظام سيستنبط بسرورٍ جميع أنواع عبارات `not`، كأنّ بن بِتدل ليس من محبّي كرة القاعدة، وأنّ المطر لا يسقط في الخارج، وأنّ 2 + 2 ليست 4.[^78] وبعبارةٍ أخرى، فإنّ `not` لغات البرمجة المنطقيّة يعبّر عمّا يُسمّى *افتراض العالم المغلق*، وهو أنّ جميع المعلومات ذات الصلة قد أُدرجت في قاعدة البيانات.[^79]
 
-**Exercise 4.64:** Louis Reasoner mistakenly deletes the `outranked-by` rule ([4.4.1](#g_t4_002e4_002e1)) from the data base. When he realizes this, he quickly reinstalls it. Unfortunately, he makes a slight change in the rule, and types it in as
+**التمرين 4.64:** يحذف لويس ريزونر قاعدة `outranked-by` ([4.4.1](#g_t4_002e4_002e1)) من قاعدة البيانات سهوًا. وحين يُدرك ذلك، يُعيد تثبيتها سريعًا. ولكنّ من سوء حظّه أنّه يُدخل تغييرًا طفيفًا على القاعدة، فيكتبها على النحو الآتي
 
 ```scheme
 (rule (outranked-by ?staff-person ?boss)
@@ -3368,21 +3368,21 @@ There is also a much more serious way in which the `not` of the query language d
                        ?middle-manager))))
 ```
 
-Just after Louis types this information into the system, DeWitt Aull comes by to find out who outranks Ben Bitdiddle. He issues the query
+وبعد أن يكتب لويس هذه المعلومة في النظام مباشرةً، يأتي ديوت أول ليسأل عمّن يتفوّق على بن بِتدل. فيُصدر الاستعلام
 
 ```scheme
 (outranked-by (Bitdiddle Ben) ?who)
 ```
 
-After answering, the system goes into an infinite loop. Explain why.
+وبعد الإجابة، يسقط النظام في حلقةٍ لا نهائيّة. اشرح السبب.
 
-**Exercise 4.65:** Cy D. Fect, looking forward to the day when he will rise in the organization, gives a query to find all the wheels (using the `wheel` rule of [4.4.1](#g_t4_002e4_002e1)):
+**التمرين 4.65:** يُعطي ساي د. فكت، وهو يتطلّع إلى اليوم الذي سيرتفع فيه في المؤسّسة، استعلامًا لإيجاد جميع العجلات (باستخدام قاعدة `wheel` الواردة في [4.4.1](#g_t4_002e4_002e1)):
 
 ```scheme
 (wheel ?who)
 ```
 
-To his surprise, the system responds
+ولدهشته، يستجيب النظام
 
 ```scheme
 ;;; Query results:
@@ -3393,9 +3393,9 @@ To his surprise, the system responds
 (wheel (Warbucks Oliver))
 ```
 
-Why is Oliver Warbucks listed four times?
+لماذا يُدرَج أوليفر واربكس أربع مرّات؟
 
-**Exercise 4.66:** Ben has been generalizing the query system to provide statistics about the company. For example, to find the total salaries of all the computer programmers one will be able to say
+**التمرين 4.66:** عمّم بن نظام الاستعلامات لتوفير إحصائيّات عن الشركة. فمثلًا، لإيجاد مجموع رواتب جميع مبرمجي الحاسوب، سيصير بإمكاننا أن نقول
 
 ```scheme
 (sum ?amount
@@ -3403,30 +3403,30 @@ Why is Oliver Warbucks listed four times?
           (salary ?x ?amount)))
 ```
 
-In general, Ben’s new system allows expressions of the form
+وبصورةٍ عامّة، يتيح نظام بن الجديد تعبيراتٍ على الصيغة
 
 ```scheme
 (accumulation-function ⟨variable⟩
                        ⟨query pattern⟩)
 ```
 
-where `accumulation-function` can be things like `sum`, `average`, or `maximum`. Ben reasons that it should be a cinch to implement this. He will simply feed the query pattern to `qeval`. This will produce a stream of frames. He will then pass this stream through a mapping function that extracts the value of the designated variable from each frame in the stream and feed the resulting stream of values to the accumulation function. Just as Ben completes the implementation and is about to try it out, Cy walks by, still puzzling over the `wheel` query result in [Exercise 4.65](#Exercise-4_002e65). When Cy shows Ben the system’s response, Ben groans, “Oh, no, my simple accumulation scheme won’t work!”
+حيث يمكن أن يكون `accumulation-function` أشياءً مثل `sum` أو `average` أو `maximum`. ويستنتج بن أنّ هذا ينبغي أن يكون سهل التنفيذ. فسيُمرّر نمط الاستعلام ببساطةٍ إلى `qeval`. وهذا سيُنتج مجرى إطارات. ثم سيُمرّر هذا المجرى عبر دالّة تحويلٍ تستخرج قيمة المتغيّر المعيَّن من كلّ إطارٍ في المجرى، ويُغذّي مجرى القيم الناتج إلى دالّة التجميع. وفي اللحظة التي يُكمل فيها بن التنفيذ ويكاد أن يجرّبه، يمرّ ساي، وهو ما زال يحيّره نتيجة استعلام `wheel` الواردة في [التمرين 4.65](#Exercise-4_002e65). وحين يُظهر ساي لبن ردّ النظام، يئنّ بن: «لا، لا، لن تعمل خطّتي البسيطة للتجميع!»
 
-What has Ben just realized? Outline a method he can use to salvage the situation.
+ما الذي أدركه بن للتوّ؟ اذكر خطّةً يمكنه استخدامها لإنقاذ الموقف.
 
-> **Exercise 4.67:** Devise a way to install a loop detector in the query system so as to avoid the kinds of simple loops illustrated in the text and in [Exercise 4.64](#Exercise-4_002e64). The general idea is that the system should maintain some sort of history of its current chain of deductions and should not begin processing a query that it is already working on. Describe what kind of information (patterns and frames) is included in this history, and how the check should be made. (After you study the details of the query-system implementation in [4.4.4](#g_t4_002e4_002e4), you may want to modify the system to include your loop detector.)
+> **التمرين 4.67:** ابتكر طريقةً لتثبيت كاشف حلقاتٍ في نظام الاستعلامات لتجنّب أنواع الحلقات البسيطة الموضّحة في النصّ وفي [التمرين 4.64](#Exercise-4_002e64). والفكرة العامّة هي أنّ النظام ينبغي أن يُحتفظ فيه بنوعٍ من تاريخ سلسلة الاستنباطات الحاليّة، وألّا يبدأ معالجة استعلامٍ يعمل عليه أصلًا. صِف أيّ نوعٍ من المعلومات (الأنماط والإطارات) يُدرَج في هذا التاريخ، وكيف ينبغي إجراء الفحص. (بعد أن تدرس تفاصيل تنفيذ نظام الاستعلامات الواردة في [4.4.4](#g_t4_002e4_002e4)، قد ترغب في تعديل النظام ليضمّ كاشف الحلقات الذي ابتكرته.)
 
-> **Exercise 4.68:** Define rules to implement the `reverse` operation of [Exercise 2.18](https://sarabander.github.io/sicp/html/2_002e2.xhtml#Exercise-2_002e18), which returns a list containing the same elements as a given list in reverse order. (Hint: Use `append-to-form`.) Can your rules answer both `(reverse (1 2 3) ?x)` and `(reverse ?x (1 2 3))`?
+> **التمرين 4.68:** عرّف قواعد تُنفّذ عمليّة `reverse` الواردة في [التمرين 2.18](https://sarabander.github.io/sicp/html/2_002e2.xhtml#Exercise-2_002e18)، والتي تُعيد قائمةً تحتوي العناصر ذاتها الموجودة في قائمةٍ معطاةً بترتيبٍ معكوس. (تلميح: استخدم `append-to-form`.) فهل تستطيع قواعدك الإجابة عن كلٍّ من `(reverse (1 2 3) ?x)` و`(reverse ?x (1 2 3))`؟
 
-> **Exercise 4.69:** Beginning with the data base and the rules you formulated in [Exercise 4.63](#Exercise-4_002e63), devise a rule for adding “greats” to a grandson relationship. This should enable the system to deduce that Irad is the great-grandson of Adam, or that Jabal and Jubal are the great-great-great-great-great-grandsons of Adam. (Hint: Represent the fact about Irad, for example, as `((great grandson) Adam Irad)`. Write rules that determine if a list ends in the word `grandson`. Use this to express a rule that allows one to derive the relationship `((great . ?rel) ?x ?y)`, where `?rel` is a list ending in `grandson`.) Check your rules on queries such as `((great grandson) ?g ?ggs)` and `(?relationship Adam Irad)`.
+> **التمرين 4.69:** بدءًا من قاعدة البيانات والقواعد التي صُغتها في [التمرين 4.63](#Exercise-4_002e63)، ابتكر قاعدةً لإضافة «greats» إلى علاقة الحفد. وينبغي لهذا أن يمكّن النظام من استنتاج أنّ إيراد هو حفيد آدم الأكبر، أو أنّ جابل وجوبال هما حفيدا آدم الأكابر بخمس درجات. (تلميح: مثّل الحقيقة حول إيراد، مثلًا، بـ`((great grandson) Adam Irad)`. اكتب قواعدًا تُحدّد ما إذا كانت قائمة تنتهي بالكلمة `grandson`. استخدم هذا للتعبير عن قاعدةٍ تسمح باستنتاج العلاقة `((great . ?rel) ?x ?y)`، حيث `?rel` قائمة تنتهي بـ`grandson`.) افحص قواعدك على استعلامات مثل `((great grandson) ?g ?ggs)` و`(?relationship Adam Irad)`.
 
-#### 4.4.4 Implementing the Query System
+#### 4.4.4 تنفيذ نظام الاستعلامات
 
-Section [4.4.2](#g_t4_002e4_002e2) described how the query system works. Now we fill in the details by presenting a complete implementation of the system.
+وصف القسم [4.4.2](#g_t4_002e4_002e2) كيف يعمل نظام الاستعلامات. والآن نستكمل التفاصيل بتقديم تنفيذٍ كاملٍ للنظام.
 
-#### 4.4.4.1 The Driver Loop and Instantiation
+#### 4.4.4.1 حلقة المُشغّل والإنشاء
 
-The driver loop for the query system repeatedly reads input expressions. If the expression is a rule or assertion to be added to the data base, then the information is added. Otherwise the expression is assumed to be a query. The driver passes this query to the evaluator `qeval` together with an initial frame stream consisting of a single empty frame. The result of the evaluation is a stream of frames generated by satisfying the query with variable values found in the data base. These frames are used to form a new stream consisting of copies of the original query in which the variables are instantiated with values supplied by the stream of frames, and this final stream is printed at the terminal:
+تقرأ حلقة المُشغّل الخاصّة بنظام الاستعلامات تعابير الدخل مرارًا. فإذا كان التعبير قاعدةً أو تأكيدًا يجب إضافته إلى قاعدة البيانات، فإنّ المعلومة تُضاف. وإلّا، فُيفترض أنّ التعبير استعلام. ويُمرّر المُشغّل هذا الاستعلام إلى المُقيّم `qeval` مع مجرى إطاراتٍ ابتدائيٍّ يتألّف من إطارٍ فارغٍ مفرد. ونتيجة التقييم مجرى إطاراتٍ تُولّد بإشباع الاستعلام بقيم متغيّراتٍ موجودة في قاعدة البيانات. وهذه الإطارات تُستخدم لتشكيل مجرى جديدٍ يتألّف من نسخٍ من الاستعلام الأصليّ تكون المتغيّرات فيه منشأةً بقيمٍ يُوفّرها مجرى الإطارات، وهذا المجرى النهائيّ يُطبع في الطرفيّة:
 
 ```scheme
 (define input-prompt  ";;; Query input:")
@@ -3457,11 +3457,11 @@ The driver loop for the query system repeatedly reads input expressions. If the 
            (query-driver-loop)))))
 ```
 
-Here, as in the other evaluators in this chapter, we use an abstract syntax for the expressions of the query language. The implementation of the expression syntax, including the predicate `assertion-to-be-added?` and the selector `add-assertion-body`, is given in [4.4.4.7](#g_t4_002e4_002e4_002e7). `Add-rule-or-assertion!` is defined in [4.4.4.5](#g_t4_002e4_002e4_002e5).
+وهنا، كما في بقيّة المُقيّمات في هذا الفصل، نستخدم صياغةً مجرّدةً لتعبيرات لغة الاستعلامات. وتنفيذ صياغة التعبير، متضمّنًا المُسَيِّم `assertion-to-be-added?` والمحدِّد `add-assertion-body`، مُعطى في [4.4.4.7](#g_t4_002e4_002e4_002e7). و`Add-rule-or-assertion!` معرَّفٌ في [4.4.4.5](#g_t4_002e4_002e4_002e5).
 
-Before doing any processing on an input expression, the driver loop transforms it syntactically into a form that makes the processing more efficient. This involves changing the representation of pattern variables. When the query is instantiated, any variables that remain unbound are transformed back to the input representation before being printed. These transformations are performed by the two procedures `query-syntax-process` and `contract-question-mark` ([4.4.4.7](#g_t4_002e4_002e4_002e7)).
+وقبل إجراء أيّ معالجةٍ على تعبير دخلٍ، تُحوّله حلقة المُشغّل تحويلًا صياغيًّا إلى شكلٍ يجعل المعالجة أكفأ. وهذا يستلزم تغيير تمثيل متغيّرات الأنماط. وحين يُنشأ الاستعلام، فإنّ أيّة متغيّراتٍ تبقى غير مربوطة تُحوَّل رجوعًا إلى تمثيل الدخل قبل طباعتها. وهذه التحويلات تُجرى بإجراءَين هما `query-syntax-process` و`contract-question-mark` ([4.4.4.7](#g_t4_002e4_002e4_002e7)).
 
-To instantiate an expression, we copy it, replacing any variables in the expression by their values in a given frame. The values are themselves instantiated, since they could contain variables (for example, if `?x` in `exp` is bound to `?y` as the result of unification and `?y` is in turn bound to 5). The action to take if a variable cannot be instantiated is given by a procedural argument to `instantiate`.
+ولإنشاء تعبيرٍ، ننسخه، مستبدلين أيّ متغيّراتٍ في التعبير بقيمها في إطارٍ معطًى. والقيم نفسها تُنشأ، إذ قد تحتوي متغيّراتٍ (فمثلًا، إذا كان `?x` في `exp` مربوطًا بـ`?y` نتيجةً للتوحيد وكان `?y` مربوطًا بدوره بـ5). والإجراء الذي يجب اتّخاذه إذا تعذّر إنشاء متغيّرٍ يُعطى بوسيطٍ إجرائيٍّ لـ`instantiate`.
 
 ```scheme
 (define (instantiate 
@@ -3483,11 +3483,11 @@ To instantiate an expression, we copy it, replacing any variables in the express
   (copy exp))
 ```
 
-The procedures that manipulate bindings are defined in [4.4.4.8](#g_t4_002e4_002e4_002e8).
+والإجراءات التي تتلاعب بالروابط معرَّفةٌ في [4.4.4.8](#g_t4_002e4_002e4_002e8).
 
-#### 4.4.4.2 The Evaluator
+#### 4.4.4.2 المُقيّم
 
-The `qeval` procedure, called by the `query-driver-loop`, is the basic evaluator of the query system. It takes as inputs a query and a stream of frames, and it returns a stream of extended frames. It identifies special forms by a data-directed dispatch using `get` and `put`, just as we did in implementing generic operations in [Chapter 2](https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2). Any query that is not identified as a special form is assumed to be a simple query, to be processed by `simple-query`.
+وإجراء `qeval`، الذي تستدعيه `query-driver-loop`، هو المُقيّم الأساسيّ لنظام الاستعلامات. وهو يأخذ كمدخلاتٍ استعلامًا ومجرى إطارات، ويُعيد مجرى إطاراتٍ مُوسَّعة. وهو يُحدّد الصيغ الخاصّة بإرسالٍ موجَّه بالبيانات باستخدام `get` و`put`، تمامًا كما فعلنا عند تنفيذ العمليّات العامّة في [الفصل 2](https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2). وأيّ استعلامٍ لا يُحدَّد على أنّه صيغةٌ خاصّة يُفترض أنّه استعلامٌ بسيط، تُعالجه `simple-query`.
 
 ```scheme
 (define (qeval query frame-stream)
@@ -3497,11 +3497,11 @@ The `qeval` procedure, called by the `query-driver-loop`, is the basic evaluator
         (simple-query query frame-stream))))
 ```
 
-`Type` and `contents`, defined in [4.4.4.7](#g_t4_002e4_002e4_002e7), implement the abstract syntax of the special forms.
+والإجراءان `type` و`contents`، المعرَّفان في [4.4.4.7](#g_t4_002e4_002e4_002e7)، يُنفّذان الصياغة المجرّدة للصيغ الخاصّة.
 
-#### Simple queries
+#### الاستعلامات البسيطة
 
-The `simple-query` procedure handles simple queries. It takes as arguments a simple query (a pattern) together with a stream of frames, and it returns the stream formed by extending each frame by all data-base matches of the query.
+ويتعامل إجراء `simple-query` مع الاستعلامات البسيطة. فهو يأخذ كمعطياتٍ استعلامًا بسيطًا (نمطًا) مع مجرى إطاراتٍ، ويُعيد المجرى المشكّل بتوسيع كلّ إطارٍ بجميع مطابقات قاعدة البيانات للاستعلام.
 
 ```scheme
 (define (simple-query query-pattern 
@@ -3515,11 +3515,11 @@ The `simple-query` procedure handles simple queries. It takes as arguments a sim
    frame-stream))
 ```
 
-For each frame in the input stream, we use `find-assertions` ([4.4.4.3](#g_t4_002e4_002e4_002e3)) to match the pattern against all assertions in the data base, producing a stream of extended frames, and we use `apply-rules` ([4.4.4.4](#g_t4_002e4_002e4_002e4)) to apply all possible rules, producing another stream of extended frames. These two streams are combined (using `stream-append-delayed`, [4.4.4.6](#g_t4_002e4_002e4_002e6)) to make a stream of all the ways that the given pattern can be satisfied consistent with the original frame (see [Exercise 4.71](#Exercise-4_002e71)). The streams for the individual input frames are combined using `stream-flatmap` ([4.4.4.6](#g_t4_002e4_002e4_002e6)) to form one large stream of all the ways that any of the frames in the original input stream can be extended to produce a match with the given pattern.
+بالنسبة إلى كلّ إطارٍ في مجرى الدخل، نستخدم `find-assertions` ([4.4.4.3](#g_t4_002e4_002e4_002e3)) لمطابقة النمط ضدّ جميع التأكيدات في قاعدة البيانات، مما يُنتج مجرى إطاراتٍ مُوسَّعة، ونستخدم `apply-rules` ([4.4.4.4](#g_t4_002e4_002e4_002e4)) لتطبيق جميع القواعد الممكنة، مما يُنتج مجرى إطاراتٍ مُوسَّعةً آخر. وهذان المجريان يُدمَجان (باستخدام `stream-append-delayed`، [4.4.4.6](#g_t4_002e4_002e4_002e6)) لتكوين مجرى بجميع الطرق التي يمكن بها إشباع النمط المعطى اتّساقًا مع الإطار الأصليّ (انظر [التمرين 4.71](#Exercise-4_002e71)). والمجاري الخاصّة بإطارات الدخل الفرديّة تُدمَج باستخدام `stream-flatmap` ([4.4.4.6](#g_t4_002e4_002e4_002e6)) لتشكيل مجرى واحدٍ هائلٍ بجميع الطرق التي يمكن بها توسيع أيّ إطارٍ من مجرى الدخل الأصليّ لإنتاج مطابقةٍ مع النمط المعطى.
 
-#### Compound queries
+#### الاستعلامات المركّبة
 
-`And` queries are handled as illustrated in [Figure 4.5](#Figure-4_002e5) by the `conjoin` procedure. `Conjoin` takes as inputs the conjuncts and the frame stream and returns the stream of extended frames. First, `conjoin` processes the stream of frames to find the stream of all possible frame extensions that satisfy the first query in the conjunction. Then, using this as the new frame stream, it recursively applies `conjoin` to the rest of the queries.
+وتُعالَج استعلامات `and` كما هو موضّح في [الشكل 4.5](#Figure-4_002e5) بإجراء `conjoin`. و`conjoin` يأخذ كمدخلاتٍ القيود ومجرى الإطارات، ويُعيد مجرى الإطارات المُوسَّعة. فأوّلًا، يعالج `conjoin` مجرى الإطارات لإيجاد مجرى جميع امتدادات الإطارات الممكنة التي تُشبع الاستعلام الأوّل في العطف. ثمّ، باستخدام هذا بوصفه مجرى الإطارات الجديد، يُطبّق `conjoin` تعاوديًّا على بقيّة الاستعلامات.
 
 ```scheme
 (define (conjoin conjuncts frame-stream)
@@ -3531,15 +3531,15 @@ For each frame in the input stream, we use `find-assertions` ([4.4.4.3](#g_t4_00
                 frame-stream))))
 ```
 
-The expression
+والتعبير
 
 ```scheme
 (put 'and 'qeval conjoin)
 ```
 
-sets up `qeval` to dispatch to `conjoin` when an `and` form is encountered.
+يُهيّئ `qeval` للإرسال إلى `conjoin` حين يصادف شكل `and`.
 
-`Or` queries are handled similarly, as shown in [Figure 4.6](#Figure-4_002e6). The output streams for the various disjuncts of the `or` are computed separately and merged using the `interleave-delayed` procedure from [4.4.4.6](#g_t4_002e4_002e4_002e6). (See [Exercise 4.71](#Exercise-4_002e71) and [Exercise 4.72](#Exercise-4_002e72).)
+وتُعالَج استعلامات `or` على نحوٍ مماثل، كما هو موضّح في [الشكل 4.6](#Figure-4_002e6). فمجاري المخرج الخاصّة بالفصول المختلفة لـ`or` تُحتسب كلٌّ على حدةٍ ويُدمَج بعضها ببعض باستخدام إجراء `interleave-delayed` الوارد في [4.4.4.6](#g_t4_002e4_002e4_002e6). (انظر [التمرين 4.71](#Exercise-4_002e71) و[التمرين 4.72](#Exercise-4_002e72).)
 
 ```scheme
 (define (disjoin disjuncts frame-stream)
@@ -3554,11 +3554,11 @@ sets up `qeval` to dispatch to `conjoin` when an `and` form is encountered.
 (put 'or 'qeval disjoin)
 ```
 
-The predicates and selectors for the syntax of conjuncts and disjuncts are given in [4.4.4.7](#g_t4_002e4_002e4_002e7).
+والمُسَيِّمات والمحدِّدات الخاصّة بصياغة القيود والفصول مُعطاةٌ في [4.4.4.7](#g_t4_002e4_002e4_002e7).
 
-#### Filters
+#### المرشّحات
 
-`Not` is handled by the method outlined in [4.4.2](#g_t4_002e4_002e2). We attempt to extend each frame in the input stream to satisfy the query being negated, and we include a given frame in the output stream only if it cannot be extended.
+ويُعالَج `not` بالطريقة الموصوفة إجمالًا في [4.4.2](#g_t4_002e4_002e2). فنحن نحاول توسيع كلّ إطارٍ في مجرى الدخل لإشباع الاستعلام المُنَفَّى، ولا نُدرج إطارًا معطًى في مجرى المخرج إلّا إذا تعذّر توسيعه.
 
 ```scheme
 (define (negate operands frame-stream)
@@ -3573,7 +3573,7 @@ The predicates and selectors for the syntax of conjuncts and disjuncts are given
 (put 'not 'qeval negate)
 ```
 
-`Lisp-value` is a filter similar to `not`. Each frame in the stream is used to instantiate the variables in the pattern, the indicated predicate is applied, and the frames for which the predicate returns false are filtered out of the input stream. An error results if there are unbound pattern variables.
+و`lisp-value` مرشّحٌ مماثل لـ`not`. فكلّ إطارٍ في المجرى يُستخدم لإنشاء المتغيّرات في النمط، ويُطبَّق المُسَيِّم المُشار إليه، ثم تُرشَّح الإطارات التي يُعيد فيها المُسَيِّم القيمة خاطئة خارج مجرى الدخل. وينتج خطأٌ إذا كانت هناك متغيّرات نمطٍ غير مربوطة.
 
 ```scheme
 (define (lisp-value call frame-stream)
@@ -3593,7 +3593,7 @@ The predicates and selectors for the syntax of conjuncts and disjuncts are given
 (put 'lisp-value 'qeval lisp-value)
 ```
 
-`Execute`, which applies the predicate to the arguments, must `eval` the predicate expression to get the procedure to apply. However, it must not evaluate the arguments, since they are already the actual arguments, not expressions whose evaluation (in Lisp) will produce the arguments. Note that `execute` is implemented using `eval` and `apply` from the underlying Lisp system.
+و`execute`، الذي يُطبّق المُسَيِّم على المعطيات، يلزمه أن يُقيّم تعبير المُسَيِّم بـ`eval` للحصول على الإجراء الذي سيُطبَّق. غير أنّه يلزمه ألّا يُقيّم المعطيات، إذ إنّها هي المعطيات الفعليّة أصلًا، لا تعبيراتٌ سيُنتج تقييمها (في Lisp) المعطيات. ولاحِظ أنّ `execute` مُنفَّذٌ باستخدام `eval` و`apply` من نظام Lisp الكامن.
 
 ```scheme
 (define (execute exp)
@@ -3602,7 +3602,7 @@ The predicates and selectors for the syntax of conjuncts and disjuncts are given
          (args exp)))
 ```
 
-The `always-true` special form provides for a query that is always satisfied. It ignores its contents (normally empty) and simply passes through all the frames in the input stream. `Always-true` is used by the `rule-body` selector ([4.4.4.7](#g_t4_002e4_002e4_002e7)) to provide bodies for rules that were defined without bodies (that is, rules whose conclusions are always satisfied).
+والصيغة الخاصّة `always-true` تتيح استعلامًا يُشبع دائمًا. فهي تتجاهل محتواها (الذي يكون فارغًا عادةً) وتُمرّر ببساطةٍ جميع الإطارات في مجرى الدخل. و`always-true` يستخدمه المحدِّد `rule-body` ([4.4.4.7](#g_t4_002e4_002e4_002e7)) لتوفير أجسامٍ للقواعد التي عُرِّفت دون أجسام (أي القواعد التي تُشبع استنتاجاتها دائمًا).
 
 ```scheme
 (define (always-true ignore frame-stream) 
@@ -3610,11 +3610,11 @@ The `always-true` special form provides for a query that is always satisfied. It
 (put 'always-true 'qeval always-true)
 ```
 
-The selectors that define the syntax of `not` and `lisp-value` are given in [4.4.4.7](#g_t4_002e4_002e4_002e7).
+والمحدِّدات التي تُحدّد صياغة `not` و`lisp-value` مُعطاةٌ في [4.4.4.7](#g_t4_002e4_002e4_002e7).
 
-#### 4.4.4.3 Finding Assertions by Pattern Matching
+#### 4.4.4.3 إيجاد التأكيدات بمطابقة الأنماط
 
-`Find-assertions`, called by `simple-query` ([4.4.4.2](#g_t4_002e4_002e4_002e2)), takes as input a pattern and a frame. It returns a stream of frames, each extending the given one by a data-base match of the given pattern. It uses `fetch-assertions` ([4.4.4.5](#g_t4_002e4_002e4_002e5)) to get a stream of all the assertions in the data base that should be checked for a match against the pattern and the frame. The reason for `fetch-assertions` here is that we can often apply simple tests that will eliminate many of the entries in the data base from the pool of candidates for a successful match. The system would still work if we eliminated `fetch-assertions` and simply checked a stream of all assertions in the data base, but the computation would be less efficient because we would need to make many more calls to the matcher.
+و`find-assertions`، الذي تستدعيه `simple-query` ([4.4.4.2](#g_t4_002e4_002e4_002e2))، يأخذ كمدخلٍ نمطًا وإطارًا. وهو يُعيد مجرى إطارات، كلٌّ منها يُوسّع الإطار المعطى بمطابقةٍ من قاعدة البيانات للنمط المعطى. وهو يستخدم `fetch-assertions` ([4.4.4.5](#g_t4_002e4_002e4_002e5)) للحصول على مجرى جميع التأكيدات في قاعدة البيانات التي ينبغي فحصها لمطابقة النمط والإطار. والسبب في استخدام `fetch-assertions` هنا هو أنّنا نستطيع غالبًا تطبيق اختباراتٍ بسيطةٍ ستُقصي العديد من مُدخلات قاعدة البيانات من مجموعة المرشّحين لمطابقةٍ ناجحة. وسيظلّ النظام يعمل لو أقصينا `fetch-assertions` وفحصنا ببساطةٍ مجرى جميع التأكيدات في قاعدة البيانات، لكنّ الاحتساب سيكون أقلّ كفاءةً لأنّنا سنحتاج إلى إجراء نداءاتٍ أكثر بكثيرٍ للمُطابِق.
 
 ```scheme
 (define (find-assertions pattern frame)
@@ -3624,7 +3624,7 @@ The selectors that define the syntax of `not` and `lisp-value` are given in [4.4
     (fetch-assertions pattern frame)))
 ```
 
-`Check-an-assertion` takes as arguments a pattern, a data object (assertion), and a frame and returns either a one-element stream containing the extended frame or `the-empty-stream` if the match fails.
+ويأخذ `check-an-assertion` كمعطياتٍ نمطًا، وكائن بيانات (تأكيدًا)، وإطارًا، ويُعيد إمّا مجرىٌ ذو عنصرٍ واحدٍ يحتوي الإطار المُوسَّع وإمّا `the-empty-stream` إذا فشلت المطابقة.
 
 ```scheme
 (define (check-an-assertion 
@@ -3637,7 +3637,7 @@ The selectors that define the syntax of `not` and `lisp-value` are given in [4.4
         (singleton-stream match-result))))
 ```
 
-The basic pattern matcher returns either the symbol `failed` or an extension of the given frame. The basic idea of the matcher is to check the pattern against the data, element by element, accumulating bindings for the pattern variables. If the pattern and the data object are the same, the match succeeds and we return the frame of bindings accumulated so far. Otherwise, if the pattern is a variable we extend the current frame by binding the variable to the data, so long as this is consistent with the bindings already in the frame. If the pattern and the data are both pairs, we (recursively) match the `car` of the pattern against the `car` of the data to produce a frame; in this frame we then match the `cdr` of the pattern against the `cdr` of the data. If none of these cases are applicable, the match fails and we return the symbol `failed`.
+ويُعيد مُطابِق الأنماط الأساسيّ إمّا الرمز `failed` وإمّا امتدادًا للإطار المعطى. والفكرة الأساسيّة في المُطابِق هي فحص النمط مقابل البيانات، عنصرًا عنصر، مُتراكمًا روابط لمتغيّرات النمط. فإن كان النمط وكائن البيانات متطابقين، تنجح المطابقة ونُعيد إطار الروابط المتراكم حتّى تلك اللحظة. وإلّا، فإن كان النمط متغيّرًا فإنّنا نُوسّع الإطار الحاليّ بربط المتغيّر بالبيانات، ما دام هذا متّسقًا مع الروابط الموجودة في الإطار أصلًا. وإن كان النمط والبيانات كليهما زوجين، فإنّنا نُطابق (تعاوديًّا) `car` النمط مقابل `car` البيانات لإنتاج إطار؛ وفي هذا الإطار نُطابق بعد ذلك `cdr` النمط مقابل `cdr` البيانات. فإن لم يكن أيٌّ من هذه الحالات منطبقًا، تفشل المطابقة ونُعيد الرمز `failed`.
 
 ```scheme
 (define (pattern-match pat dat frame)
@@ -3655,7 +3655,7 @@ The basic pattern matcher returns either the symbol `failed` or an extension of 
         (else 'failed)))
 ```
 
-Here is the procedure that extends a frame by adding a new binding, if this is consistent with the bindings already in the frame:
+وها هو الإجراء الذي يُوسّع إطارًا بإضافة ربطٍ جديد، إذا كان هذا متّسقًا مع الروابط الموجودة في الإطار أصلًا:
 
 ```scheme
 (define (extend-if-consistent var dat frame)
@@ -3666,21 +3666,21 @@ Here is the procedure that extends a frame by adding a new binding, if this is c
         (extend var dat frame))))
 ```
 
-If there is no binding for the variable in the frame, we simply add the binding of the variable to the data. Otherwise we match, in the frame, the data against the value of the variable in the frame. If the stored value contains only constants, as it must if it was stored during pattern matching by `extend-if-consistent`, then the match simply tests whether the stored and new values are the same. If so, it returns the unmodified frame; if not, it returns a failure indication. The stored value may, however, contain pattern variables if it was stored during unification (see [4.4.4.4](#g_t4_002e4_002e4_002e4)). The recursive match of the stored pattern against the new data will add or check bindings for the variables in this pattern. For example, suppose we have a frame in which `?x` is bound to `(f ?y)` and `?y` is unbound, and we wish to augment this frame by a binding of `?x` to `(f b)`. We look up `?x` and find that it is bound to `(f ?y)`. This leads us to match `(f ?y)` against the proposed new value `(f b)` in the same frame. Eventually this match extends the frame by adding a binding of `?y` to `b`. `?X` remains bound to `(f ?y)`. We never modify a stored binding and we never store more than one binding for a given variable.
+فإذا لم يكن هناك ربطٌ للمتغيّر في الإطار، فإنّنا نُضيف ببساطةٍ ربط المتغيّر بالبيانات. وإلّا، فإنّنا نُطابق، في الإطار، البيانات مقابل قيمة المتغيّر في الإطار. فإن كانت القيمة المخزّونة لا تحتوي إلّا ثوابت، كما يلزم أن يكون الأمر إذا خُزّنت أثناء مطابقة الأنماط بـ`extend-if-consistent`، فإنّ المطابقة تختبر ببساطةٍ ما إذا كانت القيمتان المخزّونة والجديدة متطابقتين. فإن كانتا كذلك، أعادت الإطار غير المعدّل؛ وإلّا، أعادت دلالةً على الفشل. غير أنّ القيمة المخزّونة قد تحتوي متغيّرات نمطٍ إذا خُزّنت أثناء التوحيد (انظر [4.4.4.4](#g_t4_002e4_002e4_002e4)). والمطابقة التعاوديّة للنمط المخزّون مقابل البيانات الجديدة ستُضيف روابط متغيّرات هذا النمط أو تفحصها. فمثلًا، لنفترض أنّ لدينا إطارًا يكون `?x` فيه مربوطًا بـ`(f ?y)` و`?y` غير مربوط، ونرغب في تعزيز هذا الإطار بربط `?x` بـ`(f b)`. فنبحث عن `?x` ونجد أنّه مربوط بـ`(f ?y)`. وهذا يدفعنا إلى مطابقة `(f ?y)` مقابل القيمة الجديدة المقترحة `(f b)` في الإطار ذاته. وفي نهاية المطاف، تُوسّع هذه المطابقة الإطار بإضافة ربط `?y` بـ`b`. ويظلّ `?X` مرتبطًا بـ`(f ?y)`. ونحن لا نُعدّل ربطًا مخزّونًا قطّ، ولا نخزّن أكثر من ربطٍ واحدٍ لمتغيّرٍ معطًى.
 
-The procedures used by `extend-if-consistent` to manipulate bindings are defined in [4.4.4.8](#g_t4_002e4_002e4_002e8).
+والإجراءات التي يستخدمها `extend-if-consistent` للتلاعب بالروابط معرَّفةٌ في [4.4.4.8](#g_t4_002e4_002e4_002e8).
 
-#### Patterns with dotted tails
+#### الأنماط ذات الذيول المنقّطة
 
-If a pattern contains a dot followed by a pattern variable, the pattern variable matches the rest of the data list (rather than the next element of the data list), just as one would expect with the dotted-tail notation described in [Exercise 2.20](https://sarabander.github.io/sicp/html/2_002e2.xhtml#Exercise-2_002e20). Although the pattern matcher we have just implemented doesn’t look for dots, it does behave as we want. This is because the Lisp `read` primitive, which is used by `query-driver-loop` to read the query and represent it as a list structure, treats dots in a special way.
+فإذا احتوى نمطٌ على نقطةٍ متبوعةٍ بمتغيّر نمطٍ، فإنّ متغيّر النمط يُطابق باقي قائمة البيانات (لا العنصر التالي من قائمة البيانات)، تمامًا كما يُتوقّع مع ترميز الذيل المنقّط الموصوف في [التمرين 2.20](https://sarabander.github.io/sicp/html/2_002e2.xhtml#Exercise-2_002e20). وعلى الرغم من أنّ مُطابِق الأنماط الذي نفّذناه للتوّ لا يبحث عن النقاط، إلّا أنّه يسلك على النحو الذي نريده. وهذا لأنّ الأوّليّة `read` في Lisp، التي تستخدمها `query-driver-loop` لقراءة الاستعلام وتمثيله بوصفه بنية قائمة، تتعامل مع النقاط بطريقةٍ خاصّة.
 
-When `read` sees a dot, instead of making the next item be the next element of a list (the `car` of a `cons` whose `cdr` will be the rest of the list) it makes the next item be the `cdr` of the list structure. For example, the list structure produced by `read` for the pattern `(computer ?type)` could be constructed by evaluating the expression `(cons 'computer (cons '?type '()))`, and that for `(computer . ?type)` could be constructed by evaluating the expression `(cons 'computer '?type)`.
+فحين ترى `read` نقطةً، فإنّها - بدلًا من أن تجعل العنصر التالي هو العنصر التالي من قائمة (أي `car` لـ`cons` يكون `cdr` فيه هو باقي القائمة) - تجعله `cdr` بنية القائمة. فمثلًا، يمكن بناء بنية القائمة التي تُنتجها `read` للنمط `(computer ?type)` بتقييم التعبير `(cons 'computer (cons '?type '()))`، وتلك الخاصّة بالنمط `(computer . ?type)` بتقييم التعبير `(cons 'computer '?type)`.
 
-Thus, as `pattern-match` recursively compares `car`s and `cdr`s of a data list and a pattern that had a dot, it eventually matches the variable after the dot (which is a `cdr` of the pattern) against a sublist of the data list, binding the variable to that list. For example, matching the pattern `(computer . ?type)` against `(computer programmer trainee)` will match `?type` against the list `(programmer trainee)`.
+وهكذا، فبينما تُقارن `pattern-match` تعاوديًّا بين `car`s قائمة بياناتٍ ونمطٍ كانت فيه نقطة و`cdr`sها، فإنّها في نهاية المطاف تُطابق المتغيّر الذي بعد النقطة (وهو `cdr` النمط) مقابل قائمةٍ جزئيّةٍ من قائمة البيانات، تربط المتغيّر بتلك القائمة. فمثلًا، مطابقة النمط `(computer . ?type)` مقابل `(computer programmer trainee)` ستُطابق `?type` مقابل القائمة `(programmer trainee)`.
 
-#### 4.4.4.4 Rules and Unification
+#### 4.4.4.4 القواعد والتوحيد
 
-`Apply-rules` is the rule analog of `find-assertions` ([4.4.4.3](#g_t4_002e4_002e4_002e3)). It takes as input a pattern and a frame, and it forms a stream of extension frames by applying rules from the data base. `Stream-flatmap` maps `apply-a-rule` down the stream of possibly applicable rules (selected by `fetch-rules`, [4.4.4.5](#g_t4_002e4_002e4_002e5)) and combines the resulting streams of frames.
+و`apply-rules` هو نظير `find-assertions` ([4.4.4.3](#g_t4_002e4_002e4_002e3)) في القواعد. فهو يأخذ كمدخلٍ نمطًا وإطارًا، ويُشكّل مجرى إطارات امتدادٍ بتطبيق قواعدٍ من قاعدة البيانات. و`stream-flatmap` يُسقط `apply-a-rule` بمجرى القواعد القابلة للتطبيق المحتملة (المختارة بواسطة `fetch-rules`، [4.4.4.5](#g_t4_002e4_002e4_002e5)) ويُدمج مجاري الإطارات الناتجة.
 
 ```scheme
 (define (apply-rules pattern frame)
@@ -3690,9 +3690,9 @@ Thus, as `pattern-match` recursively compares `car`s and `cdr`s of a data list a
    (fetch-rules pattern frame)))
 ```
 
-`Apply-a-rule` applies rules using the method outlined in [4.4.2](#g_t4_002e4_002e2). It first augments its argument frame by unifying the rule conclusion with the pattern in the given frame. If this succeeds, it evaluates the rule body in this new frame.
+ويُطبّق `apply-a-rule` القواعد باستخدام الطريقة الموصوفة إجمالًا في [4.4.2](#g_t4_002e4_002e2). فهو يُعزّز أوّلًا إطار وسيطه بتوحيد استنتاج القاعدة مع النمط في الإطار المعطى. فإن نجح ذلك، قيّم جسم القاعدة في هذا الإطار الجديد.
 
-Before any of this happens, however, the program renames all the variables in the rule with unique new names. The reason for this is to prevent the variables for different rule applications from becoming confused with each other. For instance, if two rules both use a variable named `?x`, then each one may add a binding for `?x` to the frame when it is applied. These two `?x`’s have nothing to do with each other, and we should not be fooled into thinking that the two bindings must be consistent. Rather than rename variables, we could devise a more clever environment structure; however, the renaming approach we have chosen here is the most straightforward, even if not the most efficient. (See [Exercise 4.79](#Exercise-4_002e79).) Here is the `apply-a-rule` procedure:
+غير أنّ البرنامج - قبل حدوث أيّ من هذا - يُعيد تسمية جميع متغيّرات القاعدة بأسماءٍ جديدةٍ فريدة. والسبب في ذلك هو منع متغيّرات تطبيقات القواعد المختلفة من أن تختلط ببعضها. فمثلًا، إذا كانت قاعدتان تستخدمان كِلتاهما متغيّرًا باسم `?x`، فإنّ كلًّا منهما قد يُضيف ربطًا لـ`?x` إلى الإطار عند تطبيقه. وهذان الـ`?x` ليس بينهما أيّ صلة، ولا ينبغي أن ننخدع ونظنّ أنّ الربطين يلزم أن يكونا متّسقين. وبدلًا من إعادة تسمية المتغيّرات، كان بإمكاننا ابتكار بنية بيئةٍ أكثر ذكاءً؛ غير أنّ نهج إعادة التسمية الذي اخترناه هنا هو الأكثر مباشرةً، حتّى وإن لم يكن الأكفأ. (انظر [التمرين 4.79](#Exercise-4_002e79).) وها هو الإجراء `apply-a-rule`:
 
 ```scheme
 (define (apply-a-rule rule
@@ -3711,9 +3711,9 @@ Before any of this happens, however, the program renames all the variables in th
                   unify-result))))))
 ```
 
-The selectors `rule-body` and `conclusion` that extract parts of a rule are defined in [4.4.4.7](#g_t4_002e4_002e4_002e7).
+والمحدِّدان `rule-body` و`conclusion` اللذان يستخرجان أجزاءً من القاعدة معرَّفان في [4.4.4.7](#g_t4_002e4_002e4_002e7).
 
-We generate unique variable names by associating a unique identifier (such as a number) with each rule application and combining this identifier with the original variable names. For example, if the rule-application identifier is 7, we might change each `?x` in the rule to `?x-7` and each `?y` in the rule to `?y-7`. (`Make-new-variable` and `new-rule-application-id` are included with the syntax procedures in [4.4.4.7](#g_t4_002e4_002e4_002e7).)
+ونُولّد أسماء متغيّراتٍ فريدةً بربط مُعرّفٍ فريد (كالعدد مثلًا) بكلّ تطبيق قاعدةٍ ودمج هذا المُعرّف مع أسماء المتغيّرات الأصليّة. فمثلًا، إذا كان مُعرّف تطبيق القاعدة هو 7، فقد نُغيِّر كلّ `?x` في القاعدة إلى `?x-7` وكلّ `?y` في القاعدة إلى `?y-7`. (و`Make-new-variable` و`new-rule-application-id` مُدرَجان مع إجراءات الصياغة في [4.4.4.7](#g_t4_002e4_002e4_002e7).)
 
 ```scheme
 (define (rename-variables-in rule)
@@ -3731,7 +3731,7 @@ We generate unique variable names by associating a unique identifier (such as a 
     (tree-walk rule)))
 ```
 
-The unification algorithm is implemented as a procedure that takes as inputs two patterns and a frame and returns either the extended frame or the symbol `failed`. The unifier is like the pattern matcher except that it is symmetrical—variables are allowed on both sides of the match. `Unify-match` is basically the same as `pattern-match`, except that there is extra code (marked “`***`” below) to handle the case where the object on the right side of the match is a variable.
+وتُنفَّذ خوارزميّة التوحيد بوصفها إجراءً يأخذ كمدخلاتٍ نمطين وإطارًا ويُعيد إمّا الإطار المُوسَّع وإمّا الرمز `failed`. والموحِّد يشبه مُطابِق الأنماط إلّا في أنّه متناظر - إذ يُسمح بالمتغيّرات على جانبي المطابقة. و`unify-match` هو في أساسه ذاته `pattern-match`، إلّا في أنّه توجد شيفرة إضافيّة (مُعلَّمة بـ«`***`» أدناه) للتعامل مع الحالة التي يكون فيها الكائن على الجانب الأيمن من المطابقة متغيّرًا.
 
 ```scheme
 (define (unify-match p1 p2 frame)
@@ -3756,9 +3756,9 @@ The unification algorithm is implemented as a procedure that takes as inputs two
         (else 'failed)))
 ```
 
-In unification, as in one-sided pattern matching, we want to accept a proposed extension of the frame only if it is consistent with existing bindings. The procedure `extend-if-possible` used in unification is the same as the `extend-if-consistent` used in pattern matching except for two special checks, marked “`***`” in the program below. In the first case, if the variable we are trying to match is not bound, but the value we are trying to match it with is itself a (different) variable, it is necessary to check to see if the value is bound, and if so, to match its value. If both parties to the match are unbound, we may bind either to the other.
+في التوحيد (unification)، كما في مطابقة الأنماط أحاديّة الجانب، نريد قبول توسيعٍ مقترحٍ للإطار فقط إذا كان متّسقًا مع الروابط القائمة. والإجراء `extend-if-possible` المستخدم في التوحيد هو ذاته الإجراء `extend-if-consistent` المستخدم في مطابقة الأنماط، فيما عدا فحصين خاصّين موسومَين بـ«`***`» في البرنامج أدناه. في الحالة الأولى، إذا كان المتغيّر الذي نحاول مطابقته غير مقيّد، لكنّ القيمة التي نحاول مطابقته بها هي بدورها متغيّرٌ (مختلف)، فلا بدّ من التحقّق ممّا إذا كانت القيمة مقيّدة، وإذا كانت كذلك، فمطابقة قيمتها. أمّا إذا كان طرفا المطابقة كلاهما غير مقيّد، فيمكننا ربط أيّهما بالآخر.
 
-The second check deals with attempts to bind a variable to a pattern that includes that variable. Such a situation can occur whenever a variable is repeated in both patterns. Consider, for example, unifying the two patterns `(?x ?x)` and `(?y ⟨expression involving ?y`⟩) in a frame where both `?x` and `?y` are unbound. First `?x` is matched against `?y`, making a binding of `?x` to `?y`. Next, the same `?x` is matched against the given expression involving `?y`. Since `?x` is already bound to `?y`, this results in matching `?y` against the expression. If we think of the unifier as finding a set of values for the pattern variables that make the patterns the same, then these patterns imply instructions to find a `?y` such that `?y` is equal to the expression involving `?y`. There is no general method for solving such equations, so we reject such bindings; these cases are recognized by the predicate `depends-on?`.[^80] On the other hand, we do not want to reject attempts to bind a variable to itself. For example, consider unifying `(?x ?x)` and `(?y ?y)`. The second attempt to bind `?x` to `?y` matches `?y` (the stored value of `?x`) against `?y` (the new value of `?x`). This is taken care of by the `equal?` clause of `unify-match`.
+يتناول الفحص الثاني محاولات ربط متغيّرٍ بنمطٍ يتضمّن ذلك المتغيّر. ومثل هذا الموقف يمكن أن يقع كلّما تكرّر متغيّرٌ في النمطين كليهما. فتأمّل، مثلًا، توحيد النمطين `(?x ?x)` و`(?y ⟨expression involving ?y`⟩) في إطارٍ يكون فيه `?x` و`?y` كلاهما غير مقيّد. أوّلًا تُطابَق `?x` مقابل `?y`، فينشأ رابطٌ يربط `?x` بـ`?y`. ثم تُطابَق `?x` ذاتها مقابل التعبير المعطى المتعلّق بـ`?y`. وبما أنّ `?x` مقيّدةٌ سلفًا بـ`?y`، فإنّ ذلك يؤدّي إلى مطابقة `?y` مقابل التعبير. فإن نظرنا إلى المُوحِّد بوصفه يجد مجموعةً من القيم لمتغيّرات النمط تجعل النمطين متطابقين، فإنّ هذين النمطين يعنيان تعليماتٍ بإيجاد `?y` بحيث تساوي `?y` التعبير المتعلّق بـ`?y`. ولا توجد طريقةٌ عامّةٌ لحلّ مثل هذه المعادلات، لذلك نرفض هذه الروابط؛ وتُتعرَّف هذه الحالات بالمسيّم `depends-on?`.[^80] ومن جهةٍ أخرى، فإنّنا لا نريد رفض محاولات ربط متغيّرٍ بذاته. فمثلًا، تأمّل توحيد `(?x ?x)` و`(?y ?y)`. إنّ المحاولة الثانية لربط `?x` بـ`?y` تُطابِق `?y` (القيمة المخزّنة لـ`?x`) مقابل `?y` (القيمة الجديدة لـ`?x`). وهذا ما تعالجه بند `equal?` من `unify-match`.
 
 ```scheme
 (define (extend-if-possible var val frame)
@@ -3782,7 +3782,7 @@ The second check deals with attempts to bind a variable to a pattern that includ
           (else (extend var val frame)))))
 ```
 
-`Depends-on?` is a predicate that tests whether an expression proposed to be the value of a pattern variable depends on the variable. This must be done relative to the current frame because the expression may contain occurrences of a variable that already has a value that depends on our test variable. The structure of `depends-on?` is a simple recursive tree walk in which we substitute for the values of variables whenever necessary.
+إنّ `depends-on?` مسيّمٌ يختبر ما إذا كان تعبيرٌ مُقترَحٌ أن يكون قيمةَ متغيّر نمطٍ يعتمد على المتغيّر. ولا بدّ أن يُجرى ذلك نسبةً إلى الإطار الحاليّ، لأنّ التعبير قد يحتوي على حالاتٍ من متغيّرٍ له بالفعل قيمةٌ تعتمد على متغيّر اختبارنا. وبنية `depends-on?` هي مسيرةٌ شجريّةٌ تعاوديّةٌ بسيطة نستبدل فيها بقيم المتغيّرات كلّما لزم الأمر.
 
 ```scheme
 (define (depends-on? exp var frame)
@@ -3805,9 +3805,9 @@ The second check deals with attempts to bind a variable to a pattern that includ
   (tree-walk exp))
 ```
 
-#### 4.4.4.5 Maintaining the Data Base
+#### 4.4.4.5 صيانة قاعدة البيانات
 
-One important problem in designing logic programming languages is that of arranging things so that as few irrelevant data-base entries as possible will be examined in checking a given pattern. In our system, in addition to storing all assertions in one big stream, we store all assertions whose `car`s are constant symbols in separate streams, in a table indexed by the symbol. To fetch an assertion that may match a pattern, we first check to see if the `car` of the pattern is a constant symbol. If so, we return (to be tested using the matcher) all the stored assertions that have the same `car`. If the pattern’s `car` is not a constant symbol, we return all the stored assertions. Cleverer methods could also take advantage of information in the frame, or try also to optimize the case where the `car` of the pattern is not a constant symbol. We avoid building our criteria for indexing (using the `car`, handling only the case of constant symbols) into the program; instead we call on predicates and selectors that embody our criteria.
+إنّ إحدى المسائل المهمّة في تصميم لغات البرمجة المنطقيّة هي ترتيب الأمور بحيث يُفحَص أقلّ عددٍ ممكنٍ من مدخلات قاعدة البيانات (data base) غير المتعلّقة بالموضوع عند فحص نمطٍ معطى. وفي نظامنا، فبالإضافة إلى تخزين جميع التأكيدات في مجرى واحد كبير، نخزّن جميع التأكيدات التي تكون `car`s الخاصة بها رموزًا ثابتةً في مجاري منفصلة، في جدولٍ مفهرسٍ بالرمز. فحتى نحضر تأكيدًا قد يطابق نمطًا، نتحقّق أوّلًا ممّا إذا كان `car` النمط رمزًا ثابتًا. فإن كان كذلك، نُعيد (لكي يُختبر باستخدام المُطابِق) جميع التأكيدات المخزّنة التي لها `car` المطابق. وأمّا إذا لم يكن `car` النمط رمزًا ثابتًا، فنُعيد جميع التأكيدات المخزّنة. ويمكن لطرائقَ أذكى أن تستثمر المعلومات الواردة في الإطار أيضًا، أو أن تحاول تحسين الحالة التي لا يكون فيها `car` النمط رمزًا ثابتًا. ونحن نتجنّب بناء معايير الفهرسة (باستخدام `car`، ومعالجة حالة الرموز الثابتة وحدها) في البرنامج؛ وبدلًا من ذلك نستدعي مسيّماتٍ ومحدِّداتٍ تجسّد معاييرنا.
 
 ```scheme
 (define THE-ASSERTIONS the-empty-stream)
@@ -3824,7 +3824,7 @@ One important problem in designing logic programming languages is that of arrang
               'assertion-stream))
 ```
 
-`Get-stream` looks up a stream in the table and returns an empty stream if nothing is stored there.
+يبحث الإجراء `get-stream` عن مجرى في الجدول ويُعيد مجرى فارغًا إن لم يُخزَّن هناك شيء.
 
 ```scheme
 (define (get-stream key1 key2)
@@ -3832,7 +3832,7 @@ One important problem in designing logic programming languages is that of arrang
     (if s s the-empty-stream)))
 ```
 
-Rules are stored similarly, using the `car` of the rule conclusion. Rule conclusions are arbitrary patterns, however, so they differ from assertions in that they can contain variables. A pattern whose `car` is a constant symbol can match rules whose conclusions start with a variable as well as rules whose conclusions have the same `car`. Thus, when fetching rules that might match a pattern whose `car` is a constant symbol we fetch all rules whose conclusions start with a variable as well as those whose conclusions have the same `car` as the pattern. For this purpose we store all rules whose conclusions start with a variable in a separate stream in our table, indexed by the symbol `?`.
+وتُخزَّن القواعد على نحوٍ مماثل، باستخدام `car` استنتاج القاعدة. غير أنّ استنتاجات القواعد أنماطٌ اعتراضيّة، لذا فهي تختلف عن التأكيدات في أنّها يمكن أن تحتوي على متغيّرات. فالنمط الذي يكون `car` الخاصّ به رمزًا ثابتًا يمكن أن يطابق قواعدَ استنتاجاتها تبدأ بمتغيّرٍ فضلًا عن قواعدَ استنتاجاتها لها `car` المطابق. وبذلك، فإنّنا حين نحضر القواعد التي قد تطابق نمطًا يكون `car` الخاصّ به رمزًا ثابتًا، نحضر جميع القواعد التي استنتاجاتها تبدأ بمتغيّرٍ إضافةً إلى تلك التي استنتاجاتها لها `car` النمط المطابق. ولهذا الغرض نخزّن جميع القواعد التي استنتاجاتها تبدأ بمتغيّر في مجرى منفصل في جدولنا، مفهرسٍ بالرمز `?`.
 
 ```scheme
 (define THE-RULES the-empty-stream)
@@ -3851,7 +3851,7 @@ Rules are stored similarly, using the `car` of the rule conclusion. Rule conclus
    (get-stream '? 'rule-stream)))
 ```
 
-`Add-rule-or-assertion!` is used by `query-driver-loop` to add assertions and rules to the data base. Each item is stored in the index, if appropriate, and in a stream of all assertions or rules in the data base.
+يُستخدم الإجراء `add-rule-or-assertion!` من قِبل `query-driver-loop` لإضافة التأكيدات والقواعد إلى قاعدة البيانات. ويُخزَّن كلّ عنصر في الفهرس، إن كان مناسبًا، وفي مجرى جميع التأكيدات أو القواعد في قاعدة البيانات.
 
 ```scheme
 (define (add-rule-or-assertion! assertion)
@@ -3875,7 +3875,7 @@ Rules are stored similarly, using the `car` of the rule conclusion. Rule conclus
     'ok))
 ```
 
-To actually store an assertion or a rule, we check to see if it can be indexed. If so, we store it in the appropriate stream.
+لتخزين تأكيدٍ أو قاعدةٍ فعلًا، نتحقّق ممّا إذا كان يمكن فهرسته. فإن كان كذلك، نخزّنه في المجرى المناسب.
 
 ```scheme
 (define (store-assertion-in-index assertion)
@@ -3904,7 +3904,7 @@ To actually store an assertion or a rule, we check to see if it can be indexed. 
                   current-rule-stream)))))))
 ```
 
-The following procedures define how the data-base index is used. A pattern (an assertion or a rule conclusion) will be stored in the table if it starts with a variable or a constant symbol.
+تُعرِّف الإجراءات الآتية كيفيّة استخدام فهرس قاعدة البيانات. وسيُخزَّن النمط (تأكيدٌ أو استنتاج قاعدة) في الجدول إذا بدأ بمتغيّرٍ أو برمزٍ ثابت.
 
 ```scheme
 (define (indexable? pat)
@@ -3912,7 +3912,7 @@ The following procedures define how the data-base index is used. A pattern (an a
       (var? (car pat))))
 ```
 
-The key under which a pattern is stored in the table is either `?` (if it starts with a variable) or the constant symbol with which it starts.
+إنّ المفتاح الذي يُخزَّن النمط تحته في الجدول هو إمّا `?` (إذا بدأ بمتغيّر) وإمّا الرمز الثابت الذي يبدأ به.
 
 ```scheme
 (define (index-key-of pat)
@@ -3920,14 +3920,14 @@ The key under which a pattern is stored in the table is either `?` (if it starts
     (if (var? key) '? key)))
 ```
 
-The index will be used to retrieve items that might match a pattern if the pattern starts with a constant symbol.
+وسيُستخدم الفهرس لاسترجاع العناصر التي قد تطابق نمطًا إذا بدأ النمط برمزٍ ثابت.
 
 ```scheme
 (define (use-index? pat)
   (constant-symbol? (car pat)))
 ```
 
-**Exercise 4.70:** What is the purpose of the `let` bindings in the procedures `add-assertion!` and `add-rule!`? What would be wrong with the following implementation of `add-assertion!`? Hint: Recall the definition of the infinite stream of ones in [3.5.2](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e2): `(define ones (cons-stream 1 ones))`.
+**التمرين 4.70:** ما الغرض من روابط `let` في الإجراءين `add-assertion!` و`add-rule!`؟ وما الخطأ في التنفيذ الآتي لـ`add-assertion!`؟ تلميح: تذكّر تعريف مجرى الآحاد اللانهائي الوارد في [3.5.2](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e2): `(define ones (cons-stream 1 ones))`.
 
 ```scheme
 (define (add-assertion! assertion)
@@ -3938,11 +3938,11 @@ The index will be used to retrieve items that might match a pattern if the patte
   'ok)
 ```
 
-#### 4.4.4.6 Stream Operations
+#### 4.4.4.6 عمليّات المجاري
 
-The query system uses a few stream operations that were not presented in [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3).
+يستخدم نظام الاستعلام بضعة عمليّاتٍ على المجاري لم تُعرض في [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3).
 
-`Stream-append-delayed` and `interleave-delayed` are just like `stream-append` and `interleave` ([3.5.3](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e3)), except that they take a delayed argument (like the `integral` procedure in [3.5.4](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e4)). This postpones looping in some cases (see [Exercise 4.71](#Exercise-4_002e71)).
+الإجراءان `stream-append-delayed` و`interleave-delayed` هما بمنزلة `stream-append` و`interleave` ([3.5.3](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e3))، إلّا أنّهما يأخذان معطىً مؤجّلًا (كمثل الإجراء `integral` في [3.5.4](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e4)). وهذا يؤخّر الدوران في بعض الحالات (انظر [التمرين 4.71](#Exercise-4_002e71)).
 
 ```scheme
 (define (stream-append-delayed s1 delayed-s2)
@@ -3963,7 +3963,7 @@ The query system uses a few stream operations that were not presented in [Chapte
         (delay (stream-cdr s1))))))
 ```
 
-`Stream-flatmap`, which is used throughout the query evaluator to map a procedure over a stream of frames and combine the resulting streams of frames, is the stream analog of the `flatmap` procedure introduced for ordinary lists in [2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3). Unlike ordinary `flatmap`, however, we accumulate the streams with an interleaving process, rather than simply appending them (see [Exercise 4.72](#Exercise-4_002e72) and [Exercise 4.73](#Exercise-4_002e73)).
+`Stream-flatmap`، الذي يُستخدم في كلّ مواضع مُقيِّم الاستعلام لإسقاط إجراءٍ على مجرى إطاراتٍ ودمج مجاري الإطارات الناتجة، هو نظير الإجراء `flatmap` بين المجاري، وهو الإجراء الذي استُحدث للقوائم الاعتياديّة في [2.2.3](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3). ولكن بخلاف `flatmap` الاعتياديّ، فإنّنا نُراكم المجاري بعمليّة تشابكٍ، بدلًا من إلحاقها إلحاقًا بسيطًا (انظر [التمرين 4.72](#Exercise-4_002e72) و[التمرين 4.73](#Exercise-4_002e73)).
 
 ```scheme
 (define (stream-flatmap proc s)
@@ -3978,16 +3978,16 @@ The query system uses a few stream operations that were not presented in [Chapte
                (stream-cdr stream))))))
 ```
 
-The evaluator also uses the following simple procedure to generate a stream consisting of a single element:
+ويستخدم المُقيِّم أيضًا الإجراء البسيط الآتي لتوليد مجرىً يتألّف من عنصرٍ وحيد:
 
 ```scheme
 (define (singleton-stream x)
   (cons-stream x the-empty-stream))
 ```
 
-#### 4.4.4.7 Query Syntax Procedures
+#### 4.4.4.7 إجراءات نحو الاستعلام
 
-`Type` and `contents`, used by `qeval` ([4.4.4.2](#g_t4_002e4_002e4_002e2)), specify that a special form is identified by the symbol in its `car`. They are the same as the `type-tag` and `contents` procedures in [2.4.2](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e2), except for the error message.
+الإجراءان `type` و`contents`، اللذان يستخدمهما `qeval` ([4.4.4.2](#g_t4_002e4_002e4_002e2))، يُحدّدان أنّ الصيغة الخاصّة تُعرَف بالرمز الواقع في `car` الخاصّ بها. وهما مثلهما مثل الإجراءين `type-tag` و`contents` في [2.4.2](https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e2)، فيما عدا رسالة الخطأ.
 
 ```scheme
 (define (type exp)
@@ -4003,7 +4003,7 @@ The evaluator also uses the following simple procedure to generate a stream cons
              exp)))
 ```
 
-The following procedures, used by `query-driver-loop` (in [4.4.4.1](#g_t4_002e4_002e4_002e1)), specify that rules and assertions are added to the data base by expressions of the form `(assert! ⟨rule-or-assertion⟩)`:
+والإجراءات الآتية، التي يستخدمها `query-driver-loop` (في [4.4.4.1](#g_t4_002e4_002e4_002e1))، تُحدّد أنّ القواعد والتأكيدات تُضاف إلى قاعدة البيانات بتعابيرٍ على الصورة `(assert! ⟨rule-or-assertion⟩)`:
 
 ```scheme
 (define (assertion-to-be-added? exp)
@@ -4013,7 +4013,7 @@ The following procedures, used by `query-driver-loop` (in [4.4.4.1](#g_t4_002e4_
   (car (contents exp)))
 ```
 
-Here are the syntax definitions for the `and`, `or`, `not`, and `lisp-value` special forms ([4.4.4.2](#g_t4_002e4_002e4_002e2)):
+وها هي تعريفات النحو للصيغ الخاصّة `and` و`or` و`not` و`lisp-value` ([4.4.4.2](#g_t4_002e4_002e4_002e2)):
 
 ```scheme
 (define (empty-conjunction? exps) (null? exps))
@@ -4027,7 +4027,7 @@ Here are the syntax definitions for the `and`, `or`, `not`, and `lisp-value` spe
 (define (args exps) (cdr exps))
 ```
 
-The following three procedures define the syntax of rules:
+والإجراءات الثلاثة الآتية تُعرّف نحو القواعد:
 
 ```scheme
 (define (rule? statement)
@@ -4041,7 +4041,7 @@ The following three procedures define the syntax of rules:
       (caddr rule)))
 ```
 
-`Query-driver-loop` ([4.4.4.1](#g_t4_002e4_002e4_002e1)) calls `query-syntax-process` to transform pattern variables in the expression, which have the form `?symbol`, into the internal format `(? symbol)`. That is to say, a pattern such as `(job ?x ?y)` is actually represented internally by the system as `(job (? x) (? y))`. This increases the efficiency of query processing, since it means that the system can check to see if an expression is a pattern variable by checking whether the `car` of the expression is the symbol `?`, rather than having to extract characters from the symbol. The syntax transformation is accomplished by the following procedure:[^81]
+يستدعي `query-driver-loop` ([4.4.4.1](#g_t4_002e4_002e4_002e1)) الإجراء `query-syntax-process` ليحوّل متغيّرات الأنماط في التعبير، التي على الصورة `?symbol`، إلى الصيغة الداخليّة `(? symbol)`. أي أنّ نمطًا مثل `(job ?x ?y)` يمثّله النظام داخليًّا في الحقيقة على الصورة `(job (? x) (? y))`. وهذا يزيد من كفاءة معالجة الاستعلامات، إذ يعني أنّ النظام يستطيع التحقّق ممّا إذا كان التعبير متغيّر نمطٍ بفحص ما إذا كان `car` التعبير هو الرمز `?`، بدلًا من اضطراره إلى استخراج المحارف من الرمز. ويُنجَز تحويل النحو بالإجراء الآتي:[^81]
 
 ```scheme
 (define (query-syntax-process exp)
@@ -4067,14 +4067,14 @@ The following three procedures define the syntax of rules:
         symbol)))
 ```
 
-Once the variables are transformed in this way, the variables in a pattern are lists starting with `?`, and the constant symbols (which need to be recognized for data-base indexing, [4.4.4.5](#g_t4_002e4_002e4_002e5)) are just the symbols.
+وبمجرّد تحويل المتغيّرات على هذا النحو، تصير متغيّرات النمط قوائم تبدأ بـ`?`، وتكون الرموز الثابتة (التي يلزم التعرّف عليها لفهرسة قاعدة البيانات، [4.4.4.5](#g_t4_002e4_002e4_002e5)) هي الرموز فحسب.
 
 ```scheme
 (define (var? exp) (tagged-list? exp '?))
 (define (constant-symbol? exp) (symbol? exp))
 ```
 
-Unique variables are constructed during rule application (in [4.4.4.4](#g_t4_002e4_002e4_002e4)) by means of the following procedures. The unique identifier for a rule application is a number, which is incremented each time a rule is applied.
+وتُبنى المتغيّرات الفريدة أثناء تطبيق القواعد (في [4.4.4.4](#g_t4_002e4_002e4_002e4)) بوساطة الإجراءات الآتية. والمعرّف الفريد لتطبيق قاعدةٍ هو عددٌ يُزاد كلّما طُبِّقت قاعدة.
 
 ```scheme
 (define rule-counter 0)
@@ -4089,7 +4089,7 @@ Unique variables are constructed during rule application (in [4.4.4.4](#g_t4_002
                  (cdr var))))
 ```
 
-When `query-driver-loop` instantiates the query to print the answer, it converts any unbound pattern variables back to the right form for printing, using
+وحين يُثبِّت `query-driver-loop` الاستعلام لطباعة الجواب، فإنّه يحوّل أيّ متغيّرات أنماطٍ غير مربوطةٍ عودةً إلى الصيغة الملائمة للطبع، مستخدمًا
 
 ```scheme
 (define (contract-question-mark variable)
@@ -4103,9 +4103,9 @@ When `query-driver-loop` instantiates the query to print the answer, it converts
          (symbol->string (cadr variable))))))
 ```
 
-#### 4.4.4.8 Frames and Bindings
+#### 4.4.4.8 الإطارات والروابط
 
-Frames are represented as lists of bindings, which are variable-value pairs:
+تُُمثَّل الإطارات كقوائمٍ من الروابط، والرابط زوجٌ متغيّر-قيمة:
 
 ```scheme
 (define (make-binding variable value)
@@ -4124,7 +4124,7 @@ Frames are represented as lists of bindings, which are variable-value pairs:
   (cons (make-binding variable value) frame))
 ```
 
-**Exercise 4.71:** Louis Reasoner wonders why the `simple-query` and `disjoin` procedures ([4.4.4.2](#g_t4_002e4_002e4_002e2)) are implemented using explicit `delay` operations, rather than being defined as follows:
+**التمرين 4.71:** يتساءل لويس ريزنر عن السبب في أنّ الإجراءين `simple-query` و`disjoin` ([4.4.4.2](#g_t4_002e4_002e4_002e2)) نُفِّذا باستخدام عمليّات `delay` صريحة، بدلًا من تعريفهما على النحو الآتي:
 
 ```scheme
 (define (simple-query 
@@ -4146,11 +4146,11 @@ Frames are represented as lists of bindings, which are variable-value pairs:
                 frame-stream))))
 ```
 
-Can you give examples of queries where these simpler definitions would lead to undesirable behavior?
+هل تستطيع إعطاء أمثلةً على استعلاماتٍ تؤدّي فيها هذه التعريفات الأبسط إلى سلوكٍ غير مرغوبٍ فيه؟
 
-> **Exercise 4.72:** Why do `disjoin` and `stream-flatmap` interleave the streams rather than simply append them? Give examples that illustrate why interleaving works better. (Hint: Why did we use `interleave` in [3.5.3](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e3)?)
+> **التمرين 4.72:** لماذا يشابك `disjoin` و`stream-flatmap` المجاري بدلًا من إلحاقها إلحاقًا بسيطًا؟ أعطِ أمثلةً تُبيّن لماذا يعمل التشابك على نحوٍ أفضل. (تلميح: لماذا استخدمنا `interleave` في [3.5.3](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e3)؟)
 
-**Exercise 4.73:** Why does `flatten-stream` use `delay` explicitly? What would be wrong with defining it as follows:
+**التمرين 4.73:** لماذا يستخدم `flatten-stream` الإجراء `delay` صراحةً؟ وما الخطأ في تعريفه على النحو الآتي:
 
 ```scheme
 (define (flatten-stream stream)
@@ -4161,9 +4161,9 @@ Can you give examples of queries where these simpler definitions would lead to u
                    (stream-cdr stream)))))
 ```
 
-**Exercise 4.74:** Alyssa P. Hacker proposes to use a simpler version of `stream-flatmap` in `negate`, `lisp-value`, and `find-assertions`. She observes that the procedure that is mapped over the frame stream in these cases always produces either the empty stream or a singleton stream, so no interleaving is needed when combining these streams.
+**التمرين 4.74:** تقترح أليسا ب. هاكر استخدام نسخةٍ أبسط من `stream-flatmap` في `negate` و`lisp-value` و`find-assertions`. فهي تلاحظ أنّ الإجراء الذي يُسقَط على مجرى الإطارات في هذه الحالات يُنتج دائمًا إمّا المجرى الفارغ وإمّا مجرى ذي عنصرٍ وحيد، فلا حاجة إلى التشابك عند دمج هذه المجاري.
 
-Fill in the missing expressions in Alyssa’s program.
+أكمِل التعابير الناقصة في برنامج أليسا.
 
 ```scheme
 (define (simple-stream-flatmap proc s)
@@ -4175,55 +4175,55 @@ Fill in the missing expressions in Alyssa’s program.
                              stream)))
 ```
 
-Does the query system’s behavior change if we change it in this way?
+هل يتغيّر سلوك نظام الاستعلام إذا غيّرناه على هذا النحو؟
 
-**Exercise 4.75:** Implement for the query language a new special form called `unique`. `Unique` should succeed if there is precisely one item in the data base satisfying a specified query. For example,
+**التمرين 4.75:** نفّذ للغة الاستعلام صيغةً خاصّةً جديدةً تُسمّى `unique`. وينبغي لـ`unique` أن تنجح إذا وُجد عنصرٌ واحدٌ بالضبط في قاعدة البيانات يُرضي استعلامًا معيَّنًا. فمثلًا،
 
 ```scheme
 (unique (job ?x (computer wizard)))
 ```
 
-should print the one-item stream
+ينبغي أن يطبع مجرى ذي عنصرٍ واحد
 
 ```scheme
 (unique (job (Bitdiddle Ben)
              (computer wizard)))
 ```
 
-since Ben is the only computer wizard, and
+إذ إنّ بن هو ساحر الحاسوب الوحيد، و
 
 ```scheme
 (unique (job ?x (computer programmer)))
 ```
 
-should print the empty stream, since there is more than one computer programmer. Moreover,
+ينبغي أن يطبع المجرى الفارغ، إذ يوجد أكثر من مبرمج حاسوبٍ واحد. فضلًا عن ذلك،
 
 ```scheme
 (and (job ?x ?j) 
      (unique (job ?anyone ?j)))
 ```
 
-should list all the jobs that are filled by only one person, and the people who fill them.
+ينبغي أن يسرد جميع الوظائف التي يشغلها شخصٌ واحدٌ فقط، والأشخاص الذين يشغلونها.
 
-There are two parts to implementing `unique`. The first is to write a procedure that handles this special form, and the second is to make `qeval` dispatch to that procedure. The second part is trivial, since `qeval` does its dispatching in a data-directed way. If your procedure is called `uniquely-asserted`, all you need to do is
+ثمّة جزءان لتنفيذ `unique`. الأوّل هو كتابة إجراءٍ يتعامل مع هذه الصيغة الخاصّة، والثاني هو جعل `qeval` يُوجّه نداءاته إلى ذلك الإجراء. والجزء الثاني تافه، إذ إنّ `qeval` يؤدّي توجيهه بطريقةٍ موجَّهةٍ بالبيانات. فإذا سُمِّي إجراءك `uniquely-asserted`، فكلّ ما عليك فعله هو
 
 ```scheme
 (put 'unique 'qeval uniquely-asserted)
 ```
 
-and `qeval` will dispatch to this procedure for every query whose `type` (`car`) is the symbol `unique`.
+وسيُوجِّهُ `qeval` إلى هذا الإجراء لكلّ استعلامٍ `type` (`car`) الخاصّ به هو الرمز `unique`.
 
-The real problem is to write the procedure `uniquely-asserted`. This should take as input the `contents` (`cdr`) of the `unique` query, together with a stream of frames. For each frame in the stream, it should use `qeval` to find the stream of all extensions to the frame that satisfy the given query. Any stream that does not have exactly one item in it should be eliminated. The remaining streams should be passed back to be accumulated into one big stream that is the result of the `unique` query. This is similar to the implementation of the `not` special form.
+المسألة الحقيقيّة هي كتابة الإجراء `uniquely-asserted`. وينبغي له أن يأخذ كمعطى `contents` (`cdr`) استعلام `unique`، مع مجرى إطارات. فلكلّ إطارٍ في المجرى، ينبغي له أن يستخدم `qeval` لإيجاد مجرى جميع الامتدادات للإطار التي تُرضي الاستعلام المعطى. وأيّ مجرىً لا يحوي عنصرًا واحدًا بالضبط ينبغي حذفه. وينبغي أن تُعاد المجاري الباقية لتُراكم في مجرىً كبيرٍ واحدٍ هو نتيجة استعلام `unique`. وهذا شبيهٌ بتنفيذ الصيغة الخاصّة `not`.
 
-Test your implementation by forming a query that lists all people who supervise precisely one person.
+اختبر تنفيذك بتشكيل استعلامٍ يسرد جميع الأشخاص الذين يشرفون على شخصٍ واحدٍ بالضبط.
 
-> **Exercise 4.76:** Our implementation of `and` as a series combination of queries ([Figure 4.5](#Figure-4_002e5)) is elegant, but it is inefficient because in processing the second query of the `and` we must scan the data base for each frame produced by the first query. If the data base has $n$ elements, and a typical query produces a number of output frames proportional to $n$ (say $n / k$ ), then scanning the data base for each frame produced by the first query will require $n^{2} / k$ calls to the pattern matcher. Another approach would be to process the two clauses of the `and` separately, then look for all pairs of output frames that are compatible. If each query produces $n / k$ output frames, then this means that we must perform $n^{2} / k^{2}$ compatibility checks—a factor of $k$ fewer than the number of matches required in our current method. Devise an implementation of `and` that uses this strategy. You must implement a procedure that takes two frames as inputs, checks whether the bindings in the frames are compatible, and, if so, produces a frame that merges the two sets of bindings. This operation is similar to unification.
+> **التمرين 4.76:** إنّ تنفيذنا لـ`and` بوصفه تركيبًا متسلسلًا للاستعلامات ([الشكل 4.5](#Figure-4_002e5)) أنيق، لكنّه غير كفؤ لأنّنا في معالجة الاستعلام الثاني من `and` يتعيّن علينا أن نمسح قاعدة البيانات لكلّ إطارٍ يُنتجه الاستعلام الأوّل. فإذا كانت قاعدة البيانات تحوي $n$ عنصرًا، وأنتج استعلامٌ نموذجيّ عددًا من الإطارات الناتجة متناسبًا مع $n$ (ليكن $n / k$ )، فإنّ مسح قاعدة البيانات لكلّ إطارٍ يُنتجه الاستعلام الأوّل سيتطلّب $n^{2} / k$ نداءً إلى مطابق الأنماط. وكان من شأن منهجٍ آخر أن يعالج بندَي `and` كلًّا على حدة، ثم يبحث عن جميع أزواج الإطارات الناتجة المتوافقة. فإذا أنتج كلّ استعلامٍ $n / k$ إطارًا ناتجًا، فإنّ ذلك يعني أنّ علينا أداء $n^{2} / k^{2}$ فحصًا للتوافق—أي أقلّ بمقدار عامل $k$ من عدد المطابقات التي تتطلّبها طريقتنا الحاليّة. ابتكر تنفيذًا لـ`and` يستخدم هذه الاستراتيجيّة. ويجب عليك أن تنفّذ إجراءً يأخذ إطارين كمعطيين، ويفحص ما إذا كانت الروابط في الإطارين متوافقة، وإذا كان الأمر كذلك يُنتج إطارًا يدمج مجموعتَي الروابط. وهذه العمليّة شبيهةٌ بالتوحيد.
 
-> **Exercise 4.77:** In [4.4.3](#g_t4_002e4_002e3) we saw that `not` and `lisp-value` can cause the query language to give “wrong” answers if these filtering operations are applied to frames in which variables are unbound. Devise a way to fix this shortcoming. One idea is to perform the filtering in a “delayed” manner by appending to the frame a “promise” to filter that is fulfilled only when enough variables have been bound to make the operation possible. We could wait to perform filtering until all other operations have been performed. However, for efficiency’s sake, we would like to perform filtering as soon as possible so as to cut down on the number of intermediate frames generated.
+> **التمرين 4.77:** رأينا في [4.4.3](#g_t4_002e4_002e3) أنّ `not` و`lisp-value` قد يجعلان لغة الاستعلام تُعطي أجوبةً «خاطئة» إذا طُبِّقت هاتان عمليّتا الترشيح على إطاراتٍ متغيّراتها غير مربوطة. فكّر في طريقةٍ لعلاج هذا القصور. وإحدى الأفكار هي أداء الترشيح بطريقةٍ «مؤجّلة» بإلحاق «وعدٍ» بالترشيح بالإطار لا يُوفى به إلّا حين تُربط متغيّراتٌ بقدرٍ يكفي لجعل العمليّة ممكنة. وكان في وسعنا أن ننتظر أداء الترشيح حتّى تُؤدّى جميع العمليّات الأخرى. غير أنّنا، حرصًا على الكفاءة، نودّ أن نُؤدّي الترشيح في أسرع وقتٍ ممكنٍ حتّى نقلّل عدد الإطارات الوسيطة المتولّدة.
 
-> **Exercise 4.78:** Redesign the query language as a nondeterministic program to be implemented using the evaluator of [4.3](https://sarabander.github.io/sicp/html/4_002e3.xhtml#g_t4_002e3), rather than as a stream process. In this approach, each query will produce a single answer (rather than the stream of all answers) and the user can type `try-again` to see more answers. You should find that much of the mechanism we built in this section is subsumed by nondeterministic search and backtracking. You will probably also find, however, that your new query language has subtle differences in behavior from the one implemented here. Can you find examples that illustrate this difference?
+> **التمرين 4.78:** أعد تصميم لغة الاستعلام بوصفها برنامجًا غير حتميّ ليُنفَّذ باستخدام مُقيِّم [4.3](https://sarabander.github.io/sicp/html/4_002e3.xhtml#g_t4_002e3)، بدلًا من جعلها عمليّة مجاري. وفي هذا المنهج، سيُنتج كلّ استعلامٍ جوابًا وحيدًا (بدلًا من مجرى جميع الأجوبة) ويستطيع المستخدم أن يكتب `try-again` ليرى المزيد من الأجوبة. وينبغي أن تجد أنّ كثيرًا من الآليّة التي بنيناها في هذا القسم يستوعبه البحث غير الحتميّ والتتبّع الرجعيّ. غير أنّك ستجد على الأرجح أيضًا أنّ لغة الاستعلام الجديدة لديك لها فروقًا دقيقةً في السلوك عن تلك المنفَّذة هنا. فهل تستطيع إيجاد أمثلةٍ توضّح هذا الفرق؟
 
-**Exercise 4.79:** When we implemented the Lisp evaluator in [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1), we saw how to use local environments to avoid name conflicts between the parameters of procedures. For example, in evaluating
+**التمرين 4.79:** حين نفّذنا مُقيّم Lisp في [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1)، رأينا كيف نستخدم البيئات المحلّيّة لتجنّب تعارض الأسماء بين وسائط الإجراءات. فمثلًا، في تقييم
 
 ```scheme
 (define (square x) 
@@ -4235,168 +4235,168 @@ Test your implementation by forming a query that lists all people who supervise 
 (sum-of-squares 3 4)
 ```
 
-there is no confusion between the `x` in `square` and the `x` in `sum-of-squares`, because we evaluate the body of each procedure in an environment that is specially constructed to contain bindings for the local variables. In the query system, we used a different strategy to avoid name conflicts in applying rules. Each time we apply a rule we rename the variables with new names that are guaranteed to be unique. The analogous strategy for the Lisp evaluator would be to do away with local environments and simply rename the variables in the body of a procedure each time we apply the procedure.
+لا يقع أيّ التباس بين `x` في `square` و`x` في `sum-of-squares`، لأنّنا نقيّم جسم كلّ إجراءٍ في بيئةٍ مبنيّةٍ خصيصًا لتحتوي روابط المتغيّرات المحلّيّة. أمّا في نظام الاستعلام، فقد استخدمنا استراتيجيّة مختلفةً لتجنّب تعارض الأسماء عند تطبيق القواعد. ففي كلّ مرّةٍ نطبّق فيها قاعدةً نُعيد تسمية المتغيّرات بأسماءٍ جديدةٍ مضمونٌ أنّها فريدة. وكانت الاستراتيجيّة المماثلة لمُقيّم Lisp هي الاستغناء عن البيئات المحلّيّة وإعادة تسمية المتغيّرات في جسم الإجراء ببساطةٍ في كلّ مرّةٍ نطبّق فيها الإجراء.
 
-Implement for the query language a rule-application method that uses environments rather than renaming. See if you can build on your environment structure to create constructs in the query language for dealing with large systems, such as the rule analog of block-structured procedures. Can you relate any of this to the problem of making deductions in a context (e.g., “If I supposed that $P$ were true, then I would be able to deduce $A$ and $B$ .”) as a method of problem solving? (This problem is open-ended. A good answer is probably worth a Ph.D.)
+نفّذ للغة الاستعلام طريقةَ تطبيق قواعدٍ تستخدم البيئات بدلًا من إعادة التسمية. وانظر إن كنت تستطيع البناء على بنية بيئتك لإنشاء تراكيبَ في لغة الاستعلام للتعامل مع النظم الكبيرة، مثل نظير القاعدة للإجراءات المبنيّة ببنية الكتل. فهل تستطيع ربط أيّ من هذا بمسألة إجراء الاستنتاجات في سياقٍ (مثلًا، «لو افترضت أنّ $P$ صحيحة، لكنت أستطيع استنتاج $A$ و$B$ .») بوصفها طريقةً لحلّ المسائل؟ (وهذه المسألة مفتوحة النهايات. والجواب الجيّد يستحقّ على الأرجح درجة دكتوراه.)
 
-[^1]: The same idea is pervasive throughout all of engineering. For example, electrical engineers use many different languages for describing circuits. Two of these are the language of electrical *networks* and the language of electrical *systems*. The network language emphasizes the physical modeling of devices in terms of discrete electrical elements. The primitive objects of the network language are primitive electrical components such as resistors, capacitors, inductors, and transistors, which are characterized in terms of physical variables called voltage and current. When describing circuits in the network language, the engineer is concerned with the physical characteristics of a design. In contrast, the primitive objects of the system language are signal-processing modules such as filters and amplifiers. Only the functional behavior of the modules is relevant, and signals are manipulated without concern for their physical realization as voltages and currents. The system language is erected on the network language, in the sense that the elements of signal-processing systems are constructed from electrical networks. Here, however, the concerns are with the large-scale organization of electrical devices to solve a given application problem; the physical feasibility of the parts is assumed. This layered collection of languages is another example of the stratified design technique illustrated by the picture language of [2.2.4](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e4).
+[^1]: وهذه الفكرة ذاتها سائدة في جميع فروع الهندسة. فمهندسو الكهرباء، مثلًا، يستخدمون لغاتٍ كثيرةً مختلفةً لوصف الدوائر الكهربائيّة. وهاتان هما لغة *الشبكات* الكهربائيّة ولغة *النُظم* الكهربائيّة. فإنّ لغة الشبكات تُبرز النمذجة الفيزيائيّة للأجهزة من حيث العناصر الكهربائيّة المتقطّعة. والكائنات الأوّليّة للغة الشبكات هي مكوّنات كهربائيّة أوّليّة كالمقاومات والمُكثّفات والملفّات والترانزستورات، التي تُوصَف من حيث متغيّرات فيزيائيّةً تُسمّى الجهد والتيّار. وحين يصف المهندس الدوائر بلغة الشبكات، فإنّه يهتمّ بالخصائص الفيزيائيّة للتصميم. وبالمقابل، فإنّ الكائنات الأوّليّة للغة النظم هي وحدات معالجة الإشارة، كالمرشّحات والمضخّمات. والسلوك الوظيفيّ للوحدات وحده هو ذو الصلة، وتُتلاعَب الإشارات دون اكتراث بتحقيقها الفيزيائيّ بوصفها جهودًا وتيّارًا. ولغة النظم مبنيّةٌ على لغة الشبكات، بمعنى أنّ عناصر نظم معالجة الإشارة تُبنى من الشبكات الكهربائيّة. غير أنّ الاهتمام هنا هو بالتنظيم واسع النطاق للأجهزة الكهربائيّة لحلّ مسألة تطبيقٍ معيّنة؛ أمّا الجدوى الفيزيائيّة للأجزاء فمفترضة. وهذه المجموعة الطبقيّة من اللغات مثالٌ آخر على تقنيّة التصميم المطبّق التي توضّحها لغة الرسوميّات الواردة في [2.2.4](https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e4).
 
-[^2]: The most important features that our evaluator leaves out are mechanisms for handling errors and supporting debugging. For a more extensive discussion of evaluators, see [Friedman et al. 1992](https://sarabander.github.io/sicp/html/References.xhtml#Friedman-et-al_002e-1992), which gives an exposition of programming languages that proceeds via a sequence of evaluators written in Scheme.
+[^2]: وأهمّ الخصائص التي يُغفلها مُقيّمنا هي آليّات معالجة الأخطاء ودعم التنقيح. ولمناقشةٍ أوسع للمُقيّمين، انظر [فريدمان وآخرون 1992](https://sarabander.github.io/sicp/html/References.xhtml#Friedman-et-al_002e-1992)، الذي يعرض لغات البرمجة عبر تسلسلٍ من مُقيّماتٍ مكتوبةٍ بلغة Scheme.
 
-[^3]: Even so, there will remain important aspects of the evaluation process that are not elucidated by our evaluator. The most important of these are the detailed mechanisms by which procedures call other procedures and return values to their callers. We will address these issues in [Chapter 5](https://sarabander.github.io/sicp/html/Chapter-5.xhtml#Chapter-5), where we take a closer look at the evaluation process by implementing the evaluator as a simple register machine.
+[^3]: وحتى مع ذلك، فستبقى جوانب مهمّة من عمليّة التقييم لا يجلّيها مُقيّمنا. وأهمّ هذه الجوانب هي الآليّات التفصيليّة التي تنادي بها الإجراءاتُ بعضُها بعضًا وتُعيد القيم إلى مناداتها. وسنعالج هذه القضايا في [الفصل 5](https://sarabander.github.io/sicp/html/Chapter-5.xhtml#Chapter-5)، حيث نُمعن النظر في عمليّة التقييم بتنفيذ المُقيّم بوصفه آلة مسجّلاتٍ بسيطة.
 
-[^4]: If we grant ourselves the ability to apply primitives, then what remains for us to implement in the evaluator? The job of the evaluator is not to specify the primitives of the language, but rather to provide the connective tissue—the means of combination and the means of abstraction—that binds a collection of primitives to form a language. Specifically: - The evaluator enables us to deal with nested expressions. For example, although simply applying primitives would suffice for evaluating the expression `(+ 1 6)`, it is not adequate for handling `(+ 1 (* 2 3))`. As far as the primitive procedure `+` is concerned, its arguments must be numbers, and it would choke if we passed it the expression `(* 2 3)` as an argument. One important role of the evaluator is to choreograph procedure composition so that `(* 2 3)` is reduced to 6 before being passed as an argument to `+`. - The evaluator allows us to use variables. For example, the primitive procedure for addition has no way to deal with expressions such as `(+ x 1)`. We need an evaluator to keep track of variables and obtain their values before invoking the primitive procedures. - The evaluator allows us to define compound procedures. This involves keeping track of procedure definitions, knowing how to use these definitions in evaluating expressions, and providing a mechanism that enables procedures to accept arguments. - The evaluator provides the special forms, which must be evaluated differently from procedure calls.
+[^4]: فإذا منحنا أنفسنا القدرة على تطبيق الأوّليّات، فما الذي يبقى علينا تنفيذه في المُقيّم؟ فمهمّة المُقيّم ليست تحديد أوّليّات اللغة، بل توفير النسيج الضّام—وسائل التركيب ووسائل التجريد—الذي يربط مجموعةً من الأوّليّات ليشكّل لغة. وعلى وجه الخصوص: - يتيح لنا المُقيّم التعامل مع التعابير المتداخلة. فمثلًا، على الرغم من أنّ تطبيق الأوّليّات ببساطةٍ يكفي لتقييم التعبير `(+ 1 6)`، فإنّه غير كافٍ للتعامل مع `(+ 1 (* 2 3))`. فمن وجهة نظر الإجراء الأوّليّ `+`، ينبغي أن تكون معطياته أعدادًا، وكان ليختنق لو مرّرنا إليه التعبير `(* 2 3)` كمعطى. وأحد الأدوار المهمّة للمُقيّم هو تنسيق تركيب الإجراءات بحيث يُختزل `(* 2 3)` إلى 6 قبل أن يُمرَّر كمعطىً إلى `+`. - ويتيح لنا المُقيّم استخدام المتغيّرات. فمثلًا، ليس للإجراء الأوّليّ للجمع أيّة طريقةٍ للتعامل مع تعابيرَ مثل `(+ x 1)`. فنحن نحتاج إلى مُقيّمٍ يتعقّب المتغيّرات ويحصل على قيمها قبل استدعاء الإجراءات الأوّليّة. - ويتيح لنا المُقيّم تعريف الإجراءات المركّبة. وهذا يشمل تعقّب تعريفات الإجراءات، ومعرفة كيفيّة استخدام هذه التعريفات في تقييم التعابير، وتوفير آليّةٍ تُمكّن الإجراءات من قبول المعطيات. - ويوفّر المُقيّم الصيغ الخاصّة، التي ينبغي تقييمها بطرائق مختلفة عن نداءات الإجراءات.
 
-[^5]: We could have simplified the `application?` clause in `eval` by using `map` (and stipulating that `operands` returns a list) rather than writing an explicit `list-of-values` procedure. We chose not to use `map` here to emphasize the fact that the evaluator can be implemented without any use of higher-order procedures (and thus could be written in a language that doesn’t have higher-order procedures), even though the language that it supports will include higher-order procedures.
+[^5]: كان في وسعنا تبسيط بند `application?` في `eval` باستخدام `map` (وبالنصّ على أنّ `operands` تُعيد قائمةً) بدلًا من كتابة إجراء `list-of-values` صريح. وقد اخترنا ألّا نستخدم `map` هنا للتأكيد على حقيقة أنّ المُقيّم يمكن تنفيذه دون أيّ استخدامٍ للإجراءات ذات الرتبة العليا (وبالتالي يمكن كتابته بلغةٍ لا تمتلك إجراءاتٍ ذات رتبةٍ عاليا)، حتّى وإن كانت اللغة التي يدعمها ستضمّ إجراءاتٍ ذات رتبةٍ عاليا.
 
-[^6]: In this case, the language being implemented and the implementation language are the same. Contemplation of the meaning of `true?` here yields expansion of consciousness without the abuse of substance.
+[^6]: وفي هذه الحالة، اللغة المنفَّذة ولغة التنفيذ هما اللغّة ذاتها. والتأمّل في معنى `true?` هنا يُفضي إلى اتّساع الوعي دون إساءة استخدام الموادّ.
 
-[^7]: This implementation of `define` ignores a subtle issue in the handling of internal definitions, although it works correctly in most cases. We will see what the problem is and how to solve it in [4.1.6](#g_t4_002e1_002e6).
+[^7]: إنّ هذا التنفيذ لـ`define` يُغفل مسألةً دقيقةً في التعامل مع التعريفات الداخليّة، وإن كان يعمل بصورةٍ صحيحةٍ في معظم الحالات. وسنرى ما المسألة وكيفيّة حلّها في [4.1.6](#g_t4_002e1_002e6).
 
-[^8]: As we said when we introduced `define` and `set!`, these values are implementation-dependent in Scheme—that is, the implementor can choose what value to return.
+[^8]: كما قلنا حين عرّفنا `define` و`set!`، فإنّ هذه القيم تابعةٌ للتنفيذ في Scheme—أي أنّ المنفّذ يستطيع اختيار القيمة التي تُعاد.
 
-[^9]: As mentioned in [2.3.1](https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e1), the evaluator sees a quoted expression as a list beginning with `quote`, even if the expression is typed with the quotation mark. For example, the expression `'a` would be seen by the evaluator as `(quote a)`. See [Exercise 2.55](https://sarabander.github.io/sicp/html/2_002e3.xhtml#Exercise-2_002e55).
+[^9]: كما ورد في [2.3.1](https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e1)، فإنّ المُقيّم يرى التعبير المُقتبَس كقائمةٍ تبدأ بـ`quote`، حتّى لو كُتب التعبير بعلامة الاقتباس. فمثلًا، فإنّ التعبير `'a` سيراه المُقيّم على الصورة `(quote a)`. انظر [التمرين 2.55](https://sarabander.github.io/sicp/html/2_002e3.xhtml#Exercise-2_002e55).
 
-[^10]: The value of an `if` expression when the predicate is false and there is no alternative is unspecified in Scheme; we have chosen here to make it false. We will support the use of the variables `true` and `false` in expressions to be evaluated by binding them in the global environment. See [4.1.4](#g_t4_002e1_002e4).
+[^10]: قيمةُ تعبير `if` حين يكون المسيّم خاطئًا ولا يوجد بديلٌ غير محدّدةٍ في Scheme؛ وقد اخترنا ها هنا جعلها خاطئة. وسندعم استخدام المتغيّرين `true` و`false` في التعابير التي تُقيَّم بربطهما في البيئة العامّة. انظر [4.1.4](#g_t4_002e1_002e4).
 
-[^11]: These selectors for a list of expressions—and the corresponding ones for a list of operands—are not intended as a data abstraction. They are introduced as mnemonic names for the basic list operations in order to make it easier to understand the explicit-control evaluator in [5.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4).
+[^11]: إنّ هذه المحدِّدات لقائمة التعابير—وتلك المقابلة لها لقائمة العوامل—ليست مقصودةً بوصفها تجريد بيانات. وهي مُستحدَثةٌ بوصفها أسماءً تذكيريّةً لعمليّات القوائم الأساسيّة، لتسهيل فهم مُقيّم التحكّم الصريح الوارد في [5.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4).
 
-[^12]: The value of a `cond` expression when all the predicates are false and there is no `else` clause is unspecified in Scheme; we have chosen here to make it false.
+[^12]: قيمةُ تعبير `cond` حين تكون جميع المسيّمات خاطئة ولا يوجد بند `else` غير محدّدةٍ في Scheme؛ وقد اخترنا ها هنا جعلها خاطئة.
 
-[^13]: Practical Lisp systems provide a mechanism that allows a user to add new derived expressions and specify their implementation as syntactic transformations without modifying the evaluator. Such a user-defined transformation is called a *macro*. Although it is easy to add an elementary mechanism for defining macros, the resulting language has subtle name-conflict problems. There has been much research on mechanisms for macro definition that do not cause these difficulties. See, for example, [Kohlbecker 1986](https://sarabander.github.io/sicp/html/References.xhtml#Kohlbecker-1986), [Clinger and Rees 1991](https://sarabander.github.io/sicp/html/References.xhtml#Clinger-and-Rees-1991), and [Hanson 1991](https://sarabander.github.io/sicp/html/References.xhtml#Hanson-1991).
+[^13]: تُوفّر منظومات لisp العمليّة آليّةً تسمح للمُستخدِم بإضافة تعابير مشتقّة جديدة وتحديد تنفيذها بوصفه تحويلات صياغيّة دون تعديل المقيّم. ويُسمّى مثل هذا التحويل المعرَّف من المُستخدِم *ماكرو*. وعلى الرغم من أنّ إضافة آليّة أوّليّة لتعريف الماكروهات سهلة، إلّا أنّ اللغة الناتجة لها مشكلات دقيقة في تعارض الأسماء. وقد كان هناك بحثٌ كثير في آليّات تعريف الماكرو التي لا تُسبّب هذه الصعوبات. انظر، مثلًا، [Kohlbecker 1986](https://sarabander.github.io/sicp/html/References.xhtml#Kohlbecker-1986)، [Clinger and Rees 1991](https://sarabander.github.io/sicp/html/References.xhtml#Clinger-and-Rees-1991)، و [Hanson 1991](https://sarabander.github.io/sicp/html/References.xhtml#Hanson-1991).
 
-[^14]: Frames are not really a data abstraction in the following code: `Set-variable-value!` and `define-variable!` use `set-car!` to directly modify the values in a frame. The purpose of the frame procedures is to make the environment-manipulation procedures easy to read.
+[^14]: ليست الإطارات تجريد بيانات حقيقيًّا في الشيفرة التالية: فـ `set-variable-value!` و `define-variable!` تستخدمان `set-car!` لتعديل القيم في إطار مباشرةً. والغرض من إجراءات الإطار هو تسهيل قراءة إجراءات التلاعب بالبيئة.
 
-[^15]: The drawback of this representation (as well as the variant in [Exercise 4.11](#Exercise-4_002e11)) is that the evaluator may have to search through many frames in order to find the binding for a given variable. (Such an approach is referred to as *deep binding*.) One way to avoid this inefficiency is to make use of a strategy called *lexical addressing*, which will be discussed in [5.5.6](https://sarabander.github.io/sicp/html/5_002e5.xhtml#g_t5_002e5_002e6).
+[^15]: عيب هذا التمثيل (وكذلك التنويعة الواردة في [التمرين 4.11](#Exercise-4_002e11)) هو أنّ المقيّم قد يضطرّ إلى البحث في إطارات كثيرة لإيجاد الربط الخاصّ بمتغيّر مُعطى. (ويُشار إلى مثل هذا الأسلوب بـ *الربط العميق*.) وإحدى طرق تجنّب هذا العجز في الكفاءة هي الاستعانة باستراتيجيّة تُسمّى *العنونة المعجميّة*، التي سنناقشها في [5.5.6](https://sarabander.github.io/sicp/html/5_002e5.xhtml#g_t5_002e5_002e6).
 
-[^16]: Any procedure defined in the underlying Lisp can be used as a primitive for the metacircular evaluator. The name of a primitive installed in the evaluator need not be the same as the name of its implementation in the underlying Lisp; the names are the same here because the metacircular evaluator implements Scheme itself. Thus, for example, we could put `(list 'first car)` or `(list 'square (lambda (x) (* x x)))` in the list of `primitive-procedures`.
+[^16]: يُمكن استخدام أيّ إجراء معرَّف في الليسب الأساسيّ كأوّليّ للمقيّم الحلقيّ الوسيط. ولا يلزم أن يكون اسم الأوّليّة المثبَّتة في المقيّم هو نفس اسم تنفيذها في الليسب الأساسيّ؛ والأسماء هي نفسها هنا لأنّ المقيّم الحلقيّ الوسيط يُنفّذ Scheme نفسه. بالتالي، مثلًا، كان في وسعنا أن نضع `(list 'first car)` أو `(list 'square (lambda (x) (* x x)))` في قائمة `primitive-procedures`.
 
-[^17]: `Apply-in-underlying-scheme` is the `apply` procedure we have used in earlier chapters. The metacircular evaluator’s `apply` procedure ([4.1.1](#g_t4_002e1_002e1)) models the working of this primitive. Having two different things called `apply` leads to a technical problem in running the metacircular evaluator, because defining the metacircular evaluator’s `apply` will mask the definition of the primitive. One way around this is to rename the metacircular `apply` to avoid conflict with the name of the primitive procedure. We have assumed instead that we have saved a reference to the underlying `apply` by doing ```scheme (define apply-in-underlying-scheme apply) ```
+[^17]: إنّ `apply-in-underlying-scheme` هو إجراء `apply` الذي استخدمناه في الفصول السابقة. أمّا إجراء `apply` الخاصّ بالمقيّم الحلقيّ الوسيط ([4.1.1](#g_t4_002e1_002e1)) فينمذج عمل هذه الأوّليّة. وإنّ وجود شيئين مختلفين يُسمّيان `apply` يؤدّي إلى مشكلة تقنيّة في تشغيل المقيّم الحلقيّ الوسيط، لأنّ تعريف `apply` الخاصّ بالمقيّم الحلقيّ الوسيط سيُخفي تعريف الأوّليّة. وإحدى سُبل تجاوز ذلك هي إعادة تسمية `apply` الحلقيّ الوسيط لتجنّب التعارض مع اسم الإجراء الأوّليّ. وقد افترضنا بدلًا من ذلك أنّنا حفظنا مرجعًا إلى `apply` الأساسيّ بفعل ```scheme (define apply-in-underlying-scheme apply) ```
 
-[^18]: The primitive procedure `read` waits for input from the user, and returns the next complete expression that is typed. For example, if the user types `(+ 23 x)`, `read` returns a three-element list containing the symbol `+`, the number 23, and the symbol `x`. If the user types `'x`, `read` returns a two-element list containing the symbol `quote` and the symbol `x`.
+[^18]: ينتظر الإجراء الأوّليّ `read` الدخل من المُستخدِم، ويُعيد أوّل تعبير كامل يُطبَع. فعلى سبيل المثال، إذا طبع المُستخدِم `(+ 23 x)`، فإنّ `read` يُعيد قائمةً من ثلاثة عناصر تحتوي الرمز `+` والعدد 23 والرمز `x`. وإذا طبع المُستخدِم `'x`، فإنّ `read` يُعيد قائمةً من عنصرين تحتوي الرمز `quote` والرمز `x`.
 
-[^19]: The fact that the machines are described in Lisp is inessential. If we give our evaluator a Lisp program that behaves as an evaluator for some other language, say C, the Lisp evaluator will emulate the C evaluator, which in turn can emulate any machine described as a C program. Similarly, writing a Lisp evaluator in C produces a C program that can execute any Lisp program. The deep idea here is that any evaluator can emulate any other. Thus, the notion of “what can in principle be computed” (ignoring practicalities of time and memory required) is independent of the language or the computer, and instead reflects an underlying notion of *computability*. This was first demonstrated in a clear way by Alan M. Turing (1912-1954), whose 1936 paper laid the foundations for theoretical computer science. In the paper, Turing presented a simple computational model—now known as a *Turing machine*—and argued that any “effective process” can be formulated as a program for such a machine. (This argument is known as the *Church-Turing thesis*.) Turing then implemented a universal machine, i.e., a Turing machine that behaves as an evaluator for Turing-machine programs. He used this framework to demonstrate that there are well-posed problems that cannot be computed by Turing machines (see [Exercise 4.15](#Exercise-4_002e15)), and so by implication cannot be formulated as “effective processes.” Turing went on to make fundamental contributions to practical computer science as well. For example, he invented the idea of structuring programs using general-purpose subroutines. See [Hodges 1983](https://sarabander.github.io/sicp/html/References.xhtml#Hodges-1983) for a biography of Turing.
+[^19]: حقيقة أنّ الآلات موصوفة بلغة لisp غير جوهرية. فإذا أعطينا مقيّمنا برنامج لisp يتصرّف بصفته مقيّمًا لغة أخرى، لنقل C، فإنّ مقيّم لisp سيُحاكي مقيّم C، الذي يستطيع بدوره محاكاة أيّ آلة موصوفة كبرنامج C. وبالمثل، فإنّ كتابة مقيّم لisp بلغة C تُنتج برنامج C قادرًا على تنفيذ أيّ برنامج لisp. والفكرة العميقة هنا هي أنّ أيّ مقيّم يُمكنه محاكاة أيّ مقيّم آخر. وبالتالي، فإنّ مفهوم «ماذا يُمكن حسابه مبدئيًا» (متجاهلين اعتبارات الوقت والذاكرة العمليّة المطلوبة) مستقلّ عن اللغة أو الحاسوب، بل يعبّر بدلًا من ذلك عن مفهوم أساسيّ يُسمّى *القابليّة للحساب*. وقد أُثبِثَ هذا أوّل مرّة بطريقة واضحة على يد آلان م. تورينغ (1912-1954)، الذي وضعت ورقتهResearch عام 1936 أسس علم الحاسوب النظريّ. وفي الورقة، قدّم تورينغ نموذجًا حسابيًّا بسيطًا — يُعرَف الآن بـ *آلة تورينغ* — واحتجّ بأنّ أيّ «عمليّة فعّالة» يُمكن صياغتها كبرنامج لمثل هذه الآلة. (وهذه الاحتجاجة تُعرَف بـ *أطروحة تشرتش-تورينغ*.) ثمّ نفّذ تورينغ آلة عامّة، أي آلة تورينغ تتصرف بصفتها مقيّمًا لبرامج آلات تورينغ. واستخدم هذا الإطار ليُظهر وجود مسائل مُصوَّغة صياغةً سليمة لا يُمكن حسابها بآلات تورينغ (انظر [التمرين 4.15](#Exercise-4_002e15))، وبالتالي — بالاستلزام — لا يُمكن صياغتها بوصفها «عمليّات فعّالة». وواصل تورينغ ليُقدّم إسهامات أساسيّة في علم الحاسوب العمليّ أيضًا. فعلى سبيل المثال، اخترع فكرة تنظيم البرامج باستخدام إجراءات فرعيّة عامّة الأغراض. انظر [Hodges 1983](https://sarabander.github.io/sicp/html/References.xhtml#Hodges-1983) من أجل سيرة تورينغ.
 
-[^20]: Some people find it counterintuitive that an evaluator, which is implemented by a relatively simple procedure, can emulate programs that are more complex than the evaluator itself. The existence of a universal evaluator machine is a deep and wonderful property of computation. *Recursion theory*, a branch of mathematical logic, is concerned with logical limits of computation. Douglas Hofstadter’s beautiful book Gödel, Escher, Bach explores some of these ideas ([Hofstadter 1979](https://sarabander.github.io/sicp/html/References.xhtml#Hofstadter-1979)).
+[^20]: يجد بعض الناس أنّ من غير البديهيّ أنّ مقيّمًا، يُنفَّذ بإجراء بسيط إلى حدٍّ ما، يُمكنه محاكاة برامج أكثر تعقيدًا من المقيّم ذاته. ووجود آلة مقيّم عامّة خاصّيّة عميقة ورائعة في الحساب. أمّا *نظريّة التعاود*، فرعٌ من المنطق الرياضيّ، فتتعلّق بالحدود المنطقيّة للحساب. ويستكشف كتاب دوغلاس هوفشتادتر الجميل *غودل وإيشر وباخ* بعض هذه الأفكار ([Hofstadter 1979](https://sarabander.github.io/sicp/html/References.xhtml#Hofstadter-1979)).
 
-[^21]: Warning: This `eval` primitive is not identical to the `eval` procedure we implemented in [4.1.1](#g_t4_002e1_002e1), because it uses *actual* Scheme environments rather than the sample environment structures we built in [4.1.3](#g_t4_002e1_002e3). These actual environments cannot be manipulated by the user as ordinary lists; they must be accessed via `eval` or other special operations. Similarly, the `apply` primitive we saw earlier is not identical to the metacircular `apply`, because it uses actual Scheme procedures rather than the procedure objects we constructed in [4.1.3](#g_t4_002e1_002e3) and [4.1.4](#g_t4_002e1_002e4).
+[^21]: تحذير: هذه الأوّليّة `eval` ليست هي إجراء `eval` الذي نفّذناه في [4.1.1](#g_t4_002e1_002e1)، لأنّها تستخدم بيئات Scheme *فعليّة* بدلًا من بُنى البيئة النموذجيّة التي بنيناها في [4.1.3](#g_t4_002e1_002e3). وهذه البيئات الفعليّة لا يُمكن التلاعب بها من المُستخدِم كقوائم اعتياديّة؛ بل لا بدّ من النفاذ إليها عبر `eval` أو عمليّات خاصّة أخرى. وبالمثل، فإنّ الأوّليّة `apply` التي رأيناها سابقًا ليست هي `apply` الحلقيّ الوسيط، لأنّها تستخدم إجراءات Scheme فعليّة بدلًا من كائنات الإجراءات التي بنيناها في [4.1.3](#g_t4_002e1_002e3) و[4.1.4](#g_t4_002e1_002e4).
 
-[^22]: The MIT implementation of Scheme includes `eval`, as well as a symbol `user-initial-environment` that is bound to the initial environment in which the user’s input expressions are evaluated.
+[^22]: يتضمّن تنفيذ MIT للغة Scheme `eval`، وكذلك رمزًا `user-initial-environment` مربوطًا بالبيئة الأوّليّة التي تُقيَّم فيها تعابير دخل المُستخدِم.
 
-[^23]: Although we stipulated that `halts?` is given a procedure object, notice that this reasoning still applies even if `halts?` can gain access to the procedure’s text and its environment. This is Turing’s celebrated *Halting Theorem*, which gave the first clear example of a *non-computable* problem, i.e., a well-posed task that cannot be carried out as a computational procedure.
+[^23]: وعلى الرغم من أنّنا اشترطنا أنّ `halts?` يُعطى كائن إجراء، لاحِظ أنّ هذا الاستدلال يسري حتى لو كان في وسع `halts?` أن ينفذ إلى نصّ الإجراء وبيئته. وهذا هو *مبرهنة التوقّف* الشهيرة لتورينغ، التي أعطت أوّل مثال واضح على مسألة *غير قابلة للحساب*، أي مهمّة مُصوَّغة صياغةً سليمة لا يُمكن أداؤها كإجراء حسابيّ.
 
-[^24]: Wanting programs to not depend on this evaluation mechanism is the reason for the “management is not responsible” remark in [Footnote 28](https://sarabander.github.io/sicp/html/1_002e1.xhtml#Footnote-28) of [Chapter 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1). By insisting that internal definitions come first and do not use each other while the definitions are being evaluated, the IEEE standard for Scheme leaves implementors some choice in the mechanism used to evaluate these definitions. The choice of one evaluation rule rather than another here may seem like a small issue, affecting only the interpretation of “badly formed” programs. However, we will see in [5.5.6](https://sarabander.github.io/sicp/html/5_002e5.xhtml#g_t5_002e5_002e6) that moving to a model of simultaneous scoping for internal definitions avoids some nasty difficulties that would otherwise arise in implementing a compiler.
+[^24]: إنّ رغبتنا في ألّا تعتمد البرامج على آليّة التقييم هذه هي سبب الملاحظة «الإدارة غير مسؤولة» الواردة في [الحاشية 28](https://sarabander.github.io/sicp/html/1_002e1.xhtml#Footnote-28) من [الفصل 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1). فبإصرارها على أن تأتي التعريفات الداخليّة أوّلًا ولا تستخدم بعضها بعضًا أثناء تقييم التعريفات، يترك معيار IEEE للغة Scheme بعض الخيار للمُنفّذين في الآليّة المستخدمة لتقييم هذه التعريفات. وقد يبدو اختيار قاعدة تقييم واحدة بدلًا من أخرى هنا مسألةً صغيرة، لا تؤثّر إلّا في تفسير البرامج «المصوغة صياغةً سيّئة». لكنّنا سنرى في [5.5.6](https://sarabander.github.io/sicp/html/5_002e5.xhtml#g_t5_002e5_002e6) أنّ الانتقال إلى نموذج نطاقٍ آنيّ للتعريفات الداخليّة يتجنّب بعض الصعوبات الشائكة التي كان من شأنها أن تنشأ وإلّا في تنفيذ مصرِّف.
 
-[^25]: The IEEE standard for Scheme allows for different implementation strategies by specifying that it is up to the programmer to obey this restriction, not up to the implementation to enforce it. Some Scheme implementations, including MIT Scheme, use the transformation shown above. Thus, some programs that don’t obey this restriction will in fact run in such implementations.
+[^25]: يسمح معيار IEEE للغة Scheme باستراتيجيّات تنفيذ مختلفة بتحديد أنّ الأمر متروك للمبرمج في الالتزام بهذا القيد، لا للمُنفّذ في فرضه. وبعض المنفّذات للغة Scheme، بما فيها MIT Scheme، تستخدم التحويل المُبيَّن أعلاه. بالتالي، فإنّ بعض البرامج التي لا تلتزم بهذا القيد ستعمل فعلًا في مثل هذه المنفّذات.
 
-[^26]: The MIT implementors of Scheme support Alyssa on the following grounds: Eva is in principle correct—the definitions should be regarded as simultaneous. But it seems difficult to implement a general, efficient mechanism that does what Eva requires. In the absence of such a mechanism, it is better to generate an error in the difficult cases of simultaneous definitions (Alyssa’s notion) than to produce an incorrect answer (as Ben would have it).
+[^26]: يُؤيّد منظّمو MIT للغة Scheme أليسا على الأسس التالية: إيفا محقّة من حيث المبدأ — إذ ينبغي اعتبار التعريفات آنيّة. لكن يبدو أنّ تنفيذ آليّة عامّة فعّالة تفعل ما تتطلّبه إيفا صعب. وفي غياب مثل هذه الآليّة، فمن الأفضل توليد خطأ في الحالات الصعبة للتعريفات الآنيّة (مفهوم أليسا) من إنتاج جواب غير صحيح (كما يريده بن).
 
-[^27]: This example illustrates a programming trick for formulating recursive procedures without using `define`. The most general trick of this sort is the $undefined$ *operator*, which can be used to give a “pure λ-calculus” implementation of recursion. (See [Stoy 1977](https://sarabander.github.io/sicp/html/References.xhtml#Stoy-1977) for details on the λ-calculus, and [Gabriel 1988](https://sarabander.github.io/sicp/html/References.xhtml#Gabriel-1988) for an exposition of the $undefined$ operator in Scheme.)
+[^27]: يُوضيح هذا المثال خدعة برمجيّة لصياغة إجراءات تعاوديّة دون استخدام `define`. وأعمّ خدعة من هذا القبيل هي $undefined$ *operator* (المُعامِل)، التي يُمكن استخدامها لإعطاء تنفيذ «حساب لامدا خالص» للتعاود. (انظر [Stoy 1977](https://sarabander.github.io/sicp/html/References.xhtml#Stoy-1977) للتفاصيل حول حساب لامدا، و [Gabriel 1988](https://sarabander.github.io/sicp/html/References.xhtml#Gabriel-1988) لعرض المُعامِل $undefined$ في Scheme.)
 
-[^28]: This technique is an integral part of the compilation process, which we shall discuss in [Chapter 5](https://sarabander.github.io/sicp/html/Chapter-5.xhtml#Chapter-5). Jonathan Rees wrote a Scheme interpreter like this in about 1982 for the T project ([Rees and Adams 1982](https://sarabander.github.io/sicp/html/References.xhtml#Rees-and-Adams-1982)). Marc [Feeley (1986)](https://sarabander.github.io/sicp/html/References.xhtml#Feeley-_00281986_0029) (see also [Feeley and Lapalme 1987](https://sarabander.github.io/sicp/html/References.xhtml#Feeley-and-Lapalme-1987)) independently invented this technique in his master’s thesis.
+[^28]: هذه التقنيّة جزء لا يتجزّأ من عمليّة التصريف، التي سنناقشها في [الفصل 5](https://sarabander.github.io/sicp/html/Chapter-5.xhtml#Chapter-5). وقد كتب جوناثان ريس مُفسّر Scheme على هذا النحو نحو عام 1982 لمشروع T ([Rees and Adams 1982](https://sarabander.github.io/sicp/html/References.xhtml#Rees-and-Adams-1982)). واخترع مارك [Feeley (1986)](https://sarabander.github.io/sicp/html/References.xhtml#Feeley-_00281986_0029) (انظر أيضًا [Feeley and Lapalme 1987](https://sarabander.github.io/sicp/html/References.xhtml#Feeley-and-Lapalme-1987)) هذه التقنيّة باستقلال في رسالة ماجستيره.
 
-[^29]: There is, however, an important part of the variable search that *can* be done as part of the syntactic analysis. As we will show in [5.5.6](https://sarabander.github.io/sicp/html/5_002e5.xhtml#g_t5_002e5_002e6), one can determine the position in the environment structure where the value of the variable will be found, thus obviating the need to scan the environment for the entry that matches the variable.
+[^29]: هناك، مع ذلك، جزء مهمّ من بحث المتغيّر يُمكن أداؤه كجزء من التحليل الصياغيّ. فكما سنُظهر في [5.5.6](https://sarabander.github.io/sicp/html/5_002e5.xhtml#g_t5_002e5_002e6)، يُمكن للمرء تحديد الموضع في بُنية البيئة الذي ستوجد فيه قيمة المتغيّر، مما يُغني ضرورة مسح البيئة للبحث عن المدخلة المطابقة للمتغيّر.
 
-[^30]: See [Exercise 4.23](#Exercise-4_002e23) for some insight into the processing of sequences.
+[^30]: انظر [التمرين 4.23](#Exercise-4_002e23) لبعض الإفهام عن معالجة التسلسلات.
 
-[^31]: Snarf: “To grab, especially a large document or file for the purpose of using it either with or without the owner’s permission.” Snarf down: “To snarf, sometimes with the connotation of absorbing, processing, or understanding.” (These definitions were snarfed from [Steele et al. 1983](https://sarabander.github.io/sicp/html/References.xhtml#Steele-et-al_002e-1983). See also [Raymond 1993](https://sarabander.github.io/sicp/html/References.xhtml#Raymond-1993).)
+[^31]: Snarf: «أن تَخْطِف، لا سيّما مستندًا أو ملفًا كبيرًا بغرض استخدامه مع إذن مالكه أو دونه.» Snarf down: «أن تَخْطِف، أحيانًا مع دلالة الامتصاص أو المعالجة أو الفهم.» (هذان التعريفان مَخطوفان من [Steele et al. 1983](https://sarabander.github.io/sicp/html/References.xhtml#Steele-et-al_002e-1983). انظر أيضًا [Raymond 1993](https://sarabander.github.io/sicp/html/References.xhtml#Raymond-1993).)
 
-[^32]: The difference between the “lazy” terminology and the “normal-order” terminology is somewhat fuzzy. Generally, “lazy” refers to the mechanisms of particular evaluators, while “normal-order” refers to the semantics of languages, independent of any particular evaluation strategy. But this is not a hard-and-fast distinction, and the two terminologies are often used interchangeably.
+[^32]: إنّ الفرق بين مصطلح «المتأخّر» ومصطلح «الترتيب الاعتياديّ» غامض إلى حدٍّ ما. فعلى وجه العموم، «المتأخّر» يشير إلى آليّات مقيّمين مُعيَّنين، في حين يشير «الترتيب الاعتياديّ» إلى دلالات اللغات، مستقلًّا عن أيّ استراتيجيّة تقييم مُعيَّنة. لكنّ هذا ليس تمييزًا قاطعًا، والمصطلحَيْن يُستخدمان بالتبادل كثيرًا.
 
-[^33]: The “strict” versus “non-strict” terminology means essentially the same thing as “applicative-order” versus “normal-order,” except that it refers to individual procedures and arguments rather than to the language as a whole. At a conference on programming languages you might hear someone say, “The normal-order language Hassle has certain strict primitives. Other procedures take their arguments by lazy evaluation.”
+[^33]: مصطلح «الصارم» مقابل مصطلح «غير الصارم» يعني الشيء عينه في الجوهر الذي يعنيه «الترتيب التطبيقيّ» مقابل «الترتيب الاعتياديّ»، إلّا أنّه يشير إلى الإجراءات والوسطاء فرادى لا إلى اللغة ككلّ. وفي مؤتمر عن لغات البرمجة، قد تسمع أحدهم يقول: «لغة الترتيب الاعتياديّ Hassle لها أوّليّات صارمة مُعيَّنة. أمّا الإجراءات الأخرى فتأخذ وسطاءها بالتقييم المتأخّر.»
 
-[^34]: The word *thunk* was invented by an informal working group that was discussing the implementation of call-by-name in Algol 60. They observed that most of the analysis of (“thinking about”) the expression could be done at compile time; thus, at run time, the expression would already have been “thunk” about ([Ingerman et al. 1960](https://sarabander.github.io/sicp/html/References.xhtml#Ingerman-et-al_002e-1960)).
+[^34]: كلمة *thunk* اختُرِعَت من قبل مجموعة عمل غير رسميّة كانت تناقش تنفيذ الاستدعاء بالاسم في Algol 60. فقد لاحظوا أنّ معظم التحليل («التفكير في») التعبير يُمكن أداؤه في وقت التصريف؛ وبالتالي، في وقت التشغيل، يكون التعبير قد خُطِّف فيه بالفعل ([Ingerman et al. 1960](https://sarabander.github.io/sicp/html/References.xhtml#Ingerman-et-al_002e-1960)).
 
-[^35]: This is analogous to the use of `force` on the delayed objects that were introduced in [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) to represent streams. The critical difference between what we are doing here and what we did in [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) is that we are building delaying and forcing into the evaluator, and thus making this uniform and automatic throughout the language.
+[^35]: هذا مُشابه لاستخدام `force` على الكائنات المؤجّلة التي طُرِحَت في [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) لتمثيل المجاري. أمّا الفرق الجوهريّ بين ما نفعله هنا وما فعلناه في [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) فهو أنّنا نُبني التأخير والإجبار في المقيّم، وبالتالي نجعل ذلك موحّدًا وآليًّا في اللغة بأكملها.
 
-[^36]: Lazy evaluation combined with memoization is sometimes referred to as *call-by-need* argument passing, in contrast to *call-by-name* argument passing. (Call-by-name, introduced in Algol 60, is similar to non-memoized lazy evaluation.) As language designers, we can build our evaluator to memoize, not to memoize, or leave this an option for programmers ([Exercise 4.31](#Exercise-4_002e31)). As you might expect from [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3), these choices raise issues that become both subtle and confusing in the presence of assignments. (See [Exercise 4.27](#Exercise-4_002e27) and [Exercise 4.29](#Exercise-4_002e29).) An excellent article by [Clinger (1982)](https://sarabander.github.io/sicp/html/References.xhtml#Clinger-_00281982_0029) attempts to clarify the multiple dimensions of confusion that arise here.
+[^36]: يُشار إلى التقييم المتأخّر المُرافق لحفظ النتائج أحيانًا بـ *تمرير الوسطاء بالحاجة*، مُقابِل *تمرير الوسطاء بالاسم*. (والاستدعاء بالاسم، المُدخَل في Algol 60، مُشابه للتقييم المتأخّر غير المُحفَظ.) وبوصفنا مُصمّمي لغات، يُمكننا بناء مقيّمنا ليُحفِظ، أو لا يُحفِظ، أو جعل هذا خيارًا للمبرمجين ([التمرين 4.31](#Exercise-4_002e31)). وكما قد تتوقّع من [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3)، فإنّ هذه الخيارات تُثير مسائل تصبح دقيقة ومُربِكة معًا في وجود الإحالات. (انظر [التمرين 4.27](#Exercise-4_002e27) و[التمرين 4.29](#Exercise-4_002e29).) وتحاول مقالة رائعة لـ [Clinger (1982)](https://sarabander.github.io/sicp/html/References.xhtml#Clinger-_00281982_0029) تَوضيح الأبعاد المتعدّدة للالتباس الذي ينشأ هنا.
 
-[^37]: Notice that we also erase the `env` from the thunk once the expression’s value has been computed. This makes no difference in the values returned by the interpreter. It does help save space, however, because removing the reference from the thunk to the `env` once it is no longer needed allows this structure to be *garbage-collected* and its space recycled, as we will discuss in [5.3](https://sarabander.github.io/sicp/html/5_002e3.xhtml#g_t5_002e3). Similarly, we could have allowed unneeded environments in the memoized delayed objects of [3.5.1](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e1) to be garbage-collected, by having `memo-proc` do something like `(set! proc '())` to discard the procedure `proc` (which includes the environment in which the `delay` was evaluated) after storing its value.
+[^37]: لاحِظ أنّنا نُمسي `env` من الـ thunk أيضًا بعد أن تُحسَب قيمة التعبير. وهذا لا يُحدث فرقًا في القيم التي يُعيدها المفسّر. لكنّه يُساعد فعلًا في توفير المساحة، لأنّ إزالة المرجع من الـ thunk إلى `env` بعد أن يعود غير ضروريّ يسمح لهذه البُنية بأن تُجمَّع *بوصفها قمامة* ويُعاد تدوير مساحتها، كما سنناقش في [5.3](https://sarabander.github.io/sicp/html/5_002e3.xhtml#g_t5_002e3). وبالمثل، كان في وسعنا أن نسمح للبيئات غير الضروريّة في الكائنات المؤجّلة المُحفَظة الواردة في [3.5.1](https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e1) بأن تُجمَّع قمامةً، بأن نجعل `memo-proc` يفعل شيئًا مثل `(set! proc '())` لِتَطريف الإجراء `proc` (الذي يتضمّن البيئة التي قُيّم فيها `delay`) بعد تخزين قيمته.
 
-[^38]: This exercise demonstrates that the interaction between lazy evaluation and side effects can be very confusing. This is just what you might expect from the discussion in [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3).
+[^38]: يُظهر هذا التمرين أنّ التفاعل بين التقييم المتأخّر والآثار الجانبيّة يُمكن أن يكون مُربِكًا للغاية. وهذا هو تمامًا ما قد تتوقّعه من المناقشة الواردة في [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3).
 
-[^39]: This is precisely the issue with the `unless` procedure, as in [Exercise 4.26](#Exercise-4_002e26).
+[^39]: هذه هي عين المسألة المتعلّقة بإجراء `unless`، كما في [التمرين 4.26](#Exercise-4_002e26).
 
-[^40]: This is the procedural representation described in [Exercise 2.4](https://sarabander.github.io/sicp/html/2_002e1.xhtml#Exercise-2_002e4). Essentially any procedural representation (e.g., a message-passing implementation) would do as well. Notice that we can install these definitions in the lazy evaluator simply by typing them at the driver loop. If we had originally included `cons`, `car`, and `cdr` as primitives in the global environment, they will be redefined. (Also see [Exercise 4.33](#Exercise-4_002e33) and [Exercise 4.34](#Exercise-4_002e34).)
+[^40]: هذا هو التمثيل الإيّجاديّ الموصوف في [التمرين 2.4](https://sarabander.github.io/sicp/html/2_002e1.xhtml#Exercise-2_002e4). وأيّ تمثيل إيّجاديّ في الجوهر (مثلًا، تنفيذٌ بتمرير الرسائل) يكفي كذلك. ولاحِظ أنّنا نستطيع تثبيت هذه التعريفات في المقيّم المتأخّر بمُجرّد طبعها في حلقة المُشغِّل. فلو كنّا قد أدرجنا `cons` و `car` و `cdr` أصلاً كعمليّات أوّليّة في البيئة العالميّة، فسيُعاد تعريفها. (انظر أيضًا [التمرين 4.33](#Exercise-4_002e33) و[التمرين 4.34](#Exercise-4_002e34).)
 
-[^41]: This permits us to create delayed versions of more general kinds of list structures, not just sequences. [Hughes 1990](https://sarabander.github.io/sicp/html/References.xhtml#Hughes-1990) discusses some applications of “lazy trees.”
+[^41]: هذا يسمح لنا بإنشاء إصدارات مؤجّلة من أنواع أعمّ من بُنى القوائم، لا التسلسلات وحدها. ويناقش [Hughes 1990](https://sarabander.github.io/sicp/html/References.xhtml#Hughes-1990) بعض تطبيقات «الأشجار المتأخّرة.»
 
-[^42]: We assume that we have previously defined a procedure `prime?` that tests whether numbers are prime. Even with `prime?` defined, the `prime-sum-pair` procedure may look suspiciously like the unhelpful “pseudo-Lisp” attempt to define the square-root function, which we described at the beginning of [1.1.7](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e7). In fact, a square-root procedure along those lines can actually be formulated as a nondeterministic program. By incorporating a search mechanism into the evaluator, we are eroding the distinction between purely declarative descriptions and imperative specifications of how to compute answers. We’ll go even farther in this direction in [4.4](https://sarabander.github.io/sicp/html/4_002e4.xhtml#g_t4_002e4).
+[^42]: نفترض أنّنا عرّفنا سابقًا إجراءً `prime?` يختبر whether تكون الأعداد أوّليّة. وحتّى مع تعريف `prime?`، قد يبدو إجراء `prime-sum-pair` مشبوه الشبه بمحاولة «الليسب الكاذب» غير المُفيدة لتعريف دالّة الجذر التربيعيّ، التي وصفناها في بداية [1.1.7](https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e7). وفي الواقع، يُمكن فعلًا صياغة إجراء جذر تربيعيّ على ذلك المنوال كبرنامجٍ غير حتميّ. فبإدخالنا آليّة بحث في المقيّم، فإنّنا نُضعف التمييز بين الأوصاف التصريحيّة المحضة والمواصفات الأمريّة لكيفيّة حساب الأجوبة. وسنمضي أبعد من ذلك في هذا الاتّجاه في [4.4](https://sarabander.github.io/sicp/html/4_002e4.xhtml#g_t4_002e4).
 
-[^43]: The idea of `amb` for nondeterministic programming was first described in 1961 by John McCarthy (see [McCarthy 1963](https://sarabander.github.io/sicp/html/References.xhtml#McCarthy-1963)).
+[^43]: وُصِفَت فكرة `amb` للبرمجة غير الحتميّة أوّل مرّة في عام 1961 على يد جون مكارثي (انظر [McCarthy 1963](https://sarabander.github.io/sicp/html/References.xhtml#McCarthy-1963)).
 
-[^44]: In actuality, the distinction between nondeterministically returning a single choice and returning all choices depends somewhat on our point of view. From the perspective of the code that uses the value, the nondeterministic choice returns a single value. From the perspective of the programmer designing the code, the nondeterministic choice potentially returns all possible values, and the computation branches so that each value is investigated separately.
+[^44]: في الحقيقة، يعتمد التمييز بين الإعادة غير الحتميّة لاختيار واحد والإعادة غير الحتميّة لجميع الاختيارات إلى حدٍّ ما على وجهة نظرنا. فمن منظور الشيفرة التي تستخدم القيمة، يُعيد الاختيار غير الحتميّ قيمةً واحدة. أمّا من منظور المبرمج الذي يصمّم الشيفرة، فإنّ الاختيار غير الحتميّ يُعيد جاهزًا جميع القيم الممكنة، وتتفرّع الحسبة بحيث يُفحَص كلّ قيمة على حدة.
 
-[^45]: One might object that this is a hopelessly inefficient mechanism. It might require millions of processors to solve some easily stated problem this way, and most of the time most of those processors would be idle. This objection should be taken in the context of history. Memory used to be considered just such an expensive commodity. In 1964 a megabyte of RAM cost about $400,000. Now every personal computer has many megabytes of RAM, and most of the time most of that RAM is unused. It is hard to underestimate the cost of mass-produced electronics.
+[^45]: قد يُعترض أحدهم بأنّ هذه آليّة يائسة عدم كفاءة. فقد تستلزم ملايين المعالجات لحلّ بعض المسائل سيّئة الصياغة بهذه الطريقة، وأكثر الوقت تكون معظم تلك المعالجات عاطلة. وينبغي أخذ هذا الاعتراض في سياق التاريخ. فقد كانت الذاكرة تُعتبر يومًا سلعةً باهظة من هذا القبيل. ففي عام 1964، كانت تكلفة ميغابايت من الذاكرة العشوائيّة نحو $400,000. والآن كل حاسوب شخصيّ لديه ميغابايتات عديدة من الذاكرة العشوائيّة، وأكثر الوقت معظم تلك الذاكرة غير مستخدمة. ومن الصعب الإفراط في تقدير انخفاض تكلفة الإلكترونيّات المُنتَجة بكمّيّات كبيرة.
 
-[^46]: Automagically: “Automatically, but in a way which, for some reason (typically because it is too complicated, or too ugly, or perhaps even too trivial), the speaker doesn’t feel like explaining.” ([Steele et al. 1983](https://sarabander.github.io/sicp/html/References.xhtml#Steele-et-al_002e-1983), [Raymond 1993](https://sarabander.github.io/sicp/html/References.xhtml#Raymond-1993))
+[^46]: آليًّا (Automagically): «آليًّا، ولكن بطريقةٍ، لسببٍ ما (عادةً لأنّها بالغة التعقيد، أو بالغة القبح، أو ربّما حتّى بالغة التبسيط)، لا يشعر المتحدّث بالرغبة في شرحها.» ([Steele et al. 1983](https://sarabander.github.io/sicp/html/References.xhtml#Steele-et-al_002e-1983)، [Raymond 1993](https://sarabander.github.io/sicp/html/References.xhtml#Raymond-1993))
 
-[^47]: The integration of automatic search strategies into programming languages has had a long and checkered history. The first suggestions that nondeterministic algorithms might be elegantly encoded in a programming language with search and automatic backtracking came from Robert [Floyd (1967)](https://sarabander.github.io/sicp/html/References.xhtml#Floyd-_00281967_0029). Carl [Hewitt (1969)](https://sarabander.github.io/sicp/html/References.xhtml#Hewitt-_00281969_0029) invented a programming language called Planner that explicitly supported automatic chronological backtracking, providing for a built-in depth-first search strategy. [Sussman et al. (1971)](https://sarabander.github.io/sicp/html/References.xhtml#Sussman-et-al_002e-_00281971_0029) implemented a subset of this language, called MicroPlanner, which was used to support work in problem solving and robot planning. Similar ideas, arising from logic and theorem proving, led to the genesis in Edinburgh and Marseille of the elegant language Prolog (which we will discuss in [4.4](https://sarabander.github.io/sicp/html/4_002e4.xhtml#g_t4_002e4)). After sufficient frustration with automatic search, [McDermott and Sussman (1972)](https://sarabander.github.io/sicp/html/References.xhtml#McDermott-and-Sussman-_00281972_0029) developed a language called Conniver, which included mechanisms for placing the search strategy under programmer control. This proved unwieldy, however, and [Sussman and Stallman 1975](https://sarabander.github.io/sicp/html/References.xhtml#Sussman-and-Stallman-1975) found a more tractable approach while investigating methods of symbolic analysis for electrical circuits. They developed a non-chronological backtracking scheme that was based on tracing out the logical dependencies connecting facts, a technique that has come to be known as *dependency-directed backtracking*. Although their method was complex, it produced reasonably efficient programs because it did little redundant search. [Doyle (1979)](https://sarabander.github.io/sicp/html/References.xhtml#Doyle-_00281979_0029) and [McAllester (1978; 1980)](https://sarabander.github.io/sicp/html/References.xhtml#McAllester-_00281978_003b-1980_0029) generalized and clarified the methods of Stallman and Sussman, developing a new paradigm for formulating search that is now called *truth maintenance*. Modern problem-solving systems all use some form of truth-maintenance system as a substrate. See [Forbus and deKleer 1993](https://sarabander.github.io/sicp/html/References.xhtml#Forbus-and-deKleer-1993) for a discussion of elegant ways to build truth-maintenance systems and applications using truth maintenance. [Zabih et al. 1987](https://sarabander.github.io/sicp/html/References.xhtml#Zabih-et-al_002e-1987) describes a nondeterministic extension to Scheme that is based on `amb`; it is similar to the interpreter described in this section, but more sophisticated, because it uses dependency-directed backtracking rather than chronological backtracking. [Winston 1992](https://sarabander.github.io/sicp/html/References.xhtml#Winston-1992) gives an introduction to both kinds of backtracking.
+[^47]: لقد كان دمج استراتيجيّات البحث الآليّ في لغات البرمجة تاريخًا طويلًا متقلّب الأحداث. وجاءت الاقتراحات الأولى بأنّ الخوارزميّات غير الحتميّة قد تُرمَّم بأناقة في لغة برمجة تتضمّن بحثًا وتتبّعًا رجعيًّا آليًّا من روبرت [Floyd (1967)](https://sarabander.github.io/sicp/html/References.xhtml#Floyd-_00281967_0029). واخترع كارل [Hewitt (1969)](https://sarabander.github.io/sicp/html/References.xhtml#Hewitt-_00281969_0029) لغة برمجة تُسمّى Planner دَعَمَت صراحةً التتبّع الرجعيّ الزمنيّ الآليّ، مُزوِّدةً استراتيجيّة بحث بالأولويّة إلى العمق مدمجة. ونفّذ [Sussman et al. (1971)](https://sarabander.github.io/sicp/html/References.xhtml#Sussman-et-al_002e-_00281971_0029) مجموعةً جزئيّة من هذه اللغة، تُسمّى MicroPlanner، استُخدِمَت لدعم الأعمال في حلّ المشكلات وتخطيط الروبوتات. وأدّت أفكار مشابهة، ناشئة عن المنطق وإثبات النظريّات، إلى نشأة لغة Prolog الأنيقة في إدنبرة ومرسيليا (والتي سنناقشها في [4.4](https://sarabander.github.io/sicp/html/4_002e4.xhtml#g_t4_002e4)). وبعد إحباط كافٍ من البحث الآليّ، طوّر [McDermott and Sussman (1972)](https://sarabander.github.io/sicp/html/References.xhtml#McDermott-and-Sussman-_00281972_0029) لغةً تُسمّى Conniver، تضمّنت آليّات لوضع استراتيجيّة البحث تحت تحكّم المبرمج. غير أنّ هذا أثبت عدم عمليّته، ومع ذلك، وجد [Sussman and Stallman 1975](https://sarabander.github.io/sicp/html/References.xhtml#Sussman-and-Stallman-1975) أسلوبًا أكثر قابلية للتطبيق أثناء فحص طرائق التحليل الرمزيّ للدوائر الكهربائيّة. وقد طوّرا مخطّط تتبّع رجعيّ غير زمنيّ يقوم على تعقّب التبعيّات المنطقيّة التي تربط الحقائق، وهي تقنيّة عُرفت فيما بعد بـ *dependency-directed backtracking* (التتبّع الرجعيّ الموجَّه بالتبعيّات). وعلى الرغم من تعقيد طريقتهما، فقد أنتجت برامج فعّالة إلى حدّ معقول لأنّها أجرت بحثًا زائدًا قليلًا. وعمّم [Doyle (1979)](https://sarabander.github.io/sicp/html/References.xhtml#Doyle-_00281979_0029) و[McAllester (1978; 1980)](https://sarabander.github.io/sicp/html/References.xhtml#McAllester-_00281978_003b-1980_0029) طرائق ستالمان وسوسمان ووضّحاها، مطوّرين نموذجًا جديدًا لصياغة البحث يُسمّى الآن *truth maintenance* (صيانة الحقيقة). وجميع منظومات حلّ المشكلات الحديثة تستخدم شكلًا ما من منظومات صيانة الحقيقة كطبقة أساسيّة. انظر [Forbus and deKleer 1993](https://sarabander.github.io/sicp/html/References.xhtml#Forbus-and-deKleer-1993) لمناقشة طرق أنيقة لبناء منظومات صيانة الحقيقة والتطبيقات التي تستخدم صيانة الحقيقة. ويصف [Zabih et al. 1987](https://sarabander.github.io/sicp/html/References.xhtml#Zabih-et-al_002e-1987) امتدادًا غير حتميّ لـ Scheme قائمًا على `amb`؛ وهو مشابه للمفسّر الموصوف في هذا القسم، لكنه أكثر تطورًا، لأنّه يستخدم التتبّع الرجعيّ الموجَّه بالتبعيّات بدلًا من التتبّع الرجعيّ الزمنيّ. ويُعطي [Winston 1992](https://sarabander.github.io/sicp/html/References.xhtml#Winston-1992) مقدّمة إلى نوعَي التتبّع الرجعيّ.
 
-[^48]: Our program uses the following procedure to determine if the elements of a list are distinct: ```scheme (define (distinct? items) (cond ((null? items) true) ((null? (cdr items)) true) ((member (car items) (cdr items)) false) (else (distinct? (cdr items))))) ```
+[^48]: يستخدم برنامجنا الإجراء التاليّ لتحديد ما إذا كانت عناصر قائمة متمايزة: ```scheme (define (distinct? items) (cond ((null? items) true) ((null? (cdr items)) true) ((member (car items) (cdr items)) false) (else (distinct? (cdr items))))) ```
 
-[^49]: This is taken from a booklet called “Problematical Recreations,” published in the 1960s by Litton Industries, where it is attributed to the Kansas State Engineer.
+[^49]: أُخِذَت هذه المسألة من كتيّبٍ يُسمّى «مسائل ترفيهيّة مثيرة للمشكلات»، نُشر في الستينيّات من القرن الماضي على يد شركة Litton Industries، وتُنسب فيه إلى مهندس ولاية كانساس.
 
-[^50]: Here we use the convention that the first element of each list designates the part of speech for the rest of the words in the list.
+[^50]: نعتمد هنا العُرف الذي يكون فيه أوّل عنصر من كل قائمة هو ما يُعيّن القسم اللغويّ (جزء الكلام) لبقية الكلمات في القائمة.
 
-[^51]: Notice that `parse-word` uses `set!` to modify the unparsed input list. For this to work, our `amb` evaluator must undo the effects of `set!` operations when it backtracks.
+[^51]: لاحِظ أنّ `parse-word` يستخدم `set!` لتعديل قائمة الدخل غير المُحلَّلة. ولكي يعمل هذا، يجب على مقيّم `amb` أن يُلغي آثار عمليّات `set!` عندما يقوم بالتتبّع الرجعيّ.
 
-[^52]: Observe that this definition is recursive—a verb may be followed by any number of prepositional phrases.
+[^52]: لاحِظ أنّ هذا التعريف تعاوديّ — فقد يتبع الفعل أيّ عدد من العبارات الجارّة.
 
-[^53]: This kind of grammar can become arbitrarily complex, but it is only a toy as far as real language understanding is concerned. Real natural-language understanding by computer requires an elaborate mixture of syntactic analysis and interpretation of meaning. On the other hand, even toy parsers can be useful in supporting flexible command languages for programs such as information-retrieval systems. [Winston 1992](https://sarabander.github.io/sicp/html/References.xhtml#Winston-1992) discusses computational approaches to real language understanding and also the applications of simple grammars to command languages.
+[^53]: يُمكن أن يصبح هذا النوع من القواعد بالغ التعقيد اعتباطيًّا، لكنّه ليس إلّا لُعبةً من منظور فهم اللغة الطبيعيّ الحقيقيّ. فالفهم الحقيقيّ للغة الطبيعيّة بالحاسوب يستلزم مزيجًا مُحكمًا من التحليل النحويّ وتفسير المعنى. من ناحية أخرى، حتّى المُحلِّلات اللعبيّة يُمكن أن تكون مفيدة في دعم لغات الأوامر المرنة للبرامج مثل منظومات استرجاع المعلومات. ويناقش [Winston 1992](https://sarabander.github.io/sicp/html/References.xhtml#Winston-1992) المقاربات الحسابيّة لفهم اللغة الحقيقيّ وكذلك تطبيقات القواعد البسيطة في لغات الأوامر.
 
-[^54]: Although Alyssa’s idea works just fine (and is surprisingly simple), the sentences that it generates are a bit boring—they don’t sample the possible sentences of this language in a very interesting way. In fact, the grammar is highly recursive in many places, and Alyssa’s technique “falls into” one of these recursions and gets stuck. See [Exercise 4.50](#Exercise-4_002e50) for a way to deal with this.
+[^54]: على الرغم من أنّ فكرة أليسا تعمل عملًا حسنًا (وهي بسيطة على نحوٍ يُثير الدهشة)، فإنّ الجُمل التي تُولّدها مملّة بعض الشيء — فهي لا تأخذ عيّنات من الجُمل الممكنة لهذه اللغة بطريقة مثيرة للاهتمام. وفي الواقع، فإنّ القاعدة تعاوديّة إلى حدٍّ كبير في مواضع كثيرة، وتقنيّة أليسا «تقع في» إحدى هذه التعاوديّات وتعلق. انظر [التمرين 4.50](#Exercise-4_002e50) لطريقة في التصرّف مع هذا.
 
-[^55]: We chose to implement the lazy evaluator in [4.2](https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2) as a modification of the ordinary metacircular evaluator of [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1). In contrast, we will base the `amb` evaluator on the analyzing evaluator of [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7), because the execution procedures in that evaluator provide a convenient framework for implementing backtracking.
+[^55]: اخترنا تنفيذ المقيّم المتأخّر في [4.2](https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2) بوصفه تعديلًا على المقيّم الحلقيّ الوسيط الاعتياديّ الوارد في [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1). وعلى النقيض، سنُأسيس مقيّم `amb` على المقيّم المُحلِّل الوارد في [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7)، لأنّ إجراءات التنفيذ في ذلك المقيّم تُوفّر إطارًا مريحًا لتنفيذ التتبّع الرجعيّ.
 
-[^56]: We assume that the evaluator supports `let` (see [Exercise 4.22](https://sarabander.github.io/sicp/html/4_002e1.xhtml#Exercise-4_002e22)), which we have used in our nondeterministic programs.
+[^56]: نفترض أنّ المقيّم يدعم `let` (انظر [التمرين 4.22](https://sarabander.github.io/sicp/html/4_002e1.xhtml#Exercise-4_002e22))، التي استخدمناها في برامجنا غير الحتميّة.
 
-[^57]: We didn’t worry about undoing definitions, since we can assume that internal definitions are scanned out ([4.1.6](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e6)).
+[^57]: لم نقلق بشأن إلغاء التعريفات، إذ يُمكننا الافتراض بأنّ التعريفات الداخليّة مُستخرَجة بالمسح ([4.1.6](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e6)).
 
-[^58]: Logic programming has grown out of a long history of research in automatic theorem proving. Early theorem-proving programs could accomplish very little, because they exhaustively searched the space of possible proofs. The major breakthrough that made such a search plausible was the discovery in the early 1960s of the *unification algorithm* and the *resolution principle* ([Robinson 1965](https://sarabander.github.io/sicp/html/References.xhtml#Robinson-1965)). Resolution was used, for example, by [Green and Raphael (1968)](https://sarabander.github.io/sicp/html/References.xhtml#Green-and-Raphael-_00281968_0029) (see also [Green 1969](https://sarabander.github.io/sicp/html/References.xhtml#Green-1969)) as the basis for a deductive question-answering system. During most of this period, researchers concentrated on algorithms that are guaranteed to find a proof if one exists. Such algorithms were difficult to control and to direct toward a proof. [Hewitt (1969)](https://sarabander.github.io/sicp/html/References.xhtml#Hewitt-_00281969_0029) recognized the possibility of merging the control structure of a programming language with the operations of a logic-manipulation system, leading to the work in automatic search mentioned in [4.3.1](https://sarabander.github.io/sicp/html/4_002e3.xhtml#g_t4_002e3_002e1) ([Footnote 250](https://sarabander.github.io/sicp/html/4_002e3.xhtml#Footnote-250)). At the same time that this was being done, Colmerauer, in Marseille, was developing rule-based systems for manipulating natural language (see [Colmerauer et al. 1973](https://sarabander.github.io/sicp/html/References.xhtml#Colmerauer-et-al_002e-1973)). He invented a programming language called Prolog for representing those rules. [Kowalski (1973; 1979)](https://sarabander.github.io/sicp/html/References.xhtml#Kowalski-_00281973_003b-1979_0029), in Edinburgh, recognized that execution of a Prolog program could be interpreted as proving theorems (using a proof technique called linear Horn-clause resolution). The merging of the last two strands led to the logic-programming movement. Thus, in assigning credit for the development of logic programming, the French can point to Prolog’s genesis at the University of Marseille, while the British can highlight the work at the University of Edinburgh. According to people at MIT, logic programming was developed by these groups in an attempt to figure out what Hewitt was talking about in his brilliant but impenetrable Ph.D. thesis. For a history of logic programming, see [Robinson 1983](https://sarabander.github.io/sicp/html/References.xhtml#Robinson-1983).
+[^58]: لقد نما البرمجة المنطقيّة انطلاقًا من تاريخ طويل من البحث في الإثبات الآليّ للنظريّات. فبرامج إثبات النظريّات المبكّرة لم تكن تقدر على تحقيق شيء يُذكر تقريبًا، لأنّها كانت تبحث بحثًا شاملًا في فضاء البراهين الممكنة. وكان الاختراق الكبير الذي جعل مثل هذا البحث احتمالًا هو اكتشاف *خوارزميّة التوحيد* و*مبدأ الاستنتاج* في أوائل الستينيّات ([Robinson 1965](https://sarabander.github.io/sicp/html/References.xhtml#Robinson-1965)). وقد استُخدِم الاستنتاج، على سبيل المثال، على يد [Green and Raphael (1968)](https://sarabander.github.io/sicp/html/References.xhtml#Green-and-Raphael-_00281968_0029) (انظر أيضًا [Green 1969](https://sarabander.github.io/sicp/html/References.xhtml#Green-1969)) كأساس لنظام استنتاجيّ للإجابة عن الأسئلة. وخلال معظم هذه الفترة، ركّز الباحثون على خوارزميّات يَضمَنون إيجاد برهان إن وُجد. وكان من الصعب التحكّم في مثل هذه الخوارزميّات وتوجيهها نحو برهان. وأدرك [Hewitt (1969)](https://sarabander.github.io/sicp/html/References.xhtml#Hewitt-_00281969_0029) إمكانيّة دمج بُنية التحكّم في لغة برمجة مع عمليّات نظامٍ للتلاعب المنطقيّ، وهو ما أدّى إلى العمل في البحث الآليّ المذكور في [4.3.1](https://sarabander.github.io/sicp/html/4_002e3.xhtml#g_t4_002e3_002e1) ([الحاشية 250](https://sarabander.github.io/sicp/html/4_002e3.xhtml#Footnote-250)). وفي الوقت نفسه الذي كان يُنفَّذ فيه ذلك، كان كولميرو، في مرسيليا، يُطوّر منظومات قائمة على القواعد للتلاعب باللغة الطبيعيّة (انظر [Colmerauer et al. 1973](https://sarabander.github.io/sicp/html/References.xhtml#Colmerauer-et-al_002e-1973)). وقد اخترع لغة برمجة تُسمّى Prolog لتمثيل تلك القواعد. وأدرك [Kowalski (1973; 1979)](https://sarabander.github.io/sicp/html/References.xhtml#Kowalski-_00281973_003b-1979_0029)، في إدنبرة، أنّ تنفيذ برنامج Prolog يُمكن تفسيره بأنّه إثبات للنظريّات (باستخدام تقنيّة إثبات تُسمّى الاستنتاج بجُمل هورن الخطيّة). وأدّى دمج الخيطين الأخيرين إلى حركة البرمجة المنطقيّة. وبالتالي، في إسناد الفضل في تطوير البرمجة المنطقيّة، يُمكن للفرنسيّين الإشارة إلى نشأة Prolog في جامعة مرسيليا، في حين يُمكن للبريطانيّين تسليط الضوء على العمل في جامعة إدنبرة. ووفقًا لأهل MIT، فقد طُوِّرَت البرمجة المنطقيّة على يد هذه المجموعات في محاولة لاستيعاب ما كان هيويت يتحدّث عنه في أطروحة دكتوراه بليغة لكنها غامضة. وللتاريخ البرمجة المنطقيّة، انظر [Robinson 1983](https://sarabander.github.io/sicp/html/References.xhtml#Robinson-1983).
 
-[^59]: To see the correspondence between the rules and the procedure, let `x` in the procedure (where `x` is nonempty) correspond to `(cons u v)` in the rule. Then `z` in the rule corresponds to the `append` of `(cdr x)` and `y`.
+[^59]: لرؤية التقابل بين القواعد والإجراء، دع `x` في الإجراء (حيث يكون `x` غير فارغ) يُقابِل `(cons u v)` في القاعدة. ثمّ يكون `z` في القاعدة هو `append` كُلًّا من `(cdr x)` و `y`.
 
-[^60]: This certainly does not relieve the user of the entire problem of how to compute the answer. There are many different mathematically equivalent sets of rules for formulating the `append` relation, only some of which can be turned into effective devices for computing in any direction. In addition, sometimes “what is” information gives no clue “how to” compute an answer. For example, consider the problem of computing the $undefined$ such that $undefined$ .
+[^60]: هذا لا يُخفّف بالتأكيد عن المُستخدِم مشكلة كيفيّة حساب الجواب بأكملها. فهناك العديد من مجموعات القواعد المتكافئة رياضيًّا المختلفة لصياغة علاقة `append`، لا يُمكن تحويل بعضها فقط إلى أجهزة فعّالة للحساب في أيّ اتّجاه. وبالإضافة إلى ذلك، فإنّ معلومات «ما هو» لا تُعطي أحيانًا أيّ دلالة «كيف» يُحسَب جواب. فعلى سبيل المثال، تأمّل مشكلة حساب $undefined$ بحيث $undefined$ .
 
-[^61]: Interest in logic programming peaked during the early 80s when the Japanese government began an ambitious project aimed at building superfast computers optimized to run logic programming languages. The speed of such computers was to be measured in LIPS (Logical Inferences Per Second) rather than the usual FLOPS (FLoating-point Operations Per Second). Although the project succeeded in developing hardware and software as originally planned, the international computer industry moved in a different direction. See [Feigenbaum and Shrobe 1993](https://sarabander.github.io/sicp/html/References.xhtml#Feigenbaum-and-Shrobe-1993) for an overview evaluation of the Japanese project. The logic programming community has also moved on to consider relational programming based on techniques other than simple pattern matching, such as the ability to deal with numerical constraints such as the ones illustrated in the constraint-propagation system of [3.3.5](https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e5).
+[^61]: بلغ الاهتمام بالبرمجة المنطقيّة ذروته في أوائل الثمانينيّات عندما بدأت الحكومة اليابانيّة مشروعًا طموحًا يهدف إلى بناء حواسيب فائقة السرعة مُحسَّنة لتشغيل لغات البرمجة المنطقيّة. وكانت سرعة هذه الحواسيب ستُقاس بـ LIPS (الاستنتاجات المنطقيّة في الثانية) بدلًا من FLOPS (عمليّات الفاصلة العائمة في الثانية) المعتادة. وعلى الرغم من نجاح المشروع في تطوير عتادٍ وبرمجيّات كما كان مُخطَّطًا له أصلاً، فإنّ صناعة الحاسوب الدوليّة سلكت اتجاهًا مختلفًا. انظر [Feigenbaum and Shrobe 1993](https://sarabander.github.io/sicp/html/References.xhtml#Feigenbaum-and-Shrobe-1993) من أجل تقييم عامّ للمشروع اليابانيّ. وقد انتقل مُجتمَع البرمجة المنطقيّة أيضًا إلى النظر في البرمجة العلائقيّة القائمة على تقنيّات غير مطابقة الأنماط البسيطة، مثل القدرة على التصرّف مع القيود العدديّة مثل تلك المُوضيَّحة في منظومة انتشار القيود الواردة في [3.3.5](https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e5).
 
-[^62]: This uses the dotted-tail notation introduced in [Exercise 2.20](https://sarabander.github.io/sicp/html/2_002e2.xhtml#Exercise-2_002e20).
+[^62]: هذا يستخدم صياغة الذيل المنقّط التي طُرِحَت في [التمرين 2.20](https://sarabander.github.io/sicp/html/2_002e2.xhtml#Exercise-2_002e20).
 
-[^63]: Actually, this description of `not` is valid only for simple cases. The real behavior of `not` is more complex. We will examine `not`’s peculiarities in [4.4.2](#g_t4_002e4_002e2) and [4.4.3](#g_t4_002e4_002e3).
+[^63]: في الواقع، هذا الوصف لـ `not` صالح للحالات البسيطة وحدها. أمّا السلوك الحقيقيّ لـ `not` فأكثر تعقيدًا. وسنفحص خصائص `not` المميّزة في [4.4.2](#g_t4_002e4_002e2) و[4.4.3](#g_t4_002e4_002e3).
 
-[^64]: `Lisp-value` should be used only to perform an operation not provided in the query language. In particular, it should not be used to test equality (since that is what the matching in the query language is designed to do) or inequality (since that can be done with the `same` rule shown below).
+[^64]: يجب استخدام `lisp-value` فقط لتنفيذ عمليّة غير مُوفَّرة في لغة الاستعلام. وعلى وجه الخصوص، لا يجب استخدامه لاختبار المساواة (لأنّ ذلك هو ما صُمِّمَت المطابقة في لغة الاستعلام لفعله) أو عدم المساواة (لأنّ ذلك يُمكن فعله بقاعدة `same` المُبيَّنة أدناه).
 
-[^65]: Notice that we do not need `same` in order to make two things be the same: We just use the same pattern variable for each—in effect, we have one thing instead of two things in the first place. For example, see `?town` in the `lives-near` rule and `?middle-manager` in the `wheel` rule below. `Same` is useful when we want to force two things to be different, such as `?person-1` and `?person-2` in the `lives-near` rule. Although using the same pattern variable in two parts of a query forces the same value to appear in both places, using different pattern variables does not force different values to appear. (The values assigned to different pattern variables may be the same or different.)
+[^65]: لاحِظ أنّنا لا نحتاج إلى `same` لكي نجعل شيئَيْن متساويين: فنحن نستخدم مُتغيّر النمط نفسه لكلٍّ منهما — في الواقع، لدينا شيء واحد بدلًا من شيئين في المكان الأوّل. فعلى سبيل المثال، انظر `?town` في قاعدة `lives-near` و `?middle-manager` في قاعدة `wheel` أدناه. أمّا `same` فهي مفيدة عندما نريد إرغام شيئين على الاختلاف، مثل `?person-1` و `?person-2` في قاعدة `lives-near`. فمع أنّ استخدام مُتغيّر النمط نفسه في جزأين من استعلام يُرغم القيمة عينها على الظهور في كلا الموضعين، فإنّ استخدام مُتغيّرات نمط مختلفة لا يُرغم قيمًا مختلفة على الظهور. (وقد تكون القيم المُسنَدة إلى مُتغيّرات نمط مختلفة هي نفسها أو مختلفة.)
 
-[^66]: We will also allow rules without bodies, as in `same`, and we will interpret such a rule to mean that the rule conclusion is satisfied by any values of the variables.
+[^66]: سنسمح أيضًا بقواعد بلا أجساد، كما في `same`، وسنفسّر مثل هذه القاعدة بأنّها تعني أنّ استنتاج القاعدة تُرضيه أيّ قيم للمتغيّرات.
 
-[^67]: Because matching is generally very expensive, we would like to avoid applying the full matcher to every element of the data base. This is usually arranged by breaking up the process into a fast, coarse match and the final match. The coarse match filters the data base to produce a small set of candidates for the final match. With care, we can arrange our data base so that some of the work of coarse matching can be done when the data base is constructed rather then when we want to select the candidates. This is called *indexing* the data base. There is a vast technology built around data-base-indexing schemes. Our implementation, described in [4.4.4](#g_t4_002e4_002e4), contains a simple-minded form of such an optimization.
+[^67]: لأنّ المطابقة مكلفة عمومًا إلى حدٍّ كبير، فنحن نرغب في تجنّب تطبيق المُطابِق الكامل على كل عنصر من قاعدة البيانات. ويُرتَّب هذا عادةً بتقسيم العمليّة إلى مطابقة سريعة خاشنة ومطابقة نهائيّة. وتُرشِّح المطابقة الخاشنة قاعدة البيانات لإنتاج مجموعة صغيرة من المرشّحين للمطابقة النهائيّة. وبعناية، يُمكننا ترتيب قاعدة بياناتنا بحيث يُمكن إنجاز بعض عمل المطابقة الخاشنة عند بناء قاعدة البيانات بدلًا من عند رغبتنا في اختيار المرشّحين. ويُسمّى هذا *الفهرسة* قاعدة بيانات. وهناك تقنيّة واسعة مبنيّة حول مخطّطات فهرسة قواعد البيانات. وهويتنا، الموصوفة في [4.4.4](#g_t4_002e4_002e4)، تحتوي على صورة ساذجة من مثل هذا التحسين.
 
-[^68]: But this kind of exponential explosion is not common in `and` queries because the added conditions tend to reduce rather than expand the number of frames produced.
+[^68]: ولكنّ هذا النوع من الانفجار الأُسّيّ غير شائع في استعلامات `and` لأنّ الشروط المُضافة تميل إلى تقليل عدد الإطارات المُنتَجة لا إلى توسيعه.
 
-[^69]: There is a large literature on data-base-management systems that is concerned with how to handle complex queries efficiently.
+[^69]: هناك أدبيّات واسعة على منظومات إدارة قواعد البيانات تتعلّق بكيفيّة التصرّف الفعّال مع الاستعلامات المعقّدة.
 
-[^70]: There is a subtle difference between this filter implementation of `not` and the usual meaning of `not` in mathematical logic. See [4.4.3](#g_t4_002e4_002e3).
+[^70]: هناك فرق دقيق بين هذا التنفيذ المُرشِّح لـ `not` وبين المعنى المعتاد لـ `not` في المنطق الرياضيّ. انظر [4.4.3](#g_t4_002e4_002e3).
 
-[^71]: In one-sided pattern matching, all the equations that contain pattern variables are explicit and already solved for the unknown (the pattern variable).
+[^71]: في مطابقة الأنماط أحاديّة الجانب، تكون جميع المعادلات التي تحتوي مُتغيّرات نمط صريحة ومحلولّة سابقًا بالنسبة للمجهول (مُتغيّر النمط).
 
-[^72]: Another way to think of unification is that it generates the most general pattern that is a specialization of the two input patterns. That is, the unification of `(?x a)` and `((b ?y) ?z)` is `((b ?y) a)`, and the unification of `(?x a ?y)` and `(?y ?z a)`, discussed above, is `(a a a)`. For our implementation, it is more convenient to think of the result of unification as a frame rather than a pattern.
+[^72]: هناك طريقة أخرى للتفكير في التوحيد، وهي أنّه يُولّد النمط الأكثر عموميّة الذي يُخصِّص نمطَي الدخل. أي أنّه توحيد `(?x a)` و `((b ?y) ?z)` هو `((b ?y) a)`، وتوحيد `(?x a ?y)` و `(?y ?z a)`، المناقَش أعلاه، هو `(a a a)`. وفي تنفيذنا، من الأنسب التفكير في نتيجة التوحيد بوصفها إطارًا لا نمطًا.
 
-[^73]: Since unification is a generalization of matching, we could simplify the system by using the unifier to produce both streams. Treating the easy case with the simple matcher, however, illustrates how matching (as opposed to full-blown unification) can be useful in its own right.
+[^73]: بما أنّ التوحيد تعميم للمطابقة، فقد نُبسّط المنظومة باستخدام المُوحِّد لإنتاج المجريَيْن. غير أنّ معالجة الحالة السهلة بالمُطابِق البسيط تُوضيح كيف يُمكن أن تكون المطابقة (بخلاف التوحيد الكامل) نافعة بذاتها.
 
-[^74]: The reason we use streams (rather than lists) of frames is that the recursive application of rules can generate infinite numbers of values that satisfy a query. The delayed evaluation embodied in streams is crucial here: The system will print responses one by one as they are generated, regardless of whether there are a finite or infinite number of responses.
+[^74]: السبب في استخدامنا مجاري (لا قوائم) من الإطارات هو أنّ التطبيق التعاوديّ للقواعد يُمكن أن يُولّد أعدادًا لا نهائيّة من القيم التي تُرضي استعلامًا. والتقييم المؤجَّل المتجسّد في المجاري حاسم هنا: إذ سيطبع النظام الاستجابات واحدةً تلو الأخرى أثناء توليدها، سواء كان عدد الاستجابات منتهيًا أو غير منتهٍ.
 
-[^75]: That a particular method of inference is legitimate is not a trivial assertion. One must prove that if one starts with true premises, only true conclusions can be derived. The method of inference represented by rule applications is *modus ponens*, the familiar method of inference that says that if $undefined$ is true and *A implies B* is true, then we may conclude that $undefined$ is true.
+[^75]: أنّ طريقة استنتاج مُعيَّنة مشروعة ليس تأكيدًا تافهًا. فيجب على المرء أن يُبرهن على أنّه إذا انطلق المرء من مُقدّمات صحيحة، فلا يُمكن استنتاج إلّا نتائج صحيحة. وطريقة الاستنتاج التي تمثّلها تطبيقات القواعد هي *modus ponens*، طريقة الاستنتاج المألوفة التي تقول بأنّه إذا كان $undefined$ صحيحًا وكانت *A يستتبع B* صحيحة، فيجوز لنا استنتاج أنّ $undefined$ صحيح.
 
-[^76]: We must qualify this statement by agreeing that, in speaking of the “inference” accomplished by a logic program, we assume that the computation terminates. Unfortunately, even this qualified statement is false for our implementation of the query language (and also false for programs in Prolog and most other current logic programming languages) because of our use of `not` and `lisp-value`. As we will describe below, the `not` implemented in the query language is not always consistent with the `not` of mathematical logic, and `lisp-value` introduces additional complications. We could implement a language consistent with mathematical logic by simply removing `not` and `lisp-value` from the language and agreeing to write programs using only simple queries, `and`, and `or`. However, this would greatly restrict the expressive power of the language. One of the major concerns of research in logic programming is to find ways to achieve more consistency with mathematical logic without unduly sacrificing expressive power.
+[^76]: يجب أن نُقيّد هذا القبول باتّفاقنا على أنّنا، عند الحديث عن «الاستنتاج» التي يُنجزه برنامج منطقيّ، نفترض أنّ الحساب ينتهي. وللأسف، هذا القبول المُقيَّد باطل حتّى في تنفيذنا للغة الاستعلام (وباطل أيضًا في برامج Prolog ومعظم لغات البرمجة المنطقيّة الراهنة) بسبب استخدامنا `not` و `lisp-value`. فكما سنصف أدناه، فإنّ `not` المُنفَّذة في لغة الاستعلام غير متّسقة دائمًا مع `not` المنطق الرياضيّ، و`lisp-value` يُدخل تعقيدات إضافيّة. وقد كنّا لنُنفّذ لغةً متّسقة مع المنطق الرياضيّ بإزالة `not` و `lisp-value` ببساطة من اللغة والاتّفاق على كتابة البرامج باستخدام الاستعلامات البسيطة و `and` و `or` وحدها. لكنّ هذا من شأنه تقييد القوّة التعبيريّة للغة تقييدًا كبيرًا. وإنّ أحد الاهتمامات الكبرى للبحث في البرمجة المنطقيّة هو إيجاد سُبل لتحقيق اتّساقٍ أكبر مع المنطق الرياضيّ دون التضحية بالقوّة التعبيريّة تضحيةً غير مبرّرة.
 
-[^77]: This is not a problem of the logic but one of the procedural interpretation of the logic provided by our interpreter. We could write an interpreter that would not fall into a loop here. For example, we could enumerate all the proofs derivable from our assertions and our rules in a breadth-first rather than a depth-first order. However, such a system makes it more difficult to take advantage of the order of deductions in our programs. One attempt to build sophisticated control into such a program is described in [deKleer et al. 1977](https://sarabander.github.io/sicp/html/References.xhtml#deKleer-et-al_002e-1977). Another technique, which does not lead to such serious control problems, is to put in special knowledge, such as detectors for particular kinds of loops ([Exercise 4.67](#Exercise-4_002e67)). However, there can be no general scheme for reliably preventing a system from going down infinite paths in performing deductions. Imagine a diabolical rule of the form “To show $undefined$ is true, show that $undefined$ is true,” for some suitably chosen function $undefined$ .
+[^77]: هذه ليست مشكلة في المنطق بل في التفسير الإجرائيّ للمنطق الذي يُوفّره مُفسّرنا. فقد كنّا لنكتب مُفسّرًا لا يقع في حَلْقة هنا. فعلى سبيل المثال، كنّا لنُعدّد جميع البراهين القابلة للاستنتاج من تأكيداتنا وقواعدنا بترتيب الأوسع أوّلًا بدلًا من الأعمق أوّلًا. لكنّ مثل هذه المنظومة يجعل الأمر أكثر صعوبة في الانتفاع من ترتيب الاستنتاجات في برامجنا. وهناك محاولة لبناء تحكّم متطوّر في مثل هذا البرنامج موصوفة في [deKleer et al. 1977](https://sarabander.github.io/sicp/html/References.xhtml#deKleer-et-al_002e-1977). وهناك تقنيّة أخرى، لا تؤدّي إلى مشكلات تحكّم بهذه الخطورة، وهي إدخال معرفة خاصّة، مثل كواشف أنواع مُعيَّنة من الحلقات ([التمرين 4.67](#Exercise-4_002e67)). لكن لا يُمكن أن يكون هناك مخطّط عامّ لمنع منظومة بموثوقيّة من النزول في مسارات لا نهائيّة أثناء أداء الاستنتاجات. فتخيّل قاعدة شيطانيّة من صيغة «لإظهار أنّ $undefined$ صحيح، أظهر أنّ $undefined$ صحيح»، لدالّة ما مُختارة بشكلٍ مناسب $undefined$ .
 
-[^78]: Consider the query `(not (baseball-fan (Bitdiddle Ben)))`. The system finds that `(baseball-fan (Bitdiddle Ben))` is not in the data base, so the empty frame does not satisfy the pattern and is not filtered out of the initial stream of frames. The result of the query is thus the empty frame, which is used to instantiate the input query to produce `(not (baseball-fan (Bitdiddle Ben)))`.
+[^78]: تأمّل الاستعلام `(not (baseball-fan (Bitdiddle Ben)))`. فتجد المنظومة أنّ `(baseball-fan (Bitdiddle Ben))` غير موجود في قاعدة البيانات، فلا يُرضي الإطار الفارغ النمط ولا يُرشَّح خارج مجرى الإطارات الأوّليّ. ونتيجة الاستعلام هي بالتالي الإطار الفارغ، الذي يُستخدم لإسكان الاستعلام المُدخَل لإنتاج `(not (baseball-fan (Bitdiddle Ben)))`.
 
-[^79]: A discussion and justification of this treatment of `not` can be found in the article by [Clark (1978)](https://sarabander.github.io/sicp/html/References.xhtml#Clark-_00281978_0029).
+[^79]: يُمكن العثور على مناقشة وتبرير لهذه المعاملة لـ `not` في المقالة التي كتبها [Clark (1978)](https://sarabander.github.io/sicp/html/References.xhtml#Clark-_00281978_0029).
 
-[^80]: In general, unifying `?y` with an expression involving `?y` would require our being able to find a fixed point of the equation `?y` = `⟨`expression involving `?y``⟩`. It is sometimes possible to syntactically form an expression that appears to be the solution. For example, `?y` = `(f ?y)` seems to have the fixed point `(f (f (f … )))`, which we can produce by beginning with the expression `(f ?y)` and repeatedly substituting `(f ?y)` for `?y`. Unfortunately, not every such equation has a meaningful fixed point. The issues that arise here are similar to the issues of manipulating infinite series in mathematics. For example, we know that 2 is the solution to the equation $undefined$ . Beginning with the expression $undefined$ and repeatedly substituting $undefined$ for $undefined$ gives $undefined$ which leads to $undefined$ However, if we try the same manipulation beginning with the observation that $undefined$ is the solution to the equation $undefined$ , we obtain $undefined$ which leads to $undefined$ Although the formal manipulations used in deriving these two equations are identical, the first result is a valid assertion about infinite series but the second is not. Similarly, for our unification results, reasoning with an arbitrary syntactically constructed expression may lead to errors.
+[^80]: بشكل عام، فإنّ توحيد `?y` مع تعبيرٍ يَشتمل `?y` يستلزم منّا القدرة على إيجاد نقطة ثابتة للمعادلة `?y` = `⟨`تعبير يَشتمل `?y``⟩`. ويُمكن أحيانًا تكوين تعبير يبدو حلًّا للمسألة صياغيًّا. فعلى سبيل المثال، يبدو أنّ `?y` = `(f ?y)` له النقطة الثابتة `(f (f (f … )))`، التي نستطيع إنتاجها بالبدء بالتعبير `(f ?y)` واستبدال `(f ?y)` بـ `?y` تكرارًا. وللأسف، ليست كل معادلة من هذا القبيل لها نقطة ثابتة ذات مغزى. والمسائل التي تظهر هنا تشبه مسائل التلاعب بالمتسلسلات اللانهائيّة في الرياضيّات. فعلى سبيل المثال، نعلم أنّ 2 هو الحلّ للمعادلة $undefined$ . وبالبدء بالتعبير $undefined$ واستبدال $undefined$ بـ $undefined$ تكرارًا، نحصل على $undefined$ وهو ما يؤدّي إلى $undefined$ ولكن، إذا جرّبنا التلاعب نفسه بدءًا بملاحظة أنّ $undefined$ هو الحلّ للمعادلة $undefined$ ، فنحن نحصل على $undefined$ وهو ما يؤدّي إلى $undefined$ وعلى الرغم من أنّ التلاعبات الصياغيّة المُستخدمة في استنتاج هاتين المعادلتين متطابقة، فإنّ النتيجة الأولى تأكيد صحيح عن المتسلسلات اللانهائيّة أمّا الثانية فليست كذلك. وبالمثل، بالنسبة لنتائج توحيدنا، فإنّ الاستنتاج بتعبير مبنيّ صياغيًّا اعتباطيًّا قد يؤدّي إلى أخطاء.
 
-[^81]: Most Lisp systems give the user the ability to modify the ordinary `read` procedure to perform such transformations by defining *reader macro characters*. Quoted expressions are already handled in this way: The reader automatically translates `'expression` into `(quote expression)` before the evaluator sees it. We could arrange for `?expression` to be transformed into `(? expression)` in the same way; however, for the sake of clarity we have included the transformation procedure here explicitly. `Expand-question-mark` and `contract-question-mark` use several procedures with `string` in their names. These are Scheme primitives.
+[^81]: تُعطي معظم منظومات لisp للمُستخدِم القدرة على تعديل إجراء `read` الاعتياديّ لأداء مثل هذه التحويلات بتعريف *أحرف ماكرو القارئ*. فالتعبيرات بين علامتَي اقتباس مُعالَجة سابقًا بهذه الطريقة: إذ يُترجم القارئ `'expression` آليًّا إلى `(quote expression)` قبل أن يراه المقيّم. ويُمكننا ترتيب تحويل `?expression` إلى `(? expression)` بالطريقة نفسها؛ غير أنّنا، من أجل الوضوح، أدرجنا إجراء التحويل هنا صراحةً. ويستخدم `expand-question-mark` و `contract-question-mark` عدّة إجراءات تحتوي `string` في أسمائها. وهذه هي أوّليّات Scheme.
