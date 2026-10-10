@@ -1,0 +1,70 @@
+{
+  "chapters": [
+    {
+      "key": "project01",
+      "title": "Project 1: Boolean Logic",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Project 1: Boolean Logic",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "project02",
+      "title": "Project 2: Boolean Arithmetic",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Project 2: Boolean Arithmetic",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "project03",
+      "title": "Project 3: Memory",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Project 3: Memory",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "project04",
+      "title": "Project 4: Machine Language",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Project 4: Machine Language",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "project05",
+      "title": "Project 5: Computer Architecture",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Project 5: Computer Architecture",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "project06",
+      "title": "Project 6: Assembler",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Project 6: Assembler",
+          "order": 6
+        }
+      ]
+    }
+  ]
+}
