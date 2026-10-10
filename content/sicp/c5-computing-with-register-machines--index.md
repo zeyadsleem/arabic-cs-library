@@ -1,21 +1,21 @@
 ---
-title: "Computing with Register Machines"
-lang: en
+title: "الاحتساب بآلات المسجّلات"
+lang: ar
 ---
 
-> My aim is to show that the heavenly machine is not a kind of divine, live being, but a kind of clockwork (and he who believes that a clock has soul attributes the maker’s glory to the work), insofar as nearly all the manifold motions are caused by a most simple and material force, just as all motions of the clock are caused by a single weight. —Johannes Kepler (letter to Herwart von Hohenburg, 1605)
+> هدفي أن أبيّن أنّ الآلة السماويّة ليست نوعًا من الكائن الإلهيّ الحيّ، بل نوعٌ من عمل الساعة (ومن يظنّ أنّ للساعة روحًا ينسب مجدَ صانعها إلى العمل)، إذ إن جميع الحركات المتعدّدة الأوجه - أو جميعها تقريبًا - ناجمةٌ عن قوّةٍ مادّيّةٍ في غاية البساطة، تمامًا كما أنّ جميع حركات الساعة ناجمةٌ عن ثقلٍ واحد. —يوهانس كيبلر (رسالة إلى هيروارت فون هوهنبورغ، 1605)
 
-We began this book by studying processes and by describing processes in terms of procedures written in Lisp. To explain the meanings of these procedures, we used a succession of models of evaluation: the substitution model of [Chapter 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1), the environment model of [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3), and the metacircular evaluator of [Chapter 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4). Our examination of the metacircular evaluator, in particular, dispelled much of the mystery of how Lisp-like languages are interpreted. But even the metacircular evaluator leaves important questions unanswered, because it fails to elucidate the mechanisms of control in a Lisp system. For instance, the evaluator does not explain how the evaluation of a subexpression manages to return a value to the expression that uses this value, nor does the evaluator explain how some recursive procedures generate iterative processes (that is, are evaluated using constant space) whereas other recursive procedures generate recursive processes. These questions remain unanswered because the metacircular evaluator is itself a Lisp program and hence inherits the control structure of the underlying Lisp system. In order to provide a more complete description of the control structure of the Lisp evaluator, we must work at a more primitive level than Lisp itself.
+بدأنا هذا الكتاب بدراسة العمليّات وبوصفها من حيث إجراءاتٍ مكتوبةٍ بلغة Lisp. ولشرح معاني هذه الإجراءات، استخدمنا سلسلةً من نماذج التقييم: نموذج الاستبدال الوارد في [الفصل 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1)، ونموذج البيئة الوارد في [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3)، والمُقيّم التعاكسيّ الوارد في [الفصل 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4). لقد أزاح فحصنا للمُقيّم التعاكسيّ - على وجه الخصوص - كثيرًا من غموض كيفيّة تفسير اللغات الشبيهة بـLisp. لكن حتّى المُقيّم التعاكسيّ يترك أسئلةً مهمّةً بلا جواب، إذ إنه لا يزيح الستر عن آليّات التحكّم في نظام Lisp. فإنّ المُقيّم لا يشرح - مثلًا - كيف ينجح تقييم تعبيرٍ جزئيّ في إعادة قيمةٍ إلى التعبير الذي يستخدم هذه القيمة، كما لا يشرح كيف تُنتج بعض الإجراءات التعاوديّة عمليّاتٍ تكراريّة (أي إنها مُقيَّمةٌ باستخدام فضاءٍ ثابت) بينما تُنتج إجراءاتٌ تعاوديّةٌ أخرى عمليّاتٍ تعاوديّة. وهذه الأسئلة تبقى بلا جواب لأنّ المُقيّم التعاكسيّ هو في ذاته برنامج Lisp، ومن ثمّ فهو يرث بنية التحكّم في نظام Lisp الكامن. ولكي نوفّر وصفًا أكثر اكتمالًا لبنية التحكّم في مُقيّم Lisp، يتحتّم علينا العمل على مستوى أكثر أوّليّةً من Lisp نفسها.
 
-In this chapter we will describe processes in terms of the step-by-step operation of a traditional computer. Such a computer, or *register machine*, sequentially executes *instructions* that manipulate the contents of a fixed set of storage elements called *registers*. A typical register-machine instruction applies a primitive operation to the contents of some registers and assigns the result to another register. Our descriptions of processes executed by register machines will look very much like “machine-language” programs for traditional computers. However, instead of focusing on the machine language of any particular computer, we will examine several Lisp procedures and design a specific register machine to execute each procedure. Thus, we will approach our task from the perspective of a hardware architect rather than that of a machine-language computer programmer. In designing register machines, we will develop mechanisms for implementing important programming constructs such as recursion. We will also present a language for describing designs for register machines. In [5.2](https://sarabander.github.io/sicp/html/5_002e2.xhtml#g_t5_002e2) we will implement a Lisp program that uses these descriptions to simulate the machines we design.
+سنصف في هذا الفصل العمليّات من حيث تشغيل حاسوبٍ تقليديّ خطوةً بخطوة. وحاسوبٌ كهذا، أو *آلة مسجّلات (register machine)*، ينفّذ تتابعيًّا *تعليمات (instructions)* تتلاعب بمحتويات مجموعةٍ ثابتةٍ من عناصر التخزين تُسمّى *مسجّلات (registers)*. فإنّ تعليمةً نموذجيّةً لآلة المسجّلات لتطبّق عمليّةً أوّليّةً على محتويات بعض المسجّلات وتُحيل النتيجة إلى مسجّلٍ آخر. وأوصافنا للعمليّات التي تنفّذها آلات المسجّلات ستبدو شديدة الشبه ببرامج «اللغة الآليّة» للحواسيب التقليديّة. غير أنّنا، بدلًا من التركيز على اللغة الآليّة لأيّ حاسوبٍ معيّن، سنفحص عدّة إجراءات Lisp ونُصمّم آلة مسجّلاتٍ خاصّةً لتنفيذ كلّ إجراءٍ منها. وبذلك، سنقترب من مهمّتنا من منظور مهندس عتادٍ لا من منظور مبرمجٍ بلغة آليّةٍ لحاسوب. وبتصميمنا آلات المسجّلات، سنطوّر آليّاتٍ لتنفيذ بنيات برمجةٍ مهمّةٍ كالتعاوب. وسنُقدّم أيضًا لغةً لوصف تصاميم آلات المسجّلات. وفي [5.2](https://sarabander.github.io/sicp/html/5_002e2.xhtml#g_t5_002e2) سنُنفّذ برنامج Lisp يستخدم هذه الأوصاف لمحاكاة الآلات التي نصمّمها.
 
-Most of the primitive operations of our register machines are very simple. For example, an operation might add the numbers fetched from two registers, producing a result to be stored into a third register. Such an operation can be performed by easily described hardware. In order to deal with list structure, however, we will also use the memory operations `car`, `cdr`, and `cons`, which require an elaborate storage-allocation mechanism. In [5.3](https://sarabander.github.io/sicp/html/5_002e3.xhtml#g_t5_002e3) we study their implementation in terms of more elementary operations.
+معظم العمليّات الأوّليّة لآلات المسجّلات لدينا بسيطةٌ للغاية. فإنّ عمليّةً ما قد تجمع الأعداد المقروءة من مسجّلين، وتُنتج نتيجةً تُخزَّن في مسجّلٍ ثالث. ومثل هذه العمليّة يمكن أداؤها بعتادٍ سهل الوصف. غير أنّنا، لكي نتعامل مع بنية القوائم، سنستخدم أيضًا عمليّات الذاكرة `car` و`cdr` و`cons`، التي تتطلّب آليّةً بالغة التعقيد لتخصيص التخزين. ونحن ندرس في [5.3](https://sarabander.github.io/sicp/html/5_002e3.xhtml#g_t5_002e3) تنفيذها من حيث عمليّاتٍ أكثر أوّليّةً.
 
-In [5.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4), after we have accumulated experience formulating simple procedures as register machines, we will design a machine that carries out the algorithm described by the metacircular evaluator of [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1). This will fill in the gap in our understanding of how Scheme expressions are interpreted, by providing an explicit model for the mechanisms of control in the evaluator. In [5.5](https://sarabander.github.io/sicp/html/5_002e5.xhtml#g_t5_002e5) we will study a simple compiler that translates Scheme programs into sequences of instructions that can be executed directly with the registers and operations of the evaluator register machine.
+وفي [5.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4)، بعد أن نكون قد راكمنا خبرةً في صياغة الإجراءات البسيطة كآلات مسجّلات، سنُصمّم آلةً تُنجز الخوارزميّة التي وصفها المُقيّم التعاكسيّ الوارد في [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1). وسدُّ هذه الفجوة في فهمنا لكيفيّة تفسير تعابير Scheme سيتمّ بتوفير نموذجٍ صريحٍ لآليّات التحكّم في المُقيّم. وسندرس في [5.5](https://sarabander.github.io/sicp/html/5_002e5.xhtml#g_t5_002e5) مصرِّفًا بسيطًا يترجم برامج Scheme إلى تتابعاتٍ من التعليمات التي يمكن تنفيذها مباشرةً بمسجّلات آلة المُقيّم وعمليّاتها.
 
-### 5.1 Designing Register Machines
+### 5.1 تصميم آلات المسجّلات
 
-To design a register machine, we must design its *data paths* (registers and operations) and the *controller* that sequences these operations. To illustrate the design of a simple register machine, let us examine Euclid’s Algorithm, which is used to compute the greatest common divisor (GCD) of two integers. As we saw in [1.2.5](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e5), Euclid’s Algorithm can be carried out by an iterative process, as specified by the following procedure:
+لتصميم آلة مسجّلات، يتحتّم أن نُصمّم *مسارات بياناتها (data paths)* (أي مسجّلاتها وعمليّاتها) و*متحكّمها (controller)* الذي يرتّب هذه العمليّات. ولتوضيح تصميم آلة مسجّلاتٍ بسيطة، دعنا نفحص خوارزميّة إقليد، التي تُستخدم لاحتساب القاسم المشترك الأكبر لعددين صحيحين. فكما رأينا في [1.2.5](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e5)، فإنّ خوارزميّة إقليد يمكن أداؤها بعمليّةٍ تكراريّةٍ، كما يحدّده الإجراء التالي:
 
 ```scheme
 (define (gcd a b)
@@ -24,23 +24,23 @@ To design a register machine, we must design its *data paths* (registers and ope
       (gcd b (remainder a b))))
 ```
 
-A machine to carry out this algorithm must keep track of two numbers, $a$ and $b$ , so let us assume that these numbers are stored in two registers with those names. The basic operations required are testing whether the contents of register `b` is zero and computing the remainder of the contents of register `a` divided by the contents of register `b`. The remainder operation is a complex process, but assume for the moment that we have a primitive device that computes remainders. On each cycle of the GCD algorithm, the contents of register `a` must be replaced by the contents of register `b`, and the contents of `b` must be replaced by the remainder of the old contents of `a` divided by the old contents of `b`. It would be convenient if these replacements could be done simultaneously, but in our model of register machines we will assume that only one register can be assigned a new value at each step. To accomplish the replacements, our machine will use a third “temporary” register, which we call `t`. (First the remainder will be placed in `t`, then the contents of `b` will be placed in `a`, and finally the remainder stored in `t` will be placed in `b`.)
+فالآلة التي تُنجز هذه الخوارزميّة يتحتّم عليها تتبّع عددين، $a$ و$b$، فلْنفترض أنّ هذين العددين مخزَّنان في مسجّلين يحملان هذين الاسمين. والعمليّات الأساس المطلوبة هي اختبار ما إذا كانت محتويات المسجّل `b` صفرًا، واحتساب باقي قسمة محتويات المسجّل `a` على محتويات المسجّل `b`. وعمليّة الباقي عمليّةٌ معقّدة، لكن لنفترض للحظةٍ أنّ لدينا جهازًا أوّليًّا يحتسب البواقي. وفي كلّ دورةٍ من خوارزميّة القاسم المشترك الأكبر، يتحتّم استبدال محتويات المسجّل `a` بمحتويات المسجّل `b`، كما يتحتّم استبدال محتويات `b` بباقي قسمة محتويات `a` القديمة على محتويات `b` القديمة. ولَكان الأمر مريحًا لو أُمكن أداء هذين الاستبدالين معًا، لكنّنا في نموذجنا لآلات المسجّلات سنفترض أنّ مسجّلًا واحدًا فقط يمكن أن تُحال إليه قيمةٌ جديدة في كلّ خطوة. ولأداء الاستبدالين، ستستخدم آلتنا مسجّلًا ثالثًا «مؤقّتًا»، نُسمّيه `t`. (فأوّلًا يُوضَع الباقي في `t`، ثم تُوضَع محتويات `b` في `a`، وأخيرًا يُوضَع الباقي المخزَّن في `t` في `b`.)
 
-We can illustrate the registers and operations required for this machine by using the data-path diagram shown in [Figure 5.1](#Figure-5_002e1). In this diagram, the registers (`a`, `b`, and `t`) are represented by rectangles. Each way to assign a value to a register is indicated by an arrow with an `X` behind the head, pointing from the source of data to the register. We can think of the `X` as a button that, when pushed, allows the value at the source to “flow” into the designated register. The label next to each button is the name we will use to refer to the button. The names are arbitrary, and can be chosen to have mnemonic value (for example, `a<-b` denotes pushing the button that assigns the contents of register `b` to register `a`). The source of data for a register can be another register (as in the `a<-b` assignment), an operation result (as in the `t<-r` assignment), or a constant (a built-in value that cannot be changed, represented in a data-path diagram by a triangle containing the constant).
+يمكننا توضيح المسجّلات والعمليّات المطلوبة لهذه الآلة باستخدام مخطّط مسار البيانات الموضّح في [الشكل 5.1](#Figure-5_002e1). وفي هذا المخطّط، تُمثَّل المسجّلات (`a` و`b` و`t`) بمستطيلات. وكلّ طريقٍ لإحلال قيمةٍ في مسجّلٍ يُشار إليه بسهمٍ ذي `X` خلف رأس السهم، مشيرًا من مصدر البيانات إلى المسجّل. وبوسعنا أن نفكّر في `X` بوصفه زرًّا، إذ إنّ ضغطه يسمح للقيمة عند المصدر بأن «تتدفّق» إلى المسجّل المعيَّن. والملصق المجاور لكلّ زرّ هو الاسم الذي سنستخدمه للإشارة إلى الزرّ. والأسماء اعتراضيّة، ويمكن اختيارها لتكون ذات قيمة تذكيريّة (فمثلًا، يُشار بـ`a<-b` إلى ضغط الزرّ الذي يُحيل محتويات المسجّل `b` إلى المسجّل `a`). ومصدر البيانات لمسجّلٍ ما قد يكون مسجّلًا آخر (كما في الإحلال `a<-b`)، أو نتيجة عمليّة (كما في الإحلال `t<-r`)، أو ثابتًا (أي قيمةٌ مدمجةٌ لا يمكن تغييرها، وتُمثَّل في مخطّط مسار البيانات بمثلّثٍ يحتوي الثابت).
 
 ![](/images/sicp/c5-computing-with-register-machines-0-Fig5.1a.std.webp)
 
-**Figure 5.1:** Data paths for a GCD machine.
+**الشكل 5.1:** مسارات البيانات لآلة القاسم المشترك الأكبر.
 
-An operation that computes a value from constants and the contents of registers is represented in a data-path diagram by a trapezoid containing a name for the operation. For example, the box marked `rem` in [Figure 5.1](#Figure-5_002e1) represents an operation that computes the remainder of the contents of the registers `a` and `b` to which it is attached. Arrows (without buttons) point from the input registers and constants to the box, and arrows connect the operation’s output value to registers. A test is represented by a circle containing a name for the test. For example, our GCD machine has an operation that tests whether the contents of register `b` is zero. A test also has arrows from its input registers and constants, but it has no output arrows; its value is used by the controller rather than by the data paths. Overall, the data-path diagram shows the registers and operations that are required for the machine and how they must be connected. If we view the arrows as wires and the `X` buttons as switches, the data-path diagram is very like the wiring diagram for a machine that could be constructed from electrical components.
+العمليّة التي تحتسب قيمةً من الثوابت ومحتويات المسجّلات تُمثَّل في مخطّط مسار البيانات بشبه منحرفٍ يحتوي اسم العمليّة. فمثلًا، يُمثّل الصندوق الموسوم بـ`rem` في [الشكل 5.1](#Figure-5_002e1) عمليّةً تحتسب باقي قسمة محتويات المسجّلين `a` و`b` المرفَقين به. والأسهم (بلا أزرار) تتّجه من مسجّلات المداخل والثوابت إلى الصندوق، والأسهم تصل قيمة مخرج العمليّة بالمسجّلات. والاختبار يُمثَّل بدائرةٍ تحتوي اسم الاختبار. فمثلًا، تحتوي آلة القاسم المشترك الأكبر لدينا على عمليّةٍ تختبر ما إذا كانت محتويات المسجّل `b` صفرًا. وللاختبار أسهمٌ أيضًا من مسجّلات مداخله وثوابته، لكنّه لا يملك أسهم مخرجات؛ فقيمته يستخدمها المتحكّم لا مسارات البيانات. وبصورةٍ عامّة، يُظهر مخطّط مسار البيانات المسجّلات والعمليّات المطلوبة للآلة وكيف يتحتّم وصلها. فإذا نظرنا إلى الأسهم بوصفها أسلاكًا وإلى أزرار `X` بوصفها مفاتيح، فإنّ مخطّط مسار البيانات يشبه إلى حدٍّ بعيدٍ مخطّط الأسلاك لآلةٍ يمكن بناؤها من مكوّنات كهربائيّة.
 
-In order for the data paths to actually compute GCDs, the buttons must be pushed in the correct sequence. We will describe this sequence in terms of a controller diagram, as illustrated in [Figure 5.2](#Figure-5_002e2). The elements of the controller diagram indicate how the data-path components should be operated. The rectangular boxes in the controller diagram identify data-path buttons to be pushed, and the arrows describe the sequencing from one step to the next. The diamond in the diagram represents a decision. One of the two sequencing arrows will be followed, depending on the value of the data-path test identified in the diamond. We can interpret the controller in terms of a physical analogy: Think of the diagram as a maze in which a marble is rolling. When the marble rolls into a box, it pushes the data-path button that is named by the box. When the marble rolls into a decision node (such as the test for `b` = 0), it leaves the node on the path determined by the result of the indicated test. Taken together, the data paths and the controller completely describe a machine for computing GCDs. We start the controller (the rolling marble) at the place marked `start`, after placing numbers in registers `a` and `b`. When the controller reaches `done`, we will find the value of the GCD in register `a`.
+ولكي تحتسب مسارات البيانات القواسم المشتركة الكبرى فعلًا، يتحتّم ضغط الأزرار في التتابع الصحيح. وسنصف هذا التتابع من حيث مخطّط متحكّم، كما هو موضّح في [الشكل 5.2](#Figure-5_002e2). وتُبيّن عناصر مخطّط المتحكّم كيف ينبغي تشغيل مكوّنات مسار البيانات. فالصناديق المستطيلة في مخطّط المتحكّم تُحدّد أزرار مسار البيانات التي يتحتّم ضغطها، والأسهم تصف التتابع من خطوةٍ إلى التي تليها. والمعيّن في المخطّط يُمثّل قرارًا. وسيتبع أحد سهمي التتابع، بحسب قيمة اختبار مسار البيانات المحدَّد في المعيّن. وبوسعنا تفسير المتحكّم بالاستعانة بمجادلةٍ فيزيائيّة: فتخيّل المخطّط متاهةً تتدحرج فيها كرة رخاميّة. فحين تتدحرج الكرة إلى صندوقٍ ما، تضغط زرّ مسار البيانات الذي يسمّيه الصندوق. وحين تتدحرج الكرة إلى عقدة قرار (كالاختبار الخاصّ بـ`b` = 0)، فإنّها تترك العقدة على المسار الذي تحدّده نتيجة الاختبار المُشار إليه. ومجتمعةً، تصف مسارات البيانات والمتحكّم وصفًا كاملًا آلةً لاحتساب القواسم المشتركة الكبرى. ونبدأ المتحكّم (كرة الرخام المتدحرجة) من الموضع الموسوم بـ`start`، بعد وضع الأعداد في المسجّلين `a` و`b`. وحين يصل المتحكّم إلى `done`، سنجد قيمة القاسم المشترك الأكبر في المسجّل `a`.
 
 ![](/images/sicp/c5-computing-with-register-machines-1-Fig5.2.std.webp)
 
-**Figure 5.2:** Controller for a GCD machine.
+**الشكل 5.2:** متحكّم آلة القاسم المشترك الأكبر.
 
-**Exercise 5.1:** Design a register machine to compute factorials using the iterative algorithm specified by the following procedure. Draw data-path and controller diagrams for this machine.
+**التمرين 5.1:** صمّم آلة مسجّلاتٍ لاحتساب العامليّات باستخدام الخوارزميّة التكراريّة التي يحدّدها الإجراء التالي. وارسم مخطّطات مسار البيانات والمتحكّم لهذه الآلة.
 
 ```scheme
 (define (factorial n)
@@ -52,24 +52,24 @@ In order for the data paths to actually compute GCDs, the buttons must be pushed
   (iter 1 1))
 ```
 
-#### 5.1.1 A Language for Describing Register Machines
+#### 5.1.1 لغةٌ لوصف آلات المسجّلات
 
-Data-path and controller diagrams are adequate for representing simple machines such as GCD, but they are unwieldy for describing large machines such as a Lisp interpreter. To make it possible to deal with complex machines, we will create a language that presents, in textual form, all the information given by the data-path and controller diagrams. We will start with a notation that directly mirrors the diagrams.
+مخطّطات مسار البيانات والمتحكّم كافيةٌ لتمثيل الآلات البسيطة كآلة القاسم المشترك الأكبر، لكنّها عسيرة التناول لوصف الآلات الكبيرة كمفسّر Lisp. ولكي يصبح ممكنًا التعامل مع الآلات المعقّدة، سنُنشئ لغةً تعرض، في صيغةٍ نصّيّة، جميع المعلومات التي تُعطيها مخطّطات مسار البيانات والمتحكّم. وسنبدأ بترميزٍ يعكس المخطّطات عكسًا مباشرًا.
 
-We define the data paths of a machine by describing the registers and the operations. To describe a register, we give it a name and specify the buttons that control assignment to it. We give each of these buttons a name and specify the source of the data that enters the register under the button’s control. (The source is a register, a constant, or an operation.) To describe an operation, we give it a name and specify its inputs (registers or constants).
+نُعرّف مسارات بيانات آلةٍ بوصف مسجّلاتها وعمليّاتها. ولوصف مسجّلٍ، نُعطيه اسمًا ونُحدّد الأزرار التي تتحكّم في الإحلال إليه. ونُعطي كلًّا من هذه الأزرار اسمًا ونُحدّد مصدر البيانات التي تدخل المسجّل تحت تحكّم الزرّ. (والمصدر هو مسجّلٌ أو ثابتٌ أو عمليّة.) ولوصف عمليّةٍ، نُعطيها اسمًا ونُحدّد مداخلها (مسجّلات أو ثوابت).
 
-We define the controller of a machine as a sequence of *instructions* together with *labels* that identify *entry points* in the sequence. An instruction is one of the following:
+نُعرّف متحكّم آلةٍ بوصفه تتابعًا من *التعليمات (instructions)* مع *ملصقات (labels)* تُحدّد *نقاط الدخول (entry points)* في التتابع. والتعليمة هي إحدى ما يلي:
 
-- The name of a data-path button to push to assign a value to a register. (This corresponds to a box in the controller diagram.)
-- A `test` instruction, that performs a specified test.
-- A conditional branch (`branch` instruction) to a location indicated by a controller label, based on the result of the previous test. (The test and branch together correspond to a diamond in the controller diagram.) If the test is false, the controller should continue with the next instruction in the sequence. Otherwise, the controller should continue with the instruction after the label.
-- An unconditional branch (`goto` instruction) naming a controller label at which to continue execution.
+- اسم زرّ مسار بياناتٍ يتحتّم ضغطه لإحلال قيمةٍ إلى مسجّل. (وهذا يقابل صندوقًا في مخطّط المتحكّم.)
+- تعليمة `test`، تُؤدّي اختبارًا محدَّدًا.
+- تفرّعٌ شرطيّ (تعليمة `branch`) إلى موضعٍ يُشار إليه بملصق متحكّم، بناءً على نتيجة الاختبار السابق. (والاختبار والتفرّع معًا يقابلان معيّنًا في مخطّط المتحكّم.) فإن كان الاختبار خاطئًا، فعلى المتحكّم أن يواصل التعليمة التالية في التتابع. وإلّا، فعلى المتحكّم أن يواصل التعليمة التي تلي الملصق.
+- تفرّعٌ غير شرطيّ (تعليمة `goto`) يُسمّي ملصق متحكّمٍ يتحتّم مواصلة التنفيذ عنده.
 
-The machine starts at the beginning of the controller instruction sequence and stops when execution reaches the end of the sequence. Except when a branch changes the flow of control, instructions are executed in the order in which they are listed.
+تبدأ الآلة من بداية تتابع تعليمات المتحكّم وتتوقّف حين يصل التنفيذ إلى نهاية التتابع. وإلّا حين يُغيّر تفرّعٌ مجرى التحكّم، فإنّ التعليمات تُنفَّذ بالترتيب الذي ذُكرت به.
 
-[Figure 5.3](#Figure-5_002e3) shows the GCD machine described in this way. This example only hints at the generality of these descriptions, since the GCD machine is a very simple case: Each register has only one button, and each button and test is used only once in the controller.
+يُظهر [الشكل 5.3](#Figure-5_002e3) آلة القاسم المشترك الأكبر موصوفةً بهذه الطريقة. وهذا المثال لا يُلمّح إلّا إلماحًا إلى عموميّة هذه الأوصاف، إذ إنّ آلة القاسم المشترك الأكبر حالةٌ بسيطةٌ جدًّا: فلكلّ مسجّلٍ زرٌّ واحدٌ فقط، ولكلّ زرٍّ واختبارٍ استخدامٌ واحدٌ فقط في المتحكّم.
 
-**Figure 5.3:** $↓$ A specification of the GCD machine.
+**الشكل 5.3:** $↓$ توصيف آلة القاسم المشترك الأكبر.
 
 ```scheme
 (data-paths
@@ -102,9 +102,9 @@ The machine starts at the beginning of the controller instruction sequence and s
  gcd-done)             ; label
 ```
 
-Unfortunately, it is difficult to read such a description. In order to understand the controller instructions we must constantly refer back to the definitions of the button names and the operation names, and to understand what the buttons do we may have to refer to the definitions of the operation names. We will thus transform our notation to combine the information from the data-path and controller descriptions so that we see it all together.
+للأسف، من العسر قراءة وصفٍ كهذا. ولكي نفهم تعليمات المتحكّم، يتحتّم علينا أن نرجع باستمرارٍ إلى تعاريف أسماء الأزرار وأسماء العمليّات، ولكي نفهم ما تفعله الأزرار قد يلزمنا الرجوع إلى تعاريف أسماء العمليّات. وبالتالي، سنُحوّل ترميزنا ليجمع المعلومات من وصفَي مسار البيانات والمتحكّم بحيث نراها جميعها معًا.
 
-To obtain this form of description, we will replace the arbitrary button and operation names by the definitions of their behavior. That is, instead of saying (in the controller) “Push button `tGCD machine is described as follows:
+وللحصول على هذه الصيغة من الوصف، سنستبدل أسماء الأزرار والعمليّات الاعتراضيّة بتعريفات سلوكها. أي إنّه، بدلًا من القول (في المتحكّم) «اضغط الزرّ tGCD machine is described as follows:
 
 ```scheme
 (controller
@@ -118,57 +118,57 @@ To obtain this form of description, we will replace the arbitrary button and ope
  gcd-done)
 ```
 
-This form of description is easier to read than the kind illustrated in [Figure 5.3](#Figure-5_002e3), but it also has disadvantages:
+هذه الصيغة من الوصف أيسرُ قراءةً من الصيغة الموضّحة في [الشكل 5.3](#Figure-5_002e3)، لكنّها تحمل أيضًا عيوبًا:
 
-- It is more verbose for large machines, because complete descriptions of the data-path elements are repeated whenever the elements are mentioned in the controller instruction sequence. (This is not a problem in the GCD example, because each operation and button is used only once.) Moreover, repeating the data-path descriptions obscures the actual data-path structure of the machine; it is not obvious for a large machine how many registers, operations, and buttons there are and how they are interconnected.
-- Because the controller instructions in a machine definition look like Lisp expressions, it is easy to forget that they are not arbitrary Lisp expressions. They can notate only legal machine operations. For example, operations can operate directly only on constants and the contents of registers, not on the results of other operations.
+- إنّها أكثر إطنابًا في الآلات الكبيرة، لأنّ الأوصاف الكاملة لعناصر مسار البيانات تُكرَّر كلّما ذُكرت العناصر في تتابع تعليمات المتحكّم. (وهذه ليست مشكلةً في مثال القاسم المشترك الأكبر، لأنّ كلّ عمليّةٍ وزرٍّ تُستخدم مرّةً واحدةً فقط.) فضلًا عن ذلك، فإنّ تكرار أوصاف مسار البيانات يحجب بنية مسار البيانات الفعليّة للآلة؛ فليس من الواضح في آلةٍ كبيرةٍ كم عدد المسجّلات والعمليّات والأزرار وكيف تترابط.
+- ولأنّ تعليمات المتحكّم في تعريف آلةٍ تبدو كتعبيرات Lisp، فمن السهل نسيان أنّها ليست تعابير Lisp اعتراضيّة. فإنّها لا تستطيع أن ترمّز إلّا عمليّات آلةٍ مشروعة. فإنّ العمليّات - مثلًا - لا تستطيع أن تعمل مباشرةً إلّا على الثوابت ومحتويات المسجّلات، لا على نتائج عمليّاتٍ أخرى.
 
-In spite of these disadvantages, we will use this register-machine language throughout this chapter, because we will be more concerned with understanding controllers than with understanding the elements and connections in data paths. We should keep in mind, however, that data-path design is crucial in designing real machines.
+رغم هذه العيوب، سنستخدم لغة آلات المسجّلات هذه في جميع أنحاء هذا الفصل، لأنّنا سنكون أكثر اهتمامًا بفهم المتحكّمات من اهتمامنا بفهم العناصر والوصلات في مسارات البيانات. غير أنّنا ينبغي أن نضع في أذهاننا أنّ تصميم مسار البيانات حاسمٌ في تصميم الآلات الحقيقيّة.
 
-> **Exercise 5.2:** Use the register-machine language to describe the iterative factorial machine of [Exercise 5.1](#Exercise-5_002e1).
+> **التمرين 5.2:** استخدم لغة آلات المسجّلات لوصف آلة العامليّات التكراريّة الواردة في [التمرين 5.1](#Exercise-5_002e1).
 
-#### Actions
+#### الأفعال
 
-Let us modify the GCD machine so that we can type in the numbers whose GCD we want and get the answer printed at our terminal. We will not discuss how to make a machine that can read and print, but will assume (as we do when we use `read` and `display` in Scheme) that they are available as primitive operations.[^1]
+لِنُعدّل آلة القاسم المشترك الأكبر بحيث نستطيع إدخال الأعداد التي نريد قاسمها المشترك الأكبر والحصول على الجواب مطبوعًا على طرفيّتنا. ولن نناقش كيف نصنع آلةً تستطيع القراءة والطباعة، بل سنفترض (كما نفعل حين نستخدم `read` و`display` في Scheme) أنّ هاتين العمليّتين متاحتان كعمليّتين أوّليّتين.[^1]
 
-`Read` is like the operations we have been using in that it produces a value that can be stored in a register. But `read` does not take inputs from any registers; its value depends on something that happens outside the parts of the machine we are designing. We will allow our machine’s operations to have such behavior, and thus will draw and notate the use of `read` just as we do any other operation that computes a value.
+فـ`Read` تشبه العمليّات التي كنا نستخدمها في أنّها تُنتج قيمةً يمكن تخزينها في مسجّل. لكنّ `read` لا تأخذ مداخلها من أيّ مسجّل؛ فقيمتها تعتمد على شيءٍ يحدث خارج الأجزاء من الآلة التي نصمّمها. وسنسمح لعمليّات آلتنا بأن يكون لها سلوكٌ كهذا، وبذلك سنرسم ونُرمّز استخدام `read` كما نفعل مع أيّ عمليّةٍ أخرى تحتسب قيمةً.
 
-`Print`, on the other hand, differs from the operations we have been using in a fundamental way: It does not produce an output value to be stored in a register. Though it has an effect, this effect is not on a part of the machine we are designing. We will refer to this kind of operation as an *action*. We will represent an action in a data-path diagram just as we represent an operation that computes a value—as a trapezoid that contains the name of the action. Arrows point to the action box from any inputs (registers or constants). We also associate a button with the action. Pushing the button makes the action happen. To make a controller push an action button we use a new kind of instruction called `perform`. Thus, the action of printing the contents of register `a` is represented in a controller sequence by the instruction
+أمّا `Print`، من جهةٍ أخرى، فتختلف عن العمليّات التي كنا نستخدمها اختلافًا أساسيًّا: فإنّها لا تُنتج قيمة مخرجةً تُخزَّن في مسجّل. وإن كان لها أثر، فهذا الأثر ليس على جزءٍ من الآلة التي نصمّمها. وسنُشير إلى هذا النوع من العمليّات بوصفه *فعلًا (action)*. وسنمثّل الفعلَ في مخطّط مسار البيانات تمامًا كما نمثّل عمليّةً تحتسب قيمةً، أي بشكل منحرفٍ يحتوي اسم الفعل. والأسهم تتّجه إلى صندوق الفعل من أيّ مداخلات (مسجّلات أو ثوابت). ونربط أيضًا زرًّا بالفعل. وضغط الزرّ يجعل الفعل يقع. ولكي نجعل متحكّمًا يضغط زرّ فعل، نستخدم نوعًا جديدًا من التعليمات يُسمّى `perform`. وبذلك، فإنّ فعل طباعة محتويات المسجّل `a` يُمثَّل في تتابع متحكّمٍ بالتعليمة
 
 ```scheme
 (perform (op print) (reg a))
 ```
 
-[Figure 5.4](#Figure-5_002e4) shows the data paths and controller for the new GCD machine. Instead of having the machine stop after printing the answer, we have made it start over, so that it repeatedly reads a pair of numbers, computes their GCD, and prints the result. This structure is like the driver loops we used in the interpreters of [Chapter 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4).
+يُظهر [الشكل 5.4](#Figure-5_002e4) مسارات البيانات والمتحكّم لآلة القاسم المشترك الأكبر الجديدة. وبدلًا من أن نجعل الآلة تتوقّف بعد طباعة الجواب، فقد جعلناها تبدأ من جديد، بحيث تقرأ زوجًا من الأعداد مرّةً بعد مرّة، وتحتسب قاسمهما المشترك الأكبر، وتطبع النتيجة. وهذه البنية تشبه حلقات المُشغّل التي استخدمناها في مفسّرات [الفصل 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4).
 
 ![](/images/sicp/c5-computing-with-register-machines-2-Fig5.4c.std.webp)
 
-**Figure 5.4:** A GCD machine that reads inputs and prints results.
+**الشكل 5.4:** آلة قاسمٍ مشترك أكبر تقرأ المداخل وتطبع النتائج.
 
-#### 5.1.2 Abstraction in Machine Design
+#### 5.1.2 التجريد في تصميم الآلات
 
-We will often define a machine to include “primitive” operations that are actually very complex. For example, in [5.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4) and [5.5](https://sarabander.github.io/sicp/html/5_002e5.xhtml#g_t5_002e5) we will treat Scheme’s environment manipulations as primitive. Such abstraction is valuable because it allows us to ignore the details of parts of a machine so that we can concentrate on other aspects of the design. The fact that we have swept a lot of complexity under the rug, however, does not mean that a machine design is unrealistic. We can always replace the complex “primitives” by simpler primitive operations.
+سنُعرّف غالبًا آلةً تتضمّن عمليّاتٍ «أوّليّة» هي في الواقع بالغة التعقيد. فإنّا - مثلًا - سنعامل في [5.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4) و[5.5](https://sarabander.github.io/sicp/html/5_002e5.xhtml#g_t5_002e5) عمليّات التلاعب ببيئة Scheme بوصفها أوّليّة. ومثل هذا التجريد قيّمٌ لأنّه يسمح لنا بتجاهل تفاصيل أجزاءٍ من آلةٍ حتّى نتمكّن من التركيز على جوانب أخرى من التصميم. غير أنّ كوننا قد كنسنا قدرًا كثيرًا من التعقيد تحت البساط لا يعني أنّ تصميم آلةٍ غير واقعيّ. فنستطيع دائمًا أن نستبدل «الأوّليّات» المعقّدة بعمليّاتٍ أوّليّةٍ أبسط منها.
 
-Consider the GCD machine. The machine has an instruction that computes the remainder of the contents of registers `a` and `b` and assigns the result to register `t`. If we want to construct the GCD machine without using a primitive remainder operation, we must specify how to compute remainders in terms of simpler operations, such as subtraction. Indeed, we can write a Scheme procedure that finds remainders in this way:
+تأمّل آلة القاسم المشترك الأكبر. ففي الآلة تعليمةٌ تحتسب باقي قسمة محتويات المسجّلين `a` و`b` وتحيل النتيجة إلى المسجّل `t`. فإذا أردنا بناء آلة القاسم المشترك الأكبر دون استخدام عمليّة باقٍ أوّليّة، يتحتّم علينا أن نُحدّد كيف تُحتسب البواقي من حيث عمليّاتٍ أبسط، كالطرح. وفي الواقع، نستطيع كتابة إجراء Scheme يجد البواقي بهذه الطريقة:
 
 ```scheme
 (define (remainder n d)
   (if (< n d) n (remainder (- n d) d)))
 ```
 
-We can thus replace the remainder operation in the GCD machine’s data paths with a subtraction operation and a comparison test. [Figure 5.5](#Figure-5_002e5) shows the data paths and controller for the elaborated machine. The instruction
+وبوسعنا بذلك أن نستبدل عمليّة الباقي في مسارات بيانات آلة القاسم المشترك الأكبر بعمليّة طرحٍ واختبار مقارنة. يُظهر [الشكل 5.5](#Figure-5_002e5) مسارات البيانات والمتحكّم للآلة المطوّرة. والتعليمة
 
 ```scheme
 (assign t (op rem) (reg a) (reg b))
 ```
 
-in the GCD controller definition is replaced by a sequence of instructions that contains a loop, as shown in [Figure 5.6](#Figure-5_002e6).
+الواردة في تعريف متحكّم القاسم المشترك الأكبر تُستبدل بتتابعٍ من التعليمات يحتوي حلقة، كما هو موضّح في [الشكل 5.6](#Figure-5_002e6).
 
 ![](/images/sicp/c5-computing-with-register-machines-3-Fig5.5b.std.webp)
 
-**Figure 5.5:** Data paths and controller for the elaborated GCD machine.
+**الشكل 5.5:** مسارات البيانات والمتحكّم لآلة القاسم المشترك الأكبر المطوّرة.
 
-**Figure 5.6:** $↓$ Controller instruction sequence for the GCD machine in [Figure 5.5](#Figure-5_002e5).
+**الشكل 5.6:** $↓$ تتابع تعليمات المتحكّم الخاصّ بآلة القاسم المشترك الأكبر الواردة في [الشكل 5.5](#Figure-5_002e5).
 
 ```scheme
 (controller
@@ -188,7 +188,7 @@ in the GCD controller definition is replaced by a sequence of instructions that 
  gcd-done)
 ```
 
-**Exercise 5.3:** Design a machine to compute square roots using Newton’s method, as described in [1.1.7](https://sarabander.github.io/sicp/html/1_002e1.xhtml#Sec_002e1_002e1_002e7):
+**التمرين 5.3:** صمّم آلةً لاحتساب الجذور التربيعيّة باستخدام طريقة نيوتن، كما هي موصوفةٌ في [1.1.7](https://sarabander.github.io/sicp/html/1_002e1.xhtml#Sec_002e1_002e1_002e7):
 
 ```scheme
 (define (sqrt x)
@@ -203,19 +203,19 @@ in the GCD controller definition is replaced by a sequence of instructions that 
   (sqrt-iter 1.0))
 ```
 
-Begin by assuming that `good-enough?` and `improve` operations are available as primitives. Then show how to expand these in terms of arithmetic operations. Describe each version of the `sqrt` machine design by drawing a data-path diagram and writing a controller definition in the register-machine language.
+ابدأ بافتراض أنّ عمليّتَي `good-enough?` و`improve` متاحتان كأوّليّتين. ثم أظهر كيف يُمكن توسيع هاتين من حيث العمليّات الحسابيّة. واصف كلّ نسخةٍ من تصميم آلة `sqrt` برسم مخطّط مسار بياناتٍ وكتابة تعريف متحكّمٍ بلغة آلات المسجّلات.
 
-#### 5.1.3 Subroutines
+#### 5.1.3 الروتينات الفرعيّة
 
-When designing a machine to perform a computation, we would often prefer to arrange for components to be shared by different parts of the computation rather than duplicate the components. Consider a machine that includes two GCD computations—one that finds the GCD of the contents of registers `a` and `b` and one that finds the GCD of the contents of registers `c` and `d`. We might start by assuming we have a primitive `gcd` operation, then expand the two instances of `gcd` in terms of more primitive operations. [Figure 5.7](#Figure-5_002e7) shows just the GCD portions of the resulting machine’s data paths, without showing how they connect to the rest of the machine. The figure also shows the corresponding portions of the machine’s controller sequence.
+عند تصميم آلةٍ تؤدّي احتسابًا ما، كثيرًا ما نُفضّل أن نُرتّب أن تتقاسم أجزاءٌ مختلفةٌ من الاحتساب المكوّنات بدلًا من مضاعفتها. تأمّل آلةً تتضمّن احتسابين للقاسم المشترك الأكبر، أحدهما يجد القاسم المشترك الأكبر لمحتويات المسجّلين `a` و`b`، والآخر يجد القاسم المشترك الأكبر لمحتويات المسجّلين `c` و`d`. وقد نبدأ بافتراض أنّ لدينا عمليّة `gcd` أوّليّة، ثم نُوسّع نسختَي `gcd` من حيث عمليّاتٍ أكثر أوّليّةً. يُظهر [الشكل 5.7](#Figure-5_002e7) أجزاء القاسم المشترك الأكبر وحدها من مسارات بيانات الآلة الناتجة، دون أن يُظهر كيف تتّصل ببقيّة الآلة. ويُظهر الشكل أيضًا الأجزاء المقابلة من تتابع متحكّم الآلة.
 
 ![](/images/sicp/c5-computing-with-register-machines-4-Fig5.7b.std.webp)
 
-**Figure 5.7:** Portions of the data paths and controller sequence for a machine with two GCD computations.
+**الشكل 5.7:** أجزاء من مسارات البيانات وتتابع المتحكّم لآلةٍ ذات احتسابين للقاسم المشترك الأكبر.
 
-This machine has two remainder operation boxes and two boxes for testing equality. If the duplicated components are complicated, as is the remainder box, this will not be an economical way to build the machine. We can avoid duplicating the data-path components by using the same components for both GCD computations, provided that doing so will not affect the rest of the larger machine’s computation. If the values in registers `a` and `b` are not needed by the time the controller gets to `gcd-2` (or if these values can be moved to other registers for safekeeping), we can change the machine so that it uses registers `a` and `b`, rather than registers `c` and `d`, in computing the second GCD as well as the first. If we do this, we obtain the controller sequence shown in [Figure 5.8](#Figure-5_002e8).
+لهذه الآلة صندوقا عمليّة باقٍ وصندوقا اختبار تساو. فإن كانت المكوّنات المضاعفة معقّدة، كما هو حال صندوق الباقي، فلن تكون هذه طريقةً اقتصاديّةً لبناء الآلة. ونستطيع تجنّب مضاعفة مكوّنات مسار البيانات باستخدام المكوّنات ذاتها لاحتسابَي القاسم المشترك الأكبر، بشرط ألّا يؤثّر ذلك في بقيّة احتساب الآلة الكبرى. فإذا لم تكن القيم في المسجّلين `a` و`b` مطلوبةً بحلول الوقت الذي يصل فيه المتحكّم إلى `gcd-2` (أو إذا أُمكن نقل هذه القيم إلى مسجّلاتٍ أخرى لحفظها)، فنستطيع تغيير الآلة بحيث تستخدم المسجّلين `a` و`b`، بدلًا من المسجّلين `c` و`d`، في احتساب القاسم المشترك الأكبر الثاني كما الأوّل. فإن فعلنا ذلك، حصلنا على تتابع المتحكّم الموضّح في [الشكل 5.8](#Figure-5_002e8).
 
-**Figure 5.8:** $↓$ Portions of the controller sequence for a machine that uses the same data-path components for two different GCD computations.
+**الشكل 5.8:** $↓$ أجزاء من تتابع المتحكّم لآلةٍ تستخدم مكوّنات مسار البيانات ذاتها لاحتسابَي قاسمٍ مشترك أكبر مختلفين.
 
 ```scheme
 gcd-1
@@ -237,9 +237,9 @@ gcd-2
 after-gcd-2
 ```
 
-We have removed the duplicate data-path components (so that the data paths are again as in [Figure 5.1](#Figure-5_002e1)), but the controller now has two GCD sequences that differ only in their entry-point labels. It would be better to replace these two sequences by branches to a single sequence—a `gcd` *subroutine*—at the end of which we branch back to the correct place in the main instruction sequence. We can accomplish this as follows: Before branching to `gcd`, we place a distinguishing value (such as 0 or 1) into a special register, `continue`. At the end of the `gcd` subroutine we return either to `after-gcd-1` or to `after-gcd-2`, depending on the value of the `continue` register. [Figure 5.9](#Figure-5_002e9) shows the relevant portion of the resulting controller sequence, which includes only a single copy of the `gcd` instructions.
+لقد أزلنا مكوّنات مسار البيانات المضاعفة (بحيث صارت مسارات البيانات كما في [الشكل 5.1](#Figure-5_002e1) من جديد)، لكنّ المتحكّم يملك الآن تتابعَي قاسمٍ مشترك أكبر يختلفان في ملصقي نقطة دخولهما فقط. وكان الأفضل أن نستبدل هذين التتابعين بتفرّعاتٍ إلى تتابعٍ واحدٍ - وهو *روتين فرعيّ (subroutine)* باسم `gcd` - وفي نهايته نتفرّع عائدين إلى الموضع الصحيح في تتابع التعليمات الرئيس. ونستطيع إنجاز هذا على النحو الآتي: قبل التفرّع إلى `gcd`، نضع قيمةً مميّزة (مثل 0 أو 1) في مسجّلٍ خاصّ، هو `continue`. وعند نهاية الروتين الفرعيّ `gcd` نعود إمّا إلى `after-gcd-1` وإمّا إلى `after-gcd-2`، بحسب قيمة المسجّل `continue`. ويُظهر [الشكل 5.9](#Figure-5_002e9) الجزء المعنيّ من تتابع المتحكّم الناتج، الذي يتضمّن نسخةً واحدةً فقط من تعليمات `gcd`.
 
-**Figure 5.9:** $↓$ Using a `continue` register to avoid the duplicate controller sequence in [Figure 5.8](#Figure-5_002e8).
+**الشكل 5.9:** $↓$ استخدام مسجّل `continue` لتجنّب تتابع المتحكّم المضاعف الوارد في [الشكل 5.8](#Figure-5_002e8).
 
 ```scheme
 gcd
@@ -268,11 +268,11 @@ after-gcd-1
 after-gcd-2
 ```
 
-This is a reasonable approach for handling small problems, but it would be awkward if there were many instances of GCD computations in the controller sequence. To decide where to continue executing after the `gcd` subroutine, we would need tests in the data paths and branch instructions in the controller for all the places that use `gcd`. A more powerful method for implementing subroutines is to have the `continue` register hold the label of the entry point in the controller sequence at which execution should continue when the subroutine is finished. Implementing this strategy requires a new kind of connection between the data paths and the controller of a register machine: There must be a way to assign to a register a label in the controller sequence in such a way that this value can be fetched from the register and used to continue execution at the designated entry point.
+هذا منهجٌ معقولٌ لمعالجة المسائل الصغيرة، لكنّه سيكون عسيرًا لو كانت هناك نسخٌ كثيرةٌ من احتسابات القاسم المشترك الأكبر في تتابع المتحكّم. فلكي نقرّر أين نواصل التنفيذ بعد الروتين الفرعيّ `gcd`، كنّا سنحتاج إلى اختباراتٍ في مسار البيانات وتعليمات تفرّعٍ في المتحكّم لجميع المواضع التي تستخدم `gcd`. وأقوى منهجٍ لتنفيذ الروتينات الفرعيّة هو أن نُجعل المسجّل `continue` يحمل ملصق نقطة الدخول في تتابع المتحكّم التي ينبغي مواصلة التنفيذ عندها حين ينتهي الروتين الفرعيّ. وإنّ تنفيذ هذه الاستراتيجيّة يتطلّب نوعًا جديدًا من الوصل بين مسار البيانات ومتحكّم آلة المسجّلات: فيتحتّم أن تكون هناك طريقةٌ لإحلال ملصقٍ من تتابع المتحكّم في مسجّلٍ، بحيث يمكن جلب هذه القيمة من المسجّل واستخدامها لمواصلة التنفيذ عند نقطة الدخول المعيّنة.
 
-To reflect this ability, we will extend the `assign` instruction of the register-machine language to allow a register to be assigned as value a label from the controller sequence (as a special kind of constant). We will also extend the `goto` instruction to allow execution to continue at the entry point described by the contents of a register rather than only at an entry point described by a constant label. Using these new constructs we can terminate the `gcd` subroutine with a branch to the location stored in the `continue` register. This leads to the controller sequence shown in [Figure 5.10](#Figure-5_002e10).
+ولتعكس هذه القدرة، سنُوسّع تعليمة `assign` في لغة آلات المسجّلات لتسمح بأن يُحال إلى مسجّلٍ قيمةُ ملصقٍ من تتابع المتحكّم (كنوعٍ خاصٍّ من الثوابت). وسنُوسّع أيضًا تعليمة `goto` لتسمح بأن يواصل التنفيذ عند نقطة الدخول التي تصفها محتويات مسجّلٍ، لا عند نقطة الدخول التي يصفها ملصقٌ ثابتٌ فقط. وباستخدام هذين البناءين الجديدين نستطيع إنهاء الروتين الفرعيّ `gcd` بتفرّعٍ إلى الموضع المخزَّن في المسجّل `continue`. وهذا يؤدّي إلى تتابع المتحكّم الموضّح في [الشكل 5.10](#Figure-5_002e10).
 
-**Figure 5.10:** $↓$ Assigning labels to the `continue` register simplifies and generalizes the strategy shown in [Figure 5.9](#Figure-5_002e9).
+**الشكل 5.10:** $↓$ إنّ إحلال الملصقات إلى المسجّل `continue` يُبسّط الاستراتيجيّة الموضّحة في [الشكل 5.9](#Figure-5_002e9) ويُعمّمها.
 
 ```scheme
 gcd
@@ -299,13 +299,13 @@ after-gcd-1
 after-gcd-2
 ```
 
-A machine with more than one subroutine could use multiple continuation registers (e.g., `gcd-continue`, `factorial-continue`) or we could have all subroutines share a single `continue` register. Sharing is more economical, but we must be careful if we have a subroutine (`sub1`) that calls another subroutine (`sub2`). Unless `sub1` saves the contents of `continue` in some other register before setting up `continue` for the call to `sub2`, `sub1` will not know where to go when it is finished. The mechanism developed in the next section to handle recursion also provides a better solution to this problem of nested subroutine calls.
+والآلة التي لها أكثر من روتينٍ فرعيٍّ قد تستخدم مسجّلات استمرارٍ متعدّدة (مثلًا `gcd-continue` و`factorial-continue`)، أو يمكننا أن نجعل جميع الروتينات الفرعيّة تتقاسم مسجّل `continue` واحدًا. والتقاسم أكثر اقتصاديّة، لكن يتحتّم علينا أن نكون حذرين إذا كان لدينا روتين فرعيّ (`sub1`) ينادي روتينًا فرعيًّا آخر (`sub2`). فما لم يحفظ `sub1` محتويات `continue` في مسجّلٍ آخر قبل تهيئة `continue` للنداء إلى `sub2`، فلن يعرف `sub1` إلى أين يذهب حين ينتهي. والآليّة التي نُطوّرها في القسم التالي لمعالجة التعاوب تُوفّر أيضًا حلًّا أفضل لهذه مسألة نداءات الروتينات الفرعيّة المتداخلة.
 
-#### 5.1.4 Using a Stack to Implement Recursion
+#### 5.1.4 استخدام مكدسٍ لتنفيذ التعاوب
 
-With the ideas illustrated so far, we can implement any iterative process by specifying a register machine that has a register corresponding to each state variable of the process. The machine repeatedly executes a controller loop, changing the contents of the registers, until some termination condition is satisfied. At each point in the controller sequence, the state of the machine (representing the state of the iterative process) is completely determined by the contents of the registers (the values of the state variables).
+بالأفكار التي شُرِّحت حتّى الآن، نستطيع تنفيذ أيّ عمليّةٍ تكراريّةٍ بتحديد آلة مسجّلاتٍ لها مسجّلٌ يقابل كلّ متغيّر حالةٍ في العمليّة. فإنّ الآلة تُنفّذ مرّةً بعد مرّةٍ حلقة متحكّم، غالبةً محتويات المسجّلات، حتّى يتحقّق شرطٌ ما للإنهاء. وفي كلّ نقطةٍ في تتابع المتحكّم، تكون حالة الآلة (الممثّلة لحالة العمليّة التكراريّة) محدّدةً تمامًا بمحتويات المسجّلات (أي قيم متغيّرات الحالة).
 
-Implementing recursive processes, however, requires an additional mechanism. Consider the following recursive method for computing factorials, which we first examined in [1.2.1](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e1):
+أمّا تنفيذ العمليّات التعاوديّة فيتطلّب آليّةً إضافيّة. تأمّل الطريقة التعاوديّة التالية لاحتساب العامليّات، التي فحصناها أوّل مرّةٍ في [1.2.1](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e1):
 
 ```scheme
 (define (factorial n)
@@ -314,7 +314,7 @@ Implementing recursive processes, however, requires an additional mechanism. Con
       (* (factorial (- n 1)) n)))
 ```
 
-As we see from the procedure, computing $n !$ requires computing $( n − 1 ) !$ . Our GCD machine, modeled on the procedure
+فكما نرى من الإجراء، فإنّ احتساب $n !$ يتطلّب احتساب $( n − 1 ) !$ . وأمّا آلة القاسم المشترك الأكبر لدينا، المأخوذة نموذجها من الإجراء
 
 ```scheme
 (define (gcd a b)
@@ -323,29 +323,29 @@ As we see from the procedure, computing $n !$ requires computing $( n − 1 ) !$
       (gcd b (remainder a b))))
 ```
 
-similarly had to compute another GCD. But there is an important difference between the `gcd` procedure, which reduces the original computation to a new GCD computation, and `factorial`, which requires computing another factorial as a subproblem. In GCD, the answer to the new GCD computation is the answer to the original problem. To compute the next GCD, we simply place the new arguments in the input registers of the GCD machine and reuse the machine’s data paths by executing the same controller sequence. When the machine is finished solving the final GCD problem, it has completed the entire computation.
+فكان عليها بالمثل أن تحتسب قاسمًا مشتركًا أكبر آخر. لكن هناك فرقًا مهمًّا بين إجراء `gcd`، الذي يُختزل به الاحتساب الأصليّ إلى احتساب قاسمٍ مشترك أكبر جديد، و`factorial`، الذي يتطلّب احتساب عامليّاتٍ أخرى كمسألةٍ جزئيّة. أمّا في القاسم المشترك الأكبر فجواب احتساب القاسم المشترك الأكبر الجديد هو جواب المسألة الأصليّة. فلاحتساب القاسم المشترك الأكبر التالي، نضع ببساطة المعطيات الجديدة في مسجّلات مداخل آلة القاسم المشترك الأكبر ونعيد استخدام مسارات بيانات الآلة بتنفيذ تتابع المتحكّم ذاته. وحين تنتهي الآلة من حلّ مسألة القاسم المشترك الأكبر النهائيّة، تكون قد أكملت الاحتساب كلّه.
 
-In the case of factorial (or any recursive process) the answer to the new factorial subproblem is not the answer to the original problem. The value obtained for $( n − 1 ) !$ must be multiplied by $n$ to get the final answer. If we try to imitate the GCD design, and solve the factorial subproblem by decrementing the `n` register and rerunning the factorial machine, we will no longer have available the old value of `n` by which to multiply the result. We thus need a second factorial machine to work on the subproblem. This second factorial computation itself has a factorial subproblem, which requires a third factorial machine, and so on. Since each factorial machine contains another factorial machine within it, the total machine contains an infinite nest of similar machines and hence cannot be constructed from a fixed, finite number of parts.
+أمّا في حالة العامليّات (أو أيّ عمليّةٍ تعاوديّة) فجواب مسألة العامليّات الجزئيّة الجديدة ليس جواب المسألة الأصليّة. فإنّ القيمة المتحصّلة لـ$( n − 1 ) !$ يتحتّم ضربها في $n$ للحصول على الجواب النهائيّ. فإذا حاولنا محاكاة تصميم القاسم المشترك الأكبر، وحلّلنا مسألة العامليّات الجزئيّة بإنقاص المسجّل `n` وإعادة تشغيل آلة العامليّات، فلن تعود لدينا القيمة القديمة للمسجّل `n` التي تضرب النتيجة فيها. وبذلك، نحتاج إلى آلة عامليّاتٍ ثانيةٍ تعمل على المسألة الجزئيّة. وهذه الآلة الثانية للعامليّات يتحتّم لها هي ذاتها مسألة عامليّاتٍ جزئيّة، تتطلّب آلة عامليّاتٍ ثالثة، وهكذا. وبما أنّ كلّ آلة عامليّاتٍ تحتوي آلة عامليّاتٍ أخرى داخلها، فإنّ الآلة الكلّيّة تحتوي عشًّا لانهائيًّا من آلاتٍ ممائلة، ومن ثمّ فلا يمكن بناؤها من عددٍ ثابتٍ محدودٍ من الأجزاء.
 
-Nevertheless, we can implement the factorial process as a register machine if we can arrange to use the same components for each nested instance of the machine. Specifically, the machine that computes $n !$ should use the same components to work on the subproblem of computing $( n − 1 ) !$ , on the subproblem for $( n − 2 ) !$ , and so on. This is plausible because, although the factorial process dictates that an unbounded number of copies of the same machine are needed to perform a computation, only one of these copies needs to be active at any given time. When the machine encounters a recursive subproblem, it can suspend work on the main problem, reuse the same physical parts to work on the subproblem, then continue the suspended computation.
+ومع ذلك، نستطيع تنفيذ عمليّة العامليّات كآلة مسجّلاتٍ إذا أمكننا أن نُرتّب استخدام المكوّنات ذاتها لكلّ نسخةٍ متداخلةٍ من الآلة. وتحديدًا، فإنّ الآلة التي تحتسب $n !$ ينبغي أن تستخدم المكوّنات ذاتها للعمل على مسألة احتساب $( n − 1 ) !$ الجزئيّة، وعلى مسألة احتساب $( n − 2 ) !$ الجزئيّة، وهكذا. وهذا أمرٌ معقول، لأنّ عمليّة العامليّات وإن كانت تقتضي أنّ عددًا غير محدودٍ من نسخ الآلة ذاتها لازمٌ لأداء احتسابٍ ما، فإنّ واحدةً فقط من هذه النسخ يلزم أن تكون نشطةً في أيّ لحظةٍ معيّنة. فحين تواجه الآلة مسألةً تعاوديّةً جزئيّة، فيمكنها أن تُعلّق العمل على المسألة الرئيسة، وأن تعيد استخدام الأجزاء المادّيّة ذاتها للعمل على المسألة الجزئيّة، ثم تواصل الاحتساب المعلّق.
 
-In the subproblem, the contents of the registers will be different than they were in the main problem. (In this case the `n` register is decremented.) In order to be able to continue the suspended computation, the machine must save the contents of any registers that will be needed after the subproblem is solved so that these can be restored to continue the suspended computation. In the case of factorial, we will save the old value of `n`, to be restored when we are finished computing the factorial of the decremented `n` register.[^2]
+وفي المسألة الجزئيّة، ستكون محتويات المسجّلات مختلفةً عمّا كانت عليه في المسألة الرئيسة. (وفي هذه الحالة، يُنقَص المسجّل `n`.) ولكي يصبح ممكنًا مواصلة الاحتساب المعلّق، يتحتّم على الآلة أن تحفظ محتويات أيّ مسجّلاتٍ ستكون مطلوبةً بعد حلّ المسألة الجزئيّة، بحيث يمكن استعادتها لمواصلة الاحتساب المعلّق. وفي حالة العامليّات، سنحفظ القيمة القديمة للمسجّل `n`، لتُستعاد حين ننتهي من احتساب عامليّات المسجّل `n` المنقوص.[^2]
 
-Since there is no *a priori* limit on the depth of nested recursive calls, we may need to save an arbitrary number of register values. These values must be restored in the reverse of the order in which they were saved, since in a nest of recursions the last subproblem to be entered is the first to be finished. This dictates the use of a *stack*, or “last in, first out” data structure, to save register values. We can extend the register-machine language to include a stack by adding two kinds of instructions: Values are placed on the stack using a `save` instruction and restored from the stack using a `restore` instruction. After a sequence of values has been `save`d on the stack, a sequence of `restore`s will retrieve these values in reverse order.[^3]
+وبما أنّ ليس هناك حدٌّ *أوّليّ (a priori)* لعمق نداءات التعاوب المتداخلة، فقد نحتاج إلى حفظ عددٍ اعتباطيٍّ من قيم المسجّلات. وهذه القيم يتحتّم استعادتها بالعكس من الترتيب الذي حُفظت به، إذ في عشّ التعاوبات تكون المسألة الجزئيّة الأخيرة دخولًا أوّلها انتهاءً. وهذا يمليّ استخدام *مكدس (stack)*، أو بنية بيانات «آخر داخل، أوّل خارج»، لحفظ قيم المسجّلات. ونستطيع توسيع لغة آلات المسجّلات لتتضمّن مكدسًا بإضافة نوعين من التعليمات: فالقيم تُوضَع على المكدس باستخدام تعليمة `save` وتُستعاد من المكدس باستخدام تعليمة `restore`. وبعد أن يكون تتابعٌ من القيم قد حُفظ بـ`save` على المكدس، فإنّ تتابعًا من تعليمات `restore` سيسترجع هذه القيم بالترتيب العكسيّ.[^3]
 
-With the aid of the stack, we can reuse a single copy of the factorial machine’s data paths for each factorial subproblem. There is a similar design issue in reusing the controller sequence that operates the data paths. To reexecute the factorial computation, the controller cannot simply loop back to the beginning, as with an iterative process, because after solving the $( n − 1 ) !$ subproblem the machine must still multiply the result by $n$ . The controller must suspend its computation of $n !$ , solve the $( n − 1 ) !$ subproblem, then continue its computation of $n !$ . This view of the factorial computation suggests the use of the subroutine mechanism described in [5.1.3](#g_t5_002e1_002e3), which has the controller use a `continue` register to transfer to the part of the sequence that solves a subproblem and then continue where it left off on the main problem. We can thus make a factorial subroutine that returns to the entry point stored in the `continue` register. Around each subroutine call, we save and restore `continue` just as we do the `n` register, since each “level” of the factorial computation will use the same `continue` register. That is, the factorial subroutine must put a new value in `continue` when it calls itself for a subproblem, but it will need the old value in order to return to the place that called it to solve a subproblem.
+وبمعونة المكدس، نستطيع إعادة استخدام نسخةٍ واحدةٍ من مسارات بيانات آلة العامليّات لكلّ مسألة عامليّاتٍ جزئيّة. وهناك مسألة تصميمٍ ممائلة في إعادة استخدام تتابع المتحكّم الذي يُشغّل مسارات البيانات. فلإعادة تنفيذ احتساب العامليّات، لا يستطيع المتحكّم أن يعود إلى البداية بمجرّد حلقةٍ، كما في العمليّة التكراريّة، لأنّه بعد حلّ مسألة $( n − 1 ) !$ الجزئيّة ينبغي أن تضرب الآلة النتيجة في $n$ بعد. ويتحتّم على المتحكّم أن يُعلّق احتسابه لـ$n !$ ، وأن يحلّ مسألة $( n − 1 ) !$ الجزئيّة، ثم يواصل احتسابه لـ$n !$ . وهذه النظرة إلى احتساب العامليّات تُشير إلى استخدام آليّة الروتينات الفرعيّة الموصوفة في [5.1.3](#g_t5_002e1_002e3)، التي تجعل المتحكّم يستخدم مسجّل `continue` للانتقال إلى الجزء من التتابع الذي يحلّ مسألةً جزئيّة ثم يواصل من حيث توقّف عن المسألة الرئيسة. ونستطيع بذلك أن نصنع روتينًا فرعيًّا للعامليّات يعود إلى نقطة الدخول المخزَّنة في المسجّل `continue`. وفي حوالي كلّ نداءٍ للروتين الفرعيّ، نحفظ `continue` ونستعيده كما نفعل مع المسجّل `n`، إذ إنّ كلّ «مستوى» من احتساب العامليّات سيستخدم المسجّل `continue` ذاته. أي إنّ الروتين الفرعيّ للعامليّات يتحتّم أن يضع قيمةً جديدة في `continue` حين ينادي ذاته من أجل مسألةٍ جزئيّة، لكنّه سيحتاج إلى القيمة القديمة لكي يعود إلى الموضع الذي ناداه لحلّ مسألةٍ جزئيّة.
 
-[Figure 5.11](#Figure-5_002e11) shows the data paths and controller for a machine that implements the recursive `factorial` procedure. The machine has a stack and three registers, called `n`, `val`, and `continue`. To simplify the data-path diagram, we have not named the register-assignment buttons, only the stack-operation buttons (`sc` and `sn` to save registers, `rc` and `rn` to restore registers). To operate the machine, we put in register `n` the number whose factorial we wish to compute and start the machine. When the machine reaches `fact-done`, the computation is finished and the answer will be found in the `val` register. In the controller sequence, `n` and `continue` are saved before each recursive call and restored upon return from the call. Returning from a call is accomplished by branching to the location stored in `continue`. `Continue` is initialized when the machine starts so that the last return will go to `fact-done`. The `val` register, which holds the result of the factorial computation, is not saved before the recursive call, because the old contents of `val` is not useful after the subroutine returns. Only the new value, which is the value produced by the subcomputation, is needed.
+يُظهر [الشكل 5.11](#Figure-5_002e11) مسارات البيانات والمتحكّم لآلةٍ تُنفّذ إجراء `factorial` التعاوديّ. وللآلة مكدسٌ وثلاثة مسجّلات، تُسمّى `n` و`val` و`continue`. ولكي نبسّط مخطّط مسار البيانات، لم نُسمِّ أزرار إحلال المسجّلات، بل أزرار عمليّات المكدس وحدها (`sc` و`sn` لحفظ المسجّلات، `rc` و`rn` لاستعادتها). ولتشغيل الآلة، نضع في المسجّل `n` العدد الذي نريد احتساب عامليّاته ونُشغّل الآلة. وحين تصل الآلة إلى `fact-done`، يكون الاحتساب قد انتهى وسيوجد الجواب في المسجّل `val`. وفي تتابع المتحكّم، يُحفظ المسجّلان `n` و`continue` قبل كلّ نداءٍ تعاوديّ ويُستعادان عند العودة من النداء. وتتمّ العودة من نداءٍ بالتفرّع إلى الموضع المخزَّن في `continue`. ويُهيَّأ المسجّل `Continue` عند بدء تشغيل الآلة بحيث تكون العودة الأخيرة إلى `fact-done`. وأمّا المسجّل `val`، الذي يحمل نتيجة احتساب العامليّات، فلا يُحفظ قبل النداء التعاوديّ، لأنّ المحتويات القديمة للمسجّل `val` غير مفيدةٍ بعد عودة الروتين الفرعيّ. والقيمة الجديدة وحدها، وهي القيمة التي يُنتجها الاحتساب الجزئيّ، هي المطلوبة.
 
 ![](/images/sicp/c5-computing-with-register-machines-5-Fig5.11b.std.webp)
 
-**Figure 5.11:** A recursive factorial machine.
+**الشكل 5.11:** آلة عامليّاتٍ تعاوديّة.
 
-Although in principle the factorial computation requires an infinite machine, the machine in [Figure 5.11](#Figure-5_002e11) is actually finite except for the stack, which is potentially unbounded. Any particular physical implementation of a stack, however, will be of finite size, and this will limit the depth of recursive calls that can be handled by the machine. This implementation of factorial illustrates the general strategy for realizing recursive algorithms as ordinary register machines augmented by stacks. When a recursive subproblem is encountered, we save on the stack the registers whose current values will be required after the subproblem is solved, solve the recursive subproblem, then restore the saved registers and continue execution on the main problem. The `continue` register must always be saved. Whether there are other registers that need to be saved depends on the particular machine, since not all recursive computations need the original values of registers that are modified during solution of the subproblem (see [Exercise 5.4](#Exercise-5_002e4)).
+ومع أنّ احتساب العامليّات يتطلّب من حيث المبدأ آلةً لانهائيّة، فإنّ الآلة الواردة في [الشكل 5.11](#Figure-5_002e11) محدودةٌ فعلًا ما عدا المكدس، الذي هو غير محدودٍ على نحوٍ محتمل. غير أنّ أيّ تنفيذٍ مادّيٍّ معيّنٍ للمكدس سيكون محدود الحجم، وهذا سيحدّ من عمق نداءات التعاوب التي تستطيع الآلة معالجتها. وهذا التنفيذ للعامليّات يوضّح الاستراتيجيّة العامّة لتحقيق الخوارزميّات التعاوديّة كآلات مسجّلاتٍ عاديّةٍ معزَّزةٍ بمكادس. فحين تُواجَه مسألةٌ تعاوديّةٌ جزئيّة، نحفظ على المكدس المسجّلات التي ستكون قيمُها الحالية مطلوبةً بعد حلّ المسألة الجزئيّة، ونحلّ المسألة التعاوديّة الجزئيّة، ثم نستعيد المسجّلات المحفوظة ونواصل التنفيذ على المسألة الرئيسة. ومسجّل `continue` يتحتّم حفظه دائمًا. وأمّا ما إذا كانت هناك مسجّلاتٌ أخرى يلزم حفظها فيعتمد على الآلة المعيّنة، إذ إنّ ليست جميع الاحتسابات التعاوبيّة تحتاج القيم الأصليّة للمسجّلات التي تُغيَّر أثناء حلّ المسألة الجزئيّة (انظر [التمرين 5.4](#Exercise-5_002e4)).
 
-#### A double recursion
+#### تعاوبٌ مزدوج
 
-Let us examine a more complex recursive process, the tree-recursive computation of the Fibonacci numbers, which we introduced in [1.2.2](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e2):
+لِنفحص عمليّةً تعاوديّةً أكثر تعقيدًا، وهي الاحتساب التعاوديّ الشجريّ لأعداد فيبوناتشي، الذي عرّفناه في [1.2.2](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e2):
 
 ```scheme
 (define (fib n)
@@ -354,9 +354,9 @@ Let us examine a more complex recursive process, the tree-recursive computation 
       (+ (fib (- n 1)) (fib (- n 2)))))
 ```
 
-Just as with factorial, we can implement the recursive Fibonacci computation as a register machine with registers `n`, `val`, and `continue`. The machine is more complex than the one for factorial, because there are two places in the controller sequence where we need to perform recursive calls—once to compute $Fib ( n − 1 )$ and once to compute $Fib ( n − 2 )$ . To set up for each of these calls, we save the registers whose values will be needed later, set the `n` register to the number whose Fib we need to compute recursively ( $n − 1$ or $n − 2$ ), and assign to `continue` the entry point in the main sequence to which to return (`afterfib-n-1` or `afterfib-n-2`, respectively). We then go to `fib-loop`. When we return from the recursive call, the answer is in `val`. [Figure 5.12](#Figure-5_002e12) shows the controller sequence for this machine.
+تمامًا كما هو الحال مع العامليّات، نستطيع تنفيذ الاحتساب التعاوديّ لفيبوناتشي كآلة مسجّلاتٍ ذات مسجّلات `n` و`val` و`continue`. والآلة أكثر تعقيدًا من آلة العامليّات، لأنّه هناك موضعان في تتابع المتحكّم نحتاج فيهما إلى أداء نداءات تعاوديّة - مرّةً لاحتساب $Fib ( n − 1 )$ ومرّةً لاحتساب $Fib ( n − 2 )$ . ولكي نتهيّأ لكلّ نداءٍ من هذين النداءين، نحفظ المسجّلات التي ستكون قيمُها مطلوبةً لاحقًا، ونضع المسجّل `n` على العدد الذي نحتاج إلى احتساب Fib له تعاوديًّا ( $n − 1$ أو $n − 2$ )، ونُحيل إلى `continue` نقطة الدخول في التتابع الرئيس التي نعود إليها (`afterfib-n-1` أو `afterfib-n-2`، على الترتيب). ثم نذهب إلى `fib-loop`. وحين نعود من النداء التعاوديّ، يكون الجواب في `val`. ويُظهر [الشكل 5.12](#Figure-5_002e12) تتابع المتحكّم لهذه الآلة.
 
-**Figure 5.12:** $↓$ Controller for a machine to compute Fibonacci numbers.
+**الشكل 5.12:** $↓$ متحكّم آلةٍ لاحتساب أعداد فيبوناتشي.
 
 ```scheme
 (controller
@@ -401,9 +401,9 @@ Just as with factorial, we can implement the recursive Fibonacci computation as 
  fib-done)
 ```
 
-**Exercise 5.4:** Specify register machines that implement each of the following procedures. For each machine, write a controller instruction sequence and draw a diagram showing the data paths.
+**التمرين 5.4:** حدّد آلات مسجّلاتٍ تُنفّذ كلّ إجراءٍ من الإجراءات التالية. ولكلّ آلةٍ، اكتب تتابع تعليمات متحكّمٍ وارسم مخطّطًا يُظهر مسارات البيانات.
 
-Recursive exponentiation:
+الرفع التعاوديّ إلى قوّة:
 
 ```scheme
 (define (expt b n)
@@ -412,7 +412,7 @@ Recursive exponentiation:
       (* b (expt b (- n 1)))))
 ```
 
-Iterative exponentiation:
+الرفع التكراريّ إلى قوّة:
 
 ```scheme
 (define (expt b n)
@@ -424,13 +424,13 @@ Iterative exponentiation:
   (expt-iter n 1))
 ```
 
-> **Exercise 5.5:** Hand-simulate the factorial and Fibonacci machines, using some nontrivial input (requiring execution of at least one recursive call). Show the contents of the stack at each significant point in the execution.
+> **التمرين 5.5:** حاكِ آلة العامليّات وآلة فيبوناتشي يدويًّا، مستخدِمًا مدخلًا غير تافه (يتطلّب تنفيذ نداءٍ تعاوديّ واحدٍ على الأقلّ). وأظهر محتويات المكدس عند كلّ نقطةٍ هامّةٍ في التنفيذ.
 
-> **Exercise 5.6:** Ben Bitdiddle observes that the Fibonacci machine’s controller sequence has an extra `save` and an extra `restore`, which can be removed to make a faster machine. Where are these instructions?
+> **التمرين 5.6:** يلاحظ بن بِتدل أنّ تتابع متحكّم آلة فيبوناتشي يملك `save` زائدةً و`restore` زائدة، يمكن إزالتهما لجعل الآلة أسرع. فأين هاتان التعليمتان؟
 
-#### 5.1.5 Instruction Summary
+#### 5.1.5 ملخّص التعليمات
 
-A controller instruction in our register-machine language has one of the following forms, where each $⟨ i n p u t_{i} ⟩$ is either `(reg ⟨register-name⟩)` or `(const ⟨constant-value⟩)`. These instructions were introduced in [5.1.1](#g_t5_002e1_002e1):
+التعليمة المتحكِّمة في لغة آلات المسجّلات لدينا تأخذ إحدى الصيغ التالية، حيث كلّ $⟨ i n p u t_{i} ⟩$ هو إمّا `(reg ⟨register-name⟩)` وإمّا `(const ⟨constant-value⟩)`. وقد طُرحت هذه التعليمات في [5.1.1](#g_t5_002e1_002e1):
 
 ```scheme
 (assign ⟨register-name⟩ (reg ⟨register-name⟩))
@@ -451,25 +451,25 @@ A controller instruction in our register-machine language has one of the followi
 (goto (label ⟨label-name⟩))
 ```
 
-The use of registers to hold labels was introduced in [5.1.3](#g_t5_002e1_002e3):
+وقد طُرح استخدام المسجّلات لحفظ الملصقات في [5.1.3](#g_t5_002e1_002e3):
 
 ```scheme
 (assign ⟨register-name⟩ (label ⟨label-name⟩))
 (goto (reg ⟨register-name⟩))
 ```
 
-Instructions to use the stack were introduced in [5.1.4](#g_t5_002e1_002e4):
+وقد طُرحت تعليمات استخدام المكدس في [5.1.4](#g_t5_002e1_002e4):
 
 ```scheme
 (save ⟨register-name⟩)
 (restore ⟨register-name⟩)
 ```
 
-The only kind of `⟨`constant-value`⟩` we have seen so far is a number, but later we will use strings, symbols, and lists. For example, `(const "abc")` is the string `"abc"`, `(const abc)` is the symbol `abc`, `(const (a b c))` is the list `(a b c)`, and `(const ())` is the empty list.
+أمّا النوع الوحيد من `⟨`constant-value`⟩` الذي رأيناه حتّى الآن فهو العدد، لكنّنا سنستخدم لاحقًا السلاسل والرموز والقوائم. فمثلًا، `(const "abc")` هو السلسلة `"abc"`، و`(const abc)` هو الرمز `abc`، و`(const (a b c))` هو القائمة `(a b c)`، و`(const ())` هو القائمة الخالية.
 
-### 5.2 A Register-Machine Simulator
+### 5.2 محاكي آلة مسجّلات
 
-In order to gain a good understanding of the design of register machines, we must test the machines we design to see if they perform as expected. One way to test a design is to hand-simulate the operation of the controller, as in [Exercise 5.5](https://sarabander.github.io/sicp/html/5_002e1.xhtml#Exercise-5_002e5). But this is extremely tedious for all but the simplest machines. In this section we construct a simulator for machines described in the register-machine language. The simulator is a Scheme program with four interface procedures. The first uses a description of a register machine to construct a model of the machine (a data structure whose parts correspond to the parts of the machine to be simulated), and the other three allow us to simulate the machine by manipulating the model:
+ولنكتسب فهمًا حسنًا لتصميم آلات المسجّلات، يتحتّم علينا أن نختبر الآلات التي نصمّمها لنرى ما إذا كانت تؤدّي كما هو متوقّع. وإحدى طرق اختبار تصميمٍ هي محاكاة تشغيل المتحكّم يدويًّا، كما في [التمرين 5.5](https://sarabander.github.io/sicp/html/5_002e1.xhtml#Exercise-5_002e5). لكنّ هذا أمرٌ بالغ المملّة في جميع الآلات ما عدا أبسطها. ونبني في هذا القسم محاكيًا للآلات الموصوفة بلغة آلات المسجّلات. والمحاكي برنامج Scheme فيه أربعة إجراءات واجهة. فالأوّل يستخدم وصف آلة مسجّلاتٍ لبناء نموذج للآلة (بنية بياناتٍ أجزاؤها تقابل أجزاء الآلة التي تُحاكى)، والثلاثة الأخرى تسمح لنا بمحاكاة الآلة بالتلاعب بالنموذج:
 
 ```scheme
 (make-machine ⟨register-names⟩
@@ -477,7 +477,7 @@ In order to gain a good understanding of the design of register machines, we mus
               ⟨controller⟩)
 ```
 
-constructs and returns a model of the machine with the given registers, operations, and controller.
+يبني نموذجًا للآلة ذات المسجّلات والعمليّات والمتحكّم المعطاة، ويُعيده.
 
 ```scheme
 (set-register-contents! ⟨machine-model⟩ 
@@ -485,22 +485,22 @@ constructs and returns a model of the machine with the given registers, operatio
                         ⟨value⟩)
 ```
 
-stores a value in a simulated register in the given machine.
+يُخزّن قيمةً في مسجّلٍ محاكىً في الآلة المعطاة.
 
 ```scheme
 (get-register-contents ⟨machine-model⟩
                        ⟨register-name⟩)
 ```
 
-returns the contents of a simulated register in the given machine.
+يُعيد محتويات مسجّلٍ محاكىً في الآلة المعطاة.
 
 ```scheme
 (start ⟨machine-model⟩)
 ```
 
-simulates the execution of the given machine, starting from the beginning of the controller sequence and stopping when it reaches the end of the sequence.
+يحاكي تنفيذ الآلة المعطاة، بدءًا من بداية تسلسل المتحكّم وتوقّفًا حين يبلغ نهاية التسلسل.
 
-As an example of how these procedures are used, we can define `gcd-machine` to be a model of the GCD machine of [5.1.1](https://sarabander.github.io/sicp/html/5_002e1.xhtml#g_t5_002e1_002e1) as follows:
+ومثالٌ على كيفيّة استخدام هذه الإجراءات، يمكننا تعريف `gcd-machine` ليكون نموذجًا لآلة GCD الواردة في [5.1.1](https://sarabander.github.io/sicp/html/5_002e1.xhtml#g_t5_002e1_002e1) كما يلي:
 
 ```scheme
 (define gcd-machine
@@ -517,9 +517,9 @@ As an example of how these procedures are used, we can define `gcd-machine` to b
      gcd-done)))
 ```
 
-The first argument to `make-machine` is a list of register names. The next argument is a table (a list of two-element lists) that pairs each operation name with a Scheme procedure that implements the operation (that is, produces the same output value given the same input values). The last argument specifies the controller as a list of labels and machine instructions, as in [5.1](https://sarabander.github.io/sicp/html/5_002e1.xhtml#g_t5_002e1).
+المَعطى الأوّل إلى `make-machine` هو قائمةٌ بأسماء المسجّلات. والمَعطى التالي هو جدول (قائمةٌ من قوائمٍ ثنائيّة العناصر) يُقرن كلّ اسم عمليّةٍ فيه بإجراءٍ من Scheme يُنفّذ تلك العمليّة (أي يُنتج قيمة الخرج ذاتها عند إعطائه قيم الدخل ذاتها). وأمّا المَعطى الأخير فيحدّد المتحكّم على هيئة قائمةٍ من اللصائق وتعليمات الآلة، كما في [5.1](https://sarabander.github.io/sicp/html/5_002e1.xhtml#g_t5_002e1).
 
-To compute GCDs with this machine, we set the input registers, start the machine, and examine the result when the simulation terminates:
+ولحساب القواسم المشتركة الكبرى بهذه الآلة، نُعيّن محتويات مسجّلات الدخل، ونُشغّل الآلة، وندرس النتيجة حين تنتهي المحاكاة:
 
 ```scheme
 (set-register-contents! gcd-machine 'a 206)
@@ -535,15 +535,15 @@ done
 2
 ```
 
-This computation will run much more slowly than a `gcd` procedure written in Scheme, because we will simulate low-level machine instructions, such as `assign`, by much more complex operations.
+وسيجرى هذا الاحتساب أبطأَ بكثيرٍ من إجراء `gcd` مكتوبٍ بـScheme، لأنّنا سنحاكي تعليمات آلةٍ منخفضة المستوى، مثل `assign`، بعمليّاتٍ أعقدَ بكثيرٍ.
 
-> **Exercise 5.7:** Use the simulator to test the machines you designed in [Exercise 5.4](https://sarabander.github.io/sicp/html/5_002e1.xhtml#Exercise-5_002e4).
+> **التمرين 5.7:** استخدم المُحاكي لاختبار الآلات التي صمّمتها في [التمرين 5.4](https://sarabander.github.io/sicp/html/5_002e1.xhtml#Exercise-5_002e4).
 
-#### 5.2.1 The Machine Model
+#### 5.2.1 نموذج الآلة
 
-The machine model generated by `make-machine` is represented as a procedure with local state using the message-passing techniques developed in [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3). To build this model, `make-machine` begins by calling the procedure `make-new-machine` to construct the parts of the machine model that are common to all register machines. This basic machine model constructed by `make-new-machine` is essentially a container for some registers and a stack, together with an execution mechanism that processes the controller instructions one by one.
+نموذج الآلة الذي يولّده `make-machine` مُمثَّلٌ بإجراءٍ ذي حالة محلّيّة، باستخدام تقنيّات تمرير الرسائل المطوّرة في [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3). فلبناء هذا النموذج، يبدأ `make-machine` بنداء الإجراء `make-new-machine` لبناء أجزاء نموذج الآلة المشتركة بين جميع آلات المسجّلات. وهذا النموذج الأساسيّ للآلة الذي يبنيه `make-new-machine` هو في جوهره حاوٍ لبعض المسجّلات ومكدس، إلى جانب آليّة تنفيذٍ تعالج تعليمات المتحكّم واحدةً واحدة.
 
-`Make-machine` then extends this basic model (by sending it messages) to include the registers, operations, and controller of the particular machine being defined. First it allocates a register in the new machine for each of the supplied register names and installs the designated operations in the machine. Then it uses an *assembler* (described below in [5.2.2](#g_t5_002e2_002e2)) to transform the controller list into instructions for the new machine and installs these as the machine’s instruction sequence. `Make-machine` returns as its value the modified machine model.
+ثم يمدّ `Make-machine` هذا النموذج الأساسيّ (بإرسال رسائل إليه) ليشمل مسجّلات الآلة المعيّنة وعمليّاتها ومتحكّمها. فأوّلًا يُخصِّص مسجّلًا في الآلة الجديدة لكلّ اسمٍ من أسماء المسجّلات المعطاة ويثبّت العمليّات المعيّنة في الآلة. ثم يستخدم *مُجمِّعًا (assembler)* (موصوفًا أدناه في [5.2.2](#g_t5_002e2_002e2)) لتحويل قائمة المتحكّم إلى تعليماتٍ للآلة الجديدة ويثبّتها بوصفها تسلسل تعليمات الآلة. ويُعيد `Make-machine` نموذج الآلة المعدَّل قيمةً له.
 
 ```scheme
 (define (make-machine register-names 
@@ -560,9 +560,9 @@ The machine model generated by `make-machine` is represented as a procedure with
     machine))
 ```
 
-#### Registers
+#### المسجّلات
 
-We will represent a register as a procedure with local state, as in [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3). The procedure `make-register` creates a register that holds a value that can be accessed or changed:
+وسنمثّل المسجّل بإجراءٍ ذي حالة محلّيّة، كما في [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3). فالإجراء `make-register` يُنشئ مسجّلًا يحتفظ بقيمةٍ يمكن الاطلاع عليها أو تغييرها:
 
 ```scheme
 (define (make-register name)
@@ -579,7 +579,7 @@ We will represent a register as a procedure with local state, as in [Chapter 3](
     dispatch))
 ```
 
-The following procedures are used to access registers:
+والإجراءات التالية تُستخدم للوصول إلى المسجّلات:
 
 ```scheme
 (define (get-contents register)
@@ -589,9 +589,9 @@ The following procedures are used to access registers:
   ((register 'set) value))
 ```
 
-#### The stack
+#### المكدس
 
-We can also represent a stack as a procedure with local state. The procedure `make-stack` creates a stack whose local state consists of a list of the items on the stack. A stack accepts requests to `push` an item onto the stack, to `pop` the top item off the stack and return it, and to `initialize` the stack to empty.
+ويمكننا أيضًا تمثيل المكدس بإجراءٍ ذي حالة محلّيّة. فالإجراء `make-stack` يُنشئ مكدسًا تتألّف حالته المحليّة من قائمةٍ بالعناصر الموجودة في المكدس. ويقبل المكدس طلبات `push` عنصرًا إلى المكدس، و`pop` العنصر الأعلى من المكدس وإعادته، و`initialize` المكدس ليصبح فارغًا.
 
 ```scheme
 (define (make-stack)
@@ -618,7 +618,7 @@ We can also represent a stack as a procedure with local state. The procedure `ma
     dispatch))
 ```
 
-The following procedures are used to access stacks:
+والإجراءات التالية تُستخدم للوصول إلى الأكداس:
 
 ```scheme
 (define (pop stack) (stack 'pop))
@@ -626,11 +626,11 @@ The following procedures are used to access stacks:
   ((stack 'push) value))
 ```
 
-#### The basic machine
+#### الآلة الأساسيّة
 
-The `make-new-machine` procedure, shown in [Figure 5.13](#Figure-5_002e13), constructs an object whose local state consists of a stack, an initially empty instruction sequence, a list of operations that initially contains an operation to initialize the stack, and a *register table* that initially contains two registers, named `flag` and `pc` (for “program counter”). The internal procedure `allocate-register` adds new entries to the register table, and the internal procedure `lookup-register` looks up registers in the table.
+يبني الإجراء `make-new-machine`، المبيَّن في [الشكل 5.13](#Figure-5_002e13)، كائنًا تتألّف حالته المحليّة من مكدس، وتسلسل تعليماتٍ فارغٍ في بادئ الأمر، وقائمةٍ من العمليّات تحتوي في بادئ الأمر على عمليّةٍ لتهيئة المكدس، و*جدول مسجّلات* يحتوي في بادئ الأمر على مسجّلين، يُسمّيان `flag` و`pc` (اختصارًا لـ«عدّاد البرنامج»). ويُضيف الإجراء الداخليّ `allocate-register` مُدخلاتٍ جديدة إلى جدول المسجّلات، ويَبحَث الإجراء الداخليّ `lookup-register` عن المسجّلات في الجدول.
 
-**Figure 5.13:** $↓$ The `make-new-machine` procedure, which implements the basic machine model.
+**الشكل 5.13:** $↓$ الإجراء `make-new-machine`، الذي يُنفّذ نموذج الآلة الأساسيّ.
 
 ```scheme
 (define (make-new-machine)
@@ -704,15 +704,15 @@ The `make-new-machine` procedure, shown in [Figure 5.13](#Figure-5_002e13), cons
       dispatch)))
 ```
 
-The `flag` register is used to control branching in the simulated machine. `Test` instructions set the contents of `flag` to the result of the test (true or false). `Branch` instructions decide whether or not to branch by examining the contents of `flag`.
+يُستخدم المسجّل `flag` للتحكّم في التفرّع في الآلة المحاكاة. فتعليمات `Test` تضبط محتويات `flag` بنتيجة الاختبار (صحيحة أو خاطئة). وتقرّر تعليمات `Branch` ما إذا كانت ستتفرّع أم لا بفحص محتويات `flag`.
 
-The `pc` register determines the sequencing of instructions as the machine runs. This sequencing is implemented by the internal procedure `execute`. In the simulation model, each machine instruction is a data structure that includes a procedure of no arguments, called the *instruction execution procedure*, such that calling this procedure simulates executing the instruction. As the simulation runs, `pc` points to the place in the instruction sequence beginning with the next instruction to be executed. `Execute` gets that instruction, executes it by calling the instruction execution procedure, and repeats this cycle until there are no more instructions to execute (i.e., until `pc` points to the end of the instruction sequence).
+يحدّد المسجّل `pc` تتابع التعليمات أثناء جريان الآلة. وهذا التتابع مُنفَّذٌ بالإجراء الداخليّ `execute`. ففي نموذج المحاكاة، كلّ تعليمة آلةٍ هي بنية بيانات تتضمّن إجراءً بلا معطيات، يُسمّى *إجراء تنفيذ التعليمة (instruction execution procedure)*، بحيث إنّ نداء هذا الإجراء يحاكي تنفيذ التعليمة. وأثناء جريان المحاكاة، يُشير `pc` إلى المكان في تسلسل التعليمات الذي تبدأ فيه التعليمة التالية المراد تنفيذها. و`Execute` يجلب تلك التعليمة، ويَنفّذها بنداء إجراء تنفيذ التعليمة، ويكرّر هذه الدورة حتّى لا تبقى تعليماتٌ لتنفيذها (أي حتّى يُشير `pc` إلى نهاية تسلسل التعليمات).
 
-As part of its operation, each instruction execution procedure modifies `pc` to indicate the next instruction to be executed. `Branch` and `goto` instructions change `pc` to point to the new destination. All other instructions simply advance `pc`, making it point to the next instruction in the sequence. Observe that each call to `execute` calls `execute` again, but this does not produce an infinite loop because running the instruction execution procedure changes the contents of `pc`.
+كجزءٍ من عمليّته، يُعدّل كلّ إجراءٍ لتنفيذ تعليمةٍ المسجّل `pc` للإشارة إلى التعليمة التالية المراد تنفيذها. فتعليمات `Branch` و`goto` تُغيّران `pc` ليُشير إلى الوجهة الجديدة. وجميع التعليمات الأخرى تُقدّم `pc` تقدّمًا بسيطًا، فتجعلُه يُشير إلى التعليمة التالية في التسلسل. ولاحِظ أنّ كلّ نداءٍ لـ`execute` يَنداء `execute` مرّةً أخرى، لكنّ هذا لا يُنتج حلقةً لا نهائيّةً لأنّ تشغيل إجراء تنفيذ التعليمة يُغيّر محتويات `pc`.
 
-`Make-new-machine` returns a `dispatch` procedure that implements message-passing access to the internal state. Notice that starting the machine is accomplished by setting `pc` to the beginning of the instruction sequence and calling `execute`.
+يُعيد `Make-new-machine` إجراء `dispatch` يُنفّذ وصولاً بتمرير الرسائل إلى الحالة الداخليّة. ولاحِظ أنّ تشغيل الآلة يُنجَز بتعيين `pc` إلى بداية تسلسل التعليمات ونداء `execute`.
 
-For convenience, we provide an alternate procedural interface to a machine’s `start` operation, as well as procedures to set and examine register contents, as specified at the beginning of [5.2](#g_t5_002e2):
+وللتيسير، نوفّر واجهةً إجراءيّةً بديلةً لعمليّة `start` في الآلة، وكذلك إجراءاتٍ لتعيين محتويات المسجّلات وفحصها، كما هو محدَّدٌ في بداية [5.2](#g_t5_002e2):
 
 ```scheme
 (define (start machine)
@@ -731,22 +731,22 @@ For convenience, we provide an alternate procedural interface to a machine’s `
   'done)
 ```
 
-These procedures (and many procedures in [5.2.2](#g_t5_002e2_002e2) and [5.2.3](#g_t5_002e2_002e3)) use the following to look up the register with a given name in a given machine:
+وهذه الإجراءات (والعديد من الإجراءات في [5.2.2](#g_t5_002e2_002e2) و[5.2.3](#g_t5_002e2_002e3)) تستخدم ما يلي للبحث عن المسجّل ذي الاسم المعطى في آلةٍ معطاة:
 
 ```scheme
 (define (get-register machine reg-name)
   ((machine 'get-register) reg-name))
 ```
 
-#### 5.2.2 The Assembler
+#### 5.2.2 المُجمِّع
 
-The assembler transforms the sequence of controller expressions for a machine into a corresponding list of machine instructions, each with its execution procedure. Overall, the assembler is much like the evaluators we studied in [Chapter 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4)—there is an input language (in this case, the register-machine language) and we must perform an appropriate action for each type of expression in the language.
+يحوّل المُجمِّع تسلسل تعابير المتحكّم لآلةٍ إلى قائمةٍ مقابلةٍ من تعليمات الآلة، كلٌّ منها بإجراء تنفيذه. وبصورةٍ عامّة، فإنّ المُجمِّع يشبه إلى حدٍّ كبيرٍ المقيّمات التي درسناها في [الفصل 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4) — فهناك لغة دخل (في هذه الحالة، لغة آلات المسجّلات) وينبغي أن نؤدّي فعلًا مناسبًا لكلّ نوعٍ من التعابير في اللغة.
 
-The technique of producing an execution procedure for each instruction is just what we used in [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7) to speed up the evaluator by separating analysis from runtime execution. As we saw in [Chapter 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4), much useful analysis of Scheme expressions could be performed without knowing the actual values of variables. Here, analogously, much useful analysis of register-machine-language expressions can be performed without knowing the actual contents of machine registers. For example, we can replace references to registers by pointers to the register objects, and we can replace references to labels by pointers to the place in the instruction sequence that the label designates.
+وتقنيّة إنتاج إجراء تنفيذٍ لكلّ تعليمةٍ هي ذاتها التي استخدمناها في [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7) لتسريع المقيّم بفصل التحليل عن التنفيذ وقت التشغيل. فكما رأينا في [الفصل 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4)، فإنّ جزءًا كبيرًا من التحليل المفيد لتعبيرات Scheme يمكن أداؤه دون معرفة قيم المتغيّرات الفعليّة. وهنا، بالتماثل، فإنّ جزءًا كبيرًا من التحليل المفيد لتعبيرات لغة آلات المسجّلات يمكن أداؤه دون معرفة محتويات مسجّلات الآلة الفعليّة. فمثلًا، نستطيع استبدال الإشارات إلى المسجّلات بمؤشّراتٍ إلى كائنات المسجّل، ونستطيع استبدال الإشارات إلى اللصائق بمؤشّراتٍ إلى المكان في تسلسل التعليمات الذي تُعيّّنه اللصيقة.
 
-Before it can generate the instruction execution procedures, the assembler must know what all the labels refer to, so it begins by scanning the controller text to separate the labels from the instructions. As it scans the text, it constructs both a list of instructions and a table that associates each label with a pointer into that list. Then the assembler augments the instruction list by inserting the execution procedure for each instruction.
+وقبل أن يتمكّن من توليد إجراءات تنفيذ التعليمات، ينبغي أن يعرف المُجمِّع ما تشير إليه جميع اللصائق، فيبدأ بمسح نصّ المتحكّم لفصل اللصائق عن التعليمات. وأثناء مسحه النصّ، يبني قائمةً بالتعليمات وجدولًا يُقرن كلّ لصيقةٍ بمؤشّرٍ إلى داخل تلك القائمة. ثم يُنمّي المُجمِّع قائمة التعليمات بإدراج إجراء التنفيذ لكلّ تعليمة.
 
-The `assemble` procedure is the main entry to the assembler. It takes the controller text and the machine model as arguments and returns the instruction sequence to be stored in the model. `Assemble` calls `extract-labels` to build the initial instruction list and label table from the supplied controller text. The second argument to `extract-labels` is a procedure to be called to process these results: This procedure uses `update-insts!` to generate the instruction execution procedures and insert them into the instruction list, and returns the modified list.
+الإجراء `assemble` هو المدخل الرئيسيّ إلى المُجمِّع. وهو يأخذ نصّ المتحكّم ونموذج الآلة مَعطيين ويُعيد تسلسل التعليمات الذي سيُخزَّن في النموذج. ويَنداء `Assemble` الإجراء `extract-labels` لبناء قائمة التعليمات الأوّلية وجدول اللصائق من نصّ المتحكّم المعطى. والمَعطى الثاني إلى `extract-labels` هو إجراءٌ سيُنداء لمعالجة هذه النتائج: وهذا الإجراء يستخدم `update-insts!` لتوليد إجراءات تنفيذ التعليمات وإدراجها في قائمة التعليمات، ويُعيد القائمة المعدَّلة.
 
 ```scheme
 (define (assemble controller-text machine)
@@ -756,7 +756,7 @@ The `assemble` procedure is the main entry to the assembler. It takes the contro
       insts)))
 ```
 
-`Extract-labels` takes as arguments a list `text` (the sequence of controller instruction expressions) and a `receive` procedure. `Receive` will be called with two values: (1) a list `insts` of instruction data structures, each containing an instruction from `text`; and (2) a table called `labels`, which associates each label from `text` with the position in the list `insts` that the label designates.
+يأخذ `Extract-labels` مَعطيين: قائمةً `text` (تسلسل تعابير تعليمات المتحكّم) وإجراء `receive`. وسيُنداء `Receive` بقيمتين: (1) قائمةً `insts` من بنيات بيانات التعليمات، كلٌّ منها يحتوي تعليمةً من `text`؛ و(2) جدولًا يُسمّى `labels`، يُقرن كلّ لصيقةٍ من `text` بالموضع في القائمة `insts` الذي تُعيّّنه اللصيقة.
 
 ```scheme
 (define (extract-labels text receive)
@@ -781,9 +781,9 @@ The `assemble` procedure is the main entry to the assembler. It takes the contro
                    labels)))))))
 ```
 
-`Extract-labels` works by sequentially scanning the elements of the `text` and accumulating the `insts` and the `labels`. If an element is a symbol (and thus a label) an appropriate entry is added to the `labels` table. Otherwise the element is accumulated onto the `insts` list.[^4]
+يعمل `Extract-labels` بمسح عناصر `text` تتابعيّ ليُراكِم `insts` و`labels`. فإن كان العنصر رمزًا (وهو إذن لصيقة) أُضيف مُدخلٌ مناسبٌ إلى جدول `labels`. وإلّا فالعنصر يُراكَم على قائمة `insts`.[^4]
 
-`Update-insts!` modifies the instruction list, which initially contains only the text of the instructions, to include the corresponding execution procedures:
+يُعدّل `Update-insts!` قائمة التعليمات، التي تحتوي في بادئ الأمر على نصّ التعليمات فقط، لتتضمّن إجراءات التنفيذ المقابلة:
 
 ```scheme
 (define (update-insts! insts labels machine)
@@ -806,7 +806,7 @@ The `assemble` procedure is the main entry to the assembler. It takes the contro
      insts)))
 ```
 
-The machine instruction data structure simply pairs the instruction text with the corresponding execution procedure. The execution procedure is not yet available when `extract-labels` constructs the instruction, and is inserted later by `update-insts!`.
+وبنية بيانات تعليمة الآلة تُقرن ببساطةٍ نصّ التعليمة بإجراء التنفيذ المقابل. وإجراء التنفيذ غير متوفّرٍ بعد حين يبني `extract-labels` التعليمة، ويُدرَج لاحقًا بـ`update-insts!`.
 
 ```scheme
 (define (make-instruction text)
@@ -820,16 +820,16 @@ The machine instruction data structure simply pairs the instruction text with th
   (set-cdr! inst proc))
 ```
 
-The instruction text is not used by our simulator, but it is handy to keep around for debugging (see [Exercise 5.16](#Exercise-5_002e16)).
+نصّ التعليمة لا يستخدمه مُحاكينا، لكنّ من المفيد الاحتفاظ به للتّنقيح (انظر [التمرين 5.16](#Exercise-5_002e16)).
 
-Elements of the label table are pairs:
+وعناصر جدول اللصائق هي أزواج:
 
 ```scheme
 (define (make-label-entry label-name insts)
   (cons label-name insts))
 ```
 
-Entries will be looked up in the table with
+وسيُبحَث عن المُدخلات في الجدول بـ
 
 ```scheme
 (define (lookup-label labels label-name)
@@ -840,7 +840,7 @@ Entries will be looked up in the table with
                label-name))))
 ```
 
-**Exercise 5.8:** The following register-machine code is ambiguous, because the label `here` is defined more than once:
+**التمرين 5.8:** إنّ شيفرة آلة المسجّلات التالية غامضة، لأنّ اللصيقة `here` مُعرَّفةٌ أكثر من مرّة:
 
 ```scheme
 start
@@ -854,11 +854,11 @@ here
 there
 ```
 
-With the simulator as written, what will the contents of register `a` be when control reaches `there`? Modify the `extract-labels` procedure so that the assembler will signal an error if the same label name is used to indicate two different locations.
+بالمُحاكي كما هو مكتوب، فماذا ستكون محتويات المسجّل `a` حين يبلغ التحكّم `there`؟ عدّل الإجراء `extract-labels` بحيث يُشير المُجمِّع إلى خطأٍ إذا استُخدم اسم اللصيقة ذاته للإشارة إلى موضعين مختلفين.
 
-#### 5.2.3 Generating Execution Procedures for Instructions
+#### 5.2.3 توليد إجراءات تنفيذ التعليمات
 
-The assembler calls `make-execution-procedure` to generate the execution procedure for an instruction. Like the `analyze` procedure in the evaluator of [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7), this dispatches on the type of instruction to generate the appropriate execution procedure.
+يَنداء المُجمِّع `make-execution-procedure` لتوليد إجراء تنفيذ تعليمةٍ. فمثل الإجراء `analyze` في مقيّم [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7)، فإنّه يُوزّع على نوع التعليمة لتوليد إجراء التنفيذ المناسب.
 
 ```scheme
 (define (make-execution-procedure 
@@ -886,11 +886,11 @@ The assembler calls `make-execution-procedure` to generate the execution procedu
                      inst))))
 ```
 
-For each type of instruction in the register-machine language, there is a generator that builds an appropriate execution procedure. The details of these procedures determine both the syntax and meaning of the individual instructions in the register-machine language. We use data abstraction to isolate the detailed syntax of register-machine expressions from the general execution mechanism, as we did for evaluators in [4.1.2](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e2), by using syntax procedures to extract and classify the parts of an instruction.
+فلكلّ نوعٍ من التعليمات في لغة آلات المسجّلات، هناك مُولِّدٌ يبني إجراء تنفيذٍ مناسبًا. وتفاصيل هذه الإجراءات تحدّد صياغة تعليمات لغة آلات المسجّلات الفرديّة ومعناها جميعًا. ونحن نستخدم تجريد البيانات لعزل الصياغة المفصّلة لتعبيرات آلات المسجّلات عن آليّة التنفيذ العامّة، كما فعلنا مع المقيّمات في [4.1.2](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e2)، وذلك باستخدام إجراءات الصياغة لاستخراج أجزاء التعليمة وتصنيفها.
 
-#### `Assign` instructions
+#### تعليمات `Assign`
 
-The `make-assign` procedure handles `assign` instructions:
+إنّ الإجراء `make-assign` يتعامل مع تعليمات `assign`:
 
 ```scheme
 (define (make-assign 
@@ -917,7 +917,7 @@ The `make-assign` procedure handles `assign` instructions:
         (advance-pc pc)))))
 ```
 
-`Make-assign` extracts the target register name (the second element of the instruction) and the value expression (the rest of the list that forms the instruction) from the `assign` instruction using the selectors
+يستخرج `Make-assign` اسم المسجّل الهدف (العنصر الثاني من التعليمة) وتعبير القيمة (بقيّة القائمة التي تشكّل التعليمة) من تعليمة `assign` باستخدام المحدِّدات
 
 ```scheme
 (define (assign-reg-name assign-instruction)
@@ -926,20 +926,20 @@ The `make-assign` procedure handles `assign` instructions:
   (cddr assign-instruction))
 ```
 
-The register name is looked up with `get-register` to produce the target register object. The value expression is passed to `make-operation-exp` if the value is the result of an operation, and to `make-primitive-exp` otherwise. These procedures (shown below) parse the value expression and produce an execution procedure for the value. This is a procedure of no arguments, called `value-proc`, which will be evaluated during the simulation to produce the actual value to be assigned to the register. Notice that the work of looking up the register name and parsing the value expression is performed just once, at assembly time, not every time the instruction is simulated. This saving of work is the reason we use execution procedures, and corresponds directly to the saving in work we obtained by separating program analysis from execution in the evaluator of [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7).
+يُبحَث عن اسم المسجّل بـ`get-register` لإنتاج كائن المسجّل الهدف. وتعبير القيمة يُمرَّر إلى `make-operation-exp` إذا كانت القيمة نتيجة عمليّة، وإلى `make-primitive-exp` وإلّا. وهذه الإجراءات (المبيَّنة أدناه) تُحلّل تعبير القيمة وتُنتج إجراء تنفيذٍ للقيمة. وهذا إجراءٌ بلا معطيات، يُسمّى `value-proc`، سيُقيَّم أثناء المحاكاة لإنتاج القيمة الفعليّة التي ستُحلَّ في المسجّل. ولاحِظ أنّ عمل البحث عن اسم المسجّل وتحليل تعبير القيمة يُؤدّى مرّةً واحدةً فقط، في وقت التجميع، لا في كلّ مرّةٍ تُحاكى فيها التعليمة. وهذا الاقتصاد في العمل هو سبب استخدامنا إجراءات التنفيذ، ويقابل مباشرةً الاقتصاد في العمل الذي حصلنا عليه بفصل تحليل البرنامج عن تنفيذه في مقيّم [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7).
 
-The result returned by `make-assign` is the execution procedure for the `assign` instruction. When this procedure is called (by the machine model’s `execute` procedure), it sets the contents of the target register to the result obtained by executing `value-proc`. Then it advances the `pc` to the next instruction by running the procedure
+والنتيجة التي يُعيدها `make-assign` هي إجراء تنفيذ تعليمة `assign`. وحين يُنداء هذا الإجراء (بإجراء `execute` الخاصّ بنموذج الآلة)، فإنّه يضبط محتويات المسجّل الهدف بالقيمة المتحصّلة من تنفيذ `value-proc`. ثم يُقدّم `pc` إلى التعليمة التالية بتشغيل الإجراء
 
 ```scheme
 (define (advance-pc pc)
   (set-contents! pc (cdr (get-contents pc))))
 ```
 
-`Advance-pc` is the normal termination for all instructions except `branch` and `goto`.
+إنّ `Advance-pc` هي النهاية الطبيعيّة لجميع التعليمات ما عدا `branch` و`goto`.
 
-#### `Test`, `branch`, and `goto` instructions
+#### تعليمات `Test` و`branch` و`goto`
 
-`Make-test` handles `test` instructions in a similar way. It extracts the expression that specifies the condition to be tested and generates an execution procedure for it. At simulation time, the procedure for the condition is called, the result is assigned to the `flag` register, and the `pc` is advanced:
+يتعامل `Make-test` مع تعليمات `test` على نحوٍ مماثل. فإنّه يستخرج التعبير الذي يحدّد الشرط المراد اختباره ويولّد إجراء تنفيذٍ له. في وقت المحاكاة، يُنداء إجراء الشرط، وتُحلّ النتيجة في المسجّل `flag`، ويُقدَّم `pc`:
 
 ```scheme
 (define 
@@ -964,7 +964,7 @@ The result returned by `make-assign` is the execution procedure for the `assign`
   (cdr test-instruction))
 ```
 
-The execution procedure for a `branch` instruction checks the contents of the `flag` register and either sets the contents of the `pc` to the branch destination (if the branch is taken) or else just advances the `pc` (if the branch is not taken). Notice that the indicated destination in a `branch` instruction must be a label, and the `make-branch` procedure enforces this. Notice also that the label is looked up at assembly time, not each time the `branch` instruction is simulated.
+يفحص إجراء التنفيذ الخاص بتعليمة `branch` محتويات مسجّل `flag` وإمّا أن يضبط محتويات `pc` على مقصد التفريع (إذا أُخذ التفريع) وإمّا أن يُقدّم `pc` فقط (إذا لم يُؤخذ التفريع). لاحِظ أنّ المقصد المُشار إليه في تعليمة `branch` يجب أن يكون لافتة، وإجراء `make-branch` يفرض ذلك. لاحِظ أيضًا أنّ اللافتة تُبحَث عند التجميع، لا في كلّ مرّةٍ تُحاكى فيها تعليمة `branch`.
 
 ```scheme
 (define 
@@ -988,7 +988,7 @@ The execution procedure for a `branch` instruction checks the contents of the `f
   (cadr branch-instruction))
 ```
 
-A `goto` instruction is similar to a branch, except that the destination may be specified either as a label or as a register, and there is no condition to check—the `pc` is always set to the new destination.
+تشبه تعليمة `goto` التفريع، إلّا أنّ المقصد يمكن أن يُحدَّد إمّا كلافتةٍ وإمّا كمسجّل، ولا يوجد شرطٌ يُفحص — فـ`pc` يُضبَط دائمًا على المقصد الجديد.
 
 ```scheme
 (define (make-goto inst machine labels pc)
@@ -1017,9 +1017,9 @@ A `goto` instruction is similar to a branch, except that the destination may be 
   (cadr goto-instruction))
 ```
 
-#### Other instructions
+#### تعليمات أخرى
 
-The stack instructions `save` and `restore` simply use the stack with the designated register and advance the `pc`:
+تستخدم تعليمتا المكدس `save` و`restore` المكدس مع المسجّل المُعيَّن ببساطةٍ وتُقدّمان `pc`:
 
 ```scheme
 (define (make-save inst machine stack pc)
@@ -1043,7 +1043,7 @@ The stack instructions `save` and `restore` simply use the stack with the design
   (cadr stack-instruction))
 ```
 
-The final instruction type, handled by `make-perform`, generates an execution procedure for the action to be performed. At simulation time, the action procedure is executed and the `pc` advanced.
+إنّ نوع التعليمة الأخير، الذي يتعامل معه `make-perform`، يُنشئ إجراء تنفيذٍ للفعل الذي ينبغي أداؤه. وفي وقت المحاكاة، يُنفَّذ إجراء الفعل ويُقدَّم `pc`.
 
 ```scheme
 (define (make-perform 
@@ -1066,9 +1066,9 @@ The final instruction type, handled by `make-perform`, generates an execution pr
 (define (perform-action inst) (cdr inst))
 ```
 
-#### Execution procedures for subexpressions
+#### إجراءات تنفيذ التعابير الجزئيّة
 
-The value of a `reg`, `label`, or `const` expression may be needed for assignment to a register (`make-assign`) or for input to an operation (`make-operation-exp`, below). The following procedure generates execution procedures to produce values for these expressions during the simulation:
+قد تكون قيمة تعبير `reg` أو `label` أو `const` لازمةً للإحلال إلى مسجّل (`make-assign`) أو كمدخلٍ لعمليّة (`make-operation-exp`، أدناه). والإجراء الآتي يُنشئ إجراءات تنفيذٍ لإنتاج قيم هذه التعابير أثناء المحاكاة:
 
 ```scheme
 (define (make-primitive-exp exp machine labels)
@@ -1091,7 +1091,7 @@ The value of a `reg`, `label`, or `const` expression may be needed for assignmen
                      exp))))
 ```
 
-The syntax of `reg`, `label`, and `const` expressions is determined by
+تُحدَّد صياغة تعابير `reg` و`label` و`const` بـ
 
 ```scheme
 (define (register-exp? exp)
@@ -1108,7 +1108,7 @@ The syntax of `reg`, `label`, and `const` expressions is determined by
   (cadr exp))
 ```
 
-`Assign`, `perform`, and `test` instructions may include the application of a machine operation (specified by an `op` expression) to some operands (specified by `reg` and `const` expressions). The following procedure produces an execution procedure for an “operation expression”—a list containing the operation and operand expressions from the instruction:
+قد تتضمّن تعليمات `assign` و`perform` و`test` تطبيق عمليّة آلةٍ (مُحدَّدةً بتعبير `op`) على بعض العوامل (مُحدَّدةً بتعبيرات `reg` و`const`). والإجراء الآتي يُنتج إجراء تنفيذٍ «لتعبير عمليّة» — وهو قائمةٌ تحتوي تعبير العمليّة وتعبيرات العوامل الآتية من التعليمة:
 
 ```scheme
 (define (make-operation-exp
@@ -1125,7 +1125,7 @@ The syntax of `reg`, `label`, and `const` expressions is determined by
                               aprocs)))))
 ```
 
-The syntax of operation expressions is determined by
+تُحدَّد صياغة تعابير العمليّات بـ
 
 ```scheme
 (define (operation-exp? exp)
@@ -1137,7 +1137,7 @@ The syntax of operation expressions is determined by
   (cdr operation-exp))
 ```
 
-Observe that the treatment of operation expressions is very much like the treatment of procedure applications by the `analyze-application` procedure in the evaluator of [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7) in that we generate an execution procedure for each operand. At simulation time, we call the operand procedures and apply the Scheme procedure that simulates the operation to the resulting values. The simulation procedure is found by looking up the operation name in the operation table for the machine:
+لاحِظ أنّ معالجة تعابير العمليّات تشبه إلى حدٍّ بعيدٍ معالجة تطبيقات الإجراءات التي يجريها الإجراء `analyze-application` في المقيّم الوارد في [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7)، من حيث أنّنا نُنشئ إجراء تنفيذٍ لكلّ عامل. وفي وقت المحاكاة، نستدعي إجراءات العوامل ونطبّق إجراء Scheme الذي يحاكي العمليّة على القيم الناتجة. ويُوجَد إجراء المحاكاة بالبحث عن اسم العمليّة في جدول عمليّات الآلة:
 
 ```scheme
 (define (lookup-prim symbol operations)
@@ -1148,11 +1148,11 @@ Observe that the treatment of operation expressions is very much like the treatm
                symbol))))
 ```
 
-> **Exercise 5.9:** The treatment of machine operations above permits them to operate on labels as well as on constants and the contents of registers. Modify the expression-processing procedures to enforce the condition that operations can be used only with registers and constants.
+> **التمرين 5.9:** إنّ معالجة عمليّات الآلة أعلاه تسمح لها بالعمل على اللافتات إضافةً إلى الثوابت ومحتويات المسجّلات. عدّل إجراءات معالجة التعابير لفرض الشرط القائل إنّ العمليّات لا يمكن استخدامها إلّا مع المسجّلات والثوابت.
 
-> **Exercise 5.10:** Design a new syntax for register-machine instructions and modify the simulator to use your new syntax. Can you implement your new syntax without changing any part of the simulator except the syntax procedures in this section?
+> **التمرين 5.10:** صمِّم صياغةً جديدةً لتعليمات آلة المسجّلات وعدّل المحاكي ليستخدم صياغتك الجديدة. فهل تستطيع تنفيذ صياغتك الجديدة دون تغيير أيّ جزءٍ من المحاكي ما عدا إجراءات الصياغة في هذا القسم؟
 
-**Exercise 5.11:** When we introduced `save` and `restore` in [5.1.4](https://sarabander.github.io/sicp/html/5_002e1.xhtml#g_t5_002e1_002e4), we didn’t specify what would happen if you tried to restore a register that was not the last one saved, as in the sequence
+**التمرين 5.11:** حين استحدثنا `save` و`restore` في [5.1.4](https://sarabander.github.io/sicp/html/5_002e1.xhtml#g_t5_002e1_002e4)، لم نُحدّد ما يحدث إذا حاولت استعادة مسجّلٍ ليس آخر ما حُفظ، كما في التسلسل
 
 ```scheme
 (save y)
@@ -1160,24 +1160,24 @@ Observe that the treatment of operation expressions is very much like the treatm
 (restore y)
 ```
 
-There are several reasonable possibilities for the meaning of `restore`:
+ثمّة عدّة احتمالاتٍ معقولةٍ لمعنى `restore`:
 
-1. `(restore y)` puts into `y` the last value saved on the stack, regardless of what register that value came from. This is the way our simulator behaves. Show how to take advantage of this behavior to eliminate one instruction from the Fibonacci machine of [5.1.4](https://sarabander.github.io/sicp/html/5_002e1.xhtml#g_t5_002e1_002e4) ([Figure 5.12](https://sarabander.github.io/sicp/html/5_002e1.xhtml#Figure-5_002e12)).
-2. `(restore y)` puts into `y` the last value saved on the stack, but only if that value was saved from `y`; otherwise, it signals an error. Modify the simulator to behave this way. You will have to change `save` to put the register name on the stack along with the value.
-3. `(restore y)` puts into `y` the last value saved from `y` regardless of what other registers were saved after `y` and not restored. Modify the simulator to behave this way. You will have to associate a separate stack with each register. You should make the `initialize-stack` operation initialize all the register stacks.
+1. `(restore y)` يضع في `y` آخر قيمةٍ حُفظت في المكدس، أياً يكن المسجّل الذي جاءت منه تلك القيمة. وهذا هو سلوك محاكينا. أظهر كيف يمكن استثمار هذا السلوك لإلغاء تعليمةٍ واحدةٍ من آلة فيبوناتشي الواردة في [5.1.4](https://sarabander.github.io/sicp/html/5_002e1.xhtml#g_t5_002e1_002e4) ([الشكل 5.12](https://sarabander.github.io/sicp/html/5_002e1.xhtml#Figure-5_002e12)).
+2. `(restore y)` يضع في `y` آخر قيمةٍ حُفظت في المكدس، لكن فقط إذا كانت تلك القيمة قد حُفظت من `y`؛ وإلّا فإنّه يُشير إلى خطأٍ. عدّل المحاكي ليسلوك هذا السلوك. سيتعيّن عليك تغيير `save` ليضع اسم المسجّل في المكدس إلى جانب القيمة.
+3. `(restore y)` يضع في `y` آخر قيمةٍ حُفظت من `y` أياً تكن المسجّلات الأخرى التي حُفظت بعد `y` ولم تُستعَد. عدّل المحاكي ليسلوك هذا السلوك. سيتعيّن عليك ربط مكدسٍ منفصلٍ بكلّ مسجّلٍ. وينبغي أن تجعل عمليّة `initialize-stack` تُهيّئ جميع مكدسات المسجّلات.
 
-> **Exercise 5.12:** The simulator can be used to help determine the data paths required for implementing a machine with a given controller. Extend the assembler to store the following information in the machine model: a list of all instructions, with duplicates removed, sorted by instruction type (`assign`, `goto`, and so on);
-> > a list (without duplicates) of the registers used to hold entry points (these are the registers referenced by `goto` instructions);
-> > a list (without duplicates) of the registers that are `save`d or `restore`d;
-> > for each register, a list (without duplicates) of the sources from which it is assigned (for example, the sources for register `val` in the factorial machine of [Figure 5.11](https://sarabander.github.io/sicp/html/5_002e1.xhtml#Figure-5_002e11) are `(const 1)` and `((op *) (reg n) (reg val))`).
+> **التمرين 5.12:** يمكن استخدام المحاكي للمساعدة في تحديد مسار البيانات المطلوب لتنفيذ آلةٍ بمتحكّمٍ معطى. وسّع المُجمِّع ليخزّن المعلومات الآتية في نموذج الآلة: قائمةٌ بجميع التعليمات، بعد إزالة المكرّر منها، مرتّبةً بحسب نوع التعليمة (`assign` و`goto` وما شابه)؛
+> > قائمةٌ (دون مكرّراتٍ) بالمسجّلات المستخدمة لحفظ نقاط الدخول (وهي المسجّلات التي تشير إليها تعليمات `goto`)؛
+> > قائمةٌ (دون مكرّراتٍ) بالمسجّلات التي تُحفَظ بـ`save` أو تُستعَد بـ`restore`؛
+> > وبالنسبة لكلّ مسجّلٍ، قائمةٌ (دون مكرّراتٍ) بالمصادر التي يُحلَّل منها (فمثلًا، مصادر المسجّل `val` في آلة العامليّة الواردة في [الشكل 5.11](https://sarabander.github.io/sicp/html/5_002e1.xhtml#Figure-5_002e11) هي `(const 1)` و`((op *) (reg n) (reg val))`).
 > > 
-> > Extend the message-passing interface to the machine to provide access to this new information. To test your analyzer, define the Fibonacci machine from [Figure 5.12](https://sarabander.github.io/sicp/html/5_002e1.xhtml#Figure-5_002e12) and examine the lists you constructed.
+> > وسّع واجهة تمرير الرسائل إلى الآلة لتوفير النفاذ إلى هذه المعلومات الجديدة. ولاختبار مُحلِّلك، عرّف آلة فيبوناتشي من [الشكل 5.12](https://sarabander.github.io/sicp/html/5_002e1.xhtml#Figure-5_002e12) وافحص القوائم التي بنيتها.
 
-> **Exercise 5.13:** Modify the simulator so that it uses the controller sequence to determine what registers the machine has rather than requiring a list of registers as an argument to `make-machine`. Instead of pre-allocating the registers in `make-machine`, you can allocate them one at a time when they are first seen during assembly of the instructions.
+> **التمرين 5.13:** عدّل المحاكي كي يستخدم تسلسل المتحكّم لتحديد المسجّلات التي تمتلكها الآلة بدلًا من اشتراط قائمةٍ بالمسجّلات كمعطىً لـ`make-machine`. فبدلًا من تخصيص المسجّلات مُسبقًا في `make-machine`، يمكنك تخصيصها واحدةً تلو الأخرى حين تُشاهَد أوّلَ مرّةٍ أثناء تجميع التعليمات.
 
-#### 5.2.4 Monitoring Machine Performance
+#### 5.2.4 مراقبة أداء الآلة
 
-Simulation is useful not only for verifying the correctness of a proposed machine design but also for measuring the machine’s performance. For example, we can install in our simulation program a “meter” that measures the number of stack operations used in a computation. To do this, we modify our simulated stack to keep track of the number of times registers are saved on the stack and the maximum depth reached by the stack, and add a message to the stack’s interface that prints the statistics, as shown below. We also add an operation to the basic machine model to print the stack statistics, by initializing `the-ops` in `make-new-machine` to
+المحاكاة مفيدةٌ لا للتحقّق من صحّة تصميم آلةٍ مقترحةٍ فحسب، بل أيضًا لقياس أداء الآلة. فإنّا نستطيع، مثلًا، تثبيت «مقياس» في برنامج المحاكاة لدينا يقيس عدد عمليّات المكدس المستخدمة في احتسابٍ ما. ولفعل ذلك، نعدّل مكدسنا المحاكى كي يُتابع عدد المرّات التي تُحفَظ فيها المسجّلات في المكدس وأقصى عمقٍ يبلغه المكدس، ونُضيف رسالةً إلى واجهة المكدس تطبع الإحصائيّات، كما هو موضّح أدناه. ونُضيف أيضًا عمليّةً إلى نموذج الآلة الأساسيّ لطبع إحصائيّات المكدس، بتهيئة `the-ops` في `make-new-machine` إلى
 
 ```scheme
 (list (list 'initialize-stack
@@ -1188,7 +1188,7 @@ Simulation is useful not only for verifying the correctness of a proposed machin
               (stack 'print-statistics))))
 ```
 
-Here is the new version of `make-stack`:
+وها هو الإصدار الجديد من `make-stack`:
 
 ```scheme
 (define (make-stack)
@@ -1238,89 +1238,89 @@ Here is the new version of `make-stack`:
     dispatch))
 ```
 
-[Exercise 5.15](#Exercise-5_002e15) through [Exercise 5.19](#Exercise-5_002e19) describe other useful monitoring and debugging features that can be added to the register-machine simulator.
+يصف [التمرين 5.15](#Exercise-5_002e15) إلى [التمرين 5.19](#Exercise-5_002e19) ميزات مراقبةٍ وتنقيحٍ مفيدةً أخرى يمكن إضافتها إلى محاكي آلة المسجّلات.
 
-> **Exercise 5.14:** Measure the number of pushes and the maximum stack depth required to compute $n !$ for various small values of $n$ using the factorial machine shown in [Figure 5.11](https://sarabander.github.io/sicp/html/5_002e1.xhtml#Figure-5_002e11). From your data determine formulas in terms of $n$ for the total number of push operations and the maximum stack depth used in computing $n !$ for any $n > 1$ . Note that each of these is a linear function of $n$ and is thus determined by two constants. In order to get the statistics printed, you will have to augment the factorial machine with instructions to initialize the stack and print the statistics. You may want to also modify the machine so that it repeatedly reads a value for $n$ , computes the factorial, and prints the result (as we did for the GCD machine in [Figure 5.4](https://sarabander.github.io/sicp/html/5_002e1.xhtml#Figure-5_002e4)), so that you will not have to repeatedly invoke `get-register-contents`, `set-register-contents!`, and `start`.
+> **التمرين 5.14:** قِس عدد الدفعات وأقصى عمقٍ للمكدس اللازمين لاحتساب $n !$ لقيمٍ صغيرةٍ متنوّعةٍ لـ$n$ باستخدام آلة العامليّة الموضّحة في [الشكل 5.11](https://sarabander.github.io/sicp/html/5_002e1.xhtml#Figure-5_002e11). واستنبط من بياناتك صيغًا بدلالة $n$ للعدد الكلّي لعمليّات الدفع ولأقصى عمقٍ للمكدس يُستخدم في احتساب $n !$ لأيّ $n > 1$ . ولاحِظ أنّ كُلًّا من هذين دالّةٌ خطّيّةٌ في $n$ وبالتالي تُحدَّد بثابتين. ولكي تُطبع الإحصائيّات، سيتعيّن عليك توسيع آلة العامليّة بتعليماتِ تهيئة المكدس وطبع الإحصائيّات. وقد ترغب أيضًا في تعديل الآلة كي تقرأ قيمة $n$ مرارًا، وتحسب العامليّة، وتطبع النتيجة (كما فعلنا لآلة القاسم المشترك الأكبر في [الشكل 5.4](https://sarabander.github.io/sicp/html/5_002e1.xhtml#Figure-5_002e4))، بحيث لا يضطرّك الأمر إلى استدعاء `get-register-contents` و`set-register-contents!` و`start` مرارًا.
 
-> **Exercise 5.15:** Add *instruction counting* to the register machine simulation. That is, have the machine model keep track of the number of instructions executed. Extend the machine model’s interface to accept a new message that prints the value of the instruction count and resets the count to zero.
+> **التمرين 5.15:** أضِف *عدّ التعليمات* إلى محاكاة آلة المسجّلات. أي اجعل نموذج الآلة يُتابع عدد التعليمات المُنفَّذة. وسّع واجهة نموذج الآلة لتقبل رسالةً جديدةً تطبع قيمة عدّاد التعليمات وتُصفّر العدّاد.
 
-> **Exercise 5.16:** Augment the simulator to provide for *instruction tracing*. That is, before each instruction is executed, the simulator should print the text of the instruction. Make the machine model accept `trace-on` and `trace-off` messages to turn tracing on and off.
+> **التمرين 5.16:** وسّع المحاكي ليتيح *تتبّع التعليمات*. أي قبل تنفيذ كلّ تعليمةٍ، ينبغي أن يطبع المحاكي نصّ التعليمة. واجعل نموذج الآلة يقبل رسالتي `trace-on` و`trace-off` لتشغيل التتبّع وإيقافه.
 
-> **Exercise 5.17:** Extend the instruction tracing of [Exercise 5.16](#Exercise-5_002e16) so that before printing an instruction, the simulator prints any labels that immediately precede that instruction in the controller sequence. Be careful to do this in a way that does not interfere with instruction counting ([Exercise 5.15](#Exercise-5_002e15)). You will have to make the simulator retain the necessary label information.
+> **التمرين 5.17:** وسّع تتبّع التعليمات الوارد في [التمرين 5.16](#Exercise-5_002e16) بحيث يطبع المحاكي، قبل طبع تعليمةٍ ما، أيّ لافتاتٍ تسبق تلك التعليمة مباشرةً في تسلسل المتحكّم. واحرص على فعل ذلك بطريقةٍ لا تتداخل مع عدّ التعليمات ([التمرين 5.15](#Exercise-5_002e15)). وسيتعيّن عليك أن تجعل المحاكي يحتفظ بمعلومات اللافتات اللازمة.
 
-> **Exercise 5.18:** Modify the `make-register` procedure of [5.2.1](#g_t5_002e2_002e1) so that registers can be traced. Registers should accept messages that turn tracing on and off. When a register is traced, assigning a value to the register should print the name of the register, the old contents of the register, and the new contents being assigned. Extend the interface to the machine model to permit you to turn tracing on and off for designated machine registers.
+> **التمرين 5.18:** عدّل إجراء `make-register` الوارد في [5.2.1](#g_t5_002e2_002e1) بحيث يمكن تتبّع المسجّلات. وينبغي أن تقبل المسجّلات رسائل تُشغّل التتبّع وتُوقفه. وحين يُتْبَع مسجّلٌ ما، ينبغي أن يطبع إحلال قيمةٍ إلى المسجّل اسم المسجّل والمحتويات القديمة للمسجّل والمحتويات الجديدة التي تُحلَّل إليها. وسّع الواجهة إلى نموذج الآلة لتسمح لك بتشغيل التتبّع وإيقافه لمسجّلات آلةٍ معيَّنةٍ منها.
 
-**Exercise 5.19:** Alyssa P. Hacker wants a *breakpoint* feature in the simulator to help her debug her machine designs. You have been hired to install this feature for her. She wants to be able to specify a place in the controller sequence where the simulator will stop and allow her to examine the state of the machine. You are to implement a procedure
+**التمرين 5.19:** تُريد أليسا ب. هاكر ميزة *نقطة توقّف* في المحاكي تساعدها على تنقيح تصاميم آلاتها. وقد عُهد إليك بتثبيت هذه الميزة لها. وهي تُريد أن تكون قادرةً على تحديد موضعٍ في تسلسل المتحكّم يتوقّف عنده المحاكي ويتيح لها فحص حالة الآلة. ومهمّتك تنفيذ الإجراء
 
 ```scheme
 (set-breakpoint ⟨machine⟩ ⟨label⟩ ⟨n⟩)
 ```
 
-that sets a breakpoint just before the $n^{th}$ instruction after the given label. For example,
+الذي يضع نقطة توقّفٍ قبل التعليمة رقم $n^{th}$ بعد اللافتة المعطاة. مثلًا،
 
 ```scheme
 (set-breakpoint gcd-machine 'test-b 4)
 ```
 
-installs a breakpoint in `gcd-machine` just before the assignment to register `a`. When the simulator reaches the breakpoint it should print the label and the offset of the breakpoint and stop executing instructions. Alyssa can then use `get-register-contents` and `set-register-contents!` to manipulate the state of the simulated machine. She should then be able to continue execution by saying
+يثبّت نقطة توقّفٍ في `gcd-machine` قبل الإحلال إلى المسجّل `a`. وحين يبلغ المحاكي نقطة التوقّف، ينبغي أن يطبع اللافتة وإزاحة نقطة التوقّف وأن يتوقّف عن تنفيذ التعليمات. وبوسع أليسا حينها استخدام `get-register-contents` و`set-register-contents!` للتلاعب بحالة الآلة المحاكاة. وينبغي أن تقدر بعد ذلك على متابعة التنفيذ بقولها
 
 ```scheme
 (proceed-machine ⟨machine⟩)
 ```
 
-She should also be able to remove a specific breakpoint by means of
+وينبغي أن تقدر أيضًا على إزالة نقطة توقّفٍ معيّنةٍ بـ
 
 ```scheme
 (cancel-breakpoint ⟨machine⟩ ⟨label⟩ ⟨n⟩)
 ```
 
-or to remove all breakpoints by means of
+أو على إزالة جميع نقاط التوقّف بـ
 
 ```scheme
 (cancel-all-breakpoints ⟨machine⟩)
 ```
 
-### 5.3 Storage Allocation and Garbage Collection
+### 5.3 تخصيص التخزين وجمع القمامة
 
-In section [5.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4), we will show how to implement a Scheme evaluator as a register machine. In order to simplify the discussion, we will assume that our register machines can be equipped with a *list-structured memory*, in which the basic operations for manipulating list-structured data are primitive. Postulating the existence of such a memory is a useful abstraction when one is focusing on the mechanisms of control in a Scheme interpreter, but this does not reflect a realistic view of the actual primitive data operations of contemporary computers. To obtain a more complete picture of how a Lisp system operates, we must investigate how list structure can be represented in a way that is compatible with conventional computer memories.
+في القسم [5.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4)، سنُظهر كيف نُنفّذ مقيّم Scheme بوصفه آلة مسجّلات. ولتبسيط المناقشة، سنفترض أنّ آلات المسجّلات لدينا يمكن تجهيزها بـ*ذاكرةٍ مبنيّةٍ على القوائم (list-structured memory)*، تكون فيها العمليّات الأساسيّة للتلاعب ببياناتٍ مبنيّةٍ على القوائم أوّليّةً. وافتراض وجود مثل هذه الذاكرة تجريدٌ مفيدٌ حين يكون المرء مُركّزًا على آليّات التحكّم في مفسّر Scheme، لكنّه لا يعكس نظرةً واقعيّةً عن عمليّات البيانات الأوّليّة الفعليّة للحاسبات المعاصرة. ولكي نحصل على صورةٍ أكملَ عن كيف يعمل نظام Lisp، ينبغي أن نبحث كيف يمكن تمثيل بنية القائمة بطريقةٍ متوافقةٍ مع ذاكرات الحاسوب التقليديّة.
 
-There are two considerations in implementing list structure. The first is purely an issue of representation: how to represent the “box-and-pointer” structure of Lisp pairs, using only the storage and addressing capabilities of typical computer memories. The second issue concerns the management of memory as a computation proceeds. The operation of a Lisp system depends crucially on the ability to continually create new data objects. These include objects that are explicitly created by the Lisp procedures being interpreted as well as structures created by the interpreter itself, such as environments and argument lists. Although the constant creation of new data objects would pose no problem on a computer with an infinite amount of rapidly addressable memory, computer memories are available only in finite sizes (more’s the pity). Lisp systems thus provide an *automatic storage allocation* facility to support the illusion of an infinite memory. When a data object is no longer needed, the memory allocated to it is automatically recycled and used to construct new data objects. There are various techniques for providing such automatic storage allocation. The method we shall discuss in this section is called *garbage collection*.
+ثمّة اعتباران في تنفيذ بنية القائمة. أمّا الأوّل فمسألة تمثيلٍ بحتة: كيف نُمثّل بنية «الصندوق والمؤشّر» (box-and-pointer) لأزواج Lisp، باستخدام قدرات التخزين والمعننة وحدها في ذاكرات الحاسوب النموذجيّة. وأمّا الاعتبار الثاني فيتعلّق بإدارة الذاكرة بينما يمضي الاحتساب. ويعتمد عمل نظام Lisp بشكلٍ حرجيٍّ على القدرة على إنشاء كائنات بياناتٍ جديدةٍ باستمرار. وتشمل هذه كائناتٍ تُنشَأ صراحةً بواسطة إجراءات Lisp التي يجري تفسيرها، فضلًا عن بنى يُنشئها المفسّر نفسه، كالبيئات وقوائم المعطيات. وعلى الرغم من أنّ إنشاء كائنات بياناتٍ جديدةٍ باستمرارٍ لن يُشكّل مشكلةً على حاسوبٍ يمتلك مقدارًا غير محدودٍ من الذاكرة سريعة العنونة، فإنّ ذاكرات الحاسوب متوفّرةٌ بأحجامٍ محدودةٍ فقط (للأسف الشديد). ولهذا تُوفّر أنظمة Lisp تسهيلًا لـ*التخصيص التلقائيّ للتخزين (automatic storage allocation)* دعّمًا لوهم الذاكرة غير المحدودة. وحين لم يَعد كائن بياناتٍ لازماً، تُعاد الذاكرة المُخصَّصة له تلقائيًّا وتُستخدم لبناء كائنات بياناتٍ جديدة. ثمّة تقنيّاتٌ متنوّعةٌ لتوفير مثل هذا التخصيص التلقائيّ للتخزين. وأمّا الطريقة التي سنناقشها في هذا القسم فتُسمّى *جمع القمامة (garbage collection)*.
 
-#### 5.3.1 Memory as Vectors
+#### 5.3.1 الذاكرة كمتجهات
 
-A conventional computer memory can be thought of as an array of cubbyholes, each of which can contain a piece of information. Each cubbyhole has a unique name, called its *address* or *location*. Typical memory systems provide two primitive operations: one that fetches the data stored in a specified location and one that assigns new data to a specified location. Memory addresses can be incremented to support sequential access to some set of the cubbyholes. More generally, many important data operations require that memory addresses be treated as data, which can be stored in memory locations and manipulated in machine registers. The representation of list structure is one application of such *address arithmetic*.
+يمكن النظر إلى ذاكرة الحاسوب التقليديّة بوصفها مصفوفةً من الخزائن الصغيرة، كلٌّ منها يمكن أن يحتوي قطعةً من المعلومات. ولكلّ خزانةٍ صغيرةٍ اسمٌ فريد، يُسمّى *عنوانها* أو *موقعها*. وتوفّر نظم الذاكرة النموذجيّة عمليّتَين أوّليّتَين: إحداهما تجلب البيانات المخزّنة في موقعٍ محدَّدٍ، والأخرى تُحلّل بيانات جديدة إلى موقعٍ محدَّدٍ. ويمكن زيادة عناوين الذاكرة لدعم النفاذ المتسلسل إلى مجموعةٍ ما من الخزائن الصغيرة. وبصورةٍ أعمّ، فإنّ عمليّات بياناتٍ مهمّةً كثيرةً تتطلّب أن تُعامَل عناوين الذاكرة كبياناتٍ، يمكن تخزينها في مواقع الذاكرة والتلاعب بها في مسجّلات الآلة. وتمثيل بنية القائمة أحد تطبيقات ما يُعرف بـ*حساب العناوين (address arithmetic)*.
 
-To model computer memory, we use a new kind of data structure called a *vector*. Abstractly, a vector is a compound data object whose individual elements can be accessed by means of an integer index in an amount of time that is independent of the index.[^5] In order to describe memory operations, we use two primitive Scheme procedures for manipulating vectors:
+ولنمذجة ذاكرة الحاسوب، نستخدم نوعًا جديدًا من بنى البيانات يُسمّى *متجهًا (vector)*. وتجرّديًّا، المتجه كائن بياناتٍ مركّبٌ يمكن النفاذ إلى عناصره الفرديّة بواسطة فهرس (index) صحيحٍ في مقدارٍ من الزمن مستقلٌّ عن الفهرس.[^5] ولكي نوصف عمليّات الذاكرة، نستخدم إجراءَي Scheme أوّليّين للتلاعب بالمتجهات:
 
-- `(vector-ref ⟨vector⟩ ⟨n⟩)` returns the $n^{th}$ element of the vector.
-- `(vector-set! ⟨vector⟩ ⟨n⟩ ⟨value⟩)` sets the $n^{th}$ element of the vector to the designated value.
+- يُعيد `(vector-ref ⟨vector⟩ ⟨n⟩)` العنصر رقم $n^{th}$ من المتجه.
+- يضبط `(vector-set! ⟨vector⟩ ⟨n⟩ ⟨value⟩)` العنصر رقم $n^{th}$ من المتجه على القيمة المعيَّنة.
 
-For example, if `v` is a vector, then `(vector-ref v 5)` gets the fifth entry in the vector `v` and `(vector-set! v 5 7)` changes the value of the fifth entry of the vector `v` to 7.[^6] For computer memory, this access can be implemented through the use of address arithmetic to combine a *base address* that specifies the beginning location of a vector in memory with an *index* that specifies the offset of a particular element of the vector.
+فمثلًا، إذا كان `v` متجهًا، فإنّ `(vector-ref v 5)` يُحضِر المدخل الخامس في المتجه `v` و`(vector-set! v 5 7)` يُغيّر قيمة المدخل الخامس في المتجه `v` إلى 7.[^6] أمّا في ذاكرة الحاسوب، فيمكن تنفيذ هذا النفاذ باستخدام حساب العناوين لدمج *عنوانٍ أساس (base address)* يُحدّد موقع البداية لمتجهٍ في الذاكرة مع فهرس يُحدّد إزاحة عنصرٍ معيّنٍ من المتجه.
 
-#### Representing Lisp data
+#### تمثيل بيانات Lisp
 
-We can use vectors to implement the basic pair structures required for a list-structured memory. Let us imagine that computer memory is divided into two vectors: `the-cars` and `the-cdrs`. We will represent list structure as follows: A pointer to a pair is an index into the two vectors. The `car` of the pair is the entry in `the-cars` with the designated index, and the `cdr` of the pair is the entry in `the-cdrs` with the designated index. We also need a representation for objects other than pairs (such as numbers and symbols) and a way to distinguish one kind of data from another. There are many methods of accomplishing this, but they all reduce to using *typed pointers*, that is, to extending the notion of “pointer” to include information on data type.[^7] The data type enables the system to distinguish a pointer to a pair (which consists of the “pair” data type and an index into the memory vectors) from pointers to other kinds of data (which consist of some other data type and whatever is being used to represent data of that type). Two data objects are considered to be the same (`eq?`) if their pointers are identical.[^8] [Figure 5.14](#Figure-5_002e14) illustrates the use of this method to represent the list `((1 2) 3 4)`, whose box-and-pointer diagram is also shown. We use letter prefixes to denote the data-type information. Thus, a pointer to the pair with index 5 is denoted `p5`, the empty list is denoted by the pointer `e0`, and a pointer to the number 4 is denoted `n4`. In the box-and-pointer diagram, we have indicated at the lower left of each pair the vector index that specifies where the `car` and `cdr` of the pair are stored. The blank locations in `the-cars` and `the-cdrs` may contain parts of other list structures (not of interest here).
+نستطيع استخدام المتجهات لتنفيذ بنى الأزواج الأساسيّة المطلوبة لذاكرةٍ مبنيّةٍ على القوائم (list-structured memory). فلنتخيّل أنّ ذاكرة الحاسوب مقسومةٌ إلى متجهين: `the-cars` و`the-cdrs`. وسنمثّل بنية القائمة على النحو الآتي: المؤشّر إلى زوجٍ هو فهرسٌ في المتجهين. و`car` الزوج هو المدخل في `the-cars` بالفهرس المعيَّن، و`cdr` الزوج هو المدخل في `the-cdrs` بالفهرس المعيَّن. ونحتاج أيضًا إلى تمثيلٍ لكائناتٍ غير الأزواج (كالأعداد والرموز) وإلى طريقةٍ لتمييز نوع بياناتٍ عن آخر. ثمّة طرائق كثيرةٌ لإنجاز ذلك، لكنّها جميعًا تُختزل إلى استخدام *مؤشّراتٍ معمَّمة النوع (typed pointers)*، أي توسيع مفهوم «المؤشّر» ليشمل معلومات عن نوع البيانات.[^7] ويمكّن نوع البيانات النظام من تمييز مؤشّرٍ إلى زوجٍ (وهو يتألّف من نوع البيانات «زوج» وفهرسٍ في متجهي الذاكرة) عن المؤشّرات إلى أنواع البيانات الأخرى (والتي تتألّف من نوع بياناتٍ آخر وممّا يُستخدم لتمثيل بيانات ذلك النوع). ويُعتبر كائنا بياناتٍ متطابقين (`eq?`) إذا كانت مؤشّراتهما متطابقة.[^8] ويُوضيّح [الشكل 5.14](#Figure-5_002e14) استخدام هذه الطريقة لتمثيل القائمة `((1 2) 3 4)`، التي يُعرَض مخطّط الصندوق والمؤشّر لها أيضًا. ونستخدم بادئاتٍ حرفيّةً للدلالة على معلومات نوع البيانات. وهكذا، يُرمز إلى المؤشّر إلى الزوج ذي الفهرس 5 بـ`p5`، وتُرمَّز القائمة الخالية بمؤشّر `e0`، ويُرمز إلى المؤشّر إلى العدد 4 بـ`n4`. وفي مخطّط الصندوق والمؤشّر، أشرنا أسفل يسار كلّ زوجٍ إلى فهرس المتجه الذي يُحدّد أين تُخزَّن `car` الزوج و`cdr` الزوج. والمواقع الخالية في `the-cars` و`the-cdrs` قد تحتوي أجزاءً من بنى قوائمَ أخرى (غير ذات أهمّيّةٍ هنا).
 
 ![](/images/sicp/c5-computing-with-register-machines-0-Fig5.14b.std.webp)
 
-**Figure 5.14:** Box-and-pointer and memory-vector representations of the list `((1 2) 3 4)`.
+**الشكل 5.14:** تمثيل القائمة `((1 2) 3 4)` بمخطّط الصندوق والمؤشّر وبمتجهي الذاكرة.
 
-A pointer to a number, such as `n4`, might consist of a type indicating numeric data together with the actual representation of the number 4.[^9] To deal with numbers that are too large to be represented in the fixed amount of space allocated for a single pointer, we could use a distinct *bignum* data type, for which the pointer designates a list in which the parts of the number are stored.[^10]
+وقد يتألّف المؤشّر إلى عددٍ، مثل `n4`، من نوعٍ يدلّ على بيانات عدديّةٍ إلى جانب التمثيل الفعليّ للعدد 4.[^9] ولكي نتعامل مع الأعداد التي هي كبيرةٌ بحيث لا يمكن تمثيلها في المقدار الثابت من المساحة المُخصَّصة لمؤشّرٍ واحدٍ، فبوسعنا استخدام نوع بياناتٍ مستقلٍّ هو *الأعداد الضخمة (bignum)*، يكون فيه المؤشّر مُعيِّنًا لقائمةٍ تُخزَّن فيها أجزاء العدد.[^10]
 
-A symbol might be represented as a typed pointer that designates a sequence of the characters that form the symbol’s printed representation. This sequence is constructed by the Lisp reader when the character string is initially encountered in input. Since we want two instances of a symbol to be recognized as the “same” symbol by `eq?` and we want `eq?` to be a simple test for equality of pointers, we must ensure that if the reader sees the same character string twice, it will use the same pointer (to the same sequence of characters) to represent both occurrences. To accomplish this, the reader maintains a table, traditionally called the *obarray*, of all the symbols it has ever encountered. When the reader encounters a character string and is about to construct a symbol, it checks the obarray to see if it has ever before seen the same character string. If it has not, it uses the characters to construct a new symbol (a typed pointer to a new character sequence) and enters this pointer in the obarray. If the reader has seen the string before, it returns the symbol pointer stored in the obarray. This process of replacing character strings by unique pointers is called *interning* symbols.
+وقد يُمثَّل الرمز بمؤشّرٍ معمَّم النوع يُعيِّن تسلسلًا من المحارف التي تشكّل التمثيل المطبوع للرمز. ويُنشَأ هذا التسلسل بواسطة قارئ Lisp حين تُواجَه سلسلة المحارف أوّلَ ما تُواجَه في المُدخَل. وحيث إنّا نُريد أن يُتعرَّف على نسختين من رمزٍ بوصفهما «الرمز ذاته» بواسطة `eq?`، ونُريد أن يكون `eq?` اختبارًا بسيطًا لتساوي المؤشّرات، ينبغي أن نضمن أنّ قارئ الرموز، إذا رأى سلسلة المحارف ذاتها مرّتين، سيستخدم المؤشّر ذاته (إلى تسلسل المحارف ذاته) لتمثيل الحدثين. ولكي يُنجز ذلك، يُمسك القارئ جدولًا، يُسمّى تقليديًّا *مصفوفة الرموز (obarray)*، بجميع الرموز التي واجهها قطّ. وحين يواجه القارئ سلسلة محارفٍ ويكاد يبني رمزًا، يفحص مصفوفة الرموز ليرى هل واجه سلسلة المحارف ذاتها من قبل. فإن لم يكن قد واجهها، يستخدم المحارف لبناء رمزٍ جديد (مؤشّرٌ معمَّم النوع إلى تسلسل محارفٍ جديد) ويُدخل هذا المؤشّر في مصفوفة الرموز. وإن يكون القارئ قد واجه السلسلة من قبل، يُعيد مؤشّر الرمز المخزّون في مصفوفة الرموز. وتُسمّى عمليّة استبدال سلاسل المحارف بمؤشّراتٍ فريدةٍ *إدخال الرموز (interning)*.
 
-#### Implementing the primitive list operations
+#### تنفيذ عمليّات القائمة الأوّليّة
 
-Given the above representation scheme, we can replace each “primitive” list operation of a register machine with one or more primitive vector operations. We will use two registers, `the-cars` and `the-cdrs`, to identify the memory vectors, and will assume that `vector-ref` and `vector-set!` are available as primitive operations. We also assume that numeric operations on pointers (such as incrementing a pointer, using a pair pointer to index a vector, or adding two numbers) use only the index portion of the typed pointer.
+وبالنظر إلى مخطّط التمثيل أعلاه، نستطيع استبدال كلّ عمليّة قائمةٍ «أوّليّة» في آلة المسجّلات بعمليّة متجهٍ أوّليّةٍ أو أكثر. وسنستخدم مسجّلين، `the-cars` و`the-cdrs`، لتعيين متجهي الذاكرة، وسنفترض أنّ `vector-ref` و`vector-set!` متوفّرتان بوصفهما عمليّتَين أوّليّتَين. ونفترض أيضًا أنّ العمليّات العدديّة على المؤشّرات (كتزييد مؤشّرٍ، أو استخدام مؤشّر زوجٍ لفهرسة متجهٍ، أو جمع عددين) لا تستخدم إلّا جزء الفهرس من المؤشّر المعمَّم النوع.
 
-For example, we can make a register machine support the instructions
+فمثلًا، نستطيع جعل آلة مسجّلاتٍ تدعم التعليمات
 
 ```scheme
 (assign ⟨reg₁⟩ (op car) (reg ⟨reg₂⟩))
 (assign ⟨reg₁⟩ (op cdr) (reg ⟨reg₂⟩))
 ```
 
-if we implement these, respectively, as
+إذا نفّذناها، على الترتيب، كـ
 
 ```scheme
 (assign ⟨reg₁⟩ 
@@ -1333,14 +1333,14 @@ if we implement these, respectively, as
         (reg ⟨reg₂⟩))
 ```
 
-The instructions
+أمّا التعليمات
 
 ```scheme
 (perform (op set-car!) (reg ⟨reg₁⟩) (reg ⟨reg₂⟩))
 (perform (op set-cdr!) (reg ⟨reg₁⟩) (reg ⟨reg₂⟩))
 ```
 
-are implemented as
+فمنفَّذةٌ كـ
 
 ```scheme
 (perform (op vector-set!)
@@ -1353,7 +1353,7 @@ are implemented as
          (reg ⟨reg₂⟩))
 ```
 
-`Cons` is performed by allocating an unused index and storing the arguments to `cons` in `the-cars` and `the-cdrs` at that indexed vector position. We presume that there is a special register, `free`, that always holds a pair pointer containing the next available index, and that we can increment the index part of that pointer to find the next free location.[^11] For example, the instruction
+أمّا `cons` فيُؤدّى بتخصيص فهرسٍ غير مستخدمٍ وتخزين معطيّ `cons` في `the-cars` و`the-cdrs` في موضع المتجه المُفهرَس بذلك الفهرس. ونفترض وجود مسجّلٍ خاصٍّ، `free`، يحمل دائمًا مؤشّر زوجٍ يحتوي الفهرس المتوفّر التالي، وأنّه يمكننا تزييد جزء الفهرس من ذلك المؤشّر لإيجاد الموقع الحرّ التالي.[^11] فمثلًا، التعليمة
 
 ```scheme
 (assign ⟨reg₁⟩
@@ -1362,7 +1362,7 @@ are implemented as
         (reg ⟨reg₃⟩))
 ```
 
-is implemented as the following sequence of vector operations:[^12]
+منفَّذةٌ كتسلسل عمليّات المتجه الآتي:[^12]
 
 ```scheme
 (perform (op vector-set!)
@@ -1377,17 +1377,17 @@ is implemented as the following sequence of vector operations:[^12]
 (assign free (op +) (reg free) (const 1))
 ```
 
-The `eq?` operation
+أمّا عمليّة `eq?`
 
 ```scheme
 (op eq?) (reg ⟨reg₁⟩) (reg ⟨reg₂⟩)
 ```
 
-simply tests the equality of all fields in the registers, and predicates such as `pair?`, `null?`, `symbol?`, and `number?` need only check the type field.
+فتختبر ببساطةٍ تساوي جميع الحقول في المسجّلين، والمسيّمات مثل `pair?` و`null?` و`symbol?` و`number?` لا تحتاج إلّا إلى فحص حقل النوع.
 
-#### Implementing stacks
+#### تنفيذ المكدسات
 
-Although our register machines use stacks, we need do nothing special here, since stacks can be modeled in terms of lists. The stack can be a list of the saved values, pointed to by a special register `the-stack`. Thus, `(save ⟨reg⟩)` can be implemented as
+وعلى الرغم من أنّ آلات المسجّلات لدينا تستخدم المكدسات، فليس علينا أن نفعل شيئًا خاصًّا هنا، إذ يمكن نمذجة المكدسات من حيث القوائم. فيمكن أن يكون المكدس قائمةً بالقيم المحفوظة، يُشير إليها مسجّلٌ خاصٌّ هو `the-stack`. وهكذا، يمكن تنفيذ `(save ⟨reg⟩)` كـ
 
 ```scheme
 (assign the-stack 
@@ -1396,33 +1396,33 @@ Although our register machines use stacks, we need do nothing special here, sinc
         (reg the-stack))
 ```
 
-Similarly, `(restore ⟨reg⟩)` can be implemented as
+وبالمثل، يمكن تنفيذ `(restore ⟨reg⟩)` كـ
 
 ```scheme
 (assign ⟨reg⟩ (op car) (reg the-stack))
 (assign the-stack (op cdr) (reg the-stack))
 ```
 
-and `(perform (op initialize-stack))` can be implemented as
+و`(perform (op initialize-stack))` يمكن تنفيذه كـ
 
 ```scheme
 (assign the-stack (const ()))
 ```
 
-These operations can be further expanded in terms of the vector operations given above. In conventional computer architectures, however, it is usually advantageous to allocate the stack as a separate vector. Then pushing and popping the stack can be accomplished by incrementing or decrementing an index into that vector.
+يمكن توسيع هذه العمليّات أكثر بواسطة عمليّات المتجه (vector) المعطاة أعلاه. أمّا في البُنى الحاسوبيّة التقليديّة، فمن المفيدّ عادةً تخصيص المكدّس (stack) متجهًا (vector) منفصلًا. وعندئذٍ يمكن أداء الدفع إلى المكدّس وإخراج القيم منه بزيادة فهرسٍ داخل ذلك المتجه أو إنقاصه.
 
-**Exercise 5.20:** Draw the box-and-pointer representation and the memory-vector representation (as in [Figure 5.14](#Figure-5_002e14)) of the list structure produced by
+**التمرين 5.20:** ارسم تمثيل الصناديق والمؤشّرات (box-and-pointer) وتمثيل متجه الذاكرة (memory-vector) (كما في [الشكل 5.14](#Figure-5_002e14)) لبنية القائمة (list structure) الناتجة عن
 
 ```scheme
 (define x (cons 1 2))
 (define y (list x x))
 ```
 
-with the `free` pointer initially `p1`. What is the final value of `free`? What pointers represent the values of `x` and `y`?
+حيث يكون مؤشّر `free` في البدء عند `p1`. فما القيمة النهائيّة لـ`free`؟ وأيّ مؤشّرات تمثّل قيمتَي `x` و`y`؟
 
-**Exercise 5.21:** Implement register machines for the following procedures. Assume that the list-structure memory operations are available as machine primitives.
+**التمرين 5.21:** نفّذ آلات مسجّلاتٍ للإجراءات الآتية. وافترض أنّ عمليّات ذاكرة بنية القوائم متاحة كأوّليّاتٍ آليّة.
 
-Recursive `count-leaves`:
+نسخة تعاوديّة من `count-leaves`:
 
 ```scheme
 (define (count-leaves tree)
@@ -1433,7 +1433,7 @@ Recursive `count-leaves`:
             (count-leaves (cdr tree))))))
 ```
 
-Recursive `count-leaves` with explicit counter:
+نسخة تعاوديّة من `count-leaves` بعدّاد صريح:
 
 ```scheme
 (define (count-leaves tree)
@@ -1448,11 +1448,11 @@ Recursive `count-leaves` with explicit counter:
   (count-iter tree 0))
 ```
 
-> **Exercise 5.22:** [Exercise 3.12](https://sarabander.github.io/sicp/html/3_002e3.xhtml#Exercise-3_002e12) of [3.3.1](https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e1) presented an `append` procedure that appends two lists to form a new list and an `append!` procedure that splices two lists together. Design a register machine to implement each of these procedures. Assume that the list-structure memory operations are available as primitive operations.
+> **التمرين 5.22:** عرض [التمرين 3.12](https://sarabander.github.io/sicp/html/3_002e3.xhtml#Exercise-3_002e12) الوارد في [3.3.1](https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e1) إجراءَ `append` الذي يلحق قائمتين لتكوين قائمةٍ جديدة، وإجراءَ `append!` الذي يدمج قائمتين وصْلهما معًا. صمّم آلة مسجّلاتٍ لتنفيذ كلٍّ من هذين الإجراءين. وافترض أنّ عمليّات ذاكرة بنية القوائم متاحة كعمليّاتٍ أوّليّة.
 
-#### 5.3.2 Maintaining the Illusion of Infinite Memory
+#### 5.3.2 الحفاظ على وهم الذاكرة غير المحدودة
 
-The representation method outlined in [5.3.1](#g_t5_002e3_002e1) solves the problem of implementing list structure, provided that we have an infinite amount of memory. With a real computer we will eventually run out of free space in which to construct new pairs.[^13] However, most of the pairs generated in a typical computation are used only to hold intermediate results. After these results are accessed, the pairs are no longer needed—they are *garbage*. For instance, the computation
+طريقة التمثيل المُوجَزة في [5.3.1](#g_t5_002e3_002e1) تحلّ مسألة تنفيذ بنية القوائم، شريطةَ أن تكون لدينا ذاكرةٌ غير محدودة. أمّا مع حاسوبٍ حقيقيّ، فسينفدنا في النهاية المكان الحُرّ الذي نُبنى فيه أزواجٌ جديدة.[^13] غير أنّ معظم الأزواج المُولَّدة في احتسابٍ نموذجيٍّ لا تُستخدم إلّا للاحتفاظ بنتائج وسيطة. وبعد الاستفادة من هذه النتائج، لم تعُد الأزواج لازمةً — إنّها *قمامة* (garbage). فإنّ الاحتساب
 
 ```scheme
 (accumulate 
@@ -1461,27 +1461,27 @@ The representation method outlined in [5.3.1](#g_t5_002e3_002e1) solves the prob
  (filter odd? (enumerate-interval 0 n)))
 ```
 
-constructs two lists: the enumeration and the result of filtering the enumeration. When the accumulation is complete, these lists are no longer needed, and the allocated memory can be reclaimed. If we can arrange to collect all the garbage periodically, and if this turns out to recycle memory at about the same rate at which we construct new pairs, we will have preserved the illusion that there is an infinite amount of memory.
+يبني قائمتين: التعداد ونتيجة ترشيح التعداد. وحين يكتمل التجميع، لم تعُد هاتان القائمتان لازمتين، ويمكن استعادة الذاكرة المخصَّصة. فإن تمكّنّا من جمع كلّ القمامة دوريًّا، وتمخّض ذلك عن إعادة تدوير الذاكرة بالسرعة ذاتها تقريبًا التي نُبنى بها أزواجٌ جديدة، فإنّنا نكون قد حافظنا على وهم وجود ذاكرةٍ غير محدودة.
 
-In order to recycle pairs, we must have a way to determine which allocated pairs are not needed (in the sense that their contents can no longer influence the future of the computation). The method we shall examine for accomplishing this is known as *garbage collection*. Garbage collection is based on the observation that, at any moment in a Lisp interpretation, the only objects that can affect the future of the computation are those that can be reached by some succession of `car` and `cdr` operations starting from the pointers that are currently in the machine registers.[^14] Any memory cell that is not so accessible may be recycled.
+وحتى نُعيد تدوير الأزواج، ينبغي أن تكون لدينا طريقةٌ لتحديد الأزواج المخصَّصة غير اللازمة (بمعنى أنّ محتوياتها لم تعُد قادرةً على التأثير في مستقبل الاحتساب). والطريقة التي سنفحصها لإنجاز ذلك تُعرف بـ*جمع القمامة* (garbage collection). ويقوم جمع القمامة على الملاحظة أنّ الكائنات الوحيدة التي يمكنها التأثير في مستقبل الاحتساب، في أيّ لحظةٍ من تأويل Lisp، هي تلك التي يمكن الوصول إليها بسلسلةٍ من عمليّات `car` و`cdr` تبدأ من المؤشّرات الموجودة حاليًّا في مسجّلات الآلة.[^14] ويمكن إعادة تدوير أيّ خليّة ذاكرةٍ غير متاحةٍ على هذا النحو.
 
-There are many ways to perform garbage collection. The method we shall examine here is called *stop-and-copy*. The basic idea is to divide memory into two halves: “working memory” and “free memory.” When `cons` constructs pairs, it allocates these in working memory. When working memory is full, we perform garbage collection by locating all the useful pairs in working memory and copying these into consecutive locations in free memory. (The useful pairs are located by tracing all the `car` and `cdr` pointers, starting with the machine registers.) Since we do not copy the garbage, there will presumably be additional free memory that we can use to allocate new pairs. In addition, nothing in the working memory is needed, since all the useful pairs in it have been copied. Thus, if we interchange the roles of working memory and free memory, we can continue processing; new pairs will be allocated in the new working memory (which was the old free memory). When this is full, we can copy the useful pairs into the new free memory (which was the old working memory).[^15]
+ثمّة طرائق كثيرةٌ لأداء جمع القمامة. والطريقة التي سنفحصها هنا تُسمّى *التوقّف والنسخ* (stop-and-copy). والفكرة الأساسيّة هي تقسيم الذاكرة إلى نصفين: «ذاكرة العمل» و«الذاكرة الحُرّة». وعندما يبني `cons` أزواجًا، فإنّه يخصّصها في ذاكرة العمل. وحين تمتلئ ذاكرة العمل، نؤدّي جمع القمامة بتحديد موقع جميع الأزواج المفيدة في ذاكرة العمل ونسخها في مواضعَ متتاليةٍ في الذاكرة الحُرّة. (وتُحدَّد مواقع الأزواج المفيدة بتتبّع جميع مؤشّري `car` و`cdr`، بدءًا من مسجّلات الآلة.) وبما أنّنا لا ننسخ القمامة، فسيكون هناك - على الأرجح - ذاكرةٌ حُرّةٌ إضافيّةٌ نستطيع استخدامها لتخصيص أزواجٍ جديدة. فضلًا عن ذلك، لا شيء في ذاكرة العمل لازَمٌ، إذ إنّ جميع الأزواج المفيدة فيها قد نُسخت. وبذلك، فإنّ تبادلنا أدوار ذاكرة العمل والذاكرة الحُرّة يمكنّنا من مواصلة المعالجة؛ وسيُخصَّص الأزواج الجديدة في ذاكرة العمل الجديدة (وهي الذاكرة الحُرّة القديمة). وحين تمتلئ تلك، نستطيع نسخ الأزواج المفيدة إلى الذاكرة الحُرّة الجديدة (وهي ذاكرة العمل القديمة).[^15]
 
-#### Implementation of a stop-and-copy garbage collector
+#### تنفيذ جامع قمامةٍ بطريقة التوقّف والنسخ
 
-We now use our register-machine language to describe the stop-and-copy algorithm in more detail. We will assume that there is a register called `root` that contains a pointer to a structure that eventually points at all accessible data. This can be arranged by storing the contents of all the machine registers in a pre-allocated list pointed at by `root` just before starting garbage collection.[^16] We also assume that, in addition to the current working memory, there is free memory available into which we can copy the useful data. The current working memory consists of vectors whose base addresses are in registers called `the-cars` and `the-cdrs`, and the free memory is in registers called `new-cars` and `new-cdrs`.
+نستخدم الآن لغة آلات المسجّلات لوصف خوارزميّة التوقّف والنسخ بتفصيلٍ أكثر. وسنفترض وجود مسجّلٍ يُسمّى `root` يحتوي مؤشّرًا إلى بنيةٍ تُشير في النهاية إلى جميع البيانات المتاحة. ويمكن ترتيب ذلك بتخزين محتويات جميع مسجّلات الآلة في قائمةٍ مخصَّصةٍ مسبقًا يُشير إليها `root` قبيل البدء في جمع القمامة.[^16] ونفترض أيضًا أنّه - بالإضافة إلى ذاكرة العمل الحاليّة - ثمّة ذاكرةٌ حُرّةٌ متاحةٌ نستطيع نسخ البيانات المفيدة إليها. وتتألّف ذاكرة العمل الحاليّة من متجهاتٍ عناوينها الأساسيّة في مسجّلين يُسمّيان `the-cars` و`the-cdrs`، والذاكرة الحُرّة في مسجّلين يُسمّيان `new-cars` و`new-cdrs`.
 
-Garbage collection is triggered when we exhaust the free cells in the current working memory, that is, when a `cons` operation attempts to increment the `free` pointer beyond the end of the memory vector. When the garbage-collection process is complete, the `root` pointer will point into the new memory, all objects accessible from the `root` will have been moved to the new memory, and the `free` pointer will indicate the next place in the new memory where a new pair can be allocated. In addition, the roles of working memory and new memory will have been interchanged—new pairs will be constructed in the new memory, beginning at the place indicated by `free`, and the (previous) working memory will be available as the new memory for the next garbage collection. [Figure 5.15](#Figure-5_002e15) shows the arrangement of memory just before and just after garbage collection.
+يُطلَق جمع القمامة حين نستنفد الخلايا الحُرّة في ذاكرة العمل الحاليّة، أي حين تحاول عمليّة `cons` زيادة المؤشّر `free` بما يتجاوز نهاية متجه الذاكرة. وحين يكتمل عمليّة جمع القمامة، سيُشير المؤشّر `root` إلى داخل الذاكرة الجديدة، وستكون جميع الكائنات المتاحة من `root` قد نُقلت إلى الذاكرة الجديدة، وسيُحدّد المؤشّر `free` الموضع التالي في الذاكرة الجديدة حيث يمكن تخصيص زوجٍ جديد. وبالإضافة إلى ذلك، تكون أدوار ذاكرة العمل والذاكرة الجديدة قد تبادلت — وسيُبنى الأزواج الجديدة في الذاكرة الجديدة، بدءًا من الموضع الذي يُحدّده `free`، وستكون ذاكرة العمل (السابقة) متاحةً بوصفها الذاكرة الجديدة لجمع القمامة التالي. ويُظهر [الشكل 5.15](#Figure-5_002e15) ترتيب الذاكرة قبيل جمع القمامة وبعده بلحظة.
 
 ![](/images/sicp/c5-computing-with-register-machines-1-Fig5.15c.std.webp)
 
-**Figure 5.15:** Reconfiguration of memory by the garbage-collection process.
+**الشكل 5.15:** إعادة تشكيل الذاكرة بواسطة عمليّة جمع القمامة.
 
-The state of the garbage-collection process is controlled by maintaining two pointers: `free` and `scan`. These are initialized to point to the beginning of the new memory. The algorithm begins by relocating the pair pointed at by `root` to the beginning of the new memory. The pair is copied, the `root` pointer is adjusted to point to the new location, and the `free` pointer is incremented. In addition, the old location of the pair is marked to show that its contents have been moved. This marking is done as follows: In the `car` position, we place a special tag that signals that this is an already-moved object. (Such an object is traditionally called a *broken heart*.)[^17] In the `cdr` position we place a *forwarding address* that points at the location to which the object has been moved.
+تُضبَط حالة عمليّة جمع القمامة بالإبقاء على مؤشّرين: `free` و`scan`. ويُهيَّأ هذان المؤشّران ليُشيرا إلى بداية الذاكرة الجديدة. وتبدأ الخوارزميّة بنقل الزوج الذي يُشير إليه `root` إلى بداية الذاكرة الجديدة. فيُنسخ الزوج، ويُعدَّل المؤشّر `root` ليُشير إلى الموقع الجديد، وتُزاد قيمة المؤشّر `free`. وبالإضافة إلى ذلك، يُؤشَّر الموقع القديم للزوج لإظهار أنّ محتوياته قد نُقلت. ويُنجز هذا التأشير على النحو الآتي: في موضع `car`، نضع وسمًا خاصًّا يُشير إلى أنّ هذا كائنٌ قد نُقل بالفعل. (ويُسمّى مثل هذا الكائن تقليديًّا *القلب المكسور* (broken heart).)[^17] وفي موضع `cdr` نضع *عنوان إعادة التوجيه* (forwarding address) الذي يُشير إلى الموقع الذي نُقل إليه الكائن.
 
-After relocating the root, the garbage collector enters its basic cycle. At each step in the algorithm, the `scan` pointer (initially pointing at the relocated root) points at a pair that has been moved to the new memory but whose `car` and `cdr` pointers still refer to objects in the old memory. These objects are each relocated, and the `scan` pointer is incremented. To relocate an object (for example, the object indicated by the `car` pointer of the pair we are scanning) we check to see if the object has already been moved (as indicated by the presence of a broken-heart tag in the `car` position of the object). If the object has not already been moved, we copy it to the place indicated by `free`, update `free`, set up a broken heart at the object’s old location, and update the pointer to the object (in this example, the `car` pointer of the pair we are scanning) to point to the new location. If the object has already been moved, its forwarding address (found in the `cdr` position of the broken heart) is substituted for the pointer in the pair being scanned. Eventually, all accessible objects will have been moved and scanned, at which point the `scan` pointer will overtake the `free` pointer and the process will terminate.
+وبعد نقل الجذر، يدخل جامع القمامة دورته الأساسيّة. وفي كلّ خطوةٍ من الخوارزميّة، يُشير المؤشّر `scan` (الذي يُشير في البدء إلى الجذر المنقول) إلى زوجٍ نُقل إلى الذاكرة الجديدة لكنّ مؤشّريه `car` و`cdr` ما زالا يُشيران إلى كائناتٍ في الذاكرة القديمة. وتُنقل هذه الكائنات كلٌّ منها، وتُزاد قيمة المؤشّر `scan`. ولنقل كائنٍ (مثلًا الكائن الذي يُحدّده مؤشّر `car` للزوج الذي نمسحه) نتحقّق مما إذا كان الكائن قد نُقل بالفعل (كما يُبيّنه وجود وسم القلب المكسور في موضع `car` للكائن). فإن لم يكن الكائن قد نُقل بالفعل، ننسخه إلى الموضع الذي يُحدّده `free`، ونُحدّث `free`، ونُنشئ قلبًا مكسورًا في الموقع القديم للكائن، ونُحدّث المؤشّر إلى الكائن (في هذا المثال، مؤشّر `car` للزوج الذي نمسحه) ليُشير إلى الموقع الجديد. وإن كان الكائن قد نُقل بالفعل، فتُستبدل قيمة عنوان إعادة التوجيه الخاص به (الموجود في موضع `cdr` من القلب المكسور) بالمؤشّر في الزوج الذي يُمسح. وفي النهاية، ستكون جميع الكائنات المتاحة قد نُقلت ومُسحت، وعندئذٍ يفوق المؤشّر `scan` المؤشّر `free` وتنتهي العمليّة.
 
-We can specify the stop-and-copy algorithm as a sequence of instructions for a register machine. The basic step of relocating an object is accomplished by a subroutine called `relocate-old-result-in-new`. This subroutine gets its argument, a pointer to the object to be relocated, from a register named `old`. It relocates the designated object (incrementing `free` in the process), puts a pointer to the relocated object into a register called `new`, and returns by branching to the entry point stored in the register `relocate-continue`. To begin garbage collection, we invoke this subroutine to relocate the `root` pointer, after initializing `free` and `scan`. When the relocation of `root` has been accomplished, we install the new pointer as the new `root` and enter the main loop of the garbage collector.
+يمكننا تحديد خوارزميّة التوقّف والنسخ كسلسلةٍ من التعليمات لآلة مسجّلات. أمّا الخطوة الأساسيّة في نقل كائنٍ فتتمّ بروتينٍ فرعيٍّ يُسمّى `relocate-old-result-in-new`. ويحصل هذا الروتين الفرعيّ على معطاه، وهو مؤشّرٌ إلى الكائن المطلوب نقله، من مسجّلٍ يُسمّى `old`. وهو ينقل الكائن المعيَّن (بزيادة `free` أثناء ذلك)، ويضع مؤشّرًا إلى الكائن المنقول في مسجّلٍ يُسمّى `new`، ويعود بالتفرّع إلى نقطة الدخول المخزّنة في المسجّل `relocate-continue`. وللبدء في جمع القمامة، نستدعي هذا الروتين الفرعيّ لنقل مؤشّر `root`، بعد تهيئة `free` و`scan`. وحين يُنجز نقل `root`، نُنصّب المؤشّر الجديد بوصفه `root` الجديد وندخل الحلقة الرئيسيّة لجامع القمامة.
 
 ```scheme
 begin-garbage-collection
@@ -1496,7 +1496,7 @@ reassign-root
   (goto (label gc-loop))
 ```
 
-In the main loop of the garbage collector we must determine whether there are any more objects to be scanned. We do this by testing whether the `scan` pointer is coincident with the `free` pointer. If the pointers are equal, then all accessible objects have been relocated, and we branch to `gc-flip`, which cleans things up so that we can continue the interrupted computation. If there are still pairs to be scanned, we call the relocate subroutine to relocate the `car` of the next pair (by placing the `car` pointer in `old`). The `relocate-continue` register is set up so that the subroutine will return to update the `car` pointer.
+في الحلقة الرئيسيّة لجامع القمامة، ينبغي أن نُحدّد فيما إذا كانت ثمّة كائناتٌ أخرى تبقّى مسحها. ونفعل ذلك باختبار تطابق المؤشّر `scan` مع المؤشّر `free`. فإن كان المؤشّران متساويين، فقد نُقلت جميع الكائنات المتاحة، ونتفرّع إلى `gc-flip` الذي يُرتّب الأمور حتّى نستطيع مواصلة الاحتساب المُقاطَع. وإن كان ثمّة أزواجٌ تبقّى مسحها، نستدعي روتين النقل لنقل `car` الزوج التالي (بوضع مؤشّر `car` في `old`). ويُهيَّأ المسجّل `relocate-continue` بحيث يعود الروتين الفرعيّ لتحديث مؤشّر `car`.
 
 ```scheme
 gc-loop
@@ -1511,7 +1511,7 @@ gc-loop
   (goto (label relocate-old-result-in-new))
 ```
 
-At `update-car`, we modify the `car` pointer of the pair being scanned, then proceed to relocate the `cdr` of the pair. We return to `update-cdr` when that relocation has been accomplished. After relocating and updating the `cdr`, we are finished scanning that pair, so we continue with the main loop.
+عند `update-car`، نُعدّل مؤشّر `car` للزوج الذي يُمسح، ثم نمضي إلى نقل `cdr` الزوج. ونعود إلى `update-cdr` حين يُنجز ذلك النقل. وبعد نقل `cdr` وتحديثه، نكون قد أنينا من مسح ذلك الزوج، فنواصل في الحلقة الرئيسيّة.
 
 ```scheme
 update-car
@@ -1535,7 +1535,7 @@ update-cdr
   (goto (label gc-loop))
 ```
 
-The subroutine `relocate-old-result-in-new` relocates objects as follows: If the object to be relocated (pointed at by `old`) is not a pair, then we return the same pointer to the object unchanged (in `new`). (For example, we may be scanning a pair whose `car` is the number 4. If we represent the `car` by `n4`, as described in [5.3.1](#g_t5_002e3_002e1), then we want the “relocated” `car` pointer to still be `n4`.) Otherwise, we must perform the relocation. If the `car` position of the pair to be relocated contains a broken-heart tag, then the pair has in fact already been moved, so we retrieve the forwarding address (from the `cdr` position of the broken heart) and return this in `new`. If the pointer in `old` points at a yet-unmoved pair, then we move the pair to the first free cell in new memory (pointed at by `free`) and set up the broken heart by storing a broken-heart tag and forwarding address at the old location. `Relocate-old-result-in-new` uses a register `oldcr` to hold the `car` or the `cdr` of the object pointed at by `old`.[^18]
+يُنقل الروتين الفرعيّ `relocate-old-result-in-new` الكائنات على النحو الآتي: فإن كان الكائن المطلوب نقله (الذي يُشير إليه `old`) ليس زوجًا، نُعيد المؤشّر ذاته إلى الكائن دون تغيير (في `new`). (فقد نكون مثلًا نمسح زوجًا `car` هو العدد 4. فإن مثّلنا `car` بـ`n4`، كما هو موصوف في [5.3.1](#g_t5_002e3_002e1)، فنريد أن يبقى مؤشّر `car` «المنقول» هو `n4`.) وإلّا، ينبغي أن نُجري النقل. فإن احتوى موضع `car` للزوج المطلوب نقله على وسم القلب المكسور، فالزوج قد نُقل في الحقيقة بالفعل، فنستعيد عنوان إعادة التوجيه (من موضع `cdr` في القلب المكسور) ونُعيده في `new`. وإن كان المؤشّر في `old` يُشير إلى زوجٍ لم يُنقل بعد، ننقل الزوج إلى أوّل خليّة حُرّةٍ في الذاكرة الجديدة (التي يُشير إليها `free`) ونُنشئ قلبًا مكسورًا بتخزين وسم القلب المكسور وعنوان إعادة التوجيه في الموقع القديم. ويستخدم `relocate-old-result-in-new` مسجّلًا يُسمّى `oldcr` للاحتفاظ بـ`car` أو `cdr` للكائن الذي يُشير إليه `old`.[^18]
 
 ```scheme
 relocate-old-result-in-new
@@ -1584,7 +1584,7 @@ already-moved
   (goto (reg relocate-continue))
 ```
 
-At the very end of the garbage-collection process, we interchange the role of old and new memories by interchanging pointers: interchanging `the-cars` with `new-cars`, and `the-cdrs` with `new-cdrs`. We will then be ready to perform another garbage collection the next time memory runs out.
+وفي نهاية عمليّة جمع القمامة تمامًا، نبادل دور الذاكرتين القديمة والجديدة بتبادل المؤشّرات: تبادل `the-cars` مع `new-cars`، و`the-cdrs` مع `new-cdrs`. وسنكون عندئذٍ على استعدادٍ لأداء جمع قمامةٍ آخر في المرّة التالية التي تنفد فيها الذاكرة.
 
 ```scheme
 gc-flip
@@ -1596,25 +1596,25 @@ gc-flip
   (assign new-cars (reg temp))
 ```
 
-### 5.4 The Explicit-Control Evaluator
+### 5.4 المقيّم ذو التحكّم الصريح
 
-In [5.1](https://sarabander.github.io/sicp/html/5_002e1.xhtml#g_t5_002e1) we saw how to transform simple Scheme programs into descriptions of register machines. We will now perform this transformation on a more complex program, the metacircular evaluator of [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1)–[4.1.4](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e4), which shows how the behavior of a Scheme interpreter can be described in terms of the procedures `eval` and `apply`. The *explicit-control evaluator* that we develop in this section shows how the underlying procedure-calling and argument-passing mechanisms used in the evaluation process can be described in terms of operations on registers and stacks. In addition, the explicit-control evaluator can serve as an implementation of a Scheme interpreter, written in a language that is very similar to the native machine language of conventional computers. The evaluator can be executed by the register-machine simulator of [5.2](https://sarabander.github.io/sicp/html/5_002e2.xhtml#g_t5_002e2). Alternatively, it can be used as a starting point for building a machine-language implementation of a Scheme evaluator, or even a special-purpose machine for evaluating Scheme expressions. [Figure 5.16](#Figure-5_002e16) shows such a hardware implementation: a silicon chip that acts as an evaluator for Scheme. The chip designers started with the data-path and controller specifications for a register machine similar to the evaluator described in this section and used design automation programs to construct the integrated-circuit layout.[^19]
+رأينا في [5.1](https://sarabander.github.io/sicp/html/5_002e1.xhtml#g_t5_002e1) كيف نحوّل برامج Scheme بسيطةً إلى أوصاف آلات مسجّلات. وسنُجري هذا التحويل الآن على برنامجٍ أكثر تعقيدًا، وهو المقيّم الاستعادي الوارد في [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1)–[4.1.4](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e4)، الذي يُظهر كيف يمكن وصف سلوك مفسّر Scheme من حيث الإجراءين `eval` و`apply`. أمّا *المقيّم ذو التحكّم الصريح* (explicit-control evaluator) الذي نُطوّره في هذا القسم فيُظهر كيف يمكن وصف آليّات نداء الإجراءات وتمرير المعطيات الأساسيّة المستخدمة في عمليّة التقييم من حيث عمليّاتٍ على المسجّلات والمكدّس. وبالإضافة إلى ذلك، يمكن للمقيّم ذي التحكّم الصريح أن يخدم بوصفه تنفيذًا لمفسّر Scheme، مكتوبًا بلغةٍ تشبه تشابهًا شديدًا لغة الآلة الأصليّة للحواسيب التقليديّة. ويمكن تنفيذ المقيّم بواسطة محاكي آلة المسجّلات الوارد في [5.2](https://sarabander.github.io/sicp/html/5_002e2.xhtml#g_t5_002e2). وبديلًا عن ذلك، يمكن استخدامه نقطةَ بدءٍ لبناء تنفيذٍ بلغة الآلة لمقيّم Scheme، أو حتّى آلةٍ خاصّةٍ الغرض لتقييم تعابير Scheme. ويُظهر [الشكل 5.16](#Figure-5_002e16) تنفيذًا ماديًّا من هذا القبيل: رقاقة سيليكونيّة تعمل بوصفها مقيّمًا لـScheme. وقد بدأ مصمّمو الرقاقة بمواصفات مسار البيانات والمتحكّم لآلة مسجّلاتٍ تشبه المقيّم الموصوف في هذا القسم، واستخدموا برامج أتمتة التصميم لبناء تخطيط الدارة المتكاملة.[^19]
 
 ![](/images/sicp/c5-computing-with-register-machines-0-chip.std.webp)
 
-**Figure 5.16:** A silicon-chip implementation of an evaluator for Scheme.
+**الشكل 5.16:** تنفيذ لمقيّم Scheme برقاقة سيليكونيّة.
 
-#### Registers and operations
+#### المسجّلات والعمليّات
 
-In designing the explicit-control evaluator, we must specify the operations to be used in our register machine. We described the metacircular evaluator in terms of abstract syntax, using procedures such as `quoted?` and `make-procedure`. In implementing the register machine, we could expand these procedures into sequences of elementary list-structure memory operations, and implement these operations on our register machine. However, this would make our evaluator very long, obscuring the basic structure with details. To clarify the presentation, we will include as primitive operations of the register machine the syntax procedures given in [4.1.2](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e2) and the procedures for representing environments and other run-time data given in sections [4.1.3](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e3) and [4.1.4](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e4). In order to completely specify an evaluator that could be programmed in a low-level machine language or implemented in hardware, we would replace these operations by more elementary operations, using the list-structure implementation we described in [5.3](https://sarabander.github.io/sicp/html/5_002e3.xhtml#g_t5_002e3).
+عند تصميم المقيّم ذي التحكّم الصريح، ينبغي أن نُحدّد العمليّات التي ستُستخدم في آلة المسجّلات خاصّتنا. وقد وصفنا المقيّم الاستعادي من حيث صياغة مجرّدة، باستخدام إجراءاتٍ مثل `quoted?` و`make-procedure`. وعند تنفيذ آلة المسجّلات، كان بوسعنا توسيع هذه الإجراءات إلى سلاسلَ من عمليّات ذاكرة بنية القوائم الأوّليّة، وتنفيذ هذه العمليّات على آلة المسجّلات خاصّتنا. غير أنّ ذلك كان سيجعل مقيّمنا طويلًا جدًّا، بحيث تُحجب البنية الأساسيّة بالتفاصيل. ولإيضاح العرض، سنُدرج كعمليّاتٍ أوّليّةٍ لآلة المسجّلات إجراءات الصياغة المعطاة في [4.1.2](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e2) وإجراءات تمثيل البيئات وغيرها من بيانات وقت التشغيل المعطاة في القسمين [4.1.3](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e3) و[4.1.4](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e4). وحتى نُحدّد تحديدًا تامًّا مقيّمًا يُمكن برمجته بلغة آليّةٍ منخفضة المستوى أو تنفيذه عتاديًّا، كنا سنستبدل هذه العمليّات بعمليّاتٍ أكثر أوّليّة، باستخدام تنفيذ بنية القوائم الذي وصفناه في [5.3](https://sarabander.github.io/sicp/html/5_002e3.xhtml#g_t5_002e3).
 
-Our Scheme evaluator register machine includes a stack and seven registers: `exp`, `env`, `val`, `continue`, `proc`, `argl`, and `unev`. `Exp` is used to hold the expression to be evaluated, and `env` contains the environment in which the evaluation is to be performed. At the end of an evaluation, `val` contains the value obtained by evaluating the expression in the designated environment. The `continue` register is used to implement recursion, as explained in [5.1.4](https://sarabander.github.io/sicp/html/5_002e1.xhtml#g_t5_002e1_002e4). (The evaluator needs to call itself recursively, since evaluating an expression requires evaluating its subexpressions.) The registers `proc`, `argl`, and `unev` are used in evaluating combinations.
+تتألّف آلة مسجّلات مقيّم Scheme خاصّتنا من مكدّس وسبعة مسجّلات: `exp` و`env` و`val` و`continue` و`proc` و`argl` و`unev`. ويُستخدم `exp` في الاحتفاظ بالتعبير المطلوب تقييمه، ويحتوي `env` على البيئة التي ستُجرى فيها عمليّة التقييم. وعند نهاية تقييمٍ، يحتوي `val` على القيمة المتحصّلة من تقييم التعبير في البيئة المعيَّنة. ويُستخدم المسجّل `continue` لاستيفاء التعاود، كما هو موضّح في [5.1.4](https://sarabander.github.io/sicp/html/5_002e1.xhtml#g_t5_002e1_002e4). (يحتاج المقيّم إلى نداء نفسه تعاوديًّا، إذ إنّ تقييم تعبيرٍ يتطلّب تقييم تعابيره الجزئيّة.) وتُستخدم المسجّلات `proc` و`argl` و`unev` في تقييم التركيبات.
 
-We will not provide a data-path diagram to show how the registers and operations of the evaluator are connected, nor will we give the complete list of machine operations. These are implicit in the evaluator’s controller, which will be presented in detail.
+لن نُقدّم مخطّط مسار بياناتٍ يُظهر كيف تُوصَل مسجّلات المقيّم وعمليّاته، كما أنّنا لن نُعطي القائمة التامّة لعمليّات الآلة. فهذه مستبطَنةٌ في متحكّم المقيّم، الذي سيُعرَض بتفصيلٍ.
 
-#### 5.4.1 The Core of the Explicit-Control Evaluator
+#### 5.4.1 قلب المقيّم ذي التحكّم الصريح
 
-The central element in the evaluator is the sequence of instructions beginning at `eval-dispatch`. This corresponds to the `eval` procedure of the metacircular evaluator described in [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1). When the controller starts at `eval-dispatch`, it evaluates the expression specified by `exp` in the environment specified by `env`. When evaluation is complete, the controller will go to the entry point stored in `continue`, and the `val` register will hold the value of the expression. As with the metacircular `eval`, the structure of `eval-dispatch` is a case analysis on the syntactic type of the expression to be evaluated.[^20]
+العنصر المركزيّ في المقيّم هو سلسلة التعليمات التي تبدأ عند `eval-dispatch`. وهي تقابل الإجراء `eval` في المقيّم الاستعادي الموصوف في [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1). وحين يبدأ المتحكّم عند `eval-dispatch`، فهو يقيّم التعبير الذي يُحدّده `exp` في البيئة التي يُحدّدها `env`. وحين يكتمل التقييم، يذهب المتحكّم إلى نقطة الدخول المخزّنة في `continue`، ويحتفظ المسجّل `val` بقيمة التعبير. ومثلما في `eval` الاستعادي، فإنّ بنية `eval-dispatch` هي تحليل حالاتٍ على النوع الصياغيّ للتعبير المطلوب تقييمه.[^20]
 
 ```scheme
 eval-dispatch
@@ -1639,9 +1639,9 @@ eval-dispatch
   (goto (label unknown-expression-type))
 ```
 
-#### Evaluating simple expressions
+#### تقييم التعابير البسيطة
 
-Numbers and strings (which are self-evaluating), variables, quotations, and `lambda` expressions have no subexpressions to be evaluated. For these, the evaluator simply places the correct value in the `val` register and continues execution at the entry point specified by `continue`. Evaluation of simple expressions is performed by the following controller code:
+الأعداد والمقاطع النصّيّة (وهي ذاتيّة التقييم)، والمتغيّرات، والاقتباسات، وتعبيرات `lambda` ليس لها تعابير جزئيّةٌ يُراد تقييمها. وبالنسبة لها، يضع المقيّم القيمة الصحيحة في المسجّل `val` ببساطة ويواصل التنفيذ عند نقطة الدخول التي يُحدّدها `continue`. ويُؤدّى تقييم التعابير البسيطة بشيفرة المتحكّم الآتية:
 
 ```scheme
 ev-self-eval
@@ -1673,13 +1673,13 @@ ev-lambda
   (goto (reg continue))
 ```
 
-Observe how `ev-lambda` uses the `unev` and `exp` registers to hold the parameters and body of the lambda expression so that they can be passed to the `make-procedure` operation, along with the environment in `env`.
+لاحِظ كيف يستخدم `ev-lambda` المسجّلين `unev` و`exp` للاحتفاظ بوسائط تعبير lambda وجسمه، حتّى يمكن تمريرهما إلى العمليّة `make-procedure`، إلى جانب البيئة الموجودة في `env`.
 
-#### Evaluating procedure applications
+#### تقييم تطبيقات الإجراءات
 
-A procedure application is specified by a combination containing an operator and operands. The operator is a subexpression whose value is a procedure, and the operands are subexpressions whose values are the arguments to which the procedure should be applied. The metacircular `eval` handles applications by calling itself recursively to evaluate each element of the combination, and then passing the results to `apply`, which performs the actual procedure application. The explicit-control evaluator does the same thing; these recursive calls are implemented by `goto` instructions, together with use of the stack to save registers that will be restored after the recursive call returns. Before each call we will be careful to identify which registers must be saved (because their values will be needed later).[^21]
+يُحدَّد تطبيق الإجراء بتركيبةٍ تحتوي على مشغّلٍ وعوامل. والمشغّل تعبيرٌ جزئيّ قيمته إجراء، والعوامل تعابير جزئيّةٌ قيمُها هي المعطيات التي ينبغي تطبيق الإجراء عليها. ويعالج `eval` الاستعادي التطبيقات بنداء نفسه تعاوديًّا لتقييم كلّ عنصرٍ من التركيبة، ثم بتمرير النتائج إلى `apply` الذي يؤدّي تطبيق الإجراء الفعليّ. ويفعل المقيّم ذو التحكّم الصريح الأمر ذاته؛ وهذه النداءات التعاوديّة تُنفَّذ بتعليمات `goto`، إلى جانب استخدام المكدّس لحفظ المسجّلات التي ستُستعاد بعد عودة النداء التعاوديّ. وقبل كلّ نداءٍ، سنحرص على تحديد المسجّلات التي ينبغي حفظها (لأنّ قيمها ستكون لازمةً لاحقًا).[^21]
 
-We begin the evaluation of an application by evaluating the operator to produce a procedure, which will later be applied to the evaluated operands. To evaluate the operator, we move it to the `exp` register and go to `eval-dispatch`. The environment in the `env` register is already the correct one in which to evaluate the operator. However, we save `env` because we will need it later to evaluate the operands. We also extract the operands into `unev` and save this on the stack. We set up `continue` so that `eval-dispatch` will resume at `ev-appl-did-operator` after the operator has been evaluated. First, however, we save the old value of `continue`, which tells the controller where to continue after the application.
+نبدأ تقييم تطبيقٍ بتقييم المشغّل لإنتاج إجراءٍ سيُطبَّق لاحقًا على العوامل المقيَّمة. ولتقييم المشغّل، ننقله إلى المسجّل `exp` ونذهب إلى `eval-dispatch`. والبيئة الموجودة في المسجّل `env` هي البيئة الصحيحة لتقييم المشغّل بالفعل. غير أنّنا نحفظ `env` لأنّنا سنحتاجها لاحقًا لتقييم العوامل. ونستخرج العوامل أيضًا في `unev` ونحفظ ذلك على المكدّس. ونُعِدّ `continue` بحيث يستأنف `eval-dispatch` عند `ev-appl-did-operator` بعد تقييم المشغّل. ومع ذلك، نحفظ أوّلًا القيمة القديمة لـ`continue`، التي تُبيّن للمتحكّم أين يواصل بعد التطبيق.
 
 ```scheme
 ev-application
@@ -1693,7 +1693,7 @@ ev-application
   (goto (label eval-dispatch))
 ```
 
-Upon returning from evaluating the operator subexpression, we proceed to evaluate the operands of the combination and to accumulate the resulting arguments in a list, held in `argl`. First we restore the unevaluated operands and the environment. We initialize `argl` to an empty list. Then we assign to the `proc` register the procedure that was produced by evaluating the operator. If there are no operands, we go directly to `apply-dispatch`. Otherwise we save `proc` on the stack and start the argument-evaluation loop:[^22]
+وعند العودة من تقييم التعبير الجزئيّ المشغّل، نمضي إلى تقييم عوامل التركيبة وإلى تجميع المعطيات الناتجة في قائمةٍ محفوظةٍ في `argl`. ونُعيد أوّلًا العوامل غير المقيَّمة والبيئة. ونهيّئ `argl` إلى قائمةٍ خالية. ثم نُسنِد إلى المسجّل `proc` الإجراء الذي أنتجه تقييم المشغّل. فإن لم تكن ثمّة عوامل، ننتقل مباشرةً إلى `apply-dispatch`. وإلّا نحفظ `proc` على المكدّس ونبدأ حلقة تقييم المعطيات:[^22]
 
 ```scheme
 ev-appl-did-operator
@@ -1706,7 +1706,7 @@ ev-appl-did-operator
   (save proc)
 ```
 
-Each cycle of the argument-evaluation loop evaluates an operand from the list in `unev` and accumulates the result into `argl`. To evaluate an operand, we place it in the `exp` register and go to `eval-dispatch`, after setting `continue` so that execution will resume with the argument-accumulation phase. But first we save the arguments accumulated so far (held in `argl`), the environment (held in `env`), and the remaining operands to be evaluated (held in `unev`). A special case is made for the evaluation of the last operand, which is handled at `ev-appl-last-arg`.
+تقيّم كلّ دورةٍ من حلقة تقييم المعطيات عاملًا من القائمة الموجودة في `unev` وتُجمّع النتيجة في `argl`. ولتقييم عاملٍ، نضعه في المسجّل `exp` ونذهب إلى `eval-dispatch`، بعد إعداد `continue` حتّى يستأنف التنفيذ في مرحلة تجميع المعطيات. لكنّنا نحفظ أوّلًا المعطيات المُجمَّعة حتّى الآن (المحفوظة في `argl`)، والبيئة (المحفوظة في `env`)، والعوامل الباقية المطلوب تقييمها (المحفوظة في `unev`). وتُعالَج حالةٌ خاصّةٌ لتقييم العامل الأخير، وذلك عند `ev-appl-last-arg`.
 
 ```scheme
 ev-appl-operand-loop
@@ -1723,7 +1723,7 @@ ev-appl-operand-loop
   (goto (label eval-dispatch))
 ```
 
-When an operand has been evaluated, the value is accumulated into the list held in `argl`. The operand is then removed from the list of unevaluated operands in `unev`, and the argument-evaluation continues.
+وحين يُقيَّم عاملٌ، تُجمّع القيمة في القائمة المحفوظة في `argl`. ثم يُحذَف العامل من قائمة العوامل غير المقيَّمة في `unev`، ويستمرّ تقييم المعطيات.
 
 ```scheme
 ev-appl-accumulate-arg
@@ -1740,7 +1740,7 @@ ev-appl-accumulate-arg
   (goto (label ev-appl-operand-loop))
 ```
 
-Evaluation of the last argument is handled differently. There is no need to save the environment or the list of unevaluated operands before going to `eval-dispatch`, since they will not be required after the last operand is evaluated. Thus, we return from the evaluation to a special entry point `ev-appl-accum-last-arg`, which restores the argument list, accumulates the new argument, restores the saved procedure, and goes off to perform the application.[^23]
+يُعالَج تقييم المعطى الأخير معالجةً مختلفة. فلا حاجةَ إلى حفظ البيئة أو قائمة العوامل غير المقيَّمة قبل الانتقال إلى `eval-dispatch`، إذ لن تكونا مطلوبتين بعد تقييم العامل الأخير. وبناءً عليه، نعود من التقييم إلى نقطة دخولٍ خاصّةٍ هي `ev-appl-accum-last-arg`، التي تستعيد قائمة المعطيات، وتُجمّع المعطى الجديد، وتستعيد الإجراء المحفوظ، وتنطلق لأداء التطبيق.[^23]
 
 ```scheme
 ev-appl-last-arg
@@ -1757,11 +1757,11 @@ ev-appl-accum-last-arg
   (goto (label apply-dispatch))
 ```
 
-The details of the argument-evaluation loop determine the order in which the interpreter evaluates the operands of a combination (e.g., left to right or right to left—see [Exercise 3.8](https://sarabander.github.io/sicp/html/3_002e1.xhtml#Exercise-3_002e8)). This order is not determined by the metacircular evaluator, which inherits its control structure from the underlying Scheme in which it is implemented.[^24] Because the `first-operand` selector (used in `ev-appl-operand-loop` to extract successive operands from `unev`) is implemented as `car` and the `rest-operands` selector is implemented as `cdr`, the explicit-control evaluator will evaluate the operands of a combination in left-to-right order.
+تُحدّد تفاصيل حلقة تقييم المعطيات الترتيب الذي يقيّم به المفسّر عوامل التركيبة (مثلًا، من اليسار إلى اليمين أو من اليمين إلى اليسار — انظر [التمرين 3.8](https://sarabander.github.io/sicp/html/3_002e1.xhtml#Exercise-3_002e8)). وهذا الترتيب غير محدَّدٍ في المقيّم الاستعادي، الذي يرث بنية تحكّمه من Scheme الأساس الذي نُفّذ فيه.[^24] وبما أنّ المحدِّد `first-operand` (المستخدم في `ev-appl-operand-loop` لاستخراج العوامل المتعاقبة من `unev`) مُنفَّذ بـ`car` وأنّ المحدِّد `rest-operands` مُنفَّذ بـ`cdr`، فإنّ المقيّم ذا التحكّم الصريح سيقيّم عوامل التركيبة بترتيبٍ من اليسار إلى اليمين.
 
-#### Procedure application
+#### تطبيق الإجراءات
 
-The entry point `apply-dispatch` corresponds to the `apply` procedure of the metacircular evaluator. By the time we get to `apply-dispatch`, the `proc` register contains the procedure to apply and `argl` contains the list of evaluated arguments to which it must be applied. The saved value of `continue` (originally passed to `eval-dispatch` and saved at `ev-application`), which tells where to return with the result of the procedure application, is on the stack. When the application is complete, the controller transfers to the entry point specified by the saved `continue`, with the result of the application in `val`. As with the metacircular `apply`, there are two cases to consider. Either the procedure to be applied is a primitive or it is a compound procedure.
+تقابل نقطة الدخول `apply-dispatch` الإجراء `apply` في المقيّم الاستعادي. وحين نصل إلى `apply-dispatch`، يحتوي المسجّل `proc` على الإجراء المطلوب تطبيقه، ويحتوي `argl` على قائمة المعطيات المقيَّمة التي ينبغي تطبيقه عليها. وقيمة `continue` المحفوظة (المُمرَّرة أصلًا إلى `eval-dispatch` والمحفوظة عند `ev-application`)، وهي التي تُبيّن أين نعود بنتيجة تطبيق الإجراء، موجودةٌ على المكدّس. وحين يكتمل التطبيق، يُحوِّل المتحكّم إلى نقطة الدخول التي تُحدّدها `continue` المحفوظة، مع نتيجة التطبيق في `val`. ومثلما في `apply` الاستعادي، ثمّة حالتان ينبغي النظر فيهما. فالإجراء المطلوب تطبيقه إمّا أن يكون أوّليًّا وإمّا أن يكون إجراءً مركّبًا.
 
 ```scheme
 apply-dispatch
@@ -1772,7 +1772,7 @@ apply-dispatch
   (goto (label unknown-procedure-type))
 ```
 
-We assume that each primitive is implemented so as to obtain its arguments from `argl` and place its result in `val`. To specify how the machine handles primitives, we would have to provide a sequence of controller instructions to implement each primitive and arrange for `primitive-apply` to dispatch to the instructions for the primitive identified by the contents of `proc`. Since we are interested in the structure of the evaluation process rather than the details of the primitives, we will instead just use an `apply-primitive-procedure` operation that applies the procedure in `proc` to the arguments in `argl`. For the purpose of simulating the evaluator with the simulator of [5.2](https://sarabander.github.io/sicp/html/5_002e2.xhtml#g_t5_002e2) we use the procedure `apply-primitive-procedure`, which calls on the underlying Scheme system to perform the application, just as we did for the metacircular evaluator in [4.1.4](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e4). After computing the value of the primitive application, we restore `continue` and go to the designated entry point.
+نفترض أنّ كلّ أوّليّةٍ مُنفَّذةٌ بحيث تحصل على معطياتها من `argl` وتضع نتيجتها في `val`. وحتى نُحدّد كيف تتناول الآلة الأوّليّات، سيتعيّن علينا أن نُقدّم سلسلةً من تعليمات المتحكّم لتنفيذ كلّ أوّليّةٍ وأن نُرتّب لـ`primitive-apply` أن يُوزّع إلى تعليمات الأوّليّة التي يُحدّدها محتوى `proc`. وبما أنّنا مهتمّون ببنية عمليّة التقييم أكثر من اهتمامنا بتفاصيل الأوّليّات، فسنستخدم بدلًا من ذلك عمليّة `apply-primitive-procedure` التي تُطبّق الإجراء الموجود في `proc` على المعطيات في `argl`. وبغرض محاكاة المقيّم بواسطة المحاكي الوارد في [5.2](https://sarabander.github.io/sicp/html/5_002e2.xhtml#g_t5_002e2)، نستخدم الإجراء `apply-primitive-procedure` الذي يستدعي نظام Scheme الأساس لأداء التطبيق، تمامًا كما فعلنا مع المقيّم الاستعادي في [4.1.4](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e4). وبعد احتساب قيمة التطبيق الأوّليّ، نستعيد `continue` ونذهب إلى نقطة الدخول المعيَّنة.
 
 ```scheme
 primitive-apply
@@ -1783,7 +1783,7 @@ primitive-apply
   (goto (reg continue))
 ```
 
-To apply a compound procedure, we proceed just as with the metacircular evaluator. We construct a frame that binds the procedure’s parameters to the arguments, use this frame to extend the environment carried by the procedure, and evaluate in this extended environment the sequence of expressions that forms the body of the procedure. `Ev-sequence`, described below in [5.4.2](#g_t5_002e4_002e2), handles the evaluation of the sequence.
+ولتطبيق إجراءٍ مركّب، نمضي تمامًا كما فعلنا مع المقيّم الاستعادي. فنبني إطارًا يربط وسائط الإجراء بالمعطيات، ونستخدم هذا الإطار لتوسيع البيئة التي يحملها الإجراء، ونُقيّم في هذه البيئة المُوسَّعة سلسلة التعابير التي تكوّن جسم الإجراء. ويتولّى `ev-sequence`، الموصوف أدناه في [5.4.2](#g_t5_002e4_002e2)، تقييم السلسلة.
 
 ```scheme
 compound-apply
@@ -1804,13 +1804,13 @@ compound-apply
   (goto (label ev-sequence))
 ```
 
-`Compound-apply` is the only place in the interpreter where the `env` register is ever assigned a new value. Just as in the metacircular evaluator, the new environment is constructed from the environment carried by the procedure, together with the argument list and the corresponding list of variables to be bound.
+إنّ `compound-apply` هو الموضع الوحيد في المفسّر الذي يُسنَد فيه إلى المسجّل `env` قيمةٌ جديدةٌ إطلاقًا. ومثلما في المقيّم الاستعادي، تُبنى البيئة الجديدة من البيئة التي يحملها الإجراء، إلى جانب قائمة المعطيات وقائمة المتغيّرات المقابلة لها التي ستُربط.
 
-#### 5.4.2 Sequence Evaluation and Tail Recursion
+#### 5.4.2 تقييم التسلسل والتعاود الذيلي
 
-The portion of the explicit-control evaluator at `ev-sequence` is analogous to the metacircular evaluator’s `eval-sequence` procedure. It handles sequences of expressions in procedure bodies or in explicit `begin` expressions.
+الجزء من المقيّم ذي التحكّم الصريح عند `ev-sequence` يقابل إجراء `eval-sequence` في المقيّم الاستعادي. وهو يعالج سلاسل التعابير في أجساد الإجراءات أو في تعابير `begin` الصريحة.
 
-Explicit `begin` expressions are evaluated by placing the sequence of expressions to be evaluated in `unev`, saving `continue` on the stack, and jumping to `ev-sequence`.
+تُقيَّم تعابير `begin` الصريحة بوضع سلسلة التعابير المطلوب تقييمها في `unev`، وحفظ `continue` على المكدّس، والقفز إلى `ev-sequence`.
 
 ```scheme
 ev-begin
@@ -1821,11 +1821,11 @@ ev-begin
   (goto (label ev-sequence))
 ```
 
-The implicit sequences in procedure bodies are handled by jumping to `ev-sequence` from `compound-apply`, at which point `continue` is already on the stack, having been saved at `ev-application`.
+وتُعالَج السلاسل الضمنيّة في أجساد الإجراءات بالقفز إلى `ev-sequence` من `compound-apply`، وعندها يكون `continue` موجودًا بالفعل على المكدّس، بعد أن حُفظ عند `ev-application`.
 
-The entries at `ev-sequence` and `ev-sequence-continue` form a loop that successively evaluates each expression in a sequence. The list of unevaluated expressions is kept in `unev`. Before evaluating each expression, we check to see if there are additional expressions to be evaluated in the sequence. If so, we save the rest of the unevaluated expressions (held in `unev`) and the environment in which these must be evaluated (held in `env`) and call `eval-dispatch` to evaluate the expression. The two saved registers are restored upon the return from this evaluation, at `ev-sequence-continue`.
+تُشكّل المدخلان عند `ev-sequence` و`ev-sequence-continue` حلقةً تُقيّم كلّ تعبيرٍ في السلسلة تباعًا. وتُحفظ قائمة التعابير غير المقيَّمة في `unev`. وقبل تقييم كلّ تعبيرٍ، نتحقّق مما إذا كانت ثمّة تعابيرُ إضافيّةٌ تبقّى تقييمها في السلسلة. فإن كان الأمر كذلك، نحفظ بقيّة التعابير غير المقيَّمة (المحفوظة في `unev`) والبيئة التي ينبغي تقييمها فيها (المحفوظة في `env`) ونستدعي `eval-dispatch` لتقييم التعبير. وتُستعاد المسجّلان المحفوظان عند العودة من هذا التقييم، عند `ev-sequence-continue`.
 
-The final expression in the sequence is handled differently, at the entry point `ev-sequence-last-exp`. Since there are no more expressions to be evaluated after this one, we need not save `unev` or `env` before going to `eval-dispatch`. The value of the whole sequence is the value of the last expression, so after the evaluation of the last expression there is nothing left to do except continue at the entry point currently held on the stack (which was saved by `ev-application` or `ev-begin`.) Rather than setting up `continue` to arrange for `eval-dispatch` to return here and then restoring `continue` from the stack and continuing at that entry point, we restore `continue` from the stack before going to `eval-dispatch`, so that `eval-dispatch` will continue at that entry point after evaluating the expression.
+أمّا التعبير الأخير في السلسلة فيُعالَج معالجةً مختلفة، عند نقطة الدخول `ev-sequence-last-exp`. وبما أنّ لا تعابيرَ أخرى تبقّى تقييمها بعد هذا التعبير، فلا حاجةَ إلى حفظ `unev` أو `env` قبل الانتقال إلى `eval-dispatch`. وقيمة السلسلة كلّها هي قيمة التعبير الأخير، فإنّه بعد تقييم التعبير الأخير لا يبقى شيءٌ يُفعَل إلّا المواصلة عند نقطة الدخول المحفوظة حاليًّا على المكدّس (والتي حفظها `ev-application` أو `ev-begin`.) وبدلًا من إعداد `continue` بحيث يعود `eval-dispatch` إلى هنا ثمّ استعادة `continue` من المكدّس والمواصلة عند نقطة الدخول تلك، نستعيد `continue` من المكدّس قبل الانتقال إلى `eval-dispatch`، حتّى يواصل `eval-dispatch` عند نقطة الدخول تلك بعد تقييم التعبير.
 
 ```scheme
 ev-sequence
@@ -1849,9 +1849,9 @@ ev-sequence-last-exp
   (goto (label eval-dispatch))
 ```
 
-#### Tail recursion
+#### التعاوب الذيلي
 
-In [Chapter 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1) we said that the process described by a procedure such as
+قلنا في [الفصل 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1) إنّ العمليّة التي يصفها إجراءٌ مثل
 
 ```scheme
 (define (sqrt-iter guess x)
@@ -1860,11 +1860,11 @@ In [Chapter 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1)
       (sqrt-iter (improve guess x) x)))
 ```
 
-is an iterative process. Even though the procedure is syntactically recursive (defined in terms of itself), it is not logically necessary for an evaluator to save information in passing from one call to `sqrt-iter` to the next.[^25] An evaluator that can execute a procedure such as `sqrt-iter` without requiring increasing storage as the procedure continues to call itself is called a *tail-recursive* evaluator. The metacircular implementation of the evaluator in [Chapter 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4) does not specify whether the evaluator is tail-recursive, because that evaluator inherits its mechanism for saving state from the underlying Scheme. With the explicit-control evaluator, however, we can trace through the evaluation process to see when procedure calls cause a net accumulation of information on the stack.
+عمليّةٌ تكراريّة. فرغم أنّ الإجراء تعاوديّ صياغيًّا (معرَّفٌ من حيث ذاته)، فإنّه ليس ضروريًّا منطقيًّا أن يحفظ المُقيّم معلوماتٍ عند الانتقال من نداءٍ إلى `sqrt-iter` إلى النداء التالي.[^25] ويُسمّى المُقيّم القادر على تنفيذ إجراءٍ مثل `sqrt-iter` دون أن يتطلّب مساحةً متزايدةً مع استمرار الإجراء في نداء ذاته *مُقيّمًا تعاوديًّا ذيليًّا (tail-recursive)*. أمّا تنفيذ المقيّم البعديّ الوارد في [الفصل 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4) فلا يحدّد ما إذا كان المقيّم تعاوديًّا ذيليًّا، لأنّ ذلك المقيّم يرث آليّة حفظ الحالة من Scheme الأساس. غير أنّنا مع مقيّم ذي المتحكّم الصريح نستطيع تتبّع عمليّة التقييم لنرى متى تُسبّب نداءات الإجراءات تراكمًا صافيًّا للمعلومات على المكدّس.
 
-Our evaluator is tail-recursive, because in order to evaluate the final expression of a sequence we transfer directly to `eval-dispatch` without saving any information on the stack. Hence, evaluating the final expression in a sequence—even if it is a procedure call (as in `sqrt-iter`, where the `if` expression, which is the last expression in the procedure body, reduces to a call to `sqrt-iter`)—will not cause any information to be accumulated on the stack.[^26]
+إنّ مقيّمنا تعاوديّ الذيلي، لأنّه لتقييم التعبير الأخير في تسلسلٍ ننتقل انتقالًا مباشرًا إلى `eval-dispatch` دون حفظ أيّ معلومات على المكدّس. وبذلك، فإنّ تقييم التعبير الأخير في تسلسلٍ - حتى لو كان نداء إجراءٍ (كما في `sqrt-iter`، حيث ينتهي تعبير `if`، وهو التعبير الأخير في جسم الإجراء، إلى نداءٍ لـ`sqrt-iter`) - لن يُسبّب تراكم أيّ معلومات على المكدّس.[^26]
 
-If we did not think to take advantage of the fact that it was unnecessary to save information in this case, we might have implemented `eval-sequence` by treating all the expressions in a sequence in the same way—saving the registers, evaluating the expression, returning to restore the registers, and repeating this until all the expressions have been evaluated:[^27]
+لو أنّنا لم نفكّر في الاستفادة من كون حفظ المعلومات غير ضروريّ في هذه الحالة، لكان ممكناً أن ننفّذ `eval-sequence` بمعاملة جميع تعابير التسلسل معاملةً واحدة - حفظ المسجّلات، وتقييم التعبير، والعودة لاستعادة المسجّلات، وتكرار ذلك حتّى يُقيَّم جميع التعبيرات:[^27]
 
 ```scheme
 ev-sequence
@@ -1886,7 +1886,7 @@ ev-sequence-end
   (goto (reg continue))
 ```
 
-This may seem like a minor change to our previous code for evaluation of a sequence: The only difference is that we go through the save-restore cycle for the last expression in a sequence as well as for the others. The interpreter will still give the same value for any expression. But this change is fatal to the tail-recursive implementation, because we must now return after evaluating the final expression in a sequence in order to undo the (useless) register saves. These extra saves will accumulate during a nest of procedure calls. Consequently, processes such as `sqrt-iter` will require space proportional to the number of iterations rather than requiring constant space. This difference can be significant. For example, with tail recursion, an infinite loop can be expressed using only the procedure-call mechanism:
+قد يبدو هذا تغييرًا طفيفًا في شيفرتنا السابقة لتقييم التسلسل: الفرق الوحيد هو أنّنا نمرّ بدورة الحفظ والاستعادة للتعبير الأخير في تسلسلٍ كما نمرّ بها لسواه. وسيظلّ المفسّر يُعطي القيمة نفسها لأيّ تعبير. لكنّ هذا التغيير قاتل بالنسبة للتنفيذ التعاوديّ الذيلي، لأنّنا نضطرّ الآن إلى العودة بعد تقييم التعبير الأخير في تسلسلٍ لكي نتراجع عن عمليّات حفظ المسجّلات (العقيمة). وهذه الحفظات الإضافيّة ستتراكم في عُشّ نداءات الإجراءات. ونتيجةً لذلك، فإنّ عمليّاتٍ مثل `sqrt-iter` ستتطلّب مساحةً متناسبةً مع عدد التكرارات بدلًا من مساحةٍ ثابتة. وهذا فرقٌ قد تكون أهمّيته كبيرة. فإنّه، مع التعاوب الذيلي، يمكن التعبير عن حلقةٍ لا نهائيّة باستخدام آليّة نداء الإجراءات وحدها:
 
 ```scheme
 (define (count n)
@@ -1895,13 +1895,13 @@ This may seem like a minor change to our previous code for evaluation of a seque
   (count (+ n 1)))
 ```
 
-Without tail recursion, such a procedure would eventually run out of stack space, and expressing a true iteration would require some control mechanism other than procedure call.
+وبدون التعاوب الذيلي، فإنّ إجراءً كهذا سيستنفد مكدّسه في النهاية، ولو أردنا التعبير عن تكرارٍ حقيقيّ لتطلّب ذلك آليّة تحكّمٍ أخرى غير نداء الإجراءات.
 
-#### 5.4.3 Conditionals, Assignments, and Definitions
+#### 5.4.3 التعابير الشرطيّة، والإحلالات، والتعريفات
 
-As with the metacircular evaluator, special forms are handled by selectively evaluating fragments of the expression. For an `if` expression, we must evaluate the predicate and decide, based on the value of predicate, whether to evaluate the consequent or the alternative.
+كما هو الحال في المقيّم البعديّ، فإنّ الصيغ الخاصّة تُعالَج بتقييم مقاطع من التعبير انتخابًا. فبالنسبة لتعبير `if`، يجب أن نُقيّم مُسَيِّمه ونقرّر، بالاستناد إلى قيمة المسيّم، هل نُقيّم التالي أم البديل.
 
-Before evaluating the predicate, we save the `if` expression itself so that we can later extract the consequent or alternative. We also save the environment, which we will need later in order to evaluate the consequent or the alternative, and we save `continue`, which we will need later in order to return to the evaluation of the expression that is waiting for the value of the `if`.
+وقبل تقييم المسيّم، نحفظ تعبير `if` ذاته حتّى نتمكّن لاحقًا من استخراج التالي أو البديل. ونحفظ أيضًا البيئة، التي سنحتاج إليها لاحقًا لتقييم التالي أو البديل، ونحفظ `continue`، التي سنحتاج إليها لاحقًا للعودة إلى تقييم التعبير المنتظر لقيمة `if`.
 
 ```scheme
 ev-if
@@ -1914,7 +1914,7 @@ ev-if
   (goto (label eval-dispatch))
 ```
 
-When we return from evaluating the predicate, we test whether it was true or false and, depending on the result, place either the consequent or the alternative in `exp` before going to `eval-dispatch`. Notice that restoring `env` and `continue` here sets up `eval-dispatch` to have the correct environment and to continue at the right place to receive the value of the `if` expression.
+حين نعود من تقييم المسيّم، نختبر ما إذا كانت قيمته صحيحة أم خاطئة، ووِفقًا للنتيجة نضع التالي أو البديل في `exp` قبل الانتقال إلى `eval-dispatch`. ولاحِظ أنّ استعادة `env` و`continue` هنا تُهيّئ `eval-dispatch` ليكون البيئة الصحيحة وأن يواصل في الموضع الصائب لاستلام قيمة تعبير `if`.
 
 ```scheme
 ev-if-decide
@@ -1931,9 +1931,9 @@ ev-if-consequent
   (goto (label eval-dispatch))
 ```
 
-#### Assignments and definitions
+#### الإحلالات والتعريفات
 
-Assignments are handled by `ev-assignment`, which is reached from `eval-dispatch` with the assignment expression in `exp`. The code at `ev-assignment` first evaluates the value part of the expression and then installs the new value in the environment. `Set-variable-value!` is assumed to be available as a machine operation.
+تُعالَج الإحلالات بـ`ev-assignment`، الذي يُبلَغ من `eval-dispatch` وتعبير الإحلال موضوعٌ في `exp`. والشيفرة عند `ev-assignment` تُقيّم أوّلًا جزء القيمة من التعبير ثم تُثبّت القيمة الجديدة في البيئة. وتُفترض إتاحة `set-variable-value!` كعمليّة آلة.
 
 ```scheme
 ev-assignment
@@ -1963,7 +1963,7 @@ ev-assignment-1
   (goto (reg continue))
 ```
 
-Definitions are handled in a similar way:
+أمّا التعريفات فتُعالَج بطريقةٍ مماثلة:
 
 ```scheme
 ev-definition
@@ -1991,17 +1991,17 @@ ev-definition-1
   (goto (reg continue))
 ```
 
-> **Exercise 5.23:** Extend the evaluator to handle derived expressions such as `cond`, `let`, and so on ([4.1.2](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e2)). You may “cheat” and assume that the syntax transformers such as `cond->if` are available as machine operations.[^28]
+> **التمرين 5.23:** وسّع المقيّم ليعامل التعابير المشتقّة مثل `cond` و`let` وما أشبه ذلك ([4.1.2](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e2)). ويجوز لك «الغشّ» والافتراض أنّ محوّلات الصياغة مثل `cond->if` متاحةٌ كعمليّات آلة.[^28]
 
-> **Exercise 5.24:** Implement `cond` as a new basic special form without reducing it to `if`. You will have to construct a loop that tests the predicates of successive `cond` clauses until you find one that is true, and then use `ev-sequence` to evaluate the actions of the clause.
+> **التمرين 5.24:** نفّذ `cond` كصيغةٍ خاصّةٍ أوّليّةٍ جديدة دون اختزالها إلى `if`. وسيتعيّن عليك بناء حلقةٍ تختبر مسيّمات بنود `cond` المتتالية حتّى تجد صحيحًا منها، ثم استخدام `ev-sequence` لتقييم أفعال البند.
 
-> **Exercise 5.25:** Modify the evaluator so that it uses normal-order evaluation, based on the lazy evaluator of [4.2](https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2).
+> **التمرين 5.25:** عدّل المقيّم بحيث يستخدم التقييم بالترتيب الاعتيادي، استنادًا إلى المقيّم المتأخّر الوارد في [4.2](https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2).
 
-#### 5.4.4 Running the Evaluator
+#### 5.4.4 تشغيل المقيّم
 
-With the implementation of the explicit-control evaluator we come to the end of a development, begun in [Chapter 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1), in which we have explored successively more precise models of the evaluation process. We started with the relatively informal substitution model, then extended this in [Chapter 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) to the environment model, which enabled us to deal with state and change. In the metacircular evaluator of [Chapter 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4), we used Scheme itself as a language for making more explicit the environment structure constructed during evaluation of an expression. Now, with register machines, we have taken a close look at the evaluator’s mechanisms for storage management, argument passing, and control. At each new level of description, we have had to raise issues and resolve ambiguities that were not apparent at the previous, less precise treatment of evaluation. To understand the behavior of the explicit-control evaluator, we can simulate it and monitor its performance.
+مع تنفيذ المقيّم ذي المتحكّم الصريح نصل إلى نهاية تطوّرٍ بدأ في [الفصل 1](https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1)، استكشفنا فيه نماذج متعاقبةً في الدقّة لعمليّة التقييم. فقد بدأنا بنموذج الاستبدال غير الرسميّ نسبيًّا، ثم وسّعنا هذا في [الفصل 3](https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3) إلى نموذج البيئة، الذي مكّننا من التعامل مع الحالة والتغيير. وفي المقيّم البعديّ الوارد في [الفصل 4](https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4)، استخدمنا Scheme ذاتها لغةً نجعل بها بنية البيئة المبنية أثناء تقييم تعبيرٍ أكثر وضوحًا. والآن، ومع آلات المسجّلات، ألقينا نظرةً قريبةً على آليّات المقيّم في إدارة التخزين، وتمرير المعطيات، والتحكّم. وعند كلّ مستوى جديد من الوصف، اضطررنا إلى إثارة قضايا وحلّ غموضٍ لم يكن ظاهرًا في المعاملة السابقة الأقلّ دقّة للتقييم. ولكي نفهم سلوك المقيّم ذي المتحكّم الصريح، نستطيع محاكاته ومراقبة أدائه.
 
-We will install a driver loop in our evaluator machine. This plays the role of the `driver-loop` procedure of [4.1.4](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e4). The evaluator will repeatedly print a prompt, read an expression, evaluate the expression by going to `eval-dispatch`, and print the result. The following instructions form the beginning of the explicit-control evaluator’s controller sequence:[^29]
+وسنُثبّت حلقة قيادةٍ في آلة المقيّم لدينا. وهذه تؤدّي دور الإجراء `driver-loop` الوارد في [4.1.4](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e4). وسيطبع المقيّم - تكراريًّا - حافزًا، ويقرأ تعبيرًا، ويُقيّمه بالانتقال إلى `eval-dispatch`، ويطبع النتيجة. والتعليمات الآتية تُشكّل بداية تسلسل متحكّم المقيّم ذي المتحكّم الصريح:[^29]
 
 ```scheme
 read-eval-print-loop
@@ -2019,7 +2019,7 @@ print-result
   (goto (label read-eval-print-loop))
 ```
 
-When we encounter an error in a procedure (such as the “unknown procedure type error” indicated at `apply-dispatch`), we print an error message and return to the driver loop.[^30]
+حين نصادف خطأً في إجراءٍ (كـ«خطأ نوع إجراء غير معروف» المُشار إليه عند `apply-dispatch`)، نطبع رسالة خطأٍ ونعود إلى حلقة القيادة.[^30]
 
 ```scheme
 unknown-expression-type
@@ -2039,9 +2039,9 @@ signal-error
   (goto (label read-eval-print-loop))
 ```
 
-For the purposes of the simulation, we initialize the stack each time through the driver loop, since it might not be empty after an error (such as an undefined variable) interrupts an evaluation.[^31]
+ولأغراض المحاكاة، نُهيّئ المكدّس في كلّ مرورٍ بحلقة القيادة، إذ قد لا يكون فارغًا بعد أن يقاطع خطأٌ (كمتغيّرٍ غير معرَّف) تقييمًا.[^31]
 
-If we combine all the code fragments presented in [5.4.1](#g_t5_002e4_002e1)–[5.4.4](#g_t5_002e4_002e4), we can create an evaluator machine model that we can run using the register-machine simulator of [5.2](https://sarabander.github.io/sicp/html/5_002e2.xhtml#g_t5_002e2).
+إذا جمعنا جميع مقاطع الشيفرة المقدَّمة في [5.4.1](#g_t5_002e4_002e1)–[5.4.4](#g_t5_002e4_002e4)، نستطيع إنشاء نموذج آلة مقيّمٍ نستطيع تشغيله باستخدام محاكي آلات المسجّلات الوارد في [5.2](https://sarabander.github.io/sicp/html/5_002e2.xhtml#g_t5_002e2).
 
 ```scheme
 (define eceval
@@ -2053,7 +2053,7 @@ If we combine all the code fragments presented in [5.4.1](#g_t5_002e4_002e1)–[
       as given above⟩)))
 ```
 
-We must define Scheme procedures to simulate the operations used as primitives by the evaluator. These are the same procedures we used for the metacircular evaluator in [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1), together with the few additional ones defined in footnotes throughout [5.4](#g_t5_002e4).
+ينبغي أن نُعرّف إجراءات Scheme لمحاكاة العمليّات التي يستخدمها المقيّم كأوّليّات. وهذه هي الإجراءات ذاتها التي استخدمناها للمقيّم البعديّ في [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1)، مع الإجراءات الإضافيّة القليلة المعرَّفة في الحواشي على امتداد [5.4](#g_t5_002e4).
 
 ```scheme
 (define eceval-operations
@@ -2063,7 +2063,7 @@ We must define Scheme procedures to simulate the operations used as primitives b
          for eceval machine⟩))
 ```
 
-Finally, we can initialize the global environment and run the evaluator:
+وأخيرًا، نستطيع تهيئة البيئة العامّة وتشغيل المقيّم:
 
 ```scheme
 (define the-global-environment
@@ -2087,11 +2087,11 @@ ok
 (a b c d e f)
 ```
 
-Of course, evaluating expressions in this way will take much longer than if we had directly typed them into Scheme, because of the multiple levels of simulation involved. Our expressions are evaluated by the explicit-control-evaluator machine, which is being simulated by a Scheme program, which is itself being evaluated by the Scheme interpreter.
+وبالطبع، فإنّ تقييم التعابير بهذه الطريقة سيستغرق وقتًا أطول بكثيرٍ ممّا لو كنا قد كتبناها مباشرةً في Scheme، وذلك بسبب مستويات المحاكاة المتعدّدة المتداخلة. فإنّ تعابيرنا تُقيَّم بآلة المقيّم ذي المتحكّم الصريح، وهي بدورها محاكاةٌ ببرنامج Scheme، وهو ذاته مُقيَّمٌ بمفسّر Scheme.
 
-#### Monitoring the performance of the evaluator
+#### مراقبة أداء المقيّم
 
-Simulation can be a powerful tool to guide the implementation of evaluators. Simulations make it easy not only to explore variations of the register-machine design but also to monitor the performance of the simulated evaluator. For example, one important factor in performance is how efficiently the evaluator uses the stack. We can observe the number of stack operations required to evaluate various expressions by defining the evaluator register machine with the version of the simulator that collects statistics on stack use ([5.2.4](https://sarabander.github.io/sicp/html/5_002e2.xhtml#g_t5_002e2_002e4)), and adding an instruction at the evaluator’s `print-result` entry point to print the statistics:
+قد تكون المحاكاة أداةً قويّةً لتوجيه تنفيذ المقيّمات. فالمحاكاة تُسهّل - لا استكشاف متغيّرات تصميم آلة المسجّلات فحسب، بل وأيضًا مراقبة أداء المقيّم المحاكى. فإنّ أحد العوامل المهمّة في الأداء هو مدى كفاءة المقيّم في استخدامه المكدّس. ونستطيع ملاحظة عدد عمليّات المكدّس اللازمة لتقييم تعابير مختلفة بتعريف آلة مسجّلات المقيّم باستخدام نسخة المحاكي التي تجمع إحصائيّات حول استخدام المكدّس ([5.2.4](https://sarabander.github.io/sicp/html/5_002e2.xhtml#g_t5_002e2_002e4))، وبإضافة تعليمةٍ عند نقطة دخول `print-result` في المقيّم لطباعة الإحصائيّات:
 
 ```scheme
 print-result
@@ -2102,7 +2102,7 @@ print-result
   … ; same as before
 ```
 
-Interactions with the evaluator now look like this:
+أمّا تفاعلاتنا مع المقيّم الآن فتصير على النحو الآتي:
 
 ```scheme
 ;;; EC-Eval input:
@@ -2121,9 +2121,9 @@ ok
 120
 ```
 
-Note that the driver loop of the evaluator reinitializes the stack at the start of each interaction, so that the statistics printed will refer only to stack operations used to evaluate the previous expression.
+لاحِظ أنّ حلقة القيادة في المقيّم تُعيد تهيئة المكدّس في بداية كلّ تفاعل، حتّى تكون الإحصائيّات المطبوعة مُحيلةً فقط على عمليّات المكدّس المستخدمة في تقييم التعبير السابق.
 
-**Exercise 5.26:** Use the monitored stack to explore the tail-recursive property of the evaluator ([5.4.2](#g_t5_002e4_002e2)). Start the evaluator and define the iterative `factorial` procedure from [1.2.1](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e1):
+**التمرين 5.26:** استخدم المكدّس المراقَب لاستكشاف خاصّيّة التعاوب الذيليّ في المقيّم ([5.4.2](#g_t5_002e4_002e2)). شغّل المقيّم وعرّف إجراء `factorial` التكراريّ الوارد في [1.2.1](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e1):
 
 ```scheme
 (define (factorial n)
@@ -2135,12 +2135,12 @@ Note that the driver loop of the evaluator reinitializes the stack at the start 
   (iter 1 1))
 ```
 
-Run the procedure with some small values of $n$ . Record the maximum stack depth and the number of pushes required to compute $n !$ for each of these values.
+شغّل الإجراء ببعض القيم الصغيرة لـ$n$ . وسجّل أقصى عمقٍ للمكدّس وعدد الدفعات اللازمة لاحتساب $n !$ لكلّ واحدةٍ من هذه القيم.
 
-1. You will find that the maximum depth required to evaluate $n !$ is independent of $n$ . What is that depth?
-2. Determine from your data a formula in terms of $n$ for the total number of push operations used in evaluating $n !$ for any $n ≥ 1$ . Note that the number of operations used is a linear function of $n$ and is thus determined by two constants.
+1. ستجد أنّ أقصى عمقٍ لازمٍ لتقييم $n !$ مستقلٌّ عن $n$ . فما هو ذلك العمق؟
+2. استخرج من بياناتك صيغةً بدلالة $n$ للعدد الإجماليّ لعمليّات الدفع المستخدمة في تقييم $n !$ لأيّ $n ≥ 1$ . ولاحِظ أنّ عدد العمليّات المستخدمة دالّةٌ خطّيّةٌ في $n$ وهو محدَّدٌ بالتالي بثابتين.
 
-**Exercise 5.27:** For comparison with [Exercise 5.26](#Exercise-5_002e26), explore the behavior of the following procedure for computing factorials recursively:
+**التمرين 5.27:** للمقارنة مع [التمرين 5.26](#Exercise-5_002e26)، استكشف سلوك الإجراء الآتي في احتساب العوامل المضروب تعاوديًّا:
 
 ```scheme
 (define (factorial n)
@@ -2149,11 +2149,11 @@ Run the procedure with some small values of $n$ . Record the maximum stack depth
       (* (factorial (- n 1)) n)))
 ```
 
-By running this procedure with the monitored stack, determine, as a function of $n$ , the maximum depth of the stack and the total number of pushes used in evaluating $n !$ for $n ≥ 1$ . (Again, these functions will be linear.) Summarize your experiments by filling in the following table with the appropriate expressions in terms of $n$ : $Maximum Number of depth pushes Recursive factorial Iterative factorial$ The maximum depth is a measure of the amount of space used by the evaluator in carrying out the computation, and the number of pushes correlates well with the time required.
+وبتشغيل هذا الإجراء بالمكدّس المراقَب، حدّد - كدالّةٍ في $n$ - أقصى عمقٍ للمكدّس والعدد الإجماليّ للدفعات المستخدمة في تقييم $n !$ لـ$n ≥ 1$ . (وهاتان الدالّتان خطّيّتان أيضًا.) ولخّص تجاربك بملء الجدول الآتي بالتعابير الملائمة بدلالة $n$ : $Maximum Number of depth pushes Recursive factorial Iterative factorial$ أمّا أقصى عمقٍ فهو مقياسٌ لمقدار المساحة التي يستخدمها المقيّم في إجراء الاحتساب، أمّا عدد الدفعات فيقارن جيّدًا بالوقت اللازم.
 
-> **Exercise 5.28:** Modify the definition of the evaluator by changing `eval-sequence` as described in [5.4.2](#g_t5_002e4_002e2) so that the evaluator is no longer tail-recursive. Rerun your experiments from [Exercise 5.26](#Exercise-5_002e26) and [Exercise 5.27](#Exercise-5_002e27) to demonstrate that both versions of the `factorial` procedure now require space that grows linearly with their input.
+> **التمرين 5.28:** عدّل تعريف المقيّم بتغيير `eval-sequence` كما هو موصوفٌ في [5.4.2](#g_t5_002e4_002e2) بحيث لا يعود المقيّم تعاوديًّا ذيليًّا. وأعد تشغيل تجاربك من [التمرين 5.26](#Exercise-5_002e26) و[التمرين 5.27](#Exercise-5_002e27) لتُظهر أنّ كلا النسختين من إجراء `factorial` تتطلّبان الآن مساحةً تنمو خطّيًّا مع معطاهما.
 
-**Exercise 5.29:** Monitor the stack operations in the tree-recursive Fibonacci computation:
+**التمرين 5.29:** راقب عمليّات المكدّس في احتساب فيبوناتشي التعاوديّ الشجريّ:
 
 ```scheme
 (define (fib n)
@@ -2162,38 +2162,38 @@ By running this procedure with the monitored stack, determine, as a function of 
       (+ (fib (- n 1)) (fib (- n 2)))))
 ```
 
-1. Give a formula in terms of $n$ for the maximum depth of the stack required to compute $Fib ( n )$ for $n ≥ 2$ . Hint: In [1.2.2](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e2) we argued that the space used by this process grows linearly with $n$ .
-2. Give a formula for the total number of pushes used to compute $Fib ( n )$ for $n ≥ 2$ . You should find that the number of pushes (which correlates well with the time used) grows exponentially with $n$ . Hint: Let $S ( n )$ be the number of pushes used in computing $Fib ( n )$ . You should be able to argue that there is a formula that expresses $S ( n )$ in terms of $S ( n − 1 )$ , $S ( n − 2 )$ , and some fixed “overhead” constant $k$ that is independent of $n$ . Give the formula, and say what $k$ is. Then show that $S ( n )$ can be expressed as $a ⋅ Fib ( n + 1 ) + b$ and give the values of $a$ and $b$ .
+1. أعطِ صيغةً بدلالة $n$ لأقصى عمقٍ للمكدّس لازمٍ لاحتساب $Fib ( n )$ لـ$n ≥ 2$ . تلميح: لقد قلنا في [1.2.2](https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e2) إنّ المساحة التي تستخدمها هذه العمليّة تنمو خطّيًّا مع $n$ .
+2. أعطِ صيغةً للعدد الإجماليّ للدفعات المستخدمة في احتساب $Fib ( n )$ لـ$n ≥ 2$ . ومن المفترض أن تجد أنّ عدد الدفعات (الذي يقارن جيّدًا بالوقت المستخدم) ينمو أسّيًّا مع $n$ . تلميح: لِنفترض أنّ $S ( n )$ هو عدد الدفعات المستخدمة في احتساب $Fib ( n )$ . ومن المفترض أن تتمكّن من إثبات وجود صيغةٍ تُعبِّر عن $S ( n )$ بدلالة $S ( n − 1 )$ و$S ( n − 2 )$ وثابت «عبء» ثابتٍ $k$ مستقلٍّ عن $n$ . أعطِ تلك الصيغة، وقل ما هو $k$ . ثم أظهر أنّ $S ( n )$ يمكن التعبير عنه بـ$a ⋅ Fib ( n + 1 ) + b$ وأعطِ قيمتَي $a$ و$b$ .
 
-> **Exercise 5.30:** Our evaluator currently catches and signals only two kinds of errors—unknown expression types and unknown procedure types. Other errors will take us out of the evaluator read-eval-print loop. When we run the evaluator using the register-machine simulator, these errors are caught by the underlying Scheme system. This is analogous to the computer crashing when a user program makes an error.[^32] It is a large project to make a real error system work, but it is well worth the effort to understand what is involved here. Errors that occur in the evaluation process, such as an attempt to access an unbound variable, could be caught by changing the lookup operation to make it return a distinguished condition code, which cannot be a possible value of any user variable. The evaluator can test for this condition code and then do what is necessary to go to `signal-error`. Find all of the places in the evaluator where such a change is necessary and fix them. This is lots of work.
-> > Much worse is the problem of handling errors that are signaled by applying primitive procedures, such as an attempt to divide by zero or an attempt to extract the `car` of a symbol. In a professionally written high-quality system, each primitive application is checked for safety as part of the primitive. For example, every call to `car` could first check that the argument is a pair. If the argument is not a pair, the application would return a distinguished condition code to the evaluator, which would then report the failure. We could arrange for this in our register-machine simulator by making each primitive procedure check for applicability and returning an appropriate distinguished condition code on failure. Then the `primitive-apply` code in the evaluator can check for the condition code and go to `signal-error` if necessary. Build this structure and make it work. This is a major project.
+> **التمرين 5.30:** إنّ مقيّمنا يلتقط ويُشير حاليًّا إلى نوعين فقط من الأخطاء - أنواع التعابير غير المعروفة وأنواع الإجراءات غير المعروفة. أمّا الأخطاء الأخرى فتخرج بنا من حلقة القراءة والتقييم والطباعة للمقيّم. وحين نشغّل المقيّم باستخدام محاكي آلات المسجّلات، فإنّ هذه الأخطاء تُلتقط بنظام Scheme الأساس. وهذا يقابل انهيار الحاسوب حين يرتكب برنامج المستخدم خطأً.[^32] وإنّ جعل نظام أخطاءٍ حقيقيّ يعمل مشروعٌ كبير، لكنّ الجهد المبذول لفهم ما يقتضيه الأمر هنا جديرٌ به حقًّا. فالأخطاء التي تقع في عمليّة التقييم، كمحاولة الوصول إلى متغيّرٍ غير مربوط، يمكن التقاطها بتغيير عمليّة البحث بحيث تُعيد شيفرة شرطٍ مميّزة، لا يمكن أن تكون قيمةً ممكنةً لأيّ متغيّر مستخدم. ويستطيع المقيّم اختبار شيفرة الشرط هذه ثم فعل ما يلزم للانتقال إلى `signal-error`. اعثر على جميع الأماكن في المقيّم حيث يكون مثل هذا التغيير ضروريًّا وأصلحها. وهذا عملٌ كثير.
+> > والأسوأ من ذلك مشكلة معالجة الأخطاء التي تُشير إليها تطبيقات الإجراءات الأوّليّة، كمحاولة القسمة على صفر أو محاولة استخراج `car` لرمز. ففي نظامٍ مكتوبٍ باحترافٍ وذو جودةٍ عالية، يُفحص كلّ تطبيقٍ أوّليّ من حيث السلامة كجزء من الأوّليّة ذاتها. فإنّ كلّ نداءٍ لـ`car` مثلًا قد يفحص أوّلًا أنّ المعطى زوج. وإذا لم يكن المعطى زوجًا، فإنّ التطبيق يُعيد شيفرة شرطٍ مميّزةً إلى المقيّم، والذي يُبلّغ عن الفشل بدوره. ونستطيع ترتيب هذا في محاكي آلات المسجّلات بجعل كلّ إجراءٍ أوّليّ يفحص قابليّة التطبيق ويُعيد شيفرة شرطٍ مميّزةً مناسبةً عند الفشل. وحينئذٍ تستطيع الشيفرة `primitive-apply` في المقيّم فحص شيفرة الشرط والانتقال إلى `signal-error` إذا لزم الأمر. ابنِ هذه البنية واجعلها تعمل. وهذا مشروعٌ كبير.
 > >
 
-### 5.5 Compilation
+### 5.5 التصريف
 
-The explicit-control evaluator of [5.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4) is a register machine whose controller interprets Scheme programs. In this section we will see how to run Scheme programs on a register machine whose controller is not a Scheme interpreter.
+إنّ المقيّم ذا المتحكّم الصريح الوارد في [5.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4) آلةُ مسجّلاتٍ متحكّمها يفسّر برامج Scheme. وفي هذا القسم سنرى كيف نشغّل برامج Scheme على آلة مسجّلاتٍ متحكّمها ليس مفسّر Scheme.
 
-The explicit-control evaluator machine is universal—it can carry out any computational process that can be described in Scheme. The evaluator’s controller orchestrates the use of its data paths to perform the desired computation. Thus, the evaluator’s data paths are universal: They are sufficient to perform any computation we desire, given an appropriate controller.[^33]
+إنّ آلة المقيّم ذي المتحكّم الصريح عامّة - فهي قادرة على أداء أيّ عمليّةٍ حسابيّةٍ يمكن وصفها بـScheme. ومتحكّم المقيّم ينسّق استخدام مسارات بياناته لأداء الاحتساب المطلوب. وبذلك، فإنّ مسارات بيانات المقيّم عامّة: فهي كافيّة لأداء أيّ احتسابٍ نرغبه، بمتحكّمٍ مناسب.[^33]
 
-Commercial general-purpose computers are register machines organized around a collection of registers and operations that constitute an efficient and convenient universal set of data paths. The controller for a general-purpose machine is an interpreter for a register-machine language like the one we have been using. This language is called the *native language* of the machine, or simply *machine language*. Programs written in machine language are sequences of instructions that use the machine’s data paths. For example, the explicit-control evaluator’s instruction sequence can be thought of as a machine-language program for a general-purpose computer rather than as the controller for a specialized interpreter machine.
+إنّ الحواسيب التجاريّة العامّة الغرض آلاتُ مسجّلاتٍ منظّمةٌ حول مجموعةٍ من المسجّلات والعمليّات التي تُشكّل مجموعةً عامّةً كفوءةً ومريحةً من مسارات البيانات. أمّا متحكّم آلةٍ عامّة الغرض فهو مفسّرٌ للغةٍ من لغات آلات المسجّلات شبيهة بتلك التي كنّا نستخدمها. وهذه اللغة تُسمّى *اللغة الأصليّة (native language)* للآلة، أو باختصار *لغة الآلة (machine language)*. والبرامج المكتوبة بلغة الآلة تسلسلاتٌ من التعليمات التي تستخدم مسارات بيانات الآلة. فإنّ تسلسل تعليمات المقيّم ذي المتحكّم الصريح مثلًا يمكن النظر إليه كبرنامجٍ بلغة الآلة لحاسوبٍ عامّ الغرض بدلًا من اعتباره متحكّمًا لآلة مفسّرٍ متخصّصة.
 
-There are two common strategies for bridging the gap between higher-level languages and register-machine languages. The explicit-control evaluator illustrates the strategy of interpretation. An interpreter written in the native language of a machine configures the machine to execute programs written in a language (called the *source language*) that may differ from the native language of the machine performing the evaluation. The primitive procedures of the source language are implemented as a library of subroutines written in the native language of the given machine. A program to be interpreted (called the *source program*) is represented as a data structure. The interpreter traverses this data structure, analyzing the source program. As it does so, it simulates the intended behavior of the source program by calling appropriate primitive subroutines from the library.
+ثمّة استراتيجيّتان شائعتان لردم الفجوة بين اللغات العالية المستوى ولغات آلات المسجّلات. ويُمثّل المقيّم ذو المتحكّم الصريح استراتيجيّة التفسير. فالمفسّر المكتوب باللغة الأصليّة لآلةٍ يُهيّئ الآلة لتنفيذ برامجٍ مكتوبةٍ بلغةٍ (تُسمّى *لغة المصدر (source language)*) قد تختلف عن اللغة الأصليّة للآلة التي تُجري التقييم. وتُنفَّذ الإجراءات الأوّليّة للغة المصدر كمكتبةٍ من الإجراءات الفرعيّة المكتوبة باللغة الأصليّة للآلة المعطاة. أمّا البرنامج المراد تفسيره (ويُسمّى *البرنامج المصدريّ (source program)*) فيُمثَّل كبنية بيانات. والمفسّر يجتاز بنية البيانات هذه، محلّلًا البرنامج المصدريّ. وبينما يفعل ذلك، فإنّه يحاكي السلوك المقصود من البرنامج المصدريّ بنداء الإجراءات الفرعيّة الأوّليّة الملائمة من المكتبة.
 
-In this section, we explore the alternative strategy of *compilation*. A compiler for a given source language and machine translates a source program into an equivalent program (called the *object program*) written in the machine’s native language. The compiler that we implement in this section translates programs written in Scheme into sequences of instructions to be executed using the explicit-control evaluator machine’s data paths.[^34]
+وفي هذا القسم نستكشف الاستراتيجيّة البديلة، وهي *التصريف (compilation)*. فإنّ المصرِّف الخاصّ بلغة مصدرٍ وآلةٍ معيّنتين يُترجم برنامجًا مصدريًّا إلى برنامجٍ مكافئٍ (يُسمّى *البرنامج الهدف (object program)*) مكتوبٍ بلغة الآلة الأصليّة. أمّا المصرِّف الذي ننفّذه في هذا القسم فيُترجم البرامج المكتوبة بـScheme إلى تسلسلاتٍ من التعليمات التي يُنفَّذ باستخدام مسارات بيانات آلة المقيّم ذي المتحكّم الصريح.[^34]
 
-Compared with interpretation, compilation can provide a great increase in the efficiency of program execution, as we will explain below in the overview of the compiler. On the other hand, an interpreter provides a more powerful environment for interactive program development and debugging, because the source program being executed is available at run time to be examined and modified. In addition, because the entire library of primitives is present, new programs can be constructed and added to the system during debugging.
+وبالمقارنة مع التفسير، فإنّ التصريف قادرٌ على توفير زيادةٍ كبيرةٍ في كفاءة تنفيذ البرامج، كما سنشرح أدناه في استعراضنا للمصرِّف. ومن جهةٍ أخرى، فإنّ المفسّر يوفّر بيئةً أكثر قوّةٍ لتطوير البرامج التفاعليّ وتصحيحها، لأنّ البرنامج المصدريّ قيد التنفيذ متاحٌ في زمن التشغيل للفحص والتعديل. وبالإضافة إلى ذلك، وبسبب حضور مكتبة الأوّليّات بتمامها، يمكن بناء برامج جديدة وإضافتها إلى النظم أثناء التصحيح.
 
-In view of the complementary advantages of compilation and interpretation, modern program-development environments pursue a mixed strategy. Lisp interpreters are generally organized so that interpreted procedures and compiled procedures can call each other. This enables a programmer to compile those parts of a program that are assumed to be debugged, thus gaining the efficiency advantage of compilation, while retaining the interpretive mode of execution for those parts of the program that are in the flux of interactive development and debugging. In [5.5.7](#g_t5_002e5_002e7), after we have implemented the compiler, we will show how to interface it with our interpreter to produce an integrated interpreter-compiler development system.
+وإذ نُلاحِظ المزايا المكمّلة للتصريف والتفسير، فإنّ بيئات تطوير البرامج الحديثة تنتهج استراتيجيّة مختلطة. فإنّ مفسّرات Lisp منظّمةٌ عمومًا بحيث تستطيع الإجراءات المفسَّرة والإجراءات المصرَّفة أن تنداي بعضها بعضًا. وهذا يمكّن المبرمجَ من تصريف الأجزاء من البرنامج التي يُفترض أنّها صُحِّحت، فيحصُل بذلك على ميزة كفاءة التصريف، مع الاحتفاظ بنمط التنفيذ التفسيريّ للأجزاء التي هي في تطوّرٍ تفاعليٍّ وتصحيح. وفي [5.5.7](#g_t5_002e5_002e7)، بعد أن نكون قد نفّذنا المصرِّف، سنُظهر كيف نوفّق بينه وبين مفسّرنا لإنتاج نظام تطويرٍ متكاملٍ يجمع المفسّر والمصرِّف.
 
-#### An overview of the compiler
+#### استعراض المصرِّف
 
-Our compiler is much like our interpreter, both in its structure and in the function it performs. Accordingly, the mechanisms used by the compiler for analyzing expressions will be similar to those used by the interpreter. Moreover, to make it easy to interface compiled and interpreted code, we will design the compiler to generate code that obeys the same conventions of register usage as the interpreter: The environment will be kept in the `env` register, argument lists will be accumulated in `argl`, a procedure to be applied will be in `proc`, procedures will return their answers in `val`, and the location to which a procedure should return will be kept in `continue`. In general, the compiler translates a source program into an object program that performs essentially the same register operations as would the interpreter in evaluating the same source program.
+إنّ مصرّفنا يشبه مفسّرنا إلى حدٍّ كبير، في بنيته وفي الوظيفة التي يؤدّيها. ووفقًا لذلك، فإنّ الآليّات التي يستخدمها المصرِّف لتحليل التعابير ستشبه تلك التي يستخدمها المفسّر. وبالإضافة إلى ذلك، ولتسهيل التوفيق بين الشيفرة المصرَّفة والشيفرة المفسَّرة، سنُصمّم المصرِّف ليُنتج شيفرةً تلتزم بالأعراف ذاتها في استخدام المسجّلات التي يلتزم بها المفسّر: فتُحفظ البيئة في المسجّل `env`، وتُتراكم قوائم المعطيات في `argl`، ويكون الإجراء المطلوب تطبيقه في `proc`، وتُعيد الإجراءات أجوبتها في `val`، ويُحفظ الموضع الذي ينبغي أن يعود إليه الإجراء في `continue`. وبصورةٍ عامّة، يُترجم المصرِّف برنامجًا مصدريًّا إلى برنامجٍ هدفٍ يؤدّي - في الجوهري - عمليّات المسجّل ذاتها التي كان المفسّر سيؤدّيها في تقييم البرنامج المصدريّ ذاته.
 
-This description suggests a strategy for implementing a rudimentary compiler: We traverse the expression in the same way the interpreter does. When we encounter a register instruction that the interpreter would perform in evaluating the expression, we do not execute the instruction but instead accumulate it into a sequence. The resulting sequence of instructions will be the object code. Observe the efficiency advantage of compilation over interpretation. Each time the interpreter evaluates an expression—for example, `(f 84 96)`—it performs the work of classifying the expression (discovering that this is a procedure application) and testing for the end of the operand list (discovering that there are two operands). With a compiler, the expression is analyzed only once, when the instruction sequence is generated at compile time. The object code produced by the compiler contains only the instructions that evaluate the operator and the two operands, assemble the argument list, and apply the procedure (in `proc`) to the arguments (in `argl`).
+وهذا الوصف يقترح استراتيجيّة لتنفيذ مصرِّفٍ أوّليّ: نجتاز التعبير بالطريقة ذاتها التي يجتازها المفسّر. وحين نصادف تعليمة مسجّلٍ كان المفسّر سيؤدّيها في تقييم التعبير، فإنّنا لا ننفّذ التعليمة بل نُراكمها في تسلسلٍ بدلًا من ذلك. وتسلسل التعليمات الناتج سيكون شيفرة الهدف. وتأمّل ميزة كفاءة التصريف على التفسير. ففي كلّ مرّةٍ يُقيّم فيها المفسّر تعبيرًا - `(f 84 96)` مثلًا - فإنّه يؤدّي عمل تصنيف التعبير (باكتشاف أنّ هذا تطبيق إجراء) واختبار نهاية قائمة العوامل (باكتشاف أنّ هناك عاملين). أمّا مع مصرِّف، فإنّ التعبير يُحلَّل مرّةً واحدةً فقط، حين يُنتَج تسلسل التعليمات في زمن التصريف. وشيفرة الهدف التي يُنتجها المصرِّف تحتوي فقط على التعليمات التي تُقيّم المشغّل والعاملين، وتبني قائمة المعطيات، وتُطبّق الإجراء (في `proc`) على المعطيات (في `argl`).
 
-This is the same kind of optimization we implemented in the analyzing evaluator of [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7). But there are further opportunities to gain efficiency in compiled code. As the interpreter runs, it follows a process that must be applicable to any expression in the language. In contrast, a given segment of compiled code is meant to execute some particular expression. This can make a big difference, for example in the use of the stack to save registers. When the interpreter evaluates an expression, it must be prepared for any contingency. Before evaluating a subexpression, the interpreter saves all registers that will be needed later, because the subexpression might require an arbitrary evaluation. A compiler, on the other hand, can exploit the structure of the particular expression it is processing to generate code that avoids unnecessary stack operations.
+وهذا هو النوع ذاته من التحسين الذي نفّذناه في المقيّم المحلِّل الوارد في [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7). لكن ثمّة فرصًا أخرى لاكتساب الكفاءة في الشيفرة المصرَّفة. فبينما يعمل المفسّر، فإنّه يتبع عمليّةً يجب أن تكون قابلة للتطبيق على أيّ تعبيرٍ في اللغة. وبالمقابل، فإنّ مقطعًا معيّنًا من الشيفرة المصرَّفة يُقصد به تنفيذ تعبيرٍ خاصّ بعينه. وهذا قد يُحدث فرقًا كبيرًا، في استخدام المكدّس لحفظ المسجّلات مثلًا. فحين يُقيّم المفسّر تعبيرًا، ينبغي أن يكون مستعدًّا لأيّ طارئ. وقبل تقييم تعبيرٍ جزئيّ، يحفظ المفسّر جميع المسجّلات التي ستكون لازمةً لاحقًا، لأنّ التعبير الجزئيّ قد يتطلّب تقييمًا اعتباطيًّا. أمّا المصرِّف، من جهةٍ أخرى، فيستطيع استثمار بنية التعبير الخاصّ الذي يعالجه ليُنتج شيفرةً تتجنّب عمليّات المكدّس غير الضروريّة.
 
-As a case in point, consider the combination `(f 84 96)`. Before the interpreter evaluates the operator of the combination, it prepares for this evaluation by saving the registers containing the operands and the environment, whose values will be needed later. The interpreter then evaluates the operator to obtain the result in `val`, restores the saved registers, and finally moves the result from `val` to `proc`. However, in the particular expression we are dealing with, the operator is the symbol `f`, whose evaluation is accomplished by the machine operation `lookup-variable-value`, which does not alter any registers. The compiler that we implement in this section will take advantage of this fact and generate code that evaluates the operator using the instruction
+وبوصفه مثالًا على ذلك، تأمّل التركيب `(f 84 96)`. فقبل أن يُقيّم المفسّر مشغّل التركيب، فإنّه يتهيّأ لهذا التقييم بحفظ المسجّلات التي تحتوي العوامل والبيئة، والتي ستكون قيمُها لازمةً لاحقًا. ثم يُقيّم المفسّر المشغّل ليحصل على النتيجة في `val`، ويستعيد المسجّلات المحفوظة، وأخيرًا ينقل النتيجة من `val` إلى `proc`. لكنّنا في التعبير الخاصّ الذي نتعامل معه، المشغّل هو الرمز `f`، الذي يُنجَز تقييمه بعمليّة الآلة `lookup-variable-value`، وهي لا تُغيّر أيّ مسجّل. والمصرِّف الذي ننفّذه في هذا القسم سيستفيد من هذه الحقيقة ويُنتج شيفرةً تُقيّم المشغّل باستخدام التعليمة
 
 ```scheme
 (assign proc 
@@ -2202,15 +2202,15 @@ As a case in point, consider the combination `(f 84 96)`. Before the interpreter
         (reg env))
 ```
 
-This code not only avoids the unnecessary saves and restores but also assigns the value of the lookup directly to `proc`, whereas the interpreter would obtain the result in `val` and then move this to `proc`.
+وهذه الشيفرة لا تتجنّب الحفظ والاستعادة غير الضروريّين فحسب، بل تُسند أيضًا نتيجة البحث مباشرةً إلى `proc`، بخلاف المفسّر الذي كان سيستخرج النتيجة في `val` ثم ينقلها إلى `proc`.
 
-A compiler can also optimize access to the environment. Having analyzed the code, the compiler can in many cases know in which frame a particular variable will be located and access that frame directly, rather than performing the `lookup-variable-value` search. We will discuss how to implement such variable access in [5.5.6](#g_t5_002e5_002e6). Until then, however, we will focus on the kind of register and stack optimizations described above. There are many other optimizations that can be performed by a compiler, such as coding primitive operations “in line” instead of using a general `apply` mechanism (see [Exercise 5.38](#Exercise-5_002e38)); but we will not emphasize these here. Our main goal in this section is to illustrate the compilation process in a simplified (but still interesting) context.
+ويستطيع المصرِّف أيضًا تحسين الوصول إلى البيئة. فإنّه بعد تحليل الشيفرة، يستطيع المصرِّف - في حالاتٍ كثيرةٍ - أن يعرف في أيّ إطارٍ سيقع متغيّرٌ خاصّ، وأن يصل إلى ذلك الإطار مباشرةً، بدلًا من إجراء بحث `lookup-variable-value`. وسنناقش كيف ننفّذ وصول المتغيّرات هذا في [5.5.6](#g_t5_002e5_002e6). لكنّنا، حتّى ذلك الحين، سنركّز على نوع تحسينات المسجّلات والمكدّس الموصوف أعلاه. ثمّة تحسيناتٌ أخرى كثيرةٌ يستطيع المصرِّف أداءها، كترميز العمليّات الأوّليّة «سطرًا» بدلًا من استخدام آليّة `apply` عامّة (انظر [التمرين 5.38](#Exercise-5_002e38))؛ لكنّنا لن نُشدّد على هذه هنا. أمّا هدفنا الرئيسيّ في هذا القسم فهو توضيح عمليّة التصريف في سياقٍ مبسّطٍ (لكنه لا يزال مثيرًا للاهتمام).
 
-#### 5.5.1 Structure of the Compiler
+#### 5.5.1 بنية المصرِّف
 
-In [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7) we modified our original metacircular interpreter to separate analysis from execution. We analyzed each expression to produce an execution procedure that took an environment as argument and performed the required operations. In our compiler, we will do essentially the same analysis. Instead of producing execution procedures, however, we will generate sequences of instructions to be run by our register machine.
+لقد عدّلنا في [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7) مفسّرنا البعديّ الأصليّ لفصل التحليل عن التنفيذ. فقد حلّلنا كلّ تعبيرٍ لنُنتج إجراء تنفيذٍ يأخذ بيئةً كمعطىً ويؤدّي العمليّات المطلوبة. وفي مصرّفنا، سنجري التحليل ذاته في الجوهري. لكنّنا، بدلًا من إنتاج إجراءات تنفيذٍ، سنُنتج تسلسلاتٍ من التعليمات التي ستُشغَّل بآلة مسجّلاتنا.
 
-The procedure `compile` is the top-level dispatch in the compiler. It corresponds to the `eval` procedure of [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1), the `analyze` procedure of [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7), and the `eval-dispatch` entry point of the explicit-control-evaluator in [5.4.1](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e1). The compiler, like the interpreters, uses the expression-syntax procedures defined in [4.1.2](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e2).[^35] `Compile` performs a case analysis on the syntactic type of the expression to be compiled. For each type of expression, it dispatches to a specialized *code generator*:
+والإجراء `compile` هو التوزيع الأعلى مستوىً في المصرِّف. وهو يقابل الإجراء `eval` الوارد في [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1)، والإجراء `analyze` الوارد في [4.1.7](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7)، ونقطة دخول `eval-dispatch` في المقيّم ذي المتحكّم الصريح الوارد في [5.4.1](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e1). وإنّ المصرِّف - كالمفسّرات - يستخدم إجراءات صياغة التعبير المعرَّفة في [4.1.2](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e2).[^35] ويُجري `compile` تحليل حالاتٍ على النوع الصياغيّ للتعبير المطلوب تصريفه. فلكلّ نوعٍ من التعابير، يوزّع إلى *مولّد شيفرةٍ (code generator)* متخصّص:
 
 ```scheme
 (define (compile exp target linkage)
@@ -2247,59 +2247,59 @@ The procedure `compile` is the top-level dispatch in the compiler. It correspond
                 exp))))
 ```
 
-#### Targets and linkages
+#### الأهداف والروابط
 
-`Compile` and the code generators that it calls take two arguments in addition to the expression to compile. There is a *target*, which specifies the register in which the compiled code is to return the value of the expression. There is also a *linkage descriptor*, which describes how the code resulting from the compilation of the expression should proceed when it has finished its execution. The linkage descriptor can require that the code do one of the following three things:
+إنّ `compile` ومولّدات الشيفرة التي ينديها يأخذان - بالإضافة إلى التعبير المطلوب تصريفه - معطيين. هناك *هدف (target)*، يُحدّد المسجّل الذي ينبغي أن تُعيد فيه الشيفرة المصرَّفة قيمة التعبير. وهناك أيضًا *واصف ربط (linkage descriptor)*، يصف كيف ينبغي أن تسير الشيفرة الناتجة عن تصريف التعبير بعد أن تُتمّ تنفيذها. ويستطيع واصف الربط أن يُلزم الشيفرة بأداء واحدةٍ من الأمور الثلاثة الآتية:
 
-- continue at the next instruction in sequence (this is specified by the linkage descriptor `next`),
-- return from the procedure being compiled (this is specified by the linkage descriptor `return`), or
-- jump to a named entry point (this is specified by using the designated label as the linkage descriptor).
+- المواصلة عند التعليمة التالية في التسلسل (وهذا ما يُحدّده واصف الربط `next`)،
+- العودة من الإجراء قيد التصريف (وهذا ما يُحدّده واصف الربط `return`)، أو
+- القفز إلى نقطة دخولٍ مُسمّاة (وهذا ما يُحدّده استخدام التسمية المُعيّنة واصفًا للربط).
 
-For example, compiling the expression `5` (which is self-evaluating) with a target of the `val` register and a linkage of `next` should produce the instruction
+فمثلًا، ينبغي لتصريف التعبير `5` (الذي يُقيّم ذاتيًّا) بهدفٍ هو المسجّل `val` وبربطٍ هو `next` أن يُنتج التعليمة
 
 ```scheme
 (assign val (const 5))
 ```
 
-Compiling the same expression with a linkage of `return` should produce the instructions
+وينبغي لتصريف التعبير ذاته بربطٍ هو `return` أن يُنتج التعليمات
 
 ```scheme
 (assign val (const 5))
 (goto (reg continue))
 ```
 
-In the first case, execution will continue with the next instruction in the sequence. In the second case, we will return from a procedure call. In both cases, the value of the expression will be placed into the target `val` register.
+في الحالة الأولى، سيستمرّ التنفيذ بالتعليمة التالية في التسلسل. وفي الحالة الثانية، سنعود من نداء إجراء. وفي كلتي الحالتين، ستُوضع قيمة التعبير في مسجّل الهدف `val`.
 
-#### Instruction sequences and stack usage
+#### تسلسلات التعليمات واستخدام المكدّس
 
-Each code generator returns an *instruction sequence* containing the object code it has generated for the expression. Code generation for a compound expression is accomplished by combining the output from simpler code generators for component expressions, just as evaluation of a compound expression is accomplished by evaluating the component expressions.
+يُعيد كلّ مولّد شيفرةٍ *تسلسل تعليمات (instruction sequence)* يحتوي شيفرة الهدف التي ولّدها للتعبير. أمّا توليد الشيفرة لتعبيرٍ مركّبٍ فيُنجَز بدمج مُخرَج مولّدات شيفرةٍ أبسط للتعابير المكوّنة، تمامًا كما يُنجَز تقييم تعبيرٍ مركّبٍ بتقييم التعابير المكوّنة له.
 
-The simplest method for combining instruction sequences is a procedure called `append-instruction-sequences`. It takes as arguments any number of instruction sequences that are to be executed sequentially; it appends them and returns the combined sequence. That is, if $⟨ s e q_{1} ⟩$ and $⟨ s e q_{2} ⟩$ are sequences of instructions, then evaluating
+إنّ أبسط طريقةٍ لدمج تسلسلات التعليمات هو إجراءٌ يُسمّى `append-instruction-sequences`. وهو يأخذ كمعطيات أيّ عددٍ من تسلسلات التعليمات التي يُنفَّذ بالتعاقب؛ فإنّه يُلحق بعضها ببعض ويُعيد التسلسل المدمَج. أي أنّّه، إذا كان $⟨ s e q_{1} ⟩$ و$⟨ s e q_{2} ⟩$ تسلسلَي تعليمات، فإنّ تقييم
 
 ```scheme
 (append-instruction-sequences ⟨seq₁⟩ ⟨seq₂⟩)
 ```
 
-produces the sequence
+يُنتج التسلسل
 
 ```scheme
 ⟨seq₁⟩
 ⟨seq₂⟩
 ```
 
-Whenever registers might need to be saved, the compiler’s code generators use `preserving`, which is a more subtle method for combining instruction sequences. `Preserving` takes three arguments: a set of registers and two instruction sequences that are to be executed sequentially. It appends the sequences in such a way that the contents of each register in the set is preserved over the execution of the first sequence, if this is needed for the execution of the second sequence. That is, if the first sequence modifies the register and the second sequence actually needs the register’s original contents, then `preserving` wraps a `save` and a `restore` of the register around the first sequence before appending the sequences. Otherwise, `preserving` simply returns the appended instruction sequences. Thus, for example, `(preserving (list ⟨reg₁⟩ ⟨reg₂⟩) ⟨seg₁⟩ ⟨seg₂⟩)` produces one of the following four sequences of instructions, depending on how $⟨ s e q_{1} ⟩$ and $⟨ s e q_{2} ⟩$ use $⟨ r e g_{1} ⟩$ and $⟨ r e g_{2} ⟩$ : $⟨ s e q_{1} ⟩ (save (save (save ⟨ r e g_{2} ⟩ ) ⟨ s e q_{2} ⟩ ⟨ r e g_{1} ⟩ ) ⟨ r e g_{2} ⟩ ) (save ⟨ r e g_{1} ⟩ ) ⟨ s e q_{1} ⟩ ⟨ s e q_{1} ⟩ ⟨ s e q_{1} ⟩ (restore (restore (restore ⟨ r e g_{1} ⟩ ) ⟨ r e g_{1} ⟩ ) ⟨ r e g_{2} ⟩ ) (restore ⟨ r e g_{2} ⟩ ) ⟨ s e q_{2} ⟩ ⟨ s e q_{2} ⟩ ⟨ s e q_{2} ⟩$
+كلّما قد تحتاج المسجّلات إلى الحفظ، تستخدم مولّدات الشيفرة في المصرِّف `preserving`، وهي طريقة أكثر دقّةً لدمج تسلسلات التعليمات. و`preserving` تأخذ ثلاثة معطيات: مجموعةً من المسجّلات وتسلسلي تعليمات يُنفَّذان بالتعاقب. وهي تُلحق التسلسلين بعضهما ببعض بحيث تُحفظ محتويات كلّ مسجّلٍ في المجموعة على امتداد تنفيذ التسلسل الأوّل، إذا كان ذلك لازمًا لتنفيذ التسلسل الثاني. أي أنّّه، إذا عدّل التسلسل الأوّل المسجّل وكان التسلسل الثاني يحتاج فعلًا إلى محتويات المسجّل الأصليّة، فإنّ `preserving` تلفّ `save` و`restore` للمسجّل حول التسلسل الأوّل قبل إلحاق التسلسلين. وإلّا، فإنّ `preserving` تُعيد تسلسلات التعليمات الملحوقة فحسب. وبذلك، فإنّ `(preserving (list ⟨reg₁⟩ ⟨reg₂⟩) ⟨seg₁⟩ ⟨seg₂⟩)` مثلًا يُنتج واحدًا من تسلسلات التعليمات الأربعة الآتية، بحسب كيفيّة استخدام $⟨ s e q_{1} ⟩$ و$⟨ s e q_{2} ⟩$ لـ$⟨ r e g_{1} ⟩$ و$⟨ r e g_{2} ⟩$ : $⟨ s e q_{1} ⟩ (save (save (save ⟨ r e g_{2} ⟩ ) ⟨ s e q_{2} ⟩ ⟨ r e g_{1} ⟩ ) ⟨ r e g_{2} ⟩ ) (save ⟨ r e g_{1} ⟩ ) ⟨ s e q_{1} ⟩ ⟨ s e q_{1} ⟩ ⟨ s e q_{1} ⟩ (restore (restore (restore ⟨ r e g_{1} ⟩ ) ⟨ r e g_{1} ⟩ ) ⟨ r e g_{2} ⟩ ) (restore ⟨ r e g_{2} ⟩ ) ⟨ s e q_{2} ⟩ ⟨ s e q_{2} ⟩ ⟨ s e q_{2} ⟩$
 
-By using `preserving` to combine instruction sequences the compiler avoids unnecessary stack operations. This also isolates the details of whether or not to generate `save` and `restore` instructions within the `preserving` procedure, separating them from the concerns that arise in writing each of the individual code generators. In fact no `save` or `restore` instructions are explicitly produced by the code generators.
+إنّ استخدام `preserving` لدمج تسلسلات التعليمات يجعل المصرِّف يتجنّب عمليّات المكدّس غير الضروريّة. وهذا يعزل أيضًا تفاصيل ما إذا كان توليد تعليمات `save` و`restore` لازمًا أم لا داخل الإجراء `preserving`، فاصلًا إيّاها عن الهموم الناشئة عن كتابة كلّ مولّد شيفرةٍ فرديّ. فإنّه لا تُنتج فعليًّا أيّ تعليمة `save` أو `restore` صراحةً من قِبَل مولّدات الشيفرة.
 
-In principle, we could represent an instruction sequence simply as a list of instructions. `Append-instruction-sequences` could then combine instruction sequences by performing an ordinary list `append`. However, `preserving` would then be a complex operation, because it would have to analyze each instruction sequence to determine how the sequence uses its registers. `Preserving` would be inefficient as well as complex, because it would have to analyze each of its instruction sequence arguments, even though these sequences might themselves have been constructed by calls to `preserving`, in which case their parts would have already been analyzed. To avoid such repetitious analysis we will associate with each instruction sequence some information about its register use. When we construct a basic instruction sequence we will provide this information explicitly, and the procedures that combine instruction sequences will derive register-use information for the combined sequence from the information associated with the component sequences.
+من حيث المبدأ، كان بإمكاننا تمثيل تسلسل تعليماتٍ كقائمةٍ من التعليمات. وعندئذٍ يستطيع `append-instruction-sequences` دمج تسلسلات التعليمات بأداء `append` عاديّ على القوائم. لكنّ `preserving` سيصير عندئذٍ عمليّةً معقّدة، لأنّه سيتعيّن عليها تحليل كلّ تسلسل تعليماتٍ لتحديد كيفيّة استخدام التسلسل لمسجّلاته. و`preserving` سيكون غير كفؤٍ فضلًا عن كونه معقّدًا، لأنّه سيتعيّن عليه تحليل كلّ واحدٍ من معطياته التي هي تسلسلات تعليمات، حتّى وإن كانت هذه التسلسلات قد بُنيت بدورها بنداءاتٍ إلى `preserving`، وفي هذه الحالة تكون أجزاؤها قد حُلِّلت سابقًا. ولكي نتجنّب مثل هذا التحليل المتكرّر، سنربط بكلّ تسلسل تعليماتٍ بعض المعلومات حول استخدامه للمسجّلات. وحين نبني تسلسل تعليماتٍ أساسيًّا، سنُوفّر هذه المعلومات صراحةً، والإجراءات التي تدمج تسلسلات التعليمات ستستخرج معلومات استخدام المسجّلات للتسلسل المدمَج من المعلومات المرتبطة بالتسلسلات المكوّنة.
 
-An instruction sequence will contain three pieces of information:
+سيحتوي تسلسل التعليمات على ثلاثة أجزاء من المعلومات:
 
-- the set of registers that must be initialized before the instructions in the sequence are executed (these registers are said to be *needed* by the sequence),
-- the set of registers whose values are modified by the instructions in the sequence, and
-- the actual instructions (also called *statements*) in the sequence.
+- مجموعة المسجّلات التي يجب تهيئتها قبل تنفيذ التعليمات في التسلسل (يُقال عن هذه المسجّلات أنّ التسلسل *يحتاج* إليها)،
+- مجموعة المسجّلات التي تُعدّل قيمها التعليمات في التسلسل، و
+- التعليمات الفعليّة (المسمّاة أيضًا *العبارات*) في التسلسل.
 
-We will represent an instruction sequence as a list of its three parts. The constructor for instruction sequences is thus
+وسنمثّل تسلسل التعليمات كقائمةٍ من أجزائه الثلاثة. وباني تسلسلات التعليمات هو إذن
 
 ```scheme
 (define (make-instruction-sequence 
@@ -2307,7 +2307,7 @@ We will represent an instruction sequence as a list of its three parts. The cons
   (list needs modifies statements))
 ```
 
-For example, the two-instruction sequence that looks up the value of the variable `x` in the current environment, assigns the result to `val`, and then returns, requires registers `env` and `continue` to have been initialized, and modifies register `val`. This sequence would therefore be constructed as
+فمثلًا، تسلسل التعليمتين الذي يبحث عن قيمة المتغيّر `x` في البيئة الحاليّة، ويسند النتيجة إلى `val`، ثم يرجع، يتطلّب أن يكون المسجّلان `env` و`continue` قد هُيّئا، ويعدّل المسجّل `val`. وبذلك، سيُبنى هذا التسلسل على النحو الآتي
 
 ```scheme
 (make-instruction-sequence
@@ -2320,16 +2320,16 @@ For example, the two-instruction sequence that looks up the value of the variabl
    (goto (reg continue))))
 ```
 
-We sometimes need to construct an instruction sequence with no statements:
+ونحتاج أحيانًا إلى بناء تسلسل تعليماتٍ بلا عبارات:
 
 ```scheme
 (define (empty-instruction-sequence)
   (make-instruction-sequence '() '() '()))
 ```
 
-The procedures for combining instruction sequences are shown in [5.5.4](#g_t5_002e5_002e4).
+الإجراءات الخاصة بدمج تسلسلات التعليمات موضّحة في [5.5.4](#g_t5_002e5_002e4).
 
-**Exercise 5.31:** In evaluating a procedure application, the explicit-control evaluator always saves and restores the `env` register around the evaluation of the operator, saves and restores `env` around the evaluation of each operand (except the final one), saves and restores `argl` around the evaluation of each operand, and saves and restores `proc` around the evaluation of the operand sequence. For each of the following combinations, say which of these `save` and `restore` operations are superfluous and thus could be eliminated by the compiler’s `preserving` mechanism:
+**التمرين 5.31:** في تقييم تطبيق إجراءٍ، يحفظ مُقيِّم التحكّم الصريح دائمًا المسجّل `env` ويعيده حول تقييم المشغّل، ويحفظ `env` ويعيده حول تقييم كلّ عاملٍ باستثناء الأخير، ويحفظ `argl` ويعيده حول تقييم كلّ عامل، ويحفظ `proc` ويعيده حول تقييم تسلسل العوامل. فبالنسبة لكلّ تركيبةٍ من التركيبات الآتية، قُل أيّ عمليّات `save` و`restore` هذه زائدةٌ عن الحاجة وبإمكانها بالتالي أن تُحذف بواسطة آليّة `preserving` في المصرِّف:
 
 ```scheme
 (f 'x 'y)
@@ -2338,17 +2338,17 @@ The procedures for combining instruction sequences are shown in [5.5.4](#g_t5_00
 (f (g 'x) 'y)
 ```
 
-> **Exercise 5.32:** Using the `preserving` mechanism, the compiler will avoid saving and restoring `env` around the evaluation of the operator of a combination in the case where the operator is a symbol. We could also build such optimizations into the evaluator. Indeed, the explicit-control evaluator of [5.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4) already performs a similar optimization, by treating combinations with no operands as a special case. Extend the explicit-control evaluator to recognize as a separate class of expressions combinations whose operator is a symbol, and to take advantage of this fact in evaluating such expressions.
-> > Alyssa P. Hacker suggests that by extending the evaluator to recognize more and more special cases we could incorporate all the compiler’s optimizations, and that this would eliminate the advantage of compilation altogether. What do you think of this idea?
+> **التمرين 5.32:** باستخدام آليّة `preserving`، سيتجنّب المصرِّف حفظ `env` وإعادته حول تقييم مشغّل تركيبةٍ في الحالة التي يكون فيها المشغّل رمزًا. وبإمكاننا أيضًا أن نُدمج تحسيناتٍ كهذه في المُقيِّم. ففي الحقيقة، إنّ مُقيِّم التحكّم الصريح الوارد في [5.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4) يؤدّي تحسينًا مشابهًا بالفعل، وذلك بمعاملة التركيبات التي لا عوامل لها كحالةٍ خاصّة. وسّع مُقيِّم التحكّم الصريح ليتعرّف على التركيبات التي مشغّلها رمز كصنفٍ منفصلٍ من التعابير، وليستثمر هذه الحقيقة في تقييم مثل هذه التعابير.
+> > تقترح أليسا پي. هاكر أنه بتوسيع المُقيِّم ليتعرّف على المزيد من الحالات الخاصّة فأكثر، فبوسعنا أن نُدرج جميع تحسينات المصرِّف، وأنّ هذا من شأنه أن يُزيل مزيّة التصريف برمّتها. فما رأيك في هذه الفكرة؟
 > > 
 
-#### 5.5.2 Compiling Expressions
+#### 5.5.2 تصريف التعابير
 
-In this section and the next we implement the code generators to which the `compile` procedure dispatches.
+في هذا القسم والقسم التالي نُنفّذ مولّدات الشيفرة التي يُوزّع إليها الإجراء `compile`.
 
-#### Compiling linkage code
+#### تصريف شيفرة الوصل
 
-In general, the output of each code generator will end with instructions—generated by the procedure `compile-linkage`—that implement the required linkage. If the linkage is `return` then we must generate the instruction `(goto (reg continue))`. This needs the `continue` register and does not modify any registers. If the linkage is `next`, then we needn’t include any additional instructions. Otherwise, the linkage is a label, and we generate a `goto` to that label, an instruction that does not need or modify any registers.[^36]
+بصورةٍ عامّة، ستنتهي مخرجات كلّ مولّد شيفرةٍ بتعليماتٍ - تُولَّدها الإجراء `compile-linkage` - تُنفّذ الوصل المطلوب. فإن كان الوصل هو `return` فيجب أن نُولّد التعليمة `(goto (reg continue))`. وهذا يحتاج المسجّل `continue` ولا يعدّل أيّ مسجّلات. فإن كان الوصل هو `next`، فنحن لا نحتاج إلى إضافة أيّ تعليمات. وإلّا، فالوصل عنوانٌ (label)، ونُولّد `goto` إلى ذلك العنوان، وهو تعليمةٌ لا تحتاج ولا تعدّل أيّ مسجّلات.[^36]
 
 ```scheme
 (define (compile-linkage linkage)
@@ -2364,7 +2364,7 @@ In general, the output of each code generator will end with instructions—gener
           `((goto (label ,linkage)))))))
 ```
 
-The linkage code is appended to an instruction sequence by `preserving` the `continue` register, since a `return` linkage will require the `continue` register: If the given instruction sequence modifies `continue` and the linkage code needs it, `continue` will be saved and restored.
+تُلحَق شيفرة الوصل بتسلسل تعليماتٍ بواسطة `preserving` للمسجّل `continue`، إذ إنّ وصل `return` سيحتاج المسجّل `continue`: فإن كان تسلسل التعليمات المعطى يُعدّل `continue` وشيفرة الوصل تحتاجه، فسيُحفظ `continue` ويُستعاد.
 
 ```scheme
 (define (end-with-linkage 
@@ -2374,9 +2374,9 @@ The linkage code is appended to an instruction sequence by `preserving` the `con
    (compile-linkage linkage)))
 ```
 
-#### Compiling simple expressions
+#### تصريف التعابير البسيطة
 
-The code generators for self-evaluating expressions, quotations, and variables construct instruction sequences that assign the required value to the target register and then proceed as specified by the linkage descriptor.
+مولّدات الشيفرة الخاصّة بالتعابير التي تُقيّم ذاتيًّا والاقتباسات والمتغيّرات تبني تسلسلات تعليماتٍ تُسنِد القيمة المطلوبة إلى المسجّل الهدف ثم تواصل بالطريقة التي يُحدّدها واصف الوصل.
 
 ```scheme
 (define (compile-self-evaluating 
@@ -2410,9 +2410,9 @@ The code generators for self-evaluating expressions, quotations, and variables c
               (reg env))))))
 ```
 
-All these assignment instructions modify the target register, and the one that looks up a variable needs the `env` register.
+جميع تعليمات الإسناد هذه تُعدّل المسجّل الهدف، وتلك التي تبحث عن قيمة متغيّر تحتاج المسجّل `env`.
 
-Assignments and definitions are handled much as they are in the interpreter. We recursively generate code that computes the value to be assigned to the variable, and append to it a two-instruction sequence that actually sets or defines the variable and assigns the value of the whole expression (the symbol `ok`) to the target register. The recursive compilation has target `val` and linkage `next` so that the code will put its result into `val` and continue with the code that is appended after it. The appending is done preserving `env`, since the environment is needed for setting or defining the variable and the code for the variable value could be the compilation of a complex expression that might modify the registers in arbitrary ways.
+وتُعالَج الإحلالات والتعريفات إلى حدٍّ كبيرٍ كما تُعالَج في المفسّر. فنحن نُولّد تعاوديًّا شيفرةً تحتسب القيمة التي ستُسنَد إلى المتغيّر، ونُلحق بها تسلسلًا من تعليمتين يُعيّن المتغيّر فعلًا أو يُعرّفه ويُسنِد قيمة التعبير كلّه (الرمز `ok`) إلى المسجّل الهدف. والتصريف التعاوديّ له هدفٌ هو `val` ووصلٌ هو `next` حتّى تضع الشيفرة نتيجتها في `val` وتواصل بالشيفرة المُلحَقة بعدها. أمّا الإلحاق فيُجرى مع حفظ `env`، إذ إنّ البيئة لازمة لتعيين المتغيّر أو تعريفه، وقد تكون شيفرة قيمة المتغيّر تصريفَ تعبيرٍ مركّب قد يُعدّل المسجّلات بطرائق اعتباطيّة.
 
 ```scheme
 (define (compile-assignment 
@@ -2458,11 +2458,11 @@ Assignments and definitions are handled much as they are in the interpreter. We 
          (assign ,target (const ok))))))))
 ```
 
-The appended two-instruction sequence requires `env` and `val` and modifies the target. Note that although we preserve `env` for this sequence, we do not preserve `val`, because the `get-value-code` is designed to explicitly place its result in `val` for use by this sequence. (In fact, if we did preserve `val`, we would have a bug, because this would cause the previous contents of `val` to be restored right after the `get-value-code` is run.)
+التسلسل المُلحَق المكوّن من تعليمتين يحتاج `env` و`val` ويُعدّل الهدف. ولاحِظ أنّنا مع أنّنا نحفظ `env` من أجل هذا التسلسل، فإنّا لا نحفظ `val`، لأنّ `get-value-code` مُصمَّمٌ لوضع نتيجته في `val` صراحةً لاستخدام هذا التسلسل لها. (في الحقيقة، لو حفظنا `val`، لكان لدينا عِلّة، لأنّ هذا من شأنه أن يُسبّب استعادة المحتويات السابقة لـ`val` مباشرةً بعد تشغيل `get-value-code`.)
 
-#### Compiling conditional expressions
+#### تصريف التعابير الشرطيّة
 
-The code for an `if` expression compiled with a given target and linkage has the form
+شيفرة تعبير `if` المُصَرَّف بهدفٍ ووصلٍ معطيين لها الصيغة الآتية
 
 ```scheme
 ⟨compilation of predicate, 
@@ -2478,7 +2478,7 @@ false-branch
 after-if
 ```
 
-To generate this code, we compile the predicate, consequent, and alternative, and combine the resulting code with instructions to test the predicate result and with newly generated labels to mark the true and false branches and the end of the conditional.[^37] In this arrangement of code, we must branch around the true branch if the test is false. The only slight complication is in how the linkage for the true branch should be handled. If the linkage for the conditional is `return` or a label, then the true and false branches will both use this same linkage. If the linkage is `next`, the true branch ends with a jump around the code for the false branch to the label at the end of the conditional.
+ولتوليد هذه الشيفرة، نُصَرِّف المسيّم والنتيجة والبديل، وندمج الشيفرة الناتجة مع تعليماتٍ لاختبار نتيجة المسيّم ومع عناوينَ حديثةِ التوليد لوسم الفرع الصحيح والفرع الخاطئ ونهاية التعبير الشرطيّ.[^37] وفي هذا الترتيب للشيفرة، يجب أن نتفرّع متجاوزين الفرع الصحيح إذا كان الاختبار خاطئًا. والتعقيد الطفيف الوحيد هو في كيفيّة التعامل مع وصلة الفرع الصحيح. فإن كان وصلة التعبير الشرطيّ هو `return` أو عنوانًا، فإنّ الفرعين الصحيح والخاطئ سيستخدمان الوصل عينه. فإن كان الوصل هو `next`، فإنّ الفرع الصحيح ينتهي بقفزةٍ متجاوزةً شيفرة الفرع الخاطئ إلى العنوان عند نهاية التعبير الشرطيّ.
 
 ```scheme
 (define (compile-if exp target linkage)
@@ -2518,13 +2518,13 @@ To generate this code, we compile the predicate, consequent, and alternative, an
           after-if))))))
 ```
 
-`Env` is preserved around the predicate code because it could be needed by the true and false branches, and `continue` is preserved because it could be needed by the linkage code in those branches. The code for the true and false branches (which are not executed sequentially) is appended using a special combiner `parallel-instruction-sequences` described in [5.5.4](#g_t5_002e5_002e4).
+يُحفظ `env` حول شيفرة المسيّم لأنّ الفرعين الصحيح والخاطئ قد يحتاجانه، ويُحفظ `continue` لأنّ شيفرة الوصل في هذين الفرعين قد تحتاجه. وشيفرة الفرعين الصحيح والخاطئ (اللذين لا يُنفّذان تسلسليًّا) تُلحَق باستخدام مُدَمِّجٍ خاصّ هو `parallel-instruction-sequences` الموصوف في [5.5.4](#g_t5_002e5_002e4).
 
-Note that `cond` is a derived expression, so all that the compiler needs to do handle it is to apply the `cond->if` transformer (from [4.1.2](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e2)) and compile the resulting `if` expression.
+ولاحِظ أنّ `cond` تعبيرٌ مشتقّ، فكلّ ما يلزم المصرِّف ليتعامل معه هو أن يُطبّق المحوّل `cond->if` (من [4.1.2](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e2)) ثم يُصَرِّف تعبير `if` الناتج.
 
-#### Compiling sequences
+#### تصريف التسلسلات
 
-The compilation of sequences (from procedure bodies or explicit `begin` expressions) parallels their evaluation. Each expression of the sequence is compiled—the last expression with the linkage specified for the sequence, and the other expressions with linkage `next` (to execute the rest of the sequence). The instruction sequences for the individual expressions are appended to form a single instruction sequence, such that `env` (needed for the rest of the sequence) and `continue` (possibly needed for the linkage at the end of the sequence) are preserved.
+إنّ تصريف التسلسلات (الواردة في أجسام الإجراءات أو في تعابير `begin` الصريحة) يوازي تقييمها. فيُصَرَّف كلّ تعبيرٍ من التسلسل - التعبير الأخير بالوصل المحدَّد للتسلسل، والتعبيرات الأخرى بوصل `next` (لتنفيذ بقيّة التسلسل). وتُلحَق تسلسلات التعليمات الخاصّة بالتعابير المنفردة لتكوين تسلسل تعليماتٍ واحد، بحيث يُحفظ `env` (اللازم لبقيّة التسلسل) و`continue` (الذي قد يكون لازما للوصل عند نهاية التسلسل).
 
 ```scheme
 (define (compile-sequence seq target linkage)
@@ -2537,9 +2537,9 @@ The compilation of sequences (from procedure bodies or explicit `begin` expressi
                          linkage))))
 ```
 
-#### Compiling `lambda` expressions
+#### تصريف تعابير `lambda`
 
-`Lambda` expressions construct procedures. The object code for a `lambda` expression must have the form
+إنّ تعابير `lambda` تُنشئ الإجراءات. ويجب أن تكون الشيفرة الهدف لتعبير `lambda` على الصيغة الآتية
 
 ```scheme
 ⟨construct procedure object 
@@ -2547,7 +2547,7 @@ The compilation of sequences (from procedure bodies or explicit `begin` expressi
 ⟨linkage⟩
 ```
 
-When we compile the `lambda` expression, we also generate the code for the procedure body. Although the body won’t be executed at the time of procedure construction, it is convenient to insert it into the object code right after the code for the `lambda`. If the linkage for the `lambda` expression is a label or `return`, this is fine. But if the linkage is `next`, we will need to skip around the code for the procedure body by using a linkage that jumps to a label that is inserted after the body. The object code thus has the form
+وحين نُصَرِّف تعبير `lambda`، نُولّد أيضًا الشيفرة الخاصّة بجسم الإجراء. فعلى الرغم من أنّ الجسم لن يُنفَّذ وقت بناء الإجراء، فمن الملائم إدراجه في الشيفرة الهدف مباشرةً بعد شيفرة `lambda`. فإن كان وصلة تعبير `lambda` عنوانًا أو `return`، فهذا حسن. لكن إن كان الوصل هو `next`، فسنحتاج إلى التجاوز حول شيفرة جسم الإجراء باستخدام وصلةٍ تقفز إلى عنوانٍ يُدرج بعد الجسم. وبذلك، تكون الشيفرة الهدف على الصيغة الآتية
 
 ```scheme
 ⟨construct procedure object 
@@ -2558,7 +2558,7 @@ When we compile the `lambda` expression, we also generate the code for the proce
 after-lambda
 ```
 
-`Compile-lambda` generates the code for constructing the procedure object followed by the code for the procedure body. The procedure object will be constructed at run time by combining the current environment (the environment at the point of definition) with the entry point to the compiled procedure body (a newly generated label).[^38]
+يُولّد `compile-lambda` شيفرة بناء كائن الإجراء متبوعةً بشيفرة جسم الإجراء. وسيُبنى كائن الإجراء في وقت التشغيل بدمج البيئة الحاليّة (البيئة عند نقطة التعريف) مع نقطة الدخول إلى جسم الإجراء المُصَرَّف (وهو عنوانٌ حديث التوليد).[^38]
 
 ```scheme
 (define (compile-lambda exp target linkage)
@@ -2586,9 +2586,9 @@ after-lambda
        after-lambda))))
 ```
 
-`Compile-lambda` uses the special combiner `tack-on-instruction-sequence` rather than `append-instruction-sequences` ([5.5.4](#g_t5_002e5_002e4)) to append the procedure body to the `lambda` expression code, because the body is not part of the sequence of instructions that will be executed when the combined sequence is entered; rather, it is in the sequence only because that was a convenient place to put it.
+يستخدم `compile-lambda` المُدَمِّج الخاصّ `tack-on-instruction-sequence` بدلًا من `append-instruction-sequences` ([5.5.4](#g_t5_002e5_002e4)) لإلحاق جسم الإجراء بشيفرة تعبير `lambda`، لأنّ الجسم ليس جزءًا من تسلسل التعليمات الذي سيُنفَّذ عند الدخول إلى التسلسل المدمج؛ بل هو في التسلسل فقط لأنّ ذلك كان موضعًا ملائمًا لوضع الجسم فيه.
 
-`Compile-lambda-body` constructs the code for the body of the procedure. This code begins with a label for the entry point. Next come instructions that will cause the run-time evaluation environment to switch to the correct environment for evaluating the procedure body—namely, the definition environment of the procedure, extended to include the bindings of the formal parameters to the arguments with which the procedure is called. After this comes the code for the sequence of expressions that makes up the procedure body. The sequence is compiled with linkage `return` and target `val` so that it will end by returning from the procedure with the procedure result in `val`.
+يُعمّر `compile-lambda-body` شيفرة جسم الإجراء. فتبدأ هذه الشيفرة بعنوانٍ لنقطة الدخول. ثمّ تأتي تعليماتٌ ستُسبّب انتقال بيئة التقييم في وقت التشغيل إلى البيئة الصحيحة لتقييم جسم الإجراء - أي بيئةُ تعريف الإجراء، ممدودةً لتشمل ربط الوسائط الشكليّة بالمعطيات التي يُدعى بها الإجراء. وبعد هذا تأتي شيفرة تسلسل التعابير الذي يؤلّف جسم الإجراء. ويُصَرَّف التسلسل بوصل `return` وهدف `val` حتّى ينتهي بالرجوع من الإجراء ونتيجة الإجراء في `val`.
 
 ```scheme
 (define (compile-lambda-body exp proc-entry)
@@ -2611,9 +2611,9 @@ after-lambda
                        'return))))
 ```
 
-#### 5.5.3 Compiling Combinations
+#### 5.5.3 تصريف التركيبات
 
-The essence of the compilation process is the compilation of procedure applications. The code for a combination compiled with a given target and linkage has the form
+إنّ جوهر عمليّة التصريف هو تصريف تطبيقات الإجراءات. وشيفرة تركيبةٍ مُصَرَّفة بهدفٍ ووصلٍ معطيين لها الصيغة الآتية
 
 ```scheme
 ⟨compilation of operator, 
@@ -2624,9 +2624,9 @@ The essence of the compilation process is the compilation of procedure applicati
  with given target and linkage⟩
 ```
 
-The registers `env`, `proc`, and `argl` may have to be saved and restored during evaluation of the operator and operands. Note that this is the only place in the compiler where a target other than `val` is specified.
+قد يلزم حفظ المسجّلات `env` و`proc` و`argl` وإعادتها خلال تقييم المشغّل والعوامل. ولاحِظ أنّ هذا هو الموضع الوحيد في المصرِّف الذي يُحدَّد فيه هدفٌ غير `val`.
 
-The required code is generated by `compile-application`. This recursively compiles the operator, to produce code that puts the procedure to be applied into `proc`, and compiles the operands, to produce code that evaluates the individual operands of the application. The instruction sequences for the operands are combined (by `construct-arglist`) with code that constructs the list of arguments in `argl`, and the resulting argument-list code is combined with the procedure code and the code that performs the procedure call (produced by `compile-procedure-call`). In appending the code sequences, the `env` register must be preserved around the evaluation of the operator (since evaluating the operator might modify `env`, which will be needed to evaluate the operands), and the `proc` register must be preserved around the construction of the argument list (since evaluating the operands might modify `proc`, which will be needed for the actual procedure application). `Continue` must also be preserved throughout, since it is needed for the linkage in the procedure call.
+تُولَّد الشيفرة المطلوبة بواسطة `compile-application`. فهذا يُصَرِّف تعاوديًّا المشغّل، لإنتاج شيفرةٍ تضع الإجراء المطلوب تطبيقه في `proc`، ويُصَرِّف العوامل، لإنتاج شيفرةٍ تُقيّم عوامل التطبيق المنفردة. وتُدمَج تسلسلات التعليمات الخاصّة بالعوامل (بواسطة `construct-arglist`) مع شيفرةٍ تبني قائمة المعطيات في `argl`، وتُدمَج شيفرة قائمة المعطيات الناتجة مع شيفرة الإجراء ومع الشيفرة التي تؤدّي نداء الإجراء (والتي يُنتجها `compile-procedure-call`). وعند إلحاق تسلسلات الشيفرة، يجب حفظ المسجّل `env` حول تقييم المشغّل (إذ إنّ تقييم المشغّل قد يُعدّل `env`، الذي سيكون لازمًا لتقييم العوامل)، ويجب حفظ المسجّل `proc` حول بناء قائمة المعطيات (إذ إنّ تقييم العوامل قد يُعدّل `proc`، الذي سيكون لازمًا لتطبيق الإجراء الفعليّ). ويجب حفظ `continue` على مدى ذلك كلّه أيضًا، إذ إنّه لازم للوصل في نداء الإجراء.
 
 ```scheme
 (define (compile-application 
@@ -2648,7 +2648,7 @@ The required code is generated by `compile-application`. This recursively compil
        linkage)))))
 ```
 
-The code to construct the argument list will evaluate each operand into `val` and then `cons` that value onto the argument list being accumulated in `argl`. Since we `cons` the arguments onto `argl` in sequence, we must start with the last argument and end with the first, so that the arguments will appear in order from first to last in the resulting list. Rather than waste an instruction by initializing `argl` to the empty list to set up for this sequence of evaluations, we make the first code sequence construct the initial `argl`. The general form of the argument-list construction is thus as follows:
+ستُقيّم شيفرة بناء قائمة المعطيات كلّ عاملٍ إلى `val` ثم تعمل `cons` لتلك القيمة على قائمة المعطيات المتراكمة في `argl`. وبما أنّنا نعمل `cons` للمعطيات على `argl` تسلسليًّا، فيجب أن نبدأ بالمعطى الأخير وننتهي بالأوّل، حتّى تظهر المعطيات في القائمة الناتجة مرتّبةً من الأوّل إلى الأخير. وبدلًا من إهدار تعليمةٍ بتهيئة `argl` إلى القائمة الخالية للإعداد لهذا التسلسل من التقييمات، نجعل أوّل تسلسل شيفرةٍ يبني `argl` الأوّليّة. وبذلك، فإنّ الصيغة العامّة لبناء قائمة المعطيات هي كالآتي:
 
 ```scheme
 ⟨compilation of last operand, targeted to val⟩
@@ -2660,15 +2660,15 @@ The code to construct the argument list will evaluate each operand into `val` an
 (assign argl (op cons) (reg val) (reg argl))
 ```
 
-`Argl` must be preserved around each operand evaluation except the first (so that arguments accumulated so far won’t be lost), and `env` must be preserved around each operand evaluation except the last (for use by subsequent operand evaluations).
+يجب حفظ `argl` حول تقييم كلّ عاملٍ باستثناء الأوّل (حتّى لا تُفقد المعطيات المتراكمة حتّى الآن)، ويجب حفظ `env` حول تقييم كلّ عاملٍ باستثناء الأخير (لاستخدامه في تقييمات العوامل التالية).
 
-Compiling this argument code is a bit tricky, because of the special treatment of the first operand to be evaluated and the need to preserve `argl` and `env` in different places. The `construct-arglist` procedure takes as arguments the code that evaluates the individual operands. If there are no operands at all, it simply emits the instruction
+إنّ تصريف شيفرة المعطيات هذه شاقٌّ بعض الشيء، بسبب المعاملة الخاصّة لأوّل عاملٍ يُقيَّم والحاجة إلى حفظ `argl` و`env` في مواضع مختلفة. ويأخذ الإجراء `construct-arglist` كمعطياتٍ الشيفرة التي تُقيّم العوامل المنفردة. فإن لم تكن هناك عواملٌ إطلاقًا، فهو يُخرج التعليمة الآتية ببساطةٍ
 
 ```scheme
 (assign argl (const ()))
 ```
 
-Otherwise, `construct-arglist` creates code that initializes `argl` with the last argument, and appends code that evaluates the rest of the arguments and adjoins them to `argl` in succession. In order to process the arguments from last to first, we must reverse the list of operand code sequences from the order supplied by `compile-application`.
+وإلّا، فإنّ `construct-arglist` يُنشئ شيفرةً تُهيّئ `argl` بالمعطى الأخير، ويلحق بها شيفرةً تُقيّم بقيّة المعطيات وتُضمّها إلى `argl` تتابعًا. ولكي نعالج المعطيات من الأخير إلى الأوّل، يجب أن نعكس قائمة تسلسلات شيفرة العوامل عن الترتيب الذي يُوفّره `compile-application`.
 
 ```scheme
 (define (construct-arglist operand-codes)
@@ -2717,9 +2717,9 @@ Otherwise, `construct-arglist` creates code that initializes `argl` with the las
           (cdr operand-codes))))))
 ```
 
-#### Applying procedures
+#### تطبيق الإجراءات
 
-After evaluating the elements of a combination, the compiled code must apply the procedure in `proc` to the arguments in `argl`. The code performs essentially the same dispatch as the `apply` procedure in the metacircular evaluator of [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1) or the `apply-dispatch` entry point in the explicit-control evaluator of [5.4.1](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e1). It checks whether the procedure to be applied is a primitive procedure or a compiled procedure. For a primitive procedure, it uses `apply-primitive-procedure`; we will see shortly how it handles compiled procedures. The procedure-application code has the following form:
+وبعد تقييم عناصر تركيبةٍ، يجب أن تُطبّق الشيفرة المُصَرَّفة الإجراءَ الموجود في `proc` على المعطيات الموجودة في `argl`. وإنّ الشيفرة تُجري التوزيع عينه أساسًا كما يُجريه الإجراء `apply` في المُقيِّم الحلقيّ الوسيط (metacircular evaluator) الوارد في [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1) أو نقطة الدخول `apply-dispatch` في مُقيِّم التحكّم الصريح الوارد في [5.4.1](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e1). فهي تفحص ما إذا كان الإجراء المطلوب تطبيقه إجراءً أوّليًّا أم إجراءً مُصَرَّفًا. فبالنسبة للإجراء الأوّليّ، فهي تستخدم `apply-primitive-procedure`؛ وسنرى قريبًا كيف تتعامل مع الإجراءات المُصَرَّفة. وشيفرة تطبيق الإجراء لها الصيغة الآتية:
 
 ```scheme
 (test (op primitive-procedure?) (reg proc))
@@ -2736,7 +2736,7 @@ primitive-branch
 after-call
 ```
 
-Observe that the compiled branch must skip around the primitive branch. Therefore, if the linkage for the original procedure call was `next`, the compound branch must use a linkage that jumps to a label that is inserted after the primitive branch. (This is similar to the linkage used for the true branch in `compile-if`.)
+لاحِظ أنّ الفرع المُصَرَّف يجب أن يتجاوز الفرع الأوّليّ. وبناءً على ذلك، فإن كان وصلة نداء الإجراء الأصليّ هو `next`، فيجب أن يستخدم الفرع المركّب وصلةً تقفز إلى عنوانٍ يُدرج بعد الفرع الأوّليّ. (وهذا شبيه بالوصل المستخدم للفرع الصحيح في `compile-if`.)
 
 ```scheme
 (define (compile-procedure-call
@@ -2781,11 +2781,11 @@ Observe that the compiled branch must skip around the primitive branch. Therefor
        after-call))))
 ```
 
-The primitive and compound branches, like the true and false branches in `compile-if`, are appended using `parallel-instruction-sequences` rather than the ordinary `append-instruction-sequences`, because they will not be executed sequentially.
+الفرعان الأوّليّ والمركّب، كالفرعين الصحيح والخاطئ في `compile-if`، يُلحَقان باستخدام `parallel-instruction-sequences` بدلًا من `append-instruction-sequences` الاعتياديّ، لأنّهما لن يُنفَّذا تسلسليًّا.
 
-#### Applying compiled procedures
+#### تطبيق الإجراءات المصرَّفة
 
-The code that handles procedure application is the most subtle part of the compiler, even though the instruction sequences it generates are very short. A compiled procedure (as constructed by `compile-lambda`) has an entry point, which is a label that designates where the code for the procedure starts. The code at this entry point computes a result in `val` and returns by executing the instruction `(goto (reg continue))`. Thus, we might expect the code for a compiled-procedure application (to be generated by `compile-proc-appl`) with a given target and linkage to look like this if the linkage is a label
+الشيفرة التي تتولّى تطبيق الإجراءات هي أدقّ أجزاء المصرِّف، مع أنّ متسلسلات التعليمات التي تُنتجها قصيرةٌ جدًّا. فالإجراء المصرَّف (كما يبنيه `compile-lambda`) له نقطةُ دخولٍ، وهي عنوانٌ يُعرّف موضع بداية شيفرة الإجراء. والشيفرة عند نقطة الدخول هذه تحسب نتيجةً في `val` وتعود بتنفيذ التعليمة `(goto (reg continue))`. وهكذا، فقد نتوقّع أن تكون الشيفرة الخاصّة بتطبيق إجراءٍ مصرَّفٍ (التي سيُنتجها `compile-proc-appl`) بهدفٍ ووصلةٍ معطيّين على هذه الصورة إذا كانت الوصلة عنوانًا
 
 ```scheme
 (assign continue 
@@ -2800,7 +2800,7 @@ proc-return
  (goto (label ⟨linkage⟩))   ; linkage code
 ```
 
-or like this if the linkage is `return`.
+أو على هذه الصورة إذا كانت الوصلة هي `return`.
 
 ```scheme
 (save continue)
@@ -2817,9 +2817,9 @@ proc-return
  (goto (reg continue))   ; linkage code
 ```
 
-This code sets up `continue` so that the procedure will return to a label `proc-return` and jumps to the procedure’s entry point. The code at `proc-return` transfers the procedure’s result from `val` to the target register (if necessary) and then jumps to the location specified by the linkage. (The linkage is always `return` or a label, because `compile-procedure-call` replaces a `next` linkage for the compound-procedure branch by an `after-call` label.)
+تُهيِّئ هذه الشيفرة `continue` بحيث يعود الإجراء إلى عنوانٍ اسمه `proc-return` وتقفز إلى نقطة دخول الإجراء. والشيفرة عند `proc-return` تنقل نتيجة الإجراء من `val` إلى المسجّل الهدف (إن لزم الأمر) ثم تقفز إلى الموضع الذي تُحدّده الوصلة. (فالوصلة تكون دائمًا `return` أو عنوانًا، لأنّ `compile-procedure-call` يستبدل وصلة `next` المخصّصة للفرع المركّب بعنوانٍ اسمه `after-call`.)
 
-In fact, if the target is not `val`, that is exactly the code our compiler will generate.[^39] Usually, however, the target is `val` (the only time the compiler specifies a different register is when targeting the evaluation of an operator to `proc`), so the procedure result is put directly into the target register and there is no need to return to a special location that copies it. Instead, we simplify the code by setting up `continue` so that the procedure will “return” directly to the place specified by the caller’s linkage:
+في الحقيقة، إذا لم يكن الهدف هو `val`، فهذه هي بالضبط الشيفرة التي سيُنتجها مصرّفنا.[^39] غير أنّ الهدف عادةً هو `val` (والمرّة الوحيدة التي يُحدّد فيها المصرِّف مسجّلًا مختلفًا هي عندما يكون الهدف تقييمَ مشغّلٍ في `proc`)، ولذلك تُوضع نتيجة الإجراء مباشرةً في المسجّل الهدف ولا حاجة إلى العودة إلى موضعٍ خاصٍّ ينسخها. وبدلًا من ذلك، نبسّط الشيفرة بتهيئة `continue` بحيث «يعود» الإجراء مباشرةً إلى الموضع الذي تُحدّده وصلة المُنادِي:
 
 ```scheme
 ⟨set up continue for linkage⟩
@@ -2829,7 +2829,7 @@ In fact, if the target is not `val`, that is exactly the code our compiler will 
 (goto (reg val))
 ```
 
-If the linkage is a label, we set up `continue` so that the procedure will return to that label. (That is, the `(goto (reg continue))` the procedure ends with becomes equivalent to the `(goto (label ⟨linkage⟩))` at `proc-return` above.)
+إذا كانت الوصلة عنوانًا، نُهيِّئ `continue` بحيث يعود الإجراء إلى ذلك العنوان. (أي أنّ `(goto (reg continue))` الذي يُنهي به الإجراء عمله يصبح مكافئًا للـ`(goto (label ⟨linkage⟩))` عند `proc-return` أعلاه.)
 
 ```scheme
 (assign continue 
@@ -2840,7 +2840,7 @@ If the linkage is a label, we set up `continue` so that the procedure will retur
 (goto (reg val))
 ```
 
-If the linkage is `return`, we don’t need to set up `continue` at all: It already holds the desired location. (That is, the `(goto (reg continue))` the procedure ends with goes directly to the place where the `(goto (reg continue))` at `proc-return` would have gone.)
+إذا كانت الوصلة هي `return`، فلا نحتاج إلى تهيئة `continue` إطلاقًا: فهو يحمل الموضع المطلوب أصلًا. (أي أنّ `(goto (reg continue))` الذي يُنهي به الإجراء عمله ينتقل مباشرةً إلى الموضع الذي كان `(goto (reg continue))` عند `proc-return` سينتقل إليه.)
 
 ```scheme
 (assign val
@@ -2849,11 +2849,11 @@ If the linkage is `return`, we don’t need to set up `continue` at all: It alre
 (goto (reg val))
 ```
 
-With this implementation of the `return` linkage, the compiler generates tail-recursive code. Calling a procedure as the final step in a procedure body does a direct transfer, without saving any information on the stack.
+وبهذا التنفيذ للوصلة `return`، يُنتج المصرِّف شيفرةً تعاوديّةً ذيليّةً. فإنّ نداء إجراءٍ كخطوةٍ أخيرةٍ في جسم الإجراء يؤدّي نقلًا مباشرًا، دون حفظ أيّ معلوماتٍ في المكدس.
 
-Suppose instead that we had handled the case of a procedure call with a linkage of `return` and a target of `val` as shown above for a non-`val` target. This would destroy tail recursion. Our system would still give the same value for any expression. But each time we called a procedure, we would save `continue` and return after the call to undo the (useless) save. These extra saves would accumulate during a nest of procedure calls.[^40]
+أمّا لو كنّا قد تعاملنا مع حالة نداء إجراءٍ بوصلةٍ `return` وهدفٍ هو `val` كما عُرض أعلاه لهدفٍ ليس `val`، لدمّرنا التعاود الذيليّ. فسيظلّ نظامنا يُعطي القيمة ذاتها لأيّ تعبيرٍ. لكنّنا كنّا، في كلّ مرّةٍ ننادي فيها إجراءً، سنحفظ `continue` ونعود بعد النداء للتراجع عن الحفظ (عديم الفائدة). وهذه الحفظات الإضافيّة ستتراكم أثناء عشٍّ من نداءات الإجراءات.[^40]
 
-`Compile-proc-appl` generates the above procedure-application code by considering four cases, depending on whether the target for the call is `val` and whether the linkage is `return`. Observe that the instruction sequences are declared to modify all the registers, since executing the procedure body can change the registers in arbitrary ways.[^41] Also note that the code sequence for the case with target `val` and linkage `return` is declared to need `continue`: Even though `continue` is not explicitly used in the two-instruction sequence, we must be sure that `continue` will have the correct value when we enter the compiled procedure.
+يُنتج `compile-proc-appl` شيفرة تطبيق الإجراءات أعلاه بدرس أربع حالات، تبعًا لما إذا كان الهدف للنداء هو `val` ولما إذا كانت الوصلة هي `return`. ولاحِظ أنّ متسلسلات التعليمات مُعلَنةٌ بأنّها تعدّل جميع المسجّلات، إذ إنّ تنفيذ جسم الإجراء قد يغيّر المسجّلات بطرائق اعتباطيّة.[^41] ولاحِظ أيضًا أنّ متسلسلة الشيفرة للحالة ذات الهدف `val` والوصلة `return` مُعلَنةٌ باحتياجها إلى `continue`: فعلى الرغم من أنّ `continue` غير مستخدمٍ صراحةً في متسلسلة التعليمتين، ينبغي أن نتيقّن من أنّ `continue` سيحمل القيمة الصحيحة عندما ندخل الإجراء المصرَّف.
 
 ```scheme
 (define (compile-proc-appl target linkage)
@@ -2902,9 +2902,9 @@ Suppose instead that we had handled the case of a procedure call with a linkage 
                 target))))
 ```
 
-#### 5.5.4 Combining Instruction Sequences
+#### 5.5.4 دمج متسلسلات التعليمات
 
-This section describes the details on how instruction sequences are represented and combined. Recall from [5.5.1](#g_t5_002e5_002e1) that an instruction sequence is represented as a list of the registers needed, the registers modified, and the actual instructions. We will also consider a label (symbol) to be a degenerate case of an instruction sequence, which doesn’t need or modify any registers. So to determine the registers needed and modified by instruction sequences we use the selectors
+يصف هذا القسم تفاصيل كيفيّة تمثيل متسلسلات التعليمات ودمجها. فتذكّر من [5.5.1](#g_t5_002e5_002e1) أنّ متسلسلة التعليمات تُمثَّل بقائمةٍ من المسجّلات المطلوبة، والمسجّلات المعدَّلة، والتعليمات الفعليّة. وسنعتبر أيضًا العنوان (رمز) حالةً منحطّةً من متسلسلة التعليمات، لا تحتاج ولا تعدّل أيّ مسجّلات. ولتحديد المسجّلات المطلوبة والمعدَّلة بواسطة متسلسلات التعليمات نستخدم المحدِّدات
 
 ```scheme
 (define (registers-needed s)
@@ -2915,7 +2915,7 @@ This section describes the details on how instruction sequences are represented 
   (if (symbol? s) (list s) (caddr s)))
 ```
 
-and to determine whether a given sequence needs or modifies a given register we use the predicates
+ولتحديد ما إذا كانت متسلسلةٌ معطاةٌ تحتاج مسجّلًا معطىً أو تعدّله نستخدم المُسَيِّمات
 
 ```scheme
 (define (needs-register? seq reg)
@@ -2924,11 +2924,11 @@ and to determine whether a given sequence needs or modifies a given register we 
   (memq reg (registers-modified seq)))
 ```
 
-In terms of these predicates and selectors, we can implement the various instruction sequence combiners used throughout the compiler.
+بدلالة هذه المُسَيِّمات والمحدِّدات، نستطيع تنفيذ مُجمِّعات متسلسلات التعليمات المتنوّعة المستخدمة في أرجاء المصرِّف.
 
-The basic combiner is `append-instruction-sequences`. This takes as arguments an arbitrary number of instruction sequences that are to be executed sequentially and returns an instruction sequence whose statements are the statements of all the sequences appended together. The subtle point is to determine the registers that are needed and modified by the resulting sequence. It modifies those registers that are modified by any of the sequences; it needs those registers that must be initialized before the first sequence can be run (the registers needed by the first sequence), together with those registers needed by any of the other sequences that are not initialized (modified) by sequences preceding it.
+المُجمِّع الأساسيّ هو `append-instruction-sequences`. فهو يأخذ كمعطياتٍ عددًا اعتباطيًّا من متسلسلات التعليمات التي ستُنفَّذ متسلسلةً ويُعيد متسلسلة تعليماتٍ بياناتُها هي بيانات جميع المتسلسلات ملحقةً بعضها ببعض. والنقطة الدقيقة هي تحديد المسجّلات التي تحتاجها المتسلسلة الناتجة وتعدّلها. فإنّها تعدّل تلك المسجّلات التي تعدّلها أيٌّ من المتسلسلات؛ وتحتاج تلك المسجّلات التي يجب تهيئتها قبل أن تُشغَّل المتسلسلة الأولى (المسجّلات التي تحتاجها المتسلسلة الأولى)، مع تلك المسجّلات التي تحتاجها أيٌّ من المتسلسلات الأخرى والتي لا تُهيَّأ (تُعدَّل) بواسطة المتسلسلات السابقة لها.
 
-The sequences are appended two at a time by `append-2-sequences`. This takes two instruction sequences `seq1` and `seq2` and returns the instruction sequence whose statements are the statements of `seq1` followed by the statements of `seq2`, whose modified registers are those registers that are modified by either `seq1` or `seq2`, and whose needed registers are the registers needed by `seq1` together with those registers needed by `seq2` that are not modified by `seq1`. (In terms of set operations, the new set of needed registers is the union of the set of registers needed by `seq1` with the set difference of the registers needed by `seq2` and the registers modified by `seq1`.) Thus, `append-instruction-sequences` is implemented as follows:
+تُلحَق المتسلسلات اثنتين في كلّ مرّةٍ بواسطة `append-2-sequences`. فهذا يأخذ متسلسلتي تعليماتٍ `seq1` و`seq2` ويُعيد متسلسلة التعليمات التي بياناتُها هي بيانات `seq1` متبوعةً ببيانات `seq2`، ومسجّلاتها المعدَّلة هي تلك المسجّلات التي تعدّلها إمّا `seq1` وإمّا `seq2`، ومسجّلاتها المطلوبة هي المسجّلات التي تحتاجها `seq1` مع تلك المسجّلات التي تحتاجها `seq2` والتي لا تعدّلها `seq1`. (وبدلالة عمليّات المجموعات، مجموعة المسجّلات المطلوبة الجديدة هي اتحاد مجموعة المسجّلات التي تحتاجها `seq1` مع الفرق بين مجموعة المسجّلات التي تحتاجها `seq2` والمسجّلات التي تعدّلها `seq1`.) وهكذا، يُنفَّذ `append-instruction-sequences` كما يلي:
 
 ```scheme
 (define (append-instruction-sequences . seqs)
@@ -2953,7 +2953,7 @@ The sequences are appended two at a time by `append-2-sequences`. This takes two
   (append-seq-list seqs))
 ```
 
-This procedure uses some simple operations for manipulating sets represented as lists, similar to the (unordered) set representation described in [2.3.3](https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e3):
+ويستخدم هذا الإجراء بعض العمليّات البسيطة للتلاعب بمجموعاتٍ ممثَّلةٍ كقوائم، شبيهةً بتمثيل المجموعات (غير المرتّب) الموصوف في [2.3.3](https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e3):
 
 ```scheme
 (define (list-union s1 s2)
@@ -2974,7 +2974,7 @@ This procedure uses some simple operations for manipulating sets represented as 
                                 s2)))))
 ```
 
-`Preserving`, the second major instruction sequence combiner, takes a list of registers `regs` and two instruction sequences `seq1` and `seq2` that are to be executed sequentially. It returns an instruction sequence whose statements are the statements of `seq1` followed by the statements of `seq2`, with appropriate `save` and `restore` instructions around `seq1` to protect the registers in `regs` that are modified by `seq1` but needed by `seq2`. To accomplish this, `preserving` first creates a sequence that has the required `save`s followed by the statements of `seq1` followed by the required `restore`s. This sequence needs the registers being saved and restored in addition to the registers needed by `seq1`, and modifies the registers modified by `seq1` except for the ones being saved and restored. This augmented sequence and `seq2` are then appended in the usual way. The following procedure implements this strategy recursively, walking down the list of registers to be preserved:[^42]
+يأخذ `preserving`، مُجمِّع متسلسلات التعليمات الرئيسيّ الثاني، قائمةً من المسجّلات `regs` ومتسلسلتي تعليماتٍ `seq1` و`seq2` ستُنفَّذان متسلسلةً. وهو يُعيد متسلسلة تعليماتٍ بياناتُها هي بيانات `seq1` متبوعةً ببيانات `seq2`، مع تعليمات `save` و`restore` مناسقتين حول `seq1` لحماية المسجّلات في `regs` التي تعدّلها `seq1` لكنّها يحتاجها `seq2`. ولتحقيق ذلك، ينشئ `preserving` أوّلًا متسلسلةً تحتوي تعليمات `save` المطلوبة متبوعةً ببيانات `seq1` متبوعةً بتعليمات `restore` المطلوبة. وتحتاج هذه المتسلسلة المسجّلات التي تُحفظ وتُستعاد إضافةً إلى المسجّلات التي تحتاجها `seq1`، وتعدّل المسجّلات التي تعدّلها `seq1` عدا تلك التي تُحفظ وتُستعاد. ثُمّ تُلحَق هذه المتسلسلة المُعزَّزة و`seq2` بالطريقة المعتادة. وينفّذ الإجراء التالي هذه الاستراتيجيّة تعاوديًّا، نازلًا في قائمة المسجّلات الواجب حمايتها:[^42]
 
 ```scheme
 (define (preserving regs seq1 seq2)
@@ -3004,7 +3004,7 @@ This procedure uses some simple operations for manipulating sets represented as 
              seq2)))))
 ```
 
-Another sequence combiner, `tack-on-instruction-sequence`, is used by `compile-lambda` to append a procedure body to another sequence. Because the procedure body is not “in line” to be executed as part of the combined sequence, its register use has no impact on the register use of the sequence in which it is embedded. We thus ignore the procedure body’s sets of needed and modified registers when we tack it onto the other sequence.
+وهناك مُجمِّع متسلسلاتٍ آخر، هو `tack-on-instruction-sequence`، تستخدمه `compile-lambda` لإلحاق جسم إجراءٍ بمتسلسلةٍ أخرى. ولأنّ جسم الإجراء ليس «على الخطّ» ليُنفَّذ كجزءٍ من المتسلسلة المدمجة، فإنّ استخدامه للمسجّلات لا يؤثّر في استخدام المتسلسلة المضيفة له للمسجّلات. ولذلك نتجاهل مجموعتي المسجّلات المطلوبة والمعدَّلة الخاصّتين بجسم الإجراء حين نُلحقه بالمتسلسلة الأخرى.
 
 ```scheme
 (define (tack-on-instruction-sequence 
@@ -3016,7 +3016,7 @@ Another sequence combiner, `tack-on-instruction-sequence`, is used by `compile-l
            (statements body-seq))))
 ```
 
-`Compile-if` and `compile-procedure-call` use a special combiner called `parallel-instruction-sequences` to append the two alternative branches that follow a test. The two branches will never be executed sequentially; for any particular evaluation of the test, one branch or the other will be entered. Because of this, the registers needed by the second branch are still needed by the combined sequence, even if these are modified by the first branch.
+يستخدم `compile-if` و`compile-procedure-call` مُجمِّعًا خاصًّا يُسمّى `parallel-instruction-sequences` لإلحاق الفرعين البديلين اللذين يليان اختبارًا. فلن يُنفَّذ الفرعان متسلسلين أبدًا؛ ففي أيّ تقييمٍ معيّنٍ للاختبار، يُدخل أحد الفرعين أو الآخر. ولهذا السبب، تظلّ المسجّلات التي يحتاجها الفرع الثاني مطلوبةً بواسطة المتسلسلة المدمجة، حتّى لو عدّلها الفرع الأوّل.
 
 ```scheme
 (define (parallel-instruction-sequences 
@@ -3030,9 +3030,9 @@ Another sequence combiner, `tack-on-instruction-sequence`, is used by `compile-l
            (statements seq2))))
 ```
 
-#### 5.5.5 An Example of Compiled Code
+#### 5.5.5 مثال على شيفرة مصرَّفة
 
-Now that we have seen all the elements of the compiler, let us examine an example of compiled code to see how things fit together. We will compile the definition of a recursive `factorial` procedure by calling `compile`:
+والآن بعد أن رأينا جميع عناصر المصرِّف، دعنا نفحص مثالًا على شيفرةٍ مصرَّفةٍ لنرى كيف تتناسب الأجزاء معًا. فسنُصرّف تعريف إجراء `factorial` تعاوديٍّ بنداء `compile`:
 
 ```scheme
 (compile
@@ -3044,9 +3044,9 @@ Now that we have seen all the elements of the compiler, let us examine an exampl
  'next)
 ```
 
-We have specified that the value of the `define` expression should be placed in the `val` register. We don’t care what the compiled code does after executing the `define`, so our choice of `next` as the linkage descriptor is arbitrary.
+لقد حدّدنا أنّ قيمة تعبير `define` ينبغي أن تُوضع في المسجّل `val`. ولا يهمّنا ما تفعله الشيفرة المصرَّفة بعد تنفيذ `define`، فاختيارنا `next` كواصف الوصلة اعتباطيّ.
 
-`Compile` determines that the expression is a definition, so it calls `compile-definition` to compile code to compute the value to be assigned (targeted to `val`), followed by code to install the definition, followed by code to put the value of the `define` (which is the symbol `ok`) into the target register, followed finally by the linkage code. `Env` is preserved around the computation of the value, because it is needed in order to install the definition. Because the linkage is `next`, there is no linkage code in this case. The skeleton of the compiled code is thus
+يحدّد `compile` أنّ التعبير تعريفٌ، فينادي `compile-definition` ليُصرّف شيفرةً تحسب القيمة التي ستُسَنَّد (موجّهةً إلى `val`)، تليها شيفرةٌ لتنصيب التعريف، تليها شيفرةٌ لوضع قيمة `define` (وهي الرمز `ok`) في المسجّل الهدف، تليها أخيرًا شيفرة الوصلة. ويُحتفظ بـ`env` أثناء احتساب القيمة، لأنّها لازمة لتنصيب التعريف. ولأنّ الوصلة هي `next`، فلا وجود لشيفرة الوصلة في هذه الحالة. وهكذا يكون الهيكل العظميّ للشيفرة المصرَّفة
 
 ```scheme
 ⟨save env if modified by code to compute value⟩
@@ -3060,7 +3060,7 @@ We have specified that the value of the `define` expression should be placed in 
   (assign val (const ok))
 ```
 
-The expression that is to be compiled to produce the value for the variable `factorial` is a `lambda` expression whose value is the procedure that computes factorials. `Compile` handles this by calling `compile-lambda`, which compiles the procedure body, labels it as a new entry point, and generates the instruction that will combine the procedure body at the new entry point with the run-time environment and assign the result to `val`. The sequence then skips around the compiled procedure code, which is inserted at this point. The procedure code itself begins by extending the procedure’s definition environment by a frame that binds the formal parameter `n` to the procedure argument. Then comes the actual procedure body. Since this code for the value of the variable doesn’t modify the `env` register, the optional `save` and `restore` shown above aren’t generated. (The procedure code at `entry2` isn’t executed at this point, so its use of `env` is irrelevant.) Therefore, the skeleton for the compiled code becomes
+التعبير الذي سيُصرَّف لإنتاج قيمة المتغيّر `factorial` هو تعبير `lambda` قيمتُه هي الإجراء الذي يحسب العامليّات. ويتعامل `compile` مع هذا بنداء `compile-lambda`، الذي يُصرّف جسم الإجراء، ووسمه كنقطة دخولٍ جديدة، ويُنتج التعليمة التي ستدمج جسم الإجراء عند نقطة الدخول الجديدة مع بيئة وقت التشغيل وتُسند النتيجة إلى `val`. ثم تقفز المتسلسلة فوق شيفرة الإجراء المصرَّفة، التي تُدرَج عند هذه النقطة. وتبدأ شيفرة الإجراء ذاتها بتمديد بيئة تعريف الإجراء بإطارٍ يربط الوسيط الشكليّ `n` بمعطى الإجراء. ثم يأتي جسم الإجراء الفعليّ. وبما أنّ هذه الشيفرة الخاصّة بقيمة المتغيّر لا تعدّل المسجّل `env`، فإنّ تعليمتَي `save` و`restore` الاختياريّتين المعروضتين أعلاه لا تُنتَجان. (فشيفرة الإجراء عند `entry2` لا تُنفَّذ في هذه المرحلة، فاستخدامها لـ`env` غير ذي صلة.) ولذلك، يصبح الهيكل العظميّ للشيفرة المصرَّفة
 
 ```scheme
   (assign val (op make-compiled-procedure)
@@ -3082,7 +3082,7 @@ after-lambda1
   (assign val (const ok))
 ```
 
-A procedure body is always compiled (by `compile-lambda-body`) as a sequence with target `val` and linkage `return`. The sequence in this case consists of a single `if` expression:
+يُصرَّف جسم الإجراء دائمًا (بواسطة `compile-lambda-body`) كمتسلسلةٍ هدفُها `val` ووصلتُها `return`. والمتسلسلة في هذه الحالة تتألّف من تعبير `if` واحد:
 
 ```scheme
 (if (= n 1)
@@ -3090,7 +3090,7 @@ A procedure body is always compiled (by `compile-lambda-body`) as a sequence wit
     (* (factorial (- n 1)) n))
 ```
 
-`Compile-if` generates code that first computes the predicate (targeted to `val`), then checks the result and branches around the true branch if the predicate is false. `Env` and `continue` are preserved around the predicate code, since they may be needed for the rest of the `if` expression. Since the `if` expression is the final expression (and only expression) in the sequence making up the procedure body, its target is `val` and its linkage is `return`, so the true and false branches are both compiled with target `val` and linkage `return`. (That is, the value of the conditional, which is the value computed by either of its branches, is the value of the procedure.)
+يُنتج `compile-if` شيفرةً تحسب المُسَيِّم أوّلًا (موجّهةً إلى `val`)، ثم تفحص النتيجة وتتفرّع حول الفرع الصحيح إذا كان المُسَيِّم خاطئًا. ويُحتفظ بـ`env` و`continue` حول شيفرة المُسَيِّم، إذ قد تكونان لازمين لبقية تعبير `if`. وبما أنّ تعبير `if` هو التعبير الأخير (والوحيد) في المتسلسلة المكوّنة لجسم الإجراء، فهدفُه `val` ووصلتُه `return`، ولذلك يُصرَّف الفرعان الصحيح والخاطئ كلاهما بهدف `val` ووصلة `return`. (أي أنّ قيمة التعبير الشرطيّ، وهي القيمة التي يحسبها أيٌّ من فرعيه، هي قيمة الإجراء.)
 
 ```scheme
 ⟨save continue, env if modified by 
@@ -3109,7 +3109,7 @@ false-branch4
 after-if3
 ```
 
-The predicate `(= n 1)` is a procedure call. This looks up the operator (the symbol `=`) and places this value in `proc`. It then assembles the arguments `1` and the value of `n` into `argl`. Then it tests whether `proc` contains a primitive or a compound procedure, and dispatches to a primitive branch or a compound branch accordingly. Both branches resume at the `after-call` label. The requirements to preserve registers around the evaluation of the operator and operands don’t result in any saving of registers, because in this case those evaluations don’t modify the registers in question.
+المُسَيِّم `(= n 1)` هو نداءُ إجراءٍ. وهو يبحث عن المشغّل (الرمز `=`) ويضع قيمتَه في `proc`. ثم يجمّع المعطيات `1` وقيمة `n` في `argl`. ثم يختبر ما إذا كان `proc` يحتوي إجراءً أوّليًّا أو إجراءً مركّبًا، ويُوجّه إلى فرعٍ أوّليٍّ أو فرعٍ مركّبٍ تبعًا لذلك. ويستأنف الفرعان عند العنوان `after-call`. ومتطلّبات صون المسجّلات حول تقييم المشغّل والعوامل لا تؤدّي إلى حفظ أيّ مسجّلات، لأنّ تلك التقييمات لا تعدّل المسجّلات المعنيّة في هذه الحالة.
 
 ```scheme
   (assign proc (op lookup-variable-value)
@@ -3135,16 +3135,16 @@ primitive-branch17
 after-call15
 ```
 
-The true branch, which is the constant 1, compiles (with target `val` and linkage `return`) to
+يُصرَّف الفرع الصحيح، وهو الثابت 1، (بهدف `val` ووصلة `return`) إلى
 
 ```scheme
 (assign val (const 1))
 (goto (reg continue))
 ```
 
-The code for the false branch is another procedure call, where the procedure is the value of the symbol `*`, and the arguments are `n` and the result of another procedure call (a call to `factorial`). Each of these calls sets up `proc` and `argl` and its own primitive and compound branches. [Figure 5.17](#Figure-5_002e17) shows the complete compilation of the definition of the `factorial` procedure. Notice that the possible `save` and `restore` of `continue` and `env` around the predicate, shown above, are in fact generated, because these registers are modified by the procedure call in the predicate and needed for the procedure call and the `return` linkage in the branches.
+شيفرة الفرع الخاطئ هي نداء إجراءٍ آخر، الإجراء فيه هو قيمة الرمز `*`، والمعطيات هي `n` ونتيجة نداء إجراءٍ آخر (نداء لـ`factorial`). وكلٌّ من هذه النداءات يُهيِّئ `proc` و`argl` وفرعيه الأوّليّ والمركّب الخاصّين به. ويُظهر [الشكل 5.17](#Figure-5_002e17) التصريف الكامل لتعريف إجراء `factorial`. ولاحِظ أنّ تعليمتَي `save` و`restore` المحتملتين لـ`continue` و`env` حول المُسَيِّم، والمبيَّنتين أعلاه، تُنتَجان فعلًا، لأنّ هذين المسجّلين يعدّلهما نداء الإجراء في المُسَيِّم ويحتاجهما نداء الإجراء والوصلة `return` في الفرعين.
 
-**Figure 5.17:** $↓$ Compilation of the definition of the `factorial` procedure.
+**الشكل 5.17:** $↓$ تصريف تعريف إجراء `factorial`.
 
 ```scheme
 ;; construct the procedure and skip over code
@@ -3297,7 +3297,7 @@ after-lambda1
   (assign val (const ok))
 ```
 
-**Exercise 5.33:** Consider the following definition of a factorial procedure, which is slightly different from the one given above:
+**التمرين 5.33:** تأمّل التعريف الآتي لإجراءٍ لحساب العامليّ، وهو يختلف اختلافًا طفيفًا عن المعطى أعلاه:
 
 ```scheme
 (define (factorial-alt n)
@@ -3306,9 +3306,9 @@ after-lambda1
       (* n (factorial-alt (- n 1)))))
 ```
 
-Compile this procedure and compare the resulting code with that produced for `factorial`. Explain any differences you find. Does either program execute more efficiently than the other?
+صرّف هذا الإجراء وقارِن الشيفرة الناتجة بتلك التي أُنتجت للإجراء `factorial`. اشرح أيّ فروقٍ تجدها. فهل ينفّذ أحد البرنامجين بكفاءةٍ أعلى من الآخر؟
 
-**Exercise 5.34:** Compile the iterative factorial procedure
+**التمرين 5.34:** صرّف إجراء العامليّ التكراريّ
 
 ```scheme
 (define (factorial n)
@@ -3320,11 +3320,11 @@ Compile this procedure and compare the resulting code with that produced for `fa
   (iter 1 1))
 ```
 
-Annotate the resulting code, showing the essential difference between the code for iterative and recursive versions of `factorial` that makes one process build up stack space and the other run in constant stack space.
+علّم الشيفرة الناتجة، مُبيّنًا الفرق الجوهريّ بين شيفرة النسختين التكراريّة والتعاوديّة من `factorial`، وهو الفرق الذي يجعل إحدى العمليّتين تبني مساحةً في المكدّس بينما تعمل الأخرى في مساحة مكدّسٍ ثابتة.
 
-> **Exercise 5.35:** What expression was compiled to produce the code shown in [Figure 5.18](#Figure-5_002e18)?
+> **التمرين 5.35:** ما التعبير الذي صُرّف لإنتاج الشيفرة الموضّحة في [الشكل 5.18](#Figure-5_002e18)؟
 
-**Figure 5.18:** $↓$ An example of compiler output. See [Exercise 5.35](#Exercise-5_002e35).
+**الشكل 5.18:** $↓$ مثالٌ على ناتج المصرِّف. انظر [التمرين 5.35](#Exercise-5_002e35).
 
 ```scheme
 (assign val (op make-compiled-procedure) 
@@ -3423,11 +3423,11 @@ after-lambda15
   (assign val (const ok))
 ```
 
-> **Exercise 5.36:** What order of evaluation does our compiler produce for operands of a combination? Is it left-to-right, right-to-left, or some other order? Where in the compiler is this order determined? Modify the compiler so that it produces some other order of evaluation. (See the discussion of order of evaluation for the explicit-control evaluator in [5.4.1](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e1).) How does changing the order of operand evaluation affect the efficiency of the code that constructs the argument list?
+> **التمرين 5.36:** ما ترتيب التقييم الذي يُنتجه مصرِّفنا لعوامل التركيب؟ أهو من اليسار إلى اليمين، أم من اليمين إلى اليسار، أم ترتيبٌ آخر؟ وأين يُحدَّد هذا الترتيب في المصرِّف؟ عدّل المصرّف بحيث يُنتج ترتيب تقييمٍ آخر. (انظر مناقشة ترتيب التقييم للمُقيِّم صريح التحكّم الواردة في [5.4.1](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e1).) فكيف يؤثّر تغيير ترتيب تقييم العوامل في كفاءة الشيفرة التي تبني قائمة المعطيات؟
 
-> **Exercise 5.37:** One way to understand the compiler’s `preserving` mechanism for optimizing stack usage is to see what extra operations would be generated if we did not use this idea. Modify `preserving` so that it always generates the `save` and `restore` operations. Compile some simple expressions and identify the unnecessary stack operations that are generated. Compare the code to that generated with the `preserving` mechanism intact.
+> **التمرين 5.37:** إحدى طرائق فهم آليّة `preserving` في المصرِّف - المستخدمة لتحسين استغلال المكدّس - هي رؤية العمليّات الإضافيّة التي كانت ستُولَّد لو لم نستخدم هذه الفكرة. عدّل `preserving` بحيث تُولَّد عمليّتا `save` و`restore` دائمًا. صرّف بعض التعابير البسيطة وحدّد عمليّات المكدّس غير الضروريّة التي تُولَّد. قارِن الشيفرة بتلك التي تُولَّد مع بقاء آليّة `preserving` على حالها.
 
-**Exercise 5.38:** Our compiler is clever about avoiding unnecessary stack operations, but it is not clever at all when it comes to compiling calls to the primitive procedures of the language in terms of the primitive operations supplied by the machine. For example, consider how much code is compiled to compute `(+ a 1)`: The code sets up an argument list in `argl`, puts the primitive addition procedure (which it finds by looking up the symbol `+` in the environment) into `proc`, and tests whether the procedure is primitive or compound. The compiler always generates code to perform the test, as well as code for primitive and compound branches (only one of which will be executed). We have not shown the part of the controller that implements primitives, but we presume that these instructions make use of primitive arithmetic operations in the machine’s data paths. Consider how much less code would be generated if the compiler could *open-code* primitives—that is, if it could generate code to directly use these primitive machine operations. The expression `(+ a 1)` might be compiled into something as simple as[^43]
+مصرِّفنا بارعٌ في تجنّب عمليّات المكدّس غير الضروريّة، لكنّه ليس بارعًا على الإطلاق حين يُصرّف نداءات الإجراءات الأوّليّة للغة من حيث العمليّات الأوّليّة التي تزوّدها الآلة. فتأمّل، مثلًا، كم الشيفرة التي تُصرَّف لاحتساب `(+ a 1)`: فالشيفرة تُنشئ قائمةَ معطياتٍ في `argl`، وتضع إجراء الجمع الأوّليّ (الذي تجده بالبحث عن الرمز `+` في البيئة) في `proc`، وتختبر ما إذا كان الإجراء أوّليًّا أم مركّبًا. والمصرِّف يُولّد دائمًا شيفرةً لأداء الاختبار، وكذلك شيفرةً للفرعين الأوّليّ والمركّب (ولن يُنفَّذ إلّا أحدهما). ونحن لم نُظهر الجزء من المتحكّم الذي يُنفّذ الأوّليّات، لكنّنا نفترض أنّ هذه التعليمات تستخدم العمليّات الحسابيّة الأوّليّة في مسارات بيانات الآلة. وتأمّل كم الشيفرة الأقلّ التي كانت ستُولَّد لو كان المصرِّف قادرًا على *الترميز المباشر (open-coding)* للأوّليّات - أي لو كان قادرًا على توليد شيفرةٍ تستخدم عمليّات الآلة الأوّليّة هذه مباشرةً. فقد يُصرَّف التعبير `(+ a 1)` إلى شيءٍ بسيطٍ كالآتي:[^43]
 
 ```scheme
 (assign val (op lookup-variable-value) 
@@ -3438,18 +3438,18 @@ after-lambda15
             (const 1))
 ```
 
-In this exercise we will extend our compiler to support open coding of selected primitives. Special-purpose code will be generated for calls to these primitive procedures instead of the general procedure-application code. In order to support this, we will augment our machine with special argument registers `arg1` and `arg2`. The primitive arithmetic operations of the machine will take their inputs from `arg1` and `arg2`. The results may be put into `val`, `arg1`, or `arg2`.
+سنُوسّع في هذا التمرين مصرِّفنا ليدعم الترميز المباشر لأوّليّاتٍ منتقاة. وستُولَّد شيفرةٌ خاصّةٌ لنداءات هذه الإجراءات الأوّليّة بدلًا من شيفرة تطبيق الإجراءات العامّة. ولكي نُسند هذا، سنُعزّز آلتنا بمسجّلي معطياتٍ خاصّين، `arg1` و`arg2`. وستأخذ عمليّات الآلة الحسابيّة الأوّليّة معطياتها من `arg1` و`arg2`. وقد توضع النتائج في `val` أو `arg1` أو `arg2`.
 
-The compiler must be able to recognize the application of an open-coded primitive in the source program. We will augment the dispatch in the `compile` procedure to recognize the names of these primitives in addition to the reserved words (the special forms) it currently recognizes.[^44] For each special form our compiler has a code generator. In this exercise we will construct a family of code generators for the open-coded primitives.
+ينبغي أن يكون المصرِّف قادرًا على التعرّف على تطبيق أوّليٍّ مُرمَّزٍ مباشرةً في البرنامج المصدريّ. وسنُعزّز التوزيع في الإجراء `compile` ليُتعرّف على أسماء هذه الأوّليّات بالإضافة إلى الكلمات المحجوزة (الصيغ الخاصّة) التي يتعرّف عليها حاليًّا.[^44] ولكلّ صيغةٍ خاصّةٍ في مصرِّفنا مولّدُ شيفرة. وسنبني في هذا التمرين عائلةً من مولّدات الشيفرة للأوّليّات المُرمَّزة مباشرةً.
 
-1. The open-coded primitives, unlike the special forms, all need their operands evaluated. Write a code generator `spread-arguments` for use by all the open-coding code generators. `Spread-arguments` should take an operand list and compile the given operands targeted to successive argument registers. Note that an operand may contain a call to an open-coded primitive, so argument registers will have to be preserved during operand evaluation.
-2. For each of the primitive procedures `=`, `*`, `-`, and `+`, write a code generator that takes a combination with that operator, together with a target and a linkage descriptor, and produces code to spread the arguments into the registers and then perform the operation targeted to the given target with the given linkage. You need only handle expressions with two operands. Make `compile` dispatch to these code generators.
-3. Try your new compiler on the `factorial` example. Compare the resulting code with the result produced without open coding.
-4. Extend your code generators for `+` and `*` so that they can handle expressions with arbitrary numbers of operands. An expression with more than two operands will have to be compiled into a sequence of operations, each with only two inputs.
+1. تحتاج الأوّليّات المُرمَّزة مباشرةً - بخلاف الصيغ الخاصّة - جميعًا إلى تقييم عواملها. اكتب مولّد شيفرةٍ `spread-arguments` لاستخدامه من جميع مولّدات الشيفرة التي تُرمّز مباشرةً. وينبغي لـ`spread-arguments` أن تأخذ قائمة عواملٍ وتُصرّف العوامل المعطاة موجَّهةً إلى مسجّلات المعطيات المتتالية. ولاحِظ أنّ العامل قد يحتوي نداءً لأوّليٍّ مُرمَّزٍ مباشرةً، ومن ثمّ يتعيّن الحفاظ على مسجّلات المعطيات أثناء تقييم العامل.
+2. لكلّ من الإجراءات الأوّليّة `=` و`*` و`-` و`+`، اكتب مولّد شيفرةٍ يأخذ تركيبًا ذي المشغّل المذكور، مع هدفٍ وواصف ربط، ويُنتج شيفرةً تنشر المعطيات في المسجّلات ثم تُداء العمليّة موجَّهةً إلى الهدف المعطى بالربط المعطى. وليس عليك إلّا التعامل مع التعابير ذات العاملين. واجعل `compile` يُوزّع إلى مولّدات الشيفرة هذه.
+3. جرّب مصرِّفك الجديد على مثال `factorial`. قارِن الشيفرة الناتجة بالناتج المُنتَج دون الترميز المباشر.
+4. وسّع مولّدي الشيفرة الخاصّين بـ`+` و`*` بحيث يتمكّنان من التعامل مع تعابيرَ ذات أعدادٍ اعتباطيّةٍ من العوامل. وسيتعيّن تصريف التعبير ذي أكثر من عاملين إلى تسلسلٍ من العمليّات، لكلٍّ منها مدخلان فقط.
 
-#### 5.5.6 Lexical Addressing
+#### 5.5.6 العنونة المعجميّة
 
-One of the most common optimizations performed by compilers is the optimization of variable lookup. Our compiler, as we have implemented it so far, generates code that uses the `lookup-variable-value` operation of the evaluator machine. This searches for a variable by comparing it with each variable that is currently bound, working frame by frame outward through the run-time environment. This search can be expensive if the frames are deeply nested or if there are many variables. For example, consider the problem of looking up the value of `x` while evaluating the expression `(* x y z)` in an application of the procedure that is returned by
+إحدى أكثر التحسينات شيوعًا التي تُجريها المصرّفات هي تحسين البحث عن المتغيّرات. فمصرِّفنا، كما نفّذناه حتّى الآن، يُولّد شيفرةً تستخدم عمليّة `lookup-variable-value` الخاصّة بآلة المُقيِّم. وتبحث هذه العمليّة عن متغيّرٍ بمقارنته بكلّ متغيّرٍ مربوطٍ حاليًّا، مُنتقلةً إطارًا بعد إطارٍ إلى الخارج عبر بيئة وقت التشغيل. وقد يكون هذا البحث مكلفًا إذا كانت الأطر متداخلةً بعمقٍ أو إذا كان المتغيّرات كثيرة. فتأمّل، مثلًا، مسألة البحث عن قيمة `x` أثناء تقييم التعبير `(* x y z)` في تطبيق الإجراء الذي يُعيده
 
 ```scheme
 (let ((x 3) (y 4))
@@ -3459,7 +3459,7 @@ One of the most common optimizations performed by compilers is the optimization 
       (* x y z))))
 ```
 
-Since a `let` expression is just syntactic sugar for a `lambda` combination, this expression is equivalent to
+وحيث إنّ تعبير `let` ليس إلّا سُكّرًا نحويًّا لتركيب `lambda`، فإنّ هذا التعبير مكافئٌ لـ
 
 ```scheme
 ((lambda (x y)
@@ -3471,11 +3471,11 @@ Since a `let` expression is just syntactic sugar for a `lambda` combination, thi
  4)
 ```
 
-Each time `lookup-variable-value` searches for `x`, it must determine that the symbol `x` is not `eq?` to `y` or `z` (in the first frame), nor to `a`, `b`, `c`, `d`, or `e` (in the second frame). We will assume, for the moment, that our programs do not use `define`—that variables are bound only with `lambda`. Because our language is lexically scoped, the run-time environment for any expression will have a structure that parallels the lexical structure of the program in which the expression appears.[^45] Thus, the compiler can know, when it analyzes the above expression, that each time the procedure is applied the variable `x` in `(* x y z)` will be found two frames out from the current frame and will be the first variable in that frame.
+في كلّ مرّةٍ تبحث فيها `lookup-variable-value` عن `x`، ينبغي أن تُحدّد أنّ الرمز `x` ليس `eq?` بالنسبة إلى `y` أو `z` (في الإطار الأوّل)، ولا بالنسبة إلى `a` أو `b` أو `c` أو `d` أو `e` (في الإطار الثاني). وسنفترض، في الوقت الحاضر، أنّ برامجنا لا تستخدم `define` - أي أنّ المتغيّرات لا تُربط إلّا بـ`lambda`. ولأنّ لغتنا محدودة النطاق معجميًّا، فإنّ بيئة وقت التشغيل لأيّ تعبيرٍ ستكون ذات بنيةٍ تُوازي البنية المعجميّة للبرنامج الذي يظهر فيه التعبير.[^45] وبالتالي، فيستطيع المصرِّف أن يعرف، حين يُحلّل التعبير أعلاه، أنّ المتغيّر `x` في `(* x y z)` سيوجد، في كلّ مرّةٍ يُطبَّق فيها الإجراء، على مسافة إطارين من الإطار الحاليّ وسيكون أوّل متغيّرٍ في ذلك الإطار.
 
-We can exploit this fact by inventing a new kind of variable-lookup operation, `lexical-address-lookup`, that takes as arguments an environment and a *lexical address* that consists of two numbers: a *frame number*, which specifies how many frames to pass over, and a *displacement number*, which specifies how many variables to pass over in that frame. `Lexical-address-lookup` will produce the value of the variable stored at that lexical address relative to the current environment. If we add the `lexical-address-lookup` operation to our machine, we can make the compiler generate code that references variables using this operation, rather than `lookup-variable-value`. Similarly, our compiled code can use a new `lexical-address-set!` operation instead of `set-variable-value!`.
+ويمكننا استثمار هذه الحقيقة باختراع نوعٍ جديدٍ من عمليّات البحث عن المتغيّرات، هو `lexical-address-lookup`، الذي يأخذ بيئةً و*عنوانًا معجميًّا* يتألّف من عددين: *رقم إطار*، يُحدّد كم إطارًا ينبغي تجاوزه، و*رقم إزاحة*، يُحدّد كم متغيّرًا ينبغي تجاوزه في ذلك الإطار. وستُنتج `Lexical-address-lookup` قيمة المتغيّر المخزّن عند ذلك العنوان المعجميّ نسبةً إلى البيئة الحاليّة. فإذا أضفنا عمليّة `lexical-address-lookup` إلى آلتنا، أمكننا أن نجعل المصرِّف يُولّد شيفرةً تشير إلى المتغيّرات باستخدام هذه العمليّة بدلًا من `lookup-variable-value`. وبالمثل، فيمكن لشيفرتنا المصرّفة أن تستخدم عمليّةً جديدةً هي `lexical-address-set!` بدلًا من `set-variable-value!`.
 
-In order to generate such code, the compiler must be able to determine the lexical address of a variable it is about to compile a reference to. The lexical address of a variable in a program depends on where one is in the code. For example, in the following program, the address of `x` in expression `⟨`e1`⟩` is (2, 0)—two frames back and the first variable in the frame. At that point `y` is at address (0, 0) and `c` is at address (1, 2). In expression `⟨`e2`⟩`, `x` is at (1, 0), `y` is at (1, 1), and `c` is at (0, 2).
+ولتوليد شيفرةٍ كهذه، ينبغي أن يكون المصرِّف قادرًا على تحديد العنوان المعجميّ لمتغيّرٍ يُوشك أن يُصرّف إشارةً إليه. ويعتمد العنوان المعجميّ لمتغيّرٍ في برنامجٍ على موضع المرء في الشيفرة. فتأمّل، مثلًا، في البرنامج الآتي، عنوان `x` في التعبير `⟨`e1`⟩` هو (2, 0) - أي إطاران إلى الخلف وأوّل متغيّرٍ في الإطار. وعند تلك النقطة يكون `y` عند العنوان (0, 0) و`c` عند العنوان (1, 2). وفي التعبير `⟨`e2`⟩`، يكون `x` عند (1, 0)، و`y` عند (1, 1)، و`c` عند (0, 2).
 
 ```scheme
 ((lambda (x y)
@@ -3487,15 +3487,15 @@ In order to generate such code, the compiler must be able to determine the lexic
  4)
 ```
 
-One way for the compiler to produce code that uses lexical addressing is to maintain a data structure called a *compile-time environment*. This keeps track of which variables will be at which positions in which frames in the run-time environment when a particular variable-access operation is executed. The compile-time environment is a list of frames, each containing a list of variables. (There will of course be no values bound to the variables, since values are not computed at compile time.) The compile-time environment becomes an additional argument to `compile` and is passed along to each code generator. The top-level call to `compile` uses an empty compile-time environment. When a `lambda` body is compiled, `compile-lambda-body` extends the compile-time environment by a frame containing the procedure’s parameters, so that the sequence making up the body is compiled with that extended environment. At each point in the compilation, `compile-variable` and `compile-assignment` use the compile-time environment in order to generate the appropriate lexical addresses.
+إحدى طرائق جعل المصرِّف يُنتج شيفرةً تستخدم العنونة المعجميّة هي المحافظة على بنية بياناتٍ تُسمّى *بيئة وقت التصريف*. وهي تتابع أيّ المتغيّرات ستكون في أيّ المواضع وفي أيّ الأطر في بيئة وقت التشغيل حين تُنفَّذ عمليّة وصولٍ معيّنةٍ إلى متغيّر. وبيئة وقت التصريف قائمةٌ من الأطر، يحتوي كلٌّ منها على قائمةٍ من المتغيّرات. (ولن تكون هناك بالطبع أيّ قيمٍ مربوطةٍ بالمتغيّرات، إذ إنّ القيم لا تُحتسب في وقت التصريف.) وتصير بيئة وقت التصريف معطىً إضافيًّا لـ`compile` وتُمرَّر إلى كلّ مولّد شيفرة. ويستخدم نداء `compile` في المستوى الأعلى بيئةَ وقت تصريفٍ فارغة. وحين يُصرَّف جسم `lambda`، تُوسّع `compile-lambda-body` بيئةَ وقت التصريف بإطارٍ يحتوي وسائط الإجراء، بحيث يُصرَّف التسلسل المكوِّن للجسم بتلك البيئة المُوسَّعة. وعند كلّ نقطةٍ في التصريف، تستخدم `compile-variable` و`compile-assignment` بيئةَ وقت التصريف لتوليد العناوين المعجميّة المناسبة.
 
-[Exercise 5.39](#Exercise-5_002e39) through [Exercise 5.43](#Exercise-5_002e43) describe how to complete this sketch of the lexical-addressing strategy in order to incorporate lexical lookup into the compiler. [Exercise 5.44](#Exercise-5_002e44) describes another use for the compile-time environment.
+يصف [التمرين 5.39](#Exercise-5_002e39) إلى [التمرين 5.43](#Exercise-5_002e43) كيف يُتْم هذه المخططات لاستراتيجيّة العنونة المعجميّة بغية إدماج البحث المعجميّ في المصرِّف. ويصف [التمرين 5.44](#Exercise-5_002e44) استخدامًا آخر لبيئة وقت التصريف.
 
-> **Exercise 5.39:** Write a procedure `lexical-address-lookup` that implements the new lookup operation. It should take two arguments—a lexical address and a run-time environment—and return the value of the variable stored at the specified lexical address. `Lexical-address-lookup` should signal an error if the value of the variable is the symbol `*unassigned*`.[^46] Also write a procedure `lexical-address-set!` that implements the operation that changes the value of the variable at a specified lexical address.
+> **التمرين 5.39:** اكتب إجراءً `lexical-address-lookup` يُنفّذ عمليّة البحث الجديدة. وينبغي أن يأخذ معطيين - عنوانًا معجميًّا وبيئةَ وقت تشغيل - ويُعيد قيمة المتغيّر المخزّن عند العنوان المعجميّ المحدَّد. وينبغي لـ`Lexical-address-lookup` أن يُشير إلى خطأٍ إذا كانت قيمة المتغيّر هي الرمز `*unassigned*`.[^46] واكتب أيضًا إجراءً `lexical-address-set!` يُنفّذ العمليّة التي تُغيّر قيمة المتغيّر عند عنوانٍ معجميٍّ محدَّد.
 
-> **Exercise 5.40:** Modify the compiler to maintain the compile-time environment as described above. That is, add a compile-time-environment argument to `compile` and the various code generators, and extend it in `compile-lambda-body`.
+> **التمرين 5.40:** عدّل المصرِّف ليحافظ على بيئة وقت التصريف كما وُصِف أعلاه. أي أضِف معطى بيئةِ وقت تصريفٍ إلى `compile` وإلى مولّدات الشيفرة المختلفة، ووسّعه في `compile-lambda-body`.
 
-**Exercise 5.41:** Write a procedure `find-variable` that takes as arguments a variable and a compile-time environment and returns the lexical address of the variable with respect to that environment. For example, in the program fragment that is shown above, the compile-time environment during the compilation of expression `⟨`e1`⟩` is `((y z) (a b c d e) (x y))`. `Find-variable` should produce
+**التمرين 5.41:** اكتب إجراءً `find-variable` يأخذ متغيّرًا وبيئةَ وقت تصريفٍ كمعطيين ويُعيد العنوان المعجميّ للمتغيّر نسبةً إلى تلك البيئة. فمثلًا، في المقطع البرمجيّ الموضّح أعلاه، تكون بيئة وقت التصريف أثناء تصريف التعبير `⟨`e1`⟩` هي `((y z) (a b c d e) (x y))`. وينبغي لـ`Find-variable` أن يُنتج
 
 ```scheme
 (find-variable 
@@ -3511,22 +3511,22 @@ One way for the compiler to produce code that uses lexical addressing is to main
 not-found
 ```
 
-> **Exercise 5.42:** Using `find-variable` from [Exercise 5.41](#Exercise-5_002e41), rewrite `compile-variable` and `compile-assignment` to output lexical-address instructions. In cases where `find-variable` returns `not-found` (that is, where the variable is not in the compile-time environment), you should have the code generators use the evaluator operations, as before, to search for the binding. (The only place a variable that is not found at compile time can be is in the global environment, which is part of the run-time environment but is not part of the compile-time environment.[^47] Thus, if you wish, you may have the evaluator operations look directly in the global environment, which can be obtained with the operation `(op get-global-environment)`, instead of having them search the whole run-time environment found in `env`.) Test the modified compiler on a few simple cases, such as the nested `lambda` combination at the beginning of this section.
+> **التمرين 5.42:** باستخدام `find-variable` من [التمرين 5.41](#Exercise-5_002e41)، أعد كتابة `compile-variable` و`compile-assignment` ليُخرِجا تعليمات العنوان المعجميّ. وفي الحالات التي تُعيد فيها `find-variable` القيمة `not-found` (أي حيث لا يكون المتغيّر في بيئة وقت التصريف)، ينبغي أن تجعل مولّدات الشيفرة تستخدم عمليّات المُقيِّم، كما سبق، للبحث عن الربط. (والمكان الوحيد الذي يمكن أن يكون فيه متغيّرٌ لا يُعثَر عليه في وقت التصريف هو البيئة العامّة، وهي جزءٌ من بيئة وقت التشغيل لكنّها ليست جزءًا من بيئة وقت التصريف.[^47] وبالتالي، فإن شئتَ، أمكنك أن تجعل عمليّات المُقيِّم تنظر مباشرةً في البيئة العامّة، التي يمكن الحصول عليها بالعمليّة `(op get-global-environment)`، بدلًا من أن تجعلها تبحث في بيئة وقت التشغيل كلّها الموجودة في `env`.) واختبر المصرِّف المُعدَّل على بعض الحالات البسيطة، كتركيب `lambda` المتداخل في بداية هذا القسم.
 
-> **Exercise 5.43:** We argued in [4.1.6](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e6) that internal definitions for block structure should not be considered “real” `define`s. Rather, a procedure body should be interpreted as if the internal variables being defined were installed as ordinary `lambda` variables initialized to their correct values using `set!`. [4.1.6](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e6) and [Exercise 4.16](https://sarabander.github.io/sicp/html/4_002e1.xhtml#Exercise-4_002e16) showed how to modify the metacircular interpreter to accomplish this by scanning out internal definitions. Modify the compiler to perform the same transformation before it compiles a procedure body.
+> **التمرين 5.43:** لقد حاججنا في [4.1.6](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e6) بأنّ التعريفات الداخليّة لبنية الكتل لا ينبغي اعتبارها `define`s «حقيقيّة». فالأولى أن يُفسَّر جسم الإجراء كما لو كانت المتغيّرات الداخليّة المُعرَّفة تُثبَّت متغيّرات `lambda` اعتياديّةً تُهيَّأ بقيمها الصحيحة باستخدام `set!`. وأظهر [4.1.6](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e6) و[التمرين 4.16](https://sarabander.github.io/sicp/html/4_002e1.xhtml#Exercise-4_002e16) كيف يُعدَّل المُقيِّم التحاكميّ (metacircular evaluator) لإنجاز هذا بمسح التعريفات الداخليّة وإخراجها. عدّل المصرِّف ليؤدّي التحويل ذاته قبل أن يُصرّف جسم إجراء.
 
-**Exercise 5.44:** In this section we have focused on the use of the compile-time environment to produce lexical addresses. But there are other uses for compile-time environments. For instance, in [Exercise 5.38](#Exercise-5_002e38) we increased the efficiency of compiled code by open-coding primitive procedures. Our implementation treated the names of open-coded procedures as reserved words. If a program were to rebind such a name, the mechanism described in [Exercise 5.38](#Exercise-5_002e38) would still open-code it as a primitive, ignoring the new binding. For example, consider the procedure
+**التمرين 5.44:** لقد تركّزنا في هذا القسم على استخدام بيئة وقت التصريف لإنتاج العناوين المعجميّة. لكن ثمّة استخدامات أخرى لبيئات وقت التصريف. فمثلًا، زدنا في [التمرين 5.38](#Exercise-5_002e38) كفاءة الشيفرة المصرّفة بترميز الإجراءات الأوّليّة مباشرةً. وقد عامل تنفيذنا أسماء الإجراءات المُرمَّزة مباشرةً معاملة الكلمات المحجوزة. فلو أعاد برنامجٌ ربط اسمٍ كهذا، لظلّت الآليّة الموصوفة في [التمرين 5.38](#Exercise-5_002e38) تُرمّزه مباشرةً كأوّليٍّ، متجاهلةً الربط الجديد. فتأمّل، مثلًا، الإجراء
 
 ```scheme
 (lambda (+ * a b x y)
   (+ (* a x) (* b y)))
 ```
 
-which computes a linear combination of `x` and `y`. We might call it with arguments `+matrix`, `*matrix`, and four matrices, but the open-coding compiler would still open-code the `+` and the `*` in `(+ (* a x) (* b y))` as primitive `+` and `*`. Modify the open-coding compiler to consult the compile-time environment in order to compile the correct code for expressions involving the names of primitive procedures. (The code will work correctly as long as the program does not `define` or `set!` these names.)
+الذي يحسب تركيبةً خطّيّةً من `x` و`y`. فقد ندعوه بمعطيات `+matrix` و`*matrix` وأربع مصفوفات، لكن المصرِّف المُرمِّز مباشرةً كان سيظلّ يُرمّز الـ`+` والـ`*` في `(+ (* a x) (* b y))` مباشرةً كأوّليَّي `+` و`*`. عدّل المصرِّف المُرمِّز مباشرةً ليستشير بيئة وقت التصريف بغية تصريف الشيفرة الصحيحة للتعابير التي تشمل أسماء الإجراءات الأوّليّة. (وستعمل الشيفرة صحيحةً ما دام البرنامج لا يُعرّف هذه الأسماء بـ`define` أو `set!`.)
 
-#### 5.5.7 Interfacing Compiled Code to the Evaluator
+#### 5.5.7 ربط الشيفرة المصرّفة بالمُقيِّم
 
-We have not yet explained how to load compiled code into the evaluator machine or how to run it. We will assume that the explicit-control-evaluator machine has been defined as in [5.4.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e4), with the additional operations specified in [Footnote 323](#Footnote-323). We will implement a procedure `compile-and-go` that compiles a Scheme expression, loads the resulting object code into the evaluator machine, and causes the machine to run the code in the evaluator global environment, print the result, and enter the evaluator’s driver loop. We will also modify the evaluator so that interpreted expressions can call compiled procedures as well as interpreted ones. We can then put a compiled procedure into the machine and use the evaluator to call it:
+لم نشرح بعد كيف تُحمَّل الشيفرة المصرّفة في آلة المُقيِّم ولا كيف تُشغَّل. وسنفترض أنّ آلة المُقيِّم صريحة التحكّم قد عُرِّفت كما في [5.4.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e4)، مع العمليّات الإضافيّة المحدَّدة في [الحاشية 323](#Footnote-323). وسنُنفّذ إجراءً `compile-and-go` يُصرّف تعبير Scheme، ويُحمّل الشيفرة الهدفيّة الناتجة في آلة المُقيِّم، ويجعل الآلة تُشغّل الشيفرة في البيئة العامّة للمُقيِّم، وتطبع النتيجة، وتدخل حلقة المقود (driver loop) الخاصّة بالمُقيِّم. وسنُعدّل المُقيِّم أيضًا حتّى تستطيع التعابير المُفسَّرة أن تنادي الإجراءات المصرّفة كما تنادي المُفسَّرة. وبوسعنا حينئذٍ أن نضع إجراءً مصرّفًا في الآلة وأن نستخدم المُقيِّم لندائه:
 
 ```scheme
 (compile-and-go
@@ -3545,7 +3545,7 @@ ok
 120
 ```
 
-To allow the evaluator to handle compiled procedures (for example, to evaluate the call to `factorial` above), we need to change the code at `apply-dispatch` ([5.4.1](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e1)) so that it recognizes compiled procedures (as distinct from compound or primitive procedures) and transfers control directly to the entry point of the compiled code:[^48]
+وليتمكّن المُقيِّم من التعامل مع الإجراءات المصرّفة (لتقييم نداء `factorial` أعلاه، مثلًا)، يتعيّن علينا تغيير الشيفرة عند `apply-dispatch` ([5.4.1](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e1)) بحيث تتعرّف على الإجراءات المصرّفة (بوصفها متميّزةً عن الإجراءات المركّبة أو الأوّليّة) وتنقل التحكّم مباشرةً إلى نقطة دخول الشيفرة المصرّفة:[^48]
 
 ```scheme
 apply-dispatch
@@ -3565,9 +3565,9 @@ compiled-apply
   (goto (reg val))
 ```
 
-Note the restore of `continue` at `compiled-apply`. Recall that the evaluator was arranged so that at `apply-dispatch`, the continuation would be at the top of the stack. The compiled code entry point, on the other hand, expects the continuation to be in `continue`, so `continue` must be restored before the compiled code is executed.
+لاحِظ استعادة `continue` عند `compiled-apply`. وتذكّر أنّ المُقيِّم رُتّب بحيث تكون الاستمراريّة في قمّة المكدّس عند `apply-dispatch`. أمّا نقطة دخول الشيفرة المصرّفة، من جهةٍ أخرى، فتتوقّع أن تكون الاستمراريّة في `continue`، ومن ثمّ يتعيّن استعادة `continue` قبل تنفيذ الشيفرة المصرّفة.
 
-To enable us to run some compiled code when we start the evaluator machine, we add a `branch` instruction at the beginning of the evaluator machine, which causes the machine to go to a new entry point if the `flag` register is set.[^49]
+وليُتاح لنا تشغيل بعض الشيفرة المصرّفة حين نُشغّل آلة المُقيِّم، نُضيف تعليمة `branch` في بداية آلة المُقيِّم، تجعل الآلة تنتقل إلى نقطة دخولٍ جديدة إذا كان مسجّل `flag` مضبوطًا.[^49]
 
 ```scheme
 ;; branches if flag is set:
@@ -3577,7 +3577,7 @@ read-eval-print-loop
   …
 ```
 
-`External-entry` assumes that the machine is started with `val` containing the location of an instruction sequence that puts a result into `val` and ends with `(goto (reg continue))`. Starting at this entry point jumps to the location designated by `val`, but first assigns `continue` so that execution will return to `print-result`, which prints the value in `val` and then goes to the beginning of the evaluator’s read-eval-print loop.[^50]
+تفترض `External-entry` أنّ الآلة تُشغَّل و`val` يحتوي موقع تسلسل تعليماتٍ يضع نتيجةً في `val` وينتهي بـ`(goto (reg continue))`. فالانطلاق من نقطة الدخول هذه يقفز إلى الموقع الذي يُعيّنه `val`، لكنّه يُسند أوّلًا `continue` بحيث يعود التنفيذ إلى `print-result`، الذي يطبع القيمة في `val` ثم يذهب إلى بداية حلقة القراءة والتقييم والطباعة الخاصّة بالمُقيِّم.[^50]
 
 ```scheme
 external-entry
@@ -3587,7 +3587,7 @@ external-entry
   (goto (reg val))
 ```
 
-Now we can use the following procedure to compile a procedure definition, execute the compiled code, and run the read-eval-print loop so we can try the procedure. Because we want the compiled code to return to the location in `continue` with its result in `val`, we compile the expression with a target of `val` and a linkage of `return`. In order to transform the object code produced by the compiler into executable instructions for the evaluator register machine, we use the procedure `assemble` from the register-machine simulator ([5.2.2](https://sarabander.github.io/sicp/html/5_002e2.xhtml#g_t5_002e2_002e2)). We then initialize the `val` register to point to the list of instructions, set the `flag` so that the evaluator will go to `external-entry`, and start the evaluator.
+والآن يمكننا استخدام الإجراء الآتي لتصريف تعريف إجراءٍ وتنفيذ الشيفرة المصرّفة وتشغيل حلقة القراءة والتقييم والطباعة حتّى نتمكّن من تجربة الإجراء. ولأنّنا نريد للشيفرة المصرّفة أن تعود إلى الموقع في `continue` بنتيجتها في `val`، فإنّنا نُصرّف التعبير بهدفٍ هو `val` وربطٍ هو `return`. وَلِكي نحوّل الشيفرة الهدفيّة التي يُنتجها المصرِّف إلى تعليماتٍ قابلةٍ للتنفيذ على آلة مسجّلات المُقيِّم، فإنّنا نستخدم الإجراء `assemble` من محاكي آلة المسجّلات ([5.2.2](https://sarabander.github.io/sicp/html/5_002e2.xhtml#g_t5_002e2_002e2)). ثم نُهيّئ مسجّل `val` ليشير إلى قائمة التعليمات، ونضبط `flag` بحيث يذهب المُقيِّم إلى `external-entry`، ونُشغّل المُقيِّم.
 
 ```scheme
 (define (compile-and-go expression)
@@ -3606,7 +3606,7 @@ Now we can use the following procedure to compile a procedure definition, execut
     (start eceval)))
 ```
 
-If we have set up stack monitoring, as at the end of [5.4.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e4), we can examine the stack usage of compiled code:
+وإذا كنّا قد أعددنا مراقبة المكدّس، كما في نهاية [5.4.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e4)، فأمكننا فحص استغلال المكدّس في الشيفرة المصرّفة:
 
 ```scheme
 (compile-and-go
@@ -3627,19 +3627,19 @@ ok
 120
 ```
 
-Compare this example with the evaluation of `(factorial 5)` using the interpreted version of the same procedure, shown at the end of [5.4.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e4). The interpreted version required 144 pushes and a maximum stack depth of 28. This illustrates the optimization that results from our compilation strategy.
+قارِن هذا المثال بتقييم `(factorial 5)` باستخدام النسخة المُفسَّرة من الإجراء ذاته، الموضّحة في نهاية [5.4.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e4). فقد احتاجت النسخة المُفسَّرة 144 مدفعةً وعمقَ مكدّسٍ أقصاه 28. وهذا يُبيّن التحسين الناتج عن استراتيجيّة التصريف لدينا.
 
-#### Interpretation and compilation
+#### التفسير والتصريف
 
-With the programs in this section, we can now experiment with the alternative execution strategies of interpretation and compilation.[^51] An interpreter raises the machine to the level of the user program; a compiler lowers the user program to the level of the machine language. We can regard the Scheme language (or any programming language) as a coherent family of abstractions erected on the machine language. Interpreters are good for interactive program development and debugging because the steps of program execution are organized in terms of these abstractions, and are therefore more intelligible to the programmer. Compiled code can execute faster, because the steps of program execution are organized in terms of the machine language, and the compiler is free to make optimizations that cut across the higher-level abstractions.[^52]
+بالبرامج الواردة في هذا القسم، يمكننا الآن أن نُجرّب استراتيجيّي التنفيذ البديلتين المتمثّلتين في التفسير والتصريف.[^51] فالمفسّر يرفع الآلة إلى مستوى برنامج المستخدم؛ أمّا المصرِّف فيخفض برنامج المستخدم إلى مستوى لغة الآلة. ويمكننا اعتبار لغة Scheme (أو أيّ لغة برمجةٍ) عائلةً متماسكةً من التجريدات القائمة على لغة الآلة. والمفسّرات حسنةٌ للتطوير التفاعليّ للبرامج ولتنقيحها، لأنّ خطوات تنفيذ البرنامج مُنظَّمةٌ من حيث هذه التجريدات، ومن ثمّ فهي أكثر وضوحًا للمبرمج. والشيفرة المصرّفة قادرةٌ على التنفيذ أسرعَ، لأنّ خطوات تنفيذ البرنامج مُنظَّمةٌ من حيث لغة الآلة، ولأنّ المصرِّف حرٌّ في إجراء تحسيناتٍ تتجاوز التجريدات ذات المستوى الأعلى.[^52]
 
-The alternatives of interpretation and compilation also lead to different strategies for porting languages to new computers. Suppose that we wish to implement Lisp for a new machine. One strategy is to begin with the explicit-control evaluator of [5.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4) and translate its instructions to instructions for the new machine. A different strategy is to begin with the compiler and change the code generators so that they generate code for the new machine. The second strategy allows us to run any Lisp program on the new machine by first compiling it with the compiler running on our original Lisp system, and linking it with a compiled version of the run-time library.[^53] Better yet, we can compile the compiler itself, and run this on the new machine to compile other Lisp programs.[^54] Or we can compile one of the interpreters of [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1) to produce an interpreter that runs on the new machine.
+وتؤدّي بديلتا التفسير والتصريف أيضًا إلى استراتيجيّاتٍ مختلفةٍ لنقل اللغات إلى حواسيب جديدة. فافترض أنّنا نرغب في تنفيذ Lisp على آلةٍ جديدة. فإحدى الاستراتيجيّات هي الانطلاق بالمُقيِّم صريح التحكّم الوارد في [5.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4) وترجمة تعليماته إلى تعليماتٍ للآلة الجديدة. واستراتيجيّةٌ مختلفة هي الانطلاق بالمصرِّف وتغيير مولّدات الشيفرة بحيث تُولّد شيفرةً للآلة الجديدة. والاستراتيجيّة الثانية تسمح لنا بتشغيل أيّ برنامج Lisp على الآلة الجديدة بتصريفه أوّلًا بالمصرِّف العامل على نظام Lisp الأصليّ لدينا، وربطه بنسخةٍ مصرّفةٍ من مكتبة وقت التشغيل.[^53] والأفضل من ذلك، أنّنا نستطيع تصريف المصرِّف نفسه، وتشغيل هذا الأخير على الآلة الجديدة لتصريف برامج Lisp أخرى.[^54] أو نستطيع تصريف أحد مفسّري [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1) لإنتاج مفسّرٍ يعمل على الآلة الجديدة.
 
-> **Exercise 5.45:** By comparing the stack operations used by compiled code to the stack operations used by the evaluator for the same computation, we can determine the extent to which the compiler optimizes use of the stack, both in speed (reducing the total number of stack operations) and in space (reducing the maximum stack depth). Comparing this optimized stack use to the performance of a special-purpose machine for the same computation gives some indication of the quality of the compiler. [Exercise 5.27](https://sarabander.github.io/sicp/html/5_002e4.xhtml#Exercise-5_002e27) asked you to determine, as a function of $n$ , the number of pushes and the maximum stack depth needed by the evaluator to compute $n !$ using the recursive factorial procedure given above. [Exercise 5.14](https://sarabander.github.io/sicp/html/5_002e2.xhtml#Exercise-5_002e14) asked you to do the same measurements for the special-purpose factorial machine shown in [Figure 5.11](https://sarabander.github.io/sicp/html/5_002e1.xhtml#Figure-5_002e11). Now perform the same analysis using the compiled `factorial` procedure.
-> > Take the ratio of the number of pushes in the compiled version to the number of pushes in the interpreted version, and do the same for the maximum stack depth. Since the number of operations and the stack depth used to compute $n !$ are linear in $n$ , these ratios should approach constants as $n$ becomes large. What are these constants? Similarly, find the ratios of the stack usage in the special-purpose machine to the usage in the interpreted version. Compare the ratios for special-purpose versus interpreted code to the ratios for compiled versus interpreted code. You should find that the special-purpose machine does much better than the compiled code, since the hand-tailored controller code should be much better than what is produced by our rudimentary general-purpose compiler. Can you suggest improvements to the compiler that would help it generate code that would come closer in performance to the hand-tailored version?
+> **التمرين 5.45:** بمقارنة عمليّات المكدّس التي تستخدمها الشيفرة المصرّفة بتلك التي يستخدمها المُقيِّم للاحتساب ذاته، نستطيع تحديد المدى الذي يُحسّن به المصرِّف استغلال المكدّس، سواءً في السرعة (بتقليل العدد الكلّيّ لعمليّات المكدّس) أو في المكان (بتقليل عمق المكدّس الأقصى). ومقارنة هذا الاستغلال المُحسَّن بأداء آلةٍ خاصّةٍ للاحتساب ذاته تُعطي إشارةً ما عن جودة المصرِّف. فقد طُلب منك في [التمرين 5.27](https://sarabander.github.io/sicp/html/5_002e4.xhtml#Exercise-5_002e27) أن تُحدّد، كدالّةٍ في $n$ ، عدد المدفعات وعمق المكدّس الأقصى اللذين يحتاجهما المُقيِّم لاحتساب $n !$ باستخدام إجراء العامليّ التعاوديّ المعطى أعلاه. وطُلب منك في [التمرين 5.14](https://sarabander.github.io/sicp/html/5_002e2.xhtml#Exercise-5_002e14) أن تُجري القياسات ذاتها لآلة العامليّ الخاصّة الموضّحة في [الشكل 5.11](https://sarabander.github.io/sicp/html/5_002e1.xhtml#Figure-5_002e11). وأدِر الآن التحليل ذاته باستخدام إجراء `factorial` المصرّف.
+> > خُذ نسبة عدد المدفعات في النسخة المصرّفة إلى عدد المدفعات في النسخة المُفسَّرة، وافعل المثل لعمق المكدّس الأقصى. وحيث إنّ عدد العمليّات وعمق المكدّس المستخدمين لاحتساب $n !$ خطّيان في $n$ ، فينبغي أن تقترب هذه النسب من ثوابتَ كلّما كَبُرَت $n$ . فما هذه الثوابت؟ وبالمثل، أوجد نسب استغلال المكدّس في الآلة الخاصّة إلى الاستغلال في النسخة المُفسَّرة. وقارِن نسب الخاصّة مقابل المُفسَّرة بنسب المصرّفة مقابل المُفسَّرة. وستجد أنّ الآلة الخاصّة أفضلُ أداءً بكثيرٍ من الشيفرة المصرّفة، إذ ينبغي أن تكون شيفرة المتحكّم المصمّمة يدويًّا أفضلَ بكثيرٍ مما يُنتجه مصرِّفنا العامّ البدائيّ. فهل تستطيع اقتراح تحسيناتٍ على المصرِّف تُعينه على توليد شيفرةٍ تُقارِب في أدائها النسخة المصمّمة يدويًّا؟
 > > 
 
-**Exercise 5.46:** Carry out an analysis like the one in [Exercise 5.45](#Exercise-5_002e45) to determine the effectiveness of compiling the tree-recursive Fibonacci procedure
+**التمرين 5.46:** أدِر تحليلًا مثل التحليل الوارد في [التمرين 5.45](#Exercise-5_002e45) لتحديد فعّاليّة تصريف إجراء فيبوناتشي التعاوديّ الشجريّ
 
 ```scheme
 (define (fib n)
@@ -3648,9 +3648,9 @@ The alternatives of interpretation and compilation also lead to different strate
       (+ (fib (- n 1)) (fib (- n 2)))))
 ```
 
-compared to the effectiveness of using the special-purpose Fibonacci machine of [Figure 5.12](https://sarabander.github.io/sicp/html/5_002e1.xhtml#Figure-5_002e12). (For measurement of the interpreted performance, see [Exercise 5.29](https://sarabander.github.io/sicp/html/5_002e4.xhtml#Exercise-5_002e29).) For Fibonacci, the time resource used is not linear in $n ;$ hence the ratios of stack operations will not approach a limiting value that is independent of $n$ .
+مقابل فعّاليّة استخدام آلة فيبوناتشي الخاصّة الواردة في [الشكل 5.12](https://sarabander.github.io/sicp/html/5_002e1.xhtml#Figure-5_002e12). (ولقياس الأداء المُفسَّر، انظر [التمرين 5.29](https://sarabander.github.io/sicp/html/5_002e4.xhtml#Exercise-5_002e29).) فبالنسبة إلى فيبوناتشي، فإنّ المورد الزمنيّ المستخدم ليس خطّيًّا في $n ;$ ومن ثمّ فلن تقترب نسب عمليّات المكدّس من قيمةٍ حدّيّةٍ مستقلّةٍ عن $n$ .
 
-**Exercise 5.47:** This section described how to modify the explicit-control evaluator so that interpreted code can call compiled procedures. Show how to modify the compiler so that compiled procedures can call not only primitive procedures and compiled procedures, but interpreted procedures as well. This requires modifying `compile-procedure-call` to handle the case of compound (interpreted) procedures. Be sure to handle all the same `target` and `linkage` combinations as in `compile-proc-appl`. To do the actual procedure application, the code needs to jump to the evaluator’s `compound-apply` entry point. This label cannot be directly referenced in object code (since the assembler requires that all labels referenced by the code it is assembling be defined there), so we will add a register called `compapp` to the evaluator machine to hold this entry point, and add an instruction to initialize it:
+**التمرين 5.47:** وصف هذا القسم كيف يُعدَّل المُقيِّم صريح التحكّم حتّى تستطيع الشيفرة المُفسَّرة أن تنادي إجراءاتٍ مصرّفة. أُظهر كيف يُعدَّل المصرِّف حتّى تستطيع الإجراءات المصرّفة أن تنادي، ليس الإجراءات الأوّليّة والمصرّفة فحسب، بل الإجراءات المُفسَّرة أيضًا. وهذا يتطلّب تعديل `compile-procedure-call` لمعالجة حالة الإجراءات المركّبة (المُفسَّرة). وتأكّد من معالجة جميع توليفات `target` و`linkage` ذاتها كما في `compile-proc-appl`. ولأداء تطبيق الإجراء فعليًّا، تحتاج الشيفرة إلى القفز إلى نقطة دخول `compound-apply` في المُقيِّم. ولا يمكن الإشارة إلى هذا العنوان مباشرةً في الشيفرة الهدفيّة (إذ إنّ المُجمِّع يشترط أن تكون جميع العناوين التي تشير إليها الشيفرة التي يُجمّعها معرَّفةً هناك)، ومن ثمّ سنُضيف مسجّلًا يُسمّى `compapp` إلى آلة المُقيِّم لحفظ نقطة الدخول هذه، ونُضيف تعليمةً لتهيئته:
 
 ```scheme
   (assign compapp (label compound-apply))
@@ -3659,9 +3659,9 @@ compared to the effectiveness of using the special-purpose Fibonacci machine of 
 read-eval-print-loop …
 ```
 
-To test your code, start by defining a procedure `f` that calls a procedure `g`. Use `compile-and-go` to compile the definition of `f` and start the evaluator. Now, typing at the evaluator, define `g` and try to call `f`.
+ولاختبار شيفرتك، ابدأ بتعريف إجراءٍ `f` ينادي إجراءً `g`. واستخدم `compile-and-go` لتصريف تعريف `f` وتشغيل المُقيِّم. ثم، بالكتابة على المُقيِّم، عرّف `g` وحاول نداء `f`.
 
-**Exercise 5.48:** The `compile-and-go` interface implemented in this section is awkward, since the compiler can be called only once (when the evaluator machine is started). Augment the compiler-interpreter interface by providing a `compile-and-run` primitive that can be called from within the explicit-control evaluator as follows:
+**التمرين 5.48:** إنّ واجهة `compile-and-go` المُنفَّذة في هذا القسم حرجةُ التعامل، إذ لا يمكن نداء المصرِّف إلّا مرّةً واحدةً (عند تشغيل آلة المُقيِّم). عزّز واجهة المصرِّف-المفسّر بتوفير أوّليٍّ `compile-and-run` يمكن نداؤه من داخل المُقيِّم صريح التحكّم على النحو الآتي:
 
 ```scheme
 ;;; EC-Eval input:
@@ -3681,118 +3681,118 @@ ok
 120
 ```
 
-> **Exercise 5.49:** As an alternative to using the explicit-control evaluator’s read-eval-print loop, design a register machine that performs a read-compile-execute-print loop. That is, the machine should run a loop that reads an expression, compiles it, assembles and executes the resulting code, and prints the result. This is easy to run in our simulated setup, since we can arrange to call the procedures `compile` and `assemble` as “register-machine operations.”
+> **التمرين 5.49:** كبديلٍ عن استخدام حلقة القراءة والتقييم والطباعة الخاصّة بالمُقيِّم صريح التحكّم، صمّم آلة مسجّلاتٍ تُداء حلقة قراءة-تصريف-تنفيذ-طباعة. أي أنّ الآلة ينبغي أن تُشغّل حلقةً تقرأ تعبيرًا، وتُصرّفه، وتُجمّع الشيفرة الناتجة وتنفّذها، وتطبع النتيجة. وهذا سهلُ التشغيل في تهيئتنا المُحاكاة، إذ يمكننا ترتيب أمر نداء الإجراءين `compile` و`assemble` بوصفهما «عمليّتَي آلة مسجّلات».
 
-> **Exercise 5.50:** Use the compiler to compile the metacircular evaluator of [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1) and run this program using the register-machine simulator. (To compile more than one definition at a time, you can package the definitions in a `begin`.) The resulting interpreter will run very slowly because of the multiple levels of interpretation, but getting all the details to work is an instructive exercise.
+> **التمرين 5.50:** استخدم المصرِّف لتصريف المُقيِّم التحاكميّ (metacircular evaluator) الوارد في [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1) وتشغيل هذا البرنامج باستخدام محاكي آلة المسجّلات. (ولتصريف أكثر من تعريفٍ في المرّة الواحدة، يمكنك حزم التعريفات في `begin`.) وسيعمل المفسّر الناتج ببطءٍ شديدٍ بسبب مستويات التفسير المتعدّدة، لكنّ جعل جميع التفاصيل تعمل تمرينٌ مفيدٌ للغاية.
 
-> **Exercise 5.51:** Develop a rudimentary implementation of Scheme in C (or some other low-level language of your choice) by translating the explicit-control evaluator of [5.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4) into C. In order to run this code you will need to also provide appropriate storage-allocation routines and other run-time support.
+> **التمرين 5.51:** طوّر تنفيذًا بدائيًّا لـScheme في لغة C (أو لغة أخرى منخفضة المستوى من اختيارك) بترجمة المُقيِّم صريح التحكّم الوارد في [5.4](https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4) إلى C. ولكي تُشغّل هذه الشيفرة، ستحتاج أيضًا إلى تزويد روتينات تخصيص تخزينٍ مناسبةٍ ودعمٍ آخر لوقت التشغيل.
 
-> **Exercise 5.52:** As a counterpoint to [Exercise 5.51](#Exercise-5_002e51), modify the compiler so that it compiles Scheme procedures into sequences of C instructions. Compile the metacircular evaluator of [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1) to produce a Scheme interpreter written in C.
+> **التمرين 5.52:** كنقيضٍ لـ[التمرين 5.51](#Exercise-5_002e51)، عدّل المصرّف ليُصرِّف إجراءات Scheme إلى سلاسل من تعليمات C. صرِّف المُقيِّم الحلقيّ الوسيط (metacircular evaluator) الوارد في [4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1) لتُنتج مفسّرًا لـ Scheme مكتوبًا بلغة C.
 
-[^1]: This assumption glosses over a great deal of complexity. Usually a large portion of the implementation of a Lisp system is dedicated to making reading and printing work.
+[^1]: هذا الافتراض يُخفي جانبًا كبيرًا من التعقيد. فعادةً ما يُخصَّص جزءٌ كبيرٌ من تنفيذ نظام Lisp لجعل عمليّتي القراءة والطباعة تعملان.
 
-[^2]: One might argue that we don’t need to save the old `n`; after we decrement it and solve the subproblem, we could simply increment it to recover the old value. Although this strategy works for factorial, it cannot work in general, since the old value of a register cannot always be computed from the new one.
+[^2]: قد يُقال إنّنا لسنا بحاجةٍ إلى حفظ `n` القديمة؛ إذ يمكننا، بعد إنقاصها وحلّ المسألة الفرعيّة، أن نزيدها ببساطةٍ فنستعيد القيمة القديمة. ومع أنّ هذه الاستراتيجيّة تنجح مع المضروب (factorial)، فإنّها لا تنجح عمومًا، لأنّ القيمة القديمة لمسجّلٍ لا يمكن دائمًا استخلاصها من القيمة الجديدة.
 
-[^3]: In [5.3](https://sarabander.github.io/sicp/html/5_002e3.xhtml#g_t5_002e3) we will see how to implement a stack in terms of more primitive operations.
+[^3]: سنرى في [5.3](https://sarabander.github.io/sicp/html/5_002e3.xhtml#g_t5_002e3) كيف نُنفّذ المكدس باستخدام عمليّاتٍ أوّليّةٍ أكثر.
 
-[^4]: Using the `receive` procedure here is a way to get `extract-labels` to effectively return two values—`labels` and `insts`—without explicitly making a compound data structure to hold them. An alternative implementation, which returns an explicit pair of values, is ```scheme (define (extract-labels text) (if (null? text) (cons '() '()) (let ((result (extract-labels (cdr text)))) (let ((insts (car result)) (labels (cdr result))) (let ((next-inst (car text))) (if (symbol? next-inst) (cons insts (cons (make-label-entry next-inst insts) labels)) (cons (cons (make-instruction next-inst) insts) labels))))))) ```
+[^4]: استخدام إجراء `receive` هنا طريقةٌ لجعل `extract-labels` يُعيد فعليًّا قيمتين—`labels` و`insts`—دون أن نُشكّل صراحةً بنية بيانات مركّبةٍ للاحتفاظ بهما. ثمّة تنفيذٌ بديل يُعيد زوجًا صريحًا من القيم، وهو ```scheme (define (extract-labels text) (if (null? text) (cons '() '()) (let ((result (extract-labels (cdr text)))) (let ((insts (car result)) (labels (cdr result))) (let ((next-inst (car text))) (if (symbol? next-inst) (cons insts (cons (make-label-entry next-inst insts) labels)) (cons (cons (make-instruction next-inst) insts) labels))))))) ```
 
-[^5]: We could represent memory as lists of items. However, the access time would then not be independent of the index, since accessing the $undefined$ element of a list requires $undefined$ `cdr` operations.
+[^5]: كان بوسعنا تمثيل الذاكرة كقوائمَ من العناصر. لكن زمن الوصول لم يكن ليكون حينها مستقلًّا عن الفهرس، إذ إنّ الوصول إلى العنصر رقم $undefined$ في قائمةٍ يتطلّب $undefined$ عمليّة `cdr`.
 
-[^6]: For completeness, we should specify a `make-vector` operation that constructs vectors. However, in the present application we will use vectors only to model fixed divisions of the computer memory.
+[^6]: تكاملًا، ينبغي أن نُحدّد عمليّة `make-vector` تبني المتجهات. لكن في التطبيق الحاضر سنستخدم المتجهات فقط لنمذجة تقسيماتٍ ثابتةٍ من ذاكرة الحاسوب.
 
-[^7]: This is precisely the same “tagged data” idea we introduced in [Chapter 2](https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2) for dealing with generic operations. Here, however, the data types are included at the primitive machine level rather than constructed through the use of lists.
+[^7]: هذه هي الفكرة عينها الخاصةّ بـ«البيانات الموسومة (tagged data)» التي أوردناها في [الفصل 2](https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2) للتعامل مع العمليّات العامّة. لكن هنا تُدرَج أنواع البيانات في مستوى الآلة الأوّليّ بدلًا من بنائها باستخدام القوائم.
 
-[^8]: Type information may be encoded in a variety of ways, depending on the details of the machine on which the Lisp system is to be implemented. The execution efficiency of Lisp programs will be strongly dependent on how cleverly this choice is made, but it is difficult to formulate general design rules for good choices. The most straightforward way to implement typed pointers is to allocate a fixed set of bits in each pointer to be a *type field* that encodes the data type. Important questions to be addressed in designing such a representation include the following: How many type bits are required? How large must the vector indices be? How efficiently can the primitive machine instructions be used to manipulate the type fields of pointers? Machines that include special hardware for the efficient handling of type fields are said to have *tagged architectures*.
+[^8]: يمكن ترميز معلومات النوع بطرائق متنوّعة، حسب تفاصيل الآلة التي سيُنفّذ عليها نظام Lisp. وستعتمد كفاءة تنفيذ برامج Lisp بقوةٍ على مدى حكمة هذا الخيار، لكن من الصعب صياغة قواعد تصميمٍ عامّةٍ للخيارات الجيّدة. وأبسط طريقةٍ لتنفيذ المؤشّرات الموسومة بالنوع هي تخصيص مجموعةٍ ثابتةٍ من البتّات في كلّ مؤشّرٍ لتكون *حقل النوع* الذي يُرمز نوع البيانات. وتشمل الأسئلة المهمّة الواجب تناولها عند تصميم مثل هذا التمثيل ما يلي: كم بتّةٍ للنوع تلزم؟ وما الحجم الذي يجب أن تبلغه مؤشرات المتجهات؟ ومدى كفاءة استخدام تعليمات الآلة الأوّليّة في التلاعب بحقول نوع المؤشرات؟ وتُوصف الآلات التي تتضمّن عتادًا خاصًّا للتعامل الفعّال مع حقول النوع بأنّها *ذات بنيةٍ موسومة (tagged architectures)*.
 
-[^9]: This decision on the representation of numbers determines whether `eq?`, which tests equality of pointers, can be used to test for equality of numbers. If the pointer contains the number itself, then equal numbers will have the same pointer. But if the pointer contains the index of a location where the number is stored, equal numbers will be guaranteed to have equal pointers only if we are careful never to store the same number in more than one location.
+[^9]: يحدّد هذا القصد في تمثيل الأعداد ما إذا كان يمكن استخدام `eq?`، الذي يختبر تساوي المؤشرات، لاختبار تساوي الأعداد. فإذا احتوى المؤشّر على العدد نفسه، كانت للأعداد المتساوية المؤشّر نفسه. أمّا إذا احتوى المؤشّر على فهرس موضعٍ يُخزَّن فيه العدد، فلن يكون مضمونًا أن تكون للمتساوي من الأعداد مؤشرات متساوية إلّا إذا حرصنا على ألّا نخزّن العدد نفسه في أكثر من موضعٍ واحد.
 
-[^10]: This is just like writing a number as a sequence of digits, except that each “digit” is a number between 0 and the largest number that can be stored in a single pointer.
+[^10]: هذا أشبه بكتابة عددٍ كتسلسلٍ من الأرقام، إلّا أنّ كلّ «رقم» هنا عددٌ يتراوح بين الصفر وأكبر عددٍ يمكن تخزينه في مؤشّرٍ واحد.
 
-[^11]: There are other ways of finding free storage. For example, we could link together all the unused pairs into a *free list*. Our free locations are consecutive (and hence can be accessed by incrementing a pointer) because we are using a compacting garbage collector, as we will see in [5.3.2](#g_t5_002e3_002e2).
+[^11]: ثمّة طرق أخرى لإيجاد مواضع تخزينٍ حرّة. فيمكننا مثلًا ربط كلّ الأزواج غير المستخدمة بعضها ببعض في *قائمةٍ حرّة (free list)*. إنّ مواضعنا الحرّة متتالية (وبالتالي يمكن الوصول إليها بزيادة مؤشّرٍ) لأنّنا نستخدم جامع قمامةٍ ضاغطًا، كما سنرى في [5.3.2](#g_t5_002e3_002e2).
 
-[^12]: This is essentially the implementation of `cons` in terms of `set-car!` and `set-cdr!`, as described in [3.3.1](https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e1). The operation `get-new-pair` used in that implementation is realized here by the `free` pointer.
+[^12]: هذا هو في الجوهر تنفيذ `cons` بدلالة `set-car!` و`set-cdr!`، على النحو الموصوف في [3.3.1](https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e1). والعمليّة `get-new-pair` المستخدمة في ذلك التنفيذ تُنجَز هنا بواسطة المؤشّر `free`.
 
-[^13]: This may not be true eventually, because memories may get large enough so that it would be impossible to run out of free memory in the lifetime of the computer. For example, there are about $undefined$ microseconds in a year, so if we were to `cons` once per microsecond we would need about $undefined$ cells of memory to build a machine that could operate for 30 years without running out of memory. That much memory seems absurdly large by today’s standards, but it is not physically impossible. On the other hand, processors are getting faster and a future computer may have large numbers of processors operating in parallel on a single memory, so it may be possible to use up memory much faster than we have postulated.
+[^13]: قد لا يبقى هذا صحيحًا في المستقبل، لأنّ الذاكرات قد تكبر حدًّا يستحيل معه نفاد الذاكرة الحرّة في عمر الحاسوب. ففي السنة نحو $undefined$ ميكروثانية، فلو أنّنا نُنشئ `cons` مرّةً كلّ ميكروثانية، لأضحى يلزمنا نحو $undefined$ خليّةٍ من الذاكرة لبناء آلةٍ تعمل ثلاثين سنةً دون أن تنفد ذاكرتها. وتبدو هذه الكميّة من الذاكرة سخيفةً بمعايير اليوم، لكنّها ليست مستحيلةً فيزيائيًّا. ومن جهةٍ أخرى، تصبح المعالجات أسرع فأسرع، وقد يضمّ حاسوب المستقبل أعدادًا كبيرةً من المعالجات تعمل على التوازي على ذاكرةٍ واحدة، فقد يصبح ممكنًا استهلاك الذاكرة أسرع بكثيرٍ ممّا افترضناه.
 
-[^14]: We assume here that the stack is represented as a list as described in [5.3.1](#g_t5_002e3_002e1), so that items on the stack are accessible via the pointer in the stack register.
+[^14]: نفترض هنا أنّ المكدس ممثَّلٌ كقائمةٍ على النحو الموضح في [5.3.1](#g_t5_002e3_002e1)، بحيث تكون عناصر المكدس قابلةً للوصول عبر المؤشّر الكائن في مسجّل المكدس.
 
-[^15]: This idea was invented and first implemented by Minsky, as part of the implementation of Lisp for the PDP-1 at the MIT Research Laboratory of Electronics. It was further developed by [Fenichel and Yochelson (1969)](https://sarabander.github.io/sicp/html/References.xhtml#Fenichel-and-Yochelson-_00281969_0029) for use in the Lisp implementation for the Multics time-sharing system. Later, [Baker (1978)](https://sarabander.github.io/sicp/html/References.xhtml#Baker-_00281978_0029) developed a “real-time” version of the method, which does not require the computation to stop during garbage collection. Baker’s idea was extended by Hewitt, Lieberman, and Moon (see [Lieberman and Hewitt 1983](https://sarabander.github.io/sicp/html/References.xhtml#Lieberman-and-Hewitt-1983)) to take advantage of the fact that some structure is more volatile and other structure is more permanent. An alternative commonly used garbage-collection technique is the *mark-sweep* method. This consists of tracing all the structure accessible from the machine registers and marking each pair we reach. We then scan all of memory, and any location that is unmarked is “swept up” as garbage and made available for reuse. A full discussion of the mark-sweep method can be found in [Allen 1978](https://sarabander.github.io/sicp/html/References.xhtml#Allen-1978). The Minsky-Fenichel-Yochelson algorithm is the dominant algorithm in use for large-memory systems because it examines only the useful part of memory. This is in contrast to mark-sweep, in which the sweep phase must check all of memory. A second advantage of stop-and-copy is that it is a *compacting* garbage collector. That is, at the end of the garbage-collection phase the useful data will have been moved to consecutive memory locations, with all garbage pairs compressed out. This can be an extremely important performance consideration in machines with virtual memory, in which accesses to widely separated memory addresses may require extra paging operations.
+[^15]: ابتكر هذه الفكرة مينسكي ونفّذها أوّل مرّة، كجزءٍ من تنفيذ Lisp على آلة PDP-1 في مختبر أبحاث الإلكترونيات في MIT. وطوّرها [فينيتشيل ويوكيلسون (1969)](https://sarabander.github.io/sicp/html/References.xhtml#Fenichel-and-Yochelson-_00281969_0029) لاستخدامها في تنفيذ Lisp الخاصّ بنظام المشاركة الزمنيّة Multics. ثمّ طور [بايكر (1978)](https://sarabander.github.io/sicp/html/References.xhtml#Baker-_00281978_0029) نسخةً «في الزمن الحقيقي» من الطريقة، لا تتطلّب وقوف الاحتساب أثناء جمع القمامة. وامتدّت فكرة بايكر على يد هيويت وليبرمان ومون (انظر [ليبرمان وهيويت 1983](https://sarabander.github.io/sicp/html/References.xhtml#Lieberman-and-Hewitt-1983)) لتستفيد من أنّ بعض البنى أكثر تقلّبًا وبعضها الآخر أكثر ديمومة. وثمّة تقنيّة أخرى شائعة لجمع القمامة هي طريقة *الكي والمسح (mark-sweep)*. وتتمثّل في تقفّي كلّ البنى القابلة للوصول من مسجّلات الآلة ووسم كلّ زوجٍ نصل إليه. ثمّ نمسح الذاكرة كلّها، وكلّ موضعٍ غير موسومٍ «يُكنس» كانقالًا للقمامة ويُتاح لإعادة الاستخدام. ويمكن العثور على مناقشةٍ كاملةٍ لطريقة الكي والمسح في [ألين 1978](https://sarabander.github.io/sicp/html/References.xhtml#Allen-1978). أمّا خوارزميّة مينسكي-فينيتشيل-يوكيلسون فهي الخوارزميّة السائدة في الأنظمة كبيرة الذاكرة، لأنّها لا تفحص إلّا الجزء المفيد من الذاكرة. وهذا بخلاف الكي والمسح، حيث ينبغي لمرحلة الكنس أن تفحص الذاكرة كلّها. وميزةٌ ثانية لطريقة التوقّف والنسخ أنّها جامع قمامةٍ *ضاغط (compacting)*. أي أنّ البيانات المفيدة ستنُقل في نهاية مرحلة جمع القمامة إلى مواضع ذاكرةٍ متتالية، مع ضغط كلّ الأزواج النفاية خارجها. وقد يكون هذا اعتبارًا بالغ الأهميّة للأداء في الآلات ذات الذاكرة الافتراضيّة، حيث قد يتطلّب الوصول إلى عناوين ذاكرةٍ متباعدةٍ بعيدًا عمليّاتِ تبديل صفحاتٍ إضافيّة.
 
-[^16]: This list of registers does not include the registers used by the storage-allocation system—`root`, `the-cars`, `the-cdrs`, and the other registers that will be introduced in this section.
+[^16]: لا تتضمّن قائمة المسجّلات هذه المسجّلات التي يستخدمها نظام تخصيص التخزين—`root` و`the-cars` و`the-cdrs` وغيرها من المسجّلات التي ستُعرَّف في هذا القسم.
 
-[^17]: The term *broken heart* was coined by David Cressey, who wrote a garbage collector for MDL, a dialect of Lisp developed at MIT during the early 1970s.
+[^17]: اصطلح على مصطلح *القلب المكسور (broken heart)* ديفيد كريسي، الذي كتب جامع قمامةٍ للغة MDL، وهي لهجةٌ من Lisp طُوّرت في MIT في أوائل سبعينيّات القرن العشرين.
 
-[^18]: The garbage collector uses the low-level predicate `pointer-to-pair?` instead of the list-structure `pair?` operation because in a real system there might be various things that are treated as pairs for garbage-collection purposes. For example, in a Scheme system that conforms to the IEEE standard a procedure object may be implemented as a special kind of “pair” that doesn’t satisfy the `pair?` predicate. For simulation purposes, `pointer-to-pair?` can be implemented as `pair?`.
+[^18]: يستخدم جامع القمامة المُسَيِّم منخفض المستوى `pointer-to-pair?` بدلًا من عمليّة بنية القوائم `pair?`، لأنّه قد توجد في نظامٍ حقيقيّ أمورٌ شتّى تُعامَل معاملة الأزواج لأغراض جمع القمامة. ففي نظامٍ من أنظمة Scheme مطابق لمعيار IEEE، مثلًا، قد يُنفّذ كائن الإجراء كنوعٍ خاصّ من «الزوج» لا يحقّقه المسيّم `pair?`. ولأغراض المحاكاة، يمكن تنفيذ `pointer-to-pair?` بدلالة `pair?`.
 
-[^19]: See [Batali et al. 1982](https://sarabander.github.io/sicp/html/References.xhtml#Batali-et-al_002e-1982) for more information on the chip and the method by which it was designed.
+[^19]: انظر [باتالي وآخرون 1982](https://sarabander.github.io/sicp/html/References.xhtml#Batali-et-al_002e-1982) لمزيدٍ من المعلومات عن الرقاقة وعن الطريقة التي صُمّمت بها.
 
-[^20]: In our controller, the dispatch is written as a sequence of `test` and `branch` instructions. Alternatively, it could have been written in a data-directed style (and in a real system it probably would have been) to avoid the need to perform sequential tests and to facilitate the definition of new expression types. A machine designed to run Lisp would probably include a `dispatch-on-type` instruction that would efficiently execute such data-directed dispatches.
+[^20]: في متحكّمنا، يُكتب التوزيع كسلسلةٍ من تعليمتَي `test` و`branch`. وبدلًا من ذلك، كان في الإمكان كتابته بأسلوبٍ موجَّهٍ بالبيانات (وكذلك سيكون الأمر في نظامٍ حقيقيّ على الأرجح) لتجنّب الحاجة إلى إجراء اختباراتٍ متسلسلةٍ وتسهيل تعريف أنواع تعبيراتٍ جديدة. ومن المرجّح أنّ آلةً مصمّمةً لتشغيل Lisp تتضمّن تعليمة `dispatch-on-type` تُنفّذ مثل هذه التوزيعات الموجَّهة بالبيانات بكفاءة.
 
-[^21]: This is an important but subtle point in translating algorithms from a procedural language, such as Lisp, to a register-machine language. As an alternative to saving only what is needed, we could save all the registers (except `val`) before each recursive call. This is called a *framed-stack* discipline. This would work but might save more registers than necessary; this could be an important consideration in a system where stack operations are expensive. Saving registers whose contents will not be needed later may also hold onto useless data that could otherwise be garbage-collected, freeing space to be reused.
+[^21]: هذه نقطة مهمّةٌ وإنّما خفيّةٌ في ترجمة الخوارزميّات من لغةٍ إجرائيّة، مثل Lisp، إلى لغة آلات المسجّلات. فبدلًا من حفظ ما يلزم فقط، كان بوسعنا حفظ كلّ المسجّلات (عدا `val`) قبل كلّ نداءٍ تعاوديّ. ويُسمّى هذا نظامَ المكدس المؤطَّر. وهذا ينجح، لكنّه قد يحفظ مسجّلاتٍ أكثر من اللازم؛ وقد يكون هذا اعتبارًا مهمًّا في نظامٍ تكون فيه عمليّات المكدس مكلفة. كما أنّ حفظ مسجّلاتٍ لن تُحتاج محتوياتها لاحقًا قد يُبقي بياناتٍ لا فائدة منها كان يمكن جمعها كانقالًا، فتتفرّغ مساحتها لإعادة الاستخدام.
 
-[^22]: We add to the evaluator data-structure procedures in [4.1.3](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e3) the following two procedures for manipulating argument lists: ```scheme (define (empty-arglist) '()) (define (adjoin-arg arg arglist) (append arglist (list arg))) ```
+[^22]: نضيف إلى إجراءات بنية البيانات الخاصّة بالمُقيّم الواردة في [4.1.3](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e3) الإجراءَين التاليين للتلاعب بقوائم المعطيات: ```scheme (define (empty-arglist) '()) (define (adjoin-arg arg arglist) (append arglist (list arg))) ```
 
-[^23]: The optimization of treating the last operand specially is known as *evlis tail recursion* (see [Wand 1980](https://sarabander.github.io/sicp/html/References.xhtml#Wand-1980)). We could be somewhat more efficient in the argument evaluation loop if we made evaluation of the first operand a special case too. This would permit us to postpone initializing `argl` until after evaluating the first operand, so as to avoid saving `argl` in this case. The compiler in [5.5](https://sarabander.github.io/sicp/html/5_002e5.xhtml#g_t5_002e5) performs this optimization. (Compare the `construct-arglist` procedure of [5.5.3](https://sarabander.github.io/sicp/html/5_002e5.xhtml#g_t5_002e5_002e3).)
+[^23]: يُعرَف تحسين معاملة المُعامل الأخير معاملةً خاصّةً باسم *التعاوب الذيلي في evlis* (انظر [واند 1980](https://sarabander.github.io/sicp/html/References.xhtml#Wand-1980)). وكان بوسعنا أن نكون أكفأ قليلًا في حلقة تقييم المعطيات لو جعلنا تقييم المُعامل الأوّل حالةً خاصّةً أيضًا. وهو ما كان سيسمح لنا بتأجيل تهيئة `argl` حتّى بعد تقييم المُعامل الأوّل، تفاديًا لحفظ `argl` في هذه الحالة. والمصرّف الوارد في [5.5](https://sarabander.github.io/sicp/html/5_002e5.xhtml#g_t5_002e5) يُجري هذا التحسين. (قارن بإجراء `construct-arglist` الوارد في [5.5.3](https://sarabander.github.io/sicp/html/5_002e5.xhtml#g_t5_002e5_002e3).)
 
-[^24]: The order of operand evaluation in the metacircular evaluator is determined by the order of evaluation of the arguments to `cons` in the procedure `list-of-values` of [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1) (see [Exercise 4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#Exercise-4_002e1)).
+[^24]: يحدّد ترتيب تقييم المُعاملات في المُقيّم الحلقيّ الوسيط بترتيب تقييم معطيات `cons` في الإجراء `list-of-values` الوارد في [4.1.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1) (انظر [التمرين 4.1](https://sarabander.github.io/sicp/html/4_002e1.xhtml#Exercise-4_002e1)).
 
-[^25]: We saw in [5.1](https://sarabander.github.io/sicp/html/5_002e1.xhtml#g_t5_002e1) how to implement such a process with a register machine that had no stack; the state of the process was stored in a fixed set of registers.
+[^25]: رأينا في [5.1](https://sarabander.github.io/sicp/html/5_002e1.xhtml#g_t5_002e1) كيف نُنفّذ عمليّةً كهذه بآلة مسجّلاتٍ لا مكدس لها؛ إذ كانت حالة العمليّة تُخزَّن في مجموعةٍ ثابتةٍ من المسجّلات.
 
-[^26]: This implementation of tail recursion in `ev-sequence` is one variety of a well-known optimization technique used by many compilers. In compiling a procedure that ends with a procedure call, one can replace the call by a jump to the called procedure’s entry point. Building this strategy into the interpreter, as we have done in this section, provides the optimization uniformly throughout the language.
+[^26]: هذا التنفيذ للتعاوب الذيلي في `ev-sequence` نوعٌ من تقنيّة تحسينٍ معروفةٍ يستخدمها كثيرٌ من المصرّفات. فعند تصريف إجراءٍ ينتهي بنداء إجراء، يمكن استبدال النداء بقفزةٍ إلى نقطة دخول الإجراء المندىّ. وبناء هذه الاستراتيجيّة في المفسّر، كما فعلنا في هذا القسم، يُوفّر التحسين بصورةٍ موحّدةٍ في اللغة كلّها.
 
-[^27]: We can define `no-more-exps?` as follows: ```scheme (define (no-more-exps? seq) (null? seq)) ```
+[^27]: يمكننا تعريف `no-more-exps?` كما يلي: ```scheme (define (no-more-exps? seq) (null? seq)) ```
 
-[^28]: This isn’t really cheating. In an actual implementation built from scratch, we would use our explicit-control evaluator to interpret a Scheme program that performs source-level transformations like `cond->if` in a syntax phase that runs before execution.
+[^28]: هذا ليس غشًّا حقًّا. ففي تنفيذٍ فعليٍّ مبنيٍّ من الصفر، كنّا سنستخدم مُقيّمنا ذا المتحكّم الصريح لتفسير برنامج Scheme يُجري تحويلاتٍ على مستوى المصدر، مثل `cond->if`، في مرحلة صياغةٍ تجري قبل التنفيذ.
 
-[^29]: We assume here that `read` and the various printing operations are available as primitive machine operations, which is useful for our simulation, but completely unrealistic in practice. These are actually extremely complex operations. In practice, they would be implemented using low-level input-output operations such as transferring single characters to and from a device. To support the `get-global-environment` operation we define ```scheme (define the-global-environment (setup-environment)) (define (get-global-environment) the-global-environment) ```
+[^29]: نفترض هنا أنّ `read` ومختلف عمليّات الطباعة متاحةٌ كعمليّات آلةٍ أوّليّة، وهذا مفيدٌ لمحاكاتنا، لكنّه غير واقعيّ إطلاقًا في الممارسة. فهذه في الحقيقة عمليّات شديدة التعقيد. وفي الممارسة، كانت ستُنفّذ باستخدام عمليّات إدخالٍ وإخراجٍ منخفضة المستوى، مثل نقل محارف مفردةٍ إلى جهازٍ ومنه. ولدعم عمليّة `get-global-environment` نُعرّف ```scheme (define the-global-environment (setup-environment)) (define (get-global-environment) the-global-environment) ```
 
-[^30]: There are other errors that we would like the interpreter to handle, but these are not so simple. See [Exercise 5.30](#Exercise-5_002e30).
+[^30]: ثمّة أخطاء أخرى نودّ أن يتعامل معها المفسّر، لكنّها ليست بهذه البساطة. انظر [التمرين 5.30](#Exercise-5_002e30).
 
-[^31]: We could perform the stack initialization only after errors, but doing it in the driver loop will be convenient for monitoring the evaluator’s performance, as described below.
+[^31]: كان بوسعنا إجراء تهيئة المكدس بعد الأخطاء فقط، لكنّ إجراءها في حلقة المُشغّل سيكون مريحًا لمراقبة أداء المُقيّم، كما سنُبيّن أدناه.
 
-[^32]: Regrettably, this is the normal state of affairs in conventional compiler-based language systems such as C. In UNIX(tm) the system “dumps core,” and in DOS/Windows(tm) it becomes catatonic. The Macintosh(tm) displays a picture of an exploding bomb and offers you the opportunity to reboot the computer—if you’re lucky.
+[^32]: للأسفّ، هذا هو الحال الطبيعيّ في أنظمة اللغات التقليديّة المبنيّة على المصرّفات، مثل C. ففي UNIX(tm) «يفرغ النظام لبَّه»، وفي DOS/Windows(tm) يصير كسولًا. أمّا Macintosh(tm) فيعرض صورة قنبلةٍ منفجرةٍ ويعرض عليك فرصة إعادة تشغيل الحاسوب—إن كنت محظوظًا.
 
-[^33]: This is a theoretical statement. We are not claiming that the evaluator’s data paths are a particularly convenient or efficient set of data paths for a general-purpose computer. For example, they are not very good for implementing high-performance floating-point calculations or calculations that intensively manipulate bit vectors.
+[^33]: هذا بيانٌ نظريّ. فنحن لا ندّعي أنّ مسارات البيانات الخاصّة بالمُقيّم مجموعةٌ مناسبةٌ أو فعّالةٌ بشكلٍ خاصّ لتكون مسارات حاسوبٍ عامّ الغرض. فهي مثلًا غير جيّدةٍ لتنفيذ حسابات النقاط العائمة عالية الأداء أو الحسابات التي تتلاعب بكثافةٍ بمتجهات البتّات.
 
-[^34]: Actually, the machine that runs compiled code can be simpler than the interpreter machine, because we won’t use the `exp` and `unev` registers. The interpreter used these to hold pieces of unevaluated expressions. With the compiler, however, these expressions get built into the compiled code that the register machine will run. For the same reason, we don’t need the machine operations that deal with expression syntax. But compiled code will use a few additional machine operations (to represent compiled procedure objects) that didn’t appear in the explicit-control evaluator machine.
+[^34]: في الواقع، بوسع الآلة التي تُشغّل الشيفرة المصرّفة أن تكون أبسط من آلة المفسّر، لأنّنا لن نستخدم المسجّلين `exp` و`unev`. فقد كان المفسّر يستخدمهما للاحتفاظ بقطعٍ من التعابير غير المُقيَّمة. أمّا مع المصرّف، فهذه التعابير تُبنى في الشيفرة المصرّفة التي ستُشغّلها آلة المسجّلات. ولغير هذا السبب، لا نحتاج إلى عمليّات الآلة التي تتعامل مع صياغة التعابير. لكنّ الشيفرة المصرّفة ستستخدم بعض عمليّات آلةٍ إضافيّة (لتمثيل كائنات الإجراءات المصرّفة) لم تظهر في آلة المُقيّم ذي المتحكّم الصريح.
 
-[^35]: Notice, however, that our compiler is a Scheme program, and the syntax procedures that it uses to manipulate expressions are the actual Scheme procedures used with the metacircular evaluator. For the explicit-control evaluator, in contrast, we assumed that equivalent syntax operations were available as operations for the register machine. (Of course, when we simulated the register machine in Scheme, we used the actual Scheme procedures in our register machine simulation.)
+[^35]: لكن لاحظ أنّ مصرّفنا برنامج Scheme، وأنّ إجراءات الصياغة التي يستخدمها للتلاعب بالتعابير هي إجراءات Scheme الفعليّة المستخدمة مع المُقيّم الحلقيّ الوسيط. أمّا في المُقيّم ذي المتحكّم الصريح، فقد افترضنا أنّ عمليّات صياغةٍ مكافئةً متاحةٌ كعمليّاتٍ لآلة المسجّلات. (وبالطبع، عندما حاكينا آلة المسجّلات في Scheme، استخدمنا إجراءات Scheme الفعليّة في محاكاة آلة المسجّلات خاصّتنا.)
 
-[^36]: This procedure uses a feature of Lisp called *backquote* (or *quasiquote*) that is handy for constructing lists. Preceding a list with a backquote symbol is much like quoting it, except that anything in the list that is flagged with a comma is evaluated. For example, if the value of `linkage` is the symbol `branch25`, then the expression ```scheme `((goto (label ,linkage))) ```
+[^36]: يستخدم هذا الإجراء ميزةً من Lisp تُسمّى *الاقتباس الخلفيّ (backquote)* (أو *شبه الاقتباس (quasiquote)*) وهي مفيدةٌ لبناء القوائم. فتسبيق قائمةٍ برمز الاقتباس الخلفيّ أشبه باقتباسها، إلّا أنّ أيّ شيءٍ في القائمة يُعلَّم بفاصلةٍ يُقيَّم. فمثلًا، إذا كانت قيمة `linkage` هي الرمز `branch25`، فإنّ التعبير ```scheme `((goto (label ,linkage))) ```
 
-[^37]: We can’t just use the labels `true-branch`, `false-branch`, and `after-if` as shown above, because there might be more than one `if` in the program. The compiler uses the procedure `make-label` to generate labels. `Make-label` takes a symbol as argument and returns a new symbol that begins with the given symbol. For example, successive calls to `(make-label 'a)` would return `a1`, `a2`, and so on. `Make-label` can be implemented similarly to the generation of unique variable names in the query language, as follows: ```scheme (define label-counter 0) (define (new-label-number) (set! label-counter (+ 1 label-counter)) label-counter) (define (make-label name) (string->symbol (string-append (symbol->string name) (number->string (new-label-number))))) ```
+[^37]: لا يمكننا ببساطةٍ استخدام الأسماء `true-branch` و`false-branch` و`after-if` كما وردت أعلاه، لأنّ البرنامج قد يحوي أكثر من `if` واحد. فالمصرّف يستخدم الإجراء `make-label` لتوليد الأسماء. و`Make-label` يأخذ رمزًا كمعطىً ويُعيد رمزًا جديدًا يبدأ بالرمز المعطى. فمثلًا، كانت نداءات `(make-label 'a)` المتتالية تُعيد `a1` و`a2` وهكذا. ويمكن تنفيذ `Make-label` على نحوٍ يشبه توليد أسماء المتغيّرات الفريدة في لغة الاستعلام، كما يلي: ```scheme (define label-counter 0) (define (new-label-number) (set! label-counter (+ 1 label-counter)) label-counter) (define (make-label name) (string->symbol (string-append (symbol->string name) (number->string (new-label-number))))) ```
 
-[^38]: We need machine operations to implement a data structure for representing compiled procedures, analogous to the structure for compound procedures described in [4.1.3](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e3): ```scheme (define (make-compiled-procedure entry env) (list 'compiled-procedure entry env)) (define (compiled-procedure? proc) (tagged-list? proc 'compiled-procedure)) (define (compiled-procedure-entry c-proc) (cadr c-proc)) (define (compiled-procedure-env c-proc) (caddr c-proc)) ```
+[^38]: نحتاج إلى عمليّات آلةٍ لتنفيذ بنية بياناتٍ لتمثيل الإجراءات المصرّفة، تقابل البنيّة الخاصّة بالإجراءات المركّبة الموصوفة في [4.1.3](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e3): ```scheme (define (make-compiled-procedure entry env) (list 'compiled-procedure entry env)) (define (compiled-procedure? proc) (tagged-list? proc 'compiled-procedure)) (define (compiled-procedure-entry c-proc) (cadr c-proc)) (define (compiled-procedure-env c-proc) (caddr c-proc)) ```
 
-[^39]: Actually, we signal an error when the target is not `val` and the linkage is `return`, since the only place we request `return` linkages is in compiling procedures, and our convention is that procedures return their values in `val`.
+[^39]: في الحقيقة، نُشير إلى خطأٍ عندما لا يكون الهدف `val` والوصلة `return`، إذ إنّ المكان الوحيد الذي نطلب فيه وصلات `return` هو تصريف الإجراءات، واصطلاحنا أنّ الإجراءات تُعيد قيمها في `val`.
 
-[^40]: Making a compiler generate tail-recursive code might seem like a straightforward idea. But most compilers for common languages, including C and Pascal, do not do this, and therefore these languages cannot represent iterative processes in terms of procedure call alone. The difficulty with tail recursion in these languages is that their implementations use the stack to store procedure arguments and local variables as well as return addresses. The Scheme implementations described in this book store arguments and variables in memory to be garbage-collected. The reason for using the stack for variables and arguments is that it avoids the need for garbage collection in languages that would not otherwise require it, and is generally believed to be more efficient. Sophisticated Lisp compilers can, in fact, use the stack for arguments without destroying tail recursion. (See [Hanson 1990](https://sarabander.github.io/sicp/html/References.xhtml#Hanson-1990) for a description.) There is also some debate about whether stack allocation is actually more efficient than garbage collection in the first place, but the details seem to hinge on fine points of computer architecture. (See [Appel 1987](https://sarabander.github.io/sicp/html/References.xhtml#Appel-1987) and [Miller and Rozas 1994](https://sarabander.github.io/sicp/html/References.xhtml#Miller-and-Rozas-1994) for opposing views on this issue.)
+[^40]: قد يبدو جعلُ مصرّفٍ يُنتج شيفرةً تعاوديّةً ذيليًّا فكرةً مباشرة. لكنّ معظم مصرّفات اللغات الشائعة، ومنها C وPascal، لا تفعل ذلك، ولذلك لا تستطيع هذه اللغات تمثيل العمليّات التكراريّة بالنداء الإجرائيّ وحده. وتكمُن صعوبة التعاوب الذيلي في هذه اللغات في أنّ تنفيذها تستخدم المكدس لتخزين معطيات الإجراءات ومتغيّراتها المحليّة فضلًا عن عناوين العودة. أمّا تنفيذات Scheme الموضحة في هذا الكتاب فتخزّن المعطيات والمتغيّرات في ذاكرةٍ تُجمَّع كانقالًا. والسبب في استخدام المكدس للمتغيّرات والمعطيات هو تفادي الحاجة إلى جمع القمامة في لغاتٍ لما كانت تتطلّبه لولا ذلك، ويُعتقد عمومًا أنّه أكفّ. وتستطيع مصرّفات Lisp المتطوّرة، في الواقع، استخدام المكدس للمعطيات دون أن تُفسد التعاوب الذيليّ. (انظر [هانسون 1990](https://sarabander.github.io/sicp/html/References.xhtml#Hanson-1990) لوصفٍ له.) ثمّة جدلٌ أيضًا حول ما إذا كان تخصيص المكدس أكفّ فعلًا من جمع القمامة في المقام الأوّل، لكنّ التفاصيل يبدو أنّها مرتهنةٌ بدقائق دقيقة في بنية الحاسوب. (انظر [آبل 1987](https://sarabander.github.io/sicp/html/References.xhtml#Appel-1987) و[ميلر وروزاس 1994](https://sarabander.github.io/sicp/html/References.xhtml#Miller-and-Rozas-1994) لرأيين متعارضين في هذه المسألة.)
 
-[^41]: The variable `all-regs` is bound to the list of names of all the registers: ```scheme (define all-regs '(env proc val argl continue)) ```
+[^41]: المتغيّر `all-regs` مربوطٌ بأسماء كلّ المسجّلات: ```scheme (define all-regs '(env proc val argl continue)) ```
 
-[^42]: Note that `preserving` calls `append` with three arguments. Though the definition of `append` shown in this book accepts only two arguments, Scheme standardly provides an `append` procedure that takes an arbitrary number of arguments.
+[^42]: لاحظ أنّ `preserving` ينادي `append` بثلاثة معطيات. ومع أنّ تعريف `append` المعروض في هذا الكتاب لا يقبل إلّا معطيين، فإنّ Scheme يوفّر قياسيًّا إجراء `append` يأخذ عددًا اعتباطيًّا من المعطيات.
 
-[^43]: We have used the same symbol `+` here to denote both the source-language procedure and the machine operation. In general there will not be a one-to-one correspondence between primitives of the source language and primitives of the machine.
+[^43]: لقد استخدمنا الرمز `+` نفسه هنا للدلالة على كلٍّ من إجراء لغة المصدر وعمليّة الآلة. وبشكلٍ عام، لن توجد مقابلةٌ واحدٌ بواحدٍ بين أوّليّات لغة المصدر وأوّليّات الآلة.
 
-[^44]: Making the primitives into reserved words is in general a bad idea, since a user cannot then rebind these names to different procedures. Moreover, if we add reserved words to a compiler that is in use, existing programs that define procedures with these names will stop working. See [Exercise 5.44](#Exercise-5_002e44) for ideas on how to avoid this problem.
+[^44]: جعل الأوّليّات كلماتٍ محجوزة هو فكرةٌ سيّئةٌ عمومًا، إذ لا يستطيع المستخدم حينها إعادة ربط هذه الأسماء بإجراءاتٍ مختلفة. والأسوأ من ذلك، أنّ إضافة كلماتٍ محجوزةً إلى مصرّفٍ قيد الاستخدام ستجعل البرامج الموجودة التي تُعرِّف إجراءاتٍ بهذه الأسماء تتوقّف عن العمل. انظر [التمرين 5.44](#Exercise-5_002e44) لأفكارٍ عن كيفيّة تجنّب هذه المشكلة.
 
-[^45]: This is not true if we allow internal definitions, unless we scan them out. See [Exercise 5.43](#Exercise-5_002e43).
+[^45]: لا يصحّ هذا إذا سمحنا بتعريفاتٍ داخليّة، إلّا إذا استخرجناه بالمسح. انظر [التمرين 5.43](#Exercise-5_002e43).
 
-[^46]: This is the modification to variable lookup required if we implement the scanning method to eliminate internal definitions ([Exercise 5.43](#Exercise-5_002e43)). We will need to eliminate these definitions in order for lexical addressing to work.
+[^46]: هذا هو التعديل المطلوب على البحث عن المتغيّرات إذا نُفّذت طريقة الاستخراج لإزالة التعريفات الداخليّة ([التمرين 5.43](#Exercise-5_002e43)). وسنحتاج إلى إزالة هذه التعريفات لكي تعمل العنونة المعجميّة.
 
-[^47]: Lexical addresses cannot be used to access variables in the global environment, because these names can be defined and redefined interactively at any time. With internal definitions scanned out, as in [Exercise 5.43](#Exercise-5_002e43), the only definitions the compiler sees are those at top level, which act on the global environment. Compilation of a definition does not cause the defined name to be entered in the compile-time environment.
+[^47]: لا يمكن استخدام العناوين المعجميّة للوصول إلى المتغيّرات في البيئة العامّة، لأنّ هذه الأسماء يمكن تعريفها وإعادة تعريفها تفاعليًّا في أيّ وقت. فمع استخراج التعريفات الداخليّة، كما في [التمرين 5.43](#Exercise-5_002e43)، تكون التعريفات الوحيدة التي يراها المصرّف هي التعريفات على المستوى الأعلى، وهي التي تعمل على البيئة العامّة. ولا يتسبّب تصريف تعريفٍ في إدخال الاسم المعرَّف في بيئة وقت التصريف.
 
-[^48]: Of course, compiled procedures as well as interpreted procedures are compound (nonprimitive). For compatibility with the terminology used in the explicit-control evaluator, in this section we will use “compound” to mean interpreted (as opposed to compiled).
+[^48]: وبالطبع، الإجراءات المصرّفة كالإجراءات المُفسَّرة مركّبةٌ (غير أوّليّة). واتّفاقًا مع المصطلحات المستخدمة في المُقيّم ذي المتحكّم الصريح، سنستخدم في هذا القسم «مركّب» بمعنى مُفسَّر (مقابلًا لمصرَّف).
 
-[^49]: Now that the evaluator machine starts with a `branch`, we must always initialize the `flag` register before starting the evaluator machine. To start the machine at its ordinary read-eval-print loop, we could use ```scheme (define (start-eceval) (set! the-global-environment (setup-environment)) (set-register-contents! eceval 'flag false) (start eceval)) ```
+[^49]: وحيث إنّ آلة المُقيّم تبدأ الآن بـ`branch`، ينبغي لنا دائمًا تهيئة المسجّل `flag` قبل تشغيل آلة المُقيّم. ولتشغيل الآلة على حلقة القراءة-التقييم-الطباعة المعتادة، كان بوسعنا استخدام ```scheme (define (start-eceval) (set! the-global-environment (setup-environment)) (set-register-contents! eceval 'flag false) (start eceval)) ```
 
-[^50]: Since a compiled procedure is an object that the system may try to print, we also modify the system print operation `user-print` (from [4.1.4](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e4)) so that it will not attempt to print the components of a compiled procedure: ```scheme (define (user-print object) (cond ((compound-procedure? object) (display (list 'compound-procedure (procedure-parameters object) (procedure-body object) '))) ((compiled-procedure? object) (display ')) (else (display object)))) ```
+[^50]: وبما أنّ الإجراء المصرّف كائنٌ قد يحاول النظام طباعته، نُعدّل أيضًا عمليّة طباعة النظام `user-print` (الواردة في [4.1.4](https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e4)) حتّى لا تحاول طباعة مكوّنات الإجراء المصرّف: ```scheme (define (user-print object) (cond ((compound-procedure? object) (display (list 'compound-procedure (procedure-parameters object) (procedure-body object) '))) ((compiled-procedure? object) (display ')) (else (display object)))) ```
 
-[^51]: We can do even better by extending the compiler to allow compiled code to call interpreted procedures. See [Exercise 5.47](#Exercise-5_002e47).
+[^51]: وبوسعنا أن نفعل أفضل من ذلك بتمديد المصرّف للسماح للشيفرة المصرّفة بنداء الإجراءات المُفسَّرة. انظر [التمرين 5.47](#Exercise-5_002e47).
 
-[^52]: Independent of the strategy of execution, we incur significant overhead if we insist that errors encountered in execution of a user program be detected and signaled, rather than being allowed to kill the system or produce wrong answers. For example, an out-of-bounds array reference can be detected by checking the validity of the reference before performing it. The overhead of checking, however, can be many times the cost of the array reference itself, and a programmer should weigh speed against safety in determining whether such a check is desirable. A good compiler should be able to produce code with such checks, should avoid redundant checks, and should allow programmers to control the extent and type of error checking in the compiled code. Compilers for popular languages, such as C and C++, put hardly any error-checking operations into running code, so as to make things run as fast as possible. As a result, it falls to programmers to explicitly provide error checking. Unfortunately, people often neglect to do this, even in critical applications where speed is not a constraint. Their programs lead fast and dangerous lives. For example, the notorious “Worm” that paralyzed the Internet in 1988 exploited the UNIX(tm) operating system’s failure to check whether the input buffer has overflowed in the finger daemon. (See [Spafford 1989](https://sarabander.github.io/sicp/html/References.xhtml#Spafford-1989).)
+[^52]: مستقلًّا عن استراتيجيّة التنفيذ، نتحمّل عبئًا إضافيًّا كبيرًا إذا أصرَرنا على كشف الأخطاء التي تقع أثناء تنفيذ برنامج المستخدم والإشارة إليها، بدلًا من السّماح لها بإسقاط النظام أو إنتاج إجابات خاطئة. فمثلًا، يمكن كشف مرجع مصفوفةٍ خارج الحدود بالتحقّق من صلاحيّة المرجع قبل إجرائه. غير أنّ عبء التحقّق قد يبلغ أضعاف كلفة مرجع المصفوفة نفسه، وعلى المبرمج أن يوزن بين السرعة والأمان في تحديد مدى رغبته في مثل هذا التحقّق. وينبغي لمصرّفٍ جيّدٍ أن يكون قادرًا على إنتاج شيفرةٍ تتضمّن مثل هذه التحقّقات، وأن يتجنّب التحقّقات الزائدة، وأن يسمح للمبرمجين بالتحكّم في مدى فحوص الأخطاء ونوعها في الشيفرة المصرّفة. أمّا مصرّفات اللغات الشائعة، مثل C وC++، فلا تُدخل إلّا القليل جدًّا من عمليّات التحقّق من الأخطاء في الشيفرة العاملة، حتّى تجري الأمور بأسرع ما يمكن. ونتيجةً لذلك، يقع على عاتق المبرمجين تدبير التحقّق من الأخطاء صراحةً. ومؤسفٌ أنّ الناس يغفلون عن ذلك كثيرًا، حتّى في التطبيقات الحرجة حيث لا يكون هناك قيدٌ على السرعة. فبرامجهم تعيش حياةً سريعةً وخطرة. فمثلًا، استغلّت «الدودة» (Worm) الشهيرة التي شلّت الإنترنت عام 1988 فشل نظام التشغيل UNIX(tm) في التحقّق من أنّ مخزَن الإدخال قد فاض في عفريت finger. (انظر [سبافورد 1989](https://sarabander.github.io/sicp/html/References.xhtml#Spafford-1989).)
 
-[^53]: Of course, with either the interpretation or the compilation strategy we must also implement for the new machine storage allocation, input and output, and all the various operations that we took as “primitive” in our discussion of the evaluator and compiler. One strategy for minimizing work here is to write as many of these operations as possible in Lisp and then compile them for the new machine. Ultimately, everything reduces to a small kernel (such as garbage collection and the mechanism for applying actual machine primitives) that is hand-coded for the new machine.
+[^53]: وبالطبع، مع كلٍّ من استراتيجيّة التفسير واستراتيجيّة التصريف، يتحتّم علينا أيضًا أن نُنفّذ للآلة الجديدة تخصيص التخزين، والإدخال والإخراج، وكلّ العمليّات المتنوّعة التي أخذناها كـ«أوّليّات» في مناقشتنا للمُقيّم والمصرّف. وإحدى استراتيجيّات تقليل العمل هنا هي كتابة أكبر عددٍ ممكن من هذه العمليّات في Lisp ثمّ تصريفها للآلة الجديدة. وفي النهاية، يندرج كلّ شيءٍ في نواةٍ صغيرة (مثل جمع القمامة وآليّة تطبيق أوّليّات الآلة الفعليّة) تُكتب يدويًّا للآلة الجديدة.
 
-[^54]: This strategy leads to amusing tests of correctness of the compiler, such as checking whether the compilation of a program on the new machine, using the compiled compiler, is identical with the compilation of the program on the original Lisp system. Tracking down the source of differences is fun but often frustrating, because the results are extremely sensitive to minuscule details.
+[^54]: تؤدّي هذه الاستراتيجيّة إلى اختباراتٍ ممتعةٍ لصحّة المصرّف، مثل التحقّق ممّا إذا كان تصريف برنامجٍ على الآلة الجديدة، باستخدام المصرّف المصرَّف، مطابقًا لتصريف البرنامج على نظام Lisp الأصليّ. وتتبّع مصدر الفروقات أمرٌ ممتعٌ لكنّه مُحبطٌ غالبًا، لأنّ النتائج حسّاسةٌ للغاية حتّى لأدقّ التفاصيل.
