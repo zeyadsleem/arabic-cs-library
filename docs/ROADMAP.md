@@ -6,14 +6,13 @@
 
 ## 0. الحالة الحالية (آخر تحديث)
 
-مترجم بالكامل داخل المكتبة: **30 كتاباً / 5,500+ صفحة**
-`Hello Algo` (117) · `patterns.dev` (53) · `500 Lines` (23) · `Database Design` (19) · `Crafting Interpreters` (35) · `AHA Stack` (24) · `Network Security` (10) · `Crypto 101` (18) · `Game Programming Patterns` (26) · `IntroTCS` (26) · `Missing Semester` (13) ·
-`Eloquent JavaScript` (22) · `Full Stack open` (68) · `Go by Example` (84 مثالاً) ·
-`Learn Go with Tests` · `Go 101` (136 مقالاً).
+مترجم بالكامل داخل المكتبة: **36 كتاباً / 5,874 صفحة**
+`SICP` (883) · `Full Stack open` (600) · `Discrete Math (Levin)` (549) · `500 Lines` (470) · `Go 101` (400) · `CS3110 (OCaml)` (400) · `PostgreSQL Internals` (320) · `Learn Go with Tests` (250) · `Eloquent JavaScript` (200) · `Database Foundations` (200) · `Use The Index, Luke!` (200) · `Dive into Systems` (190) · `Database Design` (153) · `MIT 6100L` (120) · `Hello Algo` (118) · `Go Tour` (103) · `Go Style` (90) · `Go by Example` (84) · `pgExercises` (70) · `patterns.dev` (53) · `AOSA v1 + v2` (51) · `Select Star SQL` (45) · `Cryptopals` (40) · `Missing Semester` (38) · `Frontend Architecture` (38) · `Crafting Interpreters` (35) · `Game Programming Patterns` (26) · `IntroTCS` (26) · `AHA Stack` (24) · `Go FAQ` (22) · `Crypto 101` (18) · `Effective Go` (16) · `Open Data Structures` (14) · `SQL Murder Mystery` (12) · `Network Security` (10) · `How to Write Go Code` (6).
 
-في طابور الترجمة: **28 مصدراً** بالترتيب المذكور في القسم 7. المصادر التي يمنع
-ترخيصها إعادة الترجمة (ND أو بلا ترخيص) أُدرجت في الطابور بمبادرة المستخدم مع
-إبقاء اسمها وحالتها ورابط مصدرها الأصلي في صفحتها.
+في طابور الترجمة: **10 مصادر** بالترتيب المذكور في القسم 7، وكلّها تحتاج مستورداً
+جديداً إذ لم يُستورد مصدرها بعد. المصادر التي يمنع ترخيصها إعادة الترجمة (ND أو
+بلا ترخيص) أُدرجت في الطابور بمبادرة المستخدم مع إبقاء اسمها وحالتها ورابط مصدرها
+الأصلي في صفحتها.
 
 ## 1. القاعدة الحاكمة: الترخيص قبل الترجمة
 
@@ -32,19 +31,19 @@
 
 | # | المرحلة | المصادر بالترتيب | المتطلب السابق |
 | --- | --- | --- | --- |
-| ① | التأسيس | SICP · Hello Algo (✅) | — |
+| ① | التأسيس | SICP (✅) · Hello Algo (✅) | — |
 | ② | أدوات المبرمج | Missing Semester (✅ 13 محاضرة) | — |
-| ③ | الرياضيات | Discrete Math (Levin) · MCS · ~~IntroTCS~~ محجوب | — |
-| ④ | بنى البيانات | Open Data Structures | — |
-| ⑤ | الأنظمة | Nand2Tetris I · Nand2Tetris II · xv6 · OSTEP (مرجع) · ~~Dive into Systems~~ محجوب | — |
+| ③ | الرياضيات | Discrete Math (Levin) (✅) · MCS · IntroTCS (✅) | — |
+| ④ | بنى البيانات | Open Data Structures (✅) | — |
+| ⑤ | الأنظمة | Nand2Tetris I · Nand2Tetris II · xv6 · OSTEP (مرجع) · Dive into Systems (✅) | — |
 | ⑥ | مسار Go | Go by Example (✅) · Learn Go with Tests (✅) · Go 101 (✅) | — |
 | ⑦ | JavaScript | Eloquent JavaScript (✅) | — |
 | ⑧ | تطوير الويب | Full Stack open (✅) | Eloquent JS |
 | ⑨ | الشبكات | Computer Networks (بانتظار موافقة المؤلفين) | Nand2Tetris I |
-| ⑩ | قواعد البيانات | DB Design · DB Performance at Scale · ~~Database Foundations~~ مرجع · ~~PostgreSQL Internals~~ مرجع · ~~Use The Index~~ مرجع | — |
-| ⑪ | اللغات | Learn Programming with OCaml · OCaml Manual · ~~CS3110~~ مرجع · ~~Crafting Interpreters~~ محجوب | — |
-| ⑫ | معمارية البرمجيات | 500 Lines · AOSA · ~~Game Programming Patterns~~ محجوب | — |
-| ⑬ | الأمن | Crypto 101 · Open Workbook of Cryptology · ~~Network Security~~ مرجع · ~~Cryptopals~~ مرجع | — |
+| ⑩ | قواعد البيانات | DB Design (✅) · DB Performance at Scale · Database Foundations (✅) · PostgreSQL Internals (✅) · Use The Index (✅) | — |
+| ⑪ | اللغات | Learn Programming with OCaml · OCaml Manual (مرجع) · CS3110 (✅) · Crafting Interpreters (✅) | — |
+| ⑫ | معمارية البرمجيات | 500 Lines (✅) · AOSA (✅) · Game Programming Patterns (✅) | — |
+| ⑬ | الأمن | Crypto 101 (✅) · Open Workbook of Cryptology · Network Security (✅) · Cryptopals (✅) | — |
 
 ## 3. مص_matrix التحقق (ملخّص ما تم التحقق منه فعلياً)
 
@@ -114,31 +113,31 @@
 
 | # | المصدر | الطريقة | الحجم | الحالة |
 | --- | --- | --- | --- | --- |
-| 1 | AHA Stack (ahastack.dev) | كشط HTML | 25 صفحة | في الطابور |
+| 1 | AHA Stack (ahastack.dev) | كشط HTML | 25 صفحة | ✅ مترجم |
 | 2 | 500 Lines or Less | Markdown على GitHub | 22 فصلاً | ✅ مترجم (23 فصلاً) |
 | 3 | Database Design 2e | Pressbooks (عبر archive.org) | 16 فصلاً + 3 ملاحق | ✅ مترجم |
-| 4 | Discrete Math (Levin) | PreTeXt + 306 SVG | 7 فصول | في الطابور |
-| 5 | SICP | HTML (38 صفحة) | 5 فصول | في الطابور |
+| 4 | Discrete Math (Levin) | PreTeXt + 306 SVG | 7 فصول | ✅ مترجم |
+| 5 | SICP | HTML (38 صفحة) | 5 فصول | ✅ مترجم |
 | 6 | Nand2Tetris I + II | صفحات المشاريع + PDF | 12 مشروعاً | في الطابور |
 | 7 | xv6 | HTML + شيفرة C | 9 فصول | في الطابور |
 | 8 | Learn Programming with OCaml | PDF/EPUB | 13 فصلاً | في الطابور |
-| 9 | Crypto 101 | Markdown | ~250 صفحة | في الطابور |
+| 9 | Crypto 101 | Markdown | ~250 صفحة | ✅ مترجم |
 | 10 | OSTEP | PDF لكل فصل | 45 فصلاً | في الطابور |
-| 11 | Crafting Interpreters | HTML/Markdown | 30 فصلاً | في الطابور |
-| 12 | CS3110 (OCaml) | HTML | 10 فصول | في الطابور |
-| 13 | Game Programming Patterns | Markdown | 21 فصلاً | في الطابور |
-| 14 | Dive into Systems | HTML | ~20 قسماً | في الطابور |
-| 15 | IntroTCS | Markdown | 24 فصلاً | في الطابور |
+| 11 | Crafting Interpreters | HTML/Markdown | 30 فصلاً | ✅ مترجم |
+| 12 | CS3110 (OCaml) | HTML | 10 فصول | ✅ مترجم |
+| 13 | Game Programming Patterns | Markdown | 21 فصلاً | ✅ مترجم |
+| 14 | Dive into Systems | HTML | ~20 قسماً | ✅ مترجم |
+| 15 | IntroTCS | Markdown | 24 فصلاً | ✅ مترجم |
 | 16 | MCS | PDF | 22 فصلاً | في الطابور |
-| 17 | AOSA v1 + v2 | LaTeX | 49 فصلاً | في الطابور |
+| 17 | AOSA v1 + v2 | LaTeX | 49 فصلاً | ✅ مترجم |
 | 18 | Computer Networks (Sys. Approach) | RST | 9 فصول | ينتظر موافقة المؤلفين |
-| 19 | Network Security | RST | 9 فصول | في الطابور |
-| 20 | PostgreSQL Internals | HTML | 12 فصلاً | في الطابور |
-| 21 | Use The Index, Luke! | HTML | 54 صفحة | في الطابور |
-| 22 | Database Foundations (UCLL) | HTML | 24 وحدة | في الطابور |
-| 23 | Cryptopals | HTML | 66 تحدياً | في الطابور |
+| 19 | Network Security | RST | 9 فصول | ✅ مترجم |
+| 20 | PostgreSQL Internals | HTML | 12 فصلاً | ✅ مترجم |
+| 21 | Use The Index, Luke! | HTML | 54 صفحة | ✅ مترجم |
+| 22 | Database Foundations (UCLL) | HTML | 24 وحدة | ✅ مترجم |
+| 23 | Cryptopals | HTML | 66 تحدياً | ✅ مترجم |
 | 24 | OCaml Manual 5.5 | HTML | 37 فصلاً | مرجع/اختياري |
-| 25 | Open Data Structures | LaTeX | 14 فصلاً | في الطابور |
+| 25 | Open Data Structures | LaTeX | 14 فصلاً | ✅ مترجم |
 | 26 | Open Workbook of Cryptology | LaTeX | 92 صفحة | في الطابور |
 | 27 | DB Performance at Scale | PDF | 11 فصلاً | في الطابور |
 
