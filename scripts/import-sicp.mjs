@@ -204,9 +204,20 @@ const mathLatex = (xml) => {
     }
     return i;
   };
-  const render = (node) => {
+  const markCases = (nodes) => {
+    for (const node of nodes) {
+      if (!node.children) continue;
+      const table = node.children.find((child) => child.tag === 'mtable');
+      const brace = node.children.some(
+        (child) => child.tag === 'mo' && child.children?.[0]?.text === '{'
+      );
+      if (table && brace) table.cases = true;
+      markCases(node.children);
+    }
+  };
+  const render = (node, inCases = false) => {
     if (node.text !== undefined) return node.text;
-    const items = (node.children || []).map(render).filter((item) => item !== '');
+    const items = (node.children || []).map((child) => render(child, inCases)).filter((item) => item !== '');
     const joined = items.join(' ');
     switch (node.tag) {
       case 'mfrac': {
@@ -229,15 +240,32 @@ const mathLatex = (xml) => {
         const [a, b] = items;
         return a && b ? `\\sqrt[${b}]{${a}}` : joined;
       }
+      case 'mtext':
+        return inCases ? `\\text{${joined}}` : joined;
+      case 'mtr':
+        return inCases && items.length > 0
+          ? `${items[0]} & ${items.slice(1).join(' ')}`
+          : joined;
+      case 'mtable': {
+        if (!node.cases) return joined;
+        const rows = (node.children || [])
+          .map((child) => render(child, true))
+          .filter((item) => item !== '');
+        return rows.length > 0 ? `\\begin{cases} ${rows.join(' \\\\ ')} \\end{cases}` : joined;
+      }
       case 'annotation':
         return '';
       default:
+        if (items.length === 2 && items[0] === '{' && items[1]?.startsWith('\\begin{cases}')) {
+          return items[1];
+        }
         return joined;
     }
   };
   const root = [];
   parseInto(xml, 0, root);
-  return root.map(render).filter(Boolean).join(' ');
+  markCases(root);
+  return root.map((node) => render(node)).filter(Boolean).join(' ');
 };
 
 const replaceMath = (html, math) =>
