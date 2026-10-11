@@ -1,8 +1,8 @@
 ---
-title: "Summary"
-lang: en
+title: "الخلاصة"
+lang: ar
 ---
 
-## 13. Summary
+## 13. الخلاصة
 
-This text introduced the main ideas in operating systems by studying one operating system, xv6, line by line. Some code lines embody the essence of the main ideas (e.g., context switching, user/kernel boundary, locks, etc.) and each line is important; other code lines provide an illustration of how to implement a particular operating system idea and could easily be done in different ways (e.g., a better algorithm for scheduling, better on-disk data structures to represent files, better logging to allow for concurrent transactions, etc.). All the ideas were illustrated in the context of one particular, very successful system call interface, the Unix interface, but those ideas carry over to the design of other operating systems.
+عرض هذا النصّ الأفكار الرئيسة في نظم التشغيل بدراسة نظامِ تشغيلٍ واحدٍ هو xv6، سطرًا بسطر. فبعض أسطر الشيفرة تُجسّد جوهر الأفكار الرئيسة (مثلًا: تبديل السّياق، وحدود المستخدم والنواة، والأقفال، وغيرها) وكلُّ سطرٍ منها مهمّ؛ وبعضها الآخر يُقدّم توضيحًا لكيفية تنفيذ فكرةٍ معيّنةٍ من أفكار نظم التشغيل، وكان يمكن أداؤها على نحوٍ مختلف (مثلًا: خوارزميّةٌ أفضل للجدولة، وبنيات بياناتٌ أفضل على القرص لتمثيل الملفّات، وتسجيلٌ أفضل للسماح بالمعاملات المتزامنة، وغيرها). وقد صُوّرت جميع الأفكار في سياق واجهة نداءات نظامٍ واحدةٍ ناجحةٍ للغاية، واجهة Unix، إلّا أنّ تلك الأفكار تمتدّ إلى تصميم أنظمة التشغيل الأخرى.

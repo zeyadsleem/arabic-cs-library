@@ -1,15 +1,15 @@
 ---
-title: "Locking"
-lang: en
+title: "القفل"
+lang: ar
 ---
 
-## 7. Locking
+## 7. القفل
 
-Most kernels, including xv6, interleave the execution of multiple activities. One source of interleaving is multiprocessor hardware: computers with multiple CPUs executing independently, such as xv6’s RISC-V. These multiple CPUs share physical RAM, and xv6 exploits the sharing to maintain kernel data structures that all CPUs read and write. This sharing raises the possibility of one CPU reading a data structure while another CPU is mid-way through updating it, or even multiple CPUs updating the same data simultaneously; without careful design such parallel access is likely to yield incorrect results or a broken data structure. Even on a uniprocessor, the kernel may switch the CPU among a number of threads, causing their execution to be interleaved. Finally, a device interrupt handler that modifies the same data as some interruptible code could damage the data if the interrupt occurs just as the interrupted code is also modifying the data. The word *concurrency* refers to situations in which multiple instruction streams are interleaved, due to multiprocessor parallelism, thread switching, or interrupts.
+تشغل معظم النوى، ومنها xv6، تنفيذ أنشطة متعددة تشابكًا. ومصدرٌ من مصادر هذا التشابك هو العتاد متعدد المعالجات: حواسيب تضمّ معالجات مركزية عدّة تنفّذ كلٌّ منها باستقلالية، مثل معالج RISC-V الذي يعمل عليه xv6. وهذه المعالجات تتشارك ذاكرة RAM الفيزيائية، ويستغلّ xv6 هذا التشارك للمحافظة على بنى بيانات في النواة تقرؤها جميع المعالجات وتكتب فيها. وهذا التشارك يفتح المجال أمام احتمال أن تقرأ معالجةٌ بنيةَ بيانات في اللحظة التي تكون معالجةٌ أخرى قد شرعت في تحديثها، أو حتى أن تُحدّث معالجات متعددة البيانات نفسها معًا؛ ودون تصميمٍ واعٍ، فمن المرجّح أن يُفضي هذا الوصول المتوازي إلى نتائج خاطئة أو إلى بنية بياناتٍ معطوبة. حتى على معالجٍ وحيد أيضًا، قد تبدّل النواة المعالج بين عدد من الخيوط، فيتشابك تنفيذها. وأخيرًا، فإنّ مُعالج مقاطعة جهازٍ يُعدّل البيانات نفسها التي تُعدّلها شيفرةٌ قابلة للمقاطعة قد يتلف تلك البيانات إن وقعت المقاطعة في اللحظة التي تكون الشيفرة المُقاطعة قد شرعت في تعديل البيانات فيها أيضًا. وتُشير كلمة *التزامن* إلى المواقف التي تتشابك فيها تدفقات تعليماتٍ متعددة، سواءً بسبب التوازي متعدد المعالجات أو تبديل الخيوط أو المقاطعات.
 
-Kernels are full of concurrently-accessed data. For example, two CPUs could simultaneously call `kalloc`, thereby concurrently popping from the head of the free list. Kernel designers like to allow for lots of concurrency, since it can increase performance and responsiveness. However, they must then convince themselves of correctness despite concurrency. Strategies aimed at correctness under concurrency, and abstractions that support them, are called *concurrency control* techniques.
+وتمتلئ النوى ببيانات يُنال منها تزامنيًا. فمثلًا، قد تستدعي معالجتان `kalloc` في الوقت نفسه، فتستخرجان من رأس القائمة الحرّة معًا. ويحبّ مصمّمو النوى أن يتركوا متّسعًا واسعًا للتزامن، إذ يمكنه أن يزيد الأداء والاستجابة. لكنّهم يلزمهم بعدئذٍ أن يُقنعوا أنفسهم بالصحّة رغم التزامن. وتُسمّى الاستراتيجيّات الموجّهة إلى الصحّة في ظلّ التزامن، والتجريدات التي تدعمها، تقنيّات *تحكّم التزامن (concurrency control)*.
 
-This chapter focuses on a widely used concurrency control technique: the *lock*. As a preview, here’s what use of a lock in the xv6 kernel looks like:
+ويركّز هذا الفصل على تقنيّةٍ شائعة الاستخدام للتحكّم في التزامن، وهي *القفل (lock)*. ولكي نقدّم لمحةً استباقية، إليك كيف يبدو استخدام القفل في نواة xv6:
 
 ```c
 struct spinlock lk;
@@ -19,19 +19,19 @@ acquire(&lk);
 release(&lk);
 ```
 
-A lock provides mutual exclusion, ensuring that only one CPU at a time can hold the lock. If the programmer associates a lock with each shared data item, and the code always holds the associated lock when using an item, then the item will be used by only one CPU at a time. In this situation, we say that the lock protects the data item. Although a lock is an easy-to-understand concurrency control mechanism, it can limit performance by serializing concurrent operations on the data it protects.
+ويوفّر القفل استبعادًا متبادلًا، يضمن أنّ معالجةً واحدةً فقط في كل مرة تستطيع حيازة القفل. فإن ربط المبرمج قفلًا بكل عنصر بياناتٍ مشترك، وحازت الشيفرة القفل المرتبط به دائمًا عند استخدام العنصر، فسيستخدم العنصرَ معالجةٌ واحدةٌ فقط في كل مرة. وفي هذا الوضع، نقول إنّ القفل يحمي عنصر البيانات. ومع أنّ القفل آليّةٌ سهلة الفهم للتحكّم في التزامن، فإنّه قد يحدّ من الأداء بتسلسله العمليّات المتزامنة على البيانات التي يحميها.
 
-The rest of this chapter explains why xv6 needs locks, how xv6 implements them, and how it uses them.
+ويشرح ما بقي من هذا الفصل لماذا يحتاج xv6 إلى الأقفال، وكيف ينفّذها، وكيف يستخدمها.
 
-## 7.1 Races
+## 7.1 حالات التسابق
 
 ![](/images/xv6/lock-0-smp.webp){#fig:smp}
 
-**Figure 7.1: Simplified SMP architecture**
+**الشكل 7.1: معمارية SMP مبسّطة**
 
-As an example of why we need locks, consider two processes with exited children calling the `wait` system call on two different CPUs. `wait` frees the child’s memory. Thus on each CPU, the kernel will call `kfree` to free the children’s memory pages. The kernel allocator maintains a linked list of free pages: `kalloc()` pops a page of memory from the list, and `kfree()` pushes a page onto the list. For best performance, we might hope that the `kfree`s of the two parent processes would execute in parallel without either having to wait for the other, but this would not be correct given xv6’s `kfree` implementation.
+ومثلًا على سبب حاجتنا إلى الأقفال، لنأخذ عمليتين لهما أولادٌ قد خرجوا، وتستدعيان نداء النظام `wait` على معالجتين مختلفتين. فـ`wait` يحرّر ذاكرة الولد. وعليه، على كلّ معالجة، ستستدعي النواة `kfree` لتحرير صفحات ذاكرة الولدين. ويحتفظ مخصّص النواة بقائمةٍ مترابطةٍ من الصفحات الحرّة: يستخرج `kalloc()` صفحةً من القائمة، ويدفع `kfree()` صفحةً إليها. ولكي نحصل على أفضل أداء، قد نأمل أن تُنفّذ نداءات `kfree` للعمليتين الأبَويتين على التوازي دون أن تنتظر إحداهما الأخرى، لكنّ ذلك لن يكون صحيحًا نظرًا إلى تنفيذ `kfree` في xv6.
 
-Figure [7.1](#fig:smp) illustrates the setting in more detail: the linked list of free pages is in memory that is shared by the two CPUs, which manipulate the list using load and store instructions. (In reality, the processors have caches, but conceptually multiprocessor systems behave as if there were a single, shared memory.) If there were no concurrent requests, you might implement a list `push` operation as follows:
+يفصّل الشكل [7.1](#fig:smp) هذا السياق تفصيلًا أوسع: فقائمة الصفحات الحرّة المترابطة موجودةٌ في ذاكرةٍ تتشاركها المعالجتان، وهما تتعاملان مع القائمة باستخدام تعليمات التحميل والتخزين. (وفي الواقع، تملك المعالجات مخابئ، لكنّ نظم تعدد المعالجات تتصرف من ناحية المفهوم كما لو كانت هناك ذاكرة واحدة مشتركة.) فلو لم تكن هناك طلبات متزامنة، فلربما نفّذت عمليةَ الدفع `push` إلى قائمةٍ على النحو التالي:
 
 ```c
     struct element {
@@ -55,13 +55,13 @@ Figure [7.1](#fig:smp) illustrates the setting in more detail: the linked list o
 
 ** ![](/images/xv6/lock-1-race.webp){#fig:race}
 
-**Figure 7.2: Example race**
+**الشكل 7.2: مثال على تسابق**
 
-This implementation is correct if executed in isolation. However, the code is not correct if more than one copy executes concurrently. If two CPUs execute `push` at the same time, both might execute line 15 as shown in Figure [7.1](#fig:smp), before either executes line 16, which results in an incorrect outcome as illustrated by Figure [7.2](#fig:race). There would then be two list elements with `next` set to the same former value of `list`. When the two assignments to `list` happen at line 16, the second one will overwrite the first; the element involved in the first assignment will be lost.
+هذا التنفيذ صحيح إذا نُفّذ منفردًا. أمّا الشيفرة فليست صحيحة إذا نُفّذت أكثر من نسخةٍ منها تزامنيًا. فإن نفّذت معالجتان `push` في الوقت نفسه، فقد تنفّذ كلتاهما السطر 15 كما هو موضّح في الشكل [7.1](#fig:smp)، قبل أن تنفّذ أيّهما السطر 16، مما ينتج عنه نتيجة خاطئة كما يوضّحه الشكل [7.2](#fig:race). سيكون هناك عندئذٍ عنصران في القائمة قيمة `next` فيهما هي القيمة السابقة نفسها لـ`list`. وحين يحدث إسنادان إلى `list` في السطر 16، فسيطغى الثاني على الأول؛ وسيضيع العنصر الذي أتمّ الإسناد الأول.
 
-The lost update at line 16 is an example of a *race*. A race is a situation in which a memory location is accessed concurrently, and at least one access is a write. A race is often a sign of a bug, either a lost update (if the accesses are writes) or a read of an incompletely-updated data structure. The outcome of a race depends on the machine code generated by the compiler, the timing of the two CPUs involved, and how their memory operations are ordered by the memory system, which can make race-induced errors difficult to reproduce and debug. For example, adding print statements while debugging `push` might change the timing of the execution enough to make the race disappear.
+إنّ التحديث الضائع في السطر 16 مثالٌ على *حالة التسابق (race)*. وحالة التسابق وضعٌ يُنال فيه موضع ذاكرة تزامنيًا، ويكون أحد الوصولين فيه كتابةً على الأقلّ. وكثيرًا ما تكون حالة التسابق علامةً على علة: إمّا تحديث ضائع (إذا كانت عمليات الوصول كتابات) أو قراءة بنية بياناتٍ لم تكتمل تحديثاتها. وتعتمد نتيجة حالة التسابق على الشيفرة الآلية التي يُنشئها المصرّف، وعلى توقيت المعالجتين المعنيتين، وعلى كيفية ترتيب نظام الذاكرة لعملياتهما، وكلّ ذلك قد يجعل الأخطاء الناجمة عن التسابق صعبة الإعادة والتنقيح. فمثلًا، قد تُغيّر إضافة عبارات الطباعة أثناء تنقيح `push` توقيت التنفيذ بما يكفي لإخفاء التسابق.
 
-The usual way to avoid races is to use a lock. Locks ensure *mutual exclusion*, so that only one CPU at a time can execute the sensitive lines of `push`; this makes the scenario above impossible. The correctly locked version of the above code adds just a few lines (highlighted in yellow):
+والطريقة المعتادة لتجنّب التسابق هي استخدام قفل. وتضمن الأقفال *استبعادًا متبادلًا (mutual exclusion)*، فلا تستطيع معالجةٌ واحدةٌ في كل مرة سوى تنفيذ الأسطر الحسّاسة من `push`؛ وهذا يجعل السيناريو أعلاه مستحيلًا. والإصدار المُقفَل الصحيح من الشيفرة أعلاه يضيف بضعة أسطر فقط (المُظلّلة بالأصفر):
 
 ```c
    struct element *list = 0;
@@ -83,21 +83,21 @@ The usual way to avoid races is to use a lock. Locks ensure *mutual exclusion*, 
 
 **
 
-The sequence of instructions between `acquire` and `release` is often called a *critical section*. The lock is said to be protecting `list`.
+ويُسمّى تتابع التعليمات الواقع بين `acquire` و`release` غالبًا *القسم الحرج (critical section)*. ويُقال إنّ القفل يحمي `list`.
 
-When we say that a lock protects data, we really mean that the lock protects some collection of invariants that apply to the data. Invariants are properties of data structures that are maintained across operations. Typically, an operation’s correct behavior depends on the invariants being true when the operation begins. The operation may temporarily violate the invariants but must reestablish them before finishing. For example, in the linked list case, the invariant is that `list` points at the first element in the list and that each element’s `next` field points at the next element. The implementation of `push` violates this invariant temporarily: in line 17, `l` points to the next list element, but `list` does not point at `l` yet (reestablished at line 18). The race we examined above happened because a second CPU executed code that depended on the list invariants while they were (temporarily) violated. Proper use of a lock ensures that only one CPU at a time can operate on the data structure in the critical section, so that no CPU will execute a data structure operation when the data structure’s invariants do not hold.
+وحين نقول إنّ قفلًا يحمي بيانات، فإنّنا نعني في الحقيقة أنّ القفل يحمي مجموعةً من الثوابت التي تنطبق على البيانات. والثوابت خصائص بنى البيانات التي تُصان على مرّ العمليات. وعادةً ما يعتمد السلوك الصحيح لعمليّةٍ ما على تحقّق الثوابت عند بدء العمليّة. وقد تخالف العمليّة الثوابت مؤقتًا، لكنّها ينبغي أن تُعيد ترسيخها قبل أن تتم. فمثلًا، في حالة القائمة المترابطة، الثابت هو أنّ `list` تشير إلى أوّل عنصرٍ في القائمة، وأنّ حقل `next` في كلّ عنصرٍ يشير إلى العنصر التالي. وتنفيذ `push` يخالف هذا الثابت مؤقتًا: في السطر 17، تشير `l` إلى عنصر القائمة التالي، لكنّ `list` لا تشير إلى `l` بعد (ويُعاد ترسيخ الثابت في السطر 18). وحدث التسابق الذي فحصناه أعلاه لأنّ معالجةً ثانيةً نفّذت شيفرةً تعتمد على ثوابت القائمة في حين كانت مخالَفةً (مؤقتًا). والاستخدام السليم للقفل يضمن أنّ معالجةً واحدةً فقط في كل مرة تستطيع العمل على بنية البيانات داخل القسم الحرج، فلا تنفّذ أيّ معالجة عمليّةً على بنية البيانات حين لا تصدق ثوابتها.
 
-You can think of a lock as *serializing* concurrent critical sections so that they run one at a time, and thus preserve invariants (assuming the critical sections are correct in isolation). You can also think of critical sections guarded by the same lock as being atomic with respect to each other, so that each sees only the complete set of changes from earlier critical sections, and never sees partially-completed updates.
+ويمكنك النظر إلى القفل بوصفه *مُسلسِلًا* للأقسام الحرجة المتزامنة بحيث تعمل قسمًا بعد آخر، فتصان بذلك الثوابت (على افتراض أنّ الأقسام الحرجة صحيحةٌ منفردةً). ويمكنك أيضًا النظر إلى الأقسام الحرجة التي يحرسها القفل نفسه بوصفها ذرّيةً نسبةً إلى بعضها، فيرى كلٌّ منها المجموعة الكاملة من تغييرات الأقسام الحرجة السابقة فقط، ولا يرى أبدًا تحديثاتٍ لم تكتمل.
 
-Though useful for correctness, locks inherently limit performance. For example, if two processes call `kfree` concurrently, the locks will serialize the two critical sections, so that there is no benefit from running them on different CPUs. We say that multiple processes *conflict* if they want the same lock at the same time, or that the lock experiences *contention*. A major challenge in kernel design is avoidance of lock contention in pursuit of parallelism. Xv6 does little of that, but sophisticated kernels organize data structures and algorithms specifically to avoid lock contention. In the list example, a kernel may maintain a separate free list per CPU and only touch another CPU’s free list if the current CPU’s list is empty and it must steal memory from another CPU. Other use cases may require more complicated designs.
+ومع أنّ الأقفال مفيدةٌ للصحّة، فإنّها تحدّ من الأداء بطبيعتها. فمثلًا، إذا استدعيت عمليتان `kfree` تزامنيًا، فإنّ الأقفال ستُسلسل القسمين الحرجين، فلا فائدة من تشغيلهما على معالجتين مختلفتين. ونقول إنّ عملياتٍ متعددة *تتعارض* إن أرادت القفل نفسه في الوقت نفسه، أو إنّ القفل يعاني *تنازعًا*. وأحد التحدّيات الكبرى في تصميم النوى هو تجنّب تنازع الأقفال سعيًا إلى التوازي. وxv6 لا يفعل من ذلك إلّا قليلًا، أمّا النوى المتطوّرة فتنظّم بنى البيانات والخوارزميّات بصورةٍ خاصّةٍ لتجنّب تنازع الأقفال. وفي مثال القائمة، قد تحتفظ النواة بقائمة حرّة منفصلة لكلّ معالجة، ولا تمسّ قائمة معالجةٍ أخرى إلّا إذا كانت قائمة المعالجة الحالية فارغة واضطرّت إلى سرقة ذاكرةٍ من معالجةٍ أخرى. وقد تتطلّب حالات الاستخدام الأخرى تصاميمَ أكثر تعقيدًا.
 
-The placement of locks is also important for performance. For example, it would be correct to move `acquire` earlier in `push`, before line 13. But this would likely reduce performance because then the calls to `malloc` would be serialized. The section “Using locks” below provides some guidelines for where to insert `acquire` and `release` invocations.
+وموضع الأقفال مهمٌّ أيضًا للأداء. فمثلًا، سيكون صحيحًا تقديم `acquire` في `push` إلى ما قبل السطر 13. لكنّ ذلك سيقلّل الأداء على الأرجح، إذ ستُسلسل عندئذٍ نداءات `malloc`. ويقدّم القسم «استخدام الأقفال» أدناه بعض الإرشادات حول مواضع إدراج نداءات `acquire` و`release`.
 
-## 7.2 Code: Locks
+## 7.2 الشيفرة: الأقفال
 
-Please read `kernel/spinlock.h` and `kernel/spinlock.c`.
+يُرجى قراءة `kernel/spinlock.h` و`kernel/spinlock.c`.
 
-Xv6 has two types of locks: spinlocks and sleep-locks. We’ll start with spinlocks. Xv6 represents a spinlock as a `struct spinlock`. The important field in the structure is `locked`, a word that is zero when the lock is available and non-zero when it is held. Were there no concurrency, xv6 could acquire a lock with code like
+يملك xv6 نوعين من الأقفال: الأقفال الدورانية (spinlocks) وأقفال النوم (sleep-locks). وسنبدأ بالأقفال الدورانية. ويمثّل xv6 القفل الدوراني بـ`struct spinlock`. والحقل المهمّ في البنية هو `locked`، وهو كلمةٌ تكون صفرًا عندما يكون القفل متاحًا، وغير صفرية عندما يكون محوزًا. فلو لم يكن هناك تزامن، لاستطاع xv6 حيازة قفلٍ بشيفرةٍ على الشكل التالي:
 
 ```c
    void
@@ -114,94 +114,94 @@ Xv6 has two types of locks: spinlocks and sleep-locks. We’ll start with spinlo
 
 **
 
-Unfortunately, this implementation does not guarantee mutual exclusion in the face of concurrency. Two CPUs could simultaneously reach line 25, see that `lk->locked` is zero, and then both grab the lock by executing line 26. At this point, two different CPUs hold the lock, which violates the mutual exclusion property. What we need is a way to make lines 25 and 26 execute as an *atomic* (indivisible) step.
+للأسف، لا يضمن هذا التنفيذ استبعادًا متبادلًا في وجه التزامن. فقد تصل معالجتان إلى السطر 25 في الوقت نفسه، وترى أنّ `lk->locked` صفر، ثم تحوزان القفل معًا بتنفيذ السطر 26. وعند تلك النقطة، تحوز القفل معالجتان مختلفتان، وهو ما يخالف خاصيّة الاستبعاد المتبادل. وما نحتاجه هو طريقةٌ تجعل السطرين 25 و26 يُنفّذان كخطوةٍ *ذرّية (atomic)* غير قابلة للانقسام.
 
-Because locks are widely used, multi-core processors usually provide an instruction that can be used to make lines 25 and 26 atomic. On the RISC-V this instruction is `amoswap r, r, a`. The `amoswap` instruction reads the value at memory address `a`, writes the contents of register `r` to that address, and puts the value it read into `r`. That is, it swaps the contents of the register and the addressed memory location. It performs this sequence atomically, using special hardware to prevent any other CPU from using the memory address between the read and the write.
+ولأنّ الأقفال تُستخدم على نطاقٍ واسع، فإنّ المعالجات متعدّدة الأنوية توفّر عادةً تعليمةً يمكن استخدامها لجعل السطرين 25 و26 ذرّيّين. وفي RISC-V هذه التعليمة هي `amoswap r, r, a`. فتعليمة `amoswap` تقرأ القيمة عند عنوان الذاكرة `a`، وتكتب محتويات المسجّل `r` في ذلك العنوان، وتضع ما قرأته في `r`. أي أنّها تبدّل محتويات المسجّل وموضع الذاكرة المُعنون. وهي تؤدّي هذا التتابع ذرّيًا، مستخدمةً عتادًا خاصًّا لمنع أيّ معالجةٍ أخرى من استخدام عنوان الذاكرة بين القراءة والكتابة.
 
-The C compiler provides a family of “atomic” built-in functions that generate atomic instructions. Xv6’s `acquire()` uses `__atomic_exchange_n(addr, value, ...)`, which boils down to the `amoswap` instruction; the function returns the old (swapped) contents of `addr`. Here’s a good way to write the loop in `acquire`:
+ويوفّر مصرف C عائلةً من الدوالّ المدمجة «الذرّية» التي تُنشئ تعليماتٍ ذرّية. وتستخدم `acquire()` في xv6 الدالّة `__atomic_exchange_n(addr, value, ...)` التي تنزل إلى تعليمة `amoswap`؛ وتُعيد الدالّة المحتويات القديمة (المبدّلة) للعنوان `addr`. وهذه طريقةٌ جيّدةٌ لكتابة الحلقة في `acquire`:
 
 ```c
   while (__atomic_exchange_n(&lk->locked, 1, __ATOMIC_ACQUIRE) != 0)
     ;
 ```
 
-Xv6’s `acquire` uses the above loop (Section [7.6](https://mit-pdos.github.io/xv6-riscv-book/lock.html#SEC:MEMORDER) will explain `__ATOMIC_ACQUIRE`). Each iteration swaps one into `lk->locked` and checks the previous value; if the previous value is zero, then we’ve acquired the lock, and the swap will have set `lk->locked` to one. If the previous value is one, then some other CPU holds the lock, and the fact that we atomically swapped one into `lk->locked` didn’t change its value.
+تستخدم `acquire` في xv6 الحلقة أعلاه (وسيشرح القسم [7.6](https://mit-pdos.github.io/xv6-riscv-book/lock.html#SEC:MEMORDER) معنى `__ATOMIC_ACQUIRE`). ففي كلّ تكرار، تتبادل الحلقة الواحد في `lk->locked` وتتحقّق من القيمة السابقة؛ فإن كانت القيمة السابقة صفرًا، فقد حزنا القفل، وسيكون التبديل قد ضبط `lk->locked` على الواحد. وإن كانت القيمة السابقة واحدًا، فمعالجةٌ أخرى تحوز القفل، وحقيقة أنّنا بدّلنا الواحد ذرّيًا في `lk->locked` لم تُغيّر قيمته.
 
-Once the lock is acquired, `acquire` records, for debugging, the CPU that acquired the lock. The `lk->cpu` field is protected by the lock and must only be changed while holding the lock.
+وبعد حيازة القفل، تسجّل `acquire`، لأغراض التنقيح، المعالجة التي حازت القفل. وحقل `lk->cpu` يحميه القفل، ولا يجوز تغييره إلّا أثناء حيازة القفل.
 
-The function `release` is the opposite of `acquire`: it clears the `lk->cpu` field and then releases the lock. Conceptually, the release just assigns zero to `lk->locked`. The C standard allows compilers to implement an assignment with multiple store instructions, so a C assignment might be non-atomic with respect to concurrent code. Instead, `release` uses the C atomic function `__atomic_store_n(addr, 0, ...)` that stores zero to the address in a single indivisible operation.
+والدالّة `release` هي عكس `acquire`: فهي تمسح حقل `lk->cpu` ثمّ تحرّر القفل. ومن ناحية المفهوم، فإنّ التحرير يُسنِد صفرًا إلى `lk->locked` إسنادًا مجرّدًا. ويسمح معيار C للمصرّفات بأن تنفّذ الإسناد بعدّة تعليمات تخزين، فقد يكون إسناد C غير ذرّي بالنسبة إلى شيفرةٍ متزامنة. وبدلًا من ذلك، تستخدم `release` الدالّة الذرّية في C التي هي `__atomic_store_n(addr, 0, ...)` والتي تخزّن الصفر في العنوان في عمليّةٍ واحدةٍ غير قابلةٍ للانقسام.
 
-## 7.3 Code: Using locks
+## 7.3 الشيفرة: استخدام الأقفال
 
-Xv6 uses locks in many places to avoid races. As described above, `kalloc` and `kfree` form a good example. Try Exercises 1 and 2 to see what happens if those functions omit the locks. You’ll likely find that it’s difficult to trigger incorrect behavior, suggesting that it’s hard to reliably test whether code is free from locking errors and races. Xv6 may well have as-yet-undiscovered races.
+يستخدم xv6 الأقفال في أماكن كثيرة لتجنّب التسابق. وكما ذُكر أعلاه، تُشكّل `kalloc` و`kfree` مثالًا جيّدًا على ذلك. فجرّب التمرينين 1 و2 لترى ما يحدث إذا ما أغفلت هاتان الدالّتان الأقفال. ومن المرجّح أن تجد صعوبةً في إثارة السلوك الخاطئ، ممّا يوحي بأنّ اختبار خلوّ الشيفرة من أخطاء الإقفال والتسابق اختبارٌ عسيرٌ على نحوٍ موثوق. وقد يكون في xv6 تسابقاتٌ لم تُكتشف بعد.
 
-A hard part about using locks is deciding how many locks to use and which data and invariants each lock should protect. There are a few basic principles. First, in any code that might cause a memory location to be written by one CPU at the same time that another CPU reads or writes it, a lock should be used to keep the two operations from overlapping. Second, remember that locks protect invariants: if an invariant involves multiple memory locations, typically all of them need to be protected by a single lock to ensure the invariant is maintained.
+من العسير في استخدام الأقفال قرارُ عدد الأقفال التي ينبغي استخدامها وأيّ البيانات والثوابت التي ينبغي لكلّ قفلٍ حمايتها. وهناك بعض المبادئ الأساسيّة. أوّلًا، في أيّ شيفرةٍ قد تُسبّب كتابةً في موضع ذاكرةٍ من قِبل معالجةٍ واحدة في الوقت نفسه الذي تقرأ فيه معالجةٌ أخرى ذلك الموضع أو تكتب فيه، ينبغي استخدام قفلٍ لمنع تداخل العمليّتين. وثانيًا، تذكّر أنّ الأقفال تحمي الثوابت: فإن تعلّق ثابتٌ بمواضع ذاكرةٍ متعددة، فعادةً ما يلزم أن تحميها كلّها قفلٌ واحدٌ لضمان صيانة الثابت.
 
-The rules above say when locks are necessary but say nothing about when locks are unnecessary, and it is important for efficiency not to lock too much, because locks reduce parallelism. If parallelism isn’t important, then one could arrange to have only a single thread and not worry about locks. A simple kernel can do this on a multiprocessor by having a single lock; the kernel acquires the lock every time the kernel is entered from user space, for a system call or interrupt; the kernel releases the lock when it returns to user space. Many uniprocessor operating systems have been converted to run on multiprocessors using this approach, sometimes called a “big kernel lock,” but the approach sacrifices parallelism: only one CPU can execute in the kernel at a time. If the kernel consumes significant CPU time, more parallelism could be obtained by protecting different objects or modules with different locks, so that different CPUs could be executing in different parts of the kernel at the same time.
+تقول القواعد أعلاه متى تكون الأقفال ضروريّة، لكنّها لا تقول شيئًا عن متى تكون غير ضروريّة، ومن المهمّ من أجل الكفاءة ألّا يُبالغ في الإقفال، لأنّ الأقفال تُنقص التوازي. فإن لم يكن التوازي مهمًّا، فبالإمكان ترتيب الأمور بحيث لا وجود لخيطٍ إلّا واحدٌ، وألّا يُعير القفل أيّ اهتمام. ويستطيع نواةٌ بسيطةٌ أن تفعل ذلك على متعدّد المعالجات بوجود قفلٍ وحيد؛ تحوز النواة القفل في كلّ مرةٍ تُدخل فيها النواة من فضاء المستخدم، لنداء نظامٍ أو مقاطعة؛ وتحرّر النواة القفل عند عودتها إلى فضاء المستخدم. وقد حُوّلت أنظمةُ تشغيلٍ عديدةٌ ذات معالجٍ واحد لتعمل على متعدّدات المعالجات باستخدام هذا المنهج، الذي يُسمّى أحيانًا «قفل النواة الكبير»، لكنّ المنهج يُضحّي بالتوازي: فلا تستطيع إلّا معالجةٌ واحدة في كل مرة أن تنفّذ في النواة. فإن استهلكت النواة وقتًا مركزيًا ذا شأن، فبالإمكان الحصول على مزيدٍ من التوازي بحماية كائنات أو وحداتٍ مختلفةٍ بأقفال مختلفة، حتّى تستطيع معالجاتٌ مختلفة أن تنفّذ في أجزاء مختلفة من النواة في الوقت نفسه.
 
-As an example of coarse-grained locking, xv6’s `kalloc.c` allocator has a single free list protected by a single lock. If multiple processes on different CPUs try to allocate pages at the same time, each will have to wait for its turn by spinning in `acquire`. Spinning wastes CPU time, since it’s not useful work. If contention for the lock wasted a significant fraction of CPU time, perhaps performance could be improved by changing the allocator to have a separate free list per CPU, each with its own lock, to allow truly parallel allocation.
+ومثالٌ على الإقفال خشن الحُبيبات، فإنّ مخصّص xv6 في `kalloc.c` يملك قائمةً حرّةً واحدةً يحميها قفلٌ وحيد. فإن حاولت عمليّات متعددة على معالجات مختلفة أن تُخصّص صفحات في الوقت نفسه، فسيلزم كلٌّ منها أن ينتظر دوره بالدوران في `acquire`. والدوران يُهدر وقت المعالج، إذ ليس عملًا نافعًا. فإن أهدر تنازع القفل جزءًا ذا شأنٍ من وقت المعالج، فلربّما تحسّن الأداء بتغيير المخصّص ليكون له قائمة حرّة منفصلة لكلّ معالجة، لكلٍّ منها قفلها الخاصّ، بما يسمح بتخصيصٍ متوازيٍّ حقيقيّ.
 
-As an example of fine-grained locking, xv6 has a separate lock for each file, so that processes that manipulate different files can often proceed without waiting for each other’s locks. The file locking scheme could be made even more fine-grained if one wanted to allow processes to simultaneously write different areas of the same file. Ultimately lock granularity decisions need to be driven by performance requirements as well as complexity considerations.
+ومثالٌ على الإقفال دقيق الحُبيبات، فإنّ xv6 يملك قفلًا منفصلًا لكلّ ملفٍ، حتّى تستطيع العمليّات التي تُعالج ملفّات مختلفة أن تمضي غالبًا دون انتظار أقفال بعضها بعضًا. ويمكن جعل نظام إقفال الملفّات أدقّ حُبيباتٍ إن أراد المرء أن يسمح للعمليّات بالكتابة في مناطق مختلفة من الملفّ نفسه تزامنيًا. وفي نهاية المطاف، يلزم أن تستند قرارات حُبيبات الإقفال إلى متطلّبات الأداء وكذلك إلى اعتبارات التعقيد.
 
-As subsequent chapters explain each part of xv6, they will mention examples of xv6’s use of locks to deal with concurrency. As a preview, Figure [7.3](#fig:locktable) lists all of the locks in xv6.
+وبينما تشرح الفصول اللاحقة كلّ جزءٍ من xv6، فإنّها ستذكر أمثلةً على استخدام xv6 الأقفال للتعامل مع التزامن. ولمحةً استباقية، يسرد الشكل [7.3](#fig:locktable) جميع الأقفال في xv6.
 
-**Figure 7.3: Locks in xv6**
+**الشكل 7.3: الأقفال في xv6**
 
-| **Lock** | **Description** |
+| **القفل** | **الوصف** |
 | --- | --- |
-| bcache.lock | Protects allocation of block buffer cache entries |
-| cons.lock | Serializes read processing of console input |
-| tx_lock | Serializes access to console (uart) output hardware |
-| ftable.lock | Serializes allocation of a struct file in file table |
-| itable.lock | Protects allocation of in-memory inode entries |
-| vdisk_lock | Serializes access to disk hardware and queue of DMA descriptors |
-| kmem.lock | Serializes allocation of memory |
-| log.lock | Serializes operations on the transaction log |
-| pipe’s pi->lock | Serializes operations on each pipe |
-| pid_lock | Serializes increments of next_pid |
-| proc’s p->lock | Serializes changes to each process’s state |
-| wait_lock | Helps wait avoid lost wakeups |
-| tickslock | Serializes operations on the ticks counter |
-| inode’s ip->lock | Serializes operations on each inode and its content |
-| buf’s b->lock | Serializes operations on each block buffer |
+| bcache.lock | يحمي تخصيص مدخلات مخبأ الكتل المؤقّت |
+| cons.lock | يُسلسل معالجة قراءة دخل الطرفيّة |
+| tx_lock | يُسلسل الوصول إلى عتاد خرج الطرفيّة (uart) |
+| ftable.lock | يُسلسل تخصيص struct file في جدول الملفّات |
+| itable.lock | يحمي تخصيص مدخلات inode في الذاكرة |
+| vdisk_lock | يُسلسل الوصول إلى عتاد القرص وطابور واصفات DMA |
+| kmem.lock | يُسلسل تخصيص الذاكرة |
+| log.lock | يُسلسل العمليّات على سجلّ المعاملات |
+| pipe’s pi->lock | يُسلسل العمليّات على كلّ أنبوب |
+| pid_lock | يُسلسل زيادات next_pid |
+| proc’s p->lock | يُسلسل تغييرات حالة كلّ عمليّة |
+| wait_lock | يساعد wait على تجنّب الإيقاظات المفقودة |
+| tickslock | يُسلسل العمليّات على عدّاد ticks |
+| inode’s ip->lock | يُسلسل العمليّات على كلّ inode ومحتواه |
+| buf’s b->lock | يُسلسل العمليّات على كلّ كتلة مخزّنة مؤقّتة |
 
-## 7.4 Deadlock and lock ordering
+## 7.4 الجمود الميت وترتيب الأقفال
 
-Suppose the functions running on CPUs C1 and C2 both have a point at which each needs to hold both lock A and lock B, and they acquire them in different orders:
+لنفترض أنّ الدالّات التي تعمل على المعالجين C1 وC2 كلتيهما عندها نقطةٍ يحتاج كلٌّ منها فيها إلى حيازة القفلين A وB معًا، وهما تحوزهما بترتيبين مختلفين:
 
 ![](/images/xv6/lock-2-order.webp)
 
-**image**
+**صورة**
 
-With a bit of bad luck, C1 and C2 might both execute their first acquire at exactly the same moment; both can succeed, since they are asking for different locks. But then both C1 and C2 will have to wait in their second calls to `acquire()`, since both locks are already held by the other CPU. Because both CPUs are waiting for each other, neither will ever release a lock, and both will wait forever. This situation is called *deadlock*.
+وبقدرٍ من الحظّ العاثر، قد ينفّذ C1 وC2 نداء الحيازة الأوّل لكلٍّ منهما في اللحظة نفسها تمامًا؛ ويمكن لكليهما أن ينجح، إذ يطلبان قفلين مختلفين. لكنّ C1 وC2 سيضطرّان بعدئذٍ إلى الانتظار في نداءيهما الثانيين إلى `acquire()`، إذ إنّ كلاّ القفلين محوزٌ أصلًا من المعالج الآخر. ولأنّ كلاّ المعالجين ينتظر الآخر، فلن يحرّر أيٌّ منهما قفلًا أبدًا، وسينتظران إلى الأبد. وتُسمّى هذه الحالة *الجمود الميت (deadlock)*.
 
-The key problem in the C1/C2 example is that the two CPUs acquired the locks in different orders. If they had both tried to acquire A first, one would have acquired A and then B and then released them both, and then the other CPU could have proceeded. More generally, locking code must follow this rule to avoid deadlock: all code paths that hold multiple locks must acquire locks in the same order. The need for this global lock acquisition order means that locks are effectively part of each function’s specification: callers must invoke functions in a way that causes locks to be acquired in the agreed-on order.
+إنّ المشكلة الجوهريّة في مثال C1/C2 هي أنّ المعالجين حازا القفلين بترتيبٍ مختلف. فلو حاول كلاهما حيازة A أوّلًا، لحاز أحدهما A ثمّ B ثمّ أحرّر القفلين معًا، ثمّ استطاع المعالج الآخر المضي قدمًا. وبشكلٍ أعمّ، يلزم أن تتبع شيفرة الإقفال هذه القاعدة لتجنّب الجمود الميت: فإنّ جميع مسارات الشيفرة التي تحوز أقفالًا متعدّدة يلزمها حيازة الأقفال بالترتيب نفسه. والحاجة إلى هذا الترتيب العالمي لحيازة الأقفال تعني أنّ الأقفال جزءٌ فعليًّا من مواصفات كلّ دالّة: فيلزم أن يستدعي المستدعون الدالّات بصورةٍ تُسبّب حيازة الأقفال بالترتيب المتّفق عليه.
 
-Xv6 has many lock-order chains of length two involving per-process locks (the lock in each `struct proc`) due to the way that the `sleep`/`wakeup` mechanism works (see Chapter [9](https://mit-pdos.github.io/xv6-riscv-book/sleep.html#CH:SLEEP)). For example, `consoleintr` is the interrupt routine which handles typed characters. When a newline arrives, any process that is waiting for console input should be woken up. To do this, `consoleintr` holds `cons.lock` while calling `wakeup`, which acquires the waiting process’s lock in order to wake it up. In consequence, the global deadlock-avoiding lock order includes the rule that `cons.lock` must be acquired before any process lock. The file-system code contains xv6’s longest lock chains. For example, creating a file requires simultaneously holding a lock on the directory, a lock on the new file’s inode, a lock on a disk block buffer, the disk driver’s `vdisk_lock`, and the calling process’s `p->lock`. To avoid deadlock, file-system code always acquires locks in the order mentioned in the previous sentence.
+ويملك xv6 سلاسلَ ترتيبِ أقفالٍ كثيرةً من طولِ اثنين تُضمّ أقفالًا خاصّةً بكلّ عمليّة (القفل في كلّ `struct proc`) بسبب طريقة عمل آليّة `sleep`/`wakeup` (انظر الفصل [9](https://mit-pdos.github.io/xv6-riscv-book/sleep.html#CH:SLEEP)). فمثلًا، `consoleintr` هي روتين المقاطعة الذي يعالج المحارف المكتوبة. وحين يصل سطر جديد، فيلزم إيقاظ أيّ عمليّةٍ تنتظر دخل الطرفيّة. ولفعل ذلك، يحوز `consoleintr` القفل `cons.lock` أثناء ندائه `wakeup`، الذي يحوز قفل العمليّة المنتظرة لإيقاظها. ونتيجةً لذلك، يضمّ ترتيب الأقفال العالمي المتجنّب للجمود الميت القاعدة التي تنصّ على أنّ `cons.lock` يلزم حيازته قبل أيّ قفل عمليّة. وشيفرة نظام الملفّات تحتوي أطول سلاسل أقفال في xv6. فمثلًا، فإنّ إنشاء ملفٍ يلزمه حيازة قفل الدليل وقفل inode الملفّ الجديد وقفل كتلة قرصٍ مخزّنة مؤقّتة و`vdisk_lock` مُشغّل القرص و`p->lock` العمليّة المستدعية معًا. ولتجنّب الجمود الميت، تحوز شيفرة نظام الملفّات الأقفال دائمًا بالترتيب المذكور في الجملة السابقة.
 
-Honoring a global deadlock-avoiding order can be surprisingly difficult. Sometimes the lock order conflicts with logical program structure, e.g., perhaps code module M1 calls module M2, but the lock order requires that a lock in M2 be acquired before a lock in M1. Sometimes the identities of locks aren’t known in advance, perhaps because one lock must be held in order to discover the identity of the lock to be acquired next. This kind of situation arises in the file system as it looks up successive components in a path name, and in the code for the `wait` and `exit` system calls as they search the table of processes looking for child processes. Finally, the danger of deadlock is often a constraint on how fine-grained one can make a locking scheme, since more locks often means more opportunity for deadlock. The need to avoid deadlock is often a major factor in kernel implementation.
+وقد يكون احترام ترتيبٍ عالميّ يتجنّب الجمود الميت عسيرًا على نحوٍ مفاجئ. فأحيانًا يتعارض ترتيب الأقفال مع البنية المنطقيّة للبرنامج، مثلًا، إذ قد تستدعي وحدة شيفرة M1 الوحدة M2، لكنّ ترتيب الأقفال يقتضي حيازة قفلٍ في M2 قبل قفلٍ في M1. وأحيانًا لا تكون هويّات الأقفال معلومةً مسبقًا، ربّما لأنّ قفلًا يلزم حيازته لكي تُكتشف هويّة القفل التالي الذي يُحاز. وينشأ هذا النوع من المواقف في نظام الملفّات حين يبحث عن المكوّنات المتتالية في اسم مسارٍ، وفي شيفرة نداءَي النظام `wait` و`exit` حين يبحثان في جدول العمليّات عن العمليّات الأولاد. وأخيرًا، فإنّ خطر الجمود الميت كثيرًا ما يكون قيدًا على مدى ما يمكن جعل نظام الإقفال دقيق الحُبيبات، إذ إنّ المزيد من الأقفال كثيرًا ما يعني مزيدًا من الفرص للجمود الميت. والحاجة إلى تجنّب الجمود الميت كثيرًا ما تكون عاملًا رئيسًا في تنفيذ النواة.
 
-A question that sometimes arises is what should happen if a CPU tries to acquire a lock that the same CPU already holds. One line of reasoning is that this should be allowed: no other CPU can hold the lock, so there’s no need to worry about CPUs interfering with each others’ use of the protected data. Locking systems that allow a CPU to re-acquire a lock it already holds are called a *re-entrant* or *recursive*. On the other hand, if a lock is already held, even on the same CPU, that means an operation may have temporarily violated and not yet restored some invariants; to allow a new operation to commence while the invariants don’t hold seems like an invitation to bugs. Xv6 takes this latter view, and forbids a CPU that currently holds a lock from re-acquiring it. Detecting this situation is the purpose of the call to `holding` in `acquire`.
+والسؤال الذي ينشأ أحيانًا هو ما ينبغي أن يحدث إذا حاولت معالجةٌ حيازة قفلٍ تحوزه المعالجة نفسها أصلًا. وأحد مسالك الاستدلال أنّ ذلك ينبغي أن يُسمح به: فلا تستطيع أيّ معالجةٍ أخرى حيازة القفل، فلا حاجة إلى القلق من تدخّل المعالجات في استخدام بعضها بعضًا للبيانات المحميّة. وتُسمّى أنظمة الأقفال التي تسمح لمعالجةٍ بأن تحوز من جديد قفلًا تحوزه أصلًا *قابلةً لإعادة الدخول (re-entrant)* أو *تعاوديّة (recursive)*. ومن ناحية أخرى، فإن كان القفل محوزًا أصلًا، حتى لو كان على المعالج نفسها، فذلك يعني أنّ عمليّةً ما قد تكون خالفت بعض الثوابت مؤقتًا ولم تُعدها بعد؛ والسماح لعمليّةٍ جديدة بالبدء حين لا تصدق الثوابت يبدو دعوةً إلى العلل. ويتّخذ xv6 هذا الرأي الأخير، ويمنع معالجةً تحوز قفلًا حاليًا من إعادة حيازته. والكشف عن هذا الموقف هو غرض نداء `holding` في `acquire`.
 
-## 7.5 Locks and interrupts
+## 7.5 الأقفال والمقاطعات
 
-Some xv6 spinlocks protect data that is used by both threads and interrupt handlers. For example, the `clockintr` timer interrupt handler might increment `ticks` at about the same time that a kernel thread reads `ticks` in `sys_pause`. The lock `tickslock` serializes the two accesses.
+تحمي بعض الأقفال الدورانية في xv6 بياناتٍ تستخدمها كلٌّ من الخيوط ومُعالجات المقاطعات. فمثلًا، قد يزيد مُعالج مقاطعة المؤقّت `clockintr` القيمة `ticks` في الوقت نفسه تقريبًا الذي يقرأ فيه خيطٌ في النواة `ticks` في `sys_pause`. والقفل `tickslock` يُسلسل الوصولين.
 
-The interaction of spinlocks and interrupts raises a potential danger. Suppose `sys_pause` holds `tickslock`, and its CPU is interrupted by a timer interrupt. `clockintr` would try to acquire `tickslock`, see it was held, and wait for it to be released. In this situation, `tickslock` will never be released: only `sys_pause` can release it, but `sys_pause` will not continue running until `clockintr` returns. So the CPU will deadlock, and any code that needs either lock will also freeze.
+ويثير تفاعل الأقفال الدورانية مع المقاطعات خطرًا محتملًا. فلنفترض أنّ `sys_pause` يحوز `tickslock`، وأنّ معالجته قُوطعت بمقاطعة مؤقّت. سيحاول `clockintr` حيازة `tickslock`، فيراه محوزًا، وينتظر تحريره. وفي هذا الموقف، فلن يُحرَّر `tickslock` أبدًا: إذ لا يستطيع تحريرَه إلّا `sys_pause`، لكنّ `sys_pause` لن يواصل العمل حتّى يعود `clockintr`. وهكذا سيقع المعالج في جمودٍ ميت، وستتجمّد أيضًا أيّ شيفرةٍ تحتاج أيًّا من القفلين.
 
-To avoid this situation, if a spinlock is used by an interrupt handler, a CPU must never hold that lock with interrupts enabled. Xv6 is more conservative: when a CPU acquires any lock, xv6 always disables interrupts on that CPU. Interrupts may still occur on other CPUs, so an interrupt’s `acquire` can wait for a thread to release a spinlock; just not on the same CPU.
+ولتجنّب هذا الموقف، إن استُخدم قفلٌ دورانيّ من قِبل مُعالج مقاطعة، فيلزم ألّا تحوز معالجةٌ ذلك القفل أبدًا والمقاطعات مُمكّنة. وأمّا xv6 فأكثر تحفّظًا: فحين تحوز معالجةٌ أيّ قفل، يعطّل xv6 المقاطعات دائمًا على تلك المعالجة. وقد تقع المقاطعات بعد على معالجات أخرى، فيمكن أن ينتظر `acquire` التابع لمقاطعةٍ حتّى يحرّر خيطٌ قفلًا دورانيًا؛ لكن ليس على المعالج نفسها.
 
-Xv6 re-enables interrupts when a CPU holds no spinlocks; it must do a little book-keeping to cope with nested critical sections. `acquire` calls `push_off` and `release` calls `pop_off` to track the nesting level of locks on the current CPU. When that count reaches zero, `pop_off` restores the interrupt enable state that existed at the start of the outermost critical section. `push_off` and `pop_off` tell the CPU to enable and disable interrupts by changing the `SIE` (Supervisor Interrupt Enable) bit in the `sstatus` (Supervisor Status) register, using `intr_on` and `rc_sstatus(SSTATUS_SIE)`; the latter clears the `SIE` bit.
+ويعيد xv6 تمكين المقاطعات حين لا تحوز معالجةٌ أيّ قفلٍ دورانيّ؛ وعليه أن يُجري القليل من مسك الدفاتر للتعامل مع الأقسام الحرجة المتداخلة. فـ`acquire` ينادي `push_off`، و`release` ينادي `pop_off`، لتتبّع مستوى تداخل الأقفال على المعالجة الحاليّة. وحين يبلغ ذلك العدّاد الصفر، يُعيد `pop_off` حالة تمكين المقاطعات التي كانت قائمةً في بداية القسم الحرج الأبعد. ويأمر `push_off` و`pop_off` المعالج بتمكين المقاطعات وتعطيلها بتغيير البِتّ `SIE` (تمكين مقاطعات المشرف) في السجلّ `sstatus` (حالة المشرف)، باستخدام `intr_on` و`rc_sstatus(SSTATUS_SIE)`؛ وهذا الأخير يمسح البِتّ `SIE`.
 
-It is important that `acquire` call `push_off` strictly before setting `lk->locked`. If the two were reversed, there would be a brief window when the lock was held with interrupts enabled, and an unfortunately timed interrupt would deadlock the system. Similarly, it is important that `release` call `pop_off` only after releasing the lock `(spinlock.c:73)`.
+ومن المهمّ أن ينادي `acquire` الدالّة `push_off` قبيل ضبط `lk->locked` ضبطًا صارم. فلو عُكس الأمران، لكانت هناك نافذةٌ وجيزةٌ يكون القفل فيها محوزًا والمقاطعات مُمكّنة، ولأدّت مقاطعةٌ ذات توقيتٍ مؤسفٍ إلى جمودٍ ميتٍ في النظام. وبالشكل نفسه، من المهمّ ألّا ينادي `release` الدالّة `pop_off` إلّا بعد تحرير القفل `(spinlock.c:73)`.
 
-## 7.6 Instruction and memory ordering
+## 7.6 ترتيب التعليمات والذاكرة
 
-It is natural to think of programs executing in the order in which source code statements appear. That’s a reasonable mental model for single-threaded code, but is not what actually happens.
+من الطبيعي أن نتصوّر البرامج وهي تنفّذ بالترتيب الذي تظهر به عبارات الشيفرة المصدريّة. وهذا نموذجٌ ذهنيٌّ معقولٌ للشيفرة أحاديّة الخيط، لكنّه ليس ما يحدث فعلًا.
 
-One reason is that compilers emit load and store instructions in orders different from those implied by the source code, and may entirely omit them (for example by caching data in registers). Another reason is that the CPU may execute instructions out of order to increase performance. For example, a CPU may notice that in a serial sequence of instructions A and B are not dependent on each other. The CPU may start instruction B first, either because its inputs are ready before A’s inputs, or in order to overlap execution of A and B.
+وأحد السببين أنّ المصرّفات تُنبِق تعليمات التحميل والتخزين بترتيبٍ مختلفٍ عمّا تنصّ عليه الشيفرة المصدريّة، وقد تحذفها كلّيًّا (كتخزينها البيانات في مسجّلات مثلًا). وسببٌ آخر أنّ المعالج قد ينفّذ التعليمات خارج ترتيبها زيادةً في الأداء. فمثلًا، قد تلاحظ معالجةٌ أنّ تعليمتين A وB في تتابعٍ متسلسلٍ غير معتمدتين إحداهما على الأخرى. وقد تبدأ المعالجةُ التعليمةَ B أوّلًا، إمّا لأنّ مدخلاتها صارت جاهزةً قبل مدخلات A، أو من أجل تراكب تنفيذ A وB.
 
-Memory access re-ordering by the CPU and compiler can cause problems when multiple threads interact through shared memory ([Waterman and Asanovic 2024](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-riscv:user); [Boehm 2005](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-boehm04)). As an example of what could go wrong, in this code for `push`, it would be a disaster if the compiler or CPU moved the store corresponding to line 4 to a point after the `release` on line 6:
+وقد تُسبّب إعادة ترتيب الوصول إلى الذاكرة من قِبل المعالج والمصرّف مشكلاتٍ حين تتفاعل خيوطٌ متعددة عبر ذاكرةٍ مشتركة ([وترمان وأسانوفيتش 2024](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-riscv:user); [بوهم 2005](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-boehm04)). ومثالٌ على ما قد يسوء، فإنّه في هذه الشيفرة الخاصّة بـ`push`، سيكون كارثةً لو نقل المصرّف أو المعالج التخزين الموافق للسطر 4 إلى نقطةٍ بعد `release` في السطر 6:
 
 ```c
       l = malloc(sizeof *l);
@@ -214,56 +214,56 @@ Memory access re-ordering by the CPU and compiler can cause problems when multip
 
 **
 
-If such a re-ordering occurred, there would be a window during which another CPU could acquire the lock and observe the updated `list`, but see an uninitialized `list->next`.
+فلو وقعت مثل هذه إعادة الترتيب، لكانت هناك نافذةٌ يستطيع معالجٌ آخر فيها أن يحوز القفل فيرى `list` المُحدَّثة، لكنّه يرى `list->next` غير مُهيّأ.
 
-The good news is that compilers and CPUs provide ways for programmers to prevent re-ordering. These appear in xv6 as the `__ATOMIC_ACQUIRE` and `__ATOMIC_RELEASE` arguments to the C atomic functions used in `acquire` and `release`. Each has two effects. First, each tells the compiler not to move memory references past the atomic call. Second, each tells the compiler to generate instructions that tell the CPU not to move execution-time memory references past the instructions generated for the atomic call. Such a “don’t move past” point is called a *memory barrier* or a *fence*.
+والخبر السارّ أنّ المصرّفات والمعالجات توفّر للمبرمجين وسائلَ لمنع إعادة الترتيب. وتظهر هذه في xv6 في الوسيطين `__ATOMIC_ACQUIRE` و`__ATOMIC_RELEASE` للدالّات الذرّيّة في C المستخدمة في `acquire` و`release`. ولكلٍّ من الوسيطين تأثيران. أوّلًا، يطلب كلٌّ منهما من المصرّف ألّا ينقل مراجع الذاكرة إلى ما بعد النداء الذرّي. وثانيًا، يطلب كلٌّ منهما من المصرّف أن يُنبِق تعليماتٍ تأمر المعالج بألّا ينقل مراجع الذاكرة زمن التنفيذ إلى ما بعد التعليمات المُنبَقة عن النداء الذرّي. وتُسمّى مثل هذه النقطة «لا تتجاوزني» *حاجز ذاكرة (memory barrier)* أو *سيّاج (fence)*.
 
-The barriers in xv6’s spinlock functions have two important effects on code that uses locks. First, all memory references (reads and writes) that occur in the C code before a `release()` are guaranteed to take effect on the memory system before the `release()` completes. This includes both memory references in the critical section and memory references before the critical section. Second, all memory references in the C code after the `acquire` are guaranteed **not** to take effect before the successful completion of the `amoswap` in `acquire()`. Again, this includes both references inside the critical section and references after the `release`.
+وللحواجز في دالّات الأقفال الدورانية في xv6 تأثيران مهمّان على الشيفرة التي تستخدم الأقفال. أوّلًا، جميع مراجع الذاكرة (القراءات والكتابات) التي تقع في شيفرة C قبل `release()` مضمونٌ أن تؤثّر في نظام الذاكرة قبل إتمام `release()`. ويشمل ذلك مراجع الذاكرة في القسم الحرج ومراجع الذاكرة التي قبله على حدّ سواء. وثانيًا، جميع مراجع الذاكرة في شيفرة C بعد `acquire` مضمونٌ **ألّا** تؤثّر قبل أن تُكمل `amoswap` في `acquire()` عملها بنجاح. ومرّة أخرى، يشمل ذلك المراجع الواقعة داخل القسم الحرج والمراجع التي بعد `release` على حدّ سواء.
 
-These barriers produce an important transitive effect. For example, if a CPU writes to a newly-allocated data object (without holding locks) and then, in a critical section, links that object into a list, any CPU that subsequently acquires a lock and obtains a pointer to the object from the list is guaranteed to observe the first CPU’s writes.
+وتُنتج هذه الحواجز تأثيرًا تعدّديًا مهمًّا. فمثلًا، إذا كتبت معالجةٌ في كائن بياناتٍ مُخصَّصٍ حديثًا (دون حيازة أقفال) ثمّ ربطت - في قسمٍ حرجٍ - ذلك الكائن بقائمة، فأيّ معالجةٍ تحوز قفلًا بعد ذلك وتحصل على مؤشّر إلى الكائن من القائمة، مضمونٌ لها أن تلاحظ كتابات المعالجة الأولى.
 
-The barriers in xv6’s `acquire` and `release` force order in almost all cases where it matters, since xv6 uses locks around accesses to shared data. Chapter [12](https://mit-pdos.github.io/xv6-riscv-book/lock2.html#CH:LOCK2) discusses a few exceptions.
+وإنّ الحواجز في `acquire` و`release` تفرض الترتيب في جميع الحالات تقريبًا حيث يكون ذلك مهمًّا، إذ يستخدم xv6 الأقفال حول الوصولات إلى البيانات المشتركة. ويناقش الفصل [12](https://mit-pdos.github.io/xv6-riscv-book/lock2.html#CH:LOCK2) بعض الاستثناءات.
 
-## 7.7 Programming with Atomics
+## 7.7 البرمجة بالعمليّات الذرّيّة
 
-Though xv6 doesn’t do this, it is sometimes possible to update shared data while avoiding races by direct use of atomic instructions, without use of locks. Most CPUs conveniently supply dozens of atomic instructions, typically with the pattern that they read a memory location, modify the value, and write the new value to the same memory location, atomically. The RISC-V `amoadd` instruction is an example: it atomically adds a register’s contents to a location in memory. The C compiler provides “atomic” wrappers for these instructions.[^1] Thus code could increment a shared counter without locks using
+وبينما لا يفعل xv6 ذلك، فمن الممكن أحيانًا تحديث البيانات المشتركة مع تجنّب التسابق بالاستخدام المباشر للتعليمات الذرّيّة، دون استخدام الأقفال. وتوفّر معظم المعالجات عشرات التعليمات الذرّيّة على نحوٍ ملائم، بأنماطٍ نموذجيّةٍ تقرأ موضع ذاكرةٍ، وتُعدّل القيمة، وتكتب القيمة الجديدة في موضع الذاكرة نفسه، ذرّيًا. وتعليمة `amoadd` في RISC-V مثالٌ على ذلك: فهي تُضيف ذرّيًا محتويات مسجّلٍ إلى موضعٍ في الذاكرة. ويوفّر مصرف C أغلفةً «ذرّيّة» لهذه التعليمات.[^1] وبذلك، تستطيع الشيفرة زيادة عدّادٍ مشتركٍ دون أقفال باستخدام
 
 ```c
   __atomic_fetch_add(&counter, 1, __ATOMIC_SEQ_CST);
 ```
 
-It can be useful to avoid locks because they consume CPU time, or because a structural reason such as deadlock avoidance makes use of locks awkward.
+وقد يكون تجنّب الأقفال نافعًا لأنّها تستهلك وقت المعالج، أو بسببٍ بنيويّ كتجنّب الجمود الميت يجعل استخدام الأقفال عسيرًا.
 
-## 7.8 Sleep locks
+## 7.8 أقفال النوم
 
-Sometimes xv6 needs to hold a lock for a long time. For example, the file system (Chapter [10](https://mit-pdos.github.io/xv6-riscv-book/fs.html#CH:FS)) keeps a file locked while reading and writing its content on the disk, and these disk operations can take tens of milliseconds. Holding a spinlock that long would lead to waste if another process wanted to acquire it, since the acquiring process would waste CPU for a long time while spinning. Another drawback of spinlocks is that a process cannot yield the CPU while retaining a spinlock; we’d like to do this so that other processes can use the CPU while the process with the lock waits for the disk. Yielding while holding a spinlock is illegal because it might lead to deadlock if a second thread then tried to acquire the spinlock; since `acquire` doesn’t yield the CPU, the second thread’s spinning might prevent the first thread from running and releasing the lock. Yielding while holding a lock would also violate the requirement that interrupts must be off while a spinlock is held. Thus we’d like a type of lock that yields the CPU while waiting to acquire, and allows yields (and interrupts) while the lock is held.
+أحيانًا يلزم xv6 أن يحوز قفلًا لمدّةٍ طويلة. فمثلًا، يُبقي نظام الملفّات (الفصل [10](https://mit-pdos.github.io/xv6-riscv-book/fs.html#CH:FS)) الملفّ مقفلًا أثناء قراءة محتواه وكتابته على القرص، وهذه العمليّات القرصيّة قد تستغرق عشرات الملّي ثوان. وإنّ حيازة قفلٍ دورانيّ كلّ تلك المدّة ستؤدّي إلى إهدار إن أرادت عمليّةٌ أخرى حيازته، إذ ستُهدر العمليّةُ الحاززةُ المعالجَ لمدّةٍ طويلةٍ أثناء دورانها. ومساوئٌ أخرى للأقفال الدورانية أنّ العمليّة لا تستطيع التنازل عن المعالج مع الاحتفاظ بقفلٍ دورانيّ؛ ونحبّ ذلك حتّى تستطيع عمليّاتٌ أخرى استخدام المعالج بينما تنتظر العمليّةُ الحاززةُ للقفلِ القرصَ. وإنّ التنازل أثناء حيازة قفلٍ دورانيّ عملٌ غير مشروع لأنّه قد يؤدّي إلى جمودٍ ميت إن حاول خيطٌ ثانٍ حيازة القفل الدورانيّ بعدئذٍ؛ وبما أنّ `acquire` لا يتنازل عن المعالج، فربّما منع دوران الخيط الثاني الخيطَ الأوّل من العمل وتحرير القفل. وإنّ التنازل أثناء حيازة قفلٍ سيخالف أيضًا شرط أن تكون المقاطعات معطّلةً أثناء حيازة قفلٍ دورانيّ. ولذلك، نودّ نوعًا من الأقفال يتنازل عن المعالج أثناء انتظار الحيازة، ويسمح بالتنازل (وبالمقاطعات) أثناء حيازة القفل.
 
-Xv6 provides such locks in the form of *sleep-locks*. `acquiresleep` yields the CPU while waiting, using techniques that will be explained in Chapter [9](https://mit-pdos.github.io/xv6-riscv-book/sleep.html#CH:SLEEP). At a high level, a sleep-lock has a `locked` field that is protected by a spinlock. If the sleep-lock is held, `acquiresleep` releases the spinlock and calls `sleep`, which yields the CPU until `releasesleep` calls `wakeup`. The result is that other threads can execute while `acquiresleep` waits.
+ويوفّر xv6 مثل هذه الأقفال في صورة *أقفال النوم (sleep-locks)*. و`acquiresleep` يتنازل عن المعالج أثناء الانتظار، باستخدام تقنيّاتٍ سيشرحها الفصل [9](https://mit-pdos.github.io/xv6-riscv-book/sleep.html#CH:SLEEP). وعلى مستوىً عالٍ، يملك قفل النوم حقل `locked` يحميه قفلٌ دورانيّ. فإن كان قفل النوم محوزًا، أحرّر `acquiresleep` القفل الدورانيّ ونادى `sleep`، الذي يتنازل عن المعالج حتّى ينادي `releasesleep` الدالّة `wakeup`. والنتيجة أنّ خيوطًا أخرى تستطيع أن تنفّذ أثناء انتظار `acquiresleep`.
 
-Because sleep-locks leave interrupts enabled, they cannot be used in interrupt handlers. Because `acquiresleep` may yield the CPU, sleep-locks cannot be used inside spinlock critical sections (though spinlocks can be used inside sleep-lock critical sections).
+ولأنّ أقفال النوم تُبقي المقاطعات مُمكّنة، فلا يمكن استخدامها في مُعالجات المقاطعات. ولأنّ `acquiresleep` قد يتنازل عن المعالج، فلا يمكن استخدام أقفال النوم داخل الأقسام الحرجة للأقفال الدورانية (وإن كان يمكن استخدام الأقفال الدورانية داخل الأقسام الحرجة لأقفال النوم).
 
-Spin-locks are best suited to short critical sections, since waiting for them wastes CPU time; sleep-locks work well for lengthy operations.
+تُلائم الأقفال الدورانية الأقسام الحرجة القصيرة خيرًا، إذ إنّ انتظارها يُهدر وقت المعالج؛ أمّا أقفال النوم فتُجيد العمل مع العمليّات الطويلة.
 
-## 7.9 Real world
+## 7.9 العالم الواقعي
 
-Programming with locks remains challenging despite years of research into concurrency primitives and parallelism. It is often best to conceal locks within higher-level constructs like synchronized queues, although xv6 does not do this. If you program with locks, it is wise to use a tool that attempts to identify races, because it is easy to miss an invariant that requires a lock.
+ويبقى البرمجة بالأقفال تحديًّا رغم سنوات البحث في أوّليّات التزامن والتوازي. وكثيرًا ما يكون الأفضل إخفاء الأقفال داخل بنياتٍ من مستوىً أعلى، كالطوابير المتزامنة، وإن كان xv6 لا يفعل ذلك. فإن كنت تبرمج بالأقفال، فمن الحكمة استخدام أداةٍ تحاول تحديد التسابقات، لأنّه من السهل إغفال ثابتٍ يلزمه قفل.
 
-Most operating systems support POSIX threads (Pthreads), which allow a user process to have several threads running concurrently on different CPUs. Pthreads has support for user-level locks, barriers, etc. Pthreads also allows a programmer to optionally specify that a lock should be re-entrant.
+وتدعم معظم أنظمة التشغيل خيوط POSIX (Pthreads)، التي تسمح لعمليّة المستخدم بأن يكون لها عدّة خيوط تعمل تزامنيًا على معالجات مختلفة. ويدعم Pthreads الأقفال على مستوى المستخدم والحواجز وغيرها. ويسمح Pthreads أيضًا للمبرمج أن يحدّد على سبيل الاختيار أنّ القفل ينبغي أن يكون قابلاً لإعادة الدخول.
 
-Supporting Pthreads at user level requires support from the operating system. For example, it should be the case that if one pthread blocks in a system call, another pthread of the same process should be able to run on that CPU. As another example, if a pthread changes its process’s address space (e.g., maps or unmaps memory), the kernel must arrange that other CPUs that run threads of the same process update their hardware page tables to reflect the change in the address space.
+ويتطلّب دعم Pthreads على مستوى المستخدم دعمًا من نظام التشغيل. فمثلًا، يلزم أن يكون الأمر كالتالي: فإن توقّف خيط pthread في نداء نظام، فينبغي أن يستطيع خيط pthread آخر من العمليّة نفسها العمل على تلك المعالجة. ومثالٌ آخر، فإن غيّر خيط pthread فضاء عناوين عمليّته (بربط ذاكرةٍ بها أو فكّ ربطها مثلًا)، فيلزم أن ترتّب النواة لأن تُحدّث المعالجات الأخرى التي تُشغّل خيوط العمليّة نفسها جداول صفحاتها العتاديّة لتعكس التغيير في فضاء العناوين.
 
-It is possible to implement locks without atomic instructions ([Lamport 1974](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-lamport:bakery)), but it is expensive, so most operating systems use atomic instructions.
+ومن الممكن تنفيذ الأقفال دون تعليمات ذرّيّة ([لامبورت 1974](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-lamport:bakery))، لكنّ ذلك مكلف، لذا تستخدم معظم أنظمة التشغيل تعليمات ذرّيّة.
 
-Locks can be expensive if many CPUs try to acquire the same lock at the same time. If one CPU has a lock cached in its local cache, and another CPU must acquire the lock, then the atomic instruction to update the cache line that holds the lock must move the line from the one CPU’s cache to the other CPU’s cache, and perhaps invalidate any other copies of the cache line. Fetching a cache line from another CPU’s cache can be orders of magnitude more expensive than fetching a line from a local cache.
+وقد تكون الأقفال مكلفة إن حاولت معالجاتٌ كثيرة حيازة القفل نفسه في الوقت نفسه. فإن كان القفل موجودًا في مخبأ معالجةٍ المحلّي، ولزم لمعالجةٍ أخرى أن تحوز القفل، فإنّ التعليمة الذرّيّة المُحدِّثة لسطر المخبأ (cache line) الحامل للقفل يلزمها أن تنقل السطر من مخبأ المعالجة الأولى إلى مخبأ المعالجة الأخرى، وربّما أن تُبطِل أيّ نسخٍ أخرى من سطر المخبأ. وإنّ جلب سطر مخبأ من مخبأ معالجةٍ أخرى قد يكون أغلى بمراتب من جلب سطرٍ من مخبأ محلّيّ.
 
-To avoid the expenses associated with locks, many operating systems use lock-free data structures and algorithms ([Herlihy and Shavit 2012](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-herlihy:art); [Mckenney et al. 2013](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-mckenney:rcuusage)). For example, it is possible to implement a linked list like the one in the beginning of the chapter that requires no locks during list searches, and one atomic instruction to insert an item in a list. Lock-free programming is more complicated, however, than programming locks; for example, one must worry about instruction and memory reordering. Programming with locks is already hard, so xv6 avoids the additional complexity of lock-free programming.
+ولتجنّب النفقات المرتبطة بالأقفال، تستخدم كثيرٌ من أنظمة التشغيل بنى بياناتٍ وخوارزميّات خالية من الأقفال (lock-free) ([هيرلي وشافيت 2012](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-herlihy:art); [مكّيني وآخرون 2013](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-mckenney:rcuusage)). فمثلًا، من الممكن تنفيذ قائمةٍ مترابطةٍ كالتي في بداية الفصل لا تلزمها أقفالٌ خلال البحث في القائمة، ولا تلزمها إلّا تعليمةً ذرّيّةً واحدةً لإدراج عنصرٍ في القائمة. غير أنّ البرمجة الخالية من الأقفال أعقد من البرمجة بالأقفال؛ فعلى المرء مثلًا أن يقلق بشأن إعادة ترتيب التعليمات والذاكرة. والبرمجة بالأقفال عصيّةٌ أصلًا، لذا يجنّب xv6 التعقيد الإضافي للبرمجة الخالية من الأقفال.
 
-## 7.10 Exercises
+## 7.10 التمارين
 
-1. Comment out the calls to `acquire` and `release` in `kalloc`. This seems like it should cause problems for kernel code that calls `kalloc`; what symptoms do you expect to see? When you run xv6, do you see these symptoms? How about when running `usertests`? If you don’t see a problem, why not? See if you can provoke a problem by inserting dummy loops into the critical section of `kalloc`.
-2. Suppose that you instead commented out the locking in `kfree` (after restoring locking in `kalloc`). What might now go wrong? Is lack of locks in `kfree` less harmful than in `kalloc`?
-3. If two CPUs call `kalloc` at the same time, one will have to wait for the other, which is bad for performance. Modify `kalloc.c` to have more parallelism, so that simultaneous calls to `kalloc` from different CPUs can proceed without waiting for each other.
-4. Write a parallel program using POSIX threads, which is supported on most operating systems. For example, implement a parallel hash table and measure if the number of puts/gets scales with increasing number of CPUs.
-5. Implement a subset of Pthreads in xv6. That is, implement a user-level thread library so that a user process can have more than 1 thread and arrange that these threads can run in parallel on different CPUs. Come up with a design that correctly handles a thread making a blocking system call and changing its shared address space.
+1. علّق على النداءات إلى `acquire` و`release` في `kalloc`. يبدو أنّ ذلك ينبغي أن يُسبّب مشكلات لشيفرة النواة التي تنادي `kalloc`؛ فما الأعراض التي تتوقّع رؤيتها؟ وحين تُشغّل xv6، أترى هذه الأعراض؟ وماذا عن تشغيل `usertests`؟ فإن لم ترَ مشكلة، فلماذا لا؟ وانظر إن كنت تستطيع إثارة مشكلةٍ بإدراج حلقاتٍ وهميّة في القسم الحرج لـ`kalloc`.
+2. لنفترض أنّك علّقت بدلًا من ذلك على الإقفال في `kfree` (بعد استعادة الإقفال في `kalloc`). فما الذي قد يسوء الآن؟ أهو انعدام الأقفال في `kfree` أقلّ ضررًا من انعدام الأقفال في `kalloc`؟
+3. إذا نادت معالجتان `kalloc` في الوقت نفسه، فسيلزم إحداهما أن تنتظر الأخرى، وهذا سيّئٌ للأداء. عدّل `kalloc.c` ليكون فيه مزيدٌ من التوازي، حتّى تستطيع نداءات `kalloc` المتزامنة من معالجات مختلفة أن تمضي دون أن ينتظر بعضها بعضًا.
+4. اكتب برنامجًا متوازيًا باستخدام خيوط POSIX، وهي مدعومةٌ على معظم أنظمة التشغيل. فمثلًا، نفّذ جدول تجزئة متوازيًا وقِس إن كان عدد عمليات puts/gets يتوسّع مع تزايد عدد المعالجات.
+5. نفّذ مجموعةً جزئيّةً من Pthreads في xv6. أي نفّذ مكتبة خيوط على مستوى المستخدم حتّى تستطيع عمليّة مستخدمٍ أن يكون لها أكثر من خيطٍ واحد، وارتّب الأمر حتّى تستطيع هذه الخيوط العمل متوازيةً على معالجات مختلفة. وضع تصميمًا يتعامل تعاملًا صحيحًا مع خيطٍ يُجري نداء نظامٍ حاجبًا ويغيّر فضاء عناوينه المشترك.
 
 [^1]: https://gcc.gnu.org/onlinedocs/gcc/_005f_005fatomic-Builtins.html

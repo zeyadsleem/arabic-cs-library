@@ -1,172 +1,172 @@
 ---
-title: "Operating system organization"
-lang: en
+title: "تنظيم نظام التشغيل"
+lang: ar
 ---
 
-## 2. Operating system organization
+## 2. تنظيم نظام التشغيل
 
-A key requirement for an operating system is to support several activities at once. For example, one might use the `fork` and `exec` system calls from Chapter [1](https://mit-pdos.github.io/xv6-riscv-book/unix.html#CH:UNIX) to start both a compiler and a text editor as processes. The operating system must *time-share* resources such as CPUs and memory among these processes. The operating system must also arrange for *isolation* between the processes. If one process has a bug and malfunctions, it shouldn’t affect unrelated processes. Complete isolation, however, is too strong, since it should be possible for processes to intentionally interact; pipelines are an example. Thus an operating system must fulfill three requirements: multiplexing, isolation, and interaction.
+شرطٌ أساسيّ لنظام التشغيل هو دعم عدّة أنشطةٍ في وقتٍ واحد. فقد يستخدم المرء نداءَي النظام `fork` و`exec` الواردين في الفصل [1](https://mit-pdos.github.io/xv6-riscv-book/unix.html#CH:UNIX) لتشغيل مصرِّفٍ ومحرّر نصوصٍ بوصفهما عمليّتين. فيتعيّن على نظام التشغيل أن يُشارك مواردٍ مثل وحدات المعالجة والذاكرة بين هذه العمليّات زمنيًّا (time-share). وينبغي لنظام التشغيل أيضًا أن يرتّب للعزل (isolation) بين العمليّات. فإن كان في عمليّةٍ خللٌ فأخذت تسلك سلوكًا خاطئًا، فلا ينبغي أن يتأثّر بذلك عمليّاتٌ لا علاقة لها بها. أمّا العزل التامّ فهو مطلوبٌ مبالغٌ فيه، إذ لا بدّ أن تتاح للعمليّات إمكانيّة التفاعل المقصود؛ وخطوط الأنابيب (pipelines) مثالٌ على ذلك. لذا ينبغي لنظام التشغيل أن يحقّق ثلاثة متطلّبات: المشاركة الزمنيّة، والعزل، والتفاعل.
 
-This chapter provides an overview of how operating systems are organized to achieve these three requirements. It turns out there are many ways to do so, but this text focuses on mainstream designs centered around a *monolithic kernel*, which is used by many Unix operating systems. This chapter also provides an overview of an xv6 process, the unit of isolation in xv6.
+ويقدّم هذا الفصل نظرةً عامّةً على كيفيّة تنظيم نظم التشغيل لتحقيق هذه المتطلّبات الثلاثة. ويتّضح أنّ ثمّة طرائق كثيرة لفعل ذلك، لكنّ هذا النصّ يركّز على التصاميم السائدة المتمحورة حول النواة الأحاديّة (monolithic kernel)، وهي التي تستخدمها كثيرٌ من نظم تشغيل Unix. ويستعرض هذا الفصل أيضًا نظرةً عامّةً على عمليّة xv6، وهي وحدة العزل في xv6.
 
-Xv6 runs on a *multi-core*[^1] RISC-V microprocessor, and much of its low-level functionality (for example, its process implementation) is specific to RISC-V. RISC-V is a 64-bit CPU, and xv6 is written in “LP64” C, which means long (L) and pointers (P) in the C programming language are 64 bits, but an `int` is 32 bits. This book assumes the reader has done a bit of machine-level programming on some architecture, and will introduce RISC-V-specific ideas as they come up. The user-level ISA ([Waterman and Asanovic 2024](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-riscv:user)) and privileged architecture ([Waterman et al. 2024](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-riscv:priv)) documents are the complete specifications. You may also refer to “The RISC-V Reader: An Open Architecture Atlas” ([Patterson and Waterman 2017](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-riscv)).
+يعمل xv6 على معالج RISC-V متعدّد الأنوية[^1]، وكثيرٌ من وظائفه منخفضة المستوى (مثل تنفيذ العمليّات) خاصٌّ به. وهذا المعالج 64-بتّ، وxv6 مكتوبٌ بلغة C وفق «LP64»، ما يعني أنّ long والمؤشّرات في تلك اللغة عرضهما 64 بتّ، أمّا `int` فعرضها 32 بتّ. ويفترض هذا الكتاب أنّ القارئ قد مارس قدرًا من البرمجة على مستوى الآلة في بنيةٍ ما، وسيُقدّم ما يخصّ تلك البنية عند وروده. ووثيقتا بنية مجموعة التعليمات للمستخدم ([ووترمان وأسانوفيتش 2024](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-riscv:user)) والبنية ذات الامتياز ([ووترمان وآخرون 2024](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-riscv:priv)) هما المواصفتان الكاملتان، ويجوز الرجوع أيضًا إلى «أطلس قارئ RISC-V: بنية مفتوحة» ([باترسون وووترمان 2017](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-riscv)).
 
-The CPU in a complete computer is surrounded by support hardware, much of it in the form of I/O interfaces. Xv6 is written for the support hardware simulated by qemu’s “-machine virt” option. This includes RAM, a ROM containing boot code, a serial connection to the user’s keyboard/screen, and a disk for storage.
+تحيط بوحدة المعالجة في الحاسوب الكامل عتادةٌ مساندة، كثيرٌ منها في صورة واجهات إدخالٍ وإخراج. وxv6 مكتوبٌ للعتادة المساندة التي يحاكيها خيار qemu ‏"-machine virt". وتشمل هذه ذاكرة الوصول العشوائي (RAM)، وذاكرة قراءة فقط (ROM) تحتوي شيفرة الإقلاع، واتصالًا تسلسليًّا بلوحة مفاتيح المستخدم وشاشته، وقرصًا للتخزين.
 
-## 2.1 Abstracting physical resources
+## 2.1 تجريد الموارد الفيزيائيّة
 
-The first question one might ask when encountering an operating system is why have it at all? That is, one could implement the system calls in Figure [1.2](#fig:api) as a library, with which applications link. In this plan, each application could even have its own library tailored to its needs. Applications could directly interact with hardware resources and use those resources in the best way for the application (e.g., to achieve high or predictable performance). Some operating systems for embedded devices or real-time systems are organized in this way.
+أوّل سؤالٍ قد يطرحه المرء عند مواجهة نظام تشغيلٍ هو: لماذا نملكه أصلًا؟ أي إنّ نداءات النظام الواردة في الشكل [1.2](#fig:api) يُمكن تنفيذها بصورة مكتبةٍ تربط بها التطبيقات. وفي هذا المخطّط، قد يكون لكلّ تطبيقٍ مكتبته الخاصّة المخصّصة لاحتياجاته. ويمكن للتطبيقات أن تتفاعل مباشرةً مع موارد العتاد وأن تستخدم تلك الموارد بأفضل طريقةٍ للتطبيق (مثلًا لتحقيق أداءٍ مرتفعٍ أو متوقّعٍ). وبعض نظم التشغيل الخاصّة بالأجهزة المدمجة أو بأنظمة الزمن الحقيقيّ مُنظَّمةٌ بهذه الطريقة.
 
-The downside of this library approach is that, if there is more than one application running, the applications must be well-behaved. For example, each application must periodically give up the CPU so that other applications can run. Such a *cooperative* time-sharing scheme may be OK if all applications trust each other and have no bugs. It’s more typical for applications to not trust each other, and to have bugs, so one often wants stronger isolation than a cooperative scheme provides.
+أمّا عيب هذا الأسلوب المكتبيّ فهو أنّه، إذا كان أكثر من تطبيقٍ يعمل، فيتعيّن على التطبيقات أن تسلك سلوكًا حسنًا. فمثلًا، ينبغي لكلّ تطبيقٍ أن يتنازل دوريًّا عن وحدة المعالجة حتّى تستطيع التطبيقات الأخرى العمل. وقد يكون هذا المخطّط التشاركيّ (cooperative) للمشاركة الزمنيّة مقبولًا إذا كانت جميع التطبيقات تثق ببعضها ولا تحوي عللًا. لكنّ الأكثر شيوعًا ألّا تثق التطبيقات ببعضها وأن تحوي عللًا، لذا يُرغَب غالبًا في عزلٍ أقوى ممّا يوفّره مخطّطٌ تشاركيّ.
 
-To achieve strong isolation it’s helpful to forbid applications from directly accessing sensitive hardware resources, and instead to abstract the resources into services. For example, Unix applications interact with storage only through the file system’s `open`, `read`, `write`, and `close` system calls, instead of reading and writing the disk directly. This provides the application with the convenience of pathnames, and it allows the operating system (which provides the interface) to manage the disk. Even if isolation is not a concern, programs that interact intentionally (or just wish to keep out of each other’s way) are likely to find a file system a more convenient abstraction than direct use of the disk.
+ولتحقيق عزلٍ قويٍّ يفيد منع التطبيقات من الوصول المباشر إلى موارد العتاد الحسّاسة، وتجريد الموارد إلى خدماتٍ بدلًا من ذلك. فمثلًا، تتفاعل تطبيقات Unix مع التخزين عبر نداءات نظام الملفّات `open` و`read` و`write` و`close` فحسب، بدلًا من قراءة القرص وكتابته مباشرةً. وهذا يمنح التطبيق راحة أسماء المسارات، كما يتيح لنظام التشغيل (الذي يوفّر الواجهة) إدارة القرص. وحتّى إذا لم يكن العزل مبعثَ قلقٍ، فمن المرجّح أن تجد البرامج التي تتفاعل مقصودًا (أو تريد فقط ألّا يتعارض مسارها مع مسار غيرها) نظام الملفّات تجريدًا أرخص من الاستخدام المباشر للقرص.
 
-Similarly, Unix transparently switches hardware CPUs among processes, saving and restoring register state as necessary, so that applications don’t have to be aware of time-sharing. This transparency allows the operating system to share CPUs even if some applications are in infinite loops.
+وعلى نحوٍ مماثل، تبدّل Unix شفّافةً وحدات المعالجة العتاديّة بين العمليّات، فتحفظ حالة المسجّلات وتستعيدها بحسب الحاجة، حتّى لا يضطرّ التطبيقات إلى إدراك المشاركة الزمنيّة. وتتيح هذه الشفافيّة لنظام التشغيل مشاركة وحدات المعالجة حتّى لو كانت بعض التطبيقات في حلقاتٍ لا نهائيّة.
 
-As another example, Unix processes use `exec` to build up their memory image, instead of directly interacting with physical memory. This allows the operating system to decide where to place a process in memory; if memory is tight, the operating system might even store some of a process’s data on disk. `exec` also provides users with the convenience of a file system to store executable program images.
+ومثالٌ آخر، تستخدم عمليّات Unix النداء `exec` لبناء صورة ذاكرتها، بدلًا من التفاعل المباشر مع الذاكرة الفيزيائيّة. ويتيح هذا لنظام التشغيل تحديد موضع وضع العمليّة في الذاكرة؛ فإن كانت الذاكرة ضيّقةً، فقد يخزّن نظام التشغيل بعض بيانات العمليّة على القرص حتّى. ويمنح `exec` المستخدمين أيضًا راحة نظام ملفّاتٍ لتخزين صور البرامج التنفيذيّة.
 
-Many forms of interaction among Unix processes occur via file descriptors. Not only do file descriptors abstract away many details (e.g., where data in a pipe or file is stored), they are also defined in a way that simplifies interaction. For example, if one application in a pipeline exits or fails, the kernel automatically generates an end-of-file signal for the next process in the pipeline.
+وتحدث صورٌ كثيرةٌ من التفاعل بين عمليّات Unix بواسطة واصفات الملفّات. فواصفات الملفّات لا تُجرّد تفاصيلَ كثيرةً فحسب (مثل موضع تخزين البيانات في أنبوبٍ أو ملفّ)، بل هي معرَّفةٌ أيضًا على نحوٍ يُيسّر التفاعل. فمثلًا، إذا خرج تطبيقٌ في خطّ أنابيبٍ أو فشل، فإنّ النواة تُنشئ تلقائيًّا إشارة نهاية ملفّ للعمليّة التالية في خطّ الأنابيب.
 
-The system-call interface in Figure [1.2](#fig:api) is carefully designed to provide both programmer convenience and the possibility of strong isolation. The Unix interface is not the only way to abstract resources, but it has proved to be a good one.
+وواجهة نداء النظام في الشكل [1.2](#fig:api) مصمّمةٌ بعنايةٍ لتوفير راحة المبرمج وإمكانيّة العزل القويّ معًا. وليست واجهة Unix الطريقة الوحيدة لتجريد الموارد، لكنّها أثبتت أنّها طريقةٌ جيّدة.
 
-## 2.2 User mode, supervisor mode, and system calls
+## 2.2 وضع المستخدم، ووضع المشرف، ونداءات النظام
 
-Strong isolation requires a hard boundary between applications and the operating system. Applications shouldn’t be allowed to disturb the operation of the operating system or other programs, even if the application has a bug or is malicious. To achieve strong isolation, the operating system must arrange that applications cannot modify (or even read) the operating system’s data structures and instructions and that applications cannot access other processes’ memory.
+يتطلّب العزل القويّ حدًّا فاصلًا صارمًا بين التطبيقات ونظام التشغيل. فلا ينبغي أن يُسمح للتطبيقات بإزعاج عمل نظام التشغيل أو البرامج الأخرى، حتّى إذا كان في التطبيق خللٌ أو كان خبيثًا. ولتحقيق عزلٍ قويّ، ينبغي لنظام التشغيل أن يُرتّب أمرَ ألّا تستطيع التطبيقات تعديل بنى بيانات نظام التشغيل وتعليماته (أو حتّى قراءتها)، وأنّها لا تستطيع الوصول إلى ذاكرة العمليّات الأخرى.
 
-CPUs provide hardware support for strong isolation. For example, RISC-V has three privilege levels which constrain what code can do: *machine mode*, *supervisor mode*, and *user mode*. Instructions executing in machine mode have full privilege; a CPU starts in machine mode. Machine mode is mostly intended for setting up the computer during boot. Xv6 executes briefly in machine mode and then changes to supervisor mode.
+توفّر وحدات المعالجة دعمًا عتاديًّا للعزل القويّ. فمثلًا، لـRISC-V ثلاثة مستوياتٍ من الصلاحيّات تُقيّد ما تستطيع الشيفرة فعله: *وضع الآلة*، و*وضع المشرف*، و*وضع المستخدم*. والتعليمات المنفّذة في وضع الآلة تمتلك الصلاحيّة الكاملة؛ وتبدأ وحدة المعالجة في وضع الآلة. ووضع الآلة موجّهٌ في الأغلب لتهيئة الحاسوب أثناء الإقلاع. وتنفّذ xv6 في وضع الآلة لفترةٍ وجيزة ثمّ تنتقل إلى وضع المشرف.
 
-In supervisor mode the CPU is allowed to execute *privileged instructions*: for example, enabling and disabling interrupts, reading and writing the register that holds the address of the page table, etc. If an application in user mode attempts to execute a privileged instruction, then the CPU doesn’t execute the instruction, but “traps” to special code in supervisor mode that can terminate the application. Figure [1.1](#fig:os) in Chapter [1](https://mit-pdos.github.io/xv6-riscv-book/unix.html#CH:UNIX) illustrates this organization. An application can execute only user-mode instructions (e.g., adding numbers, etc.) and is said to be running in *user space*, while the software in supervisor mode can also execute privileged instructions and is said to be running in *kernel space*. The software running in kernel space (or in supervisor mode) is called the *kernel*.
+في وضع المشرف يُسمح لوحدة المعالجة بتنفيذ *التعليمات ذات الصلاحيّة (privileged instructions)*: مثل تمكين المقاطعات وتعطيلها، وقراءة المسجّل الذي يحمل عنوان جدول الصفحات والكتابة إليه، وغير ذلك. وإذا حاول تطبيقٌ في وضع المستخدم تنفيذ تعليمةٍ ذات صلاحيّة، فإنّ وحدة المعالجة لا تنفّذ تلك التعليمة، بل تقع في المصيدة لتنتقل إلى شيفرةٍ خاصّةٍ في وضع المشرف تستطيع إنهاء التطبيق. ويوضّح الشكل [1.1](#fig:os) في الفصل [1](https://mit-pdos.github.io/xv6-riscv-book/unix.html#CH:UNIX) هذا التنظيم. فالتطبيق لا يستطيع تنفيذ إلّا تعليمات وضع المستخدم (مثل جمع الأعداد وغيرها) ويُقال إنّه يعمل في *فضاء المستخدم (user space)*، بينما البرمجيّة العاملة في وضع المشرف تستطيع تنفيذ التعليمات ذات الصلاحيّة أيضًا ويُقال إنّها تعمل في *فضاء النواة (kernel space)*. والبرمجيّة العاملة في فضاء النواة (أو في وضع المشرف) تُسمّى *النواة (kernel)*.
 
-Applications interact with the kernel via system calls such as `read`. Applications are not allowed to directly call kernel functions or access the kernel’s memory. RISC-V provides the `ecall` instruction for system calls; it switches the CPU from user to supervisor mode and jumps to a kernel-specified entry point. Once the CPU has switched to supervisor mode, the kernel can then validate the arguments of the system call (e.g., check if the address passed to the system call is part of the application’s memory), decide whether the application is allowed to perform the requested operation (e.g., check if the application is allowed to write the specified file), and then deny it or execute it. It is important that the kernel control the entry point for transitions to supervisor mode; if the application could decide the kernel entry point, a malicious application could, for example, enter the kernel at a point where the validation of arguments is skipped.
+وتتفاعل التطبيقات مع النواة عبر نداءات النظام مثل `read`. ولا يُسمح للتطبيقات بمناداة دوالّ النواة مباشرةً أو بالوصول إلى ذاكرة النواة. وتوفّر RISC-V تعليمة `ecall` لنداءات النظام؛ فهي تُحوّل وحدة المعالجة من وضع المستخدم إلى وضع المشرف وتقفز إلى نقطة دخولٍ تحدّدها النواة. ومتى انتقلت وحدة المعالجة إلى وضع المشرف، تستطيع النواة حينئذٍ التحقّق من صلاحيّة معطيات نداء النظام (مثل التحقّق ممّا إذا كان العنوان الممرَّر إلى نداء النظام جزءًا من ذاكرة التطبيق)، وتقرير ما إذا كان التطبيق مسموحًا له بأداء العمليّة المطلوبة (مثل التحقّق مما إذا كان مسموحًا له بكتابة الملفّ المحدّد)، ثمّ تمنعه أو تنفّذه. ومن المهمّ أن تتحكّم النواة في نقطة الدخول للانتقال إلى وضع المشرف؛ فلو كان التطبيق يقدر على تحديد نقطة دخول النواة، لتسنّى لتطبيقٍ خبيثٍ مثلًا أن يدخل النواة في نقطةٍ يُتجاوز فيها التحقّق من المعطيات.
 
-## 2.3 Kernel organization
+## 2.3 تنظيم النواة
 
-A key design question is what part of the operating system should run in supervisor mode. One possibility is that the entire operating system resides in the kernel, so that the implementations of all system calls run in supervisor mode. This organization is called a *monolithic kernel*.
+وسؤالٌ تصميميٌّ رئيس هو: أيّ جزءٍ من نظام التشغيل ينبغي أن يعمل في وضع المشرف؟ ويحتمل أن يقيم نظام التشغيل بأكمله في النواة، بحيث تُنفَّذ تطبيقات جميع نداءات النظام في وضع المشرف. ويُسمّى هذا التنظيم النواة الأحاديّة (monolithic kernel).
 
-In a monolithic organization the entire operating system consists of a single program running in supervisor mode. One reason this organization is convenient is that the OS designer doesn’t have to divide code into parts that do and do not require supervisor privileges. Furthermore, it is easy for different parts of the operating system to cooperate, since they are parts of a single program. For example, a monolithic kernel might share a disk block cache with the file system and the virtual memory system.
+وفي التنظيم الأحاديّ يتكوّن نظام التشغيل بأكمله من برنامجٍ واحدٍ يعمل في وضع المشرف. وسببٌ يجعل هذا التنظيم مريحًا هو أنّ مصمّم نظام التشغيل لا يضطرّ إلى تقسيم الشيفرة إلى أجزاءٍ تتطلّب صلاحيّات المشرف وأجزاءٍ لا تتطلّبها. وفوق ذلك، يسهل على الأجزاء المختلفة لنظام التشغيل أن تتعاون، إذ هي أجزاءٌ من برنامجٍ واحد. فمثلًا، قد تُشارك النواة الأحاديّة مخزن بلوكات القرص المؤقّت مع نظام الملفّات ونظام الذاكرة الافتراضيّة.
 
-A downside is that monolithic kernels tend to grow large and complex, so that no one developer understands all of the interactions between different parts of the code; this is a recipe for bugs. A bug in the kernel is particularly troublesome because it may cause the entire computer to crash, or cause many applications to malfunction, or make the entire computer vulnerable to security attacks.
+أمّا العيب فهو أنّ النوى الأحاديّة تميل إلى أن تكبر وتتعقّد، حتّى إنّ أحد المطوّرين لا يستطيع فهم جميع التفاعلات بين الأجزاء المختلفة من الشيفرة؛ وهذا وصفةٌ للعلل. والخلل في النواة مزعجٌ على نحوٍ خاصّ لأنّه قد يُسبّب انهيار الحاسوب بأكمله، أو جعل تطبيقاتٍ كثيرةٍ تسلك سلوكًا خاطئًا، أو جعل الحاسوب بأكمله عُرضةً لهجماتٍ أمنيّة.
 
-A *microkernel* aims to reduce the incidence of bugs in the kernel. The idea is to put an absolute minimum of functionality in the kernel itself, so that little code executes in supervisor mode, and so that the kernel is easy to understand and analyze for correctness. The bulk of the operating system runs as user-level server processes. For example, the file system code would execute as a server process, in user mode rather than supervisor mode.
+وتهدف النواة الصغريّة (microkernel) إلى تقليل حدوث العلل في النواة. والفكرة هي أن يوضع في النواة ذاتها حدٌّ أدنى مطلقٌ من الوظيفيّات، بحيث لا تنفّذ إلّا شيفرةٌ قليلةٌ في وضع المشرف، وحتّى يسهل فهم النواة وتحليلها من حيث الصحّة. أمّا الجزء الأكبر من نظام التشغيل فيعمل بوصفه عمليّات خادمةً على مستوى المستخدم. فمثلًا، تُنفَّذ شيفرة نظام الملفّات بوصفها عمليّة خادمةً، في وضع المستخدم لا في وضع المشرف.
 
 ![](/images/xv6/first-0-mkernel.webp){#fig:mkernel}
 
-**Figure 2.1: A microkernel with a file-system server**
+**الشكل 2.1: نواة صغريّة مع خادم لنظام ملفّات**
 
-Figure [2.1](#fig:mkernel) illustrates this microkernel design. In the figure, the file system runs as a user-level server process. To allow applications to interact with the file server, the kernel provides an inter-process communication mechanism to send messages from one user-mode process to another. For example, if an application like the shell wants to read or write a file, it sends a message to the file server and waits for a response.
+ويوضّح الشكل [2.1](#fig:mkernel) تصميم النواة الصغريّة هذا. ففي الشكل يعمل نظام الملفّات بوصفه عمليّة خادمةً على مستوى المستخدم. ولكي تتمكّن التطبيقات من التفاعل مع خادم الملفّات، توفّر النواة آليّة اتصالٍ بين العمليّات لإرسال الرّسائل من عمليّةٍ في وضع المستخدم إلى أخرى. فمثلًا، إذا أراد تطبيقٌ كالصدفة قراءة ملفّ أو كتابته، فإنّه يُرسل رسالةً إلى خادم الملفّات وينتظر الردّ.
 
-In a microkernel, the kernel interface consists of a few low-level functions for starting applications, sending messages, accessing device hardware, etc. This organization allows the kernel to be relatively simple, as most of the operating system resides in user-level servers.
+وفي النواة الصغريّة، تتكوّن واجهة النواة من دوالّ قليلة منخفضة المستوى لبدء التطبيقات، وإرسال الرّسائل، والوصول إلى عتاد الأجهزة، وغير ذلك. ويتيح هذا التنظيم للنواة أن تكون بسيطةً نسبيًّا، إذ يقيم معظم نظام التشغيل في خوادمَ على مستوى المستخدم.
 
-In the real world, both monolithic kernels and microkernels are popular. Many Unix kernels are monolithic. For example, Linux has a monolithic kernel, although some OS functions run as user-level servers (e.g., the window system). Linux delivers high performance to OS-intensive applications, partially because the subsystems of the kernel can be tightly integrated.
+وفي العالم الواقعيّ، تحظى النوى الأحاديّة والنوى الصغريّة بالشعبية على حدٍّ سواء. وكثيرٌ من نوى Unix أحاديّة. فمثلًا، لـLinux نواةٌ أحاديّة، وإن كانت بعض دوالّ نظام التشغيل تعمل بوصفها خوادمَ على مستوى المستخدم (مثل نظام النوافذ). وتُقدّم Linux أداءً رفيعًا للتطبيقات كثيفة الاستخدام لنظام التشغيل، جزئيًّا لأنّ نظم النواة الفرعيّة يُمكن دمجها بإحكام.
 
-Operating systems such as Minix, L4, and QNX are organized as a microkernel with servers, and have seen wide deployment in embedded settings. A variant of L4, seL4, is small enough that it has been verified for memory safety and other security properties ([Klein et al. 2009](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-sel4)).
+وتُنظَّم نظم تشغيلٍ مثل Minix وL4 وQNX في صورة نواةٍ صغريّةٍ مع خوادم، وقد شاع انتشارها في الأوساط المدمجة. وأحد أشكال L4، وهو seL4، صغيرٌ بصورةٍ تكفي للتحقّق من أمان الذاكرة ومن خصائص أمنيّةٍ أخرى ([كلاين وآخرون 2009](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-sel4)).
 
-There is much debate among developers of operating systems about which organization is better, but there is no conclusive evidence one way or the other. Furthermore, it depends much on what “better” means: faster performance, smaller code size, reliability of the kernel, reliability of the complete operating system (including user-level services), etc.
+وثمّة جدلٌ كثيرٌ بين مطوّري نظم التشغيل حول أيّ التنظيمين أفضل، لكن ليست ثمّة أدلّة قاطعة على هذا أو ذاك. وفوق ذلك، فإنّ الأمر يعتمد كثيرًا على ما يعنيه «أفضل»: أداءٌ أسرع، وحجمُ شيفرةٍ أصغر، وموثوقيّة النواة، وموثوقيّة نظام التشغيل الكامل (بما فيه الخدمات على مستوى المستخدم)، إلى آخره.
 
-There are also practical considerations that may be more important than the question of which organization. Some operating systems have a microkernel but run some of the user-level services in kernel space for performance reasons. Some operating systems have monolithic kernels because that is how they started and there is little incentive to move to a pure microkernel organization, because new features may be more important than rewriting the existing operating system to fit a microkernel design.
+وثمّة أيضًا اعتبارات عمليّةٌ قد تكون أهمّ من مسألة أيّ التنظيمين. فبعض نظم التشغيل لها نواةٌ صغريّة لكنّها تُشغّل بعض الخدمات على مستوى المستخدم في فضاء النواة لأسباب تتعلّق بالأداء. وبعض نظم التشغيل لها نوى أحاديّة لأنّها بدأت على هذا النحو، وليس ثمّة حافزٌ كبير للانتقال إلى تنظيم نواةٍ صغريّةٍ خالصة، لأنّ الميزات الجديدة قد تكون أهمّ من إعادة كتابة نظام التشغيل القائم ليوافق تصميم النواة الصغريّة.
 
-From this book’s perspective, microkernel and monolithic operating systems share many key ideas. They implement system calls, they use page tables, they handle interrupts, they support processes, they use locks for concurrency control, they implement a file system, etc. This book focuses on these core ideas.
+ومن منظور هذا الكتاب، تتشارك نظم التشغيل الصغريّة والأحاديّة أفكارًا رئيسةً كثيرة. فهي تنفّذ نداءات النظام، وتستخدم جداول الصفحات، وتعالج المقاطعات، وتدعم العمليّات، وتستخدم الأقفال للتحكّم في التزامن، وتنفّذ نظام ملفّات، إلى آخره. ويركّز هذا الكتاب على هذه الأفكار الجوهريّة.
 
-Xv6 is implemented as a monolithic kernel, like most Unix operating systems. Thus, the xv6 kernel interface corresponds to the operating system interface, and the kernel implements the complete operating system. Since xv6 doesn’t provide many services, its kernel is smaller than some microkernels, but conceptually xv6 is monolithic.
+وxv6 منفَّذٌ بوصفه نواةً أحاديّةً، مثل معظم نظم تشغيل Unix. لذا تُقابل واجهة نواة xv6 واجهة نظام التشغيل، وتُنفّذ النواة نظام التشغيل الكامل. وحيث إنّ xv6 لا توفّر خدماتٍ كثيرةً، فإنّ نواتها أصغر من بعض النوى الصغريّة، لكنّ xv6 أحاديّةٌ من حيث المفهوم.
 
-## 2.4 Code: xv6 organization
+## 2.4 شيفرة: تنظيم xv6
 
-**Figure 2.2: Xv6 kernel source files.**
+**الشكل 2.2: ملفّات شيفرة xv6 المصدرية.**
 
-|  | **File** | **Description** |
+|  | **الملفّ** | **الوصف** |
 | --- | --- | --- |
-| Boot | entry.S | Very first boot instructions. |
-|  | main.c | Control initialization of other modules. |
-|  | start.c | Early machine-mode boot code. |
-| Processes | exec.c | exec() system call. |
-|  | proc.c | Processes and scheduling. |
-|  | swtch.S | Thread switching. |
-|  | sysproc.c | Process-related system calls. |
-| Traps | kernelvec.S | Handle traps from kernel code. |
-|  | trampoline.S | Handle traps from user code. |
-|  | trap.c | C code to handle and return from traps and interrupts. |
-|  | syscall.c | Dispatch system calls to handling function. |
-| Memory | vm.c | Manage page tables and address spaces. |
-|  | kalloc.c | Physical page allocator. |
-| Devices | console.c | Connect to the user keyboard and screen. |
-|  | plic.c | RISC-V interrupt controller. |
-|  | printk.c | Formatted output to the console. |
-|  | uart.c | Serial-port console device driver. |
-|  | virtio_disk.c | Disk device driver. |
-| FS | bio.c | Disk block cache for the file system. |
-|  | file.c | File descriptor support. |
-|  | fs.c | File system. |
-|  | log.c | File system logging and crash recovery. |
-|  | sysfile.c | File-related system calls. |
-|  | pipe.c | Pipes. |
-| Misc | sleeplock.c | Locks that yield the CPU. |
-|  | spinlock.c | Locks that don’t yield the CPU. |
-|  | string.c | C string and byte-array library. |
+| الإقلاع | entry.S | أوّل تعليمات الإقلاع. |
+|  | main.c | ضبط تهيئة الوحدات الأخرى. |
+|  | start.c | شيفرة إقلاع أوّليّة في وضع الآلة. |
+| العمليّات | exec.c | نداء النظام exec(). |
+|  | proc.c | العمليّات والجدولة. |
+|  | swtch.S | تبديل الخيوط. |
+|  | sysproc.c | نداءات النظام المرتبطة بالعمليّات. |
+| المصائد | kernelvec.S | معالجة المصائد الآتية من شيفرة النواة. |
+|  | trampoline.S | معالجة المصائد الآتية من شيفرة المستخدم. |
+|  | trap.c | شيفرة C لمعالجة المصائد والمقاطعات والعودة منها. |
+|  | syscall.c | توزيع نداءات النظام على دوالّ معالجتها. |
+| الذاكرة | vm.c | إدارة جداول الصفحات وأفضية العناوين. |
+|  | kalloc.c | مخصّص الصفحات الفيزيائيّة. |
+| الأجهزة | console.c | الاتصال بلوحة مفاتيح المستخدم وشاشته. |
+|  | plic.c | متحكّم مقاطعات RISC-V. |
+|  | printk.c | المخرجات المنسّقة إلى وحدة التحكّم. |
+|  | uart.c | مشغّل جهاز وحدة التحكّم التسلسليّة. |
+|  | virtio_disk.c | مشغّل جهاز القرص. |
+| نظام الملفّات | bio.c | مخزن بلوكات القرص المؤقّت لنظام الملفّات. |
+|  | file.c | دعم واصفات الملفّات. |
+|  | fs.c | نظام الملفّات. |
+|  | log.c | تسجيل نظام الملفّات واستعادة ما بعد الانهيار. |
+|  | sysfile.c | نداءات النظام المرتبطة بالملفّات. |
+|  | pipe.c | الأنابيب. |
+| متفرّقات | sleeplock.c | أقفال تُسلّم وحدة المعالجة. |
+|  | spinlock.c | أقفال لا تُسلّم وحدة المعالجة. |
+|  | string.c | مكتبة السلاسل ومصفوفات البايتات في C. |
 
-The xv6 kernel source is in the `kernel/` sub-directory. Figure [2.2](#fig:source) lists the files, divided into the major areas of kernel responsibility: starting the system (booting), creating and controlling processes, handling traps (interrupts and system calls), allocating memory and configuring virtual addresses, controlling devices, and managing the file-system.
+وشيفرة xv6 المصدرية في المجلّد الفرعيّ `kernel/`. ويعرض الشكل [2.2](#fig:source) الملفّات، مقسّمةً إلى مجالات المسؤوليّة الرّئيسة للنواة: بدء النظام (الإقلاع)، وإنشاء العمليّات وضبطها، ومعالجة المصائد (المقاطعات ونداءات النظام)، وتخصيص الذاكرة وضبط العناوين الافتراضيّة، والتحكّم في الأجهزة، وإدارة نظام الملفّات.
 
-## 2.5 Process overview
+## 2.5 نظرة عامّة على العمليّة
 
-The unit of isolation in xv6 (as in other Unix operating systems) is a *process*. The process abstraction prevents one process from wrecking or spying on another process’s memory, CPU, file descriptors, etc. It also prevents a process from wrecking the kernel itself, so that a process can’t subvert the kernel’s isolation mechanisms. The kernel must implement the process abstraction with care because a buggy or malicious application may trick the kernel or hardware into doing something bad (e.g., circumventing isolation). The mechanisms used by the kernel to implement processes include the user/supervisor mode flag, address spaces, and time-slicing of threads.
+ووحدة العزل في xv6 (كما في نظم تشغيل Unix الأخرى) هي *العمليّة (process)*. ويمنع تجريد العمليّة عمليّةً من أن تُتلف ذاكرة عمليّةٍ أخرى أو تتجسّس عليها، أو وحدة معالجتها، أو واصفات ملفّاتها، إلى آخره. كما يمنع عمليّةً من إتلاف النواة ذاتها، حتّى لا تقدر عمليّةٌ على تقويض آليّات العزل في النواة. وينبغي للنواة أن تنفّذ تجريد العمليّة بعنايةٍ لأنّ تطبيقًا فيه خللٌ أو خبيثًا قد يخدع النواة أو العتاد ليفعل أمرًا سيّئًا (مثل التحايل على العزل). وتشمل الآليّات التي تستخدمها النواة لتنفيذ العمليّات راية وضع المستخدم/المشرف، وأفضية العناوين، وتقسيم زمن الخيوط.
 
-To help enforce isolation, the process abstraction provides the illusion to a program that it has its own private machine. A process provides a program with what appears to be a private memory system, or *address space*, which other processes cannot read or write. A process also provides the program with what appears to be its own CPU to execute the program’s instructions.
+وللمساعدة في فرض العزل، يمنح تجريد العمليّة البرنامج وهمَ أنّه يملك آلةً خاصّةً به. فتُوفّر العمليّة للبرنامج ما يبدو أنّه نظام ذاكرةٍ خاصّ، أو *فضاء عناوين (address space)*، لا تستطيع العمليّات الأخرى قراءته أو الكتابة فيه. وتوفّر العمليّة للبرنامج أيضًا ما يبدو أنّه وحدة معالجةٍ خاصّةٌ به لتنفيذ تعليمات البرنامج.
 
-Xv6 uses page tables (which are implemented by hardware) to give each process its own address space. The RISC-V page table translates (or “maps”) a *virtual address* (the address that an RISC-V instruction manipulates) to a *physical address* (an address that the CPU sends to main memory).
+تستخدم xv6 جداول الصفحات (التي ينفّذها العتاد) لتمنح كلّ عمليّةٍ فضاء عناوينها الخاصّ. وجدول صفحات RISC-V يترجم (أو «يعيّن») *عنوانًا افتراضيًّا (virtual address)* (أي العنوان الذي تعالجه تعليمةُ RISC-V) إلى *عنوانٍ فيزيائيّ (physical address)* (أي العنوان الذي تُرسله وحدة المعالجة إلى الذاكرة الرئيسة).
 
 ![](/images/xv6/first-1-as.webp){#fig:as}
 
-**Figure 2.3: Layout of a process’s virtual address space**
+**الشكل 2.3: تخطيط فضاء العناوين الافتراضيّ لعمليّة**
 
-Xv6 maintains a separate page table for each process that defines that process’s address space. As illustrated in Figure [2.3](#fig:as), an address space includes the process’s *user memory* starting at virtual address zero. Instructions come first, followed by global variables, then the stack, and finally a “heap” area (for malloc) that the process can expand as needed. There are a number of factors that limit the maximum size of a process’s address space: pointers on the RISC-V are 64 bits wide; the hardware uses only the low 39 bits when looking up virtual addresses in page tables; and xv6 uses only 38 of those 39 bits. Thus, the maximum address is $2^{38}-1$ = 0x3fffffffff, which is `MAXVA`. At the top of the address space xv6 places a *trampoline* page (4096 bytes) and a *trapframe* page. Xv6 uses these two pages to transition into the kernel and back; the trampoline page contains the code to transition in and out of the kernel, and the trapframe is where the kernel saves the process’s user registers, as Chapter [4](https://mit-pdos.github.io/xv6-riscv-book/trap.html#CH:TRAP) explains.
+تحتفظ xv6 بجدول صفحاتٍ منفصلٍ لكلّ عمليّةٍ يُعرّف فضاء عناوين تلك العمليّة. فكما يوضّح الشكل [2.3](#fig:as)، يتضمّن فضاء العناوين *ذاكرة المستخدم* الخاصّة بالعمليّة بدءًا من العنوان الافتراضيّ صفر. وتأتي التعليمات أوّلًا، تتبعها المتغيّرات العامّة، ثمّ المكدّس، وأخيرًا منطقة «الكومة» التي تخصّ malloc والتي تستطيع العمليّة توسيعها بحسب الحاجة. وثمّة عدّة عوامل تحدّ من الحجم الأقصى لفضاء عناوين عمليّةٍ: المؤشّرات في RISC-V عرضها 64 بتّ؛ ولا يستخدم العتاد إلّا الـ39 بتًّا المنخفضة عند البحث عن العناوين الافتراضيّة في جداول الصفحات؛ وxv6 تستخدم 38 من تلك الـ39 بتّ فقط. إذن، العنوان الأقصى هو $2^{38}-1$ = 0x3fffffffff، وهو `MAXVA`. وفي قمّة فضاء العناوين تضع xv6 صفحة *ترامبولين* (4096 بايتًا) وصفحة *إطار المصيدة*. وتستخدم xv6 هاتين الصفحتين للانتقال إلى النواة والعودة؛ فصفحة ترامبولين تحتوي الشيفرة اللازمة للانتقال إلى النواة والخروج منها، وإطار المصيدة هو الموضع الذي تحفظ فيه النواة مسجّرات المستخدم الخاصّة بالعمليّة، كما يشرح الفصل [4](https://mit-pdos.github.io/xv6-riscv-book/trap.html#CH:TRAP).
 
-The xv6 kernel maintains many pieces of state for each process, which it gathers into a `struct proc`. A process’s most important pieces of kernel state are its page table, its kernel stack, and its run state. We’ll use the notation `p->xxx` to refer to elements of the `proc` structure; for example, `p->pagetable` is a pointer to the process’s page table.
+وتحتفظ نواة xv6 بالكثير من أجزاء الحالة لكلّ عمليّةٍ، تجمعها في `struct proc`. وأهمّ أجزاء حالة النواة لعمليّةٍ هي جدول صفحاتها، ومكدّس نواتها، وحالة تشغيلها. وسنستخدم الترميز `p->xxx` للإشارة إلى عناصر بنية `proc`؛ فمثلًا، `p->pagetable` مؤشّرٌ إلى جدول صفحات العمليّة.
 
-At this point, please read `kernel/proc.h`, which defines `struct proc`. The xv6 code is more important for you to understand than this book; you should prioritize the code, and consult this book as needed to clarify the code. The purpose of some of the code may not be apparent at first, but further reading and searching the code will help. Feel free to explore and modify the code.
+وعند هذه النقطة، يُرجّى قراءة `kernel/proc.h`، الذي يعرّف `struct proc`. فإنّ شيفرة xv6 أهمّ لأن تُفهم من هذا الكتاب؛ فينبغي أن تُقدّم الشيفرة، وأن تراجع هذا الكتاب بحسب الحاجة لتوضيح الشيفرة. وقد لا يكون الغرض من بعض الشيفرة ظاهرًا في البدء، لكنّ المطالعة والبحث أكثر في الشيفرة سيساعدان. ولا تتردّد في استكشاف الشيفرة وتعديلها.
 
-Each process has a thread of control (or *thread* for short) that holds the state needed to execute the process. At any given time, a thread might be executing on a CPU, or suspended (not executing, but capable of resuming executing in the future). To switch a CPU between processes, the kernel suspends the thread currently running on that CPU and saves its state, and restores the state of another process’s previously-suspended thread. Much of the state of a thread (local variables, function call return addresses) is stored on the thread’s stacks. Each process has two stacks: a user stack and a kernel stack (`p->kstack`). When the process is executing user instructions, only its user stack is in use, and its kernel stack is empty. When the process enters the kernel (for a system call or interrupt), the kernel code executes on the process’s kernel stack; while a process is in the kernel, its user stack still contains saved data, but isn’t actively used. A process’s thread alternates between actively using its user stack and its kernel stack. The kernel stack is separate (and protected from user code) so that the kernel can execute even if a process has wrecked its user stack.
+لكلّ عمليّةٍ خيطُ ضبطٍ (أو *خيط (thread)* اختصارًا) يحمل الحالة اللازمة لتنفيذ العمليّة. وفي أيّ لحظةٍ، قد يكون الخيط منفّذًا على وحدة معالجة، أو مُعلّقًا (لا ينفّذ، لكنّه قادرٌ على استئناف التنفيذ مستقبلًا). ولتبديل وحدة معالجةٍ بين العمليّات، تُعلّق النواة الخيط العامل حاليًّا على تلك الوحدة وتحفظ حالته، وتستعيد حالة خيطٍ كان مُعلّقًا سابقًا لعمليّةٍ أخرى. وكثيرٌ من حالة الخيط (المتغيّرات المحليّة، وعناوين عودة نداءات الدوالّ) مخزونٌ في مكدّسات الخيط. ولكلّ عمليّةٍ مكدّسان: مكدّس مستخدمٍ ومكدّس نواة (`p->kstack`). وحين تنفّذ العمليّة تعليمات المستخدم، لا يُستخدم سوى مكدّس مستخدمها، ويكون مكدّس نواتها فارغًا. وحين تدخل العمليّة النواة (لنداء نظامٍ أو لمقاطعة)، تنفّذ شيفرة النواة على مكدّس نواة العمليّة؛ وبينما العمليّة في النواة، يزال مكدّس مستخدمها يحتوي بياناتٍ محفوظة، لكنّه لا يُستخدم بنشاط. وخيط العمليّة يتناوب بين الاستخدام النشط لمكدّس مستخدمها ومكدّس نواتها. ومكدّس النواة منفصلٌ (ومحميٌّ من شيفرة المستخدم) حتّى تستطيع النواة التنفيذ حتّى لو أتلفت عمليّةٌ مكدّس مستخدمها.
 
-A process’s user code can make a system call by executing the RISC-V `ecall` instruction. This instruction switches to supervisor mode and changes the program counter to a kernel-defined entry point. The code at the entry point switches to the process’s kernel stack and executes the kernel instructions that implement the system call. When the system call completes, the kernel returns to user space by executing the `sret` instruction, which switches to user mode and resumes executing user instructions just after the system call instruction. A process’s thread can “block” in the kernel to wait for I/O, and resume where it left off when the I/O has finished.
+ويستطيع شيفرة مستخدم العمليّة إجراء نداء نظامٍ بتنفيذ تعليمة RISC-V ‏`ecall`. وهذه التعليمة تنتقل إلى وضع المشرف وتغيّر عدّاد البرنامج إلى نقطة دخولٍ تحدّدها النواة. والشيفرة عند نقطة الدخول تنتقل إلى مكدّس نواة العمليّة وتنفّذ تعليمات النواة التي تنفّذ نداء النظام. وحين يكتمل نداء النظام، تعود النواة إلى فضاء المستخدم بتنفيذ تعليمة `sret`، التي تنتقل إلى وضع المستخدم وتستأنف تنفيذ تعليمات المستخدم بعد تعليمة نداء النظام مباشرةً. ويستطيع خيط العمليّة أن يحجب نفسه في النواة انتظارًا للإدخال والإخراج، وأن يستأنف من حيث توقّف حين ينتهي الإدخال والإخراج.
 
-`p->state` indicates whether the process is allocated, ready to run, currently running on a CPU, waiting for I/O, or exiting.
+ويُبيّن `p->state` ما إذا كانت العمليّة مخصَّصةً، أو مستعدّةً للتشغيل، أو عاملةً حاليًّا على وحدة معالجة، أو منتظرةً لإدخالٍ وإخراج، أو في طريقها إلى الخروج.
 
-`p->pagetable` holds the process’s page table, in the format that the RISC-V hardware expects. Xv6 causes the paging hardware to use a process’s `p->pagetable` when executing that process in user space. A process’s page table also serves as the record of the addresses of the physical pages allocated to store the process’s memory.
+ويحمل `p->pagetable` جدول صفحات العمليّة، بالصيغة التي يتوقّعها عتاد RISC-V. وتجعل xv6 عتاد الصفحات يستخدم `p->pagetable` عمليّةٍ ما عند تنفيذ تلك العمليّة في فضاء المستخدم. ويخدم جدول صفحات العمليّة أيضًا بوصفه سجلًّا لعناوين الصفحات الفيزيائيّة المخصّصة لتخزين ذاكرة العمليّة.
 
-In summary, a process bundles two design ideas: an address space to give a process the illusion of its own memory, and a thread to give the process the illusion of its own CPU. In xv6, a process consists of one address space and one thread. In real operating systems a process may have more than one thread to take advantage of multiple CPUs.
+وباختصار، تجمع العمليّة فكرتي تصميمٍ اثنتين: فضاء عناوينٍ يمنح العمليّة وهم ذاكرتها الخاصّة، وخيطٌ يمنح العمليّة وهم وحدة معالجتها الخاصّة. وفي xv6، تتكوّن العمليّة من فضاء عناوينٍ واحدٍ وخيطٍ واحد. أمّا في نظم التشغيل الواقعيّة فقد يكون للعمليّة أكثر من خيطٍ للاستفادة من وحدات معالجةٍ متعدّدة.
 
-## 2.6 Code: Starting xv6, the first process and system call
+## 2.6 شيفرة: إقلاع xv6، والعمليّة الأولى ونداء النظام الأوّل
 
-To make xv6 more concrete, we’ll outline how the kernel starts and runs the first process. The subsequent chapters will describe the mechanisms that show up in this overview in more detail. Please read `kernel/entry.S`, `kernel/start.c`, `kernel/main.c`, and `user/init.c`.
+ولجعل xv6 أكثر حسّيّةً، سنُوضّح موجزًا كيف تُقلِع النواة وتُشغّل العمليّة الأولى. وستصف الفصول التالية الآليّات التي تظهر في هذا الاستعراض بتفصيلٍ أكبر. ويُرجّى قراءة `kernel/entry.S`، و`kernel/start.c`، و`kernel/main.c`، و`user/init.c`.
 
-When the RISC-V computer powers on, it initializes itself and runs a boot loader which is stored in read-only memory. The boot loader copies the xv6 kernel into memory at physical address `0x80000000`. The reason it places the kernel at `0x80000000` rather than `0x0` is because the address range `0x0:0x80000000` contains I/O devices.
+وحين يُشغَّل حاسوب RISC-V، فإنّه يُهيّئ نفسه ويُشغّل مُحمّل إقلاعٍ مخزونًّا في ذاكرة قراءة فقط. وينسخ محمّل الإقلاع نواة xv6 إلى الذاكرة عند العنوان الفيزيائيّ `0x80000000`. وسبب وضع النواة عند `0x80000000` بدلًا من `0x0` هو أنّ مجال العناوين `0x0:0x80000000` يحتوي أجهزة إدخالٍ وإخراج.
 
-Then the boot loader jumps to xv6 starting at `_entry`. The RISC-V starts with paging hardware disabled: virtual addresses map directly to physical addresses. The instructions at `_entry` set up a stack so that xv6 can run C code. Xv6 declares space for this stack, `stack0`, in the file `start.c`. The code at `_entry` loads the stack pointer register `sp` with the address `stack0+4096`, the top of the stack, because the stack on RISC-V grows down. Now that the kernel has a stack, `_entry` calls into C code at `start`.
+ثمّ يقفز محمّل الإقلاع إلى xv6 بدءًا من `_entry`. ويبدأ RISC-V وعتاد الصفحات مُعطَّلًا: فالعناوين الافتراضيّة تُقابَل مباشرةً بالعناوين الفيزيائيّة. والتعليمات في `_entry` تُهيّئ مكدّسًا حتّى تستطيع xv6 تشغيل شيفرة C. وتُعلن xv6 حيّزًا لهذا المكدّس، `stack0`، في الملفّ `start.c`. والشيفرة في `_entry` تحمّل مسجّل مؤشّر المكدّس `sp` بالعنوان `stack0+4096`، أي قمّة المكدّس، لأنّ المكدّس في RISC-V ينمو نحو الأسفل. والآن، بعد أن صار للنواة مكدّسٌ، ينادي `_entry` شيفرة C عند `start`.
 
-The function `start` performs some setup that the CPU only allows in machine mode, most crucially programming the clock chip to generate timer interrupts. Then `start` uses the RISC-V `mret` instruction to switch to supervisor mode and jump to `main`. `mret` requires a bit of setup: `start` sets the previous privilege mode to supervisor in the register `mstatus`, sets the destination address to `main` by writing `main`’s address into the register `mepc`, disables virtual address translation in supervisor mode by writing `0` into the page-table register `satp`, and delegates all interrupts and exceptions to supervisor mode.
+وتؤدّي الدالّة `start` بعض التهيئة التي لا يسمح بها وحدة المعالجة إلّا في وضع الآلة، وأهمّها برمجة رقاقة الساعة لتوليد مقاطعات المؤقّت. ثمّ تستخدم `start` تعليمة RISC-V ‏`mret` للانتقال إلى وضع المشرف والقفز إلى `main`. و`mret` تتطلّب بعض التهيئة: فتضبط `start` وضع الصلاحيّة السابق على المشرف في المسجّل `mstatus`، وتضبط عنوان الوجهة على `main` بكتابة عنوان `main` في المسجّل `mepc`، وتعطّل ترجمة العناوين الافتراضيّة في وضع المشرف بكتابة `0` في مسجّل جدول الصفحات `satp`، وتُفوّض جميع المقاطعات والاستثناءات إلى وضع المشرف.
 
-After `main` initializes several devices and subsystems, it creates the first process by calling `userinit`. All newly created processes start executing in the kernel in `forkret`. As a special case for the first process, `forkret` calls `kexec` to load the user program `/init`.
+وبعد أن تُهيّئ `main` عدّة أجهزةٍ وأنظمةٍ فرعيّة، تنشئ العمليّة الأولى بمناداة `userinit`. وجميع العمليّات المنشأة حديثًا تبدأ تنفيذها في النواة في `forkret`. وكاستثناءٍ خاصّ للعمليّة الأولى، ينادي `forkret` النداء `kexec` لتحميل برنامج المستخدم `/init`.
 
-After calling `kexec`, `forkret` returns to user space in the `/init` process. `init` creates a new console device file if needed and then opens it as file descriptors 0, 1, and 2. Then it starts a shell on the console. The system is up.
+وبعد مناداة `kexec`، يعود `forkret` إلى فضاء المستخدم في عمليّة `/init`. فيُنشئ `init` ملفّ جهاز وحدة تحكّمٍ جديدًا إن لزم، ثمّ يفتحه بوصفه واصفات الملفّات 0، و1، و2. ثمّ يبدأ صدفةً على وحدة التحكّم. وعندها يكون النظام قد أقلع.
 
-## 2.7 Security Model
+## 2.7 نموذج الأمان
 
-You may wonder how the operating system deals with buggy or malicious code. Because coping with malice is strictly harder than dealing with accidental bugs, it’s reasonable to focus mostly on providing security against malice. Here’s a high-level view of typical security assumptions and goals in operating system design.
+ وقد تتساءل كيف يتعامل نظام التشغيل مع الشيفرة المعلولة أو الخبيثة. ولأنّ مجابهة الخبث أصعبُ قطعًا من مجابهة العلل العرَضيّة، فمن المعقول أن نركّز في الأغلب على توفير الأمان في مواجهة الخبث. وها هي نظرةٌ رفيعة المستوى على افتراضات الأمان وأهدافه النموذجيّة في تصميم نظم التشغيل.
 
-The operating system must assume that a process’s user-level code will do its best to wreck the kernel or other processes. User code may try to dereference pointers outside its allowed address space; it may attempt to execute instructions not intended for user code; it may try to read and write RISC-V control registers; it may try to access device hardware; and it may pass clever values to system calls in an attempt to trick the kernel into crashing or doing something stupid.
+فعلى نظام التشغيل أن يفترض أنّ شيفرة مستوى المستخدم في العمليّة ستبذل قصارى جهدها لإتلاف النواة أو العمليّات الأخرى. فقد تحاول شيفرة المستخدم الإشارة إلى مؤشّرات خارج فضاء عناوينها المسموح به؛ وقد تحاول تنفيذ تعليمات غير موجّهة لشيفرة المستخدم؛ وقد تحاول قراءة مسجّلات ضبط RISC-V والكتابة إليها؛ وقد تحاول الوصول إلى عتاد الأجهزة؛ وقد تمرّر قيمًا ماكرة إلى نداءات النظام في محاولةٍ لخداع النواة حتّى تنهار أو تفعل أمرًا سخيفًا.
 
-The kernel’s goal is to restrict each user process so that it can only access its own user memory, use the 32 general-purpose RISC-V registers, and affect the kernel and other processes in the ways that system calls are intended to allow. The kernel must prevent any other actions. These are typically absolute requirements in kernel design.
+وهدف النواة هو تقييد كلّ عمليّة مستخدمٍ بحيث لا تستطيع الوصول إلّا إلى ذاكرة مستخدمها هي، واستخدام مسجّرات RISC-V العامّة الـ32، والتأثير في النواة والعمليّات الأخرى بالطرق التي يُراد بنداءات النظام السماح بها. ويجب على النواة أن تمنع أيّ أفعالٍ أخرى. وهذه متطلّباتٌ مطلقة عادةً في تصميم النواة.
 
-Expectations for the kernel’s own code are different. Kernel code is assumed to be written by well-meaning and careful programmers, to be bug-free, and to contain nothing malicious. This assumption affects how we analyze kernel code. For example, there are many internal kernel functions (e.g., the spin locks) that would cause serious problems if kernel code used them incorrectly. We assume, however, that the kernel uses its own functions correctly. At the hardware level, the RISC-V CPU, RAM, disk, etc. are assumed to operate as advertised in the documentation, with no hardware bugs.
+أمّا توقّعات الشيفرة الخاصّة بالنواة فهي مختلفة. فيُفترض بشيفرة النواة أنّها مكتوبةٌ على يد مبرمجين حَسِني النيّة ودقيقين، وأنّها خاليةٌ من العلل، ولا تحتوي شيئًا خبيثًا. ويؤثّر هذا الافتراض في كيفيّة تحليلنا لشيفرة النواة. فمثلًا، ثمّة دوالّ نواةٍ داخليّةٍ كثيرة (مثل الأقفال الدورانيّة) كانت ستُسبّب مشكلاتٍ جسيمة لو استُخدمت استعمالاً خاطئًا في شيفرة النواة. لكنّنا نفترض أنّ النواة تستخدم دوالّها هي استعمالًا صحيحًا. وعلى مستوى العتاد، يُفترض بوحدة معالجة RISC-V، وذاكرة الوصول العشوائي، والقرص، إلى آخره، أنّها تعمل كما هو مُعلنٌ في الوثائق، بلا عللٍ عتاديّة.
 
-Real life is not so straightforward. It’s difficult to prevent abusive user programs from calling system calls in a way that makes the system unusable by consuming kernel-protected resources: disk space, CPU time, process table slots, etc. It’s usually impossible to write 100% bug-free kernel code or design bug-free hardware; if the writers of malicious user code are aware of kernel or hardware bugs, they will exploit them. Even in mature, widely-used kernels, such as Linux, people often discover previously-unknown vulnerabilities ([*Linux Common Vulnerabilities and Exposures (CVEs)*, n.d.](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-mitre:cves)). Finally, the distinction between user and kernel code is sometimes blurred: some privileged user-level processes may provide essential services and effectively be part of the operating system, and in some operating systems privileged user code can insert new code into the kernel (as with Linux’s loadable kernel modules and eBPF).
+والواقع ليس بهذه البساطة. فمن الصعب منع برامج المستخدم المسيئة من مناداة نداءات النظام بصورةٍ تجعل النظام غير قابلٍ للاستخدام فهو يستهلك موارد محميّةً بالنواة: مساحة القرص، وزمن وحدة المعالجة، وخانات جدول العمليّات، إلى آخره. ومن المتعذّر عادةً كتابة شيفرة نواةٍ خاليةٍ من العلل 100% أو تصميم عتادٍ خالٍ من العلل؛ فإن كان كاتبو شيفرة المستخدم الخبيثة على علمٍ بعللٍ في النواة أو العتاد، فسيستغلّونها. وحتّى في النوى الناضجة واسعة الاستخدام، مثل Linux، يكتشف النّاس كثيرًا ثغراتٍ لم تكن معروفة سابقًا ([*الثغرات والتعرّضات الشائعة في Linux (CVEs)*، بلا تاريخ](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-mitre:cves)). وأخيرًا، فإنّ التمييز بين شيفرة المستخدم وشيفرة النواة يكون أحيانًا ضبابيًّا: فبعض العمليّات المستخدمة ذات الامتيازات قد توفّر خدمات أساسيّةَ ويكون جزءًا فعليًّا من نظام التشغيل، وفي بعض نظم التشغيل تستطيع شيفرة المستخدم ذات الامتياز إدراج شيفرةٍ جديدةٍ في النواة (كما هو الحال مع وحدات النواة القابلة للتحميل في Linux ومع eBPF).
 
-As a partial defense against kernel bugs, xv6 code includes checks for inconsistencies and unrecoverable errors, and will “panic” in response, by calling `panic()`. This function prints an error message and halts the system. Panicking is not desirable, but is preferable to continuing execution. Typically a panic results from a kernel bug that causes kernel data to be incorrect or causes the kernel to perform an illegal action such as referencing non-existent memory; in such a situation it is safer to halt execution with `panic()` than to try to continue in an inconsistent state. A kernel developer would react to a panic by working to identify and fix the underlying code bug.
+ووكدفاعٍ جزئيٍّ ضدّ علل النواة، تتضمّن شيفرة xv6 فحوصًا للتناقضات والأخطاء غير القابلة للاستعادة، وترتعب عند اكتشافها بمناداة `panic()`. وتطبع هذه الدالّة رسالة خطأٍ وتوقف النظام. والارتعاد ليس أمرًا مرغوبًا، لكنّه أفضل من مواصلة التنفيذ. وينشأ الارتعاد عادةً من خلَلٍ في النواة يُسبّب بياناتِ نواةٍ غير صحيحةٍ أو يدفع النواة إلى أداء فعلٍ غير مشروعٍ مثل الإشارة إلى ذاكرةٍ غير موجودة؛ وفي مثل هذا الموقف فإنّ إيقاف التنفيذ بـ`panic()` أكثر أمانًا من محاولة المواصلة في حالةٍ غير متّسقة. وينبغي لمطوّر النواة أن يتعامل مع الارتعاد بالسعي إلى تحديد خلَل الشيفرة الأساسيّ وإصلاحه.
 
-## 2.8 Real world
+## 2.8 العالم الواقعيّ
 
-Most operating systems have adopted the process concept, and most processes look similar to xv6’s. Modern operating systems, however, support several threads within a process, to allow a single process to exploit multiple CPUs. Supporting multiple threads in a process involves quite a bit of machinery that xv6 doesn’t have, often including interface changes (e.g., Linux’s `clone`, a variant of `fork`), to control which aspects of a process threads share.
+ولقد تبنّت معظم نظم التشغيل مفهوم العمليّة، ومعظم العمليّات تبدو شبيهةً بعمليّات xv6. لكنّ نظم التشغيل الحديثة تدعم عدّة خيوطٍ داخل عمليّةٍ واحدة، للسمح لعمليّةٍ واحدة باستغلال وحدات معالجةٍ متعدّدة. ودعم خيوطٍ متعدّدةٍ في عمليّةٍ يتطلّب قدرًا كبيرًا من الآليّات التي لا تملكها xv6، يشمل غالبًا تغييراتٍ في الواجهة (مثل `clone` في Linux، وهو شكلٌ من `fork`)، للتحكّم في أيّ جوانب العمليّة يتشارك الخيوط.
 
-## 2.9 Exercises
+## 2.9 تمارين
 
-1. Add a system call to xv6 that returns the amount of free memory available.
+1. أضف نداء نظامٍ إلى xv6 يُعيد كمّيّة الذاكرة المتاحة.
 
-[^1]: By “multi-core” this text means multiple CPUs that share memory but execute in parallel, each with its own set of registers. This text sometimes uses the term multiprocessor as a synonym for multi-core, though multiprocessor can also refer more specifically to a computer with several distinct processor chips.
+[^1]: يقصد هذا النصّ بعبارة «multi-core» وحدات معالجةٍ متعدّدةً تتشارك الذاكرة لكنّها تنفّذ بالتوازي، لكلٍّ منها مجموعتها الخاصّة من المسجّرات. ويستخدم هذا النصّ أحيانًا مصطلح multiprocessor كمرادفٍ لـmulti-core، وإن كان multiprocessor قد يشير أيضًا بصورةٍ أكثر تخصّصًا إلى حاسوبٍ فيه عدّة رقاقات معالجةٍ متمايزة.

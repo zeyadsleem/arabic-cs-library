@@ -1,35 +1,35 @@
 ---
-title: "Logging"
-lang: en
+title: "التسجيل"
+lang: ar
 ---
 
-## 11. Logging
+## 11. التسجيل
 
-One of the most interesting problems in file system design is crash recovery. The problem arises because many file-system operations involve multiple writes to the disk, and a crash after a subset of the writes may leave the on-disk file system in an inconsistent state. For example, suppose a crash occurs during file truncation. Truncation involves writing (at least) two disk blocks, one containing the i-node and one containing part of the free-block bitmap: the i-node’s length must be set to zero and the block numbers in the i-node must be cleared, and the bitmap bits for the file’s blocks must be set to zero (marking them free). A crash after one of the writes, but before the kernel has a chance to perform the second write, will leave the on-disk file system in an incorrect state. If only the bitmap write occurs, the result after a crash and reboot will be an i-node with non-zero length which refers to blocks that are marked free; if only the i-node write occurs, the result will be blocks that are not used by any file but are also not marked free.
+من أشدّ مسائل تصميم نظم الملفات إثارةً للاهتمام مسألة الاستعادة بعد الانهيار. وتنشأ هذه المسألة لأنّ كثيرًا من عمليّات نظام الملفات تتطلّب كتاباتٍ متعدّدةً إلى القرص، وقد يترك الانهيار الحاصل بعد أداء مجموعةٍ فرعيّةٍ فقط من تلك الكتابات نظامَ الملفات المخزَّن على القرص في حالةٍ غير متّسقة. فمثلًا، لنفترض حدوثَ انهيارٍ أثناء اقتطاع ملفّ. ويستلزم الاقتطاع كتابةَ كتلتين على القرص (على الأقلّ): إحداهما تحتوي على عقدة الفهرس (inode)، والأخرى تحتوي على جزءٍ من خريطة البِتّات الحرّة (bitmap)؛ فيجب ضبط طول عقدة الفهرس على صفر، ومسح أرقام الكتل الواردة فيها، وضبط بِتّات خريطة البِتّات الخاصّة بكتل الملفّ على صفر (إشارةً إلى تحريرها). والانهيار الحاصل بعد إحدى الكتابتين، ولكن قبل أن تتاح للنواة فرصةُ أداء الكتابة الثانية، سيترك نظام الملفات على القرص في حالةٍ غير صحيحة. فإن حدثت كتابة خريطة البِتّات وحدها، كانت النتيجة بعد الانهيار وإعادة التشغيل عقدةَ فهرسٍ طولُها لا يساوي صفرًا تُشير إلى كتلٍ موسومةٍ بالحرّة؛ وإن حدثت كتابة عقدة الفهرس وحدها، كانت النتيجة كتلٍ لا يستخدمها أيّ ملفّ، لكنها غير موسومةٍ بالحرّة أيضًا.
 
-The latter is relatively benign, but an inode that refers to a freed block is likely to cause serious problems after a reboot. After reboot, the kernel might allocate that block to another file, and now we have two different files pointing unintentionally to the same block. If xv6 supported multiple users, this situation could be a security problem, since the old file’s owner would be able to read and write blocks in the new file, owned by a different user.
+والحالة الثانية حميدةٌ إلى حدّ نسبيّ، لكنّ عقدة فهرسٍ تُشير إلى كتلةٍ محرَّرةٍ يُرجَّح أن تسبّب مشكلاتٍ خطيرةً بعد إعادة التشغيل. فبعد إعادة التشغيل، قد تُخصّص النواة تلك الكتلة لملفّ آخر، فيصير لدينا ملفّان مختلفان يُشيران دون قصدٍ إلى الكتلة نفسها. ولو كان xv6 يدعم عدّة مستخدمين، لكانت هذه الحالة مشكلةً أمنيّةً، إذ سيتمكّن مالك الملفّ القديم من قراءة كتل الملفّ الجديد المملوك لمستخدمٍ آخر والكتابة فيها.
 
-Xv6 solves the problem of crashes during file-system operations with a simple form of logging. An xv6 system call does not directly write the on-disk file system data structures. Instead, it places a description of all the disk writes it wishes to make in a *log* on the disk. Once the system call has logged all of its writes, it writes a special *commit* record to the disk indicating that the log contains a complete operation. At that point the system call copies the writes to the on-disk file system data structures. After those writes have completed, the system call erases the log on disk.
+يحلّ xv6 مسألة الانهيارات التي تحدث أثناء عمليّات نظام الملفات بأسلوبٍ مبسّطٍ من التسجيل. فنداء النظام في xv6 لا يكتب بنيات بيانات نظام الملفات المخزَّنة على القرص مباشرةً، بل يضع وصفًا لجميع كتابات القرص التي يرغب في أدائها في *سجلٍّ* (log) على القرص. وحين يسجّل نداء النظام جميع كتاباته، يكتب سجلَّ *تثبيتٍ* (commit) خاصًّا إلى القرص، يشير إلى أنّ السجلّ يحتوي على عمليّةٍ كاملة. وعند تلك النقطة، ينسخ نداء النظام الكتابات إلى بنيات بيانات نظام الملفات على القرص. وبعد اكتمال تلك الكتابات، يمحو نداء النظام السجلّ عن القرص.
 
-If the system should crash and reboot, the file-system code recovers from the crash as follows, before running any processes. If the log is marked as containing a complete operation, then the recovery code copies the writes to where they belong in the on-disk file system. If the log is not marked as containing a complete operation, the recovery code ignores the log. The recovery code finishes by erasing the log.
+فإن انهار النظام وأُعيد تشغيله، فإنّ شيفرة نظام الملفات تستعيد الحالة من الانهيار على النحو الآتي، قبل تشغيل أيّ عمليّة. فإن كان السجلّ موسومًا بأنّه يحتوي على عمليّةٍ كاملة، تنسخ شيفرة الاستعادة الكتابات إلى مواضعها الصحيحة في نظام الملفات على القرص. وإن لم يكن السجلّ موسومًا بذلك، فإنّ شيفرة الاستعادة تتجاهله. وتنتهي شيفرة الاستعادة بمحو السجلّ.
 
-Why does xv6’s log solve the problem of crashes during file system operations? If the crash occurs before the operation commits, then the log on disk will not be marked as complete, the recovery code will ignore it, and the state of the disk will be as if the operation had not even started. If the crash occurs after the operation commits, then recovery will replay all of the operation’s writes, perhaps repeating them if the operation had started to write them to the on-disk data structure. In either case, the log makes operations atomic with respect to crashes: after recovery, either all of the operation’s writes appear on the disk, or none of them appear.
+فلماذا يحلّ سجلّ xv6 مسألة الانهيارات التي تحدث أثناء عمليّات نظام الملفات؟ فإن حدث الانهيار قبل تثبيت العمليّة، فلن يكون السجلّ على القرص موسومًا بالاكتمال، وستتجاهله شيفرة الاستعادة، وستكون حالة القرص كأنّ العمليّة لم تبدأ أصلًا. وإن حدث الانهيار بعد تثبيت العمليّة، فإنّ الاستعادة ستعيد تنفيذ جميع كتابات العمليّة، مُكرّرةً إيّاها ربّما إن كانت العمليّة قد بدأت بكتابتها إلى بنية البيانات على القرص. وفي الحالتين، يجعل السجلّ العمليّات ذرّيّةً إزاء الانهيارات: فبعد الاستعادة، إمّا أن تظهر جميع كتابات العمليّة على القرص، أو ألّا تظهر أيٌّ منها.
 
-## 11.1 Log design
+## 11.1 تصميم السجلّ
 
-The log resides at a known fixed location (see Figure [10.2](#fig:fslayout)), specified in the superblock. It consists of a header block followed by a sequence of updated block copies (“logged blocks”). The header block contains an array of block numbers, one for each of the logged blocks, and the count of log blocks. The count in the header block on disk is either zero, indicating that there is no transaction in the log, or non-zero, indicating that the log contains a complete committed transaction with the indicated number of logged blocks. Xv6 writes the header block when a transaction commits, but not before, and sets the count to zero after copying the logged blocks to the file system. Thus a crash midway through a transaction will result in a count of zero in the log’s header block; a crash after a commit will result in a non-zero count.
+يقع السجلّ في موضعٍ ثابتٍ معروف (انظر [الشكل 10.2](#fig:fslayout))، تحدّده الكتلة الفائقة (superblock). وهو يتكوّن من كتلة ترويسة يتبعها تسلسلٌ من نسخ الكتل المحدَّثة («الكتل المسجَّلة»). وتحتوي كتلة الترويسة على مصفوفةٍ من أرقام الكتل، رقمٌ واحدٌ لكلّ كتلةٍ من الكتل المسجَّلة، وعلى عدّادٍ لكتل السجلّ. وقيمة العدّاد في كتلة الترويسة على القرص إمّا صفر، وهو ما يشير إلى عدم وجود معاملةٍ (transaction) في السجلّ، أو قيمةٌ غير صفريّة، وهو ما يشير إلى أنّ السجلّ يحتوي على معاملةً مكتملةً مثبَّتةٍ بالعدد المشار إليه من الكتل المسجَّلة. ويكتب xv6 كتلة الترويسة عند تثبيت معاملةً، لا قبله، ويضبط العدّاد على صفر بعد نسخ الكتل المسجَّلة إلى نظام الملفات. ومن ثمّ، فإنّ الانهيار الحاصل في منتصف معاملةٍ سيُنتج عدّادًا قيمته صفر في كتلة ترويسة السجلّ؛ أمّا الانهيار الحاصل بعد تثبيتٍ فسيُنتج عدّادًا غير صفريّ.
 
-Each system call’s code indicates the start and end of the sequence of writes that must be atomic with respect to crashes. To allow concurrent execution of file-system operations by different processes, the logging system can accumulate the writes of multiple system calls into one transaction. Thus a single commit may involve the writes of multiple complete system calls. To avoid splitting a system call across transactions, the logging system only commits when no file-system system calls are underway.
+تُبيّن شيفرة كلّ نداء نظامٍ بداية تسلسل الكتابات الذي يجب أن يكون ذرّيًّا إزاء الانهيارات ونهايته. ولكي يُسمح بالتنفيذ المتزامن لعمليّات نظام الملفات من عمليّات مختلفة، فإنّ نظام التسجيل يستطيع تجميع كتابات عدّة نداءات نظام في معاملةً واحدة. ومن ثمّ، فقد يشمل التثبيت الواحد كتابات عدّة نداءات نظام كاملة. ولكي يُتجنّب تقسيم نداء نظامٍ على معاملاتٍ متعدّدة، لا يثبّت نظام التسجيل إلّا حين لا يكون أيّ نداءٍ من نداءات نظام الملفات قيد التنفيذ.
 
-The idea of committing several transactions together is known as *group commit*. Group commit reduces the number of disk operations because it amortizes the fixed cost of a commit over multiple operations. Group commit also hands the disk system more concurrent writes at the same time, perhaps allowing the disk to write them all during a single disk rotation. Xv6’s virtio driver doesn’t support this kind of *batching*, but xv6’s file system design allows for it.
+وتُعرَف فكرة تثبيت عدّة معاملاتٍ معًا بـ*التثبيت الجماعي* (group commit). وهو يقلّل عدد عمليّات القرص لأنّه يُوزّع الكلفة الثابتة للتثبيت على عمليّاتٍ متعدّدة. كما يقدّم التثبيت الجماعي إلى نظام القرص عددًا أكبر من الكتابات المتزامنة في الوقت نفسه، وهو ما قد يسمح للقرص بكتابتها جميعًا في دورةٍ قرصيّةٍ واحدة. ومشغّل xv6 للعِتاد virtio لا يدعم هذا النوع من *التجميع* (batching)، لكنّ تصميم نظام ملفات xv6 يسمح به.
 
-A subtle implication of group commit is that it makes the effects of a write system call asynchronous: that is, even after a write system call returns to the application, it is not guaranteed that the blocks it modified are on disk. For example, when a write transaction finishes, another transaction may have started and the write transaction will commit together with the second transaction as one group, delaying the effects of the write on disk until the second transaction commits. If an application wants to wait until its modifications are made durable (i.e., are on disk), it can call the `sync` system call after a write system call; `sync` waits until an in-progress group-commit has committed.
+ومن تَبِعات التثبيت الجماعي الدقيقة أنّه يجعل آثار نداء الكتابة غير متزامنة: أي أنّ الكتل التي عدّلها ليست مضمونةَ الوجود على القرص، حتّى بعد رجوع نداء النظام إلى التطبيق. فمثلًا، حين تنتهي معاملة كتابةٍ، قد تكون معاملةٌ أخرى قد بدأت، وستُثبَّت معاملة الكتابة مع المعاملة الثانية مجموعةً واحدةً، فيتأخّر أثر الكتابة على القرص حتّى تُثبَّت المعاملة الثانية. وإذا أراد تطبيقٌ أن ينتظر حتّى تصبح تعديلاته دائمةً (أي موجودةً على القرص)، فبإمكانه استدعاء نداء النظام `sync` بعد نداء الكتابة؛ و`sync` ينتظر حتّى يُثبَّت التثبيت الجماعي الجاري.
 
-Xv6 dedicates a fixed amount of space on the disk to hold the log. The total number of blocks written by the system calls in a transaction must fit in that space. This has two consequences. No single system call can be allowed to write more distinct blocks than there is space in the log. This is not a problem for most system calls, but two of them can potentially write many blocks: `write` and `unlink`. A large file write may write many data blocks and many bitmap blocks as well as an inode block; unlinking a large file might write many bitmap blocks and an inode. Xv6’s write system call breaks up large writes into multiple smaller writes that fit in the log, and `unlink` doesn’t cause problems because in practice the xv6 file system uses only one bitmap block. The other consequence of limited log space is that the logging system cannot allow a system call to start unless it is certain that the system call’s writes will fit in the space remaining in the log.
+يُخصّص xv6 مقدارًا ثابتًا من المساحة على القرص لاحتواء السجلّ. ويجب أن يقتصر مجموع الكتل التي تكتبها نداءات النظام في معاملةً واحدةً على هذه المساحة. ولهذا تَبِعاتٌ اثنتان. فلا يجوز السّماح لأيّ نداء نظامٍ واحدٍ بكتابة عددٍ من الكتل المتمايزة يزيد على المساحة المتاحة في السجلّ. وهذه ليست مشكلةً في معظم نداءات النظام، لكنّ اثنين منها قد يكتبان كتلًا كثيرة: `write` و`unlink`. فكتابة ملفّ كبيرٍ قد تكتب كتلَ بياناتٍ كثيرةً وكتل خريطة بِتّاتٍ كثيفةً، فضلًا عن كتلة عقدة فهرس؛ وكذلك قد يكتب إلغاء ربط ملفّ كبيرٍ كتلَ خريطة بِتّاتٍ كثيرةً وعقدةَ فهرس. أمّا نداء النظام write في xv6 فيقطّع الكتابات الكبيرة إلى كتاباتٍ أصغرَ متناسبةٍ مع السجلّ، و`unlink` لا يُسبّب مشكلاتٍ لأنّ نظام ملفات xv6 لا يستخدم في العمليّة سوى كتلةٍ واحدةٍ من خريطة البِتّات. وتَبِعةُ المساحة المحدودة للسجلّ الأخرى هي أنّ نظام التسجيل لا يستطيع السّماح لنداء نظامٍ بالبدء إلّا إذا كان واثقًا من أنّ كتابات ذلك النداء ستقبلُ المساحة المتبقّية في السجلّ.
 
-## 11.2 Code: Logging
+## 11.2 الشيفرة: التسجيل
 
-A typical use of the log in a system call looks like this:
+وهذا مثالٌ على استخدام نموذجيّ للسجلّ في نداء نظام:
 
 ```c
   begin_op();
@@ -41,17 +41,17 @@ A typical use of the log in a system call looks like this:
   end_op();
 ```
 
-`begin_op` waits until the logging system is not currently committing, and until there is enough unreserved log space to hold the writes from this call. `log.outstanding` counts the number of system calls that have reserved log space; the total reserved space is `log.outstanding` times `MAXOPBLOCKS`. Incrementing `log.outstanding` both reserves space and prevents a commit from occurring during this system call. The code conservatively assumes that each system call might write up to `MAXOPBLOCKS` distinct blocks.
+تنتظر `begin_op` حتّى ينتهي نظام التسجيل من التثبيت الجاري، وحتّى تتوفّر مساحةٌ غير محجوزةٍ كافيةً في السجلّ لاستيعاب كتابات هذا النداء. ويحسب `log.outstanding` عدد نداءات النظام التي حجزت مساحةً في السجلّ؛ والمساحة المحجوزة الكلّيّة هي `log.outstanding` مضروبًا في `MAXOPBLOCKS`. وزيادةُ `log.outstanding` تحجز المساحة وتمنع حدوث تثبيتٍ أثناء نداء النظام هذا في الوقت نفسه. وتفترض الشيفرة على نحوٍ متحفّظٍ أنّ كلّ نداء نظامٍ قد يكتب حتّى `MAXOPBLOCKS` كتلةً متمايزةً.
 
-`log_write` acts as a proxy for `bwrite`. It records the block’s block number in memory, reserving it a slot in the log on disk, and pins the buffer in the block cache to prevent the block cache from evicting it. The block must stay in the cache until committed: until then, the cached copy is the only record of the modification; it cannot be written to its place on disk until after commit; and other reads in the same transaction must see the modifications. `log_write` notices when a block is written multiple times during a single transaction, and allocates that block the same slot in the log. This optimization is often called *absorption*. It is common that, for example, the disk block containing inodes of several files is written several times within a transaction. By absorbing several disk writes into one, the file system can save log space and can achieve better performance because only one copy of the disk block must be written to disk.
+وتعمل `log_write` كنائبٍ عن `bwrite`. فهي تسجّل رقم كتلة الكتلة في الذاكرة، محتجزةً لها موضعًا في السجلّ على القرص، وتُثبّت المخزن المؤقّت في مخبأ الكتل كي يمنع مخبأ الكتل من إخراجها. فيجب أن تبقى الكتلة في المخبأ حتّى يتمّ تثبيتها: فحتّى تلك اللحظة، تكون النسخة المخبأة هي السجلّ الوحيد للتعديل؛ ولا يمكن كتابتها إلى موضعها على القرص إلّا بعد التثبيت؛ كما يجب أن ترى القراءات الأخرى في المعاملة نفسها التعديلات. وتلاحظ `log_write` حين تُكتب كتلةٌ عدّة مرّاتٍ خلال معاملةً واحدة، فتخصّص لتلك الكتلة الموضع نفسه في السجلّ. ويُسمّى هذا التحسين عادةً *الامتصاص* (absorption). ومن الشائع أنّ، مثلًا، تُكتب كتلةُ القرص التي تحتوي على عقد فهرس عدّة ملفّاتٍ عدّة مرّاتٍ ضمن معاملةً واحدة. وبامتصاص عدّة كتابات قرصيّةٍ في كتابةٍ واحدة، يستطيع نظام الملفات توفير مساحة السجلّ وتحقيق أداءٍ أفضل؛ لأنّ نسخةً واحدةً فقط من كتلة القرص يجب كتابتها إلى القرص.
 
-`end_op` first decrements the count of outstanding system calls. If the count is now zero, it commits the current transaction by calling `commit().` There are four stages in this process. `write_log()` copies each block modified in the transaction from the buffer cache to its slot in the log on disk. `write_head()` writes the header block to disk: this is the commit point, and a crash after the write will result in recovery replaying the transaction’s writes from the log. `install_trans` reads each block from the log and writes it to the proper place in the file system. Finally `end_op` writes the log header with a count of zero; this has to happen before the next transaction starts writing logged blocks, so that a crash doesn’t result in recovery using one transaction’s header with the subsequent transaction’s logged blocks.
+تخفض `end_op` أوّلًا عدّاد نداءات النظام قيد التنفيذ. فإن كان العدّاد صفرًا الآن، تثبّت المعاملة الحاليّة باستدعاء `commit().` وهناك أربع مراحل في هذه العمليّة. فـ`write_log()` تنسخ كلّ كتلةٍ عُدِّلت في المعاملة من مخبأ الكتل إلى موضعها في السجلّ على القرص. و`write_head()` تكتب كتلة الترويسة إلى القرص: وهذه هي نقطة التثبيت، والانهيار الحاصل بعد تلك الكتابة سيُؤدّي إلى استعادةٍ تُعيد تنفيذ كتابات المعاملة من السجلّ. و`install_trans` تقرأ كلّ كتلةٍ من السجلّ وتكتبها إلى موضعها الصحيح في نظام الملفات. وأخيرًا تكتب `end_op` ترويسة السجلّ بعدّادٍ قيمته صفر؛ ولا بدّ أن يحدث ذلك قبل أن تبدأ المعاملة التالية بكتابة الكتل المسجَّلة، حتّى لا يُؤدّي انهيارٌ إلى أن تستخدم الاستعادة ترويسة إحدى المعاملات مع الكتل المسجَّلة للمعاملة اللاحقة.
 
-A key assumption in the implementation of `end_op` is that `write_head` updates the header block atomically: completely or not at all. Recall from Chapter [10](https://mit-pdos.github.io/xv6-riscv-book/fs.html#CH:FS) that a block in xv6 is two disk sectors, but the log header fits in the first sector, and so there is no problem even if the disk guarantees only that a single-sector update is atomic.
+أحد الافتراضات الجوهريّة في تنفيذ `end_op` هو أنّ `write_head` تُحدّث كتلة الترويسة بصورةٍ ذرّيّة: إمّا كاملةً أو لا تحديثًا على الإطلاق. وتذكّر من الفصل [10](https://mit-pdos.github.io/xv6-riscv-book/fs.html#CH:FS) أنّ الكتلة في xv6 هي قطاعان من القرص، لكنّ ترويسة السجلّ تتّسع في القطاع الأوّل، فلا مشكلةَ من ثمّ حتّى لو كان القرص يضمن ذرّيّة تحديث قطاعٍ واحدٍ فقط.
 
-`recover_from_log` is called from `initlog`, which is called from `fsinit` during boot before the first user process runs `(proc.c:526)`. It reads the log header, and mimics the actions of `end_op` if the header indicates that the log contains a committed transaction.
+تُستدعى `recover_from_log` من `initlog`، التي تُستدعى من `fsinit` خلال الإقلاع قبل أن تعمل أوّل عمليّة مستخدم `(proc.c:526)`. وهي تقرأ ترويسة السجلّ، وتُحاكي أفعال `end_op` إذا دَلّت الترويسة على أنّ السجلّ يحتوي على معاملةً مثبَّتة.
 
-An example use of the log occurs in `filewrite`. The transaction looks like this:
+ومن أمثلة استخدام السجلّ ما يحدث في `filewrite`. وتبدو المعاملة على النحو الآتي:
 
 ```c
       begin_op();
@@ -61,27 +61,27 @@ An example use of the log occurs in `filewrite`. The transaction looks like this
       end_op();
 ```
 
-This code is wrapped in a loop that breaks up large writes into individual transactions of just a few blocks at a time, to avoid overflowing the log. The call to `writei` writes many blocks as part of this transaction: the file’s inode, one or more bitmap blocks, and some data blocks.
+وهذه الشيفرة ملفوفةٌ في حلقةٍ تقطّع الكتابات الكبيرة إلى معاملاتٍ فرديّةٍ لا تضمّ سوى بضع كتلٍ في المرّة، تفاديًا لفيض السجلّ. واستدعاء `writei` يكتب كتلًا كثيرةً كجزءٍ من هذه المعاملة: عقدةَ فهرس الملفّ، وكتلةً أو أكثر من كتل خريطة البِتّات، وبعض كتل البيانات.
 
-## 11.3 Real world
+## 11.3 العالم الواقعيّ
 
-Xv6’s logging system is inefficient. A commit cannot occur concurrently with file-system system calls. The system logs entire blocks, even if only a few bytes in a block are changed. It performs synchronous log writes, a block at a time, each of which is likely to require an entire disk rotation time. Real logging systems address all of these problems. - Logging is not the only way to provide crash recovery. Early file systems used a scavenger during reboot (for example, the UNIX `fsck` program) to examine every file and directory and the block and inode free lists, looking for and resolving inconsistencies. Scavenging can take hours for large file systems, and there are situations where it is not possible to resolve inconsistencies in a way that causes the original system calls to be atomic. Recovery from a log is much faster and causes system calls to be atomic in the face of crashes.
+إنّ نظام التسجيل في xv6 غير كفؤ. فلا يمكن أن يجري التثبيت بالتزامن مع نداءات نظام الملفات. ويسجّل النظام كتلًا كاملةً، حتّى لو تغيّرت بضع بايتاتٍ فقط في كتلةٍ واحدة. وهو يؤدّي كتاباتٍ متزامنةً للسجلّ، كتلةً في المرّة، يُرجَّح أن كلّ واحدةٍ منها تستلزم دورةً قرصيّةً كاملة. وأنظمة التسجيل الحقيقيّة تعالج كلّ هذه المشكلات. - التسجيل ليس الطريقة الوحيدة لتوفير الاستعادة من الانهيار. فأنظمة الملفات المبكّرة كانت تستخدم كاسحًا خلال إعادة التشغيل (برنامج `fsck` في UNIX مثلًا) ليفحص كلّ ملفّ ومجلّد، وقوائم كتل وعقد الفهارس الحرّة، باحثًا عن التناقضات وحالًا لها. وقد يستغرق الكسح ساعاتٍ في نظم الملفات الكبيرة، وهناك حالاتٌ لا يكون فيها ممكنًا حلّ التناقضات بصورةٍ تجعل نداءات النظام الأصليّة ذرّيّة. والاستعادة من سجلٍّ أسرعُ بكثيرٍ وتجعل نداءات النظام ذرّيّةً في مواجهة الانهيارات.
 
-## 11.4 Exercises
+## 11.4 تمارين
 
-To understand how the log is used, insert the following line of code before the `log_write` statement in the function `writei()` in `kernel/fs.c`:
+ولفهم كيفية استخدام السجلّ، أدخل سطر الشيفرة التالي قبل العبارة `log_write` في الدالّة `writei()` في `kernel/fs.c`:
 
 ```c
 printk("log write %d: %d %d %d\n", addr, bp->blockno, off, n);
 ```
 
-Run make clean and then make qemu, and at the xv6 shell prompt run the following command:
+شغّل make clean ثمّ make qemu، وفي موجّه صدفة xv6 نفّذ الأمر التالي:
 
 ```bash
 $ echo hi > f
 ```
 
-You should see output similar to this:
+ومن المفترض أن ترى مخرجاتٍ مشابهةً لهذا:
 
 ```
 log write 47: 47 368 16
@@ -89,4 +89,4 @@ log write 936: 936 0 2
 log write 936: 936 2 1
 ```
 
-The output indicates that `log_write` is called three times for this shell command. Why is `log_write` called 3 times? What does each `log_write` write? Does the first write above correspond to updating the root directory and the other two writes correspond to writing file f? Figure [10.2](#fig:fslayout) might be helpful and feel free to add more `printk` statements to help you answering the question.
+وتشير المخرجات إلى أنّ `log_write` قد استُدعيت ثلاث مرّاتٍ لأمر الصدفة هذا. فلماذا استُدعيت `log_write` ثلاث مرّات؟ وماذا تكتب كلّ استدعاءٍ من استدعاءات `log_write`؟ وهل تتوافق الكتابة الأولى أعلاه مع تحديث المجلّد الجذر، وتتوافق الكتابتان الأخريان مع كتابة الملفّ f؟ وقد يكون [الشكل 10.2](#fig:fslayout) مفيدًا، فلا تتردّد في إضافة عبارات `printk` أخرى لمساعدتك في الإجابة عن السؤال.

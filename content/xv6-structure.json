@@ -9,7 +9,8 @@
           "title": "Foreword and acknowledgments",
           "order": 0
         }
-      ]
+      ],
+      "titleAr": "تمهيد وشكر وتقدير"
     },
     {
       "key": "unix",
@@ -20,7 +21,8 @@
           "title": "Operating system interfaces",
           "order": 1
         }
-      ]
+      ],
+      "titleAr": "واجهات نظام التشغيل"
     },
     {
       "key": "first",
@@ -31,7 +33,8 @@
           "title": "Operating system organization",
           "order": 2
         }
-      ]
+      ],
+      "titleAr": "تنظيم نظام التشغيل"
     },
     {
       "key": "mem",
@@ -42,7 +45,8 @@
           "title": "Page tables",
           "order": 3
         }
-      ]
+      ],
+      "titleAr": "جداول الصفحات"
     },
     {
       "key": "trap",
@@ -53,7 +57,8 @@
           "title": "Traps and system calls",
           "order": 4
         }
-      ]
+      ],
+      "titleAr": "المصائد ونداءات النظام"
     },
     {
       "key": "pgfault",
@@ -64,7 +69,8 @@
           "title": "Page faults",
           "order": 5
         }
-      ]
+      ],
+      "titleAr": "أخطاء الصفحات"
     },
     {
       "key": "interrupt",
@@ -75,7 +81,8 @@
           "title": "Interrupts and device drivers",
           "order": 6
         }
-      ]
+      ],
+      "titleAr": "المقاطعات ومُشغّلات الأجهزة"
     },
     {
       "key": "lock",
@@ -86,7 +93,8 @@
           "title": "Locking",
           "order": 7
         }
-      ]
+      ],
+      "titleAr": "القفل"
     },
     {
       "key": "sched",
@@ -97,7 +105,8 @@
           "title": "Scheduling",
           "order": 8
         }
-      ]
+      ],
+      "titleAr": "الجدولة"
     },
     {
       "key": "sleep",
@@ -108,7 +117,8 @@
           "title": "Sleep and Wakeup",
           "order": 9
         }
-      ]
+      ],
+      "titleAr": "النوم والإيقاظ"
     },
     {
       "key": "fs",
@@ -119,7 +129,8 @@
           "title": "File system",
           "order": 10
         }
-      ]
+      ],
+      "titleAr": "نظام الملفات"
     },
     {
       "key": "log",
@@ -130,7 +141,8 @@
           "title": "Logging",
           "order": 11
         }
-      ]
+      ],
+      "titleAr": "التسجيل"
     },
     {
       "key": "lock2",
@@ -141,7 +153,8 @@
           "title": "Concurrency revisited",
           "order": 12
         }
-      ]
+      ],
+      "titleAr": "التزامن من جديد"
     },
     {
       "key": "sum",
@@ -152,7 +165,8 @@
           "title": "Summary",
           "order": 13
         }
-      ]
+      ],
+      "titleAr": "الخلاصة"
     },
     {
       "key": "references",
@@ -163,7 +177,8 @@
           "title": "References",
           "order": 14
         }
-      ]
+      ],
+      "titleAr": "المراجع"
     }
   ]
 }

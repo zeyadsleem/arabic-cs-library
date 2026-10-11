@@ -1,88 +1,88 @@
 ---
-title: "Traps and system calls"
-lang: en
+title: "المصائد ونداءات النظام"
+lang: ar
 ---
 
-## 4. Traps and system calls
+## 4. المصائد ونداءات النظام
 
-There are three kinds of event which cause the CPU to set aside ordinary execution of instructions and force a transfer of control to special kernel code that handles the event. One situation is a system call, when a user program executes the `ecall` instruction to ask the kernel to do something for it. Another situation is an *exception*: an instruction (user or kernel) does something illegal, such as load from an invalid virtual address. The third situation is a device *interrupt*, when a device signals that it needs attention, for example when the disk hardware finishes a read or write request.
+ثمّة ثلاثة أنواع من الأحداث تجعل وحدة المعالجة المركزيّة (CPU) تُنبذ التنفيذ العاديّ للتعليمات وتُجبر نقل التحكّم إلى شيفرة نواةٍ خاصّةٍ تتولّى معالجة الحدث. وأحد المواقف هو نداء النظام (system call)، حين ينفّذ برنامج مستخدمٍ التعليمة `ecall` طالبًا من النواة أن تفعل شيئًا نيابةً عنه. وموقفٌ آخر هو *استثناء (exception)*: حين تفعل تعليمةٌ (من المستخدم أو من النواة) شيئًا غير مشروع، مثل القراءة من عنوانٍ افتراضيّ غير صالح. والموقف الثالث هو *مقاطعة (interrupt)* جهاز، حين يشير جهازٌ إلى أنّه بحاجةٍ إلى انتباه، مثلًا حين ينهي عتاد القرص طلب قراءةٍ أو كتابةٍ.
 
-This book uses *trap* as a generic term for these situations. Typically whatever code was executing at the time of the trap will later need to resume, and shouldn’t need to be aware that anything special happened. That is, we often want traps to be transparent; this is particularly important for device interrupts, which the interrupted code typically doesn’t expect. A trap forces a transfer of control into the kernel; the kernel saves registers and other state so that execution can be resumed; the kernel executes appropriate handler code (e.g., a system call implementation or device driver); the kernel restores the saved state and returns from the trap; and the original code resumes where it left off.
+يستخدم هذا الكتاب مصطلح *مصيدة (trap)* مصطلحًا جامعًا لهذه المواقف. فأيّ شيفرةٍ كانت تُنفَّذ لحظة حدوث المصيدة ستحتاج عادةً إلى الاستئناف لاحقًا، وينبغي ألّا تحتاج إلى أن تدري أنّ شيئًا خاصًّا قد حدث. أي إنّنا نريد غالبًا أن تكون المصائد شفّافة؛ وهذا مهمٌّ بشكلٍ خاصّ في مقاطعات الأجهزة، التي لا تتوقّعها الشيفرة المتوقّفة عادةً. فالمصيدة تجبر نقل التحكّم إلى النواة؛ فتحفظ النواة المسجّلات والحالة الأخرى بحيث يمكن استئناف التنفيذ؛ ثمّ تنفّذ النواة شيفرة معالجةٍ مناسبة (مثلًا تنفيذ نداء نظامٍ أو مشغّل جهاز)؛ ثمّ تستعيد النواة الحالة المحفوظة وترجع من المصيدة؛ وتستأنف الشيفرة الأصليّة من حيث توقّفت.
 
-Xv6 handles all traps in the kernel; traps are not delivered to user code. Handling traps in the kernel is natural for system calls. It makes sense for interrupts since isolation demands that only the kernel be allowed to use devices, and because the kernel is able to share devices among multiple processes. It also makes sense for exceptions since the kernel may be able to handle the exception from user space (for an example see Chapter [5](https://mit-pdos.github.io/xv6-riscv-book/pgfault.html#CH:PGFAULTS)) or respond by killing the offending program.
+تتعامل xv6 مع جميع المصائد في النواة؛ فلا تُسلَّم المصائد إلى شيفرة المستخدم. ومعالجة المصائد في النواة أمرٌ طبيعيّ في نداءات النظام. وهي أمرٌ منطقيّ في المقاطعات لأنّ العزل يقتضي ألّا يُسمح باستخدام الأجهزة إلّا للنواة، ولأنّ النواة قادرة على مشاركة الأجهزة بين عدّة عمليات. وهي منطقيّةٌ أيضًا في الاستثناءات لأنّ النواة قد تكون قادرةً على معالجة الاستثناء القادم من فضاء المستخدم (لمثالٍ انظر الفصل [5](https://mit-pdos.github.io/xv6-riscv-book/pgfault.html#CH:PGFAULTS)) أو على الاستجابة بقتل البرنامج المذنب.
 
-Xv6 trap handling proceeds in four stages: hardware actions taken by the RISC-V CPU, some assembly instructions that prepare the way for kernel C code, a C function that decides what to do with the trap, and the system call or device-driver service routine. While commonality among the three trap types suggests that a kernel could handle all traps with a single code path, it turns out to be convenient to have separate code for two distinct cases: traps from user space, and traps from kernel space. Kernel code (assembler or C) that processes a trap is often called a *handler*; the first handler instructions are usually written in assembler (rather than C) and are sometimes called a *vector*.
+تجري معالجة المصائد في xv6 في أربع مراحل: أفعال عتاديّة يقوم بها معالج RISC-V، وبعض تعليمات التجميع التي تمهّد الطريق لشيفرة C النواة، ودالّة C تقرّر ما يفعل بالمصيدة، والإجراء الخدميّ لنداء النظام أو لمشغّل الجهاز. وبينما تتّسم أنواع المصائد الثلاثة بخصائص مشتركة، وهو ما يوحيّ بأنّ نواةً ما قد تعالج جميع المصائد بمسار شيفرةٍ واحد، إلّا أنّ من الملائم وجود شيفرةٍ منفصلةٍ لحالتين متمايزتين: المصائد القادمة من فضاء المستخدم، والمصائد القادمة من فضاء النواة. وكثيرًا ما يُسمّى شيفرة النواة (بالتجميع أو بـC) التي تعالج المصيدة *معالجًا (handler)*؛ وأوّل تعليمات المعالج تُكتب عادةً بالتجميع (لا بـC) وتُسمّى أحيانًا *ناقلًا (vector)*.
 
-Before proceeding, please read `kernel/trampoline.S`, and `usertrap()` and `prepare_return()` in `kernel/trap.c`.
+قبل المضي قدمًا، يُرجى قراءة `kernel/trampoline.S`، و`usertrap()` و`prepare_return()` في `kernel/trap.c`.
 
-## 4.1 RISC-V trap machinery
+## 4.1 آليّة المصائد في RISC-V
 
-Each RISC-V CPU has a set of hardware control registers that the kernel writes to tell the CPU how to handle traps, and that the kernel can read to find out about a trap that has occurred. The RISC-V documents contain the full story ([Waterman et al. 2024](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-riscv:priv)). `riscv.h` contains definitions that xv6 uses. Here’s an outline of the most important registers:
+لكلّ معالج RISC-V مجموعةٌ من مسجّلات التحكّم العتاديّة، تكتبها النواة لتخبر المعالج كيف يعالج المصائد، وتستطيع النواة قراءتها لتتعرّف على مصيدةٍ حدثت. والقصّة الكاملة في مستندات RISC-V ([ووترمان وآخرون 2024](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-riscv:priv)). ويحوي `riscv.h` التعريفات التي تستخدمها xv6. وهذه لمحةٌ عن أهمّ المسجّلات:
 
-- `stvec`: The kernel writes the address of its trap handler code here; the RISC-V jumps to the address in `stvec` to handle a trap.
-- `sepc`: When a trap occurs, RISC-V saves the program counter here (since the `pc` is then overwritten with the value in `stvec`). The `sret` (return from trap) instruction copies `sepc` to the `pc`. The kernel can write `sepc` to control where `sret` goes.
-- `scause`: RISC-V puts a number here that describes the reason for the trap.
-- `sscratch`: The kernel trap handler code uses `sscratch` to help it avoid overwriting user registers before saving them.
-- `sstatus`: The SIE bit in `sstatus` controls whether device interrupts are enabled. If the kernel clears SIE, the RISC-V will defer device interrupts until the kernel sets SIE. The SPP bit indicates whether a trap came from user mode or supervisor mode, and controls to what mode `sret` returns.
+- `stvec`: تكتب النواة هنا عنوان شيفرة معالج المصائد الخاصّة بها؛ وتقفز RISC-V إلى العنوان الموجود في `stvec` لمعالجة مصيدةٍ.
+- `sepc`: حين تقع مصيدة، تحفظ RISC-V عدّاد البرنامج هنا (إذ يُكتب فوق `pc` حينها بالقيمة الموجودة في `stvec`). والتعليمة `sret` (الرجوع من المصيدة) تنسخ `sepc` إلى `pc`. وتستطيع النواة كتابة `sepc` للتحكّم في الوجهة التي تذهب إليها `sret`.
+- `scause`: تضع RISC-V هنا رقمًا يصف سبب المصيدة.
+- `sscratch`: تستخدم شيفرة معالج مصائد النواة المسجّل `sscratch` ليساعدها على تجنّب الكتابة فوق مسجّلات المستخدم قبل حفظها.
+- `sstatus`: يتحكّم البتّ SIE في `sstatus` في تمكين مقاطعات الأجهزة من عدمه. فإذا أزالت النواة ضبط SIE، فإنّ RISC-V ستؤجّل مقاطعات الأجهزة حتّى تضبط النواة SIE. ويشير البتّ SPP إلى ما إذا كانت المصيدة قد جاءت من وضع المستخدم أمّ من وضع المشرف، ويتحكّم في الوضع الذي ترجع إليه `sret`.
 
-The above registers can only be accessed in supervisor mode (i.e., by the kernel); the CPU prevents user code from reading or writing them.
+لا يمكن النفاذ إلى المسجّلات المذكورة أعلاه إلّا في وضع المشرف (أي بواسطة النواة)؛ فالمعالج يمنع شيفرة المستخدم من قراءتها أو كتابتها.
 
-Each CPU on a multi-core chip has its own set of these registers, and more than one CPU may be handling a trap at any given time.
+لكلّ معالجٍ في رقاقةٍ متعدّدة الأنوية مجموعته الخاصّة من هذه المسجّلات، وقد يعالج أكثر من معالجٍ مصيدةً في أيّ لحظةٍ معيّنة.
 
-When it forces a trap, the RISC-V hardware does the following:
+وحين يجبر مصيدةً، يقوم عتاد RISC-V بالآتي:
 
-1. If the trap is a device interrupt, and the `sstatus` SIE bit is clear, don’t do any of the following.
-2. Disable interrupts by clearing the SIE bit in `sstatus`.
-3. Copy the `pc` to `sepc`.
-4. Save the current mode (user or supervisor) in the SPP bit in `sstatus`.
-5. Set `scause` to a number indicating the trap’s cause.
-6. Set the mode to supervisor.
-7. Copy `stvec` to the `pc`.
-8. Start executing at the new `pc`.
+1. إذا كانت المصيدة مقاطعة جهاز، وكان البتّ SIE في `sstatus` غير مضبوط، فلا تفعل شيئًا من الآتي.
+2. عطّل المقاطعات بإزالة ضبط البتّ SIE في `sstatus`.
+3. انسخ `pc` إلى `sepc`.
+4. احفظ الوضع الحاليّ (مستخدم أو مشرف) في البتّ SPP في `sstatus`.
+5. اضبط `scause` على رقمٍ يشير إلى سبب المصيدة.
+6. اضبط الوضع على المشرف.
+7. انسخ `stvec` إلى `pc`.
+8. ابدأ التنفيذ عند `pc` الجديد.
 
-The CPU doesn’t switch to the kernel page table, doesn’t switch to a stack in the kernel, and doesn’t save any registers other than the `pc`. Kernel software must perform these tasks. One reason that the CPU does minimal work during a trap is to provide flexibility to software; for example, some operating systems omit a page table switch in some situations to increase trap performance.
+لا يبدّل المعالج إلى جدول صفحات النواة، ولا يبدّل إلى مكدّسٍ في النواة، ولا يحفظ أيّ مسجّلٍ غير `pc`. وعلى شيفرة النواة أن تقوم بهذه المهام. وأحد أسباب قيام المعالج بأدنى عملٍ خلال المصيدة هو منح المرونة للشيفرة؛ فعلى سبيل المثال، تهمل بعض نظم التشغيل تبديل جدول الصفحات في بعض المواقف لرفع أداء المصائد.
 
-It’s worth thinking about whether any of the steps listed above could be omitted, perhaps in search of faster traps. Though there are situations in which a simpler sequence can work, many of the steps would be dangerous to omit in general. For example, suppose that the CPU didn’t switch program counters. Then a trap from user space could switch to supervisor mode while still running user instructions. Those user instructions could break user/kernel isolation, for example by modifying the `satp` register to point to a page table that allowed accessing all of physical memory. It is thus important that the CPU switch to a kernel-specified instruction address, namely `stvec`.
+يجدر بنا التفكير فيما إذا كان يمكن إسقاط أيٍّ من الخطوات المذكورة أعلاه، ربّما سعيًا إلى مصائد أسرع. فرغم أنّ هناك مواقف يستطيع فيها تسلسلٌ أبسط أن ينجح، إلّا أنّ إسقاط كثيرٍ من الخطوات سيكون خطرًا عمومًا. فمثلًا، لنفترض أنّ المعالج لم يبدّل عدّادات البرنامج. حينئذٍ، قد تُبدّل مصيدةٌ قادمة من فضاء المستخدم إلى وضع المشرف بينما ما زالت تعليمات المستخدم تُنفَّذ. وتلك التعليمات تستطيع كسر عزل المستخدم والنواة، مثلًا بتعديل المسجّل `satp` ليشير إلى جدول صفحاتٍ يسمح بالنفاذ إلى جميع الذاكرة الفيزيائيّة. ولذا من المهمّ أن يبدّل المعالج إلى عنوان تعليمةٍ تحدّده النواة، وهو `stvec`.
 
-## 4.2 Traps from user space
+## 4.2 المصائد القادمة من فضاء المستخدم
 
 ![](/images/xv6/trap-0-trap.webp){#fig:usertrap}
 
-**Figure 4.1: Outline of how a trap from user code is handled.**
+**الشكل 4.1: لمحةٌ عن كيف تُعالَج مصيدةٌ قادمة من شيفرة المستخدم.**
 
-Xv6 handles traps differently depending on whether the trap occurs while executing in the kernel or in user code. Here is the story for traps from user code; Section [4.5](https://mit-pdos.github.io/xv6-riscv-book/trap.html#s:ktraps) describes traps from kernel code.
+تتعامل xv6 مع المصائد بطرقٍ مختلفةٍ بحسب ما إذا كانت المصيدة تقع أثناء التنفيذ في النواة أمّ في شيفرة المستخدم. وهذه هي القصّة في المصائد القادمة من شيفرة المستخدم؛ أمّا القسم [4.5](https://mit-pdos.github.io/xv6-riscv-book/trap.html#s:ktraps) فيصف المصائد القادمة من شيفرة النواة.
 
-A trap may occur while executing in user space if the user program makes a system call (`ecall` instruction), or does something illegal, or if a device interrupts. As shown in Figure [4.1](#fig:usertrap), the high-level path of a trap from user space is `uservec`, then `usertrap`; and when the kernel is ready to return, `usertrap` returns to `userret` which executes `sret` to user space.
+قد تقع مصيدةٌ أثناء التنفيذ في فضاء المستخدم إذا أجرى برنامج المستخدم نداء نظام (التعليمة `ecall`)، أو فعل شيئًا غير مشروع، أو إذا قاطع جهازٌ. فكما يبيّنه الشكل [4.1](#fig:usertrap)، فإنّ المسار رفيع المستوى لمصيدةٍ من فضاء المستخدم هو `uservec`، ثمّ `usertrap`؛ وحين تكون النواة مستعدّةً للرجوع، ترجع `usertrap` إلى `userret` التي تنفّذ `sret` إلى فضاء المستخدم.
 
-A major constraint on the design of xv6’s trap handling is the fact that the RISC-V hardware does not switch page tables when it forces a trap. This means that the trap handler address in `stvec` must have a valid mapping in the user page table, since that’s the page table in force when the trap handling code starts executing. Furthermore, xv6’s trap handling code needs to switch to the kernel page table; in order to be able to continue executing after that switch, the kernel page table must also have a mapping for the handler pointed to by `stvec`.
+من القيود الرئيسة على تصميم معالجة المصائد في xv6 حقيقة أنّ عتاد RISC-V لا يبدّل جداول الصفحات حين يجبر مصيدةً. وهذا يعني أنّ عنوان معالج المصائد في `stvec` لا بدّ أن يكون له تعيينٌ صالحٌ في جدول صفحات المستخدم، إذ هو جدول الصفحات الساري حين تبدأ شيفرة معالجة المصائد في التنفيذ. وبالإضافة إلى ذلك، تحتاج شيفرة معالجة المصائد في xv6 إلى التبديل إلى جدول صفحات النواة؛ ولكي تستطيع متابعة التنفيذ بعد ذلك التبديل، لا بدّ أن يكون جدول صفحات النواة هو أيضًا ذا تعيينٍ للمعالج الذي يشير إليه `stvec`.
 
-Xv6 satisfies these requirements using a *trampoline* page. This page contains `uservec`, the xv6 trap handling code that `stvec` points to. The trampoline page is mapped in every process’s page table at virtual address `0x3ffffff000` (called `TRAMPOLINE`), which is the last page in the virtual address space so that it will be above memory that programs use for themselves. The trampoline page is mapped at the same virtual address in the kernel page table. See Figure [2.3](#fig:as) and Figure [3.3](#fig:xv6_layout). Because the trampoline page is mapped in the user page table, traps can start executing there in supervisor mode. Because the trampoline page is mapped at the same address in the kernel address space, the trap handler can continue to execute after it switches to the kernel page table.
+ترضي xv6 هذه المتطلّبات باستخدام صفحة *ترامبولين (trampoline)*. وهذه الصفحة تحوي `uservec`، وهو شيفرة معالجة مصائد xv6 التي يشير إليها `stvec`. وتُعيَّن صفحة الترامبولين في جدول صفحات كلّ عمليّةٍ عند العنوان الافتراضيّ `0x3ffffff000` (المسمّى `TRAMPOLINE`)، وهو الصفحة الأخيرة في فضاء العناوين الافتراضيّ حتّى يكون فوق الذاكرة التي تستخدمها البرامج لأنفسها. وتُعيَّن صفحة الترامبولين عند العنوان الافتراضيّ نفسه في جدول صفحات النواة. انظر الشكل [2.3](#fig:as) والشكل [3.3](#fig:xv6_layout). وبسبب تعيين صفحة الترامبولين في جدول صفحات المستخدم، تستطيع المصائد أن تبدأ التنفيذ هناك في وضع المشرف. وبسبب تعيين صفحة الترامبولين عند العنوان نفسه في فضاء عناوين النواة، يستطيع معالج المصائد مواصلة التنفيذ بعد أن يبدّل إلى جدول صفحات النواة.
 
-The code for the `uservec` trap handler is in `trampoline.S`. When `uservec` starts, all 32 registers contain values owned by the interrupted user code. These 32 values need to be saved somewhere in memory, so that later on the kernel can restore them before returning to user space. Storing to memory requires use of a register to hold the store’s destination address, but at this point there are no general-purpose registers available! Luckily RISC-V provides a helping hand in the form of the `sscratch` register. The `csrw` instruction at the start of `uservec` saves `a0` in `sscratch`. Now `uservec` has one register (`a0`) to play with.
+شيفرة معالج المصائد `uservec` في `trampoline.S`. وحين يبدأ `uservec`، تكون جميع المسجّلات الاثنين والثلاثين يحمل قيمًا مملوكةً لشيفرة المستخدم المتوقّفة. وهذه القيم الاثنان والثلاثون بحاجةٌ إلى أن تُحفظ في مكانٍ ما من الذاكرة، حتّى تستطيع النواة استعادتها لاحقًا قبل الرجوع إلى فضاء المستخدم. والتخزين في الذاكرة يقتضي استخدام مسجّلٍ لحمل عنوان وجهة التخزين، لكن لا توجد مسجّلات عامّة متاحة في هذه النقطة! ولحسن الحظّ يمدّ RISC-V يد العون في شكل المسجّل `sscratch`. فالتعليمة `csrw` في بداية `uservec` تحفظ `a0` في `sscratch`. والآن صار لدى `uservec` مسجّلٌ واحد (`a0`) يتصرّف به.
 
-`uservec`’s next task is to save the 32 user registers. The kernel allocates, for each process, a page of memory for a `trapframe` structure that (among other things) has space to save the 32 user registers `(proc.h:40)`. Because `satp` still refers to the user page table, `uservec` needs the trapframe to be mapped in the user address space. Xv6 maps each process’s trapframe at virtual address `TRAPFRAME` (`0x3fffffe000`) in that process’s user page table; one page below `TRAMPOLINE`. Each process’s `p->trapframe` contains a kernel virtual address for the process’s trapframe.
+المهمّة التالية لـ`uservec` هي حفظ مسجّلات المستخدم الاثنين والثلاثين. وتخصّص النواة، لكلّ عمليّة، صفحةً من الذاكرة لبنية `trapframe` تحتوي (من بين أمورٍ أخرى) مساحةً لحفظ مسجّلات المستخدم الاثنين والثلاثين `(proc.h:40)`. ولأنّ `satp` ما زال يشير إلى جدول صفحات المستخدم، يحتاج `uservec` إلى أن يكون إطار المصيدة معيَّنًا في فضاء عناوين المستخدم. وتعيِّن xv6 إطار مصيدة كلّ عمليّة عند العنوان الافتراضيّ `TRAPFRAME` (`0x3fffffe000`) في جدول صفحات المستخدم الخاصّ بتلك العمليّة؛ أي صفحةً واحدةً أسفل `TRAMPOLINE`. و`p->trapframe` لكلّ عمليّة يحتوي عنوانًا افتراضيًّا نواةً لإطار مصيدة تلك العمليّة.
 
-`uservec` sets register `a0` to address `TRAPFRAME` and saves all the user registers there. Then it retrieves the user `a0` from `sscratch` and saves it in the trapframe.
+يضبط `uservec` المسجّل `a0` على العنوان `TRAPFRAME` ويحفظ جميع مسجّلات المستخدم هناك. ثمّ يستعيد `a0` الخاصّ بالمستخدم من `sscratch` ويحفظه في إطار المصيدة.
 
-The kernel previously initialized the trapframe to contain some values useful to `uservec`: the address of the current process’s kernel stack, the current CPU’s hartid, the address of the `usertrap` function, and the address of the kernel page table. `uservec` retrieves these values, switches `satp` to the kernel page table, and jumps to `usertrap`, a C function.
+هيّأت النواة إطار المصيدة سلفًا ليحوي بعض القيم المفيدة لـ`uservec`: عنوان مكدّس نواة العمليّة الحاليّة، ومعرّف قلب (hartid) المعالج الحاليّ، وعنوان الدالّة `usertrap`، وعنوان جدول صفحات النواة. ويستعيد `uservec` هذه القيم، ويبدّل `satp` إلى جدول صفحات النواة، ويقفز إلى `usertrap`، وهي دالّة C.
 
-The job of `usertrap` is to determine the cause of the trap, process it, and return `(trap.c:38)`. It first changes `stvec` so that a trap while in the kernel will be handled by `kernelvec` rather than `uservec`. It saves the `sepc` register (the saved user program counter) for future use when returning back to user space. If the trap is a system call, `usertrap` calls `syscall` to handle it; if a device interrupt, `devintr`; if a page fault, `vmfault`; otherwise it’s an exception (e.g., use of an invalid address), and the kernel kills the faulting process. The system call path adds four to the saved user program counter because RISC-V, in the case of a system call, leaves the program pointer pointing to the `ecall` instruction but user code needs to resume executing at the subsequent instruction. `usertrap` checks if the process has been killed or should yield the CPU (if this trap is a timer interrupt).
+مهمّة `usertrap` هي تحديد سبب المصيدة، ومعالجتها، والرجوع `(trap.c:38)`. فهي تغيّر `stvec` أوّلًا حتّى تُعالَج مصيدةٌ تقع أثناء وجود النواة بواسطة `kernelvec` بدلًا من `uservec`. وهي تحفظ المسجّل `sepc` (عدّاد البرنامج المحفوظ للمستخدم) لاستخدامه مستقبلًا عند الرجوع إلى فضاء المستخدم. فإذا كانت المصيدة نداء نظام، نادت `usertrap` الدالّة `syscall` لتتعامل معه؛ وإذا كانت مقاطعة جهاز، فـ`devintr`؛ وإذا كانت خطأ صفحة، فـ`vmfault`؛ وإلّا فهي استثناء (مثل استخدام عنوانٍ غير صالح)، وتقتل النواة العمليّة المخطئة. ومسار نداء النظام يضيف أربعةً إلى عدّاد البرنامج المحفوظ للمستخدم لأنّ RISC-V، في حالة نداء النظام، يترك مؤشّر البرنامج مشيرًا إلى التعليمة `ecall`، بينما تحتاج شيفرة المستخدم إلى استئناف التنفيذ عند التعليمة التالية. وتفحص `usertrap` ما إذا كانت العمليّة قد قُتلت أو ينبغي أن تتنازل عن المعالج (إذا كانت هذه المصيدة مقاطعة مؤقّت).
 
-The first step in returning to user space is the call to `prepare_return`. This function sets up the RISC-V control registers to prepare for a future trap from user space: setting `stvec` to `uservec` and preparing the trapframe fields that `uservec` relies on. `prepare_return` sets `sepc` to the previously saved user program counter. Finally, `usertrap` returns back to `userret` in the trampoline page `(trampoline.S:101)`, passing back a pointer to the user page table in `a0`.
+الخطوة الأولى في الرجوع إلى فضاء المستخدم هي نداء `prepare_return`. وهذه الدالّة تهيّئ مسجّلات التحكّم في RISC-V استعدادًا لمصيدةٍ مستقبليّةٍ من فضاء المستخدم: فضبط `stvec` على `uservec`، وتهيئة حقول إطار المصيدة التي تعتمد عليها `uservec`. وتضبط `prepare_return` المسجّل `sepc` على عدّاد البرنامج المحفوظ سابقًا للمستخدم. وأخيرًا، ترجع `usertrap` إلى `userret` في صفحة الترامبولين `(trampoline.S:101)`، ممرّرةً مؤشّرًا إلى جدول صفحات المستخدم في `a0`.
 
-`userret` switches `satp` to the process’s user page table. Recall that the user page table maps both the trampoline page and `TRAPFRAME`, but nothing else from the kernel. The trampoline page mapping at the same virtual address in user and kernel page tables allows `userret` to keep executing after changing `satp`. From this point on, the only data `userret` can use is the register contents and the content of the trapframe. `userret` loads the `TRAPFRAME` address into `a0`, restores saved user registers from the trapframe via `a0`, restores the saved user `a0`, and executes `sret` to return to user space.
+تبدّل `userret` المسجّل `satp` إلى جدول صفحات المستخدم الخاصّ بالعمليّة. وتذكّر أنّ جدول صفحات المستخدم يعيّن كلاً من صفحة الترامبولين و`TRAPFRAME`، ولا شيء آخر من النواة. ويتيح تعيين صفحة الترامبولين عند العنوان الافتراضيّ نفسه في جدولَي صفحات المستخدم والنواة لـ`userret` أن تواصل التنفيذ بعد تغيير `satp`. ومن هذه النقطة فصاعدًا، لن تكون البيانات الوحيدة التي تستطيع `userret` استخدامها سوى محتويات المسجّلات ومحتوى إطار المصيدة. فتحمّل `userret` عنوان `TRAPFRAME` في `a0`، وتستعيد مسجّلات المستخدم المحفوظة من إطار المصيدة بواسطة `a0`، وتستعيد `a0` المحفوظ للمستخدم، وتنفّذ `sret` للرجوع إلى فضاء المستخدم.
 
-`uservec` and `userret` are written in assembly language because it is difficult to write C code to save or restore all the registers or survive switching page tables.
+كُتب `uservec` و`userret` بلغة التجميع لأنّ كتابة شيفرة C لحفظ جميع المسجّلات أو استعادتها، أو للنجاة من تبديل جداول الصفحات، أمرٌ عسير.
 
-## 4.3 Code: Calling system calls
+## 4.3 الشيفرة: استدعاء نداءات النظام
 
-User programs call library functions in order to make system calls. For example, the shell displays a prompt with this function call (in `user/sh.c`):
+تنادي برامج المستخدم دوالّ المكتبة لإجراء نداءات النظام. فمثلًا، تستعرض الصدفة موجّهًا باستخدام نداء الدالّة هذا (في `user/sh.c`):
 
 ```c
   write(2, "$ ", 2);
 ```
 
-Here’s the library function, in `user/usys.S`:
+وهذه هي دالّة المكتبة، في `user/usys.S`:
 
 ```asm
 write:
@@ -91,46 +91,46 @@ write:
  ret
 ```
 
-The code that the C compiler generates for the function call loads the three arguments into registers `a0`, `a1`, and `a2`. Then the `write()` function loads the system call number, `SYS_write` (16), into `a7`. The kernel will look at those registers to find out what system call is intended, and what the arguments are. The `ecall` instruction traps from user space into the kernel and causes `uservec`, `usertrap`, and then `syscall` to execute.
+والشيفرة التي يولّدها مصرِّف C لنداء الدالّة تحمّل الوسائط الثلاثة إلى المسجّلات `a0` و`a1` و`a2`. ثمّ تحمّل الدالّة `write()` رقم نداء النظام، `SYS_write` (16)، إلى `a7`. وستنظر النواة إلى تلك المسجّلات لتتعرّف على نداء النظام المقصود وعلى وسائطه. والتعليمة `ecall` تحفر من فضاء المستخدم إلى النواة وتجعل `uservec` و`usertrap` ثمّ `syscall` تُنفَّذ.
 
-At this point, please read `kernel/syscall.c`, `sys_write()` in `kernel/sysfile.c`, and `copyout()`, `copyin()`, and `copyinstr()` in `kernel/vm.c`.
+في هذه النقطة، يُرجى قراءة `kernel/syscall.c`، و`sys_write()` في `kernel/sysfile.c`، و`copyout()` و`copyin()` و`copyinstr()` في `kernel/vm.c`.
 
-`syscall` retrieves the system call number from the saved `a7` in the trapframe and uses it to index into `syscalls`. For our example, `a7` contains `SYS_write`, resulting in a call to the system call implementation function `sys_write`.
+تستعيد `syscall` رقم نداء النظام من `a7` المحفوظ في إطار المصيدة وتستخدمه لفهرسة `syscalls`. ففي مثالنا، يحوي `a7` القيمة `SYS_write`، فينتج عن ذلك نداءٌ لدالّة تنفيذ نداء النظام `sys_write`.
 
-When `sys_write` returns, `syscall` records its return value in `p->trapframe->a0`. This will cause the original user-space call to `write()` to return that value, since the C calling convention on RISC-V places return values in `a0`. System calls conventionally return negative numbers to indicate errors, and zero or positive numbers for success.
+وحين ترجع `sys_write`، تسجّل `syscall` قيمتها المعادة في `p->trapframe->a0`. وهذا سيسبّب عودة نداء `write()` الأصليّ من فضاء المستخدم بتلك القيمة، إذ يضع اصطلاح النداء في C على RISC-V القيم المعادة في `a0`. وتعيد نداءات النظام تقليديًّا أعدادًا سالبةً للإشارة إلى الأخطاء، وأعدادًا صفريةً أو موجبةً للنجاح.
 
-## 4.4 Code: System call arguments
+## 4.4 الشيفرة: وسائط نداءات النظام
 
-System call arguments start out in the user registers, and are then moved to the trap frame by the kernel trap code. The kernel functions `argint`, `argaddr`, and `argfd` retrieve the *n* ’th system call argument from the trap frame as an integer, pointer, or a file descriptor.
+تبدأ وسائط نداء النظام في مسجّلات المستخدم، ثمّ تنقلها شيفرة مصائد النواة إلى إطار المصيدة. وتستعيد دوالّ النواة `argint` و`argaddr` و`argfd` الوسيط رقم *n* من نداء النظام من إطار المصيدة على هيئة عددٍ صحيحٍ، أو مؤشّر، أو واصف ملفّ.
 
-Some system calls pass pointers as arguments, and the kernel must use those pointers to read or write user memory. The `write` system call, for example, passes the kernel a user-space pointer to the data to be written. Such pointers pose two challenges. First, the user program may be buggy or malicious, and may pass the kernel an invalid pointer or a pointer intended to trick the kernel into accessing kernel memory instead of user memory. Second, the xv6 kernel page table mappings are not the same as the user page table mappings, so the kernel cannot use ordinary instructions to load or store from user-supplied addresses.
+تمرّر بعض نداءات النظام مؤشّراتٍ كوسائط، ولا بدّ للنواة أن تستخدم تلك المؤشّرات لقراءة ذاكرة المستخدم أو كتابتها. فنداء النظام `write`، مثلًا، يمرّر إلى النواة مؤشّرًا من فضاء المستخدم إلى البيانات المطلوب كتابتها. وتُطرح مثل هذه المؤشّرات تحديّين. الأوّل، قد يكون برنامج المستخدم معطوبًا أو خبيثًا، وقد يمرّر إلى النواة مؤشّرًا غير صالحٍ أو مؤشّرًا يقصد خداع النواة لتنال ذاكرة النواة بدلًا من ذاكرة المستخدم. والثاني، تعيينات جدول صفحات نواة xv6 ليست هي نفسها تعيينات جدول صفحات المستخدم، فلا تستطيع النواة استخدام تعليمات عاديّة للتحميل من العناوين التي يوفّرها المستخدم أو للتخزين فيها.
 
-The kernel implements functions that safely transfer data to and from user-supplied addresses. `fetchstr` is an example `(syscall.c:26)`. File system calls such as `exec` use `fetchstr` to retrieve string file-name arguments from user space. `fetchstr` calls `copyinstr` to do the hard work.
+تنفّذ النواة دوالّ تنقل البيانات بأمانٍ إلى العناوين التي يوفّرها المستخدم ومنها. و`fetchstr` مثالٌ على ذلك `(syscall.c:26)`. فنداءات نظام الملفّات مثل `exec` تستخدم `fetchstr` لاستعادة وسائط أسماء الملفّات النصيّة من فضاء المستخدم. وينادي `fetchstr` الدالّة `copyinstr` لتقوم بالعمل الصعب.
 
-`copyinstr` copies up to `max` bytes to `dst` from virtual address `srcva` in the user page table `pagetable`. Since `pagetable` is *not* the current page table, `copyinstr` uses `walkaddr` (which calls `walk`) to look up `srcva` in `pagetable`, yielding physical address `pa0`. The kernel’s page table maps all of physical RAM at virtual addresses that are equal to the RAM’s physical address. This allows `copyinstr` to directly copy string bytes from `pa0` to `dst`. `walkaddr` checks that the user-supplied virtual address is part of the process’s user address space, so programs cannot trick the kernel into reading other memory. A similar function, `copyout`, copies data from the kernel to a user-supplied address.
+تنسخ `copyinstr` حتّى `max` بايتًا إلى `dst` من العنوان الافتراضيّ `srcva` في جدول صفحات المستخدم `pagetable`. وبما أنّ `pagetable` *ليس* جدول الصفحات الحاليّ، فإنّ `copyinstr` تستخدم `walkaddr` (التي تنادي `walk`) للبحث عن `srcva` في `pagetable`، فينتج العنوان الفيزيائيّ `pa0`. وجدول صفحات النواة يعيّن جميع ذاكرة RAM الفيزيائيّة عند عناوين افتراضيّةٍ تساوي العنوان الفيزيائيّ لذاكرة RAM. وهذا يسمح لـ`copyinstr` بنسخ بايتات النصّ مباشرةً من `pa0` إلى `dst`. وتفحص `walkaddr` أنّ العنوان الافتراضيّ الذي يوفّره المستخدم جزءٌ من فضاء عناوين المستخدم الخاصّ بالعمليّة، فلا تستطيع البرامج خداع النواة لقراءة ذاكرة أخرى. ودالّةٌ مشابهة، هي `copyout`، تنسخ البيانات من النواة إلى عنوانٍ يوفّره المستخدم.
 
-## 4.5 Traps from kernel space
+## 4.5 المصائد القادمة من فضاء النواة
 
-Please read `kernel/kernelvec.S`, and `kerneltrap()` in `kernel/trap.c`.
+يُرجى قراءة `kernel/kernelvec.S`، و`kerneltrap()` في `kernel/trap.c`.
 
-Xv6 handles traps from kernel code in a different way than traps from user code. When entering the kernel, `usertrap` points `stvec` to the assembly code at `kernelvec`. Since `kernelvec` only executes if xv6 was already in the kernel, `kernelvec` can rely on `satp` being set to the kernel page table, and on the stack pointer referring to a valid kernel stack. `kernelvec` pushes all caller-saved registers onto the current stack, from which it will later restore them so that the interrupted kernel code can resume without disturbance.
+تتعامل xv6 مع المصائد القادمة من شيفرة النواة بطريقةٍ مختلفةٍ عن المصائد القادمة من شيفرة المستخدم. فعند الدخول إلى النواة، تُشير `usertrap` المسجّل `stvec` إلى شيفرة التجميع الموجودة في `kernelvec`. وبما أنّ `kernelvec` لا تُنفَّذ إلّا إذا كانت xv6 في النواة أصلًا، فإنّ `kernelvec` تستطيع الاعتماد على أنّ `satp` مضبوطٌ على جدول صفحات النواة، وعلى أنّ مؤشّر المكدّس يشير إلى مكدّس نواةٍ صالح. و`kernelvec` يدفع جميع المسجّلات المحفوظة من طرف المُنادِي إلى المكدّس الحاليّ، الذي ستستعيدها منه لاحقًا حتّى تستطيع شيفرة النواة المتوقّفة أن تستأنف دون إزعاج.
 
-`kernelvec` saves the registers on the stack of the interrupted kernel thread, which makes sense because the register values belong to that thread. This is particularly important if the trap causes a switch to a different thread – in that case the trap will actually return from the stack of the new thread, leaving the interrupted thread’s saved registers safely on its stack.
+يحفظ `kernelvec` المسجّلات على مكدّس خيط النواة المتوقّف، وهذا أمرٌ منطقيّ لأنّ قيم المسجّلات مملوكةٌ لذلك الخيط. وهذا مهمٌّ بشكلٍ خاصّ إذا سبّبت المصيدة تبديلًا إلى خيطٍ مختلف – فإنّ المصيدة سترجع في تلك الحالة فعلًا من مكدّس الخيط الجديد، تاركةً مسجّلات الخيط المتوقّف المحفوظة بأمانٍ على مكدّسه.
 
-`kernelvec` jumps to `kerneltrap` after saving registers. `kerneltrap` is prepared for just one type of trap: device interrupts. It calls `devintr` to handle them. If the trap isn’t a device interrupt, it must be an exception, such as kernel code trying to use an invalid pointer. This could only be caused by a bug in the kernel code. The kernel does not have a way to recover in this situation, so it calls `panic()`, which prints an error message and then halts.
+يقفز `kernelvec` إلى `kerneltrap` بعد حفظ المسجّلات. و`kerneltrap` مستعدّةٌ لنوعٍ واحدٍ فقط من المصائد: مقاطعات الأجهزة. وهي تنادي `devintr` لمعالجتها. فإن لم تكن المصيدة مقاطعة جهاز، فلا بدّ أنّها استثناء، مثل محاولة شيفرة النواة استخدام مؤشّرٍ غير صالح. ولا يمكن أن يكون سبب ذلك سوى علّةٍ في شيفرة النواة. وليس لدى النواة طريقةً للتعافي في هذا الموقف، فهي تنادي `panic()` التي تطبع رسالة خطأٍ ثمّ تتوقّف.
 
-If `kerneltrap` was called due to a timer interrupt, and a process’s kernel thread is running (as opposed to a scheduler thread), `kerneltrap` calls `yield` to give other threads a chance to run. At some point one of those threads will yield, and let our thread and its `kerneltrap` resume again. Chapter [8](https://mit-pdos.github.io/xv6-riscv-book/sched.html#CH:SCHED) explains what happens in `yield`.
+إذا نُوديت `kerneltrap` بسبب مقاطعة مؤقّت، وكان خيط نواة عمليّةٍ يعمل (بخلاف خيط مُجدول)، فإنّ `kerneltrap` تنادي `yield` لمنح الخيوط الأخرى فرصةً للعمل. وفي مرحلةٍ ما سيتنازل أحد تلك الخيوط، ويدع خيطنا و`kerneltrap` الخاصّة به يستأنفان مرّةً أخرى. ويشرح الفصل [8](https://mit-pdos.github.io/xv6-riscv-book/sched.html#CH:SCHED) ما يحدث في `yield`.
 
-When `kerneltrap`’s work is done, it needs to return to whatever code was interrupted by the trap. Because a `yield` may have disturbed `sepc` and the previous mode in `sstatus`, `kerneltrap` saves them when it starts. It now restores those control registers and returns to `kernelvec`. `kernelvec` pops the saved registers from the stack and executes `sret`, which copies `sepc` to `pc` and resumes the interrupted kernel code.
+وحين ينتهي عمل `kerneltrap`، فلا بدّ لها من الرجوع إلى أيّ شيفرةٍ كانت قد توقّفت بسبب المصيدة. ولأنّ نداء `yield` قد يكون قد أزعج `sepc` والوضع السابق في `sstatus`، فإنّ `kerneltrap` تحفظهما حين تبدأ. وهي الآن تستعيد تلك المسجّلات التحكّم وترجع إلى `kernelvec`. ثمّ يُخرج `kernelvec` المسجّلات المحفوظة من المكدّس وينفّذ `sret`، التي تنسخ `sepc` إلى `pc` وتستأنف شيفرة النواة المتوقّفة.
 
-Xv6 sets a CPU’s `stvec` to `kernelvec` when that CPU enters the kernel from user space; you can see this in `usertrap`. But there’s a window of time when the kernel has started executing but `stvec` is still set to `uservec`, and it’s crucial that no device interrupt occur during that window. Luckily the RISC-V always disables interrupts when it starts to take a trap, and `usertrap` doesn’t enable them again until after it sets `stvec`.
+تضبط xv6 المسجّل `stvec` لأحد المعالجات على `kernelvec` حين يدخل ذلك المعالج إلى النواة من فضاء المستخدم؛ ويمكنك رؤية ذلك في `usertrap`. لكن ثمّة نافذةً زمنيّةً بدأت فيها النواة في التنفيذ وما زال `stvec` مضبوطًا على `uservec`، ومن الجوهريّ ألّا تقع أيّ مقاطعة جهازٍ خلال تلك النافذة. ولحسن الحظّ، تعطّل RISC-V المقاطعات دائمًا حين تبدأ بأخذ مصيدة، ولا تُفعّلها `usertrap` مرّةً أخرى إلّا بعد أن تضبط `stvec`.
 
-## 4.6 Real world
+## 4.6 عالم الواقع
 
-The need for trampoline pages could be eliminated if kernel memory were mapped into every process’s user page table (with `PTE_U` clear). That would also eliminate the need for a page table switch when trapping from user space into the kernel. That in turn would allow system call implementations in the kernel to take advantage of the current process’s user memory being mapped, allowing kernel code to directly dereference user pointers. Many operating systems have used these ideas to increase efficiency. Xv6 avoids them in order to reduce the chances of security bugs in the kernel due to inadvertent use of user pointers, and to reduce some complexity that would be required to ensure that user and kernel virtual addresses don’t overlap.
+كان يمكن إلغاء الحاجة إلى صفحات الترامبولين لو كانت ذاكرة النواة معيَّنةً في جدول صفحات المستخدم الخاصّ بكلّ عمليّة (مع إزالة ضبط `PTE_U`). وكان ذلك سيلغي أيضًا الحاجة إلى تبديل جدول الصفحات عند الحفر من فضاء المستخدم إلى النواة. وهذا بدوره كان سيسمح لتنفيذات نداءات النظام في النواة بالاستفادة من تعيين ذاكرة المستخدم الخاصّة بالعمليّة الحاليّة، وهو ما يسمح لشيفرة النواة بإلغاء مؤشّرات المستخدم مباشرةً. وقد استخدمت أنظمة تشغيلٌ كثيرةٌ هذه الأفكار لرفع الكفاءة. وتتجنّبها xv6 لتقليل احتمال أخطاء أمن النواة الناجمة عن الاستخدام غير المقصود لمؤشّرات المستخدم، ولتقليل بعض التعقيد اللازم لضمان عدم تراكب العناوين الافتراضيّة للمستخدم والنواة.
 
-## 4.7 Exercises
+## 4.7 تمارين
 
-1. Could some or all of the code in `trampoline.S` and `kernelvec.S` be written in C rather than assembler?
-2. Is there a way to eliminate the special `TRAPFRAME` page mapping in every user address space? For example, could `uservec` be modified to simply push the 32 user registers onto the kernel stack, or store them in the `proc` structure?
-3. Could xv6 be modified to eliminate the special `TRAMPOLINE` page mapping?
+1. هل يمكن كتابة بعض شيفرة `trampoline.S` و`kernelvec.S` أو جميعها بـC بدلًا من التجميع؟
+2. هل ثمّة طريقةٌ لإلغاء تعيين صفحة `TRAPFRAME` الخاصّة في كلّ فضاء عناوين مستخدم؟ فمثلًا، هل يمكن تعديل `uservec` ليدفع ببساطةٍ مسجّلات المستخدم الاثنين والثلاثين إلى مكدّس النواة، أو ليخزّنها في بنية `proc`؟
+3. هل يمكن تعديل xv6 لإلغاء تعيين صفحة `TRAMPOLINE` الخاصّة؟

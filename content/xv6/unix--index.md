@@ -1,70 +1,70 @@
 ---
-title: "Operating system interfaces"
-lang: en
+title: "واجهات نظام التشغيل"
+lang: ar
 ---
 
-## 1. Operating system interfaces
+## 1. واجهات نظام التشغيل
 
-The job of an operating system is to share a computer among multiple programs and to provide a more useful set of services than the hardware alone supports. An operating system manages and abstracts the low-level hardware, so that, for example, a word processor need not concern itself with which type of disk hardware is being used. An operating system shares the hardware among multiple programs so that they run (or appear to run) at the same time. Finally, operating systems provide controlled ways for programs to interact, so that they can share data or work together.
+مهمّة نظام التشغيل هي مشاركة الحاسوب بين برامج متعدّدة، وتوفير مجموعةٍ من الخدمات أنفع من تلك التي يدعمها العتاد وحده. ويدير نظام التشغيل العتاد منخفض المستوى ويجرّده، حتّى إنّ معالجَ كلماتٍ، مثلًا، لا يضطرّ إلى الاهتمام بأيّ نوعٍ من عتاد القرص يُستخدم. كما يشارك نظام التشغيل العتاد بين برامج متعدّدة حتّى تعمل (أو يبدو أنّها تعمل) في الوقت نفسه. وأخيرًا، توفّر نظم التشغيل طرائق مضبوطة لتتفاعل البرامج بها، حتّى تستطيع مشاركة البيانات أو العمل معًا.
 
-An operating system provides services to user programs through an interface.
+ويمدّ نظام التشغيل برامج المستخدم بالخدمات عبر واجهة.
 
-Designing a good interface turns out to be difficult. On the one hand, we would like the interface to be simple and narrow because that makes it easier to get the implementation right. On the other hand, we may be tempted to offer many sophisticated features to applications. The trick in resolving this tension is to design interfaces that rely on a few mechanisms that can be combined to provide much generality.
+ويتّضح أنّ تصميم واجهةٍ حسنةٍ أمرٌ عسير. فمن جهةٍ، نحبّ أن تكون الواجهة بسيطةً وضيّقةً، لأنّ ذلك يسهّل إنجاز التنفيذ الصحيح. ومن جهةٍ أخرى، قد نميل إلى تقديم ميزاتٍ كثيرةٍ متطوّرةٍ للتطبيقات. والحيلة في حلّ هذا التوتّر هي تصميم واجهاتٍ تعتمد على آليّاتٍ قليلةٍ يمكن تركيبها لتوفير عموميّةٍ كبيرة.
 
-This book uses a single operating system as a concrete example to illustrate operating system concepts. That operating system, xv6, provides the basic interfaces introduced by Ken Thompson and Dennis Ritchie’s Unix operating system ([Ritchie and Thompson 1974](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-unix)), as well as mimicking Unix’s internal design. Unix provides a narrow interface whose mechanisms combine well, offering a surprising degree of generality. This interface has been so successful that modern operating systems—BSD, Linux, macOS, Solaris, and even, to a lesser extent, Microsoft Windows—have Unix-like interfaces. Understanding xv6 is a good start toward understanding any of these systems and many others.
+ويستخدم هذا الكتاب نظام تشغيلٍ واحدًا كمثالٍ ملموسٍ لتوضيح مفاهيم نظم التشغيل. فذلك النظام، xv6، يوفّر الواجهات الأساسيّة التي قدّمها كن طومسون ودينيس ريتشي في نظام تشغيل Unix ([ريتشي وطومسون 1974](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-unix))، كما يحاكي التصميم الداخليّ لـUnix. وتوفّر Unix واجهةً ضيّقةً تتضافر آليّاتها تضافرًا حسنًا، فتمنحها درجةً مدهشةً من العموميّة. ولقد نجحت هذه الواجهة نجاحًا كبيرًا، حتّى إنّ نظم التشغيل الحديثة—BSD، Linux، ماك أو إس، سولاريس، وحتّى مايكروسوفت ويندوز بدرجةٍ أقلّ—صارت ذات واجهاتٍ تشبه Unix. وفهم xv6 بدايةٌ طيّبةٌ لفهم أيًّا من تلك النظم وغيرها كثير.
 
-As Figure [1.1](#fig:os) shows, xv6 takes the traditional form of a *kernel*, a special program that provides services to running programs. Each running program, called a *process*, has memory containing instructions, data, and a stack. The instructions implement the program’s computation. The data are the variables on which the computation acts. The stack organizes the program’s procedure calls. A given computer typically has many processes but only a single kernel.
+فكما يبيّنه الشكل [1.1](#fig:os)، فإنّ xv6 يتّخذ الصورة التقليديّة لنواة (kernel)، وهي برنامجٌ خاصّ يقدّم خدمات للبرامج العاملة. وكلّ برنامجٍ عامل، يُسمّى عمليّة (process)، له ذاكرةٌ تحتوي تعليماتٍ وبياناتٍ ومكدّسًا. والتعليمات تنفّذ حساب البرنامج. والبيانات هي المتغيّرات التي يعمل عليها الحساب. والمكدّس ينظّم نداءات الإجراءات في البرنامج. والحاسوب المُعطى له عادةً عمليّاتٌ كثيرة، لكنّه لا يملك إلّا نواةً واحدة.
 
-When a process needs to invoke a kernel service, it invokes a *system call*, one of the calls in the operating system’s interface. The system call enters the kernel; the kernel performs the service and returns. Thus a process alternates between executing in *user space* and *kernel space*.
+وحين تحتاج عمليّة إلى استدعاء خدمةٍ من النواة، فإنّها تستدعي نداء نظام (system call)، أي واحدًا من النداءات في واجهة نظام التشغيل. ويدخل نداء النظام إلى النواة؛ فتنفّذ النواة الخدمة ثمّ تعود. وبذلك تتناوب العمليّة بين التنفيذ في فضاء المستخدم (user space) وفي فضاء النواة (kernel space).
 
-As described in detail in subsequent chapters, the kernel uses the hardware protection mechanisms provided by a CPU[^1] to ensure that each process executing in user space can access only its own memory. The kernel executes with the hardware privileges required to implement these protections; user programs execute without those privileges. When a user program invokes a system call, the hardware raises the privilege level and starts executing a pre-arranged function in the kernel.
+وكما سنفصّل في الفصول التالية، تستخدم النواة آليّات الحماية التي يوفّرها المعالج CPU[^1] للتأكّد من أنّ كلّ عمليّةٍ تنفّذ في فضاء المستخدم لا تستطيع الوصول إلّا إلى ذاكرتها هي. وتنفّذ النواة بالصلاحيّات العتاديّة اللازمة لتنفيذ هذه الحمايات؛ أمّا برامج المستخدم فتنفّذ دون تلك الصلاحيّات. وحين يستدعي برنامجٌ من برامج المستخدم نداء نظام، يرفع العتاد مستوى الصلاحية ويبدأ تنفيذ دالّةٍ مُعدّةً سلفًا في النواة.
 
 ![](/images/xv6/unix-0-os.webp){#fig:os}
 
-**Figure 1.1: A kernel and two user processes.**
+**الشكل 1.1: نواة وعمليّتا مستخدم.**
 
-The collection of system calls that a kernel provides is the interface that user programs see. The xv6 kernel provides a subset of the services and system calls that Unix kernels traditionally offer. Figure [1.2](#fig:api) lists all of xv6’s system calls.
+ومجموعة نداءات النظام التي توفّرها النواة هي الواجهة التي تراها برامج المستخدم. وتوفّر نواة xv6 مجموعةً فرعيّةً من الخدمات ونداءات النظام التي تقدّمها نوى Unix تقليديًّا. ويعرض الشكل [1.2](#fig:api) جميع نداءات النظام في xv6.
 
-The rest of this chapter outlines xv6’s services—processes, memory, file descriptors, pipes, and a file system—and illustrates them with code snippets and discussions of how the *shell*, Unix’s command-line user interface, uses them. The shell’s use of system calls illustrates how carefully they have been designed.
+ويستعرض باقي هذا الفصل خدمات xv6—العمليّات، والذاكرة، وواصفات الملفّات، والأنابيب، ونظام الملفّات—ويوضّحها بمقاطع شيفرةٍ ونقاشاتٍ حول كيفيّة استخدام الصدفة (shell)، وهي واجهة مستخدم سطر أوامر Unix، لها. ويُبرِز استخدام الصدفة لنداءات النظام مدى حرص تصميمها.
 
-The shell is an ordinary program that reads commands from the user and executes them. The fact that the shell is a user program, and not part of the kernel, illustrates the power of the system call interface: there is nothing special about the shell. It also means that the shell is easy to replace; as a result, modern Unix systems have a variety of shells to choose from, each with its own user interface and scripting features. The xv6 shell is a simple implementation of the essence of the Unix Bourne shell.
+والصدفة برنامجٌ عاديّ يقرأ الأوامر من المستخدم وينفّذها. وحقيقة أنّ الصدفة برنامجٌ من برامج المستخدم، وليست جزءًا من النواة، تُبرِز قوة واجهة نداء النظام: فلا شيء مميّز في الصدفة. ويعني ذلك أيضًا أنّ الصدفة سهلة الاستبدال؛ ونتيجةً لذلك، فإنّ أنظمة Unix الحديثة فيها تشكيلةٌ من الصدفات للاختيار من بينها، لكلٍّ منها واجهة مستخدمها وميزاتها في كتابة السكربتات. وصدفة xv6 تنفيذٌ مبسّطٌ لجوهر صدفة Bourne في Unix.
 
-The implementation of the xv6 shell can be found at `user/sh.c`. The link is a hyperlink to the relevant xv6 source code at [https://github.com/mit-pdos/xv6-riscv/](https://github.com/mit-pdos/xv6-riscv/) and the specific number refers to the sheet and line number in [xv6-src-booklet.pdf](https://mit-pdos.github.io/xv6-riscv-book/xv6-src-booklet.pdf), as in the Lions’ Commentary on UNIX 6th Edition ([Lions 2000](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-lions)). A good practice is to try to read the source code first on your own (in your favorite development environment, on github, or in a PDF viewer) and then come back to this book. By the end of this book you should be able to understand every line of xv6 source code without having to consult this book.
+ويُمكن العثور على تنفيذ صدفة xv6 في `user/sh.c`. وهو رابطٌ فائقيّ إلى الشيفرة المصدرية ذات الصلة على [https://github.com/mit-pdos/xv6-riscv/](https://github.com/mit-pdos/xv6-riscv/)، أمّا الرقم المحدّد فيشير إلى رقم الورقة ورقم السطر في [xv6-src-booklet.pdf](https://mit-pdos.github.io/xv6-riscv-book/xv6-src-booklet.pdf)، كما في تعليق ليونز على الإصدار السادس من UNIX ([ليونز 2000](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-lions)). ومن الممارسات الحسنة أن تحاول قراءة الشيفرة المصدرية بنفسك أوّلًا (في بيئة التطوير المفضّلة لديك، أو على GitHub، أو في قارئ PDF) ثمّ تعود إلى هذا الكتاب. وبحلول نهاية هذا الكتاب ينبغي أن تكون قادرًا على فهم كلّ سطرٍ من شيفرة xv6 المصدرية دون الحاجة إلى الرجوع إلى هذا الكتاب.
 
-## 1.1 Processes and memory
+## 1.1 العمليّات والذاكرة
 
-An xv6 process consists of user-space memory (instructions, data, and stack) and per-process state private to the kernel. Xv6 *time-share*s processes: it transparently switches the available CPUs among the set of processes waiting to execute. When a process is not executing, xv6 saves the process’s CPU registers, restoring them when it next runs the process. The kernel associates a process identifier, or `PID`, with each process.
+تتكوّن عمليّة xv6 من ذاكرةٍ في فضاء المستخدم (تعليمات، وبيانات، ومكدّس) ومن حالةٍ مرتبطةٍ بتلك العمليّة خاصّةٌ بالنواة. وتشارك xv6 العمليّات زمنيًّا (time-share): فتبدّل وحدات المعالجة المركزيّة المتاحة شفّافةً بين مجموعة العمليّات المنتظرة للتنفيذ. وحين لا تكون عمليّةٌ في وضع التنفيذ، تحفظ xv6 مسجّلات المعالج الخاصّة بها، وتستعيدها عند تشغيلها مرّةً أخرى. وتربط النواة معرّف عمليّة، أو `PID`، بكلّ عمليّة.
 
-**Figure 1.2: Xv6 system calls. If not otherwise stated, these calls return 0 for no error, and -1 if there’s an error.**
+**الشكل 1.2: نداءات النظام في xv6. إن لم يُنصّ على خلاف ذلك، فتُعيد هذه النداءات 0 عند عدم وجود خطأ، و-1 عند حدوث خطأ.**
 
-| **System call** | **Description** |
+| **نداء النظام** | **الوصف** |
 | --- | --- |
-| int fork() | Create a process, return child’s PID. |
-| int exit(int status) | Terminate the current process; status reported to wait(). No return. |
-| int wait(int *status) | Wait for a child to exit; exit status in *status; returns child PID. |
-| int kill(int pid) | Terminate process PID. Returns 0, or -1 for error. |
-| int getpid() | Return the current process’s PID. |
-| int pause(int n) | Pause for n clock ticks. |
-| int uptime() | Return the number of clock ticks since boot. |
-| int exec(char *file, char *argv[]) | Load a file and execute it with arguments; only returns if error. |
-| char *sbrk(int n) | Grow process’s memory by n zero bytes. Returns start of new memory. |
-| int open(char *file, int flags) | Open a file; flags indicate read/write; returns an fd (file descriptor). |
-| int write(int fd, char *buf, int n) | Write n bytes from buf to file descriptor fd; returns n. |
-| int read(int fd, char *buf, int n) | Read n bytes into buf; returns number read; or 0 if end of file. |
-| int close(int fd) | Release open file fd. |
-| int dup(int fd) | Return a new file descriptor referring to the same file as fd. |
-| int pipe(int p[]) | Create a pipe, put read/write file descriptors in p[0] and p[1]. |
-| int chdir(char *dir) | Change the current directory. |
-| int mkdir(char *dir) | Create a new directory. |
-| int mknod(char *file, int, int) | Create a device file. |
-| int fstat(int fd, struct stat *st) | Place info about an open file into *st. |
-| int link(char *file1, char *file2) | Create another name (file2) for the file file1. |
-| int unlink(char *file) | Remove a file. |
-| int sync() | Wait until earlier file system modifications are on disk. |
+| int fork() | إنشاء عمليّة، وإعادة معرّف العمليّة الابن. |
+| int exit(int status) | إنهاء العمليّة الحاليّة؛ والحالة تُبلَّغ إلى wait(). بلا عودة. |
+| int wait(int *status) | الانتظار حتّى تنتهي عمليّة ابن؛ وحالة الخروج في *status؛ وتُعيد معرّف العمليّة الابن. |
+| int kill(int pid) | إنهاء العمليّة PID. تُعيد 0، أو -1 عند الخطأ. |
+| int getpid() | إعادة معرّف العمليّة الحاليّة. |
+| int pause(int n) | التوقّف لمدة n من نبضات الساعة. |
+| int uptime() | إعادة عدد نبضات الساعة منذ الإقلاع. |
+| int exec(char *file, char *argv[]) | تحميل ملفّ وتنفيذه بمعطياتٍ؛ ولا تعودة إلّا عند الخطأ. |
+| char *sbrk(int n) | تنمية ذاكرة العمليّة بمقدار n بايتًا صفريًّا. تُعيد بداية الذاكرة الجديدة. |
+| int open(char *file, int flags) | فتح ملفّ؛ وتُبيّن الرّايات القراءة/الكتابة؛ وتُعيد واصف ملفّ (fd). |
+| int write(int fd, char *buf, int n) | كتابة n بايتًا من buf إلى واصف الملفّ fd؛ وتُعيد n. |
+| int read(int fd, char *buf, int n) | قراءة n بايتًا إلى buf؛ وتُعيد العدد المقروء؛ أو 0 عند نهاية الملفّ. |
+| int close(int fd) | تحرير واصف الملفّ المفتوح fd. |
+| int dup(int fd) | إعادة واصف ملفّ جديد يشير إلى الملفّ نفسه الذي يشير إليه fd. |
+| int pipe(int p[]) | إنشاء أنبوب، ووضع واصفَي قراءة/كتابة في p[0] وp[1]. |
+| int chdir(char *dir) | تغيير المجلّد الحاليّ. |
+| int mkdir(char *dir) | إنشاء مجلّد جديد. |
+| int mknod(char *file, int, int) | إنشاء ملفّ جهاز. |
+| int fstat(int fd, struct stat *st) | وضع معلومات عن ملفّ مفتوح في *st. |
+| int link(char *file1, char *file2) | إنشاء اسمٍ آخر (file2) للملفّ file1. |
+| int unlink(char *file) | إزالة ملفّ. |
+| int sync() | الانتظار حتّى تكون تعديلات نظام الملفّات الأسبق على القرص. |
 
-A process may create a new process using the `fork` system call. `fork` gives the new process an exact copy of the calling process’s memory: `fork` copies the instructions, data, and stack of the calling process into the new process’s memory. `fork` returns in both the original and new processes. In the original process, `fork` returns the new process’s PID. In the new process, `fork` returns zero. The original and new processes are often called the *parent* and *child*.
+وقد تنشئ عمليّةٌ عمليّة جديدةً باستخدام نداء النظام `fork`. ويمنح `fork` العمليّة الجديدة نسخةً مطابقةً من ذاكرة العمليّة المنادِيَة: فـ`fork` ينسخ تعليمات العمليّة المنادِيَة وبياناتها ومكدّسها إلى ذاكرة العمليّة الجديدة. ويعود `fork` في العمليّة الأصليّة والجديدة على حدٍّ سواء. ففي العمليّة الأصليّة يعيد `fork` معرّف العمليّة الجديدة. وفي العمليّة الجديدة يعيد `fork` صفرًا. وكثيرًا ما تُسمّى العمليّتان الأصليّة والجديدة الأب (parent) والابن (child).
 
-For example, consider the following program fragment written in the C programming language ([Kernighan 1988](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-kernighan)):
+فمثلًا، انظر مقطوعة البرنامج التالية المكتوبة بلغة البرمجة C ([Kernighan 1988](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-kernighan)):
 
 ```c
 int pid = fork();
@@ -80,24 +80,24 @@ if(pid > 0){
 }
 ```
 
-The `exit` system call causes the calling process to stop executing and to release resources such as memory and open files. Exit takes an integer status argument, conventionally 0 to indicate success and 1 to indicate failure. The `wait` system call returns the PID of an exited (or killed) child of the current process and copies the exit status of the child to the address passed to wait; if none of the caller’s children has exited, `wait` waits for one to do so. If the caller has no children, `wait` immediately returns -1. If the parent doesn’t care about the exit status of a child, it can pass a 0 address to `wait`.
+ويسبّب نداء النظام `exit` توقّف العمليّة المنادِيَة عن التنفيذ وتحريرها موارد مثل الذاكرة والملفّات المفتوحة. ويأخذ Exit معطى حالةٍ صحيحًا، يُتّفق تقليديًّا على أن يكون 0 للدلالة على النجاح و1 للدلالة على الفشل. ويعيد نداء النظام `wait` معرّف عمليّة ابنٍ انتهت (أو قُتلت) من عمليّة العمليّة الحاليّة، وينسخ حالة خروج الابن إلى العنوان الممرَّر إلى wait؛ فإن لم يكن أحد أبناء المنادِي قد انتهى، فإنّ `wait` ينتظر حتّى يفعل أحدهم ذلك. وإذا لم يكن للمنادِي أبناء، فإنّ `wait` يعيد -1 فورًا. وإذا كان الأب لا يبالي بحالة خروج ابنٍ، فيمكنه تمرير العنوان 0 إلى `wait`.
 
-In the example, the output lines
+ففي المثال، قد تأتي أسطر المخرجات
 
 ```
 parent: child=1234
 child: exiting
 ```
 
-might come out in either order (or even intermixed), depending on whether the parent or child gets to its `printf` call first. After the child exits, the parent’s `wait` returns, causing the parent to print
+بأيّ من الترتيبين (أو حتى متداخلة)، اعتمادًا على أيّهما يصل إلى نداء `printf` أوّلًا، الأب أمّ الابن. وبعد خروج الابن، يعود `wait` في الأب، فيدفع ذلك الأب إلى طباعة
 
 ```
 parent: child 1234 is done
 ```
 
-Although the child starts with a copy of the parent’s memory, the parent and child execute with separate memory and separate registers: changing a variable in one does not affect the other. For example, when the return value of `wait` is stored into `pid` in the parent process, it doesn’t change the variable `pid` in the child. The value of `pid` in the child will still be zero.
+ومع أنّ الابن يبدأ بنسخةٍ من ذاكرة الأب، فإنّ الأب والابن ينفّذان بذاكرةٍ منفصلةٍ وبمسجّلاتٍ منفصلة: فتغيير متغيّرٍ في أحدهما لا يؤثّر في الآخر. فمثلًا، حين تُخزَّن قيمة عودة `wait` في `pid` في العمليّة الأب، فإنّ ذلك لا يغيّر المتغيّر `pid` في الابن. وستبقى قيمة `pid` في الابن صفرًا.
 
-The `exec` system call replaces the calling process’s memory with a new memory image loaded from a file stored in the file system. The file must have a particular format, which specifies which part of the file holds instructions, which part is data, at which instruction to start, etc. Xv6 uses the ELF format, which Chapter [3](https://mit-pdos.github.io/xv6-riscv-book/mem.html#CH:MEM) discusses in more detail. Usually the file is the result of compiling a program’s source code. When `exec` succeeds, it does not return to the calling program; instead, the instructions loaded from the file start executing at the entry point declared in the ELF header. `exec` takes two arguments: the name of the file containing the executable and an array of string arguments. For example:
+ويستبدل نداء النظام `exec` ذاكرة العمليّة المنادِيَة بصورة ذاكرةٍ جديدةٍ تُحمَّل من ملفٍّ مخزَّن في نظام الملفّات. وينبغي أن يكون للملفّ صيغةٌ خاصّة، تحدّد أيّ جزءٍ من الملفّ يحتوي التعليمات، وأيّ جزءٍ هو البيانات، وعند أيّ تعليمةٍ يبدأ التنفيذ، إلى آخره. ويستخدم xv6 صيغة ELF، التي يناقشها الفصل [3](https://mit-pdos.github.io/xv6-riscv-book/mem.html#CH:MEM) بتفصيلٍ أكبر. والملفّ هو عادةً نتيجة تصريف شيفرة مصدريّةٍ لبرنامج. وحين ينجح `exec`، فإنّه لا يعود إلى البرنامج المنادِي؛ بل تبدأ التعليمات المحمَّلة من الملفّ بالتنفيذ عند نقطة الدخول المعلنة في ترويسة ELF. ويأخذ `exec` معطيين: اسم الملفّ الذي يحتوي الملفّ التنفيذيّ، ومصفوفةً من معطياتٍ نصيّة. فمثلًا:
 
 ```c
 char *argv[3];
@@ -109,25 +109,25 @@ exec("/bin/echo", argv);
 printf("exec error\n");
 ```
 
-This fragment replaces the calling program with an instance of the program `/bin/echo` running with the argument list `echo` `hello`. Most programs ignore the first element of the argument array, which is conventionally the name of the program.
+وهذه المقطوعة تستبدل البرنامج المنادِي بنسخةٍ من البرنامج `/bin/echo` تعمل بقائمة المعطيات `echo` `hello`. وتتجاهل معظم البرامج العنصر الأوّل من مصفوفة المعطيات، وهو اصطلاحًا اسم البرنامج.
 
-The xv6 shell uses the above calls to run programs on behalf of users. The main structure of the shell is simple; see `main`. The main loop reads a line of input from the user with `getcmd`. Then it calls `fork`, which creates a copy of the shell process. The parent calls `wait`, while the child runs the command. For example, if the user had typed “`echo hello`” to the shell, `runcmd` would have been called with “`echo hello`” as the argument. `runcmd` runs the actual command. For “`echo hello`”, it would call `exec`. If `exec` succeeds then the child will execute instructions from `echo` instead of `runcmd`. At some point `echo` will call `exit`, which will cause the parent to return from `wait` in `main`.
+تستخدم صدفة xv6 النداءات الواردة أعلاه لتشغيل البرامج نيابةً عن المستخدمين. والبنية الرئيسة للصدفة بسيطة؛ انظر `main`. فالحلقة الرئيسة تقرأ سطرًا من المُدخلات من المستخدم باستخدام `getcmd`. ثمّ تنادي `fork`، الذي ينشئ نسخةً من عمليّة الصدفة. وينادي الأب `wait`، بينما ينفّذ الابن الأمر. فمثلًا، لو كتب المستخدم “`echo hello`” للصدفة، لَعُرِّضَ `runcmd` بـ“`echo hello`” معطىً. و`runcmd` ينفّذ الأمر الفعليّ. وفي حالة “`echo hello`” ينادي `exec`. فإذا نجح `exec` نفّذ الابن تعليماتٍ من `echo` بدلًا من `runcmd`. وفي لحظةٍ ما سينادي `echo` نداء `exit`، فيعيد ذلك الأب من `wait` في `main`.
 
-You might wonder why `fork` and `exec` are not combined in a single call; we will see later that the shell exploits the separation in its implementation of I/O redirection. To avoid the wastefulness of creating a duplicate process and then immediately replacing it (with `exec`), operating kernels optimize the implementation of `fork` for this use case by using virtual memory techniques such as copy-on-write (see Chapter [5](https://mit-pdos.github.io/xv6-riscv-book/pgfault.html#CH:PGFAULTS)).
+وقد تتساءل لماذا لم يُدمج `fork` و`exec` في نداءٍ واحد؛ وسنرى لاحقًا أنّ الصدفة تستثمر هذا الفصل في تنفيذها لإعادة توجيه الإدخال والإخراج. وحتّى نُجَنَّب هدر إنشاء عمليّةٍ مكرّرةٍ ثمّ استبدالها فورًا (بـ`exec`)، تحسّن النوى العاملّة تنفيذ `fork` لهذه الحالة الاستخداميّة باستخدام تقنيّات الذاكرة الافتراضيّة مثل النسخ عند الكتابة (copy-on-write) (انظر الفصل [5](https://mit-pdos.github.io/xv6-riscv-book/pgfault.html#CH:PGFAULTS)).
 
-Xv6 allocates most user-space memory implicitly: `fork` allocates the memory required for the child’s copy of the parent’s memory, and `exec` allocates enough memory to hold the executable file. A process that needs more memory at run-time (perhaps for `malloc`) can call `sbrk(n)` to grow its data memory by `n` zero bytes; `sbrk` returns the location of the new memory.
+وتخصّص xv6 معظم ذاكرة فضاء المستخدم ضمنيًّا: فـ`fork` يخصّص الذاكرة اللازمة لنسخة الابن من ذاكرة الأب، و`exec` يخصّص ذاكرةً كافيةً لاستيعاب الملفّ التنفيذيّ. والعمليّة التي تحتاج ذاكرةً أكثر أثناء التشغيل (ربّما لِـ`malloc`) تستطيع مناداة `sbrk(n)` لتنمية ذاكرة بياناتها بمقدار `n` بايتًا صفريًّا؛ ويعيد `sbrk` موضع الذاكرة الجديدة.
 
-## 1.2 I/O and File descriptors
+## 1.2 الإدخال والإخراج وواصفات الملفّات
 
-A *file descriptor* is a small integer representing a kernel-managed object that a process may read from or write to. A process may obtain a file descriptor by opening a file, directory, or device, or by creating a pipe, or by duplicating an existing descriptor. For simplicity we’ll often refer to the object a file descriptor refers to as a “file”; the file descriptor interface abstracts away the differences between files, pipes, and devices, making them all look like streams of bytes. We’ll refer to input and output as *I/O*.
+وواصف الملفّ (file descriptor) عددٌ صحيحٌ صغير يمثّل كائنًا تديره النواة وتستطيع العمليّة القراءة منه أو الكتابة إليه. وقد تحصل العمليّة على واصف ملفٍّ بفتح ملفّ، أو مجلّد، أو جهاز، أو بإنشاء أنبوب، أو بمضاعفة واصفٍ قائم. وللبساطة سنشير كثيرًا إلى الكائن الذي يشير إليه واصف الملفّ باسم «ملفّ»؛ فبواجهة واصف الملفّ تُجرَّد الفروق بين الملفّات والأنابيب والأجهزة، فتبدو جميعها مجرّدات تيّارات من البايتات. وسنشير إلى الإدخال والإخراج بـ I/O.
 
-Internally, the xv6 kernel uses the file descriptor as an index into a per-process table, so that every process has a private space of file descriptors starting at zero. By convention, a process reads from file descriptor 0 (standard input), writes output to file descriptor 1 (standard output), and writes error messages to file descriptor 2 (standard error). As we will see, the shell exploits the convention to implement I/O redirection and pipelines. The shell ensures that it always has three file descriptors open `(sh.c:152)`, which are by default file descriptors for the console.
+وداخليًّا، تستخدم نواة xv6 واصف الملفّ فهرسًا في جدولٍ خاصٍّ بالعمليّة، بحيث يكون لكلّ عمليّة فضاءٌ خاصٌّ من واصفات الملفّات يبدأ من الصفر. واصطلاحًا، تقرأ العمليّة من واصف الملفّ 0 (المُدخل القياسيّ)، وتكتب مخرجاتها إلى واصف الملفّ 1 (المُخرج القياسيّ)، وتكتب رسائل الخطأ إلى واصف الملفّ 2 (الخطأ القياسيّ). وكما سنرى، تستثمر الصدفة هذا الاصطلاح لتنفيذ إعادة توجيه الإدخال والإخراج وخطوط الأنابيب. وتحرص الصدفة على أنّ لديها دائمًا ثلاثة واصفات ملفّات مفتوحة `(sh.c:152)`، وهي افتراضيًّا واصفات ملفّات لوحة التحكّم.
 
-The `read` and `write` system calls read bytes from and write bytes to open files named by file descriptors. The call `read(fd`, `buf`, `n)` reads at most `n` bytes from the file descriptor `fd`, copies them into `buf`, and returns the number of bytes read. Each file descriptor that refers to a file has an offset associated with it. `read` reads data from the current file offset and then advances that offset by the number of bytes read: a subsequent `read` will return the bytes following the ones returned by the first `read`. When there are no more bytes to read, `read` returns zero to indicate the end of the file.
+ويقرأ نداءا النظام `read` و`write` بايتاتٍ من الملفّات المفتوحة التي تسمّيها واصفات الملفّات ويكتبان إليها. فيقرأ النداء `read(fd`، `buf`، `n)` بحدٍّ أقصى `n` بايتًا من واصف الملفّ `fd`، وينسخها إلى `buf`، ويعيد عدد البايتات المقروءة. ولكلّ واصف ملفٍّ يشير إلى ملفّ إزاحةٌ مرتبطةٌ به. فيقرأ `read` البيانات من إزاحة الملفّ الحاليّة ثمّ يُقدّم تلك الإزاحة بعدد البايتات المقروءة: فإنّ نداء `read` لاحقًا سيُعيد البايتات التالية لتلك التي أعادها نداء `read` الأوّل. وحين لا تبقى بايتاتٌ لقراءتها، يعيد `read` صفرًا للدلالة على نهاية الملفّ.
 
-The call `write(fd`, `buf`, `n)` writes `n` bytes from `buf` to the file descriptor `fd` and returns the number of bytes written. Fewer than `n` bytes are written only when an error occurs. Like `read`, `write` writes data at the current file offset and then advances that offset by the number of bytes written: each `write` picks up where the previous one left off.
+ويكتب النداء `write(fd`، `buf`، `n)` مقدار `n` بايتًا من `buf` إلى واصف الملفّ `fd` ويعيد عدد البايتات المكتوبة. ولا يُكتب إلّا عددٌ من البايتات أقلّ من `n` عند حدوث خطأ. وشأن `read`، يكتب `write` البيانات عند إزاحة الملفّ الحاليّة ثمّ يُقدّم تلك الإزاحة بعدد البايتات المكتوبة: فكلّ `write` ينطلق من حيث توقّف سابقه.
 
-The following program fragment (which forms the essence of the program `cat`) copies data from its standard input to its standard output. If an error occurs, it writes a message to the standard error.
+وتنسخ مقطوعة البرنامج التالية (وهي جوهر البرنامج `cat`) البيانات من مُدخلها القياسيّ إلى مخرجها القياسيّ. فإن حدث خطأ، كتبت رسالةً إلى الخطأ القياسيّ.
 
 ```c
 char buf[512];
@@ -140,11 +140,11 @@ for(;;){
   if(n
 ```
 
-The important thing to note in the code fragment is that `cat` doesn’t know whether it is reading from a file, console, or a pipe. Similarly `cat` doesn’t know whether it is printing to a console, a file, or whatever. The use of file descriptors and the convention that file descriptor 0 is input and file descriptor 1 is output allows a simple implementation of `cat`.
+والأمر الجوهريّ الذي ينبغي ملاحظته في مقطوعة الشيفرة هو أنّ `cat` لا تدري هل تقرأ من ملفّ، أمّ من لوحة تحكّم، أمّ من أنبوب. وكذلك لا تدري `cat` هل تطبع إلى لوحة تحكّم، أمّ إلى ملفّ، أمّ إلى أيّ شيءٍ آخر. ويمكّن استخدام واصفات الملفّات، مع الاصطلاح القائل بأنّ واصف الملفّ 0 هو المُدخل وواصف الملفّ 1 هو المخرج، من تنفيذٍ مبسّطٍ لـ`cat`.
 
-The `close` system call releases a file descriptor, making it free for reuse by a future `open`, `pipe`, or `dup` system call (see below). A newly allocated file descriptor is always the lowest-numbered unused descriptor of the current process.
+ويحرّر نداء النظام `close` واصف ملفّ، فيصبح متاحًا لإعادة استخدامه في نداء `open` أو `pipe` أو `dup` مستقبليّ (انظر أدناه). وواصف الملفّ المخصّص حديثًا هو دائمًا أقلّ واصفٍ غير مستخدمٍ رقمًا في العمليّة الحاليّة.
 
-File descriptors and `fork` interact to make I/O redirection easy to implement. `fork` copies the parent’s file descriptor table along with its memory, so that the child starts with exactly the same open files as the parent. The system call `exec` replaces the calling process’s memory but preserves its file table. This behavior allows the shell to implement *I/O redirection* by forking, closing and re-opening chosen file descriptors in the child, and then calling `exec` to run the new program. Here is a simplified version of the code a shell runs for the command `cat` `<` `input.txt`:
+وتتفاعل واصفات الملفّات مع `fork` لتجعل تنفيذ إعادة توجيه الإدخال والإخراج سهلًا. فـ`fork` ينسخ جدول واصفات الملفّات الخاصّ بالأب إلى جانب ذاكرته، حتّى يبدأ الابن بالملفّات المفتوحة نفسها التي لدى الأب بالضبط. واستدعاء النظام `exec` يستبدل ذاكرة العمليّة المنادِيَة لكنّه يحفظ جدول ملفّاتها. ويسمح هذا السلوك للصدفة بتنفيذ إعادة توجيه الإدخال والإخراج (I/O redirection) بالتفرّع، وبإغلاق واصفات الملفّات المختارة وإعادة فتحها في الابن، ثمّ بمناداة `exec` لتشغيل البرنامج الجديد. وها هو إصدارٌ مبسّطٌ من الشيفرة التي تشغّلها الصدفة للأمر `cat` `<` `input.txt`:
 
 ```c
 char *argv[2];
@@ -158,15 +158,15 @@ if(fork() == 0) {
 }
 ```
 
-After the child closes file descriptor 0, `open` is guaranteed to use that file descriptor for the newly opened `input.txt`: 0 will be the smallest available file descriptor. `cat` then executes with file descriptor 0 (standard input) referring to `input.txt`. The parent process’s file descriptors are not changed by this sequence, since it modifies only the child’s descriptors.
+وبعد أن يغلق الابن واصف الملفّ 0، يضمن `open` استخدام ذلك واصف الملفّ للملفّ `input.txt` المفتوح حديثًا: فسيكون 0 أصغر واصف ملفّ متاح. ثمّ ينفّذ `cat` بواصف الملفّ 0 (المُدخل القياسيّ) الذي يشير إلى `input.txt`. أمّا واصفات الملفّات الخاصّة بالعمليّة الأب فلا تتغيّر بهذه المتوالية، بما أنّها تعدّل واصفات الابن وحده.
 
-The code for I/O redirection in the xv6 shell works in exactly this way `(sh.c:83)`. Recall that at this point in the code the shell has already forked the child shell and that `runcmd` will call `exec` to load the new program.
+وتعمل الشيفرة الخاصّة بإعادة توجيه الإدخال والإخراج في صدفة xv6 بهذه الطريقة بالضبط `(sh.c:83)`. وتذكّر أنّ الصدفة، عند هذه النقطة من الشيفرة، قد فرّعت عمليّة الصدفة الابن سلفًا، وأنّ `runcmd` سينادي `exec` لتحميل البرنامج الجديد.
 
-The second argument to `open` consists of a set of flags, expressed as bits, that control what `open` does. The possible values are defined in the file control (fcntl) header `(fcntl.h:1-5)`: `O_RDONLY`, `O_WRONLY`, `O_RDWR`, `O_CREATE`, and `O_TRUNC`, which instruct `open` to open the file for reading, or for writing, or for both reading and writing, to create the file if it doesn’t exist, and to truncate the file to zero length.
+ويتكوّن المعامل الثاني لـ`open` من مجموعة رايات (flags)، مُعبَّر عنها بصيغة بتّات، تتحكّم فيما يفعله `open`. والقيم الممكنة معرَّفةٌ في ترويسة التحكّم بالملفّات (fcntl) `(fcntl.h:1-5)`: `O_RDONLY`، و`O_WRONLY`، و`O_RDWR`، و`O_CREATE`، و`O_TRUNC`، التي تأمر `open` بفتح الملفّ للقراءة، أو للكتابة، أو للقراءة والكتابة معًا، وبإنشاء الملفّ إن لم يكن موجودًا، وباقتضاء الملفّ إلى طولٍ صفريّ.
 
-Now it should be clear why it is helpful that `fork` and `exec` are separate calls: between the two, the shell has a chance to redirect the child’s I/O without disturbing the I/O setup of the main shell. One could instead imagine a hypothetical combined `forkexec` system call, but the options for doing I/O redirection with such a call seem awkward. The shell could modify its own I/O setup before calling `forkexec` (and then un-do those modifications); or `forkexec` could take instructions for I/O redirection as arguments; or (least attractively) every program like `cat` could be taught to do its own I/O redirection.
+وصار من الواضح الآن لماذا يفيد أن يكون `fork` و`exec` نداءين منفصلين: فبينهما، تتاح للصدفة فرصةٌ لإعادة توجيه إدخال الابن وإخراجه دون إزعاج تهيئة الإدخال والإخراج للصدفة الرئيسة. ويمكن بدلًا من ذلك تصوّر نداءٍ مركّبٍ افتراضيّ باسم `forkexec`، لكنّ الخيارات لفعل إعادة توجيه الإدخال والإخراج بنداءٍ كهذا تبدو حرجة. فيمكن للصدفة تعديل تهيئة إدخالها وإخراجها قبل مناداة `forkexec` (ثمّ التراجع عن تلك التعديلات)؛ أو أن يأخذ `forkexec` تعليمات إعادة توجيه الإدخال والإخراج معطياتٍ؛ أو (وهو الأقلّ جاذبيّةً) أن يُدرَّب كلّ برنامجٍ مثل `cat` على فعل إعادة توجيه الإدخال والإخراج بنفسه.
 
-Although `fork` copies the file descriptor table, each underlying file offset is shared between parent and child. Consider this example:
+ومع أنّ `fork` ينسخ جدول واصفات الملفّات، فإنّ إزاحة كلّ ملفّ كامنةٍ مشتركةٌ بين الأب والابن. انظر هذا المثال:
 
 ```c
 if(fork() == 0) {
@@ -178,9 +178,9 @@ if(fork() == 0) {
 }
 ```
 
-At the end of this fragment, the file attached to file descriptor 1 will contain the data `hello` `world`. The `write` in the parent (which, thanks to `wait`, runs only after the child is done) picks up where the child’s `write` left off. This behavior helps produce sequential output from sequences of shell commands, like `(echo` `hello`; `echo` `world)` `>output.txt`.
+وفي نهاية هذه المقطوعة، سيحتوي الملفّ المرتبط بواصف الملفّ 1 على البيانات `hello` `world`. فالكتابة `write` في الأب (التي تُنفَّذ، بفضل `wait`، بعد انتهاء الابن فقط) تنطلق من حيث توقّفت `write` الخاصّة بالابن. ويساعد هذا السلوك على إنتاج مخرجات متتاليةٍ من متواليات أوامر الصدفة، مثل `(echo` `hello`; `echo` `world)` `>output.txt`.
 
-The `dup` system call duplicates an existing file descriptor, returning a new one that refers to the same underlying I/O object. Both file descriptors share an offset, just as the file descriptors duplicated by `fork` do. This is another way to write `hello` `world` into a file:
+ويكرّر نداء النظام `dup` واصف ملفّ قائم، فيعيد واصفًا جديدًا يشير إلى الكائن نفسه في الإدخال والإخراج. ويتشارك واصفا الملفّات إزاحةً، تمامًا كما يفعل واصفا الملفّات المكرَّران بـ`fork`. وهذه طريقة أخرى لكتابة `hello` `world` في ملفّ:
 
 ```c
 fd = dup(1);
@@ -188,15 +188,15 @@ write(1, "hello ", 6);
 write(fd, "world\n", 6);
 ```
 
-Two file descriptors share an offset if they were derived from the same original file descriptor by a sequence of `fork` and `dup` calls. Otherwise file descriptors do not share offsets, even if they resulted from `open` calls for the same file. `dup` allows shells to implement commands like this: `ls` `existing-file` `non-existing-file` `>` `tmp1` `2>&1`. The `2>&1` tells the shell to give the command a file descriptor 2 that is a duplicate of descriptor 1. Both the name of the existing file and the error message for the non-existing file will show up in the file `tmp1`. The xv6 shell doesn’t support I/O redirection for the error file descriptor, but now you know how to implement it.
+ويتشارك واصفا ملفّاتٍ إزاحةً إذا اشتُقّا من واصف الملفّ الأصليّ نفسه بواسطة متواليةٍ من نداءات `fork` و`dup`. وإلّا فإنّ واصفات الملفّات لا تتشارك الإزاحات، حتّى لو نشأت من نداءات `open` للملفّ نفسه. ويسمح `dup` للصدفات بتنفيذ أوامر مثل: `ls` `existing-file` `non-existing-file` `>` `tmp1` `2>&1`. و`2>&1` تخبر الصدفة بأن تعطي الأمر واصف ملفٍّ برقم 2 مكرّرًا للواصف 1. وسيظهر اسم الملفّ القائم ورسالة الخطأ الخاصّة بالملفّ غير القائم كلاهما في الملفّ `tmp1`. ولا تدعم صدفة xv6 إعادة توجيه الإدخال والإخراج لواصف ملفّ الخطأ، لكنّك تعرف الآن كيف تنفّذها.
 
-File descriptors are a powerful abstraction, because they hide the details of what they are connected to: a process writing to file descriptor 1 may be writing to a file, to a device like the console, or to a pipe.
+وواصفات الملفّات تجريدٌ قويّ، لأنّها تخفي تفاصيل ما هي متّصلةٌ به: فالعمليّة التي تكتب إلى واصف الملفّ 1 قد تكون تكتب في ملفّ، أو في جهازٍ مثل لوحة التحكّم، أو في أنبوب.
 
-## 1.3 Pipes
+## 1.3 الأنابيب
 
-A *pipe* is a small kernel buffer exposed to processes as a pair of file descriptors, one for reading and one for writing. Writing data to one end of the pipe makes that data available for reading from the other end of the pipe. Pipes provide a way for processes to communicate.
+والأنبوب (pipe) مخزَنٌ صغيرٌ في النواة يُعرَّض للعمليّات بوصفه زوجًا من واصفات الملفّات، واحد للقراءة وواحد للكتابة. فكتابة البيانات إلى أحد طرفَي الأنبوب تجعلها متاحةً للقراءة من الطرف الآخر للأنبوب. وتوفّر الأنابيب طريقةً لتتواصل العمليّات.
 
-The following example code runs the program `wc` with standard input connected to the read end of a pipe.
+ويشغّل مثال الشيفرة التاليّ البرنامج `wc` بمُدخلٍ قياسيٍّ متّصلٍ بطرف القراءة لأنبوب.
 
 ```c
 int p[2];
@@ -219,29 +219,29 @@ if(fork() == 0) {
 }
 ```
 
-The program calls `pipe`, which creates a new pipe and records the read and write file descriptors in the array `p`. After `fork`, both parent and child have file descriptors referring to the pipe. The child calls `close` and `dup` to make file descriptor zero refer to the read end of the pipe, closes the file descriptors in `p`, and calls `exec` to run `wc`. When `wc` reads from its standard input, it reads from the pipe. The parent closes the read side of the pipe, writes to the pipe, and then closes the write side.
+وينادي البرنامج `pipe`، الذي ينشئ أنبوبًا جديدًا ويسجّل واصفَي القراءة والكتابة في المصفوفة `p`. وبعد `fork`، يكون لدى الأب والابن واصفات ملفّاتٍ تشير إلى الأنبوب. فينادي الابن `close` و`dup` لجعل واصف الملفّ صفرًا يشير إلى طرف القراءة للأنبوب، ويغلق واصفات الملفّات في `p`، وينادي `exec` لتشغيل `wc`. وحين يقرأ `wc` من مُدخله القياسيّ، فإنّه يقرأ من الأنبوب. ويغلق الأب طرف القراءة من الأنبوب، ويكتب إلى الأنبوب، ثمّ يغلق طرف الكتابة.
 
-If no data is available, a `read` on a pipe waits for either data to be written or for all file descriptors referring to the write end to be closed; in the latter case, `read` will return 0, just as if the end of a data file had been reached. The fact that `read` blocks until it is impossible for new data to arrive is one reason that it’s important for the child to close the write end of the pipe before executing `wc` above: if one of `wc` ’s file descriptors referred to the write end of the pipe, `wc` would never see end-of-file.
+وإذا لم تتوفّر بيانات، فإنّ `read` على أنبوب تنتظر إمّا أن تُكتب بيانات أو أن تُغلق جميع واصفات الملفّات التي تشير إلى طرف الكتابة؛ وفي الحالة الثانية، سيعيد `read` صفرًا، تمامًا كما لو كان قد بلغ نهاية ملفّ بيانات. وحقيقة أنّ `read` تحت حتّى يستحيل وصول بيانات جديدة، هي أحد الأسباب التي تجعل من المهمّ أن يغلق الابن طرف الكتابة من الأنبوب قبل تنفيذ `wc` أعلاه: فلو كان أحد واصفات `wc` يشير إلى طرف الكتابة من الأنبوب، لما رأى `wc` نهاية الملفّ أبدًا.
 
-The xv6 shell implements pipelines such as `grep fork sh.c | wc -l` in a manner similar to the above code `(sh.c:101)`. The child process creates a pipe to connect the left end of the pipeline with the right end. Then it calls `fork` and `runcmd` for the left end of the pipeline and `fork` and `runcmd` for the right end, and waits for both to finish. The right end of the pipeline may be a command that itself includes a pipe (e.g., `a` `|` `b` `|` `c`), which itself forks two new child processes (one for `b` and one for `c`). Thus, the shell may create a tree of processes. The leaves of this tree are commands and the interior nodes are processes that wait until the left and right children complete.
+وتنفّذ صدفة xv6 خطوط أنابيب مثل `grep fork sh.c | wc -l` بطريقةٍ مشابهةٍ للشيفرة أعلاه `(sh.c:101)`. فينشئ الابن أنبوبًا ليربط الطرف الأيسر من خطّ الأنابيب بالطرف الأيمن. ثمّ ينادي `fork` و`runcmd` للطرف الأيسر من خطّ الأنابيب، و`fork` و`runcmd` للطرف الأيمن، وينتظر انتهاء كليهما. وقد يكون الطرف الأيمن من خطّ الأنابيب أمرًا يتضمّن أنبوبًا هو نفسه (مثلًا، `a` `|` `b` `|` `c`)، فيفرّع هو نفسه عمليّتَي ابنٍ جديدتين (واحدةً لـ`b` وأخرى لـ`c`). وبذلك، قد تنشئ الصدفة شجرةً من العمليّات. وأوراق هذه الشجرة هي الأوامر، وعقدها الداخليّة عمليّاتٌ تنتظر حتّى يكمل الابن الأيسر والأيمن.
 
-Pipes may seem no more powerful than temporary files: the pipeline
+وقد لا تبدو الأنابيب أقوى من الملفّات المؤقّتة: فخطّ الأنابيب
 
 ```bash
 echo hello world | wc
 ```
 
-could be implemented without pipes as
+يُمكن تنفيذه دون أنابيب على الشكل
 
 ```bash
 echo hello world >/tmp/xyz; wc
 ```
 
-Pipes have at least three advantages over temporary files in this situation. First, pipes automatically clean themselves up; with the file redirection, a shell would have to be careful to remove `/tmp/xyz` when done. Second, pipes can pass arbitrarily long streams of data, while file redirection requires enough free space on disk to store all the data. Third, pipes allow for parallel execution of pipeline stages, while the file approach requires the first program to finish before the second starts.
+وللأنابيب مزايا ثلاثةٌ على الأقلّ على الملفّات المؤقّتة في هذا الموقف. أوّلًا، تنظّف الأنابيب نفسها تلقائيًّا؛ أمّا مع إعادة توجيه الملفّ، فكان على الصدفة أن تحرص على إزالة `/tmp/xyz` عند الانتهاء. ثانيًا، تستطيع الأنابيب تمرير تيّارات بيانات طويلةٍ اعتباطيًّا، بينما تتطلّب إعادة توجيه الملفّ مساحةً حرّةً كافيةً على القرص لتخزين جميع البيانات. ثالثًا، تسمح الأنابيب بالتنفيذ المتوازي لمراحل خطّ الأنابيب، بينما يتطلّب أسلوب الملفّ أن ينتهي البرنامج الأوّل قبل أن يبدأ الثاني.
 
-## 1.4 File system
+## 1.4 نظام الملفّات
 
-The xv6 file system provides data files, which contain uninterpreted byte arrays, and directories, which contain named references to data files and other directories. The directories form a tree, starting at a special directory called the *root*. A *path* like `/a/b/c` refers to the file or directory named `c` inside the directory named `b` inside the directory named `a` in the root directory `/`. Paths that don’t begin with `/` are evaluated relative to the calling process’s *current directory*, which can be changed with the `chdir` system call. Both these code fragments open the same file (assuming all the directories involved exist):
+ويوفّر نظام ملفّات xv6 ملفّات بيانات، تحتوي مصفوفات بايتاتٍ غير مُفسَّرة، ومجلّدات، تحتوي مراجع مُسمّاةً إلى ملفّات البيانات ومجلّداتٍ أخرى. والمجلّدات تشكّل شجرة، تبدأ بمجلّدٍ خاصٍّ يُسمّى الجذر (root). والمسار (path) مثل `/a/b/c` يشير إلى الملفّ أو المجلّد المسمّى `c` داخل المجلّد المسمّى `b` داخل المجلّد المسمّى `a` في المجلّد الجذر `/`. والمسارات التي لا تبدأ بـ `/` تُقيَّم نسبةً إلى المجلّد الحاليّ (current directory) للعمليّة المنادِيَة، والذي يمكن تغييره بنداء النظام `chdir`. وكلا مقطوعتَي الشيفرة هاتين تفتحان الملفّ نفسه (بافتراض أنّ جميع المجلّدات المعنيّة موجودة):
 
 ```c
 chdir("/a");
@@ -251,9 +251,9 @@ open("c", O_RDONLY);
 open("/a/b/c", O_RDONLY);
 ```
 
-The first fragment changes the process’s current directory to `/a/b`; the second neither refers to nor changes the process’s current directory.
+وتغيّر المقطوعة الأولى المجلّد الحاليّ للعمليّة إلى `/a/b`؛ أمّا الثانية فلا تشير إلى المجلّد الحاليّ للعمليّة ولا تغيّره.
 
-There are system calls to create new files and directories: `mkdir` creates a new directory, `open` with the `O_CREATE` flag creates a new data file, and `mknod` creates a new device file. This example illustrates all three:
+وهناك نداءات نظامٌ لإنشاء ملفّات ومجلّدات جديدة: فـ`mkdir` ينشئ مجلّدًا جديدًا، و`open` مع الراية `O_CREATE` ينشئ ملفّ بياناتٍ جديدًا، و`mknod` ينشئ ملفّ جهازٍ جديدًا. وهذا المثال يوضّح الثلاثة كلّها:
 
 ```c
 mkdir("/dir");
@@ -262,11 +262,11 @@ close(fd);
 mknod("/console", 1, 1);
 ```
 
-`mknod` creates a special file that refers to a device. Associated with a device file are the major and minor device numbers (the two arguments to `mknod`), which uniquely identify a kernel device. When a process later opens a device file, the kernel diverts `read` and `write` system calls to the kernel device implementation instead of passing them to the file system.
+وينشئ `mknod` ملفًّا خاصًّا يشير إلى جهاز. ويرتبط بملفّ الجهاز رقم الجهاز الرئيسيّ ورقم الجهاز الثانويّ (وهما المعطيّان لـ`mknod`)، وهما يحدّدان جهاز نواةٍ تحديدًا فريدًا. وحين تفتح عمليّةٌ ملفّ جهازٍ لاحقًا، يحوّل النواة نداءَي النظام `read` و`write` إلى تنفيذ جهاز النواة بدلًا من تمريرهما إلى نظام الملفّات.
 
-A file’s name is distinct from the file itself; the same underlying file, called an *inode*, can have multiple names, called *links*. Each link consists of an entry in a directory; the entry contains a file name and a reference to an inode. An inode holds *metadata* about a file, including its type (file or directory or device), its length, the location of the file’s content on disk, and the number of links to a file.
+واسم الملفّ متميّزٌ عن الملفّ نفسه؛ فالملفّ الكامن ذاته، المسمّى عقدة الفهرس (inode)، قد يكون له أسماءٌ متعدّدة، تُسمّى الارتباطات (links). ويتكوّن كلّ ارتباط من قيدٍ في مجلّد؛ ويحتوي القيد على اسم ملفٍّ ومرجعٍ إلى عقدة فهرس. وتحمل عقدة الفهرس بيانات وصفيّة (metadata) عن ملفّ، تشمل نوعه (ملفّ أو مجلّد أو جهاز)، وطوله، وموضع محتوى الملفّ على القرص، وعدد الارتباطات إلى ملفّ.
 
-The `fstat` system call retrieves information from the inode that a file descriptor refers to. It fills in a `struct` `stat`, defined in `stat.h` as:
+ويستعيد نداء النظام `fstat` معلومات من عقدة الفهرس التي يشير إليها واصف الملفّ. فهو يملأ `struct` `stat` المعرَّف في `stat.h` كما يلي:
 
 ```c
 #define T_DIR     1   // Directory
@@ -282,50 +282,50 @@ struct stat {
 };
 ```
 
-The `link` system call creates another file system name referring to the same inode as an existing file. This fragment creates a new file named both `a` and `b`.
+وينشئ نداء النظام `link` اسمًا آخر في نظام الملفّات يشير إلى عقدة الفهرس نفسها التي يشير إليها ملفّ قائم. وهذه المقطوعة تنشئ ملفًّا جديدًا مسمّى `a` و`b` كلاهما.
 
 ```c
 open("a", O_CREATE|O_WRONLY);
 link("a", "b");
 ```
 
-Reading from or writing to `a` is the same as reading from or writing to `b`. Each inode is identified by a unique *inode* *number*. After the code sequence above, it is possible to determine that `a` and `b` refer to the same underlying contents by inspecting the result of `fstat`: both will return the same inode number (`ino`), and the `nlink` count will be set to 2.
+فالقراءة من `a` أو الكتابة إليها هي ذاتها القراءة من `b` أو الكتابة إليه. وتُعرَّف كلّ عقدة فهرسٍ برقمٍ فريدٍ لها. وبعد متوالية الشيفرة أعلاه، يُمكن تحديد أنّ `a` و`b` يشيران إلى المحتوى الكامن نفسه بفحص نتيجة `fstat`: فكلاهما سيُعيد رقم عقدة الفهرس (`ino`) نفسه، وسيُضبط عدّاد `nlink` على 2.
 
-The `unlink` system call removes a name from the file system. The file’s inode and the disk space holding its content are only freed when the file’s link count is zero and no file descriptors refer to it. Thus adding
+ويحذف نداء النظام `unlink` اسمًا من نظام الملفّات. ولا تُحرَّر عقدة الفهرس الخاصّة بالملفّ والمساحة القرصيّة التي تحتوي محتواه إلّا عندما يكون عدّاد ارتباطات الملفّ صفرًا ولا تشير إليه أيّ واصفات ملفّات. وبذلك، فإنّ إضافة
 
 ```c
 unlink("a");
 ```
 
-to the last code sequence leaves the inode and file content accessible as `b`. Furthermore,
+إلى متوالية الشيفرة الأخيرة يُبقي عقدة الفهرس ومحتوى الملفّ متاحين بوصفهما `b`. وأيضًا،
 
 ```c
 fd = open("/tmp/xyz", O_CREATE|O_RDWR);
 unlink("/tmp/xyz");
 ```
 
-is an idiomatic way to create a temporary inode with no name that will be cleaned up when the process closes `fd` or exits.
+هي طريقة اصطلاحيّة لإنشاء عقدة فهرسٍ مؤقّتةٍ بلا اسمٍ ستُنظَّف عندما تغلق العمليّة `fd` أو تخرج.
 
-Unix provides file utilities callable from the shell as user-level programs, for example `mkdir`, `ln`, and `rm`. This design allows anyone to extend the command-line interface by adding new user-level programs. In hindsight this plan seems obvious, but other systems designed at the time of Unix often built such commands into the shell (and built the shell into the kernel).
+وتوفّر Unix أدوات ملفّاتٍ قابلة للمناداة من الصدفة بوصفها برامج على مستوى المستخدم، مثل `mkdir` و`ln` و`rm`. ويسمح هذا التصميم لأيّ شخصٍ بتوسيع واجهة سطر الأوامر بإضافة برامج جديدة على مستوى المستخدم. وبالنظر إلى الوراء، يبدو هذا المخطّط بديهيًّا، لكنّ أنظمةً أُخرى صُمّمت في زمن Unix كانت تبني مثل هذه الأوامر داخل الصدفة (وتبني الصدفة داخل النواة) غالبًا.
 
-One exception is `cd`, which is built into the shell `(sh.c:166)`. `cd` must change the current working directory of the shell itself. If `cd` were run as a regular command, then the shell would fork a child process, the child process would run `cd`, and `cd` would change the *child* ’s working directory. The parent’s (i.e., the shell’s) working directory would not change.
+واستثناءٌ واحدٌ هو `cd`، المبنيّ في الصدفة `(sh.c:166)`. فـ`cd` لا بدّ أن يغيّر مجلّد العمل الحاليّ للصدفة نفسها. ولو شُغِّل `cd` كأمرٍ عاديّ، لفرّعت الصدفة عمليّة ابن، وتنفّذ العمليّة الابن `cd`، فيغيّر `cd` مجلّد عمل الابن. أمّا مجلّد عمل الأب (أي الصدفة) فلم يكن ليتبدّل.
 
-## 1.5 Real world
+## 1.5 العالم الواقعيّ
 
-Unix’s combination of “standard” file descriptors, pipes, and convenient shell syntax for operations on them was a major advance in writing general-purpose reusable programs. The idea sparked a culture of “software tools” that was responsible for much of Unix’s power and popularity, and the shell was the first so-called “scripting language.” The Unix system call interface persists today in systems like BSD, Linux, and macOS.
+وكان اجتماع واصفات الملفّات «القياسيّة» والأنابيب وقواعد الصدفة الملائمة للعمليّات عليها، في Unix، خطوةً كبرى في كتابة برامج عامّةٍ قابلةٍ لإعادة الاستخدام. وأشعلت الفكرة ثقافة «أدوات البرمجيّات» التي كانت مسؤولةً عن كثيرٍ من قوّة Unix وشعبيّته، وكانت الصدفة أوّل ما سُمّي «لغة البرمجة النصيّة» (scripting language). وتستمرّ واجهة نداءات نظام Unix اليوم في نظمٍ مثل BSD، وLinux، وماك أو إس.
 
-The Unix system call interface has been standardized through the Portable Operating System Interface (POSIX) standard. Xv6 is *not* POSIX compliant: it is missing many system calls (including basic ones such as `lseek`), and many of the system calls it does provide differ from the standard. Our main goals for xv6 are simplicity and clarity while providing a simple UNIX-like system-call interface. Several people have extended xv6 with a few more system calls and a simple C library in order to run basic Unix programs. Modern kernels, however, provide many more system calls, and many more kinds of kernel services, than xv6. For example, they support networking, windowing systems, user-level threads, drivers for many devices, and so on. Modern kernels evolve continuously and rapidly, and offer many features beyond POSIX.
+وقُيِّست واجهة نداءات النظام في Unix بموجب معيار الواجهة المحمولة لأنظمة التشغيل. أمّا xv6 فهو غير متوافقٍ مع هذا المعيار: إذ يفتقد العديد من نداءات النظام (منها نداءات أساسيّة مثل `lseek`)، وكثيرٌ من نداءات النظام التي يوفّرها يختلف عن المعيار. وأهدافنا الرئيسة من xv6 هما البساطة والوضوح، مع توفير واجهة نداءات نظامٍ بسيطةٍ تشبه UNIX. وقد أضاف عدة أشخاص إلى xv6 بضعة نداءات نظام إضافيّة وبمكتبة C بسيطة، لتشغيل برامج Unix أساسيّة. أمّا النوى الحديثة فتوفّر نداءات نظامٍ أكثر بكثير، وأنواعًا أكثر من خدمات النواة، من xv6. فهي تدعم مثلًا الشبكات ونظم النوافذ والخيوث على مستوى المستخدم ومشغّلات لأجهزة عتاديّة كثيرة، وغير ذلك. وتتطوّر النوى الحديثة تطوّرًا متصلًا وسريعًا، وتقدّم ميزاتٍ كثيرةً تتجاوز هذا المعيار.
 
-Unix unified access to multiple types of resources (files, directories, and devices) with a single set of file-name and file-descriptor interfaces. This idea can be extended to more kinds of resources; a good example is Plan 9 ([Presotto et al. 1991](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-Presotto91plan9)), which applied the “resources are files” concept to networks, graphics, and more. However, most Unix-derived operating systems have not followed this route.
+ووحّدت Unix الوصول إلى أنواع متعدّدة من الموارد (الملفّات، والمجلّدات، والأجهزة) بمجموعةٍ واحدةٍ من واجهات أسماء الملفّات وواصفات الملفّات. ويمكن توسيع هذه الفكرة إلى أنواعٍ أكثر من الموارد؛ ومثالٌ حسَنٌ على ذلك Plan 9 ([Presotto et al. 1991](https://mit-pdos.github.io/xv6-riscv-book/references.html#ref-Presotto91plan9))، الذي طبّق مفهوم «الموارد ملفّات» على الشبكات والرسوميّات وغيرها. لكنّ معظم نظم التشغيل المشتقّة من Unix لم تسلك هذا المسار.
 
-The file system and file descriptors have been powerful abstractions. Even so, there are other models for operating system interfaces. Multics, a predecessor of Unix, abstracted file storage in a way that made it look like memory, producing a very different flavor of interface. The complexity of the Multics design had a direct influence on the designers of Unix, who aimed to build something simpler.
+وكان نظام الملفّات وواصفات الملفّات تجريدَين قويّين. ومع ذلك، فهناك نماذج أخرى لواجهات نظم التشغيل. فـMultics، وهو سلف Unix، جرّد تخزين الملفّات بطريقةٍ جعلته يشبه الذاكرة، فأنتج نكهةً مختلفةً جدًّا للواجهة. وكان تعقيد تصميم Multics مؤثّرًا مباشرًا في مصمّمي Unix، الذين سعوا إلى بناء شيءٍ أبسط.
 
-Xv6 does not provide a notion of users or of protecting one user from another; in Unix terms, all xv6 processes run as root.
+ولا يوفّر xv6 مفهومًا للمستخدمين ولا لحماية مستخدمٍ من آخر؛ فبلغة Unix، تعمل جميع عمليّات xv6 بوصفها root.
 
-This book examines how xv6 implements its Unix-like interface, but the ideas and concepts apply to more than just Unix. Any operating system must multiplex processes onto the underlying hardware, isolate processes from each other, and provide mechanisms for controlled inter-process communication. After studying xv6, you should be able to look at other, more complex operating systems and see the concepts underlying xv6 in those systems as well.
+ويفحص هذا الكتاب كيف ينفّذ xv6 واجهته الشبيهة بـUnix، لكنّ الأفكار والمفاهيم تنطبق على أكثر من Unix وحده. فأيّ نظام تشغيلٍ لا بدّ أن يُوزّع العمليّات على العتاد الكامن، ويعزل العمليّات بعضها عن بعض، ويوفّر آليّات للتواصل المضبوط بين العمليّات. وبعد دراسة xv6، ينبغي أن تكون قادرًا على النظر إلى نظم تشغيلٍ أخرى أكثر تعقيدًا ورؤية المفاهيم الكامنة وراء xv6 في تلك النظم أيضًا.
 
-## 1.6 Exercises
+## 1.6 التمارين
 
-1. Write a program that uses UNIX system calls to “ping-pong” a byte between two processes over a pair of pipes, one for each direction. Measure the program’s performance, in exchanges per second.
+1. اكتب برنامجًا يستخدم نداءات نظام UNIX لـ«ترجيع الكرة» بايتًا بين عمليّتين عبر زوجٍ من الأنابيب، واحد لكلّ اتجاه. وقِس أداء البرنامج، بوحدة التبادلات في الثانية.
 
-[^1]: This text generally refers to the hardware element that executes a computation with the term CPU, an acronym for central processing unit. Other documentation (e.g., the RISC-V specification) also uses the words processor, core, and hart instead of CPU.
+[^1]: يشير هذا النصّ عمومًا إلى العنصر العتاديّ الذي ينفّذ الحساب بمصطلح CPU، وهو اختصارٌ لوحدة المعالجة المركزيّة. وتستخدم وثائق أخرى (مثل مواصفة RISC-V) أيضًا كلمات processor وcore وhart بدلًا من CPU.
