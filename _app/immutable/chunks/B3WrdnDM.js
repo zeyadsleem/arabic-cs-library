@@ -1,0 +1,56 @@
+const n="devops-roadmap",t="growth",s="النمو المهني والمواضيع المتقدّمة",o="cloud",i="هندسة السحابة - متقدّم",e=[{depth:2,id:"finops",text:"FinOps"},{depth:2,id:"finops-aws",text:"FinOps - AWS"},{depth:3,id:"ما-الذي-تحتاج-إلى-معرفته",text:"ما الذي تحتاج إلى معرفته"},{depth:3,id:"مصادر",text:"مصادر"}],l=`<h1>هندسة السحابة - متقدّم</h1>
+<p>سيغطّي هذا القسم مواضيع هندسة السحابة المتقدّمة مثل السحابة المتعدّدة (Multi Cloud)، والحياد السحابي (Cloud Agnosticism)، والحوسبة الطرفية (Edge Computing).</p>
+<div class="callout callout--note">
+<p><strong>ملاحظة</strong></p>
+<p><strong>قيد الإنجاز.</strong></p>
+</div>
+<hr>
+<h2 id="finops">FinOps</h2>
+<p>FinOps هو نهج لتحسين تكاليف السحابة، يضمن المساءلة المالية والكفاءة وإدارة الموارد. ويستند إلى فهم المبادئ المالية ذات الصلة بالحوسبة السحابية، مثل وضع الميزانية والتنبؤ وتوزيع التكاليف والفوترة.</p>
+<p>وفقًا لـ<a href="https://www.gartner.com/en/information-technology/glossary/augmented-finops">Gartner</a>:</p>
+<blockquote>
+<p>يطبّق FinOps مفاهيم DevOps التقليدية المتمثّلة في الرشاقة والتكامل والنشر المستمر وتغذية المستخدم النهائي الراجعة على الحوكمة المالية ووضع الميزانية وجهود تحسين التكاليف. ويؤتمت FinOps المعزّز (Augmented FinOps) هذه العملية بتطبيق ممارسات الذكاء الاصطناعي (AI) والتعلّم الآلي (ML) — بشكل أساسي في السحابة — لتمكين بيئات تُحسّن التكلفة تلقائيًا استنادًا إلى أهداف أعمال محدّدة معبّر عنها باللغة الطبيعية.</p>
+</blockquote>
+<p>لكل مزوّد سحابي خدمات مدمجة لـ FinOps مثل:</p>
+<ul>
+<li><strong>AWS:</strong> Cost Explorer و AWS Budgets</li>
+<li><strong>Azure:</strong> Cost Management</li>
+<li><strong>Google:</strong> Cloud Billing</li>
+</ul>
+<h2 id="finops-aws">FinOps - AWS</h2>
+<h3 id="ما-الذي-تحتاج-إلى-معرفته">ما الذي تحتاج إلى معرفته <span class="content-anchor" id="finOps-aws-what-you-need-to-know"></span></h3>
+<p>فيما يلي بعض الاستراتيجيات لتحسين تكاليف سحابة AWS.</p>
+<p><strong>الشبكات:</strong></p>
+<ul>
+<li>إدارة تكاليف نقل البيانات: تتحمّل بوّابات NAT تكاليف؛ وفي معظم الحالات تكفي شبكتان فرعيتان (subnets) بتوفّر 99.9٪. ولموفّرية 99.99٪ استخدم ثلاث شبكات فرعية مع ثلاث بوّابات NAT. واكتفِ عمومًا بشبكتين فرعيتين في معظم السيناريوهات.</li>
+<li>أزل عناوين IPv4 غير الضرورية أو المرتبطة ببطاقة واجهة الشبكة (NIC).</li>
+<li>لتقليل التكاليف، استخدم نقاط نهاية VPC (VPC endpoints) للاتصال الخاص بخدمات AWS المدعومة وخدمات نقاط نهاية VPC بدلًا من الاعتماد على بوّابات NAT. بالإضافة إلى ذلك، غالبًا ما يكون AWS PrivateLink مطلوبًا لأغراض أخرى مثل الامتثال، بصرف النظر عن اعتبارات التكلفة.</li>
+</ul>
+<p><strong>الحوسبة:</strong></p>
+<ul>
+<li><strong>تنفيذ التوسّع التلقائي للنسخ (Instance Autoscaling)</strong>: اضبط التوسّع التلقائي باستخدام نسخ Spot لعُقد العمل عبر <a href="https://karpenter.sh/">Karpenter</a> لضبط الموارد ديناميكيًا وفق الطلب.</li>
+<li><strong>استخدام النسخ المحجوزة (Reserved Instances) وخطط التوفير (Savings Plans)</strong>: حسّن لمعظم التطبيقات نحو نوع عقدة واحد، مثل <code>m5a.large</code> أو <code>m5a.xlarge</code>، لتحقيق وفورات في التكلفة عبر السعة المحجوزة.</li>
+<li><strong>ضبط حجم الموارد (Rightsize Resources)</strong>: أعِد تقييم التطبيقات والعُقد بانتظام لتقييم الاستخدام وضبط حجم الموارد من أجل أداء وتكلفة مثاليين.</li>
+<li>استخدم <strong>الإجراءات المجدولة (scheduled actions)</strong> في مجموعة التوسّع التلقائي (Auto Scaling group) لبيئات الاختبار والتطوير لإيقاف النسخ تلقائيًا في أوقات محدّدة حين لا تكون عُقد الحوسبة قيد الاستخدام، وتشغيلها عند الحاجة.</li>
+<li><strong>نوع المعالج (CPU Type)</strong>: معالجات ARM (مثل AWS Graviton) أكثر فعالية من حيث التكلفة لكن قد تواجه مشكلات توافق مع تطبيقات معيّنة. وينبغي للمطوّرين ضمان توافق التطبيق لدعم أنواع متعدّدة من المعالجات.</li>
+<li><strong>الترقيات (Upgrades)</strong>: قد يفرض مزوّدو السحابة رسومًا على العناقيد غير المرقّاة إلى إصدار مدعوم. وفي EKS، يتطلّب استخدام عنقود Kubernetes قديم الدعم الموسّع (Extended Support)، ما يؤدّي إلى نفقات إضافية.</li>
+</ul>
+<p><strong>التخزين:</strong></p>
+<ul>
+<li><strong>S3:</strong> اضبط سياسات دورة الحياة، خصوصًا عند استخدام الإصدارات (versioning)، واختر فئة التخزين المناسبة (مثل Standard أو Infrequent Access). وفكّر في S3 Intelligent-Tiering لإدارة تخزين مؤتمتة وفعّالة من حيث التكلفة.</li>
+<li><strong>EBS:</strong> تأكّد من ضبط أحجام EBS لاستخدام نوع التخزين GP3، وهو أكثر فعالية من حيث التكلفة بنسبة 20٪ من GP2.</li>
+<li><strong>EBS:</strong> احذف أحجام EBS واللقطات (snapshots) غير المستخدمة والتي لم تعد تُستعمل.</li>
+</ul>
+<p><strong>قاعدة البيانات (Database)</strong>:</p>
+<ul>
+<li>بالنسبة لـ RDS، فكّر في ضبط الحجم، واستخدام نسخ قائمة على Graviton، وإجراء ترقيات جماعية لإصدار المحرّك إن كانت التطبيقات تدعم الإصدار الجديد.</li>
+<li>يؤدي الانتقال إلى Amazon Aurora I/O-Optimized إلى زيادة تكاليف النسخ بنحو 25٪، بما يشمل عمليات الإدخال/الإخراج (I/O)، ما يجعله خيارًا مثاليًا لأحمال العمل ذات الإدخال/الإخراج المرتفع. ويوفّر هذا الخيار قابلية أفضل للتنبؤ بالتكلفة ويمكن أن يقلّل التكاليف الإجمالية حين يكون الطلب على الإدخال/الإخراج كبيرًا.</li>
+<li>قد يفرض مزوّدو السحابة رسومًا على العناقيد غير المرقّاة إلى إصدار مدعوم. وبالنسبة لـ RDS، قد يتطلّب استخدام محرّكات قواعد بيانات قديمة الدعم الموسّع (Extended Support)، ما يؤدّي إلى نفقات إضافية.</li>
+</ul>
+<h3 id="مصادر">مصادر <span class="content-anchor" id="finOps-aws-resources"></span></h3>
+<ul>
+<li><a href="https://aws.amazon.com/solutions/guidance/cloud-financial-management-on-aws/">إرشادات لإدارة التمويل السحابي على AWS - AWS Docs</a></li>
+<li><a href="https://aws.amazon.com/blogs/aws-cloud-financial-management/tag/finops/">مدوّنة AWS - منشورات FinOps</a></li>
+<li><a href="https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-plan-storage-compare-volume-types.html">مقارنة نوعي أحجام Amazon EBS بين gp2 و gp3</a></li>
+</ul>
+`,a={book:n,chapter:t,chapterTitle:s,slug:o,title:i,headings:e,html:l};export{n as book,t as chapter,s as chapterTitle,a as default,e as headings,l as html,o as slug,i as title};

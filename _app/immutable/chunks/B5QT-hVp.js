@@ -1,0 +1,267 @@
+const s="devops-roadmap",e="growth",n="النمو المهني والمواضيع المتقدّمة",a="devsecops",l="DevSecOps - متقدّم",t=[{depth:2,id:"1-devops-مقابل-devsecops",text:"1. DevOps مقابل DevSecOps"},{depth:3,id:"ما-الذي-تحتاج-إلى-معرفته",text:"ما الذي تحتاج إلى معرفته"},{depth:2,id:"2-التعريف-تحديد-التهديدات",text:"2. التعريف: تحديد التهديدات"},{depth:3,id:"ما-الذي-تحتاج-إلى-معرفته",text:"ما الذي تحتاج إلى معرفته"},{depth:3,id:"مصادر",text:"مصادر"},{depth:2,id:"3-التحقق-عمليات-وأدوات-devsecops",text:"3. التحقّق: عمليات وأدوات DevSecOps"},{depth:3,id:"ما-الذي-تحتاج-إلى-معرفته",text:"ما الذي تحتاج إلى معرفته"},{depth:3,id:"مصادر",text:"مصادر"}],i=`<h1>DevSecOps - متقدّم</h1>
+<h2 id="1-devops-مقابل-devsecops">1. DevOps مقابل DevSecOps</h2>
+<h3 id="ما-الذي-تحتاج-إلى-معرفته">ما الذي تحتاج إلى معرفته</h3>
+<p><strong>صومعة «الأمان» (Security Silo)</strong></p>
+<ul>
+<li>كما عُرِّف سابقًا في خارطة الطريق هذه، فإنّ «DevOps» مجموعة من الممارسات والأدوات والثقافة التي تجعل تسليم البرمجيات سريعًا وفعّالًا وموثوقًا. وبعبارة أخرى، هدف «DevOps» هو جعل تسليم البرمجيات أسرع وأكثر فعالية دون المساس بالموثوقية، التي تشمل أمورًا كثيرة مثل الوظائف (يجب ألّا تُعطّل الشيفرة الجديدة الوظائف القائمة)، والأداء، والأهم من ذلك «الأمان».</li>
+<li>مع تصاعد تبنّي «DevOps»، أصبحت أدواته وعملياته أكثر نضجًا وقادرة على تغطية جوانب كثيرة من الموثوقية. فمثلًا، لضمان ألّا تُعطّل الشيفرة الجديدة الوظائف القائمة، تتيح لنا أدوات CI/CD تشغيل اختبارات الوحدة أو التكامل كجزء من خط الأنابيب، بل يمكننا حتى استخدام مقاييس مثل تغطية الشيفرة (code coverage) كمؤشّر على جودة الاختبار.</li>
+<li>غير أنّ جانبًا واحدًا من الموثوقية لم ينضج بالوتيرة ذاتها، وهو «الأمان». وبعبارة أخرى، بينما كسرت DevOps الصومعة بين «Dev» و«Ops»، بقيت فرق «الأمان» في صومعتها الخاصة.</li>
+</ul>
+<p><strong>لماذا يتخلّف «الأمان»؟</strong></p>
+<ul>
+<li>توجد تحدّيات كثيرة تجعل من الصعب إدراج «الأمان» ضمن أدوات «DevOps» وعملياته. لنبدأ باستكشاف بعض هذه التحدّيات
+<ol>
+<li><strong>الطبيعة البشرية:</strong> عند بناء الأشياء، تركّز أدمغتنا على «كيف ينبغي أن تعمل الأشياء» (المسار السعيد (happy path))، لا على «ما قد يخطئ»، ومن ثمّ يُغفَل «الأمان» عادةً.</li>
+<li><strong>طبيعة البرمجيات:</strong> تُبنى البرمجيات على طبقات وتجريدات وتبعيات كثيرة. ويمكن أن تنشأ مشكلات الأمان عن أحد هذه المكوّنات الكامنة (مثل تبعيات المصادر المفتوحة، أو إعداد السحابة، أو حتى خط أنابيب CI/CD ذاته). ومن ثمّ، لتأمين تطبيق ما، نحتاج إلى تفكيك كل هذه الطبقات والتجريدات والتأكّد من ضبطها بشكل صحيح.
+شكل توضيحي: طبقات التطبيق وتجريداته وتبعياته الكامنة التي قد تنشأ عنها مشكلات الأمان.</li>
+<li><strong>طبيعة مشكلات الأمان:</strong>
+<ul>
+<li>مشكلات الأمان أقلّ شيوعًا من أنواع الأخطاء الأخرى (مثل الاستقرار أو الأداء)، لكن أثرها عادةً أكبر.</li>
+<li>يمكن أن تبقى مشكلات الأمان سنوات دون اكتشاف، وعند اكتشافها غالبًا لا يكون الشخص الذي يصلح المشكلة هو نفسه من أدخلها.</li>
+<li>وهذا يُضعف عملية التعلّم المعتادة القائمة على «التجربة والخطأ»، ما يجعل التعلّم أبطأ بكثير.</li>
+</ul>
+</li>
+<li><strong>طبيعة أدوات الأمان:</strong>
+<ul>
+<li>حتى وقت قريب، كانت أدوات أمان كثيرة مبنية للتركيز على الاستخدام اليدوي بدلًا من الأتمتة. وهذا يجعل إدراجها في خط أنابيب CI/CD أكثر صعوبة.</li>
+<li>تُنتج معظم أدوات الأمان كثيرًا من الإيجابيات الكاذبة (false positives)، ما يجعل استخدامها لأتمتة القرارات (مثل إفشال خط أنابيب البناء) صعبًا دون قدر كبير من الضبط.</li>
+<li>لا تغطّي معظم أدوات الأمان كثيرًا من مشكلات أمان منطق الأعمال (مثل التخويل)، ما يؤدّي إلى كثير من السلبيات الكاذبة (false negatives) إن اعتمدنا عليها وحدها.</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<p><strong>إضافة «Sec» إلى «DevOps»</strong></p>
+<p>ولهذا كانت الحاجة إلى «DevSecOps» للتركيز على تجاوز التحدّيات أعلاه وإدراج «الأمان» ضمن أدوات «DevOps» وعملياته. وبعبارة أخرى، هدف «DevSecOps» هو دمج «الأمان» في جميع مراحل دورة حياة تطوير البرمجيات (SDLC) دون المساس بالسرعة والكفاءة (وهما الهدفان الرئيسان لـ DevOps).</p>
+<h2 id="2-التعريف-تحديد-التهديدات">2. التعريف: تحديد التهديدات</h2>
+<h3 id="ما-الذي-تحتاج-إلى-معرفته">ما الذي تحتاج إلى معرفته</h3>
+<ul>
+<li>لكي نتمكّن من التحقّق من أنّ تطبيقًا ما «آمن»، نحتاج أولًا إلى تعريف ما يعنيه «آمن» بالنسبة لهذا التطبيق. وهذا أحد أصعب تحدّيات «الأمان»، إذ لا يمكننا القول إنّ شيئًا ما «آمن» دون توضيح ممّا هو «آمن».</li>
+</ul>
+<p>شكل توضيحي: تعريف الأمان عبر تحديد التهديدات الرئيسة التي قد تصيب التطبيق وضوابط الأمان المقابلة للتخفيف منها.</p>
+<ul>
+<li>وبعبارة أخرى، لتعريف «الأمان» نحتاج إلى تحديد التهديدات الأمنية الرئيسة التي قد تؤثّر في التطبيق، وتحديد ضوابط الأمان (security controls) التي يلزم تنفيذها للتخفيف من هذه التهديدات.</li>
+<li>تُسمّى عملية تحديد التهديدات الرئيسة وضوابط الأمان المقابلة لها «نمذجة التهديدات» (Threat Modeling)، وسنناقشها بمزيد من التفصيل قريبًا.</li>
+</ul>
+<p><strong>متى تبدأ التخطيط للأمان؟</strong></p>
+<ul>
+<li>من الناحية المثالية، ينبغي أن نبدأ التخطيط للأمان خلال مرحلة «التصميم». وكلّما كان ذلك أبكر كان أفضل، إذ كلّما اكتُشفت مشكلة أمان متأخّرة ارتفعت كلفة إصلاحها، ويشمل ذلك الوقت والجهد والإيرادات المفقودة ... إلخ.</li>
+</ul>
+<p><strong>نمذجة التهديدات</strong></p>
+<ul>
+<li>
+<p>كما ذُكر أعلاه، «نمذجة التهديدات» هي كيفية تعريفنا لما يعنيه «آمن» بالنسبة لتطبيقنا عبر تحديد التهديدات الرئيسة والتخفيفات المقابلة لها (ضوابط الأمان)، ومن ثمّ فهي الجانب الأكثر أهمية في «DevSecOps». وهدف «نموذج التهديد» (Threat Model) هو الإجابة عن الأسئلة التالية:</p>
+<ol>
+<li>على ماذا نعمل؟ -&gt; النطاق</li>
+<li>ما الذي قد يخطئ؟ -&gt; التهديدات</li>
+<li>ما الذي سنفعله حيال ذلك؟ -&gt; التخفيفات</li>
+<li>هل قمنا بعمل جيد؟</li>
+</ol>
+</li>
+<li>
+<p>ينبغي إجراء نمذجة التهديدات خلال مرحلة التصميم حالما يتحدّد النطاق التقني للتطبيق، ويلزم القيام بها في اجتماعات تضمّ أصحاب المصلحة من فريق هندسة البرمجيات وفريق الأمان وأي فرق أخرى مشاركة في التصميم (مثل فريق المنصّات إن كنّا نستخدم خدمة سحابية).</p>
+</li>
+<li>
+<p>ناتج نمذجة التهديدات قائمة بالتهديدات والتخفيفات المقابلة لها. مثال:</p>
+<blockquote>
+<p><strong>التهديد</strong>: قد يؤدّي الوصول غير المصرّح به إلى واجهتنا البرمجية (API) إلى كشف بيانات العملاء أو العبث بها.</p>
+<p><strong>التخفيف</strong>: نُنفّذ المصادقة على جميع الطلبات عبر ترويسة <code>Authorization</code>، ونتحقّق من أنّ المستخدم المُصادَق عليه يملك صلاحية الوصول إلى المورد الذي تُستخدم الواجهة من أجله.</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="مصادر">مصادر</h3>
+<ul>
+<li><a href="https://www.amazon.com/Threat-Modeling-Designing-Adam-Shostack/dp/1118809998">نمذجة التهديدات: التصميم من أجل الأمان بقلم Adam Shostack</a></li>
+<li><a href="https://www.practical-devsecops.com/certified-threat-modeling-professional/">دورة تدريبية في نمذجة التهديدات - Practical DevSecOps</a></li>
+<li><a href="https://medium.com/@mohamed.osama.aboelkheir/list/threat-modeling-handbook-309a70ec273f">دليل نمذجة التهديدات</a></li>
+<li><a href="https://www.notion.com/templates/threat-model">قالب نموذج التهديد</a></li>
+</ul>
+<h2 id="3-التحقق-عمليات-وأدوات-devsecops">3. التحقّق: عمليات وأدوات DevSecOps</h2>
+<h3 id="ما-الذي-تحتاج-إلى-معرفته">ما الذي تحتاج إلى معرفته</h3>
+<ul>
+<li>حالما تُحدَّد التهديدات الرئيسة وضوابط الأمان المقابلة لها، يمكننا التحقّق من «الأمان» بإضافة اختبارات وأدوات و/أو عمليات إلى خط أنابيب DevOps لدينا، أو كمهام مجدولة منفصلة للتحقّق المستمر من ضوابط الأمان هذه لضمان تنفيذها بشكل صحيح وأنّ الشيفرة الجديدة أو تغييرات الإعداد لن تكسرها مستقبلًا.
+وبعبارة أخرى، ينبغي أن تكون إحدى مخرجات «نموذج التهديد» خطّة اختبار مستمر تغطّي تخفيفات التهديدات عالية الأثر أو تلك التي يُرجَّح كثيرًا أن تكسرها تغييرات الشيفرة أو الإعداد المستقبلية.</li>
+<li>توجد فئات مختلفة من الأدوات يمكننا الاختيار منها لإنشاء خطّة الاختبار هذه، بحسب التخفيفات التي نريد تغطيتها.</li>
+</ul>
+<h4>3.1 اختبارات الوحدة والتكامل</h4>
+<ul>
+<li>
+<p>تُعدّ اختبارات الوحدة والتكامل أداة مفيدة جدًّا لاختبار بعض أهمّ فئات التخفيفات وأكثرها تكرارًا، مثل المصادقة والتخويل والحماية من CSRF وغيرها من التخفيفات المتعلّقة بمنطق الأعمال. ويعود ذلك أساسًا إلى أنّ معظم أدوات الأمان (مثل SAST و DAST) غالبًا ما تُفوّت هذه الفئة من المشكلات، كما ذُكر سابقًا.</p>
+</li>
+<li>
+<p>على سبيل المثال، كاختبار تكامل، اختبار المصادقة لتطبيق Django.</p>
+<pre><code class="language-python"><span class="hljs-keyword">from</span> django.test <span class="hljs-keyword">import</span> TestCase, Client
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ShareAPIViewTestCase</span>(<span class="hljs-title class_ inherited__">TestCase</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">setUp</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.client = Client()
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">test_missing_session_cookie</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Test that a 401 response is returned when the session cookie is missing&quot;&quot;&quot;</span>
+        response = <span class="hljs-variable language_">self</span>.client.get(<span class="hljs-string">&#x27;/api/share/&#x27;</span>)
+        <span class="hljs-variable language_">self</span>.assertEqual(response.status_code, <span class="hljs-number">401</span>)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">test_valid_cookie_different_user_file</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Test that a 403 response is returned when a valid cookie for user 1 is provided and the file_id input
+        parameter is a valid id of a file owned by a different user&quot;&quot;&quot;</span>
+        <span class="hljs-comment"># Assuming you have a function or method to generate a valid session for a user</span>
+        <span class="hljs-variable language_">self</span>.client.login(username=<span class="hljs-string">&#x27;user1&#x27;</span>, password=<span class="hljs-string">&#x27;password1&#x27;</span>)
+
+        <span class="hljs-comment"># Assuming you have a function or method to create a file owned by a different user</span>
+        file_id = create_file_for_different_user()
+
+        response = <span class="hljs-variable language_">self</span>.client.get(<span class="hljs-string">&#x27;/api/share/&#x27;</span>, {<span class="hljs-string">&#x27;file_id&#x27;</span>: file_id})
+        <span class="hljs-variable language_">self</span>.assertEqual(response.status_code, <span class="hljs-number">403</span>)
+</code></pre>
+</li>
+<li>
+<p>يمكنك العثور على مزيد من التفاصيل حول كتابة اختبارات الوحدة والتكامل في خارطة الطريق هذه:</p>
+<ul>
+<li><a href="/arabic-cs-library/book/devops-roadmap/foundations/module-03#34-code---writing-unit-tests">3.4 البرمجة - كتابة اختبارات الوحدة</a></li>
+<li><a href="/arabic-cs-library/book/devops-roadmap/foundations/module-05#53-code---writing-integration-tests">5.3 البرمجة - كتابة اختبارات التكامل</a></li>
+</ul>
+</li>
+</ul>
+<h4>3.2 SAST (اختبار أمان التطبيق الساكن)</h4>
+<ul>
+<li>
+<p>فئة مفيدة أخرى من أدوات الأمان هي SAST، التي تفحص الشيفرة بحثًا عن أنماط شائعة قد تؤدّي إلى مشكلات أمان. وتكون مفيدة عادةً في تحديد الدوال الخطرة مثل:</p>
+<ul>
+<li>استعلام SQL خام يُعرَّف باستخدام مدخلات المستخدم قد يؤدّي إلى <a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html">حقن SQL</a>.</li>
+<li>أمر يُعرَّف باستخدام مدخلات المستخدم قد يؤدّي إلى <a href="https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html">حقن الأوامر</a>.</li>
+</ul>
+</li>
+<li>
+<p>على سبيل المثال، يحتوي المسار أدناه على ثغرة <a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">إعادة التوجيه المفتوح</a> لأنّه يمرّر مدخلات المستخدم (معامل الاستعلام <code>url</code>) إلى الدالة الخطرة <code>res.redirect</code>.</p>
+<pre><code class="language-javascript">app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/users/:id&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> userId = <span class="hljs-title class_">Number</span>(req.<span class="hljs-property">params</span>.<span class="hljs-property">id</span>);
+    <span class="hljs-keyword">const</span> user = users.<span class="hljs-title function_">find</span>(<span class="hljs-function">(<span class="hljs-params">user</span>) =&gt;</span> user.<span class="hljs-property">id</span> === userId);
+    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(req.<span class="hljs-property">query</span>)
+    <span class="hljs-keyword">if</span> (!user) {
+        <span class="hljs-keyword">if</span> (req.<span class="hljs-property">query</span>.<span class="hljs-property">url</span>) {
+            res.<span class="hljs-title function_">redirect</span>(req.<span class="hljs-property">query</span>.<span class="hljs-property">url</span>);
+        } <span class="hljs-keyword">else</span> {
+            res.<span class="hljs-title function_">redirect</span>(<span class="hljs-string">&#x27;https://www.example.com&#x27;</span>);
+        }
+    } <span class="hljs-keyword">else</span> {
+        res.<span class="hljs-title function_">json</span>(user);
+    }
+});
+</code></pre>
+<p>ويُنتج فحص SAST (Semgrep في هذا المثال) لهذا الأمر النتيجة التالية:</p>
+<pre><code class="language-bash">$ semgrep scan
+
+┌──── ○○○ ────┐
+│ Semgrep CLI │
+└─────────────┘
+[...]
+    ❯❱ javascript.express.security.audit.express-open-redirect.express-open-redirect
+        The application redirects to a URL specified by user-supplied input \`req\` that is not validated.
+        This could redirect <span class="hljs-built_in">users</span> to malicious locations. Consider using an allow-list approach to validate
+        URLs, or warn <span class="hljs-built_in">users</span> they are being redirected to a third-party website.
+        Details: https://sg.run/EpoP
+
+        29┆ res.redirect(req.query.url);
+</code></pre>
+</li>
+<li>
+<p>غير أنّه من الضروري ملاحظة أنّ أدوات SAST تولّد عادةً كثيرًا من الإيجابيات الكاذبة، لذا لا يُنصح بإيقاف خط أنابيب CI/CD بسبب نتائج SAST، لأنّ ذلك قد يصبح مصدر ضجيج كبير.</p>
+</li>
+<li>
+<p>فيما يلي المقاربة الموصى بها:</p>
+<ul>
+<li>فحص SAST يومي كامل للمستودع، مع فريق محدّد مسؤول عن فرز النتائج الجديدة الناتجة عن هذا الفحص وإصلاحها.</li>
+<li>فحص تزايدي لطلبات السحب/الدمج (PR/MR) يفحص الشيفرة الجديدة بحثًا عن نتائج مُدخَلة حديثًا، ويضيف النتائج كتعليقات على طلب السحب/الدمج.</li>
+<li>في خط أنابيب CI/CD، يُقتصر الحجب على النتائج المتعلّقة بالتخفيفات عالية الأثر المحدّدة في نموذج التهديد. مثلًا، فقط للقواعد المتعلّقة بنتائج حقن SQL التي اختُبرت وتُحقّق من أنّها لا تولّد إيجابيات كاذبة.</li>
+</ul>
+</li>
+<li>
+<p>فيما يلي بعض أدوات SAST للاستكشاف:</p>
+<ul>
+<li><a href="https://semgrep.dev/index.html">Semgrep</a>: يتيح كتابة قواعد مخصّصة، وتخصيص القواعد التي تُشغَّل، ما يجعله مرنًا وسهل التكيّف مع تخفيفات نموذج التهديد لديك. وله إصدار مجتمعي مجاني، لكن معظم الإصدارات (مثل <a href="https://semgrep.dev/docs/semgrep-code/semgrep-pro-engine-intro">التحليل عبر الملفات</a>، و<a href="https://semgrep.dev/docs/semgrep-appsec-platform/github-pr-comments">عمليات فحص طلبات السحب</a>، و<a href="https://semgrep.dev/docs/semgrep-assistant/overview">المساعد الذكي (AI Assistant)</a> للفرز والإصلاح التلقائيين) متاحة في الإصدار المدفوع.</li>
+<li><a href="https://www.opengrep.dev/">OpenGrep</a>: تفرّع مفتوح المصدر من الإصدار المجتمعي لـ Semgrep.</li>
+<li><a href="https://qwiet.ai/">QwietAI</a>: يستخدم رسمًا بيانيًّا لخصائص الشيفرة (code property graph) لتحديد الثغرات، ما يجعله نظريًّا قادرًا على تقليل الإيجابيات الكاذبة وتحديد ثغرات أكثر تعقيدًا (مثل الثغرات عبر الملفات).</li>
+<li><a href="https://corgea.com/">Corgea</a>: إلى جانب استخدام الذكاء الاصطناعي لفرز نتائج SAST لأدوات أخرى وإصلاحها، فإنّه يستخدم الذكاء الاصطناعي لفحص الشيفرة، ما يجعله قادرًا على تحديد مشكلات منطق الأعمال عبر (<a href="https://corgea.com/blog/introducing-blast-the-future-of-security-testing-is-here">BLAST</a>).</li>
+</ul>
+</li>
+<li>
+<p>فيما يلي مزيد من المصادر حول SAST:</p>
+<ul>
+<li><a href="https://medium.com/appsec-untangled/how-to-shift-left-sast-scans-semgrep-as-an-example-56f4428c31d3">كيف «تُنقل عمليات فحص SAST إلى اليسار» (Shift-Left) (Semgrep كمثال) | بقلم Mohamed AboElKheir | AppSec Untangled | Medium</a></li>
+<li><a href="https://medium.com/appsec-untangled/how-ai-code-scanning-breaks-sasts-limits-corgea-as-an-example-6f8c9424f165">كيف يخرق فحص الشيفرة بالذكاء الاصطناعي حدود SAST - Corgea كمثال | بقلم Mohamed AboElKheir | AppSec Untangled | Medium</a></li>
+</ul>
+</li>
+</ul>
+<h4>3.3 DAST (اختبار أمان التطبيق الديناميكي)</h4>
+<ul>
+<li>يحلّل DAST التطبيق بمحاكاة الهجمات ومراقبة كيفية استجابة التطبيق للعثور على ثغرات محتملة. وخلافًا لـ SAST، لا يحتاج هذا إلى الوصول إلى شيفرة التطبيق.</li>
+<li>يُعدّ <a href="https://portswigger.net/burp/enterprise">Burp Suite</a> و<a href="https://www.zaproxy.org/">OWASP ZAP</a> أشهر أدوات DAST. غير أنّهما لا يعملان جيدًا مع التطبيقات الحديثة (مثل تطبيقات الصفحة الواحدة (SPA) كـ React) وليسا مُحسَّنين للعمل ضمن خطوط أنابيب CI/CD، لأنّهما عادةً مستهلكان للوقت ومصدران للضجيج.</li>
+<li>توجد بعض أدوات DAST الأحدث التي تستحقّ الاستكشاف، مثل <a href="https://escape.tech/">Escape</a> و<a href="https://www.akto.io/">Akto API Security</a>، وهي أكثر تجهيزًا للتعامل مع التطبيقات والواجهات البرمجية الحديثة، لكن يُنصح عمومًا بتشغيل DAST كمهمة مجدولة منفصلة بدلًا من تشغيله ضمن خط أنابيب CI/CD.</li>
+</ul>
+<h4>3.4 IAST (اختبار أمان التطبيق التفاعلي)</h4>
+<ul>
+<li>IAST مقاربة هجينة تختبر التطبيقات ديناميكيًّا بمحاكاة الهجمات كما في DAST. كما يتكامل مباشرةً مع بيئة تشغيل التطبيق لمراقبة سلوكه أثناء التنفيذ. وهذا يتيح لـ IAST إنتاج نتائج أفضل وإضافة مزيد من السياق إلى النتائج (مثل الملف وسطر الشيفرة الذي توجد فيه الدالة الخطرة).</li>
+<li>وكما في DAST، يُنصح بتشغيل IAST كمهمة مجدولة منفصلة بدلًا من تشغيله ضمن خط أنابيب CI/CD.</li>
+<li>لتجربة IAST، يمكنك البدء بالإصدار المجتمعي المجاني من <a href="https://docs.contrastsecurity.com/en/community-edition--ce-.html">Contrast Security</a>.</li>
+</ul>
+<div class="callout callout--tip">
+<p><strong>تلميح</strong></p>
+<p>لاحظ أنّه ليس بالضرورة أن تستخدم جميع أنواع أدوات الفحص الأمني، مثل SAST و DAST و IAST. ابدأ بأهمّ التخفيفات في نموذج التهديد لديك واختر الأداة التي تمنحك أفضل تغطية. وإن لم تكن متأكّدًا، فغالبًا ما يكون البدء بـ SAST هو المسار الأسهل.</p>
+</div>
+<h4>3.5 فحص الأسرار</h4>
+<p>ثمة تهديد مهم آخر هو بيانات الاعتماد/الأسرار المُضمَّنة مباشرةً في شيفرتك (hard-coded)، ما قد يكشف هذه البيانات وأيّ بيانات تملك صلاحية الوصول إليها. وهذا خطير بشكل خاص في المستودعات مفتوحة المصدر. ومن ثمّ، يُنصح باستخدام أداة تفحص مستودعاتك بحثًا عن الأسرار.</p>
+<ul>
+<li><a href="https://github.com/trufflesecurity/trufflehog">TruffleHog</a> أداة مفتوحة المصدر يمكن استخدامها لفحص الأسرار، وهناك أيضًا بعض الحلول المدفوعة، مثل <a href="https://www.gitguardian.com/">GitGuardian</a> و<a href="http://semgrep.dev/products/semgrep-secrets/">Semgrep Secrets</a>.</li>
+</ul>
+<h4>3.6 SCA (تحليل تكوين البرمجيات)</h4>
+<ul>
+<li>كما ذُكر سابقًا، لا يعتمد أمان التطبيق على شيفرة التطبيق وحدها، بل أيضًا على جميع الطبقات والتجريدات الكامنة. وإحدى هذه الطبقات التي تحتاج إلى تأمين هي حزم المصادر المفتوحة (npm و pip و maven وغيرها) التي يستخدمها التطبيق كتبعات مباشرة أو غير مباشرة، إذ إنّ الثغرات التي تصيب أيًّا من هذه الحزم قد تُستخدم أيضًا لمهاجمة التطبيق الذي يستخدمها.</li>
+<li>ومن ثمّ، يُنصح باستخدام أدوات SCA لفحص تطبيقك للحصول على قائمة تبعيات المصادر المفتوحة، وإصداراتها الحالية، وأيّ ثغرات معروفة تؤثّر في هذه الإصدارات.</li>
+<li>ولهذا يمكننا استخدام أدوات مثل <a href="https://github.com/dependabot">Dependabot</a> أو <a href="https://snyk.io/product/open-source-security-management/">Snyk</a>، لكن بما أنّ معظم أدوات SCA تولّد عددًا هائلًا من التنبيهات، يُنصح باستكشاف أدوات تُجري «تحليل قابلية الوصول» (Reachability Analysis) مثل <a href="https://www.coana.tech/">Coana</a> (استحوذت عليها حديثًا <a href="https://socket.dev/">Socket.dev</a>) أو <a href="https://www.endorlabs.com/">Endor Labs</a>.</li>
+<li>تحليل قابلية الوصول هو التحليل المؤتمت للشيفرة وتبعياتها لتحديد ما إذا كانت الأجزاء المعرّضة للثغرة من الشيفرة (مثل الدالة المعرّضة للثغرة) في الحزمة ذات الثغرة المعروفة يمكن الوصول إليها من شيفرة التطبيق. وهذا يتيح لنا استبعاد 70-90٪ من التنبيهات، لأنّه في حالات كثيرة لا تكون الثغرة في التبعية قابلة للوصول. ولمزيد من التفاصيل حول «تحليل قابلية الوصول»، يمكنك الاطّلاع على هذا <a href="https://medium.com/appsec-untangled/how-reachability-analysis-can-help-with-open-source-vulnerabilities-mess-coana-as-an-example-54c55ba74cde">المنشور</a>.</li>
+</ul>
+<h4>3.7 فحص ثغرات الحاويات</h4>
+<ul>
+<li>ثمة طبقة أخرى تحتاج أيضًا إلى تأمين، وهي صور الحاويات المستخدمة، إذ إنّه على غرار حزم المصادر المفتوحة، قد تؤثّر ثغرات حزم صور الحاويات (مثل حزم deb أو apk) في أمان التطبيق.</li>
+<li>ومن التدابير الوقائية استخدام صور حاويات بلا توزيعة (distroless) لا تحتوي على حزم غير ضرورية، ويُرقَّع عليها دوريًّا لتقليل الحزم ذات الثغرات، مثل <a href="https://www.chainguard.dev/containers">Chainguard Images</a>.</li>
+<li>وإلى جانب ذلك، توجد أدوات يمكن استخدامها لفحص صور حاوياتك بحثًا عن الثغرات، مثل <a href="https://github.com/aquasecurity/trivy">Trivy</a> و<a href="https://github.com/anchore/grype">Grype</a> أو <a href="https://docs.docker.com/scout/">Docker Scout</a>.</li>
+<li>يُنصح باستخدام أدوات الفحص هذه كجزء من خط أنابيب بناء صورة الحاوية، وكذلك كمهمة مجدولة لتغطية الثغرات المكتشفة حديثًا.</li>
+</ul>
+<h4>3.8 فحص إعداد السحابة</h4>
+<ul>
+<li>
+<p>وعلى نحو مشابه، إن كنت تنشر تطبيقك على مزوّد سحابي (مثل AWS أو GCP أو Azure)، فقد يؤثّر سوء ضبط الخدمات السحابية في أمان تطبيقك (مثل جعل حاوية S3 تحتوي على بيانات حسّاسة عامة، ما قد يكشف هذه البيانات الحسّاسة).</p>
+</li>
+<li>
+<p>ومن ثمّ، يُنصح بفحص إعداد خدمتك السحابية دوريًّا بحثًا عن أخطاء الضبط، ولهذا يمكنك استخدام أدوات مثل <a href="https://github.com/bridgecrewio/checkov">checkov</a> و<a href="https://github.com/aquasecurity/cloudsploit">cloudsploit</a> أو <a href="https://github.com/nccgroup/ScoutSuite">Scout Suite</a></p>
+</li>
+</ul>
+<h4>3.9 فحص إعداد SCM و CI/CD</h4>
+<ul>
+<li>ثمة طبقة أخرى قد تدخل الثغرات، وهي أدوات إدارة شيفرة المصدر (SCM) (مثل GitHub) أو أدوات CI/CD (مثل GitHub Actions أو CircleCI). مثل:
+<ul>
+<li>غياب حماية الفروع (branch protection) قد يتيح لمهاجم إضافة شيفرة خبيثة إلى مستودعك.</li>
+<li>اختراق حزمة GitHub Actions (مثل <a href="https://semgrep.dev/blog/2025/popular-github-action-tj-actionschanged-files-is-compromised/">اختراق</a> الحزمة <code>tj-actions/changed-files</code>) قد يكشف أسرارك أو بيانات اعتمادك في الإنتاج.</li>
+</ul>
+</li>
+<li>ومن ثمّ، يُنصح بفحص إعداد أدوات SCM و CI/CD لديك، ولهذا يمكنك استخدام أدوات مثل <a href="https://github.com/Legit-Labs/legitify">legitify</a>.</li>
+</ul>
+<div class="callout callout--tip">
+<p><strong>تلميح</strong></p>
+<p>يمكنك العثور على <a href="https://typical-braid-834.notion.site/Threat-Model-File-Upload-Service-Sample-6b2c52bef2194cf18917ce9fbb818d6a">خدمة نموذجية ونموذج التهديد الخاص بها</a>، و<a href="https://medium.com/@mohamed.osama.aboelkheir/list/threat-modeling-handbook-309a70ec273f">الخطوات المتّبعة لإنشاء نموذج التهديد</a>. وتحت «الخطوة 6 - إنشاء اختبارات للتحقّق المستمر من التخفيفات»، يمكنك العثور على بعض الأمثلة على كيفية استخدام نموذج التهديد لإنشاء خطّة اختبار DevSecOps.</p>
+</div>
+<p><strong>الملخّص</strong></p>
+<ul>
+<li>للتذكير، هدف «DevSecOps» هو جعل الأمان يتحرّك بالوتيرة ذاتها التي تتحرّك بها DevOps، ولكي يحدث ذلك نحتاج إلى تعريف واضح لما يجب أن يكون تطبيقنا (تطبيقاتنا) آمنًا منه (التهديدات)، والضوابط التي نحتاج إلى تنفيذها للحماية منها (التخفيفات). ثم نحتاج إلى اختيار الأدوات والعمليات الصحيحة التي تساعدنا على التحقّق من أنّ هذه الضوابط تعمل كما هو متوقّع عبر جميع طبقات التطبيق.</li>
+<li>أخيرًا، إليك رسم توضيحي يلخّص أدوات وعمليات DevSecOps المذكورة أعلاه، ومواءمتها مع طبقات التطبيق المختلفة.</li>
+</ul>
+<p>شكل توضيحي: مواءمة أدوات وعمليات DevSecOps مع طبقات التطبيق المختلفة.</p>
+<h3 id="مصادر">مصادر</h3>
+<ul>
+<li><a href="https://www.practical-devsecops.com/certified-devsecops-professional/">دورة Certified DevSecOps Professional (CDP)</a>: دورة شهادة DevSecOps عملية تعتمد أساسًا على المختبرات.</li>
+<li><a href="https://www.youtube.com/watch?v=XvraqRRjHjQ&amp;t=900s">استخدام نمذجة التهديدات لإنشاء خطّة DevSecOps</a>: محاضرة حول استخدام نمذجة التهديدات لإنشاء خطّة DevSecOps.</li>
+<li><a href="https://github.com/sottlmarek/DevSecOps">مكتبة DevSecOps الشاملة</a>: مكتبة تحتوي على قائمة بالأدوات والمنهجيات مصحوبة بمصادر.</li>
+<li><a href="https://github.com/devsecops/awesome-devsecops">Awesome DevSecOps</a>: قائمة موثوقة بأدوات DevSecOps الرائعة بمساعدة تجارب المجتمع ومساهماته.</li>
+<li><a href="https://www.practical-devsecops.com/devsecops-university/">جامعة DevSecOps</a>: مجموعة شاملة من موارد تعلّم DevSecOps مثل الكتب والدروس والإنفوجرافيك والأدوات وغيرها الكثير.</li>
+</ul>
+`,p={book:s,chapter:e,chapterTitle:n,slug:a,title:l,headings:t,html:i};export{s as book,e as chapter,n as chapterTitle,p as default,t as headings,i as html,a as slug,l as title};
