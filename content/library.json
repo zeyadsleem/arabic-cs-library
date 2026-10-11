@@ -1009,6 +1009,32 @@
         "fullstack-open-ar"
       ],
       "note": "ترجمة عربية غير رسمية، بإذن المؤلف كما أكّده زياد سليم بتاريخ 5 أكتوبر 2026. نصوص الدروس وتعليمات التمارين مترجمة بالكامل؛ الفيديوهات الأصلية باللغة الإنجليزية وتظل مستضافة لدى المؤلف. الاشتراك المجاني في نشرة Frontend at Scale مطلوب عند مشاهدة الكورس كاملًا على المصدر الأصلي."
+    },
+    {
+      "id": "devops-roadmap",
+      "title": "خارطة طريق DevOps الديناميكية",
+      "titleEn": "Dynamic DevOps Roadmap",
+      "author": "DevOps Hive (Ahmed AbouZaid) — الترجمة العربية: zeyadsleem",
+      "description": "خارطة طريق عملية للتعلّم التدريجي لـ DevOps بأسلوب المنتج الأدنى القابل للتطبيق (MVP): من الأساسيات — Python وGit وLinux وDocker — إلى التكامل المستمر والتسليم المستمر والبنية التحتية كشيفرة وKubernetes وGitOps، مع مشروع عملي متكامل (HiveBox) وتحضير للمقابلات ومسارات النمو المتقدّمة.",
+      "sourceUrl": "https://devopsroadmap.io/",
+      "repoUrl": "https://github.com/DevOpsHiveHQ/dynamic-devops-roadmap",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "languages": [
+        "Python",
+        "Bash",
+        "Docker",
+        "Kubernetes",
+        "Terraform"
+      ],
+      "status": "translated",
+      "stage": "devops",
+      "order": 0,
+      "format": "web",
+      "pages": 31,
+      "completeCourse": true,
+      "prerequisites": [],
+      "note": "ترجمة عربية غير رسمية وغير تجارية لخارطة طريق «Dynamic DevOps Roadmap» من DevOps Hive، بموجب رخصة CC BY-SA 4.0؛ المصدر يحتفظ بحقوقه ولم يُراعَ أي تأييد رسمي. استُبعدت جميع الصور والرسوم (ذات التسميات الإنجليزية وتراخيص مستقلة غير واضحة)، واستُعيض عنها في مواضع محدودة بوصف نصّي أمين يبدأ بـ«شكل توضيحي:». أُسقطت بيانات الاختبارات (quiz) لأنها بيانات بنيوية تُعرض عبر مكوّن برمجي."
     }
   ]
 }

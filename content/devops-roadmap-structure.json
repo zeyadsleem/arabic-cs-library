@@ -1,0 +1,81 @@
+{
+  "chapters": [
+    {
+      "key": "getting-started",
+      "title": "Getting Started",
+      "titleAr": "البدء",
+      "sections": [
+        { "slug": "index", "title": "البدء", "order": 0 },
+        { "slug": "detailed-index", "title": "الفهرس التفصيلي", "order": 1 }
+      ]
+    },
+    {
+      "key": "general",
+      "title": "General",
+      "titleAr": "عام",
+      "sections": [
+        { "slug": "index", "title": "عام", "order": 0 },
+        { "slug": "faq", "title": "الأسئلة الشائعة", "order": 1 },
+        { "slug": "learning-plan", "title": "خطّة التعلّم", "order": 2 }
+      ]
+    },
+    {
+      "key": "foundations",
+      "title": "Foundations",
+      "titleAr": "الأساسيات",
+      "sections": [
+        { "slug": "index", "title": "الأساسيات", "order": 0 },
+        { "slug": "introduction", "title": "مقدّمة", "order": 1 },
+        { "slug": "module-01", "title": "مرحبًا بك في عالم DevOps", "order": 2 },
+        { "slug": "module-02", "title": "الأساسيات - جوهر DevOps", "order": 3 },
+        { "slug": "module-03", "title": "الانطلاق - إرساء القاعدة", "order": 4 },
+        { "slug": "module-04", "title": "التوسّع - بناء القشرة", "order": 5 },
+        { "slug": "module-05", "title": "التحوّل - إتمام البنية", "order": 6 },
+        { "slug": "module-06", "title": "التحسين - واصل التحسّن", "order": 7 },
+        { "slug": "module-07", "title": "مشروع التخرّج", "order": 8 },
+        { "slug": "next-steps", "title": "الخطوات التالية", "order": 9 }
+      ]
+    },
+    {
+      "key": "projects",
+      "title": "Projects",
+      "titleAr": "مشاريع عملية",
+      "sections": [
+        { "slug": "index", "title": "مشاريع عملية", "order": 0 },
+        { "slug": "hivebox", "title": "مشروع من البداية إلى النهاية: HiveBox", "order": 1 },
+        { "slug": "container-best-practices", "title": "مشروع حالة استخدام: تطبيق أفضل ممارسات حاويات Docker", "order": 2 },
+        { "slug": "deployment-automation", "title": "مشروع حالة استخدام: أتمتة النشر المستمر بـ GitOps", "order": 3 },
+        { "slug": "kubernetes-operator", "title": "مشروع حالة استخدام: تطوير Kubernetes Operator", "order": 4 },
+        { "slug": "multi-environment-setup", "title": "مشروع حالة استخدام: بناء إعداد متعدّد البيئات", "order": 5 },
+        { "slug": "release-automation", "title": "مشروع حالة استخدام: أتمتة إصدار المخارج", "order": 6 }
+      ]
+    },
+    {
+      "key": "interview",
+      "title": "Interview",
+      "titleAr": "التحضير للمقابلات",
+      "sections": [
+        { "slug": "index", "title": "التحضير للمقابلات", "order": 0 },
+        { "slug": "best-practices", "title": "أفضل ممارسات المقابلات", "order": 1 },
+        { "slug": "common-questions", "title": "أسئلة المقابلات الشائعة في DevOps", "order": 2 },
+        { "slug": "scenario-questions", "title": "أسئلة المقابلات القائمة على السيناريو في DevOps", "order": 3 }
+      ]
+    },
+    {
+      "key": "growth",
+      "title": "Career Growth and Advanced Topics",
+      "titleAr": "النمو المهني والمواضيع المتقدّمة",
+      "sections": [
+        { "slug": "index", "title": "النمو المهني والمواضيع المتقدّمة", "order": 0 },
+        { "slug": "devops", "title": "DevOps - متقدّم", "order": 1 },
+        { "slug": "devsecops", "title": "DevSecOps - متقدّم", "order": 2 },
+        { "slug": "platform", "title": "هندسة المنصّات - متقدّم", "order": 3 },
+        { "slug": "sre", "title": "هندسة موثوقية الموقع (SRE) - متقدّم", "order": 4 },
+        { "slug": "cloud", "title": "هندسة السحابة - متقدّم", "order": 5 },
+        { "slug": "dataops", "title": "DataOps - متقدّم", "order": 6 },
+        { "slug": "mlops", "title": "MLOps - متقدّم", "order": 7 },
+        { "slug": "aiops", "title": "AIOps - متقدّم", "order": 8 }
+      ]
+    }
+  ]
+}
