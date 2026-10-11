@@ -1,68 +1,68 @@
 ---
-title: "Project 5: Computer Architecture"
-lang: en
+title: "المشروع 5: معمارية الحاسوب"
+lang: ar
 ---
 
-## Project 5: Computer Architecture
+## المشروع 5: معمارية الحاسوب
 
-### Background
+### خلفية
 
-In previous projects we've built the computer's basic processing and storage devices (ALU and RAM, respectively). In this project we will put everything together, yielding the complete Hack Hardware Platform. The result will be a general-purpose computer that can run programs written in the Hack machine language.
+في المشاريع السابقة بنينا أجهزة المعالجة والتخزين الأساسية للحاسوب (ALU وRAM، على الترتيب). وفي هذا المشروع سنجمع كل شيء معًا، فنحصل على منصة Hack Hardware Platform كاملة. وستكون النتيجة حاسوبًا متعدد الأغراض قادرًا على تشغيل البرامج المكتوبة بلغة آلة Hack.
 
-### Objective
+### الهدف
 
-Complete the construction of the Hack CPU and the Hack hardware platform, leading up to the top-most Computer chip.
+أكمل بناء CPU Hack ومنصة Hack Hardware Platform، وصولاً إلى شريحة Computer الأعلى مستوىً.
 
-### Chips
+### الشرائح
 
-| Chip Name | Description | Testing |
+| اسم الشريحة | الوصف | الاختبار |
 |---|---|---|
-| Memory.hdl | Entire RAM address space | Test your chip using the supplied Memory.tst and Memory.cmp files. |
-| CPU.hdl | The Hack CPU | Test your chip using the supplied CPU.tst and CPU.cmp files. Alternative test files (less thorough but do not require using the built-in DRegister) are supplied in CPU-external.tst and CPU-external.cmp. |
-| Computer.hdl | The platform's top-most chip | Test by running some Hack programs on the constructed chip. See more instructions below. |
+| Memory.hdl | نطاق عناوين RAM بالكامل | اختبر شريحتك باستخدام ملفي Memory.tst وMemory.cmp المرفقَين. |
+| CPU.hdl | CPU Hack | اختبر شريحتك باستخدام ملفي CPU.tst وCPU.cmp المرفقَين. وتتوفر أيضًا ملفات اختبار بديلة (أقل شمولاً لكنها لا تتطلب استخدام DRegister المدمج) في CPU-external.tst وCPU-external.cmp. |
+| Computer.hdl | شريحة المنصة الأعلى مستوىً | اختبر الشريحة بتشغيل بعض برامج Hack عليها. راجع المزيد من التعليمات أدناه. |
 
-### Contract
+### العقد
 
-The computer platform that you build should be capable of executing programs written in the Hack machine language, specified in Chapter 4. Demonstrate this capability by having your Computer chip run the three test programs given below.
+يجب أن تكون منصة الحاسوب التي تبنيها قادرة على تنفيذ البرامج المكتوبة بلغة آلة Hack، كما هي محدّدة في الفصل 4. وأظهر هذه القدرة بجعل شريحة Computer خاصتك تشغّل برامج الاختبار الثلاثة الواردة أدناه.
 
-### Testing
+### الاختبار
 
-Testing the Memory and CPU chips: It's important to unit-test these chips before proceeding to build the overall Computer chip. Use the the test scripts and compare files listed above.
+اختبار شريحتي Memory وCPU: من المهم اختبار هاتين الشريحتين على حدة قبل الانتقال إلى بناء شريحة Computer الكلية. استخدم سكربتات الاختبار وملفات المقارنة المذكورة أعلاه.
 
-Testing the Computer chip: A natural way to test the overall Computer chip implementation is to have it execute some sample programs written in the Hack machine language. In order to perform such a test, one can write a test script that (i) loads the Computer.hdl chip description into the supplied Hardware Simulator, (ii) loads a machine-level program from an external .hack file into the ROM chip-part of the loaded Computer.hdl chip, and then (iii) runs the clock enough cycles to execute the loaded instructions. We supply all the files necessary to run three such tests, as follows:
+اختبار شريحة Computer: إنّ طريقة طبيعية لاختبار تنفيذ شريحة Computer الكلية هي جعلها تنفّذ بعض البرامج النموذجية المكتوبة بلغة آلة Hack. ولإجراء مثل هذا الاختبار، يمكن كتابة سكربت اختبار يقوم (i) بتحميل وصف شريحة Computer.hdl إلى محاكي العتاد المرفق، (ii) بتحميل برنامج بلغة الآلة من ملف .hack خارجي إلى جزء ROM من شريحة Computer.hdl المحمّلة، ثم (iii) بتشغيل الساعة عددًا كافيًا من الدورات لتنفيذ التعليمات المحمّلة. ونحن نرفق كل الملفات اللازمة لإجراء ثلاثة اختبارات من هذا القبيل، وهي كالآتي:
 
-| Program | Comments |
+| البرنامج | التعليقات |
 |---|---|
-| Add.hack | Adds up the two constants 2 and 3 and writes the result in RAM[0]. Recommended test: ComputerAdd.tst and ComputerAdd.cmp. Alternative test (less thorough but only requires usage of the built-in RAM16K): ComputerAdd-external.tst and ComputerAdd-external.cmp. |
-| Max.hack | Computes the maximum of RAM[0] and RAM[1] and writes the result in RAM[2]. Recommended test: ComputerMax.tst and ComputerMax.cmp. Alternative test (less thorough but only requires usage of the built-in RAM16K): ComputerMax-external.tst and ComputerMax-external.cmp. |
-| Rect.hack | Draws a rectangle of width 16 pixels and length RAM[0] at the top left of the screen. Recommended tests: testComputerRect.tst and ComputerRect.cmp. Alternative test (less thorough but does not require usage of any built-in chips): ComputerRect-external.tst and ComputerRect-external.cmp. |
+| Add.hack | يجمع ثابتَي 2 و3 ويكتب الناتج في RAM[0]. الاختبار الموصى به: ComputerAdd.tst وComputerAdd.cmp. اختبار بديل (أقل شمولاً لكنه يتطلب استخدام RAM16K المدمجة فقط): ComputerAdd-external.tst وComputerAdd-external.cmp. |
+| Max.hack | يحسب أكبر قيمة بين RAM[0] وRAM[1] ويكتب الناتج في RAM[2]. الاختبار الموصى به: ComputerMax.tst وComputerMax.cmp. اختبار بديل (أقل شمولاً لكنه يتطلب استخدام RAM16K المدمجة فقط): ComputerMax-external.tst وComputerMax-external.cmp. |
+| Rect.hack | يرسم مستطيلًا عرضه 16 بكسل وطوله RAM[0] في أعلى يسار الشاشة. الاختبارات الموصى بها: testComputerRect.tst وComputerRect.cmp. اختبار بديل (أقل شمولاً لكنه لا يتطلب استخدام أي من الشرائح المدمجة): ComputerRect-external.tst وComputerRect-external.cmp. |
 
-Before testing your Computer chip on any one of the above programs, read the relevant .tst file and be sure to understand the instructions given to the simulator. The [TDL Guide](https://drive.google.com/file/d/1VZSQV-7NcmG0q6v46OUIypfiTrnoi1Ss/view?usp=sharing) may be a useful reference here.
+قبل اختبار شريحة Computer خاصتك على أيٍّ من البرامج أعلاه، اقرأ ملف .tst ذا الصلة وتأكد من فهمك للتعليمات المُعطاة إلى المحاكي. وقد يكون [دليل TDL](https://drive.google.com/file/d/1VZSQV-7NcmG0q6v46OUIypfiTrnoi1Ss/view?usp=sharing) مرجعًا مفيدًا هنا.
 
-### Resources
+### الموارد
 
-See [Chapter 5](https://www.nand2tetris.org/_files/ugd/44046b_552ed0898d5d491aabafd8a768a87c6f.pdf), the [HDL Guide](https://drive.google.com/file/d/1dPj4XNby9iuAs-47U9k3xtYy9hJ-ET0T/view?usp=sharing), the [TDL Guide](https://drive.google.com/file/d/1VZSQV-7NcmG0q6v46OUIypfiTrnoi1Ss/view?usp=sharing), (for reference), and the [Hack Chip Set](https://drive.google.com/file/d/1IsDnH0t7q_Im491LQ7_5_ajV0CokRbwR/view?usp=sharing).
+انظر [الفصل 5](https://www.nand2tetris.org/_files/ugd/44046b_552ed0898d5d491aabafd8a768a87c6f.pdf)، و[دليل HDL](https://drive.google.com/file/d/1dPj4XNby9iuAs-47U9k3xtYy9hJ-ET0T/view?usp=sharing)، و[دليل TDL](https://drive.google.com/file/d/1VZSQV-7NcmG0q6v46OUIypfiTrnoi1Ss/view?usp=sharing)، (للاطلاع)، و[مجموعة شرائح Hack](https://drive.google.com/file/d/1IsDnH0t7q_Im491LQ7_5_ajV0CokRbwR/view?usp=sharing).
 
-The tools that you need for this project are the supplied hardware simulator and the files listed above. If you've downloaded the Nand2Tstris Software Suite, these files are stored in your projects/05 folder.
+الأدوات التي تحتاجها لهذا المشروع هي محاكي العتاد المرفق والملفات المذكورة أعلاه. وإذا كنت قد حمّلت حزمة برامج Nand2Tetris Software Suite، فإن هذه الملفات مخزّنة في مجلد projects/05 خاصتك.
 
-### Tips
+### نصائح
 
-Complete the computer's construction in the following order:
+أكمل بناء الحاسوب بالترتيب التالي:
 
-Memory: This chip includes three chip-parts: RAM16K, Screen, and Keyboard. The Screen and the Keyboard are available as built-in chips, and thus there is no need to implement them. Although the RAM16K chip was built in Project 3, we recommend using its built-in version, as it provides a debugging-friendly GUI.
+Memory: تتضمّن هذه الشريحة ثلاثة أجزاء: RAM16K، وScreen، وKeyboard. أما Screen وKeyboard فمتاحان كشريحتين مدمجتين، فلا حاجة إلى تنفيذهما. وعلى الرغم من بناء شريحة RAM16K في المشروع 3، فإننا نوصي باستخدام نسختها المدمجة، لأنها توفر واجهة رسومية ملائمة للتنقيح.
 
-CPU: This chip can be constructed according to the proposed CPU implementation given in Figure 5.9 of Chapter 5, using the ALU and register chips built in Projects 2 and 3, respectively. We recommend though using built-in chip-parts instead, in particular ARegister and DRegister. The built-in versions of these two chips have exactly the same interface and functionality as those of the Register chip specified in Chapter 3; however, they feature GUI side-effects that come handy for testing purposes.
+CPU: يمكن بناء هذه الشريحة وفقًا لتنفيذ CPU المقترح الوارد في الشكل 5.9 من الفصل 5، باستخدام شريحتي ALU والمسجّل المبنيتين في المشروعين 2 و3 على الترتيب. غير أننا نوصي باستخدام أجزاء مدمجة بدلًا منهما، وتحديدًا ARegister وDRegister. فالنسخ المدمجة من هاتين الشريحتين لها نفس الواجهة ونفس الوظائف تمامًا مثل شريحة Register المحدّدة في الفصل 3؛ لكنها تتميز بآثار جانبية على الواجهة الرسومية تأتي في متناول اليد لأغراض الاختبار.
 
-In principle, your CPU implementation may include internal chips of your own specification, i.e. chips not mentioned in Figure 5.9 of Chapter 5. However, this is not recommended, and will most likely yield a less efficient CPU design. If you choose to create new chips not mentioned in the book, be sure to document and unit-test them carefully before you plug them into the architecture.
+من حيث المبدأ، قد يتضمّن تنفيذ CPU خاصتك شرائح داخلية من مواصفاتك الخاصة، أي شرائح غير مذكورة في الشكل 5.9 من الفصل 5. لكن هذا غير مستحسن، وسيؤدي على الأرجح إلى تصميم CPU أقل كفاءة. فإن اخترت إنشاء شرائح جديدة غير مذكورة في الكتاب، فتأكد من توثيقها واختبارها على حدة بعناية قبل وصلها في المعمارية.
 
-Instruction memory: Use the built-in ROM32K chip.
+ذاكرة التعليمات: استخدم شريحة ROM32K المدمجة.
 
-Computer: The top-most Computer chip can be constructed according to the proposed implementation shown in Figure 5.10 of Chapter 5.
+Computer: يمكن بناء شريحة Computer الأعلى مستوىً وفقًا للتنفيذ المقترح الموضّح في الشكل 5.10 من الفصل 5.
 
-### Tools
+### الأدوات
 
-All the chips mentioned in this project, including the topmost Computer chip, can be implemented and tested using the supplied hardware simulator. Here is a screen shot of testing the Rect.hack program on a Computer chip implementation.
+يمكن تنفيذ واختبار جميع الشرائح المذكورة في هذا المشروع، بما فيها شريحة Computer الأعلى مستوىً، باستخدام محاكي العتاد المرفق. وهذه لقطة شاشة لاختبار برنامج Rect.hack على تنفيذ لشريحة Computer.
 
 ![](/images/nand2tetris-1/project05-44046b_344d66c34a4247798f9d91810.webp)
 
-The Rect program illustrated above draws a rectangle of width 16 pixels and length RAM[0] at the top-left of the screen. Now here is an interesting observation: normally, when you run a program on some computer, and you don't get the desired result, you conclude that the program is buggy. In our case though, the supplied Rect program is bug-free. Thus, if running this program yields unexpected results, it means that the computer platform on which it runs (Computer.hdl and/or some of its lower-level chip parts) is buggy. If that is the case, you have to debug your chips.
+يرسم برنامج Rect الموضّح أعلاه مستطيلًا عرضه 16 بكسل وطوله RAM[0] في أعلى يسار الشاشة. وإليك ملاحظة مثيرة للاهتمام: عادةً، حين تشغّل برنامجًا على حاسوب ما ولا تحصل على النتيجة المرجوة، تستنتج أن البرنامج معطوب. أما في حالتنا هذه، فإن برنامج Rect المرفق خالٍ من العلل. وبذلك، فإن كان تشغيل هذا البرنامج ينتج نتائج غير متوقعة، فهذا يعني أن منصة الحاسوب التي يعمل عليها (Computer.hdl و/أو بعض أجزاء شريحتها من المستوى الأدنى) معطوبة. وإذا كان الأمر كذلك، فعليك تنقيح شرائحك.

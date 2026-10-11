@@ -1,33 +1,33 @@
 ---
-title: "Project 3: Memory"
-lang: en
+title: "المشروع 3: الذاكرة"
+lang: ar
 ---
 
-## Project 3: Memory
+## المشروع 3: الذاكرة
 
-### Background
+### خلفية
 
-The computer's main memory, also called Random Access Memory, or RAM, is an addressable sequence of n-bit registers, each designed to hold an n-bit value. In this project you will gradually build a RAM unit. This involves two main issues: (i) how to use gate logic to store bits persistently, over time, and (ii) how to use gate logic to locate ("address") the memory register on which we wish to operate.
+الذاكرة الرئيسية للحاسوب، التي تُسمى أيضًا الذاكرة العشوائية أو RAM، هي متتالية قابلة للعنونة من مسجّلات بطول n بت، كل منها مصمم لحفظ قيمة بطول n بت. في هذا المشروع سوف تبني تدريجيًا وحدة RAM. ويتضمّن ذلك مسألتين رئيسيتين: (i) كيفية استخدام منطق البوابات لتخزين البتات بصورة مستمرة عبر الزمن، و(ii) كيفية استخدام منطق البوابات لعنونة (address) مسجّل الذاكرة الذي نريد العمل عليه.
 
-### Objective
+### الهدف
 
-Build all the chips described in Chapter 3 (see list below), leading up to a Random Access Memory (RAM) unit. The only building blocks that you can use are primitive DFF gates, chips that you will build on top of them, and chips described in previous chapters.
+ابنِ جميع الشرائح الموصوفة في الفصل 3 (انظر القائمة أدناه)، وصولاً إلى وحدة RAM. مكوّنات البناء الوحيدة التي يمكنك استخدامها هي بوابات DFF الأولية، والشرائح التي ستبنيها فوقها، والشرائح الموصوفة في الفصول السابقة.
 
-### Chips
+### الشرائح
 
-| Chip Name | Description |
+| اسم الشريحة | الوصف |
 |---|---|
-| DFF | Data Flip-Flop (primitive) |
-| Bit | 1-bit register |
-| Register | 16-bit register |
-| RAM8 | 16-bit / 8-register memory |
-| RAM64 | 16-bit / 64-register memory |
-| RAM512 | 16-bit / 512-register memory |
-| RAM4K | 16-bit / 4096-register memory |
-| RAM16K | 16-bit / 16384-register memory |
-| PC | 16-bit program counter |
+| DFF | قلب ثنائي للبيانات (Flip-Flop) أولي |
+| Bit | مسجّل بطول 1 بت |
+| Register | مسجّل بطول 16 بت |
+| RAM8 | ذاكرة بطول 16 بت / 8 مسجّلات |
+| RAM64 | ذاكرة بطول 16 بت / 64 مسجّلًا |
+| RAM512 | ذاكرة بطول 16 بت / 512 مسجّلًا |
+| RAM4K | ذاكرة بطول 16 بت / 4096 مسجّلًا |
+| RAM16K | ذاكرة بطول 16 بت / 16384 مسجّلًا |
+| PC | عدّاد برنامج بطول 16 بت |
 
-| Test Scripts | Compare File |
+| سكربتات الاختبار | ملف المقارنة |
 |---|---|
 | Bit.tst | Bit.cmp |
 | Register.tst | Register.cmp |
@@ -38,28 +38,28 @@ Build all the chips described in Chapter 3 (see list below), leading up to a Ran
 | RAM16K.tst | RAM16K.cmp |
 | PC.tst | PC.cmp |
 
-### Contract
+### العقد
 
-When loaded into the supplied Hardware Simulator, your chip design (modified .hdl program), tested on the supplied .tst script, should produce the outputs listed in the supplied .cmp file. If that is not the case, the simulator will let you know. This contract must be satisfied for each chip listed above, except for the DFF chip, which is considered primitive, and thus there is no need to implement it.
+عند تحميل تصميم شريحتك (برنامج .hdl المعدَّل) في محاكي العتاد (Hardware Simulator) المُرفق، واختباره باستخدام سكربت .tst المُرفق، يجب أن يُنتج المخرجات المدرجة في ملف .cmp المُرفق. وإذا لم يكن الأمر كذلك، فسوف يُبلغك المحاكي بذلك. ويجب استيفاء هذا الشرط لكل شريحة مدرجة أعلاه، باستثناء شريحة DFF التي تُعدّ أولية، وبالتالي لا حاجة إلى تنفيذها.
 
-### Resources
+### الموارد
 
-See [Chapter 3](https://www.nand2tetris.org/_files/ugd/44046b_1801b5682e4d4a67bd05e14235665d8b.pdf), the [HDL Guide](https://drive.google.com/file/d/1dPj4XNby9iuAs-47U9k3xtYy9hJ-ET0T/view?usp=sharing), and the [Hack Chip Set](https://drive.google.com/file/d/1IsDnH0t7q_Im491LQ7_5_ajV0CokRbwR/view?usp=sharing).
+انظر [الفصل 3](https://www.nand2tetris.org/_files/ugd/44046b_1801b5682e4d4a67bd05e14235665d8b.pdf)، و[دليل HDL](https://drive.google.com/file/d/1dPj4XNby9iuAs-47U9k3xtYy9hJ-ET0T/view?usp=sharing)، و[مجموعة رقائق Hack](https://drive.google.com/file/d/1IsDnH0t7q_Im491LQ7_5_ajV0CokRbwR/view?usp=sharing).
 
-For each chip, we supply a skeletal .hdl file with a missing implementation part. In addition, for each chip we supply a .tst script that instructs the hardware simulator how to test it, and a .cmp ("compare file") containing the correct output that this test should generate. Your job is to complete and test the supplied skeletal .hdl files.
+لكل شريحة، نُزوّدك بملف .hdl هيكلي ينقصه جزء التنفيذ. وبالإضافة إلى ذلك، نُزوّدك لكل شريحة بسكربت .tst يوجّه محاكي العتاد إلى كيفية اختبارها، وبملف .cmp (ملف مقارنة) يحتوي على المخرجات الصحيحة التي يجب أن يُنتجها هذا الاختبار. ومهمتك هي إكمال واختبار ملفات .hdl الهيكلية المُزوَّدة.
 
-The tools that you need for this project are the supplied hardware simulator and the files listed above. If you've downloaded the Nand2Tstris Software Suite, these files are stored in your projects/03 folder. The folder is further partitioned into two sub-folders, for reasons described below.
+والأدوات التي تحتاجها لهذا المشروع هي محاكي العتاد المُرفق والملفات المدرجة أعلاه. وإذا كنت قد حمّلت حزمة برامج Nand2Tetris Software Suite، فإن هذه الملفات مخزّنة في مجلد projects/03 لديك. وينقسم المجلد بدوره إلى مجلدين فرعيين، للأسباب الموضحة أدناه.
 
-### Tips
+### نصائح
 
-The Data Flip-Flop (DFF) gate is considered primitive and thus there is no need to build it: when the simulator encounters a DFF chip part in an HDL program, it automatically invokes the built-in nand2tetris/tools/builtInChips/DFF.hdl implementation.
+تُعدّ بوابة DFF بوابة أولية، وبالتالي لا حاجة إلى بنائها: فعندما يصادف المحاكي جزءًا من شريحة DFF في برنامج HDL، فإنه يستدعي تلقائيًا التنفيذ المدمج nand2tetris/tools/builtInChips/DFF.hdl.
 
-Built-in chips: When constructing RAM chips from lower-level RAM chip-parts, we recommend using built-in versions of the latter. Otherwise, the simulator will recursively generate numerous memory-resident software objects, one for each one of the many chip parts that make up a typical RAM unit. This may cause the simulator to run slowly, or, worse, out of memory. i.e. out of the memory of the computer on which the simulator is running.
+الشرائح المدمجة: عند بناء شرائح RAM من أجزاء شريحة RAM من مستوى أدنى، نوصي باستخدام الإصدارات المدمجة من تلك الأجزاء. وإلا، فسوف يُنتج المحاكي بصورة تعاقبية عددًا كبيرًا من كائنات البرمجيات المقيمة في الذاكرة، واحدة لكل جزء من الأجزاء العديدة التي تُشكّل وحدة RAM نموذجية. وقد يجعل ذلك المحاكي يعمل ببطء، أو، ما هو أسوأ، أن ينفد من الذاكرة. أي أن ينفد من ذاكرة الحاسوب الذي يعمل عليه المحاكي.
 
-To avert this problem, we've partitioned the RAM chips that you have to build in this project into two sub-directories, named projects/03/a and projects/03/b. This partition is superficial, and is done with one purpose only: when building the chips stored in b, the simulator is forced to use built-in implementations of the lower-level chip parts whose .hdl programs are stored in a but not in b.
+ولتفادي هذه المشكلة، قمنا بتقسيم شرائح RAM التي عليك بناؤها في هذا المشروع إلى مجلدين فرعيين، هما projects/03/a و projects/03/b. وهذا التقسيم سطحي، وتم لغرض واحد فقط: فعند بناء الشرائح المخزّنة في b، يُجبر المحاكي على استخدام التنفيذات المدمجة لأجزاء الشريحة من المستوى الأدنى التي تُخزَّن برامج .hdl الخاصة بها في a ولكن ليس في b.
 
-### Tools
+### الأدوات
 
-All the chips mentioned projects 0-5 can be implemented and tested using the supplied hardware simulator. Here is a screen shot of testing a built-in RAM8.hdl chip implementation on the hardware simulator:
+يمكن تنفيذ واختبار جميع الشرائح المذكورة في المشاريع 0-5 باستخدام محاكي العتاد المُرفق. وفيما يلي لقطة شاشة لاختبار تنفيذ مدمج لشريحة RAM8.hdl على محاكي العتاد:
 
 ![](/images/nand2tetris-1/project03-44046b_cbed6bd78b6b4a4ea21377cdd.webp)

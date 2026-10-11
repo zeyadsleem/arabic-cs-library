@@ -1,40 +1,40 @@
 ---
-title: "Project 1: Boolean Logic"
-lang: en
+title: "المشروع 1: المنطق البولياني"
+lang: ar
 ---
 
-## Project 1: Boolean Logic
+## المشروع 1: المنطق البولياني
 
-### Background
+### خلفية
 
-A typical computer architecture is based on a set of elementary logic gates like And, Or, Mux, etc., as well as their bit-wise versions And16, Or16, Mux16, etc. (assuming a 16-bit machine). This project engages you in the construction of a typical set of basic logic gates. These gates form the elementary building blocks from which we will later construct the computer's CPU and RAM.
+تستند معمارية الحاسوب النمطية إلى مجموعة من البوابات المنطقية الأولية مثل And وOr وMux وغيرها، إضافةً إلى إصداراتها على مستوى البتّ مثل And16 وOr16 وMux16 وغيرها (بافتراض آلة بـ 16 بت). يَعهد إليك هذا المشروع ببناء مجموعة نموذجية من بوابات المنطق الأساسية. تشكّل هذه البوابات لبنات البناء الأولية التي سنبني منها لاحقًا وحدة المعالجة المركزية CPU وذاكرة الوصول العشوائية RAM للحاسوب.
 
-### Objective
+### الهدف
 
-Build all the logic gates described in Chapter 1 (see list below), yielding a basic chip-set. The only building blocks that you can use in this project are primitive Nand gates and the composite gates that you will gradually build on top of them.
+ابنِ جميع بوابات المنطق الموصوفة في الفصل 1 (انظر القائمة أدناه)، للحصول على مجموعة شرائح أساسية. لبنات البناء الوحيدة التي يمكنك استخدامها في هذا المشروع هي بوابات Nand الأولية والبوابات المركّبة التي ستبنيها تدريجيًا فوقها.
 
-### Chips
+### الشرائح
 
-| Chip Name | Description |
+| اسم الشريحة | الوصف |
 |---|---|
-| Nand | Nand gate (primitive) |
-| Not | Not gate |
-| And | And gate |
-| Or | Or gate |
-| Xor | Xor gate |
-| Mux | Mux gate |
-| DMux | DMux gate |
-| Not16 | 16-bit Not |
-| And16 | 16-bit And |
-| Or16 | 16-bit Or |
-| Mux16 | 16-bit multiplexor |
+| Nand | بوابة Nand (أولية) |
+| Not | بوابة Not |
+| And | بوابة And |
+| Or | بوابة Or |
+| Xor | بوابة Xor |
+| Mux | بوابة Mux |
+| DMux | بوابة DMux |
+| Not16 | نفي بـ 16 بت |
+| And16 | عملية And بـ 16 بت |
+| Or16 | عملية Or بـ 16 بت |
+| Mux16 | مُزاوِد (multiplexor) بـ 16 بت |
 | Or8Way | Or(in0,in1,...,in7) |
-| Mux4Way16 | 16-bit/4-way mux |
-| Mux8Way16 | 16-bit/8-way mux |
-| DMux4Way | 4-way demultiplexor |
-| DMux8Way | 8-way demultiplexor |
+| Mux4Way16 | مُزاوِد بـ 16 بت و4 مسارات |
+| Mux8Way16 | مُزاوِد بـ 16 بت و8 مسارات |
+| DMux4Way | مُزاوِد عكسي (demultiplexor) بـ 4 مسارات |
+| DMux8Way | مُزاوِد عكسي (demultiplexor) بـ 8 مسارات |
 
-| Test Scripts | Compare File |
+| سكربتات الاختبار | ملف المقارنة |
 |---|---|
 | Not.tst | Not16.cmp |
 | And.tst | And.cmp |
@@ -52,28 +52,28 @@ Build all the logic gates described in Chapter 1 (see list below), yielding a ba
 | DMux4Way.tst | DMux.cmp |
 | DMux8Way.tst | DMux.cmp |
 
-### Contract
+### العقد
 
-When loaded into the supplied Hardware Simulator, your chip design (modified .hdl program), tested on the supplied .tst script, should produce the outputs listed in the supplied .cmp file. If that is not the case, the simulator will let you know. This contract must be satisfied for each chip listed above, except for the Nand chip, which is considered primitive, and thus there is no need to implement it.
+عند تحميل تصميم شريحتك (برنامج .hdl معدَّل) في محاكي العتاد (Hardware Simulator) المُرفق، واختباره باستخدام سكربت .tst المُرفق، يجب أن يُنتج المخرجات المدرَجة في ملف .cmp المُرفق. إذا لم يكن الأمر كذلك، فسأُبلغك المحاكي بذلك. يجب استيفاء هذا الشرط لكل شريحة مذكورة أعلاه، باستثناء شريحة Nand التي تُعتبر أولية، وبالتالي لا حاجة إلى تنفيذها.
 
-### Resources
+### الموارد
 
-See [Chapter 1](https://www.nand2tetris.org/_files/ugd/44046b_f2c9e41f0b204a34ab78be0ae4953128.pdf)(from the book's 1st edition) the [HDL Guide](https://drive.google.com/file/d/1dPj4XNby9iuAs-47U9k3xtYy9hJ-ET0T/view?usp=sharing) (except for A2.4), and the [Hack Chip Set](https://drive.google.com/file/d/1IsDnH0t7q_Im491LQ7_5_ajV0CokRbwR/view?usp=sharing).
+انظر [الفصل 1](https://www.nand2tetris.org/_files/ugd/44046b_f2c9e41f0b204a34ab78be0ae4953128.pdf) (من الإصدار الأول للكتاب)، و[دليل HDL](https://drive.google.com/file/d/1dPj4XNby9iuAs-47U9k3xtYy9hJ-ET0T/view?usp=sharing) (باستثناء A2.4)، و[مجموعة شرائح Hack](https://drive.google.com/file/d/1IsDnH0t7q_Im491LQ7_5_ajV0CokRbwR/view?usp=sharing).
 
-For each chip, we supply a skeletal .hdl file with a place holder for a missing implementation part. In addition, for each chip we supply a .tst script that instructs the hardware simulator how to test it, and a .cmp ("compare file") containing the correct output that this test should generate. Your job is to complete and test the supplied skeletal .hdl files.
+نوفّر لكل شريحة ملف .hdl هيكلي فيه موضع مخصّص لجزء التنفيذ المفقود. وبالإضافة إلى ذلك، نوفّر لكل شريحة سكربت .tst يوجّه محاكي العتاد إلى كيفية اختبارها، وملف .cmp (ملف مقارنة) يحتوي على المخرجات الصحيحة التي يجب أن يُنتجها هذا الاختبار. مهمتك هي إكمال ملفات .hdl الهيكلية المُرفقة واختبارها.
 
-If you've downloaded the Nand2Tetris Software Suite (from the Software section of this website), you will find the supplied hardware simulator and all the necessary project files in the nand2tetris/tools folder and in the nand2tetris/projects/01 folder, respectively, on your PC. To get acquainted with the hardware simulator, see the Hardware Simulator Tutorial ([PPT](https://www.nand2tetris.org/_files/ugd/56440f_115a10b28c1e49e786390a9a0b6ddcee.ppsx?dn=Hardware%20Simulator%20Tutorial.ppsx), [PDF](https://www.nand2tetris.org/_files/ugd/44046b_02055f8bb5ac47648c0ab642f01c1919.pdf))
+إذا كنت قد نزّلت حزمة برامج Nand2Tetris Software Suite (من قسم البرامج في هذا الموقع)، فستجد محاكي العتاد المُرفق وجميع ملفات المشروع الضرورية في مجلد nand2tetris/tools وفي مجلد nand2tetris/projects/01 على الترتيب، على حاسوبك. للتعرف على محاكي العتاد، انظر درس محاكي العتاد ([PPT](https://www.nand2tetris.org/_files/ugd/56440f_115a10b28c1e49e786390a9a0b6ddcee.ppsx?dn=Hardware%20Simulator%20Tutorial.ppsx)، [PDF](https://www.nand2tetris.org/_files/ugd/44046b_02055f8bb5ac47648c0ab642f01c1919.pdf)).
 
-### Tips
+### نصائح
 
-Prerequisite: If you haven't done it yet, download the Nand2Tetris Software Suite from the Software section of this website to your computer. Read Chapter 1 and Appendix 2 (not including A2.4), and go through parts I-II-III of the Hardware Simulator, before starting to work on this project.
+المتطلّب المسبق: إذا لم تكن قد فعلت ذلك بعد، فنزّل حزمة برامج Nand2Tetris Software Suite من قسم البرامج في هذا الموقع إلى حاسوبك. اقرأ الفصل 1 والملحق 2 (دون تضمين القسم A2.4)، واختبر الأجزاء I-II-III من درس محاكي العتاد، قبل البدء في العمل على هذا المشروع.
 
-Built-in chips: The Nand gate is considered primitive and thus there is no need to implement it: whenever a Nand chip-part is encountered in your HDL code, the simulator automatically invokes the built-in tools/builtInChips/Nand.hdl implementation. We recommend implementing all the other gates in this project in the order in which they appear in Chapter 1. However, note that the supplied hardware simulator features built-in implementations of all these chips. Therefore, you can use any one of these chips before implementing it: the simulator will automatically invoke their built-in versions.
+الرقائق المدمجة: تُعتبر بوابة Nand أولية، وبالتالي لا حاجة إلى تنفيذها: فكلما صادف المحاكي جزء شريحة Nand في شيفرة HDL لديك، فإنه يستدعي تلقائيًا التنفيذ المدمج tools/builtInChips/Nand.hdl. نوصي بتنفيذ جميع البوابات الأخرى في هذا المشروع بالترتيب الذي تظهر به في الفصل 1. لكن لاحظ أن محاكي العتاد المُرفق يتضمّن تنفيذات مدمجة لكل هذه الرقائق. لذلك يمكنك استخدام أيّ منها قبل تنفيذه: سيستدعي المحاكي تلقائيًا إصداراتها المدمجة.
 
-For example, consider the supplied skeletal Mux.hdl program. Suppose that for one reason or another you did not complete the implementation of Mux, but you still want to use Mux chips as internal parts in other chip designs. You can easily do so, thanks to the following convention. If the simulator fails to find a Mux.hdl file in the current folder, it automatically invokes the built-in Mux implementation, which is part of the supplied simulator's environment. This built-in Mux implementation has the same interface and functionality as those of the Mux chip described in the book. Thus, if you want the simulator to ignore one or more of your chip implementations, rename the corresponding chiPname.hdl file, or remove it from the project folder. When you are ready to develop this chip in HDL, put the file chipName.hdl back in the folder, and proceed to edit it with your HDL code.
+على سبيل المثال، انظر في برنامج Mux.hdl الهيكلي المُرفق. لنفترض أنه لأي سبب لم تُكمل تنفيذ شريحة Mux، لكنك لا تزال ترغب في استخدامها كأجزاء داخلية في تصاميم رقائق أخرى. يمكنك فعل ذلك بسهولة، بفضل العرف التالي. إذا فشل المحاكي في العثور على ملف Mux.hdl في المجلد الحالي، فإنه يستدعي تلقائيًا التنفيذ المدمج لها، وهو جزء من بيئة المحاكي المُرفق. ويتمتّع هذا التنفيذ المدمج بالواجهة والوظيفة نفسها الخاصة برقاقة Mux الموصوفة في الكتاب. وبالتالي، إذا أردت أن يتجاهل المحاكي تنفيذًا أو أكثر من تنفيذات رقائقك، فأعِد تسمية ملف chiPname.hdl المقابل، أو أزِله من مجلد المشروع. وعندما تكون مستعدًا لتطويرها بلغة HDL، أعد ملف chipName.hdl إلى المجلد، وتابع تعديله بشيفرة HDL.
 
-### Tools
+### الأدوات
 
-All the chips mentioned projects 1-5 can be implemented and tested using the supplied hardware simulator. Here is a screen shot of testing a Xor.hdl chip implementation on the Hardware Simulator:
+يمكن تنفيذ جميع الشرائح المذكورة في المشاريع 1-5 واختبارها باستخدام محاكي العتاد المُرفق. وفيما يلي لقطة شاشة لاختبار تنفيذ شريحة Xor.hdl على محاكي العتاد:
 
 ![](/images/nand2tetris-1/project01-44046b_d2d64ef4f50948e7ae0f5d9cd.webp)

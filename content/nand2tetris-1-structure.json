@@ -6,10 +6,11 @@
       "sections": [
         {
           "slug": "index",
-          "title": "Project 1: Boolean Logic",
+          "title": "المشروع 1: المنطق البولياني",
           "order": 1
         }
-      ]
+      ],
+      "titleAr": "المشروع 1: المنطق البولياني"
     },
     {
       "key": "project02",
@@ -17,10 +18,11 @@
       "sections": [
         {
           "slug": "index",
-          "title": "Project 2: Boolean Arithmetic",
+          "title": "المشروع 2: الحساب البولياني",
           "order": 2
         }
-      ]
+      ],
+      "titleAr": "المشروع 2: الحساب البولياني"
     },
     {
       "key": "project03",
@@ -28,10 +30,11 @@
       "sections": [
         {
           "slug": "index",
-          "title": "Project 3: Memory",
+          "title": "المشروع 3: الذاكرة",
           "order": 3
         }
-      ]
+      ],
+      "titleAr": "المشروع 3: الذاكرة"
     },
     {
       "key": "project04",
@@ -39,10 +42,11 @@
       "sections": [
         {
           "slug": "index",
-          "title": "Project 4: Machine Language",
+          "title": "المشروع 4: لغة الآلة",
           "order": 4
         }
-      ]
+      ],
+      "titleAr": "المشروع 4: لغة الآلة"
     },
     {
       "key": "project05",
@@ -50,10 +54,11 @@
       "sections": [
         {
           "slug": "index",
-          "title": "Project 5: Computer Architecture",
+          "title": "المشروع 5: معمارية الحاسوب",
           "order": 5
         }
-      ]
+      ],
+      "titleAr": "المشروع 5: معمارية الحاسوب"
     },
     {
       "key": "project06",
@@ -61,10 +66,11 @@
       "sections": [
         {
           "slug": "index",
-          "title": "Project 6: Assembler",
+          "title": "المشروع 6: المُجمِّع",
           "order": 6
         }
-      ]
+      ],
+      "titleAr": "المشروع 6: المُجمِّع"
     }
   ]
 }

@@ -1,59 +1,59 @@
 ---
-title: "Project 4: Machine Language"
-lang: en
+title: "المشروع 4: لغة الآلة"
+lang: ar
 ---
 
-## Project 4: Machine Language Programming
+## المشروع 4: البرمجة بلغة الآلة
 
-### Background
+### خلفية
 
-Every hardware platform is designed to execute commands in a certain machine language, expressed using agreed-upon binary codes. Writing programs directly in binary code is a possible, yet unnecessary. Instead, we can write such programs using a low-level symbolic language, called assembly, and have them translated into binary code by a program called assembler. In this project you will write some low-level assembly programs, and will be forever thankful for high-level languages like Java and Python. (Actually, assembly programming can be highly rewarding, allowing direct and complete control of the underlying machine.)
+كل منصة عتاد (hardware platform) مصممة لتنفيذ الأوامر بلغة آلة معيّنة، معبَّرًا عنها باستخدام رموز ثنائية متفق عليها. وكتابة البرامج مباشرةً بالرمز الثنائي ممكنة، لكنها غير ضرورية. وبدلًا من ذلك، يمكننا كتابة مثل هذه البرامج باستخدام لغة رمزية منخفضة المستوى تُسمى لغة التجميع (assembly)، ونترك ترجمتها إلى رمز ثنائي لبرنامج يُسمى المُجمِّع (assembler). في هذا المشروع سوف تكتب بعض برامج لغة التجميع منخفضة المستوى، وستظل ممتنًا للأبد للغات عالية المستوى مثل Java و Python. (في الحقيقة، يمكن أن تكون البرمجة بلغة التجميع مجزية للغاية، إذ تتيح تحكّمًا مباشرًا وكاملًا في الآلة الأساسية.)
 
-### Objective
+### الهدف
 
-To get a taste of low-level programming in machine language, and to get acquainted with the Hack computer platform. In the process of working on this project, you will become familiar with the assembly process - translating from symbolic language to machine-language - and you will appreciate visually how native binary code executes on the target hardware platform. These lessons will be learned in the context of writing and testing two low-level programs, as follows.
+أن تحصل على لمحة عن البرمجة منخفضة المستوى بلغة الآلة، وأن تتعرف على منصة حاسوب Hack. وخلال العمل على هذا المشروع، سوف تألف عملية التجميع، أي الترجمة من لغة رمزية إلى لغة الآلة، وسوف تُقدّر بصريًا كيف يُنفَّذ الرمز الثنائي الأصلي على منصة العتاد الهدف. وسوف تُتعلَّم هذه الدروس في سياق كتابة واختبار برنامجين منخفضي المستوى، على النحو التالي.
 
-### Programs
+### البرامج
 
-| Program | Description | Test Scripts |
+| البرنامج | الوصف | سكربتات الاختبار |
 |---|---|---|
-| Mult.asm | Multiplication: in the Hack computer, the top 16 RAM words (RAM[0]...RAM[15]) are also referred to as R0...R15. With this terminology in mind, this program computes the value R0*R1 and stores the result in R2. The program assumes that R0>=0, R1>=0, and R0*R1<32768. Your program need not test these conditions, but rather assume that they hold. | Use a plain text editor to write your Mult.asm program using the Hack assembly language. Use the supplied Hack Assembler to translate your Mult.asm program, producing a Mult.hack file containing binary Hack instructions. Next, load the supplied Mult.tst script into the CPU Emulator. This script loads the Mult.hack program, and executes it. Run the script. If you get any errors, debug and edit your Mult.asm program. Then assemble the program, re-run the Mult.txt script, etc. |
-| Fill.asm | I/O handling: this program illustrates low-level handling of the screen and keyboard devices, as follows. The program runs an infinite loop that listens to the keyboard input. When a key is pressed (any key), the program blackens the screen, i.e. writes "black" in every pixel; the screen should remain fully black as long as the key is pressed. When no key is pressed, the program clears the screen, i.e. writes "white" in every pixel; the screen should remain fully clear as long as no key is pressed. Implementation note: your program may blacken and clear the screen's pixels in any spatial/visual order, as long as pressing a key continuously for long enough results in a fully blackened screen, and not pressing any key for long enough results in a fully cleared screen. | Write, test, and debug your Fill.asm program by following the same guidelines given above for the Mult program. The supplied Fill.tst script, which comes with no compare file, is designed to do two things: (i) load the Fill.hack program, and (ii) remind you to select 'no animation', and then test the program interactively by pressing and releasing some keyboard keys. The supplied FillAutomatic.tst script, along with the supplied compare file FillAutomatic.cmp, are designed to test the Fill program automatically, as described by the test script documentation. For completeness of testing, test the Fill program both interactively and automatically. |
+| Mult.asm | الضرب: في حاسوب Hack، تُعرف أيضًا كلمات RAM الـ16 العليا (RAM[0]...RAM[15]) باسم R0...R15. ومع وضع هذه المصطلحات في الاعتبار، يحسب هذا البرنامج القيمة R0*R1 ويخزّن النتيجة في R2. ويفترض البرنامج أن R0>=0، وأن R1>=0، وأن R0*R1<32768. ولا يلزم أن يختبر برنامجك هذه الشروط، بل يكفي أن يفترض أنها متحققة. | استخدم محرّر نصوص عادي لكتابة برنامج Mult.asm بلغة التجميع الخاصة بـ Hack. واستخدم المُجمِّع (Hack Assembler) المُرفق لترجمة برنامج Mult.asm، فيُنتج ملف Mult.hack يحتوي على تعليمات Hack ثنائية. ثم حمّل سكربت Mult.tst المُرفق في مُحاكي الـ CPU. وهذا السكربت يحمّل برنامج Mult.hack ثم يُنفّذه. شغّل السكربت. وإذا ظهرت أي أخطاء، فصحّح برنامج Mult.asm وعدّله. ثم جمّع البرنامج، وأعد تشغيل سكربت Mult.txt، وهكذا. |
+| Fill.asm | معالجة الإدخال/الإخراج: يوضّح هذا البرنامج المعالجة منخفضة المستوى لجهازي الشاشة ولوحة المفاتيح، على النحو التالي. يُشغّل البرنامج حلقة لا نهائية تستمع إلى مدخلات لوحة المفاتيح. وعند الضغط على أي مفتاح (أي مفتاح)، يسوّد البرنامج الشاشة، أي يكتب "أسود" في كل بكسل؛ ويجب أن تظل الشاشة سوداء تمامًا ما دام المفتاح مضغوطًا. وعند عدم الضغط على أي مفتاح، يمسح البرنامج الشاشة، أي يكتب "أبيض" في كل بكسل؛ ويجب أن تظل الشاشة بيضاء تمامًا ما دام لا يوجد مفتاح مضغوط. ملاحظة تنفيذية: يجوز لبرنامجك أن يسوّد ويمسح بكسلات الشاشة بأي ترتيب مكاني/بصري، طالما أن الضغط على مفتاح باستمرار لمدة طويلة كافية يُنتج شاشة سوداء تمامًا، وعدم الضغط على أي مفتاح لمدة طويلة كافية يُنتج شاشة ممسوحة تمامًا. | اكتب برنامج Fill.asm واختبره وصحّحه باتباع الإرشادات نفسها الواردة أعلاه لبرنامج Mult. وسكربت Fill.tst المُرفق، الذي لا يأتي معه ملف مقارنة، مُصمَّم للقيام بأمرين: (i) تحميل برنامج Fill.hack، و(ii) تذكيرك باختيار "no animation"، ثم اختبار البرنامج تفاعليًا عبر الضغط على بعض مفاتيح لوحة المفاتيح وإفلاتها. وسكربت FillAutomatic.tst المُرفق، إلى جانب ملف المقارنة المُرفق FillAutomatic.cmp، مُصمَّمان لاختبار برنامج Fill تلقائيًا، كما هو موصوف في توثيق سكربت الاختبار. ولإتمام الاختبار، اختبر برنامج Fill تفاعليًا وتلقائيًا. |
 
-### Contract
+### العقد
 
-Write and test the two programs described above. When executed on the supplied CPU emulator, your programs should generate the results mandated by the specified tests.
+اكتب واختبر البرنامجين الموصوفين أعلاه. وعند تنفيذهما على مُحاكي CPU المُرفق، يجب أن يُنتج برنامجاك النتائج التي تفرضها الاختبارات المحددة.
 
-### Resources
+### الموارد
 
-The Hack assembly language is documented and discussed in [Chapter 4](https://www.nand2tetris.org/_files/ugd/44046b_d70026d8c1424487a451eaba3e372132.pdf).
+تُوثَّق لغة التجميع الخاصة بـ Hack وتُناقش في [الفصل 4](https://www.nand2tetris.org/_files/ugd/44046b_d70026d8c1424487a451eaba3e372132.pdf).
 
-The two relevant tools for this project are the supplied CPU emulator, which is required, and the supplied assembler, which is optional. Explanation: When an .asm file is loaded into the CPU emulator, the program translates the symbolic instructions into binary Hack instructions on the fly, obviating the need for a separate assembly process.
+والأداتان الصِّلتان بهذا المشروع هما مُحاكي CPU المُرفق، وهو إلزامي، والمُجمِّع المُرفق، وهو اختياري. التوضيح: عند تحميل ملف .asm في مُحاكي CPU، يترجم البرنامج التعليمات الرمزية إلى تعليمات Hack ثنائية أثناء التنفيذ، مما يُلغي الحاجة إلى عملية تجميع منفصلة.
 
-See the CPU emulator tutorial ([PPT](https://www.nand2tetris.org/_files/ugd/56440f_094edee7b355414dabb08ce75fe14f49.ppsx?dn=CPU%20Emulator%20Tutorial.ppsx), [PDF](https://www.nand2tetris.org/_files/ugd/44046b_24b3a15aa628404fbf6dacd86d7da3af.pdf)) and, optionally, the assembler tutorial ([PPT](https://www.nand2tetris.org/_files/ugd/56440f_5b6d554df74c49a18509563d7f4a4dcf.ppsx?dn=Assembler%20Tutorial.ppsx), [PDF](https://www.nand2tetris.org/_files/ugd/44046b_c8d720c7154f4c49a7f4cc80d38984d4.pdf)).
+انظر درس مُحاكي CPU التفاعلي ([PPT](https://www.nand2tetris.org/_files/ugd/56440f_094edee7b355414dabb08ce75fe14f49.ppsx?dn=CPU%20Emulator%20Tutorial.ppsx)، [PDF](https://www.nand2tetris.org/_files/ugd/44046b_24b3a15aa628404fbf6dacd86d7da3af.pdf)) و، اختياريًا، درس المُجمِّع التفاعلي ([PPT](https://www.nand2tetris.org/_files/ugd/56440f_5b6d554df74c49a18509563d7f4a4dcf.ppsx?dn=Assembler%20Tutorial.ppsx)، [PDF](https://www.nand2tetris.org/_files/ugd/44046b_c8d720c7154f4c49a7f4cc80d38984d4.pdf)).
 
-The project 4 files are available in your nand2tetris/projects/04 folder.
+وملفات المشروع 4 متوفرة في مجلد nand2tetris/projects/04 لديك.
 
-### Proposed Implementation
+### التنفيذ المقترح
 
-### - Use a plain text editor to write/edit the first assembly program. Start by loading and editing the supplied skeletal projects/04/mult/Mult.asm file.
+### - استخدم محرّر نصوص عادي لكتابة/تعديل برنامج التجميع الأول. ابدأ بتحميل ملف Mult.asm الهيكلي المُرفق وتعديله في projects/04/mult.
 
-- If you want, you can use the supplied assembler for translating your Mult.asm program into Hack binary code. This activity is optional, since the CPU Emulator translates loaded .asm files on the fly.
+- إذا أردت، يمكنك استخدام المُجمِّع المُرفق لترجمة برنامج Mult.asm إلى رمز Hack ثنائي. وهذا النشاط اختياري، إذ إن مُحاكي CPU يترجم ملفات .asm المحمّلة أثناء التنفيذ.
 
-- Use the supplied CPU emulator to load, and then execute, your Mult program. This can be done either interactively, or using the supplied Mult.tst script. If there are any errors, goto step 1.
+- استخدم مُحاكي CPU المُرفق لتحميل برنامج Mult ثم تنفيذه. ويمكن فعل ذلك إما تفاعليًا، أو باستخدام سكربت Mult.tst المُرفق. وإذا كانت هناك أي أخطاء، فارجع إلى الخطوة 1.
 
-- Repeat stages 1-3 for the second program (Fill.asm), working in the projects/04/fill folder.
+- كرّر الخطوات 1-3 للبرنامج الثاني (Fill.asm)، مع العمل في مجلد projects/04/fill.
 
-Debugging tip: The Hack language is case-sensitive. A common error occurs when one writes, say, "@foo" and "@Foo" in different parts of one's program, thinking that both labels are treated as the same symbol. In fact, the assembler treats them as two different symbols. This bug is difficult to detect, so you should be aware of it.
+نصيحة للتصحيح: لغة Hack حسّاسة لحالة الأحرف. ويحدث خطأ شائع عندما يكتب الشخص، مثلًا، "@foo" و"@Foo" في أجزاء مختلفة من برنامجه، معتقدًا أن كلا التسميتين تُعاملان باعتبارهما الرمز نفسه. في الواقع، يعامل المُجمِّع الاثنين باعتبارهما رمزين مختلفين. وهذا الخطأ يصعب اكتشافه، لذا ينبغي أن تكون على دراية به.
 
-### Tools
+### الأدوات
 
-The supplied Hack Assembler can be used in either command mode (from the command shell), or interactively. The latter mode of operation allows observing the translation process in a visual and step-wise fashion, as shown below:
+يمكن استخدام المُجمِّع (Hack Assembler) المُرفق إما في وضع الأوامر (من صدفة الأوامر)، أو تفاعليًا. ويتيح وضع التشغيل الأخير ملاحظة عملية الترجمة بصورة مرئية وخطوة بخطوة، كما هو موضح أدناه:
 
 ![](/images/nand2tetris-1/project04-44046b_0cdbe8a5eb16433e8b30d0184.webp)
 
-The machine language programs produced by the assembler can be tested in two different ways. First, one can run the resulting .hack program in the supplied CPU emulator. Alternatively, one can run the same program directly on the Hack hardware, using the supplied hardware simulator used in projects 1-3. To do so, one can load the Computer.hdl chip (built in project 5) into the hardware simulator, and then proceed to load the binary code (from the .hack file) into the computer's Instruction Memory (also called ROM). Since we will complete building the hardware platform and the Computer.hdl chip only in the next project, at this stage we recommend testing machine-level programs using the supplied CPU emulator.
+يمكن اختبار برامج لغة الآلة التي يُنتجها المُجمِّع بطريقتين مختلفتين. أولًا، يمكن تشغيل برنامج .hack الناتج في مُحاكي CPU المُرفق. أو بدلًا من ذلك، يمكن تشغيل البرنامج نفسه مباشرةً على عتاد Hack، باستخدام محاكي العتاد المُرفق المستخدم في المشاريع 1-3. ولعمل ذلك، يمكن تحميل شريحة Computer.hdl (المبنية في المشروع 5) في محاكي العتاد، ثم المتابعة لتحميل الرمز الثنائي (من ملف .hack) في ذاكرة التعليمات (Instruction Memory) للحاسوب، والتي تُسمى أيضًا ROM. وبما أننا سوف نكمل بناء منصة العتاد وشريحة Computer.hdl في المشروع التالي فقط، فإننا نوصي في هذه المرحلة باختبار البرامج على مستوى الآلة باستخدام مُحاكي CPU المُرفق.
 
-The supplied CPU Emulator includes a ROM (also called Instruction Memory) representation, into which the binary code is loaded, and a RAM representation, which holds data. For ease of use, the emulator enables the user to view the loaded ROM-resident code in either binary mode, or in symbolic / assembly mode. In fact, the CPU emulator even allows loading symbolic code written in assembly directly into the ROM, in which case the emulator translates the loaded code into binary code on the fly. This utility seems to render the supplied assembler unnecessary, but this is not the case. First, the supplied assembler shows the translation process visually, for instructive purposes. Second, the assembler generates a persistent binary file. This file can be executed either on the CPU emulator, as we illustrate below, or directly on the hardware platform, as we'll do in the next project.
+يتضمّن مُحاكي CPU المُرفق (CPU Emulator) تمثيلًا لـ ROM، التي تُسمى أيضًا ذاكرة التعليمات (Instruction Memory)، والذي يُحمَّل فيه الرمز الثنائي، وتمثيلًا لـ RAM التي تحتفظ بالبيانات. ولسهولة الاستخدام، يتيح المُحاكي للمستخدم عرض الرمز المُحمَّل المقيم في ROM إما في وضع ثنائي، أو في وضع رمزي / تجميعي. بل إن مُحاكي CPU يتيح حتى تحميل رمز رمزي مكتوب بلغة التجميع مباشرةً في ROM، وفي هذه الحالة يترجم المُحاكي الرمز المُحمَّل إلى رمز ثنائي أثناء التنفيذ. وقد تبدو هذه الأداة وكأنها تُلغي الحاجة إلى المُجمِّع المُرفق، لكن هذا ليس صحيحًا. أولًا، يُظهر المُجمِّع المُرفق عملية الترجمة بصورة مرئية، لأغراض تعليمية. وثانيًا، يُنتج المُجمِّع ملفًا ثنائيًا دائمًا. ويمكن تنفيذ هذا الملف إما على مُحاكي CPU، كما نوضح أدناه، أو مباشرةً على منصة العتاد، كما سوف نفعل في المشروع التالي.
 
 ![](/images/nand2tetris-1/project04-44046b_078b6c509a764a86a16505f0f.webp)
