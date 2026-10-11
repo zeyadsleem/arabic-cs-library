@@ -1,0 +1,169 @@
+{
+  "chapters": [
+    {
+      "key": "foreword",
+      "title": "Foreword and acknowledgments",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Foreword and acknowledgments",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "unix",
+      "title": "Operating system interfaces",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Operating system interfaces",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "first",
+      "title": "Operating system organization",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Operating system organization",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "mem",
+      "title": "Page tables",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Page tables",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "trap",
+      "title": "Traps and system calls",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Traps and system calls",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "pgfault",
+      "title": "Page faults",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Page faults",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "interrupt",
+      "title": "Interrupts and device drivers",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Interrupts and device drivers",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "lock",
+      "title": "Locking",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Locking",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "sched",
+      "title": "Scheduling",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Scheduling",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "sleep",
+      "title": "Sleep and Wakeup",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Sleep and Wakeup",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "fs",
+      "title": "File system",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "File system",
+          "order": 10
+        }
+      ]
+    },
+    {
+      "key": "log",
+      "title": "Logging",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Logging",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "key": "lock2",
+      "title": "Concurrency revisited",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Concurrency revisited",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "sum",
+      "title": "Summary",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Summary",
+          "order": 13
+        }
+      ]
+    },
+    {
+      "key": "references",
+      "title": "References",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "References",
+          "order": 14
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; Operating system organization – xv6: a simple, Unix-like teaching operating system</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./mem.html" rel="next">
+<link href="./unix.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-144df1dae3228b148528002f82521db4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./first.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Operating system organization</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">xv6: a simple, Unix-like teaching operating system</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/mit-pdos/xv6-riscv" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Foreword and acknowledgments</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Operating system interfaces</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./first.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Operating system organization</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Page tables</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./trap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Traps and system calls</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pgfault.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Page faults</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./interrupt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Interrupts and device drivers</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lock.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Locking</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sched.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Scheduling</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sleep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Sleep and Wakeup</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">File system</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./log.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Logging</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lock2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Concurrency revisited</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sum.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="CH:FIRST" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Operating system organization</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>A key requirement for an operating system is to support several activities at once. For example, one might use the <code>fork</code> and <code>exec</code> system calls from Chapter&nbsp;<a href="unix.html#CH:UNIX">1</a> to start both a compiler and a text editor as processes. The operating system must <em>time-share</em> resources such as CPUs and memory among these processes. The operating system must also arrange for <em>isolation</em> between the processes. If one process has a bug and malfunctions, it shouldn’t affect unrelated processes. Complete isolation, however, is too strong, since it should be possible for processes to intentionally interact; pipelines are an example. Thus an operating system must fulfill three requirements: multiplexing, isolation, and interaction.</p>
+<p>This chapter provides an overview of how operating systems are organized to achieve these three requirements. It turns out there are many ways to do so, but this text focuses on mainstream designs centered around a <em>monolithic kernel</em>, which is used by many Unix operating systems. This chapter also provides an overview of an xv6 process, the unit of isolation in xv6.</p>
+<p>Xv6 runs on a <em>multi-core</em><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> RISC-V microprocessor, and much of its low-level functionality (for example, its process implementation) is specific to RISC-V. RISC-V is a 64-bit CPU, and xv6 is written in “LP64” C, which means long (L) and pointers (P) in the C programming language are 64 bits, but an <code>int</code> is 32 bits. This book assumes the reader has done a bit of machine-level programming on some architecture, and will introduce RISC-V-specific ideas as they come up. The user-level ISA&nbsp;<span class="citation" data-cites="riscv:user">(<a href="references.html#ref-riscv:user" role="doc-biblioref">Waterman and Asanovic 2024</a>)</span> and privileged architecture&nbsp;<span class="citation" data-cites="riscv:priv">(<a href="references.html#ref-riscv:priv" role="doc-biblioref">Waterman et al. 2024</a>)</span> documents are the complete specifications. You may also refer to “The RISC-V Reader: An Open Architecture Atlas”&nbsp;<span class="citation" data-cites="riscv">(<a href="references.html#ref-riscv" role="doc-biblioref">Patterson and Waterman 2017</a>)</span>.</p>
+<p>The CPU in a complete computer is surrounded by support hardware, much of it in the form of I/O interfaces. Xv6 is written for the support hardware simulated by qemu’s “-machine virt” option. This includes RAM, a ROM containing boot code, a serial connection to the user’s keyboard/screen, and a disk for storage.</p>
+<section id="abstracting-physical-resources" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="abstracting-physical-resources"><span class="header-section-number">2.1</span> Abstracting physical resources</h2>
+<p>The first question one might ask when encountering an operating system is why have it at all? That is, one could implement the system calls in Figure&nbsp;<a href="#fig:api">1.2</a> as a library, with which applications link. In this plan, each application could even have its own library tailored to its needs. Applications could directly interact with hardware resources and use those resources in the best way for the application (e.g., to achieve high or predictable performance). Some operating systems for embedded devices or real-time systems are organized in this way.</p>
+<p>The downside of this library approach is that, if there is more than one application running, the applications must be well-behaved. For example, each application must periodically give up the CPU so that other applications can run. Such a <em>cooperative</em> time-sharing scheme may be OK if all applications trust each other and have no bugs. It’s more typical for applications to not trust each other, and to have bugs, so one often wants stronger isolation than a cooperative scheme provides.</p>
+<p>To achieve strong isolation it’s helpful to forbid applications from directly accessing sensitive hardware resources, and instead to abstract the resources into services. For example, Unix applications interact with storage only through the file system’s <code>open</code>, <code>read</code>, <code>write</code>, and <code>close</code> system calls, instead of reading and writing the disk directly. This provides the application with the convenience of pathnames, and it allows the operating system (which provides the interface) to manage the disk. Even if isolation is not a concern, programs that interact intentionally (or just wish to keep out of each other’s way) are likely to find a file system a more convenient abstraction than direct use of the disk.</p>
+<p>Similarly, Unix transparently switches hardware CPUs among processes, saving and restoring register state as necessary, so that applications don’t have to be aware of time-sharing. This transparency allows the operating system to share CPUs even if some applications are in infinite loops.</p>
+<p>As another example, Unix processes use <code>exec</code> to build up their memory image, instead of directly interacting with physical memory. This allows the operating system to decide where to place a process in memory; if memory is tight, the operating system might even store some of a process’s data on disk. <code>exec</code> also provides users with the convenience of a file system to store executable program images.</p>
+<p>Many forms of interaction among Unix processes occur via file descriptors. Not only do file descriptors abstract away many details (e.g., where data in a pipe or file is stored), they are also defined in a way that simplifies interaction. For example, if one application in a pipeline exits or fails, the kernel automatically generates an end-of-file signal for the next process in the pipeline.</p>
+<p>The system-call interface in Figure&nbsp;<a href="#fig:api">1.2</a> is carefully designed to provide both programmer convenience and the possibility of strong isolation. The Unix interface is not the only way to abstract resources, but it has proved to be a good one.</p>
+</section>
+<section id="user-mode-supervisor-mode-and-system-calls" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="user-mode-supervisor-mode-and-system-calls"><span class="header-section-number">2.2</span> User mode, supervisor mode, and system calls</h2>
+<p>Strong isolation requires a hard boundary between applications and the operating system. Applications shouldn’t be allowed to disturb the operation of the operating system or other programs, even if the application has a bug or is malicious. To achieve strong isolation, the operating system must arrange that applications cannot modify (or even read) the operating system’s data structures and instructions and that applications cannot access other processes’ memory.</p>
+<p>CPUs provide hardware support for strong isolation. For example, RISC-V has three privilege levels which constrain what code can do: <em>machine mode</em>, <em>supervisor mode</em>, and <em>user mode</em>. Instructions executing in machine mode have full privilege; a CPU starts in machine mode. Machine mode is mostly intended for setting up the computer during boot. Xv6 executes briefly in machine mode and then changes to supervisor mode.</p>
+<p>In supervisor mode the CPU is allowed to execute <em>privileged instructions</em>: for example, enabling and disabling interrupts, reading and writing the register that holds the address of the page table, etc. If an application in user mode attempts to execute a privileged instruction, then the CPU doesn’t execute the instruction, but “traps” to special code in supervisor mode that can terminate the application. Figure&nbsp;<a href="#fig:os">1.1</a> in Chapter&nbsp;<a href="unix.html#CH:UNIX">1</a> illustrates this organization. An application can execute only user-mode instructions (e.g., adding numbers, etc.) and is said to be running in <em>user space</em>, while the software in supervisor mode can also execute privileged instructions and is said to be running in <em>kernel space</em>. The software running in kernel space (or in supervisor mode) is called the <em>kernel</em>.</p>
+<p>Applications interact with the kernel via system calls such as <code>read</code>. Applications are not allowed to directly call kernel functions or access the kernel’s memory. RISC-V provides the <code>ecall</code> instruction for system calls; it switches the CPU from user to supervisor mode and jumps to a kernel-specified entry point. Once the CPU has switched to supervisor mode, the kernel can then validate the arguments of the system call (e.g., check if the address passed to the system call is part of the application’s memory), decide whether the application is allowed to perform the requested operation (e.g., check if the application is allowed to write the specified file), and then deny it or execute it. It is important that the kernel control the entry point for transitions to supervisor mode; if the application could decide the kernel entry point, a malicious application could, for example, enter the kernel at a point where the validation of arguments is skipped.</p>
+</section>
+<section id="kernel-organization" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="kernel-organization"><span class="header-section-number">2.3</span> Kernel organization</h2>
+<p>A key design question is what part of the operating system should run in supervisor mode. One possibility is that the entire operating system resides in the kernel, so that the implementations of all system calls run in supervisor mode. This organization is called a <em>monolithic kernel</em>.</p>
+<p>In a monolithic organization the entire operating system consists of a single program running in supervisor mode. One reason this organization is convenient is that the OS designer doesn’t have to divide code into parts that do and do not require supervisor privileges. Furthermore, it is easy for different parts of the operating system to cooperate, since they are parts of a single program. For example, a monolithic kernel might share a disk block cache with the file system and the virtual memory system.</p>
+<p>A downside is that monolithic kernels tend to grow large and complex, so that no one developer understands all of the interactions between different parts of the code; this is a recipe for bugs. A bug in the kernel is particularly troublesome because it may cause the entire computer to crash, or cause many applications to malfunction, or make the entire computer vulnerable to security attacks.</p>
+<p>A <em>microkernel</em> aims to reduce the incidence of bugs in the kernel. The idea is to put an absolute minimum of functionality in the kernel itself, so that little code executes in supervisor mode, and so that the kernel is easy to understand and analyze for correctness. The bulk of the operating system runs as user-level server processes. For example, the file system code would execute as a server process, in user mode rather than supervisor mode.</p>
+<figure id="fig:mkernel" data-latex-placement="t" class="figure">
+<img src="fig/mkernel.svg" class="figure-img">
+<figcaption>
+Figure 2.1: A microkernel with a file-system server
+</figcaption>
+</figure>
+<p>Figure&nbsp;<a href="#fig:mkernel">2.1</a> illustrates this microkernel design. In the figure, the file system runs as a user-level server process. To allow applications to interact with the file server, the kernel provides an inter-process communication mechanism to send messages from one user-mode process to another. For example, if an application like the shell wants to read or write a file, it sends a message to the file server and waits for a response.</p>
+<p>In a microkernel, the kernel interface consists of a few low-level functions for starting applications, sending messages, accessing device hardware, etc. This organization allows the kernel to be relatively simple, as most of the operating system resides in user-level servers.</p>
+<p>In the real world, both monolithic kernels and microkernels are popular. Many Unix kernels are monolithic. For example, Linux has a monolithic kernel, although some OS functions run as user-level servers (e.g., the window system). Linux delivers high performance to OS-intensive applications, partially because the subsystems of the kernel can be tightly integrated.</p>
+<p>Operating systems such as Minix, L4, and QNX are organized as a microkernel with servers, and have seen wide deployment in embedded settings. A variant of L4, seL4, is small enough that it has been verified for memory safety and other security properties&nbsp;<span class="citation" data-cites="sel4">(<a href="references.html#ref-sel4" role="doc-biblioref">Klein et al. 2009</a>)</span>.</p>
+<p>There is much debate among developers of operating systems about which organization is better, but there is no conclusive evidence one way or the other. Furthermore, it depends much on what “better” means: faster performance, smaller code size, reliability of the kernel, reliability of the complete operating system (including user-level services), etc.</p>
+<p>There are also practical considerations that may be more important than the question of which organization. Some operating systems have a microkernel but run some of the user-level services in kernel space for performance reasons. Some operating systems have monolithic kernels because that is how they started and there is little incentive to move to a pure microkernel organization, because new features may be more important than rewriting the existing operating system to fit a microkernel design.</p>
+<p>From this book’s perspective, microkernel and monolithic operating systems share many key ideas. They implement system calls, they use page tables, they handle interrupts, they support processes, they use locks for concurrency control, they implement a file system, etc. This book focuses on these core ideas.</p>
+<p>Xv6 is implemented as a monolithic kernel, like most Unix operating systems. Thus, the xv6 kernel interface corresponds to the operating system interface, and the kernel implements the complete operating system. Since xv6 doesn’t provide many services, its kernel is smaller than some microkernels, but conceptually xv6 is monolithic.</p>
+</section>
+<section id="code-xv6-organization" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="code-xv6-organization"><span class="header-section-number">2.4</span> Code: xv6 organization</h2>
+<figure id="fig:source" data-latex-placement="t" class="figure">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">
+</th>
+<th style="text-align: left;">
+<span><strong>File</strong></span>
+</th>
+<th style="text-align: left;">
+<span><strong>Description</strong></span>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">
+Boot
+</td>
+<td style="text-align: left;">
+entry.S
+</td>
+<td style="text-align: left;">
+Very first boot instructions.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+</td>
+<td style="text-align: left;">
+main.c
+</td>
+<td style="text-align: left;">
+Control initialization of other modules.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+</td>
+<td style="text-align: left;">
+start.c
+</td>
+<td style="text-align: left;">
+Early machine-mode boot code.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+Processes
+</td>
+<td style="text-align: left;">
+exec.c
+</td>
+<td style="text-align: left;">
+exec() system call.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+</td>
+<td style="text-align: left;">
+proc.c
+</td>
+<td style="text-align: left;">
+Processes and scheduling.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+</td>
+<td style="text-align: left;">
+swtch.S
+</td>
+<td style="text-align: left;">
+Thread switching.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+</td>
+<td style="text-align: left;">
+sysproc.c
+</td>
+<td style="text-align: left;">
+Process-related system calls.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+Traps
+</td>
+<td style="text-align: left;">
+kernelvec.S
+</td>
+<td style="text-align: left;">
+Handle traps from kernel code.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+</td>
+<td style="text-align: left;">
+trampoline.S
+</td>
+<td style="text-align: left;">
+Handle traps from user code.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+</td>
+<td style="text-align: left;">
+trap.c
+</td>
+<td style="text-align: left;">
+C code to handle and return from traps and interrupts.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+</td>
+<td style="text-align: left;">
+syscall.c
+</td>
+<td style="text-align: left;">
+Dispatch system calls to handling function.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+Memory
+</td>
+<td style="text-align: left;">
+vm.c
+</td>
+<td style="text-align: left;">
+Manage page tables and address spaces.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+</td>
+<td style="text-align: left;">
+kalloc.c
+</td>
+<td style="text-align: left;">
+Physical page allocator.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+Devices
+</td>
+<td style="text-align: left;">
+console.c
+</td>
+<td style="text-align: left;">
+Connect to the user keyboard and screen.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+</td>
+<td style="text-align: left;">
+plic.c
+</td>
+<td style="text-align: left;">
+RISC-V interrupt controller.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+</td>
+<td style="text-align: left;">
+printk.c
+</td>
+<td style="text-align: left;">
+Formatted output to the console.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+</td>
+<td style="text-align: left;">
+uart.c
+</td>
+<td style="text-align: left;">
+Serial-port console device driver.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+</td>
+<td style="text-align: left;">
+virtio_disk.c
+</td>
+<td style="text-align: left;">
+Disk device driver.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+FS
+</td>
+<td style="text-align: left;">
+bio.c
+</td>
+<td style="text-align: left;">
+Disk block cache for the file system.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+</td>
+<td style="text-align: left;">
+file.c
+</td>
+<td style="text-align: left;">
+File descriptor support.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+</td>
+<td style="text-align: left;">
+fs.c
+</td>
+<td style="text-align: left;">
+File system.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+</td>
+<td style="text-align: left;">
+log.c
+</td>
+<td style="text-align: left;">
+File system logging and crash recovery.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+</td>
+<td style="text-align: left;">
+sysfile.c
+</td>
+<td style="text-align: left;">
+File-related system calls.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+</td>
+<td style="text-align: left;">
+pipe.c
+</td>
+<td style="text-align: left;">
+Pipes.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+Misc
+</td>
+<td style="text-align: left;">
+sleeplock.c
+</td>
+<td style="text-align: left;">
+Locks that yield the CPU.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+</td>
+<td style="text-align: left;">
+spinlock.c
+</td>
+<td style="text-align: left;">
+Locks that don’t yield the CPU.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+</td>
+<td style="text-align: left;">
+string.c
+</td>
+<td style="text-align: left;">
+C string and byte-array library.
+</td>
+</tr>
+</tbody>
+</table>
+<figcaption>
+Figure 2.2: Xv6 kernel source files.
+</figcaption>
+</figure>
+<p>The xv6 kernel source is in the <code>kernel/</code> sub-directory. Figure&nbsp;<a href="#fig:source">2.2</a> lists the files, divided into the major areas of kernel responsibility: starting the system (booting), creating and controlling processes, handling traps (interrupts and system calls), allocating memory and configuring virtual addresses, controlling devices, and managing the file-system.</p>
+</section>
+<section id="process-overview" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="process-overview"><span class="header-section-number">2.5</span> Process overview</h2>
+<p>The unit of isolation in xv6 (as in other Unix operating systems) is a <em>process</em>. The process abstraction prevents one process from wrecking or spying on another process’s memory, CPU, file descriptors, etc. It also prevents a process from wrecking the kernel itself, so that a process can’t subvert the kernel’s isolation mechanisms. The kernel must implement the process abstraction with care because a buggy or malicious application may trick the kernel or hardware into doing something bad (e.g., circumventing isolation). The mechanisms used by the kernel to implement processes include the user/supervisor mode flag, address spaces, and time-slicing of threads.</p>
+<p>To help enforce isolation, the process abstraction provides the illusion to a program that it has its own private machine. A process provides a program with what appears to be a private memory system, or <em>address space</em>, which other processes cannot read or write. A process also provides the program with what appears to be its own CPU to execute the program’s instructions.</p>
+<p>Xv6 uses page tables (which are implemented by hardware) to give each process its own address space. The RISC-V page table translates (or “maps”) a <em>virtual address</em> (the address that an RISC-V instruction manipulates) to a <em>physical address</em> (an address that the CPU sends to main memory).</p>
+<figure id="fig:as" data-latex-placement="t" class="figure">
+<img src="fig/as.svg" class="figure-img">
+<figcaption>
+Figure 2.3: Layout of a process’s virtual address space
+</figcaption>
+</figure>
+<p>Xv6 maintains a separate page table for each process that defines that process’s address space. As illustrated in Figure&nbsp;<a href="#fig:as">2.3</a>, an address space includes the process’s <em>user memory</em> starting at virtual address zero. Instructions come first, followed by global variables, then the stack, and finally a “heap” area (for malloc) that the process can expand as needed. There are a number of factors that limit the maximum size of a process’s address space: pointers on the RISC-V are 64 bits wide; the hardware uses only the low 39 bits when looking up virtual addresses in page tables; and xv6 uses only 38 of those 39 bits. Thus, the maximum address is <span class="math inline">\(2^{38}-1\)</span> = 0x3fffffffff, which is <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/riscv.h#L417" class="coderef" data-path="kernel/riscv.h" data-line="417"><code>MAXVA</code></a>. At the top of the address space xv6 places a <em>trampoline</em> page (4096 bytes) and a <em>trapframe</em> page. Xv6 uses these two pages to transition into the kernel and back; the trampoline page contains the code to transition in and out of the kernel, and the trapframe is where the kernel saves the process’s user registers, as Chapter&nbsp;<a href="trap.html#CH:TRAP">4</a> explains.</p>
+<p>The xv6 kernel maintains many pieces of state for each process, which it gathers into a <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/proc.h#L82" class="coderef" data-path="kernel/proc.h" data-line="82"><code>struct proc</code></a>. A process’s most important pieces of kernel state are its page table, its kernel stack, and its run state. We’ll use the notation <code>p-&gt;xxx</code> to refer to elements of the <code>proc</code> structure; for example, <code>p-&gt;pagetable</code> is a pointer to the process’s page table.</p>
+<p>At this point, please read <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/proc.h" class="coderef" data-path="kernel/proc.h"><code>kernel/proc.h</code></a>, which defines <code>struct proc</code>. The xv6 code is more important for you to understand than this book; you should prioritize the code, and consult this book as needed to clarify the code. The purpose of some of the code may not be apparent at first, but further reading and searching the code will help. Feel free to explore and modify the code.</p>
+<p>Each process has a thread of control (or <em>thread</em> for short) that holds the state needed to execute the process. At any given time, a thread might be executing on a CPU, or suspended (not executing, but capable of resuming executing in the future). To switch a CPU between processes, the kernel suspends the thread currently running on that CPU and saves its state, and restores the state of another process’s previously-suspended thread. Much of the state of a thread (local variables, function call return addresses) is stored on the thread’s stacks. Each process has two stacks: a user stack and a kernel stack (<code>p-&gt;kstack</code>). When the process is executing user instructions, only its user stack is in use, and its kernel stack is empty. When the process enters the kernel (for a system call or interrupt), the kernel code executes on the process’s kernel stack; while a process is in the kernel, its user stack still contains saved data, but isn’t actively used. A process’s thread alternates between actively using its user stack and its kernel stack. The kernel stack is separate (and protected from user code) so that the kernel can execute even if a process has wrecked its user stack.</p>
+<p>A process’s user code can make a system call by executing the RISC-V <code>ecall</code> instruction. This instruction switches to supervisor mode and changes the program counter to a kernel-defined entry point. The code at the entry point switches to the process’s kernel stack and executes the kernel instructions that implement the system call. When the system call completes, the kernel returns to user space by executing the <code>sret</code> instruction, which switches to user mode and resumes executing user instructions just after the system call instruction. A process’s thread can “block” in the kernel to wait for I/O, and resume where it left off when the I/O has finished.</p>
+<p><code>p-&gt;state</code> indicates whether the process is allocated, ready to run, currently running on a CPU, waiting for I/O, or exiting.</p>
+<p><code>p-&gt;pagetable</code> holds the process’s page table, in the format that the RISC-V hardware expects. Xv6 causes the paging hardware to use a process’s <code>p-&gt;pagetable</code> when executing that process in user space. A process’s page table also serves as the record of the addresses of the physical pages allocated to store the process’s memory.</p>
+<p>In summary, a process bundles two design ideas: an address space to give a process the illusion of its own memory, and a thread to give the process the illusion of its own CPU. In xv6, a process consists of one address space and one thread. In real operating systems a process may have more than one thread to take advantage of multiple CPUs.</p>
+</section>
+<section id="code-starting-xv6-the-first-process-and-system-call" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="code-starting-xv6-the-first-process-and-system-call"><span class="header-section-number">2.6</span> Code: Starting xv6, the first process and system call</h2>
+<p>To make xv6 more concrete, we’ll outline how the kernel starts and runs the first process. The subsequent chapters will describe the mechanisms that show up in this overview in more detail. Please read <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/entry.S" class="coderef" data-path="kernel/entry.S"><code>kernel/entry.S</code></a>, <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/start.c" class="coderef" data-path="kernel/start.c"><code>kernel/start.c</code></a>, <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/main.c" class="coderef" data-path="kernel/main.c"><code>kernel/main.c</code></a>, and <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/user/init.c" class="coderef" data-path="user/init.c"><code>user/init.c</code></a>.</p>
+<p>When the RISC-V computer powers on, it initializes itself and runs a boot loader which is stored in read-only memory. The boot loader copies the xv6 kernel into memory at physical address <code>0x80000000</code>. The reason it places the kernel at <code>0x80000000</code> rather than <code>0x0</code> is because the address range <code>0x0:0x80000000</code> contains I/O devices.</p>
+<p>Then the boot loader jumps to xv6 starting at <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/entry.S#L7" class="coderef" data-path="kernel/entry.S" data-line="7"><code>_entry</code></a>. The RISC-V starts with paging hardware disabled: virtual addresses map directly to physical addresses. The instructions at <code>_entry</code> set up a stack so that xv6 can run C code. Xv6 declares space for this stack, <code>stack0</code>, in the file <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/start.c#L11" class="coderef" data-path="kernel/start.c" data-line="11"><code>start.c</code></a>. The code at <code>_entry</code> loads the stack pointer register <code>sp</code> with the address <code>stack0+4096</code>, the top of the stack, because the stack on RISC-V grows down. Now that the kernel has a stack, <code>_entry</code> calls into C code at <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/start.c#L15" class="coderef" data-path="kernel/start.c" data-line="15"><code>start</code></a>.</p>
+<p>The function <code>start</code> performs some setup that the CPU only allows in machine mode, most crucially programming the clock chip to generate timer interrupts. Then <code>start</code> uses the RISC-V <code>mret</code> instruction to switch to supervisor mode and jump to <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/main.c#L11" class="coderef" data-path="kernel/main.c" data-line="11"><code>main</code></a>. <code>mret</code> requires a bit of setup: <code>start</code> sets the previous privilege mode to supervisor in the register <code>mstatus</code>, sets the destination address to <code>main</code> by writing <code>main</code>’s address into the register <code>mepc</code>, disables virtual address translation in supervisor mode by writing <code>0</code> into the page-table register <code>satp</code>, and delegates all interrupts and exceptions to supervisor mode.</p>
+<p>After <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/main.c#L11" class="coderef" data-path="kernel/main.c" data-line="11"><code>main</code></a> initializes several devices and subsystems, it creates the first process by calling <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/proc.c#L219" class="coderef" data-path="kernel/proc.c" data-line="219"><code>userinit</code></a>. All newly created processes start executing in the kernel in <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/proc.c#L513" class="coderef" data-path="kernel/proc.c" data-line="513"><code>forkret</code></a>. As a special case for the first process, <code>forkret</code> calls <code>kexec</code> to load the user program <code>/init</code>.</p>
+<p>After calling <code>kexec</code>, <code>forkret</code> returns to user space in the <code>/init</code> process. <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/user/init.c#L15" class="coderef" data-path="user/init.c" data-line="15"><code>init</code></a> creates a new console device file if needed and then opens it as file descriptors 0, 1, and 2. Then it starts a shell on the console. The system is up.</p>
+</section>
+<section id="security-model" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="security-model"><span class="header-section-number">2.7</span> Security Model</h2>
+<p>You may wonder how the operating system deals with buggy or malicious code. Because coping with malice is strictly harder than dealing with accidental bugs, it’s reasonable to focus mostly on providing security against malice. Here’s a high-level view of typical security assumptions and goals in operating system design.</p>
+<p>The operating system must assume that a process’s user-level code will do its best to wreck the kernel or other processes. User code may try to dereference pointers outside its allowed address space; it may attempt to execute instructions not intended for user code; it may try to read and write RISC-V control registers; it may try to access device hardware; and it may pass clever values to system calls in an attempt to trick the kernel into crashing or doing something stupid.</p>
+<p>The kernel’s goal is to restrict each user process so that it can only access its own user memory, use the 32 general-purpose RISC-V registers, and affect the kernel and other processes in the ways that system calls are intended to allow. The kernel must prevent any other actions. These are typically absolute requirements in kernel design.</p>
+<p>Expectations for the kernel’s own code are different. Kernel code is assumed to be written by well-meaning and careful programmers, to be bug-free, and to contain nothing malicious. This assumption affects how we analyze kernel code. For example, there are many internal kernel functions (e.g., the spin locks) that would cause serious problems if kernel code used them incorrectly. We assume, however, that the kernel uses its own functions correctly. At the hardware level, the RISC-V CPU, RAM, disk, etc. are assumed to operate as advertised in the documentation, with no hardware bugs.</p>
+<p>Real life is not so straightforward. It’s difficult to prevent abusive user programs from calling system calls in a way that makes the system unusable by consuming kernel-protected resources: disk space, CPU time, process table slots, etc. It’s usually impossible to write 100% bug-free kernel code or design bug-free hardware; if the writers of malicious user code are aware of kernel or hardware bugs, they will exploit them. Even in mature, widely-used kernels, such as Linux, people often discover previously-unknown vulnerabilities&nbsp;<span class="citation" data-cites="mitre:cves">(<a href="references.html#ref-mitre:cves" role="doc-biblioref"><em>Linux Common Vulnerabilities and Exposures (<span>CVEs</span>)</em>, n.d.</a>)</span>. Finally, the distinction between user and kernel code is sometimes blurred: some privileged user-level processes may provide essential services and effectively be part of the operating system, and in some operating systems privileged user code can insert new code into the kernel (as with Linux’s loadable kernel modules and eBPF).</p>
+<p>As a partial defense against kernel bugs, xv6 code includes checks for inconsistencies and unrecoverable errors, and will “panic” in response, by calling <code>panic()</code>. This function prints an error message and halts the system. Panicking is not desirable, but is preferable to continuing execution. Typically a panic results from a kernel bug that causes kernel data to be incorrect or causes the kernel to perform an illegal action such as referencing non-existent memory; in such a situation it is safer to halt execution with <code>panic()</code> than to try to continue in an inconsistent state. A kernel developer would react to a panic by working to identify and fix the underlying code bug.</p>
+</section>
+<section id="real-world" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="real-world"><span class="header-section-number">2.8</span> Real world</h2>
+<p>Most operating systems have adopted the process concept, and most processes look similar to xv6’s. Modern operating systems, however, support several threads within a process, to allow a single process to exploit multiple CPUs. Supporting multiple threads in a process involves quite a bit of machinery that xv6 doesn’t have, often including interface changes (e.g., Linux’s <code>clone</code>, a variant of <code>fork</code>), to control which aspects of a process threads share.</p>
+</section>
+<section id="exercises" class="level2" data-number="2.9">
+<h2 data-number="2.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">2.9</span> Exercises</h2>
+<ol type="1">
+<li>Add a system call to xv6 that returns the amount of free memory available.</li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-sel4" class="csl-entry" role="listitem">
+Klein, Gerwin, Kevin Elphinstone, Gernot Heiser, et al. 2009. <span>“SeL4: Formal Verification of an <span>OS</span> Kernel.”</span> <em>Proceedings of the ACM SIGOPS 22nd Symposium on Operating Systems Principles</em>, 207–20.
+</div>
+<div id="ref-mitre:cves" class="csl-entry" role="listitem">
+<em>Linux Common Vulnerabilities and Exposures (<span>CVEs</span>)</em>. n.d. <a href="https://cve.mitre.org/cgi-bin/cvekey.cgi?keyword=linux" class="uri">Https://cve.mitre.org/cgi-bin/cvekey.cgi?keyword=linux</a>.
+</div>
+<div id="ref-riscv" class="csl-entry" role="listitem">
+Patterson, David, and Andrew Waterman. 2017. <em>The <span>RISC-V</span> Reader: An Open Architecture Atlas</em>. Strawberry Canyon.
+</div>
+<div id="ref-riscv:user" class="csl-entry" role="listitem">
+Waterman, Andrew, and Krste Asanovic, eds. 2024. <em>The <span>RISC-V</span> Instruction Set Manual <span>Volume I</span>: Unprivileged Specification <span>ISA</span></em>. <a href="https://drive.google.com/file/d/17GeetSnT5wW3xNuAHI95-SI1gPGd5sJ_/view?usp=drive_link" class="uri">Https://drive.google.com/file/d/17GeetSnT5wW3xNuAHI95-SI1gPGd5sJ_/view?usp=drive_link</a>.
+</div>
+<div id="ref-riscv:priv" class="csl-entry" role="listitem">
+Waterman, Andrew, Krste Asanovic, and John Hauser, eds. 2024. <em>The <span>RISC-V</span> Instruction Set Manual <span>Volume II</span>: Privileged Specification</em>. <a href="https://drive.google.com/file/d/1uviu1nH-tScFfgrovvFCrj7Omv8tFtkp/view?usp=drive_link" class="uri">Https://drive.google.com/file/d/1uviu1nH-tScFfgrovvFCrj7Omv8tFtkp/view?usp=drive_link</a>.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>By “multi-core” this text means multiple CPUs that share memory but execute in parallel, each with its own set of registers. This text sometimes uses the term <em>multiprocessor</em> as a synonym for multi-core, though multiprocessor can also refer more specifically to a computer with several distinct processor chips.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<!-- Side-by-side source code panel for xv6 book "code reference" links.
+     Included via _quarto.yml's `include-after-body`. Clicking a link tagged
+     `.coderef` (see convert.py) fetches the referenced file from GitHub's raw
+     CDN, shows it in a right-hand pane, and highlights the referenced line(s).
+     GitHub blocks <iframe> embedding (X-Frame-Options: deny), so we fetch the
+     raw text (raw.githubusercontent.com sends Access-Control-Allow-Origin: *)
+     and render it ourselves. -->
+<div id="coderef-panel" aria-hidden="true">
+  <div id="coderef-head">
+    <span id="coderef-title">source</span>
+    <a id="coderef-gh" href="#" target="_blank" rel="noopener" title="Open on GitHub">GitHub ↗</a>
+    <button id="coderef-close" type="button" title="Close (Esc)" aria-label="Close">✕</button>
+  </div>
+  <div id="coderef-body"><div id="coderef-msg">Loading…</div></div>
+</div>
+<script>
+(function () {
+  // raw.githubusercontent.com mirror of the GH blob base used in convert.py.
+  var RAW = "https://raw.githubusercontent.com/mit-pdos/xv6-riscv/riscv/";
+  var cache = {};                       // path -> array of source lines
+
+  var panel = document.getElementById("coderef-panel");
+  var bodyEl = document.getElementById("coderef-body");
+  var titleEl = document.getElementById("coderef-title");
+  var ghEl = document.getElementById("coderef-gh");
+
+  function openPanel() {
+    document.documentElement.classList.add("coderef-open");
+    panel.setAttribute("aria-hidden", "false");
+  }
+  function closePanel() {
+    document.documentElement.classList.remove("coderef-open");
+    panel.setAttribute("aria-hidden", "true");
+  }
+  document.getElementById("coderef-close").addEventListener("click", closePanel);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closePanel();
+  });
+
+  function render(lines, start, end) {
+    var frag = document.createDocumentFragment();
+    var pre = document.createElement("pre");
+    pre.className = "coderef-code";
+    var target = null;
+    for (var i = 0; i < lines.length; i++) {
+      var n = i + 1;
+      var row = document.createElement("div");
+      row.className = "coderef-row";
+      if (n >= start && n <= end) {
+        row.classList.add("coderef-hl");
+        if (!target) target = row;
+      }
+      var gut = document.createElement("span");
+      gut.className = "coderef-ln";
+      gut.textContent = n;
+      var code = document.createElement("span");
+      code.className = "coderef-src";
+      code.textContent = lines[i];
+      row.appendChild(gut);
+      row.appendChild(code);
+      pre.appendChild(row);
+    }
+    frag.appendChild(pre);
+    bodyEl.innerHTML = "";
+    bodyEl.appendChild(frag);
+    // scroll the first highlighted line to roughly a third down the pane.
+    if (target) {
+      bodyEl.scrollTop = Math.max(0, target.offsetTop - bodyEl.clientHeight / 3);
+    }
+  }
+
+  function show(path, start, end, href) {
+    openPanel();
+    titleEl.textContent = path + (start ? ":" + start + (end > start ? "-" + end : "") : "");
+    ghEl.href = href;
+    if (cache[path]) {
+      render(cache[path], start, end);
+      return;
+    }
+    bodyEl.innerHTML = '<div id="coderef-msg">Loading ' + path + ' …</div>';
+    fetch(RAW + path)
+      .then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.text();
+      })
+      .then(function (txt) {
+        cache[path] = txt.replace(/\n$/, "").split("\n");
+        render(cache[path], start, end);
+      })
+      .catch(function (err) {
+        bodyEl.innerHTML =
+          '<div id="coderef-msg">Could not load source (' + err.message +
+          ').<br><a href="' + href + '" target="_blank" rel="noopener">Open on GitHub ↗</a></div>';
+      });
+  }
+
+  // Event delegation: one listener handles every .coderef link on the page.
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a.coderef");
+    if (!a) return;
+    // let modified clicks fall through to the normal GitHub link / new tab.
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    var path = a.getAttribute("data-path");
+    if (!path) return;
+    e.preventDefault();
+    var start = parseInt(a.getAttribute("data-line"), 10) || 0;
+    var end = parseInt(a.getAttribute("data-end"), 10) || start;
+    show(path, start, end, a.href);
+  });
+})();
+</script>
+<!-- Chapter section list inside the left sidebar.
+     Included via _quarto.yml's `include-after-body`. The book sets `toc: false`
+     so Quarto emits no right-hand margin TOC (that space belongs to the code
+     pop-out in coderef-panel.html). Instead we build the current chapter's
+     section list here and nest it under the chapter's own sidebar entry. -->
+<script>
+(function () {
+  function build() {
+    var active = document.querySelector("#quarto-sidebar .sidebar-link.active");
+    if (!active) return;
+    var item = active.closest("li.sidebar-item");
+    if (!item) return;
+
+    var secs = document.querySelectorAll("main#quarto-document-content section.level2[id]");
+    if (!secs.length) return;
+
+    var list = document.createElement("ul");
+    list.className = "list-unstyled chapter-sections";
+    var links = [];
+    secs.forEach(function (sec) {
+      var h = sec.querySelector("h2");
+      if (!h) return;
+      var li = document.createElement("li");
+      li.className = "chapter-section";
+      var a = document.createElement("a");
+      a.className = "sidebar-item-text sidebar-link chapter-section-link";
+      a.href = "#" + sec.id;
+      // The heading already renders its own section number, so take it as-is.
+      a.textContent = h.textContent.replace(/\s+/g, " ").trim();
+      li.appendChild(a);
+      list.appendChild(li);
+      links.push({ a: a, sec: sec });
+    });
+    item.appendChild(list);
+
+    // Highlight the section the reader is currently in; Quarto's own scrollspy
+    // only ran against the margin TOC, which no longer exists.
+    var current = null;
+    function sync() {
+      var found = links[0];
+      for (var i = 0; i < links.length; i++) {
+        if (links[i].sec.getBoundingClientRect().top <= 120) found = links[i];
+      }
+      if (found === current) return;
+      if (current) current.a.classList.remove("active");
+      if (found) found.a.classList.add("active");
+      current = found;
+    }
+    var queued = false;
+    window.addEventListener("scroll", function () {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(function () { queued = false; sync(); });
+    }, { passive: true });
+    sync();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", build);
+  } else {
+    build();
+  }
+})();
+</script>
+<!-- Yellow highlighting for individual code-listing lines, the HTML counterpart
+     of the book's \hl{} in lstlisting escapes (see convert-quarto.py).
+     Included via _quarto.yml's `include-after-body`. convert-quarto.py tags the
+     listing with hl-lines="7,16,19", which pandoc emits as data-hl-lines on the
+     wrapping <div class="sourceCode">; pandoc numbers the lines by wrapping each
+     one in <span id="cbN-L">, so we just add .added-line (see styles.css) to the
+     spans whose line numbers were listed. -->
+<script>
+(function () {
+  function highlight(div) {
+    var code = div.querySelector("pre > code");
+    if (!code) return;
+    var spans = code.querySelectorAll(":scope > span[id]");
+    if (!spans.length) return;         // block isn't line-numbered
+    // The first span's id is "cbN-<first line number>", which is where the
+    // listing's numbering starts (lstlisting's firstnumber=).
+    var first = parseInt(spans[0].id.replace(/^.*-/, ""), 10);
+    if (isNaN(first)) return;
+    div.getAttribute("data-hl-lines").split(",").forEach(function (s) {
+      var i = parseInt(s, 10) - first;
+      if (i >= 0 && i < spans.length) spans[i].classList.add("added-line");
+    });
+  }
+  document.querySelectorAll("div.sourceCode[data-hl-lines]").forEach(highlight);
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./unix.html" class="pagination-link" aria-label="Operating system interfaces">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Operating system interfaces</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./mem.html" class="pagination-link" aria-label="Page tables">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Page tables</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>1&nbsp; Operating system interfaces – xv6: a simple, Unix-like teaching operating system</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./first.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-144df1dae3228b148528002f82521db4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./unix.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Operating system interfaces</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">xv6: a simple, Unix-like teaching operating system</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/mit-pdos/xv6-riscv" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Foreword and acknowledgments</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unix.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Operating system interfaces</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./first.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Operating system organization</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Page tables</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./trap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Traps and system calls</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pgfault.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Page faults</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./interrupt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Interrupts and device drivers</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lock.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Locking</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sched.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Scheduling</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sleep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Sleep and Wakeup</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">File system</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./log.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Logging</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lock2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Concurrency revisited</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sum.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="CH:UNIX" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Operating system interfaces</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The job of an operating system is to share a computer among multiple programs and to provide a more useful set of services than the hardware alone supports. An operating system manages and abstracts the low-level hardware, so that, for example, a word processor need not concern itself with which type of disk hardware is being used. An operating system shares the hardware among multiple programs so that they run (or appear to run) at the same time. Finally, operating systems provide controlled ways for programs to interact, so that they can share data or work together.</p>
+<p>An operating system provides services to user programs through an interface.</p>
+<p>Designing a good interface turns out to be difficult. On the one hand, we would like the interface to be simple and narrow because that makes it easier to get the implementation right. On the other hand, we may be tempted to offer many sophisticated features to applications. The trick in resolving this tension is to design interfaces that rely on a few mechanisms that can be combined to provide much generality.</p>
+<p>This book uses a single operating system as a concrete example to illustrate operating system concepts. That operating system, xv6, provides the basic interfaces introduced by Ken Thompson and Dennis Ritchie’s Unix operating system&nbsp;<span class="citation" data-cites="unix">(<a href="references.html#ref-unix" role="doc-biblioref">Ritchie and Thompson 1974</a>)</span>, as well as mimicking Unix’s internal design. Unix provides a narrow interface whose mechanisms combine well, offering a surprising degree of generality. This interface has been so successful that modern operating systems—BSD, Linux, macOS, Solaris, and even, to a lesser extent, Microsoft Windows—have Unix-like interfaces. Understanding xv6 is a good start toward understanding any of these systems and many others.</p>
+<p>As Figure&nbsp;<a href="#fig:os">1.1</a> shows, xv6 takes the traditional form of a <em>kernel</em>, a special program that provides services to running programs. Each running program, called a <em>process</em>, has memory containing instructions, data, and a stack. The instructions implement the program’s computation. The data are the variables on which the computation acts. The stack organizes the program’s procedure calls. A given computer typically has many processes but only a single kernel.</p>
+<p>When a process needs to invoke a kernel service, it invokes a <em>system call</em>, one of the calls in the operating system’s interface. The system call enters the kernel; the kernel performs the service and returns. Thus a process alternates between executing in <em>user space</em> and <em>kernel space</em>.</p>
+<p>As described in detail in subsequent chapters, the kernel uses the hardware protection mechanisms provided by a CPU<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> to ensure that each process executing in user space can access only its own memory. The kernel executes with the hardware privileges required to implement these protections; user programs execute without those privileges. When a user program invokes a system call, the hardware raises the privilege level and starts executing a pre-arranged function in the kernel.</p>
+<figure id="fig:os" data-latex-placement="t" class="figure">
+<img src="fig/os.svg" class="figure-img">
+<figcaption>
+Figure 1.1: A kernel and two user processes.
+</figcaption>
+</figure>
+<p>The collection of system calls that a kernel provides is the interface that user programs see. The xv6 kernel provides a subset of the services and system calls that Unix kernels traditionally offer. Figure&nbsp;<a href="#fig:api">1.2</a> lists all of xv6’s system calls.</p>
+<p>The rest of this chapter outlines xv6’s services—processes, memory, file descriptors, pipes, and a file system—and illustrates them with code snippets and discussions of how the <em>shell</em>, Unix’s command-line user interface, uses them. The shell’s use of system calls illustrates how carefully they have been designed.</p>
+<p>The shell is an ordinary program that reads commands from the user and executes them. The fact that the shell is a user program, and not part of the kernel, illustrates the power of the system call interface: there is nothing special about the shell. It also means that the shell is easy to replace; as a result, modern Unix systems have a variety of shells to choose from, each with its own user interface and scripting features. The xv6 shell is a simple implementation of the essence of the Unix Bourne shell.</p>
+<p>The implementation of the xv6 shell can be found at <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/user/sh.c" class="coderef" data-path="user/sh.c"><code>user/sh.c</code></a>. The <span style="color: blue">link</span> is a hyperlink to the relevant xv6 source code at <a href="https://github.com/mit-pdos/xv6-riscv/" class="uri">https://github.com/mit-pdos/xv6-riscv/</a> and the specific number refers to the sheet and line number in <a href="xv6-src-booklet.pdf">xv6-src-booklet.pdf</a>, as in the Lions’ Commentary on UNIX 6th Edition&nbsp;<span class="citation" data-cites="lions">(<a href="references.html#ref-lions" role="doc-biblioref">Lions 2000</a>)</span>. A good practice is to try to read the source code first on your own (in your favorite development environment, on github, or in a PDF viewer) and then come back to this book. By the end of this book you should be able to understand every line of xv6 source code without having to consult this book.</p>
+<section id="processes-and-memory" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="processes-and-memory"><span class="header-section-number">1.1</span> Processes and memory</h2>
+<p>An xv6 process consists of user-space memory (instructions, data, and stack) and per-process state private to the kernel. Xv6 <em>time-share</em>s processes: it transparently switches the available CPUs among the set of processes waiting to execute. When a process is not executing, xv6 saves the process’s CPU registers, restoring them when it next runs the process. The kernel associates a process identifier, or <code>PID</code>, with each process.</p>
+<figure id="fig:api" data-latex-placement="t" class="figure">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">
+<span><strong>System call</strong></span>
+</th>
+<th style="text-align: left;">
+<span><strong>Description</strong></span>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">
+int fork()
+</td>
+<td style="text-align: left;">
+Create a process, return child’s PID.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+int exit(int status)
+</td>
+<td style="text-align: left;">
+Terminate the current process; status reported to wait(). No return.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+int wait(int *status)
+</td>
+<td style="text-align: left;">
+Wait for a child to exit; exit status in *status; returns child PID.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+int kill(int pid)
+</td>
+<td style="text-align: left;">
+Terminate process PID. Returns 0, or -1 for error.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+int getpid()
+</td>
+<td style="text-align: left;">
+Return the current process’s PID.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+int pause(int n)
+</td>
+<td style="text-align: left;">
+Pause for n clock ticks.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+int uptime()
+</td>
+<td style="text-align: left;">
+Return the number of clock ticks since boot.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+int exec(char *file, char *argv[])
+</td>
+<td style="text-align: left;">
+Load a file and execute it with arguments; only returns if error.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+char *sbrk(int n)
+</td>
+<td style="text-align: left;">
+Grow process’s memory by n zero bytes. Returns start of new memory.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+int open(char *file, int flags)
+</td>
+<td style="text-align: left;">
+Open a file; flags indicate read/write; returns an fd (file descriptor).
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+int write(int fd, char *buf, int n)
+</td>
+<td style="text-align: left;">
+Write n bytes from buf to file descriptor fd; returns n.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+int read(int fd, char *buf, int n)
+</td>
+<td style="text-align: left;">
+Read n bytes into buf; returns number read; or 0 if end of file.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+int close(int fd)
+</td>
+<td style="text-align: left;">
+Release open file fd.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+int dup(int fd)
+</td>
+<td style="text-align: left;">
+Return a new file descriptor referring to the same file as fd.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+int pipe(int p[])
+</td>
+<td style="text-align: left;">
+Create a pipe, put read/write file descriptors in p[0] and p[1].
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+int chdir(char *dir)
+</td>
+<td style="text-align: left;">
+Change the current directory.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+int mkdir(char *dir)
+</td>
+<td style="text-align: left;">
+Create a new directory.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+int mknod(char *file, int, int)
+</td>
+<td style="text-align: left;">
+Create a device file.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+int fstat(int fd, struct stat *st)
+</td>
+<td style="text-align: left;">
+Place info about an open file into *st.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+int link(char *file1, char *file2)
+</td>
+<td style="text-align: left;">
+Create another name (file2) for the file file1.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+int unlink(char *file)
+</td>
+<td style="text-align: left;">
+Remove a file.
+</td>
+</tr>
+<tr>
+<td style="text-align: left;">
+int sync()
+</td>
+<td style="text-align: left;">
+Wait until earlier file system modifications are on disk.
+</td>
+</tr>
+</tbody>
+</table>
+<figcaption>
+Figure 1.2: Xv6 system calls. If not otherwise stated, these calls return 0 for no error, and -1 if there’s an error.
+</figcaption>
+</figure>
+<p>A process may create a new process using the <code>fork</code> system call. <code>fork</code> gives the new process an exact copy of the calling process’s memory: <code>fork</code> copies the instructions, data, and stack of the calling process into the new process’s memory. <code>fork</code> returns in both the original and new processes. In the original process, <code>fork</code> returns the new process’s PID. In the new process, <code>fork</code> returns zero. The original and new processes are often called the <em>parent</em> and <em>child</em>.</p>
+<p>For example, consider the following program fragment written in the C programming language&nbsp;<span class="citation" data-cites="kernighan">(<a href="references.html#ref-kernighan" role="doc-biblioref">Kernighan 1988</a>)</span>:</p>
+<pre><code>int pid = fork();
+if(pid &gt; 0){
+  printf("parent: child=%d\n", pid);
+  pid = wait((int *) 0);
+  printf("child %d is done\n", pid);
+} else if(pid == 0){
+  printf("child: exiting\n");
+  exit(0);
+} else {
+  printf("fork error\n");
+}</code></pre>
+<p>The <code>exit</code> system call causes the calling process to stop executing and to release resources such as memory and open files. Exit takes an integer status argument, conventionally 0 to indicate success and 1 to indicate failure. The <code>wait</code> system call returns the PID of an exited (or killed) child of the current process and copies the exit status of the child to the address passed to wait; if none of the caller’s children has exited, <code>wait</code> waits for one to do so. If the caller has no children, <code>wait</code> immediately returns -1. If the parent doesn’t care about the exit status of a child, it can pass a 0 address to <code>wait</code>.</p>
+<p>In the example, the output lines</p>
+<pre><code>parent: child=1234
+child: exiting</code></pre>
+<p>might come out in either order (or even intermixed), depending on whether the parent or child gets to its <code>printf</code> call first. After the child exits, the parent’s <code>wait</code> returns, causing the parent to print</p>
+<pre><code>parent: child 1234 is done</code></pre>
+<p>Although the child starts with a copy of the parent’s memory, the parent and child execute with separate memory and separate registers: changing a variable in one does not affect the other. For example, when the return value of <code>wait</code> is stored into <code>pid</code> in the parent process, it doesn’t change the variable <code>pid</code> in the child. The value of <code>pid</code> in the child will still be zero.</p>
+<p>The <code>exec</code> system call replaces the calling process’s memory with a new memory image loaded from a file stored in the file system. The file must have a particular format, which specifies which part of the file holds instructions, which part is data, at which instruction to start, etc. Xv6 uses the ELF format, which Chapter&nbsp;<a href="mem.html#CH:MEM">3</a> discusses in more detail. Usually the file is the result of compiling a program’s source code. When <code>exec</code> succeeds, it does not return to the calling program; instead, the instructions loaded from the file start executing at the entry point declared in the ELF header. <code>exec</code> takes two arguments: the name of the file containing the executable and an array of string arguments. For example:</p>
+<pre><code>char *argv[3];
+
+argv[0] = "echo";
+argv[1] = "hello";
+argv[2] = 0;
+exec("/bin/echo", argv);
+printf("exec error\n");</code></pre>
+<p>This fragment replaces the calling program with an instance of the program <code>/bin/echo</code> running with the argument list <code>echo</code> <code>hello</code>. Most programs ignore the first element of the argument array, which is conventionally the name of the program.</p>
+<p>The xv6 shell uses the above calls to run programs on behalf of users. The main structure of the shell is simple; see <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/user/sh.c#L146" class="coderef" data-path="user/sh.c" data-line="146"><code>main</code></a>. The main loop reads a line of input from the user with <code>getcmd</code>. Then it calls <code>fork</code>, which creates a copy of the shell process. The parent calls <code>wait</code>, while the child runs the command. For example, if the user had typed “<code>echo hello</code>” to the shell, <code>runcmd</code> would have been called with “<code>echo hello</code>” as the argument. <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/user/sh.c#L59" class="coderef" data-path="user/sh.c" data-line="59"><code>runcmd</code></a> runs the actual command. For “<code>echo hello</code>”, it would call <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/user/sh.c#L79" class="coderef" data-path="user/sh.c" data-line="79"><code>exec</code></a>. If <code>exec</code> succeeds then the child will execute instructions from <code>echo</code> instead of <code>runcmd</code>. At some point <code>echo</code> will call <code>exit</code>, which will cause the parent to return from <code>wait</code> in <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/user/sh.c#L146" class="coderef" data-path="user/sh.c" data-line="146"><code>main</code></a>.</p>
+<p>You might wonder why <code>fork</code> and <code>exec</code> are not combined in a single call; we will see later that the shell exploits the separation in its implementation of I/O redirection. To avoid the wastefulness of creating a duplicate process and then immediately replacing it (with <code>exec</code>), operating kernels optimize the implementation of <code>fork</code> for this use case by using virtual memory techniques such as copy-on-write (see Chapter&nbsp;<a href="pgfault.html#CH:PGFAULTS">5</a>).</p>
+<p>Xv6 allocates most user-space memory implicitly: <code>fork</code> allocates the memory required for the child’s copy of the parent’s memory, and <code>exec</code> allocates enough memory to hold the executable file. A process that needs more memory at run-time (perhaps for <code>malloc</code>) can call <code>sbrk(n)</code> to grow its data memory by <code>n</code> zero bytes; <code>sbrk</code> returns the location of the new memory.</p>
+</section>
+<section id="io-and-file-descriptors" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="io-and-file-descriptors"><span class="header-section-number">1.2</span> I/O and File descriptors</h2>
+<p>A <em>file descriptor</em> is a small integer representing a kernel-managed object that a process may read from or write to. A process may obtain a file descriptor by opening a file, directory, or device, or by creating a pipe, or by duplicating an existing descriptor. For simplicity we’ll often refer to the object a file descriptor refers to as a “file”; the file descriptor interface abstracts away the differences between files, pipes, and devices, making them all look like streams of bytes. We’ll refer to input and output as <em>I/O</em>.</p>
+<p>Internally, the xv6 kernel uses the file descriptor as an index into a per-process table, so that every process has a private space of file descriptors starting at zero. By convention, a process reads from file descriptor 0 (standard input), writes output to file descriptor 1 (standard output), and writes error messages to file descriptor 2 (standard error). As we will see, the shell exploits the convention to implement I/O redirection and pipelines. The shell ensures that it always has three file descriptors open <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/user/sh.c#L152" class="coderef" data-path="user/sh.c" data-line="152">(sh.c:152)</a>, which are by default file descriptors for the console.</p>
+<p>The <code>read</code> and <code>write</code> system calls read bytes from and write bytes to open files named by file descriptors. The call <code>read(fd</code>, <code>buf</code>, <code>n)</code> reads at most <code>n</code> bytes from the file descriptor <code>fd</code>, copies them into <code>buf</code>, and returns the number of bytes read. Each file descriptor that refers to a file has an offset associated with it. <code>read</code> reads data from the current file offset and then advances that offset by the number of bytes read: a subsequent <code>read</code> will return the bytes following the ones returned by the first <code>read</code>. When there are no more bytes to read, <code>read</code> returns zero to indicate the end of the file.</p>
+<p>The call <code>write(fd</code>, <code>buf</code>, <code>n)</code> writes <code>n</code> bytes from <code>buf</code> to the file descriptor <code>fd</code> and returns the number of bytes written. Fewer than <code>n</code> bytes are written only when an error occurs. Like <code>read</code>, <code>write</code> writes data at the current file offset and then advances that offset by the number of bytes written: each <code>write</code> picks up where the previous one left off.</p>
+<p>The following program fragment (which forms the essence of the program <code>cat</code>) copies data from its standard input to its standard output. If an error occurs, it writes a message to the standard error.</p>
+<pre><code>char buf[512];
+int n;
+
+for(;;){
+  n = read(0, buf, sizeof buf);
+  if(n == 0)
+    break;
+  if(n &lt; 0){
+    fprintf(2, "read error\n");
+    exit(1);
+  }
+  if(write(1, buf, n) != n){
+    fprintf(2, "write error\n");
+    exit(1);
+  }
+}</code></pre>
+<p>The important thing to note in the code fragment is that <code>cat</code> doesn’t know whether it is reading from a file, console, or a pipe. Similarly <code>cat</code> doesn’t know whether it is printing to a console, a file, or whatever. The use of file descriptors and the convention that file descriptor 0 is input and file descriptor 1 is output allows a simple implementation of <code>cat</code>.</p>
+<p>The <code>close</code> system call releases a file descriptor, making it free for reuse by a future <code>open</code>, <code>pipe</code>, or <code>dup</code> system call (see below). A newly allocated file descriptor is always the lowest-numbered unused descriptor of the current process.</p>
+<p>File descriptors and <code>fork</code> interact to make I/O redirection easy to implement. <code>fork</code> copies the parent’s file descriptor table along with its memory, so that the child starts with exactly the same open files as the parent. The system call <code>exec</code> replaces the calling process’s memory but preserves its file table. This behavior allows the shell to implement <em>I/O redirection</em> by forking, closing and re-opening chosen file descriptors in the child, and then calling <code>exec</code> to run the new program. Here is a simplified version of the code a shell runs for the command <code>cat</code> <code>&lt;</code> <code>input.txt</code>:</p>
+<pre><code>char *argv[2];
+
+argv[0] = "cat";
+argv[1] = 0;
+if(fork() == 0) {
+  close(0);
+  open("input.txt", O_RDONLY);
+  exec("cat", argv);
+}</code></pre>
+<p>After the child closes file descriptor 0, <code>open</code> is guaranteed to use that file descriptor for the newly opened <code>input.txt</code>: 0 will be the smallest available file descriptor. <code>cat</code> then executes with file descriptor 0 (standard input) referring to <code>input.txt</code>. The parent process’s file descriptors are not changed by this sequence, since it modifies only the child’s descriptors.</p>
+<p>The code for I/O redirection in the xv6 shell works in exactly this way <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/user/sh.c#L83" class="coderef" data-path="user/sh.c" data-line="83">(sh.c:83)</a>. Recall that at this point in the code the shell has already forked the child shell and that <code>runcmd</code> will call <code>exec</code> to load the new program.</p>
+<p>The second argument to <code>open</code> consists of a set of flags, expressed as bits, that control what <code>open</code> does. The possible values are defined in the file control (fcntl) header <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/fcntl.h#L1-L5" class="coderef" data-path="kernel/fcntl.h" data-line="1" data-end="5">(fcntl.h:1-5)</a>: <code>O_RDONLY</code>, <code>O_WRONLY</code>, <code>O_RDWR</code>, <code>O_CREATE</code>, and <code>O_TRUNC</code>, which instruct <code>open</code> to open the file for reading, or for writing, or for both reading and writing, to create the file if it doesn’t exist, and to truncate the file to zero length.</p>
+<p>Now it should be clear why it is helpful that <code>fork</code> and <code>exec</code> are separate calls: between the two, the shell has a chance to redirect the child’s I/O without disturbing the I/O setup of the main shell. One could instead imagine a hypothetical combined <code>forkexec</code> system call, but the options for doing I/O redirection with such a call seem awkward. The shell could modify its own I/O setup before calling <code>forkexec</code> (and then un-do those modifications); or <code>forkexec</code> could take instructions for I/O redirection as arguments; or (least attractively) every program like <code>cat</code> could be taught to do its own I/O redirection.</p>
+<p>Although <code>fork</code> copies the file descriptor table, each underlying file offset is shared between parent and child. Consider this example:</p>
+<pre><code>if(fork() == 0) {
+  write(1, "hello ", 6);
+  exit(0);
+} else {
+  wait(0);
+  write(1, "world\n", 6);
+}</code></pre>
+<p>At the end of this fragment, the file attached to file descriptor 1 will contain the data <code>hello</code> <code>world</code>. The <code>write</code> in the parent (which, thanks to <code>wait</code>, runs only after the child is done) picks up where the child’s <code>write</code> left off. This behavior helps produce sequential output from sequences of shell commands, like <code>(echo</code> <code>hello</code>; <code>echo</code> <code>world)</code> <code>&gt;output.txt</code>.</p>
+<p>The <code>dup</code> system call duplicates an existing file descriptor, returning a new one that refers to the same underlying I/O object. Both file descriptors share an offset, just as the file descriptors duplicated by <code>fork</code> do. This is another way to write <code>hello</code> <code>world</code> into a file:</p>
+<pre><code>fd = dup(1);
+write(1, "hello ", 6);
+write(fd, "world\n", 6);</code></pre>
+<p>Two file descriptors share an offset if they were derived from the same original file descriptor by a sequence of <code>fork</code> and <code>dup</code> calls. Otherwise file descriptors do not share offsets, even if they resulted from <code>open</code> calls for the same file. <code>dup</code> allows shells to implement commands like this: <code>ls</code> <code>existing-file</code> <code>non-existing-file</code> <code>&gt;</code> <code>tmp1</code> <code>2&gt;&amp;1</code>. The <code>2&gt;&amp;1</code> tells the shell to give the command a file descriptor 2 that is a duplicate of descriptor 1. Both the name of the existing file and the error message for the non-existing file will show up in the file <code>tmp1</code>. The xv6 shell doesn’t support I/O redirection for the error file descriptor, but now you know how to implement it.</p>
+<p>File descriptors are a powerful abstraction, because they hide the details of what they are connected to: a process writing to file descriptor 1 may be writing to a file, to a device like the console, or to a pipe.</p>
+</section>
+<section id="pipes" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="pipes"><span class="header-section-number">1.3</span> Pipes</h2>
+<p>A <em>pipe</em> is a small kernel buffer exposed to processes as a pair of file descriptors, one for reading and one for writing. Writing data to one end of the pipe makes that data available for reading from the other end of the pipe. Pipes provide a way for processes to communicate.</p>
+<p>The following example code runs the program <code>wc</code> with standard input connected to the read end of a pipe.</p>
+<pre><code>int p[2];
+char *argv[2];
+
+argv[0] = "wc";
+argv[1] = 0;
+
+pipe(p);
+if(fork() == 0) {
+  close(0);
+  dup(p[0]);
+  close(p[0]);
+  close(p[1]);
+  exec("/bin/wc", argv);
+} else {
+  close(p[0]);
+  write(p[1], "hello world\n", 12);
+  close(p[1]);
+}</code></pre>
+<p>The program calls <code>pipe</code>, which creates a new pipe and records the read and write file descriptors in the array <code>p</code>. After <code>fork</code>, both parent and child have file descriptors referring to the pipe. The child calls <code>close</code> and <code>dup</code> to make file descriptor zero refer to the read end of the pipe, closes the file descriptors in <code>p</code>, and calls <code>exec</code> to run <code>wc</code>. When <code>wc</code> reads from its standard input, it reads from the pipe. The parent closes the read side of the pipe, writes to the pipe, and then closes the write side.</p>
+<p>If no data is available, a <code>read</code> on a pipe waits for either data to be written or for all file descriptors referring to the write end to be closed; in the latter case, <code>read</code> will return 0, just as if the end of a data file had been reached. The fact that <code>read</code> blocks until it is impossible for new data to arrive is one reason that it’s important for the child to close the write end of the pipe before executing <code>wc</code> above: if one of <code>wc</code> ’s file descriptors referred to the write end of the pipe, <code>wc</code> would never see end-of-file.</p>
+<p>The xv6 shell implements pipelines such as <code>grep fork sh.c | wc -l</code> in a manner similar to the above code <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/user/sh.c#L101" class="coderef" data-path="user/sh.c" data-line="101">(sh.c:101)</a>. The child process creates a pipe to connect the left end of the pipeline with the right end. Then it calls <code>fork</code> and <code>runcmd</code> for the left end of the pipeline and <code>fork</code> and <code>runcmd</code> for the right end, and waits for both to finish. The right end of the pipeline may be a command that itself includes a pipe (e.g., <code>a</code> <code>|</code> <code>b</code> <code>|</code> <code>c</code>), which itself forks two new child processes (one for <code>b</code> and one for <code>c</code>). Thus, the shell may create a tree of processes. The leaves of this tree are commands and the interior nodes are processes that wait until the left and right children complete.</p>
+<p>Pipes may seem no more powerful than temporary files: the pipeline</p>
+<pre><code>echo hello world | wc</code></pre>
+<p>could be implemented without pipes as</p>
+<pre><code>echo hello world &gt;/tmp/xyz; wc &lt;/tmp/xyz</code></pre>
+<p>Pipes have at least three advantages over temporary files in this situation. First, pipes automatically clean themselves up; with the file redirection, a shell would have to be careful to remove <code>/tmp/xyz</code> when done. Second, pipes can pass arbitrarily long streams of data, while file redirection requires enough free space on disk to store all the data. Third, pipes allow for parallel execution of pipeline stages, while the file approach requires the first program to finish before the second starts.</p>
+</section>
+<section id="file-system" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="file-system"><span class="header-section-number">1.4</span> File system</h2>
+<p>The xv6 file system provides data files, which contain uninterpreted byte arrays, and directories, which contain named references to data files and other directories. The directories form a tree, starting at a special directory called the <em>root</em>. A <em>path</em> like <code>/a/b/c</code> refers to the file or directory named <code>c</code> inside the directory named <code>b</code> inside the directory named <code>a</code> in the root directory <code>/</code>. Paths that don’t begin with <code>/</code> are evaluated relative to the calling process’s <em>current directory</em>, which can be changed with the <code>chdir</code> system call. Both these code fragments open the same file (assuming all the directories involved exist):</p>
+<pre><code>chdir("/a");
+chdir("b");
+open("c", O_RDONLY);
+
+open("/a/b/c", O_RDONLY);</code></pre>
+<p>The first fragment changes the process’s current directory to <code>/a/b</code>; the second neither refers to nor changes the process’s current directory.</p>
+<p>There are system calls to create new files and directories: <code>mkdir</code> creates a new directory, <code>open</code> with the <code>O_CREATE</code> flag creates a new data file, and <code>mknod</code> creates a new device file. This example illustrates all three:</p>
+<pre><code>mkdir("/dir");
+fd = open("/dir/file", O_CREATE|O_WRONLY);
+close(fd);
+mknod("/console", 1, 1);</code></pre>
+<p><code>mknod</code> creates a special file that refers to a device. Associated with a device file are the major and minor device numbers (the two arguments to <code>mknod</code>), which uniquely identify a kernel device. When a process later opens a device file, the kernel diverts <code>read</code> and <code>write</code> system calls to the kernel device implementation instead of passing them to the file system.</p>
+<p>A file’s name is distinct from the file itself; the same underlying file, called an <em>inode</em>, can have multiple names, called <em>links</em>. Each link consists of an entry in a directory; the entry contains a file name and a reference to an inode. An inode holds <em>metadata</em> about a file, including its type (file or directory or device), its length, the location of the file’s content on disk, and the number of links to a file.</p>
+<p>The <code>fstat</code> system call retrieves information from the inode that a file descriptor refers to. It fills in a <code>struct</code> <code>stat</code>, defined in <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/stat.h" class="coderef" data-path="kernel/stat.h"><code>stat.h</code></a> as:</p>
+<pre><code>#define T_DIR     1   // Directory
+#define T_FILE    2   // File
+#define T_DEVICE  3   // Device
+
+struct stat {
+  int dev;     // File system's disk device
+  uint ino;    // Inode number
+  short type;  // Type of file
+  short nlink; // Number of links to file
+  uint64 size; // Size of file in bytes
+};</code></pre>
+<p>The <code>link</code> system call creates another file system name referring to the same inode as an existing file. This fragment creates a new file named both <code>a</code> and <code>b</code>.</p>
+<pre><code>open("a", O_CREATE|O_WRONLY);
+link("a", "b");</code></pre>
+<p>Reading from or writing to <code>a</code> is the same as reading from or writing to <code>b</code>. Each inode is identified by a unique <em>inode</em> <em>number</em>. After the code sequence above, it is possible to determine that <code>a</code> and <code>b</code> refer to the same underlying contents by inspecting the result of <code>fstat</code>: both will return the same inode number (<code>ino</code>), and the <code>nlink</code> count will be set to 2.</p>
+<p>The <code>unlink</code> system call removes a name from the file system. The file’s inode and the disk space holding its content are only freed when the file’s link count is zero and no file descriptors refer to it. Thus adding</p>
+<pre><code>unlink("a");</code></pre>
+<p>to the last code sequence leaves the inode and file content accessible as <code>b</code>. Furthermore,</p>
+<pre><code>fd = open("/tmp/xyz", O_CREATE|O_RDWR);
+unlink("/tmp/xyz");</code></pre>
+<p>is an idiomatic way to create a temporary inode with no name that will be cleaned up when the process closes <code>fd</code> or exits.</p>
+<p>Unix provides file utilities callable from the shell as user-level programs, for example <code>mkdir</code>, <code>ln</code>, and <code>rm</code>. This design allows anyone to extend the command-line interface by adding new user-level programs. In hindsight this plan seems obvious, but other systems designed at the time of Unix often built such commands into the shell (and built the shell into the kernel).</p>
+<p>One exception is <code>cd</code>, which is built into the shell <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/user/sh.c#L166" class="coderef" data-path="user/sh.c" data-line="166">(sh.c:166)</a>. <code>cd</code> must change the current working directory of the shell itself. If <code>cd</code> were run as a regular command, then the shell would fork a child process, the child process would run <code>cd</code>, and <code>cd</code> would change the <em>child</em> ’s working directory. The parent’s (i.e., the shell’s) working directory would not change.</p>
+</section>
+<section id="real-world" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="real-world"><span class="header-section-number">1.5</span> Real world</h2>
+<p>Unix’s combination of “standard” file descriptors, pipes, and convenient shell syntax for operations on them was a major advance in writing general-purpose reusable programs. The idea sparked a culture of “software tools” that was responsible for much of Unix’s power and popularity, and the shell was the first so-called “scripting language.” The Unix system call interface persists today in systems like BSD, Linux, and macOS.</p>
+<p>The Unix system call interface has been standardized through the Portable Operating System Interface (POSIX) standard. Xv6 is <em>not</em> POSIX compliant: it is missing many system calls (including basic ones such as <code>lseek</code>), and many of the system calls it does provide differ from the standard. Our main goals for xv6 are simplicity and clarity while providing a simple UNIX-like system-call interface. Several people have extended xv6 with a few more system calls and a simple C library in order to run basic Unix programs. Modern kernels, however, provide many more system calls, and many more kinds of kernel services, than xv6. For example, they support networking, windowing systems, user-level threads, drivers for many devices, and so on. Modern kernels evolve continuously and rapidly, and offer many features beyond POSIX.</p>
+<p>Unix unified access to multiple types of resources (files, directories, and devices) with a single set of file-name and file-descriptor interfaces. This idea can be extended to more kinds of resources; a good example is Plan 9&nbsp;<span class="citation" data-cites="Presotto91plan9">(<a href="references.html#ref-Presotto91plan9" role="doc-biblioref">Presotto et al. 1991</a>)</span>, which applied the “resources are files” concept to networks, graphics, and more. However, most Unix-derived operating systems have not followed this route.</p>
+<p>The file system and file descriptors have been powerful abstractions. Even so, there are other models for operating system interfaces. Multics, a predecessor of Unix, abstracted file storage in a way that made it look like memory, producing a very different flavor of interface. The complexity of the Multics design had a direct influence on the designers of Unix, who aimed to build something simpler.</p>
+<p>Xv6 does not provide a notion of users or of protecting one user from another; in Unix terms, all xv6 processes run as root.</p>
+<p>This book examines how xv6 implements its Unix-like interface, but the ideas and concepts apply to more than just Unix. Any operating system must multiplex processes onto the underlying hardware, isolate processes from each other, and provide mechanisms for controlled inter-process communication. After studying xv6, you should be able to look at other, more complex operating systems and see the concepts underlying xv6 in those systems as well.</p>
+</section>
+<section id="exercises" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="exercises"><span class="header-section-number">1.6</span> Exercises</h2>
+<ol type="1">
+<li>Write a program that uses UNIX system calls to “ping-pong” a byte between two processes over a pair of pipes, one for each direction. Measure the program’s performance, in exchanges per second.</li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-kernighan" class="csl-entry" role="listitem">
+Kernighan, Brian W. 1988. <em>The c Programming Language</em>. 2nd ed. Edited by Dennis M. Ritchie. Prentice Hall Professional Technical Reference.
+</div>
+<div id="ref-lions" class="csl-entry" role="listitem">
+Lions, John. 2000. <em>Commentary on UNIX 6th Edition</em>. Peer to Peer Communications.
+</div>
+<div id="ref-Presotto91plan9" class="csl-entry" role="listitem">
+Presotto, Dave, Rob Pike, Ken Thompson, and Howard Trickey. 1991. <span>“Plan 9, a Distributed System.”</span> <em>In Proceedings of the Spring 1991 EurOpen Conference</em>, 43–50.
+</div>
+<div id="ref-unix" class="csl-entry" role="listitem">
+Ritchie, Dennis M., and Ken Thompson. 1974. <span>“The <span>UNIX</span> Time-Sharing System.”</span> <em>Commun. ACM</em> 17 (7): 365–75. <a href="https://doi.org/10.1145/361011.361061">https://doi.org/10.1145/361011.361061</a>.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>This text generally refers to the hardware element that executes a computation with the term <em>CPU</em>, an acronym for central processing unit. Other documentation (e.g., the RISC-V specification) also uses the words processor, core, and hart instead of CPU.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<!-- Side-by-side source code panel for xv6 book "code reference" links.
+     Included via _quarto.yml's `include-after-body`. Clicking a link tagged
+     `.coderef` (see convert.py) fetches the referenced file from GitHub's raw
+     CDN, shows it in a right-hand pane, and highlights the referenced line(s).
+     GitHub blocks <iframe> embedding (X-Frame-Options: deny), so we fetch the
+     raw text (raw.githubusercontent.com sends Access-Control-Allow-Origin: *)
+     and render it ourselves. -->
+<div id="coderef-panel" aria-hidden="true">
+  <div id="coderef-head">
+    <span id="coderef-title">source</span>
+    <a id="coderef-gh" href="#" target="_blank" rel="noopener" title="Open on GitHub">GitHub ↗</a>
+    <button id="coderef-close" type="button" title="Close (Esc)" aria-label="Close">✕</button>
+  </div>
+  <div id="coderef-body"><div id="coderef-msg">Loading…</div></div>
+</div>
+<script>
+(function () {
+  // raw.githubusercontent.com mirror of the GH blob base used in convert.py.
+  var RAW = "https://raw.githubusercontent.com/mit-pdos/xv6-riscv/riscv/";
+  var cache = {};                       // path -> array of source lines
+
+  var panel = document.getElementById("coderef-panel");
+  var bodyEl = document.getElementById("coderef-body");
+  var titleEl = document.getElementById("coderef-title");
+  var ghEl = document.getElementById("coderef-gh");
+
+  function openPanel() {
+    document.documentElement.classList.add("coderef-open");
+    panel.setAttribute("aria-hidden", "false");
+  }
+  function closePanel() {
+    document.documentElement.classList.remove("coderef-open");
+    panel.setAttribute("aria-hidden", "true");
+  }
+  document.getElementById("coderef-close").addEventListener("click", closePanel);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closePanel();
+  });
+
+  function render(lines, start, end) {
+    var frag = document.createDocumentFragment();
+    var pre = document.createElement("pre");
+    pre.className = "coderef-code";
+    var target = null;
+    for (var i = 0; i < lines.length; i++) {
+      var n = i + 1;
+      var row = document.createElement("div");
+      row.className = "coderef-row";
+      if (n >= start && n <= end) {
+        row.classList.add("coderef-hl");
+        if (!target) target = row;
+      }
+      var gut = document.createElement("span");
+      gut.className = "coderef-ln";
+      gut.textContent = n;
+      var code = document.createElement("span");
+      code.className = "coderef-src";
+      code.textContent = lines[i];
+      row.appendChild(gut);
+      row.appendChild(code);
+      pre.appendChild(row);
+    }
+    frag.appendChild(pre);
+    bodyEl.innerHTML = "";
+    bodyEl.appendChild(frag);
+    // scroll the first highlighted line to roughly a third down the pane.
+    if (target) {
+      bodyEl.scrollTop = Math.max(0, target.offsetTop - bodyEl.clientHeight / 3);
+    }
+  }
+
+  function show(path, start, end, href) {
+    openPanel();
+    titleEl.textContent = path + (start ? ":" + start + (end > start ? "-" + end : "") : "");
+    ghEl.href = href;
+    if (cache[path]) {
+      render(cache[path], start, end);
+      return;
+    }
+    bodyEl.innerHTML = '<div id="coderef-msg">Loading ' + path + ' …</div>';
+    fetch(RAW + path)
+      .then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.text();
+      })
+      .then(function (txt) {
+        cache[path] = txt.replace(/\n$/, "").split("\n");
+        render(cache[path], start, end);
+      })
+      .catch(function (err) {
+        bodyEl.innerHTML =
+          '<div id="coderef-msg">Could not load source (' + err.message +
+          ').<br><a href="' + href + '" target="_blank" rel="noopener">Open on GitHub ↗</a></div>';
+      });
+  }
+
+  // Event delegation: one listener handles every .coderef link on the page.
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a.coderef");
+    if (!a) return;
+    // let modified clicks fall through to the normal GitHub link / new tab.
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    var path = a.getAttribute("data-path");
+    if (!path) return;
+    e.preventDefault();
+    var start = parseInt(a.getAttribute("data-line"), 10) || 0;
+    var end = parseInt(a.getAttribute("data-end"), 10) || start;
+    show(path, start, end, a.href);
+  });
+})();
+</script>
+<!-- Chapter section list inside the left sidebar.
+     Included via _quarto.yml's `include-after-body`. The book sets `toc: false`
+     so Quarto emits no right-hand margin TOC (that space belongs to the code
+     pop-out in coderef-panel.html). Instead we build the current chapter's
+     section list here and nest it under the chapter's own sidebar entry. -->
+<script>
+(function () {
+  function build() {
+    var active = document.querySelector("#quarto-sidebar .sidebar-link.active");
+    if (!active) return;
+    var item = active.closest("li.sidebar-item");
+    if (!item) return;
+
+    var secs = document.querySelectorAll("main#quarto-document-content section.level2[id]");
+    if (!secs.length) return;
+
+    var list = document.createElement("ul");
+    list.className = "list-unstyled chapter-sections";
+    var links = [];
+    secs.forEach(function (sec) {
+      var h = sec.querySelector("h2");
+      if (!h) return;
+      var li = document.createElement("li");
+      li.className = "chapter-section";
+      var a = document.createElement("a");
+      a.className = "sidebar-item-text sidebar-link chapter-section-link";
+      a.href = "#" + sec.id;
+      // The heading already renders its own section number, so take it as-is.
+      a.textContent = h.textContent.replace(/\s+/g, " ").trim();
+      li.appendChild(a);
+      list.appendChild(li);
+      links.push({ a: a, sec: sec });
+    });
+    item.appendChild(list);
+
+    // Highlight the section the reader is currently in; Quarto's own scrollspy
+    // only ran against the margin TOC, which no longer exists.
+    var current = null;
+    function sync() {
+      var found = links[0];
+      for (var i = 0; i < links.length; i++) {
+        if (links[i].sec.getBoundingClientRect().top <= 120) found = links[i];
+      }
+      if (found === current) return;
+      if (current) current.a.classList.remove("active");
+      if (found) found.a.classList.add("active");
+      current = found;
+    }
+    var queued = false;
+    window.addEventListener("scroll", function () {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(function () { queued = false; sync(); });
+    }, { passive: true });
+    sync();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", build);
+  } else {
+    build();
+  }
+})();
+</script>
+<!-- Yellow highlighting for individual code-listing lines, the HTML counterpart
+     of the book's \hl{} in lstlisting escapes (see convert-quarto.py).
+     Included via _quarto.yml's `include-after-body`. convert-quarto.py tags the
+     listing with hl-lines="7,16,19", which pandoc emits as data-hl-lines on the
+     wrapping <div class="sourceCode">; pandoc numbers the lines by wrapping each
+     one in <span id="cbN-L">, so we just add .added-line (see styles.css) to the
+     spans whose line numbers were listed. -->
+<script>
+(function () {
+  function highlight(div) {
+    var code = div.querySelector("pre > code");
+    if (!code) return;
+    var spans = code.querySelectorAll(":scope > span[id]");
+    if (!spans.length) return;         // block isn't line-numbered
+    // The first span's id is "cbN-<first line number>", which is where the
+    // listing's numbering starts (lstlisting's firstnumber=).
+    var first = parseInt(spans[0].id.replace(/^.*-/, ""), 10);
+    if (isNaN(first)) return;
+    div.getAttribute("data-hl-lines").split(",").forEach(function (s) {
+      var i = parseInt(s, 10) - first;
+      if (i >= 0 && i < spans.length) spans[i].classList.add("added-line");
+    });
+  }
+  document.querySelectorAll("div.sourceCode[data-hl-lines]").forEach(highlight);
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link" aria-label="Foreword and acknowledgments">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Foreword and acknowledgments</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./first.html" class="pagination-link" aria-label="Operating system organization">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Operating system organization</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

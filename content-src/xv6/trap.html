@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>4&nbsp; Traps and system calls – xv6: a simple, Unix-like teaching operating system</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./pgfault.html" rel="next">
+<link href="./mem.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-144df1dae3228b148528002f82521db4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./trap.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Traps and system calls</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">xv6: a simple, Unix-like teaching operating system</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/mit-pdos/xv6-riscv" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Foreword and acknowledgments</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Operating system interfaces</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./first.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Operating system organization</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Page tables</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./trap.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Traps and system calls</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pgfault.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Page faults</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./interrupt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Interrupts and device drivers</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lock.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Locking</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sched.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Scheduling</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sleep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Sleep and Wakeup</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">File system</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./log.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Logging</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lock2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Concurrency revisited</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sum.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="CH:TRAP" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Traps and system calls</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>There are three kinds of event which cause the CPU to set aside ordinary execution of instructions and force a transfer of control to special kernel code that handles the event. One situation is a system call, when a user program executes the <code>ecall</code> instruction to ask the kernel to do something for it. Another situation is an <em>exception</em>: an instruction (user or kernel) does something illegal, such as load from an invalid virtual address. The third situation is a device <em>interrupt</em>, when a device signals that it needs attention, for example when the disk hardware finishes a read or write request.</p>
+<p>This book uses <em>trap</em> as a generic term for these situations. Typically whatever code was executing at the time of the trap will later need to resume, and shouldn’t need to be aware that anything special happened. That is, we often want traps to be transparent; this is particularly important for device interrupts, which the interrupted code typically doesn’t expect. A trap forces a transfer of control into the kernel; the kernel saves registers and other state so that execution can be resumed; the kernel executes appropriate handler code (e.g., a system call implementation or device driver); the kernel restores the saved state and returns from the trap; and the original code resumes where it left off.</p>
+<p>Xv6 handles all traps in the kernel; traps are not delivered to user code. Handling traps in the kernel is natural for system calls. It makes sense for interrupts since isolation demands that only the kernel be allowed to use devices, and because the kernel is able to share devices among multiple processes. It also makes sense for exceptions since the kernel may be able to handle the exception from user space (for an example see Chapter&nbsp;<a href="pgfault.html#CH:PGFAULTS">5</a>) or respond by killing the offending program.</p>
+<p>Xv6 trap handling proceeds in four stages: hardware actions taken by the RISC-V CPU, some assembly instructions that prepare the way for kernel C code, a C function that decides what to do with the trap, and the system call or device-driver service routine. While commonality among the three trap types suggests that a kernel could handle all traps with a single code path, it turns out to be convenient to have separate code for two distinct cases: traps from user space, and traps from kernel space. Kernel code (assembler or C) that processes a trap is often called a <em>handler</em>; the first handler instructions are usually written in assembler (rather than C) and are sometimes called a <em>vector</em>.</p>
+<p>Before proceeding, please read <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/trampoline.S" class="coderef" data-path="kernel/trampoline.S"><code>kernel/trampoline.S</code></a>, and <code>usertrap()</code> and <code>prepare_return()</code> in <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/trap.c" class="coderef" data-path="kernel/trap.c"><code>kernel/trap.c</code></a>.</p>
+<section id="risc-v-trap-machinery" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="risc-v-trap-machinery"><span class="header-section-number">4.1</span> RISC-V trap machinery</h2>
+<p>Each RISC-V CPU has a set of hardware control registers that the kernel writes to tell the CPU how to handle traps, and that the kernel can read to find out about a trap that has occurred. The RISC-V documents contain the full story&nbsp;<span class="citation" data-cites="riscv:priv">(<a href="references.html#ref-riscv:priv" role="doc-biblioref">Waterman et al. 2024</a>)</span>. <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/riscv.h" class="coderef" data-path="kernel/riscv.h"><code>riscv.h</code></a> contains definitions that xv6 uses. Here’s an outline of the most important registers:</p>
+<ul>
+<li><p><code>stvec</code>: The kernel writes the address of its trap handler code here; the RISC-V jumps to the address in <code>stvec</code> to handle a trap.</p></li>
+<li><p><code>sepc</code>: When a trap occurs, RISC-V saves the program counter here (since the <code>pc</code> is then overwritten with the value in <code>stvec</code>). The <code>sret</code> (return from trap) instruction copies <code>sepc</code> to the <code>pc</code>. The kernel can write <code>sepc</code> to control where <code>sret</code> goes.</p></li>
+<li><p><code>scause</code>: RISC-V puts a number here that describes the reason for the trap.</p></li>
+<li><p><code>sscratch</code>: The kernel trap handler code uses <code>sscratch</code> to help it avoid overwriting user registers before saving them.</p></li>
+<li><p><code>sstatus</code>: The SIE bit in <code>sstatus</code> controls whether device interrupts are enabled. If the kernel clears SIE, the RISC-V will defer device interrupts until the kernel sets SIE. The SPP bit indicates whether a trap came from user mode or supervisor mode, and controls to what mode <code>sret</code> returns.</p></li>
+</ul>
+<p>The above registers can only be accessed in supervisor mode (i.e., by the kernel); the CPU prevents user code from reading or writing them.</p>
+<p>Each CPU on a multi-core chip has its own set of these registers, and more than one CPU may be handling a trap at any given time.</p>
+<p>When it forces a trap, the RISC-V hardware does the following:</p>
+<ol type="1">
+<li><p>If the trap is a device interrupt, and the <code>sstatus</code> SIE bit is clear, don’t do any of the following.</p></li>
+<li><p>Disable interrupts by clearing the SIE bit in <code>sstatus</code>.</p></li>
+<li><p>Copy the <code>pc</code> to <code>sepc</code>.</p></li>
+<li><p>Save the current mode (user or supervisor) in the SPP bit in <code>sstatus</code>.</p></li>
+<li><p>Set <code>scause</code> to a number indicating the trap’s cause.</p></li>
+<li><p>Set the mode to supervisor.</p></li>
+<li><p>Copy <code>stvec</code> to the <code>pc</code>.</p></li>
+<li><p>Start executing at the new <code>pc</code>.</p></li>
+</ol>
+<p>The CPU doesn’t switch to the kernel page table, doesn’t switch to a stack in the kernel, and doesn’t save any registers other than the <code>pc</code>. Kernel software must perform these tasks. One reason that the CPU does minimal work during a trap is to provide flexibility to software; for example, some operating systems omit a page table switch in some situations to increase trap performance.</p>
+<p>It’s worth thinking about whether any of the steps listed above could be omitted, perhaps in search of faster traps. Though there are situations in which a simpler sequence can work, many of the steps would be dangerous to omit in general. For example, suppose that the CPU didn’t switch program counters. Then a trap from user space could switch to supervisor mode while still running user instructions. Those user instructions could break user/kernel isolation, for example by modifying the <code>satp</code> register to point to a page table that allowed accessing all of physical memory. It is thus important that the CPU switch to a kernel-specified instruction address, namely <code>stvec</code>.</p>
+</section>
+<section id="traps-from-user-space" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="traps-from-user-space"><span class="header-section-number">4.2</span> Traps from user space</h2>
+<figure id="fig:usertrap" data-latex-placement="t" class="figure">
+<div class="center">
+<p><img src="fig/trap.svg" class="figure-img"></p>
+</div>
+<figcaption>
+Figure 4.1: Outline of how a trap from user code is handled.
+</figcaption>
+</figure>
+<p>Xv6 handles traps differently depending on whether the trap occurs while executing in the kernel or in user code. Here is the story for traps from user code; Section&nbsp;<a href="trap.html#s:ktraps">4.5</a> describes traps from kernel code.</p>
+<p>A trap may occur while executing in user space if the user program makes a system call (<code>ecall</code> instruction), or does something illegal, or if a device interrupts. As shown in Figure&nbsp;<a href="#fig:usertrap">4.1</a>, the high-level path of a trap from user space is <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/trampoline.S#L22" class="coderef" data-path="kernel/trampoline.S" data-line="22"><code>uservec</code></a>, then <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/trap.c#L38" class="coderef" data-path="kernel/trap.c" data-line="38"><code>usertrap</code></a>; and when the kernel is ready to return, <code>usertrap</code> returns to <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/trampoline.S#L101" class="coderef" data-path="kernel/trampoline.S" data-line="101"><code>userret</code></a> which executes <code>sret</code> to user space.</p>
+<p>A major constraint on the design of xv6’s trap handling is the fact that the RISC-V hardware does not switch page tables when it forces a trap. This means that the trap handler address in <code>stvec</code> must have a valid mapping in the user page table, since that’s the page table in force when the trap handling code starts executing. Furthermore, xv6’s trap handling code needs to switch to the kernel page table; in order to be able to continue executing after that switch, the kernel page table must also have a mapping for the handler pointed to by <code>stvec</code>.</p>
+<p>Xv6 satisfies these requirements using a <em>trampoline</em> page. This page contains <code>uservec</code>, the xv6 trap handling code that <code>stvec</code> points to. The trampoline page is mapped in every process’s page table at virtual address <code>0x3ffffff000</code> (called <code>TRAMPOLINE</code>), which is the last page in the virtual address space so that it will be above memory that programs use for themselves. The trampoline page is mapped at the same virtual address in the kernel page table. See Figure&nbsp;<a href="#fig:as">2.3</a> and Figure&nbsp;<a href="#fig:xv6_layout">3.3</a>. Because the trampoline page is mapped in the user page table, traps can start executing there in supervisor mode. Because the trampoline page is mapped at the same address in the kernel address space, the trap handler can continue to execute after it switches to the kernel page table.</p>
+<p>The code for the <code>uservec</code> trap handler is in <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/trampoline.S#L22" class="coderef" data-path="kernel/trampoline.S" data-line="22"><code>trampoline.S</code></a>. When <code>uservec</code> starts, all 32 registers contain values owned by the interrupted user code. These 32 values need to be saved somewhere in memory, so that later on the kernel can restore them before returning to user space. Storing to memory requires use of a register to hold the store’s destination address, but at this point there are no general-purpose registers available! Luckily RISC-V provides a helping hand in the form of the <code>sscratch</code> register. The <code>csrw</code> instruction at the start of <code>uservec</code> saves <code>a0</code> in <code>sscratch</code>. Now <code>uservec</code> has one register (<code>a0</code>) to play with.</p>
+<p><code>uservec</code>’s next task is to save the 32 user registers. The kernel allocates, for each process, a page of memory for a <code>trapframe</code> structure that (among other things) has space to save the 32 user registers <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/proc.h#L40" class="coderef" data-path="kernel/proc.h" data-line="40">(proc.h:40)</a>. Because <code>satp</code> still refers to the user page table, <code>uservec</code> needs the trapframe to be mapped in the user address space. Xv6 maps each process’s trapframe at virtual address <code>TRAPFRAME</code> (<code>0x3fffffe000</code>) in that process’s user page table; one page below <code>TRAMPOLINE</code>. Each process’s <code>p-&gt;trapframe</code> contains a kernel virtual address for the process’s trapframe.</p>
+<p><code>uservec</code> sets register <code>a0</code> to address <code>TRAPFRAME</code> and saves all the user registers there. Then it retrieves the user <code>a0</code> from <code>sscratch</code> and saves it in the trapframe.</p>
+<p>The kernel previously initialized the trapframe to contain some values useful to <code>uservec</code>: the address of the current process’s kernel stack, the current CPU’s hartid, the address of the <code>usertrap</code> function, and the address of the kernel page table. <code>uservec</code> retrieves these values, switches <code>satp</code> to the kernel page table, and jumps to <code>usertrap</code>, a C function.</p>
+<p>The job of <code>usertrap</code> is to determine the cause of the trap, process it, and return <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/trap.c#L38" class="coderef" data-path="kernel/trap.c" data-line="38">(trap.c:38)</a>. It first changes <code>stvec</code> so that a trap while in the kernel will be handled by <code>kernelvec</code> rather than <code>uservec</code>. It saves the <code>sepc</code> register (the saved user program counter) for future use when returning back to user space. If the trap is a system call, <code>usertrap</code> calls <code>syscall</code> to handle it; if a device interrupt, <code>devintr</code>; if a page fault, <code>vmfault</code>; otherwise it’s an exception (e.g., use of an invalid address), and the kernel kills the faulting process. The system call path adds four to the saved user program counter because RISC-V, in the case of a system call, leaves the program pointer pointing to the <code>ecall</code> instruction but user code needs to resume executing at the subsequent instruction. <code>usertrap</code> checks if the process has been killed or should yield the CPU (if this trap is a timer interrupt).</p>
+<p>The first step in returning to user space is the call to <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/trap.c#L101" class="coderef" data-path="kernel/trap.c" data-line="101"><code>prepare_return</code></a>. This function sets up the RISC-V control registers to prepare for a future trap from user space: setting <code>stvec</code> to <code>uservec</code> and preparing the trapframe fields that <code>uservec</code> relies on. <code>prepare_return</code> sets <code>sepc</code> to the previously saved user program counter. Finally, <code>usertrap</code> returns back to <code>userret</code> in the trampoline page <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/trampoline.S#L101" class="coderef" data-path="kernel/trampoline.S" data-line="101">(trampoline.S:101)</a>, passing back a pointer to the user page table in <code>a0</code>.</p>
+<p><code>userret</code> switches <code>satp</code> to the process’s user page table. Recall that the user page table maps both the trampoline page and <code>TRAPFRAME</code>, but nothing else from the kernel. The trampoline page mapping at the same virtual address in user and kernel page tables allows <code>userret</code> to keep executing after changing <code>satp</code>. From this point on, the only data <code>userret</code> can use is the register contents and the content of the trapframe. <code>userret</code> loads the <code>TRAPFRAME</code> address into <code>a0</code>, restores saved user registers from the trapframe via <code>a0</code>, restores the saved user <code>a0</code>, and executes <code>sret</code> to return to user space.</p>
+<p><code>uservec</code> and <code>userret</code> are written in assembly language because it is difficult to write C code to save or restore all the registers or survive switching page tables.</p>
+</section>
+<section id="code-calling-system-calls" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="code-calling-system-calls"><span class="header-section-number">4.3</span> Code: Calling system calls</h2>
+<p>User programs call library functions in order to make system calls. For example, the shell displays a prompt with this function call (in <code>user/sh.c</code>):</p>
+<pre><code>  write(2, "$ ", 2);</code></pre>
+<p>Here’s the library function, in <code>user/usys.S</code>:</p>
+<pre><code>write:
+ li a7, SYS_write
+ ecall
+ ret</code></pre>
+<p>The code that the C compiler generates for the function call loads the three arguments into registers <code>a0</code>, <code>a1</code>, and <code>a2</code>. Then the <code>write()</code> function loads the system call number, <code>SYS_write</code> (16), into <code>a7</code>. The kernel will look at those registers to find out what system call is intended, and what the arguments are. The <code>ecall</code> instruction traps from user space into the kernel and causes <code>uservec</code>, <code>usertrap</code>, and then <code>syscall</code> to execute.</p>
+<p>At this point, please read <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/syscall.c" class="coderef" data-path="kernel/syscall.c"><code>kernel/syscall.c</code></a>, <code>sys_write()</code> in <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/sysfile.c" class="coderef" data-path="kernel/sysfile.c"><code>kernel/sysfile.c</code></a>, and <code>copyout()</code>, <code>copyin()</code>, and <code>copyinstr()</code> in <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/vm.c" class="coderef" data-path="kernel/vm.c"><code>kernel/vm.c</code></a>.</p>
+<p><a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/syscall.c#L137" class="coderef" data-path="kernel/syscall.c" data-line="137"><code>syscall</code></a> retrieves the system call number from the saved <code>a7</code> in the trapframe and uses it to index into <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/syscall.c#L109" class="coderef" data-path="kernel/syscall.c" data-line="109"><code>syscalls</code></a>. For our example, <code>a7</code> contains <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/syscall.h#L17" class="coderef" data-path="kernel/syscall.h" data-line="17"><code>SYS_write</code></a>, resulting in a call to the system call implementation function <code>sys_write</code>.</p>
+<p>When <code>sys_write</code> returns, <code>syscall</code> records its return value in <code>p-&gt;trapframe-&gt;a0</code>. This will cause the original user-space call to <code>write()</code> to return that value, since the C calling convention on RISC-V places return values in <code>a0</code>. System calls conventionally return negative numbers to indicate errors, and zero or positive numbers for success.</p>
+</section>
+<section id="code-system-call-arguments" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="code-system-call-arguments"><span class="header-section-number">4.4</span> Code: System call arguments</h2>
+<p>System call arguments start out in the user registers, and are then moved to the trap frame by the kernel trap code. The kernel functions <code>argint</code>, <code>argaddr</code>, and <code>argfd</code> retrieve the <em>n</em> ’th system call argument from the trap frame as an integer, pointer, or a file descriptor.</p>
+<p>Some system calls pass pointers as arguments, and the kernel must use those pointers to read or write user memory. The <code>write</code> system call, for example, passes the kernel a user-space pointer to the data to be written. Such pointers pose two challenges. First, the user program may be buggy or malicious, and may pass the kernel an invalid pointer or a pointer intended to trick the kernel into accessing kernel memory instead of user memory. Second, the xv6 kernel page table mappings are not the same as the user page table mappings, so the kernel cannot use ordinary instructions to load or store from user-supplied addresses.</p>
+<p>The kernel implements functions that safely transfer data to and from user-supplied addresses. <code>fetchstr</code> is an example <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/syscall.c#L26" class="coderef" data-path="kernel/syscall.c" data-line="26">(syscall.c:26)</a>. File system calls such as <code>exec</code> use <code>fetchstr</code> to retrieve string file-name arguments from user space. <code>fetchstr</code> calls <code>copyinstr</code> to do the hard work.</p>
+<p><a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/vm.c#L412" class="coderef" data-path="kernel/vm.c" data-line="412"><code>copyinstr</code></a> copies up to <code>max</code> bytes to <code>dst</code> from virtual address <code>srcva</code> in the user page table <code>pagetable</code>. Since <code>pagetable</code> is <em>not</em> the current page table, <code>copyinstr</code> uses <code>walkaddr</code> (which calls <code>walk</code>) to look up <code>srcva</code> in <code>pagetable</code>, yielding physical address <code>pa0</code>. The kernel’s page table maps all of physical RAM at virtual addresses that are equal to the RAM’s physical address. This allows <code>copyinstr</code> to directly copy string bytes from <code>pa0</code> to <code>dst</code>. <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/vm.c#L122" class="coderef" data-path="kernel/vm.c" data-line="122"><code>walkaddr</code></a> checks that the user-supplied virtual address is part of the process’s user address space, so programs cannot trick the kernel into reading other memory. A similar function, <code>copyout</code>, copies data from the kernel to a user-supplied address.</p>
+</section>
+<section id="s:ktraps" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="s:ktraps"><span class="header-section-number">4.5</span> Traps from kernel space</h2>
+<p>Please read <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/kernelvec.S" class="coderef" data-path="kernel/kernelvec.S"><code>kernel/kernelvec.S</code></a>, and <code>kerneltrap()</code> in <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/trap.c" class="coderef" data-path="kernel/trap.c"><code>kernel/trap.c</code></a>.</p>
+<p>Xv6 handles traps from kernel code in a different way than traps from user code. When entering the kernel, <code>usertrap</code> points <code>stvec</code> to the assembly code at <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/kernelvec.S#L12" class="coderef" data-path="kernel/kernelvec.S" data-line="12"><code>kernelvec</code></a>. Since <code>kernelvec</code> only executes if xv6 was already in the kernel, <code>kernelvec</code> can rely on <code>satp</code> being set to the kernel page table, and on the stack pointer referring to a valid kernel stack. <code>kernelvec</code> pushes all caller-saved registers onto the current stack, from which it will later restore them so that the interrupted kernel code can resume without disturbance.</p>
+<p><code>kernelvec</code> saves the registers on the stack of the interrupted kernel thread, which makes sense because the register values belong to that thread. This is particularly important if the trap causes a switch to a different thread – in that case the trap will actually return from the stack of the new thread, leaving the interrupted thread’s saved registers safely on its stack.</p>
+<p><code>kernelvec</code> jumps to <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/trap.c#L137" class="coderef" data-path="kernel/trap.c" data-line="137"><code>kerneltrap</code></a> after saving registers. <code>kerneltrap</code> is prepared for just one type of trap: device interrupts. It calls <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/trap.c#L188" class="coderef" data-path="kernel/trap.c" data-line="188"><code>devintr</code></a> to handle them. If the trap isn’t a device interrupt, it must be an exception, such as kernel code trying to use an invalid pointer. This could only be caused by a bug in the kernel code. The kernel does not have a way to recover in this situation, so it calls <code>panic()</code>, which prints an error message and then halts.</p>
+<p>If <code>kerneltrap</code> was called due to a timer interrupt, and a process’s kernel thread is running (as opposed to a scheduler thread), <code>kerneltrap</code> calls <code>yield</code> to give other threads a chance to run. At some point one of those threads will yield, and let our thread and its <code>kerneltrap</code> resume again. Chapter&nbsp;<a href="sched.html#CH:SCHED">8</a> explains what happens in <code>yield</code>.</p>
+<p>When <code>kerneltrap</code>’s work is done, it needs to return to whatever code was interrupted by the trap. Because a <code>yield</code> may have disturbed <code>sepc</code> and the previous mode in <code>sstatus</code>, <code>kerneltrap</code> saves them when it starts. It now restores those control registers and returns to <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/kernelvec.S#L38" class="coderef" data-path="kernel/kernelvec.S" data-line="38"><code>kernelvec</code></a>. <code>kernelvec</code> pops the saved registers from the stack and executes <code>sret</code>, which copies <code>sepc</code> to <code>pc</code> and resumes the interrupted kernel code.</p>
+<p>Xv6 sets a CPU’s <code>stvec</code> to <code>kernelvec</code> when that CPU enters the kernel from user space; you can see this in <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/trap.c#L47" class="coderef" data-path="kernel/trap.c" data-line="47"><code>usertrap</code></a>. But there’s a window of time when the kernel has started executing but <code>stvec</code> is still set to <code>uservec</code>, and it’s crucial that no device interrupt occur during that window. Luckily the RISC-V always disables interrupts when it starts to take a trap, and <code>usertrap</code> doesn’t enable them again until after it sets <code>stvec</code>.</p>
+</section>
+<section id="real-world" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="real-world"><span class="header-section-number">4.6</span> Real world</h2>
+<p>The need for trampoline pages could be eliminated if kernel memory were mapped into every process’s user page table (with <code>PTE_U</code> clear). That would also eliminate the need for a page table switch when trapping from user space into the kernel. That in turn would allow system call implementations in the kernel to take advantage of the current process’s user memory being mapped, allowing kernel code to directly dereference user pointers. Many operating systems have used these ideas to increase efficiency. Xv6 avoids them in order to reduce the chances of security bugs in the kernel due to inadvertent use of user pointers, and to reduce some complexity that would be required to ensure that user and kernel virtual addresses don’t overlap.</p>
+</section>
+<section id="exercises" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="exercises"><span class="header-section-number">4.7</span> Exercises</h2>
+<ol type="1">
+<li><p>Could some or all of the code in <code>trampoline.S</code> and <code>kernelvec.S</code> be written in C rather than assembler?</p></li>
+<li><p>Is there a way to eliminate the special <code>TRAPFRAME</code> page mapping in every user address space? For example, could <code>uservec</code> be modified to simply push the 32 user registers onto the kernel stack, or store them in the <code>proc</code> structure?</p></li>
+<li><p>Could xv6 be modified to eliminate the special <code>TRAMPOLINE</code> page mapping?</p></li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-riscv:priv" class="csl-entry" role="listitem">
+Waterman, Andrew, Krste Asanovic, and John Hauser, eds. 2024. <em>The <span>RISC-V</span> Instruction Set Manual <span>Volume II</span>: Privileged Specification</em>. <a href="https://drive.google.com/file/d/1uviu1nH-tScFfgrovvFCrj7Omv8tFtkp/view?usp=drive_link" class="uri">Https://drive.google.com/file/d/1uviu1nH-tScFfgrovvFCrj7Omv8tFtkp/view?usp=drive_link</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<!-- Side-by-side source code panel for xv6 book "code reference" links.
+     Included via _quarto.yml's `include-after-body`. Clicking a link tagged
+     `.coderef` (see convert.py) fetches the referenced file from GitHub's raw
+     CDN, shows it in a right-hand pane, and highlights the referenced line(s).
+     GitHub blocks <iframe> embedding (X-Frame-Options: deny), so we fetch the
+     raw text (raw.githubusercontent.com sends Access-Control-Allow-Origin: *)
+     and render it ourselves. -->
+<div id="coderef-panel" aria-hidden="true">
+  <div id="coderef-head">
+    <span id="coderef-title">source</span>
+    <a id="coderef-gh" href="#" target="_blank" rel="noopener" title="Open on GitHub">GitHub ↗</a>
+    <button id="coderef-close" type="button" title="Close (Esc)" aria-label="Close">✕</button>
+  </div>
+  <div id="coderef-body"><div id="coderef-msg">Loading…</div></div>
+</div>
+<script>
+(function () {
+  // raw.githubusercontent.com mirror of the GH blob base used in convert.py.
+  var RAW = "https://raw.githubusercontent.com/mit-pdos/xv6-riscv/riscv/";
+  var cache = {};                       // path -> array of source lines
+
+  var panel = document.getElementById("coderef-panel");
+  var bodyEl = document.getElementById("coderef-body");
+  var titleEl = document.getElementById("coderef-title");
+  var ghEl = document.getElementById("coderef-gh");
+
+  function openPanel() {
+    document.documentElement.classList.add("coderef-open");
+    panel.setAttribute("aria-hidden", "false");
+  }
+  function closePanel() {
+    document.documentElement.classList.remove("coderef-open");
+    panel.setAttribute("aria-hidden", "true");
+  }
+  document.getElementById("coderef-close").addEventListener("click", closePanel);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closePanel();
+  });
+
+  function render(lines, start, end) {
+    var frag = document.createDocumentFragment();
+    var pre = document.createElement("pre");
+    pre.className = "coderef-code";
+    var target = null;
+    for (var i = 0; i < lines.length; i++) {
+      var n = i + 1;
+      var row = document.createElement("div");
+      row.className = "coderef-row";
+      if (n >= start && n <= end) {
+        row.classList.add("coderef-hl");
+        if (!target) target = row;
+      }
+      var gut = document.createElement("span");
+      gut.className = "coderef-ln";
+      gut.textContent = n;
+      var code = document.createElement("span");
+      code.className = "coderef-src";
+      code.textContent = lines[i];
+      row.appendChild(gut);
+      row.appendChild(code);
+      pre.appendChild(row);
+    }
+    frag.appendChild(pre);
+    bodyEl.innerHTML = "";
+    bodyEl.appendChild(frag);
+    // scroll the first highlighted line to roughly a third down the pane.
+    if (target) {
+      bodyEl.scrollTop = Math.max(0, target.offsetTop - bodyEl.clientHeight / 3);
+    }
+  }
+
+  function show(path, start, end, href) {
+    openPanel();
+    titleEl.textContent = path + (start ? ":" + start + (end > start ? "-" + end : "") : "");
+    ghEl.href = href;
+    if (cache[path]) {
+      render(cache[path], start, end);
+      return;
+    }
+    bodyEl.innerHTML = '<div id="coderef-msg">Loading ' + path + ' …</div>';
+    fetch(RAW + path)
+      .then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.text();
+      })
+      .then(function (txt) {
+        cache[path] = txt.replace(/\n$/, "").split("\n");
+        render(cache[path], start, end);
+      })
+      .catch(function (err) {
+        bodyEl.innerHTML =
+          '<div id="coderef-msg">Could not load source (' + err.message +
+          ').<br><a href="' + href + '" target="_blank" rel="noopener">Open on GitHub ↗</a></div>';
+      });
+  }
+
+  // Event delegation: one listener handles every .coderef link on the page.
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a.coderef");
+    if (!a) return;
+    // let modified clicks fall through to the normal GitHub link / new tab.
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    var path = a.getAttribute("data-path");
+    if (!path) return;
+    e.preventDefault();
+    var start = parseInt(a.getAttribute("data-line"), 10) || 0;
+    var end = parseInt(a.getAttribute("data-end"), 10) || start;
+    show(path, start, end, a.href);
+  });
+})();
+</script>
+<!-- Chapter section list inside the left sidebar.
+     Included via _quarto.yml's `include-after-body`. The book sets `toc: false`
+     so Quarto emits no right-hand margin TOC (that space belongs to the code
+     pop-out in coderef-panel.html). Instead we build the current chapter's
+     section list here and nest it under the chapter's own sidebar entry. -->
+<script>
+(function () {
+  function build() {
+    var active = document.querySelector("#quarto-sidebar .sidebar-link.active");
+    if (!active) return;
+    var item = active.closest("li.sidebar-item");
+    if (!item) return;
+
+    var secs = document.querySelectorAll("main#quarto-document-content section.level2[id]");
+    if (!secs.length) return;
+
+    var list = document.createElement("ul");
+    list.className = "list-unstyled chapter-sections";
+    var links = [];
+    secs.forEach(function (sec) {
+      var h = sec.querySelector("h2");
+      if (!h) return;
+      var li = document.createElement("li");
+      li.className = "chapter-section";
+      var a = document.createElement("a");
+      a.className = "sidebar-item-text sidebar-link chapter-section-link";
+      a.href = "#" + sec.id;
+      // The heading already renders its own section number, so take it as-is.
+      a.textContent = h.textContent.replace(/\s+/g, " ").trim();
+      li.appendChild(a);
+      list.appendChild(li);
+      links.push({ a: a, sec: sec });
+    });
+    item.appendChild(list);
+
+    // Highlight the section the reader is currently in; Quarto's own scrollspy
+    // only ran against the margin TOC, which no longer exists.
+    var current = null;
+    function sync() {
+      var found = links[0];
+      for (var i = 0; i < links.length; i++) {
+        if (links[i].sec.getBoundingClientRect().top <= 120) found = links[i];
+      }
+      if (found === current) return;
+      if (current) current.a.classList.remove("active");
+      if (found) found.a.classList.add("active");
+      current = found;
+    }
+    var queued = false;
+    window.addEventListener("scroll", function () {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(function () { queued = false; sync(); });
+    }, { passive: true });
+    sync();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", build);
+  } else {
+    build();
+  }
+})();
+</script>
+<!-- Yellow highlighting for individual code-listing lines, the HTML counterpart
+     of the book's \hl{} in lstlisting escapes (see convert-quarto.py).
+     Included via _quarto.yml's `include-after-body`. convert-quarto.py tags the
+     listing with hl-lines="7,16,19", which pandoc emits as data-hl-lines on the
+     wrapping <div class="sourceCode">; pandoc numbers the lines by wrapping each
+     one in <span id="cbN-L">, so we just add .added-line (see styles.css) to the
+     spans whose line numbers were listed. -->
+<script>
+(function () {
+  function highlight(div) {
+    var code = div.querySelector("pre > code");
+    if (!code) return;
+    var spans = code.querySelectorAll(":scope > span[id]");
+    if (!spans.length) return;         // block isn't line-numbered
+    // The first span's id is "cbN-<first line number>", which is where the
+    // listing's numbering starts (lstlisting's firstnumber=).
+    var first = parseInt(spans[0].id.replace(/^.*-/, ""), 10);
+    if (isNaN(first)) return;
+    div.getAttribute("data-hl-lines").split(",").forEach(function (s) {
+      var i = parseInt(s, 10) - first;
+      if (i >= 0 && i < spans.length) spans[i].classList.add("added-line");
+    });
+  }
+  document.querySelectorAll("div.sourceCode[data-hl-lines]").forEach(highlight);
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./mem.html" class="pagination-link" aria-label="Page tables">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Page tables</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./pgfault.html" class="pagination-link" aria-label="Page faults">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Page faults</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>3&nbsp; Page tables – xv6: a simple, Unix-like teaching operating system</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./trap.html" rel="next">
+<link href="./first.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-144df1dae3228b148528002f82521db4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./mem.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Page tables</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">xv6: a simple, Unix-like teaching operating system</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/mit-pdos/xv6-riscv" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Foreword and acknowledgments</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Operating system interfaces</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./first.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Operating system organization</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mem.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Page tables</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./trap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Traps and system calls</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pgfault.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Page faults</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./interrupt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Interrupts and device drivers</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lock.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Locking</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sched.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Scheduling</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sleep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Sleep and Wakeup</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">File system</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./log.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Logging</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lock2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Concurrency revisited</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sum.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="CH:MEM" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Page tables</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Page tables are the most popular mechanism through which the operating system provides each process with its own private address space and memory. Page tables determine what memory addresses mean, and what parts of physical memory can be accessed. They allow xv6 to isolate different processes’ address spaces and to multiplex them onto a single physical memory. Page tables provide a level of indirection that allows operating systems to perform many useful tricks. Xv6 performs a few: mapping the same memory (a trampoline page) in several address spaces, guarding kernel and user stacks with an unmapped page, and allocating user heap memory lazily. The rest of this chapter explains the page tables that the RISC-V hardware provides and how xv6 uses them.</p>
+<section id="paging-hardware" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="paging-hardware"><span class="header-section-number">3.1</span> Paging hardware</h2>
+<p>As a reminder, RISC-V instructions (both user and kernel) manipulate virtual addresses. The machine’s RAM, or physical memory, is indexed with physical addresses. The RISC-V page table hardware connects these two kinds of addresses, by mapping each virtual address to a physical address.</p>
+<figure id="fig:riscv_address" data-latex-placement="t" class="figure">
+<img src="fig/riscv_address.svg" class="figure-img">
+<figcaption>
+Figure 3.1: An abstract view of a flat page table mapping virtual to physical addresses.
+</figcaption>
+</figure>
+<p>Xv6 uses RISC-V’s Sv39 mode, which means that only the bottom 39 bits of a 64-bit virtual address are used; the top 25 bits are not used. In this Sv39 configuration, a RISC-V page table is logically an array of <span class="math inline">\(2^{27}\)</span> (134,217,728) <em>page table entries (PTEs)</em>. Each PTE contains a 44-bit physical page number (PPN) and some flags. The paging hardware translates a virtual address by using the top 27 bits of the 39 bits to index into the page table to find a PTE, and making a 56-bit physical address whose top 44 bits come from the PPN in the PTE and whose bottom 12 bits are copied from the original virtual address. Figure&nbsp;<a href="#fig:riscv_address">3.1</a> shows this process with a logical view of the page table as a simple array of PTEs (the RISC-V page table is actually a tree; see Figure&nbsp;<a href="#fig:riscv_pagetable">3.2</a> for a fuller story). A page table gives the operating system control over virtual-to-physical address translations at the granularity of aligned chunks of 4096 (<span class="math inline">\(2^{12}\)</span>) bytes. Such a chunk is called a <em>page</em>.</p>
+<figure id="fig:riscv_pagetable" data-latex-placement="t" class="figure">
+<img src="fig/riscv_pagetable.svg" class="figure-img">
+<figcaption>
+Figure 3.2: RISC-V address translation details.
+</figcaption>
+</figure>
+<p>RISC-V’s design leaves room for expansion of both virtual and physical addresses. If more virtual address space is needed, RISC-V supports an Sv48 mode, with 48-bit virtual addresses&nbsp;<span class="citation" data-cites="riscv:priv">(<a href="references.html#ref-riscv:priv" role="doc-biblioref">Waterman et al. 2024</a>)</span>. Physical addresses also have room for growth: there is room in the PTE format for the physical page number to grow by another 10 bits. The designers of RISC-V chose address sizes based on technology predictions. <span class="math inline">\(2^{48}\)</span> bytes is 262,144 GB, a much larger user virtual address space than any application is likely to use today. <span class="math inline">\(2^{56}\)</span> bytes of physical address space is 65,536 terabytes, much more RAM than any computer can currently be equipped with.</p>
+<p>As Figure&nbsp;<a href="#fig:riscv_pagetable">3.2</a> shows, a RISC-V CPU page table is stored in physical memory as a three-level tree. The root of the tree is a 4096-byte page-table page that contains 512 PTEs, which contain the physical addresses for page-table pages in the next level of the tree. Each of those pages contains 512 PTEs for the final level in the tree. The paging hardware uses the top 9 bits of the 27 bits to select a PTE in the root page-table page, the middle 9 bits to select a PTE in a page-table page in the next level of the tree, and the bottom 9 bits to select the final PTE. (In Sv48 RISC-V a page table has four levels, and bits 39 through 47 of a virtual address index into the top-level.)</p>
+<p>If any of the three PTEs required to translate an address is not present, the paging hardware raises a <em>page-fault exception</em>, leaving it up to the kernel to handle the page fault (see Chapters&nbsp;<a href="trap.html#CH:TRAP">4</a> and&nbsp;<a href="pgfault.html#CH:PGFAULTS">5</a>).</p>
+<p>The three-level structure of Figure&nbsp;<a href="#fig:riscv_pagetable">3.2</a> allows a memory-efficient way of recording PTEs, compared to the single-level design of Figure&nbsp;<a href="#fig:riscv_address">3.1</a>. In the common case in which large ranges of virtual addresses have no mappings, the three-level structure can omit entire page directories. For example, if an application uses only a few pages starting at address zero, then the entries 1 through 511 of the top-level page directory are invalid, and the kernel doesn’t have to allocate pages for those 511 intermediate page directories. Furthermore, the kernel also doesn’t have to allocate pages for the bottom-level page directories for those 511 intermediate page directories. So, in this example, the three-level design saves 511 pages for intermediate page directories and <span class="math inline">\(511\times512\)</span> pages for bottom-level page directories.</p>
+<p>Although a CPU walks the three-level structure in hardware as part of executing a load or store instruction, a potential downside of three levels is that the CPU must load three PTEs from memory to perform the translation of the virtual address in the load/store instruction to a physical address. To avoid the cost of loading PTEs from physical memory, a RISC-V CPU caches page table entries in a <em>Translation Look-aside Buffer (TLB)</em>.</p>
+<p>Each PTE contains flag bits that tell the paging hardware how the associated virtual address is allowed to be used. <code>PTE_V</code> indicates whether the PTE is present: if it is not set, a reference to the page causes a page fault (i.e., is not allowed). <code>PTE_R</code> controls whether instructions are allowed to read to the page. <code>PTE_W</code> controls whether instructions are allowed to write to the page. <code>PTE_X</code> controls whether the CPU may interpret the content of the page as instructions and execute them. <code>PTE_U</code> controls whether instructions in user mode are allowed to access the page; if <code>PTE_U</code> is not set, the PTE can be used only in supervisor mode. Figure&nbsp;<a href="#fig:riscv_pagetable">3.2</a> shows where the flag bits sit in a PTE. The flags and all other page hardware-related structures are defined in <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/riscv.h" class="coderef" data-path="kernel/riscv.h">(riscv.h)</a></p>
+<p>To tell a CPU to use a page table, the kernel must write the physical address of the root page-table page into the <code>satp</code> register. A CPU will translate all addresses generated by subsequent instructions using the page table pointed to by its <code>satp</code>. Each CPU has its own <code>satp</code> so that different CPUs can run different processes, each with a private address space described by its own page table.</p>
+<p>From the kernel’s point of view, a page table is data stored in memory, and the kernel creates and modifies page tables using code much like you might see for any tree-shaped data structure.</p>
+<p>A few notes about terms used in this book. <em>Physical memory</em> refers to storage cells in RAM. A byte of physical memory has an address, called a <em>physical address</em>. Instructions that dereference addresses (such as loads, stores, jumps, and function calls) use only virtual addresses, which the paging hardware translates to physical addresses, and then sends to the RAM hardware to read or write storage. An <em>address space</em> is the set of virtual addresses that are valid in a given page table; each xv6 process has a separate user address space, and the xv6 kernel has its own address space as well. <em>User memory</em> refers to a process’s user address space plus the physical memory that the page table allows the process to access. <em>Virtual memory</em> refers to the ideas and techniques associated with managing page tables and using them to achieve goals such as isolation.</p>
+<figure id="fig:xv6_layout" data-latex-placement="h" class="figure">
+<img src="fig/xv6_layout.svg" class="figure-img">
+<figcaption>
+Figure 3.3: On the left, xv6’s kernel virtual address space. <span><span>RWX</span></span> refer to PTE read, write, and execute permissions. On the right, the RISC-V physical address space that xv6 expects to see.
+</figcaption>
+</figure>
+</section>
+<section id="kernel-address-space" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="kernel-address-space"><span class="header-section-number">3.2</span> Kernel address space</h2>
+<p>When it starts, xv6 creates a single page table describing the kernel’s address space. The kernel configures the layout of its address space to give itself access to physical memory and various hardware resources at predictable virtual addresses. Figure&nbsp;<a href="#fig:xv6_layout">3.3</a> shows how this layout maps kernel virtual addresses to physical addresses. The file <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/memlayout.h" class="coderef" data-path="kernel/memlayout.h"><code>kernel/memlayout.h</code></a> declares the constants for xv6’s kernel memory layout.</p>
+<p>QEMU simulates a computer that includes RAM (physical memory) starting at physical address <code>0x80000000</code> and continuing through at least <code>0x88000000</code>, which xv6 calls <code>PHYSTOP</code>. The QEMU simulation also includes I/O devices such as a disk interface. QEMU exposes the device interfaces to software as <em>memory-mapped</em> control registers that sit below <code>0x80000000</code> in the physical address space. The kernel can interact with the devices by reading/writing these special physical addresses; such reads and writes communicate with the device hardware rather than with RAM. Chapter&nbsp;<a href="trap.html#CH:TRAP">4</a> explains how xv6 interacts with devices.</p>
+<p>The kernel maps all physical RAM and device registers at virtual addresses equal to the physical addresses. This is called “direct mapping,” and allows the kernel to read or write physical address <span class="math inline">\(x\)</span> simply by loading or storing to virtual address <span class="math inline">\(x\)</span>. The kernel code itself is located at <code>KERNBASE=0x80000000</code> in both the virtual address space and in physical memory. When <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/proc.c#L259" class="coderef" data-path="kernel/proc.c" data-line="259"><code>kfork</code></a> allocates user memory for the child process, the allocator returns the physical address of that memory; <code>kfork</code> uses that address directly as a virtual address when it is copying the parent’s user memory to the child.</p>
+<p>There are a couple of kernel virtual addresses that aren’t direct-mapped:</p>
+<ul>
+<li><p>The trampoline page. It is mapped at the top of the virtual address space; user page tables have this same mapping. Chapter&nbsp;<a href="trap.html#CH:TRAP">4</a> discusses the role of the trampoline page, but we see here an interesting use case of page tables; a physical page (holding the trampoline code) is mapped twice in the virtual address space of the kernel: once at the top of the virtual address space and once with a direct mapping.</p></li>
+<li><p>The kernel stack pages. Each process has its own kernel stack, which is mapped at a high kernel virtual address so that below it xv6 can leave an unmapped <em>guard page</em>. The guard page’s PTE is invalid (i.e., <code>PTE_V</code> is not set), so that if the kernel overflows a kernel stack, it will likely cause a page fault and the kernel will panic. Without a guard page an overflowing stack would overwrite other kernel memory, resulting in incorrect operation. A panic crash is preferable.</p></li>
+</ul>
+<p>While the kernel uses its stacks via the high-memory mappings, each is also accessible to the kernel through a direct-mapped address. An alternate design might have just the direct mapping, and use the stacks at the direct-mapped address. In that arrangement, however, providing guard pages would involve unmapping virtual addresses that would otherwise refer to physical memory, which would then be hard to use.</p>
+<p>The kernel maps the pages for the trampoline and the kernel text with the permissions <code>PTE_R</code> and <code>PTE_X</code>, but not <code>PTE_W</code>. The kernel maps other pages with the permissions <code>PTE_R</code> and <code>PTE_W</code>, but not <code>PTE_X</code>. The mappings for the guard pages are invalid. The purpose of these restricted permissions is to help catch kernel bugs that access pages in unexpected ways, for example if kernel code accidentally tried to write over kernel instructions.</p>
+<p>The kernel creates a single kernel page table, used by all CPUs when they execute in the kernel. xv6 does not modify the kernel page table after initially creating it.</p>
+</section>
+<section id="code-creating-an-address-space" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="code-creating-an-address-space"><span class="header-section-number">3.3</span> Code: Creating an address space</h2>
+<p>Please read <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/vm.c" class="coderef" data-path="kernel/vm.c"><code>kernel/vm.c</code></a> through the end of <code>mappages()</code> before proceeding.</p>
+<p>Most of the xv6 code for manipulating address spaces and page tables resides in <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/vm.c" class="coderef" data-path="kernel/vm.c"><code>vm.c</code></a>. The central data structure is <code>pagetable_t</code>, which is really a pointer to a RISC-V root page-table page; a <code>pagetable_t</code> may be either the kernel page table, or one of the per-process page tables. The central functions are <code>walk</code>, which finds the PTE for a virtual address, and <code>mappages</code>, which installs PTEs for new mappings. Functions starting with <code>kvm</code> manipulate the kernel page table; functions starting with <code>uvm</code> manipulate a user page table; other functions are used for both. <code>copyout</code> and <code>copyin</code> copy data to and from user virtual addresses provided as system call arguments; they are in <code>vm.c</code> because they need to explicitly translate those addresses in order to find the corresponding physical memory.</p>
+<p>Early in the boot sequence, <code>main</code> calls <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/vm.c#L67" class="coderef" data-path="kernel/vm.c" data-line="67"><code>kvminit</code></a> to create the kernel’s page table using <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/vm.c#L22" class="coderef" data-path="kernel/vm.c" data-line="22"><code>kvmmake</code></a>. This call occurs before xv6 has enabled paging on the RISC-V, so addresses refer directly to physical memory. <code>kvmmake</code> first allocates a page of physical memory to hold the root page-table page. Then it calls <code>kvmmap</code> to install the translations that the kernel needs. The translations include the kernel’s instructions and data, physical memory up to <code>PHYSTOP</code>, and memory ranges which are actually devices. <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/proc.c#L33" class="coderef" data-path="kernel/proc.c" data-line="33"><code>proc_mapstacks</code></a> allocates a kernel stack for each process. It calls <code>kvmmap</code> to map each stack at the virtual address generated by <code>KSTACK</code>, which leaves room for the invalid stack-guard pages.</p>
+<p><a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/vm.c#L59" class="coderef" data-path="kernel/vm.c" data-line="59"><code>kvmmap</code></a> calls <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/vm.c#L147" class="coderef" data-path="kernel/vm.c" data-line="147"><code>mappages</code></a>, which installs mappings into a page table for a range of virtual addresses to a corresponding range of physical addresses. It does this separately for each virtual address in the range, at page intervals. For each virtual address to be mapped, <code>mappages</code> calls <code>walk</code> to find the address of the PTE for that address. It then initializes the PTE to hold the relevant physical page number, the desired permissions (<code>PTE_W</code>, <code>PTE_X</code>, and/or <code>PTE_R</code>), and <code>PTE_V</code> to mark the PTE as valid <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/vm.c#L168" class="coderef" data-path="kernel/vm.c" data-line="168">(vm.c:168)</a>.</p>
+<p><a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/vm.c#L99" class="coderef" data-path="kernel/vm.c" data-line="99"><code>walk</code></a> mimics the RISC-V paging hardware as it looks up the PTE for a virtual address (see Figure&nbsp;<a href="#fig:riscv_pagetable">3.2</a>). <code>walk</code> descends the page table tree one level at a time, using each level’s 9 bits of virtual address to index into the relevant page directory page. At each level it finds either the PTE of the next level’s page directory page, or the PTE of final page <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/vm.c#L105" class="coderef" data-path="kernel/vm.c" data-line="105">(vm.c:105)</a>. If a PTE in a first or second level page directory page isn’t valid, then the required directory page hasn’t yet been allocated; if the <code>alloc</code> argument is set, <code>walk</code> allocates a new page-table page and puts its physical address in the PTE. It returns the address of the PTE in the lowest layer in the tree <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/vm.c#L115" class="coderef" data-path="kernel/vm.c" data-line="115">(vm.c:115)</a>.</p>
+<p>The above code depends on physical memory being direct-mapped into the kernel virtual address space. For example, as <code>walk</code> descends levels of the page table, it pulls the (physical) address of the next-level-down page table from a PTE <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/vm.c#L107" class="coderef" data-path="kernel/vm.c" data-line="107">(vm.c:107)</a>, and then uses that address as a virtual address to fetch the PTE at the next level down <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/vm.c#L105" class="coderef" data-path="kernel/vm.c" data-line="105">(vm.c:105)</a>.</p>
+<p>On each CPU, <code>main</code> calls <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/vm.c#L75" class="coderef" data-path="kernel/vm.c" data-line="75"><code>kvminithart</code></a> to install the kernel page table, placing the physical address of the root page-table page into the CPU’s <code>satp</code> register. After this the CPU translates addresses using the kernel page table. The kernel continues to execute correctly because the kernel page table is direct-mapped, so that addresses refer to the same locations in RAM before and after this change.</p>
+<p>Each RISC-V CPU caches page table entries in a <em>Translation Look-aside Buffer (TLB)</em>, and when xv6 changes a page table, it must tell the CPU to invalidate corresponding cached TLB entries. If it didn’t, then at some point later the TLB might use an old cached mapping, pointing to a physical page that in the meantime has been allocated to another process, and as a result, a process might be able to scribble on some other process’s memory. The RISC-V has an instruction <code>sfence.vma</code> that flushes the current CPU’s TLB. Xv6 executes <code>sfence.vma</code> in <code>kvminithart</code> after reloading the <code>satp</code> register, and in the trampoline code for <code>uservec</code> and <code>userret</code>.</p>
+<p>It is also necessary to issue <code>sfence.vma</code> before changing <code>satp</code>, in order to wait for completion of all outstanding loads and stores. This wait ensures that preceding updates to the page table have completed, and ensures that preceding loads and stores use the old page table, not the new one.</p>
+</section>
+<section id="physical-memory-allocation" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="physical-memory-allocation"><span class="header-section-number">3.4</span> Physical memory allocation</h2>
+<p>The kernel must allocate and free physical memory at run-time for page tables, user memory, kernel stacks, and pipe buffers.</p>
+<p>Xv6 uses the physical memory between the end of the kernel and <code>PHYSTOP</code> for run-time allocation. It allocates and frees whole 4096-byte pages at a time. It keeps track of which pages are free by threading a linked list through the pages themselves. Allocation consists of removing a page from the linked list; freeing consists of adding the freed page to the list.</p>
+<p>Please read <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/kalloc.c" class="coderef" data-path="kernel/kalloc.c"><code>kernel/kalloc.c</code></a>.</p>
+</section>
+<section id="code-physical-memory-allocator" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="code-physical-memory-allocator"><span class="header-section-number">3.5</span> Code: Physical memory allocator</h2>
+<p>The allocator resides in <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/kalloc.c" class="coderef" data-path="kernel/kalloc.c"><code>kalloc.c</code></a>. The allocator’s data structure is a <em>free list</em> of physical memory pages that are available for allocation. Each free page’s “next” pointer resides in a <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/kalloc.c#L17" class="coderef" data-path="kernel/kalloc.c" data-line="17"><code>struct run</code></a>. The allocator stores each free page’s <code>run</code> structure in the free page itself, since there’s nothing else stored there while the page is free. The free list is protected by a spin lock <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/kalloc.c#L21-L24" class="coderef" data-path="kernel/kalloc.c" data-line="21" data-end="24">(kalloc.c:21-24)</a>. The list and the lock are wrapped in a struct to make clear that the lock protects the fields in the struct. For now, ignore the lock and the calls to <code>acquire</code> and <code>release</code>; Chapter&nbsp;<a href="lock.html#CH:LOCK">7</a> will examine locking in detail.</p>
+<p>The function <code>main</code> calls <code>kinit</code> to initialize the allocator <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/kalloc.c#L27" class="coderef" data-path="kernel/kalloc.c" data-line="27">(kalloc.c:27)</a>. <code>kinit</code> initializes the free list to hold every page of physical RAM between the end of the kernel and <code>PHYSTOP</code>. Xv6 ought to determine how much physical memory is available by parsing configuration information provided by the hardware. Instead xv6 assumes that the machine has 128 megabytes of RAM. <code>kinit</code> calls <code>freerange</code> to add memory to the free list via per-page calls to <code>kfree</code>. A PTE can only refer to a physical address that is aligned on a 4096-byte boundary (is a multiple of 4096), so <code>freerange</code> uses <code>PGROUNDUP</code> to ensure that it frees only aligned physical addresses. The allocator starts with no memory; these calls to <code>kfree</code> give it some to manage.</p>
+<p>The allocator sometimes treats addresses as integers in order to perform arithmetic on them (e.g., traversing all pages in <code>freerange</code>), and sometimes uses addresses as pointers to read and write memory (e.g., manipulating the <code>run</code> structure stored in each page); this dual use of addresses is the main reason that the allocator code is full of C type-casts.</p>
+<p>The function <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/kalloc.c#L47" class="coderef" data-path="kernel/kalloc.c" data-line="47"><code>kfree</code></a> begins by setting every byte in the memory being freed to the value 1. This will cause code that uses memory after freeing it (uses “dangling references”) to read garbage instead of the old valid contents; hopefully that will cause such code to break faster. Then <code>kfree</code> prepends the page to the free list: it casts <code>pa</code> to a pointer to <code>struct</code> <code>run</code>, records the old start of the free list in <code>r-&gt;next</code>, and sets the free list equal to <code>r</code>. <code>kalloc</code> removes and returns the first element in the free list.</p>
+</section>
+<section id="process-address-space" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="process-address-space"><span class="header-section-number">3.6</span> Process address space</h2>
+<p>Each process has its own page table, and when xv6 switches between processes, it also changes page tables. Figure&nbsp;<a href="#fig:processlayout">3.4</a> shows a process’s address space in more detail than Figure&nbsp;<a href="#fig:as">2.3</a>. A process’s user address space starts at zero and in principle ends at <code>MAXVA</code> (<code>0x4000000000</code>) <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/riscv.h#L417" class="coderef" data-path="kernel/riscv.h" data-line="417">(riscv.h:417)</a>, though in practice only a small fraction of this is mapped to physical memory.</p>
+<p>A process’s address space consists of pages that contain the text of the program (which xv6 maps with the permissions <code>PTE_R</code>, <code>PTE_X</code>, and <code>PTE_U</code>), pages that contain the pre-initialized data of the program, a page for the stack, and pages for the heap. Xv6 maps the data, stack, and heap with the permissions <code>PTE_R</code>, <code>PTE_W</code>, and <code>PTE_U</code>.</p>
+<p>Using permissions within a user address space is a common technique to harden a user process. If the text were mapped with <code>PTE_W</code>, then a process could accidentally modify its own program; for example, a programming error may cause the program to write to a null pointer, modifying instructions at address 0, and then continue running, perhaps creating more havoc. To detect such errors immediately, xv6 maps the text without <code>PTE_W</code>; if a program accidentally attempts to store to address 0, the hardware will refuse to execute the store and raises a page fault (see Chapter&nbsp;<a href="trap.html#CH:TRAP">4</a>). The kernel then kills the process and prints out an informative message so that the developer can track down the problem.</p>
+<p>Similarly, by mapping data without <code>PTE_X</code>, a user program cannot accidentally jump to an address in the program’s data and start executing at that address.</p>
+<p>In the real world, hardening a process by setting permissions carefully also aids in defending against security attacks. An adversary may feed carefully-constructed input to a program (e.g., a Web server) that triggers a bug in the program in the hope of turning that bug into an exploit&nbsp;<span class="citation" data-cites="aleph:smashing">(<a href="references.html#ref-aleph:smashing" role="doc-biblioref">One, n.d.</a>)</span>. Setting permissions carefully and other techniques, such as randomizing of the layout of the user address space, make such attacks harder.</p>
+<p>The stack is a single page, and is shown with the initial contents as created by the <code>exec</code> system call. Strings containing the command-line arguments, as well as an array of pointers to them, are at the very top of the stack. Just under that are values that allow a program to start at <code>main</code> as if the function <code>main(argc</code>, <code>argv)</code> had just been called.</p>
+<p>To detect a user stack overflowing the allocated stack memory, xv6 places an inaccessible guard page right below the stack by clearing the <code>PTE_U</code> flag. If the user stack overflows and the process tries to use an address below the stack, the hardware will generate a page-fault exception because the guard page is inaccessible to a program running in user mode. A real-world operating system might instead automatically allocate more memory for the user stack when it overflows.</p>
+<p>We see here a few nice examples of use of page tables. First, different processes’ page tables translate user addresses to different pages of physical memory, so that each process has private user memory. Second, each process sees its memory as having contiguous virtual addresses starting at zero, while the process’s physical memory can be non-contiguous. Third, the kernel maps a page with trampoline code at the top of the user address space (without <code>PTE_U</code>), thus a single page of physical memory shows up in all address spaces, but can be used only by the kernel.</p>
+<figure id="fig:processlayout" data-latex-placement="t" class="figure">
+<img src="fig/processlayout.svg" class="figure-img">
+<figcaption>
+Figure 3.4: A process’s user address space, with its initial stack.
+</figcaption>
+</figure>
+</section>
+<section id="code-exec" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="code-exec"><span class="header-section-number">3.7</span> Code: exec</h2>
+<p>Please read <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/exec.c" class="coderef" data-path="kernel/exec.c"><code>kernel/exec.c</code></a> and <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/vm.c" class="coderef" data-path="kernel/vm.c"><code>kernel/vm.c</code></a> starting at <code>uvmcreate()</code>.</p>
+<p><code>exec</code> is a system call that replaces a process’s user address space with data read from a file, called a binary or executable file. A binary is typically the output of the compiler and linker, and holds machine instructions and program data. <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/exec.c#L28" class="coderef" data-path="kernel/exec.c" data-line="28"><code>kexec</code></a>, the kernel’s internal implementation of <code>exec</code>, opens the named binary <code>path</code> using <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/exec.c#L42" class="coderef" data-path="kernel/exec.c" data-line="42"><code>namei</code></a>, which is explained in Chapter&nbsp;<a href="fs.html#CH:FS">10</a>. Then, it reads the ELF header. Xv6 binaries are formatted in the widely-used <em>ELF format</em>, defined in <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/elf.h" class="coderef" data-path="kernel/elf.h">(elf.h)</a>. An ELF binary consists of an ELF header, <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/elf.h#L6" class="coderef" data-path="kernel/elf.h" data-line="6"><code>struct elfhdr</code></a>, followed by a sequence of program section headers, <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/elf.h#L25" class="coderef" data-path="kernel/elf.h" data-line="25"><code>struct proghdr</code></a>. Each <code>proghdr</code> describes a section of the application that must be loaded into memory; xv6 programs have two program section headers: one for instructions and one for data.</p>
+<p>The first step is a quick check that the file probably contains an ELF binary. An ELF binary starts with the four-byte “magic number” <code>0x7F</code>, <code>`E'</code>, <code>`L'</code>, <code>`F'</code>, or <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/elf.h#L3" class="coderef" data-path="kernel/elf.h" data-line="3"><code>ELF_MAGIC</code></a>. If the ELF header has the right magic number, <code>kexec</code> assumes that the binary is well-formed.</p>
+<p><code>kexec</code> allocates a new page table with no user mappings with <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/exec.c#L56" class="coderef" data-path="kernel/exec.c" data-line="56"><code>proc_pagetable</code></a>, allocates memory for each ELF segment with <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/exec.c#L72" class="coderef" data-path="kernel/exec.c" data-line="72"><code>uvmalloc</code></a>, and loads each segment into memory with <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/exec.c#L76" class="coderef" data-path="kernel/exec.c" data-line="76"><code>loadseg</code></a>. <code>loadseg</code> uses <code>walkaddr</code> to find the physical address of the allocated memory at which to write each page of the ELF segment, and <code>readi</code> to read from the file.</p>
+<p>The program section header for <code>/init</code>, the first user program created with <code>kexec</code>, looks like this:</p>
+<div class="footnotesize">
+<pre><code># objdump -p user/_init
+
+user/_init:     file format elf64-little
+
+Program Header:
+0x70000003 off    0x0000000000006bb0 vaddr 0x0000000000000000
+                                       paddr 0x0000000000000000 align 2**0
+         filesz 0x000000000000004a memsz 0x0000000000000000 flags r--
+    LOAD off    0x0000000000001000 vaddr 0x0000000000000000
+                                       paddr 0x0000000000000000 align 2**12
+         filesz 0x0000000000001000 memsz 0x0000000000001000 flags r-x
+    LOAD off    0x0000000000002000 vaddr 0x0000000000001000
+                                       paddr 0x0000000000001000 align 2**12
+         filesz 0x0000000000000010 memsz 0x0000000000000030 flags rw-
+   STACK off    0x0000000000000000 vaddr 0x0000000000000000
+                                       paddr 0x0000000000000000 align 2**4
+         filesz 0x0000000000000000 memsz 0x0000000000000000 flags rw-</code></pre>
+</div>
+<p>We see that the text segment should be loaded at virtual address 0x0 in memory (without write permissions) from content at offset 0x1000 in the file. We also see that the data should be loaded at address 0x1000, which is at a page boundary, and without executable permissions.</p>
+<p>A program section header’s <code>filesz</code> may be less than the <code>memsz</code>, indicating that the gap between them should be filled with zeroes (for C global variables) rather than read from the file. For <code>/init</code>, the data <code>filesz</code> is 0x10 bytes and <code>memsz</code> is 0x30 bytes, and thus <code>uvmalloc</code> allocates enough physical memory to hold 0x30 bytes, but reads only 0x10 bytes from the file <code>/init</code>.</p>
+<p>Now <code>kexec</code> allocates and initializes the user stack. It allocates just one stack page. <code>kexec</code> copies the argument strings to the top of the stack one at a time, recording the pointers to them in <code>ustack</code>. It places a null pointer at the end of what will be the <code>argv</code> list passed to <code>main</code>. The values for <code>argc</code> and <code>argv</code> are passed to <code>main</code> through the system-call return path: <code>argc</code> is passed via the system call return value, which goes in <code>a0</code>, and <code>argv</code> is passed through the <code>a1</code> entry of the process’s trapframe.</p>
+<p><code>kexec</code> places an inaccessible page just below the stack page, so that programs that try to use more than one page will fault. This inaccessible page also allows <code>kexec</code> to deal with arguments that are too large; in that situation, the <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/vm.c#L345" class="coderef" data-path="kernel/vm.c" data-line="345"><code>copyout</code></a> function that <code>kexec</code> uses to copy arguments to the stack will notice that the destination page is not accessible, and will return -1.</p>
+<p>During the preparation of the new memory image, if <code>kexec</code> detects an error like an invalid program segment, it jumps to the label <code>bad</code>, frees the new image, and returns -1. <code>kexec</code> must wait to free the old image until it is sure that the system call will succeed: if the old image is gone, the system call cannot return -1 to it. The only error cases in <code>kexec</code> happen during the creation of the image. Once the image is complete, <code>kexec</code> can commit to the new page table <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/exec.c#L134" class="coderef" data-path="kernel/exec.c" data-line="134">(exec.c:134)</a> and free the old one <a href="https://github.com/mit-pdos/xv6-riscv/blob/riscv/kernel/exec.c#L138" class="coderef" data-path="kernel/exec.c" data-line="138">(exec.c:138)</a>.</p>
+<p>The <code>exec</code> system call loads bytes from the ELF file into memory at addresses specified by the ELF file. Users or processes can place whatever addresses they want into an ELF file. Thus <code>exec</code> is risky, because the addresses in the ELF file may refer to the kernel, accidentally or on purpose. The consequences for an unwary kernel could range from a crash to a malicious subversion of the kernel’s isolation mechanisms (i.e., a security exploit). Xv6 performs a number of checks to avoid these risks. For example <code>if(ph.vaddr + ph.memsz &lt; ph.vaddr)</code> checks for whether the sum overflows a 64-bit integer. The danger is that a user could construct an ELF binary with a <code>ph.vaddr</code> that points to a user-chosen address, and <code>ph.memsz</code> large enough that the sum overflows to 0x1000, which will look like a valid value. In an older version of xv6 in which the user address space also contained the kernel (but not readable/writable in user mode), the user could choose an address that corresponded to kernel memory and would thus copy data from the ELF binary into the kernel. In the RISC-V version of xv6 this cannot happen, because the kernel has its own separate page table; <code>loadseg</code> loads into the process’s page table, not in the kernel’s page table.</p>
+<p>It is easy for a kernel developer to omit a crucial check, and real-world kernels have a long history of missing checks whose absence can be exploited by user programs to obtain kernel privileges. It is likely that xv6 doesn’t do a complete job of validating user-level data supplied to the kernel, which a malicious user program might be able to exploit to circumvent xv6’s isolation.</p>
+</section>
+<section id="real-world" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="real-world"><span class="header-section-number">3.8</span> Real world</h2>
+<p>Like most operating systems, xv6 uses the paging hardware for memory protection and mapping. Most operating systems make far more sophisticated use of paging than xv6 by combining paging and page-fault exceptions, which we will discuss in Chapter&nbsp;<a href="trap.html#CH:TRAP">4</a>.</p>
+<p>Xv6 is simplified by the kernel’s use of a direct map between virtual and physical addresses, and by its assumption that there is physical RAM at address 0x80000000, where the kernel expects to be loaded. This works with QEMU, but on real hardware it turns out to be a bad idea; real hardware places RAM and devices at unpredictable physical addresses, so that (for example) there might be no RAM at 0x80000000, where xv6 expect to be able to store the kernel. More serious kernel designs exploit the page table to turn arbitrary hardware physical memory layouts into predictable kernel virtual address layouts.</p>
+<p>RISC-V supports protection at the level of physical addresses, but xv6 doesn’t use that feature.</p>
+<p>On machines with lots of memory it might make sense to use RISC-V’s support for “super pages.” Small pages make sense when physical memory is small, to allow allocation and page-out to disk with fine granularity. For example, if a program uses only 8 kilobytes of memory, giving it a whole 4-megabyte super-page of physical memory is wasteful. Larger pages make sense on machines with lots of RAM, and may reduce overhead for page-table manipulation.</p>
+<p>To avoid having to flush the complete TLB when changing page tables, RISC-V CPUs may support address space identifiers (ASIDs)&nbsp;<span class="citation" data-cites="riscv:priv">(<a href="references.html#ref-riscv:priv" role="doc-biblioref">Waterman et al. 2024</a>)</span>. The kernel can then flush just the TLB entries for a particular address space. Xv6 does not use this feature.</p>
+<p>The xv6 kernel’s lack of a <code>malloc</code>-like allocator that can provide memory for small objects prevents the kernel from using sophisticated data structures that would require dynamic allocation. A more elaborate kernel would likely allocate many different sizes of small blocks, rather than (as in xv6) just 4096-byte blocks; a real kernel allocator would need to handle small allocations as well as large ones.</p>
+<p>Memory allocation is a perennial hot topic, the basic problems being efficient use of limited memory and preparing for unknown future requests&nbsp;<span class="citation" data-cites="knuth">(<a href="references.html#ref-knuth" role="doc-biblioref">Knuth 1997</a>)</span>. Today people care more about speed than space efficiency.</p>
+</section>
+<section id="exercises" class="level2" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">3.9</span> Exercises</h2>
+<ol type="1">
+<li><p>Parse RISC-V’s device tree to find the amount of physical memory the computer has.</p></li>
+<li><p>The functions <code>copyin</code> and <code>copyinstr</code> walk the user page table in software. Set up the kernel page table so that the kernel has the user program mapped, and <code>copyin</code> and <code>copyinstr</code> can use <code>memcpy</code> to copy system call arguments into kernel space, relying on the hardware to do the page table walk.</p></li>
+<li><p>Modify xv6 to use super pages for the kernel.</p></li>
+<li><p>Unix implementations of <code>exec</code> traditionally include special handling for shell scripts. If the file to execute begins with the text <code>#!</code>, then the first line is taken to be a program to run to interpret the file. For example, if <code>exec</code> is called to run <code>myprog</code> <code>arg1</code> and <code>myprog</code> ’s first line is <code>#!/interp</code>, then <code>exec</code> runs <code>/interp</code> with command line <code>/interp</code> <code>myprog</code> <code>arg1</code>. Implement support for this convention in xv6.</p></li>
+<li><p>Implement address space layout randomization for the kernel.</p></li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-knuth" class="csl-entry" role="listitem">
+Knuth, Donald. 1997. <em>Fundamental Algorithms. The Art of Computer Programming. (Second Ed.)</em>. Vol. 1. Addison-wesley.
+</div>
+<div id="ref-aleph:smashing" class="csl-entry" role="listitem">
+One, Aleph. n.d. <em>Smashing the Stack for Fun and Profit</em>. <a href="http://phrack.org/issues/49/14.html#article" class="uri">Http://phrack.org/issues/49/14.html#article</a>.
+</div>
+<div id="ref-riscv:priv" class="csl-entry" role="listitem">
+Waterman, Andrew, Krste Asanovic, and John Hauser, eds. 2024. <em>The <span>RISC-V</span> Instruction Set Manual <span>Volume II</span>: Privileged Specification</em>. <a href="https://drive.google.com/file/d/1uviu1nH-tScFfgrovvFCrj7Omv8tFtkp/view?usp=drive_link" class="uri">Https://drive.google.com/file/d/1uviu1nH-tScFfgrovvFCrj7Omv8tFtkp/view?usp=drive_link</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<!-- Side-by-side source code panel for xv6 book "code reference" links.
+     Included via _quarto.yml's `include-after-body`. Clicking a link tagged
+     `.coderef` (see convert.py) fetches the referenced file from GitHub's raw
+     CDN, shows it in a right-hand pane, and highlights the referenced line(s).
+     GitHub blocks <iframe> embedding (X-Frame-Options: deny), so we fetch the
+     raw text (raw.githubusercontent.com sends Access-Control-Allow-Origin: *)
+     and render it ourselves. -->
+<div id="coderef-panel" aria-hidden="true">
+  <div id="coderef-head">
+    <span id="coderef-title">source</span>
+    <a id="coderef-gh" href="#" target="_blank" rel="noopener" title="Open on GitHub">GitHub ↗</a>
+    <button id="coderef-close" type="button" title="Close (Esc)" aria-label="Close">✕</button>
+  </div>
+  <div id="coderef-body"><div id="coderef-msg">Loading…</div></div>
+</div>
+<script>
+(function () {
+  // raw.githubusercontent.com mirror of the GH blob base used in convert.py.
+  var RAW = "https://raw.githubusercontent.com/mit-pdos/xv6-riscv/riscv/";
+  var cache = {};                       // path -> array of source lines
+
+  var panel = document.getElementById("coderef-panel");
+  var bodyEl = document.getElementById("coderef-body");
+  var titleEl = document.getElementById("coderef-title");
+  var ghEl = document.getElementById("coderef-gh");
+
+  function openPanel() {
+    document.documentElement.classList.add("coderef-open");
+    panel.setAttribute("aria-hidden", "false");
+  }
+  function closePanel() {
+    document.documentElement.classList.remove("coderef-open");
+    panel.setAttribute("aria-hidden", "true");
+  }
+  document.getElementById("coderef-close").addEventListener("click", closePanel);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closePanel();
+  });
+
+  function render(lines, start, end) {
+    var frag = document.createDocumentFragment();
+    var pre = document.createElement("pre");
+    pre.className = "coderef-code";
+    var target = null;
+    for (var i = 0; i < lines.length; i++) {
+      var n = i + 1;
+      var row = document.createElement("div");
+      row.className = "coderef-row";
+      if (n >= start && n <= end) {
+        row.classList.add("coderef-hl");
+        if (!target) target = row;
+      }
+      var gut = document.createElement("span");
+      gut.className = "coderef-ln";
+      gut.textContent = n;
+      var code = document.createElement("span");
+      code.className = "coderef-src";
+      code.textContent = lines[i];
+      row.appendChild(gut);
+      row.appendChild(code);
+      pre.appendChild(row);
+    }
+    frag.appendChild(pre);
+    bodyEl.innerHTML = "";
+    bodyEl.appendChild(frag);
+    // scroll the first highlighted line to roughly a third down the pane.
+    if (target) {
+      bodyEl.scrollTop = Math.max(0, target.offsetTop - bodyEl.clientHeight / 3);
+    }
+  }
+
+  function show(path, start, end, href) {
+    openPanel();
+    titleEl.textContent = path + (start ? ":" + start + (end > start ? "-" + end : "") : "");
+    ghEl.href = href;
+    if (cache[path]) {
+      render(cache[path], start, end);
+      return;
+    }
+    bodyEl.innerHTML = '<div id="coderef-msg">Loading ' + path + ' …</div>';
+    fetch(RAW + path)
+      .then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.text();
+      })
+      .then(function (txt) {
+        cache[path] = txt.replace(/\n$/, "").split("\n");
+        render(cache[path], start, end);
+      })
+      .catch(function (err) {
+        bodyEl.innerHTML =
+          '<div id="coderef-msg">Could not load source (' + err.message +
+          ').<br><a href="' + href + '" target="_blank" rel="noopener">Open on GitHub ↗</a></div>';
+      });
+  }
+
+  // Event delegation: one listener handles every .coderef link on the page.
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a.coderef");
+    if (!a) return;
+    // let modified clicks fall through to the normal GitHub link / new tab.
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    var path = a.getAttribute("data-path");
+    if (!path) return;
+    e.preventDefault();
+    var start = parseInt(a.getAttribute("data-line"), 10) || 0;
+    var end = parseInt(a.getAttribute("data-end"), 10) || start;
+    show(path, start, end, a.href);
+  });
+})();
+</script>
+<!-- Chapter section list inside the left sidebar.
+     Included via _quarto.yml's `include-after-body`. The book sets `toc: false`
+     so Quarto emits no right-hand margin TOC (that space belongs to the code
+     pop-out in coderef-panel.html). Instead we build the current chapter's
+     section list here and nest it under the chapter's own sidebar entry. -->
+<script>
+(function () {
+  function build() {
+    var active = document.querySelector("#quarto-sidebar .sidebar-link.active");
+    if (!active) return;
+    var item = active.closest("li.sidebar-item");
+    if (!item) return;
+
+    var secs = document.querySelectorAll("main#quarto-document-content section.level2[id]");
+    if (!secs.length) return;
+
+    var list = document.createElement("ul");
+    list.className = "list-unstyled chapter-sections";
+    var links = [];
+    secs.forEach(function (sec) {
+      var h = sec.querySelector("h2");
+      if (!h) return;
+      var li = document.createElement("li");
+      li.className = "chapter-section";
+      var a = document.createElement("a");
+      a.className = "sidebar-item-text sidebar-link chapter-section-link";
+      a.href = "#" + sec.id;
+      // The heading already renders its own section number, so take it as-is.
+      a.textContent = h.textContent.replace(/\s+/g, " ").trim();
+      li.appendChild(a);
+      list.appendChild(li);
+      links.push({ a: a, sec: sec });
+    });
+    item.appendChild(list);
+
+    // Highlight the section the reader is currently in; Quarto's own scrollspy
+    // only ran against the margin TOC, which no longer exists.
+    var current = null;
+    function sync() {
+      var found = links[0];
+      for (var i = 0; i < links.length; i++) {
+        if (links[i].sec.getBoundingClientRect().top <= 120) found = links[i];
+      }
+      if (found === current) return;
+      if (current) current.a.classList.remove("active");
+      if (found) found.a.classList.add("active");
+      current = found;
+    }
+    var queued = false;
+    window.addEventListener("scroll", function () {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(function () { queued = false; sync(); });
+    }, { passive: true });
+    sync();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", build);
+  } else {
+    build();
+  }
+})();
+</script>
+<!-- Yellow highlighting for individual code-listing lines, the HTML counterpart
+     of the book's \hl{} in lstlisting escapes (see convert-quarto.py).
+     Included via _quarto.yml's `include-after-body`. convert-quarto.py tags the
+     listing with hl-lines="7,16,19", which pandoc emits as data-hl-lines on the
+     wrapping <div class="sourceCode">; pandoc numbers the lines by wrapping each
+     one in <span id="cbN-L">, so we just add .added-line (see styles.css) to the
+     spans whose line numbers were listed. -->
+<script>
+(function () {
+  function highlight(div) {
+    var code = div.querySelector("pre > code");
+    if (!code) return;
+    var spans = code.querySelectorAll(":scope > span[id]");
+    if (!spans.length) return;         // block isn't line-numbered
+    // The first span's id is "cbN-<first line number>", which is where the
+    // listing's numbering starts (lstlisting's firstnumber=).
+    var first = parseInt(spans[0].id.replace(/^.*-/, ""), 10);
+    if (isNaN(first)) return;
+    div.getAttribute("data-hl-lines").split(",").forEach(function (s) {
+      var i = parseInt(s, 10) - first;
+      if (i >= 0 && i < spans.length) spans[i].classList.add("added-line");
+    });
+  }
+  document.querySelectorAll("div.sourceCode[data-hl-lines]").forEach(highlight);
+})();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./first.html" class="pagination-link" aria-label="Operating system organization">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Operating system organization</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./trap.html" class="pagination-link" aria-label="Traps and system calls">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Traps and system calls</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,17 @@
+{
+  "fig/os.svg": "/images/xv6/unix-0-os.webp",
+  "fig/mkernel.svg": "/images/xv6/first-0-mkernel.webp",
+  "fig/as.svg": "/images/xv6/first-1-as.webp",
+  "fig/riscv_address.svg": "/images/xv6/mem-0-riscv_address.webp",
+  "fig/riscv_pagetable.svg": "/images/xv6/mem-1-riscv_pagetable.webp",
+  "fig/xv6_layout.svg": "/images/xv6/mem-2-xv6_layout.webp",
+  "fig/processlayout.svg": "/images/xv6/mem-3-processlayout.webp",
+  "fig/trap.svg": "/images/xv6/trap-0-trap.webp",
+  "fig/smp.svg": "/images/xv6/lock-0-smp.webp",
+  "fig/race.svg": "/images/xv6/lock-1-race.webp",
+  "fig/order.svg": "/images/xv6/lock-2-order.webp",
+  "fig/switch.svg": "/images/xv6/sched-0-switch.webp",
+  "fig/fslayer.svg": "/images/xv6/fs-0-fslayer.webp",
+  "fig/fslayout.svg": "/images/xv6/fs-1-fslayout.webp",
+  "fig/inode.svg": "/images/xv6/fs-2-inode.webp"
+}
