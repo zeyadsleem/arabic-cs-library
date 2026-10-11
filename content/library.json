@@ -1011,6 +1011,30 @@
       "note": "ترجمة عربية غير رسمية، بإذن المؤلف كما أكّده زياد سليم بتاريخ 5 أكتوبر 2026. نصوص الدروس وتعليمات التمارين مترجمة بالكامل؛ الفيديوهات الأصلية باللغة الإنجليزية وتظل مستضافة لدى المؤلف. الاشتراك المجاني في نشرة Frontend at Scale مطلوب عند مشاهدة الكورس كاملًا على المصدر الأصلي."
     },
     {
+      "id": "webdev-learn-ar",
+      "title": "معمل التعلّم: تعلّم تطوير الويب",
+      "titleEn": "Learn Web Development (web.dev curriculum) — Arabic",
+      "author": "منهج web.dev (Google) — النسخة العربية: zeyadsleem",
+      "description": "منهج web.dev التعليمي كاملًا بالعربية: 12 كورسًا و236 درسًا تغطي HTML وCSS والتصميم المتجاوب وJavaScript والنماذج وإمكانية الوصول والصور والأداء والخصوصية وتطبيقات الويب التقدّمية والاختبار والذكاء الاصطناعي — مع اختبارات تفاعلية وحفظ للتقدّم.",
+      "sourceUrl": "https://web.dev/learn/?hl=ar",
+      "siteUrl": "https://web-dev.zeyadsleem1.workers.dev/",
+      "license": "CC BY 4.0 (النصوص والوسائط)؛ أمثلة الشيفرة Apache 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "languages": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "status": "translated",
+      "stage": "web",
+      "order": 5,
+      "format": "web",
+      "pages": 236,
+      "completeCourse": true,
+      "prerequisites": [],
+      "note": "موقع تفاعلي مستقل يقدّم منهج web.dev كاملًا بالعربية مع اختبارات وحفظ للتقدّم؛ المحتوى يُقرأ على الموقع نفسه لا داخل صفحات المكتبة. ليس منتجًا رسميًا من Google أو web.dev، والنسخة العربية مأخوذة من النسخة العربية للمصدر وقد تتضمّن ترجمة آلية."
+    },
+    {
       "id": "devops-roadmap",
       "title": "خارطة طريق DevOps الديناميكية",
       "titleEn": "Dynamic DevOps Roadmap",

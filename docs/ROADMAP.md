@@ -6,8 +6,8 @@
 
 ## 0. الحالة الحالية (آخر تحديث)
 
-مترجم بالكامل داخل المكتبة: **39 كتاباً / 6,104 صفحة**
-`sicp` (883) · `fullstack-open-ar` (600) · `discrete-math` (549) · `500-lines` (470) · `go101-ar` (400) · `ocaml-cs3110` (400) · `postgres-internals` (320) · `learn-go-with-tests-ar` (250) · `eloquent-javascript-ar` (200) · `database-foundations` (200) · `use-the-index-luke` (200) · `dive-into-systems` (190) · `db-design` (153) · `mit-6100l` (120) · `hello-algo` (118) · `go-tour` (103) · `go-style` (90) · `gobyexample-ar` (84) · `pgexercises` (70) · `patterns-dev` (53) · `aosabook` (51) · `select-star-sql` (45) · `nand2tetris-1` (40) · `nand2tetris-2` (40) · `cryptopals` (40) · `missing-semester` (38) · `frontend-architecture` (38) · `crafting-interpreters` (35) · `game-programming-patterns` (26) · `introtcs` (26) · `ahastack` (24) · `go-faq` (22) · `crypto-101` (18) · `effective-go` (16) · `open-data-structures` (14) · `xv6` (150) · `sql-mystery` (12) · `network-security` (10) · `how-to-write-go-code` (6)
+مترجم بالكامل داخل المكتبة: **40 كتاباً / 6,340 صفحة**
+`sicp` (883) · `fullstack-open-ar` (600) · `discrete-math` (549) · `500-lines` (470) · `go101-ar` (400) · `ocaml-cs3110` (400) · `postgres-internals` (320) · `learn-go-with-tests-ar` (250) · `webdev-learn-ar` (236) · `eloquent-javascript-ar` (200) · `database-foundations` (200) · `use-the-index-luke` (200) · `dive-into-systems` (190) · `db-design` (153) · `mit-6100l` (120) · `hello-algo` (118) · `go-tour` (103) · `go-style` (90) · `gobyexample-ar` (84) · `pgexercises` (70) · `patterns-dev` (53) · `aosabook` (51) · `select-star-sql` (45) · `nand2tetris-1` (40) · `nand2tetris-2` (40) · `cryptopals` (40) · `missing-semester` (38) · `frontend-architecture` (38) · `crafting-interpreters` (35) · `game-programming-patterns` (26) · `introtcs` (26) · `ahastack` (24) · `go-faq` (22) · `crypto-101` (18) · `effective-go` (16) · `open-data-structures` (14) · `xv6` (150) · `sql-mystery` (12) · `network-security` (10) · `how-to-write-go-code` (6)
 
 في طابور الترجمة: **7 مصادر** بالترتيب المذكور في القسم 7، وكلّها تحتاج مستورداً
 جديداً إذ لم يُستورد مصدرها بعد. المصادر التي يمنع ترخيصها إعادة الترجمة (ND أو
@@ -38,7 +38,7 @@
 | ⑤ | الأنظمة | xv6 (✅) · OSTEP (مرجع) · Nand2Tetris I (✅) · Nand2Tetris II (✅) · Dive into Systems (✅) | — |
 | ⑥ | مسار Go | Go by Example (✅) · Learn Go with Tests (✅) · Go 101 (✅) | — |
 | ⑦ | JavaScript | Eloquent JavaScript (✅) | — |
-| ⑧ | تطوير الويب | Full Stack open (✅) | Eloquent JS |
+| ⑧ | تطوير الويب | Full Stack open (✅) · Patterns.dev (✅) · AHA Stack (✅) · Frontend Architecture (✅) · معمل التعلّم — web.dev (✅) | Eloquent JS |
 | ⑨ | الشبكات | Computer Networks (بانتظار موافقة المؤلفين) | Nand2Tetris I |
 | ⑩ | قواعد البيانات | DB Design (✅) · DB Performance at Scale · Database Foundations (✅) · PostgreSQL Internals (✅) · Use The Index (✅) | — |
 | ⑪ | اللغات | Learn Programming with OCaml · OCaml Manual (مرجع) · CS3110 (✅) · Crafting Interpreters (✅) | — |
