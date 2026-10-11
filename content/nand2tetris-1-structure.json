@@ -3,74 +3,74 @@
     {
       "key": "project01",
       "title": "Project 1: Boolean Logic",
+      "titleAr": "المشروع 1: المنطق البولياني",
       "sections": [
         {
           "slug": "index",
-          "title": "المشروع 1: المنطق البولياني",
+          "title": "Project 1: Boolean Logic",
           "order": 1
         }
-      ],
-      "titleAr": "المشروع 1: المنطق البولياني"
+      ]
     },
     {
       "key": "project02",
       "title": "Project 2: Boolean Arithmetic",
+      "titleAr": "المشروع 2: الحساب البولياني",
       "sections": [
         {
           "slug": "index",
-          "title": "المشروع 2: الحساب البولياني",
+          "title": "Project 2: Boolean Arithmetic",
           "order": 2
         }
-      ],
-      "titleAr": "المشروع 2: الحساب البولياني"
+      ]
     },
     {
       "key": "project03",
       "title": "Project 3: Memory",
+      "titleAr": "المشروع 3: الذاكرة",
       "sections": [
         {
           "slug": "index",
-          "title": "المشروع 3: الذاكرة",
+          "title": "Project 3: Memory",
           "order": 3
         }
-      ],
-      "titleAr": "المشروع 3: الذاكرة"
+      ]
     },
     {
       "key": "project04",
       "title": "Project 4: Machine Language",
+      "titleAr": "المشروع 4: لغة الآلة",
       "sections": [
         {
           "slug": "index",
-          "title": "المشروع 4: لغة الآلة",
+          "title": "Project 4: Machine Language",
           "order": 4
         }
-      ],
-      "titleAr": "المشروع 4: لغة الآلة"
+      ]
     },
     {
       "key": "project05",
       "title": "Project 5: Computer Architecture",
+      "titleAr": "المشروع 5: معمارية الحاسوب",
       "sections": [
         {
           "slug": "index",
-          "title": "المشروع 5: معمارية الحاسوب",
+          "title": "Project 5: Computer Architecture",
           "order": 5
         }
-      ],
-      "titleAr": "المشروع 5: معمارية الحاسوب"
+      ]
     },
     {
       "key": "project06",
       "title": "Project 6: Assembler",
+      "titleAr": "المشروع 6: المُجمِّع",
       "sections": [
         {
           "slug": "index",
-          "title": "المشروع 6: المُجمِّع",
+          "title": "Project 6: Assembler",
           "order": 6
         }
-      ],
-      "titleAr": "المشروع 6: المُجمِّع"
+      ]
     }
   ]
 }

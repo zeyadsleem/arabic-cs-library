@@ -312,7 +312,9 @@ const buildTable = (rows) => {
   const labels = order.filter((label) => columns.get(label).length > 0);
   if (labels.length === 0) return '';
   const stem = (value) => value.replace(/\.[^.\s]+$/, '');
-  const fileColumns = labels.filter((label) => columns.get(label).every((value) => /\.[A-Za-z0-9]+$/.test(value)));
+  const fileColumns = labels.filter((label) =>
+    columns.get(label).every((value) => /^[^\s]+\.[A-Za-z0-9]+$/.test(value))
+  );
   const anchor = fileColumns[0];
   const anchors = anchor ? [...new Set(columns.get(anchor).map(stem))] : null;
   const lines = [`| ${labels.join(' | ')} |`, `|${labels.map(() => '---').join('|')}|`];
