@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.BCBGR_AK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/JdRoWEVZ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DZyrHEN9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.6O_Cmeth.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DfV2sF27.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/wM5bDL86.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/dtojWXb_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BPdl53a2.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.CY4LTkdn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Bpjan0Eo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="المشروع 10: المصرِّف I: التحليل الصياغيّ — المشروع 10: المصرِّف I: التحليل الصياغيّ"/><!----><title>المشروع 10: المصرِّف I: التحليل الصياغيّ | Nand2Tetris — الجزء الثاني: من الآلة الافتراضية إلى نظام التشغيل</title>
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/nand2tetris-2">Nand2Tetris — الجزء الثاني: من الآلة الافتراضية إلى نظام التشغيل</a> <span class="reader-bar__chapter">› المشروع 10: المصرِّف I: التحليل الصياغيّ</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 4 من 6">4 / 6</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/nand2tetris-2/project09/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/nand2tetris-2/project11/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>المشروع 7: الآلة الافتراضية I: الحساب على المكدس</h3> <ul><!--[--><li><a href="../../../../book/nand2tetris-2/project07/index">المشروع 7: الآلة الافتراضية I: الحساب على المكدس</a></li><!--]--></ul><h3>المشروع 8: الآلة الافتراضية II: التحكم في البرنامج</h3> <ul><!--[--><li><a href="../../../../book/nand2tetris-2/project08/index">المشروع 8: الآلة الافتراضية II: التحكم في البرنامج</a></li><!--]--></ul><h3>المشروع 9: لغة عالية المستوى</h3> <ul><!--[--><li><a href="../../../../book/nand2tetris-2/project09/index">المشروع 9: لغة عالية المستوى</a></li><!--]--></ul><h3 class="active-chapter">المشروع 10: المصرِّف I: التحليل الصياغيّ</h3> <ul><!--[--><li><a href="../../../../book/nand2tetris-2/project10/index" class="active">المشروع 10: المصرِّف I: التحليل الصياغيّ</a></li><!--]--></ul><h3>المشروع 11: المصرِّف II: توليد الشيفرة</h3> <ul><!--[--><li><a href="../../../../book/nand2tetris-2/project11/index">المشروع 11: المصرِّف II: توليد الشيفرة</a></li><!--]--></ul><h3>المشروع 12: نظام التشغيل</h3> <ul><!--[--><li><a href="../../../../book/nand2tetris-2/project12/index">المشروع 12: نظام التشغيل</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>المشروع 10: المصرِّف I: التحليل الصياغيّ</h1> <!--[0--><nav class="toc-inline" aria-label="في هذا القسم"><p>في هذا القسم</p> <ul><!--[--><li><a href="#المشروع-10-مصرف-i-التحليل-الصياغي">المشروع 10: مصرِّف I - التحليل الصياغيّ</a></li><li><a href="#خلفية">خلفية</a></li><li><a href="#الهدف">الهدف</a></li><li><a href="#العقد">العقد</a></li><li><a href="#الموارد">الموارد</a></li><li><a href="#التنفيذ-المقترح">التنفيذ المقترح</a></li><li><a href="#برامج-الاختبار">برامج الاختبار</a></li><li><a href="#الاختبار">الاختبار</a></li><!--]--></ul></nav><!--]--> <!--[-1--><div class="reader-content"><!----><h2 id="المشروع-10-مصرف-i-التحليل-الصياغي">المشروع 10: مصرِّف I - التحليل الصياغيّ</h2>
+<h3 id="خلفية">خلفية</h3>
+<p>مصرِّف Jack، مثل تلك الخاصة بلغتَي Java وC#، ذو طبقتين: تُرجم الواجهة الأمامية للمصرِّف من اللغة عالية المستوى إلى لغة VM وسيطة؛ وتُترجم الواجهة الخلفية للمصرِّف بدورها من لغة VM إلى الشيفرة الأصلية للمنصة المضيفة. في المشروعين 7 و8 بنينا الواجهة الخلفية للمصرِّف (مترجم VM)؛ وننتقل الآن إلى بناء الواجهة الأمامية للمصرِّف. وسيمتد هذا التطوير على مشروعين: التحليل الصياغيّ (هذا المشروع)، وتوليد الشيفرة (المشروع التالي). مرحبًا بك في التحليل الصياغيّ.</p>
+<h3 id="الهدف">الهدف</h3>
+<p>نبني في هذا المشروع مُحَلِّلًا صياغيًا يفكّك برامج Jack وفقًا لقواعد Jack النحوية، منتجًا ملف XML يظهر بنية البرنامج باستخدام نص مُوسَّم بعلامات. وفي المشروع التالي، ستتحوّل المنطق الذي يولّد خرج XML إلى منطق يولّد شيفرة VM.</p>
+<h3 id="العقد">العقد</h3>
+<p>اكتب مُحَلِّلًا صياغيًا للغة Jack. واستخدمه لفكّك جميع ملفات أصناف .jack المرفقة أدناه. وبالنسبة لكل ملف .jack مُدخل، يجب أن يولّد مُحَلِّلك ملف خرج .xml. ويجب أن تكون الملفات المولّدة مطابقة لملفات المقارنة المرفقة، باستثناء المسافات البيضاء.</p>
+<h3 id="الموارد">الموارد</h3>
+<p>القراءة ذات الصلة بهذا المشروع هي الفصل 10 من الكتاب. وستحتاج إلى أداتين: لغة البرمجة التي ستُنفّذ بها مُحَلِّلك الصياغيّ، وأداة TextComparer المرفقة، المتوفرة في مجلد nand2tetris/tools خاصتك. وسيساعدك هذا البرنامج على مقارنة ملفات الخرج التي يولّدها مُحَلِّلك الصياغيّ بملفات المقارنة التي نرفقها. وقد ترغب أيضًا في فحص ملفات الخرج المولّدة والمرفقة بصريًا، باستخدام عارض XML ما. ولعمل ذلك، ما عليك سوى تحميل هذه الملفات في متصفّح ويب أو محرّر نصوص. وبعض هذه الأدوات، مثل Chrome، مصمّم لعرض نص XML بشكل جميل، فجرّبه. وجميع الملفات الضرورية لهذا المشروع متوفرة في nand2tetris/projects/10 على حاسوبك.</p>
+<h3 id="التنفيذ-المقترح">التنفيذ المقترح</h3>
+<p>يتضمّن الفصل 10 واجهة برمجة تطبيقات (API) مقترحة لمُحَلِّل صياغيّ مستقلة عن اللغة، يمكن أن تكون بمثابة مخطط لتنفيذك. ونقترح تنفيذ المُحَلِّل الصياغيّ في مرحلتين. أولًا، اكتب وحدة Tokenizer واختبرها. ثم اكتب وحدة CompilationEngine واختبرها، وهي تُنفّذ المُحَلِّل النحويّ الموصوف في الفصل.</p>
+<p>المرحلة الأولى: Tokenizer</p>
+<p>إنّ المعجمنة، وهي خدمة أساسية لأي مُحَلِّل صياغيّ، تتمثّل في تقسيم مُدخل نصّي معطى إلى تدفّق من الـ tokens. وأثناء قيامها بذلك، يمكن للمُحَلِّل المعجمي أيضًا تصنيف الـ tokens إلى فئات معجمية. ومع وضع ذلك في الحسبان، فإن مهمّتك الأولى هي تنفيذ واختبار وحدة JackTokenizer المحدّدة في الفصل 10. وتحديدًا، عليك تطوير (i) تنفيذ Tokenizer، و(ii) برنامج اختبار يمرّ بملف مُدخل معطى (ملف .jack) وينتج تدفّقًا من الـ tokens باستخدام تنفيذ Tokenizer خاصتك. ويجب طبع كل token في سطر منفصل، مع تصنيفه: رمز، أو كلمة مفتاحية، أو مُعرّف، أو ثابت صحيح، أو ثابت نصّي. وإليك مثالًا:</p>
+<table>
+<thead>
+<tr>
+<th>شيفرة المصدر (مُدخل)</th>
+<th>خرج Tokenizer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>if (x &lt; 0) { let state = &quot;negative&quot;; }</td>
+<td><tokens> <keyword> if </keyword> <symbol> ( </symbol> <identifier> x </identifier> <symbol> &lt; </symbol> <integerConstant> 0 </integerConstant> <symbol> ) </symbol> <symbol> { </symbol> <keyword> let </keyword> <identifier> state </identifier> <symbol> = </symbol> <stringConstant> negative </stringConstant> <symbol> ; </symbol> <symbol> } </symbol> </tokens></td>
+</tr>
+</tbody>
+</table>
+<p>ولاحظ أنه في حالة الثوابت النصية، يستبعد المُحَلِّل المعجمي علامتَي التنصيص المزدوجتين. وهذا السلوك مقصود، وهو جزء من مواصفة المُحَلِّل المعجمي خاصتنا.</p>
+<p>ولاحظ أيضًا أن أربعة من الرموز المستخدمة في لغة Jack (&lt;, &gt;, &quot;، و&amp;) تُستخدم أيضًا في وسم XML، وبالتالي لا يمكن أن تظهر حرفيًا كبيانات XML. ولحلّ المشكلة، ووفقًا للعُرف، نطلب من المُحَلِّل المعجمي إخراج هذه الرموز على الشكل &lt;, &gt;, &quot;، و&amp; على الترتيب. فمثلًا، حتى يظهر الرمز &quot;less than&quot; كما ينبغي في متصفّح ويب، يجب توليده على الشكل &quot;<symbol>&lt;</symbol>&quot;.</p>
+<p>وأخيرًا، لاحظ أنه على خلاف وحدة Tokenizer، فإن برنامج اختبار المُحَلِّل المعجمي الذي عليك كتابته ليس جزءًا من المُحَلِّل الصياغيّ. ويمثّل هذا البرنامج الاختباري مرحلة اختبار وسيطة، تركّز على الاختبار الوحدوي لـ Tokenizer فقط. وبمجرد إتمام هذا الاختبار بنجاح، لم يعُد برنامج الاختبار ضروريًا.</p>
+<p>المرحلة الثانية: المُحَلِّل النحويّ (CompilationEngine)</p>
+<p>في سياق هذا المشروع، يُعرَّف التفكيك (parsing) بصورة ضيقة على أنه المرور على المُدخل المعجمي وعرض بنيته النحوية باستخدام صيغة متّفق عليها. أمّا المُحَلِّل النحويّ المحدّد الذي نُنفّذه هنا فيستند إلى قواعد Jack النحوية، وهو مصمّم لإنتاج خرج XML. وقواعد Jack النحوية وعلامات XML المتّفق عليها موصوفة كلتاها في الفصل 10.</p>
+<p>يُنفّذ مُحَلِّل Jack النحويّ بوحدة CompilationEngine، التي تُعطى واجهة برمجة تطبيقاتها في الفصل 10. ومهمّتك هي تنفيذ واجهة برمجة التطبيقات هذه: اكتب كل واحدة من الدوالّ المحدّدة، وتأكّد من أنها تُخرج XML الصحيح. ولصالح الاختبار الوحدوي، نوصي بالبدء بكتابة محرّك تصريف يتعامل مع أي شيفرة Jack معطاة باستثناء التعابير؛ ثم وسّع محرّك التصريف ليتعامل مع التعابير أيضًا. وبرامج الاختبار المرفقة أدناه مصممة لدعم استراتيجية الاختبار المتدرّج هذه.</p>
+<h3 id="برامج-الاختبار">برامج الاختبار</h3>
+<p>إنّ طريقة طبيعية لاختبار مُحَلِّلك الصياغيّ هي أن تجعله يفكّك بعض برامج Jack تمثيلية. ونحن نرفق برنامجي اختبار من هذا القبيل: Square Dance وArray Test. ويتضمّن الأول جميع السمات النحوية للغة Jack باستثناء معالجة المصفوفات، التي تظهر في الثاني. ونوفّر أيضًا نسخة خالية من التعابير من برنامج Square Dance، كما هو موضّح أدناه.</p>
+<p>Square Dance: تطبيق تفاعلي بسيط، موصوف في المشروع 9. والتنفيذ منظّم في ثلاثة أصناف:</p>
+<table>
+<thead>
+<tr>
+<th>خرج Tokenizer</th>
+<th>خرج المُحَلِّل النحويّ</th>
+<th>ملف الصنف المصدري</th>
+<th>الوصف (غير ذي صلة بهذا المشروع تمامًا)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MainT.xml</td>
+<td>Main.xml</td>
+<td>Main.jack</td>
+<td>يُهيّئ جلسة &quot;square dance&quot; جديدة ويبدأها&quot;.</td>
+</tr>
+<tr>
+<td>SquareT.xml</td>
+<td>Square.xml</td>
+<td>Square.jack</td>
+<td>يُنفّذ مربّعًا متحرّكًا. ويمتلك كائن Square موقعًا وحجمًا على الشاشة، ودالّة للرسم والمحو والتحريك وتغيير الحجم.</td>
+</tr>
+<tr>
+<td>SquareGameT.xml</td>
+<td>Square.xml</td>
+<td>Square.jack</td>
+<td>يُدير العرض وفقًا لقواعد اللعبة.</td>
+</tr>
+</tbody>
+</table>
+<p>ملاحظة: ملفات Jack المصدريّة الثلاثة التي تشكّل تطبيق Square Dance مطابقة لتلك المخزّنة في مجلد projects/09/Square. ولاستكمال الصورة، تتوفّر نسخة مطابقة من هذه الملفات أيضًا في مجلد projects/10/Square.</p>
+<p>Square Dance الخالي من التعابير: في هذه النسخة من Square Dance، استُبدل كل تعبير في شيفرة المصدر الأصلية بمُعرّف واحد (اسم متغيّر ما في النطاق). وقد صُمّم هذا الإصدار من البرنامج لتسهيل الاختبار الوحدوي لقدرة مُحَلِّلك الصياغيّ على تفكيك كل شيء باستثناء التعابير. ولاحظ أن استبدال التعابير بمتغيّرات قد أفضى إلى شيفرة لا معنى لها، لكنها صحيحة نحوًا. وللسهولة، تحمل الملفات الخالية من التعابير الأسماء نفسها الخاصة بالملفات الأصلية، لكنها مخزّنة في مجلد منفصل هو projects/10/ExpressionlessSquare.</p>
+<p>Array Test: برنامج Jack من صنف واحد، مصمّم لاختبار كيفية تعامل المُحَلِّل الصياغيّ مع معالجة المصفوفات:</p>
+<table>
+<thead>
+<tr>
+<th>ملف الصنف المصدري</th>
+<th>الوصف (غير ذي صلة بهذا المشروع تمامًا)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Main.jack</td>
+<td>يحسب متوسط تتابع من الأعداد الصحيحة التي يُدخلها المستخدم، باستخدام بنية بيانات مصفوفة وأوامر معالجة مصفوفات.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>خرج Tokenizer</th>
+<th>خرج المُحَلِّل النحويّ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MainT.xml</td>
+<td>Main.xml</td>
+</tr>
+</tbody>
+</table>
+<p>التجريب مع برامج الاختبار: إذا أردت، يمكنك تصريف برنامجَي SquareDance وTestArray المرفقين باستخدام مصرِّف Jack المرفق، ثم استخدام مُحاكٍ الآلة الافتراضية المرفق لتشغيل الشيفرة المترجمة. وهذا النشاط غير ذي صلة بالمشروع الحالي. لكنه يخدم إظهار أن برامج الاختبار ليست مجرد نصّ صرف؛ بل لها أيضًا دلالات، أو معنى، وهو أمر لا يهتمّ به المُحَلِّل الصياغيّ.</p>
+<h3 id="الاختبار">الاختبار</h3>
+<p>اختبار Tokenizer:</p>
+<ul>
+<li>
+<p>اختبر مُحَلِّلك المعجمي على برنامجَي Square Dance وTestArray.</p>
+</li>
+<li>
+<p>بالنسبة لكل ملف مصدري Xxx.jack، اجعل برنامج اختبار المُحَلِّل المعجمي خاصتك يعطي ملف الخرج الاسم XxxT.xml. وطبّق اختبار المُحَلِّل المعجمي على كل ملف صنف في برامج الاختبار، ثم استخدم أداة TextComparer المرفقة لمقارنة الخرج المولّد بملفات المقارنة .xml المرفقة.</p>
+</li>
+<li>
+<p>وبما أن ملفات الخرج التي يولّدها برنامج اختبار المُحَلِّل المعجمي ستكون لها الأسماء والامتدادات نفسها الخاصة بملفات المقارنة المرفقة، فنقترح وضعها في مجلدات منفصلة.</p>
+</li>
+</ul>
+<p>اختبار المُحَلِّل النحويّ:</p>
+<ul>
+<li>
+<p>طبّق مُحَلِّلك الصياغيّ على برامج الاختبار المرفقة، ثم استخدم أداة TextComparer المرفقة لمقارنة الخرج المولّد بملفات المقارنة .xml المرفقة.</p>
+</li>
+<li>
+<p>وبما أن ملفات الخرج التي يولّدها مُحَلِّلك الصياغيّ ستكون لها الأسماء والامتدادات نفسها الخاصة بملفات المقارنة المرفقة، فنقترح وضعها في مجلدات منفصلة.</p>
+</li>
+<li>
+<p>ولاحظ أن إزاحة خرج XML هي للقراءة فقط. ومتصفّحات الويب وأداة TextComparer المرفقة تتجاهل المسافات البيضاء.</p>
+</li>
+</ul>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/nand2tetris-2/project09/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">المشروع 9: لغة عالية المستوى</span></a><!--]--> <!--[0--><a href="../../../../book/nand2tetris-2/project11/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">المشروع 11: المصرِّف II: توليد الشيفرة</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1kduw35 = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.BCBGR_AK.js"),
+						import("../../../../_app/immutable/entry/app.6O_Cmeth.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

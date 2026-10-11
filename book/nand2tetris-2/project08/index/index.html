@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.BCBGR_AK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/JdRoWEVZ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DZyrHEN9.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.6O_Cmeth.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DfV2sF27.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/wM5bDL86.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/dtojWXb_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BPdl53a2.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.CY4LTkdn.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Bpjan0Eo.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="المشروع 8: الآلة الافتراضية II: التحكم في البرنامج — المشروع 8: الآلة الافتراضية II: التحكم في البرنامج"/><!----><title>المشروع 8: الآلة الافتراضية II: التحكم في البرنامج | Nand2Tetris — الجزء الثاني: من الآلة الافتراضية إلى نظام التشغيل</title>
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/nand2tetris-2">Nand2Tetris — الجزء الثاني: من الآلة الافتراضية إلى نظام التشغيل</a> <span class="reader-bar__chapter">› المشروع 8: الآلة الافتراضية II: التحكم في البرنامج</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 2 من 6">2 / 6</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/nand2tetris-2/project07/index">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/nand2tetris-2/project09/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>المشروع 7: الآلة الافتراضية I: الحساب على المكدس</h3> <ul><!--[--><li><a href="../../../../book/nand2tetris-2/project07/index">المشروع 7: الآلة الافتراضية I: الحساب على المكدس</a></li><!--]--></ul><h3 class="active-chapter">المشروع 8: الآلة الافتراضية II: التحكم في البرنامج</h3> <ul><!--[--><li><a href="../../../../book/nand2tetris-2/project08/index" class="active">المشروع 8: الآلة الافتراضية II: التحكم في البرنامج</a></li><!--]--></ul><h3>المشروع 9: لغة عالية المستوى</h3> <ul><!--[--><li><a href="../../../../book/nand2tetris-2/project09/index">المشروع 9: لغة عالية المستوى</a></li><!--]--></ul><h3>المشروع 10: المصرِّف I: التحليل الصياغيّ</h3> <ul><!--[--><li><a href="../../../../book/nand2tetris-2/project10/index">المشروع 10: المصرِّف I: التحليل الصياغيّ</a></li><!--]--></ul><h3>المشروع 11: المصرِّف II: توليد الشيفرة</h3> <ul><!--[--><li><a href="../../../../book/nand2tetris-2/project11/index">المشروع 11: المصرِّف II: توليد الشيفرة</a></li><!--]--></ul><h3>المشروع 12: نظام التشغيل</h3> <ul><!--[--><li><a href="../../../../book/nand2tetris-2/project12/index">المشروع 12: نظام التشغيل</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>المشروع 8: الآلة الافتراضية II: التحكم في البرنامج</h1> <!--[0--><nav class="toc-inline" aria-label="في هذا القسم"><p>في هذا القسم</p> <ul><!--[--><li><a href="#المشروع-8-الآلة-الافتراضية-ii-التحكم-في-البرنامج">المشروع 8: الآلة الافتراضية II - التحكم في البرنامج</a></li><li><a href="#خلفية">خلفية</a></li><li><a href="#الهدف">الهدف</a></li><li><a href="#العقد">العقد</a></li><li><a href="#الموارد">الموارد</a></li><li><a href="#الاختبار">الاختبار</a></li><li><a href="#التنفيذ-المقترح">التنفيذ المقترح</a></li><li><a href="#الأدوات">الأدوات</a></li><!--]--></ul></nav><!--]--> <!--[-1--><div class="reader-content"><!----><h2 id="المشروع-8-الآلة-الافتراضية-ii-التحكم-في-البرنامج">المشروع 8: الآلة الافتراضية II - التحكم في البرنامج</h2>
+<h3 id="خلفية">خلفية</h3>
+<p>نواصل بناء مُترجِم VM - وهو برنامج يترجم البرامج المكتوبة بلغة VM إلى برامج مكتوبة بلغة آلة Hack. وهذه قطعة هندسية محترمة، لذا نؤدّيها على مرحلتَين. مرحبًا بك في المرحلة الثانية.</p>
+<h3 id="الهدف">الهدف</h3>
+<p>وسّع المترجم الأساسي المبني في المشروع 7 ليصبح مترجم VM متكاملًا. فعلى وجه الخصوص، في المشروع 7 ركّزنا على التعامل مع أوامر الحساب على المكدس والوصول إلى الذاكرة في لغة VM. وننتقل الآن إلى التعامل مع أوامر التفريع واستدعاء الدوال في لغة VM.</p>
+<h3 id="العقد">العقد</h3>
+<p>اكتب مترجمًا متكاملًا من VM إلى Hack، موسّعًا للمترجم الأساسي المطوَّر في المشروع 7، ومطابقًا لمواصفة VM الجزء الثاني (قسم 8.2 من الكتاب) ولتعيين VM القياسي على Hack الجزء الثاني (قسم 8.3.1 من الكتاب). واستخدم مترجمك لترجمة برامج VM المرفقة أدناه، منتِجًا برامج مقابلة مكتوبة بلغة التجميع Hack. وعند تشغيلها على محاكي CPU المرفق، يجب أن تُنتِج الشيفرة المترجمة التي يولّدها مترجمك النتائج المطلوبة في سكربتات الاختبار وملفات المقارنة المرفقة أدناه.</p>
+<p>لاحِظ أن برنامج الآلة الافتراضية قد يمتد إمّا على ملف .vm واحد أو على مجلد يحتوي على ملف .vm واحد أو أكثر. وفي الحالة الأولى، يُستدعى المترجم بالأمر VMTranslator fileName.vm. ويُنشئ المترجم ملف إخراج باسم fileName.asm، يُخزَّن في نفس مجلد الملف المدخل. وفي الحالة الثانية، يُستدعى المترجم بالأمر VMTranslator dirName. ويُنشئ المترجم ملف إخراج وحيدًا باسم dirName.asm، يُخزَّن في المجلد نفسه. ويحتوي هذا الملف الواحد على شيفرة التجميع الناتجة عن ترجمة كل ملفات .vm في المجلد المدخل. وقد يحتوي اسم الملف أو المجلد المدخل على مسار. فإن لم يُحدَّد مسار، يعمل المترجم على المجلد الحالي افتراضيًّا.</p>
+<h3 id="الموارد">الموارد</h3>
+<p>القراءة ذات الصلة بهذا المشروع هي الفصل 8. وستحتاج إلى أداتَين: لغة البرمجة التي ستُنفِّذ بها مترجم VM، ومحاكي CPU المرفق. ويتيح هذا المحاكي تنفيذ واختبار شيفرة الآلة التي يولّدها مترجم VM على حاسوبك. وأداة أخرى تأتي في متناول اليد في هذا المشروع هي محاكي VM المرفق. ويتيح محاكي VM (الموصوف أسفل هذه الصفحة) التجريب مع برامج VM المرفقة قبل الشروع في كتابة مترجمك.</p>
+<h3 id="الاختبار">الاختبار</h3>
+<p>نوصي بإكمال تنفيذ مترجم VM على مرحلتَين. أولًا، نَفِّذ واختَر ترجمة أوامر التفريع في لغة VM. ثم نَفِّذ واختَر ترجمة أوامر استدعاء الدوال والإرجاع. وسيتيح لك ذلك اختبار تنفيذك تدريجيًّا، باستخدام برامج الاختبار المرفقة أدناه.</p>
+<p>اختبار كيفية تعامُل مُترجِم VM مع أوامر التفريع:</p>
+<table>
+<thead>
+<tr>
+<th>البرنامج</th>
+<th>الوصف</th>
+<th>سكربتات الاختبار</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BasicLoop.vm</td>
+<td>يحسب المجموع 1+2+...+ n ويدفع الناتج إلى المكدس. وهو يختبر تنفيذ أمرَي التفريع goto و if-goto في لغة VM.</td>
+<td>BasicLoopVME.tst BasicLoop.tst BasicLoop.cmp</td>
+</tr>
+<tr>
+<td>FibonacciSeries.vm</td>
+<td>يحسب أول n عناصر من متسلسلة فيبوناتشي ويخزّنها في الذاكرة. وهذا البرنامج النموذجي لمعالجة المصفوفات يمثّل اختبارًا أكثر تحديًّا لأوامر التفريع في VM.</td>
+<td>FibonacciSeriesVME.tst FibonacciSeries.tstFibonacciSeries.cmp</td>
+</tr>
+</tbody>
+</table>
+<p>اختبار كيفية تعامُل مُترجِم VM مع أوامر استدعاء الدوال والإرجاع:</p>
+<table>
+<thead>
+<tr>
+<th>البرنامج</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SimpleFunction.vm</td>
+<td>يؤدّي عملية حساب بسيطة ويعيد النتيجة. ويوفّر هذا البرنامج اختبارًا أساسيًّا لتنفيذ أمرَي function و return في VM.</td>
+</tr>
+<tr>
+<td>NestedCall: Sys.vm اختبار اختياري ومتوسط، قد يكون مفيدًا عندما ينجح SimpleFunction (الاختبار السابق) ويفشل FibonacciElement (الاختبار التالي).</td>
+<td>يختبر عدة متطلبات من بروتوكول استدعاء الدوال. لمزيد من المعلومات حول هذا الاختبار الاختياري، انظر <a href="https://www.nand2tetris.org/copy-of-hdl-survival-guide">هذا الدليل</a> و<a href="https://www.nand2tetris.org/copy-of-nestedcall">هذا الرسم التوضيحي للمكدس.</a> ويمكن استخدامه مع شيفرة تهيئة VM أو بدونها.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>سكربتات الاختبار</th>
+<th>البرنامج</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SimpleFunctionVME.tst SimpleFunction.tstSimpleFunction.cmp</td>
+<td>FibonacciElement: Main.vm Sys.vm تكوّن البرنامج من أكثر من ملف .vm، يجب ترجمة المجلد بأكمله. وينبغي أن تُنتِج الترجمة ملف تجميع وحيدًا باسم FibonacciElement.asm. انظر الملاحظة أدناه لمزيد من المعلومات حول التعامل مع ملفات .vm المتعددة.</td>
+<td>يختبر التعامل مع أوامر استدعاء الدوال في VM، وقسم التهيئة (bootstrap)، ومعظم أوامر VM الأخرى. ويتكوّن مجلد البرنامج من ملفَّين كالآتي: يحتوي Main.vm على دالّة واحدة تُسمّى Main.fibonacci. وهذه الدالّة العودية تعيد العنصر رقم n من متسلسلة فيبوناتشي، وهي غير متعلّقة ببرنامج متسلسلة فيبوناتشي الموصوف سابقًا في هذا المشروع. ويحتوي Sys.vm على دالّة وحيدة تُسمّى Sys.init. وهي تستدعي Main.fibonacci بالقيمة n=4، ثم تدور إلى ما لا نهاية (ودالّة Sys.init نفسها ستُستدعى من شيفرة التهيئة التي تولّدها تنفيذات VM).</td>
+</tr>
+<tr>
+<td>NestedCallVME.tst NestedCall.tst NestedCall.cmp</td>
+<td>StaticsTest: Class1.vm Class2.vm Sys.vm</td>
+<td>تحتوي Class1.vm و Class2.vm على دوال VM مصمَّمة لضبط قيم static متنوعة وقراءتها؛ وذلك لاختبار التعامل مع مقطع الذاكرة static. ويحتوي Sys.vm على دالّة Sys.init وحيدة تستدعي دوال get/set من Class1 و Class2</td>
+</tr>
+<tr>
+<td>FibonacciElementVME.tst FibonacciElement.tst FibonacciElement.cmp بخلاف الاختبارات السابقة، يفترض هذا الاختبار أن المترجم يهيّئ تنفيذ VM. فإن لم تبدأ شيفرة التجميع المولَّدة بشيفرة التهيئة (bootstrap)، فسيفشل الاختبار.</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>StaticsTestVME.tst StaticsTest.tst StaticsTest.cmp يفترض هذا الاختبار أن المترجم يهيّئ تنفيذ VM؛ فإن لم تبدأ شيفرة التجميع المولَّدة بشيفرة التهيئة (bootstrap)، فسيفشل الاختبار.</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="التنفيذ-المقترح">التنفيذ المقترح</h3>
+<p>لكل واحد من برامج الاختبار الخمسة، اتّبع الخطوات التالية:</p>
+<ul>
+<li>
+<p>للتعرّف على السلوك المقصود لبرنامج الاختبار Xxx.vm المرفق، شغّله على محاكي VM المرفق باستخدام سكربت XxxVME.tst (فإن تكوّن البرنامج من ملف واحد أو أكثر موجودة في مجلد، فحمّل المجلد بأكمله إلى محاكي VM ونفّذ الشيفرة).</p>
+</li>
+<li>
+<p>استخدم مترجم VM لترجمة ملف Xxx.vm المرفق، أو المجلد، حسب الحاجة. ويجب أن تكون النتيجة ملفًا نصّيًا جديدًا يحتوي على شيفرة تجميع Hack. ويجب أن يكون اسم هذا الملف Xxx.asm.</p>
+</li>
+<li>
+<p>افحص برنامج Xxx.asm المترجَم. فإن ظهرت أخطاء في الصياغة (أو أي أخطاء أخرى)، نقِّح وأصلح مترجم VM.</p>
+</li>
+<li>
+<p>وللتحقق من أداء الشيفرة المترجَمة بشكل سليم، استخدم ملفَّي Xxx.tst و Xxx.cmp المرفقَين لتشغيل برنامج Xxx.asm المترجَم على محاكي CPU المرفق. فإن ظهرت أي مشاكل، نقِّح وأصلح مترجم VM.</p>
+</li>
+</ul>
+<p>واجهة برمجة التطبيقات (API): يتضمّن الفصل 8 واجهة برمجة تطبيقات مقترحة ومستقلّة عن اللغة لمترجم VM. ويمكن أن تكون هذه الواجهة مخططًا لتنفيذك.</p>
+<p>ترتيب التنفيذ: خُطِّطت برامج الاختبار المرفقة بعناية لاختبار الميزات التدريجية التي تُدخِلها كل مرحلة في تنفيذ VM خاصتك. لذا من المهم تنفيذ المترجم بالترتيب المقترح، واختباره باستخدام برامج الاختبار المرفقة في كل مرحلة. وقد يُسبّب تنفيذ مرحلة لاحقة قبل مرحلة سابقة فشل برامج الاختبار.</p>
+<p>التهيئة: لكي تُنفَّذ شيفرة VM المترجمة على منصة الحاسوب المضيف، يجب أن يتضمّن تدفّق الشيفرة المترجمة (المكتوب بلغة آلة المنصة المضيفة) بعض شيفرة التهيئة (bootstrap) التي تُخطِّط المكدس على ذاكرة الحاسوب المضيف وتبدأ تنفيذ الشيفرة الفعلية. وتفترض برامج الاختبار الثلاثة الأولى في هذا المشروع أن شيفرة التهيئة لم تُنفَّذ بعد، وتتضمّن سكربتات اختبار تؤدّي التهيئات اللازمة (كما في المشروع 7). أما برنامجا الاختبار الأخيران فتفترض أن شيفرة التهيئة يولّدها المترجم. وبعبارة أخرى، يجب أن تبدأ الشيفرة التي يولّدها الإصدار النهائي من مترجِم VM بشيفرة تضبط مؤشّر المكدس وتستدعي دالّة Sys.init. ثم تستدعي Sys.init دالّة Main.main، ويبدأ البرنامج بالعمل (كما تفعل JVM في Java دائمًا، إذ تبحث عن main وتبدأ تنفيذها).</p>
+<h3 id="الأدوات">الأدوات</h3>
+<p>قبل الشروع في توسيع مترجم VM الأساسي، نوصي باللعب مع برامج الاختبار .vm المرفقة. وسيتيح لك ذلك التجريب مع أوامر التفريع واستدعاء الدوال والإرجاع، باستخدام محاكي VM المرفق.</p>
+<p>محاكي VM: هذا البرنامج المكتوب بلغة Java، الذي يجب أن يكون في مجلد nand2tetris/tools خاصتك، مصمَّم لتنفيذ برامج VM بطريقة مباشرة ومرئية، دون الحاجة إلى ترجمتها أولًا إلى لغة الآلة. فعلى سبيل المثال، يمكنك استخدام محاكي VM المرفق لترى - حرفيًّا - كيف تستدعي دالّة أخرى، وكيف تؤدّي الدالّة المستدعاة عملها وتعيد قيمة إلى المستدعي. ولمزيد من المعلومات، انظر درس محاكي VM (<a href="https://www.nand2tetris.org/_files/ugd/56440f_720eab6f8ffe42aca11f7c93020776c4.ppsx?dn=VM%20Emulator%20Tutorial.ppsx">PPT</a>، <a href="https://www.nand2tetris.org/_files/ugd/44046b_d17a762a9fe74be5acee88a7bb91cd15.pdf">PDF</a>)</p>
+<p>إليك صورة شاشة نموذجية لمحاكي VM أثناء العمل:</p>
+<p><img src="/arabic-cs-library/images/nand2tetris-2/project07-44046b_c10120e0fa4d47718251b5038.webp" alt=""></p>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/nand2tetris-2/project07/index"><span class="prev-next__label">السابق</span> <span class="prev-next__title">المشروع 7: الآلة الافتراضية I: الحساب على المكدس</span></a><!--]--> <!--[0--><a href="../../../../book/nand2tetris-2/project09/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">المشروع 9: لغة عالية المستوى</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1kduw35 = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.BCBGR_AK.js"),
+						import("../../../../_app/immutable/entry/app.6O_Cmeth.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>
