@@ -6,10 +6,10 @@
 
 ## 0. الحالة الحالية (آخر تحديث)
 
-مترجم بالكامل داخل المكتبة: **36 كتاباً / 5,874 صفحة**
-`SICP` (883) · `Full Stack open` (600) · `Discrete Math (Levin)` (549) · `500 Lines` (470) · `Go 101` (400) · `CS3110 (OCaml)` (400) · `PostgreSQL Internals` (320) · `Learn Go with Tests` (250) · `Eloquent JavaScript` (200) · `Database Foundations` (200) · `Use The Index, Luke!` (200) · `Dive into Systems` (190) · `Database Design` (153) · `MIT 6100L` (120) · `Hello Algo` (118) · `Go Tour` (103) · `Go Style` (90) · `Go by Example` (84) · `pgExercises` (70) · `patterns.dev` (53) · `AOSA v1 + v2` (51) · `Select Star SQL` (45) · `Cryptopals` (40) · `Missing Semester` (38) · `Frontend Architecture` (38) · `Crafting Interpreters` (35) · `Game Programming Patterns` (26) · `IntroTCS` (26) · `AHA Stack` (24) · `Go FAQ` (22) · `Crypto 101` (18) · `Effective Go` (16) · `Open Data Structures` (14) · `SQL Murder Mystery` (12) · `Network Security` (10) · `How to Write Go Code` (6).
+مترجم بالكامل داخل المكتبة: **38 كتاباً / 5,954 صفحة**
+`sicp` (883) · `fullstack-open-ar` (600) · `discrete-math` (549) · `500-lines` (470) · `go101-ar` (400) · `ocaml-cs3110` (400) · `postgres-internals` (320) · `learn-go-with-tests-ar` (250) · `eloquent-javascript-ar` (200) · `database-foundations` (200) · `use-the-index-luke` (200) · `dive-into-systems` (190) · `db-design` (153) · `mit-6100l` (120) · `hello-algo` (118) · `go-tour` (103) · `go-style` (90) · `gobyexample-ar` (84) · `pgexercises` (70) · `patterns-dev` (53) · `aosabook` (51) · `select-star-sql` (45) · `nand2tetris-1` (40) · `nand2tetris-2` (40) · `cryptopals` (40) · `missing-semester` (38) · `frontend-architecture` (38) · `crafting-interpreters` (35) · `game-programming-patterns` (26) · `introtcs` (26) · `ahastack` (24) · `go-faq` (22) · `crypto-101` (18) · `effective-go` (16) · `open-data-structures` (14) · `sql-mystery` (12) · `network-security` (10) · `how-to-write-go-code` (6)
 
-في طابور الترجمة: **10 مصادر** بالترتيب المذكور في القسم 7، وكلّها تحتاج مستورداً
+في طابور الترجمة: **8 مصادر** بالترتيب المذكور في القسم 7، وكلّها تحتاج مستورداً
 جديداً إذ لم يُستورد مصدرها بعد. المصادر التي يمنع ترخيصها إعادة الترجمة (ND أو
 بلا ترخيص) أُدرجت في الطابور بمبادرة المستخدم مع إبقاء اسمها وحالتها ورابط مصدرها
 الأصلي في صفحتها.
@@ -35,7 +35,7 @@
 | ② | أدوات المبرمج | Missing Semester (✅ 13 محاضرة) | — |
 | ③ | الرياضيات | Discrete Math (Levin) (✅) · MCS · IntroTCS (✅) | — |
 | ④ | بنى البيانات | Open Data Structures (✅) | — |
-| ⑤ | الأنظمة | Nand2Tetris I · Nand2Tetris II · xv6 · OSTEP (مرجع) · Dive into Systems (✅) | — |
+| ⑤ | الأنظمة | xv6 · OSTEP (مرجع) · Nand2Tetris I (✅) · Nand2Tetris II (✅) · Dive into Systems (✅) | — |
 | ⑥ | مسار Go | Go by Example (✅) · Learn Go with Tests (✅) · Go 101 (✅) | — |
 | ⑦ | JavaScript | Eloquent JavaScript (✅) | — |
 | ⑧ | تطوير الويب | Full Stack open (✅) | Eloquent JS |
@@ -118,7 +118,7 @@
 | 3 | Database Design 2e | Pressbooks (عبر archive.org) | 16 فصلاً + 3 ملاحق | ✅ مترجم |
 | 4 | Discrete Math (Levin) | PreTeXt + 306 SVG | 7 فصول | ✅ مترجم |
 | 5 | SICP | HTML (38 صفحة) | 5 فصول | ✅ مترجم |
-| 6 | Nand2Tetris I + II | صفحات المشاريع + PDF | 12 مشروعاً | في الطابور |
+| 6 | Nand2Tetris I + II | صفحات المشاريع + PDF | 12 مشروعاً | ✅ مترجم (I و II) |
 | 7 | xv6 | HTML + شيفرة C | 9 فصول | في الطابور |
 | 8 | Learn Programming with OCaml | PDF/EPUB | 13 فصلاً | في الطابور |
 | 9 | Crypto 101 | Markdown | ~250 صفحة | ✅ مترجم |
