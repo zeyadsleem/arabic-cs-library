@@ -1,0 +1,76 @@
+{
+  "chapters": [
+    {
+      "key": "project07",
+      "title": "Project 7: VM I: Stack Arithmetic",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "المشروع 7: الآلة الافتراضية I: الحساب على المكدس",
+          "order": 7
+        }
+      ],
+      "titleAr": "المشروع 7: الآلة الافتراضية I: الحساب على المكدس"
+    },
+    {
+      "key": "project08",
+      "title": "Project 8: VM II: Program Control",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "المشروع 8: الآلة الافتراضية II: التحكم في البرنامج",
+          "order": 8
+        }
+      ],
+      "titleAr": "المشروع 8: الآلة الافتراضية II: التحكم في البرنامج"
+    },
+    {
+      "key": "project09",
+      "title": "Project 9: High-Level Language",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "المشروع 9: لغة عالية المستوى",
+          "order": 9
+        }
+      ],
+      "titleAr": "المشروع 9: لغة عالية المستوى"
+    },
+    {
+      "key": "project10",
+      "title": "Project 10: Compiler I: Syntax Analysis",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "المشروع 10: المصرِّف I: التحليل الصياغيّ",
+          "order": 10
+        }
+      ],
+      "titleAr": "المشروع 10: المصرِّف I: التحليل الصياغيّ"
+    },
+    {
+      "key": "project11",
+      "title": "Project 11: Compiler II: Code Generation",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "المشروع 11: المصرِّف II: توليد الشيفرة",
+          "order": 11
+        }
+      ],
+      "titleAr": "المشروع 11: المصرِّف II: توليد الشيفرة"
+    },
+    {
+      "key": "project12",
+      "title": "Project 12: Operating System",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "المشروع 12: نظام التشغيل",
+          "order": 12
+        }
+      ],
+      "titleAr": "المشروع 12: نظام التشغيل"
+    }
+  ]
+}
