@@ -1,0 +1,180 @@
+{
+  "chapters": [
+    {
+      "key": "frontmatter",
+      "title": "Title page",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Title page",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "preface",
+      "title": "Preface",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Preface",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "working-environment",
+      "title": "The Working Environment",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Working Environment",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "first-steps",
+      "title": "First Steps with OCaml",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "First Steps with OCaml",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "ocaml-concepts",
+      "title": "OCaml Concepts: A Closer Look",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "OCaml Concepts: A Closer Look",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "arrays",
+      "title": "Arrays",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Arrays",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "sets-and-dictionaries",
+      "title": "Sets and Dictionaries",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Sets and Dictionaries",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "queues",
+      "title": "Queues",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Queues",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "graphs",
+      "title": "Graphs",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Graphs",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "disjoint-sets",
+      "title": "Disjoint Sets",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Disjoint Sets",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "zippers",
+      "title": "Zippers",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Zippers",
+          "order": 10
+        }
+      ]
+    },
+    {
+      "key": "arithmetic",
+      "title": "Arithmetic",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Arithmetic",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "key": "dynamic-programming",
+      "title": "Dynamic Programming and Memoization",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Dynamic Programming and Memoization",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "sorting",
+      "title": "Sorting Algorithms",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Sorting Algorithms",
+          "order": 13
+        }
+      ]
+    },
+    {
+      "key": "graph-algorithms",
+      "title": "Graph Algorithms",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Graph Algorithms",
+          "order": 14
+        }
+      ]
+    },
+    {
+      "key": "references",
+      "title": "Bibliography",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Bibliography",
+          "order": 15
+        }
+      ]
+    }
+  ]
+}
