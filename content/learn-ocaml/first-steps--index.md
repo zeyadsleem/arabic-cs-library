@@ -3710,45 +3710,44 @@ let () =
 بلغغة C، فإن نظام الأنواع لا يمكن أن يمنع التعديل في الموضع، لأن جميع
 البيانات في C قابلة للتعديل).
 
-Finally, we must not forget that unused memory is automatically recovered.
-Consider for instance an expression such as:
+وأخيرًا، يجب ألّا ننسى أن الذاكرة غير المستخدمة تُستعاد تلقائيًا.
+فلننظر مثلًا في التعبير التالي:
 
 ```ocaml
   let l = [1;2;3] in append l [4;5;6]
 ```
 
-The three blocks of `l` are effectively copied during the construction of the list
-`[1;2;3;4;5;6]` but may be recovered immediately as they are no longer referenced
-anywhere. (Chapter [3](https://usr.lmf.cnrs.fr/lpo/mainch3.html#ocaml-concepts-a-closer-look) offers more details on memory management.)
+الكتل الثلاث لـ `l` تُنسخ فعليًا أثناء بناء القائمة
+`[1;2;3;4;5;6]`، لكن يمكن استعادتها مباشرةً إذ لم يبقَ هناك ما يشير
+إليها في أي موضع. (ويقدّم الفصل
+[3](https://usr.lmf.cnrs.fr/lpo/mainch3.html#ocaml-concepts-a-closer-look) تفاصيل أكثر عن إدارة الذاكرة.)
 
-##### The Practical Advantages of Persistence
+##### المزايا العملية للدوام
 
-Persistence has many practical advantages. To begin with, it aids reasoning about the
-code and its correctness: Since the values manipulated by the program are
-immutable, we can reason mathematically about them. We can use equational
-reasoning without even worrying about the evaluation order. It is thus easy to
-verify the correctness of the function `append` once we have stated what it is
-supposed to do (namely, that `appendl1l2` constructs the list formed from
-the elements of `l1`, followed by the elements of `l2`). A simple recursion on
-the structure of `l1` suffices. If, however, we are dealing with lists that are
-modifiable in-place and a function `append` that modifies the last pointer of
-`l1` to make it point to `l2`, then the correctness argument is clearly more
-difficult. The contrast is even more flagrant when a list is to be reversed.
+للدوام مزايا عملية كثيرة. فأولًا، هو يساعد على الاستدلال على القانون
+وصحّته: فالقيم التي يعالجها البرنامج لا يتغيّر عليها الحال، ولذلك يمكننا
+الاستدلال عليها رياضيًا. ويمكننا استخدام الاستدلال بالمعادلات دون أن
+نقلق حيال ترتيب التقييم. وهكذا يكون التحقق من صحّة الدالة `append`
+ميسورًا بمجرّد أن نُصرّح بما يُفترض أن تفعله (أي أن `appendl1l2` تبني
+القائمة المتكوِّنة من عناصر `l1`، تليها عناصر `l2`). ويكفي لذلك تعاود
+بسيط على بنية `l1`. أما إذا كنا نتعامل مع قوائم قابلة للتعديل في موضعها
+ودالة `append` تعدّل المؤشّر الأخير لـ `l1` ليجعلها تشير إلى `l2`، فإن
+حجّة الصحّة تصير أوضح صعوبةً. ويصير الفرق أشدّ إثارةً للانتباه عندما
+تكون المطلوب عكس قائمة.
  
  
-The correctness of a program is important and must always take precedence
-over its efficiency. After all, nobody would want a program that is fast but
-incorrect.
+صحّة البرنامج مسألة مهمة، ويجب أن تأتي الأولوية عليها دائمًا على
+فعّاليته. ففي النهاية، لا أحد يريد برنامجًا سريعًا لكنه غير صحيح.
 
-Persistence is not only useful for correctness, it is also a powerful tool in contexts
-where *backtracking*is necessary. Suppose, for example, we write a program to find the
-way out of a maze using a function `find` that takes as argument a persistent state and
-returns a boolean indicating a successful search. A function `possible_moves` returns
-the possible moves from a particular state as a list. As the datatype is persistent,
-another function, `move`, returns the state resulting from a move and the current state.
-We also assume that a boolean function `is_exit` returns whether a particular state
-corresponds to the exit. We can then write the function `find` in the following
-way:
+الدوام ليس مفيدًا للصحّة فقط، بل هو أيضًا أداة قوية في السياقات التي
+يكون فيها *الرجوع إلى الخلف* ضروريًا. فلنفترض مثلًا أننا نكتب برنامجًا
+لإيجاد طريق للخروج من متاهة باستخدام دالة `find` تأخذ كوسيط حالةً دائمة
+وتُعيد قيمة منطقية تدل على نجاح البحث. وتُعيد دالة `possible_moves`
+التحرّكات الممكنة من حالة معيّنة في صورة قائمة. ولما كانت نوع البيانات
+دائمًا، فإن دالةً أخرى، `move`، تُعيد الحالة الناتجة عن تحرّك ما إلى
+جانب الحالة الحالية. كما نفترض أن دالةً منطقيةً `is_exit` تُعيد ما إذا كانت
+حالةٌ معيّنة تقابل المخرج. ويمكننا حينئذٍ كتابة الدالة `find` على النحو
+التالي:
 
 ```ocaml
   let rec find e =
@@ -3758,12 +3757,12 @@ way:
     | d :: r -> find (move d e) || try_move e r
 ```
 
-Here, `try_move` is a function that tries the possible moves in a list, one by one. It is the
-persistence of the data structure encoding the state that allows us to write such
-concise code. If the state was a global data structure modified in-place, we would have
-to perform the move before calling `find` recursively in `try_move`. We would also have
-to *undo*this move in case of failure before trying other possible moves. The code
-would then look something like this:
+هنا، `try_move` دالة تجرّب التحرّكات الممكنة في قائمة، واحدًا تلو الآخر.
+ودوام بنية البيانات التي تُمثّل الحالة هو ما يسمح لنا بكتابة مثل هذا
+القانون الموجز. فلو كانت الحالة بنية بيانات عامة تُعدَّل في موضعها، لكنا
+اضطررنا إلى إجراء التحرّك قبل نداء `find` نداءً تعاوبيًا في `try_move`.
+كما كان يتعيَّن علينا *التراجع* عن هذا التحرّك في حالة الفشل قبل تجربة
+التحرّكات الممكنة الأخرى. وسيبدو القانون حينئذٍ شيئًا من هذا القبيل:
 
 ```ocaml
   let rec find () =
@@ -3773,20 +3772,19 @@ would then look something like this:
     | d :: r -> (move d; find ()) || (undo_move d; try_move r)
 ```
 
-This is indubitably less clear and more error-prone. Note that this is not an artifical
-example; *backtracking*is a programming technique regularly used when implementing
-graph traversals, coloring, enumeration of solutions, etc.
+وهذا أقلّ وضوحًا بلا ريب وأكثر عرضةً للأخطاء. ولنلاحظ أن هذا ليس مثالًا
+مصطنعًا؛ فـ *الرجوع إلى الخلف* تقنية برمجية تُستخدم بانتظام عند تنفيذ
+اجتيازات الرسوم البيانية والتلوين وحصر الحلول، إلخ.
 
-Consider a second example of the usefulness of persistence. Imagine a program
-that manipulates a database. At any moment, there is only one instance of this
-database. A priori, there is therefore no need to use a persistent data structure
-for it. Let us assume that the modifications performed on the database are
-complex, that is, involving a large number of operations, some of which can fail.
+لننظر في مثال ثانٍ على فائدة الدوام. فلنتصوَّر برنامجًا يعالج قاعدة
+بيانات. في أي لحظة، لا توجد سوى نسخة واحدة من قاعدة البيانات هذه. وليس
+ثمة من حاجة مسبقةً إذن إلى استخدام بنية بيانات دائمة من أجلها. فلنفترض
+أن التعديلات المطبَّقة على قاعدة البيانات معقَّدة، أي إنها تنطوي على عدد
+كبير من العمليات، بعضها يمكن أن يفشل.
  
  
-We then find ourselves in a difficult situation if we need to *undo*the effects
-already performed before the failure. Schematically, the code could look like
-this:
+نجد أنفسنا حينئذٍ في وضع عصيب إذا احتجنا إلى *التراجع* عن الآثار
+المُنفَّذة بالفعل قبل الفشل. وعلى نحو تخطيطي، قد يبدو القانون هكذا:
 
 ```ocaml
    try
@@ -3796,9 +3794,9 @@ this:
          then handle the error ...
 ```
 
-If we use a persistent data structure for the database, it may be stored in a reference. Let
-us call it `db`. The operation that modifies the database sets the value of this
-reference:
+إذا استخدمنا بنية بيانات دائمة لقاعدة البيانات، فيمكن تخزينها في مرجع.
+فلنُسمِّه `db`. والعملية التي تُعدّل قاعدة البيانات تضبط قيمة هذا
+المرجع:
 
 ```ocaml
    let db = ref ( ... initial database ... )
@@ -3809,24 +3807,22 @@ reference:
      ... handle the error ...
 ```
 
-From then on, there is no need to undo anything. The modification, however complex it
-may be, constructs a brand new database. Only once this construction is complete is
-the reference `db` modified so that it points to the new database. This final
-modification is atomic and cannot fail. If any exception is raised during the
-modification itself, the reference `db` remains unchanged. The automatic memory
-manager will then recover the memory that was unnecessarily allocated during the
-modification.
+ومنذ تلك اللحظة، لا حاجة إلى التراجع عن أي شيء. فالتعديل، مهما كان
+تعقيدًا، يبني قاعدة بيانات جديدة تمامًا. ولا يُعدَّل المرجع `db` إلا بعد
+اكتمال هذا البناء وحده. وهذا التعديل الأخير ذرّي ولا يمكن أن يفشل. فإذا
+طُرح أي استثناء أثناء التعديل نفسه، بقي المرجع `db` دون تغيير. وسيستعيد
+مدير الذاكرة التلقائي الذاكرة التي خُصِّص لها مكان بلا داعٍ أثناء
+التعديل.
 
-##### Interfaces and Persistence
+##### الواجهات والدوام
 
-The datatype of lists is obviously persistent because it is a type with a known
-definition, that is, it is concrete and immutable. When an OCaml module implements
-a data structure, declared as an *abstract*type, its persistent or imperative nature is
-not evident. Of course, the programmer can be informed of this fact by means of an
-appropriate comment in the interface. In practice, however, it is the types of the
-operations that provide this information. Consider the example of a persistent data
-structure that represents finite sets of integers. The interface of such a module looks
-like this:
+نوع بيانات القوائم دائم بجلاء لأنه نوع ذو تعريف معلوم، أي إنه ملموس
+(concrete) ولا يتغيّر عليه الحال. وعندما تُنفّذ وحدةٌ من وحدات أوسمل بنية
+بيانات، معلنةً كنوع *مجرَّد* (abstract)، فإن طبيعتها الدائمة أو الأمرِيّة
+غير بيّنة. وبالطبع، يمكن إحاطة المبرمج بهذا الأمر عن طريق تعليق مناسب
+في الواجهة. غير أنه، عمليًا، هي أنواع العمليات التي تُوفّر هذا المعلومة.
+فلننظر في مثال بنية بيانات دائمة تمثل المجموعات المنتهية من الأعداد
+الصحيحة. تبدو واجهة مثل هذه الوحدة هكذا:
 
 ```ocaml
   type set
@@ -3836,14 +3832,14 @@ like this:
   ...
 ```
 
-The persistent nature of sets is implicit in the interface: The operations `add` and `remove`
-return a value of type `set`, that is, a new set. The fact that the empty set `empty` is a
-constant and not a function makes the persistence even clearer. All occurrences of
-`empty` will be shared irrespective of its representation. This would not be possible
-with a mutable data structure.
+الطبيعة الدائمة للمجموعات ضمينيّة في الواجهة: فالعمليتان `add`
+و`remove` تُعيدان قيمة من النوع `set`، أي مجموعةً جديدةً. وحقيقة أن
+المجموعة الخالية `empty` ثابتٌ وليست دالةً تجعل الدوام أوضح بعد. فجميع
+مواضع `empty` ستكون مشتركةً بصرف النظر عن تمثيلها. وهذا ما لم يكن
+ممكنًا مع بنية قابلة للتعديل.
 
-A data structure for sets of integers that are modified in-place would instead have
-an interface of the form:
+وبنية بيانات لمجموعات من الأعداد الصحيحة تُعدَّل في موضعها سيكون لها
+بدلًا من ذلك شكل واجهة على النحو:
 
 ```ocaml
   type set
@@ -3853,90 +3849,68 @@ an interface of the form:
   ...
 ```
 
-Here, the function for addition, `add`, does not return anything because it adds
-an element in-place to the data structure, and it is the same for the other
-operations. The value `empty` is replaced by a *function*`create` that takes an
-argument of type `unit`. Each call to `create` must construct a new instance of the
-data structure so that the in-place modifications of one do not affect the
-others.
+هنا، دالة الإضافة، `add`، لا تُعيد شيئًا لأنها تضيف عنصرًا في موضعه إلى
+بنية البيانات، والأمر نفسه ينطبق على العمليات الأخرى. وتحلّ *دالة*
+`create` التي تأخذ وسيطًا من النوع `unit` محلّ القيمة `empty`. فكل نداء
+لـ `create` يجب أن يبني نسخةً جديدةً من بنية البيانات حتى لا تؤثر
+تعديلات إحداها في موضعها على الأخرى.
 
-Unfortunately, the type system of OCaml does not prevent the mixing of both
-kinds of data structures. Thus, you can give the type `int->set->set` to a function
-that adds an element to a set through side effects, for example by returning the set
-passed as argument. Conversely, you can give the type `unit->set` to a function `empty`
-that returns a persistent empty set. In both cases, it is useless and potentially
-dangerous.
+وللأسف، فإن نظام أنواع أوسمل لا يمنع الخلط بين نوعي بنى البيانات. وهكذا،
+يمكنك أن تعطي النوع `int->set->set` لدالة تضيف عنصرًا إلى مجموعة عبر
+الآثار الجانبية، مثلًا بإعادة المجموعة الممرَّرة إليها كوسيط. وعلى العكس،
+يمكنك أن تعطي النوع `unit->set` لدالة `empty` تُعيد مجموعةً خاليةً دائمة.
+وفي الحالتين، هذا بلا فائدة وخطر محتمل.
 
-This does not mean, however, that a persistent data structure must necessarily be
-coded without any side effects. The good definition of *persistent*is:
+غير أن هذا لا يعني أن بنية البيانات الدائمة يجب أن تُبرمج بالضرورة دون أي
+آثار جانبية. فالتعريف الجيّد لـ *دائم* هو:
 
-*persistent*= *observationally immutable*
+*دائم* = *لا يتغيّر عليه الحال من وجهة الرصد* (observationally immutable)
 
-In other words, it is not *purely applicative*, in the sense of an absence of side effects. We
-only have an implication in one direction:
+وبعبارة أخرى، ليس *تطبيقيًا خالصًا* (purely applicative)، بمعنى غياب الآثار
+الجانبية. وليس لدينا سوى تضمين في اتجاه واحد:
 
-*purely applicative*⇒*persistent*
+*تطبيقي خالص* ⇒ *دائم*
 
-The opposite is false: There are persistent data structures that make use of side effects.
-This book contains several examples of such data structures. The situation is
-illustrated in figure [2.15](#different-classes-of-data-structures).
+والعكس خاطئ: توجد بنى بيانات دائمة تستفيد من الآثار الجانبية. ويحتوي
+هذا الكتاب على أمثلة عديدة من مثل هذه البنى. وقد وُضّح هذا الموقف في
+الشكل [2.15](#different-classes-of-data-structures).
 
 ![](/images/learn-ocaml/first-steps-14-persistence_en-mps-.webp){#different-classes-of-data-structures}
 
-**Figure 2.15: Different classes of data structures.**
+**الشكل 2.15: أصناف مختلفة من بنى البيانات.**
 
-### 2.15 Exercises
+### 2.15 تمارين (Exercises)
 
-#### Drawing a Cardioid
+#### رسم قلب (Drawing a Cardioid)
 
-**2.1**Modify program [2](#x7-22014r2) to plot the set of points in figure [2.1](#computation-of-using-the-montecarlo-method).
+**2.1** عدِّل البرنامج [2](#x7-22014r2) ليرسم مجموعة النقاط الواردة في الشكل [2.1](#computation-of-using-the-montecarlo-method).
 
-**2.2**Write a program that draws the figure below.
+**2.2** اكتب برنامجًا يرسم الشكل أدناه.
 
-#### The Mandelbrot Set
+#### مجموعة ماندلبروت (Mandelbrot Set)
 
-**2.3**Modify the drawing of the Mandelbrot set by coloring points that are not in the
-set based on the first value of i for which xi2 + yi2 > 4. The color may be chosen, for
-example, by linearly interpolating between two predefined colors, and then using the
-function `Graphics.rgb` (see section [*2.10*](#breakout-without-bricks)*Breakout without Bricks*) and a simple rule
-of three.
+**2.3** عدِّل رسم مجموعة ماندلبروت عبر تلوين النقاط التي لا تنتمي إلى المجموعة بحسب أول قيمة للعدد i تتحقق عندها المتراجحة xi2 + yi2 > 4. ويمكن اختيار اللون، مثلًا، بالاستكمال الخطي (interpolation) بين لونين محدَّدين سابقًا، ثم باستعمال الدالة `Graphics.rgb` (انظر القسم [*2.10*](#breakout-without-bricks)*بريك أوت دون الطوب*) وقاعدة الثلاثة البسيطة.
 
-**2.4**Modify the code of the preceding exercise as follows: Once the drawing is done,
-choose a point in the set using the mouse. Redo the drawing centered around this
-point and at one-tenth the scale.
+**2.4** عدِّل قانون التمرين السابق على النحو التالي: بمجرد الانتهاء من الرسم، اختر نقطةً في المجموعة باستخدام الفأرة. ثم أعد الرسم ممركزًا حول هذه النقطة وبمقياس يساوي عشر المقياس الأصلي.
 
-**2.5**Write a program that draws a Koch snowflake. The snowflake is obtained by
-tracing three Koch curves along the three sides of an equilateral triangle. A Koch
-curve of depth n between two points A and B is defined as follows: For n = 0, it is the
-segment linking A and B.
+**2.5** اكتب برنامجًا يرسم ندفة ثلج كوخ (Koch snowflake). وتُحصَّل الندفة بتتبُّع ثلاث منحنيات كوخ على الأضلاع الثلاثة لمثلث متساوي الأضلاع. ويُعرَّف منحنى كوخ بعمق n بين نقطتين A و B على النحو التالي: عندما n = 0، يكون هو الواصل بين A و B.
 
-For n > 0, the segment [A,B] is divided into three segments of equal length, [A,C],
-[C,E], and [E,B]. A point D is defined as the third vertex of an equilateral triangle
-CED:
+وعندما n > 0، يُقسَّم الواصل [A,B] إلى ثلاثة وصول متساوية الطول، وهي [A,C] و [C,E] و [E,B]. وتُعرَّف النقطة D على أنها الرأس الثالث للمثلث متساوي الأضلاع CED:
 
-We then draw four Koch curves of depth n − 1 along the four segments [A,C], [C,D],
-[D,E], and [E,B].
+ثم نرسم أربعة منحنيات كوخ بعمق n − 1 على الوصلات الأربعة [A,C] و [C,D] و [D,E] و [E,B].
 
-By choosing an initial depth that is sufficiently large, we get a drawing of the
-following shape:
+ وباختيار عمق ابتدائي كبير بما يكفي، نحصل على رسم بالشكل التالي:
 
-**2.6**Let u0 be an integer greater than 1 and (un) the sequence defined
-by:
+**2.6** ليكن u0 عددًا صحيحًا أكبر من 1، وليكن (un) المتتالية المعرَّفة بالعلاقة:
 
 $$\begin{cases} u /2 if u is even un + 1 = n n 3un + 1 otherwise \end{cases}$$
 
-Write a program that reads the value of u0 using `read_int` and displays the
-successive values of the sequence (un) as long as un > 1. (The Collatz conjecture
-states that for any value of u0, we always reach the cycle 1 → 4 → 2 → 1 →…. Stated
-in 1928, this conjecture continues to defy the best efforts of mathematicians.)
+اكتب برنامجًا يقرأ قيمة u0 باستعمال `read_int` ثم يعرض القيم المتتالية للمتتالية (un) ما دام un > 1. (تنص فرضية كولاتز (Collatz conjecture) على أنه لأي قيمة لـ u0 نصل دائمًا إلى الدورة 1 → 4 → 2 → 1 →…. وقد صيغت هذه الفرضية سنة 1928، وهي لا تزال تستعصي على أفضل جهود الرياضيين.)
 
-**2.7**The problem of the tower of Hanoi consists in shifting n discs of decreasing
-diameter, stacked one on top of the other, from one location to another, by using
-a third location temporarily. Only one disc may be moved at a time, by
-taking it off the top of a stack, and it may only be placed over a larger disc.
+**2.7** تتمثل مسألة برج هانوي (tower of Hanoi) في نقل n قرصًا ذات أقطار متناقصة، مرصوصة بعضها فوق بعض، من موقع إلى آخر، باستعمال موقع ثالث بصورة مؤقتة. ولا يجوز نقل إلا قرص واحد في كل مرة، برفعه من أعلى كومة، كما لا يجوز وضعه إلا فوق قرص أكبر منه.
 
-Write a program `hanoi` that reads the value of n and then displays a valid sequence of
-moves to solve the problem, for example as follows:
+اكتب برنامجًا باسم `hanoi` يقرأ قيمة n ثم يعرض تتابعًا صحيحًا من
+الحركات لحل المسألة، مثلًا على النحو التالي:
 
 ```text
   > ./hanoi
@@ -3948,37 +3922,36 @@ moves to solve the problem, for example as follows:
   ...
 ```
 
-#### Sieve of Eratosthenes
+#### غربال إراتوستينس (Sieve of Eratosthenes)
 
-**2.8**Write a function `sum:intarray->int` that calculates the sum of the elements of
-an array, first with a `for` loop, then with a recursive function.
+**2.8** اكتب دالةً من النوع `sum:intarray->int` تحسب مجموع عناصر
+مصفوفة، أولًا باستعمال حلقة `for`، ثم بدالية تكرارية (recursive function).
 
-**2.9**Write a function `occurs:intarray->int->bool` that, for an array of
-integers a and an integer value v, determines if v appears in a. Write two
-variants of the program, one with a `while` loop and the other with a recursive
-function.
+**2.9** اكتب دالةً من النوع `occurs:intarray->int->bool` تحدد، لمصفوفة
+أعداد صحيحة a وقيمة صحيحة v، ما إذا كانت v تظهر في a. اكتب نسختين
+من البرنامج، إحداهما باستعمال حلقة `while` والأخرى بدالية تكرارية.
 
-**2.10**Write a function `binary_search:intarray->int->bool` that, for an array of
-integers a sorted in increasing order, and an integer value v, determines if v appears
-in a. Use binary search so as to have complexity O(log n), where n is the length of the
-array a.
+**2.10** اكتب دالةً من النوع `binary_search:intarray->int->bool` تحدد، لمصفوفة
+أعداد صحيحة a مرتبةً ترتيبًا تصاعديًا، وقيمة صحيحة v، ما إذا كانت v تظهر
+في a. استعمل البحث الثنائي (binary search) لتحصل على تعقيد O(log n)، حيث n هو طول
+المصفوفة a.
 
-**2.11** Write a function `shuffle:intarray->unit` that randomly shuffles the
-elements of an array using the following algorithm, called the “Knuth shuffle,” where n
-is the size of the array:
+**2.11** اكتب دالةً من النوع `shuffle:intarray->unit` تخلط عناصر
+مصفوفةً عشوائيًا باستعمال الخوارزمية التالية، المسماة «خلط نوث» (Knuth shuffle)، حيث n
+هو حجم المصفوفة:
 
-| for i from 1 to n − 1 |
+| لكل i من 1 إلى n − 1 |
 | --- |
-| let j be a random integer between 0 and i (inclusive) |
-| exchange the elements at indices i and j |
+| ليكن j عددًا صحيحًا عشوائيًا بين 0 و i (شاملًا الطرفين) |
+| بادل العنصرين ذَي المؤشرين i و j |
 
-You may use `Random.int` k to obtain a random integer between 0 and k − 1. Of course,
-this algorithm may be used for arrays of any type.
+يمكنك استعمال `Random.int` k للحصول على عدد صحيح عشوائي بين 0 و k − 1. وبالطبع،
+يمكن استعمال هذه الخوارزمية للمصفوفات من أي نوع.
 
-#### Drawing a Curve
+#### رسم منحنى (Drawing a Curve)
 
-**2.12**Write a function `sum:(int->int)->int->int->int` that takes a function f,
-and two integers i and j as arguments, and calculates the following sum:
+**2.12** اكتب دالةً من النوع `sum:(int->int)->int->int->int` تأخذ دالة f
+وعددين صحيحين i و j وسيطين، وتحسب المجموع التالي:
 
 $$k = j \sum f(k). k = i$$
 
@@ -3986,23 +3959,23 @@ $$k = j \sum f(k). k = i$$
 
 `dicho:(float->float)->float->float->float`
 
-that searches for the zero of a monotonic function f on an interval [a,b] by dichotomic
-search. The idea is as follows: Calculate the midpoint x of [a,b], and compare the
-signs of f(a) and f(x). Depending on the result, repeat the calculation on the interval
-[a,x] or [x,b]. Stop when a and b are sufficiently close to each other. You can assume
-that [a,b] contains a zero of f.
+تبحث عن صفر دالة رتيبة (monotonic function) f على فترة [a,b] باستعمال البحث
+التقريبي الثنائي (dichotomic search). والفكرة كالتالي: احسب نقطة المنتصف x للفترة [a,b]، وقارن
+إشارتَي f(a) و f(x). بحسب النتيجة، أعد الحساب على الفترة
+[a,x] أو [x,b]. توقف عندما يكون a و b قريبين من بعضهما بما يكفي. يمكنك افتراض
+أن [a,b] تحتوي صفرًا للدالة f.
 
-#### Copying a File
+#### نسخ ملف (Copying a File)
 
-**2.14**Modify program [7](#x7-48016r7) so that it correctly handles the case in which one of the two
-files cannot be opened. This triggers an exception of the form `Sys_error` s, where s
-is a string explaining the nature of the error (file does not exist, permission denied,
-etc.). This message should be displayed before terminating the program using
+**2.14** عدِّل البرنامج [7](#x7-48016r7) بحيث يعالج بشكل صحيح الحالة التي يتعذر فيها فتح
+أحد الملفين. وهذا يثير استثناءً (exception) من الشكل `Sys_error` s، حيث s
+سلسلة تشرح طبيعة الخطأ (الملف غير موجود، الإذن مرفوض،
+إلى آخره). ويجب عرض هذه الرسالة قبل إنهاء البرنامج باستعمال
 `exit1`.
 
-**2.15**In languages like C and Java, the statement `break` exits the nearest enclosing
-loop, and the statement `continue` jumps to the next iteration of the loop. Thus, the
-following C code displays `124567`:
+**2.15** في لغات مثل C و Java، تُخرج الجملةُ `break` أقرب حلقةٍ محيطة،
+وتقفز الجملةُ `continue` إلى التكرار التالي للحلقة. وبالتالي، يعرض
+كود C التالي `124567`:
 
 ```text
   for (int i = 0; i < 10; i++) {
@@ -4012,10 +3985,10 @@ following C code displays `124567`:
   }
 ```
 
-Explain how to translate these two statements into OCaml. You may use two
-exceptions, `Break` and `Continue`, to this end.
+اشرح كيف تُترجم هاتين الجملتين إلى أوسمل. يمكنك استعمال استثناءين،
+`Break` و `Continue`، لتحقيق ذلك.
 
-#### Inverting the Lines of a Text
+#### عكس ترتيب الأسطر في نص (Inverting the Lines of a Text)
 
 **2.16**Write a function `mult:intlist->int` that calculates the product of all the
 elements of a list of integers. Make sure to return 0 at the first occurrence of the
