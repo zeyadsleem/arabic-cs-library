@@ -173,6 +173,10 @@ openclaw skills check
 
 Look for the `gog` skill. Depending on your installation, it may already be available once the required CLI is installed. If it isn’t, [Skills and ClawHub](https://stevekinney.com/courses/openclaw/skills-and-clawhub) covers installing and vetting skills.
 
+The Skills page in the Control UI searched for gog, showing the bundled gog skill and the gog-remote-oauth skill at the top of the results
+
+In the Control UI, you’ll find the same list under Plugins and then the Skills tab. Searching for `gog` shows the bundled skill, which can still be disabled until you turn it on, along with community skills from ClawHub. Don’t install those just because they share the name.
+
 Make sure the `gog` executable is available in the Gateway service’s `PATH`, not just your interactive shell. A background service often has a shorter `PATH` than your terminal does.
 
 You can also add guidance to the `## Tools` section of your `AGENTS.md`:

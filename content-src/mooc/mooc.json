@@ -1,0 +1,625 @@
+[
+  {
+    "chapter": "auxiliary",
+    "slug": "all-exercises",
+    "title": "All exercises",
+    "order": 5,
+    "sourceUrl": "https://programming-26.mooc.fi/all-exercises"
+  },
+  {
+    "chapter": "auxiliary",
+    "slug": "error_messages",
+    "title": "Common error messages",
+    "order": 2,
+    "sourceUrl": "https://programming-26.mooc.fi/error_messages"
+  },
+  {
+    "chapter": "auxiliary",
+    "slug": "exam",
+    "title": "Exam 4.6.",
+    "order": 5,
+    "sourceUrl": "https://programming-26.mooc.fi/exam"
+  },
+  {
+    "chapter": "auxiliary",
+    "slug": "exam_adv",
+    "title": "Advanced Course in Programming exam 15.08.",
+    "order": 4,
+    "sourceUrl": "https://programming-26.mooc.fi/exam-adv"
+  },
+  {
+    "chapter": "auxiliary",
+    "slug": "exam_intro",
+    "title": "Introduction to Programming exam 05.09.",
+    "order": 4,
+    "sourceUrl": "https://programming-26.mooc.fi/exam-intro"
+  },
+  {
+    "chapter": "auxiliary",
+    "slug": "faq",
+    "title": "Frequently asked questions",
+    "order": 3,
+    "sourceUrl": "https://programming-26.mooc.fi/faq"
+  },
+  {
+    "chapter": "auxiliary",
+    "slug": "frontmatter-guide",
+    "title": "Frontmatter-guide",
+    "order": 1,
+    "sourceUrl": "https://programming-26.mooc.fi/frontmatter-guide"
+  },
+  {
+    "chapter": "auxiliary",
+    "slug": "grading-and-exams",
+    "title": "Grading and exams",
+    "order": 6,
+    "sourceUrl": "https://programming-26.mooc.fi/grading-and-exams"
+  },
+  {
+    "chapter": "auxiliary",
+    "slug": "index",
+    "title": "About this course",
+    "order": 0,
+    "sourceUrl": "https://programming-26.mooc.fi/"
+  },
+  {
+    "chapter": "part-1",
+    "slug": "1-getting-started",
+    "title": "Getting started",
+    "order": 1,
+    "sourceUrl": "https://programming-26.mooc.fi/part-1/1-getting-started"
+  },
+  {
+    "chapter": "part-1",
+    "slug": "2-information-from-the-user",
+    "title": "Information from the user",
+    "order": 2,
+    "sourceUrl": "https://programming-26.mooc.fi/part-1/2-information-from-the-user"
+  },
+  {
+    "chapter": "part-1",
+    "slug": "3-more-about-variables",
+    "title": "More about variables",
+    "order": 3,
+    "sourceUrl": "https://programming-26.mooc.fi/part-1/3-more-about-variables"
+  },
+  {
+    "chapter": "part-1",
+    "slug": "4-arithmetic-operations",
+    "title": "Arithmetic operations",
+    "order": 4,
+    "sourceUrl": "https://programming-26.mooc.fi/part-1/4-arithmetic-operations"
+  },
+  {
+    "chapter": "part-1",
+    "slug": "5-conditional-statements",
+    "title": "Conditional statements",
+    "order": 5,
+    "sourceUrl": "https://programming-26.mooc.fi/part-1/5-conditional-statements"
+  },
+  {
+    "chapter": "part-1",
+    "slug": "index",
+    "title": "Part 1",
+    "order": 0,
+    "sourceUrl": "https://programming-26.mooc.fi/part-1"
+  },
+  {
+    "chapter": "part-10",
+    "slug": "1-class-hierarchies",
+    "title": "Class hierarchies",
+    "order": 6,
+    "sourceUrl": "https://programming-26.mooc.fi/part-10/1-class-hierarchies"
+  },
+  {
+    "chapter": "part-10",
+    "slug": "2-access-modifiers",
+    "title": "Access modifiers",
+    "order": 7,
+    "sourceUrl": "https://programming-26.mooc.fi/part-10/2-access-modifiers"
+  },
+  {
+    "chapter": "part-10",
+    "slug": "3-oo-programming-techniques",
+    "title": "Object oriented programming techniques",
+    "order": 8,
+    "sourceUrl": "https://programming-26.mooc.fi/part-10/3-oo-programming-techniques"
+  },
+  {
+    "chapter": "part-10",
+    "slug": "4-application-development",
+    "title": "Developing a larger application",
+    "order": 9,
+    "sourceUrl": "https://programming-26.mooc.fi/part-10/4-application-development"
+  },
+  {
+    "chapter": "part-10",
+    "slug": "index",
+    "title": "Part 10",
+    "order": 0,
+    "sourceUrl": "https://programming-26.mooc.fi/part-10"
+  },
+  {
+    "chapter": "part-11",
+    "slug": "1-list-comprehensions",
+    "title": "List comprehensions",
+    "order": 10,
+    "sourceUrl": "https://programming-26.mooc.fi/part-11/1-list-comprehensions"
+  },
+  {
+    "chapter": "part-11",
+    "slug": "2-more-comprehensions",
+    "title": "More comprehensions",
+    "order": 11,
+    "sourceUrl": "https://programming-26.mooc.fi/part-11/2-more-comprehensions"
+  },
+  {
+    "chapter": "part-11",
+    "slug": "3-recursion",
+    "title": "Recursion",
+    "order": 12,
+    "sourceUrl": "https://programming-26.mooc.fi/part-11/3-recursion"
+  },
+  {
+    "chapter": "part-11",
+    "slug": "4-more-recursion-examples",
+    "title": "More recursion examples",
+    "order": 13,
+    "sourceUrl": "https://programming-26.mooc.fi/part-11/4-more-recursion-examples"
+  },
+  {
+    "chapter": "part-11",
+    "slug": "index",
+    "title": "Part 11",
+    "order": 0,
+    "sourceUrl": "https://programming-26.mooc.fi/part-11"
+  },
+  {
+    "chapter": "part-12",
+    "slug": "1-functions-as-arguments",
+    "title": "Functions as arguments",
+    "order": 14,
+    "sourceUrl": "https://programming-26.mooc.fi/part-12/1-functions-as-arguments"
+  },
+  {
+    "chapter": "part-12",
+    "slug": "2-generators",
+    "title": "Generators",
+    "order": 15,
+    "sourceUrl": "https://programming-26.mooc.fi/part-12/2-generators"
+  },
+  {
+    "chapter": "part-12",
+    "slug": "3-functional-programming",
+    "title": "Functional programming",
+    "order": 16,
+    "sourceUrl": "https://programming-26.mooc.fi/part-12/3-functional-programming"
+  },
+  {
+    "chapter": "part-12",
+    "slug": "4-regular-expressions",
+    "title": "Regular expressions",
+    "order": 17,
+    "sourceUrl": "https://programming-26.mooc.fi/part-12/4-regular-expressions"
+  },
+  {
+    "chapter": "part-12",
+    "slug": "index",
+    "title": "Part 12",
+    "order": 0,
+    "sourceUrl": "https://programming-26.mooc.fi/part-12"
+  },
+  {
+    "chapter": "part-13",
+    "slug": "1-pygame",
+    "title": "Pygame",
+    "order": 18,
+    "sourceUrl": "https://programming-26.mooc.fi/part-13/1-pygame"
+  },
+  {
+    "chapter": "part-13",
+    "slug": "2-animation",
+    "title": "Animation",
+    "order": 19,
+    "sourceUrl": "https://programming-26.mooc.fi/part-13/2-animation"
+  },
+  {
+    "chapter": "part-13",
+    "slug": "3-events",
+    "title": "Events",
+    "order": 20,
+    "sourceUrl": "https://programming-26.mooc.fi/part-13/3-events"
+  },
+  {
+    "chapter": "part-13",
+    "slug": "4-more-pygame-techniques",
+    "title": "More pygame techniques",
+    "order": 21,
+    "sourceUrl": "https://programming-26.mooc.fi/part-13/4-more-pygame-techniques"
+  },
+  {
+    "chapter": "part-13",
+    "slug": "index",
+    "title": "Part 13",
+    "order": 0,
+    "sourceUrl": "https://programming-26.mooc.fi/part-13"
+  },
+  {
+    "chapter": "part-14",
+    "slug": "1-game-project",
+    "title": "Game project",
+    "order": 22,
+    "sourceUrl": "https://programming-26.mooc.fi/part-14/1-game-project"
+  },
+  {
+    "chapter": "part-14",
+    "slug": "2-robot-and-boxes",
+    "title": "Robot and boxes",
+    "order": 23,
+    "sourceUrl": "https://programming-26.mooc.fi/part-14/2-robot-and-boxes"
+  },
+  {
+    "chapter": "part-14",
+    "slug": "3-finishing-the-game",
+    "title": "Finishing the game",
+    "order": 24,
+    "sourceUrl": "https://programming-26.mooc.fi/part-14/3-finishing-the-game"
+  },
+  {
+    "chapter": "part-14",
+    "slug": "4-your-own-game",
+    "title": "Your own game",
+    "order": 25,
+    "sourceUrl": "https://programming-26.mooc.fi/part-14/4-your-own-game"
+  },
+  {
+    "chapter": "part-14",
+    "slug": "index",
+    "title": "Part 14",
+    "order": 0,
+    "sourceUrl": "https://programming-26.mooc.fi/part-14"
+  },
+  {
+    "chapter": "part-2",
+    "slug": "1-programming_terminology",
+    "title": "Programming terminology",
+    "order": 26,
+    "sourceUrl": "https://programming-26.mooc.fi/part-2/1-programming-terminology"
+  },
+  {
+    "chapter": "part-2",
+    "slug": "2-else-elif",
+    "title": "More conditionals",
+    "order": 27,
+    "sourceUrl": "https://programming-26.mooc.fi/part-2/2-else-elif"
+  },
+  {
+    "chapter": "part-2",
+    "slug": "3-combining-conditions",
+    "title": "Combining conditions",
+    "order": 28,
+    "sourceUrl": "https://programming-26.mooc.fi/part-2/3-combining-conditions"
+  },
+  {
+    "chapter": "part-2",
+    "slug": "4-simple-loops",
+    "title": "Simple loops",
+    "order": 29,
+    "sourceUrl": "https://programming-26.mooc.fi/part-2/4-simple-loops"
+  },
+  {
+    "chapter": "part-2",
+    "slug": "index",
+    "title": "Part 2",
+    "order": 0,
+    "sourceUrl": "https://programming-26.mooc.fi/part-2"
+  },
+  {
+    "chapter": "part-3",
+    "slug": "1-loops-with-conditions",
+    "title": "Loops with conditions",
+    "order": 30,
+    "sourceUrl": "https://programming-26.mooc.fi/part-3/1-loops-with-conditions"
+  },
+  {
+    "chapter": "part-3",
+    "slug": "2-working-with-strings",
+    "title": "Working with strings",
+    "order": 31,
+    "sourceUrl": "https://programming-26.mooc.fi/part-3/2-working-with-strings"
+  },
+  {
+    "chapter": "part-3",
+    "slug": "3-more-loops",
+    "title": "More loops",
+    "order": 32,
+    "sourceUrl": "https://programming-26.mooc.fi/part-3/3-more-loops"
+  },
+  {
+    "chapter": "part-3",
+    "slug": "4-defining-functions",
+    "title": "Defining functions",
+    "order": 33,
+    "sourceUrl": "https://programming-26.mooc.fi/part-3/4-defining-functions"
+  },
+  {
+    "chapter": "part-3",
+    "slug": "index",
+    "title": "Part 3",
+    "order": 0,
+    "sourceUrl": "https://programming-26.mooc.fi/part-3"
+  },
+  {
+    "chapter": "part-4",
+    "slug": "1-vscode",
+    "title": "The Visual Studio Code editor, Python interpreter and built-in debugging tool",
+    "order": 34,
+    "sourceUrl": "https://programming-26.mooc.fi/part-4/1-vscode"
+  },
+  {
+    "chapter": "part-4",
+    "slug": "2-more-functions",
+    "title": "More functions",
+    "order": 35,
+    "sourceUrl": "https://programming-26.mooc.fi/part-4/2-more-functions"
+  },
+  {
+    "chapter": "part-4",
+    "slug": "3-lists",
+    "title": "Lists",
+    "order": 36,
+    "sourceUrl": "https://programming-26.mooc.fi/part-4/3-lists"
+  },
+  {
+    "chapter": "part-4",
+    "slug": "4-definite-iteration",
+    "title": "Definite iteration",
+    "order": 37,
+    "sourceUrl": "https://programming-26.mooc.fi/part-4/4-definite-iteration"
+  },
+  {
+    "chapter": "part-4",
+    "slug": "5-print-statement-formatting",
+    "title": "Print statement formatting",
+    "order": 38,
+    "sourceUrl": "https://programming-26.mooc.fi/part-4/5-print-statement-formatting"
+  },
+  {
+    "chapter": "part-4",
+    "slug": "6-strings-and-lists",
+    "title": "More strings and lists",
+    "order": 39,
+    "sourceUrl": "https://programming-26.mooc.fi/part-4/6-strings-and-lists"
+  },
+  {
+    "chapter": "part-4",
+    "slug": "index",
+    "title": "Part 4",
+    "order": 0,
+    "sourceUrl": "https://programming-26.mooc.fi/part-4"
+  },
+  {
+    "chapter": "part-5",
+    "slug": "1-more-lists",
+    "title": "More lists",
+    "order": 40,
+    "sourceUrl": "https://programming-26.mooc.fi/part-5/1-more-lists"
+  },
+  {
+    "chapter": "part-5",
+    "slug": "2-references",
+    "title": "References",
+    "order": 41,
+    "sourceUrl": "https://programming-26.mooc.fi/part-5/2-references"
+  },
+  {
+    "chapter": "part-5",
+    "slug": "3-dictionary",
+    "title": "Dictionary",
+    "order": 42,
+    "sourceUrl": "https://programming-26.mooc.fi/part-5/3-dictionary"
+  },
+  {
+    "chapter": "part-5",
+    "slug": "4-tuple",
+    "title": "Tuple",
+    "order": 43,
+    "sourceUrl": "https://programming-26.mooc.fi/part-5/4-tuple"
+  },
+  {
+    "chapter": "part-5",
+    "slug": "index",
+    "title": "Part 5",
+    "order": 0,
+    "sourceUrl": "https://programming-26.mooc.fi/part-5"
+  },
+  {
+    "chapter": "part-6",
+    "slug": "1-reading-files",
+    "title": "Reading files",
+    "order": 44,
+    "sourceUrl": "https://programming-26.mooc.fi/part-6/1-reading-files"
+  },
+  {
+    "chapter": "part-6",
+    "slug": "2-writing-files",
+    "title": "Writing files",
+    "order": 45,
+    "sourceUrl": "https://programming-26.mooc.fi/part-6/2-writing-files"
+  },
+  {
+    "chapter": "part-6",
+    "slug": "3-errors",
+    "title": "Handling errors",
+    "order": 46,
+    "sourceUrl": "https://programming-26.mooc.fi/part-6/3-errors"
+  },
+  {
+    "chapter": "part-6",
+    "slug": "4-scope-of-variables",
+    "title": "Local and global variables",
+    "order": 47,
+    "sourceUrl": "https://programming-26.mooc.fi/part-6/4-scope-of-variables"
+  },
+  {
+    "chapter": "part-6",
+    "slug": "index",
+    "title": "Part 6",
+    "order": 0,
+    "sourceUrl": "https://programming-26.mooc.fi/part-6"
+  },
+  {
+    "chapter": "part-7",
+    "slug": "1-modules",
+    "title": "Modules",
+    "order": 48,
+    "sourceUrl": "https://programming-26.mooc.fi/part-7/1-modules"
+  },
+  {
+    "chapter": "part-7",
+    "slug": "2-randomness",
+    "title": "Randomness",
+    "order": 49,
+    "sourceUrl": "https://programming-26.mooc.fi/part-7/2-randomness"
+  },
+  {
+    "chapter": "part-7",
+    "slug": "3-times-and-dates",
+    "title": "Times and dates",
+    "order": 50,
+    "sourceUrl": "https://programming-26.mooc.fi/part-7/3-times-and-dates"
+  },
+  {
+    "chapter": "part-7",
+    "slug": "4-data-processing",
+    "title": "Data processing",
+    "order": 51,
+    "sourceUrl": "https://programming-26.mooc.fi/part-7/4-data-processing"
+  },
+  {
+    "chapter": "part-7",
+    "slug": "5-creating-modules",
+    "title": "Creating your own modules",
+    "order": 52,
+    "sourceUrl": "https://programming-26.mooc.fi/part-7/5-creating-modules"
+  },
+  {
+    "chapter": "part-7",
+    "slug": "6-more-features",
+    "title": "More Python features",
+    "order": 53,
+    "sourceUrl": "https://programming-26.mooc.fi/part-7/6-more-features"
+  },
+  {
+    "chapter": "part-7",
+    "slug": "index",
+    "title": "Part 7",
+    "order": 0,
+    "sourceUrl": "https://programming-26.mooc.fi/part-7"
+  },
+  {
+    "chapter": "part-8",
+    "slug": "1-objects-and-methods",
+    "title": "Objects and methods",
+    "order": 54,
+    "sourceUrl": "https://programming-26.mooc.fi/part-8/1-objects-and-methods"
+  },
+  {
+    "chapter": "part-8",
+    "slug": "2-classes-and-objects",
+    "title": "Classes and objects",
+    "order": 55,
+    "sourceUrl": "https://programming-26.mooc.fi/part-8/2-classes-and-objects"
+  },
+  {
+    "chapter": "part-8",
+    "slug": "3-defining-classes",
+    "title": "Defining classes",
+    "order": 56,
+    "sourceUrl": "https://programming-26.mooc.fi/part-8/3-defining-classes"
+  },
+  {
+    "chapter": "part-8",
+    "slug": "4-defining-methods",
+    "title": "Defining methods",
+    "order": 57,
+    "sourceUrl": "https://programming-26.mooc.fi/part-8/4-defining-methods"
+  },
+  {
+    "chapter": "part-8",
+    "slug": "5-more-examples-of-classes",
+    "title": "More examples of classes",
+    "order": 58,
+    "sourceUrl": "https://programming-26.mooc.fi/part-8/5-more-examples-of-classes"
+  },
+  {
+    "chapter": "part-8",
+    "slug": "index",
+    "title": "Part 8",
+    "order": 0,
+    "sourceUrl": "https://programming-26.mooc.fi/part-8"
+  },
+  {
+    "chapter": "part-9",
+    "slug": "1-objects-and-references",
+    "title": "Objects and references",
+    "order": 59,
+    "sourceUrl": "https://programming-26.mooc.fi/part-9/1-objects-and-references"
+  },
+  {
+    "chapter": "part-9",
+    "slug": "2-objects-as-attributes",
+    "title": "Objects as attributes",
+    "order": 60,
+    "sourceUrl": "https://programming-26.mooc.fi/part-9/2-objects-as-attributes"
+  },
+  {
+    "chapter": "part-9",
+    "slug": "3-encapsulation",
+    "title": "Encapsulation",
+    "order": 61,
+    "sourceUrl": "https://programming-26.mooc.fi/part-9/3-encapsulation"
+  },
+  {
+    "chapter": "part-9",
+    "slug": "4-scope-of-methods",
+    "title": "Scope of methods",
+    "order": 62,
+    "sourceUrl": "https://programming-26.mooc.fi/part-9/4-scope-of-methods"
+  },
+  {
+    "chapter": "part-9",
+    "slug": "5-class-attributes",
+    "title": "Class attributes",
+    "order": 63,
+    "sourceUrl": "https://programming-26.mooc.fi/part-9/5-class-attributes"
+  },
+  {
+    "chapter": "part-9",
+    "slug": "6-more-examples-with-classes",
+    "title": "More examples with classes",
+    "order": 64,
+    "sourceUrl": "https://programming-26.mooc.fi/part-9/6-more-examples-with-classes"
+  },
+  {
+    "chapter": "part-9",
+    "slug": "index",
+    "title": "Part 9",
+    "order": 0,
+    "sourceUrl": "https://programming-26.mooc.fi/part-9"
+  },
+  {
+    "chapter": "auxiliary",
+    "slug": "support-and-assistance",
+    "title": "Support and assistance",
+    "order": 4,
+    "sourceUrl": "https://programming-26.mooc.fi/support-and-assistance"
+  },
+  {
+    "chapter": "auxiliary",
+    "slug": "vocabulary",
+    "title": "Glossary",
+    "order": 1,
+    "sourceUrl": "https://programming-26.mooc.fi/glossary"
+  }
+]

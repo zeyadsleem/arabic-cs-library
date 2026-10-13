@@ -125,7 +125,7 @@ Use the **primary remote connection** for the node relationship. Adding a saved 
 1. Install the CLI without running onboarding. You’re installing a node host, not a second Gateway: <code><span class="line"><span style="color:#82AAFF;font-style:italic">curl</span><span style="color:#82AAFF"> -fsSL</span><span style="color:#82AAFF"> -o</span><span style="color:#ECC48D"> openclaw-install.sh</span><span style="color:#ECC48D"> https://openclaw.ai/install.sh</span></span>
 <span class="line"><span style="color:#82AAFF;font-style:italic">less</span><span style="color:#ECC48D"> openclaw-install.sh</span></span>
 <span class="line"><span style="color:#82AAFF;font-style:italic">bash</span><span style="color:#ECC48D"> openclaw-install.sh</span><span style="color:#82AAFF"> --no-onboard</span></span></code>
-2. On the Gateway’s **Devices** page, create a setup link. It looks like `oc-pair://<setup-code>`. WarningTreat the setup link like a password. Don’t paste it into chat and don’t commit it.
+2. On the Gateway’s **Devices** page (**Settings → Devices** in the Control UI), create a setup link. It looks like `oc-pair://<setup-code>`. WarningTreat the setup link like a password. Don’t paste it into chat and don’t commit it.
 3. Run the node in the foreground using that link: <code><span class="line"><span style="color:#82AAFF;font-style:italic">openclaw</span><span style="color:#ECC48D"> node</span><span style="color:#ECC48D"> run</span><span style="color:#82AAFF"> --pair</span><span style="color:#D9F5DD"> "</span><span style="color:#ECC48D">oc-pair://<setup-code></span><span style="color:#D9F5DD">"</span><span style="color:#82AAFF"> --display-name</span><span style="color:#D9F5DD"> "</span><span style="color:#ECC48D">MacBook</span><span style="color:#D9F5DD">"</span></span></code>
 4. Once the foreground connection works, install it as a background service. Use the same hostname, port, and TLS settings so it matches the saved connection: <code><span class="line"><span style="color:#82AAFF;font-style:italic">openclaw</span><span style="color:#ECC48D"> node</span><span style="color:#ECC48D"> install</span><span style="color:#82AAFF"> --host</span><span style="color:#ECC48D"> gateway-host.your-tailnet.ts.net</span><span style="color:#82AAFF"> --port</span><span style="color:#F78C6C"> 443</span><span style="color:#82AAFF"> --tls</span><span style="color:#82AAFF"> --display-name</span><span style="color:#D9F5DD"> "</span><span style="color:#ECC48D">MacBook</span><span style="color:#D9F5DD">"</span></span>
 <span class="line"><span style="color:#82AAFF;font-style:italic">openclaw</span><span style="color:#ECC48D"> node</span><span style="color:#ECC48D"> start</span></span>
@@ -177,6 +177,10 @@ openclaw nodes describe --node "<node-id>"
 ```
 
 When you refer to a node in configuration, use its **node ID** rather than its display name.
+
+The Control UI shows the same picture under **Settings → Devices**: each paired device, whether it’s connected, and the capabilities a node offers. The **Pair device** button at the top of that page is where new pairings start.
+
+The top of the Devices page in the OpenClaw settings, with the Paired Devices count and the Pair device button
 
 Then check that the Mac has the tools you expect. This looks for executables without running them:
 

@@ -1,0 +1,21 @@
+---
+title: "AI Development Setup"
+lang: en
+source: "https://stevekinney.com/courses/ai-development-setup"
+---
+
+You might not be writing as much of the code anymore—or *any* of it. But, you’re still in charge of the system that produces it. That system is the thing worth designing, and it’s what this course is about.
+
+- If you want working examples to borrow from, I keep my own collection of skills,
+agents, and other reusable pieces in [Repertoire](https://github.com/stevekinney/repertoire).
+- If you’d like a safe place to try things out, fork or clone [front-desk](https://github.com/stevekinney/front-desk). It’s a little
+playground repository for the examples in this course, so you can let an agent
+loose without worrying about your real code.
+
+The model is the part everyone argues about. I care a lot more about everything around it: the tools the agent can use, the information it starts with, what survives from one conversation to the next, and—most of all—the checks that decide whether it actually did the thing. Get those right and you can swap models without much drama. Get them wrong and no model will save you.
+
+We’ll use [Claude Code](https://code.claude.com/docs/en/overview) as the default **harness**—the program wrapped around the model that gives it tools, permissions, and **context** (everything the model can see when it decides its next step: your messages, its instructions, and every file or command output so far). I’ll call out where OpenAI’s [Codex](https://developers.openai.com/codex), another harness, does things differently. The tools are converging fast, so most of what you learn here carries over to whatever you use.
+
+> **Prices, model names, and version numbers move quickly**
+>
+> Everything here reflects the tools as of October 2026. The principles have held steady for a while now. The specific numbers won’t.

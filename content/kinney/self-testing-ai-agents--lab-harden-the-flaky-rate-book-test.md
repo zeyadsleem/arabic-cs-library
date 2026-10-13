@@ -1,0 +1,180 @@
+---
+title: "Lab"
+lang: en
+source: "https://stevekinney.com/courses/self-testing-ai-agents/lab-harden-the-flaky-rate-book-test"
+---
+
+Time to cash the checks from the last handful of lessons. The Shelf starter doesn’t ship `tests/rate-book.spec.ts`. Your job in this lab is to *build* that file by hand from the intentionally rough version below, wiring in auth, seed data, locators, and waiting patterns as you go, so every Playwright-armor pattern lands in your fingers instead of just your eyes.
+
+The rough version works. Sort of. It passes until the machine gets slower, the selectors drift, or the database state stops matching your assumptions. It bundles every Playwright anti-pattern into one short file, which makes it a great place to harden the whole loop.
+
+> **What the minimal starter does and does not give you**
+>
+> The current starter gives you one small `playwright.config.ts`, the public smoke loop in `tests/smoke.spec.ts`, the seed data files under `tests/data/`, and the low-level create/delete helpers under `src/lib/server/`. It does **not** ship storage-state auth, an authenticated Playwright project, or a finished `tests/helpers/seed.ts`. This lab is where those pieces become real.
+
+Your job is to fix it. Every pattern we learned in the Playwright lessons applies here.
+
+## The starting point
+
+```typescript
+import { test, expect } from '@playwright/test';
+
+test('user can rate a book', async ({ page }) => {
+  await page.goto('/login');
+  await page.fill('[name=email]', 'alice@example.com');
+  await page.fill('[name=password]', 'password123');
+  await page.click('button[type=submit]');
+  await page.waitForTimeout(1000);
+
+  await page.goto('/shelf');
+  await page.waitForTimeout(2000);
+  await page.locator('.book-card button.rate').first().click();
+
+  await page.locator('.rating-modal .star[data-value="4"]').click();
+  await page.locator('.rating-modal button.submit').click();
+  await page.waitForTimeout(1500);
+
+  const toast = await page.locator('.toast').textContent();
+  expect(toast).toContain('Thanks');
+});
+```
+
+Count the problems. I get eight. See if you can find more.
+
+- UI login at the top of every test.
+- Three `waitForTimeout` calls with three different magic numbers.
+- CSS selectors everywhere.
+- Chained `.locator(...)` with compound selectors that are going to break when anyone touches the class names.
+- `.first()` to handle the fact that there’s more than one `.book-card`, instead of scoping to a specific book.
+- `textContent()` read into a variable and asserted with `.toContain`, bypassing Playwright’s auto-retry.
+- No seeding, so the test depends on whatever the database happens to have in it.
+- No network mocking, so the rating POST hits a real API endpoint and sometimes the response is slow.
+
+## The task
+
+Rewrite the test so it passes every run on both a fast laptop and a slow CI machine. You should end up applying, at minimum:
+
+1. Storage state authentication (no UI login).
+2. Seeding (the book exists in the database before the test runs).
+3. `getByRole` locators with scoped chaining.
+4. Auto-retrying `expect` assertions instead of `textContent` + `toContain`.
+5. `page.waitForResponse` for the rating POST, not a timeout.
+6. Zero `waitForTimeout` calls anywhere in the file.
+
+You may also want to use the `request` fixture to verify the rating actually landed in the database, as a second assertion on top of the UI check.
+
+## Suggested order of attack
+
+Work top-down. Fix one pattern, run the test, move on.
+
+Start by creating `tests/authentication.setup.ts` and wiring `playwright.config.ts` to use it through a `setup` project plus an `authenticated` project. Delete the login block from the test. In the current Shelf starter, the stable setup is a browser-driven login in the setup project: navigate to `/login`, fill the form through the page, and save state with `page.context().storageState(...)`. Run the setup once to make sure authentication works. Commit. (See the Storage State Authentication lesson for the full pattern.)
+
+Next, implement `tests/helpers/seed.ts` so the book you’re going to rate is in the database before the test runs. Build it from `tests/data/*.json` plus the small `src/lib/server` create/delete helpers the starter ships. Delete any reliance on “whatever is on the shelf already.” Commit.
+
+Then create `tests/rate-book.spec.ts` from the rough version below, but run it under the new `authenticated` project instead of logging in inside the test. Once the file exists, swap the CSS selectors for `getByRole` chains. Scope by book title, then by button name inside the book. Run the test locally a few times. Commit.
+
+Next, replace every `waitForTimeout` with either an `expect(locator).toBeVisible()` assertion or a `page.waitForResponse` on the rating POST. Delete the `textContent` + `toContain` pattern and use `expect(toast).toHaveText(/Thanks/)` instead. Commit.
+
+Finally, add a second assertion using `request.get('/api/shelf/...')` to verify the rating is actually persisted. This isn’t strictly required, but it’s the kind of hybrid check that catches “UI says success but database disagrees” bugs. Commit.
+
+## Acceptance criteria
+
+- `rg "waitForTimeout" tests/rate-book.spec.ts` returns nothing.
+- `rg "page.locator\(" tests/rate-book.spec.ts` returns nothing.
+- `rg "page.goto\('/login'\)" tests/rate-book.spec.ts` returns nothing.
+- `rg "page.fill\(\[name=" tests/rate-book.spec.ts` returns nothing.
+- The test passes ten times in a row: `for i in {1..10}; do npx playwright test tests/rate-book.spec.ts --project=authenticated || break; done` and no iteration exits non-zero.
+- The test passes with the Playwright project graph you built in this lab: setup creates storage state, authenticated specs reuse it, and the test no longer depends on a UI login.
+- Suite wall time for `rate-book.spec.ts` dropped compared to the baseline. Measure with `time npx playwright test tests/rate-book.spec.ts --project=authenticated` before and after. Record both numbers in your commit message.
+- `npx playwright test tests/rate-book.spec.ts --project=authenticated --grep="can rate"` completes in under 5 seconds on your machine when Playwright is reusing an already running local server.
+- The commit history shows the work broken into at least four commits, each one addressing one pattern (auth, seed, locators, waits).
+
+## Stretch goals
+
+If you finish early, pick one or more:
+
+- Add a second test in the same file that verifies a user *can’t* rate a book they haven’t added to their shelf yet. Use the `request` fixture or your server helpers to set up the scenario (book exists, user has not added it) and assert the rating button is disabled.
+- Replace the final persistence check with `expect.poll()` so the test reads as “wait until the backend agrees,” not “fire one request and hope the write already landed.” Then rewrite the same check once with `expect(async () => { ... }).toPass({ timeout: ... })` so you can feel the difference between retrying one value and retrying a whole assertion block.
+- As a short experiment, try swapping the browser-driven login in `authentication.setup.ts` for a direct server-side shortcut if your auth stack exposes one. Confirm the tests still pass. Then consider the tradeoff: the shortcut is faster, but you lose the implicit smoke test on the login form.
+- Run the test under `--repeat-each=50` and see if anything flakes under load.
+- Turn off `fullyParallel` and see if the test still passes. (It should. If it doesn’t, you have a seeding leak—fix it.)
+- Add a route-middleware experiment before the rating click: one broad route that calls `route.fallback()` for everything except `POST`s and stamps those with an `x-test-mode: 1` header, then a narrower `**/api/**` route that uses `route.fetch({ maxRetries: 2 })` and fulfills a patched JSON response. Confirm the chain order does what you think it does.
+- Add one more spec that exercises an Open Library-backed search flow, then record a HAR for it using the `UPDATE_HARS` environment variable pattern from the [Approaches to HAR Recording](https://stevekinney.com/courses/self-testing-ai-agents/approaches-to-har-recording) lesson. Commit the HAR and verify the test passes in replay mode on airplane Wi-Fi—or at least with your network cable unplugged.
+
+## A successful end state
+
+The hardened Shelf starter ends up with an explicit toast and persisted rating after the test clicks through the modal. Your exact styling may differ, but the success state should look like this:
+
+The hardened rate-book flow showing the persisted success toast and updated shelf summary
+
+## What this looks like against a real agent
+
+The interesting question isn’t whether you can harden this test — you just did. The interesting question is whether an agent can do it given the right context. Here’s what that looks like with the rules-laden `CLAUDE.md` from [Lab: Rewrite the Bad CLAUDE.md](https://stevekinney.com/courses/self-testing-ai-agents/lab-rewrite-the-bad-claude-md) in place.
+
+Restore the broken version of `tests/rate-book.spec.ts` — the one with UI login, `waitForTimeout`, and CSS selectors. Give Claude Code this prompt:
+
+> `tests/rate-book.spec.ts` is flaky. Harden it following the rules in CLAUDE.md.
+
+A typical session:
+
+```
+Reading CLAUDE.md...
+
+The Playwright locator rules and waiting rules are both explicit:
+- getByRole first, data-testid only as a last resort
+- no waitForTimeout, no waitForLoadState('networkidle')
+- login runs in authentication.setup.ts, specs inherit storage state
+- specs reset with resetShelfContent, not by hitting /login
+
+Reading the current rate-book.spec.ts... counting violations:
+  1. page.goto('/login') + page.fill('[name=email]') — forbidden per
+     the auth rule, should use the setup/authenticated project flow
+  2. page.waitForTimeout(1000) × 3 — forbidden per the waiting rule
+  3. page.locator('.book-card button.rate') — raw CSS, forbidden per
+     the locator rule
+  4. page.locator('.rating-modal .star[data-value="4"]') — same
+  5. textContent().toContain() — bypasses auto-retry; should be
+     expect(toast).toHaveText(...)
+  6. No seed call, so the test depends on whatever the database has
+
+Fix 1: delete the login block. The authenticated project already
+inherits storage state from authentication.setup.ts.
+
+Fix 2: call resetShelfContent at the top of the test so Station Eleven
+is guaranteed to be on the shelf.
+
+Fix 3: replace the click chain with scoped role locators:
+  const stationEleven = page.getByRole('article', { name: /Station Eleven/ });
+  await stationEleven.getByRole('button', { name: /Rate this book/ }).click();
+
+Fix 4: replace the star click with getByLabel:
+  await page.getByLabel('4 stars').check();
+  await page.getByRole('button', { name: 'Save rating' }).click();
+
+Fix 5: replace the toast check with auto-retry:
+  await expect(page.getByRole('status')).toHaveText(/Thanks/);
+
+Fix 6: every waitForTimeout is now unnecessary because the assertions
+above auto-retry. Delete all three.
+
+Running npm run test --grep "rate a book"...
+  → 1 passed (412ms). That's the whole suite.
+
+Hardened. Every acceptance criterion from the lab hits zero.
+```
+
+Compare this to what the *same* agent does with an empty `CLAUDE.md`: it still fixes the flakiness, but it fixes the symptoms one at a time — wraps the `waitForTimeout` in a retry, adds a `.first()` to disambiguate selectors — without ever consulting a rule set. The result is a test that passes most of the time and flakes occasionally, which is strictly worse than the version you started with because now the flakiness is hidden.
+
+The difference between the two sessions is the difference between “follow a playbook” and “improvise from the error messages.” The playbook is `CLAUDE.md`. If you can read the transcript above and recognize every decision the agent made, you’re done — the rules are in your fingers.
+
+## The one thing to remember
+
+Every anti-pattern in the starting file is individually fixable in under five minutes with the right pattern. What made the original test bad wasn’t any one mistake—it was the absence of a framework for thinking about tests. The Playwright lessons were that framework. This lab is where it becomes muscle memory.
+
+## Additional Reading
+
+- [Solution](https://stevekinney.com/courses/self-testing-ai-agents/harden-the-flaky-rate-book-test-solution)
+- [The Waiting Story](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)
+- [Storage State Authentication](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)
+- [Deterministic State and Test Isolation](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)
+- [API and UI Hybrid Tests](https://stevekinney.com/courses/self-testing-ai-agents/api-and-ui-hybrid-tests)

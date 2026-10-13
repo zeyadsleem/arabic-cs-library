@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-13T12:06:38.089Z",
+  "generatedAt": "2026-10-13T20:16:26.058Z",
   "origin": "https://stevekinney.com",
   "courses": [
     {
@@ -1269,28 +1269,28 @@
         },
         {
           "slug": "automating-deploys-with-aws-cli",
-          "title": "Automating Deploys with the AWS CLI",
+          "title": "",
           "url": "https://stevekinney.com/courses/aws/automating-deploys-with-aws-cli",
           "category": "",
           "order": 96
         },
         {
           "slug": "full-static-pipeline",
-          "title": "The Full Static Site Pipeline",
+          "title": "",
           "url": "https://stevekinney.com/courses/aws/full-static-pipeline",
           "category": "",
           "order": 97
         },
         {
           "slug": "static-site-deployment-exercise",
-          "title": "Exercise: End-to-End Static Site Deployment",
+          "title": "",
           "url": "https://stevekinney.com/courses/aws/static-site-deployment-exercise",
           "category": "",
           "order": 98
         },
         {
           "slug": "static-site-deployment-solution",
-          "title": "Solution: End-to-End Static Site Deployment",
+          "title": "",
           "url": "https://stevekinney.com/courses/aws/static-site-deployment-solution",
           "category": "",
           "order": 99
@@ -1654,7 +1654,7 @@
         },
         {
           "slug": "design-system-governance-exercise",
-          "title": "Exercise 7: Design System Governance",
+          "title": "",
           "url": "https://stevekinney.com/courses/enterprise-ui/design-system-governance-exercise",
           "category": "",
           "order": 50
@@ -1843,42 +1843,42 @@
         },
         {
           "slug": "adding-a-dark-theme-to-the-button",
-          "title": "Adding a Dark Mode",
+          "title": "",
           "url": "https://stevekinney.com/courses/figma/adding-a-dark-theme-to-the-button",
           "category": "",
           "order": 25
         },
         {
           "slug": "building-a-checkbox-component",
-          "title": "Building a Checkbox Component",
+          "title": "",
           "url": "https://stevekinney.com/courses/figma/building-a-checkbox-component",
           "category": "",
           "order": 26
         },
         {
           "slug": "creating-a-button-component",
-          "title": "Creating a Button Component",
+          "title": "",
           "url": "https://stevekinney.com/courses/figma/creating-a-button-component",
           "category": "",
           "order": 27
         },
         {
           "slug": "libraries",
-          "title": "Working with Libraries in Figma",
+          "title": "",
           "url": "https://stevekinney.com/courses/figma/libraries",
           "category": "",
           "order": 28
         },
         {
           "slug": "number-variable-tokens",
-          "title": "Using Variables for Tokens",
+          "title": "",
           "url": "https://stevekinney.com/courses/figma/number-variable-tokens",
           "category": "",
           "order": 29
         },
         {
           "slug": "styles-vs-variables",
-          "title": "Styles Versus Variables",
+          "title": "",
           "url": "https://stevekinney.com/courses/figma/styles-vs-variables",
           "category": "",
           "order": 30
@@ -2263,7 +2263,7 @@
         },
         {
           "slug": "validating-zod-schemas-solution",
-          "title": "Validating Zod Schemas (Solutions)",
+          "title": "",
           "url": "https://stevekinney.com/courses/full-stack-typescript/validating-zod-schemas-solution",
           "category": "",
           "order": 53
@@ -2760,252 +2760,252 @@
         },
         {
           "slug": "animation-performance",
-          "title": "Animation Performance in React",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/animation-performance",
           "category": "",
           "order": 31
         },
         {
           "slug": "animation-performance-advanced",
-          "title": "Advanced Animation Performance Techniques",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/animation-performance-advanced",
           "category": "",
           "order": 32
         },
         {
           "slug": "apollo-client-optimization",
-          "title": "Apollo Client Performance Optimization",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/apollo-client-optimization",
           "category": "",
           "order": 33
         },
         {
           "slug": "cdn-caching-immutable-assets",
-          "title": "CDN Caching & Immutable Assets",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/cdn-caching-immutable-assets",
           "category": "",
           "order": 34
         },
         {
           "slug": "flushsync-in-react-dom",
-          "title": "Flushsync In React Dom",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/flushsync-in-react-dom",
           "category": "",
           "order": 35
         },
         {
           "slug": "gpu-acceleration-patterns",
-          "title": "GPU Acceleration Patterns",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/gpu-acceleration-patterns",
           "category": "",
           "order": 36
         },
         {
           "slug": "graphql-react-performance",
-          "title": "GraphQL & React Performance",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/graphql-react-performance",
           "category": "",
           "order": 37
         },
         {
           "slug": "image-and-asset-optimization",
-          "title": "Image & Asset Optimization for React",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/image-and-asset-optimization",
           "category": "",
           "order": 38
         },
         {
           "slug": "image-optimization-advanced",
-          "title": "Advanced Image Optimization Techniques",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/image-optimization-advanced",
           "category": "",
           "order": 39
         },
         {
           "slug": "inp-optimization-long-tasks",
-          "title": "INP Optimization & Long Tasks",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/inp-optimization-long-tasks",
           "category": "",
           "order": 40
         },
         {
           "slug": "inp-production-monitoring",
-          "title": "INP Production Monitoring",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/inp-production-monitoring",
           "category": "",
           "order": 41
         },
         {
           "slug": "memory-leak-detection",
-          "title": "Memory Leak Detection in React Applications",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/memory-leak-detection",
           "category": "",
           "order": 42
         },
         {
           "slug": "memory-management-deep-dive",
-          "title": "Memory Management Deep Dive",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/memory-management-deep-dive",
           "category": "",
           "order": 43
         },
         {
           "slug": "micro-frontend-performance",
-          "title": "Micro-Frontend Performance",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/micro-frontend-performance",
           "category": "",
           "order": 44
         },
         {
           "slug": "offscreen-canvas-webgl",
-          "title": "OffscreenCanvas & WebGL for React",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/offscreen-canvas-webgl",
           "category": "",
           "order": 45
         },
         {
           "slug": "optimizing-server-side-rendering",
-          "title": "Optimizing Server‑Side Rendering",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/optimizing-server-side-rendering",
           "category": "",
           "order": 46
         },
         {
           "slug": "performance-budgets-and-monitoring",
-          "title": "Performance Budgets and Monitoring",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/performance-budgets-and-monitoring",
           "category": "",
           "order": 47
         },
         {
           "slug": "performance-testing-implementation",
-          "title": "Performance Testing Implementation Guide",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/performance-testing-implementation",
           "category": "",
           "order": 48
         },
         {
           "slug": "performance-testing-strategy",
-          "title": "Performance Testing Strategy",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/performance-testing-strategy",
           "category": "",
           "order": 49
         },
         {
           "slug": "priority-hints-resource-loading",
-          "title": "Priority Hints & Resource Loading",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/priority-hints-resource-loading",
           "category": "",
           "order": 50
         },
         {
           "slug": "react-cache-api",
-          "title": "The cache() API",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/react-cache-api",
           "category": "",
           "order": 51
         },
         {
           "slug": "react-compiler-migration-guide",
-          "title": "React Compiler Migration Guide",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/react-compiler-migration-guide",
           "category": "",
           "order": 52
         },
         {
           "slug": "react-server-components-rsc",
-          "title": "React Server Components",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/react-server-components-rsc",
           "category": "",
           "order": 53
         },
         {
           "slug": "real-time-data-performance",
-          "title": "Real-Time Data Performance in React",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/real-time-data-performance",
           "category": "",
           "order": 54
         },
         {
           "slug": "real-time-scale-strategies",
-          "title": "Real-Time at Scale Strategies",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/real-time-scale-strategies",
           "category": "",
           "order": 55
         },
         {
           "slug": "resource-preloading-apis",
-          "title": "Resource Preloading APIs",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/resource-preloading-apis",
           "category": "",
           "order": 56
         },
         {
           "slug": "selective-hydration-react-19",
-          "title": "Selective Hydration in Modern React Apps",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/selective-hydration-react-19",
           "category": "",
           "order": 57
         },
         {
           "slug": "service-worker-strategies",
-          "title": "Service Worker Strategies for React Apps",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/service-worker-strategies",
           "category": "",
           "order": 58
         },
         {
           "slug": "speculation-rules-bfcache",
-          "title": "Speculation Rules & bfcache Optimization",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/speculation-rules-bfcache",
           "category": "",
           "order": 59
         },
         {
           "slug": "streaming-ssr-optimization",
-          "title": "Streaming SSR Optimization",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/streaming-ssr-optimization",
           "category": "",
           "order": 60
         },
         {
           "slug": "swc-speedy-web-compiler",
-          "title": "Speedy Web Compiler (SWC) for React Apps",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/swc-speedy-web-compiler",
           "category": "",
           "order": 61
         },
         {
           "slug": "uselayouteffect-performance",
-          "title": "Performance Characteristics of useLayoutEffect",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/uselayouteffect-performance",
           "category": "",
           "order": 62
         },
         {
           "slug": "view-transitions-api",
-          "title": "View Transitions API for React",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/view-transitions-api",
           "category": "",
           "order": 63
         },
         {
           "slug": "web-workers-with-react",
-          "title": "Web Workers with React",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/web-workers-with-react",
           "category": "",
           "order": 64
         },
         {
           "slug": "webassembly-integration",
-          "title": "WebAssembly Integration in React",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/webassembly-integration",
           "category": "",
           "order": 65
         },
         {
           "slug": "windowing-and-virtualization",
-          "title": "Windowing and Virtualization",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-performance/windowing-and-virtualization",
           "category": "",
           "order": 66
@@ -3411,266 +3411,266 @@
         },
         {
           "slug": "advanced-error-handling-patterns",
-          "title": "Advanced Error Handling Patterns",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/advanced-error-handling-patterns",
           "category": "",
           "order": 56
         },
         {
           "slug": "assets-and-module-declarations",
-          "title": "Assets and Module Declarations",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/assets-and-module-declarations",
           "category": "",
           "order": 57
         },
         {
           "slug": "build-pipeline-tsc-swc",
-          "title": "Traditional approach - does everything",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/build-pipeline-tsc-swc",
           "category": "",
           "order": 58
         },
         {
           "slug": "building-development-scripts",
-          "title": "Building and Development Scripts",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/building-development-scripts",
           "category": "",
           "order": 59
         },
         {
           "slug": "code-splitting-lazy-types",
-          "title": "Code-Splitting and Lazy Types",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/code-splitting-lazy-types",
           "category": "",
           "order": 60
         },
         {
           "slug": "componenttype-hocs-render-props",
-          "title": "ComponentType, HOCs, and Render Props",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/componenttype-hocs-render-props",
           "category": "",
           "order": 61
         },
         {
           "slug": "concurrent-features-typing-patterns",
-          "title": "Concurrent Features Typing Patterns",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/concurrent-features-typing-patterns",
           "category": "",
           "order": 62
         },
         {
           "slug": "debugging-typescript-errors-guide",
-          "title": "Debugging TypeScript Errors Guide",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/debugging-typescript-errors-guide",
           "category": "",
           "order": 63
         },
         {
           "slug": "dev-tools-and-type-driven-dx",
-          "title": "Developer Tools and Type-Driven DX",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/dev-tools-and-type-driven-dx",
           "category": "",
           "order": 64
         },
         {
           "slug": "flushsync-and-imperative-dom",
-          "title": "flushSync and Imperative DOM with Types",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/flushsync-and-imperative-dom",
           "category": "",
           "order": 65
         },
         {
           "slug": "forms-actions-and-useactionstate",
-          "title": "Typed Forms, Actions, and useActionState",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/forms-actions-and-useactionstate",
           "category": "",
           "order": 66
         },
         {
           "slug": "full-crud-todo-app",
-          "title": "Full CRUD Todo App - Putting It All Together",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/full-crud-todo-app",
           "category": "",
           "order": 67
         },
         {
           "slug": "function-overloads-in-react",
-          "title": "Function Overloads for Flexible APIs",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/function-overloads-in-react",
           "category": "",
           "order": 68
         },
         {
           "slug": "migrating-from-proptypes",
-          "title": "Migrating from PropTypes to TypeScript",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/migrating-from-proptypes",
           "category": "",
           "order": 69
         },
         {
           "slug": "migrating-javascript-to-typescript",
-          "title": "Migrating a React App from JS to TS",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/migrating-javascript-to-typescript",
           "category": "",
           "order": 70
         },
         {
           "slug": "module-federation-typescript",
-          "title": "Module Federation with TypeScript",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/module-federation-typescript",
           "category": "",
           "order": 71
         },
         {
           "slug": "monorepos-and-shared-ui-types",
-          "title": "Install all dependencies",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/monorepos-and-shared-ui-types",
           "category": "",
           "order": 72
         },
         {
           "slug": "react-typescript-mental-models",
-          "title": "React 19 + TypeScript Mental Models",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/react-typescript-mental-models",
           "category": "",
           "order": 73
         },
         {
           "slug": "reading-todos-get-typescript",
-          "title": "Reading Todos - GET Requests and Type Safety",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/reading-todos-get-typescript",
           "category": "",
           "order": 74
         },
         {
           "slug": "realtime-typing-websockets-and-sse",
-          "title": "Realtime Typing Websockets And Sse",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/realtime-typing-websockets-and-sse",
           "category": "",
           "order": 75
         },
         {
           "slug": "resource-preloading-apis-types",
-          "title": "Resource Preloading APIs with TypeScript",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/resource-preloading-apis-types",
           "category": "",
           "order": 76
         },
         {
           "slug": "result-types-and-error-handling",
-          "title": "Result/Either Patterns for React",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/result-types-and-error-handling",
           "category": "",
           "order": 77
         },
         {
           "slug": "routing-and-parameters-typing",
-          "title": "Routing and Typed URL Parameters",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/routing-and-parameters-typing",
           "category": "",
           "order": 78
         },
         {
           "slug": "streaming-ssr-typescript",
-          "title": "Streaming SSR with TypeScript",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/streaming-ssr-typescript",
           "category": "",
           "order": 79
         },
         {
           "slug": "styling-csstype-and-css-modules",
-          "title": "Styling Csstype And Css Modules",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/styling-csstype-and-css-modules",
           "category": "",
           "order": 80
         },
         {
           "slug": "tailwind-cva-typed-variants",
-          "title": "Tailwind Cva Typed Variants",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/tailwind-cva-typed-variants",
           "category": "",
           "order": 81
         },
         {
           "slug": "typesafe-environment-variables",
-          "title": "Type-Safe Environment Variables",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/typesafe-environment-variables",
           "category": "",
           "order": 82
         },
         {
           "slug": "typescript-conditional-mapped-types",
-          "title": "Conditional and Mapped Types",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/typescript-conditional-mapped-types",
           "category": "",
           "order": 83
         },
         {
           "slug": "typescript-generics-deep-dive",
-          "title": "TypeScript Generics Deep Dive",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/typescript-generics-deep-dive",
           "category": "",
           "order": 84
         },
         {
           "slug": "typescript-modules-declarations",
-          "title": "Modules and Declaration Files for React",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/typescript-modules-declarations",
           "category": "",
           "order": 85
         },
         {
           "slug": "typescript-react-patterns",
-          "title": "React-Specific TypeScript Patterns",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/typescript-react-patterns",
           "category": "",
           "order": 86
         },
         {
           "slug": "typescript-type-level-programming",
-          "title": "Type-Level Programming",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/typescript-type-level-programming",
           "category": "",
           "order": 87
         },
         {
           "slug": "typescript-type-system-fundamentals",
-          "title": "TypeScript Type System Fundamentals",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/typescript-type-system-fundamentals",
           "category": "",
           "order": 88
         },
         {
           "slug": "typescript-utility-types-complete",
-          "title": "Utility Types Complete Guide",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/typescript-utility-types-complete",
           "category": "",
           "order": 89
         },
         {
           "slug": "typescript-without-trying",
-          "title": "Using TypeScript Without Even Trying",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/typescript-without-trying",
           "category": "",
           "order": 90
         },
         {
           "slug": "use-layout-effect-and-effect-typing",
-          "title": "Use Layout Effect And Effect Typing",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/use-layout-effect-and-effect-typing",
           "category": "",
           "order": 91
         },
         {
           "slug": "useoptimistic-typed-optimism",
-          "title": "useOptimistic and Typed Optimistic Updates",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/useoptimistic-typed-optimism",
           "category": "",
           "order": 92
         },
         {
           "slug": "vite-react-typescript-optimization",
-          "title": "Vite + React TypeScript Optimization",
+          "title": "",
           "url": "https://stevekinney.com/courses/react-typescript/vite-react-typescript-optimization",
           "category": "",
           "order": 93
@@ -4566,49 +4566,49 @@
         },
         {
           "slug": "add-an-addon",
-          "title": "Add an Addon to Storybook",
+          "title": "",
           "url": "https://stevekinney.com/courses/storybook/add-an-addon",
           "category": "",
           "order": 33
         },
         {
           "slug": "adding-button-sizes-solution",
-          "title": "Solution: Adding Button Size Variants and Controls",
+          "title": "",
           "url": "https://stevekinney.com/courses/storybook/adding-button-sizes-solution",
           "category": "",
           "order": 34
         },
         {
           "slug": "callout-component-solution",
-          "title": "Implementing a Calllout Component",
+          "title": "",
           "url": "https://stevekinney.com/courses/storybook/callout-component-solution",
           "category": "",
           "order": 35
         },
         {
           "slug": "color-palette-solution",
-          "title": "Creating a Color Palette from Your Tailwind Theme",
+          "title": "",
           "url": "https://stevekinney.com/courses/storybook/color-palette-solution",
           "category": "",
           "order": 36
         },
         {
           "slug": "creating-an-icon-component",
-          "title": "Creating an Icon Component",
+          "title": "",
           "url": "https://stevekinney.com/courses/storybook/creating-an-icon-component",
           "category": "",
           "order": 37
         },
         {
           "slug": "parameters",
-          "title": "Parameters",
+          "title": "",
           "url": "https://stevekinney.com/courses/storybook/parameters",
           "category": "",
           "order": 38
         },
         {
           "slug": "text-area-disabled-play-function-solution",
-          "title": "Solution: Checking a Disabled Text Area",
+          "title": "",
           "url": "https://stevekinney.com/courses/storybook/text-area-disabled-play-function-solution",
           "category": "",
           "order": 39
@@ -5182,28 +5182,28 @@
         },
         {
           "slug": "button-solutions",
-          "title": "Secondary and Dangerous Buttons",
+          "title": "",
           "url": "https://stevekinney.com/courses/tailwind/button-solutions",
           "category": "",
           "order": 80
         },
         {
           "slug": "cva-tailwind",
-          "title": "Class Variance Authority",
+          "title": "",
           "url": "https://stevekinney.com/courses/tailwind/cva-tailwind",
           "category": "",
           "order": 81
         },
         {
           "slug": "has-solutions",
-          "title": "Solutions for `has-*` Challenges",
+          "title": "",
           "url": "https://stevekinney.com/courses/tailwind/has-solutions",
           "category": "",
           "order": 82
         },
         {
           "slug": "in-utility",
-          "title": "In Utility",
+          "title": "",
           "url": "https://stevekinney.com/courses/tailwind/in-utility",
           "category": "",
           "order": 83
@@ -5504,280 +5504,280 @@
         },
         {
           "slug": "accident-counter-solution",
-          "title": "Accident Counter: Solution",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/accident-counter-solution",
           "category": "",
           "order": 41
         },
         {
           "slug": "accident-counter-with-user-event",
-          "title": "Install userEvent",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/accident-counter-with-user-event",
           "category": "",
           "order": 42
         },
         {
           "slug": "advanced-test-configuration",
-          "title": "Advanced Test Configuration With Vitest",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/advanced-test-configuration",
           "category": "",
           "order": 43
         },
         {
           "slug": "assert-versus-expect",
-          "title": "The Key Difference Between assert and expect",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/assert-versus-expect",
           "category": "",
           "order": 44
         },
         {
           "slug": "asymmetric-matching-example",
-          "title": "Handling Large Data Structures In Testing",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/asymmetric-matching-example",
           "category": "",
           "order": 45
         },
         {
           "slug": "authentication-example",
-          "title": "Testing Authentication with Vitest",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/authentication-example",
           "category": "",
           "order": 46
         },
         {
           "slug": "auto-mocking",
-          "title": "Auto-Mocking in Vitest",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/auto-mocking",
           "category": "",
           "order": 47
         },
         {
           "slug": "basic-math-exercise-walkthrough",
-          "title": "Walkthrough: Basic Math Exercise",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/basic-math-exercise-walkthrough",
           "category": "",
           "order": 48
         },
         {
           "slug": "custom-matchers",
-          "title": "Customer Matchers in Vitest",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/custom-matchers",
           "category": "",
           "order": 49
         },
         {
           "slug": "debugging-vitest-tests",
-          "title": "Debugging Vitest Tests",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/debugging-vitest-tests",
           "category": "",
           "order": 50
         },
         {
           "slug": "differences-between-jest-and-vitest",
-          "title": "Differences Between Jest and Vitest",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/differences-between-jest-and-vitest",
           "category": "",
           "order": 51
         },
         {
           "slug": "filtering-tests",
-          "title": "Filtering Tests",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/filtering-tests",
           "category": "",
           "order": 52
         },
         {
           "slug": "fire-event-events",
-          "title": "List of Events You Can Fire",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/fire-event-events",
           "category": "",
           "order": 53
         },
         {
           "slug": "guess-the-number-example",
-          "title": "Building a Guess the Number Game with Vitest",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/guess-the-number-example",
           "category": "",
           "order": 54
         },
         {
           "slug": "guessing-game-solution",
-          "title": "Guessing Game Solution",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/guessing-game-solution",
           "category": "",
           "order": 55
         },
         {
           "slug": "mocking-best-practices",
-          "title": "An Incomplete List of Best Practices for Mocking",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/mocking-best-practices",
           "category": "",
           "order": 56
         },
         {
           "slug": "mocking-dom-methods",
-          "title": "Mocking DOM Methods",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/mocking-dom-methods",
           "category": "",
           "order": 57
         },
         {
           "slug": "mocking-the-file-system",
-          "title": "Mocking Reading And Writing Files",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/mocking-the-file-system",
           "category": "",
           "order": 58
         },
         {
           "slug": "organizing-and-annotating-tests",
-          "title": "Organizing and Annotating Tests",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/organizing-and-annotating-tests",
           "category": "",
           "order": 59
         },
         {
           "slug": "overriding-object-properties",
-          "title": "Overriding Object Properties",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/overriding-object-properties",
           "category": "",
           "order": 60
         },
         {
           "slug": "parallelizing-tests",
-          "title": "Parallelizing Tests Using Test Context",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/parallelizing-tests",
           "category": "",
           "order": 61
         },
         {
           "slug": "parameterizing-tests",
-          "title": "Generating Tests with test.each and describe.each",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/parameterizing-tests",
           "category": "",
           "order": 62
         },
         {
           "slug": "running-tests",
-          "title": "Running Tests with Vitest",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/running-tests",
           "category": "",
           "order": 63
         },
         {
           "slug": "running-tests-for-related-files",
-          "title": "Only Running Tests For Related Files",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/running-tests-for-related-files",
           "category": "",
           "order": 64
         },
         {
           "slug": "strategies-for-testing-conditional-logic",
-          "title": "Strategies For Testing Conditional Logic",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/strategies-for-testing-conditional-logic",
           "category": "",
           "order": 65
         },
         {
           "slug": "structure-of-a-unit-test",
-          "title": "Arrange-Act-Assert (AAA) Pattern",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/structure-of-a-unit-test",
           "category": "",
           "order": 66
         },
         {
           "slug": "task-list-example",
-          "title": "Building a Task List with Vitest",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/task-list-example",
           "category": "",
           "order": 67
         },
         {
           "slug": "test-context",
-          "title": "Understanding Test Context",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/test-context",
           "category": "",
           "order": 68
         },
         {
           "slug": "test-driven-development",
-          "title": "Understanding Test-Driven Development",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/test-driven-development",
           "category": "",
           "order": 69
         },
         {
           "slug": "test-runners-and-assertion-libraries",
-          "title": "Which Testing Framework Should I Use?",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/test-runners-and-assertion-libraries",
           "category": "",
           "order": 70
         },
         {
           "slug": "testing-a-reducer-solution",
-          "title": "Solution: Testing a Reducer in Zod",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/testing-a-reducer-solution",
           "category": "",
           "order": 71
         },
         {
           "slug": "testing-asynchronous-errors",
-          "title": "Testing Asynchronous Errors",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/testing-asynchronous-errors",
           "category": "",
           "order": 72
         },
         {
           "slug": "testing-for-errors-exercise",
-          "title": "Testing Division By Zero in JavaScript",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/testing-for-errors-exercise",
           "category": "",
           "order": 73
         },
         {
           "slug": "testing-library-solution",
-          "title": "Refactoring Our Button Test",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/testing-library-solution",
           "category": "",
           "order": 74
         },
         {
           "slug": "testing-promises",
-          "title": "Testing Promises",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/testing-promises",
           "category": "",
           "order": 75
         },
         {
           "slug": "tic-tac-toe-example",
-          "title": "Building Tic Tac Toe with Vitest",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/tic-tac-toe-example",
           "category": "",
           "order": 76
         },
         {
           "slug": "types-of-tests",
-          "title": "Unit, Integration, and End-To-End Tests Explained",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/types-of-tests",
           "category": "",
           "order": 77
         },
         {
           "slug": "user-event",
-          "title": "FireEvent vs UserEvent in Testing",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/user-event",
           "category": "",
           "order": 78
         },
         {
           "slug": "vitest-reporters",
-          "title": "Reporters in Vitest",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/vitest-reporters",
           "category": "",
           "order": 79
         },
         {
           "slug": "you-dont-need-perfect-code-coverage",
-          "title": "Why You Don't Need 100% Code Coverage",
+          "title": "",
           "url": "https://stevekinney.com/courses/testing/you-dont-need-perfect-code-coverage",
           "category": "",
           "order": 80
@@ -6141,35 +6141,35 @@
         },
         {
           "slug": "prebuilt-dev-containers-in-vscode",
-          "title": "Prebuilt Dev Containers in Visual Studio Code",
+          "title": "",
           "url": "https://stevekinney.com/courses/visual-studio-code/prebuilt-dev-containers-in-vscode",
           "category": "",
           "order": 50
         },
         {
           "slug": "settings-precedence-vscode",
-          "title": "Settings Precedence in Visual Studio Code",
+          "title": "",
           "url": "https://stevekinney.com/courses/visual-studio-code/settings-precedence-vscode",
           "category": "",
           "order": 51
         },
         {
           "slug": "using-dev-containers-in-vscode",
-          "title": "Setting Up a Dev Container",
+          "title": "",
           "url": "https://stevekinney.com/courses/visual-studio-code/using-dev-containers-in-vscode",
           "category": "",
           "order": 52
         },
         {
           "slug": "vscode-emmet-solutions",
-          "title": "Emmet in Visual Studio Code: Solutions",
+          "title": "",
           "url": "https://stevekinney.com/courses/visual-studio-code/vscode-emmet-solutions",
           "category": "",
           "order": 53
         },
         {
           "slug": "vscode-snippets-solutions",
-          "title": "Visual Studio Code Snippet Exercise Solutions",
+          "title": "",
           "url": "https://stevekinney.com/courses/visual-studio-code/vscode-snippets-solutions",
           "category": "",
           "order": 54

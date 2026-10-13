@@ -3,10 +3,12 @@
     {
       "key": "frontmatter",
       "title": "Title page",
+      "titleAr": "صفحة العنوان",
       "sections": [
         {
           "slug": "index",
           "title": "Title page",
+          "titleAr": "صفحة العنوان",
           "order": 0
         }
       ]
@@ -14,10 +16,12 @@
     {
       "key": "preface",
       "title": "Preface",
+      "titleAr": "مقدمة",
       "sections": [
         {
           "slug": "index",
           "title": "Preface",
+          "titleAr": "مقدمة",
           "order": 1
         }
       ]
@@ -25,10 +29,12 @@
     {
       "key": "working-environment",
       "title": "The Working Environment",
+      "titleAr": "بيئة العمل",
       "sections": [
         {
           "slug": "index",
           "title": "The Working Environment",
+          "titleAr": "بيئة العمل",
           "order": 2
         }
       ]
@@ -36,10 +42,12 @@
     {
       "key": "first-steps",
       "title": "First Steps with OCaml",
+      "titleAr": "الخطوات الأولى",
       "sections": [
         {
           "slug": "index",
           "title": "First Steps with OCaml",
+          "titleAr": "الخطوات الأولى",
           "order": 3
         }
       ]
@@ -47,10 +55,12 @@
     {
       "key": "ocaml-concepts",
       "title": "OCaml Concepts: A Closer Look",
+      "titleAr": "مفاهيم OCaml",
       "sections": [
         {
           "slug": "index",
           "title": "OCaml Concepts: A Closer Look",
+          "titleAr": "مفاهيم OCaml",
           "order": 4
         }
       ]
@@ -58,10 +68,12 @@
     {
       "key": "arrays",
       "title": "Arrays",
+      "titleAr": "المصفوفات",
       "sections": [
         {
           "slug": "index",
           "title": "Arrays",
+          "titleAr": "المصفوفات",
           "order": 5
         }
       ]
@@ -69,10 +81,12 @@
     {
       "key": "sets-and-dictionaries",
       "title": "Sets and Dictionaries",
+      "titleAr": "المجموعات والقواميس",
       "sections": [
         {
           "slug": "index",
           "title": "Sets and Dictionaries",
+          "titleAr": "المجموعات والقواميس",
           "order": 6
         }
       ]
@@ -80,10 +94,12 @@
     {
       "key": "queues",
       "title": "Queues",
+      "titleAr": "الطوابير",
       "sections": [
         {
           "slug": "index",
           "title": "Queues",
+          "titleAr": "الطوابير",
           "order": 7
         }
       ]
@@ -91,10 +107,12 @@
     {
       "key": "graphs",
       "title": "Graphs",
+      "titleAr": "الرسوم البيانية",
       "sections": [
         {
           "slug": "index",
           "title": "Graphs",
+          "titleAr": "الرسوم البيانية",
           "order": 8
         }
       ]
@@ -102,10 +120,12 @@
     {
       "key": "disjoint-sets",
       "title": "Disjoint Sets",
+      "titleAr": "المجموعات المنفصلة",
       "sections": [
         {
           "slug": "index",
           "title": "Disjoint Sets",
+          "titleAr": "المجموعات المنفصلة",
           "order": 9
         }
       ]
@@ -113,10 +133,12 @@
     {
       "key": "zippers",
       "title": "Zippers",
+      "titleAr": "السحّابات",
       "sections": [
         {
           "slug": "index",
           "title": "Zippers",
+          "titleAr": "السحّابات",
           "order": 10
         }
       ]
@@ -124,10 +146,12 @@
     {
       "key": "arithmetic",
       "title": "Arithmetic",
+      "titleAr": "الحسابيات",
       "sections": [
         {
           "slug": "index",
           "title": "Arithmetic",
+          "titleAr": "الحسابيات",
           "order": 11
         }
       ]
@@ -135,10 +159,12 @@
     {
       "key": "dynamic-programming",
       "title": "Dynamic Programming and Memoization",
+      "titleAr": "البرمجة الديناميكية",
       "sections": [
         {
           "slug": "index",
           "title": "Dynamic Programming and Memoization",
+          "titleAr": "البرمجة الديناميكية",
           "order": 12
         }
       ]
@@ -146,10 +172,12 @@
     {
       "key": "sorting",
       "title": "Sorting Algorithms",
+      "titleAr": "خوارزميات الترتيب",
       "sections": [
         {
           "slug": "index",
           "title": "Sorting Algorithms",
+          "titleAr": "خوارزميات الترتيب",
           "order": 13
         }
       ]
@@ -157,10 +185,12 @@
     {
       "key": "graph-algorithms",
       "title": "Graph Algorithms",
+      "titleAr": "خوارزميات الرسوم البيانية",
       "sections": [
         {
           "slug": "index",
           "title": "Graph Algorithms",
+          "titleAr": "خوارزميات الرسوم البيانية",
           "order": 14
         }
       ]
@@ -168,10 +198,12 @@
     {
       "key": "references",
       "title": "Bibliography",
+      "titleAr": "المراجع",
       "sections": [
         {
           "slug": "index",
           "title": "Bibliography",
+          "titleAr": "المراجع",
           "order": 15
         }
       ]

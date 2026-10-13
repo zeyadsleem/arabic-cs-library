@@ -1,0 +1,38 @@
+---
+title: "Build Process & Tooling Integration"
+lang: en
+source: "https://stevekinney.com/courses/tailwind/build-process-and-tooling"
+---
+
+Setting up Tailwind CSS properly in your development environment is pretty simple—if you follow the happy path, at least.
+
+Tailwind CSS offers multiple installation methods to fit different project setups and requirements. We’ll cover the two most popular approaches: using Vite for modern build workflows and the Tailwind CLI for simpler setups.
+
+## Vite Integration
+
+> **This is the one that I use mostly.**
+>
+> And it’s the only one we’ll be working with today.
+
+Vite has become one of the most popular build tools for modern web development, and it works exceptionally well with Tailwind CSS. You can check out the official instructions for [using Tailwind with Vite](https://tailwindcss.com/docs/installation/using-vite).
+
+But, basically, this is it:
+
+```javascript
+import { defineConfig } from 'vite';
+import tailwindcss from '@tailwindcss/vite';
+
+export default defineConfig({
+  plugins: [tailwindcss()],
+});
+```
+
+### Adding Tailwind to Your CSS
+
+Simply import Tailwind in your CSS file:
+
+```css
+@import 'tailwindcss';
+```
+
+This single import replaces the traditional three directives and provides better performance with faster builds.

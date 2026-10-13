@@ -1,0 +1,554 @@
+{
+  "chapters": [
+    {
+      "key": "part-1",
+      "title": "Part 1: Getting Started",
+      "titleAr": "الجزء 1: البدء",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "1",
+          "order": "0"
+        },
+        {
+          "slug": "1-getting-started",
+          "title": "البدء",
+          "order": "1"
+        },
+        {
+          "slug": "2-information-from-the-user",
+          "title": "Information from the user",
+          "order": "2"
+        },
+        {
+          "slug": "3-more-about-variables",
+          "title": "More about variables",
+          "order": "3"
+        },
+        {
+          "slug": "4-arithmetic-operations",
+          "title": "Arithmetic operations",
+          "order": "4"
+        },
+        {
+          "slug": "5-conditional-statements",
+          "title": "Conditional statements",
+          "order": "5"
+        }
+      ]
+    },
+    {
+      "key": "part-2",
+      "title": "Part 2: Conditional Statements",
+      "titleAr": "الجزء 2: الجمل الشرطية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الجزء 2",
+          "order": "0"
+        },
+        {
+          "slug": "1-programming_terminology",
+          "title": "مصطلحات البرمجة",
+          "order": "26"
+        },
+        {
+          "slug": "2-else-elif",
+          "title": "جمل شرطية أكثر",
+          "order": "27"
+        },
+        {
+          "slug": "3-combining-conditions",
+          "title": "دمج الشروط",
+          "order": "28"
+        },
+        {
+          "slug": "4-simple-loops",
+          "title": "الحلقات البسيطة",
+          "order": "29"
+        }
+      ]
+    },
+    {
+      "key": "part-3",
+      "title": "Part 3: Loops",
+      "titleAr": "الجزء 3: الحلقات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Part 3",
+          "order": "0"
+        },
+        {
+          "slug": "1-loops-with-conditions",
+          "title": "الحلقات ذات الشروط",
+          "order": "30"
+        },
+        {
+          "slug": "2-working-with-strings",
+          "title": "Working with strings",
+          "order": "31"
+        },
+        {
+          "slug": "3-more-loops",
+          "title": "More loops",
+          "order": "32"
+        },
+        {
+          "slug": "4-defining-functions",
+          "title": "Defining functions",
+          "order": "33"
+        }
+      ]
+    },
+    {
+      "key": "part-4",
+      "title": "Part 4: Functions and Lists",
+      "titleAr": "الجزء 4: الدوال والقوائم",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Part 4",
+          "order": "0"
+        },
+        {
+          "slug": "1-vscode",
+          "title": "The Visual Studio Code editor, Python interpreter and built-in debugging tool",
+          "order": "34"
+        },
+        {
+          "slug": "2-more-functions",
+          "title": "More functions",
+          "order": "35"
+        },
+        {
+          "slug": "3-lists",
+          "title": "Lists",
+          "order": "36"
+        },
+        {
+          "slug": "4-definite-iteration",
+          "title": "Definite iteration",
+          "order": "37"
+        },
+        {
+          "slug": "5-print-statement-formatting",
+          "title": "Print statement formatting",
+          "order": "38"
+        },
+        {
+          "slug": "6-strings-and-lists",
+          "title": "More strings and lists",
+          "order": "39"
+        }
+      ]
+    },
+    {
+      "key": "part-5",
+      "title": "Part 5: Data Structures",
+      "titleAr": "الجزء 5: هياكل البيانات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الجزء 5",
+          "order": "0"
+        },
+        {
+          "slug": "1-more-lists",
+          "title": "More lists",
+          "order": "40"
+        },
+        {
+          "slug": "2-references",
+          "title": "المراجع (References)",
+          "order": "41"
+        },
+        {
+          "slug": "3-dictionary",
+          "title": "القاموس (Dictionary)",
+          "order": "42"
+        },
+        {
+          "slug": "4-tuple",
+          "title": "الزمرة (Tuple)",
+          "order": "43"
+        }
+      ]
+    },
+    {
+      "key": "part-6",
+      "title": "Part 6: Files and Errors",
+      "titleAr": "الجزء 6: الملفات والأخطاء",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الجزء 6",
+          "order": "0"
+        },
+        {
+          "slug": "1-reading-files",
+          "title": "قراءة الملفات",
+          "order": "44"
+        },
+        {
+          "slug": "2-writing-files",
+          "title": "كتابة الملفات",
+          "order": "45"
+        },
+        {
+          "slug": "3-errors",
+          "title": "معالجة الأخطاء",
+          "order": "46"
+        },
+        {
+          "slug": "4-scope-of-variables",
+          "title": "المتغيرات المحلية والعالمية",
+          "order": "47"
+        }
+      ]
+    },
+    {
+      "key": "part-7",
+      "title": "Part 7: Modules",
+      "titleAr": "الجزء 7: الوحدات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الجزء 7",
+          "order": "0"
+        },
+        {
+          "slug": "1-modules",
+          "title": "الوحدات (Modules)",
+          "order": "48"
+        },
+        {
+          "slug": "2-randomness",
+          "title": "العشوائية (Randomness)",
+          "order": "49"
+        },
+        {
+          "slug": "3-times-and-dates",
+          "title": "الأوقات والتواريخ",
+          "order": "50"
+        },
+        {
+          "slug": "4-data-processing",
+          "title": "معالجة البيانات",
+          "order": "51"
+        },
+        {
+          "slug": "5-creating-modules",
+          "title": "إنشاء وحداتك الخاصة",
+          "order": "52"
+        },
+        {
+          "slug": "6-more-features",
+          "title": "ميزات Python إضافية",
+          "order": "53"
+        }
+      ]
+    },
+    {
+      "key": "part-8",
+      "title": "Part 8: Objects and Classes",
+      "titleAr": "الجزء 8: الكائنات والصنوف",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الجزء 8",
+          "order": "0"
+        },
+        {
+          "slug": "1-objects-and-methods",
+          "title": "الكائنات (Objects) والدوال المرتبطة بها (Methods)",
+          "order": "54"
+        },
+        {
+          "slug": "2-classes-and-objects",
+          "title": "الصنفات (Classes) والكائنات (Objects)",
+          "order": "55"
+        },
+        {
+          "slug": "3-defining-classes",
+          "title": "تعريف الأصناف (Classes)",
+          "order": "56"
+        },
+        {
+          "slug": "4-defining-methods",
+          "title": "تعريف الدوال (Methods)",
+          "order": "57"
+        },
+        {
+          "slug": "5-more-examples-of-classes",
+          "title": "المزيد من أمثلة الأصناف",
+          "order": "58"
+        }
+      ]
+    },
+    {
+      "key": "part-9",
+      "title": "Part 9: More Objects",
+      "titleAr": "الجزء 9: المزيد عن الكائنات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الجزء 9",
+          "order": "0"
+        },
+        {
+          "slug": "1-objects-and-references",
+          "title": "الكائنات والمراجع (References)",
+          "order": "59"
+        },
+        {
+          "slug": "2-objects-as-attributes",
+          "title": "الكائنات كسمات (Attributes)",
+          "order": "60"
+        },
+        {
+          "slug": "3-encapsulation",
+          "title": "التغليف (Encapsulation)",
+          "order": "61"
+        },
+        {
+          "slug": "4-scope-of-methods",
+          "title": "نطاق الدوال (Scope of methods)",
+          "order": "62"
+        },
+        {
+          "slug": "5-class-attributes",
+          "title": "سمات الفئة (Class attributes)",
+          "order": "63"
+        },
+        {
+          "slug": "6-more-examples-with-classes",
+          "title": "مزيد من الأمثلة مع الفئات (More examples with classes)",
+          "order": "64"
+        }
+      ]
+    },
+    {
+      "key": "part-10",
+      "title": "Part 10: Class Hierarchies",
+      "titleAr": "الجزء 10: تراكيب الأصناف",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "10",
+          "order": "0"
+        },
+        {
+          "slug": "1-class-hierarchies",
+          "title": "(Class hierarchies)",
+          "order": "6"
+        },
+        {
+          "slug": "2-access-modifiers",
+          "title": "(Access modifiers)",
+          "order": "7"
+        },
+        {
+          "slug": "3-oo-programming-techniques",
+          "title": "Object oriented programming techniques",
+          "order": "8"
+        },
+        {
+          "slug": "4-application-development",
+          "title": "Developing a larger application",
+          "order": "9"
+        }
+      ]
+    },
+    {
+      "key": "part-11",
+      "title": "Part 11: Advanced Features",
+      "titleAr": "الجزء 11: ميزات متقدمة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الجزء 11",
+          "order": "0"
+        },
+        {
+          "slug": "1-list-comprehensions",
+          "title": "(List comprehensions)",
+          "order": "10"
+        },
+        {
+          "slug": "2-more-comprehensions",
+          "title": "(More comprehensions)",
+          "order": "11"
+        },
+        {
+          "slug": "3-recursion",
+          "title": "التكرار (Recursion)",
+          "order": "12"
+        },
+        {
+          "slug": "4-more-recursion-examples",
+          "title": "المزيد من أمثلة التكرار (recursion)",
+          "order": "13"
+        }
+      ]
+    },
+    {
+      "key": "part-12",
+      "title": "Part 12: Functional Programming",
+      "titleAr": "الجزء 12: البرمجة الدالية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الجزء 12",
+          "order": "0"
+        },
+        {
+          "slug": "1-functions-as-arguments",
+          "title": "الدوال كوسائط (Arguments)",
+          "order": "14"
+        },
+        {
+          "slug": "2-generators",
+          "title": "المولّدات (Generators)",
+          "order": "15"
+        },
+        {
+          "slug": "3-functional-programming",
+          "title": "البرمجة الوظيفية",
+          "order": "16"
+        },
+        {
+          "slug": "4-regular-expressions",
+          "title": "التعبيرات النمطية (Regular Expressions)",
+          "order": "17"
+        }
+      ]
+    },
+    {
+      "key": "part-13",
+      "title": "Part 13: Games with Pygame",
+      "titleAr": "الجزء 13: الألعاب مع Pygame",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الجزء 13",
+          "order": "0"
+        },
+        {
+          "slug": "1-pygame",
+          "title": "Pygame",
+          "order": "18"
+        },
+        {
+          "slug": "2-animation",
+          "title": "الرسوم المتحركة (Animation)",
+          "order": "19"
+        },
+        {
+          "slug": "3-events",
+          "title": "الأحداث (Events)",
+          "order": "20"
+        },
+        {
+          "slug": "4-more-pygame-techniques",
+          "title": "المزيد من تقنيات Pygame",
+          "order": "21"
+        }
+      ]
+    },
+    {
+      "key": "part-14",
+      "title": "Part 14: Game Project",
+      "titleAr": "الجزء 14: مشروع اللعبة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الجزء 14",
+          "order": "0"
+        },
+        {
+          "slug": "1-game-project",
+          "title": "مشروع لعبة",
+          "order": "22"
+        },
+        {
+          "slug": "2-robot-and-boxes",
+          "title": "الروبوت والصناديق",
+          "order": "23"
+        },
+        {
+          "slug": "3-finishing-the-game",
+          "title": "إنهاء اللعبة",
+          "order": "24"
+        },
+        {
+          "slug": "4-your-own-game",
+          "title": "لعبتك الخاصة",
+          "order": "25"
+        }
+      ]
+    },
+    {
+      "key": "auxiliary",
+      "title": "Auxiliary Pages",
+      "titleAr": "صفحات مساعدة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "حول هذه الدورة",
+          "order": "0"
+        },
+        {
+          "slug": "frontmatter-guide",
+          "title": "دليل Frontmatter",
+          "order": "1"
+        },
+        {
+          "slug": "vocabulary",
+          "title": "المصطلحات",
+          "order": "1"
+        },
+        {
+          "slug": "error_messages",
+          "title": "رسائل الخطأ الشائعة",
+          "order": "2"
+        },
+        {
+          "slug": "faq",
+          "title": "الأسئلة المتكررة",
+          "order": "3"
+        },
+        {
+          "slug": "exam_adv",
+          "title": "امتحان الدورة المتقدمة في البرمجة 15.08.",
+          "order": "4"
+        },
+        {
+          "slug": "exam_intro",
+          "title": "امتحان مقدمة في البرمجة 05.09.",
+          "order": "4"
+        },
+        {
+          "slug": "support-and-assistance",
+          "title": "الدعم والمساعدة",
+          "order": "4"
+        },
+        {
+          "slug": "all-exercises",
+          "title": "جميع التمارين",
+          "order": "5"
+        },
+        {
+          "slug": "exam",
+          "title": "الامتحان 4.6.",
+          "order": "5"
+        },
+        {
+          "slug": "grading-and-exams",
+          "title": "التصنيف والامتحانات",
+          "order": "6"
+        }
+      ]
+    }
+  ]
+}

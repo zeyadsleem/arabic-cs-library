@@ -1,0 +1,47 @@
+---
+title: "Emmet in Visual Studio Code: Solutions"
+lang: en
+source: "https://stevekinney.com/courses/visual-studio-code/vscode-emmet-solutions"
+---
+
+Here are some possible solutions to [these exercises](https://stevekinney.com/courses/visual-studio-code/vscode-emmet-exercises).
+
+## Basic Paragraph
+
+```css
+p{Hello, world!}
+```
+
+A classic statement—you can swap the text for anything that tickles your fancy.
+
+## Simple Unordered List
+
+```css
+ul>li{Item}*3
+```
+
+This one gives you three list items shouting “Item”—perfect for when you need some simple repetition.
+
+## Image Element with Attributes
+
+```css
+img[src='image.jpg'][alt='Placeholder Image']
+```
+
+No frills here: an image tag with source and alt text. It’s like the basic outfit of HTML images.
+
+## Nested Div Structure
+
+```css
+div>div
+```
+
+A parent div holding a child div. It’s as simple as nesting your hopes in a dream.
+
+## Header with Navigation
+
+```css
+header>nav>ul>li*2
+```
+
+A header with a nav that wraps a list of two items. It’s a mini layout that’s as straightforward as it gets.

@@ -31,6 +31,10 @@ The bot replying that access is not configured, with a pairing code and an appro
 
 Run the approval command from the message on the machine hosting OpenClaw. Once we’ve done that, we should be good to go.
 
+You can confirm the connection in the Control UI. Open Settings and choose Channels, and Telegram shows up under Connected Channels with a Running status.
+
+The Channels page in the OpenClaw settings with Telegram listed as running under Connected Channels
+
 If other people may communicate with the agent, configure `session.dmScope` to `"per-channel-peer"`.
 
 Once you can talk to your bot, read [Choosing a DM Policy](https://stevekinney.com/courses/openclaw/choosing-a-dm-policy) to decide who else should be able to.

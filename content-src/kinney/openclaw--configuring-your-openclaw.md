@@ -18,6 +18,10 @@ The OpenClaw Agents settings page showing identity, workspace, and model selecti
 | `TOOLS.md` | How does this environment work? | Legacy file, now consolidated into `AGENTS.md` |
 | `MEMORY.md` | What have I learned? | Persistent knowledge, decisions, and historical context |
 
+You can read and edit the core files from the Control UI. Open Settings, choose Agents, and then pick the Files tab.
+
+The Files tab in the OpenClaw agent settings, with tabs for AGENTS, SOUL, USER, and MEMORY and an editor showing AGENTS.md
+
 These files are not merely organizational conventions. Most are automatically included in the agent’s context, so every unnecessary paragraph has a cost in tokens, attention, and potentially conflicting instructions.
 
 ## `AGENTS.md`: The operating manual

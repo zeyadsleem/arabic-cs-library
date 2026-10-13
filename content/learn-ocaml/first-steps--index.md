@@ -3879,15 +3879,15 @@ let () =
 
 **الشكل 2.15: أصناف مختلفة من بنى البيانات.**
 
-### 2.15 تمارين (Exercises)
+### 2.15 تمارين
 
-#### رسم قلب (Drawing a Cardioid)
+#### رسم قلب
 
 **2.1** عدِّل البرنامج [2](#x7-22014r2) ليرسم مجموعة النقاط الواردة في الشكل [2.1](#computation-of-using-the-montecarlo-method).
 
 **2.2** اكتب برنامجًا يرسم الشكل أدناه.
 
-#### مجموعة ماندلبروت (Mandelbrot Set)
+#### مجموعة ماندلبروت
 
 **2.3** عدِّل رسم مجموعة ماندلبروت عبر تلوين النقاط التي لا تنتمي إلى المجموعة بحسب أول قيمة للعدد i تتحقق عندها المتراجحة xi2 + yi2 > 4. ويمكن اختيار اللون، مثلًا، بالاستكمال الخطي (interpolation) بين لونين محدَّدين سابقًا، ثم باستعمال الدالة `Graphics.rgb` (انظر القسم [*2.10*](#breakout-without-bricks)*بريك أوت دون الطوب*) وقاعدة الثلاثة البسيطة.
 
@@ -3922,7 +3922,7 @@ $$\begin{cases} u /2 if u is even un + 1 = n n 3un + 1 otherwise \end{cases}$$
   ...
 ```
 
-#### غربال إراتوستينس (Sieve of Eratosthenes)
+#### غربال إراتوستينس
 
 **2.8** اكتب دالةً من النوع `sum:intarray->int` تحسب مجموع عناصر
 مصفوفة، أولًا باستعمال حلقة `for`، ثم بدالية تكرارية (recursive function).
@@ -3948,14 +3948,14 @@ $$\begin{cases} u /2 if u is even un + 1 = n n 3un + 1 otherwise \end{cases}$$
 يمكنك استعمال `Random.int` k للحصول على عدد صحيح عشوائي بين 0 و k − 1. وبالطبع،
 يمكن استعمال هذه الخوارزمية للمصفوفات من أي نوع.
 
-#### رسم منحنى (Drawing a Curve)
+#### رسم منحنى
 
 **2.12** اكتب دالةً من النوع `sum:(int->int)->int->int->int` تأخذ دالة f
 وعددين صحيحين i و j وسيطين، وتحسب المجموع التالي:
 
 $$k = j \sum f(k). k = i$$
 
-**2.13**Write a function `dicho` of type:
+**2.13** اكتب دالة `dicho` من النوع:
 
 `dicho:(float->float)->float->float->float`
 
@@ -3965,7 +3965,7 @@ $$k = j \sum f(k). k = i$$
 [a,x] أو [x,b]. توقف عندما يكون a و b قريبين من بعضهما بما يكفي. يمكنك افتراض
 أن [a,b] تحتوي صفرًا للدالة f.
 
-#### نسخ ملف (Copying a File)
+#### نسخ ملف
 
 **2.14** عدِّل البرنامج [7](#x7-48016r7) بحيث يعالج بشكل صحيح الحالة التي يتعذر فيها فتح
 أحد الملفين. وهذا يثير استثناءً (exception) من الشكل `Sys_error` s، حيث s
@@ -3988,175 +3988,107 @@ $$k = j \sum f(k). k = i$$
 اشرح كيف تُترجم هاتين الجملتين إلى أوسمل. يمكنك استعمال استثناءين،
 `Break` و `Continue`، لتحقيق ذلك.
 
-#### عكس ترتيب الأسطر في نص (Inverting the Lines of a Text)
+#### عكس ترتيب الأسطر في نص
 
-**2.16**Write a function `mult:intlist->int` that calculates the product of all the
-elements of a list of integers. Make sure to return 0 at the first occurrence of the
-integer 0.
+**2.16** اكتب دالة `mult:intlist->int` تحسب حاصل ضرب جميع عناصر قائمة من الأعداد الصحيحة. تأكد من إعادة 0 عند أول ظهور للعدد الصحيح 0.
 
-**2.17**Redo the previous exercise, this time raising an exception if 0 is encountered,
-so as to avoid unnecessarily multiplying the first elements of the list.
+**2.17** أعد التمرين السابق، ولكن هذه المرة ارفع استثناءً إذا صودف 0، لتجنب ضرب العناصر الأولى من القائمة دون داعٍ.
 
-**2.18**Redo exercise [2.16](#x7-97001r16) by writing the function `mult` as a tail-recursive
-function.
+**2.18** أعد التمرين [2.16](#x7-97001r16) بكتابة الدالة `mult` كدالة تكرارية ذيلية (tail-recursive).
 
-**2.19**Write a function `insert:int->intlist->intlist` that inserts an
-integer into a list of integers sorted in increasing order. Avoid making an
-unnecessary copy of the part of the initial list that lies beyond the point of
-insertion.
+**2.19** اكتب دالة `insert:int->intlist->intlist` تُدخِل عددًا صحيحًا في قائمة من الأعداد الصحيحة مرتبة ترتيبًا تصاعديًا. تجنَّب إنشاء نسخة غير ضرورية من الجزء من القائمة الأولية الواقع بعد نقطة الإدخال.
 
-**2.20**Using the above function `insert`, write a function `insertion_sort:intlist->intlist`
-that sorts a list of integers in increasing order using following algorithm,
-known as *insertion sort:*Beginning with the empty list, insert each element
-successively, using the function `insert`. Insertion sort is described in detail in
-chapter [12](https://usr.lmf.cnrs.fr/lpo/mainch12.html#sorting-algorithms).
+**2.20** باستخدام الدالة `insert` أعلاه، اكتب دالة `insertion_sort:intlist->intlist` ترتب قائمة من الأعداد الصحيحة ترتيبًا تصاعديًا باستخدام الخوارزمية التالية، المعروفة باسم *الترتيب بالإدخال (insertion sort):* بدءًا من القائمة الفارغة، أدخِل كل عنصر بالتتابع، باستخدام الدالة `insert`. يُوصَف الترتيب بالإدخال بالتفصيل في الفصل [12](https://usr.lmf.cnrs.fr/lpo/mainch12.html#sorting-algorithms).
 
-#### Converting Integers from an Arbitrary Base
+#### تحويل الأعداد الصحيحة من أساس عشوائي
 
-**2.21**Write a function `mem:’a->’alist->bool` that determines whether an element
-is present in a list, using the equality operator `=`. This function exists in the standard
-library, under the name `List.mem`.
+**2.21** اكتب دالة `mem:’a->’alist->bool` تحدد ما إذا كان عنصر موجودًا في قائمة، باستخدام عامل المساواة `=`. توجد هذه الدالة في المكتبة القياسية تحت اسم `List.mem`.
 
-**2.22**Write a function `count:’a->’alist->int` that counts the number of
-occurrences of an element in a list, using the equality operator `=`.
+**2.22** اكتب دالة `count:’a->’alist->int` تحسب عدد مرات ظهور عنصر في قائمة، باستخدام عامل المساواة `=`.
 
-**2.23**Rewrite the function `count` of the last exercise using an iterator.
+**2.23** أعد كتابة دالة `count` من التمرين السابق باستخدام مكرِّر (iterator).
 
-**2.24**Write a function `append:’alist->’alist->’alist` that concatenates two
-lists. If l1 = [x1;…;xn] and l2 = [y1;…;ym], then the result of `append` l1 l2 must be
-the list [x1;…;xn;y1;…;ym] of length n + m. Proceed by recursion on the first
-list, thus performing n recursive calls. The OCaml standard library provides
-this function both under the name `List.append` and as the infix operator
-`@`.
+**2.24** اكتب دالة `append:’alist->’alist->’alist` تلصق قائمتين. إذا كانت l1 = [x1;…;xn] و l2 = [y1;…;ym]، فإن نتيجة `append` l1 l2 يجب أن تكون القائمة [x1;…;xn;y1;…;ym] ذات الطول n + m. تصرَّف بالتكرار على القائمة الأولى، وبالتالي إجراء n استدعاء تكراري. توفر مكتبة أوسمل القياسية هذه الدالة تحت اسم `List.append` وكعامل الوصل `@`.
 
-**2.25**Using the above function `append`, write a function `rev` of type
-`’alist->’alist` that reverses the order of elements of a list, that is, such that
-`rev` [x1;…;xn] = [xn;…;x1]. In the next section, we will discuss a more efficient
-method of implementing this function.
+**2.25** باستخدام الدالة `append` أعلاه، اكتب دالة `rev` من النوع `’alist->’alist` تعكس ترتيب عناصر قائمة، أي بحيث `rev` [x1;…;xn] = [xn;…;x1]. في القسم التالي، سنناقش طريقة أكثر كفاءة لتنفيذ هذه الدالة.
 
-**2.26**Write a function `subseq:’alist->’alist->bool` that determines if a list w1 is
-a sub-sequence of another list w2, that is, if w1 can be obtained by removing
-zero or more elements of w2. For example, [1;5;4;1] is a sub-sequence of
-[3;1;1;5;0;4;1].
+**2.26** اكتب دالة `subseq:’alist->’alist->bool` تحدد ما إذا كانت قائمة w1 تسلسلًا فرعيًا (sub-sequence) لقائمة أخرى w2، أي يمكن الحصول على w1 بإزالة صفر أو أكثر من عناصر w2. على سبيل المثال، [1;5;4;1] تسلسل فرعي لـ [3;1;1;5;0;4;1].
 
-**2.27**Write a function `exists:(’a->bool)->’alist->bool` that takes a boolean
-function p and a list l as arguments and determines if l contains at least one element
-x such that p(x) is `true`.
+**2.27** اكتب دالة `exists:(’a->bool)->’alist->bool` تأخذ دالة بولية p وقائمة l كوسيطين، وتحدد ما إذا كانت l تحتوي على عنصر واحد على الأقل x بحيث p(x) تساوي `true`.
 
-**2.28**Using `List.fold_left`, write a function `forall:(’a->bool)->’alist->bool`
-that determines whether all the elements of a list of type `’alist` satisfy a condition
-given by a function of type `’a->bool`. What is the problem with this solution?
-Propose a more efficient version.
+**2.28** باستخدام `List.fold_left`، اكتب دالة `forall:(’a->bool)->’alist->bool` تحدد ما إذا كانت جميع عناصر قائمة من النوع `’alist` تفي بشرط معطى بدالة من النوع `’a->bool`. ما هي مشكلة هذا الحل؟ اقترح نسخة أكثر كفاءة.
 
-**2.29**Write a function `filter:(’a->bool)->’alist->’alist` that takes a boolean
-function p and a list l as arguments, and returns the list of all the elements x of l for
-which p(x) is `true`. Preserve the order of the elements. This function exists in the
-standard library under the name `List.filter`.
+**2.29** اكتب دالة `filter:(’a->bool)->’alist->’alist` تأخذ دالة بولية p وقائمة l كوسيطين، وتعيد قائمة جميع العناصر x من l التي تحقق p(x) = `true`. حافظ على ترتيب العناصر. توجد هذه الدالة في المكتبة القياسية تحت اسم `List.filter`.
 
-**2.30**Using an iterator, write a function `max_seq:boollist->int` that
-returns the length of the longest sequence of consecutive `true` values in a given
-list.
+**2.30** باستخدام مكرِّر، اكتب دالة `max_seq:boollist->int` تعيد طول أطول تسلسل من القيم `true` المتتالية في قائمة معينة.
 
-**2.31**Write a function `first:(’a->bool)->’alist->’a` that returns the
-first element of the list passed as argument satisfying the given condition.
-If such an element does not exist, the function should raise the exception
-`Not_found`.
+**2.31** اكتب دالة `first:(’a->bool)->’alist->’a` تعيد أول عنصر من القائمة الممررة كوسيطة يحقق الشرط المعطى. إذا لم يكن مثل هذا العنصر موجودًا، يجب أن ترفع الدالة الاستثناء `Not_found`.
 
-**2.32**Write an iterator `fold_pairs` of type:
+**2.32** اكتب مكرِّر `fold_pairs` من النوع:
 
 `fold_pairs:(’a->’b->’b->’a)->’a->’blist->’a`
 
-The iterator takes as argument a function f, a value v, and a list [x1;…;xn], and
-returns:
+يأخذ المكرِّر كوسيطين دالة f، قيمة v، وقائمة [x1;…;xn]، ويعيد:
 
 $$f(f(...f(f(v,x1,x2),x2,x3),...,xn -1,xn),xn,x1)$$
 
-In other words, the function traverses all pairs of consecutive elements (xi,xi+1),
-where the list is considered to be circular.
+بعبارة أخرى، تجتاز الدالة جميع أزواج العناصر المتتالية (xi,xi+1)، حيث تُعتبَر القائمة دائرية.
 
-**2.33** Propose a function to create a matrix `init_matrix`, analogous to
-`Array.init`, of type:
+**2.33** اقترح دالة لإنشاء مصفوفة `init_matrix`، مشابهة لـ `Array.init`، من النوع:
 
 ```ocaml
     init_matrix: (int -> int -> ’a) -> int -> int -> ’a array array
 ```
 
-**2.34** Write a traversal function:
+**2.34** اكتب دالة تجول:
 
 ```ocaml
     iter_matrix: (int -> int -> ’a -> unit) -> ’a array array -> unit
 ```
 
-that applies a given function to all the elements of a matrix. The first two arguments of
-the function are the indices of the corresponding element. Explain why it is more
-efficient to traverse the matrix row-wise rather than column-wise.
+ تطبِّق دالة معينة على جميع عناصر مصفوفة. الوسيطان الأولان للدالة هما مؤشرا العنصر المقابل. اشرح لماذا يكون تجول المصفوفة صفًا صفًا (row-wise) أكثر كفاءة من تجولها عمودًا عمودًا (column-wise).
 
-#### Breakout without Bricks
+#### بريك أوت دون الطوب
 
-**2.35**Given a file `a.ml` that contains `let()=Printf.printf"A\n"` and a file `b.ml`
-that contains `let()=Printf.printf"B\n"`, compile these two files separately and
-verify that different results are obtained depending on the order in which the files are
-passed to the linker.
+**2.35** بالنظر إلى ملف `a.ml` يحتوي على `let()=Printf.printf"A\n"` وملف `b.ml` يحتوي على `let()=Printf.printf"B\n"`، قم بترجمة هذين الملفين بشكل منفصل وتحقق من الحصول على نتائج مختلفة اعتمادًا على الترتيب الذي تُمرَّر به الملفات إلى الرابط (linker).
 
-**2.36**Given six files `a.mli`, `a.ml`, `b.ml`, `c.ml`, `d.mli`, and `d.ml`, and knowing that `A`
-and `B` depend on `C`, and that `C` depends on `D`, give all possible ways of compiling
-and linking a program containing the four compilation units `A`, `B`, `C`, and
-`D`.
+**2.36** بالنظر إلى ستة ملفات `a.mli`، `a.ml`، `b.ml`، `c.ml`، `d.mli`، و `d.ml`، وبمعرفة أن `A` و `B` يعتمدان على `C`، وأن `C` يعتمد على `D`، أعطِ جميع الطرق الممكنة لترجمة وربط برنامج يحتوي على وحدات الترجمة الأربع `A`، `B`، `C`، و `D`.
 
-**2.37**Rewrite the code of Breakout in a single file with two submodules `Draw`
-and `Breakout`. Give the module `Draw` the same interface as that defined in
-`draw.mli`.
+**2.37** أعد كتابة كود بريك أوت (Breakout) في ملف واحد مع وحدتين فرعيتين `Draw` و `Breakout`. أعطِ الوحدة `Draw` نفس الواجهة المعرفة في `draw.mli`.
 
-#### Logo Turtle
+#### سلحفاة لوغو
 
-**2.38**Redo exercise [2.5](#x7-93003r5) that draws a Koch snowflake using the Logo turtle.
+**2.38** أعد التمرين [2.5](#x7-93003r5) الذي يرسم ندفة ثلج كوخ باستخدام سلحفاة لوغو.
 
-Hint: Write a recursive function `von_koch:int->float->unit` whose first parameter
-is the number of recursive steps and the second the length of the segment
-[A,B].
+تلميح: اكتب دالة تكرارية `von_koch:int->float->unit` يكون وسيطها الأول عدد الخطوات التكرارية والثاني طول المقطع [A,B].
 
-**2.39**Rewrite the functor `Turtle` so that it is also parametrized by a module of
-signature:
+**2.39** أعد كتابة الدالة الدالية `Turtle` כך تكون أيضًا مُعَلَّمَة بوحدة ذات توقيع:
 
 ```ocaml
     val open_graph: int -> int -> unit
     val draw_line: int -> int -> int -> int -> unit
 ```
 
-Here, `open_graph` w h opens a window of dimensions w ×h and `draw_line` x1 y1 x2 y2
-draws a segment between the points (x1,y1) and (x2,y2). Then, implement a module
-with such an interface using `Graphics`.
+هنا، `open_graph` w h تفتح نافذة بأبعاد w ×h و `draw_line` x1 y1 x2 y2 ترسم مقطعًا بين النقطتين (x1,y1) و (x2,y2). ثم نفِّذ وحدة بواجهة كهذه باستخدام `Graphics`.
 
-**2.40**We would like to define a module to represent files endowed with reading and
-writing permissions. To this end, we introduce a type `permission`.
+**2.40** نريد تعريف وحدة تمثل ملفات مزودة بأذونات قراءة وكتابة. لهذا الغرض، نقدم نوع `permission`.
 
 ```ocaml
     type permission = Read | Write
 ```
 
-Define a module `Access` to manipulate access rights. This module will provide an
-abstract type `t`, a value of type `t`, `default`, representing read and write access,
-and two functions `get` and `set` that allow, respectively, to get and set a
-permission.
+عرِّف وحدة `Access` للتعامل مع حقوق الوصول. ستوفر هذه الوحدة نوعًا مجردًا `t`، قيمة من النوع `t` هي `default`، تمثل الوصول للقراءة والكتابة، ودالتين `get` و `set` تسمحان، على التوالي، بالحصول على إذن وتعيينه.
 
 ```ocaml
     val get : t -> permission -> bool
     val set : t -> permission -> bool -> t
 ```
 
-Next, define another module `File` to represent a file endowed with access rights. This
-module will export a private record type `t`, containing the file name in a field of type
-`string` and the access rights in a `mutable` field of type `Access.t`. You will provide a
-function `create:string->t` taking the file name as argument, a function `chmod` to
-modify the access rights, a function `open_in:t->in_channel` to open a file for
-reading, and a function `open_out:t->out_channel` to open a file for writing. The last
- 
- 
-two functions will raise an exception `PermissionDenied` in case of insufficient
-permissions.
+ثم عرِّف وحدة أخرى `File` لتمثيل ملف مزود بحقوق وصول. ستصدِّر هذه الوحدة نوع سجل خاص `t`، يحتوي على اسم الملف في حقل من النوع `string` وحقوق الوصول في حقل `mutable` من النوع `Access.t`. ستوفر دالة `create:string->t` تأخذ اسم الملف كوسيطة، دالة `chmod` لتعديل حقوق الوصول، دالة `open_in:t->in_channel` لفتح ملف للقراءة، ودالة `open_out:t->out_channel` لفتح ملف للكتابة. الدالتان الأخيرتان
 
-**2.41**Write multiple modules to manipulate monetary values in different currencies.
-All the modules should have the same signature:
+سترفعان استثناء `PermissionDenied` في حال عدم كفاية الأذونات.
+
+**2.41** اكتب وحدات متعددة للتعامل مع القيم النقدية بعملات مختلفة. يجب أن تكون لجميع الوحدات نفس التوقيع:
 
 ```ocaml
   module type MONEY = sig
@@ -4166,16 +4098,9 @@ All the modules should have the same signature:
   end
 ```
 
-A monetary value is represented by an integer `i` and a fraction `f`, between 0
-and 99, representing the number of cents. The integer `i` is signed. Write a
-module `Money` implementing the signature `MONEY`. Derive from it two modules
-`Euro` and `Dollar`, both having the signature `MONEY` and the structure `Money`,
-but with distinct types `Euro.t` and `Dollar.t`. Finally, write a function
-`euros_to_dollars:float->Euro.t->Dollar.t` that, given an exchange rate, converts
-euros to dollars.
+تمثَّل القيمة النقدية بعدد صحيح `i` وكسر `f` بين 0 و 99، يمثل عدد السنتات. العدد الصحيح `i` موقع. اكتب وحدة `Money` تنفذ التوقيع `MONEY`. اشتق منها وحدتين `Euro` و `Dollar`، كلتاهما ذات توقيع `MONEY` وبنية `Money`، لكن بنوعي `Euro.t` و `Dollar.t` متميزين. أخيرًا، اكتب دالة `euros_to_dollars:float->Euro.t->Dollar.t` تحوِّل اليورو إلى دولارين عند إعطاء سعر صرف.
 
-**2.42**Write a module to represent sets of integers by lists sorted in increasing order,
-with the following signature:
+**2.42** اكتب وحدة لتمثيل مجموعات من الأعداد الصحيحة بقوائم مرتبة ترتيبًا تصاعديًا، بالتوقيع التالي:
 
 ```ocaml
   module type ISET = sig
@@ -4187,29 +4112,20 @@ with the following signature:
   end
 ```
 
-What is the advantage of making the type `t` an abstract type?
+ما هي ميزة جعل النوع `t` نوعًا مجردًا؟
 
-**2.43**Rewrite the code of the previous exercise in the form of a functor parametrized
-by the type of elements and a function defining a total order on them, that
-is:
+**2.43** أعد كتابة كود التمرين السابق على شكل دالة دالية (functor) مُعلمة بنوع العناصر ودالة تحدد ترتيبًا كليًا عليها، أي:
 
 ```ocaml
   module type ELT = sig type t val compare: t -> t -> int end
   module Set(E: ELT) : ... = struct ... end
 ```
 
-Here, the value of `compare` x y is strictly negative if x < y, zero if x = y, and strictly
-positive if x > y.
+هنا، قيمة `compare` x y سالبة قطعًا إذا x < y، صفرية إذا x = y، وموجبة قطعًا إذا x > y.
 
-**2.44**Apply the functor of the previous exercise to obtain sets of even integers,
-giving these an arbitrary total order.
+**2.44** طبِّق دالة الدالة من التمرين السابق للحصول على مجموعات من الأعداد الصحيحة الزوجية، مانحًا إياها ترتيبًا كليًا عشوائيًا.
 
-**2.45**Write a data structure for polynomials of one variable. The idea is to represent
-a polynomial using the sorted list of its monomials, each monomial being represented
-by a pair of a coefficient and an exponent. Thus, the polynomial X7 − 3X4 + 2 is
-represented by the list [(1,7);(−3,4);(2,0)]. In order to be generic with respect to the
-ring of coefficients, write the structure of polynomials as a functor `Poly` parametrized
-by a module of signature:
+**2.45** اكتب بنية بيانات لحدوديات متغير واحد. الفكرة هي تمثيل حدية باستخدام القائمة المرتبة لحدودها (monomials)، حيث يمثَّل كل حدٍّ بزوج من معامل وأس. وهكذا، تُمثَّل الحدية X7 − 3X4 + 2 بالقائمة [(1,7);(−3,4);(2,0)]. من أجل أن تكون عامة بالنسبة لحلقة المعاملات، اكتب بنية الحدوديات كدالة دالية `Poly` مُعلمة بوحدة ذات توقيع:
 
 ```ocaml
     module type Ring = sig
@@ -4222,8 +4138,7 @@ by a module of signature:
     end
 ```
 
-If `R` designates the argument of the functor `Poly`, the latter must provide the following
-functions:
+إذا كان `R` يُشير إلى وسيط دالة الدالة `Poly`، يجب أن توفر الأخيرة الدوال التالية:
 
 ```ocaml
     type t
@@ -4232,17 +4147,10 @@ functions:
     val eval: t -> R.t -> R.t
 ```
 
-Here, `t` is the type of polynomials, `create` constructs a polynomial based on a list of
-monomials, `add` adds two polynomials, and `eval` evaluates a polynomial at a point.
-Hint: Begin with the function `add` (see exercise [2.42](#x7-100019r42)) and then use it to write the
-function `create`.
+هنا، `t` هو نوع الحدوديات، `create` تنشئ حدية بناءً على قائمة من الحدود، `add` تجمع حديتين، و `eval` تقيِّم حدية عند نقطة.
+تلميح: ابدأ بالدالة `add` (انظر التمرين [2.42](#x7-100019r42)) ثم استخدمها لكتابة الدالة `create`.
 
-**2.46**Continue the previous exercise by adding two constants, `zero` and `one`, and
-two functions, `mul` and `equal`, to the signature of the functor `Poly`. This yields
-polynomials endowed with the structure of a ring. In other words, the signature of the
-functor `Poly` can be written in terms of the signature `Ring`. The construct
-`include` is a syntactic shortcut to include the definition of one signature in
-another:
+**2.46** واصِل التمرين السابق بإضافة ثابتتين، `zero` و `one`، ودالتين، `mul` و `equal`، إلى توقيع دالة الدالة `Poly`. هذا يمنح الحدوديات بنية حلقة. بعبارة أخرى، يمكن كتابة توقيع دالة الدالة `Poly` بمصطلحات التوقيع `Ring`. البنيان `include` هو اختصار نحوي لتضمين تعريف توقيع في آخر:
 
 ```ocaml
     sig
@@ -4252,41 +4160,28 @@ another:
     end
 ```
 
-It is thus possible to obtain polynomials of several variables by applying the functor `Poly`
-several times in succession. For instance, the structure of polynomials of three
-variables and integer coefficients is obtained as:
+وبذلك، يمكن الحصول على حدوديات بعدة متغيرات بتطبيق دالة الدالة `Poly` عدة مرات متتالية. على سبيل المثال، تُحصل بنية حدوديات ثلاثة متغيرات ومعاملات صحيحة كالتالي:
 
 ```ocaml
     module P = Poly(Poly(Poly(Int)))
 ```
 
-Here, it is assumed that `Int` implements the signature `Ring` for the integers.
+يُفترَض هنا أن `Int` تنفذ التوقيع `Ring` للأعداد الصحيحة.
 
-#### Quadtrees
+#### أشجار رباعية (Quadtrees)
 
-**2.47**Write a function `rotate:quad->quad` that turns an image anticlockwise by 90
-degrees.
+**2.47** اكتب دالة `rotate:quad->quad` تدير صورة عكس اتجاه عقارب الساعة بمقدار 90 درجة.
 
-**2.48**Write a function `mirror:quad->quad` that constructs the mirror symmetry
-along the vertical axis of an image represented by a quadtree. Thus, the function
-`mirror` allows switching between the following two images:
+**2.48** اكتب دالة `mirror:quad->quad` تبني التماثل المرآتي على المحور العمودي لصورة ممثلة بشجرة رباعية. هكذا، تسمح الدالة `mirror` بالتبديل بين الصورتين التاليتين:
 
-**2.49**Write a function `fractal:int->quad` that constructs a quadtree representing
-a Sierpiński carpet fractal, by iterating the following process of decomposition:
+**2.49** اكتب دالة `fractal:int->quad` تبني شجرة رباعية تمثل كسير سجادة سيربينسكي (Sierpiński carpet fractal)، بتكرار عملية التحلل التالية:
 
-#### Solving the N-Queens Problem
+#### حل مشكلة N-Queens (الملكات N)
 
-**2.50**Modify program [16](#x7-87006r16) to return the first solution found, in the form of an array
-a giving the column a[i] of the queen located on row i. When there is no solution, the
-exception `Not_found` should be raised.
+**2.50** عدِّل البرنامج [16](#x7-87006r16) ليعيد أول حل موجود، في شكل مصفوفة a تعطي العمود a[i] للملكة الموجودة في الصف i. عندما لا يوجد حل، يجب رفع الاستثناء `Not_found`.
 
-[^3]: The program `seq` is a Unix tool that displays all the integers from 1 to n, one integer per
- line. It is the simplest way to obtain exactly n lines of text.
-[^4]: Chapter [9](https://usr.lmf.cnrs.fr/lpo/mainch9.html#zippers) will present another type of iterator which can solve this problem.
-[^5]: Here, we use the French naming system of musical notes, which is used in many other
- countries as well.
-[^1]: Another solution, notably adopted in the hash tables of the OCaml standard library,
- consists is using an array whose size `n` is a power of 2. The modulo operation can then be
- implemented with `land(n-1)`, which has the added advantage of being much cheaper than a
- division.
-[^2]: This comes from the word re*trie*val.
+[^3]: البرنامج `seq` أداة يونكس (Unix) تعرض جميع الأعداد الصحيحة من 1 إلى n، عدد صحيح واحد في كل سطر. إنها أبسط طريقة للحصول على n أسطر نصية بالضبط.
+[^4]: سيقدم الفصل [9](https://usr.lmf.cnrs.fr/lpo/mainch9.html#zippers) نوعًا آخر من المكرِّرات (iterators) يمكنه حل هذه المشكلة.
+[^5]: هنا، نستخدم نظام التسمية الفرنسي للرموز الموسيقية، المُستخدَم في العديد من البلدان الأخرى أيضًا.
+[^1]: حل آخر، تتبناه جداول التجزئة (hash tables) في مكتبة أوسمل القياسية، يتكون في استخدام مصفوفة حجمها `n` قوة لـ 2. يمكن حينئذ تنفيذ عملية الباقي (modulo) بـ `land(n-1)`، مع ميزة إضافية هي كونها أرخص بكثير من القسمة.
+[^2]: يأتي هذا من كلمة re*trie*val (الاسترجاع).

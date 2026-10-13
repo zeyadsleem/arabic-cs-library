@@ -1,0 +1,98 @@
+---
+title: "Installation and Configuration"
+lang: en
+source: "https://stevekinney.com/courses/ai-development/installing-cursor"
+---
+
+[Cursor](https://cursor.com/) is still easiest to explain as a code editor with an
+agent built into the workflow. The important update is that the editor is no
+longer the whole product. Current Cursor also includes cloud agents, automations,
+subagents, hooks, skills, Bugbot, Security Agents, and a terminal interface.
+
+Start with the desktop application because that is where the everyday feedback
+loop is strongest.
+
+## Install the Desktop Application
+
+Download Cursor from [cursor.com](https://cursor.com/). During onboarding, Cursor can
+import extensions, settings, keybindings, and themes from [Visual Studio Code](https://code.visualstudio.com/). That migration is useful
+because Cursor is familiar enough that the editor should not be the new thing you
+are learning. The agent workflow should be.
+
+After installation, check these settings before you hand it a real repository:
+
+- Enable [**Privacy Mode**](https://cursor.com/help/security-and-privacy/privacy) if the
+repository contains proprietary code.
+- Decide whether model requests can use premium or [Max Mode](https://cursor.com/docs/models-and-pricing) models.
+- Add User Rules only for preferences that should follow you across every
+repository.
+- Keep repository-specific rules in `.cursor/rules/*.mdc`.
+- Configure trusted [MCP](https://modelcontextprotocol.io/) servers in `.cursor/mcp.json` or `~/.cursor/mcp.json`.
+
+The rule of thumb is simple: personal defaults go in user settings, repository
+behavior goes in the repository, and external tools should be explicit enough
+that a teammate can audit them.
+
+## Install the Command Line Interface
+
+Cursor also ships a terminal agent. Install it with the official installer:
+
+```bash
+curl https://cursor.com/install -fsS | bash
+```
+
+On Windows, use PowerShell:
+
+```powershell
+irm 'https://cursor.com/install?win32=true' | iex
+```
+
+The command is `agent`, not `cursor`. Run `agent` inside a repository for an
+interactive session, or use print mode for automation:
+
+```bash
+agent -p "Review the staged changes for correctness."
+```
+
+File modification from [print mode](https://cursor.com/docs/cli/headless) requires an explicit flag such
+as `--force` or `--yolo`, which is a name that is at least honest about the life
+choice you are making. Treat that as a real permission decision, not a
+convenience switch.
+
+## First Project Setup
+
+For a serious repository, create the project-level files before asking the agent
+to edit code:
+
+```
+.cursor/
+  rules/
+    architecture.mdc
+    testing.mdc
+  mcp.json
+```
+
+Add skills only when a workflow needs more structure than a rule can provide:
+
+```
+.cursor/
+  skills/
+    release-checklist/
+      SKILL.md
+```
+
+If the repository already has [`AGENTS.md`](https://agents.md/), Cursor will read
+it as an instruction source. I still prefer putting Cursor-specific behavior in
+Cursor files so the reader can tell which tool owns which instruction.
+
+## Verification Checklist
+
+Before you trust a new setup, ask Cursor to perform a read-only orientation:
+
+```
+Read this repository and summarize the build, test, lint, and release commands.
+Do not edit files. Cite the files you used.
+```
+
+Then compare its answer to the repository scripts. If it invents commands, fix
+the rules or context before you use Agent mode for changes.

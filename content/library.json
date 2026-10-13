@@ -565,7 +565,7 @@
       "languages": [
         "OCaml"
       ],
-      "status": "planned",
+      "status": "translated",
       "stage": "languages",
       "order": 1,
       "format": "pdf",
@@ -1067,14 +1067,15 @@
       "author": "Steve Kinney",
       "description": "ست عشرة دورة تطبيقية مكتوبة في تطوير الويب الحديث: React وTypeScript وأدائهما، وTailwind CSS، وأنظمة التصميم في Storybook، وFigma للمطوّرين، والاختبارات، وأمن الويب، وVisual Studio Code، وTypeScript للويب الكامل، ونشر التطبيقات على AWS، وواجهات المؤسسات، وأساسيات الذكاء الاصطناعي بلغة Python، وأدوات التطوير بالذكاء الاصطناعي، ووكلاء ذكاء اصطناعي يختبرون أنفسهم. كل صفحة تحفظ أمثلة الشيفرة والصور ووصفها كما هي بانتظار الترجمة.",
       "sourceUrl": "https://stevekinney.com/courses",
-      "license": "ALL RIGHTS RESERVED — reproduction prohibited without written permission",
-      "status": "blocked",
+      "license": "CC BY-NC-SA 4.0 — explicit written permission granted by Steve Kinney for Arabic translation",
+      "licenseUrl": "https://stevekinney.com/courses",
+      "status": "planned",
       "stage": "web",
       "order": 6,
       "format": "web",
       "pages": 868,
       "completeCourse": false,
-      "note": "المحتوى منسوخ من موقع ستيف كيني كما هو باللغة الإنجليزية. تم التحقّق من شروط الاستخدام في الموقع (stevekinney.com/policies/terms-of-service): القسم 2 يمنع صراحة نسخ أو تكرار أو إعادة إنتاج أي جزء من الموقع «دون إذن كتابي صريح» من المالك، ولا يوجد ملف ترخيص في مستودع الموقع ولا أي ذكر لترخيص في صفحات الكورسات نفسها. لذلك يُصنَّف المحتوى محفوظ الحقوق بالكامل، والترجمة ونشرها تتطلبان إذنًا كتابيًا صريحًا من الكاتب، ومن هنا حالة «blocked». دورة أمن الويب صفحة تعريفية فقط تربط بمستودع خارجي."
+      "note": "إذن كتابي صريح من ستيف كيني لترجمة ونشر جميع الكورسات الست عشرة باللغة العربية. المحتوى محفوظ الحقوق في الأصل، والترجمة غير الرسمية وغير التجارية مسموحة بإذن المؤلف. دورة أمن الويب صفحة تعريفية فقط تربط بمستودع خارجي."
     },
     {
       "id": "hono",
@@ -1120,6 +1121,30 @@
       "completeCourse": false,
       "note": "توثيق Better Auth مرخّص برخصة MIT، وترجمته مسموحة مع الإسناد. المصدر الإنجليزي المُحضَّر في content-src/better-auth (17 صفحة)، والترجمة العربية تُبنى بـ scripts/build-better-auth.mjs.",
       "pages": 17
+    },
+    {
+      "id": "mooc",
+      "title": "برمجة بايثون 2026 — جامعة هلسنكي",
+      "titleEn": "Python Programming MOOC 2026 — University of Helsinki",
+      "author": "University of Helsinki — الترجمة العربية: zeyadsleem",
+      "description": "دورة البرمجة التمهيدية (BSCS1001، 5 ECTS) والدورة المتقدمة (BSCS1002، 5 ECTS) من قسم علوم الحاسوب بجامعة هلسنكي. 14 جزءًا تغطي أساسيات بايثون، هياكل البيانات، البرمجة الكائنية، والألعاب مع Pygame.",
+      "sourceUrl": "https://programming-26.mooc.fi/",
+      "repoUrl": "https://github.com/rage/programming-26",
+      "translationRepo": "https://github.com/zeyadsleem/arabic-cs-library",
+      "siteUrl": "https://zeyadsleem.github.io/arabic-cs-library/",
+      "license": "CC BY-NC-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "languages": [
+        "Python"
+      ],
+      "status": "translated",
+      "stage": "foundations",
+      "order": 7,
+      "format": "web",
+      "pages": 89,
+      "completeCourse": true,
+      "prerequisites": [],
+      "note": "مادة الدورة مرخصة تحت CC BY-NC-SA 4.0 (جامعة هلسنكي). الترجمة للاستخدام التعليمي غير التجاري فقط. الكود المرافق مرخص تحت Apache-2.0."
     }
   ]
 }

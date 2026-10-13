@@ -1,0 +1,15 @@
+---
+title: "has-* Challenges"
+lang: en
+source: "https://stevekinney.com/courses/tailwind/has-challenges"
+---
+
+Can you implement the following?
+
+1. **Checkbox Container**: Make a container change background color when its checkbox is checked. (Easy mode, you can find the answer somewhere in the last section.)
+2. **Form Validation Feedback**: Create a form field container that shows different colors for valid/invalid states
+3. **Conditional Content**: Build a survey question that reveals follow-up content based on radio button selection
+4. **Multi-Element Response**: Design a contact form container that responds differently to text inputs vs textareas
+5. **Complex Attribute Targeting**: Create a file upload zone that responds to both focus states and file type attributes
+
+The [solutions can be found here](https://stevekinney.com/courses/tailwind/has-solutions).

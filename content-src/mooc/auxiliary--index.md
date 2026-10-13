@@ -1,0 +1,109 @@
+---
+title: "About this course"
+book: mooc
+chapter: auxiliary
+slug: index
+order: 0
+source: "https://programming-26.mooc.fi/"
+lang: en
+---
+
+This is the course material page for the Introduction to Programming course (BSCS1001, 5 ECTS) and the Advanced Course in Programming (BSCS1002, 5 ECTS) from the Department of Computer Science at the University of Helsinki.
+
+To pass either of the two courses, you are expected to complete programming exercises and take part in an exam. Please see the [Grading and exams](/grading-and-exams) page for more details.
+
+The Introduction to Programming course consists of parts 1 through 7 in the material, and the Advanced Course in Programming consists of parts 8 through 14.
+
+## Support channels on the course
+
+The official course support channels are available through workshop guidance on campus and Discord. The course channels in Discord are available through [this link](https://study.cs.helsinki.fi/discord/join/ohjelmoinnin_mooc).
+
+Please see the [Support and assistance](/support-and-assistance) page for more details.
+
+Use Discord primarily for communication. You can be in contact with the course teachers by e-mail ohjelmoinnin-mooc@helsinki.fi.
+
+## Timetable
+
+The course will be open until the end of the year 2026. 
+
+## Lectures
+
+The remote lectures in the course are given on Thursdays at 10.15 Finnish time. [You can follow the lectures via Zoom](https://helsinki.zoom.us/j/69552727154?pwd=skwCXNgrTltfFJBe38w2zC2mvxkd2e.1). 
+
+There are also lecture recordings from 2025 available in the table below. Please note that dates and other practical information in those lecture videos do not concern this year's course.
+
+<table>
+  <thead>
+    <tr>
+      <td>Part</td>
+      <td>Recording</td>
+      <td>Slides</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Part 1 (2026)</td>
+      <td><a href="https://youtu.be/-mmxsTadINo">Recording 03.09.2026</a></td>
+      <td><a href="https://docs.google.com/presentation/d/1zUGqmAumuSVqPLZwgbfhuuhVAm_maBvoAuvNorS5Xw4/edit?usp=sharing">Slides 1</a></td>
+    </tr>
+    <tr>
+      <td>Part 2 (2026)</td>
+      <td><a href="https://youtu.be/Z2ZNgwECF8U">Recording 10.09.2026</a></td>
+      <td><a href="https://docs.google.com/presentation/d/1zYeb3ZSHi1xahDKKqBJg_5eI8gS7zzoIkjR_8__QNWY/edit?usp=sharing">Slides 2</a></td>
+    </tr>
+    <tr>
+      <td>Part 3 (2026)</td>
+      <td><a href="https://youtu.be/v_KsHdTEfqY">Recording 17.09.2026</a></td>>
+      <td><a href="https://docs.google.com/presentation/d/1Ar-hh95KFGGgahLFcsORuUaL6ZZQtkdv3EP6cNm3yFA/edit?usp=sharing">Slides 3</a></td>
+    </tr>
+    <tr>
+      <td>Part 4 (2026)</td>
+      <td><a href="https://youtu.be/khJqYI9GbsI">Recording 24.09.2026</a></td>
+      <td><a href="https://docs.google.com/presentation/d/1n68c17s4TI0GTnFhQz2ydGP6c7lh7D5Zl1q3Od2lGDs/edit?usp=sharing">Slides 4 </a></td>
+    </tr>
+    <tr>
+      <td>Part 5 (2026)</td>
+      <td><a href="https://youtu.be/sBBo2-xAPLg">Recording 01.10.2026</a></td>
+      <td><a href="https://docs.google.com/presentation/d/1ivYhIwmyChqajftcIB2FiOjvneorwblu5uujuZdfjpA/edit?usp=sharing">Slides 5</a></td>
+    </tr>
+    <tr>
+      <td>Part 6 (2026)</td>
+      <td><a href="https://youtu.be/M0sDE8-eXjk">Recording 08.10.2026</a></td>
+      <td><a href="https://docs.google.com/presentation/d/1UPmRAcMVI85IpLq6sT1RS7tjrmf7MtLPKzx8O0U_JhI/edit?usp=sharing">Slides 6</td>
+    </tr>
+    <tr>
+      <td>Part 7 (2025)</td>
+      <td><a href="https://youtu.be/6D1bvUdsNyg">Recording 16.10.2025</a></td>
+    </tr>
+    <tr>
+      <td>Part 8 (2025)</td>
+      <td><a href="https://youtu.be/puTMAAO8GCM">Recording 30.10.2025</a></td>
+    </tr>
+    <tr>
+      <td>Part 9 (2025)</td>
+      <td><a href="https://youtu.be/Kyu3-m2K9CM">Recording 06.11.2025</a></td>
+    </tr>
+    <tr>
+      <td>Part 10 (2025)</td>
+      <td><a href="https://youtu.be/mTPc7DWiqHk">Recording 13.11.2025</a></td>
+    </tr>
+    <tr>
+      <td>Part 11 (2025)</td>
+      <td><a href="https://youtu.be/F8ZR42dga94">Recording 20.11.2025</a></td>
+    </tr>
+    <tr>
+      <td>Part 12 (2025)</td>
+      <td><a href="https://youtu.be/G1k-HffTUiM">Recording 27.11.2025</a></td>
+    </tr>
+    <tr>
+      <td>Part 13 (2025)</td>
+      <td><a href="https://youtu.be/3S_kPT5jcRw">Recording 04.12.2025</a></td>
+    </tr>
+    <tr>
+      <td>Part 14</td>
+      <td>No recording, project work</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
