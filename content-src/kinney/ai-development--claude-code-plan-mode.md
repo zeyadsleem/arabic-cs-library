@@ -1,0 +1,50 @@
+---
+title: "Plan Mode"
+lang: "en"
+chapter: "ai-development"
+slug: "claude-code-plan-mode"
+order: 26
+source: "https://stevekinney.com/courses/ai-development/claude-code-plan-mode"
+---
+
+Plan mode in [Claude Code](https://code.claude.com/docs/en/permissions) is a
+permission boundary. It lets Claude inspect and reason without immediately
+editing files.
+
+Use it when the task is unclear, risky, or broad.
+
+## What Plan Mode Should Produce
+
+A useful plan includes:
+
+- The files Claude inspected.
+- The implementation options.
+- The chosen path and why it is smallest.
+- The files expected to change.
+- The verification commands.
+- The stop conditions.
+
+Prompt:
+
+```
+Enter plan mode. Research the smallest safe way to add refresh-token rotation.
+Compare at most two implementation paths. Do not edit files.
+```
+
+## Approving the Plan
+
+Before switching from planning to implementation, check the file list and
+verification command. If either is missing, the plan is not ready.
+
+Good handoff:
+
+```
+Implement option B only. Write the regression test first. Run the targeted test
+and bun run lint. Stop on unrelated failures.
+```
+
+## Plan Mode Versus Opus Plan
+
+Plan mode controls permissions. `opusplan` controls model routing. They combine
+well for complex tasks, but they solve different problems. Plan mode says “do
+not edit yet.” `opusplan` says “use a stronger model for planning.”

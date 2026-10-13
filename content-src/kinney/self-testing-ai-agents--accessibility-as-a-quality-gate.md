@@ -1,0 +1,199 @@
+---
+title: "Accessibility as a Quality Gate"
+lang: "en"
+chapter: "self-testing-ai-agents"
+slug: "accessibility-as-a-quality-gate"
+order: 40
+source: "https://stevekinney.com/courses/self-testing-ai-agents/accessibility-as-a-quality-gate"
+---
+
+If you’ve ever written a beautiful `getByRole` test and still shipped an inaccessible UI, welcome to the club. I’ve done it. The test suite felt righteous. The screen reader experience was still bad.
+
+That is the hole this lesson closes.
+
+Semantic locators get you closer to accessible UI because they force names, roles, and labels into the markup. That’s real value. But they are still a side effect of testing behavior, not a dedicated accessibility loop. An agent needs a loop that says, explicitly, “this change introduced an accessibility regression, and that is a stop sign.”
+
+> **Prerequisite**
+>
+> This lesson assumes you’ve already internalized [Locators and the Accessibility Hierarchy](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy). That lesson gives the agent better handles on the UI. This one turns accessibility itself into a gate.
+
+## Why locator discipline is necessary but insufficient
+
+Locator discipline mostly answers one question: *can the test find the thing the way a user would?*
+
+Accessibility asks a wider set of questions:
+
+- Can a keyboard user reach it?
+- Does the focus order make sense?
+- Does the control announce itself clearly to assistive technology?
+- Does the form expose the error state, not just render it in red?
+- Does the dialog trap focus and return it when it closes?
+
+Your `getByRole('button', { name: 'Save' })` test helps with exactly one slice of that. A useful slice, yes. The whole pie, no.
+
+This is the mental model I want you to keep: **semantic locators are upstream pressure, accessibility checks are downstream proof.** You want both.
+
+## What the automated gate should catch
+
+The easiest automated gate to add is an [axe-core](https://www.deque.com/axe/core-documentation/) scan against your critical routes and flows. I like axe here because it is boring in the best possible way: mature rules, good output, and a clean “these are the violations” result that an agent can act on.
+
+What the automated pass is good at:
+
+- Missing or incorrect labels
+- Invalid ARIA relationships
+- Landmarks and heading structure problems
+- Some color-contrast issues
+- Form fields that are technically present but not actually named
+
+That class of problem is perfect for an agent loop. The agent reads the violations, fixes the markup, reruns the scan, and moves on.
+
+What I do *not* want is a fuzzy accessibility story where the agent says “I used `getByRole`, so we’re probably fine.” Probably fine is how regressions get a free ride to production.
+
+## What the gate looks like in code
+
+The Playwright integration for axe-core is small enough to fit in your head. You install one package (`@axe-core/playwright`), import its `AxeBuilder`, point it at a page, and call `.analyze()`. The result has a `violations` array that you assert against:
+
+```typescript
+import AxeBuilder from '@axe-core/playwright';
+import { expect, test } from '@playwright/test';
+
+test('shelf page has no automated accessibility violations', async ({ page }) => {
+  await page.goto('/shelf');
+
+  const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
+
+  expect(results.violations).toEqual([]);
+});
+```
+
+A few things worth understanding about that block before you start writing your own:
+
+- **`new AxeBuilder({ page })`** binds an axe run to the current Playwright `Page`. Each test gets its own builder; do not try to share one across tests.
+- **`.withTags(['wcag2a', 'wcag2aa'])`** scopes the rule set to WCAG 2.0 levels A and AA. This is the bar I want by default. You can add `'wcag21a'` and `'wcag21aa'` if you want WCAG 2.1, or pin to a specific rule with `.withRules(...)`. Without `withTags`, axe runs every rule it ships with — most of which are not failures you want to gate on.
+- **`.analyze()`** is the await point. It walks the DOM, runs the rule set, and returns a results object with `violations`, `passes`, `incomplete`, and `inapplicable` arrays.
+- **`expect(results.violations).toEqual([])`** is the gate. An empty `violations` array means axe found nothing wrong. Anything else fails the test, with the violation details printed in the failure output.
+
+That is the entire shape. Three lines of setup, one assertion. The accessibility lab adds exactly this pattern to `tests/accessibility.spec.ts`, scoped to the highest-signal routes; once you understand the four pieces above you can read that file as a real-shape implementation rather than a mystery.
+
+The Shelf starter omits this check. Once you trust the scan enough to make it part of the main gate, let `tests/accessibility.spec.ts` ride the normal `npm run test` loop instead of hiding it behind a sidecar command.
+
+## Structural accessibility checks with ARIA snapshots
+
+axe is great at rules. It is not trying to tell you whether the *shape* of a menu, dialog, tree, or form quietly changed in a way that still passes axe but is now wrong for assistive tech.
+
+That is where [ARIA snapshots](https://playwright.dev/docs/aria-snapshots) earn their keep. Playwright can capture the accessibility tree for a locator as YAML and compare it with `toMatchAriaSnapshot()`:
+
+```typescript
+const dialog = page.getByRole('dialog', { name: 'Rate Station Eleven' });
+
+await expect(dialog).toMatchAriaSnapshot(`
+- dialog "Rate Station Eleven":
+  - heading "Rate Station Eleven"
+  - radio "1 star"
+  - radio "2 stars"
+  - radio "3 stars"
+  - radio "4 stars"
+  - radio "5 stars"
+  - button "Save rating"
+  - button "Cancel"
+`);
+```
+
+You can also inspect the raw structure with `await dialog.ariaSnapshot()` when you are figuring out what to lock in.
+
+This is not a replacement for axe. It is the complement:
+
+- **axe** catches invalid labels, broken ARIA relationships, and rules violations
+- **ARIA snapshots** catch structural drift in the accessible tree
+
+Use them for the UI where accessible structure *is* the contract: dialogs, menus, nav landmarks, accordions, grouped forms, and anything else where the semantics matter more than the pixels.
+
+Keep the snapshot focused. Snapshotting an entire page because “why not” is how you create noisy golden files nobody trusts.
+
+## What the automated gate cannot prove
+
+Accessibility has a manual layer that you cannot wish away. The [W3C keyboard accessibility guidance](https://www.w3.org/WAI/WCAG22/Understanding/keyboard-accessible.html) is still the right bar here: all functionality must be operable from a keyboard, and focus cannot get trapped in weird places.
+
+An automated scan will not tell you:
+
+- Whether the focus order is intuitive
+- Whether a modal feels sane when tabbing through it
+- Whether the announcement text is actually helpful, not merely present
+- Whether a drag-and-drop interaction has an equivalent path for non-pointer users
+- Whether motion, timeouts, or progressive disclosure make the flow exhausting to use
+
+So, the gate has two parts:
+
+- **Automated violations**: fail the loop immediately.
+- **Manual-only checks**: keep a short checklist for the flows that matter, and do not pretend the bot covered them.
+
+That split matters. A short honest checklist beats a fake sense of completeness every time.
+
+## False positives, suppressions, and the part where people get sloppy
+
+Here’s where teams usually ruin the loop: the first noisy result shows up, somebody disables the rule globally, and now the accessibility gate is decorative.
+
+Don’t do that.
+
+The policy I use is simple:
+
+- Treat `violations` as blocking until proven otherwise.
+- Treat `incomplete` or manual-review-style results as a queue for human verification, not as a failed build.
+- If you suppress a rule, scope it as tightly as possible and leave a sentence explaining why the component is still accessible.
+
+> **Suppressions**
+>
+> A suppression without a written reason is not a suppression. It is a future mystery. Put the reason next to the suppression so the next agent does not cargo-cult it across the codebase.
+
+The real goal is not “zero findings at all costs.” The goal is “every remaining finding is understood.”
+
+## What the agent should do when the gate trips
+
+I want the agent to treat an accessibility violation the same way it treats a failing test: not as a suggestion, and not as a thing to explain away in the summary.
+
+The loop is:
+
+1. Run the accessibility scan after UI changes.
+2. Fix every new violation.
+3. Re-run the scan.
+4. If a rule must be suppressed, document the reason in code and in the task summary.
+5. If the change affects keyboard flow, run the manual checklist before declaring done.
+
+That’s it. No speeches about how accessibility is important. The gate already said it is.
+
+## The agent rules
+
+```markdown
+## Accessibility
+
+- After any meaningful UI change, run the automated accessibility scan
+  for the affected route or component before declaring the task done.
+- Treat new accessibility violations as blocking. Fix them before
+  reporting completion.
+- If a rule must be suppressed, scope the suppression narrowly and leave
+  a sentence explaining why the component remains accessible.
+- For dialogs, menus, and other complex interactions, run the manual
+  keyboard checklist in addition to the automated scan.
+- For UI whose accessible structure matters, add a focused ARIA snapshot
+  with `toMatchAriaSnapshot()` alongside the axe scan.
+- Do not claim a feature is accessible merely because Playwright locators
+  use roles and labels. That is upstream pressure, not proof.
+```
+
+## How You Know the Gate Is Working
+
+You know this loop is in place when:
+
+- Critical routes have an automated accessibility scan
+- Complex UI flows have a tiny manual keyboard checklist
+- The agent treats new accessibility violations as a red build, not a note
+
+## The one thing to remember
+
+Semantic locators make accessible markup more likely. They do not make accessibility done. If you care about accessibility, give it its own gate and make that gate loud enough that the agent cannot step over it.
+
+## Additional Reading
+
+- [Locators and the Accessibility Hierarchy](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)
+- [ARIA Snapshots](https://playwright.dev/docs/aria-snapshots)
+- [Lab: Wire Accessibility Checks Into Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-wire-accessibility-checks-into-shelf)

@@ -1,0 +1,4456 @@
+{
+  "chapters": [
+    {
+      "key": "ai-development",
+      "title": "Developing with AI Tools",
+      "titleAr": "التطوير بأدوات الذكاء الاصطناعي",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Developing with AI Tools",
+          "order": 0
+        },
+        {
+          "slug": "plan-implement-verify",
+          "title": "Plan → Implement → Verify Prompt Pattern",
+          "order": 1
+        },
+        {
+          "slug": "installing-cursor",
+          "title": "Installation and Configuration",
+          "order": 2
+        },
+        {
+          "slug": "interacting-with-cursor",
+          "title": "Interacting with Cursor",
+          "order": 3
+        },
+        {
+          "slug": "cursor-context",
+          "title": "Context is King",
+          "order": 4
+        },
+        {
+          "slug": "cursor-model-selection",
+          "title": "Model Selection Strategy",
+          "order": 5
+        },
+        {
+          "slug": "cursor-rules",
+          "title": "Cursor Rules",
+          "order": 6
+        },
+        {
+          "slug": "cursor-skills",
+          "title": "Cursor Skills",
+          "order": 7
+        },
+        {
+          "slug": "cursor-subagents",
+          "title": "Cursor Subagents",
+          "order": 8
+        },
+        {
+          "slug": "cursor-hooks",
+          "title": "Cursor Hooks",
+          "order": 9
+        },
+        {
+          "slug": "cursor-cli",
+          "title": "Cursor Command Line Interface",
+          "order": 10
+        },
+        {
+          "slug": "cursor-notepads",
+          "title": "Notepads Migration",
+          "order": 11
+        },
+        {
+          "slug": "cursor-background-agents",
+          "title": "Cloud Agents",
+          "order": 12
+        },
+        {
+          "slug": "cursor-automations",
+          "title": "Cursor Automations",
+          "order": 13
+        },
+        {
+          "slug": "cursor-bugbot-and-security-review",
+          "title": "Bugbot and Security Review",
+          "order": 14
+        },
+        {
+          "slug": "cursor-checkpoints",
+          "title": "Cursor Checkpoints",
+          "order": 15
+        },
+        {
+          "slug": "mcp",
+          "title": "Model Context Protocol",
+          "order": 16
+        },
+        {
+          "slug": "mcp-for-claude-code-and-cursor",
+          "title": "MCP in Claude Code and Cursor",
+          "order": 17
+        },
+        {
+          "slug": "installing-claude-code",
+          "title": "Installation and Configuration",
+          "order": 18
+        },
+        {
+          "slug": "claude-code-session-management",
+          "title": "Session Management",
+          "order": 19
+        },
+        {
+          "slug": "claude-dot-md",
+          "title": "CLAUDE.md",
+          "order": 20
+        },
+        {
+          "slug": "claude-code-model-selection",
+          "title": "Model Selection",
+          "order": 21
+        },
+        {
+          "slug": "referencing-files-in-claude-code",
+          "title": "Referencing Files",
+          "order": 22
+        },
+        {
+          "slug": "claude-code-compaction",
+          "title": "Compacting",
+          "order": 23
+        },
+        {
+          "slug": "claude-code-thinking",
+          "title": "Encouraging Thinking",
+          "order": 24
+        },
+        {
+          "slug": "test-driven-development-with-claude",
+          "title": "Test-Driven Development",
+          "order": 25
+        },
+        {
+          "slug": "claude-code-plan-mode",
+          "title": "Plan Mode",
+          "order": 26
+        },
+        {
+          "slug": "claude-code-sub-agents",
+          "title": "Subagents",
+          "order": 27
+        },
+        {
+          "slug": "subagent-anti-patterns",
+          "title": "Subagent Anti-Patterns",
+          "order": 28
+        },
+        {
+          "slug": "claude-code-and-bash-scripts",
+          "title": "Claude Code and Bash Scripts",
+          "order": 29
+        },
+        {
+          "slug": "cost-management",
+          "title": "Cost Management",
+          "order": 30
+        },
+        {
+          "slug": "claude-code-permissions",
+          "title": "Claude Code's Permission System",
+          "order": 31
+        },
+        {
+          "slug": "claude-code-commands",
+          "title": "Claude Code Commands and Skills",
+          "order": 32
+        },
+        {
+          "slug": "claude-code-hooks",
+          "title": "Claude Code's Hooks",
+          "order": 33
+        },
+        {
+          "slug": "claude-code-hook-examples",
+          "title": "Hook Cookbook",
+          "order": 34
+        },
+        {
+          "slug": "claude-code-hook-control-flow",
+          "title": "Hook Control Flow",
+          "order": 35
+        },
+        {
+          "slug": "claude-code-mcp",
+          "title": "Using MCP Servers",
+          "order": 36
+        },
+        {
+          "slug": "git-worktrees",
+          "title": "Git Worktrees",
+          "order": 37
+        },
+        {
+          "slug": "integrating-with-github-actions",
+          "title": "Integrating with GitHub Actions",
+          "order": 38
+        },
+        {
+          "slug": "notebooklm",
+          "title": "NotebookLM",
+          "order": 39
+        },
+        {
+          "slug": "gemini-and-gems",
+          "title": "Gemini and Gems",
+          "order": 40
+        },
+        {
+          "slug": "openai-codex",
+          "title": "OpenAI Codex",
+          "order": 41
+        },
+        {
+          "slug": "cursor-environment-configuration",
+          "title": "Cursor Environment Configuration",
+          "order": 42
+        },
+        {
+          "slug": "cursor-ghost-mode",
+          "title": "Cursor Privacy Mode",
+          "order": 43
+        }
+      ]
+    },
+    {
+      "key": "ai-development-setup",
+      "title": "AI Development Setup",
+      "titleAr": "تهيئة بيئة التطوير بالذكاء الاصطناعي",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "AI Development Setup",
+          "order": 0
+        },
+        {
+          "slug": "why-systems",
+          "title": "Towards Systems Thinking",
+          "order": 1
+        },
+        {
+          "slug": "planning-and-task-contracts",
+          "title": "Planning and Task Contracts",
+          "order": 2
+        },
+        {
+          "slug": "verification-and-evidence",
+          "title": "Verification and Evidence",
+          "order": 3
+        },
+        {
+          "slug": "recovering-a-failing-session",
+          "title": "Recovering a Failing Session",
+          "order": 4
+        },
+        {
+          "slug": "user-and-project-instructions",
+          "title": "User and Project Instructions",
+          "order": 5
+        },
+        {
+          "slug": "the-enforcement-ladder",
+          "title": "The Enforcement Ladder",
+          "order": 6
+        },
+        {
+          "slug": "caching-and-cost",
+          "title": "Prompt Caching and Cost",
+          "order": 7
+        },
+        {
+          "slug": "managing-a-long-session",
+          "title": "Managing a Long Session",
+          "order": 8
+        },
+        {
+          "slug": "skills",
+          "title": "Skills",
+          "order": 9
+        },
+        {
+          "slug": "skill-configuration",
+          "title": "Configuring Skills",
+          "order": 10
+        },
+        {
+          "slug": "exemplar-skills",
+          "title": "Exemplar Skills",
+          "order": 11
+        },
+        {
+          "slug": "subagents",
+          "title": "Subagents",
+          "order": 12
+        },
+        {
+          "slug": "subagent-configuration",
+          "title": "Configuring Subagents",
+          "order": 13
+        },
+        {
+          "slug": "exemplar-subagents",
+          "title": "Exemplar Subagents",
+          "order": 14
+        },
+        {
+          "slug": "hooks",
+          "title": "Hooks",
+          "order": 15
+        },
+        {
+          "slug": "writing-good-hooks",
+          "title": "Writing Good Hooks",
+          "order": 16
+        },
+        {
+          "slug": "hooks-in-practice",
+          "title": "Hooks in Practice",
+          "order": 17
+        },
+        {
+          "slug": "dynamic-workflows",
+          "title": "Dynamic Workflows",
+          "order": 18
+        },
+        {
+          "slug": "running-workflows",
+          "title": "Running Workflows",
+          "order": 19
+        },
+        {
+          "slug": "goals-and-loops",
+          "title": "Goals and Loops",
+          "order": 20
+        },
+        {
+          "slug": "goals-and-loops-in-practice",
+          "title": "Goals and Loops in Practice",
+          "order": 21
+        },
+        {
+          "slug": "routines-and-schedules",
+          "title": "Routines and Schedules",
+          "order": 22
+        },
+        {
+          "slug": "where-state-lives",
+          "title": "Where State Lives",
+          "order": 23
+        },
+        {
+          "slug": "agentic-coding-patterns",
+          "title": "Agentic Coding Patterns",
+          "order": 24
+        },
+        {
+          "slug": "patterns-for-proving-it-works",
+          "title": "Proving It Works",
+          "order": 25
+        },
+        {
+          "slug": "patterns-for-deciding-what-to-build",
+          "title": "Deciding What to Build",
+          "order": 26
+        },
+        {
+          "slug": "patterns-for-keeping-context-useful",
+          "title": "Keeping Context Useful",
+          "order": 27
+        },
+        {
+          "slug": "patterns-for-running-unattended-work",
+          "title": "Running Unattended Work",
+          "order": 28
+        },
+        {
+          "slug": "claude-code-and-codex-together",
+          "title": "Claude Code and Codex, Together",
+          "order": 29
+        },
+        {
+          "slug": "the-ralph-loop",
+          "title": "The Ralph Loop",
+          "order": 30
+        },
+        {
+          "slug": "sentinels",
+          "title": "Sentinels",
+          "order": 31
+        },
+        {
+          "slug": "committee-review",
+          "title": "Committee Review",
+          "order": 32
+        },
+        {
+          "slug": "worktrees",
+          "title": "Worktrees",
+          "order": 33
+        },
+        {
+          "slug": "agent-teams",
+          "title": "Agent Teams",
+          "order": 34
+        },
+        {
+          "slug": "agent-communication",
+          "title": "Agent Communication",
+          "order": 35
+        },
+        {
+          "slug": "claude-code-mods",
+          "title": "Claude Code Mods",
+          "order": 36
+        },
+        {
+          "slug": "jev",
+          "title": "Jev",
+          "order": 37
+        }
+      ]
+    },
+    {
+      "key": "aws",
+      "title": "Deploying Web Applications on AWS",
+      "titleAr": "نشر تطبيقات الويب على AWS",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Deploying Web Applications on AWS",
+          "order": 0
+        },
+        {
+          "slug": "creating-and-securing-an-aws-account",
+          "title": "Creating and Securing an AWS Account",
+          "order": 1
+        },
+        {
+          "slug": "iam-mental-model",
+          "title": "The IAM Mental Model",
+          "order": 2
+        },
+        {
+          "slug": "writing-your-first-iam-policy",
+          "title": "Writing Your First IAM Policy",
+          "order": 3
+        },
+        {
+          "slug": "principle-of-least-privilege",
+          "title": "The Principle of Least Privilege",
+          "order": 4
+        },
+        {
+          "slug": "setting-up-the-aws-cli",
+          "title": "Setting Up the AWS CLI",
+          "order": 5
+        },
+        {
+          "slug": "iam-policy-exercise",
+          "title": "Exercise: IAM Policy for a Deploy Bot",
+          "order": 6
+        },
+        {
+          "slug": "iam-policy-solution",
+          "title": "Solution",
+          "order": 7
+        },
+        {
+          "slug": "what-is-s3",
+          "title": "What is S3?",
+          "order": 8
+        },
+        {
+          "slug": "creating-and-configuring-a-bucket",
+          "title": "Creating and Configuring a Bucket",
+          "order": 9
+        },
+        {
+          "slug": "uploading-and-organizing-files",
+          "title": "Uploading and Organizing Files",
+          "order": 10
+        },
+        {
+          "slug": "bucket-policies-and-public-access",
+          "title": "Bucket Policies and Public Access",
+          "order": 11
+        },
+        {
+          "slug": "static-website-hosting-on-s3",
+          "title": "Static Website Hosting on S3",
+          "order": 12
+        },
+        {
+          "slug": "s3-versioning-lifecycle-and-cost",
+          "title": "Versioning, Lifecycle Rules, and Cost",
+          "order": 13
+        },
+        {
+          "slug": "s3-sdk-examples",
+          "title": "S3 SDK Examples",
+          "order": 14
+        },
+        {
+          "slug": "s3-static-site-exercise",
+          "title": "Exercise: Deploy a Static Site to S3",
+          "order": 15
+        },
+        {
+          "slug": "s3-static-site-solution",
+          "title": "Solution",
+          "order": 16
+        },
+        {
+          "slug": "what-is-a-cdn",
+          "title": "What a CDN Does and Why You Need One",
+          "order": 17
+        },
+        {
+          "slug": "creating-a-cloudfront-distribution",
+          "title": "Creating a CloudFront Distribution",
+          "order": 18
+        },
+        {
+          "slug": "origin-access-control-for-s3",
+          "title": "Origin Access Control for S3",
+          "order": 19
+        },
+        {
+          "slug": "cache-behaviors-and-invalidations",
+          "title": "Cache Behaviors and Invalidations",
+          "order": 20
+        },
+        {
+          "slug": "custom-error-pages-and-spa-routing",
+          "title": "Custom Error Pages and SPA Routing",
+          "order": 21
+        },
+        {
+          "slug": "cloudfront-headers-cors-and-security",
+          "title": "Headers, CORS, and Security Policies",
+          "order": 22
+        },
+        {
+          "slug": "cloudfront-distribution-exercise",
+          "title": "Exercise: Set Up a CloudFront Distribution",
+          "order": 23
+        },
+        {
+          "slug": "cloudfront-distribution-solution",
+          "title": "Solution",
+          "order": 24
+        },
+        {
+          "slug": "deploying-scratch-lab",
+          "title": "Deploying Scratch Lab to CloudFront",
+          "order": 25
+        },
+        {
+          "slug": "edge-compute-comparison",
+          "title": "Edge Compute: Lambda@Edge vs. CloudFront Functions",
+          "order": 26
+        },
+        {
+          "slug": "writing-a-cloudfront-function",
+          "title": "Writing a CloudFront Function",
+          "order": 27
+        },
+        {
+          "slug": "writing-a-lambda-at-edge-function",
+          "title": "Writing a Lambda@Edge Function",
+          "order": 28
+        },
+        {
+          "slug": "spa-status-codes-with-lambda-edge",
+          "title": "SPA Status Codes with Lambda@Edge",
+          "order": 29
+        },
+        {
+          "slug": "edge-function-use-cases",
+          "title": "Common Use Cases",
+          "order": 30
+        },
+        {
+          "slug": "ab-testing-at-the-edge",
+          "title": "A/B Testing at the Edge",
+          "order": 31
+        },
+        {
+          "slug": "edge-function-debugging-and-limitations",
+          "title": "Debugging and Limitations",
+          "order": 32
+        },
+        {
+          "slug": "cloudfront-function-exercise",
+          "title": "Exercise: Add a CloudFront Function",
+          "order": 33
+        },
+        {
+          "slug": "cloudfront-function-solution",
+          "title": "Solution",
+          "order": 34
+        },
+        {
+          "slug": "cicd-with-github-actions",
+          "title": "CI/CD with GitHub Actions",
+          "order": 35
+        },
+        {
+          "slug": "what-is-lambda",
+          "title": "What Lambda Is and Why Frontend Engineers Care",
+          "order": 36
+        },
+        {
+          "slug": "writing-a-lambda-handler",
+          "title": "Writing a Lambda Handler in TypeScript",
+          "order": 37
+        },
+        {
+          "slug": "lambda-execution-roles-and-permissions",
+          "title": "Execution Roles and Permissions",
+          "order": 38
+        },
+        {
+          "slug": "deploying-and-testing-a-lambda-function",
+          "title": "Deploying and Testing a Lambda Function",
+          "order": 39
+        },
+        {
+          "slug": "lambda-environment-variables",
+          "title": "Environment Variables and Configuration",
+          "order": 40
+        },
+        {
+          "slug": "lambda-cold-starts-and-performance",
+          "title": "Cold Starts and Performance",
+          "order": 41
+        },
+        {
+          "slug": "lambda-function-exercise",
+          "title": "Exercise: Build and Deploy a Lambda Function",
+          "order": 42
+        },
+        {
+          "slug": "lambda-function-solution",
+          "title": "Solution",
+          "order": 43
+        },
+        {
+          "slug": "rest-apis-vs-http-apis",
+          "title": "REST APIs vs. HTTP APIs",
+          "order": 44
+        },
+        {
+          "slug": "creating-an-http-api",
+          "title": "Creating an HTTP API",
+          "order": 45
+        },
+        {
+          "slug": "connecting-api-gateway-to-lambda",
+          "title": "Connecting API Gateway to Lambda",
+          "order": 46
+        },
+        {
+          "slug": "request-and-response-mapping",
+          "title": "Request and Response Mapping",
+          "order": 47
+        },
+        {
+          "slug": "api-gateway-cors-configuration",
+          "title": "CORS Configuration",
+          "order": 48
+        },
+        {
+          "slug": "api-gateway-stages-and-custom-domains",
+          "title": "Stages, Deployments, and Custom Domains",
+          "order": 49
+        },
+        {
+          "slug": "api-gateway-authentication",
+          "title": "Authentication with API Gateway",
+          "order": 50
+        },
+        {
+          "slug": "api-gateway-lambda-exercise",
+          "title": "Exercise: Build an API with API Gateway and Lambda",
+          "order": 51
+        },
+        {
+          "slug": "api-gateway-lambda-solution",
+          "title": "Solution",
+          "order": 52
+        },
+        {
+          "slug": "what-is-dynamodb",
+          "title": "What DynamoDB Is and When to Use It",
+          "order": 53
+        },
+        {
+          "slug": "dynamodb-tables-and-keys",
+          "title": "Tables, Partition Keys, and Sort Keys",
+          "order": 54
+        },
+        {
+          "slug": "dynamodb-reading-and-writing-data",
+          "title": "Reading and Writing Data with the SDK",
+          "order": 55
+        },
+        {
+          "slug": "dynamodb-querying-and-scanning",
+          "title": "Querying and Scanning",
+          "order": 56
+        },
+        {
+          "slug": "connecting-dynamodb-to-lambda",
+          "title": "Connecting DynamoDB to Lambda",
+          "order": 57
+        },
+        {
+          "slug": "dynamodb-lambda-exercise",
+          "title": "Exercise: Build a Data API with DynamoDB",
+          "order": 58
+        },
+        {
+          "slug": "dynamodb-lambda-solution",
+          "title": "Solution",
+          "order": 59
+        },
+        {
+          "slug": "the-problem-with-hardcoded-secrets",
+          "title": "The Problem with Hardcoded Secrets",
+          "order": 60
+        },
+        {
+          "slug": "parameter-store-hierarchical-configuration",
+          "title": "Parameter Store: Hierarchical Configuration",
+          "order": 61
+        },
+        {
+          "slug": "secrets-manager-rotation-and-encryption",
+          "title": "Secrets Manager: Rotation and Encryption",
+          "order": 62
+        },
+        {
+          "slug": "accessing-secrets-from-lambda",
+          "title": "Accessing Secrets from Lambda",
+          "order": 63
+        },
+        {
+          "slug": "parameter-store-vs-secrets-manager",
+          "title": "Parameter Store vs. Secrets Manager",
+          "order": 64
+        },
+        {
+          "slug": "secrets-in-lambda-exercise",
+          "title": "Exercise: Store and Retrieve a Secret in Lambda",
+          "order": 65
+        },
+        {
+          "slug": "secrets-in-lambda-solution",
+          "title": "Solution",
+          "order": 66
+        },
+        {
+          "slug": "end-to-end-scratch-lab-api-exercise",
+          "title": "Capstone: End-to-End Scratch Lab API",
+          "order": 67
+        },
+        {
+          "slug": "end-to-end-scratch-lab-api-solution",
+          "title": "Solution",
+          "order": 68
+        },
+        {
+          "slug": "what-is-cloudwatch",
+          "title": "What CloudWatch Does and Why You Need It",
+          "order": 69
+        },
+        {
+          "slug": "cloudwatch-log-groups-and-structured-logging",
+          "title": "Log Groups, Log Streams, and Structured Logging",
+          "order": 70
+        },
+        {
+          "slug": "cloudwatch-metrics-and-dashboards",
+          "title": "Metrics and Dashboards",
+          "order": 71
+        },
+        {
+          "slug": "cloudwatch-alarms-and-sns",
+          "title": "Alarms and Notifications with SNS",
+          "order": 72
+        },
+        {
+          "slug": "tracing-requests-across-services",
+          "title": "Tracing Requests Across Services",
+          "order": 73
+        },
+        {
+          "slug": "cloudwatch-alarms-exercise",
+          "title": "Exercise: Set Up Alarms for Your Lambda Functions",
+          "order": 74
+        },
+        {
+          "slug": "cloudwatch-alarms-solution",
+          "title": "Solution",
+          "order": 75
+        },
+        {
+          "slug": "security-review-checklist",
+          "title": "Security Review Checklist",
+          "order": 76
+        },
+        {
+          "slug": "cost-monitoring-and-budget-alarms",
+          "title": "Cost Monitoring and Budget Alarms",
+          "order": 77
+        },
+        {
+          "slug": "infrastructure-as-code-and-cdk",
+          "title": "Infrastructure as Code: When to Reach for CDK",
+          "order": 78
+        },
+        {
+          "slug": "cleanup-and-teardown",
+          "title": "Cleanup and Teardown",
+          "order": 79
+        },
+        {
+          "slug": "whats-next-services-youll-eventually-need",
+          "title": "What's Next: Services You'll Eventually Need",
+          "order": 80
+        },
+        {
+          "slug": "dns-for-frontend-engineers",
+          "title": "DNS for Frontend Engineers",
+          "order": 81
+        },
+        {
+          "slug": "registering-and-transferring-domains",
+          "title": "Registering and Transferring Domains",
+          "order": 82
+        },
+        {
+          "slug": "hosted-zones-and-record-types",
+          "title": "Hosted Zones and Record Types",
+          "order": 83
+        },
+        {
+          "slug": "why-https-matters",
+          "title": "Why HTTPS Matters",
+          "order": 84
+        },
+        {
+          "slug": "requesting-a-certificate-in-acm",
+          "title": "Requesting a Certificate in ACM",
+          "order": 85
+        },
+        {
+          "slug": "dns-validation-vs-email-validation",
+          "title": "DNS Validation vs. Email Validation",
+          "order": 86
+        },
+        {
+          "slug": "wildcard-certificates-and-multiple-domains",
+          "title": "Wildcard Certificates and Multiple Domains",
+          "order": 87
+        },
+        {
+          "slug": "certificate-renewal-and-us-east-1",
+          "title": "Certificate Renewal and the us-east-1 Requirement",
+          "order": 88
+        },
+        {
+          "slug": "attaching-an-ssl-certificate",
+          "title": "Attaching an SSL Certificate",
+          "order": 89
+        },
+        {
+          "slug": "alias-records-vs-cname-records",
+          "title": "Alias Records vs. CNAME Records",
+          "order": 90
+        },
+        {
+          "slug": "pointing-a-domain-to-cloudfront",
+          "title": "Pointing a Domain to CloudFront",
+          "order": 91
+        },
+        {
+          "slug": "acm-certificate-exercise",
+          "title": "Exercise: Request and Validate a Certificate",
+          "order": 92
+        },
+        {
+          "slug": "acm-certificate-solution",
+          "title": "Solution",
+          "order": 93
+        },
+        {
+          "slug": "route-53-dns-exercise",
+          "title": "Exercise: Configure DNS for Your Site",
+          "order": 94
+        },
+        {
+          "slug": "route-53-dns-solution",
+          "title": "Solution",
+          "order": 95
+        },
+        {
+          "slug": "automating-deploys-with-aws-cli",
+          "title": "Automating Deploys with the AWS CLI",
+          "order": 96
+        },
+        {
+          "slug": "full-static-pipeline",
+          "title": "The Full Static Site Pipeline",
+          "order": 97
+        },
+        {
+          "slug": "static-site-deployment-exercise",
+          "title": "Exercise: End-to-End Static Site Deployment",
+          "order": 98
+        },
+        {
+          "slug": "static-site-deployment-solution",
+          "title": "Solution: End-to-End Static Site Deployment",
+          "order": 99
+        }
+      ]
+    },
+    {
+      "key": "enterprise-ui",
+      "title": "Enterprise UI",
+      "titleAr": "واجهات المؤسسات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Enterprise UI",
+          "order": 0
+        },
+        {
+          "slug": "monoliths-microfrontends-and-monorepos",
+          "title": "Monoliths, Microfrontends, Monorepos, and the Real Tradeoffs",
+          "order": 1
+        },
+        {
+          "slug": "module-federation",
+          "title": "Module Federation",
+          "order": 2
+        },
+        {
+          "slug": "runtime-composition-exercise",
+          "title": "Exercise 1: Runtime Composition",
+          "order": 3
+        },
+        {
+          "slug": "nanostores",
+          "title": "Nanostores",
+          "order": 4
+        },
+        {
+          "slug": "broadcast-channel",
+          "title": "BroadcastChannel for Cross-Boundary Communication",
+          "order": 5
+        },
+        {
+          "slug": "comlink",
+          "title": "Comlink",
+          "order": 6
+        },
+        {
+          "slug": "error-boundaries-and-federation",
+          "title": "Error Boundaries and Module Federation",
+          "order": 7
+        },
+        {
+          "slug": "standalone-remotes",
+          "title": "Standalone Remotes",
+          "order": 8
+        },
+        {
+          "slug": "build-time-microfrontends",
+          "title": "Build-Time Microfrontends",
+          "order": 9
+        },
+        {
+          "slug": "build-time-composition-exercise",
+          "title": "Exercise 2: Build-Time Composition",
+          "order": 10
+        },
+        {
+          "slug": "rspack-webpack-and-vite",
+          "title": "Rspack, webpack, and Vite",
+          "order": 11
+        },
+        {
+          "slug": "rsbuild-configuration",
+          "title": "Configuring Rsbuild",
+          "order": 12
+        },
+        {
+          "slug": "island-architecture",
+          "title": "Island Architecture",
+          "order": 13
+        },
+        {
+          "slug": "server-components-and-streaming",
+          "title": "Server Components and Streaming SSR",
+          "order": 14
+        },
+        {
+          "slug": "server-rendering-across-frameworks",
+          "title": "Server Rendering Across Frameworks",
+          "order": 15
+        },
+        {
+          "slug": "streaming-and-suspense-exercise",
+          "title": "Exercise 3: Streaming & Suspense",
+          "order": 16
+        },
+        {
+          "slug": "turborepo",
+          "title": "Turborepo",
+          "order": 17
+        },
+        {
+          "slug": "turborepo-versus-nx",
+          "title": "Turborepo versus Nx, Bazel, Lerna, and Friends",
+          "order": 18
+        },
+        {
+          "slug": "monorepo-setup-exercise",
+          "title": "Exercise 4: Monorepo Setup",
+          "order": 19
+        },
+        {
+          "slug": "backends-for-frontends",
+          "title": "Backends for Frontends",
+          "order": 20
+        },
+        {
+          "slug": "workspace-package-managers",
+          "title": "npm vs pnpm vs Bun: Workspace Package Managers",
+          "order": 21
+        },
+        {
+          "slug": "dependency-management",
+          "title": "Dependency Management in Monorepos",
+          "order": 22
+        },
+        {
+          "slug": "scaling-typescript",
+          "title": "Scaling TypeScript",
+          "order": 23
+        },
+        {
+          "slug": "typescript-references-exercise",
+          "title": "Exercise 5: TypeScript References",
+          "order": 24
+        },
+        {
+          "slug": "writing-eslint-rules",
+          "title": "Writing Our Own ESLint Rules",
+          "order": 25
+        },
+        {
+          "slug": "architectural-linting-exercise",
+          "title": "Exercise 6: Architectural Linting",
+          "order": 26
+        },
+        {
+          "slug": "design-system-governance",
+          "title": "Design System Governance",
+          "order": 27
+        },
+        {
+          "slug": "versioning-and-release-management",
+          "title": "Versioning and Release Management",
+          "order": 28
+        },
+        {
+          "slug": "maintaining-a-design-system",
+          "title": "Maintaining a Design System at Scale",
+          "order": 29
+        },
+        {
+          "slug": "design-systems-across-microfrontends",
+          "title": "Design Systems Across Microfrontends",
+          "order": 30
+        },
+        {
+          "slug": "performance-at-scale",
+          "title": "Performance at Scale",
+          "order": 31
+        },
+        {
+          "slug": "performance-budgets",
+          "title": "Performance Budgets",
+          "order": 32
+        },
+        {
+          "slug": "github-actions",
+          "title": "GitHub Actions",
+          "order": 33
+        },
+        {
+          "slug": "deployment-and-release-patterns",
+          "title": "Deployment and Release Patterns",
+          "order": 34
+        },
+        {
+          "slug": "husky-and-lint-staged",
+          "title": "Husky and lint-staged",
+          "order": 35
+        },
+        {
+          "slug": "cicd-pipeline-exercise",
+          "title": "Exercise 7: CI/CD Pipeline",
+          "order": 36
+        },
+        {
+          "slug": "testing-at-scale",
+          "title": "Testing Strategy for Large Applications",
+          "order": 37
+        },
+        {
+          "slug": "mock-service-worker",
+          "title": "Mock Service Worker",
+          "order": 38
+        },
+        {
+          "slug": "testing-strategies-exercise",
+          "title": "Exercise 8: Testing Strategies",
+          "order": 39
+        },
+        {
+          "slug": "api-contract-testing",
+          "title": "API Contract Testing",
+          "order": 40
+        },
+        {
+          "slug": "authentication-and-authorization",
+          "title": "Authentication, Authorization, and Multi-Tenancy",
+          "order": 41
+        },
+        {
+          "slug": "frontend-security",
+          "title": "Frontend Security and Supply Chain Safety",
+          "order": 42
+        },
+        {
+          "slug": "ai-integration-patterns",
+          "title": "AI and LLM Integration Patterns",
+          "order": 43
+        },
+        {
+          "slug": "organizational-patterns-and-team-topology",
+          "title": "Organizational Patterns and Team Topology",
+          "order": 44
+        },
+        {
+          "slug": "observability",
+          "title": "Observability",
+          "order": 45
+        },
+        {
+          "slug": "strangler-fig-introduction",
+          "title": "The Strangler Fig Pattern",
+          "order": 46
+        },
+        {
+          "slug": "framework-migration-patterns",
+          "title": "Framework Migration Patterns",
+          "order": 47
+        },
+        {
+          "slug": "codemods-at-scale",
+          "title": "Codemods at Scale",
+          "order": 48
+        },
+        {
+          "slug": "strangler-fig-and-codemods-exercise",
+          "title": "Exercise 9: Strangler Fig & Codemods",
+          "order": 49
+        },
+        {
+          "slug": "design-system-governance-exercise",
+          "title": "Exercise 7: Design System Governance",
+          "order": 50
+        }
+      ]
+    },
+    {
+      "key": "figma",
+      "title": "Figma for Developers",
+      "titleAr": "Figma للمطوّرين",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Figma for Developers",
+          "order": 0
+        },
+        {
+          "slug": "getting-started",
+          "title": "Getting Started",
+          "order": 1
+        },
+        {
+          "slug": "aligning-objects",
+          "title": "Aligning Objects",
+          "order": 2
+        },
+        {
+          "slug": "layers",
+          "title": "Working with Layers",
+          "order": 3
+        },
+        {
+          "slug": "selecting-and-inspecting",
+          "title": "Selecting and Inspecting",
+          "order": 4
+        },
+        {
+          "slug": "constraints",
+          "title": "Constraints",
+          "order": 5
+        },
+        {
+          "slug": "layout-grids",
+          "title": "Layout Grids",
+          "order": 6
+        },
+        {
+          "slug": "auto-layout",
+          "title": "Auto Layout",
+          "order": 7
+        },
+        {
+          "slug": "styles",
+          "title": "Styles",
+          "order": 8
+        },
+        {
+          "slug": "typography",
+          "title": "Typography",
+          "order": 9
+        },
+        {
+          "slug": "variables",
+          "title": "Variables",
+          "order": 10
+        },
+        {
+          "slug": "generating-a-color-palette",
+          "title": "Generating a Color Palette",
+          "order": 11
+        },
+        {
+          "slug": "semantic-colors",
+          "title": "Semantic Colors",
+          "order": 12
+        },
+        {
+          "slug": "components",
+          "title": "Components",
+          "order": 13
+        },
+        {
+          "slug": "component-properties",
+          "title": "Component Properties",
+          "order": 14
+        },
+        {
+          "slug": "variants",
+          "title": "Variants",
+          "order": 15
+        },
+        {
+          "slug": "generating-an-icon-library",
+          "title": "Generating an Icon Library",
+          "order": 16
+        },
+        {
+          "slug": "creating-a-callout-component",
+          "title": "Creating a Callout Component",
+          "order": 17
+        },
+        {
+          "slug": "interactive-components",
+          "title": "Interactive Components",
+          "order": 18
+        },
+        {
+          "slug": "prototyping",
+          "title": "Prototyping",
+          "order": 19
+        },
+        {
+          "slug": "dev-mode",
+          "title": "Dev Mode",
+          "order": 20
+        },
+        {
+          "slug": "publishing-figma-libraries",
+          "title": "Publishing Libraries",
+          "order": 21
+        },
+        {
+          "slug": "variables-variants-responsive-text",
+          "title": "Variants and Variable Modes for Responsive Text",
+          "order": 22
+        },
+        {
+          "slug": "placeholder-components",
+          "title": "Placeholder Components",
+          "order": 23
+        },
+        {
+          "slug": "cropped-grid-components",
+          "title": "Cropped Grid Components",
+          "order": 24
+        },
+        {
+          "slug": "adding-a-dark-theme-to-the-button",
+          "title": "Adding a Dark Mode",
+          "order": 25
+        },
+        {
+          "slug": "building-a-checkbox-component",
+          "title": "Building a Checkbox Component",
+          "order": 26
+        },
+        {
+          "slug": "creating-a-button-component",
+          "title": "Creating a Button Component",
+          "order": 27
+        },
+        {
+          "slug": "libraries",
+          "title": "Working with Libraries in Figma",
+          "order": 28
+        },
+        {
+          "slug": "number-variable-tokens",
+          "title": "Using Variables for Tokens",
+          "order": 29
+        },
+        {
+          "slug": "styles-vs-variables",
+          "title": "Styles Versus Variables",
+          "order": 30
+        }
+      ]
+    },
+    {
+      "key": "full-stack-typescript",
+      "title": "Full Stack TypeScript",
+      "titleAr": "TypeScript للويب الكامل",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Full Stack TypeScript",
+          "order": 0
+        },
+        {
+          "slug": "typescript-configuration-best-practices",
+          "title": "TypeScript Configuration Best Practices",
+          "order": 1
+        },
+        {
+          "slug": "type-stripping",
+          "title": "Type Stripping",
+          "order": 2
+        },
+        {
+          "slug": "type-safety-vs-runtime-validation",
+          "title": "Type Safety vs. Runtime Validation",
+          "order": 3
+        },
+        {
+          "slug": "type-guards-vs-schema-validation",
+          "title": "Type Guards and Schema Validation",
+          "order": 4
+        },
+        {
+          "slug": "introduction-to-zod",
+          "title": "Introduction to Zod",
+          "order": 5
+        },
+        {
+          "slug": "advanced-types-with-zod",
+          "title": "Advanced Types with Zod",
+          "order": 6
+        },
+        {
+          "slug": "refining-types-with-zod",
+          "title": "Refining Types with Zod",
+          "order": 7
+        },
+        {
+          "slug": "type-branding-with-zod",
+          "title": "Type Branding with Zod",
+          "order": 8
+        },
+        {
+          "slug": "transforms-and-coercion-with-zod",
+          "title": "Transforms and Coercion with Zod",
+          "order": 9
+        },
+        {
+          "slug": "validating-zod-schema-exercises",
+          "title": "Validating Zod Schema (Exercise)",
+          "order": 10
+        },
+        {
+          "slug": "working-backwards-from-types-with-zod",
+          "title": "Working Backwards from Types with Zod",
+          "order": 11
+        },
+        {
+          "slug": "advanced-schema-design-with-zod",
+          "title": "Advanced Schema Design with Zod",
+          "order": 12
+        },
+        {
+          "slug": "testing-zod-schema",
+          "title": "Testing Zod Schema",
+          "order": 13
+        },
+        {
+          "slug": "zod-best-practices",
+          "title": "Best Practices with Zod",
+          "order": 14
+        },
+        {
+          "slug": "structuring-zod-schemas-efficiently",
+          "title": "Structuring Zod Schemas Efficiently",
+          "order": 15
+        },
+        {
+          "slug": "adding-types-to-express",
+          "title": "Adding Types to Express Requests",
+          "order": 16
+        },
+        {
+          "slug": "adding-types-to-express-responses",
+          "title": "Adding Types to Express Responses",
+          "order": 17
+        },
+        {
+          "slug": "typing-express-with-zod-walkthrough",
+          "title": "Adding Types to Express with Zod",
+          "order": 18
+        },
+        {
+          "slug": "express-zod-params",
+          "title": "Adding Zod Schemas to Path Parameters",
+          "order": 19
+        },
+        {
+          "slug": "validating-query-and-path-parameters",
+          "title": "Validating Query and Path Parameters",
+          "order": 20
+        },
+        {
+          "slug": "validating-schema-with-middleware",
+          "title": "Validating Schema with Middleware",
+          "order": 21
+        },
+        {
+          "slug": "using-zod-with-express",
+          "title": "Using Zod with Express",
+          "order": 22
+        },
+        {
+          "slug": "adding-client-side-validation",
+          "title": "Adding Client-Side Validation",
+          "order": 23
+        },
+        {
+          "slug": "testing-with-zod-and-express",
+          "title": "Testing with Zod and Express",
+          "order": 24
+        },
+        {
+          "slug": "validating-the-data-layer",
+          "title": "Validating the Data Layer",
+          "order": 25
+        },
+        {
+          "slug": "open-api-swagger-express",
+          "title": "OpenAPI/Swagger Contracts",
+          "order": 26
+        },
+        {
+          "slug": "generating-open-api-from-express",
+          "title": "Generating OpenAPI from Express",
+          "order": 27
+        },
+        {
+          "slug": "zod-to-open-api",
+          "title": "Zod to OpenAPI",
+          "order": 28
+        },
+        {
+          "slug": "generating-types-from-open-api",
+          "title": "Generating Types from an OpenAPI Specification",
+          "order": 29
+        },
+        {
+          "slug": "generating-zod-openapi",
+          "title": "Generating Zod Schemas from OpenAPI",
+          "order": 30
+        },
+        {
+          "slug": "validating-your-api-openapi",
+          "title": "Validating Your API with OpenAPI",
+          "order": 31
+        },
+        {
+          "slug": "what-is-trpc",
+          "title": "What is tRPC?",
+          "order": 32
+        },
+        {
+          "slug": "trpc-on-the-server",
+          "title": "tRPC on the Server",
+          "order": 33
+        },
+        {
+          "slug": "trpc-on-the-client",
+          "title": "tRPC on the Client",
+          "order": 34
+        },
+        {
+          "slug": "subscriptions-with-trpc",
+          "title": "Subscriptions with tRPC",
+          "order": 35
+        },
+        {
+          "slug": "middleware-auth-logging-for-trpc",
+          "title": "Middleware and Authentication with tRPC",
+          "order": 36
+        },
+        {
+          "slug": "custom-data-transformers-with-trpc",
+          "title": "Custom Data Transformers with tRPC",
+          "order": 37
+        },
+        {
+          "slug": "testing-and-debugging-trpc",
+          "title": "Testing and Debugging with tRPC",
+          "order": 38
+        },
+        {
+          "slug": "typesafe-database-with-prisma",
+          "title": "Prisma",
+          "order": 39
+        },
+        {
+          "slug": "zod-schemas-from-prisma",
+          "title": "Generate Zod Schemas from Prisma",
+          "order": 40
+        },
+        {
+          "slug": "prisma-trpc",
+          "title": "Generate tRPC with Prisma",
+          "order": 41
+        },
+        {
+          "slug": "express-zod-api",
+          "title": "Express Zod API",
+          "order": 42
+        },
+        {
+          "slug": "input-validation-with-zod",
+          "title": "Input Validation with Zod",
+          "order": 43
+        },
+        {
+          "slug": "class-validator-class-transformer-express",
+          "title": "Class Validator and Class Transformer",
+          "order": 44
+        },
+        {
+          "slug": "typed-error-middleware-with-express",
+          "title": "Typed Error Middleware with Express",
+          "order": 45
+        },
+        {
+          "slug": "branded-types-express",
+          "title": "Branded Types with Express",
+          "order": 46
+        },
+        {
+          "slug": "global-error-types-express",
+          "title": "Global Error Types with Express",
+          "order": 47
+        },
+        {
+          "slug": "type-safe-route-registration-with-express",
+          "title": "Type Safe Route Registration",
+          "order": 48
+        },
+        {
+          "slug": "type-safe-asynchronous-route-handlers-with-express",
+          "title": "Type Safe Asynchronous Route Handlers",
+          "order": 49
+        },
+        {
+          "slug": "typing-headers-and-cookies-in-express",
+          "title": "Typing Headers and Cookies",
+          "order": 50
+        },
+        {
+          "slug": "type-safe-routes-in-express",
+          "title": "Type Safe Routes in Express",
+          "order": 51
+        },
+        {
+          "slug": "type-safe-middleware-with-express",
+          "title": "Type Safe Middleware with Express",
+          "order": 52
+        },
+        {
+          "slug": "validating-zod-schemas-solution",
+          "title": "Validating Zod Schemas (Solutions)",
+          "order": 53
+        }
+      ]
+    },
+    {
+      "key": "openclaw",
+      "title": "OpenClaw",
+      "titleAr": "OpenClaw: مساعدك الذكي الشخصي",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "OpenClaw",
+          "order": 0
+        },
+        {
+          "slug": "installation",
+          "title": "Installing OpenClaw",
+          "order": 1
+        },
+        {
+          "slug": "openclaw-setup",
+          "title": "Setting Up OpenClaw",
+          "order": 2
+        },
+        {
+          "slug": "configuring-your-openclaw",
+          "title": "Configuring Your OpenClaw",
+          "order": 3
+        },
+        {
+          "slug": "security-and-approvals",
+          "title": "Security and Approvals",
+          "order": 4
+        },
+        {
+          "slug": "adding-telegram-as-a-channel",
+          "title": "Adding Telegram as a Channel",
+          "order": 5
+        },
+        {
+          "slug": "choosing-a-dm-policy",
+          "title": "Choosing a DM Policy",
+          "order": 6
+        },
+        {
+          "slug": "automation-ideas",
+          "title": "Automation Ideas to Try",
+          "order": 7
+        },
+        {
+          "slug": "gmail-and-google-calendar-integration",
+          "title": "Gmail and Google Calendar Integration",
+          "order": 8
+        },
+        {
+          "slug": "demonstrating-openclaw-memory",
+          "title": "Demonstrating OpenClaw's Memory",
+          "order": 9
+        },
+        {
+          "slug": "browser-setup-and-use",
+          "title": "Setting Up and Using the Browser",
+          "order": 10
+        },
+        {
+          "slug": "openclaw-browser-prompts",
+          "title": "OpenClaw Browser Prompts",
+          "order": 11
+        },
+        {
+          "slug": "skills-and-clawhub",
+          "title": "Skills and ClawHub",
+          "order": 12
+        },
+        {
+          "slug": "subagents-and-orchestration",
+          "title": "Subagents and Orchestration",
+          "order": 13
+        },
+        {
+          "slug": "acpx-runtime-plugin",
+          "title": "The ACPX Runtime Plugin",
+          "order": 14
+        },
+        {
+          "slug": "connecting-securely-with-tailscale",
+          "title": "Connecting to Your OpenClaw Securely with Tailscale",
+          "order": 15
+        },
+        {
+          "slug": "running-openclaw-on-railway-with-tailscale",
+          "title": "Running OpenClaw on Railway with Tailscale",
+          "order": 16
+        },
+        {
+          "slug": "connecting-a-remote-node",
+          "title": "Connecting to a Remote OpenClaw as a Paired Node",
+          "order": 17
+        },
+        {
+          "slug": "syncing-cookies-to-a-remote-gateway",
+          "title": "Syncing Your Browser Cookies to a Remote Gateway",
+          "order": 18
+        },
+        {
+          "slug": "lobster-workflows",
+          "title": "Lobster Workflows",
+          "order": 19
+        },
+        {
+          "slug": "llm-task",
+          "title": "LLM Task",
+          "order": 20
+        },
+        {
+          "slug": "swarms",
+          "title": "Swarms",
+          "order": 21
+        },
+        {
+          "slug": "choosing-an-orchestration-tool",
+          "title": "Choosing an Orchestration Tool",
+          "order": 22
+        }
+      ]
+    },
+    {
+      "key": "python-ai",
+      "title": "AI Fundamentals with Python",
+      "titleAr": "أساسيات الذكاء الاصطناعي بلغة Python",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "AI Fundamentals with Python",
+          "order": 0
+        },
+        {
+          "slug": "installing-hugging-face",
+          "title": "Installing Hugging Face",
+          "order": 1
+        },
+        {
+          "slug": "what-is-hugging-face",
+          "title": "What is Hugging Face?",
+          "order": 2
+        },
+        {
+          "slug": "hugging-face-pipeline-tasks",
+          "title": "Hugging Face Pipelines",
+          "order": 3
+        },
+        {
+          "slug": "pipeline-basics",
+          "title": "Pipeline Basics (Hugging Face)",
+          "order": 4
+        },
+        {
+          "slug": "tokenization",
+          "title": "Tokenization — From Text to Tensors",
+          "order": 5
+        },
+        {
+          "slug": "attention-mechanism",
+          "title": "The Attention Mechanism",
+          "order": 6
+        },
+        {
+          "slug": "decoders",
+          "title": "Decoders and Text Generation",
+          "order": 7
+        },
+        {
+          "slug": "attention-and-pipeline-checklist",
+          "title": "Quick Checklists — Pipelines, Attention, Generation",
+          "order": 8
+        },
+        {
+          "slug": "fine-tuning",
+          "title": "Fine-Tuning Transformer Models",
+          "order": 9
+        },
+        {
+          "slug": "image-generation",
+          "title": "Text-to-Image Generation (Stable Diffusion)",
+          "order": 10
+        },
+        {
+          "slug": "image-to-image",
+          "title": "Image-to-Image Transformations",
+          "order": 11
+        },
+        {
+          "slug": "dreambooth",
+          "title": "DreamBooth — Personalizing Text-to-Image Models",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "react-performance",
+      "title": "React Performance",
+      "titleAr": "أداء React",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "React Performance",
+          "order": 0
+        },
+        {
+          "slug": "virtual-dom-fiber-architecture",
+          "title": "Virtual DOM and Fiber Architecture",
+          "order": 1
+        },
+        {
+          "slug": "understanding-reconciliation-react-19",
+          "title": "Understanding Reconciliation in React 19",
+          "order": 2
+        },
+        {
+          "slug": "measuring-performance-with-real-tools",
+          "title": "Measuring Performance",
+          "order": 3
+        },
+        {
+          "slug": "debugging-performance-issues",
+          "title": "Debugging React Performance Issues",
+          "order": 4
+        },
+        {
+          "slug": "core-web-vitals-for-react",
+          "title": "Core Web Vitals for React",
+          "order": 5
+        },
+        {
+          "slug": "colocation-of-state",
+          "title": "Colocation of State",
+          "order": 6
+        },
+        {
+          "slug": "lifting-state-intelligently",
+          "title": "Lifting State Intelligently",
+          "order": 7
+        },
+        {
+          "slug": "derived-vs-stored-state",
+          "title": "Derived vs Stored State",
+          "order": 8
+        },
+        {
+          "slug": "react-memo-react-19-and-compiler-era",
+          "title": "React.memo",
+          "order": 9
+        },
+        {
+          "slug": "usememo-usecallback-in-react-19",
+          "title": "useMemo and useCallback",
+          "order": 10
+        },
+        {
+          "slug": "avoiding-over-memoization",
+          "title": "Avoiding Over Memoization",
+          "order": 11
+        },
+        {
+          "slug": "identity-stability-props",
+          "title": "Prop Identity Stability",
+          "order": 12
+        },
+        {
+          "slug": "key-stability-in-lists",
+          "title": "Key Stability in Lists",
+          "order": 13
+        },
+        {
+          "slug": "avoiding-unnecessary-dependencies",
+          "title": "Avoiding Unnecessary Dependencies",
+          "order": 14
+        },
+        {
+          "slug": "custom-equality-checks-areequal",
+          "title": "Custom Equality Checks with areEqual",
+          "order": 15
+        },
+        {
+          "slug": "context-api-performance-pitfalls",
+          "title": "Context API Performance Pitfalls",
+          "order": 16
+        },
+        {
+          "slug": "separating-actions-from-state-two-contexts",
+          "title": "Separating Actions from State: Two Contexts",
+          "order": 17
+        },
+        {
+          "slug": "component-granularity-splitting",
+          "title": "Component Granularity Splitting",
+          "order": 18
+        },
+        {
+          "slug": "react-19-compiler-guide",
+          "title": "React 19 Compiler",
+          "order": 19
+        },
+        {
+          "slug": "concurrent-react-scheduling",
+          "title": "Concurrent React Scheduling",
+          "order": 20
+        },
+        {
+          "slug": "usetransition-and-starttransition",
+          "title": "useTransition and startTransition",
+          "order": 21
+        },
+        {
+          "slug": "usedeferredvalue-patterns",
+          "title": "useDeferredValue Patterns",
+          "order": 22
+        },
+        {
+          "slug": "useactionstate-performance",
+          "title": "useActionState Performance",
+          "order": 23
+        },
+        {
+          "slug": "the-use-hook",
+          "title": "The use Hook",
+          "order": 24
+        },
+        {
+          "slug": "suspense-for-data-fetching",
+          "title": "Suspense for Data Fetching",
+          "order": 25
+        },
+        {
+          "slug": "code-splitting-and-lazy-loading",
+          "title": "Code Splitting and Lazy Loading",
+          "order": 26
+        },
+        {
+          "slug": "bundle-analysis-deep-dive",
+          "title": "Bundle Analysis Deep Dive",
+          "order": 27
+        },
+        {
+          "slug": "tree-shaking-optimization",
+          "title": "Tree Shaking Optimization",
+          "order": 28
+        },
+        {
+          "slug": "performance-budgets-and-automation",
+          "title": "Performance Budgets and Automation",
+          "order": 29
+        },
+        {
+          "slug": "production-performance-monitoring",
+          "title": "Production Performance Monitoring",
+          "order": 30
+        },
+        {
+          "slug": "animation-performance",
+          "title": "Animation Performance in React",
+          "order": 31
+        },
+        {
+          "slug": "animation-performance-advanced",
+          "title": "Advanced Animation Performance Techniques",
+          "order": 32
+        },
+        {
+          "slug": "apollo-client-optimization",
+          "title": "Apollo Client Performance Optimization",
+          "order": 33
+        },
+        {
+          "slug": "cdn-caching-immutable-assets",
+          "title": "CDN Caching & Immutable Assets",
+          "order": 34
+        },
+        {
+          "slug": "flushsync-in-react-dom",
+          "title": "Flushsync In React Dom",
+          "order": 35
+        },
+        {
+          "slug": "gpu-acceleration-patterns",
+          "title": "GPU Acceleration Patterns",
+          "order": 36
+        },
+        {
+          "slug": "graphql-react-performance",
+          "title": "GraphQL & React Performance",
+          "order": 37
+        },
+        {
+          "slug": "image-and-asset-optimization",
+          "title": "Image & Asset Optimization for React",
+          "order": 38
+        },
+        {
+          "slug": "image-optimization-advanced",
+          "title": "Advanced Image Optimization Techniques",
+          "order": 39
+        },
+        {
+          "slug": "inp-optimization-long-tasks",
+          "title": "INP Optimization & Long Tasks",
+          "order": 40
+        },
+        {
+          "slug": "inp-production-monitoring",
+          "title": "INP Production Monitoring",
+          "order": 41
+        },
+        {
+          "slug": "memory-leak-detection",
+          "title": "Memory Leak Detection in React Applications",
+          "order": 42
+        },
+        {
+          "slug": "memory-management-deep-dive",
+          "title": "Memory Management Deep Dive",
+          "order": 43
+        },
+        {
+          "slug": "micro-frontend-performance",
+          "title": "Micro-Frontend Performance",
+          "order": 44
+        },
+        {
+          "slug": "offscreen-canvas-webgl",
+          "title": "OffscreenCanvas & WebGL for React",
+          "order": 45
+        },
+        {
+          "slug": "optimizing-server-side-rendering",
+          "title": "Optimizing Server‑Side Rendering",
+          "order": 46
+        },
+        {
+          "slug": "performance-budgets-and-monitoring",
+          "title": "Performance Budgets and Monitoring",
+          "order": 47
+        },
+        {
+          "slug": "performance-testing-implementation",
+          "title": "Performance Testing Implementation Guide",
+          "order": 48
+        },
+        {
+          "slug": "performance-testing-strategy",
+          "title": "Performance Testing Strategy",
+          "order": 49
+        },
+        {
+          "slug": "priority-hints-resource-loading",
+          "title": "Priority Hints & Resource Loading",
+          "order": 50
+        },
+        {
+          "slug": "react-cache-api",
+          "title": "The cache() API",
+          "order": 51
+        },
+        {
+          "slug": "react-compiler-migration-guide",
+          "title": "React Compiler Migration Guide",
+          "order": 52
+        },
+        {
+          "slug": "react-server-components-rsc",
+          "title": "React Server Components",
+          "order": 53
+        },
+        {
+          "slug": "real-time-data-performance",
+          "title": "Real-Time Data Performance in React",
+          "order": 54
+        },
+        {
+          "slug": "real-time-scale-strategies",
+          "title": "Real-Time at Scale Strategies",
+          "order": 55
+        },
+        {
+          "slug": "resource-preloading-apis",
+          "title": "Resource Preloading APIs",
+          "order": 56
+        },
+        {
+          "slug": "selective-hydration-react-19",
+          "title": "Selective Hydration in Modern React Apps",
+          "order": 57
+        },
+        {
+          "slug": "service-worker-strategies",
+          "title": "Service Worker Strategies for React Apps",
+          "order": 58
+        },
+        {
+          "slug": "speculation-rules-bfcache",
+          "title": "Speculation Rules & bfcache Optimization",
+          "order": 59
+        },
+        {
+          "slug": "streaming-ssr-optimization",
+          "title": "Streaming SSR Optimization",
+          "order": 60
+        },
+        {
+          "slug": "swc-speedy-web-compiler",
+          "title": "Speedy Web Compiler (SWC) for React Apps",
+          "order": 61
+        },
+        {
+          "slug": "uselayouteffect-performance",
+          "title": "Performance Characteristics of useLayoutEffect",
+          "order": 62
+        },
+        {
+          "slug": "view-transitions-api",
+          "title": "View Transitions API for React",
+          "order": 63
+        },
+        {
+          "slug": "web-workers-with-react",
+          "title": "Web Workers with React",
+          "order": 64
+        },
+        {
+          "slug": "webassembly-integration",
+          "title": "WebAssembly Integration in React",
+          "order": 65
+        },
+        {
+          "slug": "windowing-and-virtualization",
+          "title": "Windowing and Virtualization",
+          "order": 66
+        }
+      ]
+    },
+    {
+      "key": "react-typescript",
+      "title": "React with TypeScript",
+      "titleAr": "React مع TypeScript",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "React with TypeScript",
+          "order": 0
+        },
+        {
+          "slug": "setting-up-react-and-typescript",
+          "title": "Setting Up React and TypeScript",
+          "order": 1
+        },
+        {
+          "slug": "tsconfig-deep-dive-react",
+          "title": "An Even Deeper Dive into tsconfig.json",
+          "order": 2
+        },
+        {
+          "slug": "strictness-options-for-react",
+          "title": "Strictness Options for React",
+          "order": 3
+        },
+        {
+          "slug": "module-resolution-and-paths",
+          "title": "Module Resolution and Paths",
+          "order": 4
+        },
+        {
+          "slug": "setting-up-linting-and-formatting",
+          "title": "Setting Up Linting and Formatting",
+          "order": 5
+        },
+        {
+          "slug": "typescript-react-eslint-rules",
+          "title": "ESLint Rules",
+          "order": 6
+        },
+        {
+          "slug": "typescript-type-narrowing-control-flow",
+          "title": "Type Narrowing and Control Flow",
+          "order": 7
+        },
+        {
+          "slug": "typescript-type-inference-mastery",
+          "title": "Type Inference",
+          "order": 8
+        },
+        {
+          "slug": "advanced-type-tricks-for-react",
+          "title": "Advanced Type Tricks for React",
+          "order": 9
+        },
+        {
+          "slug": "utility-types-in-practice",
+          "title": "Utility Types in Practice",
+          "order": 10
+        },
+        {
+          "slug": "typescript-template-literal-types",
+          "title": "Template Literal Types",
+          "order": 11
+        },
+        {
+          "slug": "typescript-unknown-vs-any",
+          "title": "unknown vs any",
+          "order": 12
+        },
+        {
+          "slug": "typescript-structural-typing",
+          "title": "Structural Typing",
+          "order": 13
+        },
+        {
+          "slug": "jsx-types-reactnode-reactelement",
+          "title": "JSX Types: ReactNode, ReactElement",
+          "order": 14
+        },
+        {
+          "slug": "polymorphic-components-and-as-prop",
+          "title": "Polymorphic Components and as Prop",
+          "order": 15
+        },
+        {
+          "slug": "component-props-complete-guide",
+          "title": "React Component Props",
+          "order": 16
+        },
+        {
+          "slug": "prop-combinations-and-unions",
+          "title": "Prop Combinations and Unions",
+          "order": 17
+        },
+        {
+          "slug": "render-props-and-hoc-alternatives",
+          "title": "Render Props and HOC Alternatives",
+          "order": 18
+        },
+        {
+          "slug": "usestate-typescript-basics",
+          "title": "useState with TypeScript: The Basics",
+          "order": 19
+        },
+        {
+          "slug": "react-state-management-with-typescript",
+          "title": "React State Management with TypeScript",
+          "order": 20
+        },
+        {
+          "slug": "typescript-discriminated-unions",
+          "title": "Discriminated Unions",
+          "order": 21
+        },
+        {
+          "slug": "loading-states-error-handling",
+          "title": "Loading States and Error Handling",
+          "order": 22
+        },
+        {
+          "slug": "fetching-data-usestate",
+          "title": "Fetching Data with useState and useEffect",
+          "order": 23
+        },
+        {
+          "slug": "creating-todos-post-typescript",
+          "title": "Sending Data",
+          "order": 24
+        },
+        {
+          "slug": "updating-todos-optimistic",
+          "title": "Optimistic Updates",
+          "order": 25
+        },
+        {
+          "slug": "deleting-todos-state-cleanup",
+          "title": "DELETE Requests and State Cleanup",
+          "order": 26
+        },
+        {
+          "slug": "react-state-management-with-typescript",
+          "title": "React State Management with TypeScript",
+          "order": 27
+        },
+        {
+          "slug": "typescript-discriminated-unions",
+          "title": "Discriminated Unions",
+          "order": 28
+        },
+        {
+          "slug": "context-and-selectors-typing",
+          "title": "Context and Selectors Typing",
+          "order": 29
+        },
+        {
+          "slug": "safer-createcontext-helpers",
+          "title": "Safer createContext Helpers",
+          "order": 30
+        },
+        {
+          "slug": "passing-dispatch-and-context",
+          "title": "Passing Dispatch and Context",
+          "order": 31
+        },
+        {
+          "slug": "compound-components-and-slots-typing",
+          "title": "Compound Components and Slots Typing",
+          "order": 32
+        },
+        {
+          "slug": "useref-and-imperative-handles",
+          "title": "useRef and Imperative Handles",
+          "order": 33
+        },
+        {
+          "slug": "forwardref-memo-and-displayname",
+          "title": "forwardRef, memo, and displayName",
+          "order": 34
+        },
+        {
+          "slug": "polymorphic-components-and-as-prop",
+          "title": "Polymorphic Components and as Prop",
+          "order": 35
+        },
+        {
+          "slug": "mirror-dom-props",
+          "title": "Mirroring DOM Props",
+          "order": 36
+        },
+        {
+          "slug": "typing-dom-and-react-events",
+          "title": "Typing DOM and React Events",
+          "order": 37
+        },
+        {
+          "slug": "forms-events-and-number-inputs",
+          "title": "Forms, Events, and Number Inputs",
+          "order": 38
+        },
+        {
+          "slug": "higher-order-components-typing",
+          "title": "Higher Order Components Typing",
+          "order": 39
+        },
+        {
+          "slug": "render-props-and-hoc-alternatives",
+          "title": "Render Props and HOC Alternatives",
+          "order": 40
+        },
+        {
+          "slug": "typescript-react-hooks",
+          "title": "TypeScript React Hooks",
+          "order": 41
+        },
+        {
+          "slug": "react-performance-with-typescript",
+          "title": "React Performance with TypeScript",
+          "order": 42
+        },
+        {
+          "slug": "the-use-hook-and-suspense-typing",
+          "title": "The use Hook and Suspense Typing",
+          "order": 43
+        },
+        {
+          "slug": "error-boundaries-and-suspense-boundaries",
+          "title": "Error Boundaries and Suspense Boundaries",
+          "order": 44
+        },
+        {
+          "slug": "data-fetching-and-runtime-validation",
+          "title": "Data Fetching and Runtime Validation",
+          "order": 45
+        },
+        {
+          "slug": "react-query-trpc",
+          "title": "React Query TRPC",
+          "order": 46
+        },
+        {
+          "slug": "react-server-components-types",
+          "title": "React Server Components Types",
+          "order": 47
+        },
+        {
+          "slug": "rsc-server-actions",
+          "title": "RSC Server Actions",
+          "order": 48
+        },
+        {
+          "slug": "edge-ssr-and-runtime-types",
+          "title": "Edge SSR and Runtime Types",
+          "order": 49
+        },
+        {
+          "slug": "edge-ssr-hydration",
+          "title": "Edge, SSR, and Hydration Payload Types",
+          "order": 50
+        },
+        {
+          "slug": "accessibility-and-aria-typing",
+          "title": "Accessibility and ARIA Typing",
+          "order": 51
+        },
+        {
+          "slug": "security-and-escaping-types",
+          "title": "Security and Escaping Types",
+          "order": 52
+        },
+        {
+          "slug": "testing-react-typescript",
+          "title": "Testing React TypeScript",
+          "order": 53
+        },
+        {
+          "slug": "typescript-react-testing",
+          "title": "TypeScript React Testing",
+          "order": 54
+        },
+        {
+          "slug": "type-level-testing-in-practice",
+          "title": "Type-Level Testing in Practice",
+          "order": 55
+        },
+        {
+          "slug": "advanced-error-handling-patterns",
+          "title": "Advanced Error Handling Patterns",
+          "order": 56
+        },
+        {
+          "slug": "assets-and-module-declarations",
+          "title": "Assets and Module Declarations",
+          "order": 57
+        },
+        {
+          "slug": "build-pipeline-tsc-swc",
+          "title": "Traditional approach - does everything",
+          "order": 58
+        },
+        {
+          "slug": "building-development-scripts",
+          "title": "Building and Development Scripts",
+          "order": 59
+        },
+        {
+          "slug": "code-splitting-lazy-types",
+          "title": "Code-Splitting and Lazy Types",
+          "order": 60
+        },
+        {
+          "slug": "componenttype-hocs-render-props",
+          "title": "ComponentType, HOCs, and Render Props",
+          "order": 61
+        },
+        {
+          "slug": "concurrent-features-typing-patterns",
+          "title": "Concurrent Features Typing Patterns",
+          "order": 62
+        },
+        {
+          "slug": "debugging-typescript-errors-guide",
+          "title": "Debugging TypeScript Errors Guide",
+          "order": 63
+        },
+        {
+          "slug": "dev-tools-and-type-driven-dx",
+          "title": "Developer Tools and Type-Driven DX",
+          "order": 64
+        },
+        {
+          "slug": "flushsync-and-imperative-dom",
+          "title": "flushSync and Imperative DOM with Types",
+          "order": 65
+        },
+        {
+          "slug": "forms-actions-and-useactionstate",
+          "title": "Typed Forms, Actions, and useActionState",
+          "order": 66
+        },
+        {
+          "slug": "full-crud-todo-app",
+          "title": "Full CRUD Todo App - Putting It All Together",
+          "order": 67
+        },
+        {
+          "slug": "function-overloads-in-react",
+          "title": "Function Overloads for Flexible APIs",
+          "order": 68
+        },
+        {
+          "slug": "migrating-from-proptypes",
+          "title": "Migrating from PropTypes to TypeScript",
+          "order": 69
+        },
+        {
+          "slug": "migrating-javascript-to-typescript",
+          "title": "Migrating a React App from JS to TS",
+          "order": 70
+        },
+        {
+          "slug": "module-federation-typescript",
+          "title": "Module Federation with TypeScript",
+          "order": 71
+        },
+        {
+          "slug": "monorepos-and-shared-ui-types",
+          "title": "Install all dependencies",
+          "order": 72
+        },
+        {
+          "slug": "react-typescript-mental-models",
+          "title": "React 19 + TypeScript Mental Models",
+          "order": 73
+        },
+        {
+          "slug": "reading-todos-get-typescript",
+          "title": "Reading Todos - GET Requests and Type Safety",
+          "order": 74
+        },
+        {
+          "slug": "realtime-typing-websockets-and-sse",
+          "title": "Realtime Typing Websockets And Sse",
+          "order": 75
+        },
+        {
+          "slug": "resource-preloading-apis-types",
+          "title": "Resource Preloading APIs with TypeScript",
+          "order": 76
+        },
+        {
+          "slug": "result-types-and-error-handling",
+          "title": "Result/Either Patterns for React",
+          "order": 77
+        },
+        {
+          "slug": "routing-and-parameters-typing",
+          "title": "Routing and Typed URL Parameters",
+          "order": 78
+        },
+        {
+          "slug": "streaming-ssr-typescript",
+          "title": "Streaming SSR with TypeScript",
+          "order": 79
+        },
+        {
+          "slug": "styling-csstype-and-css-modules",
+          "title": "Styling Csstype And Css Modules",
+          "order": 80
+        },
+        {
+          "slug": "tailwind-cva-typed-variants",
+          "title": "Tailwind Cva Typed Variants",
+          "order": 81
+        },
+        {
+          "slug": "typesafe-environment-variables",
+          "title": "Type-Safe Environment Variables",
+          "order": 82
+        },
+        {
+          "slug": "typescript-conditional-mapped-types",
+          "title": "Conditional and Mapped Types",
+          "order": 83
+        },
+        {
+          "slug": "typescript-generics-deep-dive",
+          "title": "TypeScript Generics Deep Dive",
+          "order": 84
+        },
+        {
+          "slug": "typescript-modules-declarations",
+          "title": "Modules and Declaration Files for React",
+          "order": 85
+        },
+        {
+          "slug": "typescript-react-patterns",
+          "title": "React-Specific TypeScript Patterns",
+          "order": 86
+        },
+        {
+          "slug": "typescript-type-level-programming",
+          "title": "Type-Level Programming",
+          "order": 87
+        },
+        {
+          "slug": "typescript-type-system-fundamentals",
+          "title": "TypeScript Type System Fundamentals",
+          "order": 88
+        },
+        {
+          "slug": "typescript-utility-types-complete",
+          "title": "Utility Types Complete Guide",
+          "order": 89
+        },
+        {
+          "slug": "typescript-without-trying",
+          "title": "Using TypeScript Without Even Trying",
+          "order": 90
+        },
+        {
+          "slug": "use-layout-effect-and-effect-typing",
+          "title": "Use Layout Effect And Effect Typing",
+          "order": 91
+        },
+        {
+          "slug": "useoptimistic-typed-optimism",
+          "title": "useOptimistic and Typed Optimistic Updates",
+          "order": 92
+        },
+        {
+          "slug": "vite-react-typescript-optimization",
+          "title": "Vite + React TypeScript Optimization",
+          "order": 93
+        }
+      ]
+    },
+    {
+      "key": "self-testing-ai-agents",
+      "title": "Self-Testing AI Agents",
+      "titleAr": "وكلاء ذكاء اصطناعي يختبرون أنفسهم",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Self-Testing AI Agents",
+          "order": 0
+        },
+        {
+          "slug": "the-hypothesis",
+          "title": "The Hypothesis",
+          "order": 1
+        },
+        {
+          "slug": "instructions-that-wire-the-agent-in",
+          "title": "Writing Good Instructions",
+          "order": 2
+        },
+        {
+          "slug": "lab-rewrite-the-bad-claude-md",
+          "title": "Lab (Optional)",
+          "order": 3
+        },
+        {
+          "slug": "rewrite-the-bad-claude-md-solution",
+          "title": "Solution",
+          "order": 4
+        },
+        {
+          "slug": "skills-rules-and-hooks",
+          "title": "Skills, Rules, and Hooks",
+          "order": 5
+        },
+        {
+          "slug": "git-hooks-with-lefthook",
+          "title": "Git Hooks with Lefthook",
+          "order": 6
+        },
+        {
+          "slug": "locators-and-the-accessibility-hierarchy",
+          "title": "Locators and the Accessibility Hierarchy",
+          "order": 7
+        },
+        {
+          "slug": "lab-locator-challenges",
+          "title": "Lab",
+          "order": 8
+        },
+        {
+          "slug": "locator-challenges-solution",
+          "title": "Solution",
+          "order": 9
+        },
+        {
+          "slug": "the-waiting-story",
+          "title": "The Waiting Story",
+          "order": 10
+        },
+        {
+          "slug": "playwright-ui-mode",
+          "title": "Playwright UI Mode",
+          "order": 11
+        },
+        {
+          "slug": "playwright-codegen",
+          "title": "Playwright Codegen",
+          "order": 12
+        },
+        {
+          "slug": "configuring-playwright",
+          "title": "Configuring Playwright",
+          "order": 13
+        },
+        {
+          "slug": "playwright-projects",
+          "title": "Playwright Projects",
+          "order": 14
+        },
+        {
+          "slug": "playwright-web-server-without-surprises",
+          "title": "Configuring the Web Server",
+          "order": 15
+        },
+        {
+          "slug": "storage-state-authentication",
+          "title": "Storage State Authentication",
+          "order": 16
+        },
+        {
+          "slug": "fixtures-worker-scoped-test-scoped",
+          "title": "Fixtures: Worker-Scoped, Test-Scoped, and the Trap Between Them",
+          "order": 17
+        },
+        {
+          "slug": "where-fixtures-actually-help",
+          "title": "Where Fixtures Actually Help",
+          "order": 18
+        },
+        {
+          "slug": "testing-third-party-authentication",
+          "title": "Testing Third-Party Authentication",
+          "order": 19
+        },
+        {
+          "slug": "api-request-context-beyond-storage-state",
+          "title": "APIRequestContext: Beyond Storage State",
+          "order": 20
+        },
+        {
+          "slug": "recording-hars-for-network-isolation",
+          "title": "Recording HARs for Network Isolation",
+          "order": 21
+        },
+        {
+          "slug": "approaches-to-har-recording",
+          "title": "Approaches to HAR Recording",
+          "order": 22
+        },
+        {
+          "slug": "route-based-network-interception",
+          "title": "Route-Based Network Interception",
+          "order": 23
+        },
+        {
+          "slug": "mocking-browser-apis",
+          "title": "Mocking Browser APIs",
+          "order": 24
+        },
+        {
+          "slug": "deterministic-state-and-test-isolation",
+          "title": "Deterministic State and Test Isolation",
+          "order": 25
+        },
+        {
+          "slug": "lab-refactor-shelf-fixtures",
+          "title": "Lab: Refactor Shelf's Fixtures",
+          "order": 26
+        },
+        {
+          "slug": "refactor-shelf-fixtures-solution",
+          "title": "Solution: Refactor Shelf's Fixtures",
+          "order": 27
+        },
+        {
+          "slug": "api-and-ui-hybrid-tests",
+          "title": "API and UI Hybrid Tests",
+          "order": 28
+        },
+        {
+          "slug": "lab-harden-the-flaky-rate-book-test",
+          "title": "Lab",
+          "order": 29
+        },
+        {
+          "slug": "harden-the-flaky-rate-book-test-solution",
+          "title": "Solution",
+          "order": 30
+        },
+        {
+          "slug": "test-step-tags-annotations",
+          "title": "test.step, Tags, and Annotations",
+          "order": 31
+        },
+        {
+          "slug": "lab-tag-and-step-annotate-the-shelf-suite",
+          "title": "Lab",
+          "order": 32
+        },
+        {
+          "slug": "tag-and-step-annotate-the-shelf-suite-solution",
+          "title": "Solution",
+          "order": 33
+        },
+        {
+          "slug": "playwright-test-agents",
+          "title": "Playwright Test Agents",
+          "order": 34
+        },
+        {
+          "slug": "lab-generate-and-heal-with-playwright-agents",
+          "title": "Lab",
+          "order": 35
+        },
+        {
+          "slug": "generate-and-heal-with-playwright-agents-solution",
+          "title": "Solution",
+          "order": 36
+        },
+        {
+          "slug": "visual-regression-as-a-feedback-loop",
+          "title": "Visual Regression as a Feedback Loop",
+          "order": 37
+        },
+        {
+          "slug": "lab-wire-visual-regression-into-the-dev-loop",
+          "title": "Lab",
+          "order": 38
+        },
+        {
+          "slug": "wire-visual-regression-into-the-dev-loop-solution",
+          "title": "Solution",
+          "order": 39
+        },
+        {
+          "slug": "accessibility-as-a-quality-gate",
+          "title": "Accessibility as a Quality Gate",
+          "order": 40
+        },
+        {
+          "slug": "lab-wire-accessibility-checks-into-shelf",
+          "title": "Lab",
+          "order": 41
+        },
+        {
+          "slug": "wire-accessibility-checks-into-shelf-solution",
+          "title": "Solution",
+          "order": 42
+        },
+        {
+          "slug": "performance-budgets-as-a-feedback-loop",
+          "title": "Performance Budgets as a Feedback Loop",
+          "order": 43
+        },
+        {
+          "slug": "lab-add-performance-budgets-to-shelf",
+          "title": "Lab",
+          "order": 44
+        },
+        {
+          "slug": "add-performance-budgets-to-shelf-solution",
+          "title": "Solution",
+          "order": 45
+        },
+        {
+          "slug": "failure-dossiers-what-agents-actually-need-from-a-red-build",
+          "title": "Failure Dossiers: What Agents Actually Need From a Red Build",
+          "order": 46
+        },
+        {
+          "slug": "lab-build-a-failure-dossier-for-shelf",
+          "title": "Lab",
+          "order": 47
+        },
+        {
+          "slug": "build-a-failure-dossier-for-shelf-solution",
+          "title": "Solution",
+          "order": 48
+        },
+        {
+          "slug": "flaky-test-triage",
+          "title": "Flaky-Test Triage: When Retries Are Lying to You",
+          "order": 49
+        },
+        {
+          "slug": "playwright-trace-viewer",
+          "title": "The Playwright Trace Viewer",
+          "order": 50
+        },
+        {
+          "slug": "reading-a-trace",
+          "title": "Reading a Trace",
+          "order": 51
+        },
+        {
+          "slug": "lab-triage-three-traces",
+          "title": "Lab",
+          "order": 52
+        },
+        {
+          "slug": "triage-three-traces-solution",
+          "title": "Solution",
+          "order": 53
+        },
+        {
+          "slug": "runtime-tools-compared",
+          "title": "Runtime Tools Compared",
+          "order": 54
+        },
+        {
+          "slug": "runtime-probes-in-the-development-loop",
+          "title": "Runtime Probes in the Development Loop",
+          "order": 55
+        },
+        {
+          "slug": "writing-a-custom-mcp-wrapper",
+          "title": "Writing a Custom MCP Wrapper",
+          "order": 56
+        },
+        {
+          "slug": "lab-wrap-a-custom-verification-mcp",
+          "title": "Lab",
+          "order": 57
+        },
+        {
+          "slug": "wrap-a-custom-verification-mcp-solution",
+          "title": "Solution",
+          "order": 58
+        },
+        {
+          "slug": "structured-cli-output-as-pipeline-glue",
+          "title": "Structured CLI Output as Pipeline Glue",
+          "order": 59
+        },
+        {
+          "slug": "the-second-opinion",
+          "title": "The Second Opinion",
+          "order": 60
+        },
+        {
+          "slug": "tuning-bugbot-for-your-codebase",
+          "title": "Tuning Bugbot for Your Codebase",
+          "order": 61
+        },
+        {
+          "slug": "lab-bugbot-on-a-planted-bug",
+          "title": "Lab",
+          "order": 62
+        },
+        {
+          "slug": "bugbot-on-a-planted-bug-solution",
+          "title": "Solution",
+          "order": 63
+        },
+        {
+          "slug": "the-static-layer-as-underlayment",
+          "title": "The Static Layer as Underlayment",
+          "order": 64
+        },
+        {
+          "slug": "lint-and-types-as-guardrails",
+          "title": "Lint and Types as Guardrails",
+          "order": 65
+        },
+        {
+          "slug": "dead-code-detection",
+          "title": "Dead Code Detection",
+          "order": 66
+        },
+        {
+          "slug": "secret-scanning-with-gitleaks",
+          "title": "Secret Scanning with Gitleaks",
+          "order": 67
+        },
+        {
+          "slug": "making-it-hard-to-cheat-the-guardrails",
+          "title": "Making It Hard to Cheat the Guardrails",
+          "order": 68
+        },
+        {
+          "slug": "lab-wire-the-static-layer-into-shelf",
+          "title": "Lab",
+          "order": 69
+        },
+        {
+          "slug": "wire-the-static-layer-into-shelf-solution",
+          "title": "Solution",
+          "order": 70
+        },
+        {
+          "slug": "ci-as-the-loop-of-last-resort",
+          "title": "CI as the Loop of Last Resort",
+          "order": 71
+        },
+        {
+          "slug": "lab-write-the-ci-workflow-from-scratch",
+          "title": "Lab",
+          "order": 72
+        },
+        {
+          "slug": "write-the-ci-workflow-from-scratch-solution",
+          "title": "Solution",
+          "order": 73
+        },
+        {
+          "slug": "post-merge-and-post-deploy-validation",
+          "title": "Post-Merge and Post-Deploy Validation",
+          "order": 74
+        },
+        {
+          "slug": "lab-add-post-deploy-smoke-checks-to-shelf",
+          "title": "Lab",
+          "order": 75
+        },
+        {
+          "slug": "add-post-deploy-smoke-checks-to-shelf-solution",
+          "title": "Solution",
+          "order": 76
+        },
+        {
+          "slug": "capstone-the-whole-loop-end-to-end",
+          "title": "The Whole Loop, End to End",
+          "order": 77
+        },
+        {
+          "slug": "the-testing-pyramid-as-a-feedback-hierarchy",
+          "title": "The Testing Pyramid",
+          "order": 78
+        },
+        {
+          "slug": "review-portability-beyond-bugbot",
+          "title": "Review Portability Beyond Bugbot",
+          "order": 79
+        },
+        {
+          "slug": "lab-port-the-review-loop-beyond-bugbot",
+          "title": "Lab",
+          "order": 80
+        },
+        {
+          "slug": "port-the-review-loop-beyond-bugbot-solution",
+          "title": "Solution",
+          "order": 81
+        },
+        {
+          "slug": "cross-browser-validation-without-burning-the-dev-loop",
+          "title": "Cross-Browser Validation Without Burning the Dev Loop",
+          "order": 82
+        },
+        {
+          "slug": "lab-add-cross-browser-coverage",
+          "title": "Lab",
+          "order": 83
+        },
+        {
+          "slug": "add-cross-browser-coverage-solution",
+          "title": "Solution",
+          "order": 84
+        },
+        {
+          "slug": "nightly-verification-loops",
+          "title": "Nightly Verification Loops",
+          "order": 85
+        },
+        {
+          "slug": "lab-add-a-nightly-verification-workflow",
+          "title": "Lab",
+          "order": 86
+        },
+        {
+          "slug": "add-a-nightly-verification-workflow-solution",
+          "title": "Solution",
+          "order": 87
+        },
+        {
+          "slug": "advanced-playwright-apis",
+          "title": "Advanced Playwright APIs",
+          "order": 88
+        },
+        {
+          "slug": "porting-the-shelf-loop-to-another-stack",
+          "title": "Porting the Shelf Loop to Another Stack",
+          "order": 89
+        },
+        {
+          "slug": "lab-translate-the-shelf-loop-to-your-stack",
+          "title": "Lab",
+          "order": 90
+        },
+        {
+          "slug": "translate-the-shelf-loop-to-your-stack-solution",
+          "title": "Solution",
+          "order": 91
+        }
+      ]
+    },
+    {
+      "key": "storybook",
+      "title": "Building Design Systems in Storybook",
+      "titleAr": "بناء أنظمة التصميم في Storybook",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Building Design Systems in Storybook",
+          "order": 0
+        },
+        {
+          "slug": "setting-up",
+          "title": "Setting Up Storybook",
+          "order": 1
+        },
+        {
+          "slug": "sandboxes",
+          "title": "Storybook Sandboxes",
+          "order": 2
+        },
+        {
+          "slug": "writing-stories",
+          "title": "How to Write a Story",
+          "order": 3
+        },
+        {
+          "slug": "adding-variants",
+          "title": "Adding Variants to a Story",
+          "order": 4
+        },
+        {
+          "slug": "controls",
+          "title": "Adding Controls to a Story",
+          "order": 5
+        },
+        {
+          "slug": "adding-button-sizes-exercise",
+          "title": "Adding Button Sizes",
+          "order": 6
+        },
+        {
+          "slug": "default-args",
+          "title": "Setting Default Arguments",
+          "order": 7
+        },
+        {
+          "slug": "setting-up-tailwind",
+          "title": "Importing Styles, Using Tailwind, and Using Themes",
+          "order": 8
+        },
+        {
+          "slug": "customizing-tailwind-colors",
+          "title": "Customizing Tailwind Colors",
+          "order": 9
+        },
+        {
+          "slug": "importing-fontsource-fonts",
+          "title": "Importing Fonts from Fontsource",
+          "order": 10
+        },
+        {
+          "slug": "mdx",
+          "title": "Using Storybook with MDX",
+          "order": 11
+        },
+        {
+          "slug": "arg-types",
+          "title": "Improving argTypes with Metadata",
+          "order": 12
+        },
+        {
+          "slug": "color-palette",
+          "title": "Color Palette",
+          "order": 13
+        },
+        {
+          "slug": "icon-gallery",
+          "title": "Icon Gallery",
+          "order": 14
+        },
+        {
+          "slug": "typeset",
+          "title": "Type Set",
+          "order": 15
+        },
+        {
+          "slug": "naming-and-hierarchy",
+          "title": "Organizing Stories and Documentation",
+          "order": 16
+        },
+        {
+          "slug": "class-variance-authority",
+          "title": "Class Variance Authority",
+          "order": 17
+        },
+        {
+          "slug": "adding-a-size-variant",
+          "title": "Adding a Size Variant with CVA",
+          "order": 18
+        },
+        {
+          "slug": "adding-dark-mode-to-our-components",
+          "title": "Supporting Dark Mode",
+          "order": 19
+        },
+        {
+          "slug": "forcing-dark-mode",
+          "title": "Forcing Dark Mode",
+          "order": 20
+        },
+        {
+          "slug": "dark-mode-alternative",
+          "title": "An Alternative Approach to Dark Mode",
+          "order": 21
+        },
+        {
+          "slug": "callout-component-exercise",
+          "title": "Implementing a Callout Component",
+          "order": 22
+        },
+        {
+          "slug": "play-functions",
+          "title": "Play Functions",
+          "order": 23
+        },
+        {
+          "slug": "testing-components-with-storybook",
+          "title": "Testing Components",
+          "order": 24
+        },
+        {
+          "slug": "test-runner",
+          "title": "Setting Up a Test Runner",
+          "order": 25
+        },
+        {
+          "slug": "visual-tests",
+          "title": "Visual Tests",
+          "order": 26
+        },
+        {
+          "slug": "accessibility-testing",
+          "title": "Accessibility Testing",
+          "order": 27
+        },
+        {
+          "slug": "decorators",
+          "title": "Using Decorators for Context",
+          "order": 28
+        },
+        {
+          "slug": "loaders",
+          "title": "Using Loaders to Fetch Data",
+          "order": 29
+        },
+        {
+          "slug": "mock-service-worker",
+          "title": "Integration with Mock Service Worker",
+          "order": 30
+        },
+        {
+          "slug": "storybook-in-figma",
+          "title": "Storybook in Figma",
+          "order": 31
+        },
+        {
+          "slug": "figma-in-storybook",
+          "title": "Figma in Storybook",
+          "order": 32
+        },
+        {
+          "slug": "add-an-addon",
+          "title": "Add an Addon to Storybook",
+          "order": 33
+        },
+        {
+          "slug": "adding-button-sizes-solution",
+          "title": "Solution: Adding Button Size Variants and Controls",
+          "order": 34
+        },
+        {
+          "slug": "callout-component-solution",
+          "title": "Implementing a Calllout Component",
+          "order": 35
+        },
+        {
+          "slug": "color-palette-solution",
+          "title": "Creating a Color Palette from Your Tailwind Theme",
+          "order": 36
+        },
+        {
+          "slug": "creating-an-icon-component",
+          "title": "Creating an Icon Component",
+          "order": 37
+        },
+        {
+          "slug": "parameters",
+          "title": "Parameters",
+          "order": 38
+        },
+        {
+          "slug": "text-area-disabled-play-function-solution",
+          "title": "Solution: Checking a Disabled Text Area",
+          "order": 39
+        }
+      ]
+    },
+    {
+      "key": "tailwind",
+      "title": "Tailwind",
+      "titleAr": "Tailwind CSS",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Tailwind",
+          "order": 0
+        },
+        {
+          "slug": "utility-first",
+          "title": "Utility-First CSS",
+          "order": 1
+        },
+        {
+          "slug": "build-process-and-tooling",
+          "title": "Build Process & Tooling Integration",
+          "order": 2
+        },
+        {
+          "slug": "how-tailwind-detects-classes",
+          "title": "How Tailwind Detects Classes",
+          "order": 3
+        },
+        {
+          "slug": "tailwind-best-practices",
+          "title": "Best Practices",
+          "order": 4
+        },
+        {
+          "slug": "tailwind-anti-patterns",
+          "title": "Anti-Patterns",
+          "order": 5
+        },
+        {
+          "slug": "tailwind-oxide",
+          "title": "What Is Oxide?",
+          "order": 6
+        },
+        {
+          "slug": "tailwind-4",
+          "title": "Differences In Tailwind 4",
+          "order": 7
+        },
+        {
+          "slug": "building-a-button",
+          "title": "Building a Button",
+          "order": 8
+        },
+        {
+          "slug": "spacing-and-dividing-utilities",
+          "title": "Spacing and Dividing Utilities",
+          "order": 9
+        },
+        {
+          "slug": "border-outline-ring",
+          "title": "Borders, Outlines, and Rings",
+          "order": 10
+        },
+        {
+          "slug": "building-a-card",
+          "title": "Building a Card Component",
+          "order": 11
+        },
+        {
+          "slug": "building-a-form-input",
+          "title": "Building a Form Input",
+          "order": 12
+        },
+        {
+          "slug": "focus-states",
+          "title": "Focus States",
+          "order": 13
+        },
+        {
+          "slug": "form-improvements",
+          "title": "Further Form Improvements",
+          "order": 14
+        },
+        {
+          "slug": "styling-form-state",
+          "title": "Even More Form State Styling Improvements",
+          "order": 15
+        },
+        {
+          "slug": "has-utility",
+          "title": "has-*",
+          "order": 16
+        },
+        {
+          "slug": "has-challenges",
+          "title": "has-* Challenges",
+          "order": 17
+        },
+        {
+          "slug": "building-an-interactive-checklist",
+          "title": "Building an Interactive Checklist",
+          "order": 18
+        },
+        {
+          "slug": "not-utility",
+          "title": "not-*",
+          "order": 19
+        },
+        {
+          "slug": "building-a-card-list",
+          "title": "Building a Card List",
+          "order": 20
+        },
+        {
+          "slug": "group-and-peer-modifiers",
+          "title": "Group and Peer Modifiers",
+          "order": 21
+        },
+        {
+          "slug": "before-and-after-pseudo-selectors",
+          "title": "Before & After Pseudo-Selectors",
+          "order": 22
+        },
+        {
+          "slug": "building-details-disclosure",
+          "title": "Building a Details Disclosure Card",
+          "order": 23
+        },
+        {
+          "slug": "building-a-compound-input",
+          "title": "Building a Compound Input",
+          "order": 24
+        },
+        {
+          "slug": "data-attribute-variants",
+          "title": "Data Attribute Variants",
+          "order": 25
+        },
+        {
+          "slug": "user-preference-variants",
+          "title": "User Preference Variants",
+          "order": 26
+        },
+        {
+          "slug": "building-an-image-card-hover-overlay",
+          "title": "Building an Image Card with an Overlay",
+          "order": 27
+        },
+        {
+          "slug": "current-color",
+          "title": "currentColor",
+          "order": 28
+        },
+        {
+          "slug": "oklch-colors",
+          "title": "OKLCH Color Palette",
+          "order": 29
+        },
+        {
+          "slug": "colors-and-css-variables",
+          "title": "CSS Variable Integration",
+          "order": 30
+        },
+        {
+          "slug": "tailwind-color-schemes",
+          "title": "Color Schemes",
+          "order": 31
+        },
+        {
+          "slug": "gradients",
+          "title": "Gradients",
+          "order": 32
+        },
+        {
+          "slug": "flexbox-direction-and-wrapping",
+          "title": "Direction and Wrapping",
+          "order": 33
+        },
+        {
+          "slug": "flexbox-alignment",
+          "title": "Alignment",
+          "order": 34
+        },
+        {
+          "slug": "flexbox-growing-and-shrinking",
+          "title": "Growing and Shrinking",
+          "order": 35
+        },
+        {
+          "slug": "flexbox-initial-size",
+          "title": "Initial Size",
+          "order": 36
+        },
+        {
+          "slug": "flexbox-aligning-individual-items",
+          "title": "Aligning Individual Items",
+          "order": 37
+        },
+        {
+          "slug": "flexbox-multi-directional-layouts",
+          "title": "Multi-Directional Layouts",
+          "order": 38
+        },
+        {
+          "slug": "flexbox-order-manipulation",
+          "title": "Order Manipulation",
+          "order": 39
+        },
+        {
+          "slug": "css-grid-the-basics",
+          "title": "CSS Grid: The Basics",
+          "order": 40
+        },
+        {
+          "slug": "defining-grid-columns-and-rows",
+          "title": "Defining Grid Columns and Rows",
+          "order": 41
+        },
+        {
+          "slug": "placing-grid-items-spanning-and-positioning",
+          "title": "Placing Grid Items (Spanning and Positioning)",
+          "order": 42
+        },
+        {
+          "slug": "grid-auto-placement-and-implicit-tracks",
+          "title": "Auto-Placement and Implicit Tracks",
+          "order": 43
+        },
+        {
+          "slug": "grid-alignment-and-justification",
+          "title": "Alignment and Justification",
+          "order": 44
+        },
+        {
+          "slug": "grid-subgrids",
+          "title": "Subgrids",
+          "order": 45
+        },
+        {
+          "slug": "building-an-invoice-table",
+          "title": "Creating an Invoice Table",
+          "order": 46
+        },
+        {
+          "slug": "grid-dynamic-columns",
+          "title": "Dynamic Columns",
+          "order": 47
+        },
+        {
+          "slug": "grid-arbitrary-column-counts",
+          "title": "Arbitrary Column Counts",
+          "order": 48
+        },
+        {
+          "slug": "complex-grid-templates",
+          "title": "Complex Grid Templates",
+          "order": 49
+        },
+        {
+          "slug": "building-a-dashboard",
+          "title": "Building a Dashboard",
+          "order": 50
+        },
+        {
+          "slug": "grid-auto-fit-and-auto-fill-patterns",
+          "title": "Auto-Fit and Auto-Fill Patterns",
+          "order": 51
+        },
+        {
+          "slug": "grid-multi-column-layouts-columns-utility",
+          "title": "Multi-Column Layouts",
+          "order": 52
+        },
+        {
+          "slug": "building-a-blog-layout",
+          "title": "Building a Blog Layout",
+          "order": 53
+        },
+        {
+          "slug": "breakpoint-utilities",
+          "title": "Breakpoint Utilities",
+          "order": 54
+        },
+        {
+          "slug": "container-queries",
+          "title": "Container Queries",
+          "order": 55
+        },
+        {
+          "slug": "navigation-menu-container-queries",
+          "title": "Building a Navigation Menu",
+          "order": 56
+        },
+        {
+          "slug": "building-a-statistics-card",
+          "title": "Building a Statistics Card",
+          "order": 57
+        },
+        {
+          "slug": "aria-integration",
+          "title": "ARIA Integration",
+          "order": 58
+        },
+        {
+          "slug": "screen-reader-support",
+          "title": "Screen Reader Support",
+          "order": 59
+        },
+        {
+          "slug": "inert-utility",
+          "title": "inert",
+          "order": 60
+        },
+        {
+          "slug": "tailwind-transition",
+          "title": "Transitions",
+          "order": 61
+        },
+        {
+          "slug": "tailwind-transform",
+          "title": "Transforms",
+          "order": 62
+        },
+        {
+          "slug": "built-in-animations",
+          "title": "Built-In Animations",
+          "order": 63
+        },
+        {
+          "slug": "starting-style",
+          "title": "@starting-style",
+          "order": 64
+        },
+        {
+          "slug": "pulse-and-loading-indicator-patterns",
+          "title": "Pulse and Loading Indicator Patterns",
+          "order": 65
+        },
+        {
+          "slug": "theme-customization",
+          "title": "Theme Customization",
+          "order": 66
+        },
+        {
+          "slug": "dark-mode",
+          "title": "Dark Mode",
+          "order": 67
+        },
+        {
+          "slug": "tailwind-plugins",
+          "title": "Tailwind Plugins",
+          "order": 68
+        },
+        {
+          "slug": "text-styles-and-font-families",
+          "title": "Text Styles and Font Families",
+          "order": 69
+        },
+        {
+          "slug": "line-spacing-and-letter-spacing",
+          "title": "Line Spacing and Letter Spacing",
+          "order": 70
+        },
+        {
+          "slug": "caret-and-accent-color",
+          "title": "Caret and Accent Color",
+          "order": 71
+        },
+        {
+          "slug": "truncation-and-wrapping",
+          "title": "Truncation and Wrapping",
+          "order": 72
+        },
+        {
+          "slug": "building-a-popover",
+          "title": "Popover",
+          "order": 73
+        },
+        {
+          "slug": "building-a-modal",
+          "title": "Modal",
+          "order": 74
+        },
+        {
+          "slug": "clsx-and-tailwind-merge",
+          "title": "Merging and Deduplicating Class Names",
+          "order": 75
+        },
+        {
+          "slug": "state-variants",
+          "title": "State Variants",
+          "order": 76
+        },
+        {
+          "slug": "at-property",
+          "title": "@property",
+          "order": 77
+        },
+        {
+          "slug": "color-mix",
+          "title": "color-mix()",
+          "order": 78
+        },
+        {
+          "slug": "button-exemplars",
+          "title": "Button Exemplars",
+          "order": 79
+        },
+        {
+          "slug": "button-solutions",
+          "title": "Secondary and Dangerous Buttons",
+          "order": 80
+        },
+        {
+          "slug": "cva-tailwind",
+          "title": "Class Variance Authority",
+          "order": 81
+        },
+        {
+          "slug": "has-solutions",
+          "title": "Solutions for `has-*` Challenges",
+          "order": 82
+        },
+        {
+          "slug": "in-utility",
+          "title": "In Utility",
+          "order": 83
+        }
+      ]
+    },
+    {
+      "key": "testing",
+      "title": "Introduction to Testing",
+      "titleAr": "مدخل إلى الاختبارات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Introduction to Testing",
+          "order": 0
+        },
+        {
+          "slug": "the-basics",
+          "title": "Writing Your First Tests",
+          "order": 1
+        },
+        {
+          "slug": "how-tests-work",
+          "title": "How Tests Work",
+          "order": 2
+        },
+        {
+          "slug": "basic-math",
+          "title": "Implementing Basic Tests",
+          "order": 3
+        },
+        {
+          "slug": "unhappy-path",
+          "title": "The Unhappy Path",
+          "order": 4
+        },
+        {
+          "slug": "error-handling-and-edge-case-testing",
+          "title": "Testing Edge Cases",
+          "order": 5
+        },
+        {
+          "slug": "beyond-strict-equality",
+          "title": "Referential Equality",
+          "order": 6
+        },
+        {
+          "slug": "asymmetric-matchers",
+          "title": "Asymmetric Matchers",
+          "order": 7
+        },
+        {
+          "slug": "asymmetric-matchers-exercise",
+          "title": "Exercise",
+          "order": 8
+        },
+        {
+          "slug": "asymmetric-matchers-solution",
+          "title": "Solution",
+          "order": 9
+        },
+        {
+          "slug": "setting-up-and-tearing-down-with-hooks",
+          "title": "Before and After Hooks",
+          "order": 10
+        },
+        {
+          "slug": "vitests-hooks-exercise",
+          "title": "Exercise",
+          "order": 11
+        },
+        {
+          "slug": "vitest-hooks-solution",
+          "title": "Solution",
+          "order": 12
+        },
+        {
+          "slug": "testing-asynchronous-code",
+          "title": "Testing Asynchronous Code",
+          "order": 13
+        },
+        {
+          "slug": "testing-the-dom",
+          "title": "The Setup",
+          "order": 14
+        },
+        {
+          "slug": "testing-the-dom-example",
+          "title": "A Basic Example",
+          "order": 15
+        },
+        {
+          "slug": "testing-local-storage",
+          "title": "Testing Local Storage",
+          "order": 16
+        },
+        {
+          "slug": "testing-library",
+          "title": "Using Testing Library",
+          "order": 17
+        },
+        {
+          "slug": "testing-library-matchers",
+          "title": "Testing Library's Matchers",
+          "order": 18
+        },
+        {
+          "slug": "test-doubles",
+          "title": "Test Doubles",
+          "order": 19
+        },
+        {
+          "slug": "stubs",
+          "title": "Stubs",
+          "order": 20
+        },
+        {
+          "slug": "spies",
+          "title": "Spies",
+          "order": 21
+        },
+        {
+          "slug": "mocks",
+          "title": "Mocks",
+          "order": 22
+        },
+        {
+          "slug": "clearing-restoring-and-resetting-mocks",
+          "title": "Clearing, Restoring, and Resetting Mocks",
+          "order": 23
+        },
+        {
+          "slug": "testing-function-arguments",
+          "title": "Spying on Function Arguments",
+          "order": 24
+        },
+        {
+          "slug": "mock-spy-secret-input-example",
+          "title": "Mocking and Spying on Built-in Methods",
+          "order": 25
+        },
+        {
+          "slug": "mocking-environment-variables",
+          "title": "Mocking Environment Variables",
+          "order": 26
+        },
+        {
+          "slug": "mocking-dependencies",
+          "title": "Mocking Dependencies",
+          "order": 27
+        },
+        {
+          "slug": "mocking-fetch-and-network-requests",
+          "title": "Mocking Fetch and Network Requests",
+          "order": 28
+        },
+        {
+          "slug": "mocking-time",
+          "title": "Testing Time",
+          "order": 29
+        },
+        {
+          "slug": "exercise-add-timestamp",
+          "title": "Add Timestamp",
+          "order": 30
+        },
+        {
+          "slug": "testing-with-mock-service-worker",
+          "title": "Mock Service Worker",
+          "order": 31
+        },
+        {
+          "slug": "alternatives-to-using-test-doubles",
+          "title": "Alternatives to Using Test Doubles",
+          "order": 32
+        },
+        {
+          "slug": "dependency-injection",
+          "title": "Dependency Injection",
+          "order": 33
+        },
+        {
+          "slug": "snapshot-testing",
+          "title": "Snapshot Testing",
+          "order": 34
+        },
+        {
+          "slug": "snapshot-test-alternatives",
+          "title": "Snapshot Test Alternatives",
+          "order": 35
+        },
+        {
+          "slug": "snapshot-test-maintenance",
+          "title": "Snapshot Test Maintenance",
+          "order": 36
+        },
+        {
+          "slug": "in-source-testing",
+          "title": "In-Source Testing",
+          "order": 37
+        },
+        {
+          "slug": "cross-browser-testing-with-playwright",
+          "title": "Cross-Browser Tests with Playwright",
+          "order": 38
+        },
+        {
+          "slug": "code-coverage",
+          "title": "Code Coverage",
+          "order": 39
+        },
+        {
+          "slug": "continuous-integration",
+          "title": "Setting Up Continuous Integration",
+          "order": 40
+        },
+        {
+          "slug": "accident-counter-solution",
+          "title": "Accident Counter: Solution",
+          "order": 41
+        },
+        {
+          "slug": "accident-counter-with-user-event",
+          "title": "Install userEvent",
+          "order": 42
+        },
+        {
+          "slug": "advanced-test-configuration",
+          "title": "Advanced Test Configuration With Vitest",
+          "order": 43
+        },
+        {
+          "slug": "assert-versus-expect",
+          "title": "The Key Difference Between assert and expect",
+          "order": 44
+        },
+        {
+          "slug": "asymmetric-matching-example",
+          "title": "Handling Large Data Structures In Testing",
+          "order": 45
+        },
+        {
+          "slug": "authentication-example",
+          "title": "Testing Authentication with Vitest",
+          "order": 46
+        },
+        {
+          "slug": "auto-mocking",
+          "title": "Auto-Mocking in Vitest",
+          "order": 47
+        },
+        {
+          "slug": "basic-math-exercise-walkthrough",
+          "title": "Walkthrough: Basic Math Exercise",
+          "order": 48
+        },
+        {
+          "slug": "custom-matchers",
+          "title": "Customer Matchers in Vitest",
+          "order": 49
+        },
+        {
+          "slug": "debugging-vitest-tests",
+          "title": "Debugging Vitest Tests",
+          "order": 50
+        },
+        {
+          "slug": "differences-between-jest-and-vitest",
+          "title": "Differences Between Jest and Vitest",
+          "order": 51
+        },
+        {
+          "slug": "filtering-tests",
+          "title": "Filtering Tests",
+          "order": 52
+        },
+        {
+          "slug": "fire-event-events",
+          "title": "List of Events You Can Fire",
+          "order": 53
+        },
+        {
+          "slug": "guess-the-number-example",
+          "title": "Building a Guess the Number Game with Vitest",
+          "order": 54
+        },
+        {
+          "slug": "guessing-game-solution",
+          "title": "Guessing Game Solution",
+          "order": 55
+        },
+        {
+          "slug": "mocking-best-practices",
+          "title": "An Incomplete List of Best Practices for Mocking",
+          "order": 56
+        },
+        {
+          "slug": "mocking-dom-methods",
+          "title": "Mocking DOM Methods",
+          "order": 57
+        },
+        {
+          "slug": "mocking-the-file-system",
+          "title": "Mocking Reading And Writing Files",
+          "order": 58
+        },
+        {
+          "slug": "organizing-and-annotating-tests",
+          "title": "Organizing and Annotating Tests",
+          "order": 59
+        },
+        {
+          "slug": "overriding-object-properties",
+          "title": "Overriding Object Properties",
+          "order": 60
+        },
+        {
+          "slug": "parallelizing-tests",
+          "title": "Parallelizing Tests Using Test Context",
+          "order": 61
+        },
+        {
+          "slug": "parameterizing-tests",
+          "title": "Generating Tests with test.each and describe.each",
+          "order": 62
+        },
+        {
+          "slug": "running-tests",
+          "title": "Running Tests with Vitest",
+          "order": 63
+        },
+        {
+          "slug": "running-tests-for-related-files",
+          "title": "Only Running Tests For Related Files",
+          "order": 64
+        },
+        {
+          "slug": "strategies-for-testing-conditional-logic",
+          "title": "Strategies For Testing Conditional Logic",
+          "order": 65
+        },
+        {
+          "slug": "structure-of-a-unit-test",
+          "title": "Arrange-Act-Assert (AAA) Pattern",
+          "order": 66
+        },
+        {
+          "slug": "task-list-example",
+          "title": "Building a Task List with Vitest",
+          "order": 67
+        },
+        {
+          "slug": "test-context",
+          "title": "Understanding Test Context",
+          "order": 68
+        },
+        {
+          "slug": "test-driven-development",
+          "title": "Understanding Test-Driven Development",
+          "order": 69
+        },
+        {
+          "slug": "test-runners-and-assertion-libraries",
+          "title": "Which Testing Framework Should I Use?",
+          "order": 70
+        },
+        {
+          "slug": "testing-a-reducer-solution",
+          "title": "Solution: Testing a Reducer in Zod",
+          "order": 71
+        },
+        {
+          "slug": "testing-asynchronous-errors",
+          "title": "Testing Asynchronous Errors",
+          "order": 72
+        },
+        {
+          "slug": "testing-for-errors-exercise",
+          "title": "Testing Division By Zero in JavaScript",
+          "order": 73
+        },
+        {
+          "slug": "testing-library-solution",
+          "title": "Refactoring Our Button Test",
+          "order": 74
+        },
+        {
+          "slug": "testing-promises",
+          "title": "Testing Promises",
+          "order": 75
+        },
+        {
+          "slug": "tic-tac-toe-example",
+          "title": "Building Tic Tac Toe with Vitest",
+          "order": 76
+        },
+        {
+          "slug": "types-of-tests",
+          "title": "Unit, Integration, and End-To-End Tests Explained",
+          "order": 77
+        },
+        {
+          "slug": "user-event",
+          "title": "FireEvent vs UserEvent in Testing",
+          "order": 78
+        },
+        {
+          "slug": "vitest-reporters",
+          "title": "Reporters in Vitest",
+          "order": 79
+        },
+        {
+          "slug": "you-dont-need-perfect-code-coverage",
+          "title": "Why You Don't Need 100% Code Coverage",
+          "order": 80
+        }
+      ]
+    },
+    {
+      "key": "visual-studio-code",
+      "title": "Visual Studio Code",
+      "titleAr": "Visual Studio Code",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Visual Studio Code",
+          "order": 0
+        },
+        {
+          "slug": "vscode-editor-layout",
+          "title": "Editor Layout",
+          "order": 1
+        },
+        {
+          "slug": "vscode-command-palette",
+          "title": "The Command Palette",
+          "order": 2
+        },
+        {
+          "slug": "keybindings",
+          "title": "Keybindings",
+          "order": 3
+        },
+        {
+          "slug": "vscode-integrated-terminal",
+          "title": "The Integrated Terminal",
+          "order": 4
+        },
+        {
+          "slug": "navigating-vscode",
+          "title": "Navigation",
+          "order": 5
+        },
+        {
+          "slug": "vscode-source-control",
+          "title": "Source Control",
+          "order": 6
+        },
+        {
+          "slug": "search-and-replace-vscode",
+          "title": "Search and Replace",
+          "order": 7
+        },
+        {
+          "slug": "vscode-multiple-cursors",
+          "title": "Multiple Cursors",
+          "order": 8
+        },
+        {
+          "slug": "multiple-cursors-with-find-and-replace",
+          "title": "Multiple Cursors with Find and Replace",
+          "order": 9
+        },
+        {
+          "slug": "refactoring-in-vscode",
+          "title": "Refactoring",
+          "order": 10
+        },
+        {
+          "slug": "vscode-emmet",
+          "title": "Emmet",
+          "order": 11
+        },
+        {
+          "slug": "vscode-emmet-exercises",
+          "title": "Exercises",
+          "order": 12
+        },
+        {
+          "slug": "favorite-vs-code-extensions",
+          "title": "A Tour of Extensions",
+          "order": 13
+        },
+        {
+          "slug": "editing-settings-through-the-vs-code-ui",
+          "title": "Editing Settings (Visually)",
+          "order": 14
+        },
+        {
+          "slug": "editing-settings-through-json",
+          "title": "Editing Settings via JSON",
+          "order": 15
+        },
+        {
+          "slug": "favorite-vs-code-settings",
+          "title": "Steve's Favorite and Other Popular Settings",
+          "order": 16
+        },
+        {
+          "slug": "vscode-settings-for-managing-files",
+          "title": "Settings for Managing Files",
+          "order": 17
+        },
+        {
+          "slug": "settings-profiles-vscode",
+          "title": "Settings Profiles",
+          "order": 18
+        },
+        {
+          "slug": "settings-via-env-vars-vscode",
+          "title": "Controlling Settings With Environment Variables",
+          "order": 19
+        },
+        {
+          "slug": "vscode-snippets",
+          "title": "Using Snippets",
+          "order": 20
+        },
+        {
+          "slug": "vscode-snippet-exercises",
+          "title": "Exercises",
+          "order": 21
+        },
+        {
+          "slug": "placeholders-and-variables-in-vscode-snippets",
+          "title": "Placeholders and Variables",
+          "order": 22
+        },
+        {
+          "slug": "snippets-regex",
+          "title": "Snippets and Regular Expressions",
+          "order": 23
+        },
+        {
+          "slug": "advanced-snippet-techniques-vscode",
+          "title": "Advanced Snippet Techniques",
+          "order": 24
+        },
+        {
+          "slug": "keybindings-for-snippets-vscode",
+          "title": "Assigning Keybindings to Snippets",
+          "order": 25
+        },
+        {
+          "slug": "snippets-libraries-and-extensions",
+          "title": "Snippets Libraries and Extensions",
+          "order": 26
+        },
+        {
+          "slug": "vscode-tasks",
+          "title": "Visual Studio Code Tasks",
+          "order": 27
+        },
+        {
+          "slug": "vscode-task-examples",
+          "title": "Tasks: Examples",
+          "order": 28
+        },
+        {
+          "slug": "vscode-tasks-tips-and-tricks",
+          "title": "Tasks: Tips and Tricks",
+          "order": 29
+        },
+        {
+          "slug": "compound-tasks-vscode",
+          "title": "Compound Tasks",
+          "order": 30
+        },
+        {
+          "slug": "built-in-problem-matchers",
+          "title": "Built-in Problem Matchers",
+          "order": 31
+        },
+        {
+          "slug": "vscode-debugging-basics",
+          "title": "Debugging Basics",
+          "order": 32
+        },
+        {
+          "slug": "launch-config",
+          "title": "launch.json",
+          "order": 33
+        },
+        {
+          "slug": "debugging-web-applications",
+          "title": "Debugging Web Applications",
+          "order": 34
+        },
+        {
+          "slug": "debugging-running-node-processes",
+          "title": "Debugging Running Node Processes",
+          "order": 35
+        },
+        {
+          "slug": "advanced-debugging-techniques",
+          "title": "Advanced Debugging Techniques",
+          "order": 36
+        },
+        {
+          "slug": "multi-root-workspaces",
+          "title": "Multi-Root Workspaces",
+          "order": 37
+        },
+        {
+          "slug": "creating-a-multi-root-workspace",
+          "title": "Creating Multi-Root Workspaces",
+          "order": 38
+        },
+        {
+          "slug": "more-on-multi-root-namespaces",
+          "title": "More on Multi-Root Namespaces",
+          "order": 39
+        },
+        {
+          "slug": "vscode-dev-containers",
+          "title": "Dev Containers",
+          "order": 40
+        },
+        {
+          "slug": "setting-up-dev-containers",
+          "title": "Setting Up Dev Containers",
+          "order": 41
+        },
+        {
+          "slug": "exploring-devcontainer-json",
+          "title": "Exploring devcontainer.json",
+          "order": 42
+        },
+        {
+          "slug": "working-with-dev-containers",
+          "title": "Working with Dev Containers",
+          "order": 43
+        },
+        {
+          "slug": "dev-containers-and-dockerfiles",
+          "title": "Dev Containers and Dockerfiles",
+          "order": 44
+        },
+        {
+          "slug": "personalizing-dev-containers",
+          "title": "Personalizing Your Container Environment",
+          "order": 45
+        },
+        {
+          "slug": "vscode-extension-scaffold",
+          "title": "Scaffolding an Extension",
+          "order": 46
+        },
+        {
+          "slug": "building-a-simple-vscode-extension",
+          "title": "Building a Simple Extension",
+          "order": 47
+        },
+        {
+          "slug": "vscode-regular-expressionist",
+          "title": "Building an Extension with a Web View",
+          "order": 48
+        },
+        {
+          "slug": "vscode-keyboard-shortcuts",
+          "title": "Some Keyboard Shortcuts",
+          "order": 49
+        },
+        {
+          "slug": "prebuilt-dev-containers-in-vscode",
+          "title": "Prebuilt Dev Containers in Visual Studio Code",
+          "order": 50
+        },
+        {
+          "slug": "settings-precedence-vscode",
+          "title": "Settings Precedence in Visual Studio Code",
+          "order": 51
+        },
+        {
+          "slug": "using-dev-containers-in-vscode",
+          "title": "Setting Up a Dev Container",
+          "order": 52
+        },
+        {
+          "slug": "vscode-emmet-solutions",
+          "title": "Emmet in Visual Studio Code: Solutions",
+          "order": 53
+        },
+        {
+          "slug": "vscode-snippets-solutions",
+          "title": "Visual Studio Code Snippet Exercise Solutions",
+          "order": 54
+        }
+      ]
+    },
+    {
+      "key": "web-security",
+      "title": "Web Security",
+      "titleAr": "أمن الويب",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Web Security",
+          "order": 0
+        }
+      ]
+    }
+  ]
+}

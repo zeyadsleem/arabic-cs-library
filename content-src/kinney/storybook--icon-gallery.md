@@ -1,0 +1,37 @@
+---
+title: "Icon Gallery"
+lang: "en"
+chapter: "storybook"
+slug: "icon-gallery"
+order: 14
+source: "https://stevekinney.com/courses/storybook/icon-gallery"
+---
+
+There are lots of icons out there, but typically, you want to use as many icons as you need but as few as you can get away with in your application or design system. Storybook’s `IconGallery` block makes it easy to show off the icons that you intend to use in your application.
+
+There is not a lot to making an icon gallery in Storybook.
+
+```mdx
+import { Meta, Title, IconGallery, IconItem } from '@storybook/blocks';
+import { icons, Icon } from './components/icon';
+
+<Meta title="Icons" />
+
+<Title>Icons</Title>
+
+These are the icons being used in our design system. They are available as React components.
+
+<IconGallery>
+  {icons.map((icon) => (
+    <IconItem key={icon} name={icon}>
+      <Icon type={icon} />
+    </IconItem>
+  ))}
+</IconGallery>
+```
+
+An icon gallery in Storybook
+
+> **The implementation of the `Icon` component**
+>
+> You can check out my implementation of the `Icon` component [here](https://stevekinney.com/courses/storybook/creating-an-icon-component).

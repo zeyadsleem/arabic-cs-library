@@ -1,0 +1,46 @@
+---
+title: "Refactoring Our Button Test"
+lang: "en"
+chapter: "testing"
+slug: "testing-library-solution"
+order: 74
+source: "https://stevekinney.com/courses/testing/testing-library-solution"
+---
+
+Again, we’re likely going to want to bring in our libraries:
+
+```javascript
+import { screen } from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
+```
+
+Next we’ll use `user-event` to click the button instead of calling a method on the element.
+
+```javascript
+it('should change the text to "Clicked!" when clicked', async () => {
+  const button = createButton();
+
+  await userEvent.click(button);
+
+  expect(button.textContent).toBe('Clicked!');
+});
+```
+
+> **Remember to make the test function asynchronous.**
+
+## Rendering the Button to the DOM
+
+We can also choose to render the button to the `document` and find it that way.
+
+```javascript
+it('should change the text to "Clicked!" when clicked', async () => {
+  document.body.appendChild(createButton());
+  const button = screen.getByRole('button', { name: 'Click Me' });
+
+  await userEvent.click(button);
+
+  expect(button.textContent).toBe('Clicked!');
+});
+```
+
+This is also nice because it makes that test where we make sure that the button has the correct label obsolete. Come to think of it, it also makes that first test where we look at the type of element obsolete as well.

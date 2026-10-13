@@ -1,0 +1,38 @@
+---
+title: "Working Backwards from Types with Zod"
+lang: "en"
+chapter: "full-stack-typescript"
+slug: "working-backwards-from-types-with-zod"
+order: 11
+source: "https://stevekinney.com/courses/full-stack-typescript/working-backwards-from-types-with-zod"
+---
+
+We know that we can create types out of Zod schemas using `z.infer()`, but sometimes, we find ourselves in the position where we *already* have the types and we want to create schemas and be 100% positive that those schemas match the types.
+
+Let’s say we have the following type:
+
+```typescript
+type Task = {
+  id: string;
+  title: string;
+  description?: string;
+  completed: boolean;
+};
+```
+
+We can use `satisfies` to make sure that our schema matches.
+
+```typescript
+const taskSchema = z.object({
+  id: z.string().uuid(),
+  title: z.string(),
+  description: z.string().optional(),
+  completed: z.boolean(),
+}) satisfies z.ZodType<Task>;
+```
+
+> **Zod v4**
+>
+> In Zod v4, `z.string().uuid()` is preferably `z.uuid()`. The `z.ZodType` generic changed from three parameters to two (the `Def` parameter was removed), but `satisfies z.ZodType<Task>` still works since it only uses the first parameter.
+
+If our schema does *not* match the type that it’s supposed to satisfy, then TypeScript will be the one yelling at us.
