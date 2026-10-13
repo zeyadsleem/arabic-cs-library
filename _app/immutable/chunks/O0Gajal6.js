@@ -1,0 +1,587 @@
+const s="better-auth",n="concepts",a="المفاهيم",t="plugins",l="الإضافات",e=[{depth:2,id:"استخدام-إضافة",text:"استخدام إضافة"},{depth:2,id:"إنشاء-إضافة",text:"إنشاء إضافة"},{depth:3,id:"ماذا-يمكن-للإضافة-أن-تفعل",text:"ماذا يمكن للإضافة أن تفعل؟"},{depth:2,id:"إنشاء-إضافة-خادم",text:"إنشاء إضافة خادم"},{depth:3,id:"تسجيل-نوع-إضافة",text:"تسجيل نوع إضافة"},{depth:3,id:"نقاط-النهاية",text:"نقاط النهاية"},{depth:3,id:"المخطط",text:"المخطط"},{depth:3,id:"الخطافات",text:"الخطافات"},{depth:3,id:"الوسيطات",text:"الوسيطات"},{depth:3,id:"عند-الطلب-وعند-الاستجابة",text:"عند الطلب وعند الاستجابة"},{depth:3,id:"حد-المعدل",text:"حد المعدل"},{depth:3,id:"الأصول-الموثوقة",text:"الأصول الموثوقة"},{depth:3,id:"دوال-مساعدة-لإضافات-الخادم",text:"دوال مساعدة لإضافات الخادم"},{depth:2,id:"إنشاء-إضافة-عميل",text:"إنشاء إضافة عميل"},{depth:3,id:"واجهة-نقاط-النهاية",text:"واجهة نقاط النهاية"},{depth:3,id:"الحصول-على-الإجراءات",text:"الحصول على الإجراءات"},{depth:3,id:"الحصول-على-الذرات",text:"الحصول على الذرات"},{depth:3,id:"طرق-المسارات",text:"طرق المسارات"},{depth:3,id:"إضافات-fetch",text:"إضافات fetch"},{depth:3,id:"مستمعو-الذرات",text:"مستمعو الذرات"}],p=`<h1>الإضافات (/docs/concepts/plugins)</h1>
+<p>تعرّف على كيفية استخدام إضافات Better Auth وإنشائها، بما في ذلك تعريف نقاط النهاية والمخططات والخطافات والوسيطات وحدود المعدل والأصول الموثوقة، وبناء إضافات العميل بإجراءات وذرات مخصصة.</p>
+<p>تُعدّ الإضافات جزءًا أساسيًا من Better Auth، فهي تتيح لك توسيع الوظائف الأساسية. يمكنك استخدامها لإضافة طرق مصادقة جديدة أو ميزات أو تخصيص السلوكيات.</p>
+<p>تأتي Better Auth بالعديد من الإضافات المدمجة الجاهزة للاستخدام. راجع قسم الإضافات للحصول على التفاصيل. يمكنك أيضًا إنشاء إضافاتك الخاصة.</p>
+<h2 id="استخدام-إضافة">استخدام إضافة</h2>
+<p>قد تكون الإضافة إضافة من جهة الخادم أو إضافة من جهة العميل أو كليهما.</p>
+<p>لإضافة إضافة على الخادم، ضمّنها في مصفوفة <code>plugins</code> في إعداد المصادقة لديك. ستُهيَّأ الإضافة بالخيارات المقدَّمة.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-attr">plugins</span>: [
+        <span class="hljs-comment">// Add your plugins here</span>
+    ]
+});
+</code></pre>
+<p>تُضاف إضافات العميل عند إنشاء العميل. تتطلب معظم الإضافات وجود إضافتَي الخادم والعميل معًا لتعمل بشكل صحيح.
+يستخدم عميل مصادقة Better Auth في الواجهة الأمامية الدالة <code>createAuthClient</code> الموفَّرة من <code>better-auth/client</code>.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { createAuthClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth/client&quot;</span>;
+
+<span class="hljs-keyword">const</span> authClient = <span class="hljs-title function_">createAuthClient</span>({
+    <span class="hljs-attr">plugins</span>: [
+        <span class="hljs-comment">// Add your client plugins here</span>
+    ]
+});
+</code></pre>
+<p>نوصي بإبقاء auth-client وكائن المصادقة العادي لديك في ملفين منفصلين.</p>
+<p><code>server.ts</code></p>
+<p><code>auth-client.ts</code></p>
+<h2 id="إنشاء-إضافة">إنشاء إضافة</h2>
+<p>للبدء، ستحتاج إلى إضافة من جهة الخادم.
+تُعدّ إضافات الخادم العمود الفقري لكل الإضافات، بينما توجد إضافات العميل لتوفير واجهة مع واجهات برمجة التطبيقات الأمامية للتعامل بسهولة مع إضافات الخادم لديك.</p>
+<div class="callout callout--note">
+<p><strong>ملاحظة</strong></p>
+<p>إذا كانت إضافات الخادم لديك تحتوي على نقاط نهاية يجب استدعاؤها من العميل، فستحتاج أيضًا إلى إنشاء إضافة عميل.</p>
+</div>
+<h3 id="ماذا-يمكن-للإضافة-أن-تفعل">ماذا يمكن للإضافة أن تفعل؟</h3>
+<ul>
+<li>إنشاء نقاط نهاية <code>endpoint</code> مخصّصة لتنفيذ أي إجراء تريده.</li>
+<li>توسيع جداول قاعدة البيانات باستخدام <code>schemas</code> مخصّصة.</li>
+<li>استخدام <code>middleware</code> لاستهداف مجموعة من المسارات باستخدام مُطابِق المسارات الخاص به، بحيث يعمل فقط عند استدعاء تلك المسارات عبر طلب.</li>
+<li>استخدام <code>hooks</code> لاستهداف مسار أو طلب معيّن. وإذا أردت تشغيل الخطاف حتى عند استدعاء نقطة النهاية مباشرةً.</li>
+<li>استخدام <code>onRequest</code> أو <code>onResponse</code> إذا أردت تنفيذ شيء يؤثر على جميع الطلبات أو الاستجابات.</li>
+<li>إنشاء قاعدة <code>rate-limit</code> مخصّصة.</li>
+</ul>
+<h2 id="إنشاء-إضافة-خادم">إنشاء إضافة خادم</h2>
+<p>لإنشاء إضافة خادم، عليك تمرير كائن يحقق واجهة <code>BetterAuthPlugin</code>.</p>
+<p>الخاصية الوحيدة المطلوبة هي <code>id</code>، وهي معرّف فريد للإضافة.
+يمكن لإضافتَي الخادم والعميل استخدام المعرّف <code>id</code> نفسه.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterAuthPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">myPlugin</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-plugin&quot;</span>,
+    } <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthPlugin</span>
+}
+</code></pre>
+<div class="callout callout--note">
+<p><strong>ملاحظة</strong></p>
+<p>لا يتعيّن عليك جعل الإضافة دالة، لكن يُوصى بذلك. بهذه الطريقة يمكنك تمرير خيارات إلى الإضافة، ويكون ذلك متسقًا مع الإضافات المدمجة.</p>
+</div>
+<h3 id="تسجيل-نوع-إضافة">تسجيل نوع إضافة</h3>
+<p>يمكن للإضافات القابلة لإعادة الاستخدام توسيع <code>BetterAuthPluginRegistry</code> بحيث تُعيد <code>getPlugin()</code> نوعها الدقيق. يجب أن يطابق مفتاح السجل قيمة <code>id</code> الخاصة بالإضافة:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">declare</span> <span class="hljs-variable language_">module</span> <span class="hljs-string">&quot;@better-auth/core&quot;</span> {
+  <span class="hljs-keyword">interface</span> <span class="hljs-title class_">BetterAuthPluginRegistry</span>&lt;<span class="hljs-title class_">AuthOptions</span>, <span class="hljs-title class_">Options</span>&gt; {
+    <span class="hljs-string">&quot;my-plugin&quot;</span>: {
+      <span class="hljs-attr">creator</span>: <span class="hljs-keyword">typeof</span> myPlugin;
+    };
+  }
+}
+</code></pre>
+<p>يؤثر هذا على TypeScript فقط. لا يزال يتعيّن على المستخدمين إضافة الإضافة إلى مصفوفة <code>plugins</code> الخاصة بهم في وقت التشغيل.</p>
+<div class="callout callout--note">
+<p><strong>ملاحظة</strong></p>
+<p>إذا نشرت الإضافة كحزمة منفصلة، فأعلن <code>@better-auth/core</code> كتبعية نظيرة (peer dependency) بنفس نطاق الإصدارات المدعوم من <code>better-auth</code>.</p>
+</div>
+<h3 id="نقاط-النهاية">نقاط النهاية</h3>
+<p>لإضافة نقاط نهاية إلى الخادم، يمكنك تمرير <code>endpoints</code> الذي يتطلب كائنًا يكون المفتاح فيه أي <code>string</code> والقيمة فيه <code>AuthEndpoint</code>.</p>
+<p>لإنشاء نقطة نهاية للمصادقة، ستحتاج إلى استيراد <code>createAuthEndpoint</code> من <code>better-auth</code>.</p>
+<p>تغلّف Better Auth مكتبة أخرى تُسمى <a href="https://github.com/bekacru/better-call">Better Call</a> لإنشاء نقاط النهاية. وBetter Call هو إطار عمل ويب بسيط بلغة ts من صنع الفريق نفسه الذي يقف خلف Better Auth.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { createAuthEndpoint } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth/api&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterAuthPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">myPlugin</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-plugin&quot;</span>,
+        <span class="hljs-attr">endpoints</span>: {
+            <span class="hljs-attr">getHelloWorld</span>: <span class="hljs-title function_">createAuthEndpoint</span>(<span class="hljs-string">&quot;/my-plugin/hello-world&quot;</span>, {
+                <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;GET&quot;</span>,
+            }, <span class="hljs-title function_">async</span>(ctx) =&gt; {
+                <span class="hljs-keyword">return</span> ctx.<span class="hljs-title function_">json</span>({
+                    <span class="hljs-attr">message</span>: <span class="hljs-string">&quot;Hello World&quot;</span>
+                })
+            })
+        }
+    } <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthPlugin</span>
+}
+</code></pre>
+<p>تغلّف دالة إنشاء نقاط نهاية المصادقة <code>createEndpoint</code> من Better Call. داخل كائن <code>ctx</code>، ستوفّر كائنًا آخر يُسمى <code>context</code> يتيح لك الوصول إلى سياقات خاصة بـ better-auth تشمل <code>options</code> و<code>db</code> و<code>baseURL</code> وغيرها.</p>
+<p><strong>كائن السياق</strong></p>
+<ul>
+<li><code>appName</code>: اسم التطبيق. القيمة الافتراضية هي &quot;Better Auth&quot;.</li>
+<li><code>options</code>: الخيارات الممرَّرة إلى كائن Better Auth.</li>
+<li><code>tables</code>: تعريف الجداول الأساسية. وهو كائن يكون فيه اسم الجدول هو المفتاح وتعريف المخطط هو القيمة.</li>
+<li><code>baseURL</code>: عنوان baseURL الخاص بخادم المصادقة. ويتضمّن المسار. على سبيل المثال، إذا كان الخادم يعمل على <code>http://localhost:3000</code>، فسيكون baseURL هو <code>http://localhost:3000/api/auth</code> افتراضيًا ما لم يغيّره المستخدم.</li>
+<li><code>session</code>: إعداد الجلسة. ويتضمّن قيمتَي <code>updateAge</code> و<code>expiresIn</code>.</li>
+<li><code>secret</code>: المفتاح السري المستخدم لأغراض متعددة. ويُحدّده المستخدم.</li>
+<li><code>authCookie</code>: إعداد الكوكي الافتراضي لكوكيز المصادقة الأساسية.</li>
+<li><code>logger</code>: كائن المسجِّل (logger) المستخدم من قِبل Better Auth.</li>
+<li><code>db</code>: كائن Kysely الذي تستخدمه Better Auth للتفاعل مع قاعدة البيانات.</li>
+<li><code>adapter</code>: هذا هو نفسه db لكنه يمنحك دوالًا شبيهة بـ <code>orm</code> للتفاعل مع قاعدة البيانات. (نوصي باستخدام هذا بدلًا من <code>db</code> ما لم تكن بحاجة إلى استعلامات SQL الخام أو لأسباب تتعلق بالأداء)</li>
+<li><code>internalAdapter</code>: نداءات قاعدة بيانات داخلية تستخدمها Better Auth. على سبيل المثال، يمكنك استخدام هذه النداءات لإنشاء جلسة بدلًا من استخدام <code>adapter</code> مباشرةً. <code>internalAdapter.createSession(userId)</code></li>
+<li><code>createAuthCookie</code>: دالة مساعدة تتيح لك الحصول على <code>name</code> الكوكي و<code>options</code> إما لـ <code>set</code> أو <code>get</code> الكوكيز. وتطبّق أشياء مثل البادئة <code>__Secure-</code> للكوكيز بناءً على ما إذا كان الاتصال آمنًا (HTTPS) أو كان التطبيق يعمل في وضع الإنتاج.</li>
+<li><code>trustedOrigins</code>: قائمة الأصول الموثوقة التي حدّدتها عبر <code>options.trustedOrigins</code>.</li>
+<li><code>isTrustedOrigin</code>: دالة مساعدة تتيح لك التحقق سريعًا مما إذا كان عنوان url أو مسار معيّن موثوقًا بناءً على إعداد الأصول الموثوقة.</li>
+</ul>
+<p>لمعرفة الخصائص الأخرى، يمكنك مراجعة توثيق <a href="https://github.com/bekacru/better-call">Better Call</a> و<a href="https://github.com/better-auth/better-auth/blob/main/packages/better-auth/src/context/create-context.ts">الشيفرة المصدرية</a>.</p>
+<p><strong>قواعد نقاط النهاية</strong></p>
+<ul>
+<li>تأكد من استخدام kebab-case لمسار نقطة النهاية</li>
+<li>تأكد من استخدام طريقتي <code>POST</code> أو <code>GET</code> فقط لنقاط النهاية.</li>
+<li>أي دالة تعدّل البيانات ينبغي أن تكون طريقة <code>POST</code>.</li>
+<li>أي دالة تجلب البيانات ينبغي أن تكون طريقة <code>GET</code>.</li>
+<li>تأكد من استخدام الدالة <code>createAuthEndpoint</code> لإنشاء نقاط نهاية API.</li>
+<li>تأكد من أن مساراتك فريدة لتجنّب التعارض مع الإضافات الأخرى. إذا كنت تستخدم مسارًا شائعًا، فأضف اسم الإضافة كبادئة للمسار. (<code>/my-plugin/hello-world</code> بدلًا من <code>/hello-world</code>.)</li>
+</ul>
+<h3 id="المخطط">المخطط</h3>
+<p>يمكنك تعريف مخطط قاعدة بيانات لإضافتك بتمرير كائن <code>schema</code>. وينبغي أن يكون اسم الجدول هو المفتاح وتعريف المخطط هو القيمة في كائن المخطط.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterAuthPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">myPlugin</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-plugin&quot;</span>,
+        <span class="hljs-attr">schema</span>: {
+            <span class="hljs-attr">myTable</span>: {
+                <span class="hljs-attr">fields</span>: {
+                    <span class="hljs-attr">name</span>: {
+                        <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;string&quot;</span>
+                    }
+                },
+                <span class="hljs-attr">modelName</span>: <span class="hljs-string">&quot;myTable&quot;</span> <span class="hljs-comment">// optional if you want to use a different name than the key</span>
+            }
+        }
+    } <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthPlugin</span>
+}
+</code></pre>
+<p><strong>الحقول</strong></p>
+<p>بشكل افتراضي، ستنشئ better-auth حقل <code>id</code> لكل جدول. يمكنك إضافة حقول إضافية إلى الجدول بإضافتها إلى كائن <code>fields</code>.</p>
+<p>المفتاح هو اسم العمود والقيمة هي تعريف العمود. ويمكن أن يحتوي تعريف العمود على الخصائص التالية:</p>
+<p><code>type</code>: نوع الحقل. يمكن أن يكون <code>string</code> أو <code>number</code> أو <code>boolean</code> أو <code>date</code>.</p>
+<p><code>required</code>: ما إذا كان الحقل مطلوبًا في سجل جديد. (القيمة الافتراضية: <code>true</code>)</p>
+<p><code>unique</code>: ما إذا كان الحقل فريدًا. (القيمة الافتراضية: <code>false</code>)</p>
+<p>بالنسبة للفهارس التي تشمل عدة حقول، أضف مصفوفة <code>indexes</code> إلى الجدول. تستخدم حقول الفهرس المفاتيح المنطقية للحقول من <code>fields</code>، حتى عندما يكون للحقل اسم عمود مخصص في قاعدة البيانات.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterAuthPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">const</span> directoryPlugin = {
+  <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;directory&quot;</span>,
+  <span class="hljs-attr">schema</span>: {
+    <span class="hljs-attr">directoryUser</span>: {
+      <span class="hljs-attr">fields</span>: {
+        <span class="hljs-attr">connectionId</span>: {
+          <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">fieldName</span>: <span class="hljs-string">&quot;connection_id&quot;</span>,
+        },
+        <span class="hljs-attr">externalId</span>: {
+          <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;string&quot;</span>,
+          <span class="hljs-attr">fieldName</span>: <span class="hljs-string">&quot;external_id&quot;</span>,
+        },
+      },
+      <span class="hljs-attr">indexes</span>: [
+        {
+          <span class="hljs-attr">fields</span>: [<span class="hljs-string">&quot;connectionId&quot;</span>, <span class="hljs-string">&quot;externalId&quot;</span>],
+          <span class="hljs-attr">unique</span>: <span class="hljs-literal">true</span>,
+        },
+      ],
+    },
+  },
+} <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthPlugin</span>;
+</code></pre>
+<p>يمكن أن يتضمّن كل فهرس حتى 16 حقلًا. اضبط <code>unique: true</code> عندما يجب أن تحدّد كل مجموعة حقول صفًا واحدًا على الأكثر. يجب أن يكون كل حقل في فهرس فريد على مستوى الجدول مطلوبًا حتى يظل التعامل مع القيم الفارغة متسقًا عبر قواعد البيانات. يمكنك أيضًا توفير <code>name</code> على مستوى المخطط بطول يصل إلى 63 بايت بترميز UTF-8 للتحكم في اسم الفهرس في قاعدة البيانات. يجب أن تبدأ الأسماء بحرف أو شرطة سفلية وأن تحتوي فقط على أحرف وأرقام وشرطات سفلية. وتُقارَن الأسماء دون مراعاة حالة الأحرف ولا يمكن أن تتعارض مع جدول أو فهرس آخر. يتضمّن CLI الفهارس على مستوى الجدول في ترحيلات SQL ومخططات Drizzle أو Prisma المُولَّدة. وينشئها محوّل MongoDB قبل أول كتابة مفهرسة إلى المجموعة.</p>
+<p><code>references</code>: ما إذا كان الحقل مرجعًا إلى جدول آخر. (اختياري) ويأخذ كائنًا بالخصائص التالية:</p>
+<ul>
+<li><code>model</code>: اسم الجدول المراد الإشارة إليه.</li>
+<li><code>field</code>: اسم الحقل المراد الإشارة إليه.</li>
+<li><code>onDelete</code>: الإجراء الذي يُتَّخذ عند حذف السجل المُشار إليه. (القيمة الافتراضية: <code>cascade</code>)</li>
+</ul>
+<p><strong>خصائص مخطط أخرى</strong></p>
+<p><code>disableMigration</code>: ما إذا كان يجب عدم ترحيل الجدول. (القيمة الافتراضية: <code>false</code>)</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterAuthPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">myPlugin</span> = (<span class="hljs-params"><span class="hljs-attr">opts</span>: <span class="hljs-title class_">PluginOptions</span></span>) =&gt; {
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-plugin&quot;</span>,
+        <span class="hljs-attr">schema</span>: {
+            <span class="hljs-attr">rateLimit</span>: {
+                <span class="hljs-attr">fields</span>: {
+                    <span class="hljs-attr">key</span>: {
+                        <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;string&quot;</span>,
+                    },
+                },
+                <span class="hljs-attr">disableMigration</span>: opts.<span class="hljs-property">storage</span>.<span class="hljs-property">provider</span> !== <span class="hljs-string">&quot;database&quot;</span>, <span class="hljs-comment">// [!code highlight]</span>
+            },
+        },
+    } <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthPlugin</span>
+}
+</code></pre>
+<p>إذا أضفت حقولًا إضافية إلى جدول <code>user</code> أو <code>session</code>، فسيُستنتج الأنواع تلقائيًا في نداءات <code>getSession</code> و<code>signUpEmail</code>.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterAuthPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">myPlugin</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-plugin&quot;</span>,
+        <span class="hljs-attr">schema</span>: {
+            <span class="hljs-attr">user</span>: {
+                <span class="hljs-attr">fields</span>: {
+                    <span class="hljs-attr">age</span>: {
+                        <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;number&quot;</span>,
+                    },
+                },
+            },
+        },
+    } <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthPlugin</span>
+}
+</code></pre>
+<p>سيؤدي هذا إلى إضافة حقل <code>age</code> إلى جدول <code>user</code>، وستضمّن جميع نقاط النهاية التي تُعيد <code>user</code> حقل <code>age</code> وسيستنتجه typescript بشكل صحيح.</p>
+<div class="callout callout--note">
+<p><strong>ملاحظة</strong></p>
+<p>لا تخزّن معلومات حساسة في جدول <code>user</code> أو <code>session</code>. أنشئ جدولًا جديدًا إذا كنت بحاجة إلى تخزين معلومات حساسة.</p>
+</div>
+<h3 id="الخطافات">الخطافات</h3>
+<p>تُستخدم الخطافات لتشغيل شيفرة قبل تنفيذ إجراء أو بعده، سواء من عميل أو مباشرةً على الخادم. يمكنك إضافة خطافات إلى الخادم بتمرير كائن <code>hooks</code> ينبغي أن يحتوي على خاصيتَي <code>before</code> و<code>after</code>.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { createAuthMiddleware } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth/api&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">myPlugin</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-plugin&quot;</span>,
+        <span class="hljs-attr">hooks</span>: {
+            <span class="hljs-attr">before</span>: [{
+                    <span class="hljs-attr">matcher</span>: <span class="hljs-function">(<span class="hljs-params">context</span>) =&gt;</span> {
+                        <span class="hljs-keyword">return</span> context.<span class="hljs-property">headers</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;x-my-header&quot;</span>) === <span class="hljs-string">&quot;my-value&quot;</span>
+                    },
+                    <span class="hljs-attr">handler</span>: <span class="hljs-title function_">createAuthMiddleware</span>(<span class="hljs-title function_">async</span> (ctx) =&gt; {
+                        <span class="hljs-comment">// do something before the request</span>
+                        <span class="hljs-keyword">return</span>  {
+                            <span class="hljs-attr">context</span>: ctx <span class="hljs-comment">// if you want to modify the context</span>
+                        }
+                    })
+                }],
+            <span class="hljs-attr">after</span>: [{
+                <span class="hljs-attr">matcher</span>: <span class="hljs-function">(<span class="hljs-params">context</span>) =&gt;</span> {
+                    <span class="hljs-keyword">return</span> context.<span class="hljs-property">path</span> === <span class="hljs-string">&quot;/sign-up/email&quot;</span>
+                },
+                <span class="hljs-attr">handler</span>: <span class="hljs-title function_">createAuthMiddleware</span>(<span class="hljs-title function_">async</span> (ctx) =&gt; {
+                    <span class="hljs-keyword">return</span> ctx.<span class="hljs-title function_">json</span>({
+                        <span class="hljs-attr">message</span>: <span class="hljs-string">&quot;Hello World&quot;</span>
+                    }) <span class="hljs-comment">// if you want to modify the response</span>
+                })
+            }]
+        }
+    } <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthPlugin</span>
+}
+</code></pre>
+<h3 id="الوسيطات">الوسيطات</h3>
+<p>يمكنك إضافة وسيطات إلى الخادم بتمرير مصفوفة <code>middlewares</code>. ينبغي أن تحتوي هذه المصفوفة على كائنات وسيطة، لكل منها خاصيتا <code>path</code> و<code>middleware</code>. وعلى عكس الخطافات، لا تعمل الوسيطة إلا على طلبات <code>api</code> القادمة من عميل. وإذا استُدعيت نقطة النهاية مباشرةً، فلن تعمل الوسيطة.</p>
+<p>يمكن أن يكون <code>path</code> إما نصًا أو مُطابِق مسار، باستخدام نظام مطابقة المسارات نفسه المستخدم في <code>better-call</code>.</p>
+<p>إذا رميت <code>APIError</code> من الوسيطة أو أعدت كائن <code>Response</code>، فسيُوقف الطلب وستُرسل الاستجابة إلى العميل.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterAuthPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+<span class="hljs-keyword">import</span> { createAuthMiddleware } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth/api&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">myPlugin</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-plugin&quot;</span>,
+        <span class="hljs-attr">middlewares</span>: [
+            {
+                <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;/my-plugin/hello-world&quot;</span>,
+                <span class="hljs-attr">middleware</span>: <span class="hljs-title function_">createAuthMiddleware</span>(<span class="hljs-title function_">async</span>(ctx) =&gt; {
+                    <span class="hljs-comment">// do something</span>
+                })
+            }
+        ]
+    } <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthPlugin</span>
+}
+</code></pre>
+<h3 id="عند-الطلب-وعند-الاستجابة">عند الطلب وعند الاستجابة</h3>
+<p>إضافةً إلى الوسيطات، يمكنك أيضًا الارتباط مباشرةً قبل إجراء الطلب ومباشرةً بعد إرجاع الاستجابة. ويكون هذا مفيدًا غالبًا إذا أردت تنفيذ شيء يؤثر على جميع الطلبات أو الاستجابات.</p>
+<h4>عند الطلب</h4>
+<p>تُستدعى الدالة <code>onRequest</code> مباشرةً قبل إجراء الطلب. وتأخذ معاملين: كائن <code>request</code> و<code>context</code>.</p>
+<p>وإليك كيف يعمل:</p>
+<ul>
+<li><strong>المتابعة كالمعتاد</strong>: إذا لم تُعِد أي شيء، فسيستمر الطلب كما هو معتاد.</li>
+<li><strong>مقاطعة الطلب</strong>: لإيقاف الطلب وإرسال استجابة، أعد كائنًا يحتوي على خاصية <code>response</code> تضم كائن <code>Response</code>.</li>
+<li><strong>تعديل الطلب</strong>: يمكنك أيضًا إعادة كائن <code>request</code> معدّل لتغيير الطلب قبل إرساله.</li>
+</ul>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterAuthPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">myPlugin</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">return</span>  {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-plugin&quot;</span>,
+        <span class="hljs-attr">onRequest</span>: <span class="hljs-title function_">async</span> (request, context) =&gt; {
+            <span class="hljs-comment">// do something</span>
+        },
+    } <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthPlugin</span>
+}
+</code></pre>
+<h4>عند الاستجابة</h4>
+<p>تُنفَّذ الدالة <code>onResponse</code> فور إرجاع الاستجابة. وتأخذ معاملين: كائن <code>response</code> و<code>context</code>.</p>
+<p>وإليك كيفية استخدامها:</p>
+<ul>
+<li><strong>تعديل الاستجابة</strong>: يمكنك إعادة كائن استجابة معدّل لتغيير الاستجابة قبل إرسالها إلى العميل.</li>
+<li><strong>المتابعة بشكل طبيعي</strong>: إذا لم تُعِد أي شيء، فستُرسل الاستجابة كما هي.</li>
+</ul>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterAuthPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">myPlugin</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-plugin&quot;</span>,
+        <span class="hljs-attr">onResponse</span>: <span class="hljs-title function_">async</span> (response, context) =&gt; {
+            <span class="hljs-comment">// do something</span>
+        },
+    } <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthPlugin</span>
+}
+</code></pre>
+<h3 id="حد-المعدل">حد المعدل</h3>
+<p>يمكنك تعريف قواعد مخصصة لحد المعدل لإضافتك بتمرير مصفوفة <code>rateLimit</code>. وينبغي أن تحتوي مصفوفة حد المعدل على مصفوفة من كائنات حد المعدل.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterAuthPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">myPlugin</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-plugin&quot;</span>,
+        <span class="hljs-attr">rateLimit</span>: [
+            {
+                <span class="hljs-attr">pathMatcher</span>: <span class="hljs-function">(<span class="hljs-params">path</span>) =&gt;</span> {
+                    <span class="hljs-keyword">return</span> path === <span class="hljs-string">&quot;/my-plugin/hello-world&quot;</span>
+                },
+                <span class="hljs-attr">limit</span>: <span class="hljs-number">10</span>,
+                <span class="hljs-attr">window</span>: <span class="hljs-number">60</span>,
+            }
+        ]
+    } <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthPlugin</span>
+}
+</code></pre>
+<h3 id="الأصول-الموثوقة">الأصول الموثوقة</h3>
+<p>إذا كنت تبني إضافات أو نقاط نهاية مخصصة، يمكنك استخدام الدالة <code>isTrustedOrigin()</code> المتاحة على سياق المصادقة للتحقق من عناوين URL وفقًا لإعداد الأصول الموثوقة لديك.
+يضمن ذلك أن تحترم نقاط النهاية المخصصة لديك إعدادات الأمان نفسها التي تحترمها نقاط النهاية المدمجة في Better Auth.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterAuthPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+<span class="hljs-keyword">import</span> { createAuthEndpoint, <span class="hljs-title class_">APIError</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth/api&quot;</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> z <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;zod&quot;</span>
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">myPlugin</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-plugin&quot;</span>,
+        <span class="hljs-attr">trustedOrigins</span>: [
+            <span class="hljs-string">&quot;http://trusted.com&quot;</span>
+        ],
+        <span class="hljs-attr">endpoints</span>: {
+            <span class="hljs-attr">getTrustedHelloWorld</span>: <span class="hljs-title function_">createAuthEndpoint</span>(<span class="hljs-string">&quot;/my-plugin/hello-world&quot;</span>, {
+                <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;GET&quot;</span>,
+                <span class="hljs-attr">query</span>: z.<span class="hljs-title function_">object</span>({
+                    <span class="hljs-attr">url</span>: z.<span class="hljs-title function_">string</span>()
+                }),
+            }, <span class="hljs-title function_">async</span> (ctx) =&gt; {
+                <span class="hljs-comment">// The allowRelativePaths option can be used to either allow or disallow relative paths</span>
+                <span class="hljs-keyword">if</span> (!ctx.<span class="hljs-property">context</span>.<span class="hljs-title function_">isTrustedOrigin</span>(ctx.<span class="hljs-property">query</span>.<span class="hljs-property">url</span>, { <span class="hljs-attr">allowRelativePaths</span>: <span class="hljs-literal">false</span> })) {
+                    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">APIError</span>(<span class="hljs-string">&quot;FORBIDDEN&quot;</span>, {
+                        <span class="hljs-attr">message</span>: <span class="hljs-string">&quot;origin is not trusted.&quot;</span>
+                    });
+                }
+
+                <span class="hljs-keyword">return</span> ctx.<span class="hljs-title function_">json</span>({
+                    <span class="hljs-attr">message</span>: <span class="hljs-string">&quot;Hello World&quot;</span>
+                })
+            })
+        }
+    } <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthPlugin</span>
+}
+</code></pre>
+<p>راجع توثيق <a href="https://better-auth.com/docs/reference/security#trusted-origins">الأصول الموثوقة والأمان</a> لمزيد من المعلومات.</p>
+<h3 id="دوال-مساعدة-لإضافات-الخادم">دوال مساعدة لإضافات الخادم</h3>
+<p>بعض الدوال المساعدة الإضافية لإنشاء إضافات الخادم.</p>
+<h4><code>getSessionFromCtx</code></h4>
+<p>تتيح لك الحصول على بيانات جلسة العميل بتمرير <code>context</code> الخاص بوسيطة المصادقة.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterAuthPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+<span class="hljs-keyword">import</span> { createAuthMiddleware, getSessionFromCtx } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth/api&quot;</span>;
+
+<span class="hljs-keyword">const</span> myPlugin = {
+    <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-plugin&quot;</span>,
+    <span class="hljs-attr">hooks</span>: {
+        <span class="hljs-attr">before</span>: [{
+                <span class="hljs-attr">matcher</span>: <span class="hljs-function">(<span class="hljs-params">context</span>) =&gt;</span> {
+                    <span class="hljs-keyword">return</span> context.<span class="hljs-property">headers</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;x-my-header&quot;</span>) === <span class="hljs-string">&quot;my-value&quot;</span>
+                },
+                <span class="hljs-attr">handler</span>: <span class="hljs-title function_">createAuthMiddleware</span>(<span class="hljs-title function_">async</span> (ctx) =&gt; {
+                    <span class="hljs-keyword">const</span> session = <span class="hljs-keyword">await</span> <span class="hljs-title function_">getSessionFromCtx</span>(ctx);
+                    <span class="hljs-comment">// do something with the client&#x27;s session.</span>
+
+                    <span class="hljs-keyword">return</span>  {
+                        <span class="hljs-attr">context</span>: ctx
+                    }
+                })
+            }],
+    }
+} <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthPlugin</span>
+</code></pre>
+<h4><code>sessionMiddleware</code></h4>
+<p>وسيطة تتحقق مما إذا كان لدى العميل جلسة صالحة. وإذا كان لدى العميل جلسة صالحة، فستضيف بيانات الجلسة إلى كائن السياق.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterAuthPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+<span class="hljs-keyword">import</span> { createAuthEndpoint, sessionMiddleware } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth/api&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">myPlugin</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-plugin&quot;</span>,
+        <span class="hljs-attr">endpoints</span>: {
+            <span class="hljs-attr">getHelloWorld</span>: <span class="hljs-title function_">createAuthEndpoint</span>(<span class="hljs-string">&quot;/my-plugin/hello-world&quot;</span>, {
+                <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;GET&quot;</span>,
+                <span class="hljs-attr">use</span>: [sessionMiddleware], <span class="hljs-comment">// [!code highlight]</span>
+            }, <span class="hljs-title function_">async</span> (ctx) =&gt; {
+                <span class="hljs-keyword">const</span> session = ctx.<span class="hljs-property">context</span>.<span class="hljs-property">session</span>;
+                <span class="hljs-keyword">return</span> ctx.<span class="hljs-title function_">json</span>({
+                    <span class="hljs-attr">message</span>: <span class="hljs-string">&quot;Hello World&quot;</span>
+                })
+            })
+        }
+    } <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthPlugin</span>
+}
+</code></pre>
+<h4><code>requireResourceOwnership</code></h4>
+<p>وسيطة تُحمّل موردًا بواسطة المعرّف وتتحقق من أنه يخص المستخدم المُصادَق عليه. استخدمها بعد <code>sessionMiddleware</code> لنقاط النهاية التي تتعامل مع نماذج يملكها المستخدم.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterAuthPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> z <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;zod&quot;</span>;
+<span class="hljs-keyword">import</span> {
+    createAuthEndpoint,
+    requireResourceOwnership,
+    sessionMiddleware,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth/api&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">myPlugin</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-plugin&quot;</span>,
+        <span class="hljs-attr">endpoints</span>: {
+            <span class="hljs-attr">deleteApiKey</span>: <span class="hljs-title function_">createAuthEndpoint</span>(<span class="hljs-string">&quot;/my-plugin/delete-api-key&quot;</span>, {
+                <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;POST&quot;</span>,
+                <span class="hljs-attr">body</span>: z.<span class="hljs-title function_">object</span>({
+                    <span class="hljs-attr">id</span>: z.<span class="hljs-title function_">string</span>(),
+                }),
+                <span class="hljs-attr">use</span>: [
+                    sessionMiddleware,
+                    <span class="hljs-title function_">requireResourceOwnership</span>({
+                        <span class="hljs-attr">model</span>: <span class="hljs-string">&quot;apiKey&quot;</span>,
+                        <span class="hljs-attr">idParam</span>: <span class="hljs-string">&quot;id&quot;</span>,
+                        <span class="hljs-attr">idSource</span>: <span class="hljs-string">&quot;body&quot;</span>,
+                    }),
+                ],
+            }, <span class="hljs-title function_">async</span> (ctx) =&gt; {
+                <span class="hljs-keyword">return</span> ctx.<span class="hljs-title function_">json</span>({ <span class="hljs-attr">success</span>: <span class="hljs-literal">true</span> });
+            })
+        }
+    } <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthPlugin</span>
+}
+</code></pre>
+<p>استخدم <code>ownerField</code> إذا كان نموذجك يخزّن المالك تحت اسم حقل مختلف، و<code>notFoundError</code> أو <code>forbiddenError</code> إذا أردت إرجاع رموز أخطاء خاصة بالإضافة.</p>
+<h4><code>requireOrgRole</code></h4>
+<p>وسيطة تتحقق من أن المستخدم المُصادَق عليه عضو في مؤسسة معيّنة، وأن لديه اختياريًا أحد أدوار مجموعة من الأدوار المسموح بها. استخدمها بعد <code>sessionMiddleware</code> لنقاط النهاية المرتبطة بالمؤسسة.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterAuthPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> z <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;zod&quot;</span>;
+<span class="hljs-keyword">import</span> {
+    createAuthEndpoint,
+    requireOrgRole,
+    sessionMiddleware,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth/api&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">myPlugin</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-plugin&quot;</span>,
+        <span class="hljs-attr">endpoints</span>: {
+            <span class="hljs-attr">syncDirectory</span>: <span class="hljs-title function_">createAuthEndpoint</span>(<span class="hljs-string">&quot;/my-plugin/sync-directory&quot;</span>, {
+                <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;POST&quot;</span>,
+                <span class="hljs-attr">body</span>: z.<span class="hljs-title function_">object</span>({
+                    <span class="hljs-attr">organizationId</span>: z.<span class="hljs-title function_">string</span>(),
+                }),
+                <span class="hljs-attr">use</span>: [
+                    sessionMiddleware,
+                    <span class="hljs-title function_">requireOrgRole</span>({
+                        <span class="hljs-attr">orgIdParam</span>: <span class="hljs-string">&quot;organizationId&quot;</span>,
+                        <span class="hljs-attr">orgIdSource</span>: <span class="hljs-string">&quot;body&quot;</span>,
+                        <span class="hljs-attr">allowedRoles</span>: [<span class="hljs-string">&quot;admin&quot;</span>, <span class="hljs-string">&quot;owner&quot;</span>],
+                    }),
+                ],
+            }, <span class="hljs-title function_">async</span> (ctx) =&gt; {
+                <span class="hljs-keyword">return</span> ctx.<span class="hljs-title function_">json</span>({ <span class="hljs-attr">success</span>: <span class="hljs-literal">true</span> });
+            })
+        }
+    } <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthPlugin</span>
+}
+</code></pre>
+<p>إذا حُذفت <code>allowedRoles</code>، فسيُقبل أي عضو في المؤسسة. ويُصرَّح للأعضاء ذوي الأدوار المتعددة عندما يطابق أي من أدوارهم.</p>
+<h2 id="إنشاء-إضافة-عميل">إنشاء إضافة عميل</h2>
+<p>إذا كانت نقاط النهاية لديك تحتاج إلى استدعاء من العميل، فستحتاج أيضًا إلى إنشاء إضافة عميل. يمكن لعملاء Better Auth استنتاج نقاط النهاية من إضافات الخادم. كما يمكنك إضافة منطق إضافي من جهة العميل.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterAuthClientPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth/client&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">myPluginClient</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-plugin&quot;</span>,
+    } <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthClientPlugin</span>
+}
+</code></pre>
+<h3 id="واجهة-نقاط-النهاية">واجهة نقاط النهاية</h3>
+<p>تُستنتج نقاط النهاية من إضافة الخادم بإضافة مفتاح <code>$InferServerPlugin</code> إلى إضافة العميل.</p>
+<p>يستنتج العميل <code>path</code> ككائن ويحوّل kebab-case إلى camelCase. على سبيل المثال، يصبح <code>/my-plugin/hello-world</code> هو <code>myPlugin.helloWorld</code>.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterAuthClientPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth/client&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { myPlugin } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./plugin&quot;</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">myPluginClient</span> = (<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">return</span>  {
+        <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-plugin&quot;</span>,
+        <span class="hljs-attr">$InferServerPlugin</span>: {} <span class="hljs-keyword">as</span> <span class="hljs-title class_">ReturnType</span>&lt;<span class="hljs-keyword">typeof</span> myPlugin&gt;,
+    } <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthClientPlugin</span>
+}
+</code></pre>
+<h3 id="الحصول-على-الإجراءات">الحصول على الإجراءات</h3>
+<p>إذا كنت بحاجة إلى إضافة طرق أو ما شابه إلى العميل، فيمكنك استخدام الدالة <code>getActions</code>. وتُستدعى هذه الدالة مع دالة <code>fetch</code> من العميل.</p>
+<p>تستخدم Better Auth <a href="https://better-fetch.vercel.app">Better fetch</a> لإجراء الطلبات. وBetter Fetch هو غلاف بسيط حول fetch من إنشاء مؤلف Better Auth نفسه.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterAuthClientPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth/client&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { myPlugin } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./plugin&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterFetchOption</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@better-fetch/fetch&quot;</span>;
+
+<span class="hljs-keyword">const</span> myPluginClient = {
+    <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-plugin&quot;</span>,
+    <span class="hljs-attr">$InferServerPlugin</span>: {} <span class="hljs-keyword">as</span> <span class="hljs-title class_">ReturnType</span>&lt;<span class="hljs-keyword">typeof</span> myPlugin&gt;,
+    <span class="hljs-attr">getActions</span>: <span class="hljs-function">(<span class="hljs-params">$fetch</span>) =&gt;</span> {
+        <span class="hljs-keyword">return</span> {
+            <span class="hljs-attr">myCustomAction</span>: <span class="hljs-title function_">async</span> (<span class="hljs-attr">data</span>: {
+                <span class="hljs-attr">foo</span>: <span class="hljs-built_in">string</span>,
+            }, <span class="hljs-attr">fetchOptions</span>?: <span class="hljs-title class_">BetterFetchOption</span>) =&gt; {
+                <span class="hljs-keyword">const</span> res = $fetch(<span class="hljs-string">&quot;/custom/action&quot;</span>, {
+                    <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;POST&quot;</span>,
+                    <span class="hljs-attr">body</span>: {
+                        <span class="hljs-attr">foo</span>: data.<span class="hljs-property">foo</span>
+                    },
+                    ...fetchOptions
+                })
+                <span class="hljs-keyword">return</span> res
+            }
+        }
+    }
+} <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthClientPlugin</span>
+</code></pre>
+<div class="callout callout--note">
+<p><strong>ملاحظة</strong></p>
+<p>كإرشاد عام، تأكد من أن كل دالة تقبل معاملًا واحدًا فقط، مع معامل ثانٍ اختياري هو fetchOptions للسماح للمستخدمين بتمرير خيارات إضافية إلى نداء fetch. وينبغي أن تُعيد الدالة كائنًا يحتوي على مفتاحَي data و error.</p>
+<p>إذا كانت حالتك تتضمن إجراءات تتجاوز نداءات API، فلا تتردد في الخروج عن هذه القاعدة.</p>
+</div>
+<h3 id="الحصول-على-الذرات">الحصول على الذرات</h3>
+<p>هذا مفيد فقط إذا أردت توفير <code>hooks</code> مثل <code>useSession</code>.</p>
+<p>تُستدعى getAtoms مع دالة <code>fetch</code> من better fetch، وينبغي أن تُعيد كائنًا يحتوي على الذرات. وينبغي إنشاء الذرات باستخدام <a href="https://github.com/nanostores/nanostores">nanostores</a>. وستُحلّ الذرات بواسطة خطاف <code>useStore</code> الخاص بكل إطار عمل والموفَّر من nanostores.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { atom } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;nanostores&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterAuthClientPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth/client&quot;</span>;
+
+<span class="hljs-keyword">const</span> myPluginClient = {
+    <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-plugin&quot;</span>,
+    <span class="hljs-attr">$InferServerPlugin</span>: {} <span class="hljs-keyword">as</span> <span class="hljs-title class_">ReturnType</span>&lt;<span class="hljs-keyword">typeof</span> myPlugin&gt;,
+    <span class="hljs-attr">getAtoms</span>: <span class="hljs-function">(<span class="hljs-params">$fetch</span>) =&gt;</span> {
+        <span class="hljs-keyword">const</span> myAtom = atom&lt;<span class="hljs-literal">null</span>&gt;()
+        <span class="hljs-keyword">return</span> {
+            myAtom
+        }
+    }
+} <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthClientPlugin</span>
+</code></pre>
+<p>راجع الإضافات المدمجة للحصول على أمثلة حول كيفية استخدام الذرات بشكل صحيح.</p>
+<h3 id="طرق-المسارات">طرق المسارات</h3>
+<p>بشكل افتراضي، تستخدم المسارات المُستنتجة طريقة <code>GET</code> إذا لم تكن بحاجة إلى جسم، و<code>POST</code> إذا كانت بحاجة إليه. يمكنك تجاوز ذلك بتمرير كائن <code>pathMethods</code>. وينبغي أن يكون المفتاح هو المسار، والقيمة هي الطريقة (&quot;POST&quot; | &quot;GET&quot;).</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">BetterAuthClientPlugin</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth/client&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { myPlugin } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./plugin&quot;</span>;
+
+<span class="hljs-keyword">const</span> myPluginClient = {
+    <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;my-plugin&quot;</span>,
+    <span class="hljs-attr">$InferServerPlugin</span>: {} <span class="hljs-keyword">as</span> <span class="hljs-title class_">ReturnType</span>&lt;<span class="hljs-keyword">typeof</span> myPlugin&gt;,
+    <span class="hljs-attr">pathMethods</span>: {
+        <span class="hljs-string">&quot;/my-plugin/hello-world&quot;</span>: <span class="hljs-string">&quot;POST&quot;</span>
+    }
+} <span class="hljs-keyword">satisfies</span> <span class="hljs-title class_">BetterAuthClientPlugin</span>
+</code></pre>
+<h3 id="إضافات-fetch">إضافات fetch</h3>
+<p>إذا كنت بحاجة إلى استخدام إضافات better fetch، فيمكنك تمريرها إلى مصفوفة <code>fetchPlugins</code>. يمكنك قراءة المزيد عن إضافات better fetch في <a href="https://better-fetch.vercel.app/docs/plugins">توثيق better fetch</a>.</p>
+<h3 id="مستمعو-الذرات">مستمعو الذرات</h3>
+<p>هذا مفيد فقط إذا أردت توفير <code>hooks</code> مثل <code>useSession</code> وأردت الاستماع إلى الذرات وإعادة تقييمها عند تغيّرها.</p>
+<p>يمكنك رؤية كيفية استخدام هذا في الإضافات المدمجة.</p>
+`,c={book:s,chapter:n,chapterTitle:a,slug:t,title:l,headings:e,html:p};export{s as book,n as chapter,a as chapterTitle,c as default,e as headings,p as html,t as slug,l as title};

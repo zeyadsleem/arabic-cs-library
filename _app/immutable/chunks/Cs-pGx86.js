@@ -1,0 +1,52 @@
+const s="hono",n="middleware-builtin",a="الوسائط المدمجة",t="logger",l="برمجية وسيطة للتسجيل",p=[{depth:2,id:"import",text:"Import"},{depth:2,id:"الاستخدام",text:"الاستخدام"},{depth:2,id:"تفاصيل-التسجيل",text:"تفاصيل التسجيل"},{depth:2,id:"printfunc",text:"PrintFunc"},{depth:2,id:"الخيارات",text:"الخيارات"},{depth:3,id:"fn-printfuncstr-string-rest-string",text:"fn: PrintFunc(str: string, ...rest: string[])"},{depth:3,id:"مثال",text:"مثال"}],e=`<p>إنه مُسجِّل بسيط.</p>
+<h2 id="import">Import</h2>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Hono</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;hono&#x27;</span>
+<span class="hljs-keyword">import</span> { logger } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;hono/logger&#x27;</span>
+</code></pre>
+<h2 id="الاستخدام">الاستخدام</h2>
+<pre><code class="language-ts"><span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Hono</span>()
+
+app.<span class="hljs-title function_">use</span>(<span class="hljs-title function_">logger</span>())
+app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">c</span>) =&gt;</span> c.<span class="hljs-title function_">text</span>(<span class="hljs-string">&#x27;Hello Hono!&#x27;</span>))
+</code></pre>
+<h2 id="تفاصيل-التسجيل">تفاصيل التسجيل</h2>
+<p>يسجل وسيط المسجّل (Logger Middleware) التفاصيل التالية لكل طلب:</p>
+<ul>
+<li><strong>الطلب الوارد</strong>: يسجّل أسلوب HTTP ومسار الطلب والطلب الوارد.</li>
+<li><strong>الاستجابة الصادرة</strong>: تسجّل أسلوب HTTP ومسار الطلب ورمز حالة الاستجابة وأوقات الطلب/الاستجابة.</li>
+<li><strong>تلوين رموز الحالة</strong>: رموز حالة الاستجابة ملونة لرؤية أفضل وتحديد سريع لفئات الحالة. تُستخدم ألوان مختلفة لتمثيل فئات رموز الحالة المختلفة.</li>
+<li><strong>الوقت المنقضي (Elapsed Time)</strong>: يُسجل الوقت المستغرق لدورة الطلب/الاستجابة بصيغة مقروءة للبشر، إما بالميلي ثانية (ms) أو بالثواني (s).</li>
+</ul>
+<p>باستخدام وسيط التسجيل (Logger Middleware)، يمكنك بسهولة مراقبة تدفق الطلبات والاستجابات في تطبيق Hono الخاص بك وتحديد أي مشكلات أو اختناقات في الأداء بسرعة.</p>
+<p>يمكنك أيضًا توسيع الوسيط (middleware) أكثر من خلال توفير <code>PrintFunc</code> دالة لسلوك تسجيل مُخصَّص.</p>
+<p>لتعطيل <em>تلوين رموز الحالة</em>، يمكنك تعيين <code>NO_COLOR</code> متغير بيئة. هذه طريقة شائعة لتعطيل رموز الهروب اللونية ANSI (ANSI color escape codes) في مكتبات التسجيل، وهي موصوفة في <a href="https://no-color.org/">https://no-color.org/</a>. لاحظ أن Cloudflare Workers ليس لديها <code>process.env</code> كائن، لذا سيتحوّل افتراضيًا إلى مخرجات سجل نصية عادية.</p>
+<h2 id="printfunc">PrintFunc</h2>
+<p>يقبل وسيط السجل (Logger Middleware) خيارًا اختياريًا <code>PrintFunc</code> كدالة كمعامل. تتيح لك هذه الدالة تخصيص المسجّل (logger) وإضافة سجلات إضافية.</p>
+<h2 id="الخيارات">الخيارات</h2>
+<h3 id="fn-printfuncstr-string-rest-string"><Badge type="info" text="optional" /> <code>fn:</code> <code>PrintFunc(str: string, ...rest: string[])</code></h3>
+<ul>
+<li><code>str</code>: تم تمريره بواسطة المُسجِّل.</li>
+<li><code>...rest</code>: خصائص نصّية إضافية تُطبع إلى الطرفية.</li>
+</ul>
+<h3 id="مثال">مثال</h3>
+<p>إعداد مخصص لـ <code>PrintFunc</code> الدالة إلى برمجية Logger الوسيطة:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title function_">customLogger</span> = (<span class="hljs-params"><span class="hljs-attr">message</span>: <span class="hljs-built_in">string</span>, ...<span class="hljs-attr">rest</span>: <span class="hljs-built_in">string</span>[]</span>) =&gt; {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(message, ...rest)
+}
+
+app.<span class="hljs-title function_">use</span>(<span class="hljs-title function_">logger</span>(customLogger))
+</code></pre>
+<p>إعداد المُسجّل (logger) المخصص في مسار:</p>
+<pre><code class="language-ts">app.<span class="hljs-title function_">post</span>(<span class="hljs-string">&#x27;/blog&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">c</span>) =&gt;</span> {
+  <span class="hljs-comment">// Routing logic</span>
+
+  <span class="hljs-title function_">customLogger</span>(<span class="hljs-string">&#x27;Blog saved:&#x27;</span>, <span class="hljs-string">\`Path: <span class="hljs-subst">\${blog.url}</span>,\`</span>, <span class="hljs-string">\`ID: <span class="hljs-subst">\${blog.id}</span>\`</span>)
+  <span class="hljs-comment">// Output</span>
+  <span class="hljs-comment">// &lt;-- POST /blog</span>
+  <span class="hljs-comment">// Blog saved: Path: /blog/example, ID: 1</span>
+  <span class="hljs-comment">// --&gt; POST /blog 201 93ms</span>
+
+  <span class="hljs-comment">// Return Context</span>
+})
+</code></pre>
+`,o={book:s,chapter:n,chapterTitle:a,slug:t,title:l,headings:p,html:e};export{s as book,n as chapter,a as chapterTitle,o as default,p as headings,e as html,t as slug,l as title};

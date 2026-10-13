@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.-zsMyaJG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BssKYVgh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CAYoF_c7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.qSgLaX1x.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.Bj0DtRZ8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BnKqALA7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C9pJNOTx.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/oG8P1a_L.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.DGACqfYL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CB4eta8j.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="الاستخدام الأساسي — مقدمات"/><!----><title>الاستخدام الأساسي | Better Auth — مصادقة شاملة للـ TypeScript</title>
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/better-auth">Better Auth — مصادقة شاملة للـ TypeScript</a> <span class="reader-bar__chapter">› مقدمات</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 1 من 2">1 / 2</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/better-auth/getting-started/installation">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/better-auth/getting-started/comparison">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3 class="active-chapter">مقدمات</h3> <ul><!--[--><li><a href="../../../../book/better-auth/getting-started/index">مقدمة</a></li><li><a href="../../../../book/better-auth/getting-started/installation">التثبيت</a></li><li><a href="../../../../book/better-auth/getting-started/basic-usage" class="active">الاستخدام الأساسي</a></li><li><a href="../../../../book/better-auth/getting-started/comparison">المقارنة</a></li><!--]--></ul><h3>المفاهيم</h3> <ul><!--[--><li><a href="../../../../book/better-auth/concepts/index">API</a></li><li><a href="../../../../book/better-auth/concepts/cli">CLI</a></li><li><a href="../../../../book/better-auth/concepts/client">العميل</a></li><li><a href="../../../../book/better-auth/concepts/cookies">ملفات تعريف الارتباط</a></li><li><a href="../../../../book/better-auth/concepts/database">قاعدة البيانات</a></li><li><a href="../../../../book/better-auth/concepts/email">البريد الإلكتروني</a></li><li><a href="../../../../book/better-auth/concepts/hooks">الخطافات</a></li><li><a href="../../../../book/better-auth/concepts/oauth">بروتوكول OAuth</a></li><li><a href="../../../../book/better-auth/concepts/plugins">الإضافات</a></li><li><a href="../../../../book/better-auth/concepts/rate-limit">تحديد المعدل</a></li><li><a href="../../../../book/better-auth/concepts/session-management">إدارة الجلسات</a></li><li><a href="../../../../book/better-auth/concepts/typescript">TypeScript</a></li><li><a href="../../../../book/better-auth/concepts/users-accounts">المستخدمون والحسابات</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>الاستخدام الأساسي</h1> <!--[-1--><!--]--> <!--[-1--><div class="reader-content"><!----><h1>الاستخدام الأساسي (/docs/basic-usage)</h1>
+<p>البدء مع Better Auth</p>
+<p>يوفّر Better Auth دعمًا مدمجًا للمصادقة عبر:</p>
+<ul>
+<li><strong>البريد الإلكتروني وكلمة المرور</strong></li>
+<li><strong>مزوّد الدخول الاجتماعي (Google وGitHub وApple وغيرها)</strong></li>
+</ul>
+<p>لكن يمكن أيضًا توسيعه بسهولة باستخدام الإضافات، مثل: <a href="https://better-auth.com/docs/plugins/username">username</a>، و<a href="https://better-auth.com/docs/plugins/magic-link">magic link</a>، و<a href="https://better-auth.com/docs/plugins/passkey">passkey</a>، و<a href="https://better-auth.com/docs/plugins/email-otp">email-otp</a>، وغيرها.</p>
+<h2 id="البريد-الإلكتروني-وكلمة-المرور">البريد الإلكتروني وكلمة المرور</h2>
+<p>لتفعيل المصادقة بالبريد الإلكتروني وكلمة المرور:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-attr">emailAndPassword</span>: {    <span class="hljs-comment">// [!code highlight]</span>
+        <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span> <span class="hljs-comment">// [!code highlight]</span>
+    } <span class="hljs-comment">// [!code highlight]</span>
+})
+</code></pre>
+<h3 id="التسجيل-sign-up">التسجيل (Sign Up)</h3>
+<p>لتسجيل مستخدم جديد، عليك استدعاء طريقة العميل <code>signUp.email</code> مع معلومات المستخدم.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { authClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/auth-client&quot;</span>; <span class="hljs-comment">//import the auth client // [!code highlight]</span>
+
+<span class="hljs-keyword">const</span> { data, error } = <span class="hljs-keyword">await</span> authClient.<span class="hljs-property">signUp</span>.<span class="hljs-title function_">email</span>({
+        email, <span class="hljs-comment">// user email address</span>
+        password, <span class="hljs-comment">// user password -&gt; min 8 characters by default</span>
+        name, <span class="hljs-comment">// user display name</span>
+        image, <span class="hljs-comment">// User image URL (optional)</span>
+        <span class="hljs-attr">callbackURL</span>: <span class="hljs-string">&quot;/dashboard&quot;</span> <span class="hljs-comment">// A URL to redirect to after the user verifies their email (optional)</span>
+    }, {
+        <span class="hljs-attr">onRequest</span>: <span class="hljs-function">(<span class="hljs-params">ctx</span>) =&gt;</span> {
+            <span class="hljs-comment">//show loading</span>
+        },
+        <span class="hljs-attr">onSuccess</span>: <span class="hljs-function">(<span class="hljs-params">ctx</span>) =&gt;</span> {
+            <span class="hljs-comment">//redirect to the dashboard or sign in page</span>
+        },
+        <span class="hljs-attr">onError</span>: <span class="hljs-function">(<span class="hljs-params">ctx</span>) =&gt;</span> {
+            <span class="hljs-comment">// display the error message</span>
+            <span class="hljs-title function_">alert</span>(ctx.<span class="hljs-property">error</span>.<span class="hljs-property">message</span>);
+        },
+});
+</code></pre>
+<p>افتراضيًا، يتم تسجيل دخول المستخدمين تلقائيًا بعد نجاح عملية التسجيل. ولتعطيل هذا السلوك يمكنك ضبط <code>autoSignIn</code> على <code>false</code>.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-attr">emailAndPassword</span>: {
+    	<span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
+    	<span class="hljs-attr">autoSignIn</span>: <span class="hljs-literal">false</span> <span class="hljs-comment">//defaults to true // [!code highlight]</span>
+  },
+})
+</code></pre>
+<h3 id="تسجيل-الدخول-sign-in">تسجيل الدخول (Sign In)</h3>
+<p>لتسجيل دخول مستخدم، يمكنك استخدام الدالة <code>signIn.email</code> التي يوفّرها العميل.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">const</span> { data, error } = <span class="hljs-keyword">await</span> authClient.<span class="hljs-property">signIn</span>.<span class="hljs-title function_">email</span>({
+        <span class="hljs-comment">/**
+         * The user email
+         */</span>
+        email,
+        <span class="hljs-comment">/**
+         * The user password
+         */</span>
+        password,
+        <span class="hljs-comment">/**
+         * A URL to redirect to after the user verifies their email (optional)
+         */</span>
+        <span class="hljs-attr">callbackURL</span>: <span class="hljs-string">&quot;/dashboard&quot;</span>,
+        <span class="hljs-comment">/**
+         * remember the user session after the browser is closed. 
+         * <span class="hljs-doctag">@default</span> <span class="hljs-variable">true</span>
+         */</span>
+        <span class="hljs-attr">rememberMe</span>: <span class="hljs-literal">false</span>
+}, {
+    <span class="hljs-comment">//callbacks</span>
+})
+</code></pre>
+<div class="callout callout--note">
+<p><strong>ملاحظة</strong></p>
+<p>استدعِ دائمًا طرق العميل من جهة العميل. لا تستدعِها من الخادم.</p>
+</div>
+<h3 id="المصادقة-من-جهة-الخادم">المصادقة من جهة الخادم</h3>
+<p>لمصادقة مستخدم على الخادم، يمكنك استخدام طرق <code>auth.api</code>.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { auth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./auth&quot;</span>; <span class="hljs-comment">// path to your Better Auth server instance</span>
+
+<span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> auth.<span class="hljs-property">api</span>.<span class="hljs-title function_">signInEmail</span>({
+    <span class="hljs-attr">body</span>: {
+        email,
+        password
+    },
+    <span class="hljs-attr">asResponse</span>: <span class="hljs-literal">true</span> <span class="hljs-comment">// returns a response object instead of data</span>
+});
+</code></pre>
+<div class="callout callout--note">
+<p><strong>ملاحظة</strong></p>
+<p>إذا تعذّر على الخادم إرجاع كائن استجابة (response object)، فستحتاج إلى تحليل الكوكيز (cookies) وضبطها يدويًا. لكن بالنسبة لأطر العمل مثل Next.js نوفّر <a href="https://better-auth.com/docs/integrations/next#server-action-cookies">إضافة</a> للتعامل مع ذلك تلقائيًا</p>
+</div>
+<h2 id="الدخول-عبر-الشبكات-الاجتماعية">الدخول عبر الشبكات الاجتماعية</h2>
+<p>يدعم Better Auth عدة مزوّدي دخول اجتماعي، من بينهم Google وGitHub وApple وDiscord وغيرهم. لاستخدام مزوّد اجتماعي، عليك تهيئة المزوّدين الذين تحتاجهم في الخيار <code>socialProviders</code> على كائن <code>auth</code> الخاص بك.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-attr">socialProviders</span>: { <span class="hljs-comment">// [!code highlight]</span>
+        <span class="hljs-attr">github</span>: { <span class="hljs-comment">// [!code highlight]</span>
+            <span class="hljs-attr">clientId</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">GITHUB_CLIENT_ID</span>!, <span class="hljs-comment">// [!code highlight]</span>
+            <span class="hljs-attr">clientSecret</span>: process.<span class="hljs-property">env</span>.<span class="hljs-property">GITHUB_CLIENT_SECRET</span>!, <span class="hljs-comment">// [!code highlight]</span>
+        } <span class="hljs-comment">// [!code highlight]</span>
+    }, <span class="hljs-comment">// [!code highlight]</span>
+})
+</code></pre>
+<h3 id="تسجيل-الدخول-عبر-مزودي-الدخول-الاجتماعي">تسجيل الدخول عبر مزوّدي الدخول الاجتماعي</h3>
+<p>لتسجيل الدخول باستخدام مزوّد اجتماعي عليك استدعاء <code>signIn.social</code>. وهو يستقبل كائنًا يحمل الخصائص التالية:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { authClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/auth-client&quot;</span>; <span class="hljs-comment">//import the auth client // [!code highlight]</span>
+
+<span class="hljs-keyword">await</span> authClient.<span class="hljs-property">signIn</span>.<span class="hljs-title function_">social</span>({
+    <span class="hljs-comment">/**
+     * The social provider ID
+     * <span class="hljs-doctag">@example</span> &quot;github&quot;, &quot;google&quot;, &quot;apple&quot;
+     */</span>
+    <span class="hljs-attr">provider</span>: <span class="hljs-string">&quot;github&quot;</span>,
+    <span class="hljs-comment">/**
+     * A URL to redirect after the user authenticates with the provider
+     * <span class="hljs-doctag">@default</span> &quot;/&quot;
+     */</span>
+    <span class="hljs-attr">callbackURL</span>: <span class="hljs-string">&quot;/dashboard&quot;</span>, 
+    <span class="hljs-comment">/**
+     * A URL to redirect if an error occurs during the sign in process
+     */</span>
+    <span class="hljs-attr">errorCallbackURL</span>: <span class="hljs-string">&quot;/error&quot;</span>,
+    <span class="hljs-comment">/**
+     * A URL to redirect if the user is newly registered
+     */</span>
+    <span class="hljs-attr">newUserCallbackURL</span>: <span class="hljs-string">&quot;/welcome&quot;</span>,
+    <span class="hljs-comment">/**
+     * disable the automatic redirect to the provider. 
+     * <span class="hljs-doctag">@default</span> <span class="hljs-variable">false</span>
+     */</span>
+    <span class="hljs-attr">disableRedirect</span>: <span class="hljs-literal">true</span>,
+});
+</code></pre>
+<p>يمكنك أيضًا المصادقة باستخدام <code>idToken</code> أو <code>accessToken</code> من المزوّد الاجتماعي بدلًا من إعادة توجيه المستخدم إلى موقع المزوّد. راجع توثيق مزوّدي الدخول الاجتماعي لمزيد من التفاصيل.</p>
+<h2 id="تسجيل-الخروج">تسجيل الخروج</h2>
+<p>لتسجيل خروج مستخدم، يمكنك استخدام الدالة <code>signOut</code> التي يوفّرها العميل.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">await</span> authClient.<span class="hljs-title function_">signOut</span>();
+</code></pre>
+<p>يمكنك تمرير <code>fetchOptions</code> لإعادة التوجيه عند onSuccess</p>
+<pre><code class="language-ts"><span class="hljs-keyword">await</span> authClient.<span class="hljs-title function_">signOut</span>({
+  <span class="hljs-attr">fetchOptions</span>: {
+    <span class="hljs-attr">onSuccess</span>: <span class="hljs-function">() =&gt;</span> {
+      router.<span class="hljs-title function_">push</span>(<span class="hljs-string">&quot;/login&quot;</span>); <span class="hljs-comment">// redirect to login page</span>
+    },
+  },
+});
+</code></pre>
+<h2 id="الجلسة">الجلسة</h2>
+<p>بمجرد تسجيل دخول المستخدم، سترغب في الوصول إلى جلسة المستخدم. يتيح لك Better Auth الوصول بسهولة إلى بيانات الجلسة من جهتي الخادم والعميل.</p>
+<h3 id="جهة-العميل">جهة العميل</h3>
+<h4>استخدام الجلسة</h4>
+<p>يوفّر Better Auth خطاف <code>useSession</code> للوصول بسهولة إلى بيانات الجلسة من جهة العميل. وقد صُمّم هذا الخطاف باستخدام nanostore ويدعم كل إطار عمل مدعوم والعميل العادي (vanilla client)، مما يضمن انعكاس أي تغييرات على الجلسة (مثل تسجيل الخروج) فورًا في واجهة المستخدم لديك.</p>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { authClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/auth-client&quot;</span> <span class="hljs-comment">// import the auth client // [!code highlight] </span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">User</span>(<span class="hljs-params"></span>){
+
+    <span class="hljs-keyword">const</span> { <span class="hljs-comment">// [!code highlight]</span>
+        <span class="hljs-attr">data</span>: session, <span class="hljs-comment">// [!code highlight]</span>
+        isPending, <span class="hljs-comment">//loading state // [!code highlight]</span>
+        error, <span class="hljs-comment">//error object // [!code highlight]</span>
+        refetch <span class="hljs-comment">//refetch the session</span>
+    } = authClient.<span class="hljs-title function_">useSession</span>() <span class="hljs-comment">// [!code highlight]</span>
+
+    <span class="hljs-keyword">return</span> (
+        <span class="hljs-comment">//...</span>
+    )
+}
+</code></pre>
+<pre><code class="language-vue">&lt;script setup lang=&quot;ts&quot;&gt;
+import { authClient } from &quot;~/lib/auth-client&quot; // [!code highlight]
+
+const session = authClient.useSession() // [!code highlight]
+&lt;/script&gt;
+
+&lt;template&gt;
+    &lt;div&gt;
+        &lt;div&gt;
+            &lt;pre&gt;{{ session.data }}&lt;/pre&gt;
+            &lt;button v-if=&quot;session.data&quot; @click=&quot;authClient.signOut()&quot;&gt;
+                Sign out
+            &lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<pre><code class="language-svelte">&lt;script lang=&quot;ts&quot;&gt;
+import { authClient } from &quot;$lib/auth-client&quot;; // [!code highlight]
+
+const session = authClient.useSession(); // [!code highlight]
+&lt;/script&gt;
+&lt;p&gt;
+    {$session.data?.user.email}
+&lt;/p&gt;
+</code></pre>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { authClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;~/lib/auth-client&quot;</span>; <span class="hljs-comment">//import the auth client</span>
+
+authClient.<span class="hljs-property">useSession</span>.<span class="hljs-title function_">subscribe</span>(<span class="hljs-function">(<span class="hljs-params">value</span>)=&gt;</span>{
+    <span class="hljs-comment">//do something with the session //</span>
+}) 
+</code></pre>
+<pre><code class="language-tsx"><span class="hljs-keyword">import</span> { authClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;~/lib/auth-client&quot;</span>; <span class="hljs-comment">// [!code highlight]</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">Home</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">const</span> session = authClient.<span class="hljs-title function_">useSession</span>() <span class="hljs-comment">// [!code highlight]</span>
+    <span class="hljs-keyword">return</span> (
+        <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>{JSON.stringify(session(), null, 2)}<span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span></span>
+    );
+}
+</code></pre>
+<h4>الحصول على الجلسة</h4>
+<p>إذا كنت تفضّل عدم استخدام الخطاف، يمكنك استخدام الطريقة <code>getSession</code> التي يوفّرها العميل.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { authClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/auth-client&quot;</span> <span class="hljs-comment">// import the auth client // [!code highlight]</span>
+
+<span class="hljs-keyword">const</span> { <span class="hljs-attr">data</span>: session, error } = <span class="hljs-keyword">await</span> authClient.<span class="hljs-title function_">getSession</span>()
+</code></pre>
+<p>يمكنك أيضًا استخدامه مع مكتبات جلب البيانات من جهة العميل مثل <a href="https://tanstack.com/query/latest">TanStack Query</a>.</p>
+<h3 id="جهة-الخادم">جهة الخادم</h3>
+<p>يوفّر الخادم كائن <code>session</code> يمكنك استخدامه للوصول إلى بيانات الجلسة. وهو يتطلّب تمرير كائن ترويسات الطلب (request headers) إلى الطريقة <code>getSession</code>.</p>
+<p><strong>مثال: الاستخدام مع بعض أطر العمل الشائعة</strong></p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { auth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./auth&quot;</span>; <span class="hljs-comment">// path to your Better Auth server instance</span>
+<span class="hljs-keyword">import</span> { headers } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;next/headers&quot;</span>;
+
+<span class="hljs-keyword">const</span> session = <span class="hljs-keyword">await</span> auth.<span class="hljs-property">api</span>.<span class="hljs-title function_">getSession</span>({
+    <span class="hljs-attr">headers</span>: <span class="hljs-keyword">await</span> <span class="hljs-title function_">headers</span>() <span class="hljs-comment">// you need to pass the headers object.</span>
+})
+</code></pre>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { auth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;lib/auth&quot;</span>; <span class="hljs-comment">// path to your Better Auth server instance</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">loader</span>(<span class="hljs-params">{ request }: <span class="hljs-title class_">LoaderFunctionArgs</span></span>) {
+    <span class="hljs-keyword">const</span> session = <span class="hljs-keyword">await</span> auth.<span class="hljs-property">api</span>.<span class="hljs-title function_">getSession</span>({
+        <span class="hljs-attr">headers</span>: request.<span class="hljs-property">headers</span>
+    })
+
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_">json</span>({ session })
+}
+</code></pre>
+<pre><code class="language-astro">---
+import { auth } from &quot;./auth&quot;;
+
+const session = await auth.api.getSession({
+    headers: Astro.request.headers,
+});
+---
+&lt;!-- Your Astro Template --&gt;
+</code></pre>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { auth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./auth&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">load</span>(<span class="hljs-params">{ request }</span>) {
+    <span class="hljs-keyword">const</span> session = <span class="hljs-keyword">await</span> auth.<span class="hljs-property">api</span>.<span class="hljs-title function_">getSession</span>({
+        <span class="hljs-attr">headers</span>: request.<span class="hljs-property">headers</span>
+    })
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-attr">props</span>: {
+            session
+        }
+    }
+}
+</code></pre>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { auth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./auth&quot;</span>;
+
+<span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Hono</span>();
+
+app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;/path&quot;</span>, <span class="hljs-title function_">async</span> (c) =&gt; {
+    <span class="hljs-keyword">const</span> session = <span class="hljs-keyword">await</span> auth.<span class="hljs-property">api</span>.<span class="hljs-title function_">getSession</span>({
+        <span class="hljs-attr">headers</span>: c.<span class="hljs-property">req</span>.<span class="hljs-property">raw</span>.<span class="hljs-property">headers</span>
+    })
+});
+</code></pre>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { auth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;~/utils/auth&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineEventHandler</span>(<span class="hljs-function">(<span class="hljs-params">event</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> session = <span class="hljs-keyword">await</span> auth.<span class="hljs-property">api</span>.<span class="hljs-title function_">getSession</span>({
+        <span class="hljs-attr">headers</span>: event.<span class="hljs-property">headers</span>,
+    })
+});
+</code></pre>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { auth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./auth&quot;</span>;
+<span class="hljs-keyword">import</span> { createAPIFileRoute } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@tanstack/start/api&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">APIRoute</span> = <span class="hljs-title function_">createAPIFileRoute</span>(<span class="hljs-string">&quot;/api/$&quot;</span>)({
+    <span class="hljs-attr">GET</span>: <span class="hljs-title function_">async</span> ({ request }) =&gt; {
+        <span class="hljs-keyword">const</span> session = <span class="hljs-keyword">await</span> auth.<span class="hljs-property">api</span>.<span class="hljs-title function_">getSession</span>({
+            <span class="hljs-attr">headers</span>: request.<span class="hljs-property">headers</span>
+        })
+    },
+});
+</code></pre>
+<div class="callout callout--note">
+<p><strong>ملاحظة</strong></p>
+<p>لمزيد من التفاصيل راجع توثيق <a href="https://better-auth.com/docs/concepts/session-management">session-management</a>.</p>
+</div>
+<h2 id="استخدام-الإضافات">استخدام الإضافات</h2>
+<p>من الميزات الفريدة في Better Auth منظومة الإضافات. فهي تتيح لك إضافة وظائف مصادقة معقّدة ببضعة أسطر قليلة من الشيفرة.</p>
+<p>فيما يلي مثال على كيفية إضافة المصادقة الثنائية باستخدام إضافة العاملين (two factor plugin).</p>
+<h3 id="تهيئة-الخادم">تهيئة الخادم</h3>
+<p>لإضافة إضافة (plugin)، عليك استيرادها وتمريرها إلى الخيار <code>plugins</code> في نسخة auth. على سبيل المثال، لإضافة المصادقة الثنائية يمكنك استخدام الشيفرة التالية:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>
+<span class="hljs-keyword">import</span> { twoFactor } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth/plugins&quot;</span> <span class="hljs-comment">// [!code highlight]</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-comment">//...rest of the options</span>
+    <span class="hljs-attr">plugins</span>: [ <span class="hljs-comment">// [!code highlight]</span>
+        <span class="hljs-title function_">twoFactor</span>() <span class="hljs-comment">// [!code highlight]</span>
+    ] <span class="hljs-comment">// [!code highlight]</span>
+})
+</code></pre>
+<p>الآن ستصبح المسارات والطرق المتعلقة بالعاملين متاحة على الخادم.</p>
+<h3 id="ترحيل-قاعدة-البيانات">ترحيل قاعدة البيانات</h3>
+<p>بعد إضافة الإضافة، ستحتاج إلى إضافة الجداول المطلوبة إلى قاعدة بياناتك. يمكنك فعل ذلك بتشغيل الأمر <code>migrate</code>، أو باستخدام الأمر <code>generate</code> لإنشاء المخطط (schema) والتعامل مع الترحيل يدويًا.</p>
+<p>لإنشاء المخطط:</p>
+<pre><code class="language-bash">npx auth generate
+</code></pre>
+<p>باستخدام الأمر <code>migrate</code>:</p>
+<pre><code class="language-bash">npx auth migrate
+</code></pre>
+<div class="callout callout--note">
+<p><strong>ملاحظة</strong></p>
+<p>إذا كنت تفضّل إضافة المخطط يدويًا، يمكنك الاطّلاع على المخطط المطلوب في توثيق <a href="https://better-auth.com/docs/plugins/2fa#schema">إضافة العاملين</a>.</p>
+</div>
+<h3 id="تهيئة-العميل">تهيئة العميل</h3>
+<p>بعد الانتهاء من الخادم، نحتاج إلى إضافة الإضافة إلى العميل. وللقيام بذلك، عليك استيراد الإضافة وتمريرها إلى الخيار <code>plugins</code> في عميل المصادقة. على سبيل المثال، لإضافة المصادقة الثنائية يمكنك استخدام الشيفرة التالية:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { createAuthClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth/client&quot;</span>;
+<span class="hljs-keyword">import</span> { twoFactorClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth/client/plugins&quot;</span>; <span class="hljs-comment">// [!code highlight]</span>
+
+<span class="hljs-keyword">const</span> authClient = <span class="hljs-title function_">createAuthClient</span>({
+    <span class="hljs-attr">plugins</span>: [ <span class="hljs-comment">// [!code highlight]</span>
+        <span class="hljs-title function_">twoFactorClient</span>({ <span class="hljs-comment">// [!code highlight]</span>
+            <span class="hljs-attr">twoFactorPage</span>: <span class="hljs-string">&quot;/two-factor&quot;</span> <span class="hljs-comment">// the page to redirect if a user needs to verify 2nd factor // [!code highlight]</span>
+        }) <span class="hljs-comment">// [!code highlight]</span>
+    ] <span class="hljs-comment">// [!code highlight]</span>
+})
+</code></pre>
+<p>الآن ستصبح الطرق المتعلقة بالعاملين متاحة على العميل.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { authClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./auth-client&quot;</span>
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">enableTwoFactor</span> = <span class="hljs-keyword">async</span>(<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> authClient.<span class="hljs-property">twoFactor</span>.<span class="hljs-title function_">enable</span>({
+        password <span class="hljs-comment">// the user password is required</span>
+    }) <span class="hljs-comment">// this will enable two factor</span>
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">disableTwoFactor</span> = <span class="hljs-keyword">async</span>(<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> authClient.<span class="hljs-property">twoFactor</span>.<span class="hljs-title function_">disable</span>({
+        password <span class="hljs-comment">// the user password is required</span>
+    }) <span class="hljs-comment">// this will disable two factor</span>
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">signInWith2Factor</span> = <span class="hljs-keyword">async</span>(<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> authClient.<span class="hljs-property">signIn</span>.<span class="hljs-title function_">email</span>({
+        <span class="hljs-comment">//...</span>
+    })
+    <span class="hljs-comment">//if the user has two factor enabled, it will redirect to the two factor page</span>
+}
+
+<span class="hljs-keyword">const</span> <span class="hljs-title function_">verifyTOTP</span> = <span class="hljs-keyword">async</span>(<span class="hljs-params"></span>) =&gt; {
+    <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> authClient.<span class="hljs-property">twoFactor</span>.<span class="hljs-title function_">verifyTOTP</span>({
+        <span class="hljs-attr">code</span>: <span class="hljs-string">&quot;123456&quot;</span>, <span class="hljs-comment">// the code entered by the user </span>
+        <span class="hljs-comment">/**
+         * If the device is trusted, the user won&#x27;t
+         * need to pass 2FA again on the same device
+         */</span>
+        <span class="hljs-attr">trustDevice</span>: <span class="hljs-literal">true</span>
+    })
+}
+</code></pre>
+<p>الخطوة التالية: راجع <a href="https://better-auth.com/docs/plugins/2fa">توثيق إضافة العاملين</a>.</p>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/better-auth/getting-started/installation"><span class="prev-next__label">السابق</span> <span class="prev-next__title">التثبيت</span></a><!--]--> <!--[0--><a href="../../../../book/better-auth/getting-started/comparison"><span class="prev-next__label">التالي</span> <span class="prev-next__title">المقارنة</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1on3o51 = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.-zsMyaJG.js"),
+						import("../../../../_app/immutable/entry/app.qSgLaX1x.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

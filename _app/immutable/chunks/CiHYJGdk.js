@@ -1,0 +1,76 @@
+const e="hono",s="middleware-builtin",a="الوسائط المدمجة",n="cache",t="برمجية وسيطة للتخزين المؤقت",o=[{depth:2,id:"import",text:"Import"},{depth:2,id:"الاستخدام",text:"الاستخدام"},{depth:2,id:"تخزين-طلبات-query-مؤقتا",text:"تخزين طلبات QUERY مؤقتًا"},{depth:2,id:"الخيارات",text:"الخيارات"},{depth:3,id:"cachename-string-c-context-gt-string-promiseltstringgt",text:"cacheName: string | (c: Context) =&gt; string | Promise&lt;string&gt;"},{depth:3,id:"wait-boolean",text:"wait: boolean"},{depth:3,id:"cachecontrol-string",text:"cacheControl: string"},{depth:3,id:"vary-string-string",text:"vary: string | string[]"},{depth:3,id:"keygenerator-c-context-gt-string-promiseltstringgt",text:"keyGenerator: (c: Context) =&gt; string | Promise&lt;string&gt;"},{depth:3,id:"maxquerybodysize-number",text:"maxQueryBodySize: number"},{depth:3,id:"cacheablestatuscodes-number",text:"cacheableStatusCodes: number[]"},{depth:3,id:"oncachenotavailable-reason-string-gt-void-promiseltvoidgt-false",text:"onCacheNotAvailable: ((reason: string) =&gt; void | Promise&lt;void&gt;) | false"}],c=`<p>يستخدم وسيط التخزين المؤقت (Cache) <a href="https://developer.mozilla.org/en-US/docs/Web/API/Cache">Cache API</a>.</p>
+<p>يدعم وسيط Cache حاليًا مشاريع Cloudflare Workers التي تستخدم نطاقات مخصصة، ومشاريع Deno التي تستخدم <a href="https://github.com/denoland/deno/releases/tag/v1.26.0">Deno 1.26+</a>. متاح أيضًا مع Deno Deploy.</p>
+<p>يحترم Cloudflare Workers الـ <code>Cache-Control</code> الترويسة (header) وإرجاع الاستجابات المخزَّنة مؤقتاً. للتفاصيل، راجع <a href="https://developers.cloudflare.com/workers/runtime-apis/cache/">التخزين المؤقت في وثائق Cloudflare</a>. لا يحترم Deno الترويسات، لذا إذا كنت بحاجة إلى تحديث ذاكرة التخزين المؤقت (cache)، ستحتاج إلى تنفيذ آلية خاصة بك.</p>
+<p>انظر <a href="#usage">الاستخدام</a> أدناه للحصول على تعليمات لكل منصة.</p>
+<h2 id="import">Import</h2>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Hono</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;hono&#x27;</span>
+<span class="hljs-keyword">import</span> { cache } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;hono/cache&#x27;</span>
+</code></pre>
+<h2 id="الاستخدام">الاستخدام</h2>
+<pre><code class="language-ts">app.<span class="hljs-title function_">get</span>(
+  <span class="hljs-string">&#x27;*&#x27;</span>,
+  <span class="hljs-title function_">cache</span>({
+    <span class="hljs-attr">cacheName</span>: <span class="hljs-string">&#x27;my-app&#x27;</span>,
+    <span class="hljs-attr">cacheControl</span>: <span class="hljs-string">&#x27;max-age=3600&#x27;</span>,
+  })
+)
+</code></pre>
+<pre><code class="language-ts"><span class="hljs-comment">// Must use \`wait: true\` for the Deno runtime</span>
+app.<span class="hljs-title function_">get</span>(
+  <span class="hljs-string">&#x27;*&#x27;</span>,
+  <span class="hljs-title function_">cache</span>({
+    <span class="hljs-attr">cacheName</span>: <span class="hljs-string">&#x27;my-app&#x27;</span>,
+    <span class="hljs-attr">cacheControl</span>: <span class="hljs-string">&#x27;max-age=3600&#x27;</span>,
+    <span class="hljs-attr">wait</span>: <span class="hljs-literal">true</span>,
+  })
+)
+</code></pre>
+<h2 id="تخزين-طلبات-query-مؤقتا">تخزين طلبات QUERY مؤقتًا</h2>
+<p>يخزّن وسيط التخزين المؤقت أيضًا الاستجابات لـ <a href="https://www.rfc-editor.org/rfc/rfc10008.html">QUERY</a> الطلبات. وفقًا لما تتطلبه RFC 10008، يتضمن مفتاح التخزين المؤقت لطلب QUERY ملخصًا (digest) لمحتوى الطلب وبياناته الوصفية (metadata) الخاصة بالتمثيل، لذا تُخزن الطلبات ذات النصوص المختلفة مؤقتًا بشكل منفصل.</p>
+<p>طلبات QUERY بجسم أكبر من <code>maxQueryBodySize</code> (64 KiB افتراضيًا) تتجاوز الذاكرة المؤقتة (cache).</p>
+<p>لدعم ذلك، تُخزَّن الإدخالات المخزنة مؤقتًا (cached entries) تحت مفتاح داخلي بالصيغة <code>/.hono/cache?__hono_cache_key=...</code> بدلًا من عنوان URL للطلب نفسه. إذا قمت بمسح إدخالات ذاكرة التخزين المؤقت مباشرة عبر Cache API — على سبيل المثال، استدعاء <code>caches.delete()</code> مع عنوان URL الأصلي للطلب — ستحتاج إلى تحديث هذا المنطق. ينطبق هذا على جميع الأساليب، بما في ذلك GET.</p>
+<h2 id="الخيارات">الخيارات</h2>
+<h3 id="cachename-string-c-context-gt-string-promiseltstringgt"><Badge type="danger" text="required" /> cacheName: <code>string</code> | <code>(c: Context) =&gt; string</code> | <code>Promise&lt;string&gt;</code></h3>
+<p>اسم ذاكرة التخزين المؤقت (cache). يمكن استخدامه لتخزين عدة مخابئ بمعرفات مختلفة.</p>
+<h3 id="wait-boolean"><Badge type="info" text="optional" /> wait: <code>boolean</code></h3>
+<p>قيمة منطقية (boolean) تشير إلى ما إذا كان ينبغي لـ Hono انتظار Promise الخاص بـ <code>cache.put</code> الدالة لإكمال التنفيذ قبل المتابعة مع الطلب. <em>مطلوب أن يكون true لبيئة Deno</em>. الافتراضي هو <code>false</code>.</p>
+<h3 id="cachecontrol-string"><Badge type="info" text="optional" /> <code>cacheControl</code>: <code>string</code></h3>
+<p>سلسلة من التوجيهات لـ <code>Cache-Control</code> الترويسة. راجع <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control">وثائق MDN</a> لمزيد من المعلومات. عند عدم توفير هذا الخيار، لا <code>Cache-Control</code> تُضاف الترويسة إلى الطلبات.</p>
+<h3 id="vary-string-string"><Badge type="info" text="optional" /> vary: <code>string</code> | <code>string[]</code></h3>
+<p>يضبط <code>Vary</code> في الاستجابة. إذا كان رأس الاستجابة الأصلي يحتوي بالفعل على <code>Vary</code> الرأس (header)، يتم دمج القيم مع إزالة أي قيم مكررة. وضبط هذا على <code>*</code> سيؤدي إلى خطأ. لمزيد من التفاصيل حول ترويسة Vary وتأثيراتها على استراتيجيات التخزين المؤقت، راجع <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Vary">وثائق MDN</a>.</p>
+<h3 id="keygenerator-c-context-gt-string-promiseltstringgt"><Badge type="info" text="optional" /> <code>keyGenerator</code>: <code>(c: Context) =&gt; string | Promise&lt;string&gt;</code></h3>
+<p>يولّد مفاتيح لكل طلب في <code>cacheName</code> مخزن. يمكن استخدامه لتخزين البيانات مؤقتًا بناءً على معاملات الطلب أو معاملات السياق. الافتراضي هو <code>c.req.url</code>. بالنسبة لطلبات QUERY، يتضمن المفتاح أيضًا ملخصًا (digest) لمحتوى الطلب وبياناته الوصفية (metadata) الخاصة بالتمثيل.</p>
+<h3 id="maxquerybodysize-number"><Badge type="info" text="optional" /> maxQueryBodySize: <code>number</code></h3>
+<p>الحد الأقصى لحجم نص طلب QUERY بالبايت الذي يمكن تخزينه مؤقتًا. طلبات QUERY ذات النص الأكبر تتجاوز ذاكرة التخزين المؤقت. الافتراضي هو <code>65536</code> (64 KiB).</p>
+<h3 id="cacheablestatuscodes-number"><Badge type="info" text="optional" /> cacheableStatusCodes: <code>number[]</code></h3>
+<p>مصفوفة برموز الحالة (status codes) التي ينبغي تخزينها مؤقتاً. الافتراضي هو <code>[200]</code>. استخدم هذا الخيار لتخزين الاستجابات ذات رموز الحالة (status codes) المحددة مؤقتًا في ذاكرة التخزين المؤقت (cache).</p>
+<pre><code class="language-ts">app.<span class="hljs-title function_">get</span>(
+  <span class="hljs-string">&#x27;*&#x27;</span>,
+  <span class="hljs-title function_">cache</span>({
+    <span class="hljs-attr">cacheName</span>: <span class="hljs-string">&#x27;my-app&#x27;</span>,
+    <span class="hljs-attr">cacheControl</span>: <span class="hljs-string">&#x27;max-age=3600&#x27;</span>,
+    <span class="hljs-attr">cacheableStatusCodes</span>: [<span class="hljs-number">200</span>, <span class="hljs-number">404</span>, <span class="hljs-number">412</span>],
+  })
+)
+</code></pre>
+<h3 id="oncachenotavailable-reason-string-gt-void-promiseltvoidgt-false"><Badge type="info" text="optional" /> onCacheNotAvailable: <code>((reason: string) =&gt; void | Promise&lt;void&gt;)</code> | <code>false</code></h3>
+<p>دالة استدعاء رجعي أو <code>false</code> الذي يتحكم في السلوك عندما لا تكون Cache API متاحة في النطاق العام (global scope)، أو عندما لا يمكن لتخزين QUERY المؤقت استخدام Web Crypto. تُستدعى الدالة مع السبب. افتراضيًا، يُسجل السبب باستخدام <code>console.log</code>. يمكنك تقديم دالة مخصصة لتخصيص السلوك، أو ضبطها على <code>false</code> لكتم السجل بالكامل.</p>
+<pre><code class="language-ts"><span class="hljs-comment">// Custom logging</span>
+app.<span class="hljs-title function_">use</span>(
+  <span class="hljs-title function_">cache</span>({
+    <span class="hljs-attr">cacheName</span>: <span class="hljs-string">&#x27;my-app-v1&#x27;</span>,
+    <span class="hljs-attr">onCacheNotAvailable</span>: <span class="hljs-function">() =&gt;</span> {
+      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Custom log: Cache API is not available.&#x27;</span>)
+    },
+  })
+)
+</code></pre>
+<pre><code class="language-ts"><span class="hljs-comment">// Suppress logging</span>
+app.<span class="hljs-title function_">use</span>(
+  <span class="hljs-title function_">cache</span>({
+    <span class="hljs-attr">cacheName</span>: <span class="hljs-string">&#x27;my-app-v1&#x27;</span>,
+    <span class="hljs-attr">onCacheNotAvailable</span>: <span class="hljs-literal">false</span>,
+  })
+)
+</code></pre>
+`,l={book:e,chapter:s,chapterTitle:a,slug:n,title:t,headings:o,html:c};export{e as book,s as chapter,a as chapterTitle,l as default,o as headings,c as html,n as slug,t as title};

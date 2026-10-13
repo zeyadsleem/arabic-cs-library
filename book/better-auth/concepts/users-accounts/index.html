@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.-zsMyaJG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BssKYVgh.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CAYoF_c7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.qSgLaX1x.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.Bj0DtRZ8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BnKqALA7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C9pJNOTx.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/oG8P1a_L.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.DGACqfYL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CB4eta8j.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="المستخدمون والحسابات — المفاهيم"/><!----><title>المستخدمون والحسابات | Better Auth — مصادقة شاملة للـ TypeScript</title>
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/better-auth">Better Auth — مصادقة شاملة للـ TypeScript</a> <span class="reader-bar__chapter">› المفاهيم</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 2 من 2">2 / 2</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/better-auth/concepts/typescript">السابق</a><!--]--> <!--[-1--><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>مقدمات</h3> <ul><!--[--><li><a href="../../../../book/better-auth/getting-started/index">مقدمة</a></li><li><a href="../../../../book/better-auth/getting-started/installation">التثبيت</a></li><li><a href="../../../../book/better-auth/getting-started/basic-usage">الاستخدام الأساسي</a></li><li><a href="../../../../book/better-auth/getting-started/comparison">المقارنة</a></li><!--]--></ul><h3 class="active-chapter">المفاهيم</h3> <ul><!--[--><li><a href="../../../../book/better-auth/concepts/index">API</a></li><li><a href="../../../../book/better-auth/concepts/cli">CLI</a></li><li><a href="../../../../book/better-auth/concepts/client">العميل</a></li><li><a href="../../../../book/better-auth/concepts/cookies">ملفات تعريف الارتباط</a></li><li><a href="../../../../book/better-auth/concepts/database">قاعدة البيانات</a></li><li><a href="../../../../book/better-auth/concepts/email">البريد الإلكتروني</a></li><li><a href="../../../../book/better-auth/concepts/hooks">الخطافات</a></li><li><a href="../../../../book/better-auth/concepts/oauth">بروتوكول OAuth</a></li><li><a href="../../../../book/better-auth/concepts/plugins">الإضافات</a></li><li><a href="../../../../book/better-auth/concepts/rate-limit">تحديد المعدل</a></li><li><a href="../../../../book/better-auth/concepts/session-management">إدارة الجلسات</a></li><li><a href="../../../../book/better-auth/concepts/typescript">TypeScript</a></li><li><a href="../../../../book/better-auth/concepts/users-accounts" class="active">المستخدمون والحسابات</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>المستخدمون والحسابات</h1> <!--[-1--><!--]--> <!--[-1--><div class="reader-content"><!----><h1>المستخدمون والحسابات (/docs/concepts/users-accounts)</h1>
+<p>تعرّف على كيفية إدارة المستخدمين والحسابات، بما في ذلك تحديث معلومات المستخدم، وتغيير عناوين البريد الإلكتروني وكلمات المرور، وحذف المستخدمين مع التحقق، وتشفير الرموز (tokens)، وربط الحسابات وفصلها.</p>
+<p>بالإضافة إلى مصادقة المستخدمين، يوفّر Better Auth أيضًا مجموعة من الطرق لإدارة المستخدمين. يشمل ذلك تحديث معلومات المستخدم، وتغيير كلمات المرور، والمزيد.</p>
+<p>يخزّن جدول المستخدم بيانات المصادقة الخاصة بالمستخدم <a href="https://better-auth.com/docs/concepts/database#user">اضغط هنا لعرض المخطط</a>.</p>
+<p>يمكن توسيع جدول المستخدم باستخدام <a href="https://better-auth.com/docs/concepts/database#extending-core-schema">حقول إضافية</a> أو عبر الإضافات (plugins) لتخزين بيانات إضافية.</p>
+<h2 id="تحديث-المستخدم">تحديث المستخدم</h2>
+<h3 id="تحديث-معلومات-المستخدم">تحديث معلومات المستخدم</h3>
+<p>لتحديث معلومات المستخدم، يمكنك استخدام الدالة <code>updateUser</code> التي يوفّرها العميل (client). تأخذ الدالة <code>updateUser</code> كائنًا (object) يحتوي على الخصائص التالية:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { authClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/auth-client&quot;</span>
+
+<span class="hljs-keyword">await</span> authClient.<span class="hljs-title function_">updateUser</span>({
+    <span class="hljs-attr">image</span>: <span class="hljs-string">&quot;https://example.com/image.jpg&quot;</span>,
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;John Doe&quot;</span>,
+})
+</code></pre>
+<h3 id="تغيير-البريد-الإلكتروني">تغيير البريد الإلكتروني</h3>
+<p>للسماح للمستخدمين بتغيير بريدهم الإلكتروني، فعّل أولًا ميزة <code>changeEmail</code>، وهي معطّلة افتراضيًا. اضبط <code>changeEmail.enabled</code> على <code>true</code>:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+<span class="hljs-keyword">import</span> { sendEmail } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./email&#x27;</span>; <span class="hljs-comment">// your email sending function</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-attr">user</span>: {
+        <span class="hljs-attr">changeEmail</span>: {
+            <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
+        }
+    },
+    <span class="hljs-attr">emailVerification</span>: {
+        <span class="hljs-comment">// Required to send the verification email</span>
+        <span class="hljs-attr">sendVerificationEmail</span>: <span class="hljs-title function_">async</span> ({ user, url, token }) =&gt; {
+            <span class="hljs-built_in">void</span> <span class="hljs-title function_">sendEmail</span>({
+                <span class="hljs-attr">to</span>: user.<span class="hljs-property">email</span>,
+            })
+        }
+    }
+})
+</code></pre>
+<div class="callout callout--note">
+<p><strong>ملاحظة</strong></p>
+<p>تجنّب انتظار (await) إرسال البريد الإلكتروني لمنع هجمات التوقيت (timing attacks). على المنصات بلا خوادم (serverless)، استخدم <code>waitUntil</code> أو ما شابه لضمان إرسال البريد.</p>
+</div>
+<p>بشكل افتراضي، عندما يطلب المستخدم تغيير بريده الإلكتروني، يُرسَل بريد تحقق إلى عنوان البريد <strong>الجديد</strong>.
+لا يُحدَّث البريد الإلكتروني إلا بعد أن يتحقق المستخدم من البريد الجديد.</p>
+<h4>التأكيد عبر البريد الإلكتروني الحالي</h4>
+<p>لمزيد من الأمان، يمكنك مطالبة المستخدمين بتأكيد التغيير عبر بريدهم الإلكتروني <strong>الحالي</strong> قبل
+إرسال بريد التحقق إلى العنوان الجديد. للقيام بذلك، وفّر الدالة <code>sendChangeEmailConfirmation</code>.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+<span class="hljs-keyword">import</span> { sendEmail } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./email&#x27;</span>; <span class="hljs-comment">// your email sending function</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-attr">user</span>: {
+        <span class="hljs-attr">changeEmail</span>: {
+            <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">sendChangeEmailConfirmation</span>: <span class="hljs-title function_">async</span> ({ user, newEmail, url, token }, request) =&gt; { 
+                <span class="hljs-built_in">void</span> <span class="hljs-title function_">sendEmail</span>({
+                    <span class="hljs-attr">to</span>: user.<span class="hljs-property">email</span>, <span class="hljs-comment">// Sent to the CURRENT email</span>
+                    <span class="hljs-attr">subject</span>: <span class="hljs-string">&#x27;Approve email change&#x27;</span>,
+                    <span class="hljs-attr">text</span>: <span class="hljs-string">`Click the link to approve the change to <span class="hljs-subst">${newEmail}</span>: <span class="hljs-subst">${url}</span>`</span>
+                })
+            }
+        }
+    },
+    <span class="hljs-comment">// ...</span>
+})
+</code></pre>
+<h4>التحديث دون تحقق</h4>
+<p>إذا أردت السماح للمستخدمين بتحديث بريدهم الإلكتروني فورًا دون تحقق (فقط إذا كان بريدهم الحالي <strong>غير</strong> مُتحقَّق منه)، يمكنك تفعيل <code>updateEmailWithoutVerification</code>.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-attr">user</span>: {
+        <span class="hljs-attr">changeEmail</span>: {
+            <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">updateEmailWithoutVerification</span>: <span class="hljs-literal">true</span>
+        }
+    }
+})
+</code></pre>
+<div class="callout callout--note">
+<p><strong>ملاحظة</strong></p>
+<p>إذا كانت <code>updateEmailWithoutVerification</code> تساوي false (وهو الافتراضي)، فلن يُحدَّث البريد الإلكتروني حتى يتم التحقق من البريد الجديد، حتى لو كان البريد الحالي غير مُتحقَّق منه.</p>
+</div>
+<h4>الاستخدام من جانب العميل</h4>
+<p>استخدم الدالة <code>changeEmail</code> على العميل لبدء العملية.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { authClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/auth-client&quot;</span>
+
+<span class="hljs-keyword">await</span> authClient.<span class="hljs-title function_">changeEmail</span>({
+    <span class="hljs-attr">newEmail</span>: <span class="hljs-string">&quot;new-email@email.com&quot;</span>,
+    <span class="hljs-attr">callbackURL</span>: <span class="hljs-string">&quot;/dashboard&quot;</span>, <span class="hljs-comment">// to redirect after verification</span>
+});
+</code></pre>
+<h3 id="تغيير-كلمة-المرور">تغيير كلمة المرور</h3>
+<p>لا تُخزَّن كلمة مرور المستخدم في جدول المستخدم. بدلًا من ذلك، تُخزَّن في جدول الحساب. لتغيير كلمة مرور مستخدم، يمكنك استخدام أحد الأساليب التالية:</p>
+<p><strong>نقطة النهاية:</strong> <code>POST /change-password</code></p>
+<h3 id="جانب-العميل">جانب العميل</h3>
+<pre><code class="language-ts"><span class="hljs-keyword">const</span> { data, error } = <span class="hljs-keyword">await</span> authClient.<span class="hljs-title function_">changePassword</span>({
+    <span class="hljs-attr">newPassword</span>: <span class="hljs-string">&quot;newpassword1234&quot;</span>, <span class="hljs-comment">// required, The new password to set</span>
+    <span class="hljs-attr">currentPassword</span>: <span class="hljs-string">&quot;oldpassword1234&quot;</span>, <span class="hljs-comment">// required, The current user password</span>
+    <span class="hljs-attr">revokeOtherSessions</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// When set to true, all other active sessions for this user will be invalidated</span>
+});
+</code></pre>
+<h3 id="جانب-الخادم">جانب الخادم</h3>
+<pre><code class="language-ts"><span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> auth.<span class="hljs-property">api</span>.<span class="hljs-title function_">changePassword</span>({
+    <span class="hljs-attr">body</span>: {
+        <span class="hljs-attr">newPassword</span>: <span class="hljs-string">&quot;newpassword1234&quot;</span>, <span class="hljs-comment">// required, The new password to set</span>
+        <span class="hljs-attr">currentPassword</span>: <span class="hljs-string">&quot;oldpassword1234&quot;</span>, <span class="hljs-comment">// required, The current user password</span>
+        <span class="hljs-attr">revokeOtherSessions</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// When set to true, all other active sessions for this user will be invalidated</span>
+    },
+    <span class="hljs-comment">// This endpoint requires session cookies.</span>
+    <span class="hljs-attr">headers</span>: <span class="hljs-keyword">await</span> <span class="hljs-title function_">headers</span>(),
+});
+</code></pre>
+<h3 id="تعريف-النوع">تعريف النوع</h3>
+<pre><code class="language-ts"><span class="hljs-keyword">type</span> changePassword = {
+    <span class="hljs-comment">/**
+     * The new password to set 
+     */</span>
+    <span class="hljs-attr">newPassword</span>: <span class="hljs-built_in">string</span> = <span class="hljs-string">&quot;newpassword1234&quot;</span>
+    <span class="hljs-comment">/**
+     * The current user password 
+     */</span>
+    <span class="hljs-attr">currentPassword</span>: <span class="hljs-built_in">string</span> = <span class="hljs-string">&quot;oldpassword1234&quot;</span>
+    <span class="hljs-comment">/**
+     * When set to true, all other active sessions for this user will be invalidated
+     */</span>
+    <span class="hljs-attr">revokeOtherSessions</span>?: <span class="hljs-built_in">boolean</span> = <span class="hljs-literal">true</span>
+}
+</code></pre>
+<h3 id="تعيين-كلمة-المرور">تعيين كلمة المرور</h3>
+<p>إذا سُجّل مستخدم باستخدام OAuth أو مزوّدين آخرين، فلن يكون لديه كلمة مرور أو حساب بيانات اعتماد. في هذه الحالة، يمكنك استخدام إجراء <code>setPassword</code> لتعيين كلمة مرور للمستخدم. لأسباب أمنية، لا يمكن استدعاء هذه الدالة إلا من الخادم. نوصي بجعل المستخدمين يمرّون عبر تدفق &quot;نسيت كلمة المرور&quot; لتعيين كلمة مرور لحسابهم.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { auth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/auth&quot;</span>
+
+<span class="hljs-keyword">await</span> auth.<span class="hljs-property">api</span>.<span class="hljs-title function_">setPassword</span>({
+    <span class="hljs-attr">body</span>: {
+        <span class="hljs-attr">newPassword</span>: <span class="hljs-string">&quot;new-password&quot;</span>,
+    },
+    <span class="hljs-attr">headers</span>: <span class="hljs-keyword">await</span> <span class="hljs-title function_">headers</span>() <span class="hljs-comment">// headers containing the user&#x27;s session token</span>
+});
+</code></pre>
+<h3 id="التحقق-من-كلمة-المرور">التحقق من كلمة المرور</h3>
+<p>تتيح لك الدالة <code>verifyPassword</code> التحقق من كلمة المرور الحالية للمستخدم. هذا مفيد لتأكيد هوية المستخدم قبل تنفيذ عمليات حساسة مثل تحديث إعدادات الأمان. لا يمكن استدعاء هذه الدالة إلا من الخادم.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { auth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/auth&quot;</span>
+
+<span class="hljs-keyword">await</span> auth.<span class="hljs-property">api</span>.<span class="hljs-title function_">verifyPassword</span>({
+    <span class="hljs-attr">body</span>: {
+        <span class="hljs-attr">password</span>: <span class="hljs-string">&quot;user-password&quot;</span> <span class="hljs-comment">// required</span>
+    },
+    <span class="hljs-attr">headers</span>: <span class="hljs-keyword">await</span> <span class="hljs-title function_">headers</span>() <span class="hljs-comment">// headers containing the user&#x27;s session token</span>
+});
+</code></pre>
+<div class="callout callout--note">
+<p><strong>ملاحظة</strong></p>
+<p>بالنسبة إلى مستخدمي OAuth الذين لا يملكون كلمات مرور، فكّر بدلًا من ذلك في استخدام التحقق عبر البريد الإلكتروني أو فحوصات الجلسة الحديثة (fresh session) للعمليات الحساسة.</p>
+</div>
+<h2 id="حذف-المستخدم">حذف المستخدم</h2>
+<p>يوفّر Better Auth أداة لحذف مستخدم نهائيًا من قاعدة بياناتك. وهي معطّلة افتراضيًا، لكن يمكنك تفعيلها بسهولة بتمرير <code>enabled:true</code></p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-comment">//...other config</span>
+    <span class="hljs-attr">user</span>: {
+        <span class="hljs-attr">deleteUser</span>: { <span class="hljs-comment">// [!code highlight]</span>
+            <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span> <span class="hljs-comment">// [!code highlight]</span>
+        } <span class="hljs-comment">// [!code highlight]</span>
+    }
+})
+</code></pre>
+<p>بمجرد التفعيل، يمكنك استدعاء <code>authClient.deleteUser</code> لحذف بيانات المستخدم نهائيًا من قاعدة بياناتك.</p>
+<h3 id="إضافة-التحقق-قبل-الحذف">إضافة التحقق قبل الحذف</h3>
+<p>لمزيد من الأمان، سترغب على الأرجح في تأكيد نية المستخدم قبل حذف حسابه. من الأساليب الشائعة إرسال بريد تحقق. يوفّر Better Auth أداة <code>sendDeleteAccountVerification</code> لهذا الغرض.
+وهذا مطلوب بشكل خاص إذا كان لديك إعداد OAuth وتريد تمكين المستخدمين من حذف حساباتهم دون إجبارهم على تسجيل الدخول مجددًا للحصول على جلسة حديثة.</p>
+<p>إليك كيفية إعداد ذلك:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-attr">user</span>: {
+        <span class="hljs-attr">deleteUser</span>: {
+            <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">sendDeleteAccountVerification</span>: <span class="hljs-title function_">async</span> (
+                {
+                    user,   <span class="hljs-comment">// The user object</span>
+                    url, <span class="hljs-comment">// The auto-generated URL for deletion</span>
+                    token  <span class="hljs-comment">// The verification token  (can be used to generate custom URL)</span>
+                },
+                request  <span class="hljs-comment">// The original request object (optional)</span>
+            ) =&gt; {
+                <span class="hljs-comment">// Your email sending logic here</span>
+                <span class="hljs-comment">// Example: sendEmail(data.user.email, &quot;Verify Deletion&quot;, data.url);</span>
+            },
+        },
+    },
+});
+</code></pre>
+<p><strong>كيف يعمل التحقق عبر الاستدعاء الراجع (callback):</strong></p>
+<ul>
+<li><strong>عنوان URL للاستدعاء الراجع</strong>: عنوان URL المقدَّم في <code>sendDeleteAccountVerification</code> هو رابط مُولَّد مسبقًا يحذف بيانات المستخدم عند الوصول إليه.</li>
+</ul>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { authClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/auth-client&quot;</span>
+
+<span class="hljs-keyword">await</span> authClient.<span class="hljs-title function_">deleteUser</span>({
+    <span class="hljs-attr">callbackURL</span>: <span class="hljs-string">&quot;/goodbye&quot;</span> <span class="hljs-comment">// you can provide a callback URL to redirect after deletion</span>
+});
+</code></pre>
+<ul>
+<li><strong>فحص المصادقة</strong>: يجب أن يكون المستخدم مسجّلًا في الحساب الذي يحاول حذفه.
+إذا لم يكن مسجّلًا، ستفشل عملية الحذف.</li>
+</ul>
+<p>إذا أرسلت عنوان URL مخصصًا، يمكنك استخدام طريقة <code>deleteUser</code> مع الرمز (token) لحذف المستخدم.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { authClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/auth-client&quot;</span>
+
+<span class="hljs-keyword">await</span> authClient.<span class="hljs-title function_">deleteUser</span>({
+    token
+});
+</code></pre>
+<h3 id="متطلبات-المصادقة">متطلبات المصادقة</h3>
+<p>لحذف مستخدم، يجب أن يستوفي المستخدم أحد المتطلبات التالية:</p>
+<ol>
+<li>كلمة مرور صالحة</li>
+</ol>
+<p>إذا كان لدى المستخدم كلمة مرور، فيمكنه حذف حسابه بتقديم كلمة المرور.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { authClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/auth-client&quot;</span>
+
+<span class="hljs-keyword">await</span> authClient.<span class="hljs-title function_">deleteUser</span>({
+    <span class="hljs-attr">password</span>: <span class="hljs-string">&quot;password&quot;</span>
+});
+</code></pre>
+<ol start="2">
+<li>جلسة حديثة</li>
+</ol>
+<p>يجب أن يمتلك المستخدم رمز جلسة <code>fresh</code>، بمعنى أنه يجب أن يكون قد سجّل الدخول مؤخرًا. يُفحَص هذا إذا لم تُقدَّم كلمة المرور.</p>
+<div class="callout callout--note">
+<p><strong>ملاحظة</strong></p>
+<p>بشكل افتراضي، تُضبط <code>session.freshAge</code> على <code>60 * 60 * 24</code> (يوم واحد). يمكنك تغيير هذه القيمة بتمرير كائن <code>session</code> إلى تكوين <code>auth</code>. إذا ضُبطت على <code>0</code>، يُعطَّل فحص الحداثة. يُوصى بعدم تعطيل هذا الفحص إذا لم تكن تستخدم التحقق عبر البريد الإلكتروني لحذف الحساب.</p>
+</div>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { authClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/auth-client&quot;</span>
+
+<span class="hljs-keyword">await</span> authClient.<span class="hljs-title function_">deleteUser</span>();
+</code></pre>
+<ol start="3">
+<li>التحقق عبر البريد الإلكتروني المفعَّل (مطلوب لمستخدمي OAuth)</li>
+</ol>
+<p>نظرًا لأن مستخدمي OAuth لا يملكون كلمة مرور، نحتاج إلى إرسال بريد تحقق لتأكيد نية المستخدم في حذف حسابه. إذا كنت قد أضفت بالفعل الاستدعاء الراجع <code>sendDeleteAccountVerification</code>، فيمكنك ببساطة استدعاء طريقة <code>deleteUser</code> دون تقديم أي معلومات أخرى.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { authClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/auth-client&quot;</span>
+
+<span class="hljs-keyword">await</span> authClient.<span class="hljs-title function_">deleteUser</span>();
+</code></pre>
+<ol start="4">
+<li>إذا كانت لديك صفحة مخصصة لحذف الحساب وأرسلت عنوان URL ذلك عبر الاستدعاء الراجع <code>sendDeleteAccountVerification</code>.
+فحينئذٍ تحتاج إلى استدعاء طريقة <code>deleteUser</code> مع الرمز لإكمال الحذف.</li>
+</ol>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { authClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/auth-client&quot;</span>
+
+<span class="hljs-keyword">await</span> authClient.<span class="hljs-title function_">deleteUser</span>({
+    token
+});
+</code></pre>
+<h3 id="الاستدعاءات-الراجعة-callbacks">الاستدعاءات الراجعة (Callbacks)</h3>
+<p><strong>validateUserInfo</strong>: بوّابة تحدّد الهويات التي يقبلها Better Auth. تُستدعى قبيل إنشاء مستخدم (<code>create-user</code>) أو ربط حساب مزوّد جديد (<code>link-account</code>)، ولكل طريقة مصادقة (OAuth، وOIDC SSO، وSAML SSO، والبريد الإلكتروني/كلمة المرور، والرابط السحري (magic link)، وOTP عبر البريد الإلكتروني، والمجهول (anonymous)، وSIWE، ورقم الهاتف، والمستخدمين المنشأين من قِبل المشرف، وSCIM)، بما في ذلك الإعدادات بلا حالة (stateless) التي لا تملك قاعدة بيانات دائمة، بحيث تبقى السياسة في مكان واحد بدلًا من كل مزوّد على حدة.</p>
+<p>تُستدعى أيضًا عندما يسجّل مستخدم <strong>OAuth أو SSO</strong> موجود الدخول مجددًا (<code>sign-in</code>)، وهناك تتلقّى البريد الإلكتروني والملف الشخصي <em>الحديثين</em> من المزوّد بدلًا من الصف المخزَّن. يتيح ذلك لسياسة نطاق أو مؤسسة رفض مستخدم تحرّكت هوية مزوّده خارج الحدود المسموح بها (على سبيل المثال، بريد إلكتروني خرج من النطاق المسموح). لا يُعاد التحقق من تسجيلات الدخول العائدة من غير المزوّدين، لأن صفّهم المخزَّن لم يتغيّر منذ أن بوّبته <code>create-user</code>؛ استخدم أدوات الحظر في إضافة المشرف (admin plugin) أو خطاف <code>databaseHooks.session.create.before</code> لحجب هؤلاء.</p>
+<p><code>source.action</code> هو <code>&quot;create-user&quot;</code> أو <code>&quot;link-account&quot;</code> أو <code>&quot;sign-in&quot;</code>، و<code>source.method</code> هو طريقة المصادقة. بالنسبة إلى OAuth، يحمل <code>source.oauth</code> معرّف المزوّد وملفه الشخصي الخام. بالنسبة إلى OIDC وSAML SSO، يحمل <code>source.sso</code> معرّف مزوّد SSO ومطالبات المزوّد الخام أو سمات التأكيد (assertion attributes).</p>
+<p>لا تُرجع شيئًا للسماح بالتزويد. أرجِع كائنًا يحتوي على <code>error</code> لرفضه: ترسل تدفقات المتصفح/إعادة التوجيه الرفض إلى عنوان URL المكوَّن للخطأ، بينما تُرجع التدفقات البرمجية خطأ <code>403</code> من واجهة API. تجنّب وضع تفاصيل حساسة في <code>errorDescription</code> لأنه يُعاد إلى العميل.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-attr">user</span>: {
+        <span class="hljs-attr">validateUserInfo</span>: <span class="hljs-function">(<span class="hljs-params">{ user, source }</span>) =&gt;</span> {
+            <span class="hljs-keyword">if</span> (!user.<span class="hljs-property">email</span>?.<span class="hljs-title function_">endsWith</span>(<span class="hljs-string">&quot;@example.com&quot;</span>)) {
+                <span class="hljs-keyword">return</span> {
+                    <span class="hljs-attr">error</span>: <span class="hljs-string">&quot;email_not_allowed&quot;</span>,
+                    <span class="hljs-attr">errorDescription</span>: <span class="hljs-string">&quot;Use your example.com email to sign in&quot;</span>,
+                };
+            }
+
+            <span class="hljs-keyword">if</span> (
+                source.<span class="hljs-property">oauth</span>?.<span class="hljs-property">providerId</span> === <span class="hljs-string">&quot;company-oauth&quot;</span> &amp;&amp;
+                source.<span class="hljs-property">oauth</span>?.<span class="hljs-property">profile</span>?.<span class="hljs-property">hd</span> !== <span class="hljs-string">&quot;example.com&quot;</span>
+            ) {
+                <span class="hljs-keyword">return</span> {
+                    <span class="hljs-attr">error</span>: <span class="hljs-string">&quot;invalid_organization&quot;</span>,
+                    <span class="hljs-attr">errorDescription</span>: <span class="hljs-string">&quot;Use your company OAuth account&quot;</span>,
+                };
+            }
+        },
+    },
+});
+</code></pre>
+<div class="callout callout--note">
+<p><strong>ملاحظة</strong></p>
+<p><code>validateUserInfo</code> هي بوّابة السياسة عالية المستوى. يظل خطاف <code>databaseHooks.user.create.before</code> الأقل مستوى يعمل بعدها لتشكيل البيانات ويمكنه أيضًا إلغاء الكتابة؛ استخدمه عندما تحتاج إلى تعديل السجل بدلًا من قبول الهوية أو رفضها.</p>
+</div>
+<p><strong>beforeDelete</strong>: يُستدعى هذا الاستدعاء الراجع قبل حذف المستخدم. يمكنك استخدامه لتنفيذ أي تنظيف أو فحوصات إضافية قبل حذف المستخدم.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-attr">user</span>: {
+        <span class="hljs-attr">deleteUser</span>: {
+            <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">beforeDelete</span>: <span class="hljs-title function_">async</span> (user) =&gt; {
+                <span class="hljs-comment">// Perform any cleanup or additional checks here</span>
+            },
+        },
+    },
+});
+</code></pre>
+<p>يمكنك أيضًا رفع <code>APIError</code> لمقاطعة عملية الحذف.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">APIError</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth/api&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-attr">user</span>: {
+        <span class="hljs-attr">deleteUser</span>: {
+            <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">beforeDelete</span>: <span class="hljs-title function_">async</span> (user, request) =&gt; {
+                <span class="hljs-keyword">if</span> (user.<span class="hljs-property">email</span>.<span class="hljs-title function_">includes</span>(<span class="hljs-string">&quot;admin&quot;</span>)) {
+                    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">APIError</span>(<span class="hljs-string">&quot;BAD_REQUEST&quot;</span>, {
+                        <span class="hljs-attr">message</span>: <span class="hljs-string">&quot;Admin accounts can&#x27;t be deleted&quot;</span>,
+                    });
+                }
+            },
+        },
+    },
+});
+</code></pre>
+<p><strong>afterDelete</strong>: يُستدعى هذا الاستدعاء الراجع بعد حذف المستخدم. يمكنك استخدامه لتنفيذ أي تنظيف أو إجراءات إضافية بعد حذف المستخدم.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-attr">user</span>: {
+        <span class="hljs-attr">deleteUser</span>: {
+            <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">afterDelete</span>: <span class="hljs-title function_">async</span> (user, request) =&gt; {
+                <span class="hljs-comment">// Perform any cleanup or additional actions here</span>
+            },
+        },
+    },
+});
+</code></pre>
+<h2 id="الحسابات">الحسابات</h2>
+<p>يدعم Better Auth طرق مصادقة متعددة عبر مزوّدين مثل البريد الإلكتروني وكلمة المرور، وGoogle، أو مزوّد هوية مؤسسي. تُخزَّن كل طريقة مرتبطة بمستخدم كحساب.</p>
+<p>يمتلك الحساب معرّف سجل محلي وهوية مزوّد. يحدّد <code>id</code> سجل حساب Better Auth وهو القيمة التي تُمرَّر كـ<code>accountId</code> إلى واجهات API لإدارة الحسابات. يحدّد الزوج <code>providerId</code> و<code>accountId</code> الحساب الخارجي: يسمّي <code>providerId</code> تكوين المزوّد، و<code>accountId</code> هو المعرّف الثابت الذي أسنده المزوّد. راجع <a href="https://better-auth.com/docs/concepts/database#account">مخطط الحساب</a> للحصول على المجموعة الكاملة من الحقول.</p>
+<h3 id="عرض-حسابات-المستخدم">عرض حسابات المستخدم</h3>
+<p>استخدم <code>listAccounts</code> لاسترداد كل طريقة مصادقة مرتبطة بالمستخدم الحالي. احتفظ بالقيمة <code>id</code> المُرجَعة عندما تحتاج إلى فصل الحساب أو استدعاء واجهة API أخرى خاصة بالحساب.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { authClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/auth-client&quot;</span>
+
+<span class="hljs-keyword">const</span> { <span class="hljs-attr">data</span>: accounts, error } = <span class="hljs-keyword">await</span> authClient.<span class="hljs-title function_">listAccounts</span>();
+
+<span class="hljs-keyword">if</span> (error) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(error.<span class="hljs-property">message</span>);
+}
+
+<span class="hljs-keyword">const</span> googleAccount = accounts?.<span class="hljs-title function_">find</span>(<span class="hljs-function">(<span class="hljs-params">account</span>) =&gt;</span> account.<span class="hljs-property">providerId</span> === <span class="hljs-string">&quot;google&quot;</span>);
+</code></pre>
+<h3 id="تشفير-الرموز">تشفير الرموز</h3>
+<p>لا يشفّر Better Auth الرموز (tokens) افتراضيًا، وهذا مقصود. نريد أن تكون لديك سيطرة كاملة على كيفية التعامل مع التشفير وفك التشفير، بدلًا من تضمين سلوك قد يكون مربكًا أو مقيّدًا. إذا كنت بحاجة إلى تخزين رموز مشفّرة (مثل accessToken أو refreshToken)، يمكنك استخدام databaseHooks لتشفيرها قبل حفظها في قاعدة بياناتك.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-attr">databaseHooks</span>: {
+        <span class="hljs-attr">account</span>: {
+            <span class="hljs-attr">create</span>: {
+                <span class="hljs-title function_">before</span>(<span class="hljs-params">account, context</span>) {
+                    <span class="hljs-keyword">const</span> withEncryptedTokens = { ...account };
+                    <span class="hljs-keyword">if</span> (account.<span class="hljs-property">accessToken</span>) {
+                        <span class="hljs-keyword">const</span> encryptedAccessToken = <span class="hljs-title function_">encrypt</span>(account.<span class="hljs-property">accessToken</span>)  <span class="hljs-comment">// [!code highlight]</span>
+                        withEncryptedTokens.<span class="hljs-property">accessToken</span> = encryptedAccessToken;
+                    }
+                    <span class="hljs-keyword">if</span> (account.<span class="hljs-property">refreshToken</span>) {
+                        <span class="hljs-keyword">const</span> encryptedRefreshToken = <span class="hljs-title function_">encrypt</span>(account.<span class="hljs-property">refreshToken</span>); <span class="hljs-comment">// [!code highlight]</span>
+                        withEncryptedTokens.<span class="hljs-property">refreshToken</span> = encryptedRefreshToken;
+                    }
+                    <span class="hljs-keyword">return</span> {
+                        <span class="hljs-attr">data</span>: withEncryptedTokens
+                    }
+                },
+            }
+        }
+    }
+})
+</code></pre>
+<p>ثم كلما استرجعت الحساب، تأكد من فك تشفير الرموز قبل استخدامها.</p>
+<h3 id="ربط-الحسابات">ربط الحسابات</h3>
+<p>ربط الحسابات <a href="https://www.better-auth.com/docs/reference/options#accountlinking">مفعّل افتراضيًا</a> ويتيح للمستخدمين ربط طرق مصادقة متعددة بحساب واحد. مع Better Auth، يمكن للمستخدمين ربط عمليات تسجيل دخول اجتماعية إضافية أو مزوّدي OAuth بحساباتهم الحالية إذا أكّد المزوّد أن البريد الإلكتروني للمستخدم مُتحقَّق منه.</p>
+<p>إذا كان ربط الحسابات معطّلًا، فلا يمكن ربط أي حسابات، بغض النظر عن المزوّد أو حالة التحقق من البريد الإلكتروني.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-attr">account</span>: {
+        <span class="hljs-attr">accountLinking</span>: {
+            <span class="hljs-attr">enabled</span>: <span class="hljs-literal">false</span>, 
+        }
+    },
+});
+</code></pre>
+<h4>الربط القسري</h4>
+<p>يمكنك تحديد قائمة بـ&quot;المزوّدين الموثوقين&quot;. عندما يسجّل مستخدم الدخول باستخدام مزوّد موثوق، سيُربط حسابه تلقائيًا حتى لو لم يؤكّد المزوّد حالة التحقق من البريد الإلكتروني. استخدم هذا بحذر لأنه قد يزيد من خطر الاستيلاء على الحساب (account takeover).</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-attr">account</span>: {
+        <span class="hljs-attr">accountLinking</span>: {
+            <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">trustedProviders</span>: [<span class="hljs-string">&quot;google&quot;</span>, <span class="hljs-string">&quot;github&quot;</span>]
+        }
+    },
+});
+</code></pre>
+<h4>تعطيل الربط الضمني</h4>
+<p>بشكل افتراضي، عندما يسجّل مستخدم الدخول باستخدام مزوّد OAuth يتطابق بريده الإلكتروني مع مستخدم موجود (وإما أن يكون المزوّد قد تحقق من البريد أو أنه ضمن <code>trustedProviders</code>)، يربط Better Auth حساب OAuth بذلك المستخدم تلقائيًا. اضبط <code>disableImplicitLinking: true</code> لإيقاف ذلك. عند تفعيل هذا الخيار:</p>
+<ul>
+<li>تُرفض تسجيلات الدخول عبر OAuth بالبريد نفسه لمستخدم موجود بخطأ <a href="https://better-auth.com/docs/reference/errors/account_not_linked"><code>account_not_linked</code></a> بدلًا من ربطها بصمت، حتى عندما يكون المزوّد ضمن <code>trustedProviders</code> أو يكون البريد مُتحقَّقًا منه.</li>
+<li>لا يزال بإمكان المستخدمين الجدد (لا يوجد مستخدم موجود بالبريد ذاته) التسجيل عبر OAuth.</li>
+<li>لا يزال بإمكان مستخدم مُصادَق عليه مسبقًا ربط المزوّدين صراحةً عبر <a href="#manually-linking-accounts"><code>linkSocial()</code></a>.</li>
+</ul>
+<p>استخدم هذا عندما تريد أن يؤكّد المستخدمون الربط من صفحة إعدادات بدلًا من الربط الضمني عند تسجيل الدخول.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-attr">account</span>: {
+        <span class="hljs-attr">accountLinking</span>: {
+            <span class="hljs-attr">disableImplicitLinking</span>: <span class="hljs-literal">true</span>,
+        }
+    },
+});
+</code></pre>
+<h4>ربط الحسابات يدويًا</h4>
+<p>يمكن للمستخدمين المسجّلين بالفعل ربط حساباتهم يدويًا بمزوّدي خدمات اجتماعية إضافيين أو بحسابات قائمة على بيانات الاعتماد.</p>
+<ul>
+<li>
+<p><strong>ربط الحسابات الاجتماعية:</strong> استخدم طريقة <code>linkSocial</code> على العميل لربط مزوّد اجتماعي بحساب المستخدم.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { authClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/auth-client&quot;</span>
+
+<span class="hljs-keyword">await</span> authClient.<span class="hljs-title function_">linkSocial</span>({
+    <span class="hljs-attr">provider</span>: <span class="hljs-string">&quot;google&quot;</span>, <span class="hljs-comment">// Provider to link</span>
+    <span class="hljs-attr">callbackURL</span>: <span class="hljs-string">&quot;/callback&quot;</span> <span class="hljs-comment">// Callback URL after linking completes</span>
+});
+</code></pre>
+<p>يمكنك أيضًا طلب نطاقات (scopes) محددة عند ربط حساب اجتماعي، والتي قد تختلف عن النطاقات المستخدمة أثناء المصادقة الأولية:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { authClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/auth-client&quot;</span>
+
+<span class="hljs-keyword">await</span> authClient.<span class="hljs-title function_">linkSocial</span>({
+    <span class="hljs-attr">provider</span>: <span class="hljs-string">&quot;google&quot;</span>,
+    <span class="hljs-attr">callbackURL</span>: <span class="hljs-string">&quot;/callback&quot;</span>,
+    <span class="hljs-attr">scopes</span>: [<span class="hljs-string">&quot;https://www.googleapis.com/auth/drive.readonly&quot;</span>] <span class="hljs-comment">// Request additional scopes</span>
+});
+</code></pre>
+</li>
+</ul>
+<div class="callout callout--note">
+<p><strong>ملاحظة</strong></p>
+<p>تُدمج النطاقات الممنوحة حديثًا في <code>account.scope</code>، لذا تبقى المنح السابقة صالحة عبر التفويض التدريجي (incremental authorization). لا تعدّل إعادةُ المصادقة عند تسجيل الدخول ولا استجابات رموز التحديث (refresh-token) قيمة <code>account.scope</code>.</p>
+</div>
+<p>يمكنك أيضًا ربط الحسابات باستخدام رموز الهوية (ID tokens) مباشرةً، دون إعادة التوجيه إلى تدفق OAuth الخاص بالمزوّد:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { authClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/auth-client&quot;</span>
+
+<span class="hljs-keyword">await</span> authClient.<span class="hljs-title function_">linkSocial</span>({
+    <span class="hljs-attr">provider</span>: <span class="hljs-string">&quot;google&quot;</span>,
+    <span class="hljs-attr">idToken</span>: {
+        <span class="hljs-attr">token</span>: <span class="hljs-string">&quot;id_token_from_provider&quot;</span>,
+        <span class="hljs-attr">nonce</span>: <span class="hljs-string">&quot;nonce_used_for_token&quot;</span>, <span class="hljs-comment">// Optional</span>
+        <span class="hljs-attr">accessToken</span>: <span class="hljs-string">&quot;access_token&quot;</span>, <span class="hljs-comment">// Optional, may be required by some providers</span>
+        <span class="hljs-attr">refreshToken</span>: <span class="hljs-string">&quot;refresh_token&quot;</span> <span class="hljs-comment">// Optional</span>
+    }
+});
+</code></pre>
+<p>هذا مفيد عندما تكون لديك بالفعل رموز صالحة من المزوّد، على سبيل المثال:</p>
+<ul>
+<li>بعد تسجيل الدخول باستخدام SDK أصلي (native)</li>
+<li>عند استخدام تطبيق جوال يتولّى المصادقة</li>
+<li>عند تنفيذ تدفقات OAuth مخصصة</li>
+</ul>
+<p>يجب أن يكون رمز الهوية صالحًا ويجب أن يدعم المزوّد التحقق من رمز الهوية.</p>
+<p>إذا أردت أن يتمكّن مستخدموك من ربط حساب اجتماعي بعنوان بريد إلكتروني مختلف عن المستخدم، أو إذا أردت استخدام مزوّد لا يُرجع عناوين بريد إلكتروني، فستحتاج إلى تفعيل ذلك في إعدادات ربط الحسابات.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-attr">account</span>: {
+        <span class="hljs-attr">accountLinking</span>: {
+            <span class="hljs-attr">allowDifferentEmails</span>: <span class="hljs-literal">true</span>
+        }
+    },
+});
+</code></pre>
+<p>بشكل افتراضي، يترك ربط الحساب ملف المستخدم الشخصي الحالي دون تغيير. فعّل <code>updateUserInfoOnLink</code> لنسخ ملف المزوّد الشخصي إلى المستخدم في كل مرة يُربط فيها حساب. الحقول المتزامنة هي نفسها التي تُحفظ عند التسجيل (<code>name</code>، و<code>image</code>، وأي حقول مسموح بها كمدخلات يضيفها <code>mapProfileToUser</code>). لا يتغيّر <code>email</code> الخاص بالمستخدم و<code>emailVerified</code> أبدًا عند الربط، لذا لا يمكن لربط مزوّد أن يعيد ربط هوية الحساب.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-attr">account</span>: {
+        <span class="hljs-attr">accountLinking</span>: {
+            <span class="hljs-attr">updateUserInfoOnLink</span>: <span class="hljs-literal">true</span>
+        }
+    },
+});
+</code></pre>
+<ul>
+<li>
+<p><strong>ربط الحسابات القائمة على بيانات الاعتماد:</strong> لربط حساب قائم على بيانات الاعتماد (مثل البريد الإلكتروني وكلمة المرور)، يمكن للمستخدمين بدء تدفق &quot;نسيت كلمة المرور&quot;، أو يمكنك استدعاء طريقة <code>setPassword</code> على الخادم.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { auth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/auth&quot;</span>
+
+<span class="hljs-keyword">await</span> auth.<span class="hljs-property">api</span>.<span class="hljs-title function_">setPassword</span>({
+  <span class="hljs-attr">body</span>: {
+      <span class="hljs-attr">newPassword</span>: <span class="hljs-string">&quot;new-password&quot;</span>, <span class="hljs-comment">// required</span>
+  },
+  <span class="hljs-attr">headers</span>: <span class="hljs-keyword">await</span> <span class="hljs-title function_">headers</span>() <span class="hljs-comment">// headers containing the user&#x27;s session token</span>
+});
+</code></pre>
+</li>
+</ul>
+<div class="callout callout--note">
+<p><strong>ملاحظة</strong></p>
+<p>لا يمكن استدعاء <code>setPassword</code> من العميل لأسباب أمنية.</p>
+</div>
+<h3 id="فصل-الحسابات">فصل الحسابات</h3>
+<p>افصل حسابًا بتمرير القيمة <code>id</code> الخاصة بسجل حساب Better Auth، والتي يمكنك الحصول عليها من <code>listAccounts</code>.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { authClient } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@/lib/auth-client&quot;</span>
+
+<span class="hljs-keyword">const</span> { <span class="hljs-attr">data</span>: accounts, error } = <span class="hljs-keyword">await</span> authClient.<span class="hljs-title function_">listAccounts</span>();
+
+<span class="hljs-keyword">if</span> (error) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(error.<span class="hljs-property">message</span>);
+}
+
+<span class="hljs-keyword">const</span> account = accounts?.<span class="hljs-title function_">find</span>(<span class="hljs-function">(<span class="hljs-params">account</span>) =&gt;</span> account.<span class="hljs-property">providerId</span> === <span class="hljs-string">&quot;google&quot;</span>);
+
+<span class="hljs-keyword">if</span> (account) {
+    <span class="hljs-keyword">await</span> authClient.<span class="hljs-title function_">unlinkAccount</span>({
+        <span class="hljs-attr">accountId</span>: account.<span class="hljs-property">id</span>,
+    });
+}
+</code></pre>
+<p>إذا لم يكن الحساب موجودًا أو لم يكن مملوكًا للمستخدم الحالي، يُرجع Better Auth خطأً. كما يمنع Better Auth المستخدم من فصل حسابه الوحيد ما لم تكن <code>allowUnlinkingAll</code> تساوي <code>true</code>.</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { betterAuth } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;better-auth&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> auth = <span class="hljs-title function_">betterAuth</span>({
+    <span class="hljs-attr">account</span>: {
+        <span class="hljs-attr">accountLinking</span>: {
+            <span class="hljs-attr">allowUnlinkingAll</span>: <span class="hljs-literal">true</span>
+        }
+    },
+});
+</code></pre>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/better-auth/concepts/typescript"><span class="prev-next__label">السابق</span> <span class="prev-next__title">TypeScript</span></a><!--]--> <!--[-1--><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1on3o51 = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.-zsMyaJG.js"),
+						import("../../../../_app/immutable/entry/app.qSgLaX1x.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

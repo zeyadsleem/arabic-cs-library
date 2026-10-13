@@ -1,0 +1,198 @@
+const e="hono",n="getting-started",s="مقدمات",o="webassembly-wasi",a="WebAssembly (مع WASI)",c=[{depth:2,id:"1-الإعداد",text:"1. الإعداد"},{depth:2,id:"2-إعداد-واجهة-wit-والتبعيات",text:"2. إعداد واجهة WIT والتبعيات"},{depth:2,id:"3-مرحبا-wasm",text:"3. مرحبًا Wasm"},{depth:2,id:"4-البناء",text:"4. البناء"},{depth:2,id:"5-تشغيل",text:"5. تشغيل"},{depth:2,id:"مزيد-من-المعلومات",text:"مزيد من المعلومات"}],p=`<p><a href="https://webassembly.org/">WebAssembly</a> هي بيئة تشغيل آمنة ومعزولة (sandboxed) ومحمولة تعمل داخل متصفحات الويب وخارجها.</p>
+<p>عمليًا:</p>
+<ul>
+<li>اللغات (مثل JavaScript) <em>تُترجم إلى</em> WebAssembly (<code>.wasm</code> ملفات)</li>
+<li>بيئات تشغيل WebAssembly (مثل <a href="https://wasmtime.dev"><code>wasmtime</code></a> أو <a href="https://github.com/bytecodealliance/jco"><code>jco</code></a>) تتيح <em>تشغيل</em> ملفات WebAssembly الثنائية</li>
+</ul>
+<p>بينما لا يملك WebAssembly الأساسي <em>أي</em> وصول إلى أشياء مثل نظام الملفات المحلي أو المقابس (sockets)، فإن <a href="https://wasi.dev/">WebAssembly System Interface</a>
+تتدخل لتمكين تعريف منصة ضمن أعباء عمل (workloads) WebAssembly.</p>
+<p>هذا يعني أنه <em>مع</em> WASI، يمكن لـ WebAssembly العمل على الملفات والمآخذ (sockets) وغير ذلك الكثير.</p>
+<p>هل تريد إلقاء نظرة على واجهة WASI بنفسك؟ اطّلع على <a href="https://github.com/WebAssembly/wasi-http"><code>wasi:http</code></a></p>
+<p>يعتمد دعم WebAssembly مع WASI في JS على <a href="https://github.com/bytecodealliance/StarlingMonkey">StarlingMonkey</a>، وبفضل التركيز على معايير الويب في
+كلاهما StarlingMonkey و Hono، <strong>يعمل Hono *مباشرة مع النظم البيئية لـ WebAssembly المفعّلة بـ WASI.</strong></p>
+<h2 id="1-الإعداد">1. الإعداد</h2>
+<p>يوفر النظام البيئي JavaScript الخاص بـ WebAssembly أدوات تسهّل البدء في بناء مكونات WebAssembly المفعّلة بـ WASI:</p>
+<ul>
+<li><a href="https://github.com/bytecodealliance/StarlingMonkey">StarlingMonkey</a> هو فرع (fork) من <a href="https://spidermonkey.dev/">SpiderMonkey</a> يُترجم إلى WebAssembly ويتيح للمكونات</li>
+<li><a href="https://github.com/bytecodealliance/componentize-js"><code>componentize-js</code>'</a> يحوّل وحدات JavaScript ES إلى مكونات WebAssembly</li>
+<li><a href="https://github.com/bytecodealliance/jco"><code>jco</code></a> هو أداة متعددة الاستخدامات تبني المكونات، وتولّد الأنواع، وتشغّل المكونات في بيئات مثل Node.js أو المتصفح</li>
+</ul>
+<p>يمتلك WebAssembly نظامًا بيئيًا مفتوحًا ومصدرًا مفتوحًا، حيث تُدار المشاريع الأساسية بشكل أساسي من قبل <a href="https://bytecodealliance.org/">Bytecode Alliance</a> وأعضائه.</p>
+<p>الميزات الجديدة والقضايا وطلبات السحب (pull requests) وأنواع المساهمات الأخرى مرحب بها دائمًا.</p>
+<p>على الرغم من أن قالب البدء (starter) لـ Hono على WebAssembly غير متوفر بعد، يمكنك بدء مشروع Hono على WebAssembly تمامًا مثل أي مشروع آخر:</p>
+<pre><code class="language-sh"><span class="hljs-built_in">mkdir</span> my-app
+<span class="hljs-built_in">cd</span> my-app
+npm init
+npm i hono
+npm i -D @bytecodealliance/jco @bytecodealliance/componentize-js @bytecodealliance/jco-std
+npm i -D rolldown
+</code></pre>
+<pre><code class="language-sh"><span class="hljs-built_in">mkdir</span> my-app
+<span class="hljs-built_in">cd</span> my-app
+npm init
+yarn add hono
+yarn add -D @bytecodealliance/jco @bytecodealliance/componentize-js @bytecodealliance/jco-std
+yarn add -D rolldown
+</code></pre>
+<pre><code class="language-sh"><span class="hljs-built_in">mkdir</span> my-app
+<span class="hljs-built_in">cd</span> my-app
+pnpm init --init-type module
+pnpm add hono
+pnpm add -D @bytecodealliance/jco @bytecodealliance/componentize-js @bytecodealliance/jco-std
+pnpm add -D rolldown
+</code></pre>
+<pre><code class="language-sh"><span class="hljs-built_in">mkdir</span> my-app
+<span class="hljs-built_in">cd</span> my-app
+npm init
+bun add hono
+bun add -D @bytecodealliance/jco @bytecodealliance/componentize-js @bytecodealliance/jco-std
+</code></pre>
+<p>لضمان استخدام مشروعك لوحدات ES، تأكّد من <code>type</code> مضبوط على <code>&quot;module&quot;</code> في <code>package.json</code></p>
+<p>بعد إدخال <code>my-app</code> المجلد، ثبِّت التبعيات، وتهيِّئ TypeScript:</p>
+<pre><code class="language-sh">npm i
+npx tsc --init
+</code></pre>
+<pre><code class="language-sh">yarn
+yarn tsc --init
+</code></pre>
+<pre><code class="language-sh">pnpm i
+pnpm <span class="hljs-built_in">exec</span> tsc --init
+</code></pre>
+<pre><code class="language-sh">bun i
+</code></pre>
+<p>بمجرد أن يكون لديك ملف تهيئة TypeScript أساسي (<code>tsconfig.json</code>)، يُرجى التأكد من أنه يحتوي على الإعدادات التالية:</p>
+<ul>
+<li><code>compilerOptions.module</code> تعيين إلى <code>&quot;nodenext&quot;</code></li>
+</ul>
+<p>منذ <code>componentize-js</code> (و <code>jco</code> الذي يعيد استخدامه) يدعم فقط ملفات JS المفردة،
+التجميع ضروري، لذا <a href="https://rolldown.rs"><code>rolldown</code></a> يمكن استخدامه لإنشاء حزمة (bundle) من ملف واحد.</p>
+<p>إعداد Rolldown (<code>rolldown.config.mjs</code>) كهذا يمكن استخدامه:</p>
+<pre><code class="language-js"><span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;rolldown&#x27;</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">input</span>: <span class="hljs-string">&#x27;src/component.ts&#x27;</span>,
+  <span class="hljs-attr">external</span>: <span class="hljs-regexp">/wasi:.*/</span>,
+  <span class="hljs-attr">output</span>: {
+    <span class="hljs-attr">file</span>: <span class="hljs-string">&#x27;dist/component.js&#x27;</span>,
+    <span class="hljs-attr">format</span>: <span class="hljs-string">&#x27;esm&#x27;</span>,
+  },
+})
+</code></pre>
+<p>لا تتردد في استخدام أي أدوات تجميع (bundlers) أخرى تشعر براحة أكبر معها (<code>rolldown</code>, <code>esbuild</code>, <code>rollup</code>، إلخ)</p>
+<h2 id="2-إعداد-واجهة-wit-والتبعيات">2. إعداد واجهة WIT والتبعيات</h2>
+<p><a href="https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md">WebAssembly Interface Types (WIT)</a> هي لغة تعريف واجهات (Interface Definition Language) تحكم الوظائف التي يستخدمها مكون WebAssembly (&quot;imports&quot;) وما يوفره (&quot;exports&quot;).</p>
+<p>من بين واجهات WIT الموحّدة، <a href="https://github.com/WebAssembly/wasi-http"><code>wasi:http</code></a> مخصص للتعامل مع طلبات HTTP (سواء استقبالها أو إرسالها)، وبما أننا ننوي إنشاء خادم ويب، يجب أن يصرح مكوننا باستخدام <code>wasi:http/incoming-handler</code> في <a href="https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md#wit-worlds">عالم WIT</a> الخاص به:</p>
+<p>أولاً، لنُعِدّ عالم WIT الخاص بالمكوّن في ملف يُسمّى <code>wit/component.wit</code>:</p>
+<pre><code class="language-txt">package example:hono;
+
+world component {
+    export wasi:http/incoming-handler@0.2.6;
+}
+</code></pre>
+<p>ببساطة، يعني ملف WIT أعلاه أن مكوننا &quot;يوفر&quot; وظيفة &quot;استقبال&quot;/&quot;معالجة الطلبات الواردة&quot; لطلبات HTTP.</p>
+<p>الـ <code>wasi:http/incoming-handler</code> تعتمد الواجهة على واجهات WIT المعيارية من المنبع (مواصفات لكيفية تنظيم الطلبات، وما إلى ذلك).</p>
+<p>لسحب واجهات WIT تلك من طرف ثالث (التي يحافظ عليها Bytecode Alliance)، فإن إحدى الأدوات التي يمكننا استخدامها هي <a href="https://github.com/bytecodealliance/wasm-pkg-tools"><code>wkg</code></a>:</p>
+<pre><code class="language-sh">wkg wit fetch
+</code></pre>
+<p>بمجرد <code>wkg</code> انتهى التشغيل، ينبغي أن تجد <code>wit</code> مجلد مملوء بـ <code>deps</code> مجلد بجانب <code>component.wit</code>:</p>
+<pre><code>wit
+├── component.wit
+└── deps
+    ├── wasi-cli-0.2.6
+    │   └── package.wit
+    ├── wasi-clocks-0.2.6
+    │   └── package.wit
+    ├── wasi-http-0.2.6
+    │   └── package.wit
+    ├── wasi-io-0.2.6
+    │   └── package.wit
+    └── wasi-random-0.2.6
+        └── package.wit
+</code></pre>
+<h2 id="3-مرحبا-wasm">3. مرحبًا Wasm</h2>
+<p>لبناء خادم HTTP في WebAssembly، يمكننا الاستفادة من [<code>jco-std</code>][jco-std] مشروع، يحتوي على أدوات مساعدة تجعل التجربة مشابهة جدًا لتجربة Hono القياسية.</p>
+<p>لنحقِّق <code>component</code> مرحبًا بالعالم مع تطبيق Hono أساسي كمكوّن WebAssembly في ملف يُسمى <code>src/component.ts</code>:</p>
+<pre><code class="language-ts"><span class="hljs-keyword">import</span> { <span class="hljs-title class_">Hono</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;hono&#x27;</span>
+<span class="hljs-keyword">import</span> { fire } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@bytecodealliance/jco-std/wasi/0.2.6/http/adapters/hono/server&#x27;</span>
+
+<span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Hono</span>()
+
+app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/hello&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">c</span>) =&gt;</span> {
+  <span class="hljs-keyword">return</span> c.<span class="hljs-title function_">json</span>({ <span class="hljs-attr">message</span>: <span class="hljs-string">&#x27;Hello from WebAssembly!&#x27;</span> })
+})
+
+<span class="hljs-title function_">fire</span>(app)
+
+<span class="hljs-comment">// Although we&#x27;ve called \`fire()\` with wasi HTTP configured for use above,</span>
+<span class="hljs-comment">// we still need to actually export the \`wasi:http/incoming-handler\` interface object,</span>
+<span class="hljs-comment">// as jco and componentize-js will be looking for the ES module export that matches the WASI interface.</span>
+<span class="hljs-keyword">export</span> { incomingHandler } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@bytecodealliance/jco-std/wasi/0.2.6/http/adapters/hono/server&#x27;</span>
+</code></pre>
+<h2 id="4-البناء">4. البناء</h2>
+<p>بما أننا نستخدم Rolldown (وهو مُهيأ للتعامل مع تجميع TypeScript)، يمكننا استخدامه للبناء والتجميع (bundle):</p>
+<pre><code class="language-sh">npx rolldown -c
+</code></pre>
+<pre><code class="language-sh">yarn rolldown -c
+</code></pre>
+<pre><code class="language-sh">pnpm <span class="hljs-built_in">exec</span> rolldown -c
+</code></pre>
+<pre><code class="language-sh">bun build --target=bun --outfile=dist/component.js ./src/component.ts
+</code></pre>
+<p>خطوة التجميع (bundling) ضرورية لأن أدوات النظام البيئي JavaScript الخاص بـ WebAssembly تدعم حاليًا ملف JS واحدًا فقط، ونود تضمين Hono مع المكتبات ذات الصلة.</p>
+<p>بالنسبة للمكونات ذات المتطلبات الأبسط، لا تكون أدوات التجميع (bundlers) ضرورية.</p>
+<p>لبناء مكوّن WebAssembly الخاص بك، استخدم <code>jco</code> (وبشكل غير مباشر <code>componentize-js</code>):</p>
+<pre><code class="language-sh">npx jco componentize -w wit -o dist/component.wasm dist/component.js
+</code></pre>
+<pre><code class="language-sh">yarn jco componentize -w wit -o dist/component.wasm dist/component.js
+</code></pre>
+<pre><code class="language-sh">pnpm <span class="hljs-built_in">exec</span> jco componentize -w wit -o dist/component.wasm dist/component.js
+</code></pre>
+<pre><code class="language-sh">bun run jco componentize -w wit -o dist/component.wasm dist/component.js
+</code></pre>
+<h2 id="5-تشغيل">5. تشغيل</h2>
+<p>لتشغيل خادم Hono WebAssembly HTTP الخاص بك، يمكنك استخدام أي بيئة تشغيل WebAssembly تدعم WASI:</p>
+<ul>
+<li><a href="https://wasmtime.dev"><code>wasmtime</code></a></li>
+<li><code>jco</code> (يعمل في Node.js)</li>
+</ul>
+<p>في هذا الدليل، سنستخدم <code>jco serve</code> لأنه مثبّت بالفعل.</p>
+<p><code>jco serve</code> مخصص للتطوير (development)، ولا يُنصح باستخدامه في بيئة الإنتاج (production).</p>
+<pre><code class="language-sh">npx jco serve dist/component.wasm
+</code></pre>
+<pre><code class="language-sh">yarn jco serve dist/component.wasm
+</code></pre>
+<pre><code class="language-sh">pnpm <span class="hljs-built_in">exec</span> jco serve dist/component.wasm
+</code></pre>
+<pre><code class="language-sh">bun run jco serve dist/component.wasm
+</code></pre>
+<p>ينبغي أن ترى مخرجات كهذه:</p>
+<pre><code>$ npx jco serve dist/component.wasm
+Server listening @ localhost:8000...
+</code></pre>
+<p>إرسال طلب إلى <code>localhost:8000/hello</code> سينتج مخرجات JSON التي حددتها في تطبيق Hono الخاص بك.</p>
+<p>ينبغي أن ترى مخرجات كهذه:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Hello from WebAssembly!&quot;</span> <span class="hljs-punctuation">}</span>
+</code></pre>
+<p><code>jco serve</code> يعمل عن طريق تحويل مكون WebAssembly إلى وحدة نواة (core module) أساسية من WebAssembly، بحيث يمكن تشغيله في أوقات تشغيل مثل Node.js والمتصفح.</p>
+<p>تُشغَّل هذه العملية عادةً عبر <code>jco transpile</code>، وهي الطريقة التي يمكننا من خلالها استخدام محركات JS مثل Node.js والمتصفح (الذي قد يستخدم V8 أو محركات JavaScript أخرى) كأوقات تشغيل لمكونات WebAssembly.</p>
+<p>كيف <code>jco transpile</code> خارج نطاق هذا الدليل، يمكنك قراءة المزيد عنه في <a href="https://bytecodealliance.github.io/jco/">كتاب Jco</a></p>
+<h2 id="مزيد-من-المعلومات">مزيد من المعلومات</h2>
+<p>لمعرفة المزيد حول WASI ومكونات WebAssembly والمزيد، راجع الموارد التالية:</p>
+<ul>
+<li><a href="https://component-model.bytecodealliance.org/">كتاب نموذج مكوّنات BytecodeAlliance</a></li>
+<li><a href="https://github.com/bytecodealliance/jco"><code>jco</code> codebase</a>
+<ul>
+<li><a href="https://github.com/bytecodealliance/jco/tree/main/examples/components"><code>jco</code> مكونات المثال</a> (ولا سيما <a href="https://github.com/bytecodealliance/jco/tree/main/examples/components/http-server-hono">مثال Hono</a>)</li>
+</ul>
+</li>
+<li><a href="https://bytecodealliance.github.io/jco/">Jco book</a></li>
+<li><a href="https://github.com/bytecodealliance/componentize-js"><code>componentize-js</code> codebase</a></li>
+<li><a href="https://github.com/bytecodealliance/StarlingMonkey">StarlingMonkey codebase</a></li>
+</ul>
+<p>للتواصل مع مجتمع WebAssembly بأسئلة أو تعليقات أو مساهمات أو لتسجيل القضايا:</p>
+<ul>
+<li><a href="https://bytecodealliance.zulipchat.com">Bytecode Alliance Zulip</a> (فكّر في النشر في <a href="https://bytecodealliance.zulipchat.com/#narrow/channel/409526-jco">قناة <code>#jco</code></a>)</li>
+<li><a href="https://github.com/bytecodealliance/jco">مستودع <code>Jco</code></a></li>
+<li><a href="https://github.com/bytecodealliance/componentize-js">مستودع componentize-js</a></li>
+</ul>
+`,l={book:e,chapter:n,chapterTitle:s,slug:o,title:a,headings:c,html:p};export{e as book,n as chapter,s as chapterTitle,l as default,c as headings,p as html,o as slug,a as title};
