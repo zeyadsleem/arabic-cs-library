@@ -1,72 +1,44 @@
 ---
-title: "Dynamic Programming and Memoization"
-lang: en
+title: "البرمجة الديناميكية"
+lang: ar
 ---
 
-## 11. Dynamic Programming and Memoization
+## 11. البرمجة الديناميكية والحفظ (memoization)
 
-Dynamic programming and memoization are two closely related techniques based on
-the idea that it is better to avoid computing the same thing twice.
+البرمجة الديناميكية (dynamic programming) والحفظ (memoization) تقنيتان وثيقتا الصلة، تقومان على فكرة أنّ من الأفضل تجنّب حساب الشيء نفسه مرّتين.
 
-### 11.1 Basic Idea
+### 11.1 الفكرة الأساسية
 
-We illustrate the two techniques in the simple example of the Fibonacci sequence.
-Recall that this sequence of integers (Fn) is defined by:
+نوضّح التقنيتين من خلال المثال البسيط لمتتالية فيبوناتشي (Fibonacci). ونتذكّر أنّ هذه المتتالية من الأعداد الصحيحة (Fn) تُعرَّف كما يلي:
 
 $$( { F0 = 0 F1 = 1 ( Fn = Fn-2 + Fn-1 if n \ge 2.$$
 
-It is easy enough to write a recursive function that calculates Fn based on this
-definition:
+من السهل بما يكفي كتابة دالة تخصيصية (recursive) تحسب Fn انطلاقًا من هذا التعريف:
 
 ```ocaml
   let rec fib n =
     if n <= 1 then n else fib (n - 2) + fib (n - 1)
 ```
 
-But this is also rather simplistic. Indeed, it would take more than a minute to compute
-F50. It is not the recursion that is problematic here, but rather the fact that we
- 
- 
-compute the same values of Fn several times over. For instance, to compute F5, F3
-will be computed twice and F2 three times, as shown in the call graph in
-figure [11.1](#call-graph-of-f).
+غير أنّ هذا الحل يبقى بدائيًّا إلى حدٍّ ما. فحساب F50 يستغرق أكثر من دقيقة. والمشكلة هنا لا تكمن في التخصيص (recursion) نفسه، بل في أنّنا نحسب القيم ذاتها لـ Fn عدّة مرّات. فمثلًا، لحساب F5 سيُحسب F3 مرّتين وF2 ثلاث مرّات، كما يظهر في مخطط الاستدعاء في الشكل [11.1](#call-graph-of-f).
 
 ![](/images/learn-ocaml/dynamic-programming-0-fib5_tree-mps-.webp){#call-graph-of-f}
 
-**Figure 11.1: Call graph of F5.**
+**الشكل 11.1: مخطط الاستدعاء لـ F5.**
 
-It is easy to see that, in general, the computation of Fn requires Fn+1 − 1
-additions because the recursion equation is exactly the same as that which
-defines Fn. We can observe this empirically. On a computer circa 2011, it
-takes 2 seconds to compute F42, 3 seconds to compute F43, 5 seconds to
-compute F44, etc. We recognize here the terms of the Fibonacci sequence.
-Extrapolating, we can say that it would take 89 seconds to compute F50, and this is
-correct to within a half-second! As we know that Fn grows exponentially, we
-cannot hope to go much further in the computation of the sequence using this
-method.
+من السهل ملاحظة أنّ حساب Fn يتطلّب، في الحالة العامة، عددًا من عمليات الجمع يساوي Fn+1 − 1، لأنّ معادلة التخصيص مطابقة تمامًا لتلك التي تُعرّف Fn. ويمكننا ملاحظة ذلك تجريبيًّا. فحاسوب من نحو عام 2011 يستغرق ثانيتين لحساب F42، وثلاث ثوانٍ لحساب F43، وخمس ثوانٍ لحساب F44، وهكذا. ونُلاحظ هنا حدود متتالية فيبوناتشي. وبالاستقراء، يمكننا القول إنّ حساب F50 سيستغرق 89 ثانية، وهذا صحيح بدقّة تصل إلى نصف ثانية! وبما أنّ Fn ينمو نموًّا أُسِّيًّا، فلا يمكننا أن نأمل في المضي قدمًا في حساب المتتالية بهذه الطريقة.
 
-#### 11.1.1 Memoization
+#### 11.1.1 الحفظ (memoization)
 
-The fact that we are computing the same thing several times leads us, quite naturally,
-to the idea that we could store the intermediate results in a table. Such a table would
-associate integers n with the value Fn. Accordingly, we proceed as follows: To
-compute `fibn`, we begin by checking whether there is an entry in the table for `n`, in
-which case we return the corresponding value. Otherwise, we calculate `fibn` as
-`fib(n-2)+fib(n-1)`, that is, recursively. We return the result after havingadded
-it to the table. This technique, consisting in using a table to store intermediate
-results, is called *memoization*, a term coined by the researcher Donald Michie in
-1968.
+لكوننا نحسب الشيء نفسه عدّة مرّات، يتبادر إلينا بشكل طبيعي جدًّا أنّه يمكننا تخزين النتائج الوسيطة في جدول. ومن شأن جدول كهذا أن يربط كل عدد صحيح n بالقيمة Fn. وبناءً على ذلك، نتّبع ما يلي: لحساب `fibn`، نبدأ بالتحقق ممّا إذا كان هناك مدخل في الجدول يقابل `n`، وفي هذه الحالة نعيد القيمة الموافقة. وإلا نحسب `fibn` بدلالة `fib(n-2)+fib(n-1)`، أي بالتخصيص. ثم نعيد النتيجة بعد إضافتها إلى الجدول. وهذه التقنية، التي تقوم على استخدام جدول لتخزين النتائج الوسيطة، تُسمّى *الحفظ* (memoization)، وهو مصطلح صاغه الباحث دونالد ميتشي (Donald Michie) عام 1968.
 
-Let us implement this idea in a function `fib_memo`. We begin by introducing a hash
-table to store the intermediate results, choosing an arbitrary initial size for
-it:
+ولنُنفّذ هذه الفكرة في دالة `fib_memo`. نبدأ بإدخال جدول تجزئة (hash table) لتخزين النتائج الوسيطة، ونختار له حجمًا ابتدائيًّا اعتباطيًّا:
 
 ```ocaml
   let memo = Hashtbl.create 17
 ```
 
-The function `fib_memo` begins by checking whether the value of `fib` `n` is already present
-in the table `memo`. If it is, it is returned:
+تبدأ الدالة `fib_memo` بالتحقق ممّا إذا كانت قيمة `fib` `n` موجودة بالفعل في الجدول `memo`. فإن كانت كذلك، تُعاد:
 
 ```ocaml
   let rec fib_memo n =
@@ -74,8 +46,7 @@ in the table `memo`. If it is, it is returned:
       Hashtbl.find memo n
 ```
 
-Otherwise, we compute the result exactly as for the function `fib`, that is, using two
-recursive calls:
+وإلا نحسب النتيجة تمامًا كما في الدالة `fib`، أي باستخدام استدعاءين تخصيصيَّين:
 
 ```ocaml
     with Not_found ->
@@ -83,41 +54,22 @@ recursive calls:
                else fib_memo (n-2) + fib_memo (n-1) in
 ```
 
-Then, we store it in the table `memo` before returning it:
+ثم نخزّنها في الجدول `memo` قبل إعادتها:
 
 ```ocaml
       Hashtbl.add memo n fn;
       fn
 ```
 
-This concludes the function `fib_memo`. Its efficiency is far greater than that
-of `fib`. The computation of F50, for example, becomes instantaneous (in
-contrast to the 89 seconds taken by `fib`). We can show that the complexity
-of `fib_memo` is linear. Intuitively, we understand that computing Fn now
-involves computing Fi only once for i ≤ n. The complete code of the function
-`fib_memo` is given in program [84](#x26-266015r84) below. Note that the table `memo` is defined
-*outside*the function `fib_memo`, since it must be the same for all recursive
-calls.
+وبهذا تنتهي الدالة `fib_memo`. وفعّاليتها أكبر بكثير من فعالية `fib`. فحساب F50، على سبيل المثال، يصبح فوريًّا (خلافًا للثواني الـ 89 التي تستغرقها `fib`). ويمكننا أن نبيّن أنّ تعقيد `fib_memo` خطّي. وبديهيًّا، نفهم أنّ حساب Fn لم يعد يستلزم حساب Fi إلا مرّة واحدة لكل i ≤ n. ويرد الكود الكامل للدالة `fib_memo` في البرنامج [84](#x26-266015r84) أدناه. ولاحظ أنّ الجدول `memo` مُعرَّف *خارج* الدالة `fib_memo`، لأنّه يجب أن يكون نفسه في جميع الاستدعاءات التخصيصية.
 
 >
 
-#### 11.1.2 Dynamic Programming
+#### 11.1.2 البرمجة الديناميكية
 
-Using a hash table to memoize the computation of the Fibonacci sequence may seem
-unnecessarily costly. Indeed, in the end we will store only the values of Fi for i ≤ n,
-for which an array of size n + 1 would suffice. If we wished to rewrite the
-function `fib_memo` using this idea, we could, for example, begin by assigning the
-value −1 to each cell of the array, to indicate that the value has not yet
-been computed. Another possibility would be to fill the array in a specific
-order. In the present case, we see that it suffices to fill the array in increasing
-order since the computation of Fi requires the values of Fi−2 and Fi−1. This
-technique, consisting in using a table and progressively filling it with the results of
-intermediate computations, is called *dynamic programming*, often abbreviated as
-DP.
+قد يبدو استخدام جدول تجزئة لحفظ حساب متتالية فيبوناتشي مكلفًا بلا ضرورة. ففي النهاية لن نخزّن سوى قيم Fi من أجل i ≤ n، وهي قيم تكفي لها مصفوفة (array) بحجم n + 1. ولو أردنا إعادة كتابة الدالة `fib_memo` وفقًا لهذه الفكرة، لأمكننا، على سبيل المثال، أن نبدأ بإسناد القيمة −1 إلى كل خلية في المصفوفة، للدلالة على أنّ القيمة لم تُحسب بعد. وثمّة احتمال آخر يتمثّل في ملء المصفوفة بترتيب معيّن. وفي حالتنا هذه، نرى أنّه يكفي ملء المصفوفة بترتيب متزايد، لأنّ حساب Fi يتطلّب قيمتَي Fi−2 وFi−1. وهذه التقنية، التي تقوم على استخدام جدول وملئه تدريجيًّا بنتائج الحسابات الوسيطة، تُسمّى *البرمجة الديناميكية* (dynamic programming)، وغالبًا ما تُختصر بـ DP.
 
-Let us implement this idea in a function `fib_dp`. We begin by treating the special
-case n = 0. In the general case, when n > 0, we allocate an array `f` of size `n` + 1,
-which will contain the values of the Fi.
+ولنُنفّذ هذه الفكرة في دالة `fib_dp`. نبدأ بمعالجة الحالة الخاصة n = 0. وفي الحالة العامة، عندما n > 0، نخصّص مصفوفة `f` بحجم `n` + 1، ستضمّ قيم Fi.
 
 ```ocaml
   let fib_dp n =
@@ -125,63 +77,43 @@ which will contain the values of the Fi.
     let f = Array.make (n+1) 0 in
 ```
 
-This array may be allocated *inside*the function `fib_dp` since, unlike `fib_memo`, it
-will not be recursive. Next, we fill the cells of the array `f` in increasing order, treating
-`f.(1)` as a special case.
+يجوز تخصيص هذه المصفوفة *داخل* الدالة `fib_dp`، لأنّها، خلافًا لـ `fib_memo`، لن تكون تخصيصية. بعد ذلك نملأ خلايا المصفوفة `f` بترتيب متزايد، مع معاملة `f.(1)` كحالة خاصة.
 
 ```ocaml
     f.(1) <- 1;
     for i = 2 to n do f.(i) <- f.(i-2) + f.(i-1) done;
 ```
 
-Once the array is filled, we have only to return the value contained in its last
-cell.
+وبمجرد أن تُملأ المصفوفة، ما علينا إلا إعادة القيمة الموجودة في خليتها الأخيرة.
 
 ```ocaml
     f.(n)
 ```
 
-This concludes the function `fib_dp`. As for `fib_memo`, its complexity is linear. This can
-be seen easily since the code boils down to a simple `for` loop. The complete code of
-the function `fib_dp` is given in program [85](#x26-267010r85).
+وبهذا تنتهي الدالة `fib_dp`. وكما في حالة `fib_memo`، فإنّ تعقيدها خطّي. ويمكن ملاحظة ذلك بسهولة، لأنّ الكود لا يعدو أن يكون حلقة `for` بسيطة. ويرد الكود الكامل للدالة `fib_dp` في البرنامج [85](#x26-267010r85).
 
 >
 
-##### Remark
+##### ملاحظة
 
-We have chosen the Fibonacci sequence as an example for pedagogical reasons. Of
-course, it is very simple to compute the terms of this sequence in linear time without
-using either memoization or dynamic programming (see exercise [11.1](#x26-273001r1)).
+لقد اخترنا متتالية فيبوناتشي مثالًا لأسباب تربوية. فمن الواضح، بطبيعة الحال، أنّه من السهل جدًّا حساب حدود هذه المتتالية في زمن خطّي دون استخدام الحفظ ولا البرمجة الديناميكية (انظر التمرين [11.1](#x26-273001r1)).
 
-### 11.2 Mechanical Memoization
+### 11.2 الحفظ الآلي
 
-The use of an array in `fib_dp`, rather than the hash table in `fib_memo`, may leave us
-thinking that dynamic programming is simpler to implement than memoization. This
-is indeed the case in that example.
+قد يجعلنا استخدام مصفوفة في `fib_dp`، بدلًا من جدول التجزئة في `fib_memo`، نعتقد أنّ البرمجة الديناميكية أسهل تنفيذًا من الحفظ. وهذا صحيح فعلًا في هذا المثال.
 
-It is nevertheless important to understand that in order to write `fib_dp` we made
-use of two facts: we had to compute the Fi for all i ≤ n; and we could compute
-them in increasing order. In general, the inputs of the function that we wish
-to compute may not necessarily be consecutive integers. They may not be
-integers at all, or the dependencies between the different values may not be as
-simple.
+ومع ذلك، من المهم أن نفهم أنّنا، لكتابة `fib_dp`، اعتمدنا على أمرين: كان علينا حساب Fi من أجل كل i ≤ n؛ وكان بمقدورنا حسابها بترتيب متزايد. وفي الحالة العامة، قد لا تكون مدخلات الدالة التي نريد حسابها أعدادًا صحيحة متتالية بالضرورة. وقد لا تكون أعدادًا صحيحة إطلاقًا، أو قد لا تكون التبعيات بين القيم المختلفة بهذه البساطة.
 
-Memoization, by contrast, is simpler to implement. It suffices to add a few lines of
-code to consult and fill the hash table, without modifying the structure of the
-function. We can do this mechanically.
+أمّا الحفظ، في المقابل، فأسهل تنفيذًا. فيكفي إضافة بضعة أسطر من الكود للاستعلام عن جدول التجزئة وملئه، دون تعديل بنية الدالة. ويمكننا القيام بذلك آليًّا.
 
-Better yet, we can implement the memoization procedure *once and for all*, as a
-higher-order function `memo_fun` that takes as argument a function `f` to be memoized.
-We begin by creating a hash table in which to store the already computed
-results.
+والأفضل من ذلك، يمكننا تنفيذ إجراء الحفظ *مرّة واحدة وإلى الأبد*، في صورة دالة عالية الرتبة (higher-order function) هي `memo_fun`، تأخذ وسيطًا دالة `f` يُراد حفظها. نبدأ بإنشاء جدول تجزئة نخزّن فيه النتائج المحسوبة مسبقًا.
 
 ```ocaml
   let memo_fun f =
     let h = Hashtbl.create 17 in
 ```
 
-We then return a function that performs the memoization, that is, consults the table and
-fills it as needed.
+ثم نُعيد دالة تُجري الحفظ، أي تستشير الجدول وتملؤه حسب الحاجة.
 
 ```ocaml
     fun x ->
@@ -189,30 +121,23 @@ fills it as needed.
       with Not_found -> let v = f x in Hashtbl.add h x v; v
 ```
 
-The type of the function `memo_fun` is as follows:
+نوع الدالة `memo_fun` كما يلي:
 
 ```ocaml
     memo_fun : (’a -> ’b) -> ’a -> ’b
 ```
 
-As we see, `memo_fun` takes as argument a function of an arbitrary type and returns
-a function of the same type. The polymorphic nature of the function follows from the
-use of the generic hash tables of OCaml (see exercise [11.2](#x26-273002r2)).
+وكما نرى، تأخذ `memo_fun` وسيطًا دالةً بنوع اعتباطي وتُعيد دالة من النوع نفسه. وتنبع الصفة المتعدّدة الأشكال (polymorphic) للدالة من استخدام جداول التجزئة العامة في OCaml (انظر التمرين [11.2](#x26-273002r2)).
 
-In order to memoize the function `fib`, it suffices to write:
+ولحفظ الدالة `fib`، يكفي أن نكتب:
 
 ```ocaml
   let fib_memo2 = memo_fun fib
 ```
 
-If we compute `fib_memo250` twice, the second computation is instantaneous
-because the result is present in the table. However, the first computation takes just as
-long as it does without memoization. Indeed, during the first call, we calculate
-`fib50` because the value is not present in the table. During this computation,
-recursive calls are made to the function `fib` and not to its memoized version
-`fib_memo2`.
+إذا حسبنا `fib_memo250` مرّتين، يصبح الحساب الثاني فوريًّا لأنّ النتيجة موجودة في الجدول. غير أنّ الحساب الأول يستغرق وقتًا مماثلًا لِما يستغرقه دون حفظ. فخلال الاستدعاء الأول، نحسب `fib50` لأنّ القيمة غير موجودة في الجدول. وأثناء هذا الحساب، تُوجَّه استدعاءات تخصيصية إلى الدالة `fib` لا إلى نسختها المحفوظة `fib_memo2`.
 
-We might think that a solution consists in writing the following code:
+وقد نعتقد أنّ حلًّا يكمن في كتابة الكود التالي:
 
 ```ocaml
   let rec fib_memo3 =
@@ -220,32 +145,25 @@ We might think that a solution consists in writing the following code:
                        else fib_memo3 (n-2) + fib_memo3 (n-1))
 ```
 
-Unfortunately, this still does not work. Each call to `fib_memo3` involves a new call
-to `memo_fun`, which has the effect of allocating a new hash table. Thus the previously
-calculated results are lost and cannot be found.
+للأسف، لا ينجح هذا أيضًا. فكل استدعاء لـ `fib_memo3` يستلزم استدعاءً جديدًا لـ `memo_fun`، ما يؤدّي إلى تخصيص جدول تجزئة جديد. وبذلك تُفقد النتائج المحسوبة سابقًا ويتعذّر العثور عليها.
 
-To solve this problem, that is, to allocate a single hash table and perform recursive
-calls to the function being memoized, it is necessary to rewrite the function `memo_fun`
-in a subtler manner. We do this in the form of a function `memo_rec` that may be used
-as follows:
+ولحلّ هذه المشكلة، أي تخصيص جدول تجزئة واحد وإجراء استدعاءات تخصيصية إلى الدالة التي تُحفظ، لا بدّ من إعادة كتابة الدالة `memo_fun` بأسلوب أكثر دقّة. ونفعل ذلك في صورة دالة `memo_rec` يمكن استخدامها كما يلي:
 
 ```ocaml
   let fib_memo4 =
     memo_rec (fun f n -> if n <= 1 then n else f (n-2) + f (n-1))
 ```
 
-Here, the single call to `memo_rec` ensures the creation of a single table. The
-function being memoized is passed as an additional argument `f`.
+هنا، يضمن الاستدعاء الوحيد لـ `memo_rec` إنشاء جدول واحد. وتُمرَّر الدالة التي يُراد حفظها في صورة وسيط إضافي `f`.
 
-The function `memo_rec` is written as follows. We begin, as in case of `memo_fun`, by
-creating a table:
+وتُكتب الدالة `memo_rec` كما يلي. نبدأ، كما في حالة `memo_fun`، بإنشاء جدول:
 
 ```ocaml
   let memo_rec ff =
     let h = Hashtbl.create 5003 in
 ```
 
-Next, we define the *recursive*function `f` that performs the memoization:
+ثم نُعرّف الدالة *التخصيصية* `f` التي تُجري الحفظ:
 
 ```ocaml
     let rec f x =
@@ -255,47 +173,27 @@ Next, we define the *recursive*function `f` that performs the memoization:
     f
 ```
 
-When the result is not in the table, we compute the result `v` using `fffx`, that is,
-by passing the function `f` and the argument `x` to the function `ff` provided by the user.
-The complete code of `memo_rec` is given in program [86](#x26-269029r86).
+عندما لا تكون النتيجة في الجدول، نحسب النتيجة `v` باستخدام `fffx`، أي بتمرير الدالة `f` والوسيط `x` إلى الدالة `ff` التي يوفّرها المستخدم. ويرد الكود الكامل لـ `memo_rec` في البرنامج [86](#x26-269029r86).
 
 >
 
-As in case of `memo_fun`, the type of `memo_rec` is polymorphic, but it is more
-complex:
+وكما في حالة `memo_fun`، فإنّ نوع `memo_rec` متعدّد الأشكال، لكنّه أكثر تعقيدًا:
 
 `memo_rec: ((’a -> ’b) -> ’a -> ’b) -> ’a -> ’b`
 
-The function `ff` has type `(’a->’b)->’a->’b`, which may be read as
-`(’a->’b)->(’a->’b)`. That is, it takes as argument a function of type `’a->’b`
-and returns a function of the same type.
+نوع الدالة `ff` هو `(’a->’b)->’a->’b`، ويمكن قراءته على أنّه `(’a->’b)->(’a->’b)`. أي أنّها تأخذ وسيطًا دالةً من النوع `’a->’b` وتُعيد دالة من النوع نفسه.
 
-### 11.3 Differences between Memoization and Dynamic Programming
+### 11.3 الفروق بين الحفظ والبرمجة الديناميكية
 
-In certain situations, dynamic programming may be preferred to memoization. Take
-the example of the computation of the binomial coefficients C(n,k), the recursive
-definition of which is as follows:
+في بعض الحالات، قد يُفضَّل اعتماد البرمجة الديناميكية على الحفظ. خُذ مثال حساب معاملات ذات الحدّين (binomial coefficients) C(n,k)، التي يكون تعريفها التخصيصي كما يلي:
 
 $$( { C (n,0) = 1 C (n,n) = 1 ( C (n,k) = C (n - 1,k - 1) + C(n - 1,k) if 0 < k < n.$$
 
-Both memoization and dynamic programming may be applied to this definition. In
-the first case, we will have a hash table indexed by the pair (n,k) and, in the second
-case, a matrix indexed by n and k. However, if we seek to compute C(n,k) for
-n = 2 × 105 and k = 105, we are probably going to exceed the available memory of the
-machine (assuming an ordinary desktop computer). In the first case, this would
-happen when filling the hash table and in the second, when trying to allocate the
-matrix. The reason is that the complexity in time *and in space*is O(nk). In the
-previous example, we would have to store at least 15 billion intermediate
-results.
+يمكن تطبيق كلٍّ من الحفظ والبرمجة الديناميكية على هذا التعريف. في الحالة الأولى سيكون لدينا جدول تجزئة مفهرس بالزوج (n,k)، وفي الحالة الثانية مصفوفة (matrix) مفهرسة بـ n و k. غير أنّنا، إذا سعينا إلى حساب C(n,k) من أجل n = 2 × 105 و k = 105، فمن المرجّح أن نتجاوز الذاكرة المتاحة في الآلة (بافتراض حاسوب مكتبي عادي). وفي الحالة الأولى، سيحدث ذلك عند ملء جدول التجزئة، وفي الثانية عند محاولة تخصيص المصفوفة. والسبب هو أنّ التعقيد في الزمن *وفي المساحة* من الرتبة O(nk). وفي المثال السابق، سيتعيّن علينا تخزين 15 مليار نتيجة وسيطة على الأقل.
 
-Yet, if we look closer, the computation of C(n,k) for a given value of n only
-requires the values of C(n− 1,k). Accordingly, we may carry out the computation for
-increasing values of n, even if not all the values computed are going to be useful in the
-end. We can visualize the situation by drawing Pascal’s triangle as in figure [11.2](#pascals-triangle). We
-will compute the values line by line, keeping track of only a single line at any given
-moment.
+ومع ذلك، إذا نظرنا عن كثب، نجد أنّ حساب C(n,k) من أجل قيمة معطاة لـ n لا يتطلّب سوى قيم C(n− 1,k). وبناءً على ذلك، يمكننا إجراء الحساب من أجل قيم متزايدة لـ n، حتى وإن لم تكن جميع القيم المحسوبة مفيدة في النهاية. ويمكننا تصوّر الوضع برسم مثلث باسكال كما في الشكل [11.2](#pascals-triangle). وسنحسب القيم سطرًا سطرًا، مع الاحتفاظ بسطر واحد فقط في أي لحظة.
 
-**Figure 11.2: Pascal’s triangle.**
+**الشكل 11.2: مثلث باسكال.**
 
 | 1 |  |  |  |  |  |
 | --- | --- | --- | --- | --- | --- |
@@ -306,109 +204,64 @@ moment.
 | 1 | 5 | 10 | 10 | 5 | 1 |
 | ⋮ |  |  |  |  |  |
 
-Let us implement this idea in a function `comb_smart_dp`. We begin by allocating
-an array `row` of size `n+1` that will contain the line of Pascal’s triangle being
-computed:
+ولنُنفّذ هذه الفكرة في دالة `comb_smart_dp`. نبدأ بتخصيص مصفوفة `row` بحجم `n+1` ستضمّ سطر مثلث باسكال الجاري حسابه:
 
 ```ocaml
   let comb_smart_dp n k =
     let row = Array.make (n+1) 0 in
 ```
 
-In fact, an array of size `k+1` would suffice (see exercise [11.3](#x26-273003r3)).
+في الواقع، تكفي مصفوفة بحجم `k+1` (انظر التمرين [11.3](#x26-273003r3)).
 
-Initially, this array is filled with zeroes. We initialize the first cell with
-1.
+في البداية، تُملأ هذه المصفوفة بالأصفار. ونُهيّئ الخلية الأولى بالقيمة 1.
 
 ```ocaml
     row.(0) <- 1;
 ```
 
-This value will not change in what follows, because the first column of Pascal’s
-triangle contains only ones. Next, we write a loop to compute the `i`-th line of Pascal’s
-triangle:
+لن تتغيّر هذه القيمة فيما يلي، لأنّ العمود الأول من مثلث باسكال لا يحتوي إلا على الآحاد. بعد ذلك، نكتب حلقة لحساب السطر `i` من مثلث باسكال:
 
 ```ocaml
     for i = 1 to n do
 ```
 
-This computation will be done in-place within the array `row`, assuming that it
-contains the values of the (`i`− 1)-th line. To avoid overwriting values that have yet to
-be used, we will compute the new values from right to left, since these values do not
-depend on those situated further to the right. We continue with a second
-loop:
+سيُجرى هذا الحساب في المكان نفسه داخل المصفوفة `row`، بافتراض أنّها تضمّ قيم السطر (`i`− 1). ولتجنّب طمس قيم لم تُستخدم بعد، سنحسب القيم الجديدة من اليمين إلى اليسار، لأنّ هذه القيم لا تعتمد على تلك الواقعة إلى أقصى اليمين. ونُتابع بحلقة ثانية:
 
 ```ocaml
       for j = i downto 1 do row.(j) <- row.(j) + row.(j-1) done
 ```
 
-Here, we make use of the fact that `row.(i)` contains 0, which permits us to avoid
-introducing a special case. We stop when `j` = 1 because the value `row.(0)` does not
-need to be recomputed, as explained above. Once we have exited the double loop, the
- 
- 
-array `row` contains the `n`-th line of Pascal’s triangle, and we only have to return
-`row.(k)`:
+هنا نستفيد من كون `row.(i)` تحتوي على 0، ما يمكّننا من تجنّب إدخال حالة خاصة. ونتوقّف عندما `j` = 1 لأنّ القيمة `row.(0)` لا تحتاج إلى إعادة حساب، كما أوضحنا أعلاه. وبعد أن نخرج من الحلقة المزدوجة، تكون المصفوفة `row` قد أصبحت تضمّ السطر `n` من مثلث باسكال، ولم يتبقّ لنا إلا إعادة `row.(k)`:
 
 ```ocaml
     done;
     row.(k)
 ```
 
-The time complexity remains O(nk) but the space complexity is only O(n). In the
-example given above, with n = 2 × 105 and k = 105, the result is now obtained
-in a few seconds. Note, however, that it causes an arithmetic overflow (see
-exercise [11.4](#x26-273004r4)).
+يبقى التعقيد الزمني من الرتبة O(nk)، أمّا تعقيد المساحة فهو O(n) فقط. وفي المثال المعطى أعلاه، حيث n = 2 × 105 و k = 105، تُحصَّل النتيجة الآن في بضع ثوانٍ. ولاحظ، مع ذلك، أنّها تُسبّب طفحًا حسابيًّا (arithmetic overflow) (انظر التمرين [11.4](#x26-273004r4)).
 
-The conclusion of this little exercise is that dynamic programming, which allows
-for a finer control of the use of memory, can sometimes be more advantageous than
-memoization. Conversely, in many situations where this extra measure of control is
-not necessary, memoization is far simpler to implement.
+وخلاصة هذا التمرين الصغير أنّ البرمجة الديناميكية، التي تتيح تحكّمًا أدقّ في استخدام الذاكرة، قد تكون أحيانًا أكثر فائدة من الحفظ. وعلى العكس من ذلك، فإنّ الحفظ، في كثير من الحالات التي لا يكون فيها هذا القدر الإضافي من التحكّم ضروريًّا، أبسط بكثير في التنفيذ.
 
-### 11.4 Hash-consing
+### 11.4 التجزئة (hash-consing)
 
-Just as we can avoid computing the same thing twice, as we did above, we
-may similarly avoid constructing the same data several times, to save on
-memory. We can do this safely as long as we are dealing with values that will
-not be subsequently modified. If, for example, we have already constructed
-the list `[1;2;3]`, it is pointless to reconstruct anew. We can instead reuse
-it.
+وكما يمكننا تجنّب حساب الشيء نفسه مرّتين، كما فعلنا أعلاه، يمكننا بالمثل تجنّب بناء البيانات نفسها عدّة مرّات، لتوفير الذاكرة. ويمكننا القيام بذلك بأمان ما دمنا نتعامل مع قيم لن تُعدَّل لاحقًا. فمثلًا، إذا كنا قد بنينا القائمة `[1;2;3]` بالفعل، فلا جدوى من إعادة بنائها من جديد. ويمكننا بدلًا من ذلك إعادة استخدامها.
 
-The technique of reusing values that have already been constructed is
-known as *hash-consing*. It is quite simply the application of the technique
-of memoization to the construction of values. The term hash-consing
-combines precisely the idea of hashing used in memoization with that of
- 
- 
-allocation[^1].
-Here, we will demonstrate how to implement this technique, taking as an example
-binary trees containing characters, that is:
+وتُعرف تقنية إعادة استخدام القيم التي بُنيت بالفعل بـ *التجزئة* (hash-consing). وهي ببساطة تطبيق تقنية الحفظ على بناء القيم. ويجمع مصطلح التجزئة (hash-consing) على وجه التحديد فكرة التجزئة (hashing) المستخدمة في الحفظ مع فكرة التخصيص[^1].
+وهنا سوف نوضّح كيفية تنفيذ هذه التقنية، متخذين مثالًا أشجارًا ثنائية تحتوي على محارف، أي:
 
 ```ocaml
   type tree = E | N of tree * char * tree
 ```
 
-The idea is to provide an alternative to the constructor `N`, in the form of a
-function `node` that behaves exactly as this constructor, but that returns a structurally
-identical value, if one has already been constructed. One possible solution consists in
-directly memoizing the function `node`, that is, by storing the values of type `tree`
-that have already been constructed in a hash table. However, proceeding in
-this manner would not be very efficient. Indeed, both computing the hash
-keys and comparing values of the type `tree` require traversals that may be
-costly.
+وتقوم الفكرة على توفير بديل للباني (constructor) `N`، في صورة دالة `node` تتصرّف تمامًا كما يتصرّف هذا الباني، لكنّها تُعيد قيمة مماثلة بنيويًّا، إذا كانت قد بُنيت من قبل. ويتمثّل أحد الحلول الممكنة في حفظ الدالة `node` مباشرةً، أي بتخزين قيم النوع `tree` التي بُنيت بالفعل في جدول تجزئة. غير أنّ المضي في هذا النهج لن يكون فعّالًا كثيرًا. فحساب مفاتيح التجزئة ومقارنة قيم النوع `tree` كلاهما يتطلّب اجتيازات قد تكون مكلفة.
 
-A much better solution consists in avoiding these traversals by associating an
-integer, to be used in the hash function, with each value of type `tree`. We begin,
-therefore, by modifying the type `tree` slightly in order to store an integer as the first
-argument of the constructor `N`.
+وثمّة حل أفضل بكثير يقوم على تجنّب هذه الاجتيازات بإقران عدد صحيح، يُستخدم في دالة التجزئة، بكل قيمة من النوع `tree`. لذا نبدأ بتعديل النوع `tree` قليلًا كي نخزّن عددًا صحيحًا كأول وسيط للباني `N`.
 
 ```ocaml
   type tree = E | N of int * tree * char * tree
 ```
 
-We will see below how this integer is computed. We write a function that
-returns this integer when it is given the constructor `N`, and the integer 0
-otherwise.
+وسنرى أدناه كيف يُحسب هذا العدد الصحيح. نكتب دالة تُعيد هذا العدد الصحيح عندما يُعطى الباني `N`، والعدد الصحيح 0 في غير ذلك.
 
 ```ocaml
   let unique = function
@@ -416,11 +269,7 @@ otherwise.
     | N (u, _, _, _) -> u
 ```
 
-We will justify the name of this function below, by explaining why this integer is
- 
- 
-in fact unique. For the present, this is not important since we wish only to define a
-hash function. Here is the definition of the hash function:
+وسنبرّر اسم هذه الدالة أدناه، موضّحين لماذا هذا العدد الصحيح فريد في الواقع. وفي الوقت الحاضر، لا يهمّ ذلك لأنّ غايتنا ليست سوى تعريف دالة تجزئة. وفيما يلي تعريف دالة التجزئة:
 
 ```ocaml
   let hash = function
@@ -430,17 +279,9 @@ hash function. Here is the definition of the hash function:
         (19 * (19 * unique l + Char.code c) + unique r) land max_int
 ```
 
-This function does not make use of the integer stored in the constructor `N`.
-Indeed, `hash` will be used precisely to determine if a tree with root `c` and subtrees `l`
-and `r` has already been constructed. It must therefore only depend on the
-values `l`, `c`, and `r`. To compute the result in constant time, the function `hash` uses
-the integers stored in the subtrees `l` and `r`, via the function `unique`. The operation
-`landmax_int` is used here to guarantee a non-negative result.
+لا تستخدم هذه الدالة العدد الصحيح المخزَّن في الباني `N`. فدالة `hash` ستُستخدم تحديدًا لتحديد ما إذا كانت شجرة جذرها `c` وشجرتاها الفرعيتان `l` و `r` قد بُنيت بالفعل. لذا يجب ألّا تعتمد إلا على القيم `l` و `c` و `r`. ولحساب النتيجة في زمن ثابت، تستخدم دالة `hash` الأعداد الصحيحة المخزَّنة في الشجرتين الفرعيتين `l` و `r`، عبر دالة `unique`. وتُستخدم العملية `landmax_int` هنا لضمان نتيجة غير سالبة.
 
-The second idea consists in comparing two values of type `tree` in constant time by
-using the fact that their subtrees have already been shared if they are equal and are
-therefore physically equal. For this we write a function `equal` that uses the physical
-equality `==` on the subtrees.
+وتقوم الفكرة الثانية على مقارنة قيمتين من النوع `tree` في زمن ثابت بالاستفادة من أنّ شجريهما الفرعيتين قد شارُكتا بالفعل إن كانتا متساويتين، ومن ثمّ فهما متساويتان فيزيائيًّا. ولهذا نكتب دالة `equal` تستخدم المساواة الفيزيائية `==` على الشجرتين الفرعيتين.
 
 ```ocaml
   let equal t1 t2 = match t1, t2 with
@@ -450,15 +291,9 @@ equality `==` on the subtrees.
     | _ -> false
 ```
 
-Equipped with these two functions, we can now construct a hash table to memoize
-the construction of trees. We can do this using the functor `Hashtbl.Make` of the
-OCaml standard library. However, such a table would keep the constructed values
-forever. What we want, by constrast, is for the GC to be able to recover the space
-allocated for values that are no longer used, as it usually does.
+وبتزوّدنا بهاتين الدالتين، يمكننا الآن بناء جدول تجزئة لحفظ بناء الأشجار. ويمكننا فعل ذلك باستخدام الفونكتور (functor) `Hashtbl.Make` من المكتبة القياسية لـ OCaml. غير أنّ جدولًا كهذا سيحتفظ بالقيم المبنية إلى الأبد. أمّا ما نريده، في المقابل، فهو أن يتمكّن جامع القمامة (GC) من استعادة المساحة المخصَّصة لقيم لم تعد مستخدَمة، كما يفعل عادةً.
 
-For this, we will use another hash table structure included in the OCaml standard
-library, namely, the functor `Weak.Make`. Its signature is identical to that of the functor
-`Hashtbl.Make`.
+ولهذا، سنستخدم بنية جدول تجزئة أخرى مضمّنة في المكتبة القياسية لـ OCaml، ألا وهي الفونكتور `Weak.Make`. وتوقيعه مطابق لتوقيع الفونكتور `Hashtbl.Make`.
 
 ```ocaml
   module X = struct
@@ -469,15 +304,9 @@ library, namely, the functor `Weak.Make`. Its signature is identical to that of 
   module W = Weak.Make(X)
 ```
 
-The resulting module `W` provides a set structure of values of type `tree`, in which the
-elements disappear when they are not referenced anywhere except by a pointer from
- 
- 
-this structure. Such pointers, which are not taken into account by the GC, are called
-*weak references*. Hence the name of the module: `Weak`.
+توفّر الوحدة `W` الناتجة بنية مجموعة (set) من قيم النوع `tree`، تختفي عناصرها عندما لا يُشار إليها في أي مكان سوى بمؤشر من هذه البنية. وتُسمّى مؤشرات كهذه، التي لا يأخذها جامع القمامة في الحسبان، *مراجع ضعيفة* (weak references). ومن هنا اسم الوحدة: `Weak`.
 
-We may now construct the table that will contain the constructed values of type
-`tree`. We initialize it with an arbitrary size.
+ويمكننا الآن بناء الجدول الذي سيضمّ قيم النوع `tree` المبنية. ونهيّئه بحجم اعتباطي.
 
 ```ocaml
   let nodes = W.create 5003
@@ -485,8 +314,7 @@ We may now construct the table that will contain the constructed values of type
 
 >
 
-It remains only to write the function `node` that will perform the actual
-memoization. It uses a global counter, initialized with the value 1.
+ولم يتبقّ إلا كتابة الدالة `node` التي ستُجري الحفظ الفعلي. وهي تستخدم عدّادًا عامًّا، مهيّأً بالقيمة 1.
 
 ```ocaml
   let node =
@@ -494,108 +322,57 @@ memoization. It uses a global counter, initialized with the value 1.
     fun l c r ->
 ```
 
-We begin by constructing the desired tree, using the current value of the counter.
+نبدأ ببناء الشجرة المطلوبة، باستخدام القيمة الحالية للعدّاد.
 
 ```ocaml
       let n0 = N (!cpt, l, c, r) in
 ```
 
-Next, we consult the hash table to determine if such a value has already been
-constructed. The module `W` conveniently provides a function `merge` that determines if
-an equal value is already present in the set and, if this is not the case, adds it. In both
-cases, the returned value is contained in the table.
+بعد ذلك نستشير جدول التجزئة لتحديد ما إذا كانت قيمة كهذه قد بُنيت بالفعل. وتوفّر الوحدة `W` بسهولة دالة `merge` تحدّد ما إذا كانت قيمة مماثلة موجودة بالفعل في المجموعة، وإن لم تكن، تضيفها. وفي كلتا الحالتين، تكون القيمة المُعادة محتواةً في الجدول.
 
 ```ocaml
       let n = W.merge nodes n0 in
 ```
 
-It only remains to increment the value of the counter if a new node has been added to the
-table, which is easily determined by comparing `n` and `n0` using physical comparison.
-In all cases, we return the tree `n`.
+لم يتبقّ إلا زيادة قيمة العدّاد إذا أُضيفت عقدة جديدة إلى الجدول، وهو ما يمكن تحديده بسهولة بمقارنة `n` و `n0` باستخدام المقارنة الفيزيائية. وفي جميع الحالات، نُعيد الشجرة `n`.
 
 ```ocaml
       if n == n0 then incr cpt;
       n
 ```
 
-The complete code is given in program [87](#x26-271037r87).
+ويرد الكود الكامل في البرنامج [87](#x26-271037r87).
 
-Of course, all of this is correct only if two trees that have the same integer are
-indeed equal. To guarantee it, we must encapsulate the type `tree` behind an interface
-that prevents users from arbitrarily setting this integer. One possibility is to make
-`tree` a private type. Such an interface is given in program [88](#x26-271084r88) (see following page). In
-this way, we can justify *a posteriori*that the integer stored in each tree is unique in
-the sense that two trees bearing the same integer are equal. However, two equal
- 
- 
-values can bear a different integer. Indeed, a value can be constructed, then
-reclaimed by the GC, then reconstructed identically later, with a different
-integer.
+بطبيعة الحال، كل هذا صحيح فقط إذا كانت أي شجرتين تحملان العدد الصحيح نفسه متساويتين فعلًا. ولضمان ذلك، يجب أن نغلّف النوع `tree` خلف واجهة تمنع المستخدمين من إسناد هذا العدد الصحيح على نحو اعتباطي. وأحد الاحتمالات هو جعل `tree` نوعًا خاصًّا (private type). وترد واجهة كهذه في البرنامج [88](#x26-271084r88) (انظر الصفحة التالية). وبهذه الطريقة، يمكننا أن نبرّر *بعديًّا* أنّ العدد الصحيح المخزَّن في كل شجرة فريد بمعنى أنّ أي شجرتين تحملان العدد الصحيح نفسه متساويتان. غير أنّ قيمتين متساويتين يمكن أن تحملا عددًا صحيحًا مختلفًا. فالقيمة قد تُبنى، ثم يستعيدها جامع القمامة، ثم يُعاد بناؤها على نحو مماثل لاحقًا، بعدد صحيح مختلف.
 
-The advantages of hash-consing are numerous. Firstly, it permits us to economize
-on memory. Certainly, there is an extra cost linked to memoization, but this cost is of
-constant time. Indeed, we have been careful to write an equality and a hash
-function that are of constant cost. The second advantage of hash-consing is that
-we can now use physical equality `==` instead of structural equality. Indeed,
-two values of type `tree` are equal if and only if they are physically equal.
-This is guaranteed by the encapsulation of the type `tree` behind a private
-type. Thirdly, we have a total order on the type `tree`, of constant time,
-by comparing the values returned by the function `unique`. In particular,
-we can now construct data structures, for example by using the functors
-`Set.Make` or `Map.Make`, that will be as efficient as in case of integers. Finally,
-we have an excellent hash function on the type `tree`, namely, the function
-`unique`. Exercise [11.6](#x26-274001r6) proposes using it to memoize a recursive function on
-trees.
+ومزايا التجزئة (hash-consing) عديدة. أولًا، تتيح لنا الاقتصاد في الذاكرة. صحيح أنّ ثمّة كلفة إضافية مرتبطة بالحفظ، لكنّ هذه الكلفة من الزمن الثابت. فقد حرصنا على كتابة دالة مساواة ودالة تجزئة بكلفة ثابتة. والميزة الثانية للتجزئة (hash-consing) هي أنّه يمكننا الآن استخدام المساواة الفيزيائية `==` بدلًا من المساواة البنيوية. فقيمتان من النوع `tree` متساويتان إذا وفقط إذا كانتا متساويتين فيزيائيًّا. وهذا مضمون بتغليف النوع `tree` خلف نوع خاص. وثالثًا، لدينا ترتيب كلّي على النوع `tree`، بكلفة ثابتة، بمقارنة القيم التي تُعيدها الدالة `unique`. وعلى وجه الخصوص، يمكننا الآن بناء بنى بيانات، مثلًا باستخدام الفونكتورين `Set.Make` أو `Map.Make`، تكون فعّالة كما في حالة الأعداد الصحيحة. وأخيرًا، لدينا دالة تجزئة ممتازة على النوع `tree`، ألا وهي الدالة `unique`. ويقترح التمرين [11.6](#x26-274001r6) استخدامها لحفظ دالة تخصيصية على الأشجار.
 
-It is important to reiterate here that the hash-consing technique is only applicable
-to structures that can be shared. The technique is thus applicable to persistent
-structures, but not to mutable ones.
+ومن المهم أن نُكرّر هنا أنّ تقنية التجزئة (hash-consing) لا تنطبق إلا على البنى القابلة للمشاركة. وبالتالي، تنطبق التقنية على البنى الدائمة (persistent)، لا على البنى القابلة للتغيير (mutable).
 
 >
 
-### 11.5 Exercises
+### 11.5 التمارين
 
-#### Dynamic Programming and Memoization
+#### البرمجة الديناميكية والحفظ
 
-**11.1**Modify the function `fib_dp` so that it uses only two integers instead of an
-array.
+**11.1** عدّل الدالة `fib_dp` بحيث لا تستخدم سوى عددين صحيحين بدلًا من مصفوفة.
 
-**11.2**Reimplement the function `memo_rec` as a functor parametrized by the type of
-the arguments of the memoized function, so as to be able to use hash tables other
-than the generic tables of OCaml.
+**11.2** أعد تنفيذ الدالة `memo_rec` في صورة فونكتور مُعامَل بنوع وسائط الدالة المحفوظة، بحيث يمكن استخدام جداول تجزئة غير الجداول العامة في OCaml.
 
-**11.3**Modify the function `comb_smart_dp` so that it does not compute the values of
-Pascal’s triangle beyond the `k`-th column.
+**11.3** عدّل الدالة `comb_smart_dp` بحيث لا تحسب قيم مثلث باسكال بعد العمود `k`.
 
-**11.4**Modify the function `comb_smart_dp` so that it returns an arbitrary-precision
-integer (type `Num.num` of the OCaml library). Note: The complexity is no longer
-O(nk) because additions are no longer atomic operations. Their cost depends on the
-size of the operands, and these grow rapidly in Pascal’s triangle.
+**11.4** عدّل الدالة `comb_smart_dp` بحيث تُعيد عددًا صحيحًا بدقّة اعتباطية (النوع `Num.num` من مكتبة OCaml). ملاحظة: لم يعد التعقيد من الرتبة O(nk) لأنّ عمليات الجمع لم تعد عمليات ذرّية. فكلفتها تعتمد على حجم المعاملات، وهذه تنمو بسرعة في مثلث باسكال.
 
-**11.5** The edit distance between two strings is defined as the smallest number of
-insertions, deletions, and substitutions of characters required to pass from one to the
-other. For example, the distance between `"duck"` and `"duke"` is two (one
-deletion, one insertion). Write a recursive function that takes as arguments two
-strings `a` and `b`, and two indices `i` and `j`, and returns the distance between the
-strings `a`[0..`i`[ and `b`[0..`j`[. Explain why we end up making the same calls
-several times. Improve efficiency by using either memoization or dynamic
- 
- 
-programming.
+**11.5** تُعرَّف مسافة التحرير (edit distance) بين سلسلتين بأنّها أصغر عدد من عمليات الإدراج والحذف والاستبدال للمحارف اللازمة للانتقال من إحداهما إلى الأخرى. فمثلًا، المسافة بين `"duck"` و `"duke"` تساوي اثنين (حذف واحد وإدراج واحد). اكتب دالة تخصيصية تأخذ وسيطين سلسلتين `a` و `b`، ومؤشّرين `i` و `j`، وتُعيد المسافة بين السلسلتين `a`[0..`i`[ و `b`[0..`j`[. واشرح لماذا ننتهي إلى إجراء الاستدعاءات نفسها عدّة مرّات. وحسّن الفعالية باستخدام الحفظ أو البرمجة الديناميكية.
 
-#### Hash-consing
+#### التجزئة (hash-consing)
 
-**11.6**Write a memoized function `height` that computes the height of a tree making
-use of the fact that trees have been hash-consed.
+**11.6** اكتب دالة محفوظة `height` تحسب ارتفاع شجرة بالاستفادة من كون الأشجار قد خضعت للتجزئة (hash-consing).
 
-**11.7**Write a structure of lists of integers making use of the hash-consing
-technique.
+**11.7** اكتب بنية قوائم من الأعداد الصحيحة تستفيد من تقنية التجزئة (hash-consing).
 
-**11.8**Generalize the above exercise to a functor that takes as argument the type of
-the elements, equipped with an equality and a hash function.
+**11.8** عمّم التمرين السابق على فونكتور يأخذ وسيطًا نوع العناصر، مزوّدًا بدالة مساواة ودالة تجزئة.
 
-**11.9**How can the application of the constructor `N` in the function `node` in
-program [87](#x26-271037r87) be avoided when the value has already been constructed?
+**11.9** كيف يمكن تجنّب تطبيق الباني `N` في الدالة `node` في البرنامج [87](#x26-271037r87) عندما تكون القيمة قد بُنيت بالفعل؟
 
-[^3]: The program `seq` is a Unix tool that displays all the integers from 1 to n, one integer per
- line. It is the simplest way to obtain exactly n lines of text.
+[^3]: البرنامج `seq` أداة من يونكس (Unix) تعرض جميع الأعداد الصحيحة من 1 إلى n، عددًا صحيحًا في كل سطر. وهي أبسط طريقة للحصول على n سطرًا من النص بالضبط.

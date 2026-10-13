@@ -6,9 +6,9 @@
   "description": "المكتبة العربية لعلوم الحاسوب",
   "scripts": {
     "dev": "pnpm content && vite dev",
-    "build": "node scripts/import-frontend-architecture.mjs && node scripts/build-go-tour.mjs && node scripts/build-content.mjs && vite build",
+    "build": "node scripts/import-frontend-architecture.mjs && node scripts/build-go-tour.mjs && node scripts/build-hono.mjs && node scripts/build-better-auth.mjs && node scripts/build-content.mjs && vite build",
     "preview": "vite preview",
-    "content": "node scripts/import-frontend-architecture.mjs && node scripts/build-go-tour.mjs && node scripts/build-content.mjs",
+    "content": "node scripts/import-frontend-architecture.mjs && node scripts/build-go-tour.mjs && node scripts/build-hono.mjs && node scripts/build-better-auth.mjs && node scripts/build-content.mjs",
     "build:go-browser": "node scripts/build-go-browser.mjs",
     "audit:content": "node scripts/audit-content.mjs --check",
     "check:links": "node scripts/check-links.mjs",

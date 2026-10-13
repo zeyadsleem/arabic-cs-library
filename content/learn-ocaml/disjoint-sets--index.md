@@ -1,65 +1,33 @@
 ---
-title: "Disjoint Sets"
-lang: en
+title: "المجموعات المنفصلة"
+lang: ar
 ---
 
-## 8. Disjoint Sets
+## 8. المجموعات المنفصلة
 
-This chapter presents an imperative data structure that solves the problem of
-partitioning a finite set into disjoint subsets, called “classes.” We wish to
-determine whether two elements belong to the same class and merge two
-classes into one. It is these two operations that give the structure its name:
-*union-find*.
+يقدّم هذا الفصل بنية بيانات أمرية (imperative) تحلّ مسألة تقسيم مجموعة منتهية إلى مجموعات فرعية منفصلة (disjoint subsets)، تُسمّى «أصنافاً» (classes). نريد أن نحدّد ما إذا كان عنصران ينتميان إلى الصنف نفسه، وأن ندمج صنفين في صنف واحد. وهاتان العمليتان هما ما يمنح البنية اسمها: *union-find* (اتحاد-بحث).
 
-### 8.1 The Basic Idea
+### 8.1 الفكرة الأساسية
 
-Without loss of generality, we may assume that the set to be partitioned consists of
-the n integers {0,1,…,n− 1}. Program [71](#x22-233002r71) (see page [618](#x22-233002r71)) gives the signature of such
-a structure. The operation `create` n constructs a new partition of {0,1,…,n − 1} in
-which each element forms a class by itself. The operation `find` determines
-the class of an element by returning one of the integers as a distinguished
-representative. In particular, we can determine if two elements are in the same class
-by comparing the result given by `find` for each one. Finally, the operation
-`union` merges two classes of the partition, modifying the data structure in
-place.
+بلا فقدان للعمومية، يمكننا افتراض أن المجموعة المراد تقسيمها تتكوّن من الأعداد الصحيحة n وهي {0,1,…,n− 1}. يعطي البرنامج [71](#x22-233002r71) (انظر الصفحة [618](#x22-233002r71)) توقيع بنية كهذه. تنشئ العملية `create` n تجزيئاً جديداً للمجموعة {0,1,…,n − 1} يكون فيه كل عنصر صنفاً بذاته. وتحدّد العملية `find` صنف عنصر ما بإرجاع أحد الأعداد الصحيحة كممثل مميّز له. وعلى وجه الخصوص، يمكننا تحديد ما إذا كان عنصران يقعان في الصنف نفسه بمقارنة النتيجة التي يعطيها `find` لكل منهما. وأخيراً، تدمج العملية `union` صنفين من التجزيء، فتعدّل بنية البيانات في مكانها.
 
-The basic idea is to link the elements of a class between themselves. In each class,
-these links form a graph in which all paths lead to the representative, which is the
-only element linked to itself. Figure [8.1](#a-partition-of-into-two-sets) illustrates a situation in which the set
-{0,1,…,7} is partitioned into two classes, whose representatives are respectively 3 and
-4.
+تكمن الفكرة الأساسية في ربط عناصر الصنف الواحد بعضها ببعض. وفي كل صنف تشكّل هذه الروابط رسماً بيانياً تنتهي فيه جميع المسارات إلى الممثل، وهو العنصر الوحيد المرتبط بنفسه. يوضّح الشكل [8.1](#a-partition-of-into-two-sets) حالة قُسّمت فيها المجموعة {0,1,…,7} إلى صنفين ممثلاهما 3 و4 على التوالي.
 
 ![](/images/learn-ocaml/disjoint-sets-0-uf2-mps-.webp){#a-partition-of-into-two-sets}
 
-**Figure 8.1: A partition of {0,1,…,7} into two sets.**
+**الشكل 8.1: تقسيم المجموعة {0,1,…,7} إلى مجموعتين.**
 
-It is possible to represent such a structure using individually allocated nodes
-(see exercise [8.5](#x22-236015r5)). Nevertheless it is simpler, and often more efficient, to
-use an array that links each integer to another integer of the same class.
-These links lead to the class representative, which is associated with itself in
-the array. Thus, the partition of figure [8.1](#a-partition-of-into-two-sets) is represented by the following
-array:
+من الممكن تمثيل بنية كهذه باستعمال عقد تُخصَّص كل واحدة منها على حدة (انظر التمرين [8.5](#x22-236015r5)). ومع ذلك، فمن الأبسط، وكثيراً ما يكون أكثر كفاءة، استعمال مصفوفة تربط كل عدد صحيح بعدد صحيح آخر من الصنف نفسه. وتؤدي هذه الروابط إلى ممثل الصنف، وهو المرتبط بنفسه في المصفوفة. وهكذا، يُمثَّل تجزيء الشكل [8.1](#a-partition-of-into-two-sets) بالمصفوفة التالية:
 
-The `find` operation simply follows the links until the representative is
-found. The `union` operation begins by finding the representatives of both
-elements and then links them together. We propose two improvements in the
-interest of efficiency. The first involves performing *path compression*during the
-search carried out by `find`: All the elements found along the path traversed
-to reach the representative are linked directly to it. The second consists in
-keeping track of the *rank*of each representative, that is, the maximum length
-of a path in its class. This information is stored in a second array and is
-used by the function `union` to choose the representative for the union of the
-classes.
+تتبع العملية `find` الروابط ببساطة حتى العثور على الممثل. وتبدأ العملية `union` بالعثور على ممثلي العنصرين ثم تربطهما معاً. ونقترح تحسينين في سبيل الكفاءة. يتمثّل الأول في إجراء *ضغط المسار* (path compression) أثناء البحث الذي تقوم به `find`: إذ تُربط جميع العناصر الموجودة على المسار المسلوك للوصول إلى الممثل به مباشرةً. ويتمثّل الثاني في تتبّع *الرتبة* (rank) لكل ممثل، أي الطول الأقصى لمسار في صنفه. وتُخزَّن هذه المعلومة في مصفوفة ثانية وتستعملها الدالة `union` لاختيار الممثل عند اتحاد الصنفين.
 
 >
 
-### 8.2 Implementation
+### 8.2 التنفيذ
 
 >
 
-We now describe the code of the *union-find*structure. The type `t` is a record
-containing two arrays: `rank`, containing the rank of each class; and `link`, containing
-the links between elements.
+نصف الآن شيفرة بنية *union-find*. النوع `t` سجلّ (record) يحتوي مصفوفتين: `rank`، وتحتوي رتبة كل صنف؛ و`link`، وتحتوي الروابط بين العناصر.
 
 ```ocaml
   type t = {
@@ -68,10 +36,7 @@ the links between elements.
   }
 ```
 
-The information contained in `rank` is only meaningful for those elements i that are
-representatives, that is, for which `link.(`i`)` = i. Initially, each element forms a class in
-itself (that is, it is its own representative), and the rank of every class is
-0.
+المعلومة الموجودة في `rank` لا معنى لها إلا بالنسبة للعناصر i التي هي ممثلون، أي التي يكون فيها `link.(i)` = i. في البداية، يشكّل كل عنصر صنفاً بذاته (أي أنه ممثل نفسه)، ورتبة كل صنف تساوي 0.
 
 ```ocaml
   let create n =
@@ -79,10 +44,7 @@ itself (that is, it is its own representative), and the rank of every class is
       link = Array.init n (fun i -> i) }
 ```
 
-The function `find` computes the representative of an element `i`. It is naturally written as
-a recursive function. We begin by calculating the element `p` linked to `i` in
-the array `t.link`. If it is `i` itself, `i` is the class representative, and we are
-done.
+تحسب الدالة `find` ممثل عنصر i. وتُكتب بشكل طبيعي كدالة تعاودية. نبدأ بحساب العنصر p المرتبط بـ i في المصفوفة `t.link`. فإن كان i نفسه، فإن i هو ممثل الصنف، ويكون هذا كافياً.
 
 ```ocaml
   let rec find t i =
@@ -91,9 +53,7 @@ done.
       i
 ```
 
-Otherwise, we recursively compute the representative `r` of `p` with `findtp`.
-However, before returning `r`, we perform path compression, that is, we link `i` to `r`
-directly.
+وإلا، نحسب بشكل تعاودي ممثل r للعنصر p بواسطة `find t p`. غير أنه قبل إرجاع r، نُجري ضغط المسار، أي نربط i بـ r مباشرة.
 
 ```ocaml
     else begin
@@ -103,11 +63,9 @@ directly.
     end
 ```
 
-This way, the next time we call `find` on `i`, we will immediately find `r`.
+وبهذه الطريقة، في المرة التالية التي نستدعي فيها `find` على i، سنجد r فوراً.
 
-The operation `union` merges the classes of two elements, `i` and `j`. We begin by
-calculating their representatives, `ri` and `rj`, respectively. If they are equal, there is
-nothing more to be done.
+تبدأ العملية `union` بدمج صنفي عنصرين، i وj. نبدأ بحساب ممثليهما، ri وrj على التوالي. فإن كانا متساويين، فليس ثمة ما يستدعي المزيد.
 
 ```ocaml
   let union t i j =
@@ -116,28 +74,21 @@ nothing more to be done.
     if ri <> rj then begin
 ```
 
-Otherwise, we compare the ranks of the two classes. If that of `ri` is strictly less than that
-of `rj`, we make `rj` the representative of the union.
+وإلا، نقارن رتبتي الصنفين. فإن كانت رتبة ri أصغر تماماً من رتبة rj، جعلنا rj ممثلاً للاتحاد.
 
 ```ocaml
       if t.rank.(ri) < t.rank.(rj) then
         t.link.(ri) <- rj
 ```
 
-The rank does not have to be updated for this new class. Indeed, only the paths in the
-previous class of `ri` have had their lengths increased by one unit, and this new length
-does not exceed the rank of `rj`. When the rank of `rj` is smaller, we proceed
-symmetrically.
+لا يلزم تحديث الرتبة لهذا الصنف الجديد. وفي الواقع، فإن المسارات الواقعة في صنف ri السابق فقط هي التي ازدادت أطوالها بوحدة واحدة، وهذا الطول الجديد لا يتجاوز رتبة rj. وعندما تكون رتبة rj أصغر، نمضي بشكل متماثل.
 
 ```ocaml
       else begin
         t.link.(rj) <- ri;
 ```
 
-When the two classes have the same rank, we choose one of the two representatives
-arbitrarily as the representative of the union (here, `ri`). The rank information must
-then be updated, because in this case the length of the longest path in the class may
-increase by one unit.
+عندما تكون رتبتا الصنفين متساويتين، نختار أحد الممثلين عشوائياً ليكون ممثلاً للاتحاد (هنا ri). ويجب عندئذ تحديث معلومة الرتبة، لأن طول أطول مسار في الصنف قد يزداد في هذه الحالة بوحدة واحدة.
 
 ```ocaml
         if t.rank.(ri) = t.rank.(rj) then
@@ -146,31 +97,17 @@ increase by one unit.
     end
 ```
 
-Importantly the function `union` uses the function `find`, and therefore performs
-path compression even in the case when `i` and `j` belong to the same class.
-The complete code of the *union-find*structure is given in program [72](#x22-234001r72) (see
-page [621](#x22-234001r72)).
+من المهم أن الدالة `union` تستعمل الدالة `find`، وبالتالي تُجري ضغط المسار حتى في حالة انتماء i وj إلى الصنف نفسه. وتُعطى الشيفرة الكاملة لبنية *union-find* في البرنامج [72](#x22-234001r72) (انظر الصفحة [621](#x22-234001r72)).
 
-#### Complexity
+#### التعقيد
 
-We can show that, thanks to path compression and the rank associated with each
-class, a sequence of m `find` and `union` operations, performed on a structure
-containing n elements, is executed in O(mα(n,m)) total time, where α is a function
-that grows extremely slowly. In fact, it grows so slowly that we may consider it to be
-constant for all practical purposes, given the constraints that memory and time
-impose on the values of n and m. We may therefore assume that each operation takes
-amortized constant time. This analysis is complex and lies beyond the scope of this
-book. A detailed explanation may be found in *Introduction to Algorithms* [[7](https://usr.lmf.cnrs.fr/lpo/mainli3.html#Xcormen),
-chap. 22].
+يمكننا أن نبيّن أنه، بفضل ضغط المسار والرتبة المرتبطة بكل صنف، فإن متتالية من m عملية من عمليات `find` و`union`، تُنفَّذ على بنية تحتوي n عنصراً، تُنجَز في زمن كلي قدره O(mα(n,m))، حيث α دالة تنمو ببطء شديد للغاية. بل إنها تنمو ببطء إلى حدّ يمكننا أن نعتبرها معه ثابتة في كل الأغراض العملية، نظراً للقيود التي تفرضها الذاكرة والوقت على قيمتي n وm. ويمكننا من ثمّ افتراض أن كل عملية تستغرق زمناً ثابتاً مطفأً (amortized constant time). هذا التحليل معقّد ويقع خارج نطاق هذا الكتاب. ويمكن العثور على شرح مفصّل في *Introduction to Algorithms* [[7](https://usr.lmf.cnrs.fr/lpo/mainli3.html#Xcormen)، الفصل 22].
 
 >
 
-### 8.3 Exercises
+### 8.3 تمارين
 
-**8.1**The signature of the *union-find*structure is constraining because it requires
-prior knowledge of the number of elements. For greater flexibility, we may
-wish to add new elements dynamically, and without any restriction on the
-number of elements. The signature of such a structure could be the following:
+**8.1** إن توقيع بنية *union-find* مُقيِّد لأنه يتطلّب معرفة مسبقة بعدد العناصر. ولمزيد من المرونة، قد نرغب في إضافة عناصر جديدة ديناميكياً، ودون أي قيد على عدد العناصر. ويمكن أن يكون توقيع بنية كهذه كما يلي:
 
 ```ocaml
   type t
@@ -180,55 +117,40 @@ number of elements. The signature of such a structure could be the following:
   val union: t -> int -> int -> unit
 ```
 
-The function `create` creates an empty structure. The function `add` adds a new element
-and returns it. (Elements are always integers). The signatures of `find` and `union`
-remain unchanged. Implement such a data structure using resizeable arrays (see
-section [*4.1*](https://usr.lmf.cnrs.fr/lpo/mainch4.html#resizeable-arrays) *Resizeable Arrays*).
+تنشئ الدالة `create` بنية فارغة. وتضيف الدالة `add` عنصراً جديداً وتُرجعه. (العناصر دائماً أعداد صحيحة). ويبقى توقيعا `find` و`union` دون تغيير. نفّذ بنية بيانات كهذه باستعمال مصفوفات قابلة لتغيير الحجم (انظر القسم [*4.1*](https://usr.lmf.cnrs.fr/lpo/mainch4.html#resizeable-arrays) *Resizeable Arrays*).
 
-**8.2**Extend the *union-find*structure with an operation `num_classes` that returns
-the total number of classes.
+**8.2** وسّع بنية *union-find* بعملية `num_classes` تُرجع العدد الإجمالي للأصناف.
 
 ```ocaml
   val num_classes: t -> int
 ```
 
-Ensure that `num_classes` executes in constant time by keeping track of this value as an
-additional field of the record.
+تأكّد من أن `num_classes` تُنفَّذ في زمن ثابت بتتبّع هذه القيمة كحقل إضافي في السجلّ.
 
-**8.3**Extend the *union-find*structure with an operation `iter_classes` that permits
-the traversal of the set of all class representatives.
+**8.3** وسّع بنية *union-find* بعملية `iter_classes` تسمح بالمرور على مجموعة جميع ممثلي الأصناف.
 
 ```ocaml
   val iter_classes: (int -> unit) -> t -> unit
 ```
 
-Ensure that `iter_classes` executes in time proportionate to the total number of
-classes.
+تأكّد من أن `iter_classes` تُنفَّذ في زمن يتناسب مع العدد الإجمالي للأصناف.
 
-**8.4**If the elements are not consecutive integers, we can replace the two arrays `rank`
-and `link` by a pair of hash tables. Reimplement the operations `create`, `find`, and
-`union` using this idea.
+**8.4** إذا لم تكن العناصر أعداداً صحيحة متتالية، فيمكننا استبدال المصفوفتين `rank` و`link` بزوج من جداول التجزئة. أعد تنفيذ العمليات `create` و`find` و`union` باستعمال هذه الفكرة.
 
-**8.5** Instead of using arrays, another way of implementing the *union-find*structure
-consists in representing each class directly as an acyclic graph whose nodes are
-records containing the values `rank` and `link`. Each node is of the following
-type:
+**8.5** بدلاً من استعمال المصفوفات، تتمثّل طريقة أخرى لتنفيذ بنية *union-find* في تمثيل كل صنف مباشرةً كرسم بياني لا دوري عُقده سجلات تحتوي القيمتين `rank` و`link`. وكل عقدة من النوع التالي:
 
 ```ocaml
   type elt = { mutable rank: int; mutable link: elt }
 ```
 
-If we wish to keep track of extra information for each element, we may use the following
-type instead:
+إذا رغبنا في تتبّع معلومات إضافية لكل عنصر، فيمكننا استعمال النوع التالي بدلاً من ذلك:
 
 ```ocaml
   type ’a elt =
     { mutable rank: int; mutable link: ’a elt; data: ’a }
 ```
 
-It is no longer necessary to keep track of any global information in the *union-find*
-structure, because each node contains all the necessary information. The signature of
-the *union-find*structure is then modified as follows:
+لم يعد من الضروري تتبّع أي معلومة عامة في بنية *union-find*، لأن كل عقدة تحتوي على جميع المعلومات اللازمة. ويُعدَّل توقيع بنية *union-find* عندئذ كما يلي:
 
 ```ocaml
   type ’a elt
@@ -237,14 +159,9 @@ the *union-find*structure is then modified as follows:
   val union: ’a elt -> ’a elt -> unit
 ```
 
-The function `create_node` constructs a class consisting of a single element, that is, a
-record whose field `link` points to itself. Write the operations `make`, `find`, and `union`.
-Note: The comparison of values of type `’aelt` must be done using physical
-equality.
+تنشئ الدالة `create_node` صنفاً يتكوّن من عنصر واحد، أي سجلاً يشير فيه الحقل `link` إلى نفسه. اكتب العمليات `make` و`find` و`union`. ملاحظة: يجب إجراء مقارنة القيم من النوع `’a elt` باستعمال التساوي الفيزيائي.
 
-**8.6**Replace the arrays `rank` and `link` with persistent arrays (see section [*4.4*](https://usr.lmf.cnrs.fr/lpo/mainch4.html#persistent-arrays)
-*Persistent Arrays*), and write a persistent *union-find*structure with the following
-signature:
+**8.6** استبدل المصفوفتين `rank` و`link` بمصفوفات دائمة (انظر القسم [*4.4*](https://usr.lmf.cnrs.fr/lpo/mainch4.html#persistent-arrays) *Persistent Arrays*)، واكتب بنية *union-find* دائمة بالتوقيع التالي:
 
 ```ocaml
   type t
@@ -253,57 +170,29 @@ signature:
   val union: t -> int -> int -> t
 ```
 
-Note: To perform path compression, it is convenient to modify the contents of the field
-`link` using side effects. We accordingly define the following type:
+ملاحظة: لإجراء ضغط المسار، من المناسب تعديل محتوى الحقل `link` باستعمال الآثار الجانبية. وبناءً على ذلك نعرّف النوع التالي:
 
 ```ocaml
   type t = { rank: int A.t; mutable link: int A.t }
 ```
 
-Here, the type `A.t` is the type of persistent arrays, and the mutability of the field `link`
-can be used to record the effect of path compression before returning the result of the
-function `find`. Although the data structure is modified by a side effect, the
-modification cannot be observed: the representative of each element remains the
-same.
+هنا، النوع `A.t` هو نوع المصفوفات الدائمة، ويمكن استعمال قابلية التعديل في الحقل `link` لتسجيل أثر ضغط المسار قبل إرجاع نتيجة الدالة `find`. ومع أن بنية البيانات تُعدَّل بأثر جانبي، فإن هذا التعديل لا يمكن ملاحظته: إذ يبقى ممثل كل عنصر كما هو.
 
-**8.7**The *union-find*structure can be used to efficiently construct a perfect maze,
-that is, one in which there is one and only one path between any two cells. Here is an
-example of such a maze:
+**8.7** يمكن استعمال بنية *union-find* لبناء متاهة مثالية بكفاءة، أي متاهة يوجد فيها مسار واحد فقط بين أي خليتين. وفيما يلي مثال على متاهة كهذه:
 
-You may proceed as follows: Create a *union-find*structure whose elements are the
-different cells. The idea is that two cells are in the same class if and only if they are
-linked by a path. Initially, all the cells of the maze are separated from each other by
-walls. Next, consider all pairs of adjacent cells (vertically and horizontally) in random
-order. For each pair (c1,c2), compare the classes of the cells c1 and c2. If they are
-identical, there is nothing more to be done. Otherwise, delete the wall that separates
-c1 and c2, and merge the two classes using `union`. Write code that constructs a maze
+يمكنك المضي كما يلي: أنشئ بنية *union-find* تكون عناصرها هي الخلايا المختلفة. والفكرة أن خليتين تكونان في الصنف نفسه إذا وفقط إذا كانتا مرتبطتين بمسار. في البداية، تكون جميع خلايا المتاهة منفصلة بعضها عن بعض بجدران. ثم انظر في جميع أزواج الخلايا المتجاورة (عمودياً وأفقياً) بترتيب عشوائي. ولكل زوج (c1,c2)، قارن صنفي الخليتين c1 وc2. فإن كانا متطابقين، فليس ثمة ما يستدعي المزيد. وإلا، فاحذف الجدار الفاصل بين c1 وc2، وادمج الصنفين باستعمال `union`. اكتب شيفرة تبني متاهة
  
  
-using this method.
+بهذه الطريقة.
 
-Hint: The easiest way to traverse all pairs of adjacent cells in random order is by
-constructing an array containing all pairs, and then mixing them randomly using the
-*Knuth shuffle*(exercice [2.11](https://usr.lmf.cnrs.fr/lpo/mainch2.html#x7-94006r11), page [249](https://usr.lmf.cnrs.fr/lpo/mainch2.html#x7-94006r11)).
+تلميح: أسهل طريقة للمرور على جميع أزواج الخلايا المتجاورة بترتيب عشوائي هي ببناء مصفوفة تحتوي جميع الأزواج، ثم خلطها عشوائياً باستعمال *خلط كنوث* (Knuth shuffle) (التمرين [2.11](https://usr.lmf.cnrs.fr/lpo/mainch2.html#x7-94006r11)، الصفحة [249](https://usr.lmf.cnrs.fr/lpo/mainch2.html#x7-94006r11)).
 
-Justify that at the end of the construction every cell is linked to every other cell
-by a single path.
+برّر أنه في نهاية البناء تكون كل خلية مرتبطة بكل خلية أخرى بمسار واحد.
 
-**8.8**The aim of this exercise is to color the *connected*components of a
-black-and-white image using different colors. A connected component is formed by
-pixels that have the same color as their neighbors. Two pixels are neighbors if they
-have a common border.
+**8.8** الهدف من هذا التمرين هو تلوين المكوّنات *المتصلة* (connected components) لصورة بالأبيض والأسود باستعمال ألوان مختلفة. يتكوّن المكوّن المتصل من وحدات بكسل (pixels) لها اللون نفسه الذي لجيرانها. وتكون وحدتا البكسل متجاورتين إذا كان بينهما حدّ مشترك.
 
-For example, in the following image of 6 × 6 pixels, there are two white connected
-components, and four black ones.
+على سبيل المثال، في الصورة التالية ذات 6 × 6 بكسل، يوجد مكوّنان أبيضان متصلان، وأربعة سوداء.
 
-A black-and-white image is represented by a matrix of booleans. To compute its
-connected components, we use a *union-find*structure to group neighboring pixels
-having the same color in a single class. Write a function that takes as argument a
-matrix of booleans and returns a *union-find*structure containing its equivalence
-classes.
+تُمثَّل صورة بالأبيض والأسود بمصفوفة من القيم المنطقية (booleans). ولحساب مكوّناتها المتصلة، نستعمل بنية *union-find* لتجميع وحدات البكسل المتجاورة ذات اللون نفسه في صنف واحد. اكتب دالة تأخذ كوسيط مصفوفة من القيم المنطقية وتُرجع بنية *union-find* تحتوي أصناف تكافؤها.
 
-To assign a different color to each connected component, use a hash table that
-associates a different color with each representative. Write a function that displays the
-image with its connected components colored. Assume that you are given a
-function `new_color` of type `unit->color` and a function `draw_pixel` of type
-`int->int->color->unit`.
+ولإسناد لون مختلف لكل مكوّن متصل، استعمل جدول تجزئة يربط لوناً مختلفاً بكل ممثل. واكتب دالة تعرض الصورة مع تلوين مكوّناتها المتصلة. افترض أنك معطى دالة `new_color` من النوع `unit->color` ودالة `draw_pixel` من النوع `int->int->color->unit`.

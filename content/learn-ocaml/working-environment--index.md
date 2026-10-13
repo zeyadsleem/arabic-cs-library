@@ -1,55 +1,55 @@
 ---
-title: "The Working Environment"
-lang: en
+title: "بيئة العمل"
+lang: ar
 ---
 
-## 1. The Working Environment
+## 1. بيئة العمل
 
-The OCaml language is available for use with the main operating systems (Linux,
-macOS, Windows). It can be obtained at the following address:
+لغة OCaml متاحة للاستخدام مع أنظمة التشغيل الرئيسية (Linux،
+macOS، Windows). يمكن الحصول عليها على العنوان التالي:
 
 `https://ocaml.org/`
 
-The site contains installation instructions for these systems. Once you have installed
-OCaml, you will have access to the following tools: an interpreter, `ocaml`; two
-compilers, `ocamlc` and `ocamlopt`; and a package manager, `opam`. We briefly present
-these four tools below.
+يحتوي الموقع على تعليمات تثبيت لهذه الأنظمة. بعد تثبيت
+OCaml، ستتمكن من الوصول إلى الأدوات التالية: مفسّر (interpreter)، `ocaml`؛ ومصرِّفان (compilers)،
+`ocamlc` و `ocamlopt`؛ ومدير حزم (package manager)، `opam`. سنقدّم باختصار
+هذه الأدوات الأربعة أدناه.
 
-### 1.1 The Compiler and the Interpreter
+### 1.1 المصرِّف والمفسّر
 
-The OCaml system includes two compilers: `ocamlc` and `ocamlopt`. The first generates
-portable code, independent of the hardware architecture; the second generates more
-efficient native code (X86, ARM, etc.). You can use either of these two tools to
-compile the programs given in this book. The system also includes an interactive
-version, namely, the program `ocaml`. This is an interpreter or *toplevel*that executes a
-read-eval-print loop (REPL).
+يتضمن نظام OCaml مصرِّفين: `ocamlc` و `ocamlopt`. يُنشئ الأول
+كودًا قابلاً للنقل (portable)، مستقلاً عن بنية الأجهزة؛ ويُنشئ الثاني
+كودًا أصليًا (native) أكثر كفاءة (X86، ARM، etc.). يمكنك استخدام أي من هذين الأداتين لـ
+ترجمة (compile) البرامج المعطاة في هذا الكتاب. يتضمن النظام أيضًا نسخة تفاعلية،
+وهي البرنامج `ocaml`. هذا مفسّر (interpreter) أو *toplevel* (البيئة التفاعلية) ينفّذ
+حلقة قراءة-تقييم-طباعة (REPL).
 
-### 1.2 A First OCaml Program
+### 1.2 برنامج OCaml أول
 
-We illustrate the use of these tools with a simple program that displays the message
-`Hello world!` on the screen. It can be written as follows:
+نوضّح استخدام هذه الأدوات على مثال برنامج بسيط يعرض رسالة
+`Hello world!` على الشاشة. يمكن كتابته على النحو التالي:
 
 ```ocaml
   let () = print_string "Hello world!\n"
 ```
 
-This is itself a complete program. We will go into the details of such programs in the next
-chapter. If the program is stored in a file `hello.ml`, it can be compiled from within a
-terminal[^1] 
-using `ocamlc`, as follows:
+هذا بحدّ ذاته برنامج كامل. سنتناول تفاصيل مثل هذه البرامج في
+الفصل التالي. إذا خُزّن البرنامج في ملف `hello.ml`، يمكن ترجمته (compile) من داخل
+الطرفية[^1] 
+باستخدام `ocamlc`، على النحو التالي:
 
 ```console
   > ocamlc hello.ml
 ```
 
-We can then execute the resulting binary, `a.out`, with the expected result:
+يمكننا ثم تنفيذ الملف (binary) الناتج، `a.out`، مع النتيجة المتوقعة:
 
 ```text
   > ./a.out
   Hello world!
 ```
 
-The binary can be given a different name using the compiler’s `-o` option:
+يمكن إعطاء الملف (binary) اسمًا مختلفًا باستخدام خيار `-o` للمصرِّف:
 
 ```console
   > ocamlc -o hello hello.ml
@@ -57,9 +57,9 @@ The binary can be given a different name using the compiler’s `-o` option:
   Hello world!
 ```
 
-To use the interpreter, it suffices to type the command `ocaml` in a terminal. The
-program then displays a prompt in the form of the character `#`, prompting the user to
-enter an expression.
+لاستخدام المفسّر، يكفي كتابة الأمر `ocaml` في الطرفية. يعرض
+البرنامج آنذاك مؤشرًا (prompt) على شكل الحرف `#`، موجِّهًا المستخدم
+لإدخال تعبير.
 
 ```console
   > ocaml
@@ -67,11 +67,11 @@ enter an expression.
   #
 ```
 
-To be evaluated, the expression must end with two semicolons `;;` followed by a
-carriage return. The toplevel verifies that the expression is syntactically correct and
-well-typed. It then evaluates the expression and displays the result. Thus,
-in order to display the message `Hello world!` on the screen, it suffices to
-type:
+لتقييم التعبير، يجب أن ينتهي بفاصلتين منقوطتين `;;` تتبعهما
+عودة carriage return. تتحقق البيئة التفاعلية (toplevel) من صحة التعبير نحويًا (syntactically) وكونه
+مُحدَّد الأنواع (well-typed). ثم تُقيّم التعبير وتعرض النتيجة. لذا،
+لعرض رسالة `Hello world!` على الشاشة، يكفي
+كتابة:
 
 ```console
   > ocaml
@@ -82,10 +82,10 @@ type:
   #
 ```
 
-In addition to the result, the toplevel also displays the type inferred by
-OCaml for the expression that has been entered. For example, if you enter
-the mathematical expression 1 + 4 × 2, the interpreter returns the following
-response:
+بالإضافة إلى النتيجة، تعرض البيئة التفاعلية (toplevel) أيضًا النوع (type)
+المستنتج (inferred) بواسطة OCaml للتعبير المُدخل. على سبيل المثال، إذا أدخلت
+التعبير الرياضي 1 + 4 × 2، يُرجع المفسّر الاستجابة
+التالية:
 
 ```text
   # 1 + 4 * 2;;
@@ -93,68 +93,57 @@ response:
   #
 ```
 
-This shows that the expression is of type `int` (the type of integers), and that its result
-is 9. From now on, we will present the expression entered by the user and the
-interpreter’s response against a gray background. Thus, the evaluation of the
-preceding expression will be presented, as follows:
+يُظهر هذا أن التعبير من نوع `int` (نوع الأعداد الصحيحة)، وأن
+نتيجته هي 9. من الآن فصاعدًا، سنقدّم التعبير المُدخل من قبل المستخدم
+واستجابة المفسّر على خلفية رمادية. لذا، تقييم
+التعبير السابق سيُقدَّم على النحو التالي:
 
 ```ocaml
   # 1 + 4 * 2 ;;
   - : int = 9
 ```
 
-To exit the toplevel, type the command `#quit`, as follows:
+للخروج من البيئة التفاعلية (toplevel)، اكتب الأمر `#quit`، على النحو التالي:
 
 ```text
   # #quit;;
   >
 ```
 
-A simpler way to do this is to press the keys `ctrl` and `D` simultaneously.
+طريقة أبسط هي الضغط على المفتاحين `ctrl` و `D` في آن واحد.
 
-### 1.3 Programming Environments
+### 1.3 بيئات البرمجة
 
-As with many other programming languages, you can work with OCaml using your
-preferred text editor (Emacs, Visual Studio Code, etc.). The text editor may be
-configured with OCaml-specific syntax coloring, error highlighting, and so
-forth.
+كما هو الحال مع العديد من لغات البرمجة الأخرى، يمكنك العمل مع OCaml باستخدام محرر النصوص المفضّل لديك (Emacs، Visual Studio Code، etc.). يمكن تهيئة محرر النصوص لاستخدام تلوين نحو (syntax coloring) خاص بـ OCaml، وإبراز الأخطاء (error highlighting)، وما إلى ذلك.
 
-In this text, we will use the tool `dune` to automate the compilation process. This
-tool can be obtained via the `opam` package manager, and can be installed by typing
-the following command in a terminal:
+في هذا النص، سنستخدم الأداة `dune` لأتمتة عملية الترجمة (compilation). يمكن الحصول على هذه الأداة عبر مدير الحزم `opam`، ويمكن تثبيتها بكتابة الأمر التالي في الطرفية:
 
 ```text
   > opam install dune
 ```
 
-Another solution is to use the tool `make`. This requires writing a configuration file
-(`Makefile`) specific to OCaml.
+حل آخر هو استخدام الأداة `make`. هذا يتطلب كتابة ملف تهيئة (`Makefile`) خاص بـ OCaml.
 
-#### Online Environments
+#### بيئات عبر الإنترنت
 
-There are also online solutions for using OCaml without installing it on your machine.
-One example is the online interpreter TryOCaml, available at the following address:
+هناك أيضًا حلول عبر الإنترنت لاستخدام OCaml دون تثبيته على جهازك. مثال واحد هو المفسّر عبر الإنترنت TryOCaml، المتوفر على العنوان التالي:
 
 `https://try.ocamlpro.com/`
 
-Another example is the website
+مثال آخر هو موقع الويب
 
 `https://replit.com/`
 
-which offers online environments for a number of languages, among them OCaml.
+الذي يوفر بيئات عبر الإنترنت لعدد من اللغات، ومن بينها OCaml.
 
-### 1.4 Installing OCaml Libraries
+### 1.4 تثبيت مكتبات OCaml
 
-The community of OCaml users has developed a number of OCaml libraries. The
-easiest way to install them is to use the package manager `opam`. In the next chapter,
-we will use a graphics library, which may be installed as follows:
+طوّرت مجتمع مستخدمي OCaml عددًا من مكتبات OCaml. أسهل طريقة لتثبيتها هي استخدام مدير الحزم `opam`. في الفصل التالي، سنستخدم مكتبة رسوميات (graphics)، يمكن تثبيتها على النحو التالي:
 
 ```text
   > opam install graphics
 ```
 
-We will explain later how to use this library and, more generally, any library installed
-using `opam`.
+سنوضح لاحقًا كيفية استخدام هذه المكتبة، وبشكل عام، أي مكتبة تم تثبيتها باستخدام `opam`.
 
-[^3]: The program `seq` is a Unix tool that displays all the integers from 1 to n, one integer per
- line. It is the simplest way to obtain exactly n lines of text.
+[^3]: البرنامج `seq` هي أداة Unix تعرض جميع الأعداد الصحيحة من 1 إلى n، عدد صحيح في كل سطر. إنها أبسط طريقة للحصول على n سطرًا بالضبط من النص.

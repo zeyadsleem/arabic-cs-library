@@ -1,108 +1,102 @@
 ---
-title: "Graphs"
-lang: en
+title: "الرسوم البيانية"
+lang: ar
 ---
 
-## 7. Graphs
+## 7. الرسوم البيانية
 
-Graphs are a fundamental data structure in computer science. A graph consists of a
-set of *vertices* linked by *edges*. We are accustomed to visualizing graphs as illustrated
-in figure [7.1](#example-of-a-graph).
+تُعدّ الرسوم البيانية بنية معطيات أساسية في علم الحاسوب. يتكوّن الرسم البياني من مجموعة
+من *الرؤوس (vertices)* تربطها *الأضلاع (edges)*. وقد اعتدنا على تصوير الرسوم البيانية على النحو
+المبيّن في الشكل [7.1](#example-of-a-graph).
 
 ![](/images/learn-ocaml/graphs-0-graph1-mps-.webp){#example-of-a-graph}
 
-**Figure 7.1: Example of a graph.**
+**الشكل 7.1: مثال على رسم بياني.**
 
-Formally, a graph is a set V of vertices and a set E of edges, which are
-*unordered pairs*of vertices. If {x,y}∈ E, we say that the vertices x and y are
-adjacent. As the adjacency relation is symmetric, we speak of an *undirected graph*.
+رسميًّا، الرسم البياني هو مجموعة V من الرؤوس ومجموعة E من الأضلاع، وهي
+*أزواج غير مرتّبة* من الرؤوس. إذا كان {x,y}∈ E، نقول إن الرأسين x و y متجاوران. وبما أن
+علاقة التجاور متناظرة، فإننا نتحدث عن *رسم بياني غير موجّه*.
 
-We can also define the notion of *directed graph*by taking E to be a set of *ordered pairs*of vertices rather than unordered pairs. We then speak of *arcs* rather than
-edges. If (x,y) ∈ E, we say that y is a successor of x and write x → y. An example of
-a directed graph is given in figure [7.2](#example-of-a-directed-graph).
+ويمكننا أيضًا تعريف مفهوم *الرسم البياني الموجّه* بأخذ E لتكون مجموعة من *الأزواج المرتّبة*
+من الرؤوس بدلًا من الأزواج غير المرتّبة. حينئذٍ نتحدث عن *الأقواس (arcs)* بدلًا من
+الأضلاع. إذا كان (x,y) ∈ E، نقول إن y خَلَفٌ لـ x ونكتب x → y. ويُعطى مثال على
+رسم بياني موجّه في الشكل [7.2](#example-of-a-directed-graph).
 
 ![](/images/learn-ocaml/graphs-1-graph1d-mps-.webp){#example-of-a-directed-graph}
 
-**Figure 7.2: Example of a directed graph.**
+**الشكل 7.2: مثال على رسم بياني موجّه.**
 
-An arc from a vertex to itself, as in this example, is called a *cycle*. The *indegree*
-(resp. *outdegree*) of a vertex is the number of arcs that point towards it (resp. that
-point away from it). A *path* from a vertex u to a vertex v is a sequence x0,…,xn of
-vertices such as x0 = u, xn = v and xi → xi+1 for 0 ≤ i < n. Such a path is of
-length n; it contains n arcs.
+يُسمّى القوس الممتد من رأس إلى نفسه، كما في هذا المثال، *حلقة (cycle)*. أما *درجة الدخول (indegree)*
+(وبالمثل *درجة الخروج (outdegree)*) لرأس فهي عدد الأقواس المتّجهة نحوه (وبالمثل المتّجهة
+بعيدًا عنه). و*المسار (path)* من رأس u إلى رأس v هو متتالية x0,…,xn من
+الرؤوس بحيث x0 = u و xn = v و xi → xi+1 من أجل 0 ≤ i < n. ويكون طول هذا المسار
+n؛ فهو يحتوي على n قوسًا.
 
-Vertices, like arcs, may carry information. We then speak of a *labeled graph*. An
-example of a directed, labeled graph is given in figure [7.3](#example-of-a-directed-labeled-graph).
+وقد تحمل الرؤوس، شأنها شأن الأقواس، معلومات. حينئذٍ نتحدث عن *رسم بياني موسوم (labeled graph)*. ويُعطى
+مثال على رسم بياني موجّه وموسوم في الشكل [7.3](#example-of-a-directed-labeled-graph).
 
 ![](/images/learn-ocaml/graphs-2-graph1dl-mps-.webp){#example-of-a-directed-labeled-graph}
 
-**Figure 7.3: Example of a directed, labeled graph.**
+**الشكل 7.3: مثال على رسم بياني موجّه وموسوم.**
 
-It is important to note that the label of a vertex is not the same as the vertex
-itself. In particular, two vertices may bear the same label. Formally, a labeled graph
-therefore comprises two additional functions giving, respectively, the label of a vertex
-in V and the label of an arc in E.
+من المهم ملاحظة أن وسم الرأس ليس هو الرأس نفسه. وعلى وجه الخصوص، قد يحمل رأسان الوسم
+ذاته. ولذلك يشتمل الرسم البياني الموسوم، رسميًّا، على دالتين إضافيتين تعطيان على التوالي
+وسم رأس في V ووسم قوس في E.
 
-In what follows, we will use the term edge for both directed and undirected
-graphs.
+في ما يأتي، سنستخدم مصطلح ضلع لكلٍّ من الرسوم البيانية الموجّهة وغير الموجّهة.
 
-#### Basic Operations on Graphs
+#### العمليات الأساسية على الرسوم البيانية
 
-Before defining data structures to represent graphs, it is necessary to consider the
-operations that these structures should provide. We do this independently of any
-particular representation, with a view to constructing generic algorithms. We may
-distinguish the following basic operations:
+قبل تعريف بنى المعطيات اللازمة لتمثيل الرسوم البيانية، لا بدّ من النظر في
+العمليات التي ينبغي أن توفّرها هذه البنى. ونفعل ذلك بمعزل عن أي تمثيل بعينه، بهدف
+بناء خوارزميات عامة. ويمكننا تمييز العمليات الأساسية الآتية:
 
-- construction operations, such as the creation of a graph, the addition or
-       removal of a vertex or an edge;
-- access operations, such as testing whether a vertex or an edge belongs to
-       a graph, accessing the degree of a vertex, its label, the number of vertices
-       or edges;
-- basic  traversal  operations,  such  as  the  traversal  of  all  vertices,  of  all
-       successors of a given vertex, or of all edges.
+- عمليات البناء، مثل إنشاء رسم بياني، أو إضافة رأس أو ضلع أو حذفه؛
+- عمليات الوصول، مثل اختبار ما إذا كان رأس أو ضلع ينتمي إلى رسم بياني،
+       أو الوصول إلى درجة رأس، أو وسمه، أو عدد الرؤوس أو الأضلاع؛
+- عمليات المرور الأساسية، مثل المرور على جميع الرؤوس، أو على جميع
+       خلفاء رأس معطى، أو على جميع الأضلاع.
 
-As we will see shortly, there is no single structure of graphs that provides all these
-operations in an optimal manner. At the end of this chapter, we compare different
-graph data structures according to the complexity of the different operations
-above.
+وكما سنرى بعد قليل، لا توجد بنية وحيدة للرسوم البيانية توفّر كل هذه
+العمليات على نحو أمثل. وفي نهاية هذا الفصل، نقارن بين بنى مختلفة
+للرسوم البيانية وفقًا لتعقيد العمليات المختلفة المذكورة أعلاه.
 
-### 7.1 Adjacency Matrix
+### 7.1 مصفوفة التجاور
 
-We consider in this section the case in which vertices are represented by integers and,
-more precisely, by consecutive integers 0,…,N − 1. In other words, we have
+ننظر في هذا القسم في الحالة التي تُمثَّل فيها الرؤوس بأعداد صحيحة، وبشكل أدق
+بأعداد صحيحة متتالية 0,…,N − 1. بعبارة أخرى، لدينا
 V = {0,…,N − 1}.
 
-Program [67](#x21-220003r67) (see following page) gives a minimal signature for such graphs. The
-type `t` is that of graphs. It is deliberately made abstract as we are going to present
-two different implementations of this signature. The creation function, `create`, takes
-the value N as argument, and the function `nb_vertex` gives it back. Crucially, we
-assume here that the graph contains N vertices from the outset. Consequently, we do
-not provide operations to add or remove vertices, or to test whether they belong to
-the graph. In case of edges, however, we do have these operations, namely, `add_edge`,
-`remove_edge`, and `mem_edge`. Note that the functions to add and remove edges
-correspond to an imperative structure. The signature provides only the functions to
-traverse the successors of a vertex (`iter_succ`) and all edges (`iter_edge`). Traversing
-all vertices can be easily achieved with a `for` loop from 0 to N − 1. Finally,
-note that this signature works equally well for both directed and undirected
-graphs.
+يعطي البرنامج [67](#x21-220003r67) (انظر الصفحة التالية) توقيعًا مصغّرًا لهذه الرسوم البيانية. والنوع
+`t` هو نوع الرسوم البيانية. وقد جُعل مجرّدًا عن قصد لأننا سنقدّم
+تنفيذين مختلفين لهذا التوقيع. وتأخذ دالة الإنشاء `create`
+القيمة N وسيطًا، وتعيدها دالة `nb_vertex`. والأهم هنا أننا
+نفترض أن الرسم البياني يحتوي منذ البداية على N من الرؤوس. وبناءً على ذلك، لا
+نوفّر عمليات لإضافة الرؤوس أو حذفها أو لاختبار انتمائها إلى
+الرسم البياني. أما في حالة الأضلاع، فلدينا بالفعل هذه العمليات، وهي `add_edge`،
+و`remove_edge`، و`mem_edge`. ولاحظ أن دالتي إضافة الأضلاع وحذفها
+تقابلان بنية أمرية. ولا يوفّر التوقيع سوى دالتي المرور على خلفاء رأس
+(`iter_succ`) وعلى جميع الأضلاع (`iter_edge`). ويمكن تحقيق المرور على
+جميع الرؤوس بسهولة بحلقة `for` من 0 إلى N − 1. وأخيرًا،
+لاحظ أن هذا التوقيع يصلح على حدٍّ سواء للرسوم البيانية الموجّهة وغير الموجّهة.
 
-The signature is deliberately minimal. In particular, graphs are not labeled. Some
-of the exercises of this section propose extensions.
+التوقيع مصغّر عن قصد. وعلى وجه الخصوص، فإن الرسوم البيانية غير موسومة. وتقترح بعض
+تمارين هذا القسم امتدادات.
 
 >
 
-A straightforward representation of such a graph is a matrix M of size N × N,
-where each element Mi,j indicates the presence of an edge between the vertices i
-and j. As the graphs are assumed to be unlabeled, it suffices to use a matrix of
-booleans:
+التمثيل المباشر لمثل هذا الرسم البياني هو مصفوفة M بحجم N × N،
+حيث يشير كل عنصر Mi,j إلى وجود ضلع بين الرأسين i
+و j. وبما أن الرسوم البيانية مفترضة غير موسومة، فيكفي استخدام مصفوفة من
+القيم المنطقية:
 
 ```ocaml
   type vertex = int
   type t = bool array array
 ```
 
-The definition of the function that creates a graph without any edges is clear: We
-construct a square matrix, initialized with `false`.
+تعريف الدالة التي تنشئ رسمًا بيانيًا خاليًا من الأضلاع واضح: ننشئ
+مصفوفة مربّعة مهيّأة بالقيمة `false`.
 
 ```ocaml
   let create n = Array.make_matrix n n false
@@ -111,9 +105,9 @@ construct a square matrix, initialized with `false`.
 
 >
 
-In what follows, we assume that all graphs are directed. Exercise [7.4](#x21-229004r4) indicates the
-modifications required for undirected graphs. Adding, removing, or testing for the
-presence of an edge can all be done in constant time:
+في ما يأتي، نفترض أن جميع الرسوم البيانية موجّهة. ويشير التمرين [7.4](#x21-229004r4) إلى
+التعديلات اللازمة للرسوم البيانية غير الموجّهة. ويمكن إجراء إضافة ضلع أو حذفه أو اختبار
+وجوده كلها في زمن ثابت:
 
 ```ocaml
   let mem_edge g v1 v2 = g.(v1).(v2)
@@ -121,42 +115,40 @@ presence of an edge can all be done in constant time:
   let remove_edge g v1 v2 = g.(v1).(v2) <- false
 ```
 
-To apply a function `f:vertex->unit` to all successors of a vertex `v` of a graph `g`,
-it suffices to traverse the row `g.(v)` of the matrix, for example, with `Array.iteri`.
-We test whether an edge is present before applying the function `f` to the
-corresponding vertex.
+لتطبيق دالة `f:vertex->unit` على جميع خلفاء رأس `v` في رسم بياني `g`،
+يكفي المرور على الصف `g.(v)` من المصفوفة، مثلًا باستخدام `Array.iteri`.
+ونختبر وجود الضلع قبل تطبيق الدالة `f` على الرأس المقابل.
 
 ```ocaml
   let iter_succ f g v =
     Array.iteri (fun w b -> if b then f w) g.(v)
 ```
 
-To apply a function `f:vertex->vertex->unit` to all edges of a graph `g`, we begin by
-traversing the vertices of `g` with a `for` loop. Then, for each vertex `v`, we traverse its
-outgoing edges using `iter_succ`. The function passed to `iter_succ` is obtained by
-partially applying `f` to `v`.
+لتطبيق دالة `f:vertex->vertex->unit` على جميع أضلاع رسم بياني `g`، نبدأ
+بالمرور على رؤوس `g` بحلقة `for`. ثم نمرّ، لكل رأس `v`، على أضلاعه
+الخارجة باستخدام `iter_succ`. وتُشتقّ الدالة المُمرَّرة إلى `iter_succ` بتطبيق
+جزئي للدالة `f` على `v`.
 
 ```ocaml
   let iter_edge f g =
     for v = 0 to nb_vertex g - 1 do iter_succ (f v) g v done
 ```
 
-The complete code for graphs via adjacency matrices is given in program [68](#x21-220024r68). The
-structure of the adjacency matrix may be adapted to the case of labeled graphs (see
-exercise [7.3](#x21-229003r3)) and/or undirected graphs (see exercise [7.4](#x21-229004r4)).
+يُعطى الكود الكامل للرسوم البيانية عبر مصفوفات التجاور في البرنامج [68](#x21-220024r68). ويمكن
+تكييف بنية مصفوفة التجاور مع حالة الرسوم البيانية الموسومة (انظر
+التمرين [7.3](#x21-229003r3)) و/أو الرسوم البيانية غير الموجّهة (انظر التمرين [7.4](#x21-229004r4)).
 
-#### Complexity
+#### التعقيد
 
-The table in figure [7.4](#cost-of-operations-on-adjacency-matrices) summarizes the complexity of the main operations on
-adjacency matrices. In general, the cost is expressed as a function of the number N of
+يلخّص الجدول في الشكل [7.4](#cost-of-operations-on-adjacency-matrices) تعقيد العمليات الرئيسية على
+مصفوفات التجاور. وبصفة عامة، يُعبَّر عن التكلفة بدلالة عدد الرؤوس N
  
- 
-vertices and the number E of edges. In the particular case of adjacency matrices,
-however, the cost depends only on N.
+وعدد الأضلاع E. أما في الحالة الخاصة لمصفوفات التجاور،
+فإن التكلفة تعتمد على N فحسب.
 
-**Figure 7.4: Cost of operations on adjacency matrices.**
+**الشكل 7.4: تكلفة العمليات على مصفوفات التجاور.**
 
-| operation | cost |
+| العملية | التكلفة |
 | --- | --- |
 | `mem_edge` | O(1) |
 | `add_edge` | O(1) |
@@ -164,40 +156,41 @@ however, the cost depends only on N.
 | `iter_vertex` | O(N) |
 | `iter_edge` | O(N2) |
 
-Of course, we assume that the functions passed as arguments of `iter_succ`,
-`iter_vertex`, and `iter_edge` have constant cost. From this table, we deduce that
-adjacency matrices are well adapted to *dense* graphs, that is, graphs in which the
-number of edges E is of the order of N2. Indeed, the outdegree of each vertex is
-then of the order of N, so that `iter_succ` is optimal. Similarly, `iter_edge`
-must traverse a number of edges of the order of N2 and is therefore also
-optimal.
+بطبيعة الحال، نفترض أن الدوال المُمرَّرة كوسائط إلى `iter_succ`
+و`iter_vertex` و`iter_edge` ذات تكلفة ثابتة. ومن هذا الجدول نستنتج أن
+مصفوفات التجاور ملائمة جيدًا للرسوم البيانية *الكثيفة (dense)*، أي الرسوم البيانية التي يكون فيها
+عدد الأضلاع E من رتبة N2. وفي الواقع، تكون درجة خروج كل رأس
+حينئذٍ من رتبة N، بحيث تصبح `iter_succ` مثالية. وبالمثل، يتعيّن على `iter_edge`
+أن تمرّ على عدد من الأضلاع من رتبة N2، ومن ثمّ فهي أيضًا
+مثالية.
 
-As for the cost in space, an adjacency matrix clearly occupies quadratic space,
-namely (N + 1)2 words in case of a boolean matrix (see section [*3.2*](https://usr.lmf.cnrs.fr/lpo/mainch3.html#runtime-model) *Runtime Model*). We can reduce this cost by a constant factor by using bit vectors (see
-section [*4.2*](https://usr.lmf.cnrs.fr/lpo/mainch4.html#bit-vectors) *Bit Vectors*). Exercise [7.5](#x21-229005r5) proposes such an optimization. It is
-important to note that this optimization is only possible if the edges are not
-labeled.
+أما تكلفة الحيّز (space)، فمن الواضح أن مصفوفة التجاور تشغل حيزًا تربيعيًّا،
+أي (N + 1)2 كلمة في حالة مصفوفة منطقية (انظر القسم [*3.2*](https://usr.lmf.cnrs.fr/lpo/mainch3.html#runtime-model) *نموذج التنفيذ*). ويمكننا تقليل هذه التكلفة بمعامل ثابت باستخدام المتجهات
+البتية (bit vectors) (انظر
+القسم [*4.2*](https://usr.lmf.cnrs.fr/lpo/mainch4.html#bit-vectors) *المتجهات البتية*). ويقترح التمرين [7.5](#x21-229005r5) مثل هذا التحسين. ومن
+المهم ملاحظة أن هذا التحسين ممكن فقط إذا كانت الأضلاع غير
+موسومة.
 
-### 7.2 Adjacency Lists
+### 7.2 قوائم التجاور
 
-In case of sparse graphs, an alternative to adjacency matrices consists in using an
-array containing the list of the successors of each vertex. We speak of *adjacency lists*.
-The type of graphs follows directly from this definition.
+في حالة الرسوم البيانية المتخلخلة، يتمثّل بديل مصفوفات التجاور في استخدام
+مصفوفة (array) تحتوي على قائمة خلفاء كل رأس. ونحن نتحدث عن *قوائم التجاور (adjacency lists)*.
+ويتبع نوع الرسوم البيانية هذا التعريف مباشرةً.
 
 ```ocaml
   type vertex = int
   type t = vertex list array
 ```
 
-An empty graph is represented by an array containing only empty lists.
+يُمثَّل الرسم البياني الفارغ بمصفوفة تحتوي على قوائم فارغة فقط.
 
 ```ocaml
   let create n = Array.make n []
   let nb_vertex = Array.length
 ```
 
-To test whether an edge is present between vertices `v1` and `v2` in a graph `g`, we traverse
-the adjacency list `g.(v1)` in search of `v2`. We do this here with the function
+لاختبار وجود ضلع بين الرأسين `v1` و`v2` في رسم بياني `g`، نمرّ على
+قائمة التجاور `g.(v1)` بحثًا عن `v2`. ونفعل ذلك هنا باستخدام الدالة
 `List.mem`.
 
 ```ocaml
@@ -205,58 +198,58 @@ the adjacency list `g.(v1)` in search of `v2`. We do this here with the function
     List.mem v2 g.(v1)
 ```
 
-We add an edge between `v1` and `v2` by adding `v2` to the list `g.(v1)`. We only do this if
-the edge does not already exist, to avoid unnecessary duplicates in the adjacency
-list.
+نضيف ضلعًا بين `v1` و`v2` بإضافة `v2` إلى القائمة `g.(v1)`. ولا نفعل ذلك إلا
+إذا لم يكن الضلع موجودًا من قبل، لتجنّب تكرارات غير ضرورية في قائمة
+التجاور.
 
 ```ocaml
   let add_edge g v1 v2 =
     if not (mem_edge g v1 v2) then g.(v1) <- v2 :: g.(v1)
 ```
 
-We remove the edge `v1` → `v2` by removing the possible instance of `v2` in the list `g.(v1)`.
-We can do this easily using `List.filter`.
+نحذف الضلع `v1` → `v2` بحذف أي ظهور محتمل لـ `v2` في القائمة `g.(v1)`.
+ويمكننا فعل ذلك بسهولة باستخدام `List.filter`.
 
 ```ocaml
   let remove_edge g v1 v2 =
     g.(v1) <- List.filter ((<>) v2) g.(v1)
 ```
 
-Note, nevertheless, that this use of `List.filter` has two defects: On the one hand, it
-does not take advantage of the absence of duplicates in the list to stop early. On
-the other, it unnecessarily reconstructs the entire list `g.(v1)` in the case
-where `v2` does not appear. Exercise [7.8](#x21-230002r8) proposes a remedy for these issues.
-Similarly, the fact that the vertices are integers could be used to optimize
-the three preceding operations by keeping the adjacency lists sorted (see
-exercise [7.9](#x21-230003r9)).
+ومع ذلك، لاحظ أن استخدام `List.filter` هذا فيه عيبان: فمن جهة،
+لا يستفيد من غياب التكرارات في القائمة ليتوقف مبكرًا. ومن
+جهة أخرى، يعيد بناء القائمة `g.(v1)` بأكملها بلا داعٍ في الحالة
+التي لا يظهر فيها `v2`. ويقترح التمرين [7.8](#x21-230002r8) علاجًا لهذه المسائل.
+وبالمثل، يمكن الاستفادة من كون الرؤوس أعدادًا صحيحة لتحسين
+العمليات الثلاث السابقة بالحفاظ على قوائم التجاور مرتّبة (انظر
+التمرين [7.9](#x21-230003r9)).
 
-The traversal of the successors of a vertex `v` of a graph `g` is simpler than in case of
-adjacency matrices. It is trivially implemented by applying `List.iter` to the
-adjacency list `g.(v)`.
+المرور على خلفاء رأس `v` في رسم بياني `g` أبسط مما هو عليه في حالة
+مصفوفات التجاور. ويُنفَّذ على نحو بديهي بتطبيق `List.iter` على
+قائمة التجاور `g.(v)`.
 
 ```ocaml
   let iter_succ f g v = List.iter f g.(v)
 ```
 
-The code of `iter_edge`, by contrast, is the same as that for adjacency matrices.
+أما كود `iter_edge`، في المقابل، فهو نفسه المستخدم لمصفوفات التجاور.
 
 ```ocaml
   let iter_edge f g =
     for v = 0 to nb_vertex g - 1 do iter_succ (f v) g v done
 ```
 
-The complete code for graphs via adjacency lists is given in program [69](#x21-222023r69).
+يُعطى الكود الكامل للرسوم البيانية عبر قوائم التجاور في البرنامج [69](#x21-222023r69).
 
 >
 
-#### Complexity
+#### التعقيد
 
-The table in figure [7.5](#cost-of-operations-on-adjacency-lists) summarizes the complexity of the main operations on
-adjacency lists. Here, δ denotes the outdegree of a vertex.
+يلخّص الجدول في الشكل [7.5](#cost-of-operations-on-adjacency-lists) تعقيد العمليات الرئيسية على
+قوائم التجاور. وهنا، يرمز δ إلى درجة خروج رأس.
 
-**Figure 7.5: Cost of operations on adjacency lists.**
+**الشكل 7.5: تكلفة العمليات على قوائم التجاور.**
 
-| operation | cost |
+| العملية | التكلفة |
 | --- | --- |
 | `mem_edge` | O(δ) |
 | `add_edge` | O(δ) |
@@ -264,50 +257,48 @@ adjacency lists. Here, δ denotes the outdegree of a vertex.
 | `iter_vertex` | O(N) |
 | `iter_edge` | O(E) |
 
-Note that, unlike in case of adjacency matrices, the operations `mem_edge` and
-`add_edge` are no longer in O(1) but in O(δ). By contrast, `iter_succ` and `iter_edge`
-now have optimal complexity.
+لاحظ أن العمليتين `mem_edge` و`add_edge` لم تعودا، على خلاف ما هو عليه الحال
+في مصفوفات التجاور، من الرتبة O(1) بل من الرتبة O(δ). وفي المقابل، أصبح لكلٍّ من
+`iter_succ` و`iter_edge` تعقيد أمثل.
 
-As for the cost in space, adjacency lists have optimal complexity O(N + E). To be
-precise, the cost is N + 3E + 1 words (see section [*3.2*](https://usr.lmf.cnrs.fr/lpo/mainch3.html#runtime-model) *Runtime Model*).
+أما تكلفة الحيّز، فلقوائم التجاور تعقيد أمثل O(N + E). ولكي
+نكون دقيقين، فإن التكلفة هي N + 3E + 1 كلمة (انظر القسم [*3.2*](https://usr.lmf.cnrs.fr/lpo/mainch3.html#runtime-model) *نموذج التنفيذ*).
 
-### 7.3 Adjacency Dictionaries
+### 7.3 قواميس التجاور
 
-One clear drawback of the two preceding data structures is the condition that vertices
-must be represented by integers and, moreover, by consecutive integers. This
-representation is adapted for graphs whose sets of vertices do not change. If, on
-the other hand, we wish to add or remove vertices dynamically, we have to
-modify the preceding structures. We can, for example, use resizeable arrays
-to permit the addition of vertices. To remove vertices, we could imagine
-marking them so as to exclude them from the graph, but this would have an
-impact on the complexity of the functions `iter_succ`, `iter_vertex`, and
+من العيوب الواضحة في بنيتَي المعطيات السابقتين شرط وجوب تمثيل الرؤوس
+بأعداد صحيحة، بل بأعداد صحيحة متتالية. وهذا
+التمثيل ملائم للرسوم البيانية التي لا تتغيّر فيها مجموعات الرؤوس. أما إذا
+أردنا، على العكس، إضافة الرؤوس أو حذفها ديناميكيًّا، فيتعيّن علينا
+تعديل البنيتين السابقتين. ويمكننا، على سبيل المثال، استخدام مصفوفات قابلة لتغيير الحجم
+للسماح بإضافة الرؤوس. ولحذف الرؤوس، يمكننا أن نتخيّل
+وسمها بحيث تُستبعد من الرسم البياني، لكن هذا سيؤثّر
+على تعقيد الدوال `iter_succ` و`iter_vertex` و
 `iter_edge`.
 
-Ideally, we would like a graph structure whose vertices are not necessarily integers
-and can be added or removed dynamically. The structure would also combine the
-respective advantages of adjacency matrices and adjacency lists in time and in space.
-Such a structure exists: It suffices to combine the structure of a dictionary with
-that of a set. A graph is thus nothing but a dictionary in which each vertex
-is associated with the set of its successors. In other words, we retain the
-idea of adjacency lists, but replace the array with a dictionary, and lists by
-sets. We will call this structure an *adjacency dictionary*. In this way, vertices
-are not limited to integers, and may be easily added and removed. As for
-efficiency, it suffices to use a hash table for the dictionary to obtain optimal
-complexity. We may also use a hash table to represent the set of successors of a
-vertex.
+من الناحية المثالية، نريد بنية رسم بياني لا تكون رؤوسها بالضرورة أعدادًا صحيحة
+ويمكن إضافتها أو حذفها ديناميكيًّا. كما تجمع البنية بين
+المزايا الخاصة لمصفوفات التجاور وقوائم التجاور في الزمن والحيّز.
+وهذه البنية موجودة: يكفي أن نجمع بنية قاموس مع
+بنية مجموعة. فالرسم البياني ليس في جوهره سوى قاموس يُقرَن فيه كل رأس
+بمجموعة خلفائه. بعبارة أخرى، نحتفظ بفكرة
+قوائم التجاور، لكن نستبدل المصفوفة بقاموس، والقوائم
+بمجموعات. وسنسمّي هذه البنية *قاموس التجاور (adjacency dictionary)*. وبهذه الطريقة، لا تقتصر الرؤوس
+على الأعداد الصحيحة، ويمكن إضافتها وحذفها بسهولة. أما من حيث
+الفعالية، فيكفي استخدام جدول مُجزَّأ (hash table) للقاموس للحصول على تعقيد
+أمثل. ويمكننا أيضًا استخدام جدول مُجزَّأ لتمثيل مجموعة خلفاء
+رأس.
 
-We can therefore parametrize our adjacency dictionary structure by a module `H` of
- 
- 
-hash tables (such as the one in section [*5.3*](https://usr.lmf.cnrs.fr/lpo/mainch5.html#hash-tables) *Hash Tables*or the module `Hashtbl` of the
-OCaml standard library).
+وبالتالي يمكننا أن نُوسِّط بنية قاموس التجاور لدينا بوحدة `H` من
+الجداول المُجزَّأة (مثل الوحدة المذكورة في القسم [*5.3*](https://usr.lmf.cnrs.fr/lpo/mainch5.html#hash-tables) *الجداول المُجزَّأة* أو الوحدة `Hashtbl` من
+المكتبة القياسية لـ OCaml).
 
 ```ocaml
   module Graph(H: HashTable) = struct
 ```
 
-For clarity, we introduce a module `V` for the dictionary, as a synonym of the
-module `H`. The type of the vertices is then that of the keys of the module
+للتوضيح، نُدخل وحدة `V` للقاموس، كمرادف للوحدة
+`H`. ويكون نوع الرؤوس حينئذٍ هو نوع مفاتيح الوحدة
 `V`.
 
 ```ocaml
@@ -315,46 +306,45 @@ module `H`. The type of the vertices is then that of the keys of the module
     type vertex = V.key
 ```
 
-Similarly, we introduce a module `E` for the sets of adjacent vertices, also a synonym of the
-module `H`. The idea here is to represent a set of vertices by a hash table, by
-associating each element of the set with the value `()`.
+وبالمثل، نُدخل وحدة `E` لمجموعات الرؤوس المتجاورة، وهي أيضًا مرادف للوحدة
+`H`. والفكرة هنا هي تمثيل مجموعة من الرؤوس بجدول مُجزَّأ،
+وذلك بقرن كل عنصر من عناصر المجموعة بالقيمة `()`.
 
 ```ocaml
     module E = H
 ```
 
-The type of graphs is therefore the following:
+وبالتالي يكون نوع الرسوم البيانية كما يأتي:
 
 ```ocaml
     type t = (unit E.t) V.t
 ```
 
-If the edges were labeled, it would suffice to associate each successor w of v with the label
-of the edge v → w rather than with the value `()` (see exercise [7.10](#x21-231001r10)).
+لو كانت الأضلاع موسومة، لكفى قرن كل خَلَف w للرأس v بوسم
+الضلع v → w بدلًا من القيمة `()` (انظر التمرين [7.10](#x21-231001r10)).
 
-Creating a graph becomes merely a matter of constructing an empty
-dictionary. The number of vertices is obtained simply as the number of keys of the
-dictionary.
+لا يصبح إنشاء رسم بياني سوى مسألة إنشاء قاموس فارغ. ويُحصَل على عدد الرؤوس ببساطة باعتباره عدد مفاتيح
+القاموس.
 
 ```ocaml
     let create () = V.create ()
     let nb_vertex g = V.length g
 ```
 
-We check if a vertex `v` belongs to the graph `g` with `V.mem`, that is, by testing if it is a key
-in the dictionary. We add `v` by creating a binding associating `v` with a new hash
-table.
+نتحقق من انتماء رأس `v` إلى الرسم البياني `g` باستخدام `V.mem`، أي باختبار كونه مفتاحًا
+في القاموس. ونضيف `v` بإنشاء ارتباط يقرن `v` بجدول مُجزَّأ
+جديد.
 
 ```ocaml
     let mem_vertex g v = V.mem g v
     let add_vertex g v = V.add g v (E.create ())
 ```
 
-We note that the function `add_vertex` assumes that `v` is not yet present in the graph `g`.
-Otherwise, we would have to first verify the presence of `v` using `mem_vertex`. The
-removal of a vertex `v` is more delicate: Not only must its binding be removed from the
-dictionary, it is also necessary to remove every instance of `v` from the adjacency sets of
-other vertices (here written as `s`).
+نلاحظ أن الدالة `add_vertex` تفترض أن `v` غير موجود بعد في الرسم البياني `g`.
+وإلا لتعيّن علينا أولًا التحقق من وجود `v` باستخدام `mem_vertex`. أما
+حذف رأس `v` فأكثر دقة: فلا يقتصر الأمر على وجوب حذف ارتباطه من
+القاموس، بل يلزم أيضًا حذف كل ظهور لـ `v` من مجموعات تجاور
+الرؤوس الأخرى (المكتوبة هنا بالرمز `s`).
 
 ```ocaml
     let remove_vertex g v =
@@ -362,12 +352,12 @@ other vertices (here written as `s`).
       V.iter (fun _ s -> E.remove s v) g
 ```
 
-For greater efficiency, we should access only the predecessors of `v`. Exercise [7.14](#x21-231006r14) proposes
-such an improvement.
+ولمزيد من الفعالية، ينبغي ألا نصل إلا إلى أسلاف `v`. ويقترح التمرين [7.14](#x21-231006r14)
+تحسينًا من هذا القبيل.
 
-To add, remove, or test for the presence of an edge between two vertices `v1` and
-`v2`, we begin by retrieving the adjacency set of `v1` using `V.findgv1`. We then use
-respectively the functions `E.replace`, `E.remove`, and `E.mem`.
+لإضافة ضلع بين الرأسين `v1` و
+`v2` أو حذفه أو اختبار وجوده، نبدأ باسترجاع مجموعة تجاور `v1` باستخدام `V.findgv1`. ثم نستخدم
+على التوالي الدوال `E.replace` و`E.remove` و`E.mem`.
 
 ```ocaml
     let mem_edge g v1 v2 = E.mem (V.find g v1) v2
@@ -375,92 +365,92 @@ respectively the functions `E.replace`, `E.remove`, and `E.mem`.
     let remove_edge g v1 v2 = E.remove (V.find g v1) v2
 ```
 
-These three functions assume that `v1` is already present in the graph, that is, that
-`V.findgv1` does not fail. As for the function `add_edge`, we use `E.replace` rather than
-`E.add`, to avoid duplicates in the adjacency set.
+تفترض هذه الدوال الثلاث أن `v1` موجود بالفعل في الرسم البياني، أي أن
+`V.findgv1` لا يفشل. أما الدالة `add_edge`، فنستخدم فيها `E.replace` بدلًا من
+`E.add`، لتجنّب التكرارات في مجموعة التجاور.
 
 >
 
-To traverse the set of vertices of a graph `g`, it suffices to traverse the set of keys of
-the dictionary using `V.iter`. Similarly, we traverse the successors of a vertex `v` by
-traversing its adjacency set using `E.iter`.
+للمرور على مجموعة رؤوس رسم بياني `g`، يكفي المرور على مجموعة مفاتيح
+القاموس باستخدام `V.iter`. وبالمثل، نمرّ على خلفاء رأس `v`
+بالمرور على مجموعة تجاوره باستخدام `E.iter`.
 
 ```ocaml
     let iter_vertex f g = V.iter (fun v _ -> f v) g
     let iter_succ f g v = E.iter (fun w _ -> f w) (V.find g v)
 ```
 
-Here too, we assume that `iter_succ` is called on an existing vertex `v`. To traverse all
-edges, it suffices to compose `iter_vertex` and `iter_succ` as we did for adjacency
-matrices and adjacency lists. However, it would be unnecessarily costly to access the
-adjacency set of `v` using `V.findgv`. Instead, it suffices to compose directly `V.iter` and
-`E.iter`.
+وهنا أيضًا، نفترض أن `iter_succ` تُستدعى على رأس موجود `v`. وللمرور على جميع
+الأضلاع، يكفي تركيب `iter_vertex` و`iter_succ` كما فعلنا من أجل مصفوفات
+التجاور وقوائم التجاور. غير أن الوصول إلى مجموعة تجاور
+`v` باستخدام `V.findgv` سيكون مكلفًا بلا داعٍ. وبدلًا من ذلك، يكفي تركيب
+`V.iter` و`E.iter` مباشرةً.
 
 ```ocaml
     let iter_edge f g = V.iter (fun v s -> E.iter (f v) s) g
 ```
 
-The complete code of this graph structure is given in program [70](#x21-224024r70).
+يُعطى الكود الكامل لبنية الرسم البياني هذه في البرنامج [70](#x21-224024r70).
 
-For undirected, labeled graphs or graphs with multiple edges between two vertices,
-the reader is referred to exercises [7.10](#x21-231001r10)–[7.12](#x21-231003r12).
+أما بالنسبة إلى الرسوم البيانية غير الموجّهة والرسوم البيانية الموسومة أو الرسوم البيانية ذات الأضلاع المتعددة بين رأسين،
+فيُحال القارئ إلى التمارين [7.10](#x21-231001r10)–[7.12](#x21-231003r12).
 
-#### Complexity
+#### التعقيد
 
-If we assume that dictionaries and sets are implemented by hash tables, we obtain the
-performances given in the table of figure [7.6](#cost-of-operations-on-adjacency-dictionaries).
+إذا افترضنا أن القواميس والمجموعات منفَّذة بجداول مُجزَّأة، نحصل على
+الأداء المعطى في جدول الشكل [7.6](#cost-of-operations-on-adjacency-dictionaries).
 
-**Figure 7.6: Cost of operations on adjacency dictionaries.**
+**الشكل 7.6: تكلفة العمليات على قواميس التجاور.**
 
-| operation | cost |
+| العملية | التكلفة |
 | --- | --- |
 | `mem_vertex` | O(1) |
 | `add_vertex` | O(1) |
 | `remove_vertex` | O(N) |
 
-| operation | cost |
+| العملية | التكلفة |
 | --- | --- |
 | `mem_edge` | O(1) |
 | `add_edge` | O(1) |
 | `remove_edge` | O(1) |
 
-| operation | cost |
+| العملية | التكلفة |
 | --- | --- |
 | `iter_succ` | O(δ) |
 | `iter_vertex` | O(N) |
 | `iter_edge` | O(E) |
 
-We observe that the complexities are optimal, except in case of `remove_vertex`
-(see exercise [7.14](#x21-231006r14)). As for the cost in space, it is necessary to make an assumption
-regarding the sizes of the hash tables. If we assume that the number of buckets is at
-least twice the number of bindings in each hash table then the cost in space of a hash
-table containing K inputs is 6K + 4 words. Hence, for a graph containing N vertices
-and E edges, the total cost is:
+نلاحظ أن التعقيدات أمثل، باستثناء حالة `remove_vertex`
+(انظر التمرين [7.14](#x21-231006r14)). أما تكلفة الحيّز، فلا بدّ من وضع افتراض
+بشأن أحجام الجداول المُجزَّأة. فإذا افترضنا أن عدد الجرافات (buckets) يساوي على الأقل
+ضعف عدد الارتباطات في كل جدول مُجزَّأ، فإن تكلفة الحيّز لجدول
+مُجزَّأ يحتوي على K مدخلة هي 6K + 4 كلمة. ومن ثمّ، بالنسبة إلى رسم بياني يحتوي على N رأسًا
+وE ضلعًا، تكون التكلفة الإجمالية:
 
 $$(6N + 4) + \sum (6 δ + 4) v v$$
 
-This is 10N + 6E + 4 words in total.
+وهذا يساوي 10N + 6E + 4 كلمة في المجموع.
 
-#### Persistent Graphs
+#### الرسوم البيانية المستدامة
 
-Graphs implemented using adjacency dictionaries as presented above are imperative
-due to the imperative nature of hash tables. We naturally obtain persistent graphs by
-substituting hash tables with a persistent data structure. For example, we may use
-any dictionary having the signature `Map.S` of OCaml (see exercise [7.15](#x21-231009r15)), in particular
-all those discussed in chapter [5](https://usr.lmf.cnrs.fr/lpo/mainch5.html#sets-and-dictionaries).
+الرسوم البيانية المنفَّذة باستخدام قواميس التجاور كما عُرضت أعلاه أمرية
+بسبب الطبيعة الأمرية للجداول المُجزَّأة. ونحصل بطبيعة الحال على رسوم بيانية مستدامة
+باستبدال الجداول المُجزَّأة ببنية معطيات مستدامة. ويمكننا، على سبيل المثال، استخدام
+أي قاموس يمتلك التوقيع `Map.S` الخاص بـ OCaml (انظر التمرين [7.15](#x21-231009r15))، ولا سيّما
+كل تلك التي نوقشت في الفصل [5](https://usr.lmf.cnrs.fr/lpo/mainch5.html#sets-and-dictionaries).
 
-### 7.4 Performance Comparison
+### 7.4 مقارنة الأداء
 
-We recapitulate here the performance of the different graph structures. The time
-complexity of the main operations are summarized in the table of figure [7.7](#comparison-of-different-graph-data-structures). As we
-have already highlighted above, adjacency dictionaries offer the best possible
-complexity for each operation.
+نستعرض هنا بإيجاز أداء بنى الرسوم البيانية المختلفة. ويُلخَّص التعقيد
+الزمني للعمليات الرئيسية في جدول الشكل [7.7](#comparison-of-different-graph-data-structures). وكما
+أشرنا سابقًا أعلاه، تقدّم قواميس التجاور أفضل
+تعقيد ممكن لكل عملية.
 
-**Figure 7.7: Comparison of different graph data structures.**
+**الشكل 7.7: مقارنة بين بنى معطيات مختلفة للرسوم البيانية.**
 
-| operation | adjacency | adjacency | adjacency |
+| العملية | تجاور | تجاور | تجاور |
 | --- | --- | --- | --- |
-|  | matrices | lists | dictionaries |
+|  | مصفوفات | قوائم | قواميس |
 | `mem_vertex` | — | — | O(1) |
 | `add_vertex` | — | — | O(1) |
 | `remove_vertex` | — | — | O(N) |
@@ -471,116 +461,113 @@ complexity for each operation.
 | `iter_vertex` | O(N) | O(N) | O(N) |
 | `iter_edge` | O(N2) | O(E) | O(E) |
 
-As for the cost in space, recall the cost in number of words for each graph
-structure:
+أما تكلفة الحيّز، فتذكّر تكلفة كل بنية رسم بياني
+بعدد الكلمات:
 
-- adjacency matrix: 2 words;
-- adjacency lists: N + 3E + 1 words;
-- adjacency dictionary: 10N + 6E + 4 words.
+- مصفوفة التجاور: 2 كلمة؛
+- قوائم التجاور: N + 3E + 1 كلمة؛
+- قاموس التجاور: 10N + 6E + 4 كلمة.
 
-It is clear that adjacency lists are more economical in terms of memory than adjacency
-dictionaries. The comparison with adjacency matrices is more difficult. Indeed, it
-depends on the density of the graph, that is, the ratio between the number of vertices
-N and the number of edges E. For a very dense graph, in which E is close to N2, the
-adjacency matrix is more economical. In the case of a sparse graph, for example where
-E ∼ N, adjacency lists are more economical. In general, lists are preferable
-to matrices when E < N2∕3 and, similarly, dictionaries are preferable to
-matrices when E < N2∕6. Lists are always preferable to dictionaries *in terms of space*.
+من الواضح أن قوائم التجاور أكثر اقتصاديًّا من حيث الذاكرة من قواميس
+التجاور. أما المقارنة مع مصفوفات التجاور فأصعب. فالواقع أنها
+تعتمد على كثافة الرسم البياني، أي النسبة بين عدد الرؤوس
+N وعدد الأضلاع E. فبالنسبة إلى رسم بياني كثيف جدًّا، يكون فيه E قريبًا من N2، تكون
+مصفوفة التجاور أكثر اقتصاديًّا. وفي حالة رسم بياني متخلخل، تكون فيه على سبيل المثال
+E ∼ N، تكون قوائم التجاور أكثر اقتصاديًّا. وبصفة عامة، تُفضَّل القوائم
+على المصفوفات عندما E < N2∕3، وبالمثل تُفضَّل القواميس على
+المصفوفات عندما E < N2∕6. والقوائم دائمًا أفضل من القواميس *من حيث الحيّز*.
 
-Of course, in choosing a structure for graphs, the complexity in space of the
-different operations must be weighed against their complexity in time.
+بطبيعة الحال، عند اختيار بنية للرسوم البيانية، يجب الموازنة بين تعقيد
+العمليات المختلفة في الحيّز وتعقيدها في الزمن.
 
-### 7.5 Exercices
+### 7.5 تمارين
 
-#### Adjacency Matrices
+#### مصفوفات التجاور
 
-**7.1**The transposition of a directed graph G, denoted by GR, is the graph having
-the same vertices as G and which contains an edge x → y if and only if there exists an
-edge y → x in G. Write a function `reverse:graph->graph` that calculates the
-transposition of a given graph.
+**7.1** نقل رسم بياني موجّه G، ورمزه GR، هو الرسم البياني الذي يمتلك
+الرؤوس نفسها التي يمتلكها G ويحتوي على ضلع x → y إذا وفقط إذا وُجد
+ضلع y → x في G. اكتب دالة `reverse:graph->graph` تحسب
+نقل رسم بياني معطى.
 
-**7.2**Add an operation `nb_edge:t->int` that gives the number of edges in constant
-time. Hint: Keep track of the number of edges in the structure of the graph by
-updating its value in `add_edge` and `remove_edge`.
+**7.2** أضف عملية `nb_edge:t->int` تعطي عدد الأضلاع في زمن ثابت.
+تلميح: تتبّع عدد الأضلاع في بنية الرسم البياني
+بتحديث قيمته في `add_edge` و`remove_edge`.
 
-**7.3**Modify adjacency matrices for graphs in which edges are labeled by a given type
+**7.3** عدّل مصفوفات التجاور لتناسب الرسوم البيانية التي تكون أضلاعها موسومة بنوع معطى
 `label`.
 
-**7.4**The easiest way to represent undirected graphs is by preserving the same
-structure as for directed graphs, but by maintaining the invariant that, for each edge
-a → b, there is also an edge b → a. Modify the operations `add_edge` and `remove_edge`
-of adjacency matrices and lists accordingly. Also modify `iter_edge` so that it
-traverses each edge only once.
+**7.4** أسهل طريقة لتمثيل الرسوم البيانية غير الموجّهة هي الحفاظ على البنية نفسها
+المستخدمة للرسوم البيانية الموجّهة، لكن مع صيانة الثابت القائل إنه لكل ضلع
+a → b يوجد أيضًا ضلع b → a. عدّل العمليتين `add_edge` و`remove_edge`
+في مصفوفات التجاور وقوائم التجاور وفقًا لذلك. وعدّل أيضًا `iter_edge` بحيث
+يمرّ على كل ضلع مرة واحدة فقط.
 
-**7.5**Modify the adjacency matrix structure to use bit vectors (see section
-[*4.2*](https://usr.lmf.cnrs.fr/lpo/mainch4.html#bit-vectors) *Bit Vectors*) rather than boolean arrays. What is the gain in terms of
-space?
+**7.5** عدّل بنية مصفوفة التجاور لتستخدم المتجهات البتية (bit vectors) (انظر القسم
+[*4.2*](https://usr.lmf.cnrs.fr/lpo/mainch4.html#bit-vectors) *المتجهات البتية*) بدلًا من المصفوفات المنطقية. فما هو المكسب من حيث
+الحيّز؟
 
-**7.6** The transitive closure of a graph G is a graph T having the same vertices
-as G, and an edge between i and j when there is a *path*between i and j in G.
-When the graph is represented by a boolean matrix, the transitive closure may be
-calculated in O(N3) time using the Floyd-Warshall algorithm. The pseudo-code is as
-follows:
+**7.6** الإغلاق المتعدّي (transitive closure) لرسم بياني G هو رسم بياني T يمتلك الرؤوس نفسها
+التي يمتلكها G، وضلع بين i و j عندما يوجد *مسار* بين i و j في G.
+وعندما يُمثَّل الرسم البياني بمصفوفة منطقية، يمكن حساب الإغلاق المتعدّي
+في زمن O(N3) باستخدام خوارزمية فلويد-وورسال (Floyd-Warshall). والكود الزائف (pseudo-code) كما
+يأتي:
 
 | T ← G |
 | --- |
-| for k from 0 to N − 1 |
-| for i from 0 to N − 1 |
-| for j from 0 to N − 1 |
-| Ti,j ← Ti,j or (Ti,k and Tk,j) |
+| من أجل k من 0 إلى N − 1 |
+| من أجل i من 0 إلى N − 1 |
+| من أجل j من 0 إلى N − 1 |
+| Ti,j ← Ti,j أو (Ti,k و Tk,j) |
 
-The idea consists in determining, for increasing values of k, if there exists a path between
-i and j that uses only intermediate vertices smaller than k. The last line of the
-pseudo-code considers the two cases of a path between i and j, passing via
-k, or not. Write a function `transitive_closure:t->t` implementing this
-algorithm.
+تتمثّل الفكرة في تحديد، من أجل قيم متزايدة لـ k، ما إذا كان يوجد مسار بين
+i و j لا يستخدم سوى رؤوس وسيطة أصغر من k. وينظر السطر الأخير من
+الكود الزائف في الحالتين لمسار بين i و j، إما مارًّا عبر
+k أو غير مارٍّ به. اكتب دالة `transitive_closure:t->t` تنفّذ
+هذه الخوارزمية.
 
-#### Adjacency Lists
+#### قوائم التجاور
 
-**7.7**Redo exercises [7.2](#x21-229002r2) to [7.4](#x21-229004r4) for adjacency lists.
+**7.7** أعد حلّ التمارين من [7.2](#x21-229002r2) إلى [7.4](#x21-229004r4) بالنسبة إلى قوائم التجاور.
 
-**7.8**Modify the function `remove_edge` on adjacency lists so that (1) it does not
-modify the adjacency list if the edge to be removed does not exist, and (2) it makes
-use of the fact that adjacency lists do not contain duplicates to stop once the edge is
-found.
+**7.8** عدّل الدالة `remove_edge` على قوائم التجاور بحيث (1) لا
+تعدّل قائمة التجاور إذا لم يكن الضلع المراد حذفه موجودًا، و(2) تستفيد
+من كون قوائم التجاور لا تحتوي على تكرارات لتتوقف بمجرد العثور على الضلع.
 
-**7.9**Modify the operations on adjacency lists to maintain the invariant that
-adjacency lists are sorted. Make use of this property to optimize some of the
-operations.
+**7.9** عدّل العمليات على قوائم التجاور لصيانة الثابت القائل إن
+قوائم التجاور مرتّبة. واستفد من هذه الخاصية لتحسين بعض
+العمليات.
 
-#### Adjacency Dictionaries
+#### قواميس التجاور
 
-**7.10**Modify the code of program [70](#x21-224024r70) for graphs whose edges are labeled by values of
-any type. More precisely, give graphs the polymorphic type `type’at=(’aE.t)V.t`,
-where `’a` is the type of labels.
+**7.10** عدّل كود البرنامج [70](#x21-224024r70) ليطابق الرسوم البيانية التي تكون أضلاعها موسومة بقيم من
+أي نوع. وبشكل أدق، أعطِ الرسوم البيانية النوع متعدد الأشكال `type’at=(’aE.t)V.t`،
+حيث `’a` هو نوع الوسوم.
 
-**7.11**Modify the adjacency dictionary structure for undirected graphs drawing on
-exercise [7.4](#x21-229004r4).
+**7.11** عدّل بنية قاموس التجاور لتناسب الرسوم البيانية غير الموجّهة استنادًا إلى
+التمرين [7.4](#x21-229004r4).
 
-**7.12**Modify the adjacency dictionary structure for graphs with *multiple edges*, that is, where two vertices may be linked by more than one edge. For
-unlabeled multi-edges, the dictionary must associate each vertex with the
-*multi-set*of its successors. For labeled multi-edges, we may distinguish two cases,
-depending on whether the edges between v1 and v2 can bear the same label or
-not.
+**7.12** عدّل بنية قاموس التجاور لتناسب الرسوم البيانية ذات *الأضلاع المتعددة (multiple edges)*، أي التي قد يرتبط فيها رأسان بأكثر من ضلع واحد. وفي حالة
+الأضلاع المتعددة غير الموسومة، يجب أن يقرن القاموس كل رأس بـ
+*المجموعة المتعددة (multi-set)* الخاصة بخلفائه. وفي حالة الأضلاع المتعددة الموسومة، يمكننا تمييز حالتين،
+بحسب ما إذا كانت الأضلاع بين v1 و v2 قد تحمل الوسم نفسه أم
+لا.
 
-**7.13**Modify the functor of program [70](#x21-224024r70) so that, instead of taking a module `H` of
-hash tables as argument, it takes:
+**7.13** عدّل الدالّ (functor) في البرنامج [70](#x21-224024r70) بحيث يأخذ، بدلًا من أخذ وحدة `H` من
+الجداول المُجزَّأة كوسيط:
 
-- either a module V introducing a type t equipped with hash and comparison
-       functions;
-- or two modules, M and S, that respectively implement dictionaries and sets
-       on the same type of vertices.
+- إما وحدة V تُدخل نوعًا t مزوّدًا بدالتي التجزئة والمقارنة؛
+- أو وحدتين، M و S، تنفّذان على التوالي القواميس والمجموعات
+       على النوع نفسه من الرؤوس.
 
-**7.14**Modify the adjacency dictionary structure to keep track of the set of
-predecessors of a vertex in an efficient manner. In other words, provide an
-operation
+**7.14** عدّل بنية قاموس التجاور لتتبّع مجموعة
+أسلاف رأس على نحو فعّال. بعبارة أخرى، وفّر عملية
 
 ```ocaml
     val iter_pred: (vertex -> unit) -> t -> vertex -> unit
 ```
 
-whose cost is proportionate to the indegree. Use this function to reimplement the
-function `remove_vertex`.
+تكون تكلفتها متناسبة مع درجة الدخول (indegree). واستخدم هذه الدالة لإعادة تنفيذ
+الدالة `remove_vertex`.
 
-**7.15**Modify the functor of program [70](#x21-224024r70) to obtain persistent graphs by replacing the
-argument `H` by a module `M` of signature `Map.S`.
+**7.15** عدّل الدالّ في البرنامج [70](#x21-224024r70) للحصول على رسوم بيانية مستدامة باستبدال
+الوسيط `H` بوحدة `M` ذات التوقيع `Map.S`.

@@ -1,29 +1,25 @@
 ---
-title: "First Steps with OCaml"
-lang: en
+title: "الخطوات الأولى"
+lang: ar
 ---
 
-## 2. First Steps with OCaml
+## 2. الخطوات الأولى
 
-The best way to learn a programming language is by programming. We therefore
-present below fourteen (little) programs to get started with OCaml. The aim is to
-introduce the basic constructions and ideas of the language.
+أفضل طريقة لتعلّم لغة برمجة هي البرمجة نفسها. لذلك نعرض أدناه أربعة عشر برنامجًا (صغيرًا) للبدء مع أوسمل (OCaml). والهدف هو تقديم البُنى والأفكار الأساسية للغة.
 
-### 2.1 Leap Years
+### 2.1 السنوات الكبيسة
 
 >
 
 >
 
-Our first program, `leap_year.ml`, determines if a given year is a leap year. We can
-compile it using `ocamlc`.
+برنامجنا الأول، `leap_year.ml`، يحدد ما إذا كانت سنة معيّنة كبيسة. ويمكننا ترجمته باستخدام `ocamlc`.
 
 ```console
   > ocamlc -o leap_year leap_year.ml
 ```
 
-When the program is launched, it waits for the user to enter a year. It then prints
-whether the year is a leap year or not.
+عند تشغيل البرنامج، ينتظر أن يُدخِل المستخدم سنة. ثم يطبع ما إذا كانت السنة كبيسة أم لا.
 
 ```text
   > ./leap_year
@@ -31,141 +27,85 @@ whether the year is a leap year or not.
   2013 is not a leap year
 ```
 
-Let us now consider the structure of this program. The first line reads an integer
-from standard input:
+لننظر الآن في بنية هذا البرنامج. يقرأ السطر الأول عددًا صحيحًا من الدخل القياسي:
 
 ```ocaml
   let year = read_int ()
 ```
 
-This line alone contains several notions of the OCaml language. Firstly, it is a *variable declaration*of the form:
+يحتوي هذا السطر وحده على عدة مفاهيم من لغة أوسمل. أولًا، إنه *إعلان متغير* (variable declaration) بالشكل التالي:
 
 ```ocaml
   let year = ...
 ```
 
-This initializes a new variable `year` with the result of the expression to the right of the
-symbol `=`. The type of the variable `year` does not have to be declared; it is
-automatically deduced by the compiler or the interpreter. The expression to the
-right of the symbol `=` is a *function call*. It is a call to the predefined function
-`read_int`.
+يُهيّئ هذا متغيرًا جديدًا `year` بنتيجة التعبير الواقع على يمين الرمز `=`. ولا يلزم التصريح بنوع المتغير `year`؛ إذ يستنتجه المترجم أو المفسّر تلقائيًا. والتعبير الواقع على يمين الرمز `=` هو *استدعاء دالة* (function call). إنه استدعاء للدالة المعرَّفة مسبقًا `read_int`.
 
 ```ocaml
        ... = read_int ()
 ```
 
-Here, `()` indicates that the function `read_int` does not take any meaningful argument. It
-only returns an integer, read from standard input.
+هنا، تشير `()` إلى أن الدالة `read_int` لا تأخذ أي وسيط ذي معنى. إنها تُعيد فقط عددًا صحيحًا مقروءًا من الدخل القياسي.
 
-The second line introduces a boolean variable `leap` whose value is `true` if and only
-if `year` is a leap year, that is, if it is divisible by 4 but not by 100, or if it is divisible
-by 400.
+يُعرِّف السطر الثاني متغيرًا منطقيًا `leap` قيمته `true` إذا وفقط إذا كانت `year` سنة كبيسة، أي إذا كانت تقبل القسمة على 4 دون 100، أو إذا كانت تقبل القسمة على 400.
 
 ```ocaml
   let leap =
     (year mod 4 = 0 && year mod 100 <> 0) || year mod 400 = 0
 ```
 
-The infix operator `mod` returns the remainder of integer division. The operators `&&` and `||`
-represent the boolean AND and OR, respectively. As with `year`, the type of the
-variable `leap` is deduced automatically. The following line introduces a third variable,
-`msg`, which contains a string:
+تُعيد المعاملة (العامل) `mod` باقي قسمة الأعداد الصحيحة. ويمثّل العاملان `&&` و`||` العمليتين المنطقيتين «و» و«أو» على التوالي. وكما في `year`، يُستنتج نوع المتغير `leap` تلقائيًا. ويُعرِّف السطر التالي متغيرًا ثالثًا، `msg`، يحوي سلسلة نصية:
 
 ```ocaml
   let msg = if leap then "is" else "is not"
 ```
 
-The variable `msg` will contain the string `"is"` if `leap` is true, and the string
-`"isnot"` if it is false. (Strings are delimited by double quotes ".) Note that the
-construction `if-then-else` is used here to construct an expression, namely, a
-string.
+سيحوي المتغير `msg` السلسلة `"is"` إذا كانت `leap` صحيحة، والسلسلة `"isnot"` إذا كانت خاطئة. (تُحدَّد السلاسل بعلامتي تنصيص مزدوجتين ".) لاحظ أن البنية `if-then-else` تُستخدَم هنا لبناء تعبير، ألا وهو سلسلة نصية.
 
-Finally, the last line prints a message that indicates whether or not the year
-entered is a leap year.
+أخيرًا، يطبع السطر الأخير رسالة تبيّن ما إذا كانت السنة المُدخَلة كبيسة أم لا.
 
 ```ocaml
   let () = Printf.printf "%d %s a leap year\n" year msg
 ```
 
-This is achieved by calling the library function `Printf.printf` with three arguments: a
-formatting string "%d %s a leap year\n" together with the two values, `year` and
-`msg`, which respectively replace `%d` and `%s` in the printed message. As you can
-see, the function call is denoted by simply juxtaposing the function and its
-arguments. Unlike other languages, OCaml does not use parentheses around
-arguments.
+يُنجَز ذلك باستدعاء دالة المكتبة `Printf.printf` بثلاث وسائط: سلسلة تنسيق "%d %s a leap year\n" مع القيمتين، `year` و`msg`، اللتين تحلّان على التوالي محل `%d` و`%s` في الرسالة المطبوعة. وكما ترى، يُرمَز إلى استدعاء الدالة بمجرد تجاور الدالة ووسائطها. وخلافًا للغات أخرى، لا تستخدم أوسمل أقواسًا حول الوسائط.
 
 ```ocaml
      ... = Printf.printf "%d %s a leap year\n" year msg
 ```
 
-We refer the reader to the OCaml manual for further information on the standard library
-and, in particular, on the function `Printf.printf`. The manual is available
-online at the address: `https://ocaml.org/manual`. Finally, note that
- 
- 
-the call to the function `printf` is contained in a declaration of a specific
-form:
+نُحيل القارئ إلى دليل أوسمل لمزيد من المعلومات عن المكتبة القياسية، وبوجه خاص عن الدالة `Printf.printf`. يتوفّر الدليل على الإنترنت على العنوان: `https://ocaml.org/manual`. وأخيرًا، لاحظ أن استدعاء الدالة `printf` مُضمَّن في إعلان ذي شكل محدَّد:
 
 ```ocaml
   let () = ...
 ```
 
-This is somewhat enigmatic, and will be left so for the present. It will be explained when
-we discuss pattern matching in sections [*2.6*](#drawing-a-curve) *Drawing a Curve*and [*2.12*](#playing-a-musical-score) *Playing a Musical Score*. For now, suffice it to say that in general an OCaml program is a series
-of declarations that are evaluated from top to bottom, that is, in the order in which
-they appear in the source file. Unlike languages like C or Java, there is no `main`
-entry point. The specific form `let()=...` is used in order to maintain the
-same format in case of expressions that do not return a value. When this
-form is used, OCaml verifies that the expression does indeed not return a
-value.
+هذا غامض بعض الشيء، وسنتركه كذلك في الوقت الحالي. وسنشرحه حين نتناول مطابقة الأنماط (pattern matching) في القسمين [*2.6*](#drawing-a-curve) *رسم منحنى* و[*2.12*](#playing-a-musical-score) *عزف مقطوعة موسيقية*. ويكفي الآن القول إن برنامج أوسمل، بشكل عام، سلسلة من الإعلانات تُقيَّم من الأعلى إلى الأسفل، أي بالترتيب الذي تظهر به في الملف المصدر. وخلافًا للغات مثل C أو Java، لا توجد نقطة دخول `main`. ويُستخدَم الشكل المحدَّد `let()=...` للحفاظ على التنسيق نفسه في حالة التعبيرات التي لا تُعيد قيمة. وعند استخدام هذا الشكل، يتحقق أوسمل من أن التعبير لا يُعيد قيمة فعلًا.
 
-#### Additional Information
+#### معلومات إضافية
 
-##### The Command Line
+##### سطر الأوامر
 
-Rather than reading the year from standard input, we can pass it on the command
-line. In that case, the program is invoked as follows:
+بدلًا من قراءة السنة من الدخل القياسي، يمكننا تمريرها على سطر الأوامر. وفي هذه الحالة، يُستدعى البرنامج على النحو التالي:
 
 ```text
   > ./leap_year 2013
   2013 is not a leap year
 ```
 
-To do this, we replace the line `letyear=read_int()` with:
+للقيام بذلك، نستبدل السطر `letyear=read_int()` بـ:
 
 ```ocaml
   let year = int_of_string Sys.argv.(1)
 ```
 
-This line calls the predefined function `int_of_string` with `Sys.argv.(1)` as argument.
-The value `Sys.argv.(1)` contains the year passed as parameter on the command line.
-As is the case with other programming languages (Java or C, for example), we can
-retrieve the values passed to the program in the form of an array of strings,
-designated `Sys.argv` in OCaml. More precisely, the array is called `argv`, and
-it is available within the `Sys` module, which consists of an interface to the
-operating system. The notation `Sys.argv` involves the *module system*of
-OCaml, that organizes libraries in terms of units, called modules, which
-themselves contain different values. Without getting into the details of the module
-system, suffice it to say for now that we refer to a value in a module by writing
-the name of the module, followed by the name of the value, separated by
-a dot. (We will discuss this in greater detail in section [*2.11*](#logo-turtle) *Logo Turtle*.)
-Thus, `Sys.argv` must be read as “the array `argv` that belongs to the module
-`Sys`.”
+يستدعي هذا السطر الدالة المعرَّفة مسبقًا `int_of_string` بالوسيط `Sys.argv.(1)`. وتحتوي القيمة `Sys.argv.(1)` على السنة الممرَّرة كوسيط على سطر الأوامر. وكما هو الحال في لغات برمجة أخرى (Java أو C، مثلًا)، يمكننا استرجاع القيم الممرَّرة إلى البرنامج على شكل مصفوفة من السلاسل النصية، تُسمّى `Sys.argv` في أوسمل. وبشكل أدق، تُسمّى المصفوفة `argv`، وهي متاحة ضمن وحدة `Sys`، التي تشكّل واجهة لنظام التشغيل. ويتعلّق الترميز `Sys.argv` بـ*نظام الوحدات* في أوسمل، الذي ينظّم المكتبات في وحدات تُسمّى وحدات (modules)، تحتوي هي نفسها على قيم مختلفة. ودون الخوض في تفاصيل نظام الوحدات، يكفي القول الآن إننا نشير إلى قيمة داخل وحدة بكتابة اسم الوحدة، متبوعًا باسم القيمة، مفصولين بنقطة. (سنناقش هذا بمزيد من التفصيل في القسم [*2.11*](#logo-turtle) *لوجو ترتل (Logo Turtle)*.) وعليه، يجب قراءة `Sys.argv` على أنها «المصفوفة `argv` التي تنتمي إلى الوحدة `Sys`».
 
-We use the notation `t.(i)` to access the `i`-th element of an array `t`. We will return
-to the notion of arrays in section [*2.5*](#sieve-of-eratosthenes) *The Sieve of Eratosthenes*. The first element of
-`Sys.argv` is `Sys.argv.(0)` since arrays are indexed starting from 0. This is the
-program’s name (here `leap_year`). The second element is `Sys.argv.(1)`. This is the
-first parameter passed to the program (`2013` in our example). Since it is a string, it
-must be converted into an integer by calling the function `int_of_string`, which
-belongs to the module `Stdlib`. This is a special module for which it is not necessary
-to write `Stdlib.`f.
+نستخدم الترميز `t.(i)` للوصول إلى العنصر رقم `i` في مصفوفة `t`. وسنعود إلى مفهوم المصفوفات في القسم [*2.5*](#sieve-of-eratosthenes) *غربال إراتوستينس (The Sieve of Eratosthenes)*. العنصر الأول من `Sys.argv` هو `Sys.argv.(0)` لأن فهرسة المصفوفات تبدأ من 0. وهذا هو اسم البرنامج (هنا `leap_year`). والعنصر الثاني هو `Sys.argv.(1)`. وهذا أول وسيط يُمرَّر إلى البرنامج (`2013` في مثالنا). وبما أنه سلسلة نصية، يجب تحويله إلى عدد صحيح باستدعاء الدالة `int_of_string`، التي تنتمي إلى وحدة `Stdlib`. وهذه وحدة خاصة لا يلزم أن تُكتب `Stdlib.` قبل أسماء قيمها.
 
-##### Type-Checking
+##### التحقق من الأنواع
 
-Let us now consider some additional details regarding the datatypes introduced in our
-first program. While the types of variables are inferred automatically, it is also
-possible to display them using the `-i` option of the compiler:
+لننظر الآن في بعض التفاصيل الإضافية المتعلقة بأنواع البيانات المقدَّمة في برنامجنا الأول. وبينما تُستنتَج أنواع المتغيرات تلقائيًا، يمكن أيضًا عرضها باستخدام الخيار `-i` للمترجم:
 
 ```console
   > ocamlc -i leap_year.ml
@@ -174,60 +114,41 @@ possible to display them using the `-i` option of the compiler:
   val msg : string
 ```
 
-We thus see that the variables `year`, `leap`, and `msg` are respectively of type `int`, `bool`,
-and `string`. These are three predefined types in OCaml. Let us examine these and
-other related types using the toplevel.
+نرى إذن أن المتغيرات `year` و`leap` و`msg` من الأنواع `int` و`bool` و`string` على التوالي. وهذه ثلاثة أنواع معرَّفة مسبقًا في أوسمل. لنفحص هذه الأنواع وأنواعًا أخرى متعلقة بها باستخدام الطرفية التفاعلية.
 
-##### Types int, int32, and int64
+##### الأنواع int و int32 و int64
 
-Let us begin with the type `int`, which corresponds to processor-native integers, also
-called machine integers. An integer constant can be written in decimal, binary (prefix
-`0b`), octal (prefix `0o`) or hexadecimal (prefix `0x`) notations. Thus, the decimal constant
-`91` can be written as `0b1011011` in binary, as `0o133` in octal, and as `0x5B` in
-hexadecimal.
+لنبدأ بالنوع `int`، الذي يقابل الأعداد الصحيحة الأصلية للمعالج، وتُسمّى أيضًا الأعداد الصحيحة الآلية. ويمكن كتابة ثابتة صحيحة بالترميز العشري، أو الثنائي (السابقة `0b`)، أو الثماني (السابقة `0o`)، أو السداسي عشر (السابقة `0x`). وهكذا يمكن كتابة الثابتة العشرية `91` على هيئة `0b1011011` في النظام الثنائي، و`0o133` في النظام الثماني، و`0x5B` في النظام السداسي عشر.
 
-The usual operations on the type `int` are addition (`+`), subtraction (`-`),
-multiplication (`*`), integer division (`/`), and remainder (`mod`).
+العمليات المعتادة على النوع `int` هي الجمع (`+`)، والطرح (`-`)، والضرب (`*`)، وقسمة الأعداد الصحيحة (`/`)، والباقي (`mod`).
 
 ```ocaml
   # 2 * (7 / 2) + 7 mod 2;;
   - : int = 7
 ```
 
-For greater clarity, the digits may be separated using an underscore (`_`).
+لمزيد من الوضوح، يمكن فصل الأرقام باستخدام شرطة سفلية (`_`).
 
 ```ocaml
   # 0x2f_ff_ff_ff + 268_435_456;;
   - : int = 1073741823
 ```
 
-The precision of the type `int` depends on the machine architecture. The minimum and
-maximum values of the type `int` are given by the two constants `min_int` and
-`max_int`.
+تعتمد دقة النوع `int` على معمارية الآلة. ويُعطى الحدّان الأدنى والأقصى للنوع `int` بالثابتتين `min_int` و`max_int`.
 
 ```ocaml
   # min_int;;
   - : int = -1073741824
 ```
 
-On a 32-bit machine, values of type `int` are encoded as 31-bit signed
-integers[^1],
-so that `min_int` and `max_int` have the values −230 and 230 − 1, respectively.
-On a 64-bit machine, the values of type `int` are encoded as 63-bit signed
-integers. The machine representation of integers uses the two’s complement
-representation and may be manipulated with the help of shift operations
-(`lsl`, `lsr`, and `asr`) and bitwise operations (`land`, `lor`, `lxor`, and `lnot`). For
-example, you can test the fifth bit of the representation of the integer 42
-using:
+على آلة ذات 32 بت، تُرمَّز قيم النوع `int` كأعداد صحيحة مؤشَّرة ذات 31 بت[^1]، بحيث تأخذ `min_int` و`max_int` القيمتين −230 و 230 − 1 على التوالي. وعلى آلة ذات 64 بت، تُرمَّز قيم النوع `int` كأعداد صحيحة مؤشَّرة ذات 63 بت. ويستخدم التمثيل الآلي للأعداد الصحيحة تمثيل المتمّم الثنائي، ويمكن التعامل معه بمساعدة عمليات الإزاحة (`lsl` و`lsr` و`asr`) والعمليات البتّية (`land` و`lor` و`lxor` و`lnot`). فعلى سبيل المثال، يمكنك اختبار البتة الخامسة في تمثيل العدد الصحيح 42 باستخدام:
 
 ```ocaml
   # 42 land (1 lsl 5);;
   - : int = 32
 ```
 
-To manipulate 32-bit or 64-bit signed integers, OCaml offers two specific types: `int32`
-and `int64`. The integer constants of type `int32` (or `int64`) are written with the suffix
-`l` (or `L`).
+لمعالجة الأعداد الصحيحة المؤشَّرة ذات 32 بت أو 64 بت، تقدّم أوسمل نوعين خاصين: `int32` و`int64`. وتُكتَب الثوابت الصحيحة من النوع `int32` (أو `int64`) باللاحقة `l` (أو `L`).
 
 ```ocaml
   # 123l;;
@@ -236,61 +157,45 @@ and `int64`. The integer constants of type `int32` (or `int64`) are written with
   - : int64 = 10000000000000L
 ```
 
-The arithmetic operations on these two types may be found in the OCaml modules `Int32`
-and `Int64`.
+يمكن العثور على العمليات الحسابية على هذين النوعين في وحدتي أوسمل `Int32` و`Int64`.
 
-##### The Type bool
+##### النوع bool
 
-The type `bool` represents boolean values, that is, `true` and `false`. The operations on
-the type `bool` are conjunction (`&&`), disjunction (`||`), and negation (`not`).
+يمثّل النوع `bool` القيم المنطقية، أي `true` و`false`. والعمليات على النوع `bool` هي العطف (`&&`)، والفصل (`||`)، والنفي (`not`).
 
 ```ocaml
   # not true && false || true;;
   - : bool = true
 ```
 
-Negation has the highest priority, followed by conjunction, and then disjunction. The
-preceding expression is therefore read as:
+للنفي الأسبقية الأعلى، يليه العطف، ثم الفصل. لذا يُقرأ التعبير السابق على النحو التالي:
 
 ```ocaml
   # ((not true) && false) || true;;
   - : bool = true
 ```
 
-The evaluation order of the operations `&&` and `||` is fixed from left to right. Furthermore,
-the second argument is evaluated only if necessary, that is, only if the first argument
-of the operation `&&` (respectively, `||`) is true (respectively, false). These are the only
-operations for which the evaluation order is specified. Furthermore, these are the only
-operations whose evaluation is lazy.
+ترتيب تقييم المعاملتين `&&` و`||` ثابت من اليسار إلى اليمين. وعلاوةً على ذلك، لا يُقيَّم الوسيط الثاني إلا عند الحاجة، أي فقط إذا كان الوسيط الأول للمعاملة `&&` (أو `||` على التوالي) صحيحًا (أو خاطئًا على التوالي). وهاتان هما المعاملتان الوحيدتان المحدَّد لهما ترتيب التقييم. وعلاوةً على ذلك، هاتان هما المعاملتان الوحيدتان اللتان يكون تقييمهما كسولًا (lazy).
 
-The comparison operations `=`, `<>`, ``, `=` return a boolean.
+تُعيد عمليات المقارنة `=`, `<>`, ``, `=` قيمة منطقية.
 
 ```ocaml
   # 1 < 2 && 3 = 4;;
   - : bool = false
 ```
 
-Boolean expressions are mainly used in the conditional construction `ife1thene2elsee3`.
-Depending on whether the expression `e1` is true or false, either the expression `e2` or
-the expression `e3` is evaluated.
+تُستخدَم التعبيرات المنطقية أساسًا في البنية الشرطية `ife1thene2elsee3`. ووفقًا لكون التعبير `e1` صحيحًا أو خاطئًا، يُقيَّم إما التعبير `e2` وإما التعبير `e3`.
 
 ```ocaml
   # if 1 < 2 then 3 else 4;;
   - : int = 3
 ```
 
-As is clear in this example, the construction `ifthenelse` is an expression like any other.
-In particular, for this expression to be well-typed, the two branches `e2` and
-`e3` must have the same type, which is then the type of the expression as a
-whole.
+وكما هو واضح في هذا المثال، فإن البنية `ifthenelse` تعبير كأي تعبير آخر. وبوجه خاص، لكي يكون هذا التعبير سليم النوع (well-typed)، يجب أن يكون للفرعين `e2` و`e3` النوع نفسه، الذي يصبح عندئذ نوع التعبير ككل.
 
-##### Types char and string
+##### النوعان char و string
 
-Characters are represented by the type `char`. They are written between single quotes:
-`’a’`. Characters that are not printable are entered using a notation of the form `’``\`c`’`,
-where c can be a character (`n`, `r`, `t`, \), or an ASCII code (between 0 and
-255), written with three decimal digits (\ddd) or two hexadecimal digits
-(\xdd).
+تُمثَّل المحارف بالنوع `char`. وتُكتَب بين علامتي تنصيص مفردتين: `’a’`. أما المحارف غير القابلة للطباعة فتُدخَل باستخدام ترميز بالشكل `’``\`c`’`، حيث يمكن أن يكون c محرفًا (`n` أو `r` أو `t` أو \) أو رمز ASCII (بين 0 و255)، مكتوبًا بثلاثة أرقام عشرية (\ddd) أو رقمين سداسيَّين عشريَّين (\xdd).
 
 ```ocaml
   # ’a’;;
@@ -305,12 +210,9 @@ where c can be a character (`n`, `r`, `t`, \), or an ASCII code (between 0 and
   - : char = ’~’
 ```
 
-You can convert a character to its ASCII code and vice versa with the help of the
-functions `Char.code` and `Char.chr` of the `Char` module.
+يمكنك تحويل محرف إلى رمزه ASCII والعكس بمساعدة الدالتين `Char.code` و`Char.chr` من وحدة `Char`.
 
-Strings are represented by the type `string`. They are written within double
-quotes: `"abc"`. Within a string, characters that are not printable may be entered with
-the same syntax used for the type `char`.
+تُمثَّل السلاسل النصية بالنوع `string`. وتُكتَب بين علامتي تنصيص مزدوجتين: `"abc"`. ويمكن داخل السلسلة النصية إدخال المحارف غير القابلة للطباعة بالصيغة نفسها المستخدمة للنوع `char`.
 
 ```ocaml
   # "a";;
@@ -323,66 +225,43 @@ the same syntax used for the type `char`.
   - : string = "abc~def"
 ```
 
-As is clear in this example, the string `"a"` does not have the same type as the
-character `’a’`. In general, there is no conversion between these two types. You can
-access the i-th character of a string s with the notation s`.[`i`]`, the first character
-having index 0.
+وكما هو واضح في هذا المثال، لا تملك السلسلة `"a"` النوع نفسه الذي يملكه المحرف `’a’`. وبشكل عام، لا يوجد تحويل بين هذين النوعين. ويمكنك الوصول إلى المحرف رقم i في سلسلة s بالترميز s`.[`i`]`، حيث يكون للمحرف الأول الفهرس 0.
 
 ```ocaml
   # "abc".[1];;
   - : char = ’b’
 ```
 
-The length of a string is given by the function `String.length` of the module `String`.
-Finally, two strings can be concatenated using the operator `^`.
+يُعطى طول سلسلة نصية بالدالة `String.length` من وحدة `String`. وأخيرًا، يمكن دمج سلسلتين نصيتين باستخدام المعاملة `^`.
 
 ```ocaml
   # String.length ("abc" ^ "def");;
   - : int = 6
 ```
 
-The reader is referred to the OCaml manual for further details regarding the modules
-presented in this chapter.
+نُحيل القارئ إلى دليل أوسمل لمزيد من التفاصيل بشأن الوحدات المعروضة في هذا الفصل.
 
-##### Input/Output
+##### الإدخال/الإخراج
 
-The simplest input/output functions are those that print values of basic
-types, such as `print_string`, which was used above to print `Hello world`.
-Other such functions include `print_char`, `print_int`, and `print_float`;
-`print_newline`, to print a carriage return; and `print_endline`, to print a
-string followed by a carriage return. These six printing functions write to
-standard output. To write to standard error, there are six other functions:
-`prerr_char`, `prerr_string`, etc. Likewise, there are functions that read from
-standard input, namely `read_int`, `read_float`, and `read_line`. There is also a
-variant of the function `printf` to write to standard error, `Printf.eprintf`.
-You will find more details regarding input/output in section [*2.7*](#copying-a-file) *Copying a File*.
+أبسط دوال الإدخال/الإخراج هي تلك التي تطبع قيمًا من الأنواع الأساسية، مثل `print_string`، التي استُخدمت أعلاه لطباعة `Hello world`. ومن هذه الدوال أيضًا `print_char` و`print_int` و`print_float`؛ و`print_newline` لطباعة إرجاع عربة؛ و`print_endline` لطباعة سلسلة نصية يتبعها إرجاع عربة. وتكتب دوال الطباعة الست هذه إلى الخرج القياسي. أما الكتابة إلى الخطأ القياسي، فثمّ ست دوال أخرى: `prerr_char` و`prerr_string` وغيرها. وبالمثل، توجد دوال تقرأ من الدخل القياسي، وهي `read_int` و`read_float` و`read_line`. وهناك أيضًا صيغة من الدالة `printf` للكتابة إلى الخطأ القياسي، هي `Printf.eprintf`. وستجد مزيدًا من التفاصيل بشأن الإدخال/الإخراج في القسم [*2.7*](#copying-a-file) *نسخ ملف*.
 
-### 2.2 The Monte-Carlo Method
+### 2.2 طريقة مونت كارلو
 
 >
 
-Our second program (see page [46](#x7-22014r2)), `approx_pi.ml`, calculates the value of π
-experimentally using the Monte-Carlo method. This method consists in randomly
-generating points in a square of side 1, whose area is therefore 1, and then counting
-the number of those points that lie within a quarter circle of radius 1 inscribed in
-this square. The area of the quarter circle is π∕4. Figure [2.1](#computation-of-using-the-montecarlo-method) illustrates the
-idea.
+برنامجنا الثاني (انظر الصفحة [46](#x7-22014r2))، `approx_pi.ml`، يحسب قيمة π تجريبيًا باستخدام طريقة مونت كارلو (Monte-Carlo). وتتمثّل هذه الطريقة في توليد نقاط عشوائيًا داخل مربع طول ضلعه 1، ومساحته بالتالي 1، ثم عدّ عدد هذه النقاط الواقعة داخل ربع دائرة نصف قطرها 1 مرسوم داخل هذا المربع. ومساحة ربع الدائرة هي π∕4. ويوضّح الشكل [2.1](#computation-of-using-the-montecarlo-method) الفكرة.
 
 ![](/images/learn-ocaml/first-steps-0-pi_monte_carlo-mps-.webp){#computation-of-using-the-montecarlo-method}
 
-**Figure 2.1: Computation of π using the Monte-Carlo method.**
+**الشكل 2.1: حساب π باستخدام طريقة مونت كارلو.**
 
-We compile the program `approx_pi.ml`, for instance using `ocamlopt` (for greater
-efficiency), as follows:
+نترجم البرنامج `approx_pi.ml`، مثلًا باستخدام `ocamlopt` (لكفاءة أكبر)، على النحو التالي:
 
 ```console
   > ocamlopt -o approx_pi approx_pi.ml
 ```
 
-We then execute the program and give it the number of points to be generated. If this
-number is sufficiently large, the proportion of points contained within the quarter
-circle approaches the ratio of the area of the quarter circle to that of the square, that
-is, π∕4. We obtain the following results:
+ثم ننفّذ البرنامج ونعطيه عدد النقاط المطلوب توليدها. وإذا كان هذا العدد كبيرًا بما يكفي، تقترب نسبة النقاط الواقعة داخل ربع الدائرة من نسبة مساحة ربع الدائرة إلى مساحة المربع، أي π∕4. فنحصل على النتائج التالية:
 
 ```text
   > ./approx_pi
@@ -399,66 +278,39 @@ is, π∕4. We obtain the following results:
   3.142184
 ```
 
-In practice, however, this method yields a value of π that is accurate only to a few
-decimal places. For example, with 10 million points, the value is accurate only to the
-third decimal place.
+غير أنه في الممارسة العملية، تعطي هذه الطريقة قيمة لـ π صحيحة فقط حتى بضعة منازل عشرية. فمثلًا، مع 10 ملايين نقطة، تكون القيمة صحيحة فقط حتى المنزلة العشرية الثالثة.
 
 >
 
-As in our first program, the first line of `approx_pi.ml` obtains the number `n` of
-points to be generated by reading an integer from standard input:
+كما في برنامجنا الأول، يحصل السطر الأول من `approx_pi.ml` على العدد `n` من النقاط المطلوب توليدها بقراءة عدد صحيح من الدخل القياسي:
 
 ```ocaml
   let n = read_int ()
 ```
 
-The rest of the program uses a loop to generate `n` points at random. In each
-iteration of the loop, we increase by 1 the contents of a variable initialized with
-0 if the generated point lies within the quarter circle of radius 1. At the
-end, we display the approximate value of π, which equals four times the
-ratio of the number of points within the quarter circle to the total number of
-points.
+تستخدم بقية البرنامج حلقة لتوليد `n` نقطة عشوائيًا. وفي كل تكرار من تكرارات الحلقة، نزيد بمقدار 1 محتوى متغير مهيَّأ بالقيمة 0 إذا كانت النقطة المولَّدة تقع داخل ربع الدائرة ذي نصف القطر 1. وفي النهاية، نعرض القيمة التقريبية لـ π، التي تساوي أربعة أمثال نسبة عدد النقاط الواقعة داخل ربع الدائرة إلى العدد الإجمالي للنقاط.
 
-Computing in this manner, by modifying the contents of a variable, is called
-computation by *side effects*. More generally, the term side effect is used in relation to
-expressions that do not return a value when evaluated. As we have mentioned in the
-previous section, a declaration of the form `let()=...` is used to evaluate such
-expressions.
+يُسمّى الحساب بهذه الطريقة، بتعديل محتوى متغير، حسابًا بواسطة *الآثار الجانبية* (side effects). وبشكل أعم، يُستخدَم مصطلح الأثر الجانبي بالنسبة إلى التعبيرات التي لا تُعيد قيمة عند تقييمها. وكما ذكرنا في القسم السابق، يُستخدَم إعلان بالشكل `let()=...` لتقييم مثل هذه التعبيرات.
 
-The rest of the program consists in the expression that follows the `=` sign.
-It begins with the initialization of a variable `p` using a declaration of the
-form:
+تتألف بقية البرنامج من التعبير الذي يلي علامة `=`. ويبدأ بتهيئة متغير `p` بإعلان بالشكل التالي:
 
 ```ocaml
      let p = ... in
      ...
 ```
 
-This declaration introduces a *local variable*, whose use or *scope* is restricted to the
-expression that follows the keyword `in`. This kind of declaration is useful when one
-wishes to restrict the visibility of a variable, whether to prevent its usage in other
-parts of the program or because one wishes to hide temporarily another variable with
-the same name.
+يُعرِّف هذا الإعلان *متغيرًا محليًا*، يقتصر استخدامه أو *نطاقه* على التعبير الذي يلي الكلمة المفتاحية `in`. ويفيد هذا النوع من الإعلانات عندما يرغب المرء في تقييد ظهور متغير، سواء لمنع استخدامه في أجزاء أخرى من البرنامج أو لأنه يرغب في إخفاء متغير آخر بالاسم نفسه مؤقتًا.
 
-The variable `p` is initialized with a *reference*, that is, a memory cell, the contents
-of which can be modified, and which initially contains the value 0. This
-reference will be used to count the number of points that fall within the quarter
-circle.
+يُهيَّأ المتغير `p` بـ*مرجع* (reference)، أي خلية ذاكرة يمكن تعديل محتواها، وتحوي في البداية القيمة 0. وسيُستخدَم هذا المرجع لعدّ عدد النقاط الواقعة داخل ربع الدائرة.
 
 ```ocaml
      let p = ref 0 in
      ...
 ```
 
-The variable `p` is created by calling the predefined function `ref` (defined in the `Stdlib`
-module) with the integer 0 as argument. The application of this function has the
-effect of allocating a new memory cell and initializing its contents to 0. The type of `p`
-inferred by OCaml is `intref`, read as “a reference containing a value of type
-`int`.”
+يُنشأ المتغير `p` باستدعاء الدالة المعرَّفة مسبقًا `ref` (المعرَّفة في وحدة `Stdlib`) بالعدد الصحيح 0 كوسيط. ويترتّب على تطبيق هذه الدالة تخصيص خلية ذاكرة جديدة وتهيئة محتواها بالقيمة 0. والنوع الذي يستنتجه أوسمل للمتغير `p` هو `intref`، ويُقرأ على أنه «مرجع يحوي قيمة من النوع `int`».
 
-The next line introduces a `for` *loop* that evaluates the expression situated between
-the keywords `do` and `done` `n` times, while varying the contents of a variable `k` from `1`
-to `n`:
+يُعرِّف السطر التالي *حلقة* `for` تقيّم التعبير الواقع بين الكلمتين المفتاحيتين `do` و`done` عدد `n` من المرات، مع تغيير محتوى المتغير `k` من `1` إلى `n`:
 
 ```ocaml
      for k = 1 to n do
@@ -466,53 +318,27 @@ to `n`:
      done
 ```
 
-The variable `k` is the *index*of the loop, and the expression between `do` and `done` is the
-*body*of the loop. The index `k` is initialized with the value `1`. Then, the body is
-evaluated. This is the first iteration of the loop. Then, `k` is increased, and the
-body is evaluated again. This is the second iteration of the loop. And so
-on and so forth. Following the evaluation for which `k` equals `n`, the loop
-terminates.
+المتغير `k` هو *فهرس* الحلقة، والتعبير الواقع بين `do` و`done` هو *جسم* الحلقة. يُهيَّأ الفهرس `k` بالقيمة `1`. ثم يُقيَّم الجسم. هذه هي التكرار الأول للحلقة. بعد ذلك يُزاد `k`، ويُقيَّم الجسم مرة أخرى. هذا هو التكرار الثاني للحلقة. وهكذا دواليك. وبعد التقييم الذي تكون فيه `k` مساوية لـ `n`، تنتهي الحلقة.
 
-The body of the loop begins by generating the coordinates of a point (x,y)
-randomly within the square of side 1.
+يبدأ جسم الحلقة بتوليد إحداثيات نقطة (x,y) عشوائيًا داخل مربع طول ضلعه 1.
 
 ```ocaml
       let x = Random.float 1.0 in
       let y = Random.float 1.0 in
 ```
 
-To this end, two local variables, `x` and `y`, are initialized by two calls to the function
-`Random.float` with the *floating-point number* `1.0` as argument. Each of these calls
-returns a floating-point number between 0 and 1 (including 0 and excluding 1). As
-we will see later, OCaml makes a strong distinction between floating-point
-numbers, which are of type `float`, and integers, which are of type `int`. Crucially,
-a dot must be inserted after the number `1` to represent the floating-point
-number 1. We thus write `1.0` or `1.` to distinguish it from the integer `1` of type
- 
- 
-`int`.
+ولهذا الغرض، يُهيَّأ متغيران محليان، `x` و`y`، باستدعاءين للدالة `Random.float` بالوسيط *العدد ذي الفاصلة العائمة* `1.0`. ويُعيد كلٌّ من هذين الاستدعاءين عددًا ذا فاصلة عائمة بين 0 و1 (يشمل 0 ويستثني 1). وكما سنرى لاحقًا، تفرّق أوسمل تفريقًا صارمًا بين أعداد الفاصلة العائمة، وهي من النوع `float`، والأعداد الصحيحة، وهي من النوع `int`. والمهم أنه يجب إدراج نقطة بعد العدد `1` لتمثيل العدد ذي الفاصلة العائمة 1. لذا نكتب `1.0` أو `1.` لتمييزه عن العدد الصحيح `1` من النوع `int`.
 
-The conditional that follows increases the contents of the reference `p` if the point
-(x,y) is within the quarter circle, that is, if x2 + y2 ≤ 1.
+تزيد البنية الشرطية التي تلي محتوى المرجع `p` إذا كانت النقطة (x,y) داخل ربع الدائرة، أي إذا كان x2 + y2 ≤ 1.
 
 ```ocaml
       if x *. x +. y *. y <= 1.0 then
         p := !p + 1
 ```
 
-As we see in the expression `x*.x+.y*.y`, the arithmetic operators on floating-point
-numbers are also distinguished *syntactically*from operators on integers: A dot `.` must
-be added after the sign of each operator (`+`, `-`, etc.). Thus, `+.` is the addition operator
-on floats, `*.` the multiplication operator, etc. However, the same operator `<=` is used
-to compare floats and integers. (See chapter [3](https://usr.lmf.cnrs.fr/lpo/mainch3.html#ocaml-concepts-a-closer-look) for further details on comparison
-operators.)
+وكما نرى في التعبير `x*.x+.y*.y`، فإن المعاملات الحسابية على أعداد الفاصلة العائمة تتميّز أيضًا *صرفيًا* (syntactically) عن معاملات الأعداد الصحيحة: يجب إضافة نقطة `.` بعد إشارة كل معاملة (`+` و`-` وغيرها). وهكذا فإن `+.` هي معاملة الجمع على العوائم، و`*.` معاملة الضرب، وهكذا. ومع ذلك، تُستخدَم المعاملة نفسها `<=` لمقارنة العوائم والأعداد الصحيحة. (انظر الفصل [3](https://usr.lmf.cnrs.fr/lpo/mainch3.html#ocaml-concepts-a-closer-look) لمزيد من التفاصيل حول معاملات المقارنة.)
 
-The expression `p:=!p+1` is used to increase the reference `p` by 1. Here, the
-assignment operator `:=` serves to modify the contents of a reference, and the prefix
-unary *dereference* operator `!` is used to retrieve the contents of a reference. Thus, if `p`
-is a reference of type `intref`, the value `!p` is of type `int`. The loop ends after the
-iteration for which `k` equals `n`. The evaluation then continues with the expression that
-follows the `;` operator.
+يُستخدَم التعبير `p:=!p+1` لزيادة المرجع `p` بمقدار 1. هنا، تعمل معاملة الإسناد `:=` على تعديل محتوى مرجع، بينما تُستخدَم معاملة *إلغاء المرجع* (dereference) الأحادية البادئة `!` لاسترجاع محتوى مرجع. وعليه، إذا كان `p` مرجعًا من النوع `intref`، فإن القيمة `!p` من النوع `int`. وتنتهي الحلقة بعد التكرار الذي تكون فيه `k` مساوية لـ `n`. ثم يستمر التقييم بالتعبير الذي يلي المعاملة `;`.
 
 ```ocaml
      for k = 1 to n do
@@ -520,48 +346,34 @@ follows the `;` operator.
      done;
 ```
 
-Such a series of evaluations is called an *expression sequence*. For an expression sequence
-to be accepted by OCaml, the expression before the semicolon must not return a
-value, that is, it must only perform side effects.
+تُسمّى سلسلة التقييمات هذه *تسلسل تعبيرات* (expression sequence). ولكي يقبل أوسمل تسلسل تعبيرات، يجب ألا يُعيد التعبير الذي قبل الفاصلة المنقوطة قيمة، أي يجب ألا يُحدِث سوى آثار جانبية.
 
-The declaration that follows the `for` loop defines a local variable `pi` containing the
-approximation of π.
+يُعرِّف الإعلان الذي يلي حلقة `for` متغيرًا محليًا `pi` يحوي تقريب π.
 
 ```ocaml
       let pi = 4.0 *. float !p /. float n in
 ```
 
-In order to perform a division of floating-point numbers, the integer values `!p` and `n` are
-converted into floats using the function `float` (defined in the `Stdlib` module).
+لإجراء قسمة على أعداد الفاصلة العائمة، تُحوَّل القيمتان الصحيحتان `!p` و`n` إلى عوائم باستخدام الدالة `float` (المعرَّفة في وحدة `Stdlib`).
  
  
-Finally, we display the approximation of π thus calculated using the function
-`Printf.printf`:
+أخيرًا، نعرض تقريب π المحسوب بهذه الطريقة باستخدام الدالة `Printf.printf`:
 
 ```ocaml
       Printf.printf "%f\n" pi
 ```
 
-Just as we used %d in a formatting string to display an integer, here we use %f to display
-a float.
+وكما استخدمنا %d في سلسلة تنسيق لعرض عدد صحيح، نستخدم هنا %f لعرض عدد ذي فاصلة عائمة.
 
-#### Additional Information
+#### معلومات إضافية
 
-Here, we present further explanations regarding the ideas introduced in this second
-program.
+نقدّم هنا شروحًا إضافية تتعلق بالأفكار المطروحة في هذا البرنامج الثاني.
 
-##### The Type float
+##### النوع float
 
-Real numbers are represented in the computer using a specific kind of encoding called
-*floating-point numbers*, or more simply *floats*. In OCaml, floating-point numbers are
-encoded using the double-precision IEEE 754 standard (64 bits). There are no
-single-precision (32 bits) floating-point numbers in OCaml.
+تُمثَّل الأعداد الحقيقية في الحاسوب باستخدام نوع خاص من الترميز يُسمّى *أعداد الفاصلة العائمة* (floating-point numbers)، أو ببساطة *العوائم* (floats). وفي أوسمل، تُرمَّز أعداد الفاصلة العائمة باستخدام معيار IEEE 754 مزدوج الدقة (64 بت). ولا توجد في أوسمل أعداد فاصلة عائمة أحادية الدقة (32 بت).
 
-As we noted earlier, the type of floating-point numbers is `float`. A constant of
-type `float` is written either in decimal notation (for example, `3.14`) or in scientific
-notation (for example, `6.02214e23`). A dot must always be used in the decimal
-notation, to indicate that the constant is not of type `int`. In case of scientific
-notation, however, the dot is not compulsory.
+كما لاحظنا سابقًا، نوع أعداد الفاصلة العائمة هو `float`. وتُكتَب ثابتة من النوع `float` إما بالترميز العشري (مثل `3.14`) وإما بالترميز العلمي (مثل `6.02214e23`). ويجب دائمًا استخدام نقطة في الترميز العشري، للإشارة إلى أن الثابتة ليست من النوع `int`. أما في حالة الترميز العلمي، فليست النقطة إلزامية.
 
 ```ocaml
   # 3 ;;
@@ -572,11 +384,7 @@ notation, however, the dot is not compulsory.
   - : float = 1000000.
 ```
 
-Operations on the type `float` are distinct from those on the type `int`. They are followed
-by a dot, as in case of floating-point constants: `+.`, `-.`, `*.`, `/.`. Unlike in other
-languages, arithmetic operations thus have different names depending on whether
-integers or floats are involved, and there are no implicit conversions between the types
-`int` and `float`.
+تختلف العمليات على النوع `float` عن تلك التي على النوع `int`. ويتبعها نقطة، كما في حالة ثوابت أعداد الفاصلة العائمة: `+.` و`-.` و`*.` و`/.`. وخلافًا لما في لغات أخرى، تختلف أسماء العمليات الحسابية وفقًا لكون الأعداد صحيحة أو ذات فاصلة عائمة، ولا توجد تحويلات ضمنية بين النوعين `int` و`float`.
 
 ```ocaml
   # 2 +. 3.14;;
@@ -584,8 +392,7 @@ integers or floats are involved, and there are no implicit conversions between t
   expected of type float
 ```
 
-The conversion functions `float` and `truncate` must be used to convert integers to
-floats and vice versa.
+يجب استخدام دالتي التحويل `float` و`truncate` لتحويل الأعداد الصحيحة إلى أعداد الفاصلة العائمة والعكس.
 
 ```ocaml
   # 3.14 /. float 2;;
@@ -594,19 +401,14 @@ floats and vice versa.
   - : int = 3
 ```
 
-Numerous operations on the type `float` are available in the `Stdlib` module, such
-as exponentiation `**`, square root `sqrt`, trigonometic functions, logarithmic functions,
-etc. Thus, the value of π, which is not predefined in OCaml, could be calculated using
-the following expression:
+تتوفر عمليات عديدة على النوع `float` في وحدة `Stdlib`، مثل الرفع إلى قوة `**`، والجذر التربيعي `sqrt`، والدوال المثلثية، والدوال اللوغاريتمية، وغيرها. وهكذا يمكن حساب قيمة π، غير المعرَّفة مسبقًا في أوسمل، باستخدام التعبير التالي:
 
 ```ocaml
   # 4. *. atan 1.;;
   - : float = 3.14159265358979312
 ```
 
-Unlike the type `int`, the type `float` includes three additional values,
-`neg_infinity`, `infinity`, and `nan`, that represent calculations that have no
-meaningful result.
+وخلافًا للنوع `int`، يتضمّن النوع `float` ثلاث قيم إضافية، `neg_infinity` و`infinity` و`nan`، تمثّل حسابات لا نتيجة ذات معنى لها.
 
 ```ocaml
   # -1. /. 0.;;
@@ -617,9 +419,7 @@ meaningful result.
   - : float = nan
 ```
 
-Unlike other languages, OCaml offers only one type of floating-point numbers, namely,
-64-bit double-precision floats conforming to the IEEE 754 standard. Floats lie
-between a minimum value `min_float` and a maximum value `max_float`.
+وخلافًا للغات أخرى، تقدّم أوسمل نوعًا واحدًا فقط من أعداد الفاصلة العائمة، ألا وهو أعداد الفاصلة العائمة المزدوجة الدقة 64-بت المطابقة لمعيار IEEE 754. وتقع أعداد الفاصلة العائمة بين قيمة دنيا `min_float` وقيمة قصوى `max_float`.
 
 ```ocaml
   # min_float;;
@@ -628,40 +428,30 @@ between a minimum value `min_float` and a maximum value `max_float`.
   - : float = 1.79769313486231571e+308
 ```
 
-##### The let and let-in Constructs
+##### بنيتا let و let-in
 
-The `let` and `let-in` constructs are used, respectively, to define global and local
-variables. Two important points must be noted regarding variables:
+تُستخدَم البنيتان `let` و`let-in`، على التوالي، لتعريف المتغيرات العامة والمحلية. ويجب ملاحظة نقطتين مهمتين بخصوص المتغيرات:
 
-- Variables are necessarily initialized.
-- The type of a variable is automatically inferred.
+- المتغيرات مهيَّأة بالضرورة.
+- يُستنتج نوع المتغير تلقائيًا.
 
-The first point results simply from the fact that variables can only be defined using the
-constructions `let` and `let-in`, whose syntax requires an expression for the initial
-value. The second point is specific to the OCaml language.
+تنتج النقطة الأولى ببساطة من أن المتغيرات لا يمكن تعريفها إلا باستخدام البنيتين `let` و`let-in`، الذي تتطلّب صيغتهما تعبيرًا للقيمة الابتدائية. أما النقطة الثانية فهي خاصة بلغة أوسمل.
 
-You can use the toplevel to find out the type inferred for a variable. For instance,
-if we type the following declaration:
+يمكنك استخدام الطرفية التفاعلية لمعرفة النوع المستنتَج لمتغير. على سبيل المثال، إذا كتبنا الإعلان التالي:
 
 ```ocaml
   # let x = 1+2;;
 ```
 
-The interpreter displays the response:
+يعرض المفسّر الاستجابة:
 
 ```ocaml
   val x : int = 3
 ```
 
-This indicates that we have defined a global variable `x`, initialized with the integer `3`. The
-type of `x` is inferred from the expression `1+2`, namely, `int`.
+يشير هذا إلى أننا عرّفنا متغيرًا عامًا `x`، مهيَّأً بالعدد الصحيح `3`. ويُستنتج نوع `x` من التعبير `1+2`، ألا وهو `int`.
 
-It is equally important to master the *scoping rules*of variables declared by a `let`
-or `let-in` construct. The scope of a global variable `x` begins immediately after the
-declaration `let x =...` used to define it. This scope extends until the end of the
-program. The scope of a local variable introduced with the `let-in` construct is
-limited to the expression that follows the keyword `in`. Thus, each of the three
-declarations below triggers a scoping error:
+من المهم بالقدر نفسه إتقان *قواعد النطاق* (scoping rules) للمتغيرات المعرَّفة بواسطة بنية `let` أو `let-in`. يبدأ نطاق المتغير العام `x` مباشرةً بعد الإعلان `let x =...` المستخدم لتعريفه. ويمتد هذا النطاق حتى نهاية البرنامج. أما نطاق المتغير المحلي المُعرِّف بواسطة بنية `let-in` فيقتصر على التعبير الذي يلي الكلمة المفتاحية `in`. وعليه فإن كل إعلان من الإعلانات الثلاثة أدناه يُحدِث خطأ في النطاق:
 
 ```ocaml
   # let x = x + 1;;
@@ -672,27 +462,21 @@ declarations below triggers a scoping error:
   Error: Unbound value z
 ```
 
-The three declarations above illustrate an important rule regarding variable usage: To be
-used, a variable must have been declared beforehand. The following program is
-therefore correct:
+توضّح الإعلانات الثلاثة أعلاه قاعدة مهمة تتعلق باستخدام المتغيرات: لكي يُستخدَم متغير، يجب أن يكون قد أُعلن مسبقًا. وعليه يكون البرنامج التالي صحيحًا:
 
 ```ocaml
   let x = 10
   let y = x+2
 ```
 
-By contrast, the program below is wrong:
+وفي المقابل، البرنامج أدناه خاطئ:
 
 ```ocaml
   let y = x+2
   let x = 10
 ```
 
-It is important to note that in the expression `letx=e1ine2;e3`, the scope of the
-variable `x` extends to the entire expression `e2;e3`. The precedence of the operator `;` is
-higher than that of the construction `let`. In other words, this expression must be read
-as: `letx=e1in(e2;e3)`. Program [2](#x7-22014r2) uses this scoping rule in the declaration of the local
-variable `p`.
+من المهم ملاحظة أنه في التعبير `letx=e1ine2;e3`، يمتد نطاق المتغير `x` إلى التعبير `e2;e3` بأكمله. وأسبقية المعاملة `;` أعلى من أسبقية البنية `let`. وبعبارة أخرى، يجب قراءة هذا التعبير على النحو التالي: `letx=e1in(e2;e3)`. ويستفيد البرنامج [2](#x7-22014r2) من قاعدة النطاق هذه في إعلان المتغير المحلي `p`.
 
 ```ocaml
   let () =
@@ -705,12 +489,9 @@ variable `p`.
     ...
 ```
 
-Thus, the variable `p` is visible both in the `for` loop and in the body of the declaration of
-the variable `pi`.
+وهكذا يكون المتغير `p` مرئيًا في حلقة `for` وفي جسم إعلان المتغير `pi` معًا.
 
-You can use the same name for several variables, including those of different types.
-The use of a variable `x` always refers to the nearest declaration. Consider the following
-program as an example:
+يمكنك استخدام الاسم نفسه لعدة متغيرات، بما في ذلك متغيرات من أنواع مختلفة. وتشير استخدامات المتغير `x` دائمًا إلى أقرب إعلان. خُذ البرنامج التالي مثالًا:
 
 ```ocaml
   let x = 10
@@ -719,14 +500,11 @@ program as an example:
   let () = Printf.printf "x=%d y=%d\n" x y
 ```
 
-The declaration `letx=20` defines a *new*variable `x`, which hides the scope of the
-previous one. The message displayed when you execute the program is therefore
-`x=20y=12`.
+يُعرِّف الإعلان `letx=20` متغيرًا *جديدًا* `x`، يحجب نطاق المتغير السابق. وعليه تكون الرسالة المعروضة عند تنفيذ البرنامج `x=20y=12`.
 
-##### The for Loop
+##### حلقة for
 
-As we have seen in our example, `for` loops are used to evaluate a given expression a
-certain number of times. They have the following form:
+كما رأينا في مثالنا، تُستخدَم حلقات `for` لتقييم تعبير معيّن عددًا محدَّدًا من المرات. ولها الشكل التالي:
 
 ```ocaml
   for i = e1 to e2 do
@@ -734,11 +512,7 @@ certain number of times. They have the following form:
   done
 ```
 
-The index of the loop, the variable `i`, is introduced by the `for` construct. Its value cannot
-be modified by the user. Its scope is limited to the body of the loop (the expression
-`e`), and therefore it cannot be used in the expressions `e1` and `e2`. These two
-expressions are evaluated only once, before the execution of the loop. This can be
-observed with the following program:
+يُعرِّف بناء `for` فهرس الحلقة، أي المتغير `i`. ولا يمكن للمستخدم تعديل قيمته. ويقتصر نطاقه على جسم الحلقة (التعبير `e`)، ولذلك لا يمكن استخدامه في التعبيرين `e1` و`e2`. ويُقيَّم هذان التعبيران مرة واحدة فقط، قبل تنفيذ الحلقة. ويمكن ملاحظة ذلك بالبرنامج التالي:
 
 ```ocaml
   let () =
@@ -747,21 +521,9 @@ observed with the following program:
     done
 ```
 
-When you execute this program, it displays the string `*.012345`. The evaluation of the
-`for` loop begins with the initialization of the index `i` with the value of the expression
-`(Printf.printf "*"; 0)`. The evaluation of this sequence first causes the symbol `*`
-to be printed. Then, the integer `0` is returned. The fact that the second printed
-character is a dot `.` indicates that the expression `(Printf.printf".";5)`,
-which corresponds to the final value of the index, is evaluated next. As the
-rest of the message contains only the numbers displayed by the expression
-Printf.printf "%d" i of the body of the loop, it may be deduced that the
-expressions `e1` and `e2` are not evaluated again. It is also important to note that if the
-value of `e1` is strictly greater than that of `e2`, the body of the loop is never
-executed.
+عند تنفيذ هذا البرنامج، يعرض السلسلة `*.012345`. يبدأ تقييم حلقة `for` بتهيئة الفهرس `i` بقيمة التعبير `(Printf.printf "*"; 0)`. ويؤدي تقييم هذا التسلسل أولًا إلى طباعة الرمز `*`. ثم تُعاد القيمة الصحيحة `0`. وتشير كون المحرف المطبوع الثاني نقطة `.` إلى أن التعبير `(Printf.printf".";5)`، الذي يوافق القيمة النهائية للفهرس، يُقيَّم بعد ذلك. وبما أن بقية الرسالة لا تحوي سوى الأعداد التي يعرضها التعبير Printf.printf "%d" i من جسم الحلقة، فيمكن استنتاج أن التعبيرين `e1` و`e2` لا يُقيَّمان مرة أخرى. ومن المهم أيضًا ملاحظة أنه إذا كانت قيمة `e1` أكبر تمامًا من قيمة `e2`، فلن يُنفَّذ جسم الحلقة أبدًا.
 
-There is also a variant of the `for` construct that goes backwards. For
-example, the following program displays the numbers `9876543210`, in this
-order.
+توجد أيضًا صيغة من البنية `for` تسير بالاتجاه المعاكس. على سبيل المثال، يعرض البرنامج التالي الأعداد `9876543210` بهذا الترتيب.
 
 ```ocaml
   let () =
@@ -770,103 +532,77 @@ order.
     done
 ```
 
-Note that the index can only be increased or decreased by 1 in each iteration. For
-other increments, it is possible to use a `while` loop, which will be discussed
-later.
+لاحظ أن الفهرس يمكن أن يزداد أو ينقص بمقدار 1 فقط في كل تكرار. ولتحقيق زيادات أخرى، يمكن استخدام حلقة `while`، التي ستُناقَش لاحقًا.
 
-For the sake of completeness, let us note that the body of the `for` loop in
-program [2](#x7-22014r2) does not make use of the loop index `k`. The OCaml compiler
-can detect this and emit a warning, if we add the command-line option `-w +a`:
+من باب الاستيفاء، لنلاحظ أن جسم حلقة `for` في البرنامج [2](#x7-22014r2) لا يستخدم فهرس الحلقة `k`. ويمكن لمترجم أوسمل كشف ذلك وإصدار تحذير، إذا أضفنا خيار سطر الأوامر `-w +a`:
 
 ```console
   > ocamlopt -w +a -o approx_pi approx_pi.ml
   Warning 35 [unused-for-index]: unused for-loop index k.
 ```
 
-A solution is to avoid naming the index of the loop, by replacing it with an
-underscore `_`.
+يتمثّل أحد الحلول في تجنّب تسمية فهرس الحلقة، باستبداله بشرطة سفلية `_`.
 
 ```ocaml
   for _ = 1 to n do
 ```
 
-This does not change the behavior of the `for` loop in any way.
+لا يغيّر هذا سلوك حلقة `for` بأي شكل.
 
-### 2.3 Drawing a Cardioid
+### 2.3 رسم قلب (cardioid)
 
 >
 
-Our third program (see page [62](#x7-27006r3)), `cardioid.ml`, draws a cardioid, that is, a curve
-that represents the trajectory of a fixed point on a circle that turns around a second
-circle of the same diameter, as shown in figure [2.2](#drawing-a-cardioid1).
+برنامجنا الثالث (انظر الصفحة [62](#x7-27006r3))، `cardioid.ml`، يرسم قلبًا (cardioid)، وهو منحنى يمثّل مسار نقطة ثابتة على دائرة تدور حول دائرة ثانية بالقطر نفسه، كما هو مبيّن في الشكل [2.2](#drawing-a-cardioid1).
 
 ![](/images/learn-ocaml/first-steps-1-cardioide_expl-mps-.webp){#drawing-a-cardioid1}
 
-**Figure 2.2: Drawing a cardioid.**
+**الشكل 2.2: رسم قلب (cardioid).**
 
 ![PIC](/images/learn-ocaml/first-steps-2-cardioide-mps-.webp)
 
-Mathematically, a cardioid is an algebraic plane curve that may be defined by the
-following parametric equations:
-
+رياضيًا، القلب (cardioid) منحنى جبري مستوٍ يمكن تعريفه بالمعادلتين الوسيطيتين (parametric equations) التاليتين:
 $$\begin{cases} x(\theta ) = a(1 - sin(\theta )) cos(\theta ) y(\theta ) = a(1 - sin(\theta )) sin(\theta ) \end{cases}$$
 
-where a is the radius of each circle.
+حيث a هو نصف قطر كل دائرة.
 
 >
 
-To trace the cardioid, we use the OCaml library `Graphics`, which allows you to
-open a two-dimensional graphical window and draw in it using elementary graphical
-functions. This library contains a single module, also called `Graphics`. Since we will
-be using a number of functions of this module, the program begins with a directive to
-open the module:
+لرسم القلب، نستخدم مكتبة أوسمل `Graphics`، التي تتيح فتح نافذة رسومية ثنائية الأبعاد والرسم فيها باستخدام دوال رسومية أولية. وتحتوي هذه المكتبة على وحدة واحدة، تُسمّى أيضًا `Graphics`. وبما أننا سنستخدم عددًا من دوال هذه الوحدة، يبدأ البرنامج بتوجيه لفتح الوحدة:
 
 ```ocaml
   open Graphics
 ```
 
-We will thus be able to use the values and functions of this library without having to
-prefix them each time with the name of the module, `Graphics`.
+وبهذا سنتمكن من استخدام قيم هذه المكتبة ودوالها دون الحاجة إلى إضافة اسم الوحدة `Graphics` كسابقة في كل مرة.
 
-The following line opens a graphical window with the function `open_graph`. This
-function takes as argument a string indicating the window’s dimensions.
+يفتح السطر التالي نافذة رسومية بالدالة `open_graph`. تأخذ هذه الدالة كوسيط سلسلة نصية تشير إلى أبعاد النافذة.
 
 ```ocaml
   let () = open_graph " 300x200"
 ```
 
-This statement opens a window of size 300 × 200, that is, 300 pixels wide and 200 pixels
-high. (Note that the space at the start of the string is mandatory.) We then draw
-within this window using integer coordinates, the origin being located at the bottom
-left of the window, the x-coordinates taking values from 0 to 299 and the
-y-coordinates from 0 to 199 (see figure [2.3](#coordinate-system-of-the-library-graphics)).
+تفتح هذه التعليمة نافذة بحجم 300 × 200، أي بعرض 300 بكسل وارتفاع 200 بكسل. (لاحظ أن الفراغ في بداية السلسلة إلزامي.) ثم نرسم داخل هذه النافذة باستخدام إحداثيات صحيحة، حيث يقع أصل الإحداثيات في أسفل يسار النافذة، وتأخذ إحداثيات x القيم من 0 إلى 299 وإحداثيات y من 0 إلى 199 (انظر الشكل [2.3](#coordinate-system-of-the-library-graphics)).
 
 ![0x0yxy∙2199-a-a99xxiiss](/images/learn-ocaml/first-steps-3-main1x.webp){#coordinate-system-of-the-library-graphics}
 
-**Figure 2.3: Coordinate system of the library Graphics.**
+**الشكل 2.3: نظام إحداثيات مكتبة الرسوميات.**
 
-The rest of the program plots the cardioid. Since this part of the code does not
-return a value, we place it within a declaration of the form:
+يرسم باقي البرنامج القلب. وبما أن هذا الجزء من الشيفرة لا يُعيد قيمة، فإننا نضعه داخل إعلان بالشكل التالي:
 
 ```ocaml
   let () = ...
 ```
 
-The functions we will use to draw the cardioid rely on a notion of *current point*. This
-point can be positioned using `moveto`. A call to `lineto x y` traces a line segment
-from the current point to the point with coordinates `(x,y)`, which then becomes the
-new current point.
+تعتمد الدوال التي سنستخدمها لرسم القلب على مفهوم *النقطة الحالية*. ويمكن تحديد موضع هذه النقطة باستخدام `moveto`. ويقوم استدعاء `lineto x y` برسم قطعة مستقيمة من النقطة الحالية إلى النقطة ذات الإحداثيات `(x,y)`، التي تصبح بعد ذلك النقطة الحالية الجديدة.
 
-We begin by placing the current point at (200,150), by calling the function
-`moveto`, with a view to drawing a cardioid beginning at this point:
+نبدأ بوضع النقطة الحالية عند (200,150)، باستدعاء الدالة `moveto`، بغية رسم قلب يبدأ من هذه النقطة:
 
 ```ocaml
     moveto 200 150;
 ```
 
-We use a `for` loop to vary the angle 𝜃 between 0 and 2π. For this, we make use of an
-integer index `i` varying from 0 to 200, and we use the fact that arctan(1) = π∕4 to
-calculate 𝜃 as arctan(1) × i∕25.
+نستخدم حلقة `for` لتغيير الزاوية 𝜃 بين 0 و2π. ولتحقيق ذلك، نستعمل فهرسًا صحيحًا `i` يتغيّر من 0 إلى 200، ونستفيد من أن arctan(1) = π∕4 لحساب 𝜃 كـ arctan(1) × i∕25.
 
 ```ocaml
     for i = 0 to 200 do
@@ -875,65 +611,42 @@ calculate 𝜃 as arctan(1) × i∕25.
     done
 ```
 
-In OCaml, the arctangent of an angle, expressed in radians, is calculated using the
-function `atan` of the standard library `Stdlib`.
+في أوسمل، يُحسَب ظل الزاوية للقوس (arctangent)، معبَّرًا عنه بالراديان، باستخدام الدالة `atan` من المكتبة القياسية `Stdlib`.
 
-The following line defines a local variable `r` with the value of the intermediate
-subexpression a(1 − sin(𝜃)), where the radius a of the cardioid is fixed at 50
-pixels:
+يُعرِّف السطر التالي متغيرًا محليًا `r` بقيمة التعبير الجزئي الوسيط a(1 − sin(𝜃))، حيث يُثبَّت نصف قطر القلب a عند 50 بكسل:
 
 ```ocaml
     let r = 50. *. (1. -. sin th) in
 ```
 
-This variable is used to factor out one part of the calculation of the coordinates of the
-point (x(𝜃),y(𝜃)).
+يُستخدَم هذا المتغير لإخراج جزء من حساب إحداثيات النقطة (x(𝜃),y(𝜃)).
 
-Finally, using the function `lineto`, we trace a segment between the current point
-and the point with coordinates (x(𝜃),y(𝜃)). Since graphical coordinates are integers,
-we use the function `truncate` to extract the integer part of the expressions used to
-calculate the coordinates.
+أخيرًا، باستخدام الدالة `lineto`، نرسم قطعة مستقيمة بين النقطة الحالية والنقطة ذات الإحداثيات (x(𝜃),y(𝜃)). وبما أن الإحداثيات الرسومية أعداد صحيحة، نستخدم الدالة `truncate` لاستخراج الجزء الصحيح من التعبيرات المستخدمة في حساب الإحداثيات.
 
 ```ocaml
     lineto (150 + truncate (r *. cos th))
            (150 + truncate (r *. sin th))
 ```
 
-After the `for` loop, the last line of the code pauses the program, waiting for a key to be
-pressed. This is in order to keep the graphical window from closing immediately after
-the drawing finishes.
+بعد حلقة `for`، يُوقف آخر سطر من الشيفرة البرنامج، منتظرًا ضغط مفتاح. والغرض من ذلك منع النافذة الرسومية من الإغلاق مباشرةً بعد انتهاء الرسم.
 
 ```ocaml
     ignore (read_key())
 ```
 
-Since we are only waiting for a key to be pressed, we ignore the actual character returned
-by the function `read_key` using the predefined function `ignore`.
+بما أننا ننتظر فقط ضغط مفتاح، فإننا نتجاهل المحرف الفعلي الذي تُعيده الدالة `read_key` باستخدام الدالة المعرَّفة مسبقًا `ignore`.
 
-##### Compilation
+##### الترجمة
 
-In order to compile the program `cardioid.ml`, we must explicitly tell the compiler
-that we wish to use the library `Graphics`. This is not needed in case of the modules
-we saw earlier, such as `Sys`, `Arg` or `Printf`, which belong to the OCaml *standard library*. The `Graphics` library is contained in the file `graphics.cmxa`, which must be
-added to the command line. Furthermore, we must tell the compiler the location of
-this file, which was installed by `opam`. This can be done using the following
-command:
+من أجل ترجمة البرنامج `cardioid.ml`، يجب أن نخبر المترجم صراحةً بأننا نرغب في استخدام مكتبة `Graphics`. ولا حاجة إلى ذلك في حالة الوحدات التي رأيناها سابقًا، مثل `Sys` و`Arg` و`Printf`، التي تنتمي إلى *المكتبة القياسية* لأوسمل. ومكتبة `Graphics` موجودة في الملف `graphics.cmxa`، الذي يجب إضافته إلى سطر الأوامر. وعلاوةً على ذلك، يجب أن نخبر المترجم بموقع هذا الملف، الذي نصّبه `opam`. ويمكن القيام بذلك باستخدام الأمر التالي:
 
 ```console
   > ocamlopt -I ‘ocamlfind query graphics‘ graphics.cmxa cardioid.ml -o cardioid
 ```
 
-The tool `ocamlfind` allows you to find the location of the library `graphics`, which is
-then passed to the OCaml compiler using the `-I` option. (Note that the command
-`ocamlfind query graphics` has to be placed between *backquotes*.) If you wish to use
-the `ocamlc` compiler, you should replace the suffix `.cmxa` by `.cma`. As we will see in
-section [*2.10*](#breakout-without-bricks) *Breakout without Bricks*, the order of the files on the command line of the
-compiler is important: Here, `graphics.cmxa` must appear before `cardioid.ml` since
-the latter uses the library `Graphics`.
+تتيح أداة `ocamlfind` إيجاد موقع مكتبة `graphics`، الذي يُمرَّر بعد ذلك إلى مترجم أوسمل باستخدام الخيار `-I`. (لاحظ أنه يجب وضع الأمر `ocamlfind query graphics` بين *علامتي اقتباس خلفية*.) وإذا رغبت في استخدام المترجم `ocamlc`، فينبغي أن تستبدل اللاحقة `.cmxa` بـ `.cma`. وكما سنرى في القسم [*2.10*](#breakout-without-bricks) *بريك أوت بدون طوب (Breakout without Bricks)*، فإن ترتيب الملفات على سطر أوامر المترجم مهم: هنا، يجب أن يظهر `graphics.cmxa` قبل `cardioid.ml` لأن الأخير يستخدم مكتبة `Graphics`.
 
-Another way of compiling our program consists in using `dune`. To do this, we write
-a configuration file, which must be named `dune`, in the directory containing
-`cardioid.ml`. This file should contain the following:
+هناك طريقة أخرى لترجمة برنامجنا تتمثّل في استخدام `dune`. وللقيام بذلك، نكتب ملف إعدادات، يجب أن يُسمّى `dune`، في الدليل الذي يحوي `cardioid.ml`. وينبغي أن يحتوي هذا الملف على ما يلي:
 
 ```text
   (executable
@@ -941,35 +654,28 @@ a configuration file, which must be named `dune`, in the directory containing
    (libraries graphics))
 ```
 
-This specifies that we wish to construct an executable that is named `cardioid`, and
-that uses the library `graphics`. Assuming that our two files `cardioid.ml` and `dune`
-are in the directory `my-first-project/`, we must first perform an initialization step
-with the following command:
+يحدّد هذا أننا نرغب في بناء ملف تنفيذي اسمه `cardioid`، ويستخدم مكتبة `graphics`. وبافتراض أن ملفَّينا `cardioid.ml` و`dune` موجودان في الدليل `my-first-project/`، يجب أولًا تنفيذ خطوة تهيئة بالأمر التالي:
 
 ```text
   > dune init project my-first-project/
 ```
 
-We can then shift to the directory `my-first-project/` and build the executable
-there:
+يمكننا بعد ذلك الانتقال إلى الدليل `my-first-project/` وبناء الملف التنفيذي هناك:
 
 ```text
   > cd my-first-project/
   > dune build
 ```
 
-Finally, we can execute the program with the following command:
+أخيرًا، يمكننا تنفيذ البرنامج بالأمر التالي:
 
 ```text
   > dune exec ./cardioid.exe
 ```
 
-The executable is named `cardioid.exe`, where the extension `.exe` is added by `dune`.
-It is stored in a subdirectory `_build/default/`, and the command `dune exec` allows
-us to launch it directly.
+يُسمّى الملف التنفيذي `cardioid.exe`، حيث تُضيف `dune` الامتداد `.exe`. وهو مخزَّن في دليل فرعي `_build/default/`، ويتيح لنا الأمر `dune exec` تشغيله مباشرةً.
 
-To use the library `Graphics` from within the toplevel `ocaml`, it suffices to type the
-following command in the terminal:
+لاستخدام مكتبة `Graphics` من داخل الطرفية التفاعلية `ocaml`، يكفي كتابة الأمر التالي في الطرفية:
 
 ```console
   > ocaml -I ‘ocamlfind query graphics‘ graphics.cma
@@ -977,38 +683,24 @@ following command in the terminal:
   #
 ```
 
-Note that the library `Graphics` can also be used directly from within TryOCaml.
+لاحظ أن مكتبة `Graphics` يمكن أيضًا استخدامها مباشرةً من داخل TryOCaml.
 
-#### The Library Graphics
+#### مكتبة الرسوميات
 
-In addition to the functions `moveto` and `lineto` used in our program `cardioid.ml`,
-the library `Graphics` offers various other functions: `plot`, to plot a point; `set_color`,
-to modify the display color; `draw_circle`, to draw a circle; `set_line_width`, to
-change the line thickness; `fill_rect`, to shade a rectangle; `draw_string`, to display a
-string, etc. The reader is referred to the OCaml manual’s web page for a complete
-description of this library. It is important to note that, although the features of
-`Graphics` are limited, this library has the advantage of being available on many
-architectures. If you wish to use a more sophisticated library, you can use (depending
-on your operating system):
+إضافةً إلى الدالتين `moveto` و`lineto` المستخدمتين في برنامجنا `cardioid.ml`، تقدّم مكتبة `Graphics` دوال أخرى متنوعة: `plot` لرسم نقطة؛ و`set_color` لتعديل لون العرض؛ و`draw_circle` لرسم دائرة؛ و`set_line_width` لتغيير سماكة الخط؛ و`fill_rect` لتظليل مستطيل؛ و`draw_string` لعرض سلسلة نصية، وغيرها. نُحيل القارئ إلى الصفحة الإلكترونية لدليل أوسمل للحصول على وصف كامل لهذه المكتبة. ومن المهم ملاحظة أنه، على الرغم من أن ميزات `Graphics` محدودة، فإن لهذه المكتبة ميزة كونها متاحة على معماريات عديدة. وإذا رغبت في استخدام مكتبة أكثر تطورًا، فيمكنك استخدام (حسب نظام تشغيلك):
 
-- OCaml-Canvas: a portable Canvas framework for OCaml, with an interface
-       similar to HTML5 Canvas.
-- LablTk: a Tcl/Tk library that allows you to create graphical user interfaces
-       (GUI) with drop-down menus, buttons, etc.
-- LablGtk: similar to LablTk but based on the graphical library Gtk.
-- OCamlsdl: an SDL library mainly used to create video games.
+- OCaml-Canvas: إطار عمل Canvas محمول لأوسمل، بواجهة مشابهة لـ HTML5 Canvas.
+- LablTk: مكتبة Tcl/Tk تتيح إنشاء واجهات رسومية (GUI) بقوائم منسدلة وأزرار وغيرها.
+- LablGtk: تشبه LablTk لكنها مبنية على مكتبة الرسوميات Gtk.
+- OCamlsdl: مكتبة SDL تُستخدَم أساسًا لإنشاء ألعاب الفيديو.
 
-This list is not exhaustive.
+هذه القائمة ليست شاملة.
 
-### 2.4 The Mandelbrot Set
+### 2.4 مجموعة ماندلبروت (Mandelbrot set)
 
 >
 
-Program [4](#x7-30015r4) (see page [80](#x7-30015r4)) draws the Mandelbrot set (see figure [2.4](#mandelbrot-set)). It is defined as
-the set of points (a,b) of the plane for which neither of the following two recursive
- 
- 
-sequences tends to infinity in absolute value.
+يُرسِم البرنامج [4](#x7-30015r4) (انظر الصفحة [80](#x7-30015r4)) مجموعة ماندلبروت (انظر الشكل [2.4](#mandelbrot-set)). وتُعرَّف بأنها مجموعة النقاط (a,b) من المستوى التي لا يميل أيٌّ من التتابعين العوديين (recursive sequences) التاليين إلى اللانهاية في قيمته المطلقة.
 
 | x0 | = | 0 |
 | --- | --- | --- |
@@ -1018,60 +710,40 @@ sequences tends to infinity in absolute value.
 
 ![](/images/learn-ocaml/first-steps-4-mandelbrot-mps-.webp){#mandelbrot-set}
 
-**Figure 2.4: Mandelbrot set.**
+**الشكل 2.4: مجموعة ماندلبروت.**
 
-Although there is no exact method to determine whether this condition holds, it
-can be proven that one of these sequences must tend to infinity as soon as
-xn2 + yn2 > 4. This result allows us, firstly, to deduce that the points of the
-Mandelbrot set belong to a disc of radius 2 and center (0,0). Secondly, it enables us to
-draw an approximation of the Mandelbrot set, defined by the set of points (a,b)
-such that xn2 + yn2 ≤ 4 for the first k terms of these sequences. Note that
-the precision of this approximation depends solely on the number of terms
-k.
+على الرغم من عدم وجود طريقة دقيقة لتحديد ما إذا كان هذا الشرط متحققًا، يمكن إثبات أن أحد هذين التتابعين لا بد أن يميل إلى اللانهاية حالما تكون xn2 + yn2 > 4. تتيح لنا هذه النتيجة، أولًا، أن نستنتج أن نقاط مجموعة ماندلبروت تنتمي إلى قرص (disc) نصف قطره 2 ومركزه (0,0). وثانيًا، تمكننا من رسم تقريب لمجموعة ماندلبروت، معرَّفةً بمجموعة النقاط (a,b) التي تحقق xn2 + yn2 ≤ 4 لأول k حدٍّ من هذين التتابعين. ولاحظ أن دقة هذا التقريب تعتمد فقط على عدد الحدود k.
 
-The program begins with an `openGraphics` directive to simplify the use of the
-functions of the graphical library. It continues with the definition of two global
-variables `width` and `height`, containing respectively the width and height of the
-graphical window we wish to open (here, 800 × 800):
+يبدأ البرنامج بتوجيه (directive) `openGraphics` لتبسيط استخدام دوال مكتبة الرسوميات. ويستمر بتعريف متغيرين عامين `width` و`height`، يحويان على التوالي عرض النافذة الرسومية التي نرغب في فتحها وارتفاعها (هنا 800 × 800):
 
 ```ocaml
   let width = 800
   let height = 800
 ```
 
-Next, we fix k, the maximum number of terms to be calculated (100 terms sufficing for a
-good approximation):
+بعد ذلك، نُثبّت القيمة k، أي العدد الأقصى للحدود المطلوب حسابها (ويكفي 100 حدٍّ للحصول على تقريب جيد):
 
 ```ocaml
   let k = 100
 ```
 
-The following declaration defines a function `norm2` that takes two *arguments*x
-and y and returns the value of the expression x2 + y2.
+يُعرِّف الإعلان التالي دالة `norm2` تأخذ *وسيطين* x وy، وتُعيد قيمة التعبير x2 + y2.
 
 ```ocaml
   let norm2 x y = x *. x +. y *. y
 ```
 
-We discuss this syntactic construction in greater detail at the end of this section.
-For now, note that, as in the case of a function call, the names of the arguments are
-only separated by spaces. Note also that the *body*of the function, the expression to
-the right of the symbol `=`, may be arbitrary.
+سنتناول هذا التركيب النحوي بمزيد من التفصيل في نهاية هذا القسم. وفي الوقت الحالي، لاحظ أنه، كما في حالة استدعاء دالة، لا تُفصَل أسماء الوسائط إلا بمسافات. ولاحظ أيضًا أن *جسم* الدالة، أي التعبير الواقع على يمين الرمز `=`,قد يكون تعبيرًا اعتباطيًا.
 
 >
 
-The following function, `mandelbrot`, determines whether a point with coordinates
-(`a`,`b`) belongs to the Mandelbrot set by calculating the first `k` terms of the
-recursive sequences (xn) and (yn). In a manner similar to the declaration of
-`norm2`, we declare the function `mandelbrot` with two arguments `a` and `b` as
-follows:
+تحدد الدالة التالية، `mandelbrot`، ما إذا كانت نقطة ذات إحداثيات (`a`,`b`) تنتمي إلى مجموعة ماندلبروت، وذلك بحساب أول `k` حدٍّ من التتابعين العوديين (xn) و(yn). وبطريقة مشابهة لإعلان `norm2`، نُعلن الدالة `mandelbrot` بوسيطين `a` و`b` على النحو التالي:
 
 ```ocaml
   let mandelbrot a b = ...
 ```
 
-To calculate the terms of the two recursive sequences, we define a local *recursive*function
-`mandel_rec` with three arguments `x`, `y`, and `i`.
+لحساب حدود التتابعين العوديين، نعرّف دالة محلية *عودية* `mandel_rec` بثلاثة وسائط: `x` و`y` و`i`.
 
 ```ocaml
      let rec mandel_rec x y i =
@@ -1079,71 +751,49 @@ To calculate the terms of the two recursive sequences, we define a local *recurs
      in
 ```
 
-The first two arguments `x` and `y` of `mandel_rec` contain the i-th values xi and
-yi of the recursive sequences, and the third argument contains the index
-i.
+يحوي الوسيطان الأولان `x` و`y` من `mandel_rec` القيمتين رقم i، أي xi وyi، من التتابعين العوديين، ويحوي الوسيط الثالث الفهرس i.
 
-Before we discuss the body of this function let us note that, syntactically
-speaking, a declaration of the form `letrec` is used to define a recursive function. This
-is a function in which you can use its own name within its body. Furthermore, as with
-local variable declarations, the scope of a *local*function, whether it is introduced by
-`let-rec-in` or simply `let-in`, is limited to the expression that follows the keyword
-`in`.
+وقبل أن نتناول جسم هذه الدالة، لاحظ أنه، من الناحية الصرفية، يُستخدَم إعلان بالشكل `letrec` لتعريف دالة عودية، أي دالة يمكنك استخدام اسمها نفسه داخل جسمها. وعلاوةً على ذلك، وكما هو الحال مع إعلانات المتغيرات المحلية، فإن *نطاق* الدالة *المحلية*، سواء أُدخلت بالشكل `let-rec-in` أم `let-in` ببساطة، يقتصر على التعبير الذي يلي الكلمة المفتاحية `in`.
 
-The body of the function `mandel_rec` begins with a test to determine whether we
-have reached the calculation of the k-th term of the sequence, or if the stopping
-condition xi2 + yi2 > 4 holds:
+يبدأ جسم الدالة `mandel_rec` باختبار لتحديد ما إذا كنا قد وصلنا إلى حساب الحد رقم k من التتابع، أو ما إذا كان شرط الإيقاف xi2 + yi2 > 4 متحققًا:
 
 ```ocaml
        if i = k || norm2 x y > 4. then i = k
        else
 ```
 
-In both cases, the `mandel_rec` function ends and returns a boolean indicating whether or
-not the point is in the set. If neither of these conditions holds, we calculate xi+1 and
- 
- 
-yi+1 by applying the equations of the recursive sequences, and store them in the local
-variables `x’` and `y’`:
+في الحالتين، تنتهي الدالة `mandel_rec` وتُعيد قيمة منطقية تشير إلى ما إذا كانت النقطة في المجموعة أم لا. وإذا لم يتحقق أيٌّ من هذين الشرطين، نحسب xi+1 وyi+1 بتطبيق معادلتي التتابعين العوديين، ونخزّنهما في المتغيرين المحليين `x’` و`y’`:
 
 ```ocaml
          let x’ = x *. x -. y *. y +. a in
          let y’ = 2. *. x *. y +. b in
 ```
 
-We then call the function `mandel_rec` again to calculate the following terms:
+ثم نستدعي الدالة `mandel_rec` مرة أخرى لحساب الحدود التالية:
 
 ```ocaml
          mandel_rec x’ y’ (i + 1)
        in
 ```
 
-Finally, the `mandelbrot` function starts the calculation by calling the local function
-`mandel_rec` with the initial values x0 and y0 as arguments:
+أخيرًا، تبدأ الدالة `mandelbrot` الحساب باستدعاء الدالة المحلية `mandel_rec` بالقيمتين الابتدائيتين x0 وy0 كوسيطين:
 
 ```ocaml
        in
        mandel_rec 0. 0. 0
 ```
 
-To draw the Mandelbrot set, it suffices to traverse each row and each column of
-the graphical window and to display the pixels (`a`,`b`) for which `mandelbrotab` returns
-the value `true`.
+لرسم مجموعة ماندلبروت، يكفي أن نجتاز كل صف وكل عمود من النافذة الرسومية، وأن نعرض البكسلات (`a`,`b`) التي تُعيد الدالة `mandelbrot` لها القيمة `true`.
 
-The drawing code is contained in a function `draw` that is declared as
-follows:
+يحتوي كود الرسم على دالة `draw` تُعلَن على النحو التالي:
 
 ```ocaml
   let draw () = ...
 ```
 
-A declaration of this form is used to define functions without arguments. To be precise,
-this declaration defines a function with *a single argument*, denoted by `()`.
-This is the unique value of a particular type, `unit`. As we will see in section
-[*2.6*](#drawing-a-curve)*Drawing a Curve*, this is an example of a function defined by *pattern matching*.
+يُستخدَم إعلان بهذا الشكل لتعريف دوال بلا وسائط. وبشكل دقيق، يُعرِّف هذا الإعلان دالة *بوسيط وحيد*، يُرمَز إليه بـ`()`، وهو القيمة الوحيدة لنوع خاص، هو `unit`. وكما سنرى في القسم [*2.6*](#drawing-a-curve) *رسم منحنى*، هذا مثال على دالة تُعرَّف بواسطة *مطابقة الأنماط* (pattern matching).
 
-The function `draw` traverses the rows and columns of the graphical window using
-two nested `for` loops:
+تجتاز الدالة `draw` صفوف النافذة الرسومية وأعمدتها باستخدام حلقتين `for` متداخلتين:
 
 ```ocaml
     for w = 0 to width - 1 do
@@ -1153,18 +803,14 @@ two nested `for` loops:
     done
 ```
 
-To draw the Mandelbrot set in a window of size `width`×`height`, we scale the window
-coordinates to points (`a`,`b`) in [−2,2] × [−2,2], where `a` and `b` are variables defined as
-follows:
+لرسم مجموعة ماندلبروت في نافذة بحجم `width`×`height`، نعيد قياس إحداثيات النافذة إلى نقاط (`a`,`b`) في الفترة [−2,2] × [−2,2]، حيث يكون `a` و`b` متغيرين معرَّفين على النحو التالي:
 
 ```ocaml
         let a = 4. *. float w /. float width -. 2. in
         let b = 4. *. float h /. float height -. 2. in
 ```
 
-All that remains is to determine whether the point (`a`,`b`) belongs to the set, by
-calling the function `mandelbrot` and plotting the point using the function
-`plot`:
+لم يبقَ سوى تحديد ما إذا كانت النقطة (`a`,`b`) تنتمي إلى المجموعة، باستدعاء الدالة `mandelbrot` ورسم النقطة باستخدام الدالة `plot`:
 
 ```ocaml
         if mandelbrot a b then plot w h
@@ -1172,9 +818,7 @@ calling the function `mandelbrot` and plotting the point using the function
     done
 ```
 
-To complete the program, we open a graphical window of size `width` × `height`
-by building a string of the form `"` w`x`h`"` where w and h are replaced by the values
-contained in the variables `width` and `height`.
+لإكمال البرنامج، نفتح نافذة رسومية بحجم `width` × `height` ببناء سلسلة نصية بالشكل `"` w`x`h`"` حيث يُستبدَل w وh بالقيمتين المحتوتين في المتغيرين `width` و`height`.
 
 ```ocaml
   let () =
@@ -1182,41 +826,29 @@ contained in the variables `width` and `height`.
     open_graph dim;
 ```
 
-The string is constructed by calling the function `Printf.sprintf` with a formatting
-string `"``%``dx``%``d"`, and the two arguments `width` and `height`. The function
-`Printf.sprintf` is similar to the function `printf`, except that it returns the string as
-result instead of displaying it.
+تُبنى السلسلة النصية باستدعاء الدالة `Printf.sprintf` بسلسلة تنسيق `"``%``dx``%``d"` والوسيطين `width` و`height`. والدالة `Printf.sprintf` مشابهة للدالة `printf`، إلا أنها تُعيد السلسلة نتيجةً بدلًا من عرضها.
 
-Finally, we draw the Mandelbrot set by calling the function `draw`. We then wait
-until a key is pressed to end the program:
+أخيرًا، نرسم مجموعة ماندلبروت باستدعاء الدالة `draw`. ثم ننتظر حتى يُضغَط مفتاح لإنهاء البرنامج:
 
 ```ocaml
     draw ();
     ignore (read_key ())
 ```
 
-Note that the same syntax is used to call the function `draw`, as is used in its
-declaration.
+لاحظ أن الصياغة نفسها تُستخدَم في استدعاء الدالة `draw` كما تُستخدَم في إعلانها.
 
-#### Function Declarations
+#### إعلانات الدوال
 
-Let us return to the notion of function in OCaml. A function is declared with the
-keyword `let`. Thus, a global function `f` that associates x with x + 1 is written simply
-as:
+لنعد إلى مفهوم الدالة في أوسمل. تُعلَن الدالة بالكلمة المفتاحية `let`. وهكذا، تُكتب دالة عامة `f` تربط x بـ x + 1 ببساطة على النحو التالي:
 
 ```ocaml
   # let f x = x + 1;;
   val f : int -> int = <fun>
 ```
 
-As with variables, its type is inferred. More precisely, the type of its argument (here
-`int`) and that of its result (also `int`) are both inferred. The type of `f` has
-the form `int->int`, where the type to the left of the arrow `->` is that of
-the argument and the type to the right is that of the result. However, the
-value of `f` is not displayed. Only `` is displayed, indicating that it is a
-function.
+وكما هو الحال مع المتغيرات، يُستنتَج نوعها تلقائيًا. وبشكل أدق، يُستنتَج نوع وسيطها (هنا `int`) ونوع نتيجتها (وهو أيضًا `int`) معًا. ونوع `f` بالشكل `int->int`، حيث يكون النوع الواقع على يسار السهم `->` هو نوع الوسيط، والنوع الواقع على يمينه هو نوع النتيجة. غير أن قيمة `f` لا تُعرض. ولا يُعرض سوى ``، ما يدل على أنها دالة.
 
-Functions may be local and follow the same scoping rules as variables.
+يمكن أن تكون الدوال محلية، وتخضع لقواعد النطاق نفسها التي تخضع لها المتغيرات.
 
 ```ocaml
   # let sqr x = x * x in sqr 3 + sqr 4;;
@@ -1225,14 +857,14 @@ Functions may be local and follow the same scoping rules as variables.
   Error: Unbound value sqr
 ```
 
-By default, functions are not recursive.
+افتراضيًا، لا تكون الدوال عودية.
 
 ```ocaml
   # let fact x = if x = 0 then 1 else x * fact (x-1);;
   Error: Unbound value fact
 ```
 
-The construction `letrec` must be explicitly used to introduce a recursive function.
+يجب استخدام البنية `letrec` صراحةً لتعريف دالة عودية.
 
 ```ocaml
   # let rec fact x = if x = 0 then 1 else x * fact (x-1);;
@@ -1241,22 +873,16 @@ The construction `letrec` must be explicitly used to introduce a recursive funct
   - : int = 3628800
 ```
 
-Notice that in the previous example, we wrote `fact(x-1)` and not `factx-1`. The
-second expression is understood as `(factx)-1` because function application is the
-operation with the highest precedence.
+لاحظ أننا كتبنا في المثال السابق `fact(x-1)` وليس `factx-1`. فالتعبير الثاني يُفهم على أنه `(factx)-1`، لأن تطبيق الدالة هو المعاملة ذات الأسبقية الأعلى.
 
-Mutually recursive functions must be defined *simultaneously*using the keyword
-`and`. For example, we can define two mutually recursive functions `f` and `g` as
-follows:
+يجب تعريف الدوال العودية المتبادلة *بشكل متزامن* باستخدام الكلمة المفتاحية `and`. على سبيل المثال، يمكننا تعريف دالتين عوديتين متبادلتين `f` و`g` على النحو التالي:
 
 ```ocaml
   let rec f x = ... g ...
   and     g x = ... f ...
 ```
 
-A function may take several arguments. These are simply juxtaposed both in the
-definition and when it is called. For example, the following declaration defines a
-function `plus` with two arguments:
+يمكن أن تأخذ الدالة عدة وسائط، تُكتَب متجاورة ببساطة في التعريف وعند الاستدعاء. على سبيل المثال، يُعرِّف الإعلان التالي دالة `plus` بوسيطين:
 
 ```ocaml
   # let plus x y = x + y ;;
@@ -1265,61 +891,37 @@ function `plus` with two arguments:
   - : int = 7
 ```
 
-The type inferred by OCaml for this function is `int->int->int`. Adding parentheses
-yields the type `int->(int->int)` (the operator `->` is *right*associative), which is read
-as: “a function that takes a value of type `int` and returns a function of type `int` to
-`int` ”. The function `plus` is therefore seen as a function with *one*argument that
-returns a function that awaits the *second*argument. Thus, strictly speaking, OCaml
-does not have functions that take multiple arguments. There are only *higher-order*
-functions with one argument, that is, functions that take a *single*argument and
-return another function. We will discuss such functions later on (section [*2.6*](#drawing-a-curve) *Drawing a curve*).
+النوع الذي يستنتجه أوسمل لهذه الدالة هو `int->int->int`. وإضافة أقواس تُنتج النوع `int->(int->int)` (المعاملة `->` *ترابطية يمنى* (right-associative))، الذي يُقرأ على النحو التالي: «دالة تأخذ قيمة من النوع `int` وتُعيد دالة من النوع `int` إلى `int`». ولذلك تُرى الدالة `plus` على أنها دالة *بوسيط واحد* تُعيد دالة تنتظر *الوسيط الثاني*. وهكذا، بالمعنى الدقيق، لا تملك أوسمل دوالًا تأخذ عدة وسائط. فما توجد إلا دوال *عالية الرتبة* (higher-order) بوسيط واحد، أي دوال تأخذ *وسيطًا واحدًا* وتُعيد دالة أخرى. وسنتناول مثل هذه الدوال لاحقًا (القسم [*2.6*](#drawing-a-curve) *رسم منحنى*).
 
-### 2.5 Sieve of Eratosthenes
+### 2.5 غربال إراتوستينس (Sieve of Eratosthenes)
 
 >
 
 >
 
-Our next program (see page [88](#x7-32006r5)) determines the primality of integers n ≤ N
-for a given integer N. To do this, it uses an algorithm called *the sieve of Eratosthenes*. Let us illustrate how it works for N = 23. We write down all the
-integers from 0 to N and progressively eliminate all the integers that are
-not prime. Hence the name *sieve*. We begin by noting that 0 and 1 are not
-prime.
+يحدد برنامجنا التالي (انظر الصفحة [88](#x7-32006r5)) أولية الأعداد الصحيحة n ≤ N بالنسبة إلى عدد صحيح معطى N. وللقيام بذلك، يستخدم خوارزمية تُسمّى *غربال إراتوستينس* (sieve of Eratosthenes). فلنوضّح كيف تعمل من أجل N = 23. نكتب جميع الأعداد الصحيحة من 0 إلى N، ثم نحذف تدريجيًا جميع الأعداد الصحيحة غير الأولية. ومن هنا جاء اسم *الغربال*. ونبدأ بملاحظة أن 0 و1 ليسا أوليين.
 
-Next, we determine the first integer that has not yet been eliminated, namely, 2. We
-eliminate all its multiples, that is, all even integers greater than 2. These are shaded
-below.
+بعد ذلك، نحدد أول عدد صحيح لم يُحذف بعد، ألا وهو 2. فنحذف جميع مضاعفاته، أي جميع الأعداد الزوجية الأكبر من 2. وهذه مظلَّلة أدناه.
 
-Then, we repeat the process. The next integer that has not yet been eliminated is 3. We
-eliminate all the multiples of 3, shown shaded below.
+ثم نكرر العملية. العدد الصحيح التالي الذي لم يُحذف بعد هو 3. فنحذف جميع مضاعفات 3، كما هي مظلَّلة أدناه.
 
-Note that certain integers have already been eliminated (the multiples of 6 in this
-case).
+لاحظ أن بعض الأعداد الصحيحة سبق حذفها (مضاعفات 6 في هذه الحالة).
 
-The next integer to be considered is 5. Since 5 × 5 > 23, the sieve is finished: All
-multiples of 5, that is, k × 5, have either been eliminated (if k < 5) or are greater than
-23 (if k ≥ 5). The integers that remain are the prime numbers less than or equal to N:
-2, 3, 5, 7, 11, 13, 17, 19 and 23.
+العدد الصحيح التالي الذي يجب أخذه في الاعتبار هو 5. وبما أن 5 × 5 > 23، يكون الغربال قد اكتمل: فجميع مضاعفات 5، أي k × 5، إما حُذفت (إذا كان k < 5) وإما أكبر من 23 (إذا كان k ≥ 5). والأعداد الصحيحة المتبقية هي الأعداد الأولية الأصغر من أو تساوي N: 2 و3 و5 و7 و11 و13 و17 و19 و23.
 
-The program `sieve.ml` implements the sieve of Eratosthenes for a value of N
-entered on standard input. We store this value in a variable `max`.
+ينفّذ البرنامج `sieve.ml` غربال إراتوستينس لقيمة N تُدخَل على الدخل القياسي. نخزّن هذه القيمة في متغير `max`.
 
 ```ocaml
   let max = read_int ()
 ```
 
-We then create an array of booleans `prime` of size `max+1`. To this end, we use the library
-function `Array.make`. It takes as arguments the size of the array and a default value
-for its elements, here `true`.
+ثم ننشئ مصفوفة من القيم المنطقية `prime` حجمها `max+1`. ولهذا الغرض، نستخدم دالة المكتبة `Array.make`. وهي تأخذ كوسيطين حجم المصفوفة وقيمة افتراضية لعناصرها، هي هنا `true`.
 
 ```ocaml
   let prime = Array.make (max + 1) true
 ```
 
-Recall that arrays are indexed starting from 0. The indices of the array `prime` are
-therefore the integers from 0 to `max`, both included. We begin by indicating that the
-integers 0 and 1 are not primes, by assigning the value `false` to the two
-corresponding elements of the array `prime`.
+تذكّر أن المصفوفات تُفهرس بدءًا من 0. وبالتالي، فإن فهارس المصفوفة `prime` هي الأعداد الصحيحة من 0 إلى `max`، وكلاهما مشمول. ونبدأ بالإشارة إلى أن العددين 0 و1 ليسا أوليين، بإسناد القيمة `false` إلى العنصرين الموافقَين من المصفوفة `prime`.
 
 ```ocaml
   let () =
@@ -1327,17 +929,15 @@ corresponding elements of the array `prime`.
     prime.(1) <- false;
 ```
 
-For this, we have used the construction t`.(`i`). We could also have written `Array.setprime0false`.
+ولهذا، استخدمنا البنية t`.(`i`). وكان يمكننا أيضًا أن نكتب `Array.setprime0false`.
 
-We continue the program by specifying the largest number to be considered. This
-is ⌊⌋, which can be calculated thus:
+نواصل البرنامج بتحديد أكبر عدد يجب أخذه في الاعتبار. هذا العدد هو ⌊⌋، الذي يمكن حسابه على النحو التالي:
 
 ```ocaml
     let limit = truncate (sqrt (float max)) in
 ```
 
-The main loop of the sieve then iterates over the integers from 2 to `limit`, testing
-whether each is prime. The loop therefore has the following structure:
+تتكرر الحلقة الرئيسية للغربال على الأعداد الصحيحة من 2 إلى `limit`، مختبرةً ما إذا كان كل واحد منها أوليًا. ولذلك تكون للحلقة البنية التالية:
 
 ```ocaml
     for n = 2 to limit do
@@ -1346,27 +946,15 @@ whether each is prime. The loop therefore has the following structure:
       end
 ```
 
-The construction `begin-end` introduces a *block*, that is, a piece of program that is
-delimited, indicated here by the ellipses. In OCaml, there is no distinction between
-expressions and instructions; there are only expressions. The delimited piece of code is
-thus nothing but an expression; it could have been delimited by parentheses.
-Nevertheless, the use of `begin-end` highlights the imperative character of this
-expression.
+تُقدّم البنية `begin-end` *كتلة* (block)، أي جزءًا من البرنامج محدَّدًا، يُشار إليه هنا بنقاط الحذف. وفي أوسمل، لا يوجد تمييز بين التعبيرات والتعليمات؛ فلا توجد إلا تعبيرات. والجزء المحدَّد من الكود ليس إذن سوى تعبير؛ وكان يمكن تحديده بأقواس. ورغم ذلك، تُبرز استخدام `begin-end` الطابع الأمرّي (imperative) لهذا التعبير.
 
-Let us now discuss this block. It consists of a second loop that eliminates all
-multiples of `n` in the array `prime`. The same reasoning that allows us to stop the sieve
-as soon as `n`×`n` > N also allows us to begin the elimination from `n`×`n` (rather than
-2`n`), the smaller multiples having already been eliminated. To iterate over all the
-integer multiples of `n` from `n`2 onwards, we initialize a reference `m` to the starting
-value:
+لنناقش الآن هذه الكتلة. فهي تتكون من حلقة ثانية تحذف جميع مضاعفات `n` في المصفوفة `prime`. والمنطق نفسه الذي يتيح لنا إيقاف الغربال حالما يكون `n`×`n` > N يتيح لنا أيضًا بدء الحذف من `n`×`n` (بدلًا من 2`n`)، لأن المضاعفات الأصغر سبق حذفها. وللتكرار على جميع المضاعفات الصحيحة لـ `n` انطلاقًا من `n`2، نهيّئ مرجعًا `m` بالقيمة الابتدائية:
 
 ```ocaml
         let m = ref (n * n) in
 ```
 
-Then, we use a loop that assigns `false` to `prime.(!m)` and increases `m` by `n`, as long as
-the expression `!m<=max` holds. Such a loop is written using a `while` construct, as
-follows:
+ثم نستخدم حلقة تُسند `false` إلى `prime.(!m)` وتزيد `m` بمقدار `n`، ما دام التعبير `!m<=max` متحققًا. تُكتب مثل هذه الحلقة باستخدام بنية `while`، على النحو التالي:
 
 ```ocaml
         while !m <= max do
@@ -1375,12 +963,9 @@ follows:
         done
 ```
 
-Note that, as in case of the `for` loop, the body of the `while` loop is delimited by the
-keywords `do` and `done`.
+لاحظ أنه، كما في حالة حلقة `for`,يُحدَّد جسم حلقة `while` بالكلمتين المفتاحيتين `do` و`done`.
 
-This completes the sieve. The values of the array `prime` now indicate which
-numbers less than or equal to `max` are prime. We can display these prime numbers
-using another loop.
+بهذا يكتمل الغربال. وتشير قيم المصفوفة `prime` الآن إلى الأعداد الأصغر من أو تساوي `max` التي تكون أولية. ويمكننا عرض هذه الأعداد الأولية باستخدام حلقة أخرى.
 
 ```ocaml
   let () =
@@ -1389,19 +974,15 @@ using another loop.
     done
 ```
 
-We could instead have displayed the prime numbers upon finding them, that is, while
-executing the sieve. However, the sieve’s loop stops when `n` = ⌊⌋, so that another
-loop would have been necessary anyway to display the prime numbers between
-⌊⌋ + 1 and `max`.
+كان يمكننا بدلًا من ذلك عرض الأعداد الأولية عند العثور عليها، أي أثناء تنفيذ الغربال. غير أن حلقة الغربال تتوقف عندما يكون `n` = ⌊⌋، لذلك كانت ستلزم حلقة أخرى على أي حال لعرض الأعداد الأولية الواقعة بين ⌊⌋ + 1 و`max`.
 
-#### Additional Information
+#### معلومات إضافية
 
-We return here to the constructions `while` and `begin`-`end` introduced in this section,
-and then discuss arrays.
+نعود هنا إلى البنيتين `while` و`begin`-`end` المقدَّمتين في هذا القسم، ثم نتناول المصفوفات.
 
-##### The while Loop
+##### حلقة while
 
-In general, the syntax of the `while` loop is:
+بشكل عام، صياغة حلقة `while` هي:
 
 ```ocaml
   while e1 do
@@ -1409,66 +990,58 @@ In general, the syntax of the `while` loop is:
   done
 ```
 
-The expression e1 must be of type `bool` and the expression e2 of type `unit`.
+يجب أن يكون التعبير e1 من النوع `bool` والتعبير e2 من النوع `unit`.
 
-##### The begin-end Block
+##### كتلة begin-end
 
-The construction `begin`-`end` is equivalent to a pair of parentheses. Thus, you can
-write:
+البنية `begin`-`end` مكافئة لزوج من الأقواس. وهكذا، يمكنك كتابة:
 
 ```ocaml
   # 2 * begin 1 + 2 end;;
   - : int = 6
 ```
 
-Nevertheless, the convention is to limit its use to expressions that perform side effects, by
-analogy with the notion of block in languages such as C or Java.
+ومع ذلك، تقتضي الاصطلاحية قصر استخدامها على التعبيرات التي تُحدِث آثارًا جانبية، قياسًا على مفهوم الكتلة في لغات مثل C أو Java.
 
-##### Arrays
+##### المصفوفات
 
-An array can be constructed explicitly by specifying the values that make it
-up.
+يمكن بناء مصفوفة صراحةً بتحديد القيم المكوِّنة لها.
 
 ```ocaml
   # let t = [| 12; 32; 3; 8 |];;
   val t : int array = [|12; 32; 3; 8|]
 ```
 
-To allocate an array of an arbitrary and, in particular, statically unknown size, we use the
-library function `Array.make`. It takes as arguments the size of the array and a value
-used to initialize all its cells. (As with any OCaml value, an array must be
-initialized.)
+لتخصيص مصفوفة بحجم اعتباطي، وبوجه خاص غير معروف ساكنًا (statically)، نستخدم دالة المكتبة `Array.make`. وهي تأخذ كوسيطين حجم المصفوفة وقيمة تُستخدَم لتهيئة جميع خلاياها. (وكما هو الحال مع أي قيمة في أوسمل، يجب أن تُهيَّأ المصفوفة.)
 
 ```ocaml
   # let u = Array.make 1024 ’a’;;
   val u : char array = [|’a’; ’a’; ’a’; ... |]
 ```
 
-The size of an array can be obtained using the library function `Array.length`.
+يمكن الحصول على حجم مصفوفة باستخدام دالة المكتبة `Array.length`.
 
 ```ocaml
   # Array.length u;;
   - : int = 1024
 ```
 
-Note finally that accessing an array with an index that lies outside the range of valid
-indices produces a runtime error, signaled by an exception:
+لاحظ أخيرًا أن الوصول إلى مصفوفة بفهرس يقع خارج نطاق الفهارس الصالحة يُنتج خطأً وقت التنفيذ، يُشار إليه باستثناء (exception):
 
 ```ocaml
   # u.(4012);;
   Exception: Invalid_argument "index out of bounds".
 ```
 
-Exceptions will be discussed in detail later on.
+ستُناقَش الاستثناءات بالتفصيل لاحقًا.
 
-##### Matrices
+##### المصفوفات (matrices)
 
-There is no predefined type for matrices nor, more generally, for multidimensional
-arrays. We simply use arrays of arrays. Consider, for instance, the matrix:
+لا يوجد نوع معرَّف مسبقًا للمصفوفات (matrices)، ولا، بشكل أعم، للمصفوفات متعددة الأبعاد (multidimensional arrays). فنستخدم ببساطة مصفوفات من المصفوفات. خذ على سبيل المثال المصفوفة:
 
 $$( ) 1 0 M = ( 2 3 )$$
 
-It is represented by the expression:
+تُمثَّل بالتعبير:
 
 ```ocaml
   # let m = [| [| 1; 0 |];
@@ -1476,68 +1049,52 @@ It is represented by the expression:
     val m : int array array = [|[|1; 0|]; [|2; 3|]|]
 ```
 
-The element Mi,j is accessed with `m.(i).(j)`, which is nothing more than two successive
-accesses: First, we access row `i` with `m.(i)`, and then, its element at index
-`j`.
+يُوصَل إلى العنصر Mi,j باستخدام `m.(i).(j)`، وهو ليس سوى عمليتي وصول متتاليتين: أولًا، نصل إلى الصف `i` باستخدام `m.(i)`، ثم إلى عنصره الواقع عند الفهرس `j`.
 
 ```ocaml
   # m.(1).(0);;
   - : int = 2
 ```
 
-All operations on matrices are implemented using those of arrays. The module
-`Array` nonetheless offers an operation to create a matrix, `make_matrix`, which
-takes as arguments the dimensions of the matrix and the initial value of its
-elements. We will return to matrices in the section [*10.4*](https://usr.lmf.cnrs.fr/lpo/mainch10.html#matrix-calculus) *Matrix Calculus*of
-chapter [10](https://usr.lmf.cnrs.fr/lpo/mainch10.html#arithmetic).
+تُنفَّذ جميع العمليات على المصفوفات باستخدام عمليات المصفوفات. ومع ذلك، تقدّم الوحدة `Array` عملية لإنشاء مصفوفة، هي `make_matrix`، تأخذ كوسائط أبعاد المصفوفة والقيمة الابتدائية لعناصرها. وسنعود إلى المصفوفات في القسم [*10.4*](https://usr.lmf.cnrs.fr/lpo/mainch10.html#matrix-calculus) *حساب المصفوفات* من الفصل [10](https://usr.lmf.cnrs.fr/lpo/mainch10.html#arithmetic).
 
-##### Aliasing
+##### الاسم المستعار (aliasing)
 
-Imperative structures must be handled with caution. In particular, whenever it
-is possible to reference an imperative structure in multiple ways, you may
-think you are modifying different data even though this need not be the
-case.
+يجب التعامل مع البنى الأمرّية بحذر. وبوجه خاص، كلما أمكنت الإشارة إلى بنية أمرّية بأكثر من طريقة، قد تظن أنك تعدّل بيانات مختلفة مع أن الأمر ليس كذلك بالضرورة.
 
-A typical example of aliasing is obtained by allocating an array with all its
-elements initialized to the same array. Consider the following expression:
+يُحصل على مثال نموذجي للاسم المستعار بتخصيص مصفوفة مهيَّأة جميع عناصرها بالمصفوفة نفسها. خذ التعبير التالي:
 
 ```ocaml
   Array.make 3 (Array.make 4 v)
 ```
 
-You may think you are constructing a 3 × 4 matrix, each of whose elements is `v`. In
-reality, this expression constructs a *single*array of size 4—let us call it a—whose
-elements have the value `v`, and an array of size 3, whose three elements are the *same*
-array a. In other words, the result is as follows:
+قد تظن أنك تبني مصفوفة 3 × 4، كل عنصر من عناصرها هو `v`. وفي الواقع، يبني هذا التعبير *مصفوفة واحدة* حجمها 4 —لنسمِّها a— عناصرها لها القيمة `v`، ومصفوفة حجمها 3، عناصرها الثلاثة هي *نفسها* المصفوفة a. وبعبارة أخرى، تكون النتيجة على النحو التالي:
 
-Of course, this is not what we want, as it has only four elements instead of
-twelve. To construct an array of arrays correctly, you can use the function
-`Array.make_matrix` of the standard library, by writing `Array.make_matrix34v`,
-which has the effect of constructing the desired matrix, that is:
+بطبيعة الحال، هذا ليس ما نريده، لأن لدينا أربعة عناصر فقط بدلًا من اثني عشر. ولبناء مصفوفة من المصفوفات بشكل صحيح، يمكنك استخدام الدالة `Array.make_matrix` من المكتبة القياسية، بكتابة `Array.make_matrix34v`، الذي يؤدي إلى بناء المصفوفة المطلوبة، أي:
 
-### 2.6 Drawing a Curve
+### 2.6 رسم منحنى
 
 >
 
-Our sixth program (see page [104](#x7-39025r6)), `plot.ml`, draws a curve specified by a set of
-points in the plane. The algorithm consists in joining these points with line
-segments, proceeding in increasing order of their x-coordinates. For example, the
-curve drawn for the set of points {(20,15),(2,2),(30,10),(10,15)} is shown in
-figure [2.5](#drawing-a-curve1).
+برنامجنا السادس (انظر الصفحة [104](#x7-39025r6))، `plot.ml`، يرسم منحنى محدَّدًا بمجموعة من
+النقاط في المستوى. وتقوم الخوارزمية على وصل هذه النقاط بقطع مستقيمة
+(line segments)، متجهين بترتيب تزايدي لإحداثياتها السينية. فعلى سبيل المثال،
+يُعرض المنحنى المرسوم لمجموعة النقاط {(20,15),(2,2),(30,10),(10,15)} في
+الشكل [2.5](#drawing-a-curve1).
 
 ![0x0y11∙2∙22∙3∙1--05000aaxxiiss](/images/learn-ocaml/first-steps-5-main6x.webp){#drawing-a-curve1}
 
-**Figure 2.5: Drawing a curve.**
+**الشكل 2.5: رسم منحنى.**
 
-To draw this curve, we begin by reading from standard input an integer that
-indicates the number of points in the set.
+لرسم هذا المنحنى، نبدأ بقراءة عدد صحيح من الدخل القياسي
+يدل على عدد النقاط في المجموعة.
 
 ```ocaml
   let n = read_int ()
 ```
 
-Next, we define a function that reads the coordinates of a point from standard
-input:
+بعد ذلك، نعرّف دالة تقرأ إحداثيات نقطة من الدخل
+القياسي:
 
 ```ocaml
   let read_pair () =
@@ -1546,80 +1103,77 @@ input:
     (x, y)
 ```
 
-After reading the first integer, `x`, and the second, `y`, from standard input using two calls
-to `read_int`, the function `read_pair` returns the pair of integers (`x`,`y`), constructed
-very naturally using the syntax `(x,y)`. The type of this pair is written as `int*int` in
-OCaml. We will discuss pairs and, more generally, n-tuples in greater detail at the
-end of this section.
+بعد قراءة العدد الصحيح الأول، `x`، والثاني، `y`، من الدخل القياسي باستدعاءين
+للدالة `read_int`، تُعيد الدالة `read_pair` زوج الأعداد الصحيحة (`x`,`y`)، المُنشأ
+بشكل طبيعي جدًا باستخدام الصياغة `(x,y)`. ويُكتب نوع هذا الزوج على شكل `int*int` في
+أوسمل. وسنناقش الأزواج، وبشكل أعم الثنائيات (n-tuples)، بمزيد من التفصيل في نهاية
+هذا القسم.
 
-We then create an array `data` of size `n` that we initialize with the pairs of integers
-read from standard input. To do this, we use the library function `Array.init` that
-takes as arguments the size of the array and a function used to initialize the array’s
-cells:
+ننشئ بعد ذلك مصفوفة `data` بحجم `n`، نهيّئها بأزواج الأعداد الصحيحة
+المقروءة من الدخل القياسي. وللقيام بذلك، نستخدم دالة المكتبة `Array.init` التي
+تأخذ كوسيطين حجم المصفوفة ودالة تُستخدَم لتهيئة
+خلايا المصفوفة:
 
 ```ocaml
   let data = Array.init n (fun i -> read_pair ())
 ```
 
-The function call `Array.init` illustrates two new notions. First, the expression
-`funi->...` passed as an argument to `Array.init` is an *anonymous*function. The
-symbol `i` to the left of the arrow `->` represents the argument of the function, the
-expression to the right, its body. Second, this call shows that functions in OCaml are
-values like any other. We also say they are *first-class*values. They can be passed as
-arguments and, as we will see later, returned as the results of other functions. A
-function like `Array.init`, which takes a function as an argument, is called a
-*higher-order* function.
+يوضح استدعاء الدالة `Array.init` مفهومين جديدين. أولًا، التعبير
+`funi->...` الممرَّر كوسيط إلى `Array.init` هو دالة *مجهولة* (anonymous). ويمثل
+الرمز `i` الواقع يسار السهم `->` وسيط الدالة، أما التعبير
+الواقع يمينه فجسم (body) الدالة. ثانيًا، يُظهر هذا الاستدعاء أن الدوال في أوسمل
+قيم مثلها مثل أي قيم أخرى. ونقول أيضًا إنها قيم *من الدرجة الأولى* (first-class).
+يمكن تمريرها كوسائط، وكما سنرى لاحقًا، إعادتها كناتج لدوال أخرى. والدالة
+مثل `Array.init` التي تأخذ دالة كوسيط، تُسمّى دالة *من الرتبة الأعلى* (higher-order).
 
-The function `Array.init` returns an array obtained by initializing the cell at
-index k (ranging from 0 to `n`− 1) with the value obtained by applying the function
-`(funi->read_pair())` to k.
+تُعيد الدالة `Array.init` مصفوفة تُحصَل عليها بتهيئة الخلية ذات
+الرقم k (المتراوح من 0 إلى `n`− 1) بالقيمة الناتجة عن تطبيق الدالة
+`(funi->read_pair())` على k.
 
-Thus, if the integers entered on standard input consist of the sequence
-`420152230101015`, the preceding declarations define a variable `n` containing the
-integer `4` and an array `data` whose contents are graphically represented as follows:
+وهكذا، إذا كانت الأعداد الصحيحة المُدخَلة على الدخل القياسي مؤلفة من المتتالية
+`420152230101015`، فتعريف الإعلانات السابقة متغيرًا `n` يحتوي
+العدد الصحيح `4` ومصفوفة `data` تُعرض محتوياتها بيانيًا على النحو التالي:
 
-To draw the curve, we must begin by sorting the cells of this array in increasing
-order of x-coordinates. To this end, we begin by defining a function that compares
-two pairs by their first component:
+لرسم المنحنى، يجب أن نبدأ بفرز خلايا هذه المصفوفة بترتيب تزايدي
+لإحداثياتها السينية. وتحقيقًا لهذه الغاية، نبدأ بتعريف دالة تقارن
+زوجين وفق مكونهما الأول:
 
 ```ocaml
   let compare (x1, y1) (x2, y2) = x1 - x2
 ```
 
-This function returns an integer. Its sign is interpreted by the sorting algorithm as
-follows:
+تُعيد هذه الدالة عددًا صحيحًا. ويفسّر خوارزم الفرز (sorting algorithm) إشارته
+على النحو التالي:
 
-- if x1 - x2 = 0, the two pairs are considered to be equal;
-- if x1 - x2 > 0, the first pair is considered to be greater;
-- if x1 - x2 < 0, the first pair is considered to be smaller.
+- إذا كان x1 - x2 = 0، يعدّ الزوجان متساويين؛
+- إذا كان x1 - x2 > 0، يعدّ الزوج الأول أكبر؛
+- إذا كان x1 - x2 < 0، يعدّ الزوج الأول أصغر.
 
-Before continuing with the description of our program, let us stop an instant and
-consider the form of this declaration.
+قبل مواصلة وصف برنامجنا، لنتوقف لحظة وننظر في
+شكل هذا الإعلان.
 
-The arguments of the function `compare` are not simple identifiers, but rather
-*patterns*. They each have the form of a pair `(x`i,`y`i`)`. The use of patterns allows us
-here to easily retrieve the components `x`i and `y`i of the pairs passed as arguments of
-the function. This is a declaration by *pattern matching*. This form of declaration is
-very frequently used in OCaml programs, and we will use it on numerous occasions in
-this book.
+وسيطا الدالة `compare` ليسا معرفين بسيطين، بل *أنماط* (patterns). لكل منهما
+شكل زوج `(x`i,`y`i`)`. ويتيح لنا استخدام الأنماط هنا استرجاع المكونين `x`i و`y`i للزوجين الممرَّرين كوسيطين للدالة بسهولة. وهذا إعلان بواسطة *مطابقة الأنماط*
+(pattern matching). وهذا الشكل من الإعلان شائع جدًا في برامج أوسمل، وسنستخدمه في مناسبات عديدة في
+هذا الكتاب.
 
 >
 
-To sort the array, we use the higher-order function `Array.sort` which, in
-addition to the array to be sorted, takes as its first argument a function to
-compare the elements of the array. This sorting is done in-place, that is, directly
-within the array `data`. The call to `Array.sort` only performs side effects.
+لفرز المصفوفة، نستخدم الدالة من الرتبة الأعلى `Array.sort` التي،
+بالإضافة إلى المصفوفة المراد فرزها، تأخذ كوسيط أول دالة
+تقارن عناصر المصفوفة. ويتم هذا الفرز في نفس المكان (in-place)، أي مباشرةً
+داخل المصفوفة `data`. ولا يُحدث استدعاء `Array.sort` سوى آثار جانبية (side effects).
 
 ```ocaml
   let () = Array.sort compare data
 ```
 
-At the end of this call, the contents of `data` are as follows:
+في نهاية هذا الاستدعاء، تكون محتويات `data` على النحو التالي:
 
-All that remains is to draw the curve by joining the points thus ordered, with line
-segments. We begin with a directive `openGraphics`. Then, we open a graphical
-window of size 200 × 200. The call `set_line_width3` fixes the thickness of the line
-segments.
+لا يتبقى سوى رسم المنحنى بوصل النقاط المرتَّبة بهذا الشكل، بقطع مستقيمة
+نستهل الأمر بتوجيه (directive) `openGraphics`. ثم نفتح نافذة
+رسوميات بحجم 200 × 200. ويحدد الاستدعاء `set_line_width3` سُمك قطع
+المستقيمة.
 
 ```ocaml
   open Graphics
@@ -1628,22 +1182,22 @@ segments.
    set_line_width 3;
 ```
 
-We then retrieve the first pair `(x0,y0)` from the `0`-th cell of the array `data`, and use it to
-fix the coordinates of the current point using the function `moveto`:
+نسترجِع بعد ذلك الزوج الأول `(x0,y0)` من الخلية ذات الرقم `0` في المصفوفة `data`، ونستخدمه
+لتثبيت إحداثيات النقطة الحالية باستخدام الدالة `moveto`:
 
 ```ocaml
     let (x0,y0) = data.(0) in moveto x0 y0;
 ```
 
-Here again, we use a declaration by pattern matching to extract the components
-of a pair stored in the array. The value contained in `data.(0)` is matched
+هنا أيضًا نستخدم إعلانًا بواسطة مطابقة الأنماط لاستخراج المكونين
+لزوج مخزَّن في المصفوفة. وتُطابَق القيمة الموجودة في `data.(0)`
  
  
-by means of the pattern `(x0,y0)`, which defines two local variables `x0` and
+بوساطة النمط `(x0,y0)`، الذي يعرّف متغيرين محليين `x0` و
 `y0`.
 
-We then iterate over all the elements of the array `data` with the help of a `for` loop
-to join the points:
+نمرّ بعد ذلك على جميع عناصر المصفوفة `data` بمساعدة حلقة `for`
+لوصل النقاط:
 
 ```ocaml
     for i = 1 to n-1 do
@@ -1652,26 +1206,26 @@ to join the points:
     done;
 ```
 
-The body of the loop retrieves the coordinates `(x,y)` of each point using a local
-declaration by pattern matching (identical to the one above) and draws a line from
-the current point to the point with coordinates `(x,y)`.
+يسترجِع جسم الحلقة الإحداثيين `(x,y)` لكل نقطة باستخدام إعلان محلي
+بمطابقة الأنماط (مطابق للإعلان أعلاه)، ويرسم خطًا من
+النقطة الحالية إلى النقطة ذات الإحداثيين `(x,y)`.
 
-#### Additional Information
+#### معلومات إضافية
 
-##### Pairs and n-Tuples
+##### الأزواج والثنائيات (pairs and n-tuples)
 
-A pair of two values `v1` and `v2` can be constructed using the traditional notation
-`(v1,v2)`. The type of pairs uses the mathematical notation of the Cartesian
-product.
+يمكن إنشاء زوج من قيمتين `v1` و`v2` باستخدام الترميز التقليدي
+`(v1,v2)`. ويستخدم نوع الأزواج الترميز الرياضي للجداء
+الديكارتي (Cartesian product).
 
 ```ocaml
   # (1, true);;
   - : int * bool = (1, true)
 ```
 
-You will note that the comma is used to construct *the pair*while the symbol `*` is
-used to construct *the type*of the pair. The two projections are written `fst` and `snd`
-respectively.
+ستلاحظ أن الفاصلة تُستخدَم لإنشاء *الزوج* بينما يُستخدَم الرمز `*`
+لإنشاء *نوع* الزوج. ويُكتب الإسقاطان (projections) `fst` و`snd`
+على التوالي.
 
 ```ocaml
   # fst (1 + 2, true);;
@@ -1680,32 +1234,32 @@ respectively.
   - : bool = false
 ```
 
-Pairs may be arbitrarily nested.
+قد تكون الأزواج متداخلة بشكل تعسفي (arbitrarily nested).
 
 ```ocaml
   # ((1, true), (3.14, false));;
   - : (int * bool) * (float * bool) = ((1, true), (3.14, false))
 ```
 
-Pairs are a special case of n-tuples, and use the same syntax for both values and
-types.
+الأزواج حالة خاصة من الثنائيات (n-tuples)، وتستخدم الصياغة نفسها للقيم
+والأنواع.
 
 ```ocaml
   # (1, true, 3.14);;
   - : int * bool * float = (1, true, 3.14)
 ```
 
-It should be noted that the type `(int*int)*int`, the type `int*(int*int)`, and
-the type `int*int*int` are not the same:
+تجدر الإشارة إلى أن النوع `(int*int)*int` والنوع `int*(int*int)` و
+النوع `int*int*int` ليست متطابقة:
 
-- the first is that of a pair whose first component is a pair;
-- the second is that of a pair whose second component is a pair;
-- the third is that of a triple.
+- الأول هو نوع زوج مكونه الأول زوج؛
+- الثاني هو نوع زوج مكونه الثاني زوج؛
+- الثالث هو نوع ثالوث (triple).
 
-##### Projections by Pattern Matching and Wildcard Pattern
+##### الإسقاطات بمطابقة الأنماط والنمط البديل (wildcard pattern)
 
-There are no projection functions for n-tuples. A declaration by pattern matching
-must be used to retrieve each component. For example:
+لا توجد دوال إسقاط للثنائيات. ويجب استخدام إعلان بمطابقة الأنماط
+لاسترجاع كل مكون. على سبيل المثال:
 
 ```ocaml
   # let (x, (y, z), t) = (1, (true, "hello"), 3.4);;
@@ -1715,11 +1269,10 @@ must be used to retrieve each component. For example:
   val t : float = 3.4
 ```
 
-If you only wish to access certain components of an n-tuple, you may
-use a *wildcard pattern*, which is written as `_`, to avoid having to introduce
-unnecessary variable names. For example, if you wish only to access the
-components `x` and `z` of the above triple, you can write the following pattern
-matching:
+إذا أردت الوصول إلى مكونات معينة فقط من ثنائية، يمكنك
+استخدام *نمط بديل* (wildcard pattern)، يُكتب على شكل `_`، لتجنب إدخال
+أسماء متغيرات غير ضرورية. على سبيل المثال، إذا أردت الوصول فقط إلى
+المكونين `x` و`z` من الثالوث أعلاه، يمكنك كتابة مطابقة الأنماط التالية:
 
 ```ocaml
   # let (x, (_, z), _) = (1, (true, "hello"), 3.4);;
@@ -1727,9 +1280,9 @@ matching:
   val z : string = "hello"
 ```
 
-Wildcard patterns also allow you to represent arbitrary values. Thus, if you only
-wish to access components `x` and `t`, you may use a wildcard pattern to represent the
-second component of the above triple:
+تتيح الأنماط البديلة أيضًا تمثيل قيم تعسفية. وهكذا، إذا أردت فقط
+الوصول إلى المكونين `x` و`t`، يمكنك استخدام نمط بديل لتمثيل
+المكون الثاني من الثالوث أعلاه:
 
 ```ocaml
   # let (x, _, t) = (1, (true, "hello"), 3.4);;
@@ -1737,55 +1290,52 @@ second component of the above triple:
   val t : float = 3.4
 ```
 
-##### Functions with Several Arguments and n-Tuples
+##### الدوال ذات الوسائط المتعددة والثنائيات
 
-It is equally important to differentiate clearly between a function with several
-arguments and a function that takes a single argument which is an n-tuple. Consider,
-for instance, the following function `pyth`:
+من المهم أيضًا التمييز بوضوح بين دالة ذات وسائط
+متعددة ودالة تأخذ وسيطًا واحدًا هو ثنائية. لنأخذ،
+على سبيل المثال، الدالة التالية `pyth`:
 
 ```ocaml
   # let pyth (x, y, z) = x*x + y*y = z*z;;
   val pyth : int * int * int -> bool = <fun>
 ```
 
-It takes a triple of integers as argument. You therefore call it using a *single*
-argument of the form `(`e1`,`e2`,`e3`)`, as in the following call:
+تأخذ ثالوث أعداد صحيحة كوسيط. ولذلك تستدعيها باستخدام وسيط *وحيد*
+بالشكل `(`e1`,`e2`,`e3`)`، كما في الاستدعاء التالي:
 
 ```ocaml
   # pyth (3, 4, 5);;
   - : bool = true
 ```
 
-On the other hand, the same function may be written as a function of several arguments,
-as follows:
+من جهة أخرى، يمكن كتابة الدالة نفسها كدالة بوسائط متعددة،
+على النحو التالي:
 
 ```ocaml
   # let pyth x y z = x*x + y*y = z*z;;
   val pyth : int -> int -> int -> bool = <fun>
 ```
 
-This function must be called by juxtaposing its name with *three*arguments, as in the
-following call:
+يجب استدعاء هذه الدالة بمجرد تجاور اسمها مع *ثلاثة* وسائط، كما في
+الاستدعاء التالي:
 
 ```ocaml
   # pyth 3 4 5;;
   - : bool = true
 ```
 
-The types `int*int*int->bool` and `int->int->int->bool` illustrate clearly the
-difference between these two variants. In this text, we adopt the *Curry* style,
-wherein functions take n arguments rather than an n-tuple. In particular, this
-enables the *partial*application of functions: You can pass the function fewer
-arguments than it expects and obtain another function in return. For example, by
-applying the function `pyth` to an integer, you obtain a function that takes two
-arguments:
+النوعان `int*int*int->bool` و`int->int->int->bool` يوضحان بوضوح
+الفرق بين هاتين الصيغتين. وفي هذا الكتاب، نعتمد أسلوب *كاري* (Curry)،
+الذي تأخذ فيه الدوال n من الوسائط بدلًا من ثنائية واحدة. ويتيح هذا الأسلوب، بوجه خاص، *الاستخدام الجزئي* (partial application) للدوال: إذ يمكنك تمرير عدد وسائط للدالة أقل مما تتوقعه، والحصول في المقابل على دالة أخرى. على سبيل المثال، بتطبيق
+الدالة `pyth` على عدد صحيح، تحصل على دالة تأخذ وسيطين:
 
 ```ocaml
   # let f = pyth 3;;
   val f : int -> int -> bool = <fun>
 ```
 
-You can then apply it several times:
+يمكنك بعد ذلك تطبيقها عدة مرات:
 
 ```ocaml
   # f 4 5;;
@@ -1794,46 +1344,46 @@ You can then apply it several times:
   - : bool = false
 ```
 
-##### Records
+##### السجلات (records)
 
-Tuples serve to group several values together. However, it is easy to confuse the
-different components of an n-tuple when they have the same type. Thus,
-a date represented by a triple of integers, of type `int*int*int`, does not
-indicate clearly which integer designates the day, the month, and the year. To
-correct this defect, the OCaml language provides the notion of *record*, that is,
-an n-tuple whose fields are named. To create a record, you must declare a
-new type beforehand, describing the names and the types of the different
-fields.
+تُستخدم الثنائيات لتجميع عدة قيم معًا. ومع ذلك، يسهل الخلط بين
+المكونات المختلفة لثنائية عندما تكون من النوع نفسه. وهكذا،
+فإن تاريخًا ممثلًا بثالوث أعداد صحيحة، من النوع `int*int*int`، لا
+يبين بوضوح أي عدد صحيح يدل على اليوم، وأيها على الشهر، وأيها على السنة. ولتصحيح
+هذا النقص، توفّر لغة أوسمل مفهوم *السجل* (record)، أي
+ثنائية ذات حقول مسماة. ولإنشاء سجل، يجب الإعلان مسبقًا عن
+نوع جديد، يصف أسماء وأنواع مختلف
+الحقول.
 
 ```ocaml
   # type date = { day : int; month : int; year : int };;
   type date = { day : int; month : int; year : int; }
 ```
 
-We can then construct a value of the type `date` with the following syntax.
+يمكننا بعد ذلك إنشاء قيمة من النوع `date` بالصياغة التالية.
 
 ```ocaml
   # let valentine’s_day = { day = 14; month = 2; year = 2014 };;
   val valentine’s_day : date = { day = 14; month = 2; year = 2014 }
 ```
 
-We access a field f of a record e using the notation e`.`f.
+نصل إلى الحقل f من سجل e باستخدام الترميز e`.`f.
 
 ```ocaml
   # valentine’s_day.month;;
   - : int = 2
 ```
 
-A new record can be constructed based on another record of the same type, preserving
-the values of certain fields and giving new values to others. We use the construction
-`with` for this.
+يمكن إنشاء سجل جديد انطلاقًا من سجل آخر من النوع نفسه، مع الحفاظ
+على قيم حقول معينة وإعطاء قيم جديدة لحقول أخرى. ونستخدم البنية
+`with` لهذا الغرض.
 
 ```ocaml
   # let d = { valentine’s_day with day = 15 };;
   val d : date = {day = 15; month = 2; year = 2014}
 ```
 
-This is identical to the following declaration:
+وهذا مطابق للإعلان التالي:
 
 ```ocaml
   # let d = { day = 15;
@@ -1842,8 +1392,8 @@ This is identical to the following declaration:
   val d : date = {day = 15; month = 2; year = 2014}
 ```
 
-Another advantage of records over n-tuples is that the order of fields is not significant.
-We can therefore write:
+من مزايا السجلات الأخرى مقارنة بالثنائيات أن ترتيب الحقول غير ذي أهمية.
+ولذلك يمكننا كتابة:
 
 ```ocaml
   # let us_valentine’s_day = { month = 2; day = 14; year = 2014; };;
@@ -1852,8 +1402,8 @@ We can therefore write:
   - : bool = true
 ```
 
-It is also possible to use a pattern to retrieve the values of each field, once again in any
-order.
+من الممكن أيضًا استخدام نمط لاسترجاع قيم كل حقل، مرة أخرى بأي
+ترتيب.
 
 ```ocaml
   # let { day; month; year } = valentine’s_day;;
@@ -1862,34 +1412,34 @@ order.
   val year : int = 2014
 ```
 
-We can omit certain fields by using the wildcard pattern `_` to indicate the fields to be
-ignored.
+يمكننا حذف بعض الحقول باستخدام النمط البديل `_` للإشارة إلى الحقول
+التي ينبغي تجاهلها.
 
 ```ocaml
   # let { day; month; _ } = valentine’s_day;;
 ```
 
-Tuples are nevertheless useful, particularly because they do not require us to declare a
-type.
+ومع ذلك، تظل الثنائيات مفيدة، وبوجه خاص لأنها لا تتطلب منا الإعلان عن
+نوع.
 
-##### Records with Mutable Fields
+##### السجلات ذات الحقول القابلة للتعديل (mutable fields)
 
-The keyword `mutable` declares a record field that can be modified.
+يصرّح المفتاح `mutable` عن حقل سجل يمكن تعديله.
 
 ```ocaml
   # type student = { number : int; mutable age : int };;
   type student = { number : int; mutable age : int; }
 ```
 
-A record field is modified using the construction `<-`.
+يُعدَّل حقل سجل باستخدام البنية `<-`.
 
 ```ocaml
   # let birthday e = e.age <- e.age + 1;;
   val birthday : student -> unit = <fun>
 ```
 
-This modification does not return a value. Hence its type is `unit`. We observe this side
-effect in the following example:
+لا تُعيد هذه العملية قيمة. ولذلك يكون نوعها `unit`. ونلاحظ هذا
+الآثار الجانبية في المثال التالي:
 
 ```ocaml
   # let e = { number = 123456; age = 21 };;
@@ -1900,17 +1450,17 @@ effect in the following example:
   - : student = {number = 123456; age = 22}
 ```
 
-We can use a record with a `mutable` field to simulate the traditional notion of a
-mutable variable. For example, in case of a variable of type `int`, it suffices to declare a
-type with a single mutable field `value`.
+يمكننا استخدام سجل ذي حقل `mutable` لمحاكاة المفهوم التقليدي للمتغير
+القابل للتعديل. على سبيل المثال، في حالة متغير من النوع `int`، يكفي الإعلان عن
+نوع ذي حقل قابل للتعديل وحيد `value`.
 
 ```ocaml
   # type variable = { mutable value : int };;
   type variable = { mutable value : int; }
 ```
 
-We then use `x.value` to access the contents of the variable `x` and the assignment
-`x.value<-e` to modify it.
+نستخدم بعد ذلك `x.value` للوصول إلى محتويات المتغير `x`، والإسناد
+`x.value<-e` لتعديله.
 
 ```ocaml
   # let x = { value = 41 };;
@@ -1921,22 +1471,22 @@ We then use `x.value` to access the contents of the variable `x` and the assignm
   - : int = 42
 ```
 
-Strictly speaking, we are not modifying the variable `x`. We modify only the value
-contained in the record that `x` points to. So, more precisely, it is the notion of pointer
-that is being used here.
+بالمعنى الدقيق، لا نعدّل المتغير `x` نفسه. إنما نعدّل فقط القيمة
+الموجودة في السجل الذي يشير إليه `x`. وبشكل أدق، إنما هو مفهوم المؤشر
+(pointer) المستخدم هنا.
 
-To avoid having to define such a type each time we need a mutable variable,
-OCaml offers the predefined type of *references*, that we have already used (see
-section [*2.2*](#the-montecarlo-method) *Approximation of*π). A reference is created using the keyword `ref`.
+ولتجنب الاضطرار إلى تعريف نوع من هذا القبيل في كل مرة نحتاج فيها إلى متغير قابل للتعديل،
+توفّر أوسمل النوع المعرَّف مسبقًا لـ*المراجع* (references)، الذي استخدمناه بالفعل (انظر
+القسم [*2.2*](#the-montecarlo-method) *تقريب*π). ويُنشأ المرجع باستخدام المفتاح `ref`.
 
 ```ocaml
   # let x = ref 41;;
   val x : int ref = {contents = 41}
 ```
 
-As is clear, the type of a reference, written as `intref`, is that of a record, with a single
-field `contents`. We access this field using the notation `!` and modify its contents using
-the notation `:=`.
+كما هو واضح، فإن نوع المرجع، المكتوب على شكل `intref`، هو نوع سجل، ذي حقل
+وحيد `contents`. ونصل إلى هذا الحقل باستخدام الترميز `!`، ونعدّل محتوياته باستخدام
+الترميز `:=`.
 
 ```ocaml
   # x := !x + 1;;
@@ -1945,15 +1495,14 @@ the notation `:=`.
   - : int = 42
 ```
 
-##### Evaluation Order
+##### ترتيب التقييم (evaluation order)
 
-The OCaml language does not specify the evaluation order of the components of
-n-tuples and records. Thus, in the pair `(e1,e2)`, it is not possible to know
-*a priori*if the expression `e1` will be evaluated before `e2` or the other way
-around.
+لا تحدد لغة أوسمل ترتيب تقييم مكونات
+الثنائيات والسجلات. وهكذا، في الزوج `(e1,e2)`، لا يمكن معرفة
+*مسبقًا* ما إذا كان التعبير `e1` سيُقيَّم قبل `e2` أم بالعكس.
 
-Of course, we can easily figure out the evaluation order of a specific implementation of
-OCaml using an expression that creates a pair, as follows:
+وبطبيعة الحال، يمكننا بسهولة معرفة ترتيب التقييم لتنفيذ معين من
+أوسمل باستخدام تعبير ينشئ زوجًا، على النحو التالي:
 
 ```ocaml
   # (read_int (), read_int ());;
@@ -1962,13 +1511,13 @@ OCaml using an expression that creates a pair, as follows:
   - : int * int = (5, 4)
 ```
 
-We can see here that it is the expression `e2` that is evaluated first, since the first integer
-typed in, here `4`, is stored in the second component of the pair.
+نلاحظ هنا أن التعبير `e2` هو الذي يُقيَّم أولًا، لأن العدد الصحيح الأول
+المُدخَل، وهو هنا `4`، يُخزَّن في المكون الثاني من الزوج.
 
-In general, it is not a good idea to write a program that relies on the
-evaluation order implemented by a specific compiler. It is better to use local
-declarations to specify the evaluation order. Thus, what we ought to write
-is:
+وبشكل عام، ليست فكرة جيدة كتابة برنامج يعتمد على
+ترتيب التقييم المنفَّذ من طرف مترجم معين. ومن الأفضل استخدام إعلانات
+محلية لتحديد ترتيب التقييم. وهكذا، ما كان ينبغي لنا كتابته
+هو:
 
 ```ocaml
   # let x = read_int () in let y = read_int () in (x, y);;
@@ -1977,17 +1526,17 @@ is:
   - : int * int = (4, 5)
 ```
 
-##### Anonymous Functions
+##### الدوال المجهولة (anonymous functions)
 
-The definitions of anonymous functions are not limited to one argument. Functions
-that take several arguments may be defined as follows:
+لا تقتصر تعريفات الدوال المجهولة على وسيط واحد. فالدوال
+التي تأخذ عدة وسائط يمكن تعريفها على النحو التالي:
 
 ```ocaml
   # fun x y -> x + y;;
   - : int -> int -> int = <fun>
 ```
 
-It is interesting to note that the following two declarations are strictly equivalent:
+ومن المثير للاهتمام ملاحظة أن الإعلانين التاليين متكافئان تمامًا:
 
 ```ocaml
   # let f = fun x -> x + 1;;
@@ -1996,18 +1545,17 @@ It is interesting to note that the following two declarations are strictly equiv
   val f : int -> int = <fun>
 ```
 
-### 2.7 Copying a File
+### 2.7 نسخ ملف
 
 >
 
-Our next program, `copy_file.ml`, copies the contents of one file into another, with
-the names of the two files passed on the command line.
+برنامجنا التالي، `copy_file.ml`، ينسخ محتويات ملف إلى ملف آخر، مع تمرير اسمَي
+الملفين على سطر الأوامر.
 
-For this, we write a function `copy_file` that takes as arguments the names of the
-files, as strings `f1` and `f2`. We begin by opening channels `c1` and `c2` on the files `f1`
+ولهذا، نكتب دالة `copy_file` تأخذ كوسيطين اسمي الملفين، كسلسلتين نصيتين `f1` و`f2`. نبدأ بفتح قناتين `c1` و`c2` على الملفين `f1`
  
  
-and `f2`, respectively.
+و`f2`، على التوالي.
 
 ```ocaml
   let copy_file f1 f2 =
@@ -2015,20 +1563,18 @@ and `f2`, respectively.
     let c2 = open_out f2 in
 ```
 
-The first, `c1`, is opened for reading and the second, `c2`, for writing.
+تُفتح الأولى، `c1`، للقراءة والثانية، `c2`، للكتابة.
 
-Then, we execute an infinite loop, (`whiletrue`), which reads characters from `c1`
-and writes them to `c2`.
+ثم ننفّذ حلقة لا نهائية (`whiletrue`) تقرأ الحروف من `c1`
+وتكتبها إلى `c2`.
 
 ```ocaml
       while true do output_char c2 (input_char c1) done
 ```
 
-When there are no more characters left to read, the function `input_char` raises a
-predefined *exception*, namely, `End_of_file`. This interrupts the execution of the
-`while` loop and, more generally, of the program being executed, until the exception is
-*caught*. Here, we catch this exception just outside the `while` loop. We do this with the
-construction `try-with`.
+عندما لا يتبقى أي حرف لقراءته، تُطلق الدالة `input_char` *استثناءً* معرَّفًا مسبقًا، ألا وهو `End_of_file`. يقاطع هذا تنفيذ حلقة
+`while`، وبوجه عام تنفيذ البرنامج الجاري، حتى يُلتقط (caught) الاستثناء. وهنا، نلتقط هذا الاستثناء خارج حلقة `while` مباشرةً، وذلك باستخدام
+البناء `try-with`.
 
 ```ocaml
   let () =
@@ -2038,36 +1584,36 @@ construction `try-with`.
       close_in c1; close_out c2
 ```
 
-The meaning of the construction `try` e1 `with` `E` `->` e2 is as follows: We begin by
-evaluating the expression e1. If a value is obtained, it is the value of the entire
-`try-with` expression. If, however, the evaluation of e1 raises the exception `E`, then we
-evaluate the expression e2, and that is the result of the expression as a whole. Finally,
-if e1 raises an exception other than `E`, then the exception is not caught, and it is the
-expression `try-with` as a whole that raises it.
+معنى البناء `try` e1 `with` `E` `->` e2 هو كما يلي: نبدأ
+بتقييم التعبير e1. وإذا حصلنا على قيمة، فهي قيمة
+التعبير `try-with` بأكمله. أما إذا أطلق تقييم e1 الاستثناء `E`، فإننا
+نقيّم التعبير e2، ويكون ذلك هو ناتج التعبير ككل. وأخيرًا،
+إذا أطلق e1 استثناءً غير `E`، فلا يُلتقط الاستثناء، ويكون التعبير
+`try-with` بأسره هو ما يُطلقه.
 
-In our case, the expression e1 is an infinite loop, whose evaluation will never end.
-However, it ends by raising the exception `End_of_file`, which is then caught, and the
-two files `c1` and `c2` are closed.
+وفي حالتنا هذه، التعبير e1 حلقة لا نهائية، ولن ينتهي تقييمها أبدًا.
+غير أنها تنتهي بإطلاق الاستثناء `End_of_file`، الذي يُلتقط بعد ذلك،
+فيُغلَق الملفان `c1` و`c2`.
 
-All that remains then is to call the function `copy_file` with the first two
-arguments of the command line, namely, `Sys.argv.(1)` and `Sys.argv.(2)`.
+ولا يتبقى بعد ذلك سوى استدعاء الدالة `copy_file` بالوسيطين الأولين
+لسطر الأوامر، وهما `Sys.argv.(1)` و`Sys.argv.(2)`.
 
 >
 
-#### Additional Information
+#### معلومات إضافية
 
-##### Input/Output Channels
+##### قنوات الإدخال/الإخراج (input/output channels)
 
-Input/output devices are represented by *channels*. Input channels are of the
-predefined type `in_channel`, and output channels of the type `out_channel`. Three
-predefined values represent, respectively, standard input, standard output, and
-standard error of the program being executed: `stdin` of type `in_channel`, and `stdout`
-and `stderr` of type `out_channel`.
+تُمثَّل أجهزة الإدخال/الإخراج بواسطة *قنوات* (channels). وقنوات الإدخال من
+النوع المعرَّف مسبقًا `in_channel`، وقنوات الإخراج من النوع `out_channel`. وتمثل ثلاث
+قيم معرَّفة مسبقًا، على التوالي، الدخل القياسي، والخرج القياسي، والخطأ القياسي
+للبرنامج الجاري تنفيذه: `stdin` من النوع `in_channel`، و`stdout`
+و`stderr` من النوع `out_channel`.
 
-Functions are available for reading and writing on channels. The function
-`input_char`, of type `in_channel->char`, reads a single character from the channel
-passed as argument. We can thus read a character from standard input, `stdin`, in the
-following manner:
+تتوفر دوال للقراءة والكتابة على القنوات. وتقرأ الدالة
+`input_char`، من النوع `in_channel->char`، حرفًا واحدًا من القناة
+الممرَّرة كوسيط. وهكذا يمكننا قراءة حرف من الدخل القياسي، `stdin`، على النحو
+التالي:
 
 ```ocaml
   # let c = input_char stdin;;
@@ -2075,31 +1621,28 @@ following manner:
   val c : char = ’a’
 ```
 
-A more general function, `input`, can be used to read n characters from an input channel
-and store them at a certain position within a string.
+ويمكن استخدام دالة أعم، `input`، لقراءة n حرفًا من قناة إدخال
+وتخزينها في موضع معين داخل سلسلة نصية.
 
-Similarly, the `output_char` function, of type `out_channel->char->unit`, writes a
-character to an output channel. A more general function, `output`, writes a given
-substring. There is also a function `Printf.fprintf` that writes to an output
-channel, in a manner analogous to the function `Printf.printf` that we used
-earlier.
+وبالمثل، تكتب الدالة `output_char`، من النوع `out_channel->char->unit`، حرفًا إلى قناة إخراج. أما الدالة الأعم `output`، فتكتب سلسلة فرعية معينة. وتوجد أيضًا دالة `Printf.fprintf` تكتب إلى قناة
+إخراج، بطريقة مماثلة للدالة `Printf.printf` التي استخدمناها
+سابقًا.
 
-Files can also be manipulated as channels. Thus, a file is opened for reading with
-the function `open_in`, of type `string->in_channel`, and for writing with the function
-`open_out`, of type `string->out_channel`. The string designates the file name.
-Symmetrically, we close a channel with the functions `close_in` and `close_out`.
+يمكن أيضًا التعامل مع الملفات كقنوات. وهكذا، يُفتح ملف للقراءة باستخدام
+الدالة `open_in`، من النوع `string->in_channel`، وللكتابة باستخدام الدالة
+`open_out`، من النوع `string->out_channel`. وترمز السلسلة النصية إلى اسم الملف.
+وبشكل متماثل، نغلق قناة بالدالتين `close_in` و`close_out`.
  
  
-Input/output operations on channels can fail (reading or writing on a closed channel,
-invalid permissions, etc.). This is systematically signalled by raising an exception. For
-instance, reading beyond the end of a file raises the predefined exception
+يمكن أن تفشل عمليات الإدخال/الإخراج على القنوات (القراءة أو الكتابة على قناة مغلقة،
+أو صلاحيات غير صالحة، وما إلى ذلك). ويُشار إلى ذلك بشكل منهجي بإطلاق استثناء. فعلى سبيل
+المثال، القراءة بعد نهاية ملف تُطلق الاستثناء المعرَّف مسبقًا
 `End_of_file`.
 
-##### Marshalling
+##### الترميز (marshalling)
 
-Besides characters, it is possible to use channels to read and write OCaml values of
-arbitrary types. This is known as *marshalling*. The function `output_value` writes a
-value of an arbitrary type to an output channel.
+إضافةً إلى الحروف، يمكن استخدام القنوات لقراءة وكتابة قيم أوسمل من
+أنواع اعتباطية. ويُعرف هذا باسم *الترميز* (marshalling). وتكتب الدالة `output_value` قيمة من نوع اعتباطي إلى قناة إخراج.
 
 ```ocaml
   # let c = open_out "foo" in
@@ -2108,11 +1651,11 @@ value of an arbitrary type to an output channel.
   - : unit = ()
 ```
 
-The format used is specific to OCaml (and even to its version). The function that
-performs the inverse operation is `input_value`. When you read a marshalled value
-with the function `input_value`, its type is *inferred*according to how it is used. It is
-good practice to indicate the type of the value that is read with a type annotation.
-Below, we read back the value written to the file `"foo"`, specifying that its type is
+الصيغة المستخدمة خاصة بأوسمل (بل وبنسخته تحديدًا). والدالة التي
+تقوم بالعملية العكسية هي `input_value`. وعندما تقرأ قيمة مرمَّزة
+بالدالة `input_value`، يُستنتج (inferred) نوعها وفقًا لكيفية استخدامها. ومن
+الممارسات الجيدة تحديد نوع القيمة المقروءة بتعليق نوع (type annotation).
+وفيما يلي، نعيد قراءة القيمة المكتوبة في الملف `"foo"`، محدِّدين أن نوعها هو
 `int*float*bool`:
 
 ```ocaml
@@ -2122,11 +1665,11 @@ Below, we read back the value written to the file `"foo"`, specifying that its t
   val v : int * float * bool = (1, 3.14, true)
 ```
 
-There is no type information in the marshalled value itself. In particular, runtime type
-safety is not guaranteed if we use a marshalled value in a way that is incompatible
-with the type of the value that was actually marshalled. In the above example, we
-could pretend that the value read is a pair whose first component is also a pair. This
-leads to a fatal program error.
+لا توجد أي معلومات عن النوع في القيمة المرمَّزة نفسها. وبوجه خاص، لا تُضمن
+سلامة النوع عند التشغيل (runtime) إذا استخدمنا قيمة مرمَّزة بطريقة غير متوافقة
+مع نوع القيمة المرمَّزة فعلًا. وفي المثال أعلاه، يمكننا
+أن ندّعي أن القيمة المقروءة زوج مكونه الأول زوج أيضًا. وهذا
+يؤدي إلى خطأ برنامج قاتل (fatal).
 
 ```ocaml
   # let c = open_in "foo";;
@@ -2136,25 +1679,25 @@ leads to a fatal program error.
   Process caml-toplevel segmentation fault
 ```
 
-This error is not an exception that we could have caught. It is, rather, a
-lower-level error corresponding to an unrecoverable illegal memory access.
+هذا الخطأ ليس استثناءً كان يمكننا التقاطه. بل هو، بالأحرى،
+خطأ من مستوى أدنى يقابل وصولًا غير قانوني إلى الذاكرة لا يمكن التعافي منه.
 
-##### Exceptions
+##### الاستثناءات (exceptions)
 
-Certain operations are partial, that is, they are not defined for all possible values of
-their arguments. For instance, integer division by zero is not defined. If you try,
-nevertheless, to perform this operation, an *exception is raised*.
+بعض العمليات جزئية (partial)، أي أنها غير معرَّفة لجميع القيم الممكنة
+لوسائطها. فعلى سبيل المثال، القسمة الصحيحة على الصفر غير معرَّفة. وإذا حاولت،
+رغم ذلك، إجراء هذه العملية، *يُطلق استثناء*.
 
 ```ocaml
   # 1/0;;
   Exception: Division_by_zero.
 ```
 
-The evaluation of the expression does not result in a value; it fails when the
-exception is raised, as the message beginning with `Exception` indicates. Here,
-`Division_by_zero` is a predefined exception. Another predefined exception in OCaml,
-`Invalid_argument`, is often used to signal the use of a function outside its domain of
-definition.
+لا ينتج عن تقييم التعبير قيمة؛ بل يفشل عند إطلاق
+الاستثناء، كما تدل الرسالة التي تبدأ بـ`Exception`. وهنا،
+`Division_by_zero` استثناء معرَّف مسبقًا. وهناك استثناء آخر معرَّف مسبقًا في أوسمل،
+`Invalid_argument`، يُستخدم غالبًا للإشارة إلى استخدام دالة خارج نطاق
+تعريفها.
 
 ```ocaml
   # Random.int (-4);;
@@ -2163,12 +1706,12 @@ definition.
   Exception: Invalid_argument "Char.chr".
 ```
 
-As is clear from these examples, a string is associated with the exception
-`Invalid_argument`, which specifies the name of the function that raised the
-exception.
+كما يتضح من هذه الأمثلة، ترتبط سلسلة نصية بالاستثناء
+`Invalid_argument`، تحدد اسم الدالة التي أطلقت
+الاستثناء.
 
-Raising an exception *interrupts*the calculation, as we can see by evaluating the
-following expression.
+إن إطلاق استثناء *يقاطع* الحساب، كما نرى بتقييم
+التعبير التالي.
 
 ```ocaml
   # print_endline "before"; print_int (1/0); print_endline "after";;
@@ -2176,8 +1719,8 @@ following expression.
   Exception: Division_by_zero.
 ```
 
-It is, nonetheless, possible to catch an exception, so as to continue the evaluation with
-another expression. You use the construction `trywith` for this, as follows:
+ورغم ذلك، يمكن التقاط استثناء لمواصلة التقييم بتعبير
+آخر. وتستخدم لهذا الغرض البناء `trywith`، كما يلي:
 
 ```ocaml
   # let test x y =
@@ -2189,34 +1732,34 @@ another expression. You use the construction `trywith` for this, as follows:
   - : unit = ()
 ```
 
-Here, we attempt to calculate `x/y` and display its value. In case of failure, that is,
-when the division triggers the exception `Division_by_zero`, we catch the exception
-and display an error message. The evaluation of the function `test` therefore always
-ends with a value of type `unit`.
+هنا، نحاول حساب `x/y` وعرض قيمته. وفي حالة الفشل، أي عندما
+تستثير القسمة الاستثناء `Division_by_zero`، نلتقط الاستثناء
+ونعرض رسالة خطأ. لذلك ينتهي تقييم الدالة `test` دائمًا
+بقيمة من النوع `unit`.
 
-In general, the expression `try`e1`withE->`e2 is evaluated as follows:
+بشكل عام، يُقيَّم التعبير `try`e1`withE->`e2 كما يلي:
 
-- The expression e1 is evaluated first. If it does not raise an exception, the
-       calculation is complete, and its value is that of e1.
-- If, however, the expression raises an exception, then there are two possibilities:
+- يُقيَّم التعبير e1 أولًا. وإذا لم يُطلق استثناءً، يكتمل
+       الحساب، وتكون قيمته هي قيمة e1.
+- أما إذا أطلق التعبير استثناءً، فثمة احتمالان:
   
-  if the exception is E, then evaluation continues with e2;
-- if the exception is something other than E, then it is propagated,
-            without evaluating e2.
+  إذا كان الاستثناء هو E، يستمر التقييم بـe2؛
+- إذا كان الاستثناء غير E، يُنشر (propagated)
+            دون تقييم e2.
 
-In the expression `try`e1`withE->`e2, the two sub-expressions e1 and e2 must have the same
-type, which is also the type of the expression as a whole.
+في التعبير `try`e1`withE->`e2، يجب أن يكون للتعبيرين الفرعيين e1 وe2 النوع
+نفسه، وهو أيضًا نوع التعبير ككل.
 
-Users may define their own exceptions with the declaration `exception` followed by
-the exception’s name, which must begin with a capital letter. The exception need not
-take any arguments, for example, `Division_by_zero`:
+يمكن للمستخدمين تعريف استثناءاتهم الخاصة بالإعلان `exception` متبوعًا
+باسم الاستثناء، الذي يجب أن يبدأ بحرف كبير. ولا يلزم أن يأخذ الاستثناء
+أي وسائط، على سبيل المثال، `Division_by_zero`:
 
 ```ocaml
   # exception Stop;;
   exception Stop
 ```
 
-Alternatively, the exception may have one or more arguments, for example,
+بدلًا من ذلك، قد يأخذ الاستثناء وسيطًا واحدًا أو أكثر، على سبيل المثال،
 `Invalid_argument`:
 
 ```ocaml
@@ -2224,8 +1767,8 @@ Alternatively, the exception may have one or more arguments, for example,
   exception Error of string
 ```
 
-To raise an exception, you use the construction `raise`. This construction takes an
-exception as argument.
+لإطلاق استثناء، تستخدم البناء `raise`. يأخذ هذا البناء
+استثناءً كوسيط.
 
 ```ocaml
   # let f x =
@@ -2234,20 +1777,20 @@ exception as argument.
   val f : int -> int = <fun>
 ```
 
-Here, the exception is constructed by applying the constructor `Error` to the string
-`"negativeargument"`. You can observe the exception being raised by calling `f` with a
-negative argument.
+هنا، يُنشأ الاستثناء بتطبيق المُنشئ (constructor) `Error` على السلسلة النصية
+`"negativeargument"`. ويمكنك ملاحظة إطلاق الاستثناء باستدعاء `f` بوسيط
+سالِب.
 
 ```ocaml
   # f (-1);;
   Exception: Error "negative argument".
 ```
 
-Exceptions are, in fact, values like any other and belong to the predefined type `exn`. This
-type can be seen as a concrete type with an unbounded number of constructors.
-Predefined exceptions are merely predefined constructors of this type. Each
-`exception` declaration adds a new constructor. You can construct a value of type `exn`
-and pass it as an argument to `raise`:
+الاستثناءات، في الواقع، قيم مثل أي قيم أخرى وتنتمي إلى النوع المعرَّف مسبقًا `exn`. ويمكن النظر إلى هذا
+النوع بوصفه نوعًا ملموسًا (concrete) بعدد غير محدود من المنشئات.
+والاستثناءات المعرَّفة مسبقًا ليست سوى منشئات معرَّفة مسبقًا لهذا النوع. وكل
+إعلان `exception` يضيف منشئًا جديدًا. يمكنك إنشاء قيمة من النوع `exn`
+وتمريرها كوسيط إلى `raise`:
 
 ```ocaml
   # let e = Error "invalid argument";;
@@ -2256,10 +1799,10 @@ and pass it as an argument to `raise`:
   Exception: Error "invalid argument".
 ```
 
-The construction `raise` is simply a function that takes an argument of type
-`exn`. The expression `raise`e can take any type. In the previous example,
-the expression `raise(Error"invalidargument")` takes the type `unit`, but
-can equally take the type `int` if we wish to write the function `f` with an
+البناء `raise` ليس سوى دالة تأخذ وسيطًا من النوع
+`exn`. ويمكن للتعبير `raise`e أن يأخذ أي نوع. وفي المثال السابق،
+يأخذ التعبير `raise(Error"invalidargument")` النوع `unit`، لكنه
+يمكن أن يأخذ أيضًا النوع `int` إذا أردنا كتابة الدالة `f` مع
 `else`:
 
 ```ocaml
@@ -2268,11 +1811,11 @@ can equally take the type `int` if we wish to write the function `f` with an
   val f : int -> int = <fun>
 ```
 
-Exceptions can be used to signal exceptional behaviors (as in the preceding
-examples), as well as to change the program’s control flow. A typical example is that
-of an infinite loop that you exit using an exception. For example, this is the case of
-interactive programs that you exit by pressing a key. With the library `Graphics`, such
-a loop can be written as follows:
+يمكن استخدام الاستثناءات للإشارة إلى سلوكيات استثنائية (كما في الأمثلة
+السابقة)، وكذلك لتغيير تدفق التحكم (control flow) في البرنامج. ومن الأمثلة النموذجية
+على ذلك حلقة لا نهائية تخرج منها باستخدام استثناء. وهذا هو حال
+البرامج التفاعلية التي تخرج منها بالضغط على مفتاح. وباستخدام مكتبة `Graphics`، يمكن كتابة مثل هذه
+الحلقة كما يلي:
 
 ```ocaml
   try
@@ -2286,25 +1829,25 @@ a loop can be written as follows:
     ...
 ```
 
-Raising the exception `Exit` interrupts the infinite loop `whiletrue`. We catch the
-exception, close the graphical window with `close_graph`, and then continue the
-program. Other examples of the use of exceptions to change the flow of control are
-given in exercises [2.15](#x7-96002r15) and [5.7](https://usr.lmf.cnrs.fr/lpo/mainch5.html#x16-195007r7).
+إن إطلاق الاستثناء `Exit` يقاطع الحلقة اللانهائية `whiletrue`. نلتقط
+الاستثناء، ونغلق النافذة الرسومية بالدالة `close_graph`، ثم نواصل
+البرنامج. وقد وردت أمثلة أخرى على استخدام الاستثناءات لتغيير تدفق التحكم في
+التمرينين [2.15](#x7-96002r15) و[5.7](https://usr.lmf.cnrs.fr/lpo/mainch5.html#x16-195007r7).
 
-Finally, note that the OCaml standard library provides two functions, `failwith`
-and `invalid_arg`. When called with a string `s`, these raise the exceptions `Failures`
-and `Invalid_argument s`, respectively. OCaml also provides a specific construction
-`assert` `e`, which evaluates an expression `e` of type `bool` and raises the exception
-`Assert_failure` if `e` is `false`.
+أخيرًا، لاحظ أن المكتبة القياسية لأوسمل توفر دالتين، `failwith`
+و`invalid_arg`. عند استدعائهما بسلسلة نصية `s`، تُطلقان الاستثناءين `Failures`
+و`Invalid_argument s`، على التوالي. وتوفر أوسمل أيضًا بناءً خاصًا
+`assert` `e`، يقيّم تعبيرًا `e` من النوع `bool` ويُطلق الاستثناء
+`Assert_failure` إذا كان `e` هو `false`.
 
-### 2.8 Reversing the Order of Lines in a Text
+### 2.8 عكس ترتيب الأسطر في نص
 
 >
 
-Our next program, `tac.ml`, reads lines of text from standard input and then
-displays them in reverse order. It is easy to use. Having compiled the program,
-we execute it and enter, for example, the following three lines on standard
-input:
+برنامجنا التالي، `tac.ml`، يقرأ أسطرًا نصية من الدخل القياسي ثم
+يعرضها بترتيب معكوس. ومن السهل استخدامه. بعد ترجمة البرنامج،
+ننفذه وندخل، على سبيل المثال، الأسطر الثلاثة التالية على الدخل
+القياسي:
 
 ```text
   first line
@@ -2312,8 +1855,8 @@ input:
   third line
 ```
 
-Once we signal the end of input (for example, by pressing the keys `ctrl` and `D`), the
-program displays the lines in reverse order:
+بمجرد أن نشير إلى نهاية الدخل (بالضغط، على سبيل المثال، على المفتاحين `ctrl` و`D`)،
+يعرض البرنامج الأسطر بترتيب معكوس:
 
 ```text
   third line
@@ -2321,63 +1864,61 @@ program displays the lines in reverse order:
   first line
 ```
 
-To achieve this, the program must store all the lines read before it is able to
-display them, since the first line to be displayed is the last one to be
-read. We therefore need a data structure to store the lines that have been
-read. An array is not suitable since we do not know the total number of
-lines[^2].
-We will therefore use a *list*.
+لتحقيق ذلك، يجب على البرنامج أن يخزن جميع الأسطر المقروءة قبل أن يتمكن من
+عرضها، لأن أول سطر يُعرض هو آخر سطر
+يُقرأ. لذلك، نحتاج إلى بنية بيانات (data structure) لتخزين الأسطر
+المقروءة. والمصفوفة غير مناسبة لأننا لا نعرف العدد الإجمالي للأسطر[^2].
+لذا سنستخدم *قائمة* (list).
 
-OCaml provides a built-in type for lists. These are constructed from the empty
-list, represented by `[]`, and by adding an element x at the front of an existing list l,
-represented as x `::` l. Lists in OCaml are *immutable*: once a list is constructed, it is
-no longer possible to modify it.
+توفر أوسمل نوعًا مدمجًا (built-in) للقوائم. وتُنشأ القوائم من القائمة
+الفارغة، الممثلة بـ`[]`، وبإضافة عنصر x إلى مقدمة قائمة موجودة l،
+ممثلة على الشكل x `::` l. والقوائم في أوسمل *غير قابلة للتعديل* (immutable): بمجرد إنشاء قائمة، لا
+يعود من الممكن تعديلها.
 
 >
 
-Our program begins by introducing a reference, `lines`, that will contain the list of
-lines that have been read. Initially, this list is empty.
+يبدأ برنامجنا بتعريف مرجع، `lines`، سيحتوي قائمة
+الأسطر المقروءة. وفي البداية، تكون هذه القائمة فارغة.
 
 ```ocaml
   let lines = ref []
 ```
 
-We then proceed to read the lines, using the library function `read_line`, which reads a
-line of text from standard input and returns it as a string. To read all the lines, we
-write an infinite loop:
+ثم ننتقل إلى قراءة الأسطر، باستخدام دالة المكتبة `read_line`، التي تقرأ سطرًا من النص من الدخل القياسي وتعيده كسلسلة نصية. ولقراءة جميع الأسطر،
+نكتب حلقة لا نهائية:
 
 ```ocaml
     while true do lines := read_line () :: !lines done
 ```
 
-Each line read using `read_line` is added to the list contained in the reference `lines`.
-More precisely, we construct a new list whose first element is the most recently read
-line, followed by the elements already present in `lines`, that is, `!lines`.
-Next, we set the value of the reference `lines` to this new list. When there
-are no more lines to be read, the function `read_line` raises the exception
+يُضاف كل سطر يُقرأ باستخدام `read_line` إلى القائمة الموجودة في المرجع `lines`.
+وبشكل أدق، نُنشئ قائمة جديدة عنصرها الأول هو أحدث سطر قُرئ،
+متبوعًا بالعناصر الموجودة أصلًا في `lines`، أي `!lines`.
+بعد ذلك، نضبط قيمة المرجع `lines` على هذه القائمة الجديدة. وعندما
+لا يتبقى أي أسطر لقراءتها، تُطلق الدالة `read_line` الاستثناء
 `End_of_file`.
 
-We catch this exception just outside the loop:
+نلتقط هذا الاستثناء خارج الحلقة مباشرةً:
 
 ```ocaml
     try  while true do ... done
     with End_of_file -> ()
 ```
 
-With this, we are done with the reading. The reference `lines` now contains the list of all
-the lines read. By construction, this list is in reverse order, the most recently read line
-having been added at the head of the list. This is convenient since this is precisely the
-order in which we wish to display the lines. To display the lines, we begin by
-writing a recursive function `print`, which displays a list `l` of strings, one per
-line.
+بهذا نكون قد انتهينا من القراءة. ويحتوي المرجع `lines` الآن على قائمة جميع
+الأسطر المقروءة. وبتصميم هذه البنية، تكون هذه القائمة بترتيب معكوس، إذ أُضيف أحدث سطر قُرئ
+في رأس القائمة. وهذا ملائم لأن هذا هو تحديدًا
+الترتيب الذي نرغب في عرض الأسطر به. لعرض الأسطر، نبدأ
+بكتابة دالة عودية `print`، تعرض قائمة `l` من السلاسل النصية، سطرًا بعد
+سطر.
 
 ```ocaml
   let rec print l =
 ```
 
-This function examines the list `l`, treating the case of an empty list and that of a list
-containing at least one element separately. We discriminate between the two cases
-using the OCaml construct `match-with`, as follows:
+تفحص هذه الدالة القائمة `l`، معالِجةً حالة القائمة الفارغة وحالة القائمة
+التي تحتوي عنصرًا واحدًا على الأقل، بشكل منفصل. ونميّز بين الحالتين
+باستخدام بناء أوسمل `match-with`، كما يلي:
 
 ```ocaml
     match l with
@@ -2385,15 +1926,15 @@ using the OCaml construct `match-with`, as follows:
     | s :: r -> ...case 2...
 ```
 
-This pattern matching construct is read as follows: If the list `l` is of the form `[]`, that is,
-if it is the empty list, then we evaluate the code denoted above by `...case 1...`. If,
-however, the list `l` is of the form `s::r`, that is, if it contains a first element `s` and is
-followed by other elements forming a list `r`, then we evaluate the code denoted above
-by...case 2.... Here, the variables `s` and `r` take the value of the first
-element and the rest of the elements of `l`. In the function `print`, we do nothing
-in the first case. In the second case, we display the string `s` and then call
-`print` recursively on the list `r`. Therefore, the body of the function `print`
-is:
+يُقرأ هذا البناء الخاص بمطابقة الأنماط كما يلي: إذا كانت القائمة `l` على الشكل `[]`، أي إذا
+كانت هي القائمة الفارغة، نقيّم الكود المشار إليه أعلاه بـ`...case 1...`. وإذا
+كانت القائمة `l`، مع ذلك، على الشكل `s::r`، أي إذا كانت تحتوي عنصرًا أول `s` يليه
+عناصر أخرى تشكل قائمة `r`، نقيّم الكود المشار إليه أعلاه
+بـ...case 2.... وهنا، يأخذ المتغيران `s` و`r` قيمة العنصر الأول
+وبقية عناصر `l`. وفي الدالة `print`، لا نفعل شيئًا
+في الحالة الأولى. وفي الحالة الثانية، نعرض السلسلة النصية `s` ثم نستدعي
+`print` بشكل عودي على القائمة `r`. لذلك، يكون جسم الدالة `print`
+كما يلي:
 
 ```ocaml
     match l with
@@ -2401,20 +1942,20 @@ is:
     | s :: r -> print_endline s; print r
 ```
 
-All that remains to complete our program is to apply this function to the list contained in
-the reference `lines`, that is:
+ولا يتبقى لإكمال برنامجنا سوى تطبيق هذه الدالة على القائمة الموجودة في
+المرجع `lines`، أي:
 
 ```ocaml
   let () = print !lines
 ```
 
-#### Additional Information
+#### معلومات إضافية
 
-##### Lists
+##### القوائم (lists)
 
-The type of lists is predefined in OCaml; it is `list`. This type is “generic,” in the sense
-that we can construct lists of values of any type at all, provided that all the elements
-of a given list are of the same type.
+نوع القوائم معرَّف مسبقًا في أوسمل؛ وهو `list`. وهذا النوع *عام* (generic)، بمعنى
+أننا نستطيع إنشاء قوائم من قيم من أي نوع كان، شريطة أن تكون جميع عناصر
+قائمة معينة من النوع نفسه.
 
 ```ocaml
   # 1 :: 2 :: 3 :: [];;
@@ -2427,27 +1968,27 @@ of a given list are of the same type.
          was expected of type int
 ```
 
-As we see in the first example, the toplevel displays a list in the form `[1;2;3]`. This
-notation can also be used to construct a list given its elements.
+كما نرى في المثال الأول، تعرض الطرفية التفاعلية قائمة على الشكل `[1;2;3]`. وهذا
+الترميز يمكن استخدامه أيضًا لإنشاء قائمة من عناصرها.
 
 ```ocaml
   # [’a’; ’b’; ’c’];;
   - : char list = [’a’; ’b’; ’c’]
 ```
 
-##### Pattern Matching
+##### مطابقة الأنماط (pattern matching)
 
-When we presented n-tuples, we explained that pairs can be destructured using the
-construction `let(x,y)=`e1`in`e2. In fact, that pattern matching is identical in every
-way to the one we discussed above in relation to lists. The construction `let` is merely
-a shorthand for the expression `match`e1`with(x,y)->`e2. In general, the construct `let`
-may be used with an arbitrary pattern as its first argument, even if the latter is often
-reduced to a variable.
+عندما عرضنا الثنائيات (n-tuples)، شرحنا أنه يمكن تفكيك الأزواج باستخدام
+البناء `let(x,y)=`e1`in`e2. في الواقع، هذه المطابقة مطابقة تمامًا، من كل وجه،
+لتلك التي ناقشناها أعلاه بخصوص القوائم. والبناء `let` ليس سوى
+اختصار للتعبير `match`e1`with(x,y)->`e2. وبشكل عام، يمكن استخدام البناء `let`
+بنمط اعتباطي كوسيط أول، حتى لو كان النمط في أغلب الأحيان
+مختزلًا إلى متغير.
 
-The function `print` proceeds by pattern matching on its argument `l`. Such
-functions are so common in OCaml that there is a keyword, `function`, which
-introduces a function that proceeds by pattern matching on its argument. Thus, we
-may write:
+تعمل الدالة `print` بواسطة مطابقة الأنماط على وسيطها `l`. وهذه
+الدوال شائعة جدًا في أوسمل حتى إن هناك كلمة مفتاحية، `function`،
+تقدّم دالة تعمل بواسطة مطابقة الأنماط على وسيطها. وهكذا، يمكننا أن
+نكتب:
 
 ```ocaml
    let rec print = function
@@ -2455,48 +1996,47 @@ may write:
     | s :: r -> print_endline s; print r
 ```
 
-In other words, the keyword `function` is a shorthand for `funx->matchxwith`. Note also
-that `function` introduces a function with only *one*argument, where the pattern
-matching may have one or more patterns. By contrast, `fun` defines a function with
-several arguments, where each argument is matched by *a single*pattern. Thus, we
-may write:
+بعبارة أخرى، الكلمة المفتاحية `function` اختصار لـ`funx->matchxwith`. لاحظ أيضًا
+أن `function` تقدّم دالة بوسيط *واحد* فقط، حيث يمكن لمطابقة الأنماط
+أن تحتوي على نمط واحد أو أكثر. وفي المقابل، تعرّف `fun` دالة بعدة
+وسائط، حيث يُطابَق كل وسيط بنمط *واحد*. وهكذا، يمكننا أن
+نكتب:
 
 ```ocaml
   fun x (y, z) -> x + y * z
 ```
 
-##### List Traversals
+##### اجتياز القوائم (list traversals)
 
-The function `print` that we wrote to display all the elements of the list `!lines` is an
-example of a list *traversal*, where all the elements of the list are treated the same way,
-in the order in which they appear. Such traversals are so frequent that a library
-function exists for them, namely, `List.iter`. This is a higher-order function, like
-`Array.init` or `Array.sort`, which we presented earlier. `List.iter` takes as argument
-the function to be applied to each element. Thus, we can rewrite `print` quite simply
-as:
+الدالة `print` التي كتبناها لعرض جميع عناصر القائمة `!lines` هي
+مثال على *اجتياز قائمة* (traversal)، حيث تُعامل جميع عناصر القائمة بالطريقة نفسها،
+وبالترتيب الذي تظهر به. وهذه الاجتيازات متكررة جدًا حتى إن هناك دالة
+مكتبة لها، ألا وهي `List.iter`. وهذه دالة من الرتبة الأعلى، مثل
+`Array.init` أو `Array.sort`، اللتين عرضناهما سابقًا. تأخذ `List.iter` كوسيط
+الدالة التي ينبغي تطبيقها على كل عنصر. وهكذا، يمكننا إعادة كتابة `print` ببساطة
+على النحو التالي:
 
 ```ocaml
   let print l = List.iter print_endline l
 ```
 
-We can even replace the last five lines by:
+ويمكننا حتى استبدال الأسطر الخمسة الأخيرة بما يلي:
 
 ```ocaml
   let () = List.iter print_endline !lines
 ```
 
-##### Call Stack
+##### مكدس الاستدعاءات (call stack)
 
-Suppose we want our program to display the total number of lines that have been
-read and reversed, in a message of the form:
+لنفترض أننا نريد لبرنامجنا أن يعرض العدد الإجمالي للأسطر التي تمت
+قراءتها وعكسها، في رسالة من الشكل:
 
 ```text
   113 lines read
 ```
 
-For this, we write a function `length` that calculates the length of a list. As with
-`print`, we write it in the form of a recursive function that proceeds by pattern
-matching:
+لهذا، نكتب دالة `length` تحسب طول قائمة. وكما هو الحال مع
+`print`، نكتبها في شكل دالة عودية تعمل بمطابقة الأنماط:
 
 ```ocaml
   let rec length = function
@@ -2504,32 +2044,32 @@ matching:
     | _ :: r -> 1 + length r
 ```
 
-Note the wildcard pattern `_` used in place of the first element of the list in the second
-pattern. This value does not need to be named because it is not used in the
-calculation of the length of the list. All that remains now is to display the length thus
-calculated:
+لاحظ النمط البديل (wildcard pattern) `_` المستخدم مكان العنصر الأول من القائمة في النمط
+الثاني. لا يلزم تسمية هذه القيمة لأنها لا تُستخدم في
+حساب طول القائمة. ولا يتبقى الآن سوى عرض الطول المحسوب
+بهذه الطريقة:
 
 ```ocaml
   let () = Printf.printf "%d lines read\n" (length !lines)
 ```
 
-If we run the program several times, we would observe that it does indeed give the expected
-result. However, if we were to attempt feeding the program a very large number of
-lines—say, 700,000 lines—we would be in for a nasty surprise: The program would give us
-an error[^3] 
-even though everything worked just fine up until the point where we tried to display
-the number of lines:
+إذا شغّلنا البرنامج عدة مرات، سنلاحظ أنه يعطي فعلًا النتيجة
+المتوقعة. غير أننا لو حاولنا إمداد البرنامج بعدد كبير جدًا من
+الأسطر—لنقل 700,000 سطر—سنفاجأ بمفاجأة غير سارة: سيُعطينا البرنامج
+خطأً[^3] 
+حتى مع أن كل شيء عمل بشكل جيد تمامًا إلى غاية النقطة التي حاولنا فيها عرض
+عدد الأسطر:
 
 ```ocaml
   seq 700000 | ./tac
   Fatal error: exception Stack_overflow
 ```
 
-To explain this phenomenon, it is necessary to understand the principle behind the
-execution of a recursive function like `length`.
+لتفسير هذه الظاهرة، من الضروري فهم المبدأ الكامن وراء
+تنفيذ دالة عودية مثل `length`.
 
-Consider as an example the execution of the call `length[1;2;3]`. We can
-“symbolically” unroll this call as follows:
+لنأخذ على سبيل المثال تنفيذ الاستدعاء `length[1;2;3]`. يمكننا
+«رمزيًا» فكّ هذا الاستدعاء كما يلي:
 
 ```ocaml
   length [1; 2; 3] = 1 + length [2; 3]
@@ -2541,66 +2081,64 @@ Consider as an example the execution of the call `length[1;2;3]`. We can
                    = 3
 ```
 
-Each call to `length` allocates a memory cell to store the function’s argument. In
-general, a function call, whether recursive or not, allocates the memory space
-necessary for its arguments and its local variables. This memory space is freed
-once the function call ends. In case of the recursive function `length`, the call
-does not end until the recursive call completes and the addition `1+...` is
-performed. In particular, the call `length[1;2;3]` will require up to four nested
-function calls to reach the final call `length[]`. Thus, four memory cells will be
-needed to store the arguments of each of the four calls, as represented in
-figure [2.6](#representation-of-a-call-stack).
+يخصص كل استدعاء لـ`length` خلية ذاكرة لتخزين وسيط الدالة. وبشكل
+عام، يخصص استدعاء دالة، سواء أكان عوديًا أم لا، مساحة الذاكرة
+الضرورية لوسائطها ومتغيراتها المحلية. وتُحرَّر هذه المساحة
+بمجرد انتهاء استدعاء الدالة. وفي حالة الدالة العودية `length`، لا ينتهي الاستدعاء
+حتى يكتمل الاستدعاء العودي وتُجرى عملية الجمع `1+...`.
+وبوجه خاص، يتطلب الاستدعاء `length[1;2;3]` حتى أربعة استدعاءات
+دوال متداخلة للوصول إلى الاستدعاء الأخير `length[]`. وهكذا، ستكون هناك حاجة إلى أربع خلايا ذاكرة
+لتخزين وسائط كلٍّ من الاستدعاءات الأربعة، كما هو موضح في
+الشكل [2.6](#representation-of-a-call-stack).
 
 ![](/images/learn-ocaml/first-steps-6-length_123-mps-.webp){#representation-of-a-call-stack}
 
-**Figure 2.6: Representation of a call stack.**
+**الشكل 2.6: تمثيل مكدس الاستدعاءات.**
 
-As is clear in the diagram, the nesting of function calls allows us to organize the
-memory required for them as a *stack*. Hence the term *call stack*. Each call
-to a function pushes the memory space required for its variables (here, the
-single variable `l`) onto the call stack, and removes this space when the call
-ends.
+كما يتضح في الرسم، يتيح تدرج استدعاءات الدوال تنظيم
+الذاكرة المطلوبة لها على شكل *مكدس* (stack). ومن هنا جاء مصطلح *مكدس الاستدعاءات*. ويدفع كل استدعاء
+لدالة مساحة الذاكرة المطلوبة لمتغيراتها (هنا، المتغير الوحيد `l`) إلى مكدس الاستدعاءات، ويزيل هذه المساحة عند انتهاء
+الاستدعاء.
 
-The error `Stack_overflow` triggered earlier when calculating the length of a list of
-700,000 elements is due to a limit on the size of the call stack. This limit depends on
-the operating system and the compiler. It is generally fairly low, of the order of
-several MB. When the stack reaches this limit, we call it a *stack overflow*. The
-program is then interrupted. This is signaled either by the exception `Stack_overflow`
-in OCaml or by a fatal crash of the program. If, on the other hand, the size of the
-stack is large (or even unlimited), the program will not trigger a stack overflow, but
-will consume more and more memory, which could eventually cause the machine to
-crash.
+الخطأ `Stack_overflow` الذي استُثير سابقًا عند حساب طول قائمة من
+700,000 عنصر يرجع إلى حد على حجم مكدس الاستدعاءات. ويعتمد هذا الحد على
+نظام التشغيل والمترجم. وهو بشكل عام منخفض إلى حد ما، من رتبة
+عدة ميغابايت. وعندما يبلغ المكدس هذا الحد، نسميه *فيضان مكدس* (stack overflow). ثم
+يُقاطع البرنامج. ويُشار إلى ذلك إما بالاستثناء `Stack_overflow`
+في أوسمل أو بانهيار (crash) قاتل للبرنامج. ومن ناحية أخرى، إذا كان حجم
+المكدس كبيرًا (أو حتى غير محدود)، لن يُحدث البرنامج فيضان مكدس، لكنه
+سيستهلك ذاكرة أكثر فأكثر، الأمر الذي قد يتسبب في النهاية في انهيار
+الآلة.
 
-##### Tail Calls
+##### الاستدعاءات الذيلية (tail calls)
 
-You may wonder why the call `print!lines` does not provoke a stack overflow, unlike
-`length!lines`. The difference between the two functions is that, in the function
-`print`, the recursive call is the very last expression evaluated in the body of the
-function. This is not the case in the function `length`, where an addition
-remains to be performed after the recursive call. In the case of `print`, the
-compiler performs an *optimization*, which consists in removing the current call
-from the call stack, before performing the recursive call. Thus, the call stack
-only ever contains the final call to `print` and, therefore, does not increase in
-size.
+قد تتساءل لماذا لا يسبب الاستدعاء `print!lines` فيضان مكدس، على عكس
+`length!lines`. الفرق بين الدالتين هو أنه، في الدالة
+`print`، يكون الاستدعاء العودي آخر تعبير يُقيَّم في جسم
+الدالة. وهذا ليس هو الحال في الدالة `length`، حيث تبقى عملية جمع
+لإجرائها بعد الاستدعاء العودي. وفي حالة `print`، يقوم
+المترجم *بتحسين* (optimization) يتمثل في إزالة الاستدعاء الحالي
+من مكدس الاستدعاءات، قبل إجراء الاستدعاء العودي. وهكذا، لا يحتوي مكدس الاستدعاءات
+إطلاقًا إلا على الاستدعاء الأخير لـ`print`، ومن ثم لا يزداد في
+الحجم.
 
-In general, when a function call is the last expression to be evaluated in the body
-of a function, we say it is a *tail call*. Note that this notion applies to both
-recursive and non-recursive functions. In the former case, if every recursive
+بشكل عام، عندما يكون استدعاء دالة هو آخر تعبير يُقيَّم في جسم
+دالة، نقول إنه *استدعاء ذيلي* (tail call). لاحظ أن هذا المفهوم ينطبق على كل من
+الدوال العودية وغير العودية. وفي الحالة الأولى، إذا كان كل استدعاء عودي
  
  
-call is a tail call, the function is said to be *tail recursive*. Thus, `print` is
-tail recursive and `length` is not. Note that a recursive function can contain
-both tail calls and non-tail calls. This is the case of McCarthy’s famous 91
-function.
+استدعاءً ذيليًا، توصف الدالة بأنها *عودية ذيلية* (tail recursive). وهكذا، `print` عودية ذيلية
+بينما `length` ليست كذلك. لاحظ أن الدالة العودية يمكن أن تحتوي
+على استدعاءات ذيلية واستدعاءات غير ذيلية معًا. وهذا هو حال دالة مكارثي (McCarthy) الشهيرة 91.
 
 ```ocaml
  let rec f91 n =
    if n > 100 then n - 10 else f91 (f91 (n + 11))
 ```
 
-We can avoid the stack overflow in the function `length` by writing it differently,
-using an additional argument that represents the number of elements already
-traversed. Thus, we can write:
+يمكننا تجنب فيضان المكدس في الدالة `length` بكتابتها بشكل مختلف،
+باستخدام وسيط إضافي يمثل عدد العناصر التي تم
+اجتيازها حتى الآن. وهكذا، يمكننا أن نكتب:
 
 ```ocaml
   let rec length_term acc = function
@@ -2608,30 +2146,30 @@ traversed. Thus, we can write:
     | _ :: r -> length_term (1 + acc) r
 ```
 
-In this version, the recursive call to `length_term` is a tail call. To calculate the length of
-a list, it suffices to call `length_term` with `0` as the first argument.
+في هذه النسخة، يكون الاستدعاء العودي لـ`length_term` استدعاءً ذيليًا. ولحساب طول
+قائمة، يكفي استدعاء `length_term` بالوسيط الأول `0`.
 
 ```ocaml
   let length l = length_term 0 l
 ```
 
-We can even define the function `length` as the result of the partial application of
-`length_term` to `0`.
+يمكننا حتى تعريف الدالة `length` كنتيجة للتطبيق الجزئي (partial application) للدالة
+`length_term` على `0`.
 
 ```ocaml
   let length = length_term 0
 ```
 
-### 2.9 Converting Integers from an Arbitrary Base
+### 2.9 تحويل الأعداد الصحيحة من أساس تعسّفي (arbitrary base)
 
 >
 
-Our next program (see page [144](#x7-60004r9)), `radix.ml`, takes numbers written in some base B,
-where 2 ≤ B ≤ 36, and converts them to base 10. The base is passed on the command
-line. The program then reads numbers from standard input and displays them in base
+برنامجنا التالي (انظر الصفحة [144](#x7-60004r9))، `radix.ml`، يستقبل أعدادًا مكتوبةً بأساسٍ ما B،
+حيث 2 ≤ B ≤ 36، ويحوّلها إلى الأساس 10. يُمرَّر الأساس عبر سطر الأوامر (command line).
+بعد ذلك، يقرأ البرنامج أعدادًا من الدخل القياسي (standard input) ويعرضها بالأساس
 10.
 
-Here is a first example in base 16:
+إليك مثالًا أول بالأساس 16:
 
 ```text
   > radix 16
@@ -2641,11 +2179,11 @@ Here is a first example in base 16:
    -> 160
 ```
 
-After launching the program with the given base, we enter the number 7FFF on
-standard input, and the program displays the result of the conversion, namely 32767.
-Next, we enter the number A0 and obtain 160.
+بعد تشغيل البرنامج بالأساس المعطى، نُدخل الرقم 7FFF على
+الدخل القياسي، فيعرض البرنامج نتيجة التحويل، أي 32767.
+ثم نُدخل الرقم A0 فنحصل على 160.
 
-Here is a second example, with numbers written in base 36:
+إليك مثالًا ثانيًا، بأعداد مكتوبة بالأساس 36:
 
 ```text
   > radix 36
@@ -2653,23 +2191,21 @@ Here is a second example, with numbers written in base 36:
    -> 59942292
 ```
 
-As you see in these examples, the numbers are written using the characters
-`0` to `9`, and `A` (for 10) to `Z` (for 35).
+كما ترى في هذه الأمثلة، تُكتب الأعداد باستخدام المحارف
+`0` إلى `9`، و`A` (للرقم 10) إلى `Z` (للرقم 35).
 
 >
 
-Let us now pass to the implementation of the program. To begin, we retrieve the
-base from the command line and store it in a variable `base`.
+لننتقل الآن إلى تنفيذ البرنامج. في البداية، نستخرج
+الأساس من سطر الأوامر ونخزّنه في متغير `base`.
 
 ```ocaml
   let base = int_of_string Sys.argv.(1)
 ```
 
-It is good practice to verify that the integer does indeed lie between 2 and 36, and to fail
-otherwise.
+من الممارسات الجيدة التحقق من أن العدد الصحيح يقع فعلًا بين 2 و36، وإن لم يكن كذلك، نوقف البرنامج.
 
-We continue by defining a function, `list_of_string`, which converts a string (of
-type `string`) to a list of characters (of type `charlist`).
+نواصل بتعريف دالة `list_of_string`، تحوّل سلسلة نصية (من النوع `string`) إلى قائمة محارف (من النوع `charlist`).
 
 ```ocaml
   let list_of_string s =
@@ -2680,12 +2216,9 @@ type `string`) to a list of characters (of type `charlist`).
     !digits
 ```
 
-We traverse the string `s`, beginning with its first character, so as to construct a list in
-which the last character of `s`—that is, the least significant digit of the number—is
-found at the head of the list.
+نجتاز السلسلة النصية `s`، مبتدئين بحرفها الأول، بحيث نبني قائمة يكون حرف `s` الأخير — أي الرقم الأقل دلالة (least significant digit) في العدد — في رأس القائمة.
 
-Next, we write a function `digit_of_char` to convert a character representing a
-digit into the corresponding integer.
+بعد ذلك، نكتب دالة `digit_of_char` لتحويل محرفٍ يمثل رقمًا إلى العدد الصحيح الموافق له.
 
 ```ocaml
   let digit_of_char c =
@@ -2695,16 +2228,9 @@ digit into the corresponding integer.
       | c -> Printf.eprintf "invalid character %c\n" c; exit 1
 ```
 
-The first pattern matching case `|’0’..’9’->` treats the case of a character `c`
-between `’0’` and `’9’`. Its numeric value is obtained simply as the difference
-between the ASCII code of `c` and that of the character `0`. The second case
-proceeds in the same manner, for the characters between `’A’` and `’Z’`. For all
-other characters, the last case displays a message on standard error using
-`Printf.eprintf` and terminates the program using the predefined function
-`exit`.
+تعالج حالة مطابقة الأنماط الأولى `|’0’..’9’->` حالة محرف `c` بين `’0’` و`’9’`. تُحصل قيمته العددية ببساطة على أنها الفرق بين رمز ASCII للمحرف `c` ورمز المحرف `0`. وتسير الحالة الثانية على النحو نفسه، وذلك للمحارف بين `’A’` و`’Z’`. وبالنسبة إلى سائر المحارف، تعرض الحالة الأخيرة رسالة على الخطأ القياسي (standard error) باستخدام `Printf.eprintf` وتنهي البرنامج باستخدام الدالة المعرَّفة مسبقًا `exit`.
 
-We then write a function `check_digit` that verifies that `d` is a valid digit for the
-given base, that is, that it lies between 0 and `base`− 1.
+ثم نكتب دالة `check_digit` تتحقق من أن `d` رقم صالح للأساس المعطى، أي أنه يقع بين 0 و`base`−1.
 
 ```ocaml
   let check_digit d =
@@ -2713,11 +2239,9 @@ given base, that is, that it lies between 0 and `base`− 1.
     end
 ```
 
-This function does not return a result. It interrupts the program if the digit `d` is not
-valid.
+لا تُعيد هذه الدالة أي نتيجة. فهي توقف البرنامج إذا لم يكن الرقم `d` صالحًا.
 
-The main part of the program is an infinite loop that reads a string `s` from
-standard input and converts the corresponding number to base 10.
+الجزء الرئيسي من البرنامج هو حلقة لا نهائية (infinite loop) تقرأ سلسلة نصية `s` من الدخل القياسي وتحوّل العدد الموافق لها إلى الأساس 10.
 
 ```ocaml
   let () =
@@ -2727,81 +2251,56 @@ standard input and converts the corresponding number to base 10.
     done
 ```
 
-We begin by converting the string `s` into a list of characters `cl` using the function
-`list_of_string`.
+نبدأ بتحويل السلسلة النصية `s` إلى قائمة محارف `cl` باستخدام الدالة `list_of_string`.
 
 ```ocaml
       let cl = list_of_string s in
 ```
 
-In order to convert the list `cl` into a list of digits, we apply the function
-`digit_of_char` to *each*element of `cl`. For this, we use the library function `List.map`,
-which constructs a new list by applying a given function to all the elements of a
-list.
+لتحويل القائمة `cl` إلى قائمة أرقام، نطبق الدالة `digit_of_char` على *كل* عنصر من عناصر `cl`. ولتحقيق ذلك، نستخدم دالة المكتبة `List.map`، التي تبني قائمة جديدة بتطبيق دالة معطاة على جميع عناصر قائمة.
 
 ```ocaml
       let dl = List.map digit_of_char cl in
 ```
 
-For example, if `cl` is the list `[’A’;’0’]`, then `dl` is the list `[10;0]`. More generally, given
-a function f and a list l `[`e1`;`e2`;`...`;`en`]`, we have:
+مثلًا، إذا كانت `cl` هي القائمة `[’A’;’0’]`، فإن `dl` هي القائمة `[10;0]`. وبشكل أعم، إذا عُطيت دالة f وقائمة l `[`e1`;`e2`;`...`;`en`]`، فإن لدينا:
 
 $$List.map f l = [f e1;f e2; ...;f en]$$
 
-We then verify that each digit of the list `dl` is valid by applying the function
-`check_digit` successively to each element of `dl`.
+ثم نتحقق من أن كل رقم في القائمة `dl` صالح بتطبيق الدالة `check_digit` تباعًا على كل عنصر من عناصر `dl`.
 
 ```ocaml
       List.iter check_digit dl;
 ```
 
-In this case we do not wish to construct a new list but rather to apply `check_digit`. The
-whole program will be interrupted if `check_digit` detects an invalid digit. In general,
-given a function f and a list l equal to `[`e1`;`e2`;`...`;`en`]`, the application `List.iter` f l
-is equivalent to the following sequence:
+في هذه الحالة لا نرغب في بناء قائمة جديدة بل في تطبيق `check_digit`. سيُوقف البرنامج بأكمله إذا رصدت `check_digit` رقمًا غير صالح. وبشكل عام، إذا عُطيت دالة f وقائمة l تساوي `[`e1`;`e2`;`...`;`en`]`، فإن التطبيق `List.iter` f l يعادل التسلسل التالي:
 
 $$List.iter f l = f e1;f e2; \cdot \cdot \cdot ;f en$$
 
-Finally, we will calculate the base 10 notation and display it. The list `dl` is of the
-form `[`d0`;`d1`;`…`;`dn−1`]`, where d0 is the digit corresponding to the last character in the
-string, that is, the least significant digit. It is therefore necessary to calculate the
-following value:
+أخيرًا، سنحسب التمثيل بالأساس 10 ونعرضه. القائمة `dl` على الشكل `[`d0`;`d1`;`…`;`dn−1`]`، حيث d0 هو الرقم الموافق للحرف الأخير في السلسلة النصية، أي الرقم الأقل دلالة. لذلك من الضروري حساب القيمة التالية:
 
 $$n\sum -1 di \times basei i = 0$$
 
-The most efficient method to minimize the number of multiplications (in
-particular to avoid the expensive calculation of `base`i) is Horner’s rule, which rewrites
-the preceding sum as follows:
+إن أكثر الطرق كفاءة لتقليل عدد عمليات الضرب (وبخاصة لتجنب حساب `base`i المكلف) هي قاعدة هورنر (Horner’s rule)، التي تعيد كتابة المجموع السابق على النحو التالي:
 
 $$d0 + base \times (d1 + base \times (...(dn- 2 + base \times (dn-1 + base\times 0))...))$$
 
-We can easily program the above using the library function `List.fold_right`,
-which allows us to traverse the list `dl` from the last element dn−1 to the first element
-d0, applying a function f to each element as follows:
+يمكننا بسهولة برمجة ما سبق باستخدام دالة المكتبة `List.fold_right`، التي تتيح لنا اجتياز القائمة `dl` من العنصر الأخير dn−1 إلى العنصر الأول d0، بتطبيق دالة f على كل عنصر على النحو التالي:
 
 $$List.fold_right f l acc = f d0 (...(f dn-2 (f dn-1 acc) ...))$$
 
-The value computed for each element of the list is systematically passed to the
-function f as the second argument, called the *accumulator*. Its initial value, used
-when calling f on the last element dn−1 of the list, is the third argument of
-`List.fold_right`, here called acc. To obtain Horner’s formula, it suffices to let
-f be the function `fundacc->d+base*acc`. Thus, the end of the program is
-simply:
+تُمرَّر القيمة المحسوبة لكل عنصر من عناصر القائمة إلى الدالة f بصورة منهجية بوصفها الوسيط الثاني، ويُسمى *المُرتاكِم* (accumulator). قيمته الابتدائية، المستخدمة عند استدعاء f على العنصر الأخير dn−1 من القائمة، هي الوسيط الثالث لـ`List.fold_right`، ويسمى هنا acc. للحصول على صيغة هورنر، يكفي جعل f الدالة `fundacc->d+base*acc`. وهكذا تكون نهاية البرنامج ببساطة:
 
 ```ocaml
     let v = List.fold_right (fun d acc -> d + base * acc) dl 0 in
     Printf.printf " -> %d\n" v
 ```
 
-#### Additional Information
+#### معلومات إضافية
 
-##### Polymorphism
+##### تعدد الأشكال (Polymorphism)
 
-To be useful, the functions of the library `List`, such as `iter`, `map`, or `fold_right`,
-must be generic with respect to both the type of the elements of the list to which they
-are applied, and the operation performed on them. This genericity is called
-*polymorphism*. The notion may be illustrated using the function `length` to calculate
-the length of a list:
+لكي تكون دوال المكتبة `List`، مثل `iter` و`map` و`fold_right`، مفيدة، يجب أن تكون عامة (generic) بالنسبة إلى نوع عناصر القائمة التي تُطبق عليها، وبالنسبة إلى العملية المنفَّذة عليها كذلك. تُسمى هذه العمومية *تعدد الأشكال* (polymorphism). ويمكن توضيح المفهوم باستخدام الدالة `length` لحساب طول قائمة:
 
 ```ocaml
   let rec length l =
@@ -2810,17 +2309,14 @@ the length of a list:
     | _ :: r -> 1 + length r
 ```
 
-This function may, of course, be applied to a list of integers. For example:
+يمكن لهذه الدالة، بطبيعة الحال، أن تُطبق على قائمة أعداد صحيحة. مثلًا:
 
 ```ocaml
   # length [1; 6; 2; 8; 3] ;;
   - : int = 5
 ```
 
-However, this function does not directly use the elements of the list `l` passed as
-argument (as indicated by the pattern matching `_::r`). Therefore, this function may
-in fact be applied to any list, be it a list of strings or one of floating-point numbers.
-For example:
+غير أن هذه الدالة لا تستخدم مباشرة عناصر القائمة `l` الممرَّرة بوصفها وسيطًا (كما يدلّ عليه تطابق الأنماط `_::r`). لذلك يمكن لهذه الدالة في الواقع أن تُطبق على أي قائمة، سواء كانت قائمة سلاسل نصية أم قائمة أعداد كسرية (floating-point numbers). مثلًا:
 
 ```ocaml
   # length ["hello"; "world"; "!"] ;;
@@ -2829,60 +2325,40 @@ For example:
   - : int = 4
 ```
 
-For the above to be possible, the function `length` must accept arguments of type
-`intlist`, `stringlist`, and even `floatlistlist`. This function is, in fact, applicable
-to lists of *any type*. In OCaml, it is given the type:
+لكي يكون ما سبق ممكنًا، يجب أن تقبل الدالة `length` وسائط من الأنواع `intlist` و`stringlist` وحتى `floatlistlist`. وهذه الدالة في الواقع قابلة للتطبيق على قوائم من *أي نوع*. وفي أوسمل، يُعطى لها النوع:
 
 `’alist->int`
 
-where the *type variable*`’a` represents any type. A type such as that of `length`, which
-contains at least one type variable, is said to be *polymorphic*.
+حيث يمثل *متغير النوع* (type variable) `’a` أي نوع. يُقال عن نوع مثل نوع `length`، الذي يحوي متغير نوع واحدًا على الأقل، إنه *متعدد الأشكال* (polymorphic).
 
-Apart from representing any type, type variables are also useful in establishing
-relations between the generic parts of a polymorphic type. For example, in the
-function `f`, defined by `letfgx=(gx)+1`, the types of the arguments `g` and `x` must be
-related because the function `g` is applied to `x`. Nevertheless, `x` (and hence `g`) remains
- 
- 
-polymorphic, because there is no other type constraint involving this value in the
-body of `f`. Thus, in the type of `f`, that is, `(’a->int)->’a->int`, the variable `’a`
-relates the type of the argument of `g` with the type of `x`, without adding any extra
-constraints. Similarly, the function `iter` of the library `List` has a polymorphic
-type:
+إضافةً إلى تمثيل أي نوع، تُفيد متغيرات الأنواع أيضًا في إقامة علاقات بين الأجزاء العامة لنوع متعدد الأشكال. مثلًا، في الدالة `f` المعرَّفة بـ`letfgx=(gx)+1`، يجب أن يكون نوعا الوسيطين `g` و`x` مرتبطين لأن الدالة `g` تُطبق على `x`. ومع ذلك، يبقى `x` (ومن ثم `g`) متعدد الأشكال، لعدم وجود قيد نوع آخر يتعلق بهذه القيمة في جسم `f`. وهكذا، في نوع `f`، أي `(’a->int)->’a->int`، يربط المتغير `’a` نوع وسيط `g` بنوع `x`، دون إضافة أي قيود إضافية. وبالمثل، تكون لدالة `iter` من المكتبة `List` نوع متعدد الأشكال:
 
 | `iter` | : | `(’a -> unit) -> ’a list -> unit` |
 | --- | --- | --- |
 
-This relates the type of the function passed as argument to that of the elements of the
-list that the function iterates over.
+وهذا يربط نوع الدالة الممرَّرة بوصفها وسيطًا بنوع عناصر القائمة التي تجتازها الدالة.
 
-A polymorphic type can contain several type variables, to represent unrelated
-generic types. Thus, consider the function `make_pair`, defined by:
+يمكن لنوع متعدد الأشكال أن يحوي عدة متغيرات أنواع، لتمثيل أنواع عامة غير مرتبطة. ولنتأمل مثلًا الدالة `make_pair` المعرَّفة بـ:
 
 ```ocaml
   let make_pair x y = (x, y)
 ```
 
-Here, the arguments `x` and `y` may be of any type, and they need not be related. Hence
-this function has a polymorphic type with two variables, that is, `’a->’b->’a*’b`.
+هنا، يمكن أن يكون الوسيطان `x` و`y` من أي نوع، ولا يلزم أن يكونا مرتبطين. ومن ثم يكون لهذه الدالة نوع متعدد الأشكال بمتغيرين، أي `’a->’b->’a*’b`.
 
-In the same way, the functions `map` and `fold_right` of the library `List` have the
-following polymorphic types:
+بالطريقة نفسها، تكون للدالتين `map` و`fold_right` من المكتبة `List` الأنواع متعددة الأشكال التالية:
 
 | `map` | : | `(’a -> ’b) -> ’a list -> ’b list` |
 | --- | --- | --- |
 | `fold_right` | : | `(’a -> ’b -> ’b) -> ’a list -> ’b -> ’b` |
 
-These types are the most general possible.
+هذه الأنواع هي الأكثر عموميةً على الإطلاق.
 
-##### Right-to-Left and Left-to-Right Iterators on Lists
+##### المُكرِّرات (iterators) على القوائم من اليمين إلى اليسار ومن اليسار إلى اليمين
 
-Combining higher-order functions and polymorphic types allows us to define
-*iterators*, that is, functions that traverse generic data structures, such as
-lists.
+يتيح لنا الجمع بين دوال الرتب الأعلى (higher-order functions) والأنواع متعددة الأشكال تعريف *مُكرِّرات* (iterators)، أي دوال تجتاز بنى بيانات عامة، مثل القوائم.
 
-For example, the iterator `fold_right` used in the program `radix.ml` can be
-defined as follows:
+مثلًا، يمكن تعريف المُكرِّر `fold_right` المستخدم في برنامج `radix.ml` على النحو التالي:
 
 ```ocaml
   # let rec fold_right f l e =
@@ -2892,31 +2368,21 @@ defined as follows:
   val fold_right : (’a -> ’b -> ’b) -> ’a list -> ’b -> ’b = <fun>
 ```
 
-As we have seen in the program `radix.ml`, the use of such an iterator allows us to
-avoid writing recursive functions. Suppose, for example, that we wish to multiply
-all the elements of a list of floats. We can simply write a function `mult` as
-follows:
+كما رأينا في برنامج `radix.ml`، يتيح لنا استخدام مثل هذا المُكرِّر تجنّب كتابة الدوال العودية. لنفترض مثلًا أننا نريد ضرب جميع عناصر قائمة أعداد كسرية. يمكننا ببساطة كتابة دالة `mult` على النحو التالي:
 
 ```ocaml
   # let sum l = fold_right (fun x y -> x *. y) l 1. ;;
   val mult : float list -> float = <fun>
 ```
 
-The reason for calling this iterator `fold_right` is that it treats the elements of the
-list from right to left. The list is, in fact, traversed from left to right, but the recursive
-call is performed *before*applying the function passed as argument. This means
-that the rest of the list is treated before its first element. We can confirm
-this behaviour by applying `fold_right` to a function that prints its first
-argument:
+سبب تسمية هذا المُكرِّر `fold_right` هو أنه يعالج عناصر القائمة من اليمين إلى اليسار. فالقائمة في الواقع تُجتاز من اليسار إلى اليمين، لكن الاستدعاء العودي يُنفَّذ *قبل* تطبيق الدالة الممرَّرة بوصفها وسيطًا. وهذا يعني أن بقية القائمة تُعالج قبل عنصرها الأول. ويمكننا التأكد من هذا السلوك بتطبيق `fold_right` على دالة تطبع وسيطها الأول:
 
 ```ocaml
   # fold_right (fun x () -> print_int x) [1;2;3;4] ();;
   4321- : unit = ()
 ```
 
-It is natural at this point to consider the other iterator, which traverses and treats
-elements from left to right. It is naturally called `fold_left` and is written as
-follows:
+من الطبيعي هنا أن ننظر إلى المُكرِّر الآخر، الذي يجتاز العناصر ويعالجها من اليسار إلى اليمين. يُسمى طبيعيًا `fold_left` ويُكتب على النحو التالي:
 
 ```ocaml
   # let rec fold_left f e = function
@@ -2925,40 +2391,23 @@ follows:
   val fold_left : (’a -> ’b -> ’a) -> ’a -> ’b list -> ’a = <fun>
 ```
 
-It is clear that the elements are effectively treated from left to right:
+من الواضح أن العناصر تُعالج فعلًا من اليسار إلى اليمين:
 
 ```ocaml
   # fold_left (fun () x -> print_int x) () [1;2;3;4];;
   1234- : unit = ()
 ```
 
-We can write the function `mult` with `fold_left` as we did with `fold_right`:
+يمكننا كتابة الدالة `mult` بـ`fold_left` كما فعلنا بـ`fold_right`:
 
 ```ocaml
   # let mult l = fold_left (fun x y -> x *. y) 1. l ;;
   val mult : float list -> float
 ```
 
-There is, nevertheless, a slight difference. On a list containing hundreds of thousands of
-elements, the function `mult` written with `fold_right` may trigger a stack overflow,
-which results either in an exception `Stack_overflow` or in the sudden halt of the
-program. This is because the recursive call to `fold_right` is not a tail call. (Since the
-call must be carried out before performing the operation, it is necessary to save the
-value of the first element of the list.) By contrast, in the case of `fold_left`, the
-recursive call is a tail call. (The stack is not needed since the value `x` is used before
-the recursive call to `fold_left`).
+غير أن هناك فرقًا طفيفًا. فعلى قائمة تحوي مئات الآلاف من العناصر، قد تُحدث الدالة `mult` المكتوبة بـ`fold_right` فيضًا في المكدس (stack overflow)، ينجم عنه إما استثناء `Stack_overflow` أو توقف البرنامج فجأة. وذلك لأن الاستدعاء العودي لـ`fold_right` ليس استدعاءً ذيليًا (tail call). (وبما أن الاستدعاء يجب أن يُنفَّذ قبل إجراء العملية، فمن الضروري حفظ قيمة العنصر الأول من القائمة.) وفي المقابل، في حالة `fold_left`، يكون الاستدعاء العودي استدعاءً ذيليًا. (لا حاجة إلى المكدس لأن القيمة `x` تُستخدم قبل الاستدعاء العودي لـ`fold_left`).
 
-It is important to note that an iterator like `fold_left` or `fold_right`
-traverses *all*the elements of the list passed as argument. If we wish
-to stop the calculation at a specific element, we have at least two
-possibilities[^4]:
-Either we write a recursive function that traverses the list and stops when we want it
-to. Alternatively, we can use an iterator and raise an exception to interrupt the list
-traversal. Consider again the example of the function `mult`. We may wish to stop the
- 
- 
-calculation when the value 0 is encountered. The version with the exception may be
-written as follows:
+من المهم ملاحظة أن مُكرِّرًا مثل `fold_left` أو `fold_right` يجتاز *جميع* عناصر القائمة الممرَّرة بوصفها وسيطًا. وإذا أردنا إيقاف الحساب عند عنصر محدد، فلدينا احتمالان على الأقل[^4]: إما أن نكتب دالة عودية تجتاز القائمة وتتوقف متى شئنا، وإما أن نستخدم مُكرِّرًا ونُثير استثناءً (exception) لمقاطعة اجتياز القائمة. لنعد إلى مثال الدالة `mult`. قد نرغب في إيقاف الحساب عند مواجهة القيمة 0. ويمكن كتابة النسخة التي تستخدم الاستثناء على النحو التالي:
 
 ```ocaml
   let mult l =
@@ -2968,77 +2417,49 @@ written as follows:
     with Exit -> 0.
 ```
 
-However, in this case, writing a recursive function that terminates when it encounters 0 is
-simpler and more elegant.
+غير أنه في هذه الحالة، فإن كتابة دالة عودية تنتهي عند مواجهتها 0 أبسط وأكثر أناقة.
 
-### 2.10 Breakout without Bricks
+### 2.10 بريك أوت دون الطوب (Breakout without Bricks)
 
 >
 
-Our tenth program (see page [160](#x7-64018r10)) is a simplified version of the game Breakout,
-without the bricks. The game consists in making a ball bounce within a frame, by
-means of a paddle that is controlled using the mouse.
+برنامجنا العاشر (انظر الصفحة [160](#x7-64018r10)) نسخة مبسطة من لعبة بريك أوت (Breakout)، دون الطوب. تتمثل اللعبة في جعل كرة ترتد داخل إطار، بواسطة مجداف (paddle) يُتحكم فيه باستخدام الفأرة.
 
 ![](/images/learn-ocaml/first-steps-7-breakout.webp){#breakout-without-bricks1}
 
-**Figure 2.7: Breakout without bricks.**
+**الشكل 2.7: بريك أوت دون الطوب.**
 
-Graphically, the game window is as shown in figure [2.7](#breakout-without-bricks1), represented by a gray
-frame, with a black circle representing the ball, and a black rectangle at the base of
-the game window representing the paddle.
+بيانيًا، تكون نافذة اللعبة كما في الشكل [2.7](#breakout-without-bricks1)، ممثلة بإطار رمادي، مع دائرة سوداء تمثل الكرة، ومستطيل أسود في أسفل نافذة اللعبة يمثل المجداف.
 
-Programming such a game involves three main ingredients. First, we must define
-the *constants*of the game, that is, the dimensions of the window (its height and
-width, in pixels), the dimensions of the ball (that is, the radius of the circle), and the
-paddle (the height and width of the rectangle). Next, we must determine the *state*of
-the game, that is, the set of values that characterize it at any instant. Here, these are
-the coordinates of the center of the ball, its velocity, and the position of the paddle,
-which can be specified by the coordinates of its bottom-left corner. To simplify
-matters, we may use the same coordinate system as that of the library `Graphics`.
-That is, the point with coordinates (0,0) is located at the bottom left of the window,
-and the x- and y-axes are respectively the window’s bottom and left edges.
-Finally, the game is played using an algorithm that executes the following
-steps:
+تتضمن برمجة مثل هذه اللعبة ثلاثة مكونات رئيسية. أولًا، يجب أن نعرّف *ثوابت* (constants) اللعبة، أي أبعاد النافذة (ارتفاعها وعرضها، بالبكسل)، وأبعاد الكرة (أي نصف قطر الدائرة)، والمجداف (ارتفاع المستطيل وعرضه). ثانيًا، يجب أن نحدد *حالة* (state) اللعبة، أي مجموعة القيم التي تميزها في أي لحظة. وهنا، هي إحداثيات مركز الكرة، وسرعتها، وموضع المجداف، الذي يمكن تحديده بإحداثيات زاويته السفلية اليسرى. وتبسيطًا للأمور، يمكننا استخدام نظام الإحداثيات نفسه الذي تستخدمه المكتبة `Graphics`؛ أي أن النقطة ذات الإحداثيات (0,0) تقع في أسفل يسار النافذة، وأن محوري x وy هما على التوالي الحافتان السفلية واليسرى للنافذة. وأخيرًا، تُلعب اللعبة باستخدام خوارزمية تنفذ الخطوات التالية:
 
-1. Initialize the state of the game (the position and velocity of the ball, the
-       position of the paddle).
-2. Erase the graphical window.
-3. Calculate the position of the paddle as a function of the x-coordinate of
-       the mouse.
-4. Display the ball and the paddle.
-5. Calculate the new state of the game, that is:
-  
-  the new position of the ball, as a function of its current position and
-            velocity vector;
-6. the new velocity vector of the ball, as a function of its bouncing off
-            the sides of the window and the position of the paddle.
+1. تهيئة حالة اللعبة (موضع الكرة وسرعتها، وموضع المجداف).
+2. مسح النافذة البيانية.
+3. حساب موضع المجداف بوصفه دالةً في الإحداثي x للفأرة.
+4. عرض الكرة والمجداف.
+5. حساب الحالة الجديدة للعبة، أي:
 
-Return to step 2.
+    الموضع الجديد للكرة، بوصفه دالةً في موضعها الحالي ومتجه
+    سرعتها؛
+6. متجه السرعة الجديد للكرة، بوصفه دالةً في ارتدادها عن
+            جانبي النافذة وموضع المجداف.
 
-As you can see, the actions performed in these steps are of two types:
-those that are purely graphical (steps 2, 3, 4) and those that manipulate the
-state of the game (steps 1, 5, 6). We choose to divide the OCaml code into
-two files: `draw.ml` and `breakout.ml`. The first contains all the constants
-and graphical functions of the game; the second maintains the current state
-and implements the algorithm. In general, to clarify the structure of larger
-programs, it is a good idea to divide them into several files, called compilation
-units.
+والعودة إلى الخطوة 2.
+
+وكما ترى، فإن الأفعال المنفَّذة في هذه الخطوات من نوعين: أفعال بيانية صِرفة (الخطوات 2 و3 و4)، وأفعال تتعامل مع حالة اللعبة (الخطوات 1 و5 و6). نختار تقسيم شيفرة أوسمل إلى ملفين: `draw.ml` و`breakout.ml`. يحوي الأول جميع ثوابت اللعبة ودوالها البيانية؛ ويحافظ الثاني على الحالة الحالية وينفذ الخوارزمية. وبشكل عام، لتوضيح بنية البرامج الأكبر حجمًا، من الجيد تقسيمها إلى عدة ملفات تسمى وحدات الترجمة (compilation units).
 
 >
 
-To compile this program, which is divided into two files, we use the following
-command line:
+لترجمة هذا البرنامج، المقسم إلى ملفين، نستخدم سطر الأوامر التالي:
 
 ```console
   > ocamlc -I ‘ocamlfind query graphics‘ -o breakout graphics.cma \
         draw.ml breakout.ml
 ```
 
-As we will see shortly, the order of file names on the command line matters.
+وكما سنرى قريبًا، فإن ترتيب أسماء الملفات على سطر الأوامر مهم.
 
-The graphical part (file `draw.ml`, program [10](#x7-64018r10)), begins by defining the dimensions
-of the game window, with the declaration of four constants: `left`, `right`, `down`, and
-`up`.
+يبدأ الجزء البياني (الملف `draw.ml`، البرنامج [10](#x7-64018r10)) بتعريف أبعاد نافذة اللعبة، مع الإعلان عن أربعة ثوابت: `left` و`right` و`down` و`up`.
 
 ```ocaml
   let left = 0.
@@ -3047,11 +2468,9 @@ of the game window, with the declaration of four constants: `left`, `right`, `do
   let up = 200.
 ```
 
-These constants are values of type `float`, as we will later be using floating-point numbers
-in trajectory calculations so as to guarantee a high degree of precision.
+هذه الثوابت قيم من النوع `float`، إذ سنستخدم لاحقًا أعدادًا كسرية في حسابات المسار لضمان درجة عالية من الدقة.
 
-The following three constants define respectively the radius of the ball, the length
-of the paddle, and its width (in pixels).
+تعرف الثوابت الثلاثة التالية على التوالي نصف قطر الكرة، وطول المجداف، وعرضه (بالبكسل).
 
 ```ocaml
   let ball = 5
@@ -3059,15 +2478,13 @@ of the paddle, and its width (in pixels).
   let thick = 8
 ```
 
-Finally, we declare a color `gray`, obtained by specifying the values of its three
-components—red, green, and blue—using the function `rgb`.
+أخيرًا، نصرّح عن لون `gray`، يُحصَل عليه بتحديد قيم مكوناته الثلاثة — الأحمر والأخضر والأزرق — باستخدام الدالة `rgb`.
 
 ```ocaml
   let gray = rgb 240 240 240
 ```
 
-The function `init` initializes the game window by opening a graphical canvas of
-dimensions `right`×`up`.
+تهيّئ الدالة `init` نافذة اللعبة بفتح لوحة بيانية (canvas) بأبعاد `right`×`up`.
 
 ```ocaml
   let init () =
@@ -3076,18 +2493,9 @@ dimensions `right`×`up`.
     auto_synchronize false
 ```
 
-Since the constants `right` and `up` are values of type `float`, we use the predefined
-function `truncate` from the standard library to truncate their values and convert
-them into integers. The call `auto_synchronizefalse` activates the *double buffering*
-mode of the graphical device. When this mode is activated, all display operations
-(drawing a circle, a rectangle, etc.) are performed in a memory zone called the *backing store*, and not directly on the screen. The function `synchronize` must then be
-used explicitly to copy the contents of the backing store to the screen. As
-this copy is instantaneous, it eliminates any “flickering” effects during the
-animation.
+وبما أن الثابتين `right` و`up` قيمتان من النوع `float`، نستخدم الدالة المعرَّفة مسبقًا `truncate` من المكتبة القياسية لاقتطاع قيمتيهما وتحويلهما إلى عددين صحيحين. والاستدعاء `auto_synchronizefalse` يفعّل وضع *التخزين المؤقت المزدوج* (double buffering) بالجهاز البياني. وعند تفعيل هذا الوضع، تُنفَّذ جميع عمليات العرض (رسم دائرة أو مستطيل، وما إلى ذلك) في منطقة ذاكرة تُسمى *مخزن الدعم* (backing store)، وليس مباشرة على الشاشة. ويجب بعد ذلك استخدام الدالة `synchronize` صراحةً لنسخ محتويات مخزن الدعم إلى الشاشة. وبما أن هذا النسخ لحظي، فإنه يزيل أي تأثيرات «وميض» أثناء الحركة.
 
-We now write a function for each graphical step of the algorithm. Step 2 is
-implemented by a function `clear` that erases the canvas by drawing a gray rectangle
-of the same dimensions as the graphical window.
+نكتب الآن دالة لكل خطوة بيانية من خوارزمية اللعبة. تنفَّذ الخطوة 2 بدالة `clear` تمسح اللوحة برسم مستطيل رمادي بأبعاد النافذة البيانية نفسها.
 
 ```ocaml
   let clear () =
@@ -3095,11 +2503,7 @@ of the same dimensions as the graphical window.
     fill_rect 0 0 (truncate right) (truncate up)
 ```
 
-Step 3 of the algorithm is implemented by a function `get_paddle_pos`. It begins by
-retrieving the `x`-coordinate of the current position of the mouse (with the function
-`mouse_pos`). To ensure that the paddle does not go outside the game window
-on the right side, we take the minimum between the value obtained and
-`truncateright-paddle`.
+تنفَّذ الخطوة 3 من الخوارزمية بدالة `get_paddle_pos`. تبدأ باسترجاع الإحداثي `x` للموضع الحالي للفأرة (بالدالة `mouse_pos`). ولضمان عدم خروج المجداف خارج نافذة اللعبة من الجهة اليمنى، نأخذ الحد الأدنى بين القيمة المحصَّلة و`truncateright-paddle`.
 
 ```ocaml
 let get_paddle_pos () =
@@ -3107,8 +2511,7 @@ let get_paddle_pos () =
   max 0 (min x (truncate right - paddle))
 ```
 
-The main graphical function, `game`, takes as arguments the `x`- and `y`-coordinates of
-the ball and implements steps 2, 3, and 4 of the algorithm.
+تأخذ الدالة البيانية الرئيسية، `game`، الإحداثيين `x` و`y` للكرة بوصفهما وسيطين، وتنفذ الخطوات 2 و3 و4 من الخوارزمية.
 
 ```ocaml
   let game x y =
@@ -3121,40 +2524,23 @@ the ball and implements steps 2, 3, and 4 of the algorithm.
     x
 ```
 
-The second file, `breakout.ml` (see page [166](#x7-64103r11)), implements steps 1, 5, and 6 of the
-algorithm. The state of the game is encoded as two pairs of floating-point numbers:
-`(x,y)` and `(vx,vy)`, which represent respectively the coordinates of the ball and its
- 
- 
-velocity.
+ينفذ الملف الثاني، `breakout.ml` (انظر الصفحة [166](#x7-64103r11))، الخطوات 1 و5 و6 من الخوارزمية. تُرمَّز حالة اللعبة بزوجين من الأعداد الكسرية: `(x,y)` و`(vx,vy)`، يمثلان على التوالي إحداثيات الكرة وسرعتها.
 
-The first function of this file, `bounce`, calculates the new velocity of the ball,
-taking into account that the ball may bounce off the sides of the window or the
-paddle. The function `bounce` therefore also takes the position `xp` of the paddle as an
-argument.
+تحسب الدالة الأولى في هذا الملف، `bounce`، السرعة الجديدة للكرة، مراعيةً أن الكرة قد ترتد عن جانبي النافذة أو عن المجداف. لذلك تأخذ الدالة `bounce` أيضًا موضع المجداف `xp` بوصفه وسيطًا.
 
 ```ocaml
   let bounce (x, y) (vx, vy) xp =
     ...
 ```
 
-To calculate the new component `vx`, the `x`-coordinate of the ball must be compared with
-the left and right edges of the game window. The constants `left` and `right` having
-been defined in the file `draw.ml`, the dot notation `Draw.left` and `Draw.right`
-must be used to refer to them. Each compilation unit effectively defines a
-module bearing the same name as the file, but with the first letter in upper
-case.
+لحساب المركبة الجديدة `vx`، يجب مقارنة الإحداثي `x` للكرة بالحافتين اليسرى واليمنى لنافذة اللعبة. وبما أن الثابتين `left` و`right` قد عُرِّفا في الملف `draw.ml`، فيجب استخدام تدوين النقطة `Draw.left` و`Draw.right` للإشارة إليهما. فكل وحدة ترجمة تعرّف فعلًا وحدة نمطية (module) تحمل اسم الملف نفسه، لكن بحرف أول كبير.
 
 ```ocaml
     let vx =
       if x <= Draw.left || x >= Draw.right then -. vx else vx in
 ```
 
-In the same way, to calculate the new component `vy`, we must compare the
-`y`-coordinate of the ball with the top of the window `Draw.up`. The direction of the
-ball’s velocity also changes if the ball hits the paddle, that is, if the `x`-coordinate lies
-between `xp` and `xp+.floatDraw.paddle`, and if the `y`-coordinate is less than the
-paddle thickness `Draw.thick`.
+وبالطريقة نفسها، لحساب المركبة الجديدة `vy`، يجب مقارنة الإحداثي `y` للكرة بأعلى النافذة `Draw.up`. ويتغير اتجاه سرعة الكرة أيضًا إذا اصطدمت الكرة بالمجداف، أي إذا كان الإحداثي `x` واقعًا بين `xp` و`xp+.floatDraw.paddle`، وكان الإحداثي `y` أقل من سماكة المجداف `Draw.thick`.
 
 ```ocaml
     let vy =
@@ -3165,8 +2551,7 @@ paddle thickness `Draw.thick`.
     (vx, vy)
 ```
 
-The following function returns the ball’s new position by adding the `x`- and
-`y`-coordinates, respectively, to the velocity’s coordinates `vx` and `vy`.
+تعيد الدالة التالية الموضع الجديد للكرة بجمع الإحداثيين `x` و`y`، على التوالي، إلى إحداثيي السرعة `vx` و`vy`.
 
 ```ocaml
   let new_position (x, y) (vx, vy) = x +. vx, y +. vy
@@ -3174,47 +2559,40 @@ The following function returns the ball’s new position by adding the `x`- and
 
 >
 
-The function `play` implements the loop between steps 2 and 6. Starting from the
-current state of the game, passed as argument, we begin by verifying that the ball
-does not go beyond the bottom of the game window, by comparing the `y`-coordinate
-to the constant `Draw.down`. If the ball does so, the game ends with a call to the
-function `failwith` of the standard library:
+تنفذ الدالة `play` الحلقة بين الخطوتين 2 و6. انطلاقًا من الحالة الحالية للعبة، الممرَّرة بوصفها وسيطًا، نبدأ بالتحقق من أن الكرة لا تتجاوز أسفل نافذة اللعبة، بمقارنة الإحداثي `y` بالثابت `Draw.down`. وإذا تجاوزته الكرة، تنتهي اللعبة باستدعاء الدالة `failwith` من المكتبة القياسية:
 
 ```ocaml
   let rec play (x, y) (vx, vy) =
     if y <= Draw.down then failwith "game over";
 ```
 
-If the game has not ended, we display the ball and the paddle using the function
-`Draw.game`, which returns the `x`-coordinate of the paddle.
+إذا لم تكن اللعبة قد انتهت، نعرض الكرة والمجداف باستخدام الدالة `Draw.game`، التي تعيد الإحداثي `x` للمجداف.
 
 ```ocaml
     let xp = Draw.game x y in
 ```
 
-Next, we calculate the new coordinates of the velocity vector, and then those of
-the ball.
+بعد ذلك، نحسب إحداثيات متجه السرعة الجديدة، ثم إحداثيات الكرة.
 
 ```ocaml
     let vx, vy = bounce (x, y) (vx, vy) (float xp) in
     let x’, y’ = new_position (x, y) (vx, vy) in
 ```
 
-We return to step 2 by a recursive call to the function `play` with the new state of the
-game as argument.
+نعود إلى الخطوة 2 باستدعاء عودي للدالة `play` بالحالة الجديدة للعبة بوصفها وسيطًا.
 
 ```ocaml
     play (x’, y’) (vx, vy)
 ```
 
-The main part of the program opens the game window by a call to `Draw.init`.
+يفتح الجزء الرئيسي من البرنامج نافذة اللعبة باستدعاء `Draw.init`.
 
 ```ocaml
   let () =
     Draw.init();
 ```
 
-It then creates a random velocity vector `(vx,vy)`:
+ثم ينشئ متجه سرعة عشوائيًا `(vx,vy)`:
 
 ```ocaml
     let speed = 0.1 in
@@ -3222,67 +2600,44 @@ It then creates a random velocity vector `(vx,vy)`:
     let vy = speed *. Random.float 1. in
 ```
 
-Finally, the game begins with a call to the function `play`, placing the ball on top of the
-paddle and at the center of the window:
+أخيرًا، تبدأ اللعبة باستدعاء الدالة `play`، واضعةً الكرة فوق المجداف وفي مركز النافذة:
 
 ```ocaml
     play (Draw.right /. 2., float Draw.thick) (vx, vy)
 ```
 
-#### Additional Information
+#### معلومات إضافية
 
-##### Separate Compilation and Linking
+##### الترجمة المنفصلة والربط (separate compilation and linking)
 
-The command line given above to compile Breakout can be decomposed into
-several commands. We can begin by compiling the file `draw.ml` alone, with the
-command:
+يمكن تفكيك سطر الأوامر المعطى أعلاه لترجمة بريك أوت إلى عدة أوامر. يمكننا البدء بترجمة الملف `draw.ml` وحده، بالأمر:
 
 ```console
   > ocamlc -I ‘ocamlfind query graphics‘ -c draw.ml
 ```
 
-The compiler option `-c` specifies that we do not wish to construct an executable,
-but only to compile the code. The result consists of two files, `draw.cmi` and `draw.cmo`.
-The first contains typing information, and the second contains code. This code is not
-self-contained. In particular, it references functions from the module `Graphics`, which
-are not included in this file.
+يحدد خيار المترجم `-c` أننا لا نرغب في إنشاء ملف تنفيذي، بل في ترجمة الشيفرة فقط. تتكون النتيجة من ملفين: `draw.cmi` و`draw.cmo`. يحوي الأول معلومات الأنواع (typing)، ويحوي الثاني الشيفرة. وهذه الشيفرة ليست مكتفية بذاتها؛ فهي على وجه الخصوص تشير إلى دوال من الوحدة النمطية `Graphics` غير مضمَّنة في هذا الملف.
 
-We can then compile the second file, with a similar command.
+يمكننا بعد ذلك ترجمة الملف الثاني بأمر مماثل.
 
 ```console
   > ocamlc -c breakout.ml
 ```
 
-Since this file references the module `Draw`, we had to compile the file `draw.ml` first.
-The information needed for the type-checking of `breakout.ml` is contained in the file
-`draw.cmi`. Here, too, the code obtained is not self-contained; the file `breakout.cmo`
-references values and functions of the module `Draw` that are contained in
-`draw.cmo`.
+وبما أن هذا الملف يشير إلى الوحدة النمطية `Draw`، فقد كان علينا ترجمة الملف `draw.ml` أولًا. والمعلومات اللازمة لفحص الأنواع (type-checking) للملف `breakout.ml` موجودة في الملف `draw.cmi`. وهنا أيضًا، الشيفرة المحصَّلة ليست مكتفية بذاتها؛ فالملف `breakout.cmo` يشير إلى قيم ودوال من الوحدة النمطية `Draw` موجودة في `draw.cmo`.
 
-To obtain an executable, we must perform a *linking*operation, which consists in
-putting together several pieces of code while verifying that every reference can be
-resolved. Here, the three pieces involved are those of the OCaml library `graphics.cma`
-(which groups a set of `cmo` files together) and the two files, `draw.cmo` and
-`breakout.cmo`.
+للحصول على ملف تنفيذي، يجب إجراء عملية *ربط* (linking)، تتكون من ضم عدة قطع من الشيفرات مع التحقق من إمكانية حل كل إشارة. وهنا، القطع الثلاث المعنية هي قطع مكتبة أوسمل `graphics.cma` (التي تجمع مجموعة ملفات `cmo` معًا) والملفان `draw.cmo` و`breakout.cmo`.
 
 ```console
   > ocamlc -I ‘ocamlfind query graphics‘ -o breakout graphics.cma \
         draw.cmo breakout.cmo
 ```
 
-As we explained above, the order of file names on this command line is significant.
-In particular, it must be compatible with the dependencies between compilation units.
-Here, `breakout.cmo` *depends*on `draw.cmo`, which itself depends on `graphics.cma`.
-Furthermore, it must be understood that an OCaml program does not have a specific
-entry point. The code obtained after linking simply executes the code of
-the different files passed on the command line, in the order in which they
-appear.
+وكما أوضحنا أعلاه، فإن ترتيب أسماء الملفات على سطر الأوامر هذا مهم. وعلى وجه الخصوص، يجب أن يكون متوافقًا مع التبعيات بين وحدات الترجمة. هنا، `breakout.cmo` *يعتمد* على `draw.cmo`، الذي يعتمد هو نفسه على `graphics.cma`. وفضلاً عن ذلك، يجب إدراك أن برنامج أوسمل لا يملك نقطة دخول محددة. فالشيفرة المحصَّلة بعد الربط تنفذ ببساطة شيفرات الملفات المختلفة الممرَّرة على سطر الأوامر، بالترتيب الذي تظهر به.
 
-##### Interfaces
+##### الواجهات (interfaces)
 
-The file `draw.cmi` produced by compilation contains the typing information of all the
-values defined in the file `draw.ml`. This same information can be obtained using the
-compiler option `-i`.
+يحوي الملف `draw.cmi` الناتج عن الترجمة معلومات الأنواع لجميع القيم المعرَّفة في الملف `draw.ml`. ويمكن الحصول على المعلومات نفسها باستخدام خيار المترجم `-i`.
 
 ```console
   > ocamlc -I ‘ocamlfind query graphics‘ -i draw.ml
@@ -3292,50 +2647,29 @@ compiler option `-i`.
   val game : float -> float -> int
 ```
 
-We may, however, wish to make some of these values inaccessible to the
-rest of the program. For example, we may wish to hide the function `clear`.
-To this end, we can define an *interface*for `draw.ml`, in the form of a file
-`draw.mli`.
+غير أننا قد نرغب في جعل بعض هذه القيم غير قابلة للوصول من بقية البرنامج. مثلًا، قد نرغب في إخفاء الدالة `clear`. ولتحقيق ذلك، يمكننا تعريف *واجهة* (interface) للملف `draw.ml`، في شكل ملف `draw.mli`.
 
 >
 
-Such a file is given in program [12](#x7-67002r12). We write it using the same syntax as
-that used by the compiler option `-i`. We compile `draw.mli` before compiling
-`draw.ml`.
+يُعطى مثل هذا الملف في البرنامج [12](#x7-67002r12). نكتبه باستخدام الصياغة نفسها التي يستخدمها خيار المترجم `-i`. ونترجم `draw.mli` قبل ترجمة `draw.ml`.
 
 ```console
   > ocamlc -c draw.mli
   > ocamlc -I ‘ocamlfind query graphics‘ -c draw.ml
 ```
 
-The first command produces the file `draw.cmi`. The second produces `draw.cmo` and
-verifies that it is compatible with `draw.cmi`, that is, that it defines values having the
-names and types specified in the file `draw.cmi`. When there is a file `draw.mli`, the
-compiler refuses to compile `draw.ml` until `draw.mli` has been compiled. If we then try
-to use a value in `breakout.ml` that is not mentioned in `draw.mli`, for example `clear`,
-an error is triggered.
+يُنتج الأمر الأول الملف `draw.cmi`. ويُنتج الثاني `draw.cmo` ويتحقق من توافقه مع `draw.cmi`، أي أنه يعرّف قيمًا لها الأسماء والأنواع المحددة في الملف `draw.cmi`. وعند وجود ملف `draw.mli`، يرفض المترجم ترجمة `draw.ml` حتى يُترجم `draw.mli`. وإذا حاولنا بعد ذلك استخدام قيمة في `breakout.ml` غير مذكورة في `draw.mli`، مثل `clear`، يُثار خطأ.
 
 ```console
   > ocamlc -c breakout.ml
   Error: Unbound value Draw.clear
 ```
 
-Interfaces are not only a means of limiting the visibility of values defined in a
-compilation unit. They also enable *separate compilation*. This means that the code of
-each compilation unit may be compiled independantly of the code of other units,
-because it depends only on their interfaces. Once `draw.mli` is compiled,
-we can compile either `draw.ml` or `breakout.ml`, in any order. Notably, this
-makes it possible to divide the work amongst several developers once the
-interfaces are in place. Furthermore, separate compilation helps avoid unnecessary
-recompilation of code. For example, a change in the code of the function
-`Draw.clear` would only call for recompiling `draw.ml`, and then redoing the linking
-operation. No other unit using `Draw` needs to be recompiled (for example,
-`breakout.ml`).
+ليست الواجهات مجرد وسيلة لتحديد رؤية القيم المعرَّفة في وحدة ترجمة. فهي تمكّن أيضًا من *الترجمة المنفصلة* (separate compilation). وهذا يعني أن شيفرة كل وحدة ترجمة يمكن ترجمتها بصورة مستقلة عن شيفرات الوحدات الأخرى، لأنها تعتمد على واجهاتها فقط. وبمجرد ترجمة `draw.mli`، يمكننا ترجمة `draw.ml` أو `breakout.ml` بأي ترتيب. وبوجه خاص، يتيح هذا تقسيم العمل بين عدة مطورين بمجرد وضع الواجهات. وعلاوةً على ذلك، تساعد الترجمة المنفصلة في تجنب إعادة الترجمة غير الضرورية للشيفرة. مثلًا، تغيير شيفرة الدالة `Draw.clear` يستدعي فقط إعادة ترجمة `draw.ml`، ثم إعادة عملية الربط. ولا حاجة إلى إعادة ترجمة أي وحدة أخرى تستخدم `Draw` (مثل `breakout.ml`).
 
-##### Separate Compilation with dune
+##### الترجمة المنفصلة باستخدام dune
 
-To compile our program with `dune`, we write the following configuration
-file:
+لترجمة برنامجنا باستخدام `dune`، نكتب ملف الإعداد التالي:
 
 ```text
   (executable
@@ -3344,21 +2678,11 @@ file:
    (libraries graphics))
 ```
 
-The line `(modules draw breakout)` lists the modules necessary for the compilation of
-the program. The tool `dune` will successively compile the modules `Draw` and `Breakout`,
-as we did manually above. In particular, if an `.mli` file exists, it is compiled before the
-corresponding `.ml` file. Furthermore, the line `(libraries graphics)` indicates that
-the files must be compiled with the library `Graphics`.
+يسرد السطر `(modules draw breakout)` الوحدات النمطية اللازمة لترجمة البرنامج. وسيترجم أداة `dune` الوحدتين النمطيتين `Draw` و`Breakout` تباعًا، كما فعلنا يدويًا أعلاه. وعلى وجه الخصوص، إذا وُجد ملف `.mli`، فإنه يُترجم قبل ملف `.ml` الموافق له. وعلاوةً على ذلك، يشير السطر `(libraries graphics)` إلى أن الملفات يجب أن تُترجم باستخدام المكتبة `Graphics`.
 
-##### Modules
+##### الوحدات النمطية (modules)
 
-We have used various modules thus far, including those of the standard library, like
-`Array` and `List`, and the modules `Draw` and `Breakout` of the preceding example.
-These modules always corresponded to compilation units, that is, to pairs of `.ml` and
-`.mli` files. The notions of module and interface are, in fact, more precise than the
-notion of file; they correspond to constructs of the language. Thus, we can define an
-interface `I` that contains a constant `a` and a function `f` with the following
-syntax:
+استخدمنا حتى الآن وحدات نمطية شتى، بما فيها وحدات المكتبة القياسية، مثل `Array` و`List`، والوحدتين النمطيتين `Draw` و`Breakout` من المثال السابق. وقد كانت هذه الوحدات النمطية تطابق دائمًا وحدات ترجمة، أي أزواج ملفات `.ml` و`.mli`. غير أن مفهومي الوحدة النمطية والواجهة أدقّ من مفهوم الملف؛ فهما يقابلان منشآت (constructs) من اللغة. وهكذا، يمكننا تعريف واجهة `I` تحوي ثابتًا `a` ودالة `f` بالصياغة التالية:
 
 ```ocaml
   module type I = sig
@@ -3367,8 +2691,7 @@ syntax:
   end
 ```
 
-We can then define a module `M` having this interface, with the following
-syntax:
+يمكننا بعد ذلك تعريف وحدة نمطية `M` بهذه الواجهة، بالصياغة التالية:
 
 ```ocaml
   module M : I = struct
@@ -3378,43 +2701,28 @@ syntax:
   end
 ```
 
-The compiler then performs the same operations as if we had written the interface `I` in a
-file `m.mli` and the module `M` in a file `m.ml`. In particular, we access the constant `a` with
-the notation `M.a`, while the constant `b` is not accessible outside the module
-`M`.
+ينفذ المترجم بعد ذلك العمليات نفسها كما لو كتبنا الواجهة `I` في ملف `m.mli` والوحدة النمطية `M` في ملف `m.ml`. وعلى وجه الخصوص، نصل إلى الثابت `a` بتدوين `M.a`، بينما لا يمكن الوصول إلى الثابت `b` خارج الوحدة النمطية `M`.
 
-### 2.11 Logo Turtle
+### 2.11 السلحفاة لوجو (Logo Turtle)
 
 >
 
-Our next program, `turtle.ml`, is a simplified version of the Logo turtle. Although the
- 
- 
-programming language Logo has fallen into disuse today, conceptually, it remains as
-interesting as ever. Its most salient feature is a turtle that can be displaced using
-instructions of the form “forward 3 units” or “turn right 30 degrees,” and whose path
-is then displayed on the screen.
+برنامجنا التالي، `turtle.ml`، نسخة مبسطة من سلحفاة لوجو (Logo turtle). فعلى الرغم من أن
+لغة البرمجة لوجو قد خرجت من الاستخدام اليوم، فإنها تبقى من الناحية المفاهيمية مثيرة للاهتمام كما كانت دائمًا. وأبرز ما تتميز به سلحفاة يمكن تحريكها بتعليمات على غرار «تقدَّم 3 وحدات» أو «انعطف يمينًا 30 درجة»، ثم يُعرَض مسارها على الشاشة.
 
 ![](/images/learn-ocaml/first-steps-8-turtle_squares-mps-.webp){#example-of-a-drawing-using-the-logo-turtle}
 
-**Figure 2.8: Example of a drawing using the Logo turtle.**
+**الشكل 2.8: مثال على رسم باستخدام سلحفاة لوجو.**
 
-We can thus easily trace a square by repeating the sequence “forward, then turn
-left 90 degrees,” or even draw figure [2.8](#example-of-a-drawing-using-the-logo-turtle) through several repetitions of the sequence
-“trace a square, then turn by 20 degrees.”
+يمكننا بالتالي تتبّع مربع بسهولة، عبر تكرار التسلسل «تقدَّم، ثم انعطف يسارًا 90 درجة»، أو حتى رسم الشكل [2.8](#example-of-a-drawing-using-the-logo-turtle) بتكرار التسلسل «ارسم مربعًا، ثم انعطف بمقدار 20 درجة» عدة مرات.
 
-Our aim here is to implement some of the basic turtle operations, such as moving
-forward, turning, and lifting the pen.
+هدفنا هنا هو تنفيذ بعض العمليات الأساسية للسلحفاة، مثل التقدُّم إلى الأمام، والانعطاف، ورفع القلم.
 
-The following question arises naturally when writing the code of the turtle: how
-do we represent the angle that determines the turtle’s direction?
+يتبادر إلى الذهن سؤال طبيعي عند كتابة شيفرة السلحفاة: كيف نمثّل الزاوية التي تحدّد اتجاه السلحفاة؟
 
-We may choose to represent the angle in degrees or in radians, as an integer or a
-floating-point number, and so forth. Here, we decided not to choose amongst these
-options, and instead to *parametrize*the code by a module `A` that provides the type of
-angles.
+يمكننا اختيار تمثيل الزاوية بالدرجات أو بالتقديرات الدائرية (radians)، كعدد صحيح أو كعدد كسري، وهكذا. وهنا، قررنا عدم الاختيار بين هذه الاحتمالات، وبدلًا من ذلك، نُبارمِد (parametrize) الشيفرة بوحدة `A` توفّر نوع الزوايا.
 
-We begin accordingly by creating a signature for such a module, namely:
+نبدأ وفقًا لذلك بإنشاء بصمة (signature) لمثل هذه الوحدة، وهي:
 
 ```ocaml
   module type ANGLE = sig
@@ -3426,47 +2734,31 @@ We begin accordingly by creating a signature for such a module, namely:
   end
 ```
 
-The type `t` is that of angles. It has no definition; we say it is an *abstract type*. We
-can, nevertheless, use it in the implementation of our turtle because we are
-provided with the following: a function `of_degrees`, to convert an angle
-expressed in degrees to a value of type `t`; a function `add`, to add two angles;
-and, finally, `sin` and `cos` functions, to calculate the sine and cosine of an
-angle.
+النوع `t` هو نوع الزوايا. ليس له تعريف؛ نقول عنه إنه *نوع مجرَّد* (abstract type). غير أننا نستطيع مع ذلك استخدامه في تنفيذ سلحفاتنا، لأننا مُنِحنا ما يلي: دالة `of_degrees`، لتحويل زاوية معبَّر عنها بالدرجات إلى قيمة من النوع `t`؛ ودالة `add`، لجمع زاويتين؛ وأخيرًا الدالتان `sin` و`cos`، لحساب جيب تمام الزاوية وجيبها.
 
-We can therefore write the Logo turtle as a module `Turtle`, parametrized by a
-module `A` with signature `ANGLE`. Such a module is called a *functor* and is defined
-thus:
+يمكننا بالتالي كتابة سلحفاة لوجو على هيئة وحدة `Turtle`، مبارَمة بوحدة `A` ذات البصمة `ANGLE`. وتُسمّى مثل هذه الوحدة *مُبَرْمِجًا* (functor)، وتُعرَّف على النحو التالي:
 
 ```ocaml
   module Turtle(A: ANGLE) = struct
 ```
 
-Inside the module `Turtle`, the module `A` of signature `ANGLE` is visible and may be used
-like any other module. For example, we can introduce a reference `angle`, containing
-the current direction of the turtle, using:
+داخل الوحدة `Turtle`، تكون الوحدة `A` ذات البصمة `ANGLE` مرئية ويمكن استخدامها مثل أي وحدة أخرى. فمثلًا، يمكننا إدخال مرجع (reference) باسم `angle` يحتوي على الاتجاه الحالي للسلحفاة، باستخدام:
 
 ```ocaml
     let angle = ref (A.of_degrees 0.)
 ```
 
-We can also write a function `rotate_left` to make the turtle turn `d` degrees to the
-left:
+يمكننا أيضًا كتابة دالة `rotate_left` لجعل السلحفاة تنعطف `d` درجة إلى اليسار:
 
 ```ocaml
     let rotate_left d = angle := A.add !angle (A.of_degrees d)
 ```
 
-The complete code of the parametrized turtle is given in program [13](#x7-70023r13) (see below).
-There, we find references `tx` and `ty` which keep track of the the current position of the
-turtle, and a function `advance` to make the turtle move forward. The boolean
-reference `draw` indicates whether the turtle’s pen is up or down, and is modified using
-the functions `pen_up` and `pen_down`.
+تُعطى الشيفرة الكاملة للسلحفاة المبارَمة في البرنامج [13](#x7-70023r13) (انظر أدناه). وهناك نجد المرجعين `tx` و`ty` اللذين يتابعان الموضع الحالي للسلحفاة، ودالة `advance` لجعلها تتقدّم إلى الأمام. ويشير المرجع المنطقي (boolean) `draw` إلى ما إذا كان قلم السلحفاة مرفوعًا أم منخفضًا، ويُعدَّل بالدالتين `pen_up` و`pen_down`.
 
 >
 
-To use the functor `Turtle`, we must begin by providing a specific module with
-interface `ANGLE`. If we choose to represent angles in radians and floating-point
-numbers, one such module `Angle` may be defined as follows:
+لاستخدام المُبَرْمِج `Turtle`، يجب أن نبدأ بتوفير وحدة محدَّدة ذات الواجهة `ANGLE`. فإذا اخترنا تمثيل الزوايات بالتقديرات الدائرية (radians) وبأعداد كسرية، فيمكن تعريف وحدة `Angle` على النحو التالي:
 
 ```ocaml
   module Angle: ANGLE = struct
@@ -3479,14 +2771,13 @@ numbers, one such module `Angle` may be defined as follows:
   end
 ```
 
-We then obtain a module `T` by applying the functor `Turtle` to the module `Angle`, which
-is written thus:
+نحصل بعد ذلك على وحدة `T` بتطبيق المُبَرْمِج `Turtle` على الوحدة `Angle`، وهو ما يُكتب على النحو التالي:
 
 ```ocaml
   module T = Turtle(Angle)
 ```
 
-Finally, we can use the module `T` to trace the figure [2.8](#example-of-a-drawing-using-the-logo-turtle) by writing, for example:
+أخيرًا، يمكننا استخدام الوحدة `T` لتتبُّع الشكل [2.8](#example-of-a-drawing-using-the-logo-turtle) بكتابة ما يلي مثلًا:
 
 ```ocaml
   let square d =
@@ -3498,25 +2789,15 @@ Finally, we can use the module `T` to trace the figure [2.8](#example-of-a-draw
   let () = squares 100. 20.
 ```
 
-Here, `squared` traces a square of side `d` and `squaresda`, a set of squares of side `d`, with a
-rotation of `a` degrees between any two successive squares.
+هنا، ترسم الدالة `squared` مربعًا طول ضلعه `d`، وترسم الدالة `squaresda` مجموعة من المربعات طول ضلع كل منها `d`، مع دوران بمقدار `a` درجة بين أي مربعين متتاليين.
 
-The reason for writing the module `Turtle` as a functor, parametrized by the
-representation of angles, is that we can then apply it to other modules of
-signature `ANGLE`, and thus obtain other turtles where the angles are represented
-differently.
+يكمن سبب كتابة الوحدة `Turtle` على هيئة مُبَرْمِج، مبارَمة بتمثيل الزوايا، في أنه يمكننا بعد ذلك تطبيقها على وحدات أخرى ذات البصمة `ANGLE`، والحصول بالتالي على سلاحف أخرى تُتمثَّل فيها الزوايا بشكل مختلف.
 
-#### Additional Information
+#### معلومات إضافية
 
-##### Abstract Types
+##### الأنواع المجرَّدة (Abstract Types)
 
-In the above example, the type of angles `A.t` is an abstract type, because we do not
-yet know how it will be implemented. We may equally use the notion of abstract
-types to *hide*a concrete implementation, even when it is already known. This is what
-we call *encapsulation*. Suppose, for example, that we wish to define a module to
-manipulate integers between 0 and 30, and ensure that all the integers we use
-lie within this interval. We begin by defining a signature `INT31` for such a
-module:
+في المثال أعلاه، نوع الزوايا `A.t` نوع مجرَّد، لأننا لا نعرف بعد كيف سيُنفَّذ. ويمكننا أيضًا استخدام مفهوم الأنواع المجرَّدة لـ*إخفاء* تنفيذ ملموس، حتى عندما يكون معروفًا سلفًا. وهذا ما نسميه *الإخفاء* (encapsulation). فلنفترض مثلًا أننا نرغب في تعريف وحدة للتلاعب بأعداد صحيحة بين 0 و30، والتأكد من أن جميع الأعداد الصحيحة التي نستخدمها تقع ضمن هذا المجال. نبدأ بتعريف بصمة `INT31` لهذه الوحدة:
 
 ```ocaml
   module type INT31 = sig
@@ -3526,10 +2807,7 @@ module:
   end
 ```
 
-This signature declares an abstract type `t`, and two functions `create` and `value`. We note
-that, by virtue of the abstract nature of the type `t`, a value of this type can only be
-constructed using the function `create`. Next, we can construct a module `Int31` with
-this signature.
+تصرّح هذه البصمة بنوع مجرَّد `t`، وبدالتين `create` و`value`. ونلاحظ أنه بحكم الطبيعة المجرَّدة للنوع `t`، لا يمكن بناء قيمة من هذا النوع إلا باستخدام الدالة `create`. بعد ذلك، يمكننا بناء وحدة `Int31` بهذه البصمة.
 
 ```ocaml
   module Int31 : INT31 = struct
@@ -3540,23 +2818,16 @@ this signature.
   end
 ```
 
-Inside this module, we give a definition to the type `t`, namely, `int`. Outside the
-module `Int31`, by contrast, the type `t` remains abstract, that is, we do not know that
-the values of type `Int31.t` are integers. In particular, we can enforce the
-invariant that any value of type `Int31.t` lies between 0 and 30. We would
-not have been able to do this if we had written `typet=int` in the interface
-`INT31`.
+داخل هذه الوحدة، نُعطي النوع `t` تعريفًا، وهو `int`. أما خارج الوحدة `Int31`، فيبقى النوع `t` مجرَّدًا، أي إننا لا نعلم أن قيم النوع `Int31.t` أعداد صحيحة. واستطاعتنا بذلك فرض الثابتة التي تقضي بأن أي قيمة من النوع `Int31.t` تقع بين 0 و30. فما كان بوسعنا فعل ذلك لو كتبنا `typet=int` في الواجهة `INT31`.
 
-The abstract nature of type `t` is illustrated by the way in which the values are
-displayed by the OCaml interpreter:
+يتجلى الطابع المجرَّد للنوع `t` في الطريقة التي تُعرَض بها القيم في مُفسِّر أوسمل:
 
 ```ocaml
   # let x = Int31.create 7;;
   x : Int31.t = <abstr>
 ```
 
-Here, the value displayed for `x` is ``, which denotes the value of an abstract
-type. Thus, `x` cannot be used like an integer:
+هنا، القيمة المعروضة لـ`x` هي ``، وهي تُشير إلى قيمة ذات نوع مجرَّد. وبالتالي، لا يمكن استخدام `x` كعدد صحيح:
 
 ```ocaml
   # x + 10;;
@@ -3564,223 +2835,156 @@ type. Thus, `x` cannot be used like an integer:
          but an expression was expected of type int
 ```
 
-The type system therefore distinguishes the two types `Int31.t` and `int`.
-Nevertheless, the value of `x` (namely, the integer 7) is exactly the same as if `x` had
-type `int`. Using an abstract type does not introduce any extra cost at runtime. If we
-wish to add the value of `x` to 10, it is necessary to apply the function `Int31.value` to
-`x` in order to get back a value of type `int`.
+وبالتالي، يميّز نظام الأنواع بين النوعين `Int31.t` و`int`. ومع ذلك، فإن قيمة `x` (أي العدد الصحيح 7) هي ذاتها تمامًا كما لو كان `x` من النوع `int`. فاستخدام نوع مجرَّد لا يُحدث أي كلفة إضافية في زمن التشغيل. وإذا أردنا إضافة قيمة `x` إلى 10، فلا بدّ من تطبيق الدالة `Int31.value` على `x` لاستعادة قيمة من النوع `int`.
 
 ```ocaml
   # Int31.value x + 10;;
   - : int = 17
 ```
 
-##### Private Types
+##### الأنواع الخاصة (Private Types)
 
-As we have seen with the type `Int31.t`, an abstract type can be used to enforce an
-invariant. Let us consider the example of a module `Polar`, used to represent complex
-numbers in polar coordinates, with the type:
+كما رأينا مع النوع `Int31.t`، يمكن استخدام نوع مجرَّد لفرض ثابتة (invariant). فلننظر في مثال الوحدة `Polar`، المستخدمة لتمثيل الأعداد المركَّبة (complex numbers) بالإحداثيات القطبية، بالنوع:
 
 ```ocaml
   type t = { rho : float; theta : float; }
 ```
 
-If we wish to enforce the invariant 0 ≤rho on this type, or to ensure that
-0 ≤theta < 2π, one solution is to define an abstract type. However, in that
-case, we would no longer be able to access the fields `rho` and `theta` from
-outside the module `Polar`, and would therefore have to provide two accessor
-functions:
+إذا أردنا فرض الثابتة 0 ≤rho على هذا النوع، أو ضمان أن 0 ≤theta < 2π، فأحد الحلول هو تعريف نوع مجرَّد. غير أننا في هذه الحالة لم نعد قادرين على الوصول إلى الحقلين `rho` و`theta` من خارج الوحدة `Polar`، وكان لا بدّ بالتالي من توفير دالتي وصول (accessor):
 
 ```ocaml
   val rho : t -> float
   val theta : t -> float
 ```
 
-A more elegant solution consists in making the type `t` a *private type*. We give the
-module a signature in which the definition of the type `t` is qualified with
-`private`.
+أما الحل الأنقت فيتمثل في جعل النوع `t` *نوعًا خاصًّا* (private type). ونمنح الوحدة بصمة يكون فيها تعريف النوع `t` مؤهَّلًا بـ`private`.
 
 ```ocaml
   type t = private { rho : float; theta : float; }
 ```
 
-The definition of the type `t` inside the module remains unchanged. The private nature of
-the type `t` entails that it is no longer possible to construct a record of type `Polar.t`
-outside the module. Thus, if we write the expression `{ Polar.rho = 1.; Polar.theta = 0. }`, the following error is triggered:
+يظل تعريف النوع `t` داخل الوحدة على ما هو عليه. ويترتب على الطابع الخاص للنوع `t` أنه لم يعد ممكنًا بناء سجل من النوع `Polar.t` خارج الوحدة. وبالتالي، إذا كتبنا التعبير `{ Polar.rho = 1.; Polar.theta = 0. }`، فسيُثار الخطأ التالي:
 
 ```ocaml
   Error: Cannot create values of the private type Polar.t
 ```
 
-However, it remains possible to construct values of this type inside the module
-`Polar`. We may therefore provide one—or several—functions to create values of type
-`t`, for example:
+ومع ذلك، يظل ممكنًا بناء قيم من هذا النوع داخل الوحدة `Polar`. ويمكننا بالتالي توفير دالة — أو عدة دوال — لبناء قيم من النوع `t`، مثلًا:
 
 ```ocaml
   val create : float -> float -> t
 ```
 
-We may implement this function inside the module in a way that enforces the invariant:
-We may either choose to fail if the values of `rho` and `theta` do not satisfy the
-invariant, or normalize the values so that they do. Private types are useful because
-their definition is not hidden, so that the structure of their values is accessible, but
-the construction of these values is still disallowed. In our example, we can
-access the fields `rho` and `theta` with the usual notation in an expression
-or a pattern matching. Furthermore, it would not be possible to modify a
-`mutable` field of a private record. The notion of privacy is not limited to record
-types.
+يمكننا تنفيذ هذه الدالة داخل الوحدة بطريقة تفرض الثابتة: فإما أن نختار الفشل إذا كانت قيمتا `rho` و`theta` لا تحققان الثابتة، وإما أن نُسوِّي القيم بحيث تحققانها. والأنواع الخاصة مفيدة لأن تعريفها غير مخفي، مما يجعل بنية قيمها قابلة للوصول، لكن بناء هذه القيم يظل ممنوعًا. وفي مثالنا، يمكننا الوصول إلى الحقلين `rho` و`theta` بالترميز المعتاد في تعبير أو في مطابقة أنماط. وبالإضافة إلى ذلك، لا يمكن تعديل حقل `mutable` في سجل خاص. ولا يقتصر مفهوم الخصوصية على أنواع السجلات.
 
-##### Iterators and Abstract Types
+##### المُكرِّرات (Iterators) والأنواع المجرَّدة
 
-Iterators allow the traversal of a data structure (see section [*2.9*](#x7-63000doc) *Converting Integers from an Arbitrary Base*). In case of concrete types, such as lists, we always have the
-option of directly defining a recursive function. By contrast, in case of *abstract*types,
-this is no longer possible. It is therefore a good idea to provide an iterator as well, in
- 
- 
-the form of a function `iter` or `fold`. If, for example, a module `S` provides an
-abstract type for sets of integers—let us call it `set`—it could also provide a
-function:
+تتيح المُكرِّرات اجتياز بنية بيانات (انظر القسم [*2.9*](#x7-63000doc) *تحويل الأعداد الصحيحة من أساس تعسّفي (arbitrary base)*). في حالة الأنواع الملموسة، مثل القوائم، يمكننا دائمًا اختيار تعريف دالة عودية مباشرة. أما في حالة الأنواع *المجرَّدة*، فإن ذلك لم يعد ممكنًا. ولذلك، من الحكمة توفير مُكرِّر أيضًا، على هيئة دالة `iter` أو `fold`. فمثلًا، إذا كانت وحدة `S` توفر نوعًا مجرَّدًا لمجموعات الأعداد الصحيحة — ولنُسمِّه `set` — فيمكنها أيضًا توفير دالة:
 
 ```ocaml
   fold: (int -> ’a -> ’a) -> set -> ’a -> ’a
 ```
 
-We can use this function to calculate the sum of the elements of a given set, even though
-we do not know its representation.
+يمكننا استخدام هذه الدالة لحساب مجموع عناصر مجموعة معيَّنة، وذلك رغم أننا لا نعرف تمثيلها.
 
-##### Functors
+##### المُبَرْمِجات (Functors)
 
-Functors allow us to construct data structures parametrized by other data structures.
-The OCaml standard library contains four examples of data structures defined as
-functors: `Hashtbl.Make`, `Set.Make`, `Map.Make`, and `Weak.Make`. Part II of this book
-also contains numerous such examples. Functors can also help us write algorithms
-parametrized by data structures or even by other algorithms (see the various
-examples in Part III). In general, functors are an elegant way of reusing code, by
-writing it in the most generic way possible. Despite numerous differences, they are
-comparable to C++ *templates*.
+تتيح لنا المُبَرْمِجات بناء بنى بيانات مبارَمة ببنى بيانات أخرى. فالمكتبة القياسية لأوسمل تحوي أربعة أمثلة على بنى بيانات مُعرَّفة على هيئة مُبَرْمِجات: `Hashtbl.Make` و`Set.Make` و`Map.Make` و`Weak.Make`. كما يحوي الجزء الثاني من هذا الكتاب أمثلة عديدة من هذا القبيل. ويمكن للمُبَرْمِجات أن تساعدنا أيضًا على كتابة خوارزميات مبارَمة ببنى بيانات أو حتى بخوارزميات أخرى (انظر الأمثلة المتنوعة في الجزء الثالث). وبصفة عامة، تُعدّ المُبَرْمِجات طريقة أنيقة لإعادة استخدام الشيفرة، عبر كتابتها بأكبر قدر ممكن من العمومية. ورغم الاختلافات العديدة بينهما، فإنها تُقارَن بـ*قوالب* C++ (templates).
 
-### 2.12 Playing a Musical Score
+### 2.12 عزف مقطوعة موسيقية (Playing a Musical Score)
 
 >
 
-Our next program (see page [202](#x7-76005r14)), `music.ml`, plays a musical score. The simple scores
-that we are going to play are represented grapically as in figure [2.9](#musical-score).
+برنامجنا التالي (انظر الصفحة [202](#x7-76005r14))، `music.ml`، يعزف مقطوعة موسيقية. والمقطوعات البسيطة التي سنعزفها مُمثَّلة بيانيًا كما في الشكل [2.9](#musical-score).
 
 ![](/images/learn-ocaml/first-steps-9-partition-.webp){#musical-score}
 
-**Figure 2.9: Musical score.**
+**الشكل 2.9: مقطوعة موسيقية.**
 
-There are several types of *signs*here:
+هناك عدة أنواع من *الإشارات* (signs) هنا:
 
-- Notes are determined by their pitch (or position) on the score and their
-       duration. We are only interested in notes of two specific durations: half
-       notes and quarter notes. Half notes are twice as long as quarter notes.
-- Silences, for which we similarly consider only those that have the durations
-       of half and quarter notes.
+- تُحدَّد النوتات (notes) بدرجتها (أي بموضعها) على المقطوعة وبمدّتها. ونحن مهتمون فقط بالنوتات ذات مدتين محددتين: نصف النوتات (half notes) وربع النوتات (quarter notes). فنصف النوتة ضعف ربع النوتة طولًا.
+- الأصوات الساكنة (silences)، التي نعتبر فيها بالمثل فقط تلك التي تبلغ مدتها مدّة نصف النوتة أو مدّة ربع النوتة.
 
-To these signs, we add the *tempo*, which determines the number of quarter
-notes per minute. In the example above, the tempo is 60 quarter notes per
-minute.
+إلى هذه الإشارات، نُضيف *الإيقاع* (tempo)، الذي يحدّد عدد ربع النوتات في الدقيقة. وفي المثال أعلاه، الإيقاع هو 60 ربع نوتة في الدقيقة.
 
-To play the notes, we need to know their respective frequencies (in Hz). To
-facilitate this calculation, we represent the pitch of a note not by its position on the
-score, but rather by using the following two pieces of information:
+لعزف النوتات، يلزمنا معرفة تردداتها الخاصة (بالهرتز). ولتسهيل هذا الحساب، نُمثّل درجة النوتة لا بموضعها على المقطوعة، بل باستخدام معلومتين اثنتين:
 
-- a main note—do, re, mi, fa, sol, la, or si;
-- an octave 0, 1, 2, 3, etc.
+- نوتة رئيسة — دو، ري، مي، فا، صول، لا، سي؛
+- أوكتاف 0 أو 1 أو 2 أو 3، إلى آخره.
 
-This representation allows us to determine the frequency of a note easily, using the
-following formula:
+يتيح لنا هذا التمثيل تحديد تردد النوتة بسهولة، باستخدام الصيغة التالية:
 
 $$o f = f0 \times 2$$
 
-Here, f0 is the frequency of its main note in the octave 0 and o is its octave.
-Table [2.10](#frequencies-for-octave-of-the-main-musical-notes) gives the frequencies in octave 0 for the main notes.
+هنا، f0 هو تردد نوتتها الرئيسة في الأوكتاف 0، وo هو أوكتافها. ويعطي الجدول [2.10](#frequencies-for-octave-of-the-main-musical-notes) الترددات في الأوكتاف 0 للنوتات الرئيسة.
 
-**Figure 2.10: Frequencies for octave 0 of the main musical notes.**
+**الشكل 2.10: الترددات في الأوكتاف 0 للنوتات الموسيقية الرئيسة.**
 
 $$Note Frequency (Hz) - - - - - - - - - - for - octave 0 - - - - do 33 re 37 mi 41 fa 44 sol 49 la 55 si 62$$
 
 >
 
-In order to represent all the elements of a score, our program begins by defining
-several types. The main notes are represented by the type `note` as follows
-[^5]:
+كي يتمكن برنامجنا من تمثيل جميع عناصر المقطوعة، يبدأ بتعريف عدة أنواع. فالنوتات الرئيسة مُمثَّلة بالنوع `note` على النحو التالي [^5]:
 
 ```ocaml
   type note = Do | Re | Mi | Fa | Sol | La | Si
 ```
 
-This is an *enumerated* type, which defines a finite domain made up of seven elements (`Do`,
-`Re`, etc.), called *constructors*. Syntactically, OCaml requires that the name of a
-constructor begin with an uppercase letter.
+هذا نوع *مُعدَّد* (enumerated)، يُعرّف مجالًا محدودًا يتكون من سبعة عناصر (`Do` و`Re` وغيرها)، تُسمّى *بواني إنشاء* (constructors). وبصياغة نحوية، يطلب أوسمل أن يبدأ اسم الباني بحرف كبير.
 
-Once we have defined this type, we may manipulate values of type `note` by simply
-using the names of their constructors:
+بمجرد تعريف هذا النوع، أصبح بإمكاننا التعامل مع قيم النوع `note` بمجرد استخدام أسماء بواني إنشائها:
 
 ```ocaml
   # Re;;
   - : note = Re
 ```
 
-The pitch of the notes is represented using records of type `pitch` with two fields,
-`note` and `octave`, which must contain non-negative integers.
+تُرمَّز درجة النوتات بسجلات (records) من النوع `pitch` ذات حقلين، `note` و`octave`، يجب أن يحتويا أعدادًا صحيحة غير سالبة.
 
 ```ocaml
   type pitch = { note : note; octave : int }
 ```
 
-The durations, which are of type `duration`, are represented by the two
-constructors `Half` (half notes) and `Quarter` (quarter notes).
+أما المدد، التي هي من النوع `duration`، فمُمثَّلة بالبانيين `Half` (نصف نوتة) و`Quarter` (ربع نوتة).
 
 ```ocaml
   type duration = Half | Quarter
 ```
 
-To represent the two kinds of signs that may appear on musical scores, we define
-the type `symbol` as follows:
+ولتمثيل نوعي الإشارات الذين قد يظهران في المقطوعات الموسيقية، نُعرّف النوع `symbol` على النحو التالي:
 
 ```ocaml
   type symbol = Note of pitch * duration | Rest of duration
 ```
 
-This is an *algebraic type*, which allows us to distinguish between notes and silences by
-means of two constructors, `Note` and `Rest`. Unlike the constructors of enumerated
-types `note` and `duration`, the constructors `Note` and `Rest` have arguments. In case of
-`Note`, the arguments are of type `pitch` and `duration`. `Rest` has an argument of
-type `duration`. For example, to create a silence of quarter-note duration, we
-write:
+هذا نوع *جَبْري* (algebraic type)، يتيح لنا التمييز بين النوتات والأصوات الساكنة بواسطة بانيين، `Note` و`Rest`. وخلافًا لبواني الإنشاء في النوعين المُعدَّدين `note` و`duration`، فإن البانيين `Note` و`Rest` لهما وسائط. ففي حالة `Note`، الوسائط من النوعين `pitch` و`duration`. أما `Rest` فله وسيط من النوع `duration`. فلإنشاء صمت مدته ربع نوتة، مثلًا، نكتب:
 
 ```ocaml
   # Rest Quarter;;
   - : symbol = Rest Quarter
 ```
 
-Similarly, to create a note re in octave 1 of half-note duration, we write:
+وبالمثل، لإنشاء نوتة ري في الأوكتاف 1 وبمدّة نصف نوتة، نكتب:
 
 ```ocaml
   # Note ({ note = Re; octave = 1 }, Half);;
   - : signe = Note ({note = Re; octave = 1}, Half)
 ```
 
-Finally, scores are represented by the record type `score`, composed of a list of
-signs and a tempo that gives the number of quarter notes per minute.
+أخيرًا، تُرمَّز المقطوعات بنوع السجل `score`، المكوَّن من قائمة إشارات وإيقاع (tempo) يحدّد عدد ربع النوتات في الدقيقة.
 
 ```ocaml
   type score = { symbols : symbol list;  metronome : int }
 ```
 
-The first function of the program calculates the frequency associated with
-the pitch of a note based on the formula and the table of frequencies given
-above.
+تحسب الدالة الأولى في البرنامج التردد المرتبط بدرجة النوتة، استنادًا إلى الصيغة وجدول الترددات المعطيين أعلاه.
 
 ```ocaml
   let frequency { note = n; octave = o } =
 ```
 
-Given a note `n` of type `note` and an octave `o`, the function `frequency` begins by
-determining the frequency `f0` of the main note `n` using the pattern matching construct
-`matchnwith` as follows:
+إذًا، بنوتة `n` من النوع `note` وأوكتاف `o`، تبدأ الدالة `frequency` بتحديد التردد `f0` للنوتة الرئيسة `n`، باستخدام بنية مطابقة الأنماط `matchnwith`، على النحو التالي:
 
 ```ocaml
     let f0 =
@@ -3796,32 +3000,25 @@ determining the frequency `f0` of the main note `n` using the pattern matching c
     ...
 ```
 
-This construct returns different values depending on the constructor used to create `n`.
-Thus, if `n` is the constructor `Do`, the construct `matchnwith` returns the integer `33`.
-Else, if `n` is the constructor `Re`, it is the integer `37` that is returned, and so
-forth. The main frequency `f0` is then used to calculate the frequency of the
-note:
+تُعيد هذه البنية قيمًا مختلفة بحسب الباني المستخدم في إنشاء `n`. إذًا، إذا كان `n` هو الباني `Do`، فإن البنية `matchnwith` تُعيد العدد الصحيح `33`. وإلا، إذا كان `n` هو الباني `Re`، فهو العدد الصحيح `37` الذي يُعاد، وهكذا دواليك. ثُمّ يُستخدَم التردد الرئيس `f0` لحساب تردد النوتة:
 
 ```ocaml
     f0 * truncate (2. ** float o)
 ```
 
-The second function calculates the time (in milliseconds) corresponding to a
-duration `d` (a half or quarter note), for a given tempo `t`.
+تحسب الدالة الثانية الزمن (بالمِلّيثوان) المقابل لمدّة `d` (نصف نوتة أو ربع نوتة)، لإيقاع معيَّن `t`.
 
 ```ocaml
   let milliseconds d t = ...
 ```
 
-We begin by calculating the time of a quarter note, (`quarter`), for the given
-tempo:
+نبدأ بحساب زمن ربع النوتة، (`quarter`)، للإيقاع المعيَّن:
 
 ```ocaml
     let quarter = 60000 / t in
 ```
 
-Next, depending on the duration `d`, we return `quarter*2` milliseconds for a
-quarter note, and `quarter` milliseconds for a half note:
+بعد ذلك، وتبعًا للمدّة `d`، نُعيد `quarter*2` مِلّيثوان لربع النوتة، و`quarter` مِلّيثوان لنصف النوتة:
 
 ```ocaml
     match d with
@@ -3829,14 +3026,13 @@ quarter note, and `quarter` milliseconds for a half note:
     | Quarter -> quarter
 ```
 
-The following function, `sound`, either plays a musical note or a silence:
+الدالة التالية، `sound`، إما تعزف نوتة موسيقية وإما تُخرِج صمتًا:
 
 ```ocaml
   let sound t s = ...
 ```
 
-Given a tempo `t` and a symbol `s`, `sound` pattern matches on `s` to determine if it is a
-musical note or a silence:
+بإيقاع `t` وإشارة `s`، تُجرِي الدالة `sound` مطابقة أنماط على `s` لتحديد ما إذا كانت نوتة موسيقية أم صمتًا:
 
 ```ocaml
     match s with
@@ -3846,19 +3042,9 @@ musical note or a silence:
           ...
 ```
 
-This pattern matching construct allows us not only to discern the constructor used
-to create `s`, but also to retrieve the arguments of this constructor. Thus,
-if `s` corresponds to the first *pattern* `Note(p,d)`, the two variables `p` and `d`
-represent, respectively, the pitch and duration associated with this constructor. In
-the second pattern, the variable `r` represents the silence associated with the
-constructor `Rest`. In both cases, the variables introduced by the patterns
-have a scope limited to the expression on the right-hand side of the arrow
-`->`.
+تتيح لنا بنية مطابقة الأنماط هذه ليس فقط التمييز بين الباني المستخدم في إنشاء `s`، بل أيضًا استرجاع وسائط هذا الباني. إذًا، إذا كان `s` يقابل أول *نمط* (pattern)، وهو `Note(p,d)`، فإن المتغيرين `p` و`d` يُمثّلان على التوالي درجة النوتة ومدّتها المرتبطتين بهذا الباني. وفي النمط الثاني، يُمثّل المتغير `r` الصمت المرتبط بالباني `Rest`. وفي الحالتين، نطاق المتغيرات التي تُدخِلها الأنماط مقتصر على التعبير الواقع على الجانب الأيمن من السهم `->`.
 
-When `s` is of the form `Note(p,d)`, we calculate the frequency `f` associated
-with the pitch `p` of the note using the function `frequency`. Then, we use the
-function `Graphics.sound` to emit a sound of frequency `f` for a duration of
-`(millisecondsdt)`:
+عندما يكون `s` على الشكل `Note(p,d)`، نحسب التردد `f` المرتبط بدرجة النوتة `p` باستخدام الدالة `frequency`. ثُمّ نستخدم الدالة `Graphics.sound` لإصدار صوت بتردد `f` مدّة `(millisecondsdt)`:
 
 ```ocaml
       | Note (p, d) ->
@@ -3866,29 +3052,25 @@ function `Graphics.sound` to emit a sound of frequency `f` for a duration of
         Graphics.sound f (millisecondes d t)
 ```
 
-When `s` is a silence of the form `Restr`, we emit a sound of zero frequency during
-`(millisecondsrt)` milliseconds.
+وعندما يكون `s` صمتًا على الشكل `Restr`، نصدر صوتًا بتردد صفر مدّة `(millisecondsrt)` مِلّيثوان.
 
 ```ocaml
       | Rest r ->
         Graphics.sound 0 (millisecondes r t)
 ```
 
-Finally, the last function plays the notes of a score one by one, using the function
-`sound`:
+أخيرًا، تعزف الدالة الأخيرة نوتات المقطوعة الواحدة تلو الأخرى، باستخدام الدالة `sound`:
 
 ```ocaml
   let play_score { symbols = l; metronome = t } =
     List.iter (sound t) l
 ```
 
-#### Additional Information
+#### معلومات إضافية
 
-##### Pattern Matching
+##### مطابقة الأنماط (Pattern Matching)
 
-In general, the pattern matching construct `matchvwith` generalizes what we
-saw earlier in case of lists (section [*2.8*](#reversing-the-order-of-lines-in-a-text) *Reversing the Order of Lines in a Text*). It contains `k` branches, each branch associating a pattern with an
-expression:
+بصفة عامة، تُعمِّم بنية مطابقة الأنماط `matchvwith` ما اطلعنا عليه سابقًا في حالة القوائم (القسم [*2.8*](#reversing-the-order-of-lines-in-a-text) *عكس ترتيب الأسطر في نص*). فهي تحوي `k` فرعًا، يربط كل فرع نمطًا بتعبير:
 
 ```ocaml
   match v with
@@ -3898,33 +3080,24 @@ expression:
     | pattern_k -> e_k
 ```
 
-The value `v` is first evaluated and is then compared, from top to bottom, with each
-pattern. The only expression evaluated by this construct is the `e_i` corresponding to
-the first pattern *compatible*with the shape of `v`.
+تُقيَّم القيمة `v` أوّلًا، ثُمّ تُقارَن، من الأعلى إلى الأسفل، بكل نمط. والتعبير الوحيد الذي تُقيّمه هذه البنية هو `e_i` المقابل لأول نمط *متوافق* مع شكل `v`.
 
-The syntax of patterns is very expressive. It allows us to decompose complex
-values with ease, for example values defined using the following types `t` and
-`u`:
+صياغة الأنماط صياغة معبِّرة جدًا. فهي تتيح لنا تفكيك القيم المعقَّدة بسهولة، مثل القيم المعرَّفة باستخدام النوعين `t` و`u` التاليين:
 
 ```ocaml
   type t = A of int * float | B of string
   type u = { a : t; b : int * t }
 ```
 
-Thus, the pattern `{ b = (_, A (x, _)) }` allows us to retrieve the integer `1` passed as
-argument to the constructor `A` in the following value:
+وبالتالي، يتيح لنا النمط `{ b = (_, A (x, _)) }` استرجاع العدد الصحيح `1` الممرَّر بوصفه وسيطًا للباني `A` في القيمة التالية:
 
 ```ocaml
   { a = B "foo"; b = (10, A(1, 4.5)) }
 ```
 
-Informally, the pattern `{ b = (_, A (x, _)) }` is read as “a record whose field `b`
-contains a pair, the second component of which is a value constructed using `A` with
-two arguments, the first of which is named `x`.”
+وبصورة غير رسمية، يُقرأ النمط `{ b = (_, A (x, _)) }` على أنه «سجل يحوي حقله `b` زوجًا، مكوّنه الثاني قيمة مبنية باستخدام `A` بوسيطين، أولّهما مُسمًّى `x`».
 
-OCaml can also verify the exhaustivity of pattern matching, ensuring that all
-possible cases are indeed covered. Thus, for any value `v` of type `u`, the compiler detects
-that the following pattern matching is not exhaustive:
+يستطيع أوسمل أيضًا التحقق من شمولية (exhaustivity) مطابقة الأنماط، بما يضمن تغطية جميع الحالات الممكنة فعلًا. إذًا، بالنسبة إلى أي قيمة `v` من النوع `u`، يكشف المُصرِّف أن مطابقة الأنماط التالية غير شاملة:
 
 ```ocaml
   match v with
@@ -3933,10 +3106,7 @@ that the following pattern matching is not exhaustive:
     | { a = B x; b = (_, B y) } -> ...
 ```
 
-It even indicates that values of the form `{ a=B _; b=(_, A (_, _)) }` are not handled
-by this pattern matching, which could lead to a runtime error. By contrast, the
-compiler verifies that the following construct *is*exhaustive, although this is not
-obvious *a priori*:
+إنه يُشير حتى إلى أن القيم على الشكل `{ a=B _; b=(_, A (_, _)) }` لا تُعالَج في مطابقة الأنماط هذه، مما قد يؤدي إلى خطأ في زمن التشغيل. وعلى النقيض، يتحقق المُصرِّف من أن البنية التالية *شاملة* فعلًا، وإن كان ذلك غير بديهي *من باب الأولوية* (a priori):
 
 ```ocaml
   match v with
@@ -3946,9 +3116,7 @@ obvious *a priori*:
     | { a = _;  b = (_, A(_, y)) } -> ...
 ```
 
-The pattern matching construct also allows us to associate the same expression
-with several patterns. These patterns, called *or*patterns, take the following
-form:
+تتيح لنا بنية مطابقة الأنماط أيضًا ربط التعبير ذاته بعدة أنماط. وهذه الأنماط، التي تُسمّى الأنماط *البديلة* (or-patterns)، تتخذ الشكل التالي:
 
 ```ocaml
   match v with
@@ -3956,9 +3124,7 @@ form:
     | ...
 ```
 
-The only syntactic constraint is that each pattern must introduce the same variable
-names, and these must have the same type. For example, we may write the following
-*or*pattern on values of type `u`:
+القيد النحوي الوحيد هو أن كل نمط يجب أن يُدخِل أسماء المتغيرات نفسها، وأن تكون من النوع نفسه. فمثلًا، يمكننا كتابة النمط *البديل* التالي على قيم النوع `u`:
 
 ```ocaml
   match v with
@@ -3966,8 +3132,7 @@ names, and these must have the same type. For example, we may write the followin
     | ...
 ```
 
-It is equally possible to associate variable names to the sub-parts of a pattern using the
-`as` notation, as in the following example:
+ومن الممكن أيضًا ربط أسماء متغيرات بالأجزاء الفرعية لنمط باستخدام الترميز `as`، كما في المثال التالي:
 
 ```ocaml
   match v with
@@ -3975,11 +3140,9 @@ It is equally possible to associate variable names to the sub-parts of a pattern
     | ...
 ```
 
-Here, the variable `z` references the value that is matched by the (sub-)pattern `A(y,_)`.
-Thus, the application of this pattern matching to `{ a = B "foo"; b = (10, A(1, 4.5)) }` will construct the pair `(1,A(1,4.5))`.
+هنا، يُشير المتغير `z` إلى القيمة التي يُطابَقها النمط الفرعي (sub-pattern) `A(y,_)`. وبالتالي، فإن تطبيق مطابقة الأنماط هذه على `{ a = B "foo"; b = (10, A(1, 4.5)) }` سيُنتج الزوج `(1,A(1,4.5))`.
 
-Finally, pattern matching may be extended with arbitrary boolean conditions,
-using the `when` notation as follows:
+أخيرًا، يمكن تمديد مطابقة الأنماط بشروط منطقية اعتباطية، باستخدام الترميز `when` على النحو التالي:
 
 ```ocaml
   match v with
@@ -3987,8 +3150,7 @@ using the `when` notation as follows:
     | ...
 ```
 
-For example, we can match values of type `u` having a field `a` of the form `A(x,_)`, with `x`
-greater than `10`, as follows:
+فمثلًا، يمكننا مطابقة قيم النوع `u` التي حقلها `a` على الشكل `A(x,_)`، مع `x` أكبر من `10`، على النحو التالي:
 
 ```ocaml
   match v with
@@ -3996,47 +3158,36 @@ greater than `10`, as follows:
     | ...
 ```
 
-It is important to note that the exhaustivity analysis does not take into account these
-boolean conditions and that all patterns constrained by such expressions are simply
-ignored.
+من المهم ملاحظة أن تحليل الشمولية لا يأخذ هذه الشروط المنطقية في الحسبان، وأن جميع الأنماط المقيدة بمثل هذه التعبيرات تُهمَل ببساطة.
 
-##### Algebraic Types
+##### الأنواع الجَبْرية (Algebraic Types)
 
-It is also possible to define polymorphic algebraic types. To do so, we must indicate
-the list of type variables (or parameters) that appear in the definition. Consider the
-following example:
+من الممكن أيضًا تعريف أنواع جبرية متعددة الأشكال (polymorphic). ولكي، يجب أن نشير إلى قائمة متغيرات الأنواع (أو البارامترات) التي تظهر في التعريف. فلننظر في المثال التالي:
 
 ```ocaml
   type (’a, ’b) t = C of ’a * int | D of ’b | E of int
 ```
 
-Here, the type `t` is parametrized by two variables `’a` and `’b`. The constructors `C` and `D`
-are polymorphic. Thus, as in the case of a polymorphic function, these constructors
-may be applied to arguments of any type:
+هنا، النوع `t` مُبارمَد بمتغيرين `’a` و`’b`. والبانيان `C` و`D` متعددا الأشكال. إذًا، كما في حالة الدالة متعددة الأشكال، يمكن تطبيق هذين البانيين على وسائط من أي نوع:
 
 ```ocaml
   # let v = C(3, "foo");;
   val v : (int, string) t = C(3, "foo")
 ```
 
-The type `’alist` of polymorphic lists predefined in the OCaml standard library is
-an example of a polymorphic algebraic type. If the syntax allowed it, it could be
-defined by:
+أما النوع `’alist` الخاص بالقوائم متعددة الأشكال، المُعرَّف سلفًا في المكتبة القياسية لأوسمل، فهو مثال على نوع جَبْري متعدد الأشكال. ولو سمحت الصياغة بذلك، لأمكن تعريفه على النحو التالي:
 
 ```ocaml
   type ’a list = [] | :: of ’a * ’a list
 ```
 
-Another example of a polymorphic algebraic type is the type `option` of the standard
-library defined by:
+ومثال آخر على النوع الجَبْري متعدد الأشكال هو النوع `option` في المكتبة القياسية، المعرَّف بـ:
 
 ```ocaml
   type ’a option = None | Some of ’a
 ```
 
-It serves in particular to represent a value not yet initialized, or an optional result. For
-example, the following function returns either `None`, when it is not possible to divide `x`
-by `y`, or else `Some(x/y)`:
+وهو يُستخدم خاصةً لتمثيل قيمة لم تُهيَّأ بعد، أو نتيجة اختيارية. فمثلًا، تُعيد الدالة التالية إمّا `None`، عندما يتعذّر قسمة `x` على `y`، وإمّا `Some(x/y)`:
 
 ```ocaml
   let division x y = if y = 0 then None else Some (x / y)
@@ -4047,31 +3198,31 @@ by `y`, or else `Some(x/y)`:
   - : int option = None
 ```
 
-### 2.13 Quadtrees
+### 2.13 الأشجار الرباعية (Quadtrees)
 
 >
 
-Our next program (page [219](#x7-80021r15)), `quad.ml`, manipulates black-and-white square images
-of size 2n ×  2n. If the image is completely black or white, it is represented using a
-constant denoting its color. Otherwise, it is decomposed into four sub-images, each of
-size 2n−1 ×  2n−1, following the order indicated in figure [2.11](#breaking-up-an-image).
+برنامجنا التالي (الصفحة [219](#x7-80021r15))، `quad.ml`، يعالج صورًا مربّعة بالأبيض والأسود
+بحجم 2n × 2n. إذا كانت الصورة سوداء أو بيضاء بالكامل، فتُعرض باستخدام ثابت
+يدل على لونها. وإلا، فتُفكَّك إلى أربع صور جزئية، كلٌّ منها بحجم
+2n−1 × 2n−1، وفق الترتيب الموضَّح في الشكل [2.11](#breaking-up-an-image).
 
 ![](/images/learn-ocaml/first-steps-10-quad_tree-mps-.webp){#breaking-up-an-image}
 
-**Figure 2.11: Breaking up an image.**
+**الشكل 2.11: تفكيك صورة.**
 
-The image is the union of the four sub-images. In our program, the type `quad`
-corresponds to this representation.
+الصورة هي اتحاد الصور الجزئية الأربع. وفي برنامجنا، يقابل النوع `quad`
+هذا التمثيل.
 
 ```ocaml
   type quad = White | Black | Node of quad * quad * quad * quad
 ```
 
-The constants `White` and `Black` respectively denote an image that is either completely
-white or completely black. The constructor `Node` corresponds to an image decomposed
-into four sub-images, which are the four arguments of this constructor.
+يشير الثابتان `White` و`Black` إلى صورة بيضاء بالكامل أو سوداء
+بالكامل على التوالي. ويقابل الباني `Node` صورةً مفكَّكة إلى أربع صور
+جزئية، وهي الوسائط الأربعة لهذا الباني.
 
-Consider the image in figure [2.12](#an-image-of-size-). It is represented by the following value of type
+فلننظر في الصورة الواردة في الشكل [2.12](#an-image-of-size-). وتُعرض بالقيمة التالية من النوع
 `quad`:
 
 ```ocaml
@@ -4083,36 +3234,36 @@ Consider the image in figure [2.12](#an-image-of-size-). It is represented by t
 
 ![](/images/learn-ocaml/first-steps-11-quad_tree_example-mps-.webp){#an-image-of-size-}
 
-**Figure 2.12: An image of size 4 × 4.**
+**الشكل 2.12: صورة بحجم 4 × 4.**
 
-Graphically, we may also represent this value as follows:
+ويمكننا أيضًا أن نعرض هذه القيمة بيانيًا على النحو التالي:
 
-This is why we speak of *trees*in relation to such values.
+ولهذا نتحدَّث عن *أشجار* (trees) فيما يتعلق بمثل هذه القيم.
 
-Let us now write a function `checker_board`, which constructs a quadtree
-corresponding to a 2n × 2n checkerboard. Thus, `checker_board3` corresponds to the
-image in figure [2.13](#an-checkerboard).
+فلنكتب الآن دالة `checker_board`، التي تبني شجرةً ربعيةً مقابلةً
+لرقعة شطرنج بحجم 2n × 2n. وبذلك، تقابل `checker_board3` الصورة
+الواردة في الشكل [2.13](#an-checkerboard).
 
 ![](/images/learn-ocaml/first-steps-12-damier3-mps-.webp){#an-checkerboard}
 
-**Figure 2.13: An 8 × 8 checkerboard.**
+**الشكل 2.13: رقعة شطرنج بحجم 8 × 8.**
 
-We proceed by recursion on n. If n is 0, we make an arbitrary choice and return a
-black square.
+نسلك طريقة التعاود (recursion) على n. فإذا كان n يساوي 0، فنجري اختيارًا
+اعتباطيًا ونُعيد مربعًا أسود.
 
 ```ocaml
 let rec checker_board = function
   | 0 -> Black
 ```
 
-If n = 1, we return a checkerboard of size 2 × 2:
+وإذا كان n = 1، نُعيد رقعة شطرنج بحجم 2 × 2:
 
 ```ocaml
   | 1 -> Node (White, Black, White, Black)
 ```
 
-Finally, if n > 1, we construct a 2n−1 × 2n−1 checkerboard that we use four times over to
-construct a checkerboard of size 2n × 2n.
+وأخيرًا، إذا كان n > 1، نبني رقعة شطرنج بحجم 2n−1 × 2n−1 نستخدمها أربع مرات
+لبناء رقعة شطرنج بحجم 2n × 2n.
 
 ```ocaml
   | n -> let q = checker_board (n - 1) in Node (q, q, q, q)
@@ -4120,35 +3271,34 @@ construct a checkerboard of size 2n × 2n.
 
 >
 
-Let us now write a function `draw` that draws the image represented by a quadtree.
-This function takes as arguments the coordinates of the square in which we wish to
-draw the image: the position (`x`,`y`) of the bottom-left point of the image, and the
-side length `w` of the square. We proceed recursively on the structure of the
-quadtree.
+فلنكتب الآن دالة `draw` ترسم الصورة التي تمثلها شجرة رباعية.
+تأخذ هذه الدالة وسيطين هما إحداثيات المربع الذي نرغب في رسم الصورة
+فيه: الموضع (`x`,`y`) للنقطة السفلية اليسرى من الصورة، وطول الضلع `w`
+للمربع. ونسلك طريقة التعاود على بنية الشجرة الرباعية.
 
 ```ocaml
   let rec draw x y w = function
 ```
 
-If the tree consists of only one leaf, we distinguish between two cases: For a white leaf,
-we do nothing; for a black leaf, we shade the square defined by `x`, `y`, and
-`w`.
+إذا كانت الشجرة تتألف من ورقة واحدة فقط، فنميّز بين حالتين: فبالنسبة
+للورقة البيضاء لا نفعل شيئًا؛ وبالنسبة للورقة السوداء نُظلّل المربع
+المحدَّد بـ `x` و`y` و`w`.
 
 ```ocaml
     | White -> ()
     | Black -> Graphics.fill_rect x y w w
 ```
 
-If, however, we are in the case of the constructor `Node`, we begin by calculating the side
-length of the four sub-images, namely, `w`∕2.
+أما إذا كنا في حالة الباني `Node`، فنبدأ بحساب طول ضلع الصور
+الجزئية الأربع، وهو `w`∕2.
 
 ```ocaml
     | Node (q1, q2, q3, q4) ->
         let w = w / 2 in
 ```
 
-Then, we draw the sub-images with four recursive calls to `draw`. In each case, we pass the
-coordinates of the bottom-left corner of the corresponding sub-image.
+ثم نرسم الصور الجزئية بأربع نداءات تعاوبية للدالة `draw`. نمرر في
+كل حالة إحداثيات الزاوية السفلية اليسرى للصورة الجزئية المقابلة.
 
 ```ocaml
         draw x       y       w q1;
@@ -4157,17 +3307,17 @@ coordinates of the bottom-left corner of the corresponding sub-image.
         draw x       (y + w) w q4
 ```
 
-In this way, we can draw an 8 × 8 checkerboard in a square of side 256 by calling
-`draw00256(checker_board3)`.
+وبهذه الطريقة، يمكننا رسم رقعة شطرنج بحجم 8 × 8 في مربع طول ضلعه 256
+بنداء `draw00256(checker_board3)`.
 
-#### Additional Information
+#### معلومات إضافية
 
-##### Constructors with Records
+##### البواني مع السجلّات (Records)
 
-With the type `quad` of quadtrees, it is easy to make a mistake in the order of the
-sub-trees of the constructor `Node`. We have to be very careful and constantly keep in
-mind the figure [2.11](#breaking-up-an-image). An alternative consists in naming the four sub-trees, as we do
-with record types:
+مع النوع `quad` الخاص بالأشجار الرباعية، من السهل أن يخطئ المرء في ترتيب
+الأشجار الفرعية للباني `Node`. فيجب أن نكون يقظين جدًا وأن نحفظ الشكل
+[2.11](#breaking-up-an-image) في الذهن باستمرار. وبديل ذلك هو تسمية الأشجار الفرعية الأربعة،
+كما نفعل مع أنواع السجلّات:
 
 ```ocaml
   type quad =
@@ -4176,16 +3326,16 @@ with record types:
     | Node of { sw: quad; se: quad; ne: quad; nw: quad }
 ```
 
-Both within a pattern and when constructing a value, we use the syntax of records to
-manipulate the arguments of the constructor `Node`. Thus, we construct a node as
-follows:
+سواء داخل نمط مطابقة أو عند بناء قيمة، نستخدم صيغة السجلّات للتعامل
+مع وسائط الباني `Node`. وهكذا، نبني عقدة (node) على النحو التالي:
 
 ```ocaml
   Node { nw = a; sw = b; se = c; ne = d }
 ```
 
-As we see here, the declaration order of the fields is not important. As in case of records,
-we can use pattern matching to retrieve their values:
+وكما نرى هنا، فإن ترتيب الحقول في الإعلان غير مهم. وكما هو الحال مع
+السجلّات، يمكننا استخدام مطابقة الأنماط (pattern matching) لاسترجاع
+قيمها:
 
 ```ocaml
   match q with
@@ -4193,7 +3343,7 @@ we can use pattern matching to retrieve their values:
     | Node { sw; se; ne; nw } -> ...
 ```
 
-However, we cannot write the following:
+غير أننا لا نستطيع كتابة ما يلي:
 
 ```ocaml
   match q with
@@ -4201,39 +3351,37 @@ However, we cannot write the following:
     | Node r -> ...
 ```
 
-This is because there is no record as such, only a syntax to name the four arguments of
-the constructor `Node`.
+والسبب هو أنه لا وجود لسجلّ كمنظومة قائمة بذاتها، بل توجد فقط صيغة
+تسمّي الوسائط الأربعة للباني `Node`.
 
-To understand the difference, let us compare the constructor `Node` above with the
-constructor `C` of the type `t` below:
+ولفهم الفرق، لنقارن الباني `Node` الوارد أعلاه بالباني `C` من النوع
+`t` أدناه:
 
 ```ocaml
   type r = { a: int; b: bool; c: int }
   type t = C of r | ...
 ```
 
-Here, the constructor `C` has a single argument of type `r`, which is a record. This value can
-be retrieved and, for example, passed to a function which takes a value of
-type `r`:
+هنا، الباني `C` له وسيط وحيد من النوع `r`، وهو سجلّ. ويمكن استرجاع هذه
+القيمة وتمريرها مثلًا إلى دالة تأخذ قيمة من النوع `r`:
 
 ```ocaml
   match ... with
   | C r -> f r
 ```
 
-This, however, has a cost. The constructor `C` contains a pointer to a record allocated
-previously, which means two allocations are needed instead of one. And accessing the
-components of the constructor `C` requires two memory accesses, the first to access the
-record and the second to access the field.
+غير أن لذلك ثمنًا. فالباني `C` يحتوي على مؤشّر إلى سجلّ خُصِّص له مكان
+سابقًا، ما يعني الحاجة إلى تخصيصين بدلًا من تخصيص واحد. والوصول إلى
+مكونات الباني `C` يتطلب عمليتَي وصول للذاكرة، الأولى للوصول إلى
+السجلّ والثانية للوصول إلى الحقل.
 
-##### Invariants
+##### اللوازم (Invariants)
 
-We may wish to guarantee the property that a quadtree is never made up of four
-leaves of the same color, since that would be an unnecessarily complicated
-representation. To enforce this invariant, we must make `quad` either an abstract or a
-private type. As alternatives to the constructors `Black`, `White`, and `Node`, we must
-then provide two constants `black` and `white`, and a function `node`, defined so as to
-guarantee the invariant.
+قد نرغب في ضمان خاصية ألّا تتألف شجرة رباعية قط من أربع أوراق باللون
+نفسه، إذ سيكون ذلك تمثيلًا معقَّدًا بلا داعٍ. ولفرض هذه اللازمة، يجب أن
+نجعل `quad` نوعًا مجرَّدًا (abstract) أو نوعًا خاصًا (private). وبديلًا عن
+البواني `Black` و`White` و`Node`، يجب أن نوفّر ثابتين `black` و`white`،
+ودالة `node` معرَّفة بحيث تضمن اللازمة.
 
 ```ocaml
   let node = function
@@ -4242,171 +3390,171 @@ guarantee the invariant.
     | q1, q2, q3, q4 -> Node (q1, q2, q3, q4)
 ```
 
-We is known as a *smart constructor*.
+ويُعرف هذا باسم *باني ذكي* (smart constructor).
 
-##### Sharing
+##### المشاركة (Sharing)
 
-The attentive reader will have noticed that the function `checker_board`
-makes *a single*recursive call, reusing its result four times. What we have
-constructed is thus not a tree, but rather a DAG. A depiction of the result of
-`checker_board3` that more accurately reflects its memory representation is
-therefore:
+سيُلاحظ القارئ اليقظ أن الدالة `checker_board` تجري نداءً تعاوبيًا
+*وحيدًا*، إذ تعيد استخدام نتيجتها أربع مرات. فما بنيناه ليس إذن شجرة،
+بل رسم موجَّه لا حلقات (DAG). ولهذا، يكون تصوير نتيجة `checker_board3`
+الذي يعكس تمثيلها في الذاكرة بأدقّ وجه هو:
 
-In particular, `checker_board` n executes in O(n) time and space. By contrast,
-*drawing*its result takes O(4n) time because the function `draw` traverses the four
-sub-images successively. In other words, the function `draw` traverses a tree without
-taking into account the sharing that exists in memory. Section [*11.4*](https://usr.lmf.cnrs.fr/lpo/mainch11.html#hashconsing)*Hash-consing*
-explains how to exploit such sharing.
+على وجه الخصوص، `checker_board` ن تعمل بزمن O(n) ومساحة O(n). وبالمقابل،
+فإن *رسم* نتيجتها يستغرق زمنًا قدره O(4n) لأن الدالة `draw` تجتاز الصور
+الجزئية الأربع تباعًا. وبعبارة أخرى، تجتاز الدالة `draw` شجرة دون أن
+تأخذ المشاركة القائمة في الذاكرة في الحسبان. ويشرح القسم
+[*11.4*](https://usr.lmf.cnrs.fr/lpo/mainch11.html#hashconsing) *Hash-consing* كيفية استغلال
+مثل هذه المشاركة.
 
-##### Binary Trees
+##### الأشجار الثنائية (Binary Trees)
 
-In a binary tree, each internal node contains exactly two sub-trees. The leaves, like
-the nodes, can be labeled. For example, binary trees with internal nodes labeled by
-integers correspond to the type:
+في الشجرة الثنائية، تحتوي كل عقدة داخلية على شجرتين فرعيتين بالضبط.
+والأوراق، شأنها شأن العقد، يمكن أن تكون موسومة. فمثلًا، تقابل الأشجار
+الثنائية ذات العقد الداخلية الموسومة بأعداد صحيحة النوع:
 
 ```ocaml
   type tree = Leaf | Node of tree * int * tree
 ```
 
-Similarly, trees with leaves labeled by strings correspond to the type:
+ومثلًا، تقابل الأشجار ذات الأوراق الموسومة بسلاسل نصية النوع:
 
 ```ocaml
   type tree = Leaf of string | Node of tree * tree
 ```
 
-The reader will find numerous examples of such trees in the pages that follow.
+سيجد القارئ أمثلة عديدة من مثل هذه الأشجار في الصفحات التالية.
 
-##### n-ary Trees
+##### الأشجار المتعددة الفروع (n-ary Trees)
 
-The number of sub-trees of an internal node is not necessarily fixed. It may vary and
-can even be unbounded. In this case, we may represent the sub-trees of a node by a
-list of trees. Thus we write:
+ليس عدد الأشجار الفرعية للعقدة الداخلية محدَّدًا بالضرورة. فقد يتبدَّن
+ويصل إلى حدّ عدم التحديد. وفي هذه الحالة، قد نمثل الأشجار الفرعية
+للعقدة بقائمة من الأشجار. فنكتب هكذا:
 
 ```ocaml
   type tree = Node of tree list
 ```
 
-It is interesting to note that we no longer need a specific constructor to represent
-leaves because the value `Node[]` fulfills this role. Of course, we may label the
-nodes of such a tree if we wish. An example may be found in section [*5.4*](https://usr.lmf.cnrs.fr/lpo/mainch5.html#prefix-trees)*Prefix Trees*.
+ومن الجدير بالملاحظة أننا لم نعد بحاجة إلى باني خاص لتمثيل الأوراق، لأن
+القيمة `Node[]` تؤدي هذا الدور. وبالطبع، يمكننا توسيم عقد هذه الشجرة إن
+أردنا ذلك. ومثال على ذلك موجود في القسم
+[*5.4*](https://usr.lmf.cnrs.fr/lpo/mainch5.html#prefix-trees) *Prefix Trees*.
 
-### 2.14 Solving the N-Queens Problem
+### 2.14 حلّ مسألة الملكات N (N-Queens Problem)
 
 >
 
-We are interested here in the classic N-queens problem: N queens are to be placed on
-an N × N chessboard such that none of them are threatened by the others.
-Figure [2.14](#one-solution-of-the-queens-problem) shows one of the 92 solutions when N = 8.
+نتعرض هنا للمسألة الكلاسيكية للملكات N: يجب وضع N ملكة على رقعة شطرنج
+بحجم N × N بحيث لا تتهدَّد أيٌّ منها الأخرى. ويعرض الشكل
+[2.14](#one-solution-of-the-queens-problem) أحد الحلول الـ92 عندما N = 8.
 
 ![](/images/learn-ocaml/first-steps-13-solution8-mps-.webp){#one-solution-of-the-queens-problem}
 
-**Figure 2.14: One solution of the 8-queens problem.**
+**الشكل 2.14: أحد حلول مسألة الملكات الثماني.**
 
-More precisely, we are interested in the problem of enumerating all solutions,
-without taking into consideration the symmetries of the problem. We proceed in a
-relatively brute fashion by exploring all possibilities, noting nevertheless that a
-solution must necessarily have one and only one queen on each line of the
-chessboard. In light of this, we try to fill the chessboard line by line, placing
-a queen each time in such a way that it is not threatened by the queens
-already placed. Thus, if we have placed three queens on the first three lines of
-the chessboard, we then search for a valid placement on the fourth line as
-follows:
+وعلى نحو أدق، نهتم بمسألة حصر جميع الحلول، دون أن نأخذ تماثلات المسألة
+في الحسبان. ونسلك طريقةً قاسيةً نسبيًا باستكشاف جميع الاحتمالات، مع
+الملاحظة مع ذلك أن الحلول يجب أن تضم بالضرورة ملكةً واحدةً فقط على كل
+سطر من أسطر رقعة الشطرنج. وفي ضوء ذلك، نحاول ملء رقعة الشطرنج سطرًا
+سطرًا، واضعين ملكةً في كل مرة بحيث لا تتهدَّدها الملكات الواضعة
+سابقًا. وهكذا، إذا وضعنا ثلاث ملكات على الأسطر الثلاثة الأولى من رقعة
+الشطرنج، فإننا نبحث بعد ذلك عن وضع صحيح على السطر الرابع على النحو
+التالي:
 
-If we find one, we place a queen there and continue the search on the following line.
-Otherwise, we go back one step and begin again. A solution is obtained each
-time we manage to place a queen on the last line. By proceeding in such a
-systematic manner, we are sure to find all solutions. This technique is called
-*backtracking*.
+إذا وجدنا وضعًا، نضع ملكةً هناك ونواصل البحث على السطر التالي. وإلا،
+نرجع خطوةً إلى الوراء ونبدأ من جديد. ويُحصَّل على حلّ في كل مرة ننجح
+فيها في وضع ملكة على السطر الأخير. وبنسلكنا على هذا النحو المنهجي،
+نكون واثقين من إيجاد جميع الحلول. وتُسمَّى هذه التقنية *الرجوع إلى
+الخلف* (backtracking).
 
 >
 
-For each line of the chessboard, our program will keep track of the columns in
-which a queen may be placed. Thus, instead of trying all the N columns of the
-current line, we would be able to examine far fewer than N and would therefore
-backtrack sooner. We illustrate this idea for N = 8.
+لكل سطر من رقعة الشطرنج، سيحتفظ برنامجنا بالأعمدة التي يمكن وضع ملكة
+فيها. وهكذا، بدلًا من تجربة جميع الأعمدة N في السطر الحالي، سيصبح في
+إمكاننا البحث في أقلّ بكثير من N عمودًا، وسنرجع إلى الخلف في وقت أبكر.
+ونوضح هذه الفكرة لـ N = 8.
 
-Let us suppose that we have already placed
-queens on the first three lines. Only five
-columns need be considered in the fourth line
-(at the bottom of the chessboard).
+لنفترض أننا وضعنا ملكات
+بالفعل على الأسطر الثلاثة الأولى. وليس ثمة حاجة
+إلى النظر سوى في خمسة أعمدة في
+السطر الرابع (في أسفل رقعة الشطرنج).
 
 (1)
 
-Furthermore, three positions in the fourth line
-are threatened by queens already placed along
-a left diagonal. These three positions need not
-be considered.
+علاوةً على ذلك، هناك ثلاثة مواضع في
+السطر الرابع متهدَّدة من ملكات وُضعت
+بالفعل على قُطْر أيسر. وهذه المواضع الثلاثة
+لا تحتاج إلى النظر فيها.
 
 (2)
 
-Similarly, two positions in the fourth line are
-threatened by queens already placed along a
-right diagonal. These two positions need not
-be considered.
+ومثلًا، هناك موضعان في السطر الرابع
+متهدَّدان من ملكات وُضعت بالفعل على
+قُطْر أيمن. وهذان الموضعان لا يحتاجان
+إلى النظر فيهما.
 
 (3)
 
-There are thus six positions on the fourth line
-that cannot be used, leaving only two to be
-consider, rather than eight.
+هكذا، هناك ستة مواضع على السطر
+الرابع لا يمكن استخدامها، فلا يتبقّى إلا
+موضعان للنظر فيهما، بدلًا من ثمانية.
 
 (4)
 
-Our program will proceed recursively, keeping track at each instant of three sets of
-columns: the set `cols` of columns that remain to be considered; the set `d1` of columns
-that should be avoided since queens placed there would be threatened along a left
-diagonal; and the set `d2` of columns that should be avoided since queens placed there
-would be threatened along a right diagonal. In our example, numbering the columns
-starting from the right, we have `cols` = {0,2,5,6,7}, `d1` = {3,5,6}, and
-`d2` = {0,3}, as shown in the figures above (respectively in (1), (2), and (3)). The
-set of columns where queens can be placed is obtained by calculating the
+سيسير برنامجنا بطريقة تعاودية، متتبعًا في كل لحظة ثلاث مجموعات من
+الأعمدة: المجموعة `cols` وهي الأعمدة التي بقيت للنظر فيها؛ والمجموعة `d1`
+وهي الأعمدة التي يجب تجنبها لأن الملكات الموضوعة فيها ستكون متهدَّدة على
+قُطْر أيسر؛ والمجموعة `d2` وهي الأعمدة التي يجب تجنبها لأن الملكات
+الموضوعة فيها ستكون متهدَّدة على قُطْر أيمن. وفي مثالنا، إذا رقّمنا
+الأعمدة بدءًا من اليمين، فلدينا `cols` = {0,2,5,6,7} و`d1` = {3,5,6} و
+`d2` = {0,3}، كما هو موضَّح في الأشكال أعلاه (على التوالي في (1) و(2)
+و(3)). ومجموعة الأعمدة التي يمكن وضع الملكات فيها تُحصَّل بحساب
  
  
-set-theoretic difference `cols`∖`d1`∖`d2`, which gives the set {2,7}, as shown in
-figure (4).
+الفرق النظري للمجموعات `cols`∖`d1`∖`d2`، وهو ما يعطي المجموعة {2,7}، كما
+هو موضَّح في الشكل (4).
 
-To manipulate such sets of integers, we use the module `Set.Make` of the OCaml
-standard library. This is a functor that we instantiate with a type equipped with a
-total order. (The code of such a functor will be explained later in this book, in the
-section *AVL*of chapter [5](https://usr.lmf.cnrs.fr/lpo/mainch5.html#sets-and-dictionaries).)
+وللتعامل مع مثل هذه المجموعات من الأعداد الصحيحة، نستخدم الوحدة `Set.Make`
+من المكتبة القياسية لأوسمل. وهذا مُوَلِّد (functor) نُعرِضه (instantiate)
+بنوع مجهَّز بترتيب كلي. (وسيُشرح قانون (code) مثل هذا المولِّد لاحقًا في
+هذا الكتاب، في القسم *AVL* من الفصل
+[5](https://usr.lmf.cnrs.fr/lpo/mainch5.html#sets-and-dictionaries).)
 
-We choose here the usual order on the integers, provided by the function `compare`
-of the library `Stdlib`.
+نختار هنا الترتيب المعتاد على الأعداد الصحيحة، الذي توفره الدالة `compare`
+من المكتبة `Stdlib`.
 
 ```ocaml
   module S = Set.Make(struct type t = int let compare = compare end)
 ```
 
-The resulting module `S` provides a data structure `S.t` that represents a set of integers, a
-constant `S.empty` corresponding to the empty set, and operations such as `S.add`
-(adding an element), `S.remove` (removing an element), `S.diff` (set-theoretic
-difference), etc. An important property of this data structure is its *persistence*. This
-means that the operations applied to this data structure do not modify it, but instead
-return *new*data structures. Thus, if we have a set `s` of type `S.t`, then the expression
-`S.add4s` denotes a new set (containing 4 and all the elements of `s`), while the set `s`
-remains unmodified.
+تُوفّر الوحدة الناتجة `S` بنية بيانات `S.t` تمثل مجموعة من الأعداد الصحيحة،
+وثابتًا `S.empty` يقابل المجموعة الخالية، وعمليات مثل `S.add` (إضافة
+عنصر) و`S.remove` (إزالة عنصر) و`S.diff` (الفرق النظري للمجموعات)، إلخ.
+وخاصية مهمة لهذه البنية هي *دوامها* (persistence). وهذا يعني أن
+العمليات المطبَّقة على هذه البنية لا تعدّلها، بل تُعيد بدلًا من ذلك بنى
+*جديدة*. وهكذا، إذا كان لدينا مجموعة `s` من النوع `S.t`، فإن التعبير
+`S.add4s` يدل على مجموعة جديدة (تحوي 4 وجميع عناصر `s`)، في حين تبقى
+المجموعة `s` دون تعديل.
 
-Let us now write our program using a recursive function `count` that takes as
-arguments the three sets `cols`, `d1`, and `d2` described above:
+فلنكتب الآن برنامجنا باستخدام دالة تعاوبية `count` تأخذ كوسائط المجموعات
+الثلاث `cols` و`d1` و`d2` الموضَّحة أعلاه:
 
 ```ocaml
   let rec count cols d1 d2 =
 ```
 
-This function returns the number of solutions that are compatible with these arguments.
-The search ends when `cols` is empty. We then indicate that a solution has been
-found.
+تُعيد هذه الدالة عدد الحلول المتوافقة مع هذه الوسائط. وينتهي البحث عندما
+تكون `cols` خالية. ونشير حينئذٍ إلى أنه قد وُجد حلّ.
 
 ```ocaml
   if S.is_empty cols then 1 else
 ```
 
-Otherwise, we calculate the set of columns in which queens can be placed using
+وإلا، نحسب مجموعة الأعمدة التي يمكن وضع الملكات فيها باستعمال التعبير
  
  
-the expression `S.diff(S.diffcolsd1)d2`, as explained above. Then, we traverse the
-elements of this set using the iterator `S.fold`, where the accumulator is the current
-number of solutions found.
+`S.diff(S.diffcolsd1)d2`، كما شُرح أعلاه. ثم نجتاز عناصر هذه المجموعة
+باستخدام المكرِّر (iterator) `S.fold`، بحيث يكون المُجمِّع هو عدد الحلول
+الموجودة حتى الآن.
 
 ```ocaml
     S.fold
@@ -4415,22 +3563,23 @@ number of solutions found.
       0
 ```
 
-For each column `c` where a queen can be placed, it suffices to call `count` recursively with
-the three sets adjusted accordingly. To adjust `cols`, it suffices to remove the element
-`c`, using `S.remove`. To adjust `d1` and `d2`, we use `S.add` to add the column `c` to each of
-them, and then shift their elements by one unit as appropriate. To do this, we define a
-function `map` that applies a function f to all the elements of a set s, that
-is, it constructs the set {f(x)∣x ∈ s}. We may write it, for instance, using
-`S.fold`.
+بالنسبة لكل عمود `c` يمكن وضع ملكة فيه، يكفي نداء `count` نداءً تعاوبيًا
+بالمجموعات الثلاث بعد تعديلها على النحو الواجب. ولكي نعدّل `cols`، يكفي
+إزالة العنصر `c` باستخدام `S.remove`. ولكي نعدّل `d1` و`d2`، نستخدم
+`S.add` لإضافة العمود `c` إلى كل منها، ثم نزيح عناصرها بمقدار وحدة
+واحدة على الوجه اللائق. ولفعل ذلك، نعرّف دالة `map` تطبّق دالة f على
+جميع عناصر المجموعة s، أي إنها تبني المجموعة {f(x)∣x ∈ s}. ويمكننا
+كتابتها مثلًا باستخدام `S.fold`.
 
 ```ocaml
   let map f s = S.fold (fun x s -> S.add (f x) s) s S.empty
 ```
 
-Given this function, the set `d1` may be adjusted using `mapsucc`, where `succ` is the
-predefined function `funx->x+1`. Likewise, the set `d2` is adjusted with `mappred`, where
-`pred` is the predefined function `funx->x-1`. The function passed as argument to
-`S.fold` therefore has the following form:
+بالانطلاق من هذه الدالة، يمكن تعديل المجموعة `d1` باستخدام `mapsucc`، حيث
+`succ` هي الدالة المعرَّفة مسبقًا `funx->x+1`. وكذلك تُعدَّل المجموعة
+`d2` باستخدام `mappred`، حيث `pred` هي الدالة المعرَّفة مسبقًا
+`funx->x-1`. ولذلك تكون الدالة الممرَّرة كوسيط إلى `S.fold` بالشكل
+التالي:
 
 ```ocaml
       (fun c res ->
@@ -4439,21 +3588,21 @@ predefined function `funx->x+1`. Likewise, the set `d2` is adjusted with `mappre
         res + count (S.remove c cols) d1 d2)
 ```
 
-With this, the function `count` is complete. It is important to note here the key role played
-by the persistence of the sets `cols`, `d1`, and `d2`. Indeed, these sets are reused for each
-value of `c`, and must therefore not be modified by the operations `S.add` and
-`S.remove`.
+بهذا تكون الدالة `count` مكتملة. ومن المهم أن نلاحظ هنا الدور المحوري الذي
+يلعبه دوام المجموعات `cols` و`d1` و`d2`. فهذه المجموعات تُعاد
+استعادتها لكل قيمة من قيم `c`، ولذلك يجب ألّا تعدّلها العمليتان `S.add`
+و`S.remove`.
 
-To solve the N-queens problem, it suffices to call `count` with `cols` equal to the set
-{0,1,…,N − 1}, and `d1` and `d2` each equal to the empty set. To this end, we define a
-function `upto` that constructs the set {0,1,…,n}.
+ولحلّ مسألة الملكات N، يكفي نداء `count` مع `cols` مساويةً للمجموعة
+{0,1,…,N − 1}، و`d1` و`d2` مساويتين كلًّا منهما للمجموعة الخالية. ولهذه
+الغاية، نعرّف دالة `upto` تبني المجموعة {0,1,…,n}.
 
 ```ocaml
   let rec upto n = if n < 0 then S.empty else S.add n (upto (n-1))
 ```
 
-The main part of the program retrieves the value of N from the command line and then
-displays the result obtained by `count`.
+والجزء الرئيسي من البرنامج يسترجع قيمة N من سطر الأوامر ثم يعرض النتيجة
+التي تحصّلت عليها `count`.
 
 ```ocaml
 let () =
@@ -4461,64 +3610,64 @@ let () =
   Format.printf "%d@." (count (upto (n - 1)) S.empty S.empty)
 ```
 
-We can thus enumerate the 365,596 solutions of the 14-queens problem in less than a
-minute.
+وهكذا يمكننا حصر 365,596 حلًّا لمسألة الملكات الأربعة عشر في أقلّ من دقيقة.
 
-#### Additional Information
+#### معلومات إضافية
 
-The data structures that you find in the literature on algorithms are, for the most
-part, *imperative*in nature: They are modified in-place by the operations they
-provide. Arrays and linked lists are the first examples that come to mind.
-Thus, writing to an array’s cell replaces the previous value by a new one.
-Something similar occurs when we add an element to a linked list such as:
+بنى البيانات التي تجدونها في الأدبيات المتعلقة بالخوارزميات هي في مجملها
+*أمرِيّة* (imperative) بطبيعتها: إذ تُعدَّل في موضعها بواسطة العمليات التي
+تُوفّرها. والمصفوفات والقوائم المترابطة هما المثالان الأولان اللذان
+يأتيان على البال. وهكذا، فالكتابة في خليّة من المصفوفة تستبدل القيمة
+السابقة بقيمة جديدة. ويحدث شيء مماثل عندما نضيف عنصرًا إلى قائمة
+مترابطة مثل:
 
-The operation consists in modifying two of the pointers, as follows:
+تتألف العملية من تعديل اثنين من المؤشّرات، على النحو التالي:
 
-As in case of the array, we have modified the structure of the list *in-place*. In both cases,
-it is possible to return to the previous state, but it requires another in-place
-modification.
+وكما هو الحال مع المصفوفة، فقد عدَّلنا بنية القائمة *في موضعها*. وفي
+الحالتين، من الممكن العودة إلى الحالة السابقة، لكن ذلك يستلزم تعديلاً
+في الموضع أيضًا.
 
-A *persistent*data structure, by contrast, is a data structure whose operations
-never modify their arguments; *new*values are returned instead. Of course, we could
-render a data structure persistent by making a copy of it systematically, but this
-would be grossly inefficient. There are other, more efficient means of rendering an
-imperative data structure persistent. See, for instance, section [*4.4*](https://usr.lmf.cnrs.fr/lpo/mainch4.html#persistent-arrays) *Persistent Arrays*.
+وبالمقابل، فإن بنية البيانات *الدائمة* (persistent) هي بنية بيانات لا
+تعدّل عملياتها وسائطها قط؛ بل تُعاد *قيم* جديدة بدلًا من ذلك. وبالطبع،
+يمكننا تحويل بنية بيانات إلى بنية دائمة بنسخها بصورة منتظمة، غير أن
+ذلك سيكون غير فعّال على نحو فظيع. وهناك وسائل أخرى أكثر فعاليةً لتحويل
+بنية بيانات أمرِيّة إلى بنية دائمة. انظر مثلًا القسم
+[*4.4*](https://usr.lmf.cnrs.fr/lpo/mainch4.html#persistent-arrays) *Persistent Arrays*.
 
-There is an entire class of data structures for which persistence is both
-possible and efficient, namely, *immutable*data structures, which cannot be
-modified once constructed. For such data structures, it is possible to avoid
-unnecessary copies through sharing. This is easiest to illustrate in case of
-lists.
+ثمة فئة كاملة من بنى البيانات يكون فيها الدوام ممكنًا وفعّالًا في الوقت
+نفسه، وهي بنى البيانات *التي لا يتغيّر عليها الحال* (immutable)، والتي لا
+يمكن تعديلها بعد بنائها. وبالنسبة لمثل هذه البنى، يمكن تجنُّب النسخ غير
+الضروري عن طريق المشاركة. وأسهل طريقة لتوضيح ذلك هي حالة القوائم.
 
-If we define a list `l` by `letl=[1;2;3]`, then, in terms of its memory representation,
-`l` is a pointer. It points to a first block that contains `1` and a pointer to a second
-block, and so on and so forth:
+إذا عرّفنا قائمة `l` بـ `letl=[1;2;3]`، فإن `l`، من حيث تمثيلها في الذاكرة،
+مؤشّر. فهي تشير إلى كتلة أولى تحوي `1` ومؤشّرًا إلى كتلة ثانية، وهكذا
+دواليك:
 
-If we now define a list `l’` by adding another element to the list `l`, with the
-declaration `letl’=0::l`, we have the following situation:
+وإذا عرّفنا الآن قائمة `l’` بإضافة عنصر آخر إلى القائمة `l`، بالإعلان
+`letl’=0::l`، فسنكون أمام الوضع التالي:
 
-The application of the constructor `::` has the effect of allocating a new block,
-whose first element is `0` and whose second element is a pointer having the same value
-as `l`. The variable `l` continues to point to the same blocks as before. In general, any
-function that we may write on lists has the property of not modifying the lists passed
-as arguments.
+يثمر تطبيق الباني `::` من تخصيص كتلة جديدة، عنصرها الأول هو `0` وعنصرها
+الثاني مؤشّر له القيمة نفسها التي للمؤشّر `l`. ويستمر المتغير `l` في
+الإشارة إلى الكتل نفسها كما كان من قبل. وبصفة عامة، فإن أي دالة قد
+نكتبها على القوائم تتميّز بأنها لا تعدّل القوائم الممرَّرة إليها كوسائط.
 
-It is very important to understand that the above involves *sharing*. The
-declaration of `l’` allocates a single block (because only one constructor is applied),
-and the blocks forming `l` are reused without modification. We have two lists of three
-and four elements respectively, namely `[1;2;3]` and `[0;1;2;3]`, but only four
-memory blocks. In particular, *no copy*is made. In general, OCaml never makes copies
-of values, unless you explicitly write a function to do so. Such a function would be
-useless in case of lists because a list cannot be modified in-place. Functions that
-make copies of values are not useful unless the data structures involved are
-mutable.
+من المهم جدًا أن نفهم أن ما ورد أعلاه ينطوي على *مشاركة*. فإعلان `l’`
+يخصّص كتلةً وحيدة (لأننا طبّقنا بانيًّا واحدًا فقط)، وتُعاد استخدام الكتل
+المكوِّنة لـ `l` دون تعديل. فلدينا قائمتان فيهما ثلاثة عناصر وأربعة
+عناصر على التوالي، هما `[1;2;3]` و`[0;1;2;3]`، لكن ثمة أربع كتل في
+الذاكرة فحسب. وعلى وجه الخصوص، *لا يجري أي نسخ*. وبصفة عامة، لا تجري
+أوسمل نسخًا للقيم قط، إلا إذا كتبنا صراحةً دالةً لفعل ذلك. ومثل هذه
+الدالة ستكون بلا فائدة في حالة القوائم لأن القائمة لا يمكن تعديلها في
+موضعها. والدالة التي تنسخ القيم غير مفيدة إلا إذا كانت بنى البيانات
+المعنية قابلةً للتعديل.
 
-It is now clear why it is harder to add an element to the end of a list rather than
-to its head. This is because an in-place modification of the list `l` would be required:
+صار من الواضح الآن لماذا كان إضافة عنصر إلى نهاية القائمة أصعب من
+إضافته إلى مقدّمتها. والسبب هو أن ذلك يستلزم تعديل القائمة `l` في
+موضعها:
 
-To add an element to the end of a list, we must make a copy of every block of the
-list. This is in fact what is done by the following function `append`, which concatenates
-two lists (see exercise [2.24](#x7-98007r24)):
+ولإضافة عنصر إلى نهاية القائمة، يجب أن ننسخ كل كتلة من كتل القائمة.
+وهذا هو فعلًا ما تفعله الدالة `append` التالية، التي تربط قائمتين (انظر
+التمرين [2.24](#x7-98007r24)):
 
 ```ocaml
   let rec append l1 l2 = match l1 with
@@ -4526,42 +3675,40 @@ two lists (see exercise [2.24](#x7-98007r24)):
     | x :: l -> x :: append l l2
 ```
 
-We observe that this function creates as many blocks as there are in `l1` and shares only
-those of `l2`. Thus, if we declare `letl’=[4;5]` and concatenate `l` and `l’` with
-`letl’’=appendll’`, we will have the following situation:
+نلاحظ أن هذه الدالة تُنشئ عددًا من الكتل مساويًا لعدد كتل `l1` ولا
+تشارك إلا في كتل `l2`. وهكذا، إذا أعلنّا `letl’=[4;5]` وربطنا `l` و`l’`
+بـ `letl’’=appendll’`، فسنكون أمام الوضع التالي:
 
-Copies of the the blocks of `l` have been made and those of `l’` have been shared.
+جرى نسخ كتل `l` ومشارَكة كتل `l’`.
 
-Accordingly, lists must be used whenever the relevant operations are addition and
-removal from the front (*stack*structure). When we need to access and/or
-make modifications at arbitrary positions, it is preferable to use another data
-structure.
+ولذلك، يجب استخدام القوائم كلما كانت العمليات المعنية هي الإضافة
+والإزالة من المقدّمة (بنية *المكدَّس* (stack)). وعندما نحتاج إلى الوصول
+و/أو إجراء تعديلات في مواضع اعتباطية، فالأفضل استخدام بنية بيانات أخرى.
 
-Crucially, the *elements*of the list are not themselves copied by the function
-`append`. In fact, the variable `x` in the code of `append` denotes an element of an
-arbitrary type and is not itself copied. This does make a difference when dealing with
-lists of integers. However, if we have a list `l` with three elements of a more complex
-type, for example the list `[(1,2,3);(4,5,6);(7,8,9)]`, then these will be shared
-between `l` and `appendl[(10,11,12)]`:
+ومن الأهمية بمكان أن *عناصر* القائمة لا تنسخها الدالة `append` هي نفسها.
+ففي الواقع، المتغير `x` في قانون `append` يدل على عنصر من نوع اعتباطي
+ولا يُنسخ هو نفسه. وهذا الأمر يُحدث فرقًا في الواقع عند التعامل مع قوائم
+الأعداد الصحيحة. لكن إذا كانت لدينا قائمة `l` بثلاثة عناصر من نوع أكثر
+تعقيدًا، مثل القائمة `[(1,2,3);(4,5,6);(7,8,9)]`، فإن هذه العناصر ستكون
+مشترَكةً بين `l` و`appendl[(10,11,12)]`:
 
-All this may appear unnecessarily expensive if we are used to lists that are
-modified in-place, which is the traditional approach in the context of imperative
-languages. However, this would be to underestimate the practical advantages of
-persistence. Besides, it is important to note that the concept of persistence can be
-easily implemented in an imperative language. We only have to manipulate linked
-lists exactly as the OCaml compiler does. Conversely, we can certainly manipulate
-lists that are modifiable in-place in OCaml, for example by defining the following
-type:
+قد يبدو كل هذا باهظ الثمن بلا داعٍ إذا كنّا معتادين على القوائم التي
+تُعدَّل في موضعها، وهي المقاربة التقليدية في سياق اللغات الأمرِيّة.
+غير أن ذلك سيعني التقليل من شأن المزايا العملية للدوام. علاوةً على ذلك،
+من المهم أن نلاحظ أن مفهوم الداوم يمكن تنفيذه بسهولة في لغة أمرِيّة.
+فكل ما علينا فعله هو التعامل مع القوائم المترابطة تمامًا كما يفعل
+مترجم أوسمل. وعلى العكس، يمكننا قطعًا التعامل مع قوائم قابلة للتعديل في
+موضعها في أوسمل، مثلًا بتعريف النوع التالي:
 
 ```ocaml
   type ’a mlist = Nil | Cons of ’a * ’a mlist ref
 ```
 
-Here, the second argument of the constructor `Cons` is a reference. Unlike imperative
-languages, OCaml provides the possibility of defining immutable data structures in a
-natural manner that is also safe. (Even if we code a persistent data structure in C,
-the type system cannot prevent in-place modification, since all data in C is
-mutable).
+هنا، الوسيط الثاني للباني `Cons` هو مرجع (reference). وبخلاف اللغات
+الأمرِيّة، تُتيح أوسمل إمكانية تعريف بنى بيانات لا يتغيّر عليها الحال
+بصورة طبيعية وآمنة في الوقت نفسه. (وحتى لو برمجنا بنية بيانات دائمة
+بلغغة C، فإن نظام الأنواع لا يمكن أن يمنع التعديل في الموضع، لأن جميع
+البيانات في C قابلة للتعديل).
 
 Finally, we must not forget that unused memory is automatically recovered.
 Consider for instance an expression such as:

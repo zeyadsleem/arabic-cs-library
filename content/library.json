@@ -1059,6 +1059,67 @@
       "completeCourse": true,
       "prerequisites": [],
       "note": "ترجمة عربية غير رسمية وغير تجارية لخارطة طريق «Dynamic DevOps Roadmap» من DevOps Hive، بموجب رخصة CC BY-SA 4.0؛ المصدر يحتفظ بحقوقه ولم يُراعَ أي تأييد رسمي. استُبعدت جميع الصور والرسوم (ذات التسميات الإنجليزية وتراخيص مستقلة غير واضحة)، واستُعيض عنها في مواضع محدودة بوصف نصّي أمين يبدأ بـ«شكل توضيحي:». أُسقطت بيانات الاختبارات (quiz) لأنها بيانات بنيوية تُعرض عبر مكوّن برمجي."
+    },
+    {
+      "id": "kinney",
+      "title": "دورات ستيف كيني التطبيقية",
+      "titleEn": "Steve Kinney's Courses",
+      "author": "Steve Kinney",
+      "description": "ست عشرة دورة تطبيقية مكتوبة في تطوير الويب الحديث: React وTypeScript وأدائهما، وTailwind CSS، وأنظمة التصميم في Storybook، وFigma للمطوّرين، والاختبارات، وأمن الويب، وVisual Studio Code، وTypeScript للويب الكامل، ونشر التطبيقات على AWS، وواجهات المؤسسات، وأساسيات الذكاء الاصطناعي بلغة Python، وأدوات التطوير بالذكاء الاصطناعي، ووكلاء ذكاء اصطناعي يختبرون أنفسهم. كل صفحة تحفظ أمثلة الشيفرة والصور ووصفها كما هي بانتظار الترجمة.",
+      "sourceUrl": "https://stevekinney.com/courses",
+      "license": "ALL RIGHTS RESERVED — reproduction prohibited without written permission",
+      "status": "blocked",
+      "stage": "web",
+      "order": 6,
+      "format": "web",
+      "pages": 868,
+      "completeCourse": false,
+      "note": "المحتوى منسوخ من موقع ستيف كيني كما هو باللغة الإنجليزية. تم التحقّق من شروط الاستخدام في الموقع (stevekinney.com/policies/terms-of-service): القسم 2 يمنع صراحة نسخ أو تكرار أو إعادة إنتاج أي جزء من الموقع «دون إذن كتابي صريح» من المالك، ولا يوجد ملف ترخيص في مستودع الموقع ولا أي ذكر لترخيص في صفحات الكورسات نفسها. لذلك يُصنَّف المحتوى محفوظ الحقوق بالكامل، والترجمة ونشرها تتطلبان إذنًا كتابيًا صريحًا من الكاتب، ومن هنا حالة «blocked». دورة أمن الويب صفحة تعريفية فقط تربط بمستودع خارجي."
+    },
+    {
+      "id": "hono",
+      "title": "Hono — إطار العمل للويب على معايير الويب",
+      "titleEn": "Hono Docs",
+      "author": "Hono contributors (Yusuke Wada et al.)",
+      "description": "توثيق إطار Hono الكامل: إطار عمل ويب صغير وسريع مبني على معايير الويب، يعمل على Cloudflare Workers وDeno وBun وVercel وAWS Lambda وNode.js. يغطي مقدمات التثبيت على كل بيئة تشغيل، والمفاهيم (الموجّهات، والمعايير، والأداء، والوسائط)، و26 وسيطاً مدمجاً وخارجياً، و15 مساعداً، والأدلة العملية (JSX، والاختبار، والتحقّق، وRPC)، ومرجع الواجهة البرمجية (App، والتوجيه، والسياق، والطلب، والاستثناءات، والقوالب الجاهزة)، وأدوات وكلاء البرمجة — مع كل الأمثلة الشيفرية كما هي.",
+      "sourceUrl": "https://hono.dev/docs/",
+      "repoUrl": "https://github.com/honojs/website",
+      "license": "MIT",
+      "licenseUrl": "https://github.com/honojs/hono/blob/main/LICENSE",
+      "languages": [
+        "TypeScript"
+      ],
+      "status": "translated",
+      "stage": "web",
+      "order": 6,
+      "format": "web",
+      "completeCourse": false,
+      "prerequisites": [
+        "eloquent-javascript-ar"
+      ],
+      "note": "توثيق Hono الرسمي مرخّص برخصة MIT، وترجمته مسموحة. المصدر الإنجليزي المُحضَّر للترجمة كامل في content-src/hono، والترجمة العربية تُبنى بـ scripts/build-hono.mjs.",
+      "pages": 91
+    },
+    {
+      "id": "better-auth",
+      "title": "Better Auth — مصادقة شاملة للـ TypeScript",
+      "titleEn": "Better Auth Docs",
+      "author": "Better Auth (bereach / better-auth contributors)",
+      "description": "توثيق مكتبة Better Auth: إطار مصادقة وتخويل شامل ومستقل عن الإطار البرمجي، مكتوب بـ TypeScript. يغطي البدء السريع والتثبيت والاستخدام الأساسي والمقارنة، ثم المفاهيم الأساسية: واجهة الـ API، وواجهة سطر الأوامر، والعميل، وملفات تعريف الارتباط، وقاعدة البيانات، والبريد الإلكتروني، والخطافات، وOAuth، والإضافات، وتحديد المعدل، وإدارة الجلسات، وTypeScript، والمستخدمون والحسابات.",
+      "sourceUrl": "https://better-auth.com/docs",
+      "repoUrl": "https://github.com/better-auth/better-auth",
+      "license": "MIT",
+      "licenseUrl": "https://github.com/better-auth/better-auth/blob/main/LICENSE",
+      "languages": [
+        "TypeScript"
+      ],
+      "status": "translated",
+      "stage": "web",
+      "order": 6,
+      "format": "web",
+      "completeCourse": false,
+      "note": "توثيق Better Auth مرخّص برخصة MIT، وترجمته مسموحة مع الإسناد. المصدر الإنجليزي المُحضَّر في content-src/better-auth (17 صفحة)، والترجمة العربية تُبنى بـ scripts/build-better-auth.mjs.",
+      "pages": 17
     }
   ]
 }

@@ -1,81 +1,70 @@
 ---
-title: "Sets and Dictionaries"
-lang: en
+title: "المجموعات والقواميس"
+lang: ar
 ---
 
-## 5. Sets and Dictionaries
+## 5. المجموعات والقواميس
 
-Sets and dictionaries are the most frequently used data structures. This chapter
-presents several ways of implementing sets. In each case, we discuss how they may be
-adapted for dictionaries. Some data structures may be used with elements of any type
-while others are more specialized, applicable to elements of a particular shape (for
-example, lists) or type (for example, integers).
+المجموعات والقواميس هي أكثر بنى المعطيات استخدامًا. يعرض هذا الفصل عدة طرق لتنفيذ
+المجموعات (sets). وفي كل حالة نناقش كيف يمكن تكييفها لتمثيل القواميس (dictionaries).
+يمكن استخدام بعض بنى المعطيات مع عناصر من أي نوع، بينما بعضها الآخر أكثر تخصصًا،
+إذ يصلح لعناصر ذات شكل معين (مثل القوائم) أو نوع معين (مثل الأعداد الصحيحة).
 
-Some of these data structures are presented in a persistent version and others in
-an imperative version. This is an arbitrary choice. Other choices are often possible,
-such as persistent hash tables or imperative AVL trees. Some of these variations are
-proposed in the exercises.
+تُعرض بعض هذه بنى المعطيات بصيغة دائمة (persistent) وبعضها بصيغة أمرية (imperative).
+وهذا اختيار اعتباطي، وغالبًا ما تكون الخيارات الأخرى ممكنة، مثل جداول التجزئة الدائمة
+أو أشجار AVL الأمرية. وتُقترح بعض هذه الصيغ في التمارين.
 
-The choice of a data structure does not depend solely on its persistent or
-imperative character. Other criteria determine this choice, such as the available
-operations on the elements (for example, the existence of a total order), the
-operations provided by the data structure (for example, a union operation), or their
-respective cost (for example, the possibility of constructing a set in linear
-time).
+لا يعتمد اختيار بنية المعطيات على كونها دائمة أو أمرية فحسب، بل تحكمه معايير أخرى،
+مثل العمليات المتاحة على العناصر (مثل وجود ترتيب كلي)، والعمليات التي توفرها بنية
+المعطيات نفسها (مثل عملية الاتحاد)، وتكلفتها النسبية (مثل إمكانية بناء مجموعة في زمن
+خطي).
 
-### 5.1 Binary Search Trees
+### 5.1 أشجار البحث الثنائية
 
-In this section, we implement persistent sets. A minimal signature for such sets,
-`PersistentSet`, is given in program [32](#x16-156002r32). The type of the elements is `elt` and that of
-the sets is `t`. The empty set is represented by the value `empty`. The operations `add`
-and `mem` respectively add an element and test the membership of an element in a set.
-The function `min_elt` returns the smallest element of a set, if such an element exists,
-and raises the exception `Not_found` otherwise. The function `remove` removes an
-element from a set, if such an element is present, and returns the same set otherwise.
-Finally, the operation `cardinal` returns the number of elements of a set. Of course, a
-more realistic signature would contain additional operations, such as union,
-intersection, and difference.
+في هذا القسم ننفذ مجموعات دائمة. ترد توقيعة (signature) دنيا لهذه المجموعات، وهي
+`PersistentSet`، في البرنامج [32](#x16-156002r32). نوع العناصر هو `elt` ونوع المجموعات هو `t`.
+وتمثل المجموعة الفارغة بالقيمة `empty`. وتضيف العمليتان `add` و`mem` على التوالي عنصرًا
+وتختبران انتماء عنصر إلى مجموعة. وتُرجع الدالة `min_elt` أصغر عنصر في مجموعة إن وُجد،
+وترفع الاستثناء `Not_found` في غير ذلك. وتزيل الدالة `remove` عنصرًا من مجموعة إن كان
+موجودًا، وتُرجع المجموعة نفسها في غير ذلك. وأخيرًا تُرجع العملية `cardinal` عدد عناصر
+المجموعة. وبالطبع فإن توقيعة أكثر واقعية ستضم عمليات إضافية، مثل الاتحاد والتقاطع
+والفرق.
 
-The data structure chosen here to implement this signature is that of a *binary search tree*, that is, a binary tree such that every element contained in a node is larger
-than every element in its left subtree and smaller than every element in its right
-subtree. This organization allows searching for an element in time proportionate to
-the height of the tree. This tree structure assumes, however, that the elements can
-be compared to one another. For this, we require a comparison function
-`compare:elt->elt->int` such as:
+بنية المعطيات المختارة هنا لتنفيذ هذه التوقيعة هي *شجرة البحث الثنائية* (binary search tree)، أي شجرة
+ثنائية يكون فيها كل عنصر في عقدة أكبر من كل عنصر في شجرتها الفرعية اليسرى وأصغر من كل عنصر في
+شجرتها الفرعية اليمنى. ويسمح هذا التنظيم بالبحث عن عنصر في زمن يتناسب مع ارتفاع الشجرة.
+غير أن بنية الشجرة هذه تفترض إمكانية مقارنة العناصر بعضها ببعض. ولهذا نطلب دالة مقارنة
+`compare:elt->elt->int` على النحو التالي:
 
-$$( { < 0 if x is strictly smaller than y, compare x y est = 0 if x is equal to y, ( > 0 if x is strictly larger than y.$$
+$$( { < 0 إذا كان x أصغر تمامًا من y, compare x y = 0 إذا كان x مساويًا لـ y, ( > 0 إذا كان x أكبر تمامًا من y.$$
 
 >
 
 >
 
-We gather the type `elt` and the declaration of the function `compare` in a signature
-`Ordered` shown in program [33](#x16-156015r33). The code is then written as a functor parametrized by
-a module of signature `Ordered`:
+نجمع النوع `elt` وتصريح الدالة `compare` في توقيعة `Ordered` الواردة في البرنامج [33](#x16-156015r33).
+وتُكتب الشيفرة بعد ذلك على شكل مُمَيِّز (functor) يُوسَّم بوحدة ذات التوقيعة `Ordered`:
 
 ```ocaml
   module Make(X : Ordered) : PersistentSet with type elt = X.t =
   struct
 ```
 
-The signature of the module returned by this functor is `PersistentSet`, where we specify
-that the type `elt` of the elements is the type `X.t`.
+توقيعة الوحدة التي يُرجعها هذا المُمَيِّز هي `PersistentSet`، حيث نحدد أن النوع `elt` للعناصر هو النوع `X.t`.
 
-Accordingly, in the body of the functor, we begin by introducing the type `elt` as a
-synonym of the type `X.t`.
+تبعًا لذلك، نبدأ في جسم المُمَيِّز بتعريف النوع `elt` كمرادف للنوع `X.t`.
 
 ```ocaml
   type elt = X.t
 ```
 
-We then define the type `t` of sets as that of binary trees whose internal nodes
-contain a value of type `elt`:
+ثم نعرّف النوع `t` للمجموعات بأنه نوع الأشجار الثنائية التي تحتوي عقدها الداخلية على قيمة من النوع `elt`:
 
 ```ocaml
   type t = Empty | Node of t * elt * t
 ```
 
-Consider the following OCaml value:
+لنتأمل القيمة التالية بلغة OCaml:
 
 ```ocaml
   Node (Node (Node (Empty, ’B’, Empty), ’D’, Empty),
@@ -83,30 +72,28 @@ Consider the following OCaml value:
         Node (Empty, ’F’, Empty))
 ```
 
-It corresponds to the left tree in figure [5.1](#two-representations-of-the-same-binary-search-tree), where only the value of type `elt` in
-each node is shown, and where `Empty` is represented by ⊥.
+وهي تقابل الشجرة اليسرى في الشكل [5.1](#two-representations-of-the-same-binary-search-tree)، حيث تُعرض فقط القيمة من النوع `elt`
+في كل عقدة، وحيث يُمثَّل `Empty` بالرمز ⊥.
 
-In what follows, we will not draw the children of a node when they are both
-empty, as depicted in the right tree of the figure.
+في ما يلي لن نرسم أبناء العقدة عندما يكونان فارغين معًا، على النحو المبين في الشجرة اليمنى من الشكل.
 
 ![](/images/learn-ocaml/sets-and-dictionaries-0-avl_example-mps-.webp){#two-representations-of-the-same-binary-search-tree}
 
-**Figure 5.1: Two representations of the same binary search tree.**
+**الشكل 5.1: تمثيلان لشجرة البحث الثنائية نفسها.**
 
 ![PIC](/images/learn-ocaml/sets-and-dictionaries-1-avl_example_pretty-mps-.webp)
 
-The value `empty`, denoting the empty set, is simply a synonym for the constructor
-`Empty`, that is, the empty tree.
+القيمة `empty`، التي تدل على المجموعة الفارغة، ليست سوى مرادف للباني
+`Empty`، أي الشجرة الفارغة.
 
 ```ocaml
   let empty = Empty
 ```
 
-#### Smallest Element
+#### أصغر عنصر
 
-The structure of a binary search tree makes it easy to retrieve its smallest element. It
-suffices to descend along the left branch as long as possible. The function `min_elt`
-implements this traversal.
+يسهّل تركيب شجرة البحث الثنائية استرجاع أصغر عنصر فيها، إذ يكفي النزول على طول الفرع الأيسر
+أطول مسافة ممكنة. وتنفذ الدالة `min_elt` هذا الاجتياز.
 
 ```ocaml
   let rec min_elt = function
@@ -115,13 +102,13 @@ implements this traversal.
     | Node (l, _, _) -> min_elt l
 ```
 
-Rather than the predefined exception `Not_found`, we could have declared and used an
-exception specific to binary search trees.
+كان بإمكاننا، بدلًا من الاستثناء المعرّف مسبقًا `Not_found`، أن نعرّف ونستخدم استثناءً خاصًا
+بأشجار البحث الثنائية.
 
-#### Searching for an Element
+#### البحث عن عنصر
 
-Searching for an element `x` in a binary search tree proceeds recursively as follows: If
-the tree is empty, we return `false`.
+يجري البحث عن عنصر `x` في شجرة بحث ثنائية على نحو تعاودي كما يلي: إذا كانت الشجرة فارغة
+نُرجع `false`.
 
 ```ocaml
   let rec mem x = function
@@ -129,9 +116,8 @@ the tree is empty, we return `false`.
         false
 ```
 
-Otherwise, we compare `x` with the element `v` situated at the root of the tree. If they are
-equal, the search finishes successfully. If `x` < `v`, we continue recursively down the left
-subtree and, otherwise, down the right subtree.
+وإلا فإننا نقارن `x` بالعنصر `v` الموجود في جذر الشجرة. وإذا تساويا انتهى البحث بنجاح. وإذا كان `x` < `v`
+واصلنا تعاوديًا في الشجرة الفرعية اليسرى، وإلا واصلنا في الشجرة الفرعية اليمنى.
 
 ```ocaml
     | Node (l, v, r) ->
@@ -139,11 +125,10 @@ subtree and, otherwise, down the right subtree.
         c = 0 || if c < 0 then mem x l else mem x r
 ```
 
-#### Inserting an Element
+#### إدراج عنصر
 
-Inserting an element `x` in a binary search tree `t` consists in finding the location of `x` in
-`t`, following the same principle as when searching for an element. If `t` is empty, it
-suffices to construct a tree that contains only `x`.
+يتلخص إدراج عنصر `x` في شجرة بحث ثنائية `t` في إيجاد موضع `x` في `t` وفق المبدأ نفسه المتبع
+عند البحث عن عنصر. وإذا كانت `t` فارغة كفى بناء شجرة تحتوي على `x` وحده.
 
 ```ocaml
   let rec add x t =
@@ -152,8 +137,7 @@ suffices to construct a tree that contains only `x`.
         Node (Empty, x, Empty)
 ```
 
-Otherwise, we compare the element `x` with the root `v` of `t`. If they are equal, we return
-the tree `t` unchanged to avoid introducing a duplicate.
+وإلا فإننا نقارن العنصر `x` بالجذر `v` للشجرة `t`. وإذا تساويا أعدنا الشجرة `t` كما هي تفاديًا لإدخال تكرار.
 
 ```ocaml
     | Node (l, v, r) ->
@@ -161,38 +145,32 @@ the tree `t` unchanged to avoid introducing a duplicate.
         if c = 0 then t
 ```
 
-Otherwise, we recursively pursue the insertion to the left or to the right,
-depending on the result of the comparison.
+وإلا واصلنا الإدراج تعاوديًا إلى اليسار أو إلى اليمين بحسب نتيجة المقارنة.
 
 ```ocaml
         else if c < 0 then Node (add x l, v, r)
         else Node (l, v, add x r)
 ```
 
-Of course, this implementation of the insertion function may lead to highly
-unbalanced trees. For example, if we successively add `F`, `E`, `D`, and `B` to the empty tree,
-we get the “comb” shown in figure [5.2](#a-binary-search-tree-shaped-like-a-comb).
+من الطبيعي أن يؤدي هذا التنفيذ لدالة الإدراج إلى أشجار شديدة الاختلال. فمثلًا إذا أضفنا تباعًا
+`F` و`E` و`D` و`B` إلى الشجرة الفارغة حصلنا على «المشط» المبين في الشكل [5.2](#a-binary-search-tree-shaped-like-a-comb).
 
 ![](/images/learn-ocaml/sets-and-dictionaries-2-list_example-mps-.webp){#a-binary-search-tree-shaped-like-a-comb}
 
-**Figure 5.2: A binary search tree shaped like a comb.**
+**الشكل 5.2: شجرة بحث ثنائية على شكل مشط.**
 
-Such shapes degrade the efficiency of subsequent search and insertion operations.
-The worst case corresponds to that of the comb where, as shown in the example, each
-internal node has only one non-empty subtree. Operations in such trees are then
-proportionate to the number of elements. In the following section, we will see that it
-is possible to limit the height of a binary search tree so that it remains logarithmic
-with respect to the number of elements. The complete code of the insertion function is
-given in program [34](#x16-159014r34).
+تُضعف هذه الأشكال كفاءة عمليات البحث والإدراج اللاحقة. وتقابل أسوأ حالة حالةَ المشط حيث لا
+تملك كل عقدة داخلية، كما يبين المثال، سوى شجرة فرعية واحدة غير فارغة. وعندئذ تتناسب العمليات في
+مثل هذه الأشجار مع عدد العناصر. وسنرى في القسم التالي أنه يمكن تحديد ارتفاع شجرة البحث الثنائية
+بحيث يظل لوغاريتميًا بالنسبة إلى عدد العناصر. وترد الشيفرة الكاملة لدالة الإدراج في البرنامج
+[34](#x16-159014r34).
 
 >
 
-#### Removing an Element
+#### إزالة عنصر
 
-To remove an element `x` from a binary search tree `t`, we proceed in the same
-manner as when searching or inserting an element, that is, by recursive descent
-towards the possible location of `x`. If `t` is empty, it suffices to return the empty
-tree.
+لإزالة عنصر `x` من شجرة بحث ثنائية `t` نسير بالطريقة نفسها التي نتبعها عند البحث أو الإدراج، أي
+بالنزول التعاودي نحو الموضع المحتمل لـ `x`. وإذا كانت `t` فارغة كفى إرجاع الشجرة الفارغة.
 
 ```ocaml
   let rec remove x = function
@@ -200,10 +178,9 @@ tree.
         Empty
 ```
 
-Otherwise, we compare `x` to the root `v` of `t`. If they are equal, we face a problem:
-It is necessary to remove `v`, that is, to construct a tree from the left and the right
-subtrees of `t`. To implement this operation, we assume that we have written a
-function `merge` that performs this merging.
+وإلا فإننا نقارن `x` بالجذر `v` للشجرة `t`. وإذا تساويا واجهتنا مشكلة: إذ يجب إزالة `v`، أي
+بناء شجرة انطلاقًا من الشجرتين الفرعيتين اليسرى واليمنى للشجرة `t`. ولتنفيذ هذه العملية نفترض أننا
+كتبنا دالة `merge` تتولى هذا الدمج.
 
 ```ocaml
     | Node (l, v, r) ->
@@ -211,48 +188,44 @@ function `merge` that performs this merging.
         if c = 0 then merge l r
 ```
 
-If `x` is different from `v`, we descend recursively along the left or the right subtree to
-remove `x`. The code is similar to that of an insertion.
+وإذا كان `x` مختلفًا عن `v` نزلنا تعاوديًا في الشجرة الفرعية اليسرى أو اليمنى لإزالة `x`. والشيفرة
+مماثلة لشيفرة الإدراج.
 
 ```ocaml
         else if c < 0 then Node (remove x l, v, r)
         else Node (l, v, remove x r)
 ```
 
-The function `merge`, which merges two trees `l` and `r`, remains to be written. The
-difficulty lies in determining a root for the resulting tree. One way of proceeding
-consists in choosing the smallest element of `r`. Its value is obtained using the function
-`min_elt` written earlier. We must then remove this element from `r`, but this is
-precisely the operation that we are trying to implement.
+تبقى دالة `merge`، التي تدمج شجرتين `l` و`r`، بحاجة إلى كتابة. وتكمن الصعوبة في تحديد جذر
+للشجرة الناتجة. وتتمثل إحدى الطرق في اختيار أصغر عنصر في `r`، وتُحصَّل قيمته باستخدام الدالة
+`min_elt` المكتوبة سابقًا. ثم يجب إزالة هذا العنصر من `r`، لكن هذه هي بالضبط العملية التي نحاول
+تنفيذها.
 
-Fortunately, the removal of the smallest element of a binary search tree is much
-simpler to implement than the removal of an arbitrary element. Let us write a
+لحسن الحظ، إن إزالة أصغر عنصر في شجرة بحث ثنائية أبسط بكثير في التنفيذ من إزالة عنصر عشوائي.
+ولنكتب
  
  
-function `remove_min_elt` for this. If the tree is empty, there is nothing more to be
-done.
+الدالة `remove_min_elt` لهذا الغرض. وإذا كانت الشجرة فارغة فليس هناك ما يُفعل.
 
 ```ocaml
   let rec remove_min_elt = function
     | Empty -> Empty
 ```
 
-If not, and if there is no left subtree, then the root is the smallest element, and we
-return the right subtree.
+وإلا، وإذا لم توجد شجرة فرعية يسرى، فإن الجذر هو أصغر عنصر، ونُرجع الشجرة الفرعية اليمنى.
 
 ```ocaml
     | Node (Empty, _, r) -> r
 ```
 
-Otherwise, we recursively remove the smallest element from the left subtree.
+وإلا فإننا نزيل أصغر عنصر من الشجرة الفرعية اليسرى تعاوديًا.
 
 ```ocaml
     | Node (l, v, r) -> Node (remove_min_elt l, v, r)
 ```
 
-We are now ready to write the function `merge`. If one of its two arguments is
-empty, we return the other. Otherwise, we use `min_elt` and `remove_min_elt`, and
-apply the idea mentioned previously.
+أصبحنا الآن جاهزين لكتابة الدالة `merge`. وإذا كانت إحدى وسيطتيها فارغة أعدنا الأخرى. وإلا
+استخدمنا `min_elt` و`remove_min_elt` وطبقنا الفكرة المذكورة سابقًا.
 
 ```ocaml
   let merge t1 t2 = match t1, t2 with
@@ -262,39 +235,33 @@ apply the idea mentioned previously.
 
 >
 
-The complete code for removing an element is given in program [35](#x16-160023r35). Exercise [5.7](#x16-195007r7)
-proposes a slight improvement, which consists in avoiding the reconstruction of the
-tree when the element to be removed is not actually present. This optimization is also
-applicable in the function `add`.
+ترد الشيفرة الكاملة لإزالة عنصر في البرنامج [35](#x16-160023r35). ويقترح التمرين [5.7](#x16-195007r7)
+تحسينًا طفيفًا يتمثل في تجنب إعادة بناء الشجرة عندما لا يكون العنصر المراد إزالته موجودًا فعلًا.
+وينطبق هذا التحسين أيضًا على الدالة `add`.
 
-#### Dictionaries
+#### القواميس
 
-We do not show here how to adapt this data structure to implement dictionaries since
-this will be done in the following section for balanced binary trees.
+لا نوضح هنا كيفية تكييف بنية المعطيات هذه لتنفيذ القواميس، لأن ذلك سيُفعل في القسم التالي بشأن
+الأشجار الثنائية المتوازنة.
 
-### 5.2 AVL Trees
+### 5.2 أشجار AVL
 
-As we saw in the previous section, the height of a binary search tree can be as high as
-the number of elements it contains, which is the case of the comb. The efficiency of
-each operation is directly affected by this. The problem can be resolved by
-*balancing*the binary search tree, that is, by trying to make its height as
-small as possible. In practice, we look for a solution that is not too costly at
-construction time, but which guarantees that the two subtrees of each node
-contain the same number of elements up to a small multiplicative factor.
-The solution discussed here is that of AVL trees, where the difference in
-heights of the left and right subtrees of each node is never allowed to exceed
-1.
+كما رأينا في القسم السابق، يمكن أن يبلغ ارتفاع شجرة البحث الثنائية عدد عناصرها، كما هي
+حال المشط. وتتأثر كفاءة كل عملية بهذا مباشرة. ويمكن حلّ المشكلة بموازنة شجرة البحث
+الثنائية، أي بمحاولة جعل ارتفاعها صغيرًا قدر الإمكان. ومن الناحية العملية نبحث عن حل لا
+يكون مكلفًا جدًا عند البناء، لكنه يضمن أن تحتوي الشجرتان الفرعيتان لكل عقدة على العدد نفسه
+من العناصر ضمن عامل مضاعف صغير. والحل المعروض هنا هو حل أشجار AVL، حيث لا يُسمح أبدًا
+لاختلاف الارتفاعين بين الشجرتين الفرعيتين اليسرى واليمنى لكل عقدة أن يتجاوز 1.
 
-We begin by modifying the type of binary search trees to store the height of the
-tree as the fourth argument of the constructor `Node`.
+نبدأ بتعديل نوع أشجار البحث الثنائية لتخزين ارتفاع الشجرة كوسيط رابع للباني `Node`.
 
 ```ocaml
   type t = Empty | Node of t * elt * t * int
 ```
 
-Consider the following tree BDEF:
+لنتأمل الشجرة التالية BDEF:
 
-It is represented by the following OCaml value:
+وهي ممثَّلة بالقيمة التالية بلغة OCaml:
 
 ```ocaml
   Node (Node (Node (Empty, ’B’, Empty, 1), ’D’, Empty, 2),
@@ -303,8 +270,7 @@ It is represented by the following OCaml value:
         3)
 ```
 
-To manipulate the height of an AVL tree, it is convenient to introduce a function to
-retrieve it:
+للتعامل مع ارتفاع شجرة AVL، من الملائم تعريف دالة لاسترجاعه:
 
 ```ocaml
   let height = function
@@ -312,79 +278,69 @@ retrieve it:
     | Node (_, _, _, h) -> h
 ```
 
-It is similarly useful to introduce a function that creates a new node while simultaneously
-computing its height:
+ومن المفيد بالمثل تعريف دالة تنشئ عقدة جديدة وتحسب ارتفاعها في الوقت نفسه:
 
 ```ocaml
   let node l v r =
     Node (l, v, r, 1 + max (height l) (height r))
 ```
 
-Such a function is what we call a *smart constructor*. It will be used in what follows
-instead of the constructor `Node`. Of course, the height computed by `node` is correct
-only if the heights stored in `l` and `r` are also correct. This will be guaranteed by
-making the type of AVL trees abstract.
+تُسمى دالة كهذه *بانيًا ذكيًا* (smart constructor). وسنستخدمها في ما يلي بدلًا من الباني
+`Node`. وبالطبع لا يكون الارتفاع الذي تحسبه `node` صحيحًا إلا إذا كان الارتفاعان المخزنان في
+`l` و`r` صحيحين أيضًا. وسنضمن ذلك بجعل نوع أشجار AVL مجرّدًا (abstract).
 
-#### Smallest Element and Membership Testing
+#### أصغر عنصر واختبار الانتماء
 
-As an AVL tree is a binary search tree, the functions `min_elt` and `mem` remain
-identical to those of program [34](#x16-159014r34) (see page [395](#x16-159014r34)). The only difference is that they
-discard the fourth argument of the `Node` constructor.
+بما أن شجرة AVL شجرة بحث ثنائية، تبقى الدالتان `min_elt` و`mem` مطابقتين لما في البرنامج
+[34](#x16-159014r34) (انظر الصفحة [395](#x16-159014r34)). والفرق الوحيد أنهما تتجاهلان الوسيط الرابع للباني
+`Node`.
 
-#### Balancing
+#### الموازنة
 
-We illustrate the balancing of an AVL tree with the help of an example. If
-we insert the element `A` into the tree BDEF, we obtain the following tree
-ABDEF:
+نوضح موازنة شجرة AVL بمثال. فإذا أدرجنا العنصر `A` في الشجرة BDEF حصلنا على الشجرة
+التالية ABDEF:
 
-This tree is not balanced since the difference in height between the left and right
-subtrees of the node `E` is two. Nevertheless, it is easy to restore the balance of the
-tree. This can be done by performing local transformations that preserve the binary
-search tree property. An example of such an operation is *right rotation*, illustrated in
-figure [5.3](#right-rotation-in-an-avl-tree).
+هذه الشجرة غير متوازنة لأن فرق الارتفاع بين الشجرتين الفرعيتين اليسرى واليمنى للعقدة `E`
+يساوي اثنين. ومع ذلك يسهل استعادة توازن الشجرة، ويمكن فعل ذلك بإجراء تحويلات محلية تحافظ
+على خاصية شجرة البحث الثنائية. ومن أمثلة هذه العمليات *الدوران الأيمن* (right rotation) المبين
+في الشكل [5.3](#right-rotation-in-an-avl-tree).
 
 ![](/images/learn-ocaml/sets-and-dictionaries-3-right_rotate3-mps-.webp){#right-rotation-in-an-avl-tree}
 
-**Figure 5.3: Right rotation in an AVL tree.**
+**الشكل 5.3: دوران أيمن في شجرة AVL.**
 
-This operation replaces the root `v` by the root `lv` of the left subtree and shifts the
-subtree `lr` containing the elements between `lv` and `v`. Note that this operation
-modifies only two nodes in the tree structure. The binary search tree property is
-preserved: the subtree `ll` remains to the left of `lv`; the subtree `r` remains to the right
-of `v`; and the subtree `lr` remains to the right of `lv` and to the left of `v`. A left rotation
-may be performed symmetrically.
+تحل هذه العملية الجذر `v` محل الجذر `lv` للشجرة الفرعية اليسرى، وتنقل الشجرة الفرعية `lr`
+التي تحتوي على العناصر الواقعة بين `lv` و`v`. ولاحظ أن هذه العملية تعدّل عقدتين فقط في بنية
+الشجرة. وتُحفظ خاصية شجرة البحث الثنائية: فتبقى الشجرة الفرعية `ll` على يسار `lv`؛ وتبقى
+الشجرة الفرعية `r` على يمين `v`؛ وتبقى الشجرة الفرعية `lr` على يمين `lv` وعلى يسار `v`.
+ويمكن إجراء دوران أيسر على نحو متناظر.
 
-Thus, the tree ABDEF may be rebalanced by performing a right rotation on the
-subtree with root `D`. We then obtain the following tree, which satisfies the AVL
-condition.
+وبذلك يمكن إعادة موازنة الشجرة ABDEF بإجراء دوران أيمن عند الشجرة الفرعية ذات الجذر `D`.
+فنحصل عندئذ على الشجرة التالية، التي تحقق شرط AVL.
 
-A simple left or right rotation does not necessarily suffice to rebalance the tree.
-For example, if we insert `C`, we obtain the following tree, which is not an AVL
-tree.
+لا يكفي دوران أيسر أو أيمن بسيط بالضرورة لإعادة موازنة الشجرة. فمثلًا إذا أدرجنا `C` حصلنا
+على الشجرة التالية، وهي ليست شجرة AVL.
 
-We can then try to perform a right rotation at the root `E` or a left rotation at the
-node `B`. However, neither operation yields an AVL tree.
+ويمكننا حينئذ أن نحاول إجراء دوران أيمن عند الجذر `E` أو دوران أيسر عند العقدة `B`. غير أن
+أيا من العمليتين لا يعطي شجرة AVL.
 
-Nevertheless, the tree on the right can be easily rebalanced by performing a
-further right rotation at the root `E`. We obtain the following AVL tree:
+ومع ذلك يمكن إعادة موازنة الشجرة اليمنى بسهولة بإجراء دوران أيمن إضافي عند الجذر `E`. فنحصل
+على شجرة AVL التالية:
 
-This double operation is called *left-right rotation*. Needless to say, there is also a
-symmetrical right-left rotation.
+وتسمى هذه العملية المزدوجة *الدوران الأيسر-الأيمن* (left-right rotation). وغني عن القول إن
+هناك أيضًا دورانًا متناظرًا يمينًا-يسارًا.
 
-These four operations, that is, the two simple rotations and the two double
-rotations, suffice to rebalance any AVL tree following an insertion operation. We
-gather the rebalancing code in a *smart constructor* `balance` with the following
-type:
+تكفي هذه العمليات الأربع، أي الدورانين البسيطين والدورانين المزدوجين، لإعادة موازنة أي شجرة
+AVL بعد عملية إدراج. ونجمع شيفرة إعادة الموازنة في *باني ذكي* `balance` بالنوع التالي:
 
 ```ocaml
   val balance : t -> elt -> t -> t
 ```
 
-It behaves exactly like the function `node`, except that it also guarantees that the result
-will be balanced.
+وهو يتصرف تمامًا كالدالة `node`، إلا أنه يضمن أيضًا أن تكون النتيجة متوازنة.
 
-We begin by calculating the heights `hl` and `hr` of the left and right subtrees, and
-consider first the case in which the imbalance is due to the left subtree `l`:
+نبدأ بحساب الارتفاعين `hl` و`hr` للشجرتين الفرعيتين اليسرى واليمنى، وننظر أولًا في الحالة التي
+يكون فيها الاختلال ناتجًا عن الشجرة الفرعية اليسرى `l`:
 
 ```ocaml
   let balance l v r =
@@ -393,8 +349,8 @@ consider first the case in which the imbalance is due to the left subtree `l`:
     if hl > hr + 1 then begin
 ```
 
-As illustrated in figure [5.4](#simple-rotation-in-an-avl-tree), a simple right rotation suffices if the left subtree `ll` of
-`l` is at least as tall as the right subtree `lr`:
+كما هو مبين في الشكل [5.4](#simple-rotation-in-an-avl-tree)، يكفي دوران أيمن بسيط إذا كانت الشجرة الفرعية اليسرى `ll`
+للشجرة `l` لا تقل ارتفاعًا عن الشجرة الفرعية اليمنى `lr`:
 
 ```ocaml
       match l with
@@ -404,32 +360,31 @@ As illustrated in figure [5.4](#simple-rotation-in-an-avl-tree), a simple right
 
 ![](/images/learn-ocaml/sets-and-dictionaries-4-right_rotate_code2-mps-.webp){#simple-rotation-in-an-avl-tree}
 
-**Figure 5.4: Simple rotation in an AVL tree.**
+**الشكل 5.4: دوران بسيط في شجرة AVL.**
 
 ![](/images/learn-ocaml/sets-and-dictionaries-5-left_right_rotate_code2-mps-.webp){#double-rotation-in-an-avl-tree}
 
-**Figure 5.5: Double rotation in an AVL tree.**
+**الشكل 5.5: دوران مزدوج في شجرة AVL.**
 
-On the other hand, if `ll` is shorter than `lr`, we must perform a left-right double
-rotation, as illustrated in figure [5.5](#double-rotation-in-an-avl-tree).
+ومن جهة أخرى، إذا كانت `ll` أقصر من `lr`، وجب إجراء دوران مزدوج أيسر-أيمن، كما هو مبين في
+الشكل [5.5](#double-rotation-in-an-avl-tree).
 
 ```ocaml
         | Node(ll, lv, Node(lrl, lrv, lrr, _),_)->
             node (node ll lv lrl) lrv (node lrr v r)
 ```
 
-Here too, the AVL property is guaranteed. Note that the imbalance can be due to
-either `lrl` or `lrr`, and that in both cases a left-right double rotation suffices to restore
-the balance.
+وهنا أيضًا يُضمن شرط AVL. ولاحظ أن الاختلال قد يكون ناتجًا عن `lrl` أو عن `lrr`، وأن دورانًا
+مزدوجًا أيسر-أيمن يكفي في الحالتين لاستعادة التوازن.
 
-As `l` and `r` are both assumed to be AVL trees, there is no other possible cause for
-imbalance when `l` is taller than `r`. This completes the pattern matching:
+وبما أن `l` و`r` يفترض أن تكونا شجرتي AVL، فلا يوجد سبب آخر محتمل للاختلال عندما تكون `l`
+أطول من `r`. وبذلك تكتمل مطابقة الأنماط:
 
 ```ocaml
         |  _ -> assert false
 ```
 
-The case where the imbalance is due to `r` is handled symmetrically:
+وتُعالج الحالة التي يكون فيها الاختلال ناتجًا عن `r` على نحو متناظر:
 
 ```ocaml
     end else if hr > hl + 1 then begin
@@ -442,42 +397,37 @@ The case where the imbalance is due to `r` is handled symmetrically:
             assert false
 ```
 
-Finally, if the heights of `l` and `r` differ by at most one, we construct the node
-without rebalancing:
+وأخيرًا، إذا اختلف ارتفاعا `l` و`r` بواحد على الأكثر، فإننا نبني العقدة دون إعادة موازنة:
 
 ```ocaml
     end else
       node l v r
 ```
 
-The complete code of the function `balance` is given in program [36](#x16-164034r36).
+ترد الشيفرة الكاملة للدالة `balance` في البرنامج [36](#x16-164034r36).
 
 >
 
-#### Insertion and Removal
+#### الإدراج والإزالة
 
-We can now adapt the code for inserting an element (function `add` in program [34](#x16-159014r34)),
-replacing each application of the constructor `Node` with an application of the function
-`balance`. Similarly, we can adapt the code for removing an element (functions
-`remove_min_elt`, `merge`, and `remove`), making the same modification.
+يمكننا الآن تكييف شيفرة إدراج عنصر (الدالة `add` في البرنامج [34](#x16-159014r34))، باستبدال
+كل تطبيق للباني `Node` بتطبيق للدالة `balance`. وبالمثل يمكننا تكييف شيفرة إزالة عنصر (الدوال
+`remove_min_elt` و`merge` و`remove`)، بإجراء التعديل نفسه.
 
-The code thus obtained is given in program [37](#x16-165001r37).
+وترد الشيفرة المحصَّلة بهذه الطريقة في البرنامج [37](#x16-165001r37).
 
->
+نؤكد أن التكييفات المذكورة أعلاه لا تتضمن سوى استبدالات بسيطة.
 
-We emphasize that the adaptions above only involve simple substitutions.
+#### مقارنة المجموعات
 
-#### Comparison of Sets
-
-The implementation of a total order on sets is important. It has the following
-type:
+تنفيذ ترتيب كلي على المجموعات مهم، وهو من النوع التالي:
 
 ```ocaml
   val compare : t -> t -> int
 ```
 
-In particular, this allows us to easily construct sets of sets by instantiating the functor
-`Make` several times in succession, as follows:
+ويتيح لنا ذلك على وجه الخصوص بناء مجموعات من المجموعات بسهولة بتجسيد المُمَيِّز `Make` عدة
+مرات متتالية، كما يلي:
 
 ```ocaml
   module Int = struct
@@ -488,67 +438,57 @@ In particular, this allows us to easily construct sets of sets by instantiating 
   module IntSetSet = Make(IntSet)
 ```
 
-The comparison on sets cannot be done simply by using `Stdlib.compare`. Indeed, two
-binary search trees may contain the same elements without having the same
-structure. A simple solution would be to construct the list of elements of each tree in
-the infix order and then compare them. This is, however, very inefficient: On the one
-hand, constructing the list requires a lot of memory. On the other, this construction
-can be wasteful if the lists differ near the beginning. Chapter [9](https://usr.lmf.cnrs.fr/lpo/mainch9.html#zippers) proposes an efficient
-solution to this problem.
+لا يمكن إجراء المقارنة على المجموعات ببساطة باستخدام `Stdlib.compare`. فالواقع أن شجرتي بحث
+ثنائيتين قد تحتويان العناصر نفسها دون أن يكون لهما التركيب نفسه. ويتمثل حل بسيط في بناء قائمة
+عناصر كل شجرة بالترتيب الداخلي ثم مقارنتها. غير أن ذلك غير فعّال البتة: فمن جهة يتطلب بناء
+القائمة ذاكرة كبيرة، ومن جهة أخرى قد يكون هذا البناء مضيعة إذا اختلفت القائمتان قرب البداية.
+ويقترح الفصل [9](https://usr.lmf.cnrs.fr/lpo/mainch9.html#zippers) حلًا فعّالًا لهذه المسألة.
 
-#### Complexity
+#### التعقيد
 
-To justify the claim that AVL trees are balanced, we now show that the height of such
-a tree is always logarithmic in the number of elements.
+لتبرير القول بأن أشجار AVL متوازنة، نبين الآن أن ارتفاع شجرة كهذه لوغاريتمي دائمًا بالنسبة إلى
+عدد العناصر.
 
-Consider an AVL tree of height h. Let us try to estimate the number of its
-elements, n.
+لنأخذ شجرة AVL ارتفاعها h، ولنحاول تقدير عدد عناصرها n.
 
-If the tree is perfectly balanced, then n = 2h − 1. However, in general, we have
-only n ≤ 2h − 1. The smallest possible value of n would be attained in a tree having
-one subtree of height h − 1 and the other of height h − 2. (The reason is that,
-otherwise, we would still be able to remove elements from one of the two subtrees
-while maintaining the AVL property.) Thus, if we let Nh be the smallest number of
-elements in an AVL tree of height h, we have Nh = 1 + Nh−1 + Nh−2, which can be
-rewritten as Nh + 1 = (Nh−1 + 1) + (Nh−2 + 1). Equivalently, letting Gh = Nh + 1,
-we have Gh = Gh−1 + Gh−2. Here, we recognize the recurrence relation that
-defines the Fibonacci sequence. As we also have N0 = 0 and N1 = 1, that is,
-G0 = 1 and G1 = 2, we deduce that Gh = Fh+2, where (Fi) is the Fibonacci
-sequence.
+إذا كانت الشجرة متوازنة تمامًا فإن n = 2h − 1. غير أن لدينا في الحالة العامة n ≤ 2h − 1
+فقط. وتُحصَّل أصغر قيمة ممكنة لـ n في شجرة تحتوي إحدى شجرتيها الفرعيتين على ارتفاع h − 1
+والأخرى على ارتفاع h − 2. (والسبب أنه لولا ذلك لأمكننا إزالة عناصر من إحدى الشجرتين
+الفرعيتين مع الحفاظ على خاصية AVL.) وهكذا، إذا دللنا بـ Nh على أصغر عدد من العناصر في شجرة
+AVL ارتفاعها h، كان لدينا Nh = 1 + Nh−1 + Nh−2، ويمكن إعادة كتابة ذلك على الصورة
+Nh + 1 = (Nh−1 + 1) + (Nh−2 + 1). وبشكل مكافئ، إذا وضعنا Gh = Nh + 1 كان لدينا
+Gh = Gh−1 + Gh−2. وهنا نتعرف على العلاقة التعاودية التي تعرّف متتالية فيبوناتشي. وبما أن لدينا
+أيضًا N0 = 0 وN1 = 1، أي G0 = 1 وG1 = 2، نستنتج أن Gh = Fh+2، حيث (Fi) هي متتالية
+فيبوناتشي.
 
-A mathematical result tells us that Fi > ϕi∕ − 1, where ϕ = is the golden
-ratio. Hence:
+تخبرنا نتيجة رياضية أن Fi > ϕi∕ − 1، حيث ϕ = هي النسبة الذهبية. ومن ثَمّ:
 
 $$h + 2 \sqrt - - n \ge Nh = Fh + 2 - 1 > \phi / 5- 2,$$
 
-that is,
+أي:
 
 $$h + 2 \sqrt - - \phi / 5 < n + 2.$$
 
-Taking the base 2 logarithm of this inequality, we deduce the desired bound on the
-height h as a function of the number of elements n:
+وبأخذ اللوغاريتم ذي الأساس 2 لهذه المتباينة، نستنتج الحد المطلوب لارتفاع h بدلالة عدد
+العناصر n:
 
 $$\sqrt - - h \le - - 1 - - log (n + 2) + log2 - - 5 - 2 log2 \phi 2 log2\phi \approx 1,44 log (n + 2)- 0,33 2$$
 
-An AVL tree therefore has a height that is logarithmic in the number of elements.
-This guarantees, in particular, O(log n) complexity for the searching, insertion, and
-removal operations. This also guarantees that these operations will not trigger a stack
-overflow.
+ومن ثَمّ يكون ارتفاع شجرة AVL لوغاريتميًا بالنسبة إلى عدد العناصر. ويضمن ذلك على وجه الخصوص
+تعقيدًا O(log n) لعمليات البحث والإدراج والإزالة. كما يضمن ألا تسبب هذه العمليات طفحًا في
+المكدس (stack overflow).
 
 >
 
-#### Dictionary
+#### القاموس
 
-A minimal signature for a persistent dictionary is given in program [38](#x16-167003r38). It is very
-similar to that of a set (program [32](#x16-156002r32), at the start of the chapter). The type `key` of keys
-replaces the type `elt` of elements, for greater clarity. The type `t` is now polymorphic,
-its argument of type `’a` being the type of the values associated with the keys. The
-function `add` takes an additional argument. Finally, a new function `find`
-returns the value associated with a key, and raises the exception `Not_found`
-otherwise.
+ترد توقيعة دنيا لقاموس دائم في البرنامج [38](#x16-167003r38). وهي شديدة الشبه بتوقيعة المجموعة
+(البرنامج [32](#x16-156002r32)، في بداية الفصل). والنوع `key` للمفاتيح يحل محل النوع `elt` للعناصر
+لمزيد من الوضوح. والنوع `t` أصبح متعدد الصور (polymorphic)، ووسيطه من النوع `’a` هو نوع القيم
+المقترنة بالمفاتيح. وتأخذ الدالة `add` وسيطًا إضافيًا. وأخيرًا تُرجع دالة جديدة `find` القيمة
+المقترنة بمفتاح، وترفع الاستثناء `Not_found` في غير ذلك.
 
-The adaptation of the structure of AVL trees to dictionaries consists in adding the
-value associated with the key to each node, that is:
+يتلخص تكييف بنية أشجار AVL للقواميس في إضافة القيمة المقترنة بالمفتاح إلى كل عقدة، أي:
 
 ```ocaml
   type ’a t = Empty | Node of ’a t * key * ’a * ’a t * int
@@ -556,113 +496,90 @@ value associated with the key to each node, that is:
 
 >
 
-The function `mem` is unchanged. The function `find` follows exactly the same
-schema as `mem`, except that the exception `Not_found` is raised if the key is not present
-in the dictionary. Its code is given in program [39](#x16-168004r39). All the other functions on AVL
-trees (`balance`, `add`, etc.) are unchanged, except that elements are replaced by
-key/value pairs.
+الدالة `mem` لا تتغير. وتتبع الدالة `find` المخطط نفسه تمامًا الذي تتبعه `mem`، إلا أنها ترفع
+الاستثناء `Not_found` إذا لم يكن المفتاح موجودًا في القاموس. وترد شيفرتها في البرنامج [39](#x16-168004r39).
+وجميع الدوال الأخرى على أشجار AVL (`balance`، `add`، إلخ) لا تتغير، إلا أن العناصر تُستبدل
+بأزواج مفتاح/قيمة.
 
-#### Modules Set and Map
+#### الوحدتان Set وMap
 
-The OCaml standard library provides the modules `Set` and `Map`, implemented
-using AVL trees, that are almost identical to those presented in this section.
-The only difference is that the condition on the height of the subtrees is
-relaxed (2 for OCaml versus 1 here). This choice is a compromise between the
-construction cost and the efficiency of the operations. These libraries provide
-all set-theoretic operations, such as union, intersection, inclusion testing,
-etc.
+توفر المكتبة القياسية لـ OCaml الوحدتين `Set` و`Map`، المنفذتين باستخدام أشجار AVL، وهما شبه
+مطابقتين لما عرضناه في هذا القسم. والفرق الوحيد أن الشرط المفروض على ارتفاع الشجرتين الفرعيتين
+مخفف (2 في OCaml مقابل 1 هنا). وهذا الاختيار حل وسط بين تكلفة البناء وكفاءة العمليات. وتوفر
+هاتان المكتبتان جميع العمليات المجموعاتية (set-theoretic)، مثل الاتحاد والتقاطع واختبار
+التضمين، إلخ.
 
->
+### 5.3 جداول التجزئة
 
-### 5.3 Hash Tables
-
-An *imperative*data structure for sets can be implemented using an array of booleans
+يمكن تنفيذ بنية معطيات *أمرية* (imperative) للمجموعات باستخدام مصفوفة من القيم المنطقية
  
  
-of size n if the elements are integers between 0 and n − 1. However, this idea is not
-applicable to other kinds of elements, such as integers in a different range, elements of
-a different type, or if the number of elements is unbounded. We could also use a list,
-but searching is then costly.
+بحجم n إذا كانت العناصر أعدادًا صحيحة بين 0 و n − 1. غير أن هذه الفكرة لا تصلح لأنواع أخرى
+من العناصر، مثل أعداد صحيحة في مجال مختلف، أو عناصر من نوع مختلف، أو إذا كان عدد العناصر غير
+محدود. ويمكننا أيضًا استخدام قائمة، لكن البحث يصبح حينئذ مكلفًا.
 
-We present here the *hash table*data structure, which combines these two
-approaches. The idea consists in using a function f that maps each element to an
-integer between 0 and n − 1. In general, it is difficult to find an f that is
-*injective*. We will thus have to handle *collisions*, that is, cases where several
-elements map to the same value under f. Rather than using an array of
-booleans, we will use an array where each cell contains a “bucket” of elements
-represented as a list. Thus, an element x will belong to the set if and only
-if it belongs to the bucket at index f(x). If the function f distributes the
-elements uniformly across the different buckets, then the search operation will be
-efficient.
+نعرض هنا بنية المعطيات المسماة *جدول التجزئة* (hash table)، التي تجمع بين هذين المقاربتين.
+وتتلخص الفكرة في استخدام دالة f تربط كل عنصر بعدد صحيح بين 0 و n − 1. ومن الصعب عمومًا إيجاد
+دالة f تكون *تباينية* (injective). وسيتعين علينا تبعًا لذلك معالجة *التصادمات* (collisions)، أي
+الحالات التي تُسند فيها عدة عناصر إلى القيمة نفسها بموجب f. وبدلًا من استخدام مصفوفة من القيم
+المنطقية، سنستخدم مصفوفة تحتوي كل خلية فيها على «دلو» (bucket) من العناصر ممثَّل بقائمة.
+وهكذا ينتمي عنصر x إلى المجموعة إذا وفقط إذا انتمى إلى الدلو ذي الفهرس f(x). وإذا كانت الدالة
+f توزع العناصر بانتظام على مختلف الدلاء، كانت عملية البحث فعّالة.
 
-Consider, for example, a hash table representing the following set of strings:
+لنأخذ، على سبيل المثال، جدول تجزئة يمثل مجموعة السلاسل النصية التالية:
 
 $$\begin{cases} "" \\ "we like" \\ "the codes " \\ "in" \\ "ocaml" } \end{cases}$$
 
-Let us assume the table has n = 7 buckets. We also assume that there is a
-function h, called the *hash function*, which associates a positive integer (or zero) to
-each element. We can then define the function f as:
+لنفترض أن الجدول يحتوي على n = 7 دلاء. ولنفترض أيضًا وجود دالة h، تسمى *دالة التجزئة* (hash
+function)، تربط بكل عنصر عددًا صحيحًا موجبًا (أو صفرًا). ويمكننا عندئذ تعريف الدالة f كما يلي:
 
 $$f (s) = h(s) mod n$$
 
-The operation *modulo*guarantees that the value of f is indeed in the range
-0..n− 1. In the case of strings, we can take h to be the length of the string. If we use
-lists to represent buckets, we then obtain the structure shown in figure [5.6](#a-hash-table-containing-strings). Thus, for
-example, bucket 2 contains the two strings `"the codes"` and `"in"`, respectively of
-length 9 and 2.
+تضمن العملية *الباقي* (modulo) أن قيمة f تقع فعلًا في المجال 0..n− 1. وفي حالة السلاسل النصية
+يمكننا أن نأخذ h مطابقًا لطول السلسلة. وإذا استخدمنا القوائم لتمثيل الدلاء حصلنا على البنية
+المبينة في الشكل [5.6](#a-hash-table-containing-strings). وهكذا، على سبيل المثال، يحتوي الدلو 2 على
+السلسلتين `"the codes"` و`"in"`، اللتين طولهما على التوالي 9 و2.
 
 ![](/images/learn-ocaml/sets-and-dictionaries-6-hash1-mps-.webp){#a-hash-table-containing-strings}
 
-**Figure 5.6: A hash table containing strings.**
+**الشكل 5.6: جدول تجزئة يحتوي سلاسل نصية.**
 
-The choice of the number of buckets n and of the hash function h is
-important. For example, if we wish to represent the set of the 80000 words
-of the French dictionary, we must choose a value of n that is sufficiently
-large, of the same order of magnitude as the number of elements, with a view
-to having small buckets. It is also necessary to choose a subtler function
-h than simply the length of the string, or else only a few buckets will be
-used.
+يُعدّ اختيار عدد الدلاء n ودالة التجزئة h أمرًا مهمًا. فمثلًا إذا أردنا تمثيل مجموعة الكلمات
+الـ 80000 في القاموس الفرنسي، وجب علينا اختيار قيمة n كبيرة بما يكفي، من الرتبة نفسها لعدد
+العناصر، بغية الحصول على دلاء صغيرة. كما يجب اختيار دالة h أكثر دقة من مجرد طول السلسلة، وإلا
+فسيُستخدم عدد قليل من الدلاء فقط.
 
-We will now implement hash tables having the signature given in program [40](#x16-170003r40).
-The type `elt` is that of the elements and the type `t` is that of hash tables. The
-function `create` returns a new table that is initially empty. The function `add` adds an
-element and the function `remove` removes an element. The function `mem` tests for the
-presence of an element and `cardinal` returns the number of elements in the
-set.
+سننفذ الآن جداول تجزئة ذات التوقيعة الواردة في البرنامج [40](#x16-170003r40). والنوع `elt` هو نوع
+العناصر والنوع `t` هو نوع جداول التجزئة. وتُرجع الدالة `create` جدولًا جديدًا فارغًا في البداية.
+وتضيف الدالة `add` عنصرًا وتزيل الدالة `remove` عنصرًا. وتختبر الدالة `mem` وجود عنصر وتُرجع
+`cardinal` عدد العناصر في المجموعة.
 
-To add an element to a hash table, it is necessary to have a hash function `hash` of
-type `elt->int`. To search for an element, it is also necessary to have an equality
-function `equal` of type `elt->elt->bool`. Rather than using the OCaml equality
-operator `=`, we prefer to let users choose their own comparison function. The two
-functions `hash` and `equal` must verify the following condition:
+لإضافة عنصر إلى جدول تجزئة تجب الاستعانة بدالة تجزئة `hash` من النوع `elt->int`. وللبحث عن
+عنصر تجب أيضًا الاستعانة بدالة تساوٍ `equal` من النوع `elt->elt->bool`. وبدلًا من استخدام عامل
+التساوي `=` في OCaml، نفضل أن نترك للمستخدمين اختيار دالة المقارنة الخاصة بهم. ويجب أن تحقق
+الدالتان `hash` و`equal` الشرط التالي:
 
 $$\forall x, y.equal x y ⇒ hash x = hash y$$
 
-It is therefore natural to write hash tables as a functor parametrized by a module
-of type `HashType`, whose signature contains these two functions (see program [41](#x16-170015r41)
-below).
+لذلك من الطبيعي أن نكتب جداول التجزئة على شكل مُمَيِّز يُوسَّم بوحدة من النوع `HashType`،
+تحتوي توقعيتها على هاتين الدالتين (انظر البرنامج [41](#x16-170015r41) أدناه).
 
->
-
->
-
-The functor then takes the following form:
+يتخذ المُمَيِّز عندئذ الشكل التالي:
 
 ```ocaml
 module Make(X: HashType): ImperativeSet with type elt = X.t = struct
   type elt = X.t
 ```
 
-The type `t` of hash tables could be defined as follows:
+كان يمكن تعريف النوع `t` لجداول التجزئة كما يلي:
 
 ```ocaml
   type t = (elt list) array
 ```
 
-However, it is also preferable to store the number of elements in the set, so as to be able
-to implement the function `cardinal` efficiently. We therefore use a record type
-containing, on the one hand, the number of elements in a field `size` and, on the other,
-the array of buckets in a field `buckets`
+غير أنه يُفضَّل أيضًا تخزين عدد العناصر في المجموعة حتى نتمكن من تنفيذ الدالة `cardinal`
+بكفاءة. ولذلك نستخدم نوع سجل (record) يحتوي، من جهة، على عدد العناصر في الحقل `size`، ومن
+جهة أخرى، على مصفوفة الدلاء في الحقل `buckets`
 
 ```ocaml
   type t = {
@@ -671,27 +588,24 @@ the array of buckets in a field `buckets`
   }
 ```
 
-The function `cardinal` is then immediate.
+وتكون الدالة `cardinal` عندئذ فورية.
 
 ```ocaml
   let cardinal h =
     h.size
 ```
 
-To create a new hash table, it is necessary to choose the size n of the array.
-Ideally, this size should be of the same order of magnitude as the number of elements
-that will be stored in the table. The user could provide this information, for example
-in the form of an additional argument to `create`, but this is not always possible. For
-the present, let us therefore consider a simplified situation in which the size is an
-arbitrary constant.
+لإنشاء جدول تجزئة جديد يجب اختيار حجم n للمصفوفة. ويُستحسن أن يكون هذا الحجم من الرتبة نفسها
+لعدد العناصر التي ستُخزَّن في الجدول. ويمكن للمستخدم تقديم هذه المعلومة، مثلًا على شكل وسيط
+إضافي للدالة `create`، لكن ذلك غير ممكن دائمًا. ولنفترض الآن حالة مبسطة يكون فيها الحجم ثابتًا
+اعتباطيًا.
 
 ```ocaml
   let array_length = 5003
 ```
 
-We will see later how to eliminate the need for this arbitrary choice. The creation of an
-empty hash table consists in the creation of an array of size `array_length` containing
-only empty lists, and in initializing the field `size` to 0.
+سنرى لاحقًا كيف نتخلص من الحاجة إلى هذا الاختيار الاعتباطي. ويتلخص إنشاء جدول تجزئة فارغ في
+إنشاء مصفوفة بحجم `array_length` تحتوي على قوائم فارغة فقط، وفي تهيئة الحقل `size` بالقيمة 0.
 
 ```ocaml
   let create () =
@@ -699,46 +613,43 @@ only empty lists, and in initializing the field `size` to 0.
       buckets = Array.make array_length []; }
 ```
 
-#### Searching for an Element
+#### البحث عن عنصر
 
-To search for an element `x` within a hash table `h`, we begin by writing a function
-`bucket_of` that returns the bucket corresponding to `x` in `h`.
+للبحث عن عنصر `x` داخل جدول تجزئة `h`، نبدأ بكتابة دالة `bucket_of` تُرجع الدلو المقابل لـ `x`
+في `h`.
 
 ```ocaml
   let bucket_of x h =
     (X.hash x land max_int) mod (Array.length h.buckets)
 ```
 
-Since the result of `mod` has the same sign as its first argument, we
-make sure that the latter is not negative by clearing the sign
-bit[^1].
+بما أن نتيجة `mod` تحمل الإشارة نفسها التي تحملها وسيطتها الأولى، فإننا نتأكد من أن هذه
+الأخيرة ليست سالبة بإزالة بت الإشارة[^1].
 
-To search for an element `x` in a table `h`, we begin by determining the index `i` of
-the bucket containing `x` with the function `bucket_of`.
+للبحث عن عنصر `x` في جدول `h`، نبدأ بتحديد فهرس `i` للدلو الذي يحتوي `x` باستخدام الدالة
+`bucket_of`.
 
 ```ocaml
   let mem x h =
     let i = bucket_of x h in
 ```
 
-Next, we search for `x` in the list `h.buckets.(i)`. For this we use the equality function on
-the type `elt`, namely, `X.equal`.
+بعد ذلك نبحث عن `x` في القائمة `h.buckets.(i)`. ولهذا نستخدم دالة التساوي على النوع `elt`، أي
+`X.equal`.
 
 ```ocaml
      List.exists (X.equal x) h.buckets.(i)
 ```
 
-The complete code of `mem` is given below in program [42](#x16-171011r42).
+ترد الشيفرة الكاملة للدالة `mem` أدناه في البرنامج [42](#x16-171011r42).
 
 >
 
-Since the operation of searching within a bucket is reused several times
-subsequently, we turn it into a function, `mem_bucket`.
+بما أن عملية البحث داخل دلو تُستخدم عدة مرات لاحقًا، فسنحوّلها إلى دالة `mem_bucket`.
 
-#### Inserting an Element
+#### إدراج عنصر
 
-To insert an element `x` in a table `h`, we begin by retrieving the list `b` of the bucket that
-may contain `x`.
+لإدراج عنصر `x` في جدول `h`، نبدأ باسترجاع القائمة `b` الخاصة بالدلو الذي قد يحتوي `x`.
 
 ```ocaml
   let add x h =
@@ -746,8 +657,8 @@ may contain `x`.
     let b = h.buckets.(i) in
 ```
 
-If `x` is present in the bucket, then there is nothing more to be done. Otherwise, we
-increase the field `size` and add `x` at the head of the list `b`.
+إذا كان `x` موجودًا في الدلو فليس هناك ما يُفعل. وإلا فإننا نزيد الحقل `size` ونضيف `x` في رأس
+القائمة `b`.
 
 ```ocaml
     if not (mem_bucket x b) then begin
@@ -756,47 +667,38 @@ increase the field `size` and add `x` at the head of the list `b`.
     end
 ```
 
-The complete code of `add` is given below in program [43](#x16-172010r43).
+ترد الشيفرة الكاملة للدالة `add` أدناه في البرنامج [43](#x16-172010r43).
 
-*Note*: We could have directly added `x` to the list `b` without checking for its
-presence beforehand. This would not modify the contents of the set (from the point of
-view of `mem`), and insertion would then happen in O(1) time. On the other hand, it
-would have become impossible to keep track of the field `size`, and the operation
-`cardinal` would have become more costly. Furthermore, repeated insertions of the
-same element would have occupied more and more space in the hash table, thereby
-reducing the efficiency of search operations. Alternatively, to prevent duplicates,
-buckets may be represented using a more efficient data structure than lists. We
-could, for example, use AVL trees, presented in the previous section. This
-would nevertheless require an additional comparison function on the type
-`elt`.
+*ملاحظة*: كان بإمكاننا إضافة `x` مباشرة إلى القائمة `b` دون التحقق من وجوده مسبقًا. ولن يغيّر
+ذلك محتوى المجموعة (من وجهة نظر `mem`)، وكان الإدراج سيحدث عندئذ في زمن O(1). ومن جهة أخرى،
+كان سيصبح من المستحيل تتبع الحقل `size`، وكانت العملية `cardinal` ستصبح أكثر كلفة. علاوة على
+ذلك، كانت الإدراجات المتكررة للعنصر نفسه ستشغل حيزًا متزايدًا في جدول التجزئة، مما يقلل كفاءة
+عمليات البحث. وبدلًا من ذلك، لمنع التكرارات، يمكن تمثيل الدلاء باستخدام بنية معطيات أكثر كفاءة
+من القوائم؛ فيمكننا مثلًا استخدام أشجار AVL المعروضة في القسم السابق. غير أن ذلك سيتطلب دالة
+مقارنة إضافية على النوع `elt`.
 
 >
 
-#### Removing an Element
+#### إزالة عنصر
 
-Removing an element from a hash table proceeds as in the insertion operation. The
-code of `remove` is given in program [44](#x16-173001r44).
+تسير إزالة عنصر من جدول تجزئة كما في عملية الإدراج. وترد شيفرة `remove` في البرنامج [44](#x16-173001r44).
 
 >
 
-When `x` is present in the bucket `b`, it is necessary to decrease the field `size` and
-delete the occurrence of `x` in `b`. For this last operation, we use the function
-`List.filter` so as to preserve only the elements of the bucket that are distinct from
-`x`.
+عندما يكون `x` موجودًا في الدلو `b`، يجب إنقاص الحقل `size` وحذف وقوع `x` في `b`. ولهذه
+العملية الأخيرة نستخدم الدالة `List.filter` بحيث لا نبقي إلا على عناصر الدلو المختلفة
+عن `x`.
 
-#### Resizing the Array Dynamically
+#### تغيير حجم المصفوفة ديناميكيًا
 
-The efficiency of the code that we presented above is satisfactory when the order of
-magnitude of the number of elements of the set is known beforehand. However, our
-structure is too simplistic if the number of elements can increase arbitrarily. Efficiency
-decreases rapidly once the *load factor*of the hash table—that is, the ratio between
-the number of elements in the table and the size of the array—becomes large. To
-remedy this, it is necessary to resize the array dynamically, depending on the load
-factor. For example, we may double the size of the array once the load factor is
-greater than 1∕2.
+تكون كفاءة الشيفرة المعروضة أعلاه مرضية عندما يكون ترتيب حجم عدد عناصر المجموعة معروفًا
+مسبقًا. غير أن بنيتنا أبسط مما ينبغي إذا أمكن لعدد العناصر أن يزداد على نحو اعتباطي. وتنخفض
+الكفاءة بسرعة بمجرد أن يكبر *عامل الحمولة* (load factor) لجدول التجزئة، أي النسبة بين عدد
+العناصر في الجدول وحجم المصفوفة. ولعلاج ذلك يجب تغيير حجم المصفوفة ديناميكيًا بحسب عامل
+الحمولة. ويمكننا، مثلًا، مضاعفة حجم المصفوفة بمجرد أن يتجاوز عامل الحمولة 1∕2.
 
-To do this, it is necessary to modify the definition of the type `t` slightly, so as to
-make the field `buckets` `mutable`.
+ولفعل ذلك يجب تعديل تعريف النوع `t` تعديلًا طفيفًا، بحيث يُجعل الحقل `buckets` من النوع
+`mutable`.
 
 ```ocaml
   type t = {
@@ -805,12 +707,12 @@ make the field `buckets` `mutable`.
   }
 ```
 
-The initial value of the constant `array_length` remains arbitrary but will no longer
-impact the efficiency of the operations. The user may, nevertheless, continue to
-indicate an order of magnitude so as to avoid too many resizings.
+تبقى القيمة الأولية للثابت `array_length` اعتباطية لكنها لن تؤثر بعد ذلك في كفاءة العمليات.
+غير أنه يمكن للمستخدم أن يستمر في الإشارة إلى ترتيب حجم مناسب تجنبًا لكثرة عمليات تغيير
+الحجم.
 
-The main modification is to the function `add`, where the array must be resized
-when the load factor becomes too large.
+يتمثل التعديل الرئيسي في الدالة `add`، حيث يجب تغيير حجم المصفوفة عندما يصبح عامل الحمولة
+كبيرًا جدًا.
 
 ```ocaml
   let add x h =
@@ -822,10 +724,9 @@ when the load factor becomes too large.
     end
 ```
 
-The test `h.size>n/2` is done immediately after the insertion of `x`. If the condition
-holds, we call a function `resize` that will take care of resizing the array. This function
-proceeds as in section [*4.1*](https://usr.lmf.cnrs.fr/lpo/mainch4.html#resizeable-arrays)*Resizeable Arrays*. It begins by allocating a new array `a`, of
-size m = 2 × n.
+يُجرى الاختبار `h.size>n/2` مباشرة بعد إدراج `x`. وإذا تحقق الشرط نستدعي دالة `resize` تتولى
+تغيير حجم المصفوفة. وتسير هذه الدالة كما في القسم [*4.1*](https://usr.lmf.cnrs.fr/lpo/mainch4.html#resizeable-arrays)*Resizeable Arrays*. وتبدأ بتخصيص مصفوفة جديدة `a`، من
+حجم m = 2 × n.
 
 ```ocaml
   let resize h =
@@ -834,11 +735,9 @@ size m = 2 × n.
     let a = Array.make m [] in
 ```
 
-The size of the array having changed, the bucket number of an element is no longer
-necessarily the same due to the change in the *modulus*. It is therefore necessary
-to reassign each of the elements of `h` to their respective new buckets. For
-this, we introduce a function `rehash` that adds the element `x` into its new
-bucket.
+بما أن حجم المصفوفة تغير، فإن رقم دلو العنصر لم يعد بالضرورة هو نفسه بسبب تغير *المقاس*
+(modulus). ولذلك من الضروري إعادة تعيين كل عنصر من عناصر `h` إلى دلوّه الجديد. ولهذا
+نعرّف دالة `rehash` تضيف العنصر `x` إلى دلوّه الجديد.
 
 ```ocaml
     let rehash x =
@@ -847,58 +746,51 @@ bucket.
     in
 ```
 
-It then suffices to execute `rehash` on all the buckets of the previous array `h.buckets`:
+ثم يكفي تنفيذ `rehash` على جميع دلاء المصفوفة السابقة `h.buckets`:
 
 ```ocaml
     Array.iter (List.iter rehash) h.buckets;
 ```
 
-Finally, we replace the array `h.buckets` by `a`.
+وأخيرًا نستبدل المصفوفة `h.buckets` بالمصفوفة `a`.
 
 ```ocaml
     h.buckets <- a
 ```
 
-The complete code of `resize` is given in program [45](#x16-174028r45).
+ترد الشيفرة الكاملة للدالة `resize` في البرنامج [45](#x16-174028r45).
 
 >
 
-As the size of arrays is limited to `Sys.max_array_length`, it is a good idea to
-verify that the length of the array created by the function `resize` is not too large (see
-exercise [5.11](#x16-197002r11)).
+بما أن حجم المصفوفات محدد بـ `Sys.max_array_length`، فمن الجيد التحقق من أن طول المصفوفة
+التي تنشئها الدالة `resize` ليس كبيرًا جدًا (انظر التمرين [5.11](#x16-197002r11)).
 
-#### Complexity
+#### التعقيد
 
-The complexity of the operations on a hash table obviously depends on the hash
-function. If, for example, this function always returns the same value, then the hash
-table becomes a simple list, and the operations `mem`, `add`, and `remove` all have cost
-O(N) if the table contains N elements. If, by contrast, the hash function distributes
-the elements uniformly over the different buckets, and if the number of buckets is
-sufficiently large, then we can hope that the size of each bucket will be bounded
-by a small constant. In this case, the complexity of each operation will be
-O(1).
+يعتمد تعقيد العمليات على جدول التجزئة على دالة التجزئة بالطبع. فإذا كانت هذه الدالة تُرجع
+دائمًا القيمة نفسها، مثلًا، تحول الجدول إلى قائمة بسيطة، وتكون لعمليات `mem` و`add` و`remove`
+تكلفة O(N) إذا كان الجدول يحتوي N عنصرًا. وعلى النقيض، إذا كانت دالة التجزئة توزع العناصر
+بانتظام على مختلف الدلاء، وكان عدد الدلاء كبيرًا بما يكفي، أمكننا أن نأمل أن يكون حجم كل دلو
+محصورًا بثابت صغير. وفي هذه الحالة يكون تعقيد كل عملية O(1).
 
-The tuning of the hash function is done empirically, for example by measuring
-maximal and average bucket sizes. On values such as integers, strings, or even arrays
-of integers, we can use the polymorphic hash function `Hashtbl.hash`, provided by the
-OCaml library, which gives good results. In the section [*11.4*](https://usr.lmf.cnrs.fr/lpo/mainch11.html#hashconsing) *Hash-consing*, we will see
-how to define an efficient hash function for more complex values, such as lists or
-trees.
+يُضبط اختيار دالة التجزئة تجريبيًا، بقياس الحد الأقصى والمتوسط لحجوم الدلاء مثلًا. وبالنسبة
+إلى قيم مثل الأعداد الصحيحة والسلاسل النصية أو حتى مصفوفات الأعداد الصحيحة، يمكننا استخدام
+دالة التجزئة متعددة الصور `Hashtbl.hash` المتوفرة في مكتبة OCaml، والتي تعطي نتائج جيدة.
+وسنرى في القسم [*11.4*](https://usr.lmf.cnrs.fr/lpo/mainch11.html#hashconsing) *Hash-consing* كيف
+نعرّف دالة تجزئة فعّالة لقيم أكثر تعقيدًا، مثل القوائم أو الأشجار.
 
-To maintain a bounded load factor, we have shown above how to dynamically
-resize the hash table. Each operation that triggers a resizing obviously has cost O(N),
-since each element has to be reintroduced individually into the new array. However, if
-we follow the above strategy, consisting in doubling the size of the array each time,
-then the cost is *amortized*over the entire sequence of operations, exactly as in section
-[*4.1*](https://usr.lmf.cnrs.fr/lpo/mainch4.html#resizeable-arrays) *Resizeable Arrays*. The operations `mem`, `add`, and `remove` therefore have
-amortized cost O(1). A hash table is consequently an extremely efficient data
-structure.
+للحفاظ على عامل حمولة محدود، بيّنا أعلاه كيفية تغيير حجم جدول التجزئة ديناميكيًا. ومن الواضح
+أن لكل عملية تستدعي تغيير الحجم تكلفة O(N)، لأن كل عنصر يجب إعادة إدراجه على حدة في
+المصفوفة الجديدة. غير أنه إذا اتبعنا الاستراتيجية أعلاه المتمثلة في مضاعفة حجم المصفوفة في كل
+مرة، فإن التكلفة تكون *مطفأة* (amortized) على تسلسل العمليات بأكمله، تمامًا كما في القسم
+[*4.1*](https://usr.lmf.cnrs.fr/lpo/mainch4.html#resizeable-arrays) *Resizeable Arrays*. وعليه تكون
+لعمليات `mem` و`add` و`remove` تكلفة مطفأة O(1). وبناءً عليه يعد جدول التجزئة بنية معطيات
+فعّالة للغاية.
 
-#### Dictionary
+#### القاموس
 
-To adapt the hash table structure to represent dictionaries, we add the values
-associated with the keys into the buckets. The lists become association lists and the
-type `t` becomes:
+لتكييف بنية جدول التجزئة لتمثيل القواميس، نضيف القيم المقترنة بالمفاتيح إلى الدلاء. فتصبح
+القوائم قوائم إقران (association lists) ويصبح النوع `t`:
 
 ```ocaml
   type ’a t = {
@@ -907,85 +799,70 @@ type `t` becomes:
   }
 ```
 
-To check for the presence of a key in a list of type `(key*’a)list`, we modify the
-function `mem_bucket` slightly, as follows:
+للتحقق من وجود مفتاح في قائمة من النوع `(key*’a)list`، نعدل الدالة `mem_bucket` تعديلًا
+طفيفًا، كما يلي:
 
 ```ocaml
   let mem_bucket x b =
     List.exists (fun (y,_) -> X.equal x y) b
 ```
 
-All the other functions are subject to similar minor modifications. The only new
-function that needs to be added is `find`. It looks for the value associated with a key in
-the corresponding bucket, which boils down to searching in an association list. We
-cannot use the predefined function `List.assoc`, because here we must use the
-equality predicate `X.equal`. We therefore write a specific function, `lookup`, for this.
-The code of `find` is given in program [46](#x16-176010r46).
+تخضع جميع الدوال الأخرى لتعديلات طفيفة مماثلة. والدالة الجديدة الوحيدة التي يجب إضافتها هي
+`find`، إذ تبحث عن القيمة المقترنة بمفتاح في الدلو المقابل، وهو ما يختزل إلى البحث في قائمة
+إقران. ولا يمكننا استخدام الدالة المعرّفة مسبقًا `List.assoc`، لأنه يجب علينا هنا استخدام
+المسند بالتساوي `X.equal`. لذلك نكتب لهذا الغرض دالة خاصة `lookup`. وترد شيفرة `find` في
+البرنامج [46](#x16-176010r46).
 
 >
 
-#### Module Hashtbl
+#### الوحدة Hashtbl
 
-The standard library of OCaml provides dictionaries implemented as hash
-tables in the form of a functor `Hashtbl.Make`, analogous to the one we just
-wrote.
+توفر المكتبة القياسية لـ OCaml قواميس منفذة كجداول تجزئة في شكل مُمَيِّز `Hashtbl.Make`،
+مماثل للمُمَيِّز الذي كتبناه للتو.
 
-This data structure may be used to associate several values with a single key.
-More precisely, it allows us to call the function `add` several times with the same key,
-without losing the values with which the key was previously associated. For example,
-if we execute the additions `addhxv1` and `addhxv2` sequentially for a key `x` in a table `h`,
-then `findhx` will return `v2`. If we then perform `removehx`, this has the effect of
-deleting the last binding of `x`, and `findhx` will then return `v1`. On the other
-hand, if we wish to replace the value `v1` by `v2`, we can use the operation
-`replace`.
+يمكن استخدام بنية المعطيات هذه لإقران عدة قيم بمفتاح واحد. وبشكل أدق، تتيح لنا استدعاء الدالة
+`add` عدة مرات بالمفتاح نفسه دون أن نفقد القيم التي كان المفتاح مقترنًا بها سابقًا. فمثلًا، إذا
+نفذنا الإضافتين `addhxv1` و`addhxv2` تباعًا لمفتاح `x` في جدول `h`، فإن `findhx` سيرجع `v2`.
+ثم إذا نفذنا `removehx`، كان لأثر ذلك حذف آخر إقران لـ `x`، وسيرجع `findhx` حينئذ `v1`. ومن
+جهة أخرى، إذا أردنا استبدال القيمة `v1` بالقيمة `v2`، يمكننا استخدام العملية `replace`.
 
-The module `Hashtbl` also provides a polymorphic hash table data structure that
-relies on the polymorphic hash function `Hashtbl.hash` that has type `’a->int` and
-that is compatible with the structural equality operation `=`. This way, we avoid having
-to use the functor `Hashtbl.Make` when the keys are, for example, values of type `int`
-or `string`.
+توفر الوحدة `Hashtbl` أيضًا بنية معطيات جدول تجزئة متعدد الصور تعتمد على دالة التجزئة
+متعددة الصور `Hashtbl.hash` من النوع `’a->int`، وهي متوافقة مع عملية التساوي التركيبي `=`.
+وبهذه الطريقة نتجنب الاضطرار إلى استخدام المُمَيِّز `Hashtbl.Make` عندما تكون المفاتيح، مثلًا،
+قيمًا من النوع `int` أو `string`.
 
-### 5.4 Prefix Trees
+### 5.4 أشجار البادئة
 
-We are concerned in this section with a data structure used to represent
-sets of *words*. By “word,” we mean here any OCaml value that can be seen
-as a sequence of *letters*. The first data type that comes to mind for such
-values is obviously the type `string` of strings, where the letters are values
-of type `char`. However, other values may also be considered as words. For
- 
- 
-example, an integer written in base 2 can be understood as a word formed of
-the letters `0` and `1`. More generally, we will assume that words are of type
-`L.tlist`, where `L` is a module of signature `Letter`, given in program [47](#x16-178007r47),
-containing a type `t` that represents letters. Apart from this type `t`, this signature
-assumes the existence of a comparison function that we will need in what
-follows.
+نعنى في هذا القسم ببنية معطيات تُستعمل لتمثيل مجموعات من *الكلمات*. ونقصد بالكلمة هنا
+أي قيمة من قيم OCaml يمكن النظر إليها بوصفها متتالية من *الحروف*. ونوع المعطيات الأول
+الذي يتبادر إلى الذهن لهذه القيم هو بطبيعة الحال النوع `string` الخاص بالسلاسل النصية،
+حيث تكون الحروف قيمًا من النوع `char`. غير أن قيمًا أخرى قد تُعد أيضًا كلمات. فعلى سبيل
+المثال، يمكن فهم عدد صحيح مكتوب على الأساس 2 بوصفه كلمة مؤلفة من الحرفين `0` و`1`.
+وبشكل أعم، سنفترض أن الكلمات من النوع `L.tlist`، حيث أن `L` وحدة من توقيع `Letter`،
+ترد في البرنامج [47](#x16-178007r47)، وتحتوي على نوع `t` يمثل الحروف. وبصرف النظر عن
+هذا النوع `t`، يفترض هذا التوقيع وجود دالة مقارنة سنحتاج إليها فيما يلي.
 
-We use this decomposition into letters to represent sets of words
-with the help of a data structure called a *prefix tree*, also known as
-*trie*[^2].
-In these trees, each branch is labeled by a letter and each node contains a
-boolean indicating whether the sequence of letters leading from the root of the
-tree to this node is a word belonging to the set. For example, the prefix
-tree corresponding to the set of words {`if`,`in`,`do`,`done`} is represented in
-figure [5.7](#prefix-tree-for-the-set-if-in-do-done).
+نستخدم هذا التحليل إلى حروف لتمثيل مجموعات الكلمات بمساعدة بنية معطيات تسمى *شجرة
+البادئة* (prefix tree)، وتعرف أيضًا باسم *trie*[^2].
+في هذه الأشجار، تُوسم كل حافة بحرف، وتحتوي كل عقدة على قيمة منطقية تبين ما إذا كانت
+متتالية الحروف الواصلة من جذر الشجرة إلى هذه العقدة كلمة تنتمي إلى المجموعة. فعلى سبيل
+المثال، الشجرة السابقة المقابلة لمجموعة الكلمات {`if`,`in`,`do`,`done`} ممثَّلة في
+الشكل [5.7](#prefix-tree-for-the-set-if-in-do-done).
 
 ![](/images/learn-ocaml/sets-and-dictionaries-7-trie_1-mps-.webp){#prefix-tree-for-the-set-if-in-do-done}
 
-**Figure 5.7: Prefix tree for the set {if,in,do,done}.**
+**الشكل 5.7: شجرة بادئة لمجموعة {`if`,`in`,`do`,`done`}.**
 
-This data structure is useful to bound the time needed to search for a word in a
-set by the length of the word, independent of the number of words in the
-set.
-
->
+هذه البنية مفيدة لتحديد الزمن اللازم للبحث عن كلمة في مجموعة بطول الكلمة، بصرف النظر عن
+عدد الكلمات في المجموعة.
 
 >
 
-In order to avoid depending on a particular implementation of the module
-`L`, we define the prefix tree data structure as a functor parametrized by `L`
-and returning a persistent set whose signature, `PersistentSet`, is given in
-program [48](#x16-178014r48).
+>
+
+تجنبًا للاعتماد على تنفيذ خاص للوحدة `L`، نعرّف بنية معطيات شجرة البادئة على شكل مُمَيِّز
+يُوسَّم بوحدة `L` ويُرجع مجموعة دائمة تكون توقعيتها، `PersistentSet`، واردة في البرنامج
+[48](#x16-178014r48).
 
 ```ocaml
   module Make(L: Letter): PersistentSet with type elt = L.t list =
@@ -993,44 +870,42 @@ program [48](#x16-178014r48).
     type elt = L.t list
 ```
 
-As mentioned earlier, the type `elt` of elements is defined as a list of letters, that is, a list
-of type `L.tlist`.
+كما ذكرنا سابقًا، يُعرَّف النوع `elt` للعناصر بأنه قائمة من الحروف، أي قائمة من النوع
+`L.tlist`.
 
-The idea behind prefix trees is to represent each node as a dictionary that
-associates letters with subtrees, that is, with other nodes. We begin by introducing a
-dictionary `M`, whose keys are letters, by applying the functor `Map.Make` to the module
+تتلخص الفكرة وراء أشجار البادئة في تمثيل كل عقدة بقاموس يربط الحروف بأشجار فرعية، أي
+بعقد أخرى. ونبدأ بتقديم قاموس `M`، مفاتيحه حروف، بتطبيق المُمَيِّز `Map.Make` على الوحدة
 `L`.
 
 ```ocaml
   module M = Map.Make(L)
 ```
 
-We can then define the type `t` of nodes as follows:
+ويمكننا عندئذ تعريف النوع `t` للعقد كما يلي:
 
 ```ocaml
    type t = { word : bool; branches : t M.t }
 ```
 
-The field `word` contains the boolean value indicating the presence of a word in the set.
-The field `branches` contains the children of the node.
+يحتوي الحقل `word` على القيمة المنطقية الدالة على وجود كلمة في المجموعة. ويحتوي الحقل
+`branches` على أبناء العقدة.
 
-The empty set is represented by a tree `empty` consisting of a single node, where
-the field `word` is `false`, and `branches` is the empty dictionary:
+وتمثل المجموعة الفارغة بشجرة `empty` تتكون من عقدة واحدة، يكون فيها الحقل `word` هو
+`false`، و`branches` هو القاموس الفارغ:
 
 ```ocaml
   let empty = { word = false; branches = M.empty }
 ```
 
-The code is given in program [49](#x16-178037r49) along with a function `is_empty` that tests whether a set
-is empty.
+وترد الشيفرة في البرنامج [49](#x16-178037r49) مع دالة `is_empty` تختبر ما إذا كانت مجموعة
+فارغة.
 
 >
 
-#### Searching for an Element
+#### البحث عن عنصر
 
-Searching for an element `x` proceeds recursively as follows: If the word `x` is the empty
-list, the search ends, returning the boolean value contained in the root of the tree
-`t`.
+يجري البحث عن عنصر `x` على نحو تعاودي كما يلي: إذا كانت الكلمة `x` هي القائمة الفارغة،
+انتهى البحث معيدًا القيمة المنطقية الموجودة في جذر الشجرة `t`.
 
 ```ocaml
   let rec mem x t =
@@ -1038,9 +913,8 @@ list, the search ends, returning the boolean value contained in the root of the 
     | [] -> t.word
 ```
 
-Otherwise, we pursue the search recursively within the subtree associated with the branch
-labeled with the first letter `i` of the word `x`. If this branch does not exist, the search
-ends immediately with a failure.
+وإلا واصلنا البحث تعاوديًا داخل الشجرة الفرعية المقترنة بالحافة الموسومة بالحرف الأول `i` من
+الكلمة `x`. وإذا لم توجد هذه الحافة، انتهى البحث فورًا بالفشل.
 
 ```ocaml
     | i :: l ->
@@ -1048,15 +922,15 @@ ends immediately with a failure.
         with Not_found -> false
 ```
 
-The code of the function `mem` is given in program [49](#x16-178037r49).
+ترد شيفرة الدالة `mem` في البرنامج [49](#x16-178037r49).
 
-#### Inserting an Element
+#### إدراج عنصر
 
-Inserting a word `x` in a prefix tree `t` consists in descending along the branches labeled
-with the letters of `x`, as was done when searching for an element.
+يتلخص إدراج كلمة `x` في شجرة بادئة `t` في النزول على طول الحواف الموسومة بحروف `x`، كما
+فُعل عند البحث عن عنصر.
 
-If `x` is the empty word, the insertion ends and returns a tree `t` with a field `word` set
-to `true`, indicating that `x` now belongs to the set.
+وإذا كانت `x` هي الكلمة الفارغة، انتهى الإدراج معيدًا شجرة `t` يكون فيها الحقل `word` مضبوطًا
+على `true`، دلالة على أن `x` تنتمي الآن إلى المجموعة.
 
 ```ocaml
   let rec add x t =
@@ -1065,13 +939,11 @@ to `true`, indicating that `x` now belongs to the set.
         if t.word then t else { t with word = true }
 ```
 
-We avoid reconstructing the node when `t.word` is already `true`.
+ونتجنب إعادة بناء العقدة عندما يكون `t.word` هو `true` مسبقًا.
 
-If `x` is a non-empty list of the form `i::l`, we recursively insert `l` in the
-subtree `b` associated with the letter `i` in `t`. If `b` does not exist, we perform the
-insertion starting with an empty tree. The insertion ends with the creation of
-a new node in which we associate the letter `i` with the subtree obtained
-recursively.
+وإذا كانت `x` قائمة غير فارغة من الشكل `i::l`، ندرج `l` تعاوديًا في الشجرة الفرعية `b`
+المقترنة بالحرف `i` في `t`. وإذا لم توجد `b` نجري الإدراج انطلاقًا من شجرة فارغة. وينتهي
+الإدراج بإنشاء عقدة جديدة نربط فيها الحرف `i` بالشجرة الفرعية المحصَّلة تعاوديًا.
 
 ```ocaml
     | i :: l ->
@@ -1079,23 +951,21 @@ recursively.
         { t with branches = M.add i (add l b) t.branches }
 ```
 
-The code of the function `add` is given in program [50](#x16-180010r50).
+ترد شيفرة الدالة `add` في البرنامج [50](#x16-180010r50).
 
 >
 
-#### Removing an Element
+#### إزالة عنصر
 
-Removing an element `x` in a tree `t` proceeds, once again, with the same recursive
-traversal. There is, however, a subtlety. Removing an element can leave the tree in a
-state in which one branch is completely empty, that is, where the fields `word` are all
-`false`. To avoid wasting space in this manner, we will enforce the property that all
-leaves of a prefix tree must represent a word belonging to the set. In other words, the
-boolean `word` of a leaf must always be `true`, with the exception, of course, of
-the empty set, represented by a single node with the boolean `word` set to
-`false`.
+تسير إزالة عنصر `x` في شجرة `t`، مرة أخرى، بالاجتياز التعاودي نفسه. غير أن ثمة دقة.
+إذ يمكن للإزالة أن تترك الشجرة في حالة تكون فيها إحدى الحواف فارغة تمامًا، أي حيث تكون كل
+حقول `word` مساوية لـ`false`. وتفاديًا لإهدار الحيز على هذا النحو، نفرض الخاصية القاضية
+بأن جميع أوراق شجرة البادئة يجب أن تمثل كلمة تنتمي إلى المجموعة. بعبارة أخرى، يجب أن تكون
+القيمة المنطقية `word` للورقة مساوية دائمًا لـ`true`، باستثناء، بالطبع، المجموعة الفارغة
+الممثَّلة بعقدة واحدة تكون فيها القيمة المنطقية `word` مضبوطة على `false`.
 
-Let us now write the code of the function `remove`. If the argument `x` is the empty
-list, it is deleted from `t` by switching the field `word` to `false`.
+ولنكتب الآن شيفرة الدالة `remove`. وإذا كانت الوسيطة `x` هي القائمة الفارغة، حُذفت من `t`
+بتحويل الحقل `word` إلى `false`.
 
 ```ocaml
   let rec remove x t =
@@ -1104,9 +974,8 @@ list, it is deleted from `t` by switching the field `word` to `false`.
           { t with word = false }
 ```
 
-Otherwise, `x` is of the form `i::l` and we begin by recursively deleting the rest of the word
-`l` from the subtree associated with `i`. If this subtree does not exist, the function ends,
-directly returning `t`.
+وإلا تكون `x` من الشكل `i::l`، ونبدأ بحذف بقية الكلمة `l` تعاوديًا من الشجرة الفرعية المقترنة
+بـ `i`. وإذا لم توجد هذه الشجرة الفرعية، تنتهي الدالة معيدة `t` مباشرة.
 
 ```ocaml
       | i :: l ->
@@ -1116,8 +985,8 @@ directly returning `t`.
           with Not_found -> t
 ```
 
-Next, if the tree `s` exists and is empty, we remove the branch associated with `i` in
-`t`. Otherwise, we create a new binding between `i` and `s`.
+بعد ذلك، إذا وُجدت الشجرة `s` وكانت فارغة، نزيل الحافة المقترنة بـ `i` في `t`. وإلا أنشأنا
+إقرانًا جديدًا بين `i` و`s`.
 
 ```ocaml
             let new_branches =
@@ -1126,23 +995,21 @@ Next, if the tree `s` exists and is empty, we remove the branch associated with 
             in
 ```
 
-This guarantees that no branch of `t` will point to an empty tree. Finally, the function
-ends by updating `t` with the new branches.
+يضمن هذا ألا تشير أي حافة من حواف `t` إلى شجرة فارغة. وأخيرًا تنتهي الدالة بتحديث `t`
+بالحواف الجديدة.
 
 ```ocaml
             { t with branches = new_branches }
 ```
 
-The code of the function `remove` is given above in program [50](#x16-180010r50).
+ترد شيفرة الدالة `remove` أعلاه في البرنامج [50](#x16-180010r50).
 
-#### Intersection of Prefix Trees
+#### تقاطع أشجار البادئة
 
-The intersection of two prefix trees is implemented with the help of two mutually
-recursive functions `inter` and `inter_branches`. The function `inter` computes the
-intersection of two trees `t1` and `t2` that are assumed to correspond to the same prefix
-p. The word p belongs to the intersection if the roots of `t1` and `t2` both contain
-the word p. The branches of the intersection are calculated by the function
-`inter_branches`.
+يُنفَّذ تقاطع شجرتي بادئة بمساعدة دالتين متعاودتين تبادليًا (mutually recursive) هما `inter`
+و`inter_branches`. فتحسب الدالة `inter` تقاطع شجرتين `t1` و`t2` يفترض أنهما تقابلان البادئة
+نفسها p. وتنتمي الكلمة p إلى التقاطع إذا احتوى جذرا `t1` و`t2` معًا الكلمة p. وتحسب حواف
+التقاطع الدالة `inter_branches`.
 
 ```ocaml
   let rec inter t1 t2 =
@@ -1150,11 +1017,9 @@ the word p. The branches of the intersection are calculated by the function
       branches = inter_branches t1.branches t2.branches }
 ```
 
-The function `inter_branches` implements the intersection of two dictionaries `m1` and `m2`.
-The idea is to enumerate the branches of `m1` while checking, for each branch, if
-a corresponding branch exists in `m2`. For this we use the function `M.fold`,
-starting from an empty dictionary and considering each binding `i`↦`ti` of `m1` in
-turn.
+تنفذ الدالة `inter_branches` تقاطع قاموسين `m1` و`m2`. وتتلخص الفكرة في تعداد حواف `m1` مع
+التحقق، لكل حافة، مما إذا كانت حافة مناظرة موجودة في `m2`. ولهذا نستخدم الدالة `M.fold`،
+انطلاقًا من قاموس فارغ وبالنظر إلى كل إقران `i`↦`ti` من `m1` تباعًا.
 
 ```ocaml
   and inter_branches m1 m2 =
@@ -1163,10 +1028,9 @@ turn.
       m1 M.empty
 ```
 
-For each binding, we recursively compute the intersection `t` of `ti` with the tree
-bound to `i` in `m2`, if it exists. We add the binding `i`↦`t` to `m`, taking care to verify that `t`
-is not empty. If `m2` does not contain the branch `i`, the intersection is empty and `m` is
-left unchanged.
+ولكل إقران نحسب تعاوديًا التقاطع `t` للشجرة `ti` مع الشجرة المقيدة بـ `i` في `m2`، إن وُجدت.
+ونضيف الإقران `i`↦`t` إلى `m`، متحققين من أن `t` ليست فارغة. وإذا لم تحتوِ `m2` على الحافة
+`i`، يكون التقاطع فارغًا ويُترك `m` دون تغيير.
 
 ```ocaml
       (fun i ti m ->
@@ -1176,19 +1040,18 @@ left unchanged.
          with Not_found -> m)
 ```
 
-The complete code of the intersection function is given in program [51](#x16-182016r51). The union
-operation is left as an exercise.
+ترد الشيفرة الكاملة لدالة التقاطع في البرنامج [51](#x16-182016r51). ويُترك تنفيذ عملية
+الاتحاد (union) كتمرين للقارئ.
 
 >
 
-#### Comparison
+#### المقارنة
 
-Prefix trees can be compared easily. To compare two trees `t1` and `t2`, we begin by
-comparing the two booleans `t1.word` and `t2.word`. In case of equality, it is necessary
-to compare the two dictionaries `t1.branches` and `t2.branches`. For this, we use the
-comparison function provided by the module `M`. This takes as argument a function to
-compare the values in the two dictionaries, which corresponds precisely to the
-function `compare` that we seek to define. This function is therefore recursive.
+يمكن مقارنة أشجار البادئة بسهولة. لمقارنة شجرتين `t1` و`t2`، نبدأ بمقارنة القيمتين
+المنطقيتين `t1.word` و`t2.word`. وفي حالة التساوي، يلزم مقارنة القاموسين `t1.branches`
+و`t2.branches`. ولهذا الغرض نستعمل دالة المقارنة التي توفرها الوحدة `M`. وتأخذ هذه
+الدالة وسيطة هي دالة لمقارنة القيم في القاموسين، وهو ما يطابق تمامًا الدالة `compare`
+التي نسعى إلى تعريفها. ومن ثم تكون هذه الدالة تعاودية.
 
 ```ocaml
   let rec compare t1 t2 =
@@ -1196,110 +1059,94 @@ function `compare` that we seek to define. This function is therefore recursive.
     if c<>0 then c else M.compare compare t1.branches t2.branches
 ```
 
-#### Complexity
+#### التعقيد
 
-Consider a prefix tree s containing N words in all, and consider a word x of
-length M. The search for x in s necessitates at most M recursive calls to the function
-`mem`, each having the same cost as that of searching in the dictionary `branches` of the
-corresponding node. Since our dictionaries use the module `Map` of the standard library
-of OCaml, the cost of searching is logarithmic in the number of elements. The total
-cost is therefore proportionate to ∑
- log(Bi), where the Bi are the sizes of the
-dictionaries encountered during the search. We can bound each Bi by N,
-since the property that each leaf ends with `true` guarantees that a node
-with a dictionary of size B contains at least B different words. Hence the
-complexity is at worst O(M log N). However, it can be a lot less. If, for example,
-each Bi equals two, then the complexity will be O(M), while N can be as
-large as 2M. More generally, if the set of letters considered has a bounded
-size, as in case of the 26 letters of the alphabet for example, then searching
- 
- 
-has complexity O(M). The insertion and removal operations have similar
-complexity.
+لنأخذ شجرة بادئة s تحتوي N كلمة بالمجموع، واعتبر كلمة x من الطول M. لا يتطلب البحث
+عن x في s أكثر من M استدعاءً تعاوديًا للدالة `mem`، لكل منها التكلفة نفسها التي تتطلبها
+عملية البحث في قاموس `branches` للعقدة المناظرة. وبما أن قواميسنا تستعمل الوحدة `Map`
+من المكتبة القياسية لـ OCaml، فإن تكلفة البحث لوغاريتمية بالنسبة إلى عدد العناصر.
+وعليه تكون التكلفة الكلية متناسبة مع ∑
+ log(Bi)، حيث Bi هي أحجام القواميس التي
+تُصادَف أثناء البحث. ويمكننا حصر كل Bi بالعدد N، ذلك أن الخاصية القاضية بأن كل ورقة
+تنتهي بـ`true` تضمن أن العقدة التي تحوي قاموسًا من الحجم B تتضمن على الأقل B كلمات
+مختلفة. ومن ثم يكون التعقيد في أسوأ الحالات O(M log N). غير أنه قد يكون أقل من ذلك
+بكثير. فإذا كان كل Bi مساويًا لاثنين، فإن التعقيد سيكون O(M)، بينما يمكن أن يبلغ N حد
+2M. وبشكل أعم، إذا كانت مجموعة الحروف المدروسة محدودة الحجم، كما هو الحال مع
+الحروف الـ26 للأبجدية مثلًا، فإن البحث له تعقيد O(M). ولعمليتي الإدراج والحذف تعقيد
+مماثل.
 
-For the intersection of two prefix trees containing respectively N1 and N2
-elements of length less than M, we can similarly bound the complexity by
-O(N1M log N2). If the number of letters is bounded, the complexity reduces to
-O(N1M).
+أما بالنسبة لتقاطع شجرتي بادئة تحتويان على التوالي على N1 وN2 عنصرًا من الطول الأصغر
+من M، فيمكننا بالمثل حصر التعقيد بـ O(N1M log N2). وإذا كان عدد الحروف محدودًا،
+ينخفض التعقيد إلى O(N1M).
 
-#### Dictionaries
+#### القواميس
 
-A prefix tree encodes the presence of an element with a boolean contained in each
-node. Adapting this structure to represent dictionaries therefore consists in
-replacing the boolean by an optional value. We therefore define the following
-type:
+ترمّز شجرة البادئة إلى وجود عنصر بقيمة منطقية موجودة في كل عقدة. ويتلخص تكييف هذه البنية
+لتمثيل القواميس في استبدال القيمة المنطقية بقيمة اختيارية (optional). ولذلك نعرّف النوع
+التالي:
 
 ```ocaml
   type ’a t = { value : ’a option ; branches : ’a t M.t }
 ```
 
-The field `value` replaces the boolean field `word`. The necessary adaptations are
-immediate: the function `mem` checks if the field `value` is different from `None`; the
-function `add` replaces the current value (if present) by a new value; etc. The code of
-the function `find` is given in program [52](#x16-185004r52).
+يحل الحقل `value` محل الحقل المنطقي `word`. والتكييفات اللازمة فورية: فهي تتحقق في الدالة `mem`
+بفحص ما إذا كان الحقل `value` مختلفًا عن `None`؛ وتستبدل الدالة `add` القيمة الحالية (إن
+وُجدت) بقيمة جديدة؛ وهكذا. وترد شيفرة الدالة `find` في البرنامج [52](#x16-185004r52).
 
 >
 
-### 5.5 Patricia Trees
+### 5.5 أشجار باتريشيا
 
-We presented prefix trees in the preceding section. This data structure can be used to
-represent sets of integers by identifying an integer with the word formed by its binary
-digits. We call this a *Patricia tree*. Thus, the set {4,5,17} can be seen as the following
-set of three binary words:
+عرضنا في القسم السابق أشجار البادئة. ويمكن استعمال بنية المعطيات هذه لتمثيل مجموعات من
+الأعداد الصحيحة بأن نطابق العدد الصحيح مع الكلمة المكونة من أرقامه الثنائية. ونسمي هذا
+بنية *شجرة باتريشيا* (Patricia tree). وهكذا يمكن النظر إلى المجموعة {4,5,17} على أنها
+المجموعة التالية المكونة من ثلاث كلمات ثنائية:
 
 $$\begin{cases} (100)2 \\ (101)2 \\ (10001 )2} \end{cases}$$
 
-We can construct a prefix tree for these three words. We have two possible Patricia
-trees, depending on whether we begin reading from the high- or the low-order bit. In the
-first case, we speak of *big-endian*Patricia trees and in the second, of *little-endian*Patricia
-trees[^3].
-In what follows, we consider only little-endian Patricia trees, which means that we
-examine the bits starting from the least significant one, that is, from right to left.
-Adopting the convention that a 0 bit leads to the left subtree while a 1 bit leads to
-the right subtree, the prefix tree obtained for the integers {4,5,17} is represented in
- 
- 
-figure [5.8](#prefix-tree-for-the-integers-).
+يمكننا بناء شجرة بادئة لهذه الكلمات الثلاث. ولدينا شجرتا باتريشيا محتملتان، بحسب ما إذا
+بدأنا القراءة من بت الترتيب الأعلى أو الأدنى. وفي الحالة الأولى نتحدث عن أشجار باتريشيا
+*كبيرة الطرف* (big-endian)، وفي الثانية عن أشجار باتريشيا *صغيرة الطرف*
+(little-endian)[^3].
+وفي ما يلي نكتفي بالنظر في أشجار باتريشيا صغيرة الطرف فقط، أي أننا نفحص البتات بدءًا
+من البت الأقل دلالة، أي من اليمين إلى اليسار. وباعتماد الاصطلاح القاضي بأن بت 0 يقود
+إلى الشجرة الفرعية اليسرى بينما يقود بت 1 إلى الشجرة الفرعية اليمنى، فإن شجرة البادئة
+المحصَّلة للأعداد الصحيحة {4,5,17} ممثلة في الشكل [5.8](#prefix-tree-for-the-integers-).
 
 ![](/images/learn-ocaml/sets-and-dictionaries-8-pt_naive2-mps-.webp){#prefix-tree-for-the-integers-}
 
-**Figure 5.8: Prefix tree for the integers {4,5,17}.**
+**الشكل 5.8: شجرة بادئة للأعداد الصحيحة {4,5,17}.**
 
-We observe immediately that there is a lot of redundant information. For instance,
-the second bit of the three integers is always 0. Yet the prefix tree contains a
-branching node at this level. This is also the case for the fourth bit in the right
-subtree. We observe equally that it is useless to branch off when there is only one
-element left in the tree. To obtain a more compact representation, we will
-add a branching node to the tree only when necessary, that is, when there
-is a difference in the bits of the two subsets of elements. More precisely, a
-node will contain the bit to be tested as well as all the bits situated to its
-right. We thus obtain the tree of figure [5.9](#patricia-tree-for-the-set-), where the bit to be tested is
-underlined.
+نلاحظ فورًا وجود كثير من المعلومات المكررة. فعلى سبيل المثال، تكون البتة الثانية من
+الأعداد الصحيحة الثلاثة صفرًا دائمًا. ومع ذلك تحتوي شجرة البادئة على عقدة فرعية عند هذا
+المستوى. وهذا هو الحال أيضًا بالنسبة للبتة الرابعة في الشجرة الفرعية اليمنى. ونلاحظ
+بالمثل أنه لا جدوى من إنشاء فرع عندما لا يبقى في الشجرة سوى عنصر واحد. وللحصول على
+تمثيل أكثر إحكامًا، سنضيف عقدة فرعية إلى الشجرة عند الضرورة فقط، أي عندما يكون ثمة
+اختلاف في بتات المجموعتين الجزئيتين من العناصر. وبصيغة أدق، ستحتوي العقدة على البتة
+التي يتعين فحصها وكذلك جميع البتات الواقعة إلى يمينها. وهكذا نحصل على الشجرة المعروضة
+في الشكل [5.9](#patricia-tree-for-the-set-)، حيث البتة التي يتعين فحصها مسطَّر تحتها.
 
 ![](/images/learn-ocaml/sets-and-dictionaries-9-pt_exact-mps-.webp){#patricia-tree-for-the-set-}
 
-**Figure 5.9: Patricia tree for the set {4,5,17}.**
+**الشكل 5.9: شجرة باتريشيا للمجموعة {4,5,17}.**
 
-This tree signifies that we can begin by testing the first bit. If it is 0, we go to the
-left subtree, which contains a single element, 4 = (100)2. If it is 1, we go to the right
-subtree, which indicates that the third bit is to be tested, and that the two low-order
-bits are (01)2 for this entire subtree. If the third bit is 0, we reach the subtree
-containing only 17 = (10001)2. If it is 1, we reach the subtree containing only
-5 = (101)2. Note that the order of elements is not preserved in the tree structure.
-(This would, however, be the case in big-endian Patricia trees containing unsigned
-integers.)
+تدل هذه الشجرة على أنه يمكننا البدء بفحص البتة الأولى. وإذا كانت 0، نتجه إلى الشجرة
+الفرعية اليسرى التي تحتوي عنصرًا واحدًا، ألا وهو 4 = (100)2. وإذا كانت 1، نتجه إلى
+الشجرة الفرعية اليمنى التي تشير إلى أن البتة الثالثة يتعين فحصها، وأن البتتين الأدنى
+ترتيبًا هما (01)2 بالنسبة لهذه الشجرة الفرعية بأكملها. وإذا كانت البتة الثالثة 0، نبلغ
+الشجرة الفرعية التي لا تحتوي إلا على 17 = (10001)2. وإذا كانت 1، نبلغ الشجرة الفرعية
+التي لا تحتوي إلا على 5 = (101)2. ولاحظ أن ترتيب العناصر غير محفوظ في بنية الشجرة.
+(وسيكون الأمر كذلك، مع ذلك، في أشجار باتريشيا كبيرة الطرف التي تحتوي أعدادًا صحيحة
+غير موقَّعة).
 
-It is important to note that a branching node such as (101)2 contains two distinct
-pieces of information: the bit that must be tested (here the third) and the bits lying
-to its right (here (01)2). Only the first piece of information is necessary to search for
-an element in the tree. Insertion, however, requires the second piece as well.
-We will use two integers to represent a branching node such as (101)2: a
-power of two to represent the bit to be tested (here (100)2) and an integer
-representing the prefix, that is, the bits of order less than this power of two
-(here (01)2). One integer alone would suffice (here (101)2), but since it is not
-easy to extract the high-order bit, it is simpler to maintain the two pieces of
-information separately. We adopt therefore the following type to represent Patricia
-trees:
+من المهم ملاحظة أن عقدة فرعية مثل (101)2 تحتوي معلومتين متميزتين: البتة التي يتعين
+فحصها (وهنا الثالثة) والبتات الواقعة إلى يمينها (وهنا (01)2). وليس ضروريًا للبحث عن
+عنصر في الشجرة سوى المعلومة الأولى. غير أن الإدراج يتطلب المعلومة الثانية أيضًا.
+وسنستعمل عددين صحيحين لتمثيل عقدة فرعية مثل (101)2: قوة لعدد اثنين لتمثيل البتة التي
+يتعين فحصها (وهنا (100)2) وعددًا صحيحًا يمثل البادئة، أي البتات ذات الترتيب الأصغر من
+هذه القوة (وهنا (01)2). وقد يكفي عدد صحيح واحد وحده (وهنا (101)2)، لكن بما أنه ليس
+من السهل استخراج بتة الرتبة العليا، فمن الأبسط الاحتفاظ بالمعلومتين منفصلتين.
+ونعتمد لذلك النوع التالي لتمثيل أشجار باتريشيا:
 
 ```ocaml
   type t =
@@ -1308,85 +1155,77 @@ trees:
     | Node of int * int * t * t
 ```
 
-The constructor `Empty` represents the empty tree; `Leafx` is a leaf containing an
-element `x`; and, finally, `Node(p,b,l,r)` represents a branching point, where `p` is the
-prefix, `b` the bit to test (a power of 2), and `l` and `r` the two subtrees. In what follows
-we will guarantee the following well-formedness invariant: A tree of the form `Node`
-does not contain a subtree of the form `Empty`.
+ويمثل المُنشئ `Empty` الشجرة الفارغة؛ و`Leafx` ورقة تحتوي عنصرًا `x`؛ وأخيرًا، يمثل
+`Node(p,b,l,r)` نقطة تفرع، حيث `p` هي البادئة، و`b` البتة الواجب فحصها (قوة لعدد
+اثنين)، و`l` و`r` الشجرتان الفرعيتان. وفي ما يلي سنضمن الثابتة التالية المسماة ثابتة حسن
+التكوين (well-formedness): شجرة من الشكل `Node` لا تحتوي شجرة فرعية من الشكل
+`Empty`.
 
-#### Searching for an Element
+#### البحث عن عنصر
 
-To search for an element `x` in a Patricia tree, it suffices to descend along the tree
-according to the branching bits, until a leaf is reached. We begin by writing a function
-`zero_bit` that tests whether the bit `b` of `x` is 0, using a *logical and*and assuming that
-the integer `b` is a power of 2.
+للبحث عن عنصر `x` في شجرة باتريشيا، يكفي النزول على طول الشجرة وفقًا لبتات التفرع،
+حتى بلوغ ورقة. نبدأ بكتابة دالة `zero_bit` تختبر ما إذا كانت البتة `b` من `x` تساوي 0،
+باستعمال *وٍمنطقي* (logical and) وبافتراض أن العدد الصحيح `b` قوة لعدد اثنين.
 
 ```ocaml
   let zero_bit x b =
     x land b == 0
 ```
 
-We can now write the function `mem`. Its definition is clear if the tree is
-empty.
+يمكننا الآن كتابة الدالة `mem`. فتعريفها واضح إذا كانت الشجرة فارغة.
 
 ```ocaml
   let rec mem x = function
     | Empty -> false
 ```
 
-If we reach a leaf `j`, we check whether `x` is equal to `j`.
+وإذا بلغنا ورقة `j`، نتحقق مما إذا كانت `x` تساوي `j`.
 
 ```ocaml
     | Leaf j -> x = j
 ```
 
-Finally, on a branching node, it suffices to determine if the bit corresponding to `x` is 0 or
-1 by using the function `zero_bit`.
+وأخيرًا، عند عقدة تفرع، يكفي تحديد ما إذا كانت البتة المقابلة لـ `x` تساوي 0 أو 1 باستعمال
+الدالة `zero_bit`.
 
 ```ocaml
     | Node (_, b, l, r) -> mem x (if zero_bit x b then l else r)
 ```
 
-The code of `mem` is given in program [53](#x16-187011r53).
+ترد شيفرة الدالة `mem` في البرنامج [53](#x16-187011r53).
 
 >
 
-Note that this code descends systematically until a leaf is reached, though it could
-sometimes stop earlier if the element `x` does not have the prefix expected by a
-branching node. We have chosen here an approach that performs fewer checks, which
-privileges situations in which a majority of searches have a positive outcome. Exercise
-[5.22](#x16-199001r22) considers the other option.
+لاحظ أن هذه الشيفرة تنزل بشكل منهجي حتى بلوغ ورقة، رغم أنها قد تتوقف أحيانًا قبل ذلك
+إذا لم تتوفر في العنصر `x` البادئة التي تتوقعها العقدة الفرعية. وقد اخترنا هنا مقاربة
+تجري فحوصًا أقل، ما يخدم المواقف التي تنتهي فيها أغلبية عمليات البحث بنتيجة إيجابية.
+ويتناول التمرين [5.22](#x16-199001r22) الاحتمال الآخر.
 
-#### Inserting an Element
+#### إدراج عنصر
 
-Inserting an element into a Patricia tree consists in descending along the tree until the
-insertion position is found. We use an example to illustrate the two cases that may
-come up. Let us assume that we are inserting 7 = (111)2 into the tree of figure [5.9](#patricia-tree-for-the-set-).
-The first branching node leads to the right subtree, because the low-order bit is 1.
-However, in the second branching node, namely, (101)2, the prefix does not
-coincide: It is (11)2 in the element to be inserted and (10)2 in the subtree. It
-is therefore necessary to create a new branching node, namely, (11)2, with
-the previous subtree to the left and the leaf 7 to the right. In the end, we
-obtain the left tree of figure [5.10](#insertion-of-on-the-left-or-on-the-right-in-the-patricia-tree-of-figureref-eqptexact). On the other hand, if we insert not 7 but
-13 = (1101)2, then we reach the leaf containing 5, which must be separated into two
-distinct leaves, containing 5 and 13, which gives the tree on the right in
-figure [5.10](#insertion-of-on-the-left-or-on-the-right-in-the-patricia-tree-of-figureref-eqptexact).
+يتلخص إدراج عنصر في شجرة باتريشيا في النزول على طول الشجرة حتى إيجاد موضع الإدراج.
+ونستعمل مثالًا لتوضيح الحالتين اللتين قد تطرآن. لنفترض أننا ندرج 7 = (111)2 في الشجرة
+المعروضة في الشكل [5.9](#patricia-tree-for-the-set-). تقود العقدة الفرعية الأولى إلى الشجرة الفرعية اليمنى، لأن البتة
+الأدنى ترتيبًا هي 1. غير أن البادئة لا تتطابق في العقدة الفرعية الثانية، أي (101)2: فهي
+(11)2 في العنصر المزمع إدراجه و(10)2 في الشجرة الفرعية. ومن ثم يلزم إنشاء عقدة فرعية
+جديدة، ألا وهي (11)2، مع وضع الشجرة الفرعية السابقة إلى اليسار والورقة 7 إلى اليمين.
+وفي النهاية نحصل على الشجرة اليسرى في الشكل [5.10](#insertion-of-on-the-left-or-on-the-right-in-the-patricia-tree-of-figureref-eqptexact). ومن جهة أخرى، إذا أدرجنا لا 7 بل 13 = (1101)2،
+فإننا نبلغ الورقة المحتوية على 5، والتي يجب فصلها إلى ورقتين متميزتين، تحتويان على 5
+و13، وهو ما يعطي الشجرة على اليمين في الشكل [5.10](#insertion-of-on-the-left-or-on-the-right-in-the-patricia-tree-of-figureref-eqptexact).
 
 ![](/images/learn-ocaml/sets-and-dictionaries-10-pt_4_5_7_17-mps-.webp){#insertion-of-on-the-left-or-on-the-right-in-the-patricia-tree-of-figureref-eqptexact}
 
-**Figure 5.10: Insertion of 7 = (111)2 (on the left) or 13 = (1101)2 (on the right) in the Patricia tree of figure 5.9.**
+**الشكل 5.10: إدراج 7 = (111)2 (على اليسار) أو 13 = (1101)2 (على اليمين) في شجرة باتريشيا في الشكل 5.9.**
 
 ![PIC](/images/learn-ocaml/sets-and-dictionaries-11-pt_4_5_13_17-mps-.webp)
 
-We begin by implementing a function `branch` that takes two trees `t1` and `t2` as
-arguments, and creates the corresponding branching node. The prefixes of the two
-trees, `p1` and `p2`, are assumed to be different. It is therefore necessary to determine
-the lowest-order bit at which `p1` and `p2` differ. For this, we proceed in two
-steps: We begin by determining all the bits that differ, using the operation
-`p1lxorp2`. Then, we extract the lowest-order set bit, which must exist. We have
-already seen how to do this using a *logical and*between `x` and `-x` in section
-[*4.2*](https://usr.lmf.cnrs.fr/lpo/mainch4.html#bit-vectors) *Bit Vectors*. Accordingly, we introduce a function `rightmost_1_bit` for
-this.
+نبدأ بتنفيذ دالة `branch` تأخذ شجرتين `t1` و`t2` كوسيطتين، وتنشئ العقدة الفرعية
+المناظرة. ويفترض أن تكون بادئتا الشجرتين، `p1` و`p2`، مختلفتين. ومن ثم يلزم تحديد
+البتة الأدنى ترتيبًا التي يختلف عندها `p1` و`p2`. ولهذا نعمل على خطوتين: نبدأ بتحديد
+جميع البتات المختلفة، باستعمال العملية `p1lxorp2`. ثم نستخرج البتة الأدنى ترتيبًا
+المضبوطة على 1، والتي يجب أن توجد. وقد رأينا سابقًا كيف نفعل ذلك باستعمال *وٍمنطقي*
+بين `x` و`-x` في القسم [*4.2*](https://usr.lmf.cnrs.fr/lpo/mainch4.html#bit-vectors) *متجهات البتات*. وبناءً عليه، نقدم دالة
+`rightmost_1_bit` لهذا الغرض.
 
 ```ocaml
   let rightmost_1_bit x =
@@ -1395,24 +1234,22 @@ this.
 
 >
 
-Let us now write the function `branch`. We begin by calculating the branching bit
-using `rightmost_1_bit`.
+لنكتب الآن الدالة `branch`. نبدأ بحساب بتة التفرع باستعمال `rightmost_1_bit`.
 
 ```ocaml
   let branch p1 t1 p2 t2 =
     let b = rightmost_1_bit (p1 lxor p2) in
 ```
 
-Then, we calculate the common prefix `p` of `p1` and `p2`. This is the set of bits of order less
-than `b`, that we extract using a *logical and*with the mask `b-1`.
+ثم نحسب البادئة المشتركة `p` لكل من `p1` و`p2`. وهي مجموعة البتات ذات الترتيب الأصغر
+من `b`، التي نستخرجها باستعمال *وٍمنطقي* مع القناع `b-1`.
 
 ```ocaml
     let p = p1 land (b-1) in
 ```
 
-We use `p1` here to determine this prefix, but we could have also used `p2`. The only thing
-that remains now is to determine which of the two, `t1` or `t2`, must be placed on the
-left, depending on the value of the bit `b`.
+نستعمل هنا `p1` لتحديد هذه البادئة، لكن كان يمكننا أيضًا استعمال `p2`. ولم يبقَ الآن سوى
+تحديد أيّ من الشجرتين، `t1` أو `t2`، يجب وضعه في اليسار، وفقًا لقيمة البتة `b`.
 
 ```ocaml
     if zero_bit p1 b then
@@ -1421,21 +1258,20 @@ left, depending on the value of the bit `b`.
       Node (p, b, t2, t1)
 ```
 
-Let us illustrate how the function `branch` works with `p1` = (011101)2 and `p2` = (110101)2.
-The result of `p1lxorp2` is (101000)2. The bit `b` extracted using `rightmost_1_bit` is
-therefore (001000)2. The mask `b-1` is then (000111)2, which gives the prefix
-`p` = (000101)2.
+لنتناول مثالًا يوضح طريقة عمل الدالة `branch` مع `p1` = (011101)2 و`p2` = (110101)2.
+فنتيجة `p1lxorp2` هي (101000)2. والبتة `b` المستخرجة باستعمال `rightmost_1_bit` هي إذن
+(001000)2. والقناع `b-1` هو عندئذ (000111)2، مما يعطي البادئة `p` = (000101)2.
 
-We next define a function `matches_prefix` that determines if an integer `x` has the
-prefix defined by `p` and `b`.
+نعرّف بعد ذلك دالة `matches_prefix` تحدد ما إذا كان لعدد صحيح `x` البادئة المعرفة بـ `p`
+و`b`.
 
 ```ocaml
   let matches_prefix x p b =
     x land (b-1) == p
 ```
 
-We are now able to write the function `add` that inserts an element `x` in a Patricia tree.
-The case of an empty tree is clear.
+أصبحنا الآن قادرين على كتابة الدالة `add` التي تدرج عنصرًا `x` في شجرة باتريشيا. فحالة
+الشجرة الفارغة واضحة.
 
 ```ocaml
   let rec add x = function
@@ -1443,24 +1279,23 @@ The case of an empty tree is clear.
         Leaf x
 ```
 
-In the case of a leaf `j`, we begin by checking if `j` is equal to `x`. If it is, there is nothing
-more to be done. Otherwise, a branching node must be created for the two leaves,
-using `branch`.
+وفي حالة ورقة `j`، نبدأ بالتحقق مما إذا كانت `j` تساوي `x`. وإذا كان الأمر كذلك، فلا
+ثمة شيء آخر ينبغي فعله. وإلا، يجب إنشاء عقدة فرعية للورقتين، باستعمال `branch`.
 
 ```ocaml
     | Leaf j as t ->
         if j == x then t else branch x (Leaf x) j t
 ```
 
-Finally, in case of a `Node`, we determine whether `x` has the prefix of this tree.
+وأخيرًا، في حالة `Node`، نحدد ما إذا كانت `x` تملك بادئة هذه الشجرة.
 
 ```ocaml
     | Node (p, b, l, r) as t ->
         if matches_prefix x p b then
 ```
 
-If this is the case, we pursue the insertion recursively in the left or the right subtree,
-depending on whether the bit of `x` defined by `b` equals 0 or 1.
+وإذا كان الأمر كذلك، نواصل الإدراج تعاوديًا في الشجرة الفرعية اليسرى أو اليمنى، وفقًا
+لما إذا كانت بتة `x` المعرفة بـ`b` تساوي 0 أو 1.
 
 ```ocaml
           if zero_bit x b then
@@ -1469,25 +1304,23 @@ depending on whether the bit of `x` defined by `b` equals 0 or 1.
             Node (p, b, l, add x r)
 ```
 
-If, on the other hand, `x` does not have the prefix `p`, then it is necessary to create a
-branching node with two subtrees, `t` and the leaf `x`. The function `branch` is
-made precisely for this.
+وإذا لم تكن `x`، من جهة أخرى، تملك البادئة `p`، فمن الضروري إنشاء عقدة فرعية بشجرتين
+فرعيتين، `t` والورقة `x`. وقد أُنشئت الدالة `branch` لهذا الغرض تحديدًا.
 
 ```ocaml
         else
           branch x (Leaf x) p t
 ```
 
-This concludes the function `add`. The complete code is given in program [54](#x16-188006r54) (see
-page [497](#x16-188006r54)).
+وبهذا تكتمل الدالة `add`. وترد الشيفرة الكاملة في البرنامج [54](#x16-188006r54) (انظر
+الصفحة [497](#x16-188006r54)).
 
-#### Removing an Element
+#### إزالة عنصر
 
-Removing an element in a Patricia tree proceeds exactly as in case of insertion, the
-only difference being that it is necessary to maintain the well-formedness invariant.
-To this end, it suffices to introduce a *smart constructor* `node` that behaves
-like `Node` when its arguments are not `Empty` and performs a simplification
-otherwise.
+تتم إزالة عنصر في شجرة باتريشيا تمامًا كما هو الحال في الإدراج، والفرق الوحيد هو ضرورة
+الحفاظ على ثابتة حسن التكوين. ولهذا الغرض، يكفي إدخال *منشئ ذكي* (smart constructor)
+`node` يتصرف مثل `Node` عندما لا تكون وسيطاته `Empty` ويجري تبسيطًا في الحالة
+المعاكسة.
 
 ```ocaml
   let node = function
@@ -1496,22 +1329,21 @@ otherwise.
     | (p, b, l, r) -> Node (p, b, l, r)
 ```
 
-By using the function `node` instead of the constructor `Node`, the definition of `remove` is
-clear. It is given in program [55](#x16-189007r55).
+وباستعمال الدالة `node` بدل المنشئ `Node`، يكون تعريف `remove` واضحًا. وهو وارد في
+البرنامج [55](#x16-189007r55).
 
 >
 
-#### Union
+#### الاتحاد
 
-One of the advantages of Patricia trees compared to AVL trees is that the former lend
-themselves more easily to set-theoretic operations such as union. Indeed, two Patricia
-trees that have many elements in common will typically have the same, or similar,
-branching structures, thereby allowing an approach that uses recursive descent. This
-stands in contrast with AVL trees, where the root depends strongly on the manner in
-which the tree was constructed.
+من مزايا أشجار باتريشيا مقارنة بأشجار AVL أن الأولى تصلح بيسر أكبر للعمليات
+المجموعاتية مثل الاتحاد (union). ففي الواقع، تملك شجرتا باتريشيا تتشاطران عناصر كثيرة
+عادةً بنى تفرع متماثلة أو متشابهة، مما يسمح بمقاربة تقوم على النزول التعاودي. وهذا
+يتناقض مع أشجار AVL، حيث يعتمد الجذر اعتمادًا كبيرًا على الطريقة التي بُنيت بها
+الشجرة.
 
-Let us implement the union of two Patricia trees, `t1` and `t2`. We begin by
-considering the trivial cases. The simplest is that in which one of the trees is empty.
+لننفذ اتحاد شجرتي باتريشيا، `t1` و`t2`. نبدأ بالنظر في الحالات البديهية. وأبسطها هي
+الحالة التي تكون فيها إحدى الشجرتين فارغة.
 
 ```ocaml
   let rec union t1 t2 = match t1, t2 with
@@ -1519,35 +1351,33 @@ considering the trivial cases. The simplest is that in which one of the trees is
         t
 ```
 
-Similarly, we can easily treat the case in which one of the two trees is a leaf, by
-calling the function `add`.
+وبالمثل، يمكننا معالجة الحالة التي تكون فيها إحدى الشجرتين ورقة بسهولة، باستدعاء
+الدالة `add`.
 
 ```ocaml
     | Leaf x, t | t, Leaf x ->
         add x t
 ```
 
-Next we must consider the general case, where `t1` and `t2` are both branching
-nodes.
+ثم يجب علينا النظر في الحالة العامة، حيث تكون `t1` و`t2` معًا عقدتي تفرع.
 
 ```ocaml
     | Node (p1, b1, l1, r1), Node (p2, b2, l2, r2) ->
 ```
 
-There are three possible scenarios. The simplest case is that in which the prefixes of `t1`
-and `t2` coincide exactly. In this case, it suffices to recursively perform the union of the
-left and right subtrees respectively.
+ثمة ثلاثة سيناريوهات ممكنة. وأبسط الحالات هي التي تتطابق فيها بادئتا `t1` و`t2`
+تطابقًا تامًا. وفي هذه الحالة، يكفي إجراء الاتحاد تعاوديًا على الشجرتين الفرعيتين اليسرى
+واليمنى على التوالي.
 
 ```ocaml
         if b1 == b2 && p1 = p2 then
           Node (p1, b1, union l1 l2, union r1 r2)
 ```
 
-In the second case, one of the two prefixes is included in the other. Assume for example
-that the prefix of `t1` is included in the prefix of `t2`. This means that `t1` tests a bit
-that is of lower order than that of `t2`, that is, `b1<b2`, and that the bits of `p2`
-below `b1` coincide with `p1`. In this case, all of `t2` must be recursively merged
-with the left or right subtree of `t1`, depending on the bit `b1` of the prefix
+في الحالة الثانية، تكون إحدى البادئتين مضمنة في الأخرى. لنفترض مثلًا أن بادئة `t1`
+مضمنة في بادئة `t2`. وهذا يعني أن `t1` تختبر بتة ترتيبها أدنى من بتة `t2`، أي أن
+`b1<b2`، وأن بتات `p2` الواقعة دون `b1` تطابق `p1`. وفي هذه الحالة، يجب دمج `t2`
+بأكملها تعاوديًا مع الشجرة الفرعية اليسرى أو اليمنى من `t1`، وفقًا للبتة `b1` من البادئة
 `p2`.
 
 ```ocaml
@@ -1558,57 +1388,51 @@ with the left or right subtree of `t1`, depending on the bit `b1` of the prefix
             Node (p1, b1, l1, union r1 t2)
 ```
 
-We treat the symmetrical case, when the prefix of `t2` is included in that of `t1`, in a
-similar manner.
+ونعالج الحالة المتناظرة، عندما تكون بادئة `t2` مضمنة في بادئة `t1`، بطريقة مماثلة.
 
 ```ocaml
         else if b1 > b2 && matches_prefix p1 p2 b2 then
           ...
 ```
 
-The last case is that in which the prefixes differ completely, neither being included
-in the other. This means that the elements of `t1` are disjoint from the elements
-of `t2`, and it suffices to create a new branching node with `t1` on one side
-and `t2` on the other, which is exactly what is done by the function `branch`.
+الحالة الأخيرة هي التي تختلف فيها البادئتان اختلافًا كاملًا، دون أن تتضمن إحداهما
+الأخرى. وهذا يعني أن عناصر `t1` منفصلة عن عناصر `t2`، ويكفي إنشاء عقدة فرعية جديدة
+مع `t1` في جانب و`t2` في الجانب الآخر، وهو ما تقوم به الدالة `branch` تحديدًا.
 
 ```ocaml
         else
           branch p1 t1 p2 t2
 ```
 
-The complete code of `union` is given below in program [56](#x16-190025r56).
+ترد الشيفرة الكاملة للدالة `union` أدناه في البرنامج [56](#x16-190025r56).
 
 >
 
-The intersection, difference, and inclusion test operations are written in a similar
-manner (see exercise [5.23](#x16-199002r23)).
+تُكتب عمليات التقاطع والفرق واختبار الاحتواء (inclusion) بطريقة مماثلة (انظر التمرين
+[5.23](#x16-199002r23)).
 
-#### Comparison
+#### المقارنة
 
-Patricia trees can be compared easily. Indeed, two Patricia trees containing the same
-elements must have the same structure. Hence, the structural comparison functions of
-OCaml can be directly used on Patricia trees. In this way, we obtain an
-equality and a total order on the type `t` with the operator `=` and the function
-`Stdlib.compare`.
+يمكن مقارنة أشجار باتريشيا بسهولة. ففي الواقع، يجب أن تملك شجرتا باتريشيا تحتويان
+العناصر نفسها البنية نفسها. ومن ثم يمكن استعمال دوال المقارنة البنيوية في OCaml مباشرة
+على أشجار باتريشيا. وبهذه الطريقة نحصل على مساواة وترتيب كلي على النوع `t` مع
+العامل `=` والدالة `Stdlib.compare`.
 
-#### Complexity
+#### التعقيد
 
-The cost of searching, inserting, and removing elements in Patricia trees is
-proportionate to the number of bits of the integer considered. The cost is thus
-constant. Note, however, that this cost can reach 64 comparisons on a 64-bit machine,
-which, in the case of an AVL tree, would correspond to a structure containing more
-elements than can be represented in the memory of the computer. We therefore
-cannot deduce from this that a Patricia tree is better than an AVL tree in general. A
-Patricia tree can require more comparisons than an AVL tree. Indeed, a Patricia tree
-containing 30 elements can have a comb structure while the corresponding AVL
-tree would be balanced. Nonetheless, Patricia trees remain an interesting
-structure when we have to implement operations like union, intersection, or
-comparison.
+تكون تكلفة البحث عن العناصر وإدراجها وإزالتها في أشجار باتريشيا متناسبة مع عدد بتات
+العدد الصحيح المدروس. وبذلك تكون التكلفة ثابتة. ولاحظ، مع ذلك، أن هذه التكلفة قد
+تصل إلى 64 مقارنة على جهاز ذي 64 بتًا، وهو ما يقابل، في حالة شجرة AVL، بنية تحتوي
+من العناصر أكثر مما يمكن تمثيله في ذاكرة الحاسوب. ومن ثم لا يمكننا أن نستنتج من هذا
+أن شجرة باتريشيا أفضل من شجرة AVL بشكل عام. فقد تقتضي شجرة باتريشيا مقارنات أكثر
+من شجرة AVL. ففي الواقع، يمكن لشجرة باتريشيا تحتوي 30 عنصرًا أن تتخذ بنية مشطية
+(comb) بينما تكون شجرة AVL المناظرة متوازنة. ومع ذلك، تبقى أشجار باتريشيا بنية
+مثيرة للاهتمام عندما يتعين علينا تنفيذ عمليات مثل الاتحاد أو التقاطع أو المقارنة.
 
-#### Dictionaries
+#### القواميس
 
-It is easy to adapt the type of Patricia trees to make dictionaries out of them. Indeed,
-it suffices to add a second argument to the constructor `Leaf`.
+من السهل تكييف نوع أشجار باتريشيا لصنع قواميس منها. ففي الواقع، يكفي إضافة وسيطة
+ثانية إلى المُنشئ `Leaf`.
 
 ```ocaml
   type key = int
@@ -1618,133 +1442,119 @@ it suffices to add a second argument to the constructor `Leaf`.
     | Node of int * int * ’a t * ’a t
 ```
 
-The adaptations needed for the different functions are clear. Exercise [5.27](#x16-199006r27) proposes
-writing the function `find`.
+والتكييفات اللازمة للدوال المختلفة واضحة. ويقترح التمرين [5.27](#x16-199006r27) كتابة الدالة
+`find`.
 
 >
 
-### 5.6 Exercises
+### 5.6 التمارين
 
-#### Binary Search Trees
+#### أشجار البحث الثنائية
 
-**5.1**Write a function `height` that calculates the height of a tree.
+**5.1** اكتب دالة `height` تحسب ارتفاع شجرة.
 
-**5.2**Write a function `cardinal:t->int` that returns the number of elements of a
-binary search tree.
+**5.2** اكتب دالة `cardinal:t->int` تُرجع عدد عناصر شجرة البحث الثنائية.
 
-**5.3**Write a function `max_elt:t->elt` analogous to `min_elt`.
+**5.3** اكتب دالة `max_elt:t->elt` مماثلة لدالة `min_elt`.
 
-**5.4**Write a function `floor:elt->t->elt` that returns the largest element of a
-binary search tree less than or equal to a given element, if it exists, and raises the
-exception `Not_found` otherwise.
+**5.4** اكتب دالة `floor:elt->t->elt` تُرجع أكبر عنصر في شجرة البحث الثنائية يكون أصغر
+من أو يساوي عنصرًا معطى، إن وُجد، وتُطلق الاستثناء `Not_found` في الحالة المعاكسة.
 
-**5.5**Write a function `iter:(elt->unit)->t->unit` that traverses the elements of a
-binary search tree in increasing order.
+**5.5** اكتب دالة `iter:(elt->unit)->t->unit` تجتاز عناصر شجرة البحث الثنائية بترتيب
+تصاعدي.
 
-**5.6**Write a function `elements:t->eltlist` that returns the elements of a binary
-search tree in increasing order.
+**5.6** اكتب دالة `elements:t->eltlist` تُرجع عناصر شجرة البحث الثنائية بترتيب تصاعدي.
 
-**5.7**When calling `add` with an element already present or `remove` with an element
-that is absent, the efficiency of the two functions can be improved by directly
-returning the tree passed as argument. Rewrite the functions `add` and `remove` using
-this idea. You can raise an exception to signal that the tree is unchanged, taking care
-not to catch it at every recursive call, but only at the level of the initial
-call.
+**5.7** عندما تُستدعى `add` بعنصر موجود مسبقًا، أو `remove` بعنصر غير موجود، يمكن
+تحسين كفاءة الدالتين بإرجاع الشجرة الممررة كوسيطة مباشرة. أعد كتابة الدالتين `add`
+و`remove` باستعمال هذه الفكرة. ويمكنك إطلاق استثناء للإشارة إلى أن الشجرة لم تتغير،
+مع الحرص على عدم التقاطه عند كل استدعاء تعاودي، بل فقط على مستوى الاستدعاء
+الأولي.
 
-**5.8**If you use the idea of the preceding exercise, it becomes easy to keep track of
-the cardinal of a binary search tree. You can, for example, use a record that stores the
-cardinal next to the tree. Rewrite the type `t`, and the functions `add` and `remove` in
-this way.
+**5.8** إذا استعملت فكرة التمرين السابق، يصبح من السهل تتبع أصل (cardinal) شجرة
+البحث الثنائية. يمكنك، مثلًا، استعمال سجل (record) يخزن الأصل بجانب الشجرة. أعد
+كتابة النوع `t`، والدالتين `add` و`remove` بهذه الطريقة.
 
-#### AVL Trees
+#### أشجار AVL
 
-All the previous exercises on binary search trees may be taken up again with AVL
-trees.
+يمكن إعادة تناول جميع التمارين السابقة حول أشجار البحث الثنائية مع أشجار AVL.
 
-**5.9**Write the function `add` for a dictionary implemented with an AVL tree. What
-should be done if a key is already associated with a value?
+**5.9** اكتب الدالة `add` لقواميس مطبقة بشجرة AVL. وما الذي ينبغي فعله إذا كان مفتاح
+مقترنًا مسبقًا بقيمة؟
 
-#### Hash Tables
+#### جداول التجزئة
 
-**5.10**The computation of `(X.hashx)mod(Array.lengthh.buckets)` would
-be incorrect if `X.hashx` returns a negative value, since the result would be
-negative. Explain why `(abs(X.hashx))mod(Array.lengthh.buckets)` is not a
-solution.
+**5.10** سيكون حساب `(X.hashx)mod(Array.lengthh.buckets)` غير صحيح إذا أرجع
+`X.hashx` قيمة سالبة، لأن النتيجة ستكون سالبة. اشرح لماذا ليست
+`(abs(X.hashx))mod(Array.lengthh.buckets)` حلًا.
 
-**5.11**Modify the function `resize` so that the size `m` of the new array does not exceed
+**5.11** عدّل الدالة `resize` بحيث لا يتجاوز حجم `m` المصفوفة الجديدة
 `Sys.max_array_length`.
 
-**5.12**In case of a dictionary, rather than using an association list of type
-`(key*’a)list` to represent the buckets, you could use a more compact type,
-namely:
+**5.12** في حالة القاموس، بدلًا من استعمال قائمة اقترانات من النوع `(key*’a)list` لتمثيل
+الدلاء، يمكنك استعمال نوع أكثر إحكامًا، ألا وهو:
 
 ```ocaml
     type ’a bucket = Nil | Cons of key * ’a * ’a bucket
 ```
 
-Show that you would thus economize a third of the memory words. Rewrite the functions
-on hash tables using the type `’abucket`.
+بيّن أنك ستوفر بذلك ثلث كلمات الذاكرة. أعد كتابة الدوال الخاصة بجداول التجزئة باستعمال
+النوع `’abucket`.
 
-**5.13**Using persistent arrays, implement a data structure of persistent hash
-tables.
+**5.13** باستعمال المصفوفات الدائمة (persistent arrays)، نفذ بنية معطيات لجداول تجزئة
+دائمة.
 
-#### Prefix Trees
+#### أشجار البادئة
 
-**5.14**Write the function `cardinal` on prefix trees.
+**5.14** اكتب الدالة `cardinal` على أشجار البادئة.
 
-**5.15**Write a function `min_elt` that returns the smallest element of a prefix tree
-with respect to the lexicographic order derived from `L.compare`. You can use the fact
-that the iterators of the module `Map` traverse the bindings in increasing order of the
-keys.
+**5.15** اكتب دالة `min_elt` تُرجع أصغر عنصر في شجرة بادئة بالنسبة للترتيب المعجمي
+المشتق من `L.compare`. يمكنك استعمال حقيقة أن مكررات الوحدة `Map` تجتاز الاقترانات
+بترتيب تصاعدي للمفاتيح.
 
-**5.16**Improve the efficiency of the functions `add` and `remove` using the idea of
-exercice [5.7](#x16-195007r7).
+**5.16** حسّن كفاءة الدالتين `add` و`remove` باستعمال فكرة التمرين
+[5.7](#x16-195007r7).
 
-**5.17**The function `mem` is not tail recursive since the recursive call is contained in a
-`try-with`. Remedy this problem by only catching the exception `Not_found` at the top
-of the function.
+**5.17** الدالة `mem` ليست تعاودية الذيل (tail recursive) لأن الاستدعاء التعاودي موجود
+داخل `try-with`. عالج هذه المشكلة بالتقاط الاستثناء `Not_found` فقط في أعلى الدالة.
 
-**5.18**Rather than using the module `Map` of the OCaml standard library, the functor
-`Make` can take an additional argument `M` of signature
+**5.18** بدلًا من استعمال الوحدة `Map` من المكتبة القياسية لـ OCaml، يمكن للمميّز
+`Make` أن يأخذ وسيطة إضافية `M` من التوقيع
 
 ```ocaml
     Map.S with type key = L.t
 ```
 
-Rewrite the functor `Make` in this manner.
+أعد كتابة المميّز `Make` بهذه الطريقة.
 
-**5.19**Write the function `union` on prefix trees. You can use two mutually recursive
-functions as we did in case of the function `inter`.
+**5.19** اكتب الدالة `union` على أشجار البادئة. يمكنك استعمال دالتين تعاوديتين تبادليًا
+كما فعلنا في حالة الدالة `inter`.
 
-**5.20**Write a variant of prefix trees where the dictionary `branches` is implemented
-with an array, for example, when words are formed from the characters `’a’`..`’z’`.
+**5.20** اكتب نسخة مختلفة من أشجار البادئة حيث يُطبق القاموس `branches` بمصفوفة، على
+سبيل المثال، عندما تتكون الكلمات من المحارف `’a’`..`’z’`.
 
-**5.21**The `T9` input method of early mobile phones facilitates typing text on their
-numeric keyboards: Instead of pressing several times on a key to produce each letter,
-a single press suffices, and the phone proposes the words that correspond to
-the sequence of pressed keys, based on a dictionary that the phone has in
-memory.
+**5.21** تسهّل طريقة الإدخال `T9` في الهواتف المحمولة القديمة كتابة النصوص على
+لوحات مفاتيحها الرقمية: فبدلًا من الضغط على مفتاح عدة مرات لإنتاج كل حرف، يكفي
+ضغطة واحدة، ويقترح الهاتف الكلمات التي تقابل متتالية المفاتيح المضغوطة، استنادًا إلى
+قاموس بحوزة الهاتف في ذاكرته.
 
-For example, when you press the keys 2, 6, 6, 7, 8, 8, 3, 7 successively, you
-obtain the word *computer*, assuming the following mapping from keys to
-letters,
+فعلى سبيل المثال، عندما تضغط على المفاتيح 2، 6، 6، 7، 8، 8، 3، 7 تباعًا، تحصل على
+الكلمة *computer*، بافتراض المراسلة التالية من المفاتيح إلى الحروف،
 
-$$2 ↦\to abc,3 ↦\to def,4 ↦\to ghi,5 ↦\to jkl,6 ↦\to mno, 7 ↦\to pqrs,8 ↦\to tuv,9 ↦\to wxyz.$$
+$$2 ↦→ abc,3 ↦→ def,4 ↦→ ghi,5 ↦→ jkl,6 ↦→ mno, 7 ↦→ pqrs,8 ↦→ tuv,9 ↦→ wxyz.$$
 
-A sequence of keys may correspond to more than one word. For instance, the
-sequence 2, 2, 5, 3, 7 corresponds to both *baker*and *cakes*, and the sequence 3, 3, 2, 7
-corresponds to both *dear*and *fear*.
+قد تقابل متتالية من المفاتيح أكثر من كلمة واحدة. على سبيل المثال، تقابل المتتالية
+2، 2، 5، 3، 7 كلا الكلمتين *baker* و*cakes*، وتقابل المتتالية 3، 3، 2، 7 كلا الكلمتين
+*dear* و*fear*.
 
-You can use prefix trees to represent such dictionaries. We thus have a data
-structure that allows us to search efficiently for all the words in the telephone’s
-dictionary that correspond to a given sequence of key presses.
+يمكنك استعمال أشجار البادئة لتمثيل مثل هذه القواميس. وهكذا يكون لدينا بنية معطيات
+تسمح لنا بالبحث بكفاءة عن جميع الكلمات في قاموس الهاتف التي تقابل متتالية معطاة من
+ضغطات المفاتيح.
 
-To this end, it is necessary to modify the data structure presented in
-this chapter slightly. First of all, we must assume that the decomposition of
-words is not necessarily injective. In other words, two different words may
-now be represented by the same sequence of letters. We will assume the
-existence of a module implementing this decomposition, with the following
-signature:
+ولهذا الغرض، يلزم تعديل بنية المعطيات المعروضة في هذا الفصل تعديلًا طفيفًا. أولًا،
+يجب علينا أن نفترض أن تحليل الكلمات ليس حقنيًا (injective) بالضرورة. بعبارة أخرى، قد
+يُمثَّل الآن كلمتان مختلفتان بنفس متتالية الحروف. وسنفترض وجود وحدة تنفذ هذا التحليل،
+بالتوقيع التالي:
 
 ```ocaml
   module type Word = sig
@@ -1755,10 +1565,9 @@ signature:
   end
 ```
 
-Next, in order to store all the words whose decomposition corresponds to the same prefix,
-we must replace the boolean field `word`, which indicates a complete word, by a field
-containing a set of matching words. The beginning of the module `Make` will therefore
-have the following form:
+بعد ذلك، لتخزين جميع الكلمات التي يقابل تحليلها البادئة نفسها، يجب استبدال الحقل
+المنطقي `word`، الذي يدل على كلمة مكتملة، بحقل يحتوي مجموعة من الكلمات المتطابقة.
+وعليه ستأخذ بداية الوحدة `Make` الشكل التالي:
 
 ```ocaml
   module Make(L : Letter)(W : Word with type letter = L.t)
@@ -1771,43 +1580,38 @@ have the following form:
     type t = { words : S.t ; branches : t M.t }
 ```
 
-Complete the code of the functor `Make`.
+أكمل شيفرة المميّز `Make`.
 
-#### Patricia Trees
+#### أشجار باتريشيا
 
-**5.22**Modify the function `mem` on Patricia trees (program [53](#x16-187011r53)) so that it fails as soon
-as `x` does not possess the prefix corresponding to the node `Node`.
+**5.22** عدّل الدالة `mem` على أشجار باتريشيا (البرنامج [53](#x16-187011r53)) بحيث تفشل
+بمجرد أن لا تملك `x` البادئة المقابلة للعقدة `Node`.
 
-**5.23**Write functions `inter`, `diff`, and `subset` on Patricia trees, implementing
-respectively the intersection, the difference, and the inclusion test, taking the function
-`union` as a model.
+**5.23** اكتب الدوال `inter` و`diff` و`subset` على أشجار باتريشيا، منفذة على التوالي
+التقاطع والفرق واختبار الاحتواء، متخذًا الدالة `union` نموذجًا.
 
-**5.24**Write all the operations of *big-endian*Patricia trees, that is, where the bits
-are examined from left to right rather than from right to left. The main
-difficulty is writing the function `leftmost_1_bit` which is not as simple as
-`rightmost_1_bit`.
+**5.24** اكتب جميع عمليات أشجار باتريشيا *كبيرة الطرف* (big-endian)، أي تلك التي
+تُفحص فيها البتات من اليسار إلى اليمين بدلًا من اليمين إلى اليسار. والصعوبة الرئيسية
+هي كتابة الدالة `leftmost_1_bit` التي ليست ببساطة `rightmost_1_bit`.
 
-**5.25**Write a library of Patricia trees, independently of the little-endian or
-big-endian nature, as a functor parameterized by those elements that differ between
-the two implementations.
+**5.25** اكتب مكتبة لأشجار باتريشيا، بصرف النظر عن طبيعتها صغيرة الطرف أو كبيرة
+الطرف، بوصفها مميّزًا (functor) مُعاملًا بالعناصر التي تختلف بين التنفيذين.
 
-**5.26**Improve the representation of prefix trees by factoring out common prefixes as
-is done in Patricia trees. Thus, for the set of words {`do`, `doing`, `dominate`, `domino`}
-will have the following representation:
+**5.26** حسّن تمثيل أشجار البادئة بإخراج البادئات المشتركة عاملًا مشتركًا كما يحدث في
+أشجار باتريشيا. وهكذا، سيكون لمجموعة الكلمات {`do`, `doing`, `dominate`, `domino`}
+التمثيل التالي:
 
-The root indicates that the first two letters must be `do` and that the corresponding word,
-`do`, is in the set. We move down the tree according to the value of the third
-letter. For `i`, we reach a leaf containing the word `doing`. For `m`, we reach a
-new branching node that indicates that the two following letters must be
-`in` and that the corresponding word, `domin`, is not in the set. According to
-the value of the sixth letter, we obtain either the leaf `dominate` or the leaf
-`domino`.
+يشير الجذر إلى أن الحرفين الأولين يجب أن يكونا `do` وأن الكلمة المقابلة، `do`، موجودة
+في المجموعة. وننزل في الشجرة وفقًا لقيمة الحرف الثالث. بالنسبة لـ `i`، نبلغ ورقة
+تحتوي الكلمة `doing`. وبالنسبة لـ `m`، نبلغ عقدة فرعية جديدة تشير إلى أن الحرفين
+التاليين يجب أن يكونا `in` وأن الكلمة المقابلة، `domin`، غير موجودة في المجموعة.
+ووفقًا لقيمة الحرف السادس، نحصل إما على الورقة `dominate` أو الورقة `domino`.
 
-**5.27**Write the function `find` for dictionaries represented using Patricia
-trees.
+**5.27** اكتب الدالة `find` للقواميس الممثلة باستعمال أشجار باتريشيا.
 
-[^3]: The program `seq` is a Unix tool that displays all the integers from 1 to n, one integer per
- line. It is the simplest way to obtain exactly n lines of text.
-[^4]: Chapter [9](https://usr.lmf.cnrs.fr/lpo/mainch9.html#zippers) will present another type of iterator which can solve this problem.
-[^5]: Here, we use the French naming system of musical notes, which is used in many other
- countries as well.
+[^3]: البرنامج `seq` أداة Unix تعرض جميع الأعداد الصحيحة من 1 إلى n، عددًا صحيحًا
+في كل سطر. وهو أبسط طريقة للحصول على n سطرًا من النص بالضبط.
+[^4]: سيعرض الفصل [9](https://usr.lmf.cnrs.fr/lpo/mainch9.html#zippers) نوعًا آخر من
+المكررات قد يحل هذه المشكلة.
+[^5]: نستعمل هنا النظام الفرنسي لتسمية الأنغام الموسيقية، وهو مستعمل في بلدان أخرى
+كثيرة أيضًا.

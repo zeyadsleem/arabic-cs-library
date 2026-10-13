@@ -1,45 +1,41 @@
 ---
-title: "Sorting Algorithms"
-lang: en
+title: "خوارزميات الترتيب"
+lang: ar
 ---
 
-## 12. Sorting Algorithms
+## 12. خوارزميات الترتيب
 
-This chapter presents several sorting algorithms on lists and arrays. We assume
-that the elements to be sorted are of type `elt`, equipped with a total order
-given in the form of a function `compare` of type `elt->elt->int`. Sorting
-functions on lists and arrays will respectively have type `eltlist->eltlist`
-and `eltarray->unit`. We assume that we sort lists and arrays in increasing
-order. For the sake of convenience, we define two functions `lt` and `le` as
-follows:
+يعرض هذا الفصل عدة خوارزميات للترتيب (sorting algorithms) على القوائم والمصفوفات.
+نفترض أن العناصر المطلوب ترتيبها من النوع `elt`، مزوّدة بترتيب كلي يُعطى في صورة دالة
+`compare` من النوع `elt->elt->int`. وستكون لدوال الترتيب على القوائم والمصفوفات
+على التوالي النوعان `eltlist->eltlist` و`eltarray->unit`. ونفترض أننا نرتّب القوائم
+والمصفوفات ترتيبًا تصاعديًا. وللتيسير، نعرّف الدالتين `lt` و`le` على
+النحو التالي:
 
 ```ocaml
   let lt x y = compare x y < 0
   let le x y = compare x y <= 0
 ```
 
-Throughout this chapter, N will denote the number of elements to be sorted. For each
-sorting algorithm presented, we indicate its complexity not only in terms of the
-number of comparisons performed, but also in terms of the number of basic
-allocations in the case of lists and the number of assignments in the case of arrays.
-For each one, we give the complexity in the best, worst, and average cases. For the
-average case, we assume that the elements to be sorted are distinct and that the N!
-possible permutations of the input are all equally likely. Recall that the optimal
-complexity of a sorting algorithm only performing comparisons of elements is
-O(N log N) (see section [12.5](#optimal-complexity)).
+في هذا الفصل كله، سنرمز بـ N إلى عدد العناصر المطلوب ترتيبها. ولكل خوارزمية
+ترتيب معروضة، نبيّن تعقيدها لا من حيث عدد المقارنات المُنفّذة فحسب، بل أيضًا
+من حيث عدد التخصيصات (allocations) الأساسية في حالة القوائم وعدد الإسنادات (assignments) في حالة المصفوفات.
+ولكل واحدة منها، نعطي التعقيد في أفضل الحالات وأسوئها ومتوسطها. وفي
+الحالة المتوسطة، نفترض أن العناصر المطلوب ترتيبها متمايزة وأن التباديل (permutations) الممكنة N!
+للمُدخل كلها متساوية الاحتمال. وذكّر أن التعقيد الأمثل لخوارزمية ترتيب لا
+تُجري إلا مقارنات بين العناصر هو O(N log N) (انظر القسم [12.5](#optimal-complexity)).
 
-### 12.1 Insertion Sort
+### 12.1 الترتيب بالإدراج (insertion sort)
 
-Insertion sort consists in successively inserting each element into the set of elements
-already sorted. This is what we do, for example, when we sort a pack of
-cards.
+يتمثل الترتيب بالإدراج في إدراج كل عنصر تباعًا ضمن مجموعة العناصر المرتّبة
+بالفعل. وهذا ما نفعله، على سبيل المثال، عند ترتيب رزمة من البطاقات.
 
-#### 12.1.1 Lists
+#### 12.1.1 القوائم
 
-Insertion sort on a list consists in traversing it while successively inserting each
-element in the part already sorted. We begin therefore by writing a function `insert`
-that inserts an element `x` in a list that is assumed to be sorted. The code is as
-follows:
+يتمثل الترتيب بالإدراج على قائمة في اجتيازها مع إدراج كل عنصر تباعًا
+في الجزء المرتّب بالفعل. لذلك نبدأ بكتابة دالة `insert` تُدرج عنصرًا `x`
+في قائمة مفترض أنها مرتّبة. ويكون الرمز على النحو
+التالي:
 
 ```ocaml
   let rec insert x = function
@@ -47,58 +43,58 @@ follows:
     | l -> x :: l
 ```
 
-The first pattern matching case corresponds to a recursive insertion when the first
-element of the list is smaller than `x`. The second pattern matching case corresponds to
-that in which `x` is smaller than all the elements of `l`, whether `l` is empty or
-not.
+تقابل الحالة الأولى من مطابقة الأنماط إدراجًا عوديًا عندما يكون العنصر الأول
+من القائمة أصغر من `x`. وتقابل الحالة الثانية من مطابقة الأنماط
+الحالة التي يكون فيها `x` أصغر من جميع عناصر `l`، سواء كانت `l` فارغة أم
+لا.
 
-Sorting then consists in traversing the list using `List.fold_left`, with the portion
-of the list already sorted as accumulator.
+عندئذٍ يتمثل الترتيب في اجتياز القائمة باستعمال `List.fold_left`، مع اتخاذ
+الجزء المرتّب بالفعل من القائمة مركمًا (accumulator).
 
 ```ocaml
   let insertion_sort l =
     List.fold_left (fun acc x -> insert x acc) [] l
 ```
 
-This code may prove problematic for long lists: Since the function `insert` is not tail
-recursive, it can overflow the stack. It is, however, easy to modify the function `insert`
-to make it tail recursive. We can do this by adding an accumulator containing the list,
-in reverse order, of elements smaller than `x` that have already been considered. If we
-call this accumulator `acc`, we then have the following situation when we try to insert
-`x` in `l`:
+قد يثبت هذا الرمز مشكلةً في القوائم الطويلة: فلأن الدالة `insert` ليست
+عودية ذيلية (tail recursive)، فإنها قد تتجاوز سعة المكدس (stack overflow). ومع ذلك، من السهل تعديل الدالة `insert`
+لجعلها عودية ذيلية. ويمكننا فعل ذلك بإضافة مركم يحوي القائمة،
+بترتيب معكوس، للعناصر الأصغر من `x` التي فُحصت بالفعل. وإذا
+أسمينا هذا المركم `acc`، تصبح لدينا الحالة التالية عندما نحاول إدراج
+`x` في `l`:
 
-Once the position of `x` is determined, it suffices to reverse the accumulator
-`acc` and concatenate the result with `l`. The function `List.rev_append` does
-exactly this and is tail recursive. The final code of insertion sort is given in
-program [89](#x28-277013r89).
+بمجرد تحديد موضع `x`، يكفي عكس المركم
+`acc` وربط (concatenate) النتيجة بـ `l`. وتفعل الدالة `List.rev_append`
+هذا بالضبط، وهي عودية ذيلية. ويُعطى الرمز النهائي للترتيب بالإدراج في
+البرنامج [89](#x28-277013r89).
 
 >
 
-##### Complexity
+##### التعقيد
 
-When the function `insert` inserts an element `x` at position k in `l`, it performs k
-comparisons and 2k allocations (k to construct the accumulator and k in
-`List.rev_append`). At best, k is always 1 and, at worst, it equals the length of the
-list, which in the end gives the table in figure [12.1](#complexity-of-insertion-sort-on-lists).
+عندما تُدرج الدالة `insert` عنصرًا `x` في الموضع k ضمن `l`، فإنها تُجري k
+مقارنة و2k تخصيصًا (k لبناء المركم وk في
+`List.rev_append`). وفي أفضل الحالات يكون k دائمًا مساويًا 1، وفي أسوئها
+يساوي طول القائمة، ما يعطي في النهاية الجدول في الشكل [12.1](#complexity-of-insertion-sort-on-lists).
 
-**Figure 12.1: Complexity of insertion sort on lists.**
+**الشكل 12.1: تعقيد الترتيب بالإدراج على القوائم.**
 
-|  | best case | average | worst case |
+|  | أفضل الحالات | الحالة المتوسطة | أسوأ الحالات |
 | --- | --- | --- | --- |
-| comparisons | N | N2∕4 | N2∕2 |
-| allocations | N | N2∕2 | N2 |
+| مقارنات | N | N2∕4 | N2∕2 |
+| تخصيصات | N | N2∕2 | N2 |
 
-#### 12.1.2 Arrays
+#### 12.1.2 المصفوفات
 
-Insertion sort on an array `a` is performed in-place. It consists in successively inserting
-each element `a.(i)` in the portion of the array `a`[`0`..`i-1`] that is already sorted, which
-corresponds to the following situation:
+يُنفَّذ الترتيب بالإدراج على مصفوفة `a` في المكان. ويتمثل في إدراج
+كل عنصر `a.(i)` تباعًا في الجزء المرتّب بالفعل من المصفوفة `a`[`0`..`i-1`]، وهو ما
+يقابل الحالة التالية:
 
 | `0 i-1` |  |  |
 | --- | --- | --- |
-| … already sorted … | `a.(i)` | … to be sorted … |
+| … مرتّب بالفعل … | `a.(i)` | … بحاجة إلى ترتيب … |
 
-We begin with a `for` loop to traverse the array:
+نبدأ بحلقة `for` لاجتياز المصفوفة:
 
 ```ocaml
   let insertion_sort a =
@@ -106,8 +102,8 @@ We begin with a `for` loop to traverse the array:
       let v = a.(i) in
 ```
 
-To insert the element `a.(i)` in the right place, we use a `while` loop that shifts the
-elements to the right as long as they are greater than `a.(i)`.
+لإدراج العنصر `a.(i)` في الموضع الصحيح، نستعمل حلقة `while` تُزيح
+العناصر نحو اليمين ما دامت أكبر من `a.(i)`.
 
 ```ocaml
       let j = ref i in
@@ -117,78 +113,77 @@ elements to the right as long as they are greater than `a.(i)`.
       done;
 ```
 
-Once out of the loop, all that remains is to put `a.(i)` in its place.
+وبمجرد الخروج من الحلقة، لم يبقَ سوى وضع `a.(i)` في موضعه.
 
 ```ocaml
        a.(!j) <- v
     done
 ```
 
-The complete code of insertion sort on arrays is given in program [90](#x28-279016r90).
+ويُعطى الرمز الكامل للترتيب بالإدراج على المصفوفات في البرنامج [90](#x28-279016r90).
 
 >
 
-##### Complexity
+##### التعقيد
 
-Note that the function `insertion_sort` performs as many comparisons as
-assignments. When the `while` loop inserts the element `a.(i)` at position `i`− k, it
-performs k + 1 comparisons. At best, k equals 0 and, at worst, it equals `i`, which in
-the end gives the table in figure [12.2](#complexity-of-insertion-sort-on-arrays).
+لاحظ أن الدالة `insertion_sort` تُجري من المقارنات مثل ما تُجريه من
+الإسنادات. وعندما تُدرج حلقة `while` العنصر `a.(i)` في الموضع `i`− k، فإنها
+تُجري k + 1 مقارنة. وفي أفضل الحالات يساوي k الصفر، وفي أسوئها يساوي `i`، ما يعطي
+في النهاية الجدول في الشكل [12.2](#complexity-of-insertion-sort-on-arrays).
 
-**Figure 12.2: Complexity of insertion sort on arrays.**
+**الشكل 12.2: تعقيد الترتيب بالإدراج على المصفوفات.**
 
-|  | best case | average | worst case |
+|  | أفضل الحالات | الحالة المتوسطة | أسوأ الحالات |
 | --- | --- | --- | --- |
-| comparisons | N | N2∕4 | N2∕2 |
-| assignments | N | N2∕4 | N2∕2 |
+| مقارنات | N | N2∕4 | N2∕2 |
+| إسنادات | N | N2∕4 | N2∕2 |
 
-### 12.2 Quicksort
+### 12.2 الترتيب السريع (quicksort)
 
-Quicksort relies on the method of *divide and conquer*: The elements to be sorted are
-divided into two subsets, all the elements of the first being smaller than those of the
-second. Then, we sort each subset recursively. In practice, the subdivision is
-performed with the help of an arbitrary element p of the set, called the *pivot*. The two
-subsets are then respectively the elements less than or equal to p, and the elements
-greater than p.
+يعتمد الترتيب السريع على طريقة *تقسيم وتغلّب (divide and conquer)*: تُقسَّم العناصر المطلوب ترتيبها
+إلى مجموعتين جزئيتين، تكون فيهما جميع عناصر الأولى أصغر من عناصر
+الثانية. ثم نرتّب كل مجموعة جزئية عوديًا. وعمليًا، يُنفَّذ التقسيم
+بمساعدة عنصر اعتباطي p من المجموعة، يُسمّى *المحور (pivot)*. وعندئذٍ تكون المجموعتان
+الجزئيتان على التوالي العناصر الأصغر من أو المساوية لـ p، والعناصر
+الأكبر من p.
 
-#### 12.2.1 Lists
+#### 12.2.1 القوائم
 
-To implement quicksort on lists, we begin by writing a function `partition` that
-partitions a list at a given pivot `p`. To ensure tail recursion, we use an accumulator
-consisting of a pair of lists. The function `partition` therefore takes the following
-form:
+لتطبيق الترتيب السريع على القوائم، نبدأ بكتابة دالة `partition` تُقسّم
+قائمة عند محور معطى `p`. ولضمان العودية الذيلية، نستعمل مركمًا
+يتألف من زوج من القوائم. ولذلك تأخذ الدالة `partition` الشكل
+التالي:
 
 ```ocaml
   let rec partition ((left, right) as acc) p = function
 ```
 
-The lists `left` and `right` represent the elements that are, respectively, less than or
-equal to `p` and greater than `p`. When we reach the empty list, it suffices to return the
-accumulator.
+تمثّل القائمتان `left` و`right` العناصر الأصغر من أو المساوية لـ `p` والأكبر من `p` على التوالي. وعندما
+نبلغ القائمة الفارغة، يكفي إعادة المركم.
 
 ```ocaml
     | [] -> acc
 ```
 
-Otherwise, we consider the first element `x` and compare it with the pivot `p`. If `x` is
-less than or equal to `p`, we add it to `left` and call `partition` recursively on the rest of
-the list, `s`.
+وإلا، نأخذ العنصر الأول `x` ونقارنه بالمحور `p`. فإذا كان `x`
+أصغر من أو مساويًا لـ `p`، أضفناه إلى `left` واستدعينا `partition` عوديًا على بقية
+القائمة، `s`.
 
 ```ocaml
     | x :: s when le x p ->
         partition (x :: left, right) p s
 ```
 
-On the other hand, if `x` is greater than `p`, we add it to `right` and similarly call
-`partition` recursively.
+ومن ناحية أخرى، إذا كان `x` أكبر من `p`، أضفناه إلى `right` واستدعينا
+`partition` عوديًا بالمثل.
 
 ```ocaml
     | x :: s ->
         partition (left, x :: right) p s
 ```
 
-Quicksort takes the form of a recursive function `quicksort`. The base case is that
-of the empty list.
+يتخذ الترتيب السريع صورة دالة عودية `quicksort`. والحالة الأساسية هي
+حالة القائمة الفارغة.
 
 ```ocaml
   let rec quicksort = function
@@ -196,139 +191,139 @@ of the empty list.
         []
 ```
 
-If the list is not empty, we choose its first element as pivot `p` and partition the
-remaining elements using the function `partition`.
+وإذا لم تكن القائمة فارغة، نختار عنصرها الأول محورًا `p` ونُقسّم
+العناصر المتبقية باستعمال الدالة `partition`.
 
 ```ocaml
     | p :: s ->
         let (left, right) = partition ([], []) p s in
 ```
 
-Finally, we sort `left` and `right` recursively and concatenate the results, remembering to
-insert the pivot `p` in the middle.
+وأخيرًا، نرتّب `left` و`right` عوديًا ونربط النتيجتين، مع تذكّر
+إدراج المحور `p` في الوسط.
 
 ```ocaml
         (quicksort left) @ (p :: quicksort right)
 ```
 
-The complete code of quicksort on lists is given in program [91](#x28-282020r91).
+ويُعطى الرمز الكامل للترتيب السريع على القوائم في البرنامج [91](#x28-282020r91).
 
 >
 
-It is important to note that neither of the two recursive calls of the function
-`quicksort`is tail recursive. A stack overflow is therefore possible. Exercise [12.4](#x28-302001r4)
-discusses a solution to this problem.
+من المهم ملاحظة أن كلا الاستدعاءين العوديين للدالة
+`quicksort` ليس عوديًا ذيليًا. ولذلك يكون تجاوز سعة المكدس ممكنًا. ويناقش التمرين [12.4](#x28-302001r4)
+حلًا لهذه المشكلة.
 
-##### Complexity
+##### التعقيد
 
-The function `partition` makes as many comparisons and allocations as there are
-elements in the list passed as argument. Let C(N) be the number of comparisons
-performed in the function `quicksort` for a list of length N.
+تُجري الدالة `partition` من المقارنات والتخصيصات بقدر عدد
+العناصر في القائمة الممرَّرة كوسيطة. ولتكن C(N) عدد المقارنات
+المُنفّذة في الدالة `quicksort` من أجل قائمة طولها N.
 
-If `partition` returns a list of length K and a list of length N − 1 − K, we
-deduce:
+إذا أعادت `partition` قائمة طولها K وقائمة طولها N − 1 − K،
+نستنتج:
 
 $$C (N) = N - 1 + C (K) + C(N - 1- K ).$$
 
-The worst case corresponds to K = 0, which gives C(N) = N − 1 + C(N − 1), and
-hence C(N) ∼. The best case corresponds to a list split into two equal halves, that
-is, K = N∕2. From this we easily deduce C(N) ∼ N log N. For the number of
-comparisons on average, we consider that the N possible final places for the pivot are
-all equally probable, which gives:
+تقابل أسوأ الحالات K = 0، وهو ما يعطي C(N) = N − 1 + C(N − 1)، ومن
+ثم C(N) ∼. وتقابل أفضل الحالات قائمة مقسّمة إلى نصفين متساويين، أي
+K = N∕2. ومن ذلك نستنتج بسهولة C(N) ∼ N log N. وفي ما يتعلق بعدد
+المقارنات في المتوسط، نعتبر أن المواضع النهائية الممكنة N للمحور
+كلها متساوية الاحتمال، وهو ما يعطي:
 
 $$1 \sum C (N ) = N - 1 + N - C (K ) + C (N - 1 - K ) 0\le K\le N -1 - 2 \sum = N - 1 + N C (K ). 0\le K\le N -1$$
 
-After a bit of algebra, left to the reader, we obtain:
+وبعد قليل من الجبر، نتركه للقارئ، نحصل على:
 
 $$C(N ) C (N - 1) 2 2 N - + - 1 - = - - - - N - - - - + N - + - - 1 - N(N - - + - 1).$$
 
-This is a telescoping sum, which leads us to conclude that:
+وهذا مجموع متداخل، يقودنا إلى استنتاج ما يلي:
 
 $$C(N ) - - - - - - ∼ 2logN N + 1$$
 
-We therefore have C(N) ∼ 2N log N. For the number of allocations A(N), we
-proceed in a similar fashion, with a slightly different equation:
+وبذلك يكون لدينا C(N) ∼ 2N log N. وفي ما يتعلق بعدد التخصيصات A(N)،
+نسير على نحو مشابه، بمعادلة مختلفة قليلًا:
 
 $$A(N ) = N + K + A(K ) + A (N - 1 - K ).$$
 
-In the end, we obtain the results given in the table of figure [12.3](#complexity-of-quicksort-on-lists).
+وفي النهاية نحصل على النتائج المعطاة في جدول الشكل [12.3](#complexity-of-quicksort-on-lists).
 
-**Figure 12.3: Complexity of quicksort on lists.**
+**الشكل 12.3: تعقيد الترتيب السريع على القوائم.**
 
-|  | best case | average | worst case |
+|  | أفضل الحالات | الحالة المتوسطة | أسوأ الحالات |
 | --- | --- | --- | --- |
-| comparisons | N log N | 2N log N | N2∕2 |
-| allocations | N log N | 4N log N | N2 |
+| مقارنات | N log N | 2N log N | N2∕2 |
+| تخصيصات | N log N | 4N log N | N2 |
 
-#### 12.2.2 Arrays
+#### 12.2.2 المصفوفات
 
-Quicksort on arrays is performed in-place. The partition and sorting functions take as
-arguments the array and two indices that delimit the portion to be considered. We
-retain the idea of a function `partition` that organizes the elements around a pivot,
-and a sorting function that proceeds recursively.
+يُنفَّذ الترتيب السريع على المصفوفات في المكان. وتأخذ دالتا التقسيم والترتيب
+كوسيطتين المصفوفة وفهرسين يحدّان الجزء الواجب اعتباره. ونحتفظ
+بفكرة دالة `partition` تنظّم العناصر حول محور،
+ودالة ترتيب تسير عوديًا.
 
-The function `partition` takes an array `a` as argument, and two indices `l` and `r`,
-that delimit a portion of the array. This portion corresponds to the elements between
-the indices `l` (inclusive) and `r` (exclusive). We begin by choosing `a.(l)` as
-pivot.
+تأخذ الدالة `partition` مصفوفة `a` كوسيطة، وفهرسين `l` و`r`،
+يحدّان جزءًا من المصفوفة. ويقابل هذا الجزء العناصر الواقعة بين
+الفهرسين `l` (شاملًا) و`r` (غير شامل). ونبدأ باختيار `a.(l)`
+محورًا.
 
 ```ocaml
   let partition a l r =
     let p = a.(l) in
 ```
 
-This choice is arbitrary and can influence performance. Exercise [12.8](#x28-302005r8) proposes a better
-method of choosing the pivot.
+هذا الاختيار اعتباطي ويمكن أن يؤثر في الأداء. ويقترح التمرين [12.8](#x28-302005r8) طريقة أفضل
+لاختيار المحور.
 
-The idea consists in traversing the array from left to right, between indices `l`
-(inclusive) and `r` (exclusive), with a `for` loop. In each iteration of the loop, the
-situation is as follows:
+تتمثل الفكرة في اجتياز المصفوفة من اليسار إلى اليمين، بين الفهرسين `l`
+(شاملًا) و`r` (غير شامل)، بحلقة `for`. وفي كل تكرار من تكرارات الحلقة،
+تكون الحالة على النحو التالي:
 
-The index `i` of the loop gives the position of the next element to consider. The
-index `m` partitions the part that has already been traversed. More precisely, it is the
-index of the last cell containing a value less than or equal to `p`. We represent it with a
-reference.
+يعطي فهرس الحلقة `i` موضع العنصر التالي الواجب اعتباره. ويُقسّم
+الفهرس `m` الجزء الذي جرى اجتيازه بالفعل. وبتعبير أدق، هو
+فهرس آخر خلية تحوي قيمة أصغر من أو مساوية لـ `p`. ونمثّله
+بمرجع.
 
 ```ocaml
     let m = ref l in
     for i = l + 1 to r - 1 do
 ```
 
-If `a.(i)` is strictly greater than `p`, we leave it in its place. Otherwise, to maintain the loop
-invariant, it suffices to increment `m` and swap `a.(i)` and `a.(!m)`.
+إذا كان `a.(i)` أكبر تمامًا من `p`، تركناه في موضعه. وإلا، فحفاظًا على ثابت
+الحلقة (loop invariant)، يكفي زيادة `m` وتبديل `a.(i)` و`a.(!m)`.
 
 ```ocaml
       if le a.(i) p then begin incr m; swap a i !m end
     done;
 ```
 
-The code of the function `swap` is given in program [92](#x28-284024r92) below. Once all the elements have
-been traversed, we perform one more swap to put the pivot in its place, that is, at
-position `!m`, and we return this index.
+ويُعطى رمز الدالة `swap` في البرنامج [92](#x28-284024r92) أدناه. وبمجرد اجتياز جميع العناصر،
+نُجري تبديلًا آخر لوضع المحور في موضعه، أي في
+الموضع `!m`، ونُعيد هذا الفهرس.
 
 ```ocaml
     if l <> !m then swap a l !m;
     !m
 ```
 
-We write the main function of quicksort as a recursive function `quick_rec` that takes the
-same arguments as the function `partition`. If `l` ≥ `r-1`, the number of elements to be
-sorted is either zero or one, and there is nothing to do.
+نكتب الدالة الرئيسية للترتيب السريع في صورة دالة عودية `quick_rec` تأخذ
+الوسيطات نفسها التي تأخذها الدالة `partition`. وإذا كان `l` ≥ `r-1`، فإن عدد العناصر
+المطلوب ترتيبها إما صفر أو واحد، ولا شيء هناك لفعله.
 
 ```ocaml
   let rec quick_rec a l r =
     if l < r - 1 then begin
 ```
 
-Otherwise, we partition the elements between `l` and `r`.
+وإلا، نُقسّم العناصر بين `l` و`r`.
 
 ```ocaml
      let m = partition a l r in
 ```
 
-After this call, the pivot `a.(m)` is at its final place. We then perform two recursive
-calls to sort, respectively, the elements smaller than and larger than the
-pivot.
+بعد هذا الاستدعاء، يكون المحور `a.(m)` في موضعه النهائي. ثم نُجري استدعاءين
+عوديين لترتيب العناصر الأصغر من المحور والعناصر الأكبر منه
+على التوالي.
 
 ```ocaml
       quick_rec a l m;
@@ -336,63 +331,63 @@ pivot.
     end
 ```
 
-To sort an array, it suffices to call `quick_rec` on all of its elements.
+ولترتيب مصفوفة، يكفي استدعاء `quick_rec` على جميع عناصرها.
 
 ```ocaml
   let quicksort a = quick_rec a 0 (Array.length a)
 ```
 
-The complete code is given in program [92](#x28-284024r92).
+ويُعطى الرمز الكامل في البرنامج [92](#x28-284024r92).
 
 >
 
-As with quicksort on lists, a stack overflow could occur. Indeed, the first call to
-`quick_rec` is not tail recursive and, in the worst case, the number of these calls may
-be equal to the length of the array. Exercice [12.6](#x28-302003r6) discusses a solution to this
-problem.
+وكما في حالة الترتيب السريع على القوائم، قد يحدث تجاوز لسعة المكدس. فبالفعل، الاستدعاء الأول لـ
+`quick_rec` ليس عوديًا ذيليًا، وفي أسوأ الحالات قد يساوي عدد هذه الاستدعاءات
+طول المصفوفة. ويناقش التمرين [12.6](#x28-302003r6) حلًا لهذه
+المشكلة.
 
-##### Complexity
+##### التعقيد
 
-The function `partition` always performs exactly (`r`−`l`) − 1 comparisons. The
-complexity in number of comparisons is therefore the same as in case of quicksort
-on lists. As far as the number of assignments is concerned, we note that
-the function `partition` performs as many calls to `swap` as increments of
-`m`. The best case occurs when, at each partition stage, the pivot remains
-in the first position. Then no assignment is performed. It is important to
-note that this case does not correspond to the best complexity in terms of
-comparisons, which is quadratic in this case. Thus, on average, and assuming
-that all final positions for the pivot are equally likely, we have fewer than
-(`r`−`l`) + 1 assignments, each call to `swap` performing two assignments. This leads
-to a calculation analogous to that of the average number of comparisons.
-We have already done this computation for lists and obtained 2N log N.
-In the worst case, the pivot is always found at position `r-1`. The function
-`partition` then performs 2(`r`−`l`) assignments. There is, thus, a total of N2
-assignments. In the end, we obtain the results given in the table of figure
+تُجري الدالة `partition` دائمًا ما مجموعه بالضبط (`r`−`l`) − 1 مقارنة. ولذلك يكون
+التعقيد من حيث عدد المقارنات هو نفسه كما في حالة الترتيب السريع
+على القوائم. أما من حيث عدد الإسنادات، نلاحظ أن
+الدالة `partition` تُجري من الاستدعاءات لـ `swap` بقدر ما تزيد
+`m`. وتحدث أفضل الحالات عندما يبقى المحور، في كل مرحلة،
+في الموضع الأول. عندئذٍ لا يُنفَّذ أي إسناد. ومن المهم
+ملاحظة أن هذه الحالة لا تقابل أفضل تعقيد من حيث
+المقارنات، وهو تربيعي في هذه الحالة. وهكذا، في المتوسط، وبافتراض
+أن جميع المواضع النهائية للمحور متساوية الاحتمال، يكون لدينا أقل من
+(`r`−`l`) + 1 إسناد، مع إجراء كل استدعاء لـ `swap` إسنادين. ويؤدي هذا
+إلى حساب مماثل لحساب المتوسط لعدد المقارنات.
+وقد أجرينا هذا الحساب بالفعل للقوائم وحصلنا على 2N log N.
+وفي أسوأ الحالات، يوجد المحور دائمًا في الموضع `r-1`. وعندئذٍ تُجري الدالة
+`partition` ما مجموعه 2(`r`−`l`) إسناد. ويوجد، بالتالي، ما مجموعه N2
+إسناد. وفي النهاية نحصل على النتائج المعطاة في جدول الشكل
 [12.4](#complexity-of-quicksort-on-arrays).
 
-**Figure 12.4: Complexity of quicksort on arrays.**
+**الشكل 12.4: تعقيد الترتيب السريع على المصفوفات.**
 
-|  | best case | average | worst case |  |
+|  | أفضل الحالات | الحالة المتوسطة | أسوأ الحالات |  |
 | --- | --- | --- | --- | --- |
-| comparisons | N log N | - | 2N log N | N2∕2 |
-| assignments | - | 0 | 2N log N | N2 |
+| مقارنات | N log N | - | 2N log N | N2∕2 |
+| إسنادات | - | 0 | 2N log N | N2 |
 
-To avoid the worst case, to the extent possible, the two optimizations proposed in
-exercises [12.8](#x28-302005r8) and [12.9](#x28-302008r9) must be implemented.
+ولتفادي أسوأ الحالات، قدر الإمكان، يجب تنفيذ التحسينين المقترحين في
+التمرينين [12.8](#x28-302005r8) و[12.9](#x28-302008r9).
 
-### 12.3 Merge Sort
+### 12.3 الترتيب بالدمج (merge sort)
 
-As with quicksort, merge sort also applies the principle of divide and conquer. It
-partitions the elements to be sorted into two parts of the same size, without trying to
-compare their elements. It then sorts the two parts recursively and merges them;
-hence the name *merge sort.*Thus, the worst case of quicksort, in which the two parts
-have disproportionate sizes, is avoided.
+كما في حالة الترتيب السريع، يطبّق الترتيب بالدمج أيضًا مبدأ تقسيم وتغلّب. فهو
+يقسّم العناصر المطلوب ترتيبها إلى جزأين متساويين في الحجم، دون محاولة
+مقارنة عناصرهما. ثم يرتّب الجزأين عوديًا ويدمجهما؛
+ومن هنا جاء اسم *الترتيب بالدمج (merge sort)*. وبذلك تُتفادى أسوأ حالات الترتيب السريع، التي يكون فيها للجزأين
+حجمان غير متناسبين.
 
-#### 12.3.1 Lists
+#### 12.3.1 القوائم
 
-We begin by writing a function `split` that partitions a list into two lists of length
-differing by at most one. To ensure tail recursion, we pass two lists `l1` and
-`l2` as accumulators. When we reach the end of the list, we return the pair
+نبدأ بكتابة دالة `split` تُقسّم قائمة إلى قائمتين يختلف طولاهما
+بواحد على الأكثر. ولضمان العودية الذيلية، نمرّر قائمتين `l1` و
+`l2` كمركمين. وعندما نبلغ نهاية القائمة، نُعيد الزوج
 `(l1,l2)`.
 
 ```ocaml
@@ -400,41 +395,41 @@ differing by at most one. To ensure tail recursion, we pass two lists `l1` and
     | [] -> (l1, l2)
 ```
 
-Otherwise, we consider the first element `x` and place it alternatively in `l1` or `l2`. The
-simplest way to achieve this is to exchange `l1` and `l2` at each call.
+وإلا، نأخذ العنصر الأول `x` ونضعه بالتناوب في `l1` أو `l2`. وأبسط
+طريقة لتحقيق ذلك هي تبادل `l1` و`l2` عند كل استدعاء.
 
 ```ocaml
     | x :: l -> split (x :: l2) l1 l
 ```
 
-The second step consists in writing a function `merge` that merges two sorted lists.
-For this, we traverse the two lists simultaneously.
+تتمثل الخطوة الثانية في كتابة دالة `merge` تدمج قائمتين مرتّبتين.
+ولهذا، نُجري الاجتياز على القائمتين في آنٍ واحد.
 
 ```ocaml
   let rec merge l1 l2 = match l1, l2 with
 ```
 
-If one of the two is empty, we return the other.
+وإذا كانت إحداهما فارغة، أعدنا الأخرى.
 
 ```ocaml
     | [], l | l, [] ->
         l
 ```
 
-Otherwise, we compare the first elements `x1` and `x2` of each list. If `x1` is smaller, it is
-placed at the head of the result, and we recursively merge the remainder `s1` of `l1` with
-`l2`. We proceed symmetrically if `x2` is smaller.
+وإلا، نقارن العنصرين الأولين `x1` و`x2` في كل قائمة. فإذا كان `x1` أصغر، وُضع
+في رأس النتيجة، ودمجنا عوديًا الباقي `s1` من `l1` مع
+`l2`. ونسير على نحو متناظر إذا كان `x2` أصغر.
 
 ```ocaml
     | x1 :: s1, x2 :: s2 ->
         if le x1 x2 then x1 :: merge s1 l2 else x2 :: merge l1 s2
 ```
 
-Note: We observe that `merge` is not tail recursive. We can fix this easily by adding
-an additional argument in which we accumulate the smaller elements.
+ملاحظة: نلاحظ أن `merge` ليست عودية ذيلية. ويمكننا إصلاح ذلك بسهولة بإضافة
+وسيطة إضافية نُراكم فيها العناصر الأصغر.
 
-Finally, we write a function `mergesort` that implements merge sort on a list `l`. If
-the list contains at most one element, we return it directly.
+وأخيرًا، نكتب دالة `mergesort` تُطبّق الترتيب بالدمج على قائمة `l`. وإذا
+كانت القائمة تحوي عنصرًا واحدًا على الأكثر، أعدناها مباشرة.
 
 ```ocaml
   let rec mergesort l = match l with
@@ -442,79 +437,79 @@ the list contains at most one element, we return it directly.
         l
 ```
 
-Otherwise, we partition the list `l` into two lists using the function `split`:
+وإلا، نُقسّم القائمة `l` إلى قائمتين باستعمال الدالة `split`:
 
 ```ocaml
     | _ ->
         let l1, l2 = split [] [] l in
 ```
 
-We then sort the two lists `l1` and `l2` recursively, and merge the results using
+ثم نرتّب القائمتين `l1` و`l2` عوديًا، وندمج النتيجتين باستعمال
 `merge`.
 
 ```ocaml
         merge (mergesort l1) (mergesort l2)
 ```
 
-Unlike the function `merge`, the function `mergesort` does not risk triggering a stack
-overflow: Since the list `l` is partitioned into two equal halves, the size of the stack is
-logarithmic. Program [93](#x28-287023r93) below contains the complete code, with the function `merge`
-in its tail-recursive version.
+وعلى خلاف الدالة `merge`، لا تخاطر الدالة `mergesort` بإحداث تجاوز
+لسعة المكدس: فلأن القائمة `l` تُقسَّم إلى نصفين متساويين، يكون حجم المكدس
+لوغاريتميًا. ويحوي البرنامج [93](#x28-287023r93) أدناه الرمز الكامل، مع الدالة `merge`
+في نسختها العودية الذيلية.
 
 >
 
-We can avoid allocating the lists `l1` and `l2` by cleverly reusing the list `l` itself.
-Exercise [12.10](#x28-303001r10) proposes such an optimization. This idea is notably used in the
-function `List.sort` of the OCaml standard library.
+يمكننا تفادي تخصيص القائمتين `l1` و`l2` بإعادة استعمال القائمة `l` نفسها ببراعة.
+ويقترح التمرين [12.10](#x28-303001r10) تحسينًا من هذا القبيل. وتُستعمل هذه الفكرة على وجه الخصوص في
+الدالة `List.sort` من المكتبة المعيارية لـ OCaml.
 
-##### Complexity
+##### التعقيد
 
-The function `split` makes N allocations and no comparisons. The function `merge`
-makes twice as many allocations as comparisons: In the second branch of the pattern
-matching, there are as many comparisons as allocations, and in the first
-branch, the number of allocations performed by `List.rev_append` is equal
-to the length of `acc`, itself equal to the number of allocations/comparisons
-performed in the recursive part. Let C(N) (resp. f(N)) be the total number of
-comparisons performed by `mergesort` (resp. `merge`). We then have the following
-equation:
+تُجري الدالة `split` عددًا مقداره N من التخصيصات ولا تُجري أي مقارنة. وتُجري الدالة `merge`
+من التخصيصات ضعف ما تُجريه من المقارنات: ففي الفرع الثاني من مطابقة
+الأنماط، يوجد من المقارنات بقدر ما يوجد من التخصيصات، وفي الفرع
+الأول، يساوي عدد التخصيصات التي تُجريها `List.rev_append` طول
+`acc`، وهو نفسه مساوٍ لعدد التخصيصات/المقارنات المُنفّذة
+في الجزء العودي. ولتكن C(N) (على التوالي f(N)) العدد الكلي
+للمقارنات التي تُجريها `mergesort` (على التوالي `merge`). عندئذٍ تكون لدينا
+المعادلة التالية:
 
 $$C (N ) = 2C (N /2) + f(N )$$
 
-Indeed, the two recursive calls are made on lists of the same length N∕2. In the
-best case, the function `merge` examines only the elements of one of the two lists, since
-they are all smaller than those of the other list. In this case, f(N) = N∕2 and
-hence C(N) ∼N log N. In the worst case, `merge` examines every element, so
-that f(N) = N − 1; hence C(N) ∼ N log N. The analysis on the average
-case is subtler (see [[15](https://usr.lmf.cnrs.fr/lpo/mainli3.html#XKnuthV3), ex 2 p. 646]) and gives f(N) = N + O(1); hence
+فبالفعل، يُجرى الاستدعاءان العوديان على قائمتين لهما الطول نفسه N∕2. وفي
+أفضل الحالات، لا تفحص الدالة `merge` إلا عناصر إحدى القائمتين، لأنها
+جميعًا أصغر من عناصر القائمة الأخرى. وفي هذه الحالة f(N) = N∕2 ومن
+ثم C(N) ∼N log N. وفي أسوأ الحالات، تفحص `merge` كل عنصر، بحيث
+f(N) = N − 1؛ ومن ثم C(N) ∼ N log N. والتحليل في
+الحالة المتوسطة أدقّ (انظر [[15](https://usr.lmf.cnrs.fr/lpo/mainli3.html#XKnuthV3)، المثال 2 ص. 646]) ويعطي f(N) = N + O(1)؛ ومن ثم
  
  
-C(N) ∼ N log N as well. The number of assignments is easily deduced from the
-number of comparisons. In the end, we obtain the results given in the table of
-figure [12.5](#complexity-of-merge-sort-on-lists).
+C(N) ∼ N log N أيضًا. ويُستنتج عدد الإسنادات بسهولة من
+عدد المقارنات. وفي النهاية نحصل على النتائج المعطاة في جدول
+الشكل [12.5](#complexity-of-merge-sort-on-lists).
 
-**Figure 12.5: Complexity of merge sort on lists.**
+**الشكل 12.5: تعقيد الترتيب بالدمج على القوائم.**
 
-|  | best case | average | worst case |
+|  | أفضل الحالات | الحالة المتوسطة | أسوأ الحالات |
 | --- | --- | --- | --- |
-| comparisons | N log N | N log N | N log N |
-| allocations | 2N log N | 3N log N | 3N log N |
+| مقارنات | N log N | N log N | N log N |
+| تخصيصات | 2N log N | 3N log N | 3N log N |
 
-#### 12.3.2 Arrays
+#### 12.3.2 المصفوفات
 
-The idea of merge sort on arrays is the same as for lists: We partition the elements to
-be sorted into two equal halves. We sort the two halves, and then merge them. We
-delimit the portion to be sorted by two indices `l` (inclusive) and `r` (exclusive). For the
-partition, it suffices to compute the middle index `m` =. We then recursively sort
-the two parts delimited by `l` and `m` on the one hand, and `m` and `r` on the other. We
-have only to merge them. This proves extremely difficult to do in-place. It is
-simpler to use a second array, allocated once and for all at the start of the
-sort.
+فكرة الترتيب بالدمج على المصفوفات هي نفسها كما في القوائم: نقسّم العناصر المطلوب
+ترتيبها إلى نصفين متساويين. ونرتّب النصفين، ثم ندمجهما. ونحدّ
+الجزء المطلوب ترتيبه بفهرسين `l` (شاملًا) و`r` (غير شامل). وللتقسيم،
+يكفي حساب الفهرس الأوسط `m` =. ثم نرتّب عوديًا
+الجزأين المحدودين بـ `l` و`m` من جهة، و`m` و`r` من جهة أخرى. ولم يبقَ لنا
+سوى دمجهما. ويثبت أن القيام بذلك في المكان بالغ الصعوبة. والأبسط
+هو استعمال مصفوفة ثانية، تُخصَّص مرة واحدة وللأبد في بداية
+الترتيب.
 
-We begin by writing the function `merge` that implements the merging. It takes as
-arguments two arrays, `a1` and `a2`, and the three indices `l`, `m`, and `r`. The portions
-`a1`[`l`..`m`[ and `a1`[`m`..`r`[ are sorted. The objective is to merge them in `a2`[`l`..`r`[. For this,
-we traverse the two portions of `a1` (with two references `i` and `j`) and the portion of `a2`
-that is to be filled (with a `for` loop).
+نبدأ بكتابة الدالة `merge` التي تُطبّق الدمج. وهي تأخذ كوسيطتين
+مصفوفتين، `a1` و`a2`، والفهارس الثلاثة `l` و`m` و`r`. والجزآن
+`a1`[`l`..`m`[ و`a1`[`m`..`r`[ مرتّبان. والهدف هو دمجهما في `a2`[`l`..`r`[. ولهذا
+نُجري الاجتياز على جزأي `a1` (بمرجعين `i` و`j`) وعلى الجزء من `a2`
+الواجب تعبئته (بحلقة `for`).
 
 ```ocaml
   let merge a1 a2 l m r =
@@ -523,22 +518,22 @@ that is to be filled (with a `for` loop).
     for k = l to r - 1 do
 ```
 
-In each iteration of the loop, the situation is therefore as follows:
+وفي كل تكرار من تكرارات الحلقة، تكون الحالة على النحو التالي:
 
-We must determine the next value to put in `a2.(k)`. It is the smallest of the
-two values `a1.(!i)` and `a1.(!j)`. It is important, however, to also treat
-the case in which there are no more elements in one of the two halves. We
-determine whether the element is to be taken from the left half with the following
-test:
+يجب أن نحدّد القيمة التالية التي سنضعها في `a2.(k)`. وهي أصغر القيمتين
+`a1.(!i)` و`a1.(!j)`. ومن المهم، مع ذلك، معالجة
+الحالة التي لم يبقَ فيها عناصر في أحد النصفين. ونحدّد
+ما إذا كان العنصر سيُؤخذ من النصف الأيسر بالاختبار
+التالي:
 
 ```ocaml
       if !i < m && (!j = r || le a1.(!i) a1.(!j)) then begin
 ```
 
-This test checks whether the left half is non-empty and its first element is smaller
-than the first element of the right half, if such an element exists. In both
-cases, we copy the element into `a2.(k)` and increment the corresponding
-index.
+يفحص هذا الاختبار ما إذا كان النصف الأيسر غير فارغ وعنصره الأول أصغر
+من العنصر الأول للنصف الأيمن، إن وُجد عنصر كهذا. وفي كلتا
+الحالتين، ننسخ العنصر إلى `a2.(k)` ونزيد الفهرس
+المقابل.
 
 ```ocaml
         a2.(k) <- a1.(!i); incr i
@@ -548,31 +543,31 @@ index.
     done
 ```
 
-Next, we implement merge sort as a function `mergesort`. We begin by allocating a
-temporary array `tmp` obtained by copying the array to be sorted.
+بعد ذلك، نطبّق الترتيب بالدمج في صورة دالة `mergesort`. نبدأ بتخصيص
+مصفوفة مؤقتة `tmp` ناتجة عن نسخ المصفوفة المطلوب ترتيبها.
 
 ```ocaml
   let mergesort a =
     let tmp = Array.copy a in
 ```
 
-The recursive part of merge sort is materialized via a recursive function `mergesort_rec`
-that takes as arguments the indices `l` and `r`, that delimit the portion to be
-sorted.
+ويُجسَّد الجزء العودي من الترتيب بالدمج عبر دالة عودية `mergesort_rec`
+تأخذ كوسيطتين الفهرسين `l` و`r` اللذين يحدّان الجزء المطلوب
+ترتيبه.
 
 ```ocaml
     let rec mergesort_rec l r =
 ```
 
-If the segment contains at most one element, that is, if `l` ≥ `r-1`, there is nothing
-more to be done.
+وإذا كان المقطع يحوي عنصرًا واحدًا على الأكثر، أي إذا كان `l` ≥ `r-1`، فلا شيء
+آخر هناك لفعله.
 
 ```ocaml
       if l < r - 1 then begin
 ```
 
-Otherwise, we divide the interval into two equal halves by computing the middle
-position `m`, and then recursively sort `a`[`l`..`m`[ and `a`[`m`..`r`[.
+وإلا، نقسّم المجال إلى نصفين متساويين بحساب الموضع
+الأوسط `m`، ثم نرتّب عوديًا `a`[`l`..`m`[ و`a`[`m`..`r`[.
 
 ```ocaml
         let m = (l + r) / 2 in
@@ -580,14 +575,14 @@ position `m`, and then recursively sort `a`[`l`..`m`[ and `a`[`m`..`r`[.
         mergesort_rec m r;
 ```
 
-Note that the computation of `(l+r)/2` cannot trigger an integer overflow, since the
-maximum size of an OCaml array is much smaller than the largest representable
-integer (see section [*3.2*](https://usr.lmf.cnrs.fr/lpo/mainch3.html#runtime-model) *Runtime Model*for further details).
+لاحظ أن حساب `(l+r)/2` لا يمكن أن يُحدث تجاوزًا للعدد
+الصحيح (integer overflow)، لأن الحجم الأقصى لمصفوفة OCaml أصغر بكثير من أكبر
+عدد صحيح قابل للتمثيل (انظر القسم [*3.2*](https://usr.lmf.cnrs.fr/lpo/mainch3.html#runtime-model) *نموذج التنفيذ* لمزيد من التفاصيل).
 
 >
 
-It remains to perform the merge. For this, we copy the entire portion `a`[`l`..`r`[ into
-the array `tmp` and then call the function `merge`.
+ويبقى تنفيذ الدمج. ولهذا ننسخ الجزء `a`[`l`..`r`[ كاملًا إلى
+المصفوفة `tmp` ثم نستدعي الدالة `merge`.
 
 ```ocaml
         Array.blit a l tmp l (r - l);
@@ -595,68 +590,66 @@ the array `tmp` and then call the function `merge`.
       end
 ```
 
-Finally, we sort the full array `a` by calling `mergesort` on all its elements.
+وأخيرًا، نرتّب المصفوفة `a` كاملة باستدعاء `mergesort` على جميع عناصرها.
 
 ```ocaml
     in
     mergesort_rec 0 (Array.length a)
 ```
 
-Program [94](#x28-289025r94) contains the complete code. Its efficiency can be further improved: As with
-quicksort, we can switch to insertion sort when the portion to be sorted becomes
-sufficiently small (see exercise [12.7](#x28-302004r7)). Another idea consists in avoiding the copy of `a`
-to `tmp`, which uses `Array.blit` (see exercise [12.12](#x28-303003r12)).
+ويحوي البرنامج [94](#x28-289025r94) الرمز الكامل. ويمكن تحسين كفاءته أكثر: فكما في
+حالة الترتيب السريع، يمكننا التحوّل إلى الترتيب بالإدراج عندما يصبح الجزء المطلوب
+ترتيبه صغيرًا بدرجة كافية (انظر التمرين [12.7](#x28-302004r7)). وتتمثل فكرة أخرى في تفادي نسخ `a`
+إلى `tmp`، وهو ما يستعمل `Array.blit` (انظر التمرين [12.12](#x28-303003r12)).
 
-##### Complexity
+##### التعقيد
 
-The number of comparisons is exactly the same as in case of lists. The number of
-assignments is also the same: N assignments in the function `merge` (each element
-being copied from `a1` to `a2`) and N assignments performed by `Array.blit`.
+عدد المقارنات هو نفسه تمامًا كما في حالة القوائم. وعدد
+الإسنادات هو نفسه أيضًا: N إسناد في الدالة `merge` (حيث يُنسخ كل عنصر
+من `a1` إلى `a2`) وN إسناد تُجريها `Array.blit`.
 
-Let A(N) be the total number of assignments in `mergesort`. We then
-have:
+ولتكن A(N) العدد الكلي للإسنادات في `mergesort`. عندئذٍ
+يكون لدينا:
 
 $$A(N ) = 2A(N /2) + 2N,$$
 
-that is, 2N log N assignments in total. In the end, we obtain the results of
-figure [12.6](#complexity-of-merge-sort-on-arrays).
+أي ما مجموعه 2N log N إسناد. وفي النهاية نحصل على نتائج
+الشكل [12.6](#complexity-of-merge-sort-on-arrays).
 
-**Figure 12.6: Complexity of merge sort on arrays.**
+**الشكل 12.6: تعقيد الترتيب بالدمج على المصفوفات.**
 
-|  | best case | average | worst case |
+|  | أفضل الحالات | الحالة المتوسطة | أسوأ الحالات |
 | --- | --- | --- | --- |
-| comparisons | N log N | N log N | N log N |
-| assignments | 2N log N | 2N log N | 2N log N |
+| مقارنات | N log N | N log N | N log N |
+| إسنادات | 2N log N | 2N log N | 2N log N |
 
-### 12.4 Heapsort
+### 12.4 الترتيب بالكومة (heapsort)
 
-Heapsort is based on the use of a priority queue. Such a structure permits the
-addition of elements and the extraction of its smallest element. The idea behind
-heapsort is the following: We construct a priority queue containing all the elements to
-be sorted and then extract the elements one by one. Since the extraction operation
-returns the smallest element each time, the elements come out in increasing
-order.
+يعتمد الترتيب بالكومة على استعمال طابور أولوية (priority queue). وتتيح بنية كهذه
+إضافة العناصر واستخراج أصغر عنصر فيها. والفكرة الكامنة وراء
+الترتيب بالكومة هي التالية: نبني طابور أولوية يحوي جميع العناصر المطلوب
+ترتيبها ثم نستخرج العناصر واحدًا واحدًا. ولأن عملية الاستخراج
+تُعيد أصغر عنصر في كل مرة، تخرج العناصر بترتيب تصاعدي.
 
-In principle, any priority queue structure could be used. However, a structure in
-which the addition and extraction operations have cost O(log N) gives an optimal
-sorting algorithm in O(N log N). Both of the heap structures presented in chapter [6](https://usr.lmf.cnrs.fr/lpo/mainch6.html#queues)
-have such complexity.
+من حيث المبدأ، يمكن استعمال أي بنية لطابور الأولوية. غير أن بنية تكون فيها
+عمليتا الإضافة والاستخراج بتكلفة O(log N) تُعطي خوارزمية
+ترتيب مثلى في O(N log N). وكلا بنيتَي الكومة المعروضتين في الفصل [6](https://usr.lmf.cnrs.fr/lpo/mainch6.html#queues)
+لهما تعقيد كهذا.
 
-#### 12.4.1 Lists
+#### 12.4.1 القوائم
 
-We assume we are given a functor `PriorityQueue` that implements a priority queue
-structure. In principle, we can choose between imperative and persistent structures.
-However, there is no advantage to choosing a persistent structure here. We therefore
-use the imperative heap structure described in section [*6.3*](https://usr.lmf.cnrs.fr/lpo/mainch6.html#imperative-priority-queues) *Imperative Priority Queues*.
-Its interface is given again in program [95](#x28-292001r95).
+نفترض أننا نملك دالة تصنيفية (functor) `PriorityQueue` تُطبّق بنية طابور أولوية.
+ومن حيث المبدأ، يمكننا الاختيار بين بنيتين أمرية (imperative) ودائمة (persistent).
+غير أنه لا فائدة من اختيار بنية دائمة هنا. ولذلك
+نستعمل بنية الكومة الأمرية الموصوفة في القسم [*6.3*](https://usr.lmf.cnrs.fr/lpo/mainch6.html#imperative-priority-queues) *طوابير الأولوية الأمرية*.
+وتُعطى واجهتها مجددًا في البرنامج [95](#x28-292001r95).
 
 >
 
-We apply the functor `PriorityQueue` by passing as argument a module that
-compares elements with `compare`. To avoid having to reverse the list at the end, we
-order elements in decreasing order, that is, the element of highest priority for the
-priority queue will be the largest element for the order relation `lt`. We therefore
-write:
+نُطبّق الدالة التصنيفية `PriorityQueue` بتمرير وحدة (module) تقارن العناصر
+بـ `compare` كوسيطة. ولتفادي الاضطرار إلى عكس القائمة في النهاية، نرتّب
+العناصر بترتيب تنازلي، أي أن العنصر ذا الأولوية الأعلى في طابور الأولوية
+سيكون أكبر عنصر بالنسبة إلى علاقة الترتيب `lt`. ولذلك نكتب:
 
 ```ocaml
   module Heap = PriorityQueue(struct
@@ -665,115 +658,113 @@ write:
                 end)
 ```
 
-The function `heapsort` takes a list `l` of elements to be sorted and begins by
-creating an empty heap `h`.
+تأخذ الدالة `heapsort` قائمة `l` من العناصر المطلوب ترتيبها وتبدأ
+بإنشاء كومة فارغة `h`.
 
 ```ocaml
   let heapsort l =
     let h = Heap.create () in
 ```
 
-The function then adds all the elements of the list `l` to the heap.
+ثم تُضيف الدالة جميع عناصر القائمة `l` إلى الكومة.
 
 ```ocaml
     List.iter (fun x -> Heap.add x h) l;
 ```
 
-Next, we create a reference `res` that will receive the sorted result. We extract the
-elements from the heap with the help of a `while` loop.
+بعد ذلك، نُنشئ مرجعًا `res` سيستقبل النتيجة المرتّبة. ونستخرج
+العناصر من الكومة بمساعدة حلقة `while`.
 
 ```ocaml
     let res = ref [] in
     while not (Heap.is_empty h) do
 ```
 
-If the heap is not empty, we extract its smallest element `x` using `Heap.get_min` and then
-remove it from the heap using `Heap.remove_min`.
+وإذا لم تكن الكومة فارغة، نستخرج أصغر عنصر فيها `x` باستعمال `Heap.get_min` ثم
+نحذفه من الكومة باستعمال `Heap.remove_min`.
 
 ```ocaml
       let x = Heap.get_min h in
       Heap.remove_min h;
 ```
 
-We add `x` at the head of the list contained in `res` and then repeat.
+نُضيف `x` في رأس القائمة الموجودة في `res` ثم نُعيد الكرّة.
 
 ```ocaml
       res := x :: !res
     done;
 ```
 
-Once the heap becomes empty, it suffices to return the contents of `res`.
+وبمجرد أن تصبح الكومة فارغة، يكفي إعادة محتوى `res`.
 
 ```ocaml
     !res
 ```
 
-Note that the fact of having reversed the order relation in the heap structure means that
-we do not have to reverse the list `!res` at the end of `heapsort`. Program [96](#x28-292032r96) contains
-the complete code.
+لاحظ أن عكس علاقة الترتيب في بنية الكومة يعني أننا
+لا نضطر إلى عكس القائمة `!res` في نهاية `heapsort`. ويحوي البرنامج [96](#x28-292032r96)
+الرمز الكامل.
 
 >
 
-##### Complexity
+##### التعقيد
 
-The complexity of heapsort depends on the complexity of the heap structure used. As
-we mentioned in the introduction to this section, if the operations `add` and
-`remove_min` of the heap structure have at most logarithmic cost, then the sort itself
-has cost O(N log N) in the worst case, which is optimal. If we now assume that the
-heap structure used is that of section [*6.3*](https://usr.lmf.cnrs.fr/lpo/mainch6.html#imperative-priority-queues) *Imperative Priority Queues*, we can give a
-more precise result. Indeed, we then know that `add` and `remove_min` each make a
-maximum of 2log k comparisons to add or remove an element from a heap containing
-k elements, so that the total number of comparisons in the worst case is at most:
+يعتمد تعقيد الترتيب بالكومة على تعقيد بنية الكومة المستعملة. وكما
+ذكرنا في مقدمة هذا القسم، إذا كانت عمليتا `add` و
+`remove_min` في بنية الكومة بتكلفة لوغاريتمية على الأكثر، فإن الترتيب نفسه
+تكون تكلفته O(N log N) في أسوأ الحالات، وهو الأمثل. وإذا افترضنا الآن أن
+بنية الكومة المستعملة هي بنية القسم [*6.3*](https://usr.lmf.cnrs.fr/lpo/mainch6.html#imperative-priority-queues) *طوابير الأولوية الأمرية*، يمكننا إعطاء
+نتيجة أدقّ. فبالفعل، نعلم حينئذٍ أن `add` و`remove_min` تُجري كل منهما
+2log k مقارنة على الأكثر لإضافة عنصر إلى كومة تحوي
+k عنصر أو لحذفه منها، بحيث يكون العدد الكلي للمقارنات في أسوأ الحالات على الأكثر:
 
 $$4(log1 + log 2 + \cdot \cdot \cdot + log N) ∼ 4N logN$$
 
-In fact, we will see in the next section that the construction of the heap has only
-linear cost, so that the total is equivalent to 2N log N.
+بل سنرى في القسم التالي أن بناء الكومة تكلفته خطية فحسب، بحيث يكون
+المجموع مكافئًا لـ 2N log N.
 
-#### 12.4.2 Arrays
+#### 12.4.2 المصفوفات
 
-To implement heapsort on an array `a`, we will construct the heap structure
-directly inside this array. The organization of the heap in the array is exactly
-the same as in section [*6.3*](https://usr.lmf.cnrs.fr/lpo/mainch6.html#imperative-priority-queues) *Imperative Priority Queues*: The left and right
-children of a node stored at index i are respectively stored at indices 2i + 1 and
-2i + 2. As in the previous section, we construct a heap for the reverse order
-relation, that is, a heap in which the largest element is to be found at the
-root.
+لتطبيق الترتيب بالكومة على مصفوفة `a`، سنبني بنية الكومة
+مباشرة داخل هذه المصفوفة. وتنظيم الكومة في المصفوفة هو تمامًا
+نفسه كما في القسم [*6.3*](https://usr.lmf.cnrs.fr/lpo/mainch6.html#imperative-priority-queues) *طوابير الأولوية الأمرية*: يُخزَّن الابنان الأيسر والأيمن
+لعقدة مخزّنة في الفهرس i على التوالي في الفهرسين 2i + 1 و
+2i + 2. وكما في القسم السابق، نبني كومة لعلاقة الترتيب المعكوسة،
+أي كومة يوجد فيها أكبر عنصر في الجذر.
 
-To construct the heap, we consider the elements of the array from right to left. In
-each iteration, we have the following situation:
+ولبناء الكومة، نأخذ عناصر المصفوفة من اليمين إلى اليسار. وفي
+كل تكرار، تكون لدينا الحالة التالية:
 
-The portion `a`[`k+1`..`n`[ contains the bottom of the heap being constructed, that is,
-it is a forest of heaps whose roots are situated at indices i such that `k` < i < 2`k` + 3.
-We then make the value `a.(k)` descend to its place in the heap rooted at `k`.
-Once all the elements have been traversed, we have a single heap rooted at
+يحوي الجزء `a`[`k+1`..`n`[ قاعدة الكومة قيد البناء، أي
+أنه غابة من أكوام تقع جذورها في فهارس i بحيث `k` < i < 2`k` + 3.
+ثم نُنزل القيمة `a.(k)` إلى موضعها في الكومة ذات الجذر `k`.
+وبمجرد اجتياز جميع العناصر، تصبح لدينا كومة واحدة جذرها
 0.
 
-The second step consists in deconstructing the heap. For this, we exchange its
-root r in `a.(0)` with the element v in `a.(n-1)`. The value r is then in its
-final place. We then reestablish the heap structure on `a`[0..`n-1`[ by making
-v descend to its place in the heap of size `n-1` rooted at 0. We repeat the
-operation for positions `n-1`, `n-2`, etc. In each iteration `k`, we have the following
-situation:
+وتتمثل الخطوة الثانية في تفكيك الكومة. ولهذا نستبدل جذرها
+r في `a.(0)` بالعنصر v في `a.(n-1)`. وتكون القيمة r حينئذٍ في
+موضعها النهائي. ثم نُعيد إنشاء بنية الكومة على `a`[0..`n-1`[ بإنزال
+v إلى موضعه في الكومة ذات الحجم `n-1` والجذر 0. ونُكرّر العملية
+على المواضع `n-1` و`n-2` وهكذا. وفي كل تكرار `k`، تكون لدينا الحالة
+التالية:
 
-There is a heap in the portion `a`[0..`k`[, all of whose elements are smaller than those of
-the portion `a`[`k`..`n`[ that is already sorted.
+توجد كومة في الجزء `a`[0..`k`[، تكون جميع عناصرها أصغر من عناصر
+الجزء `a`[`k`..`n`[ المرتّب بالفعل.
 
-The two steps of the above algorithm use the same operation consisting in making
-a value descend until it reaches its position in a heap. This is implemented using a
-recursive function `move_down` that takes as arguments an array `a`, an index `k`, a value
-`v`, and an upper bound on the indices, `n`.
+تستعمل خطوتا الخوارزمية أعلاه العملية نفسها المتمثلة في إنزال
+قيمة حتى تبلغ موضعها في كومة. ويُطبَّق ذلك باستعمال دالة
+عودية `move_down` تأخذ كوسيطات مصفوفة `a` وفهرسًا `k` وقيمة
+`v` وحدًّا أعلى للفهارس، `n`.
 
 ```ocaml
   let rec move_down a k v n =
 ```
 
-We assume that we already have a heap h1, rooted at `2k+1`, so that `2k+1` < `n`, and
-similarly a heap h2, rooted at `2k+2`, so that `2k+2` < `n`. The objective is to construct a
-heap rooted at `k`, containing `v` and all the elements of h1 and h2. We begin by
-determining whether the heap rooted at `k` will be reduced to a leaf, that is, whether
-the heap h1 is empty. If this is so, we assign the value `v` to `a.(k)`, and we are
-done.
+نفترض أن لدينا بالفعل كومة h1 جذرها `2k+1`، بحيث `2k+1` < `n`، وبالمثل
+كومة h2 جذرها `2k+2`، بحيث `2k+2` < `n`. والهدف هو بناء كومة جذرها `k`،
+تحوي `v` وجميع عناصر h1 وh2. ونبدأ بتحديد ما إذا كانت الكومة ذات الجذر `k`
+ستُختزل إلى ورقة، أي ما إذا كانت الكومة h1 فارغة. فإذا كان الأمر كذلك،
+نُسند القيمة `v` إلى `a.(k)`، وينتهي الأمر.
 
 ```ocaml
     let r = 2 * k + 1 in
@@ -781,8 +772,8 @@ done.
       a.(k) <- v
 ```
 
-Otherwise, we determine the index `rmax` of the largest of the two roots of h1 and h2, by
-carefully handling the case in which h2 is empty.
+وإلا، نحدّد الفهرس `rmax` لأكبر الجذرين في h1 وh2،
+مع معالجة الحالة التي تكون فيها h2 فارغة بعناية.
 
 ```ocaml
     else
@@ -791,38 +782,38 @@ carefully handling the case in which h2 is empty.
         else r in
 ```
 
-If the value `v` is greater than or equal to `a.(rmax)`, the descent is complete, and it suffices
-to assign `v` to `a.(k)`.
+وإذا كانت القيمة `v` أكبر من أو مساوية لـ `a.(rmax)`، فقد اكتمل الإنزال، ويكفي
+إسناد `v` إلى `a.(k)`.
 
 ```ocaml
       if le a.(rmax) v then a.(k) <- v
 ```
 
-Otherwise, we move `a.(rmax)` up and continue the descent of `v` recursively at the
-position `rmax`.
+وإلا، نرفع `a.(rmax)` إلى الأعلى ونواصل إنزال `v` عوديًا عند
+الموضع `rmax`.
 
 ```ocaml
       else begin a.(k) <- a.(rmax); move_down a rmax v n end
 ```
 
-The sorting function takes an array `a` as argument:
+وتأخذ دالة الترتيب مصفوفة `a` كوسيطة:
 
 ```ocaml
   let heapsort a =
     let n = Array.length a in
 ```
 
-We begin by constructing the heap bottom-up by calling `move_down`. We avoid
-unnecessary calls for heaps reduced to single leaves by beginning the loop at ⌊⌋− 1.
-(Indeed, for every strictly greater index `k`, we have `2k+1` ≥ `n`.)
+نبدأ ببناء الكومة من الأسفل إلى الأعلى باستدعاء `move_down`. ونتفادى
+الاستدعاءات غير الضرورية للأكوام المختزلة إلى أوراق وحيدة بالبدء بالحلقة عند ⌊⌋− 1.
+(فبالفعل، من أجل كل فهرس `k` أكبر تمامًا، يكون لدينا `2k+1` ≥ `n`.)
 
 ```ocaml
     for k = n/2 - 1 downto 0 do move_down a k a.(k) n done;
 ```
 
-Once the heap is fully constructed, we extract its elements one by one, in decreasing
-order. As explained above, for each index `k`, we swap `a.(0)` with the value `v` in `a.(k)`
-and then move `v` down to its place in the heap.
+وبمجرد أن تُبنى الكومة بالكامل، نستخرج عناصرها واحدًا واحدًا، بترتيب تنازلي.
+وكما شُرح أعلاه، من أجل كل فهرس `k`، نستبدل `a.(0)` بالقيمة `v` في `a.(k)`
+ثم نُنزل `v` إلى موضعها في الكومة.
 
 ```ocaml
     for k = n-1 downto 1 do
@@ -830,296 +821,290 @@ and then move `v` down to its place in the heap.
     done
 ```
 
-Note that the specification of `move_down` allows us to avoid assigning `v` to `a.(0)` before
-beginning the descent. Program [97](#x28-294025r97) below contains the complete code.
+لاحظ أن مواصفة `move_down` تتيح لنا تفادي إسناد `v` إلى `a.(0)` قبل
+بدء الإنزال. ويحوي البرنامج [97](#x28-294025r97) أدناه الرمز الكامل.
 
 >
 
-##### Complexity
+##### التعقيد
 
-Let us first consider the cost of a call to `move_downakvn`. The number of recursive
-calls is bounded by log `n` since the value of `k` is doubled at each call. Furthermore,
-`move_down` performs at most two comparisons and an assignment in each call.
-Thus, in the worst case, we have a total of 2log `n` comparisons and log `n`
-assignments.
+لنعتبر أولًا تكلفة استدعاء واحد لـ `move_downakvn`. عدد الاستدعاءات
+العودية محدود بـ log `n` لأن قيمة `k` تتضاعف عند كل استدعاء. وعلاوة على ذلك،
+تُجري `move_down` مقارنتين على الأكثر وإسنادًا واحدًا في كل استدعاء.
+وهكذا، في أسوأ الحالات، يكون لدينا ما مجموعه 2log `n` مقارنة وlog `n`
+إسناد.
 
-For the sorting itself, we can roughly bound the number C(N) of comparisons in
-each call to `move_down` by 2log N, that is, at worst a total of 3N log N comparisons
-(N log N comparisons for the first step and 2N log N for the second). Similarly, the
-total number of assignments is, at worst, N log N.
+وفي ما يتعلق بالترتيب نفسه، يمكننا أن نحدّ تقريبيًا عدد المقارنات C(N) في
+كل استدعاء لـ `move_down` بـ 2log N، أي ما مجموعه في أسوأ الحالات 3N log N مقارنة
+(N log N مقارنة للخطوة الأولى و2N log N للثانية). وبالمثل، يكون
+العدد الكلي للإسنادات، في أسوأ الحالات، N log N.
 
-In fact, we can be more precise and show that the first step of the algorithm,
-namely, the construction of the heap, has linear cost. (See for example [[7](https://usr.lmf.cnrs.fr/lpo/mainli3.html#Xcormen), Sec. 7.3].)
-It follows that only the second part of the algorithm contributes to the asymptotic
-complexity so that C(N) ∼ 2N log N. For an analysis on average of heapsort, the
-reader is referred to *The Art of Computer Programming* [[15](https://usr.lmf.cnrs.fr/lpo/mainli3.html#XKnuthV3), vol. 3, p. 152].
+بل يمكننا أن نكون أدقّ ونبيّن أن الخطوة الأولى من الخوارزمية،
+أي بناء الكومة، تكلفتها خطية. (انظر على سبيل المثال [[7](https://usr.lmf.cnrs.fr/lpo/mainli3.html#Xcormen)، القسم 7.3].)
+ويترتب على ذلك أن الجزء الثاني من الخوارزمية فحسب يسهم في التعقيد
+المقارب، بحيث C(N) ∼ 2N log N. ولتحليل متوسط للترتيب بالكومة،
+يُحال القارئ إلى *فن البرمجة الحاسوبية* [[15](https://usr.lmf.cnrs.fr/lpo/mainli3.html#XKnuthV3)، المجلد 3، ص. 152].
 
-Note that heapsort executes in constant memory. Indeed, the function `move_down`
-performs only tail-recursive calls and, moreover, all computations are performed
-in-place inside the array `a`.
+لاحظ أن الترتيب بالكومة يُنفَّذ في ذاكرة ثابتة. فبالفعل، لا تُجري الدالة `move_down`
+إلا استدعاءات عودية ذيلية، وعلاوة على ذلك، تُنفَّذ جميع الحسابات
+في المكان داخل المصفوفة `a`.
 
-### 12.5 Optimal Complexity
+### 12.5 التعقيد الأمثل
 
-We present here a quick proof of the fact that the optimal complexity of a sorting
-algorithm that performs only element comparisons is in O(N log N).
+نعرض هنا برهانًا موجزًا على أن التعقيد الأمثل لخوارزمية ترتيب
+لا تُجري إلا مقارنات بين العناصر يقع في O(N log N).
 
-We can visualize such an algorithm as a binary tree. Each internal node
-symbolizes a comparison that has been performed, the left (resp. right) subtree
-representing the rest of the algorithm when the test is positive (resp. negative). Each
+يمكننا أن نتصوّر خوارزمية كهذه في صورة شجرة ثنائية. ويرمز كل عقدة داخلية
+إلى مقارنة أُجريت، ويمثّل الشجران الجزئيان الأيسر (على التوالي الأيمن) بقية الخوارزمية عندما يكون الاختبار موجبًا (على التوالي سالبًا). وكل
  
  
-leaf constitutes a possible result, that is, a permutation performed on the
-initial sequence. If we assume N distinct elements, there are N! possible
-permutations and, hence, at least N! leaves in this tree. Its height is consequently at
-least log N!. Now the longest path from the root to a leaf corresponds to the
-largest number of comparisons performed by the algorithm on an input.
-There is, therefore, an input for which the number of comparisons is at least
-log N!. By Stirling’s formula, we know that log N! ∼ N log N. For a more
-detailed proof, the reader is referred to *The Art of Computer Programming* [[15](https://usr.lmf.cnrs.fr/lpo/mainli3.html#XKnuthV3),
-Sec. 5.3].
+ورقة تشكّل نتيجة ممكنة، أي تبديلًا أُجري على
+المتتالية الابتدائية. وإذا افترضنا وجود N عنصرًا متمايزًا، فإن هناك N! تبديلًا
+ممكنًا، ومن ثم N! ورقة على الأقل في هذه الشجرة. وبالتالي يكون ارتفاعها على
+الأقل log N!. والآن، يقابل أطول مسار من الجذر إلى ورقة
+أكبر عدد من المقارنات التي تُجريها الخوارزمية على مُدخل.
+ويوجد، بالتالي، مُدخل يكون فيه عدد المقارنات على الأقل
+log N!. وبصيغة ستيرلينغ (Stirling’s formula)، نعلم أن log N! ∼ N log N. ولبرهان أكثر
+تفصيلًا، يُحال القارئ إلى *فن البرمجة الحاسوبية* [[15](https://usr.lmf.cnrs.fr/lpo/mainli3.html#XKnuthV3)،
+القسم 5.3].
 
-### 12.6 Experimental Evaluation
+### 12.6 التقييم التجريبي (experimental evaluation)
 
-In this section, we compare the different sorting algorithms presented in this chapter
-empirically.
+في هذا القسم، نقارن تجريبيًا بين خوارزميات الترتيب المختلفة المعروضة في هذا الفصل.
 
-#### Evaluation Protocol
+#### بروتوكول التقييم
 
-For a given list or array, we evaluate the performance of several algorithms on the
-same input as follows. We execute each sorting algorithm five times, measuring the
-computation time in each case. We exclude the smallest and the largest values, and
-take the average of the three remaining values.
+من أجل قائمة أو مصفوفة معطاة، نُقيّم أداء عدة خوارزميات على المدخل نفسه على
+النحو التالي. نُنفّذ كل خوارزمية ترتيب خمس مرات، مع قياس زمن الحساب في كل
+حالة. ونستبعد أصغر القيم وأكبرها، ونأخذ متوسط القيم الثلاث المتبقية.
 
-For lists, we consider randomly constructed as well as already sorted lists, with
-lengths 2i × 1000 for i ranging from 0 to 10. For arrays, we consider randomly filled as
-already sorted arrays, with lengths 2i × 1000 for i ranging from 0 to 12. It is
-important to consider the case of data that is already sorted because that represents a
-realistic situation for which we wish to verify that our sorting algorithms are
-efficient.
+وبالنسبة إلى القوائم، نأخذ قوائم مبنية عشوائيًا وكذلك قوائم مرتّبة بالفعل،
+بأطوال 2i × 1000 حيث i يتراوح من 0 إلى 10. وبالنسبة إلى المصفوفات، نأخذ مصفوفات معبّأة عشوائيًا
+وكذلك مصفوفات مرتّبة بالفعل، بأطوال 2i × 1000 حيث i يتراوح من 0 إلى 12. ومن
+المهم اعتبار حالة البيانات المرتّبة بالفعل لأنها تمثّل
+وضعًا واقعيًا نرغب في التحقق فيه من كفاءة خوارزميات الترتيب لدينا.
 
-#### Evaluation on Lists
+#### التقييم على القوائم
 
-We compare the algorithms listed in figure [12.7](#sorting-algorithms-on-lists). Figures [12.8](#comparison-of-sorting-algorithms-on-random-lists) and [12.9](#comparison-of-sorting-algorithms-on-already-sorted-lists) present the
-results.
+نقارن الخوارزميات المدرجة في الشكل [12.7](#sorting-algorithms-on-lists). ويعرض الشكلان [12.8](#comparison-of-sorting-algorithms-on-random-lists) و[12.9](#comparison-of-sorting-algorithms-on-already-sorted-lists)
+النتائج.
 
-**Figure 12.7: Sorting algorithms on lists.**
+**الشكل 12.7: خوارزميات الترتيب على القوائم.**
 
-| `insertion` | insertion sort of program [89](#x28-277013r89) |
+| `insertion` | الترتيب بالإدراج من البرنامج [89](#x28-277013r89) |
 | --- | --- |
-| `quicksort` | quicksort of program [91](#x28-282020r91) |
-| `quicksort (log stack)` | quicksort with the first call made to the smaller of
- the two lists after partitioning (see exercise [12.4](#x28-302001r4)) |
-| `quicksort (rand)` | quicksort with a randomly chosen pivot (see
- exercise [12.5](#x28-302002r5)) |
-| `mergesort` | merge sort of program [93](#x28-287023r93) |
-| `mergesort (reuse)` | merge sort with optimization consisting in not
- constructing intermediate lists when partitioning
- (see exercise [12.10](#x28-303001r10)) |
-| `List.sort` | the function `List.sort` of the OCaml standard
- library (version 3.11.2) |
-| `heapsort (arrays)` | heapsort of program [96](#x28-292032r96), using the structure based
- on arrays presented in section [6.3](https://usr.lmf.cnrs.fr/lpo/mainch6.html#imperative-priority-queues) |
-| `heapsort (trees)` | heapsort of program [96](#x28-292032r96), using the structure based
- on binary trees presented in section [6.4](https://usr.lmf.cnrs.fr/lpo/mainch6.html#persistent-priority-queues) |
+| `quicksort` | الترتيب السريع من البرنامج [91](#x28-282020r91) |
+| `quicksort (log stack)` | الترتيب السريع مع إجراء الاستدعاء الأول على أصغر
+ القائمتين بعد التقسيم (انظر التمرين [12.4](#x28-302001r4)) |
+| `quicksort (rand)` | الترتيب السريع مع محور مختار عشوائيًا (انظر
+ التمرين [12.5](#x28-302002r5)) |
+| `mergesort` | الترتيب بالدمج من البرنامج [93](#x28-287023r93) |
+| `mergesort (reuse)` | الترتيب بالدمج مع تحسين يتمثل في عدم
+ إنشاء قوائم وسيطة عند التقسيم
+ (انظر التمرين [12.10](#x28-303001r10)) |
+| `List.sort` | الدالة `List.sort` من المكتبة المعيارية لـ OCaml
+ (الإصدار 3.11.2) |
+| `heapsort (arrays)` | الترتيب بالكومة من البرنامج [96](#x28-292032r96)، باستعمال البنية المعتمدة
+ على المصفوفات المعروضة في القسم [6.3](https://usr.lmf.cnrs.fr/lpo/mainch6.html#imperative-priority-queues) |
+| `heapsort (trees)` | الترتيب بالكومة من البرنامج [96](#x28-292032r96)، باستعمال البنية المعتمدة
+ على الأشجار الثنائية المعروضة في القسم [6.4](https://usr.lmf.cnrs.fr/lpo/mainch6.html#persistent-priority-queues) |
 
-For random lists (figure [12.8](#comparison-of-sorting-algorithms-on-random-lists)), we observe the following: Insertion sort
-(`insertion`) can only be used in case of small lists, given its quadratic complexity.
-(We do not give the computation time for lists longer than 16,000.) Two of the three
-quicksort algorithms, (`quicksort` and `quicksort (rand)`) triggered a stack overflow
-on lists of length 210. The algorithm `heapsort (trees)`, which uses binary trees, is
-penalized due to the construction of the trees, even if its complexity is optimal. The
-other sorting algorithms have comparable efficiency, the fastest being that of the
-OCaml standard library.
+بالنسبة إلى القوائم العشوائية (الشكل [12.8](#comparison-of-sorting-algorithms-on-random-lists))، نلاحظ ما يلي: لا يمكن استعمال الترتيب بالإدراج
+(`insertion`) إلا في حالة القوائم الصغيرة، نظرًا إلى تعقيده التربيعي.
+(لا نعطي زمن الحساب للقوائم الأطول من 16,000.) وقد أحدثت اثنتان من خوارزميات
+الترتيب السريع الثلاث، (`quicksort` و`quicksort (rand)`) تجاوزًا لسعة المكدس
+على قوائم طولها 210. وتُعاق خوارزمية `heapsort (trees)`، التي تستعمل الأشجار الثنائية،
+بسبب بناء الأشجار، حتى وإن كان تعقيدها أمثل. أما
+خوارزميات الترتيب الأخرى فكفاءتها متقاربة، وأسرعها هي خوارزمية المكتبة
+المعيارية لـ OCaml.
 
 ![](/images/learn-ocaml/sorting-0-sorting-random-lists-.webp){#comparison-of-sorting-algorithms-on-random-lists}
 
-**Figure 12.8: Comparison of sorting algorithms on random lists.**
+**الشكل 12.8: مقارنة خوارزميات الترتيب على القوائم العشوائية.**
 
 ![](/images/learn-ocaml/sorting-1-sorting-sorted-lists-.webp){#comparison-of-sorting-algorithms-on-already-sorted-lists}
 
-**Figure 12.9: Comparison of sorting algorithms on already sorted lists.**
+**الشكل 12.9: مقارنة خوارزميات الترتيب على القوائم المرتّبة بالفعل.**
 
-In case of already sorted lists (figure [12.9](#comparison-of-sorting-algorithms-on-already-sorted-lists)), we observe the following: Insertion sort
-(`insertion`) has quadratic complexity. (The favorable case would have been
-that of a list sorted in decreasing order.) The first two quicksort algorithms,
-`quicksort` and `quicksort (log stack)`, have quadratic complexity, which is
-explained by the arbitrary choice of the first element of the list as pivot. (We do
-not give the computation time for lists of length greater than 16,000.) The
-third quicksort algorithm, `quicksort (rand)`, behaves well but triggers a
-stack overflow on lists of size 210 × 1000. The algorithm `heapsort (trees)`
-remains penalized due to the construction of the trees, as in case of random
-lists.
+وفي حالة القوائم المرتّبة بالفعل (الشكل [12.9](#comparison-of-sorting-algorithms-on-already-sorted-lists))، نلاحظ ما يلي: للترتيب بالإدراج
+(`insertion`) تعقيد تربيعي. (كانت الحالة المواتية ستكون
+حالة قائمة مرتّبة ترتيبًا تنازليًا.) ولخوارزميتَي الترتيب السريع الأوليين،
+`quicksort` و`quicksort (log stack)`، تعقيد تربيعي، وهو ما
+يُفسَّر بالاختيار الاعتباطي للعنصر الأول من القائمة محورًا. (لا نعطي
+زمن الحساب للقوائم التي يتجاوز طولها 16,000.) أما
+خوارزمية الترتيب السريع الثالثة، `quicksort (rand)`، فتَسلُك سلوكًا جيدًا لكنها تُحدث
+تجاوزًا لسعة المكدس على قوائم بحجم 210 × 1000. وتبقى خوارزمية `heapsort (trees)`
+مُعاقة بسبب بناء الأشجار، كما في حالة القوائم العشوائية.
 
-We may draw the following conclusions: Merge sort is the one that best combines
-simplicity and efficiency. Even its simplest version has an efficiency comparable to the
-optimized version of the OCaml standard library. Heapsort always performs well,
-but its implementation is considerably more complex than that of merge
-sort. Finally, we observe that using quicksort on lists is not straightforward
-because we must, at a minimum, combine the optimizations of exercises [12.4](#x28-302001r4)
-and [12.5](#x28-302002r5), to avoid both stack overflows and the unfavorable case of quadratic
-complexity.
+يمكننا أن نستخلص الاستنتاجات التالية: الترتيب بالدمج هو الأفضل في الجمع بين
+البساطة والكفاءة. حتى أبسط نسخة منه لها كفاءة مقاربة للنسخة المحسّنة
+من المكتبة المعيارية لـ OCaml. والترتيب بالكومة يؤدي دائمًا أداءً جيدًا،
+لكن تطبيقه أعقد بكثير من تطبيق الترتيب
+بالدمج. وأخيرًا، نلاحظ أن استعمال الترتيب السريع على القوائم ليس بالأمر المباشر
+لأننا يجب، في الحد الأدنى، أن نجمع التحسينين الواردين في التمرينين [12.4](#x28-302001r4)
+و[12.5](#x28-302002r5)، لتفادي تجاوز سعة المكدس والحالة غير المواتية ذات التعقيد
+التربيعي معًا.
 
-#### Evaluation on Arrays
+#### التقييم على المصفوفات
 
-We now compare the different techniques for sorting arrays of integers based
-on algorithms listed in figure [12.10](#sorting-algorithms-on-arrays-of-integers). Figures [12.11](#comparison-of-sorting-on-random-arrays) and [12.12](#comparison-of-sorting-on-already-sorted-arrays) present the
-results.
+نقارن الآن التقنيات المختلفة لترتيب مصفوفات من الأعداد الصحيحة استنادًا
+إلى الخوارزميات المدرجة في الشكل [12.10](#sorting-algorithms-on-arrays-of-integers). ويعرض الشكلان [12.11](#comparison-of-sorting-on-random-arrays) و[12.12](#comparison-of-sorting-on-already-sorted-arrays) النتائج.
 
-**Figure 12.10: Sorting algorithms on arrays of integers.**
+**الشكل 12.10: خوارزميات الترتيب على مصفوفات من الأعداد الصحيحة.**
 
-| `insertion` | insertion sort of program [90](#x28-279016r90) |
+| `insertion` | الترتيب بالإدراج من البرنامج [90](#x28-279016r90) |
 | --- | --- |
-| `quicksort` | quicksort of program [92](#x28-284024r92) |
-| `quicksort (insertion)` | quicksort using an insertion sort on small
- segments (see exercise [12.7](#x28-302004r7)) |
-| `quicksort (log stack)` | quicksort with the first call on the smallest of
- the two segments (see exercise [12.6](#x28-302003r6)) |
-| `quicksort (rand)` | quicksort with a pivot chosen randomly (see
- exercise [12.8](#x28-302005r8)) |
-| `mergesort` | merge sort of program [94](#x28-289025r94) |
-| `merge sort (swap)` | merge sort with the optimization consisting
- in avoiding the use of `Array.blit` (see
- exercise [12.12](#x28-303003r12)) |
-| `Array.stable_sort` | the function `Array.stable_sort` of the OCaml
- standard library (version 3.11.2) |
-| `heapsort` | heapsort of program [97](#x28-294025r97) |
-| `Array.sort` | heapsort of the OCaml standard library |
+| `quicksort` | الترتيب السريع من البرنامج [92](#x28-284024r92) |
+| `quicksort (insertion)` | الترتيب السريع باستعمال ترتيب بالإدراج على
+ مقاطع صغيرة (انظر التمرين [12.7](#x28-302004r7)) |
+| `quicksort (log stack)` | الترتيب السريع مع إجراء الاستدعاء الأول على أصغر
+ المقطعين (انظر التمرين [12.6](#x28-302003r6)) |
+| `quicksort (rand)` | الترتيب السريع مع محور مختار عشوائيًا (انظر
+ التمرين [12.8](#x28-302005r8)) |
+| `mergesort` | الترتيب بالدمج من البرنامج [94](#x28-289025r94) |
+| `merge sort (swap)` | الترتيب بالدمج مع التحسين المتمثل
+ في تفادي استعمال `Array.blit` (انظر
+ التمرين [12.12](#x28-303003r12)) |
+| `Array.stable_sort` | الدالة `Array.stable_sort` من المكتبة
+ المعيارية لـ OCaml (الإصدار 3.11.2) |
+| `heapsort` | الترتيب بالكومة من البرنامج [97](#x28-294025r97) |
+| `Array.sort` | الترتيب بالكومة من المكتبة المعيارية لـ OCaml |
 
 ![](/images/learn-ocaml/sorting-2-sorting-random-arrays-.webp){#comparison-of-sorting-on-random-arrays}
 
-**Figure 12.11: Comparison of sorting on random arrays.**
+**الشكل 12.11: مقارنة الترتيب على المصفوفات العشوائية.**
 
 ![](/images/learn-ocaml/sorting-3-sorting-sorted-arrays-.webp){#comparison-of-sorting-on-already-sorted-arrays}
 
-**Figure 12.12: Comparison of sorting on already sorted arrays.**
+**الشكل 12.12: مقارنة الترتيب على المصفوفات المرتّبة بالفعل.**
 
-For random arrays (figure [12.11](#comparison-of-sorting-on-random-arrays)), we observe the following: As in case of lists,
-insertion sort can only be used for small arrays. The two heapsort algorithms,
-`heapsort` and `Array.sort`, are slightly less efficient than merge sort and quicksort.
-The two most efficient algorithms are both merge sorts.
+بالنسبة إلى المصفوفات العشوائية (الشكل [12.11](#comparison-of-sorting-on-random-arrays))، نلاحظ ما يلي: كما في حالة القوائم،
+لا يمكن استعمال الترتيب بالإدراج إلا من أجل مصفوفات صغيرة. وخوارزميتا
+الترتيب بالكومة، `heapsort` و`Array.sort`، أقل كفاءة بقليل من الترتيب بالدمج والترتيب السريع.
+وأكثر الخوارزميتين كفاءة هما كلتاهما من خوارزميات
+الترتيب بالدمج.
 
-For already sorted arrays (figure [12.12](#comparison-of-sorting-on-already-sorted-arrays)), we observe the following: Here, the first
-three quicksort algorithms, `quicksort`, `quicksort (insertion)`, and `quicksort (log stack)`, are in their most unfavorable case, which may be explained by the
-arbitrary choice of the left-most element as pivot. (We do not give the computation
-time for arrays of length greater than 16,000.) The version of quicksort with
-a randomly chosen pivot achieves a good efficiency, comparable to that of
+وبالنسبة إلى المصفوفات المرتّبة بالفعل (الشكل [12.12](#comparison-of-sorting-on-already-sorted-arrays))، نلاحظ ما يلي: هنا تكون خوارزميات
+الترتيب السريع الثلاث الأولى، `quicksort` و`quicksort (insertion)` و`quicksort (log stack)`، في أكثر حالاتها غير المواتية، وهو ما قد يُفسَّر
+بالاختيار الاعتباطي لأقصى عنصر يسارًا محورًا. (لا نعطي زمن الحساب
+للمصفوفات التي يتجاوز طولها 16,000.) أما نسخة الترتيب السريع ذات
+المحور المختار عشوائيًا فتحقق كفاءة جيدة، مقارِبة لكفاءة
 `mergesort`.
 
-Of all the sorting algorithms in O(N log N), heapsort is among the least efficient
-while merge sort is among the most efficient. Here, insertion sort (`insertion`) is
-the most efficient, since we are in the favorable case of linear complexity.
-(The unfavorable case would have been that of an array sorted in decreasing
-order.)
+من بين جميع خوارزميات الترتيب في O(N log N)، يُعدّ الترتيب بالكومة من الأقل كفاءة
+بينما يُعدّ الترتيب بالدمج من الأكثر كفاءة. وهنا يكون الترتيب بالإدراج (`insertion`)
+الأكثر كفاءة، لأننا في الحالة المواتية ذات التعقيد الخطي.
+(كانت الحالة غير المواتية ستكون حالة مصفوفة مرتّبة ترتيبًا تنازليًا.)
 
-We may draw the following conclusions: If we are allowed to allocate an
-intermediate array, in other words, to temporarily double memory use, then merge
-sort is the best choice. As in case of lists, it combines simplicity and efficiency. If,
-however, we wish to sort an array in-place, we must either use heapsort or quicksort,
-taking care to combine it with the optimizations of exercises [12.6](#x28-302003r6) and [12.8](#x28-302005r8), to
-avoid both stack overflows and quadratic behavior due to a bad choice of
-pivot.
+يمكننا أن نستخلص الاستنتاجات التالية: إذا كان مسموحًا لنا بتخصيص
+مصفوفة وسيطة، بعبارة أخرى، بمضاعفة استعمال الذاكرة مؤقتًا، فإن الترتيب
+بالدمج هو الخيار الأفضل. وكما في حالة القوائم، فهو يجمع بين البساطة والكفاءة. أما
+إذا أردنا ترتيب مصفوفة في المكان، فيجب علينا إما استعمال الترتيب بالكومة أو الترتيب السريع،
+مع الحرص على جمعه بالتحسينين الواردين في التمرينين [12.6](#x28-302003r6) و[12.8](#x28-302005r8)، لتفادي
+تجاوز سعة المكدس والسلوك التربيعي الناجم عن اختيار سيئ
+للمحور معًا.
 
-### 12.7 Exercises
+### 12.7 التمارين
 
-**12.1**Write a function `two_way_sort:boolarray->unit` that sorts a boolean
-array in-place, performing only swaps of elements, with the convention that
-`false` < `true`. The complexity should be proportionate to the number of
+**12.1** اكتب دالة `two_way_sort:boolarray->unit` ترتّب مصفوفة من القيم المنطقية
+في المكان، بإجراء تبديلات للعناصر فحسب، مع الاصطلاح على أن
+`false` < `true`. وينبغي أن يكون التعقيد متناسبًا مع عدد
  
  
-elements.
+العناصر.
 
-**12.2**(Dijkstra’s Dutch national flag problem) Write a function that sorts an array
-in-place. The array contains values representing the three colors of the Dutch flag,
-namely:
+**12.2** (مسألة العلم الهولندي لديكسترا) اكتب دالة ترتّب مصفوفة
+في المكان. وتحوي المصفوفة قيمًا تمثّل ألوان العلم الهولندي الثلاثة،
+وهي:
 
 ```ocaml
   type color = Blue | White | Red
 ```
 
-Only swaps of elements in the array may be performed. The complexity should be
-proportionate to the number of elements.
+لا يجوز إجراء سوى تبديلات للعناصر في المصفوفة. وينبغي أن يكون التعقيد
+متناسبًا مع عدد العناصر.
 
-**12.3**More generally, we consider the case of an array containing k distinct values.
-To simplify matters, we assume that we are dealing with integers 0,…,k − 1. Write a
-function that sorts such an array in O(max(k,N)) time, where N is the size of the
-array.
+**12.3** وبشكل أعم، نأخذ حالة مصفوفة تحوي k قيمة متمايزة.
+وللتبسيط، نفترض أننا نتعامل مع الأعداد الصحيحة 0,…,k − 1. اكتب
+دالة ترتّب مصفوفة كهذه في زمن O(max(k,N))، حيث N هو حجم
+المصفوفة.
 
-#### Quicksort
+#### الترتيب السريع
 
-**12.4**One way to avoid a potential stack overflow in the function `quicksort` on lists
-is by first implementing a non-tail-recursive call to sort the smaller of the two lists,
-followed by a tail-recursive call to sort the larger one. Hint: For the tail-recursive call,
-generalize the function `quicksort` so that it takes as additional arguments the two
-lists `left` and `right`, so that `quicksortleftlright` returns the concatenation, in this
-order, of `left`, the sorted list `l`, and `right`. Show that the size of the stack remains
-logarithmic even in the worst case.
+**12.4** من طرق تفادي تجاوز محتمل لسعة المكدس في الدالة `quicksort` على القوائم
+أن نُجري أولًا استدعاءً غير عودي ذيلي لترتيب أصغر القائمتين،
+يتبعه استدعاء عودي ذيلي لترتيب الأكبر منهما. إرشاد: من أجل الاستدعاء العودي الذيلـي،
+عمّم الدالة `quicksort` بحيث تأخذ كوسيطتين إضافيتين القائمتين
+`left` و`right`، بحيث تُعيد `quicksortleftlright` الربط، بهذا
+الترتيب، لـ `left` والقائمة المرتّبة `l` و`right`. وبيّن أن حجم المكدس يبقى
+لوغاريتميًا حتى في أسوأ الحالات.
 
-**12.5**Modify the function `partition` on lists to use a randomly chosen element of
-the list as pivot. The aim is to avoid the unfavorable case of a sorted list, where
-quicksort would then have quadratic complexity.
+**12.5** عدّل الدالة `partition` على القوائم بحيث تستعمل عنصرًا مختارًا عشوائيًا من
+القائمة محورًا. والهدف هو تفادي الحالة غير المواتية لقائمة مرتّبة، حيث
+سيكون للترتيب السريع حينئذٍ تعقيد تربيعي.
 
-**12.6**One way of avoiding a potential stack overflow in the function `quick_rec` on
-arrays is to begin by performing the recursive call on the smaller of the two
-portions. Show that the size of the stack remains logarithmic even in the worst
-case.
+**12.6** من طرق تفادي تجاوز محتمل لسعة المكدس في الدالة `quick_rec` على
+المصفوفات أن نبدأ بإجراء الاستدعاء العودي على أصغر
+الجزأين. وبيّن أن حجم المكدس يبقى لوغاريتميًا حتى في أسوأ
+الحالات.
 
-**12.7**A classic idea to speed up sorting algorithms consists in switching to insertion
-sort when the number of elements to be sorted is small, that is, less than a constant
-fixed in advance (for example, 5). Modify the quicksort implementation on arrays
-taking this idea into consideration. Use the function `insertion_sort` on arrays
-(program [90](#x28-279016r90)) and generalize it by passing two indices, `l` and `r`, to delimit the portion
-of the array to be sorted.
+**12.7** من الأفكار الكلاسيكية لتسريع خوارزميات الترتيب التحوّل إلى الترتيب
+بالإدراج عندما يكون عدد العناصر المطلوب ترتيبها صغيرًا، أي أقل من ثابت
+محدَّد مسبقًا (مثلًا 5). عدّل تطبيق الترتيب السريع على المصفوفات
+آخذًا هذه الفكرة في الحسبان. استعمل الدالة `insertion_sort` على المصفوفات
+(البرنامج [90](#x28-279016r90)) وعمّمها بتمرير فهرسين، `l` و`r`، لتحديد الجزء
+المطلوب ترتيبه من المصفوفة.
 
-**12.8**Modify the quicksort implementation on arrays to use a pivot chosen randomly
-in the segment `a`[`l`..`r`[. As with lists, the idea is to avoid the unfavorable case of an
-already sorted array, where quicksort would then have quadratic complexity. One
-simple solution is to shuffle the array *before*sorting it, for example using
-exercise [2.11](https://usr.lmf.cnrs.fr/lpo/mainch2.html#x7-94006r11).
+**12.8** عدّل تطبيق الترتيب السريع على المصفوفات بحيث يستعمل محورًا مختارًا عشوائيًا
+في المقطع `a`[`l`..`r`[. وكما في حالة القوائم، تتمثل الفكرة في تفادي الحالة غير المواتية
+لمصفوفة مرتّبة بالفعل، حيث سيكون للترتيب السريع حينئذٍ تعقيد تربيعي. وأحد
+الحلول البسيطة هو خلط المصفوفة *قبل* ترتيبها، مثلًا باستعمال
+التمرين [2.11](https://usr.lmf.cnrs.fr/lpo/mainch2.html#x7-94006r11).
 
-**12.9**When numerous elements of the array are equal, the preceding exercise does
-not always suffice to guarantee a good choice of pivot. Modify the function `partition`
-so that it separates the elements that are strictly smaller than the pivot (to
-the left), those equal to the pivot (in the center), and those strictly greater
-than the pivot (to the right). Instead of two indices `m` and `i` dividing the
-segment of the array into three parts, as illustrated in figure **??**, we will
-use three indices to divide the segment of the array into four parts. The
-new function `partition` must now return two indices. Modify the function
-`quick_rec` accordingly. Partitioning into three parts in this way is the subject of
-exercise [12.2](#x28-301002r2).
+**12.9** عندما تكون عناصر المصفوفة كثيرة التكافؤ، لا يكفي التمرين السابق دائمًا
+لضمان اختيار جيد للمحور. عدّل الدالة `partition`
+بحيث تفصل العناصر الأصغر تمامًا من المحور (إلى
+اليسار)، والعناصر المساوية للمحور (في الوسط)، والعناصر الأكبر تمامًا
+من المحور (إلى اليمين). وبدلًا من فهرسين `m` و`i` يقسمان
+مقطع المصفوفة إلى ثلاثة أجزاء، كما هو موضّح في الشكل **??**، سوف
+نستعمل ثلاثة فهارس لتقسيم مقطع المصفوفة إلى أربعة أجزاء. وعلى
+الدالة الجديدة `partition` الآن أن تُعيد فهرسين. عدّل الدالة
+`quick_rec` وفقًا لذلك. ويشكّل التقسيم إلى ثلاثة أجزاء بهذه الطريقة موضوع
+التمرين [12.2](#x28-301002r2).
 
-#### Merge Sort
+#### الترتيب بالدمج
 
-**12.10**One source of inefficiency of merge sort on lists is the function `split`. Given
-a list `l` containing n elements, `splitl` constructs two completely new lists, `l1` and `l2`,
-containing all the elements of `l`. We can avoid this construction by using only the list
-`l`, without allocating any new lists. Rather than taking every other element of `l` to
-construct `l1` and `l2`, we choose for `l1` the ⌊n∕2⌋ first elements of `l` and for `l2` the
-⌈n∕2⌉ last elements. To construct `l2`, write a function `chop:int->’alist->’alist`
-such that `chopn1l` returns the suffix of `l` obtained by removing its `n1` first elements.
-As for `l1`, it suffices to represent it as a prefix of `l`, that is, to add an argument `n1` to
-the function `mergesort`, indicating that the first `n1` elements of `l` must be sorted.
-Rewrite the function `mergesort` using this idea. Reuse the function `merge` of
-program [93](#x28-287023r93). Calculate the complexity in number of allocations of the function
+**12.10** من مصادر عدم كفاءة الترتيب بالدمج على القوائم الدالة `split`. فبالنظر إلى
+قائمة `l` تحوي n عنصرًا، تُنشئ `splitl` قائمتين جديدتين تمامًا، `l1` و`l2`،
+تحويان جميع عناصر `l`. ويمكننا تفادي هذا البناء باستعمال القائمة
+`l` وحدها، دون تخصيص أي قائمة جديدة. وبدلًا من أخذ كل عنصر ثانٍ من `l` لبناء
+`l1` و`l2`، نختار لـ `l1` العناصر ⌊n∕2⌋ الأولى من `l` ولـ `l2` العناصر
+⌈n∕2⌉ الأخيرة. ولبناء `l2`، اكتب دالة `chop:int->’alist->’alist`
+بحيث تُعيد `chopn1l` لاحقة `l` الناتجة عن حذف عناصرها `n1` الأولى.
+أما `l1`، فيكفي تمثيلها بادئةً من `l`، أي إضافة وسيطة `n1` إلى
+الدالة `mergesort`، تشير إلى وجوب ترتيب العناصر `n1` الأولى من `l`.
+أعد كتابة الدالة `mergesort` باستعمال هذه الفكرة. وأعد استعمال الدالة `merge` من
+البرنامج [93](#x28-287023r93). واحسب التعقيد من حيث عدد التخصيصات للدالة
 `mergesort`.
 
-**12.11**One way of optimizing the function `mergesort` on almost sorted arrays
-is by avoiding the merging when, after both recursive calls, the elements
-of the left half are all smaller than the elements of the right half. We can
-easily test this by comparing the right-most element of the left half with the
-left-most element of the right half. Modify the function `mergesort` using this
-idea.
+**12.11** من طرق تحسين الدالة `mergesort` على المصفوفات شبه المرتّبة
+تفادي الدمج عندما تكون، بعد الاستدعاءين العوديين،
+جميع عناصر النصف الأيسر أصغر من عناصر النصف الأيمن. ويمكننا
+اختبار ذلك بسهولة بمقارنة أقصى عنصر يمينًا في النصف الأيسر بـ
+أقصى عنصر يسارًا في النصف الأيمن. عدّل الدالة `mergesort` باستعمال هذه
+الفكرة.
 
-**12.12**To avoid copying `a` into `tmp` with `Array.blit` in the function `mergesort` on
-arrays, one possibility is to sort the two halves of the array `a` while simultaneously
-shifting them to the array `tmp`, then merging `tmp` back into `a` as is already done.
-However, sorting the elements of `a` into `tmp` requires, conversely, that the two halves
-be sorted in-place, then merged into `tmp`. We therefore need two mutually
-recursive sorting functions. We can make do with only one by passing an
-additional parameter indicating whether the sorting must be done in-place or
-in `tmp`. Modify the functions `mergesort` and `mergesort_rec` following this
-idea.
+**12.12** لتفادي نسخ `a` إلى `tmp` بـ `Array.blit` في الدالة `mergesort` على
+المصفوفات، أحد الاحتمالات هو ترتيب نصفي المصفوفة `a` مع نقلِهما في الوقت نفسه
+إلى المصفوفة `tmp`، ثم دمج `tmp` مرة أخرى في `a` كما يُفعل بالفعل.
+غير أن ترتيب عناصر `a` في `tmp` يقتضي، على العكس، أن يُرتَّب النصفان
+في المكان، ثم يُدمجا في `tmp`. ولذلك نحتاج إلى دالتي ترتيب
+متعاودتين (mutually recursive). ويمكننا الاكتفاء بواحدة بتمرير
+وسيطة إضافية تشير إلى ما إذا كان الترتيب واجب التنفيذ في المكان أم
+في `tmp`. عدّل الدالتين `mergesort` و`mergesort_rec` وفقًا لهذه
+الفكرة.
 
-**12.13**In merge sort, as in quicksort, we can switch to insertion sort when the
+**12.13** في الترتيب بالدمج، كما في الترتيب السريع، يمكننا التحوّل إلى الترتيب بالإدراج عندما يكون
  
  
-number of elements to be sorted is small (see exercise [12.7](#x28-302004r7)).
+عدد العناصر المطلوب ترتيبها صغيرًا (انظر التمرين [12.7](#x28-302004r7)).

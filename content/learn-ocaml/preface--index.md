@@ -1,57 +1,53 @@
 ---
-title: "Preface"
-lang: en
+title: "مقدمة"
+lang: ar
 ---
 
-## Preface
+## مقدمة
 
-## Preface
+## مقدمة
 
-Learning to program is difficult. To program well requires knowledge of algorithms,
-imagination, foresight, mastery of a programming language. Most of all, it requires
-experience, since the difficulties are often hidden in the details. This book offers a
-synthesis based on our own experience, both as programmers and as teachers of
-programming.
+التعلم لبرمجة حاسوب أمرٌ صعب. والبرمجةُ الجيدة تتطلب معرفةً بالخوارزميات،
+والخيال، والبصيرة، وإتقان لغة برمجة. والشيءُ الأهم من ذلك كله، هي تتطلب خبرة،
+لأن الصعوبات كثيراً ما تختبئ في التفاصيل. يقدم هذا الكتاب توليفةً مبنيةً على
+خبرتنا الخاصة، بوصفنا مبرمجين ومدرّسي برمجة.
 
-It is important to remember that style is essential to programming. The same
-algorithm can be written in a given language in multiple ways; only some of these are
-simultaneously elegant and efficient, which is what the programmer should strive for,
-above all else. This is why we chose to use a concrete programming language, OCaml,
-rather than pseudocode.
+من المهم تذكُّر أن الأسلوب جوهريٌّ في البرمجة. فخوارزميةٌ واحدة يمكن كتابتها
+في لغةٍ معينة بطرقٍ متعددة؛ وما جازَ منها أن يكون أنيقاً وفعالاً في الوقت نفسه،
+هو ما يجب أن يسعى المبرمجُ إلى تحقيقه، فوق كل شيء. ولذا اخترنا استخدام لغة برمجة
+ملموسة، OCaml، بدلاً من شبه شيفرة (pseudocode).
 
-The book is divided into three parts. Part I is an introduction to the OCaml
-language. It is aimed at beginners, including both novice programmers and more
-experienced programmers who do not know OCaml. Various small programs will
-enable the reader to discover the basic concepts of programming and the OCaml
-language. Parts II and III focus on fundamental algorithmic concepts, with a view to
-enabling readers to write their own programs in an efficient and structured manner.
- 
- 
-Algorithmic concepts are presented directly in OCaml syntax, and all the programs in
-this book can be readily reused.
+ينقسم الكتاب إلى ثلاثة أجزاء. الجزء I هو مقدمةٌ إلى لغة OCaml. وهو موجَّهٌ
+إلى المبتدئين، بما يشمل مبرمجي المبتدئين والمبرمجين الأكثر خبرةً الذين لا
+يعرفون OCaml. وستمكّن برامج صغيرة متعددة القارئ من اكتشاف المفاهيم
+الأساسية للبرمجة ولغة OCaml. أما الجزءان II و III فيركّزان على مفاهيم
+خوارزمية أساسية، بهدف تمكين القرّاء من كتابة برامجهم الخاصة بطريقة فعّالة
+ومنظّمة.
 
-### Who Should Read This Book
+تُعرض المفاهيم الخوارزمية مباشرةً في صياغة OCaml، ويمكن إعادة استخدام جميع
+البرامج في هذا الكتاب بسهولة.
 
-The book is aimed at teachers, students, and programmers seeking to discover and use
-the OCaml language effectively. For teachers and students, the book may be
-used as a textbook in courses on algorithms or functional programming. It
-contains numerous code samples and exercises. For OCaml programmers,
-it may serve as a reference text in the study of specific data structures or
-algorithms.
+### من يجب أن يقرأ هذا الكتاب
 
-### The Book’s Companion Website
+الكتابُ موجَّهٌ إلى المدرّسين والطلاب والمبرمجين الذين يسعون إلى اكتشاف
+لغة OCaml واستخدامها بفعالية. للمدرّسين والطلاب، قد يُستخدم الكتاب ككتاب
+دراسي في دورات عن الخوارزميات أو البرمجة الوظيفية. وهو يحتوي على العديد من
+أمثلة الشفرة والتمارين. ولمبرمجي OCaml، قد يُستخدم كنص مرجعي في دراسة بُنى بيانات
+أو خوارزميات محددة.
 
-All the programs in this book have been compiled and tested with OCaml version
-4.14.0. The programs are available at the following address:
+### الموقع المرافق للكتاب
+
+تم تجميع جميع برامج هذا الكتاب واختبارها مع إصدار OCaml 4.14.0. والبرامج
+متاحة على العنوان:
 
 `http://programmer-avec-ocaml.lri.fr/`
 
-### Acknowledgements
+### شكر وتقدير
 
-We would like to thank François Pottier for discussions regarding the creation of this
-book. We are also very grateful to our colleagues Arthur Charguéraud and Frédéric
-Voisin for their careful and constructive revision of the text. We would also like to
-thank everyone who read and commented on it: Thomas Braibant, Martin Clochard,
-David Declerck, Léon Gondelman, Louis Mandel, Simão Melo de Sousa, Mattias
-Roux. Finally, we thank the Eyrolles editorial team for their precious help in putting
-the book together.
+نودّ أن نشكر François Pottier على مناقشاته حول إعداد هذا الكتاب. ونحن ممتنون
+لزملائنا Arthur Charguéraud و Frédéric Voisin على مراجعتهما الدقيقة والبناءة
+للنص. ونودّ أيضاً أن نشكر كل من قرأ الكتاب وعلّق عليه: Thomas Braibant،
+Martin Clochard، David Declerck، Léon Gondelman، Louis Mandel، Simão Melo de
+Sousa، Mattias Roux. أخيراً، نشكر فريق Eyrolles التحريري على مساعدته القيّمة
+في تجميع الكتاب.
+" 

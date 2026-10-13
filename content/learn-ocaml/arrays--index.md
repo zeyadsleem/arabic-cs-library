@@ -1,31 +1,22 @@
 ---
-title: "Arrays"
-lang: en
+title: "المصفوفات"
+lang: ar
 ---
 
-## 4. Arrays
+## 4. المصفوفات
 
-One of the simplest data structures is the array, represented by the OCaml type
-`array`. In this chapter, we present several variations on this data structure. We show
-how to construct resizeable arrays, compact arrays of booleans, arrays with an
-efficient concatenation operation, and persistent arrays.
+من أبسط بنى المعطيات المصفوفة (array)، التي يمثّلها النوع `array` في OCaml. نعرض في هذا الفصل عدة تنويعات على بنية المعطيات هذه. فنوضّح كيفية بناء مصفوفات قابلة لتغيير الحجم، ومصفوفات مضغوطة من القيم المنطقية، ومصفوفات ذات عملية دمج فعّالة، ومصفوفات دائمة.
 
-### 4.1 Resizeable Arrays
+### 4.1 المصفوفات القابلة لتغيير الحجم
 
-A resizeable array is an array whose size can be increased or decreased at any time by
-means of an operation `resize`. The signature of such arrays is given in program [17](#x15-133002r17).
-(We will use resizeable arrays in chapters [5](https://usr.lmf.cnrs.fr/lpo/mainch5.html#sets-and-dictionaries) and [6](https://usr.lmf.cnrs.fr/lpo/mainch6.html#queues).)
+المصفوفة القابلة لتغيير الحجم (resizeable array) هي مصفوفة يمكن زيادة حجمها أو إنقاصه في أي وقت بواسطة عملية `resize`. وتُعطى توقيعة هذه المصفوفات في البرنامج [17](#x15-133002r17).
+(سنستعمل المصفوفات القابلة لتغيير الحجم في الفصلين [5](https://usr.lmf.cnrs.fr/lpo/mainch5.html#sets-and-dictionaries) و[6](https://usr.lmf.cnrs.fr/lpo/mainch6.html#queues).)
 
 >
 
-The idea behind the implementation of resizeable arrays is simple: We use a
-normal array to store the elements, and if it becomes too small, we allocate a larger
-array into which we copy the existing elements. To avoid spending too much time
-allocating and copying, we allow the backing array to be larger than needed, with the
-elements beyond a certain index left unused.
+الفكرة الكامنة وراء تنفيذ المصفوفات القابلة لتغيير الحجم بسيطة: نستعمل مصفوفة عادية لتخزين العناصر، فإذا صارت صغيرة جدًّا خصّصنا مصفوفة أكبر ننسخ إليها العناصر الموجودة. ولتفادي إضاعة وقت كبير في التخصيص والنسخ، نسمح للمصفوفة الداعمة (backing array) بأن تكون أكبر من اللازم، مع بقاء العناصر التي تتجاوز فهرسًا معينًا غير مستعملة.
 
-The type of resizeable arrays is therefore a record containing an ordinary array in
-a field `data` and the number of elements in use in a field `size`.
+وبالتالي فإن نوع المصفوفات القابلة لتغيير الحجم هو سجل (record) يحتوي على مصفوفة عادية في حقل `data` وعلى عدد العناصر المستعملة في حقل `size`.
 
 ```ocaml
   type ’a t = {
@@ -34,28 +25,19 @@ a field `data` and the number of elements in use in a field `size`.
   }
 ```
 
-Thus, if `v` is such a resizeable array, we may represent the situation as follows:
+وهكذا، إذا كانت `v` مصفوفة قابلة لتغيير الحجم من هذا القبيل، أمكننا تمثيل الحالة كما يلي:
 
-Accordingly, we will maintain the following invariant throughout:
+بناءً على ذلك، سنحافظ في ما يلي على الثابت (invariant) الآتي:
 
 $$0 \le v.size \le Array.length v.data$$
 
-If we wish to increase the size of the array `v`, there are two possibilities to
-consider. If the new size does not exceed the capacity of the array `v.data`, it suffices
-to modify `v.size`. Otherwise, we allocate a new, sufficiently large array and copy
- 
- 
-the elements of `v.data` into it. We then assign this new array to `v.data`.
-Whenever we wish to decrease the size of the array `v`, it suffices to modify
-`v.size`.
+إذا أردنا زيادة حجم المصفوفة `v`، فهناك احتمالان ينبغي النظر فيهما. فإذا لم يتجاوز الحجم الجديد سعة المصفوفة `v.data`، كفى تعديل `v.size`. وإلا خصّصنا مصفوفة جديدة كبيرة بما يكفي ونسخنا
 
-There is, however, a slight difficulty regarding this last point. Pointers to
-elements that are no longer in use should not be retained, so that the GC is
-able to collect them whenever possible. We therefore need a value of the
-right type to replace the elements that are no longer in use. To this end, we
-will require that a default value be provided when the array is created. We
-will save it in a third field of the record. We thus arrive at the following
-type:
+
+عناصر `v.data` إليها. ثم نُسند هذه المصفوفة الجديدة إلى `v.data`.
+وكلما أردنا إنقاص حجم المصفوفة `v`، كفى تعديل `v.size`.
+
+غير أن هناك صعوبة طفيفة تتعلق بهذه النقطة الأخيرة. إذ ينبغي عدم الاحتفاظ بالمؤشرات إلى العناصر التي لم تعد مستعملة، حتى يتمكن جامع القمامة (GC) من جمعها كلما أمكن ذلك. ولذلك نحتاج إلى قيمة من النوع المناسب لتحل محل العناصر التي لم تعد مستعملة. وتحقيقًا لهذه الغاية، سنشترط توفير قيمة افتراضية عند إنشاء المصفوفة. وسنحفظها في حقل ثالث من السجل. وهكذا نصل إلى النوع الآتي:
 
 ```ocaml
   type ’a t = {
@@ -65,29 +47,23 @@ type:
   }
 ```
 
-Let us now write the code for the different operations. The length of the resizeable
-array is given by the field `size`.
+لنكتب الآن شفرة العمليات المختلفة. يُعطى طول المصفوفة القابلة لتغيير الحجم بواسطة الحقل `size`.
 
 ```ocaml
   let length a = a.size
 ```
 
-To create a new resizeable array, it suffices to use `Array.make`, and to store the size and
-the default value.
+لإنشاء مصفوفة جديدة قابلة لتغيير الحجم، يكفي استعمال `Array.make` وتخزين الحجم والقيمة الافتراضية.
 
 ```ocaml
   let make n d = { default = d; size = n; data = Array.make n d }
 ```
 
-In general, we will maintain the following invariant on the type `t`: Every element beyond
-index `size`, that is, every unused element, contains the value stored in the field
-`default`.
+بصفة عامة، سنحافظ على الثابت الآتي على النوع `t`: كل عنصر يتجاوز الفهرس `size`، أي كل عنصر غير مستعمل، يحتوي على القيمة المخزَّنة في الحقل `default`.
 
 >
 
-To access the `i`-th element of a resizeable array `a`, it is necessary to verify
-that the index is valid, as the array `a.data` may contain more than `a.size`
-elements.
+للوصول إلى العنصر ذي الرتبة `i` في مصفوفة قابلة لتغيير الحجم `a`، لا بد من التحقق من صلاحية الفهرس، لأن المصفوفة `a.data` قد تحتوي على أكثر من `a.size` عنصر.
 
 ```ocaml
   let get a i =
@@ -95,8 +71,7 @@ elements.
     a.data.(i)
 ```
 
-Note that once this verification has been done, we could use `Array.unsafe_get` to access
-`a.data` for greater efficiency. The assignment operation is analogous:
+لاحظ أنه متى جرى هذا التحقق، أمكننا استعمال `Array.unsafe_get` للوصول إلى `a.data` لمزيد من الفعالية. وعملية الإسناد مماثلة:
 
 ```ocaml
   let set a i v =
@@ -104,10 +79,7 @@ Note that once this verification has been done, we could use `Array.unsafe_get` 
     a.data.(i) <- v
 ```
 
-All the subtlety lies in the function `resize`, which modifies the size of a resizeable
-array `a`. Several scenarios are possible. If the new size `s` is less than or equal
-to `a.size`, it suffices to replace the elements between `s` and `a.size-1` by
-`a.default`.
+يكمن كل الدقة في الدالة `resize`، التي تعدّل حجم مصفوفة قابلة لتغيير الحجم `a`. وهناك عدة حالات ممكنة. فإذا كان الحجم الجديد `s` أصغر من `a.size` أو يساويه، كفى استبدال العناصر الواقعة بين `s` و`a.size-1` بالقيمة `a.default`.
 
 ```ocaml
   let resize a s =
@@ -115,10 +87,7 @@ to `a.size`, it suffices to replace the elements between `s` and `a.size-1` by
       Array.fill a.data s (a.size - s) a.default
 ```
 
-We could also reallocate the elements into a smaller array (see exercise [4.2](#x15-151002r2)). If,
-however, `s` is larger than `a.size`, it is necessary to check whether the array `a.data` is
-large enough to contain `s` elements. We therefore compute the size `n` of the array
-`a.data` and compare it with `s`.
+ويمكننا كذلك إعادة تخصيص العناصر في مصفوفة أصغر (انظر التمرين [4.2](#x15-151002r2)). أما إذا كان `s` أكبر من `a.size`، فلا بد من التحقق مما إذا كانت المصفوفة `a.data` كبيرة بما يكفي لاحتواء `s` عنصرًا. لذلك نحسب الحجم `n` للمصفوفة `a.data` ونقارنه بـ `s`.
 
 ```ocaml
     else begin
@@ -126,29 +95,22 @@ large enough to contain `s` elements. We therefore compute the size `n` of the
       if s > n then begin
 ```
 
-If `s` is greater than `n`, it is necessary to resize the array. Here, we choose the strategy of
-doubling the size of the array `a.data`. (See exercise [4.1](#x15-151001r1) for another strategy.) Since
-that may not suffice, we calculate the new size as the maximum of `2*n` and
-`s`.
+إذا كان `s` أكبر من `n`، فلا بد من تغيير حجم المصفوفة. ونختار هنا استراتيجية مضاعفة حجم المصفوفة `a.data`. (انظر التمرين [4.1](#x15-151001r1) لاستراتيجية أخرى.) ولما كان ذلك قد لا يكفي، نحسب الحجم الجديد باعتباره القيمة العظمى لـ `2*n` و`s`.
 
 ```ocaml
         let n’ = max (2 * n) s in
 ```
 
-To be perfectly safe, it would be necessary to limit the new size to the maximum size of
-arrays, that is, `Sys.max_array_length`, and to fail if the value `s` is too large. This is
-left as an exercise for the reader.
+ولضمان السلامة التامة، كان يلزم تقييد الحجم الجديد بالحجم الأقصى للمصفوفات، أي `Sys.max_array_length`، والفشل إذا كانت القيمة `s` كبيرة جدًّا. وقد تُرك هذا تمرينًا للقارئ.
 
-We then allocate a new array of size `n’` into which we copy the elements of `a.data`
-that are in use. For this, we use the function `Array.blit`, which copies a portion of
-one array into another.
+ثم نخصّص مصفوفة جديدة بحجم `n’` ننسخ إليها عناصر `a.data` المستعملة. ولهذا نستعمل الدالة `Array.blit`، التي تنسخ جزءًا من مصفوفة إلى أخرى.
 
 ```ocaml
         let a’ = Array.make n’ a.default in
         Array.blit a.data 0 a’ 0 a.size;
 ```
 
-Then, we replace the array `a.data` by the new array.
+ثم نستبدل المصفوفة `a.data` بالمصفوفة الجديدة.
 
 ```ocaml
         a.data <- a’
@@ -156,78 +118,48 @@ Then, we replace the array `a.data` by the new array.
     end;
 ```
 
-When `s<=n`, there is nothing more to be done. Finally, in all scenarios, we end by
-updating the field `size`.
+عندما `s<=n`، لا يبقى ما يُفعل. وأخيرًا، في جميع الحالات، ننتهي بتحديث الحقل `size`.
 
 ```ocaml
     a.size <- s
 ```
 
-This completes the implementation of resizeable arrays. The code is given in full
-in program [18](#x15-133028r18) (see page [303](#x15-133028r18)).
+وبهذا يكتمل تنفيذ المصفوفات القابلة لتغيير الحجم. والشفرة معطاة كاملة في البرنامج [18](#x15-133028r18) (انظر الصفحة [303](#x15-133028r18)).
 
-#### Complexity
+#### التعقيد
 
-Resizeable arrays are typically used when the number of elements to be stored is not
-known beforehand (see exercise [4.3](#x15-151003r3)). Let us suppose that we begin with a resizeable
- 
- 
-array of length 0 and increase its length n times by one unit, to end up with an array
-of length n. The naive strategy of giving the array `data` exactly the same length as
-the resizeable array entails that each `resize` with a length i would have cost i. The
-total cost would then be quadratic:
+تُستعمل المصفوفات القابلة لتغيير الحجم عادةً عندما لا يكون عدد العناصر المراد تخزينها معروفًا مسبقًا (انظر التمرين [4.3](#x15-151003r3)). لنفترض أننا نبدأ بمصفوفة قابلة لتغيير الحجم
+
+
+طولها 0 ونزيد طولها n مرة بمقدار وحدة واحدة، لننتهي بمصفوفة طولها n. وتقتضي الاستراتيجية الساذجة، التي تمنح المصفوفة `data` الطول نفسه بالضبط الذي للمصفوفة القابلة لتغيير الحجم، أن تكون تكلفة كل عملية `resize` بطول i مقدار i. وتكون التكلفة الإجمالية عندئذ تربيعية:
 
 $$n(n + 1) 1 + 2 + \cdot \cdot \cdot + n = - - - - - - - - = O (n2). 2$$
 
-However, the strategy implemented by `resize` here is more subtle, consisting in
-(at least) doubling the size of the array whenever it needs to be increased. The total
-cost is then linear, which may be shown as follows: Let us assume, without loss of
-generality, that n ≥ 2. Let k = ⌊log 2(n)⌋, that is, 2k ≤ n < 2k+1. Beginning with an
-empty array, we will have executed a total of k + 2 resizings to arrive at an array `data`
-of the final size 2k+1. After the i-th resizing, where i = 0,…,k + 1, the size
-of the array is 2i. The i-th resizing therefore has cost 2i. The total cost is
-then:
+بيد أن الاستراتيجية التي تنفذها `resize` هنا أكثر دقة، وهي تتمثل في مضاعفة حجم المصفوفة (على الأقل) كلما احتاجت إلى الزيادة. وتكون التكلفة الإجمالية عندئذ خطية، ويمكن بيان ذلك كما يلي: لنفترض، دون إخلال بالعمومية، أن n ≥ 2. ولتكن k = ⌊log 2(n)⌋، أي 2k ≤ n < 2k+1. بدءًا من مصفوفة فارغة، نكون قد نفّذنا ما مجموعه k + 2 عملية تغيير حجم للوصول إلى مصفوفة `data` بحجم نهائي 2k+1. وبعد عملية تغيير الحجم رقم i، حيث i = 0,…,k + 1، يكون حجم المصفوفة 2i. لذلك تكون تكلفة عملية تغيير الحجم رقم i مقدار 2i. والتكلفة الإجمالية عندئذ:
 
 $$k\sum + 1 2i = 2k + 2 - 1 < 4n. i = 0$$
 
-In other words, some of the `resize` operations have constant cost (when resizing is
-not actually necessary). Others, by contrast, have non-constant cost, but the total
-complexity remains linear. Averaging over the n operations, it is as if each addition
-had constant cost. The extension of a resizeable array by one unit therefore has
-*amortized complexity* O(1).
+وبعبارة أخرى، فإن بعض عمليات `resize` لها تكلفة ثابتة (عندما لا تكون زيادة الحجم ضرورية فعلاً). في المقابل، لعمليات أخرى تكلفة غير ثابتة، لكن التعقيد الإجمالي يبقى خطيًّا. وبأخذ المتوسط على العمليات n، يكون الأمر كما لو كانت كل إضافة ذات تكلفة ثابتة. لذلك فإن توسيع مصفوفة قابلة لتغيير الحجم بمقدار وحدة واحدة له *تعقيد مطفأ (amortized complexity)* من الرتبة O(1).
 
-### 4.2 Bit Vectors
+### 4.2 المتجهات البتية (bit vectors)
 
-If a program needs to manipulate a set of integers included within a reasonable
-interval, and if persistence is not required, then an array of booleans may be used.
-This is what we did, for instance, in section [*2.5*](https://usr.lmf.cnrs.fr/lpo/mainch2.html#sieve-of-eratosthenes) *Sieve of Eratosthenes*. However, given
-that a boolean is represented by one memory word (32 or 64 bits depending on the
-architecture), a lot of memory is wasted. While a single bit per element would suffice,
-an array of booleans occupies 32 or 64 times that amount. The bit vector data
-structure is useful precisely in this regard: it enables the use of a single bit per
-element.
+إذا احتاج برنامج إلى معالجة مجموعة من الأعداد الصحيحة تقع ضمن مجال معقول، وإذا لم تكن الاستدامة مطلوبة، أمكن استعمال مصفوفة من القيم المنطقية. وهذا ما فعلناه مثلاً في القسم [*2.5*](https://usr.lmf.cnrs.fr/lpo/mainch2.html#sieve-of-eratosthenes) *غربال إراتوستينس*. غير أنه، بما أن القيمة المنطقية تُمثَّل بكلمة ذاكرة واحدة (32 أو 64 بتة حسب المعمارية)، تُهدر ذاكرة كثيرة. فبينما تكفي بتة واحدة لكل عنصر، تشغل مصفوفة القيم المنطقية 32 أو 64 ضعف هذا المقدار. وبنية معطيات المتجه البتي (bit vector) مفيدة تحديدًا في هذا الشأن: فهي تتيح استعمال بتة واحدة لكل عنصر.
 
-The signature of such a data structure is exactly the same as that of arrays,
-except that elements are of type `bool`. The beginning of such a signature is given in
-program [19](#x15-135013r19) (see below).
+توقيعة بنية المعطيات هذه هي نفسها تمامًا توقيعة المصفوفات، باستثناء أن العناصر من النوع `bool`. وتُعطى بداية هذه التوقيعة في البرنامج [19](#x15-135013r19) (انظر أدناه).
 
-The implementation consists in using an ordinary array of integers and storing
-several booleans in each of the integers: 31 booleans in a 32-bit architecture and 63
-booleans in a 64-bit architecture. (Recall that OCaml reserves one bit of each integer
-for use by the GC.) We begin by letting `bpi` be the number of booleans stored in each
-integer.
+يقوم التنفيذ على استعمال مصفوفة عادية من الأعداد الصحيحة وتخزين عدة قيم منطقية في كل عدد صحيح: 31 قيمة منطقية في معمارية 32 بتة و63 قيمة منطقية في معمارية 64 بتة. (تذكّر أن OCaml تحجز بتة واحدة من كل عدد صحيح لاستعمال جامع القمامة.) ونبدأ بجعل `bpi` عدد القيم المنطقية المخزَّنة في كل عدد صحيح.
 
 ```ocaml
   let bpi = Sys.word_size - 1
 ```
 
-The maximum size of a bit vector is therefore given by the following value:
+يُعطى الحجم الأقصى للمتجه البتي إذن بالقيمة الآتية:
 
 ```ocaml
   let max_length = Sys.max_array_length * bpi
 ```
 
-To represent a bit vector, we introduce the following type `t`:
+لتمثيل متجه بتي، نُعرّف النوع الآتي `t`:
 
 ```ocaml
   type t = {
@@ -236,35 +168,22 @@ To represent a bit vector, we introduce the following type `t`:
   }
 ```
 
-The field `length` contains the actual number of booleans present in the bit vector, as this
-is not necessarily a multiple of `bpi`. The field `bits` contains the array of integers. If
-b0,b1,…,b`bpi`−1 are the first `bpi` elements of an array of booleans, they are
-represented in the first cell of the array `bits` by the integer
+يحتوي الحقل `length` على العدد الفعلي للقيم المنطقية الموجودة في المتجه البتي، إذ لا يكون هذا العدد بالضرورة مضاعفًا لـ `bpi`. ويحتوي الحقل `bits` على مصفوفة الأعداد الصحيحة. وإذا كانت b0,b1,…,b`bpi`−1 أول `bpi` عنصرًا من مصفوفة القيم المنطقية، فإنها تُمثَّل في الخلية الأولى من المصفوفة `bits` بالعدد الصحيح
 
 $$b0 + 2b1 + \cdot \cdot \cdot + 2bpi-1bbpi-1$$
 
-The following `bpi` elements are represented in the same manner by the second
-integer of the array `bits`, and so forth. When the number of elements is not a
-multiple of `bpi`, some of the high-order bits of the last integer of the array are not
-used. To allow comparing bit vectors structurally, we enforce the following invariant
-on the representation:
+وتُمثَّل العناصر `bpi` التالية بالطريقة نفسها بالعدد الصحيح الثاني من المصفوفة `bits`، وهكذا دواليك. وعندما لا يكون عدد العناصر مضاعفًا لـ `bpi`، تبقى بعض البتات عالية الرتبة في آخر عدد صحيح من المصفوفة غير مستعملة. وللسماح بمقارنة المتجهات البتية بنيويًّا، نفرض الثابت الآتي على التمثيل:
 
 |  | (4.1) |
 | --- | --- |
 
-We can thus use the OCaml operations `=` or `<>` on bit vectors, irrespective of how they
-are constructed.
+يمكننا إذن استعمال عمليتي OCaml `=` أو `<>` على المتجهات البتية، بغض النظر عن كيفية بنائها.
 
 >
 
-#### Creation
+#### الإنشاء
 
-Let us begin with the function `create`, which constructs a bit vector of size `n`, where
-all the elements have the same value `b`. Except for the last integer, all the elements of
-the array `bits` will contain the same value: 0 if `b` is `false` or −1 if `b` is `true`.
-This is because in the two’s-complement representation, −1 is written in
-binary using only the digit 1, that is, −1 = (1⋯1)2. The function `create`
-therefore begins by defining this initial value, 0 or −1, depending on the value of
+نبدأ بالدالة `create`، التي تبني متجهًا بتيًّا بحجم `n`، حيث يكون لجميع العناصر القيمة نفسها `b`. وباستثناء العدد الصحيح الأخير، ستحتوي جميع عناصر المصفوفة `bits` على القيمة نفسها: 0 إذا كان `b` مساويًا `false` أو −1 إذا كان `b` مساويًا `true`. ويرجع ذلك إلى أنه في تمثيل المتمم الثنائي (two’s complement)، يُكتب −1 في النظام الثنائي باستعمال الرقم 1 فقط، أي −1 = (1⋯1)2. لذلك تبدأ الدالة `create` بتعريف هذه القيمة الأولية، 0 أو −1، حسب قيمة
 `b`.
 
 ```ocaml
@@ -272,27 +191,20 @@ therefore begins by defining this initial value, 0 or −1, depending on the val
     let initv = if b then -1 else 0 in
 ```
 
-The number of elements of the array `bits` is then determined by the Euclidean division of
-`n` by `bpi`.
+يتحدد عدد عناصر المصفوفة `bits` عندئذ بالقسمة الإقليدية لـ `n` على `bpi`.
 
 ```ocaml
     let q = n / bpi and r = n mod bpi in
 ```
 
-If the remainder `r` is 0, then all elements of the array are fully used, and it suffices
-to construct an array of size `q` initialized with `initv`.
+إذا كان الباقي `r` مساويًا 0، فجميع عناصر المصفوفة مستعملة بالكامل، ويكفي بناء مصفوفة بحجم `q` مهيّأة بالقيمة `initv`.
 
 ```ocaml
     if r = 0 then
       { length = n; bits = Array.make q initv }
 ```
 
-If the remainder `r` is not 0, we need to construct an array of `q` + 1 integers.
-All the elements contain `initv`, except for the last one, whose high-order
-bits must be 0 to respect the invariant. More precisely, if `b` is `true`, then
-the last element of the array must have exactly `r` low-order set bits. This is
-easily obtained using the expression `(1lslr)-1`. This completes the function
-`create`:
+أما إذا لم يكن الباقي `r` مساويًا 0، فنحتاج إلى بناء مصفوفة من `q` + 1 عددًا صحيحًا. وتحتوي جميع العناصر على `initv`، باستثناء الأخير، الذي يجب أن تكون بتاته عالية الرتبة 0 احترامًا للثابت. وبشكل أدق، إذا كان `b` مساويًا `true`، فيجب أن يحتوي العنصر الأخير من المصفوفة على `r` بتة مضبوطة منخفضة الرتبة بالضبط. ويُحصل على ذلك بسهولة باستعمال التعبير `(1lslr)-1`. وبهذا تكتمل الدالة `create`:
 
 ```ocaml
     else begin
@@ -302,19 +214,13 @@ easily obtained using the expression `(1lslr)-1`. This completes the function
     end
 ```
 
-The complete code is given in program [20](#x15-136015r20).
+الشفرة الكاملة معطاة في البرنامج [20](#x15-136015r20).
 
 >
 
-#### Reading
+#### القراءة
 
-To read the n-th element of a bit vector we must first determine the index i of the
-corresponding integer in the array, and then the index j of the corresponding bit
-within this integer. The values of i and j are obtained from the Euclidean
-division of n by `bpi`. Given the i-th element of the array, in order to extract
-the j-th bit, it suffices to shift this integer j positions to the right using
-`lsr`, and then test its least significant bit. We end up with the following
-function:
+لقراءة العنصر ذي الرتبة n في متجه بتي، يجب أولاً تحديد الفهرس i للعدد الصحيح المقابل في المصفوفة، ثم الفهرس j للبتة المقابلة داخل هذا العدد الصحيح. وتُستخرج قيمتا i وj من القسمة الإقليدية لـ n على `bpi`. وبمعرفة العنصر ذي الرتبة i من المصفوفة، يكفي، لاستخراج البتة ذات الرتبة j، إزاحة هذا العدد الصحيح j موضعًا إلى اليمين باستعمال `lsr`، ثم اختبار بتته الأقل دلالة. فننتهي إلى الدالة الآتية:
 
 ```ocaml
   let get v n =
@@ -322,57 +228,44 @@ function:
     (v.bits.(i) lsr j) land 1 <> 0
 ```
 
-Equivalently, we could also perform a bitwise *and*operation against the integer
-containing a single set bit in the j-th position, which is obtained using the expression
-`1lslj`:
+وبشكل مكافئ، يمكننا كذلك إجراء عملية *العطف البتي (logical and)* على العدد الصحيح الذي يحتوي على بتة واحدة مضبوطة في الموضع j، والذي نحصل عليه بالتعبير `1lslj`:
 
 ```ocaml
     v.bits.(i) land (1 lsl j) <> 0
 ```
 
-#### Writing
+#### الكتابة
 
-To assign a value `b` of type `bool` to the n-th element of a bit vector `v`, we begin by
-determining its position exactly as we did for reading, via the Euclidean division of n
-by `bpi`.
+لإسناد قيمة `b` من النوع `bool` إلى العنصر ذي الرتبة n في متجه بتي `v`، نبدأ بتحديد موضعه تمامًا كما فعلنا في القراءة، عبر القسمة الإقليدية لـ n على `bpi`.
 
 ```ocaml
   let set v n b =
     let i = n / bpi and j = n mod bpi in
 ```
 
-We then consider the two possible cases separately. If `b` is `true`, that is, if the j-th bit of
-`v.bits.(i)` must be set to 1, we perform a *logical or*against the integer containing a
-single set bit in the j-th position.
+ثم ننظر في الحالتين الممكنتين كلًّا على حدة. فإذا كان `b` مساويًا `true`، أي إذا كان يجب ضبط البتة ذات الرتبة j في `v.bits.(i)` على 1، أجرينا عملية *الفصل المنطقي (logical or)* على العدد الصحيح الذي يحتوي على بتة واحدة مضبوطة في الموضع j.
 
 ```ocaml
     if b then
       v.bits.(i) <- v.bits.(i) lor (1 lsl j)
 ```
 
-Otherwise, we must set the j-th bit to 0, which can be done using a *logical and*against an
-integer with all bits set, except the j-th.
+وإلا وجب ضبط البتة ذات الرتبة j على 0، وهو ما يمكن إجراؤه بعملية *العطف المنطقي (logical and)* على عدد صحيح جميع بتاته مضبوطة باستثناء البتة j.
 
 ```ocaml
     else
       v.bits.(i) <- v.bits.(i) land lnot (1 lsl j)
 ```
 
-The complete code of the functions `get` and `set` is given in program [21](#x15-138010r21). The two
-operations clearly have cost O(1).
+الشفرة الكاملة للدالتين `get` و`set` معطاة في البرنامج [21](#x15-138010r21). ومن الواضح أن تكلفة العمليتين O(1).
 
 >
 
-#### Set-Theoretic Operations
+#### العمليات المتعلقة بالمجموعات
 
-Bit vectors come into their own when they are used to represent sets. In particular,
-the union, intersection and complement operations can be implemented efficiently by
-the corresponding bitwise operations.
+تظهر فائدة المتجهات البتية بجلاء عند استعمالها لتمثيل المجموعات. فعلى وجه الخصوص، يمكن تنفيذ عمليات الاتحاد والتقاطع والمتمم بكفاءة بواسطة العمليات البتية المقابلة.
 
-Consider, for example, the *logical and*operation of two bit vectors, `inter`, which
-also computes the intersection of the corresponding sets. This operation is only
-meaningful when the two bit vectors are of the same size. We begin by verifying
-this.
+خُذ مثلاً عملية *العطف المنطقي (logical and)* لمتجهين بتين، `inter`، التي تحسب أيضًا تقاطع المجموعتين المقابلتين. وهذه العملية لا معنى لها إلا عندما يكون المتجهان البتيان بالحجم نفسه. ونبدأ بالتحقق من ذلك.
 
 ```ocaml
   let inter v1 v2 =
@@ -380,34 +273,25 @@ this.
     if l1 <> v2.length then invalid_arg "Bitv.inter";
 ```
 
-Once we know that both vectors are of the same size, we implement the *logical and*operation itself. For this, we may use the function `Array.mapi`, which
-constructs an array by applying a function to all the elements of another
-array.
+ومتى علمنا أن المتجهين بالحجم نفسه، نفّذنا عملية *العطف المنطقي* نفسها. ولهذا يمكننا استعمال الدالة `Array.mapi`، التي تبني مصفوفة بتطبيق دالة على جميع عناصر مصفوفة أخرى.
 
 ```ocaml
     let b = Array.mapi (fun i ei -> ei land v2.bits.(i)) v1.bits in
     { length = l1; bits = b }
 ```
 
-This completes the function `inter`. We can similarly write the function `union`, which
-computes the set-theoretic union, by performing a *logical or*.
+وبهذا تكتمل الدالة `inter`. ويمكننا بالمثل كتابة الدالة `union`، التي تحسب الاتحاد المجموعي، بإجراء عملية *الفصل المنطقي (logical or)*.
 
 >
 
-Note that the invariant ([4.1](#x15-135012r1)) is respected, because *and*and *or*preserve the unused
-high-order 0s. This is not the case with bitwise operations like *negation*or *exclusive or*. In these cases, it is necessary to re-establish the invariant by zeroing the unused
-high-order bits *a posteriori*. Let us write a function `normalize` to do this. We
-begin by letting `r` be the number of bits in use in the last integer of the
-array.
+لاحظ أن الثابت ([4.1](#x15-135012r1)) محترَم، لأن *العطف* و*الفصل* يحافظان على الأصفار عالية الرتبة غير المستعملة. أما العمليات البتية مثل *النفي (negation)* أو *الفصل الحصري (exclusive or)* فليس الأمر كذلك. وفي هذه الحالات، لا بد من إعادة إرساء الثابت بتصفير البتات عالية الرتبة غير المستعملة *بعديًّا (a posteriori)*. ولنكتب دالة `normalize` تفعل ذلك. نبدأ بجعل `r` عدد البتات المستعملة في العدد الصحيح الأخير من المصفوفة.
 
 ```ocaml
   let normalize v =
     let r = v.length mod bpi in
 ```
 
-If this number is not zero, we must zero out all bits of index `r` and higher. This can be
-implemented using a mask containing exactly `r` low-order set bits, that is,
-`1lslr-1`.
+فإذا لم يكن هذا العدد صفرًا، وجب تصفير جميع البتات ذات الرتبة `r` وما فوقها. ويمكن تنفيذ ذلك باستعمال قناع يحتوي على `r` بتة مضبوطة منخفضة الرتبة بالضبط، أي `1lslr-1`.
 
 ```ocaml
     if r > 0 then
@@ -415,10 +299,9 @@ implemented using a mask containing exactly `r` low-order set bits, that is,
       v.bits.(s) <- v.bits.(s) land (1 lsl r - 1)
 ```
 
-This completes the function `normalize`.
+وبهذا تكتمل الدالة `normalize`.
 
-We can easily derive from this a function `compl` that computes the bitwise
-negation of a bit vector, that is, the complement of the corresponding set.
+ويمكننا بسهولة أن نستخلص من هذا دالة `compl` تحسب النفي البتي لمتجه بتي، أي متمم المجموعة المقابلة.
 
 ```ocaml
   let compl v =
@@ -428,22 +311,16 @@ negation of a bit vector, that is, the complement of the corresponding set.
     r
 ```
 
-The functions `inter` and `compl` are summarized in program [22](#x15-139008r22) (see page [320](#x15-139008r22)).
-They have cost O(n) in time and space, where n is the size of the bit vectors
-concerned.
+الدالتان `inter` و`compl` ملخَّصتان في البرنامج [22](#x15-139008r22) (انظر الصفحة [320](#x15-139008r22)).
+وتكلفتهما O(n) في الزمن والمكان، حيث n حجم المتجهات البتية المعنية.
 
-Among other useful set-theoretic operations, we may also consider iteration over
-all elements. For a bit vector, this boils down to iterating over the set of indices for
-which the corresponding boolean is `true`. Such an iteration may be expressed as a
-function of the form:
+من بين العمليات الأخرى المفيدة المتعلقة بالمجموعات، يمكننا أيضًا النظر في التكرار على جميع العناصر. وبالنسبة لمتجه بتي، يتلخص هذا في التكرار على مجموعة الفهارس التي تكون فيها القيمة المنطقية المقابلة `true`. ويمكن التعبير عن تكرار كهذا بدالة من الشكل:
 
 ```ocaml
   val iteri_true : (int -> unit) -> t -> unit
 ```
 
-To implement this function, we iterate over the elements of the array using
-`Array.iteri`. For each element, we iterate over the set bits with a loop that
-successively tests each bit. We obtain the following code:
+لتنفيذ هذه الدالة، نكرّر على عناصر المصفوفة باستعمال `Array.iteri`. ولكل عنصر، نكرّر على البتات المضبوطة بحلقة تختبر كل بتة على التوالي. فنحصل على الشفرة الآتية:
 
 ```ocaml
   let iteri_true f v =
@@ -456,31 +333,17 @@ successively tests each bit. We obtain the following code:
       v.bits
 ```
 
-It is not necessary to consider the case of the final element of the array separately,
-because the invariant guarantees precisely that the unused bits are 0.
+ليس من الضروري معالجة حالة العنصر الأخير من المصفوفة على حدة، لأن الثابت يضمن بدقة أن البتات غير المستعملة قيمتها 0.
 
 >
 
-Although correct, this solution is relatively inefficient, because it successively tests
-*all*bits of the array. We would like the cost of the iteration to decrease if there are
-fewer set bits. In other words, we need an efficient means of iterating over the set bits
-of an integer.
+ومع أن هذا الحل صحيح، فهو قليل الفعالية نسبيًّا، لأنه يختبر *جميع* بتات المصفوفة على التوالي. ونريد أن تنخفض تكلفة التكرار كلما قلّت البتات المضبوطة. وبعبارة أخرى، نحتاج إلى وسيلة فعّالة للتكرار على البتات المضبوطة في عدد صحيح.
 
-As it so happens, the two’s-complement representation allows extracting the
-low-order set bit of an integer `x` easily by performing a *logical and*of `x` and `-x` (see
-exercise [4.5](#x15-152001r5)). This gives an efficient means of iterating over the set bits of
-an integer, by successively extracting and zeroing each set bit in increasing
-order.
+ومن حسن الحظ أن تمثيل المتمم الثنائي يتيح استخراج البتة المضبوطة منخفضة الرتبة في عدد صحيح `x` بسهولة بإجراء عملية *عطف منطقي* بين `x` و`-x` (انظر التمرين [4.5](#x15-152001r5)). وهذا يوفّر وسيلة فعّالة للتكرار على البتات المضبوطة في عدد صحيح، باستخراج كل بتة مضبوطة وتصفيرها على التوالي بترتيب متزايد.
 
-There remains, however, one difficulty: The expression `xland-x` does not return
-the *index* i of the low-order set bit in `x`, but instead returns 2i. We therefore need to
-calculate the base 2 logarithm of this value or, equivalently, the number of
-low-order 0s. For this, let us suppose that we are given a function `ntz`, for
-*number of trailing zeros*, that calculates the number of low-order 0s of an
-integer.
+غير أنه تبقى صعوبة واحدة: فالتعبير `xland-x` لا يعيد *الفهرس* i للبتة المضبوطة منخفضة الرتبة في `x`، بل يعيد 2i. ولذلك نحتاج إلى حساب اللوغاريتم ذي الأساس 2 لهذه القيمة، أو ما يكافئه، أي عدد الأصفار منخفضة الرتبة. ولهذا، لنفترض أن لدينا دالة `ntz`، اختصارًا لـ *number of trailing zeros*، تحسب عدد الأصفار منخفضة الرتبة في عدد صحيح.
 
-We may then rewrite the part of the code of `iteri_true` that examines the set
-bits of `ei` with the help of a recursive function `visit` instead of a `for` loop.
+ويمكننا عندئذ إعادة كتابة الجزء من شفرة `iteri_true` الذي يفحص البتات المضبوطة في `ei` بمساعدة دالة عودية `visit` بدلاً من حلقة `for`.
 
 ```ocaml
        let rec visit x =
@@ -493,26 +356,17 @@ bits of `ei` with the help of a recursive function `visit` instead of a `for` l
        visit ei
 ```
 
-The function `visit` ends as soon as its argument is 0, that is, when it does not contain
-any set bit. Otherwise, we extract the low-order set bit, `b`. We call `f` on the
-corresponding index `index+ntzb`, and then call `visit` again on `x-b`, which is `x` with
-the `b`-th bit zeroed out. The complete code of `iteri_true` is given in program [23](#x15-139055r23) (see
-page [324](#x15-139055r23)). The function `ntz` is the focus of exercise [4.6](#x15-152002r6).
+تنتهي الدالة `visit` بمجرد أن تصير وسيطها 0، أي عندما لا تحتوي على أي بتة مضبوطة. وإلا استخرجنا البتة المضبوطة منخفضة الرتبة، `b`. فنستدعي `f` على الفهرس المقابل `index+ntzb`، ثم نستدعي `visit` مرة أخرى على `x-b`، وهي `x` بعد تصفير البتة ذات الرتبة `b`. والشفرة الكاملة لـ `iteri_true` معطاة في البرنامج [23](#x15-139055r23) (انظر
+الصفحة [324](#x15-139055r23)). وتُخصص الدالة `ntz` للتمرين [4.6](#x15-152002r6).
 
-Finally, let us write a function `cardinal:t->int`, which calculates the number
-of set bits in the bit vector, that is, the cardinal of the set. It suffices to
-calculate the sum of the number of set bits in each element of the array. If
-we assume we are given a function `pop` of type `int->int` that calculates
-the number of set bits of an integer, then the function `cardinal` is easily
-obtained.
+أخيرًا، لنكتب دالة `cardinal:t->int`، تحسب عدد البتات المضبوطة في المتجه البتي، أي أصل المجموعة (cardinal). ويكفي حساب مجموع عدد البتات المضبوطة في كل عنصر من المصفوفة. وإذا افترضنا أن لدينا دالة `pop` من النوع `int->int` تحسب عدد البتات المضبوطة في عدد صحيح، أمكن الحصول على الدالة `cardinal` بسهولة.
 
 ```ocaml
   let cardinal v =
     Array.fold_left (fun n x -> n + pop x) 0 v.bits
 ```
 
-The function `pop` (short for *population count*) remains to be written. We can write it
-by extracting the bits one by one, again thanks to the expression `xland-x`:
+وتبقى الدالة `pop` (اختصارًا لـ *population count*) بحاجة إلى كتابة. ويمكننا كتابتها باستخراج البتات واحدة تلو الأخرى، مرة أخرى بفضل التعبير `xland-x`:
 
 ```ocaml
   let pop x =
@@ -521,34 +375,23 @@ by extracting the bits one by one, again thanks to the expression `xland-x`:
     count 0 x
 ```
 
-We can render this function more efficient by tabulating it (see exercise [4.12](#x15-152008r12)).
+ويمكننا جعل هذه الدالة أكثر فعالية بجدولتها (انظر التمرين [4.12](#x15-152008r12)).
 
-#### Other Operations on Bit Vectors
+#### عمليات أخرى على المتجهات البتية
 
-To be complete, a bit vector library should also provide other operations. On the one
-hand, it should provide the same operations that we use for arrays, like `append`, `sub`,
-`fill`, and `blit`. On the other hand, it should also offer arithmetic operations that
-interpret a bit vector as an integer of n bits, such as addition, shifts, and conversions
-to and from the different integer types of OCaml. Some of these operations are
-proposed in exercises [4.8](#x15-152004r8)–[4.11](#x15-152007r11).
+لتكتمل مكتبة المتجهات البتية، ينبغي أن توفر عمليات أخرى أيضًا. فمن جهة، ينبغي أن توفر العمليات نفسها التي نستعملها للمصفوفات، مثل `append` و`sub` و`fill` و`blit`. ومن جهة أخرى، ينبغي أن تقدّم كذلك عمليات حسابية تفسّر المتجه البتي كعدد صحيح من n بتة، مثل الجمع والإزاحات والتحويلات من وإلى الأنواع الصحيحة المختلفة في OCaml. ويُقترح بعض هذه العمليات في التمارين [4.8](#x15-152004r8)–[4.11](#x15-152007r11).
 
 >
 
-### 4.3 Ropes
+### 4.3 الحبال (ropes)
 
-This section presents the *rope*data structure. This data structure was originally
-introduced as an alternative to strings, to address the following issues:
+يعرض هذا القسم بنية معطيات *الحبل (rope)*. وقد أدخلت هذه البنية في الأصل بديلاً عن السلاسل النصية (strings)، لمعالجة المسائل الآتية:
 
-- Strings are not persistent; they are immutable in OCaml, but this is not
-       necessarily the case in other languages, like C for instance.
-- Strings are limited in size, especially when OCaml is used on a 32-bit
-       machine, where the limit is 224 − 5 characters.
-- Concatenation and substring extraction have a significant cost, particularly
-       in space, as they involve copying the contents of the underlying string.
+- السلاسل النصية ليست دائمة؛ فهي غير قابلة للتعديل في OCaml، لكن هذا ليس بالضرورة الحال في لغات أخرى، مثل C مثلاً.
+- السلاسل النصية محدودة الحجم، خصوصًا عند استعمال OCaml على جهاز 32 بتة، حيث الحد هو 224 − 5 حرفًا.
+- للدمج واستخراج السلسلة الجزئية تكلفة كبيرة، وخاصة في المكان، لأنهما يتضمنان نسخ محتوى السلسلة النصية الأساسية.
 
-To address these issues, the rope data structure draws on a simple idea: A rope is nothing
-but a binary tree whose leaves are (ordinary) strings and whose inner nodes should be
-interpreted as concatenations. A rope therefore corresponds to the following type:
+لمعالجة هذه المسائل، تستند بنية الحبل إلى فكرة بسيطة: الحبل ليس سوى شجرة ثنائية أوراقها سلاسل نصية (عادية) وينبغي تفسير عقدها الداخلية على أنها عمليات دمج. لذلك يقابل الحبل النوع الآتي:
 
 ```ocaml
   type t =
@@ -556,20 +399,9 @@ interpreted as concatenations. A rope therefore corresponds to the following typ
     | App of t * t
 ```
 
-For example, one possible value by which the string `"averylongstring"` may be
-represented is the following:
+مثلاً، إحدى القيم الممكنة التي يمكن أن تمثّل بها السلسلة النصية `"averylongstring"` هي الآتية:
 
-Two considerations lead us to refine the proposed type `t`. On the one hand,
-numerous algorithms require efficient access to the length of a rope, particularly to
-decide whether to descend along the left or the right subtree of an `App` node. It is
-therefore advisable to decorate each internal node with the length of the rope. On the
-other hand, it is important to share substrings between ropes themselves as
-well as with the ordinary strings used to construct the ropes. Hence, rather
-than having the `Str` node point to a complete OCaml string, we prefer to
-have it designate a substring of an OCaml string. A substring of a string
-s is represented by a triple (s,o,n), denoting s[o..o + n − 1], that is, the
-portion of s of length n starting at offset o. We thus obtain the following
-type:
+يدفعنا اعتباران إلى تنقيح النوع المقترح `t`. فمن جهة، تتطلب خوارزميات عديدة وصولاً فعّالاً إلى طول الحبل، خصوصًا لتقرير ما إذا كان ينبغي النزول عبر الشجرة الجزئية اليسرى أم اليمنى لعقدة `App`. لذلك يُستحسن توسيم كل عقدة داخلية بطول الحبل. ومن جهة أخرى، من المهم تقاسم السلاسل الجزئية بين الحبال نفسها وكذلك مع السلاسل النصية العادية المستعملة لبناء الحبال. ومن ثَمّ، بدلاً من أن تشير عقدة `Str` إلى سلسلة نصية كاملة في OCaml، نفضّل أن تدلّ على سلسلة جزئية من سلسلة نصية في OCaml. وتُمثَّل السلسلة الجزئية من سلسلة s بثلاثية (s,o,n)، تدل على s[o..o + n − 1]، أي الجزء من s الذي طوله n والبداية عند الإزاحة o. وهكذا نحصل على النوع الآتي:
 
 ```ocaml
   type t =
@@ -577,65 +409,47 @@ type:
     | App of t * t * int
 ```
 
-A node `App`(r1,r2,n) represents the concatenation of the two ropes r1 and r2, whose total
-length is n. We could also have stored the sizes of r1 and r2 in the node. However,
-retaining only the total size is more economical in terms of memory space, and there
-is no loss of efficiency in practice.
+تمثّل العقدة `App`(r1,r2,n) دمج الحبلين r1 وr2، وطولهما الإجمالي n. وكان يمكننا كذلك تخزين حجمي r1 وr2 في العقدة. غير أن الاحتفاظ بالحجم الإجمالي وحده أكثر اقتصادًا من حيث حيّز الذاكرة، ولا ضياع في الفعالية عمليًّا.
 
-#### Genericity
+#### العمومية (genericity)
 
-We notice that the notion of rope is not related to that of string. Instead of the
-type `string`, we could equally use arrays or lists of characters or, more generally still,
-sequences of values of a type other than that of characters. In fact, all we need is a
-data structure of *sequences*of a certain *type of characters*. We can then construct
-ropes whose leaves consist of these sequences.
+نلاحظ أن مفهوم الحبل لا يرتبط بمفهوم السلسلة النصية. فبدلاً من النوع `string`، يمكننا بالمثل استعمال مصفوفات أو قوائم من المحارف، أو، بصفة أعم، متتاليات من قيم نوع غير المحارف. بل إن كل ما نحتاجه هو بنية معطيات من *المتتاليات* لنوع معين من *المحارف*. ويمكننا عندئذ بناء حبال تتكون أوراقها من هذه المتتاليات.
 
-The resulting data structure has *the same signature*as that with which we started,
-namely, the signature of sequences for the same type of characters.
+ولبنية المعطيات الناتجة *التوقيعة نفسها* التي بدأنا بها، أي توقيعة المتتاليات لنوع المحارف نفسه.
 
-Program [24](#x15-142001r24) gives a minimal signature `STRING` for a data structure of strings. The
-abstract type `t` is that of strings, and the type `char`, that of their characters.
-This signature contains only the operations that are needed to implement
-the rope structure. They are compatible with those of the OCaml module
-`String`.
+يعطي البرنامج [24](#x15-142001r24) توقيعة دنيا `STRING` لبنية معطيات السلاسل النصية. النوع المجرّد `t` هو نوع السلاسل النصية، والنوع `char` هو نوع محارفها. ولا تحتوي هذه التوقيعة إلا على العمليات اللازمة لتنفيذ بنية الحبل. وهي متوافقة مع عمليات الوحدة `String` في OCaml.
 
 >
 
 >
 
-We introduce a signature `ROPE` for ropes in program [25](#x15-142014r25). This signature includes
-the module `S` of strings that will be the leaves of the ropes. The signature `ROPE`
-provides the same operations as those of strings, for the same type of characters,
-which can be translated as follows:
+نُعرّف توقيعة `ROPE` للحبال في البرنامج [25](#x15-142014r25). وتتضمن هذه التوقيعة الوحدة `S` للسلاسل النصية التي ستكون أوراق الحبال. وتوفّر التوقيعة `ROPE` العمليات نفسها التي توفّرها السلاسل النصية، لنوع المحارف نفسه، وهو ما يمكن ترجمته كما يلي:
 
 ```ocaml
   include STRING with type char = S.char
 ```
 
-Ropes are immutable. Update operations (`set`, etc.) return new ropes.
+الحبال غير قابلة للتعديل. وعمليات التحديث (`set` وغيرها) تعيد حبالاً جديدة.
 
-The rope structure is naturally implemented as a functor parametrized by a
-module `X` of signature `STRING`:
+تُنفَّذ بنية الحبل طبيعيًّا كدالّية محدِّدة الوسائط (functor) تُعامَل بوحدة `X` ذات التوقيعة `STRING`:
 
 ```ocaml
   module Make(X : STRING) : (ROPE with module S = X) = struct
 ```
 
-The module obtained by applying this functor has the signature `ROPEwithmoduleS=X`,
-which specifies that its module `S` is the module `X` passed as argument of the functor.
-The code thus begins by defining `S` to be equal to `X`:
+للوحدة الناتجة عن تطبيق هذه الدالّية المحدِّدة الوسائط التوقيعة `ROPEwithmoduleS=X`، التي تحدّد أن وحدتها `S` هي الوحدة `X` الممرَّرة وسيطًا للدالّية المحدِّدة الوسائط. ولذلك تبدأ الشفرة بتعريف `S` على أنها تساوي `X`:
 
 ```ocaml
   module S = X
 ```
 
-The type of characters of the rope is the same as that of strings:
+نوع محارف الحبل هو نوع محارف السلاسل النصية نفسه:
 
 ```ocaml
   type char = S.char
 ```
 
-The type of ropes is as presented earlier:
+ونوع الحبال كما عُرض سابقًا:
 
 ```ocaml
   type t =
@@ -643,20 +457,17 @@ The type of ropes is as presented earlier:
     | App of t * t * int
 ```
 
-We will enforce several invariants on this type. On the one hand, for every rope of the
-form `Str(s,o,n)`, we have the inequalities:
+سنفرض عدة ثوابت على هذا النوع. فمن جهة، لكل حبل من الشكل `Str(s,o,n)`، لدينا المتباينات:
 
 $$0 \le o, 0 \le n and o + n \le S.length s$$
 
-On the other hand, for every rope of the form `App(u,v,n)`, we have the
-inequalities:
+ومن جهة أخرى، لكل حبل من الشكل `App(u,v,n)`، لدينا المتباينات:
 
 $$0 < length u, 0 < length v and n = length u + length v$$
 
-#### Basic Operations
+#### العمليات الأساسية
 
-By definition of the type `t`, the length of a rope can be computed in constant
-time.
+بتعريف النوع `t`، يمكن حساب طول الحبل في زمن ثابت.
 
 ```ocaml
   let length = function
@@ -664,29 +475,25 @@ time.
     | App (_,_,n) -> n
 ```
 
-The construction of the empty rope is straightforward using the empty string:
+وبناء الحبل الفارغ مباشر باستعمال السلسلة النصية الفارغة:
 
 ```ocaml
   let empty =
     Str (S.empty, 0, 0)
 ```
 
-More generally, the rope corresponding to a string `s` is given by:
+وبصفة أعم، يُعطى الحبل المقابل لسلسلة نصية `s` بما يلي:
 
 ```ocaml
   let of_string s =
     Str (s, 0, S.length s)
 ```
 
-Importantly, the type `S.t` must itself be persistent in order to guarantee both the
-persistent nature of ropes and the correctness of rope operations. This is the case
-when `S.t` is the type `string`, as strings in OCaml are immutable.
+والأهم أنه يجب أن يكون النوع `S.t` نفسه دائمًا، لضمان كلٍّ من الطبيعة الدائمة للحبال وصحة عمليات الحبال. وهذا هو الحال عندما يكون `S.t` هو النوع `string`، إذ إن السلاسل النصية في OCaml غير قابلة للتعديل.
 
 >
 
-To access the i-th character of a rope, it suffices to go down the tree until the
-target leaf is reached. We assume that the index is valid. The recursive part of the
-operation is then written as follows:
+للوصول إلى المحرف ذي الرتبة i في حبل، يكفي النزول في الشجرة حتى بلوغ الورقة الهدف. ونفترض أن الفهرس صالح. ويُكتب الجزء العودي من العملية كما يلي:
 
 ```ocaml
   let rec unsafe_get t i = match t with
@@ -697,13 +504,9 @@ operation is then written as follows:
         if i < n1 then unsafe_get t1 i else unsafe_get t2 (i - n1)
 ```
 
-We see here the importance of being able to retrieve the size of `t1` in constant
-time. The complexity of this operation is therefore bound by the height of
-the tree. As we will see later, ropes can be balanced so as to minimize this
-height.
+نرى هنا أهمية القدرة على استرجاع حجم `t1` في زمن ثابت. لذلك يتحدد تعقيد هذه العملية بارتفاع الشجرة. وكما سنرى لاحقًا، يمكن موازنة الحبال لتقليل هذا الارتفاع.
 
-We define a function `get` that also checks whether the index is valid, as a wrapper
-around `unsafe_get`.
+نُعرّف دالة `get` تتحقق أيضًا من صلاحية الفهرس، كغلاف حول `unsafe_get`.
 
 ```ocaml
   let get t i =
@@ -711,49 +514,35 @@ around `unsafe_get`.
     unsafe_get t i
 ```
 
-These basic operations on ropes are presented together in program [26](#x15-143011r26) (see
-page [339](#x15-143011r26)).
+تُعرض هذه العمليات الأساسية على الحبال معًا في البرنامج [26](#x15-143011r26) (انظر
+الصفحة [339](#x15-143011r26)).
 
-#### Concatenation
+#### الدمج
 
-*A priori*, the concatenation of two ropes `t1` and `t2` is as simple as applying the
-constructor `App` and calculating the total length, that is:
+*مبدئيًّا (A priori)*، فإن دمج حبلين `t1` و`t2` بسيط بقدر تطبيق البانية `App` وحساب الطول الإجمالي، أي:
 
 ```ocaml
   let append t1 t2 =
     App (t1, t2, length t1 + length t2)
 ```
 
-We note that this operation thus takes constant time. However, iterated concatenations
-may cause the number of nodes, and hence the height of the tree, to increase rapidly,
-to the detriment of other operations.
+نلاحظ أن هذه العملية تستغرق إذن زمنًا ثابتًا. غير أن عمليات الدمج المتكررة قد تؤدي إلى تزايد سريع في عدد العقد، ومن ثَمّ في ارتفاع الشجرة، على حساب عمليات أخرى.
 
-Two ideas allow us to control the number of nodes and the height of the tree. The
-first idea consists in actually concatenating “small” leaves (i.e. short strings) when
-they are found side by side in the tree. We may choose, for example, to concatenate
-the leaves `s1` and `s2` in the three situations illustrated in figure [4.1](#possible-situations-with-adjacent-leaves). The first
-situation corresponds to the concatenation of a rope whose right branch is the
-small leaf `s1`, with another small leaf `s2`. The second corresponds to the
-concatenation of two small leaves, `s1` and `s2`. The third is the mirror image of the
-first.
+ثمة فكرتان تتيحان لنا التحكم في عدد العقد وارتفاع الشجرة. وتتمثل الفكرة الأولى في دمج الأوراق «الصغيرة» فعليًّا (أي السلاسل النصية القصيرة) عندما توجد متجاورة في الشجرة. ويمكننا أن نختار، مثلاً، دمج الورقتين `s1` و`s2` في الحالات الثلاث المبيَّنة في الشكل [4.1](#possible-situations-with-adjacent-leaves). وتقابل الحالة الأولى دمج حبل فرعه الأيمن هو الورقة الصغيرة `s1` مع ورقة صغيرة أخرى `s2`. وتقابل الثانية دمج ورقتين صغيرتين، `s1` و`s2`. أما الثالثة فهي الصورة المعكوسة للأولى.
 
 ![](/images/learn-ocaml/arrays-0-rope_append_small-mps-.webp){#possible-situations-with-adjacent-leaves}
 
-**Figure 4.1: Possible situations with adjacent leaves.**
+**الشكل 4.1: الحالات الممكنة مع الأوراق المتجاورة.**
 
-To determine whether the leaves are small enough to be concatenated, we use a
-constant:
+لتحديد ما إذا كانت الأوراق صغيرة بما يكفي لتُدمج، نستعمل ثابتًا:
 
 ```ocaml
   let small_length = 256
 ```
 
-The constant is arbitrary and should be chosen depending on the specific use of
-the rope structure. Exercise [4.15](#x15-153002r15) proposes making this constant a parameter of the
-functor.
+الثابت اعتباري وينبغي اختياره حسب الاستعمال المحدَّد لبنية الحبل. ويقترح التمرين [4.15](#x15-153002r15) جعل هذا الثابت وسيطًا للدالّية المحدِّدة الوسائط.
 
-To implement the concatenation of two leaves, we define the following general
-function that concatenates fragments of two strings, `s1` and `s2`:
+لتنفيذ دمج ورقتين، نُعرّف الدالة العامة الآتية التي تدمج أجزاء من سلسلتين نصيتين، `s1` و`s2`:
 
 ```ocaml
   let append_string s1 ofs1 len1 s2 ofs2 len2 =
@@ -761,10 +550,9 @@ function that concatenates fragments of two strings, `s1` and `s2`:
          0, len1 + len2)
 ```
 
-We now give the code of the function `append`, which implements the concatenation
-of two ropes `t1` and `t2`.
+نعطي الآن شفرة الدالة `append`، التي تنفّذ دمج حبلين `t1` و`t2`.
 
-We begin by considering the case in which one of the two ropes is empty.
+نبدأ بالنظر في الحالة التي يكون فيها أحد الحبلين فارغًا.
 
 ```ocaml
   let append t1 t2 = match t1, t2 with
@@ -772,9 +560,7 @@ We begin by considering the case in which one of the two ropes is empty.
         t
 ```
 
-Next, we consider the three possible cases in which two small leaves are found side by
-side. The simplest case is that in which `t1` and `t2` are the leaves in question. We then
-use the function `append_string`:
+بعد ذلك، ننظر في الحالات الثلاث الممكنة التي توجد فيها ورقتان صغيرتان متجاورتين. وأبسط حالة هي التي تكون فيها `t1` و`t2` هما الورقتان المعنيتان. فنستعمل عندئذ الدالة `append_string`:
 
 ```ocaml
     | Str (s1, ofs1, len1), Str (s2, ofs2, len2)
@@ -782,7 +568,7 @@ use the function `append_string`:
         append_string s1 ofs1 len1 s2 ofs2 len2
 ```
 
-The two other cases are similar:
+والحالتان الأخريان مماثلتان:
 
 ```ocaml
     | App (t1, Str (s1, ofs1, len1), _), Str (s2, ofs2, len2)
@@ -791,8 +577,7 @@ The two other cases are similar:
       when ... -> ...
 ```
 
-Finally, the general case is simply the application of the constructor `App`, as we discussed
-above:
+وأخيرًا، الحالة العامة هي ببساطة تطبيق البانية `App`، كما ناقشنا سابقًا:
 
 ```ocaml
     | t1, t2 ->
@@ -801,38 +586,23 @@ above:
 
 >
 
-The entire code of `append` is given in program [27](#x15-144027r27).
+الشفرة الكاملة لـ `append` معطاة في البرنامج [27](#x15-144027r27).
 
-In the rest of the section, we will use the infix operator `++` to denote rope
-concatenation.
+في ما تبقى من القسم، سنستعمل المعامل المُداخل (infix) `++` للدلالة على دمج الحبال.
 
 ```ocaml
    let (++) = append
 ```
 
-The second idea that allows us to control the height of ropes consists in
-*rebalancing*the underlying trees. We could implement balancing incrementally as the
-rope is constructed, using for example the same technique as for AVL trees (see
-chapter [5](https://usr.lmf.cnrs.fr/lpo/mainch5.html#sets-and-dictionaries)). It would then be necessary to modify the last line of the function `append`,
-to invoke a balancing function instead of the constructor `App`. We may equally
-conceive of an *a posteriori*rebalancing implemented either selectively, when the
-height of the tree becomes too large, or explicitly, when the user requests it.
-Exercises [4.17](#x15-153004r17)–[4.20](#x15-153016r20) propose different ways of implementing an *a posteriori*
-rebalancing.
+تتضمن الفكرة الثانية التي تتيح لنا التحكم في ارتفاع الحبال *إعادة موازنة (rebalancing)* الشجرات الأساسية. ويمكننا تنفيذ الموازنة تدريجيًّا أثناء بناء الحبل، باستعمال مثلاً التقنية نفسها التي تُستعمل لشجرات AVL (انظر الفصل [5](https://usr.lmf.cnrs.fr/lpo/mainch5.html#sets-and-dictionaries)). وسيلزم عندئذ تعديل السطر الأخير من الدالة `append` لاستدعاء دالة موازنة بدلاً من البانية `App`. ويمكننا بالمثل تصوّر إعادة موازنة *بعدية (a posteriori)* تُنفَّذ إما انتقائيًّا، عندما يصبح ارتفاع الشجرة كبيرًا جدًّا، أو صراحةً، عندما يطلب المستعمل ذلك. وتقترح التمارين [4.17](#x15-153004r17)–[4.20](#x15-153016r20) طرقًا مختلفة لتنفيذ إعادة موازنة *بعدية*.
 
-#### Subrope Extraction
+#### استخراج حبل فرعي
 
-The next operation consists in extracting a rope fragment, defined by an offset and a
-length. Extraction consists in retaining only those parts of the rope that are within
-this fragment, possibly reconstructing `Str` nodes that partially overlap it. It is in fact
-preferable to specify the fragment to be extracted as extending from an offset `start`
-(inclusive) to the offset `stop` (exclusive). We assume that this is a valid and
-non-empty fragment, that is:
+تتعلق العملية التالية باستخراج جزء من حبل، محدَّد بإزاحة وطول. ويقوم الاستخراج على الاحتفاظ فقط بأجزاء الحبل الواقعة ضمن هذا الجزء، مع إعادة بناء عقد `Str` التي تتداخل معه جزئيًّا عند الحاجة. بل إن الأفضل تحديد الجزء المراد استخراجه بأنه يمتد من الإزاحة `start` (شاملة) إلى الإزاحة `stop` (غير شاملة). ونفترض أن هذا جزء صالح وغير فارغ، أي:
 
 $$0 \le start < stop \le length t.$$
 
-The extraction function, `mksub`, begins by considering the particular case in which
-the fragment is the whole rope.
+تبدأ دالة الاستخراج، `mksub`، بالنظر في الحالة الخاصة التي يكون فيها الجزء هو الحبل كله.
 
 ```ocaml
   let rec mksub start stop t =
@@ -840,12 +610,9 @@ the fragment is the whole rope.
       t
 ```
 
-This allows, to the extent possible, the sharing of subropes between the result of the
-extraction and the initial rope. Without this special case, these subropes would all be
-reconstructed.
+وهذا يتيح، قدر الإمكان، تقاسم الحبال الفرعية بين ناتج الاستخراج والحبل الأولي. ولولا هذه الحالة الخاصة، لأُعيد بناء هذه الحبال الفرعية كلها.
 
-In the general case, we examine the shape of the rope `t`. If `t` is a leaf, it suffices to
-modify the fragment specification:
+وفي الحالة العامة، نفحص شكل الحبل `t`. فإذا كانت `t` ورقة، كفى تعديل مواصفة الجزء:
 
 ```ocaml
     else match t with
@@ -853,10 +620,7 @@ modify the fragment specification:
           Str (s, ofs+start, stop-start)
 ```
 
-Note that this is a constant-time operation, which does not call `S.sub`, and that it shares
-`s` between the initial rope and the result of the extraction. For a rope of form
-`App`, there are three cases to be considered. The first is when the fragment is
-completely contained in the left subrope. It then suffices to make a recursive call.
+لاحظ أن هذه عملية ذات زمن ثابت، لا تستدعي `S.sub`، وأنها تتقاسم `s` بين الحبل الأولي وناتج الاستخراج. أما الحبل من الشكل `App`، فهناك ثلاث حالات ينبغي النظر فيها. الأولى هي عندما يكون الجزء محتوى بالكامل في الحبل الفرعي الأيسر. ويكفي عندئذ إجراء استدعاء عودي.
 
 ```ocaml
       | App (t1, t2, _) ->
@@ -864,28 +628,21 @@ completely contained in the left subrope. It then suffices to make a recursive c
           if stop <= n1 then mksub start stop t1
 ```
 
-Symmetrically, the fragment may be completely contained in the right subrope.
+وبالتناظر، قد يكون الجزء محتوى بالكامل في الحبل الفرعي الأيمن.
 
 ```ocaml
           else if start >= n1 then mksub (start-n1) (stop-n1) t2
 ```
 
-Finally, the fragment may overlap both `t1` and `t2`. It suffices then to concatenate the
-fragment of `t1` with that of `t2`.
+وأخيرًا، قد يتداخل الجزء مع كلٍّ من `t1` و`t2`. ويكفي عندئذ دمج جزء `t1` مع جزء `t2`.
 
 ```ocaml
           else mksub start n1 t1 ++ mksub 0 (stop-n1) t2
 ```
 
-Note that neither of these fragments is empty, which respects the invariant of
-`mksub`. Note also that `t1` or `t2` may be completely contained in the result, in
-which case they will be shared by virtue of the first two lines of the function
-`mksub`.
+لاحظ أن أياً من هذين الجزأين ليس فارغًا، وهو ما يحترم ثابت `mksub`. ولاحظ أيضًا أن `t1` أو `t2` قد يكون محتوى بالكامل في الناتج، وفي هذه الحالة سيُتقاسمان بحكم السطرين الأولين من الدالة `mksub`.
 
-Next, we define an extraction function `sub` specified by an offset `ofs` and a length
-`len` (similar to `String.sub` or `Array.sub`). It verifies the validity of the arguments,
-and then handles the special case of an empty fragment or calls the recursive function
-`mksub`.
+بعد ذلك، نُعرّف دالة استخراج `sub` محدَّدة بإزاحة `ofs` وطول `len` (مشابهة لـ `String.sub` أو `Array.sub`). وهي تتحقق من صلاحية الوسائط، ثم تعالج الحالة الخاصة بجزء فارغ أو تستدعي الدالة العودية `mksub`.
 
 ```ocaml
   let sub t ofs len =
@@ -894,21 +651,17 @@ and then handles the special case of an empty fragment or calls the recursive fu
     if len = 0 then empty else mksub ofs stop t
 ```
 
-The entire code is given in program [28](#x15-145022r28).
+الشفرة الكاملة معطاة في البرنامج [28](#x15-145022r28).
 
 >
 
-#### Update Operations
+#### عمليات التحديث
 
-We now consider several operations to insert or delete characters in a rope. Since
-ropes are persistent, these operations do not mutate them, but instead return new
-ropes.
+ننظر الآن في عدة عمليات لإدراج المحارف أو حذفها في حبل. ولما كانت الحبال دائمة، فإن هذه العمليات لا تعدّلها في مكانها، بل تعيد حبالاً جديدة.
 
 >
 
-Let us consider for example the operation `set`, which inserts the character `c` at
-offset `i` in a rope `t`. We begin by verifying that the offset `i` is valid, that is,
-0 ≤ `i` < `length t`.
+لننظر مثلاً في العملية `set`، التي تُدرج المحرف `c` عند الإزاحة `i` في حبل `t`. نبدأ بالتحقق من أن الإزاحة `i` صالحة، أي 0 ≤ `i` < `length t`.
 
 ```ocaml
   let set t i c =
@@ -916,40 +669,26 @@ offset `i` in a rope `t`. We begin by verifying that the offset `i` is valid, th
     if i < 0 || i >= n then invalid_arg "set";
 ```
 
-Next, it suffices to extract the subropes to the left and right of the offset `i`, and use
-concatenation to insert the character `c`.
+بعد ذلك، يكفي استخراج الحبلين الفرعيين الواقعين إلى يسار الإزاحة `i` وإلى يمينها، واستعمال الدمج لإدراج المحرف `c`.
 
 ```ocaml
     sub t 0 i ++ make 1 c ++ sub t (i + 1) (n - i - 1)
 ```
 
-We note, however, that this solution is not optimal, since it performs two recursive
-traversals of the rope where one would have sufficed. Exercise [4.16](#x15-153003r16) proposes an
-improvement in this regard.
+غير أننا نلاحظ أن هذا الحل ليس أمثل، لأنه يُجري اجتيازين عوديين للحبل حيث كان يكفي اجتياز واحد. ويقترح التمرين [4.16](#x15-153003r16) تحسينًا في هذا الشأن.
 
-We may similarly define operations `insert` (which inserts a rope within another at
-a given offset), `insert_char` (which inserts a character into a rope), and `delete_char`
-(which deletes the i-th character of a rope). The entire code of the four operations is
-given in program **??** (see previous page). This concludes our discussion of the functor
-defining ropes.
+ويمكننا بالمثل تعريف العمليات `insert` (التي تُدرج حبلاً داخل حبل آخر عند إزاحة معطاة)، و`insert_char` (التي تُدرج محرفًا في حبل)، و`delete_char` (التي تحذف المحرف ذا الرتبة i من حبل). والشفرة الكاملة للعمليات الأربع معطاة في البرنامج **??** (انظر الصفحة السابقة). وبهذا ننهي مناقشتنا للدالّية المحدِّدة الوسائط التي تعرّف الحبال.
 
-#### Application: Text Editor
+#### تطبيق: محرر نصوص
 
-Ropes are an ideal structure for text editors, in particular to support very long
-texts, which are rarely handled well by text editors, including the best-known
-ones.
+تعدّ الحبال بنية مثالية لمحررات النصوص، خصوصًا لدعم النصوص الطويلة جدًّا، التي قلّما تُعالَج جيدًا في محررات النصوص، بما فيها أشهرها.
 
-Rather than using a single rope to represent the text to be edited in its entirety,
-we will use our functor for greater flexibility. Handling lines of text using a single rope
-is awkward: Line breaks have to be found, or their offsets recorded in a table that
- 
- 
-must be maintained in sync with the text. Instead, we can use ropes whose elements
-are characters to represent lines, and a rope whose elements are lines to represent the
-entire text.
+فبدلاً من استعمال حبل واحد لتمثيل النص المراد تحريره كاملاً، سنستعمل الدالّية المحدِّدة الوسائط لمزيد من المرونة. فالتعامل مع أسطر النص باستعمال حبل واحد أمر عسير: إذ يجب إيجاد فواصل الأسطر، أو تسجيل إزاحاتها في جدول
 
-We therefore begin by constructing a rope structure for lines. The argument of the
-functor `Make` is based on the OCaml module `String`:
+
+يجب إبقاؤه متزامنًا مع النص. وبدلاً من ذلك، يمكننا استعمال حبال عناصرها محارف لتمثيل الأسطر، وحبل عناصره أسطر لتمثيل النص كله.
+
+لذلك نبدأ ببناء بنية حبل للأسطر. وتستند وسيطة الدالّية المحدِّدة الوسائط `Make` إلى الوحدة `String` في OCaml:
 
 ```ocaml
   module Str = struct
@@ -961,18 +700,13 @@ functor `Make` is based on the OCaml module `String`:
   end
 ```
 
-Note that we use `String.unsafe_get` rather than `String.get`, because every access to
-the characters of a string contained in a rope is guaranteed to be valid. We can thus
-avoid unnecessary checks. Ropes are obtained by applying the functor `Make` as
-follows:
+لاحظ أننا نستعمل `String.unsafe_get` بدلاً من `String.get`، لأن كل وصول إلى محارف سلسلة نصية موجودة في حبل مضمون أنه صالح. ويمكننا بذلك تفادي فحوص لا لزوم لها. وتُحصل الحبال بتطبيق الدالّية المحدِّدة الوسائط `Make` كما يلي:
 
 ```ocaml
   module Line = Make(Str)
 ```
 
-Next, we construct another rope structure for the whole text, whose “characters”
-are lines. For this, it suffices to apply the functor `Make` once again, this time using
-arrays for the leaves of our ropes.
+بعد ذلك، نُنشئ بنية حبل أخرى للنص كله، «محارفها» هي الأسطر. ويكفي لهذا تطبيق الدالّية المحدِّدة الوسائط `Make` مرة أخرى، باستعمال مصفوفات هذه المرة لأوراق حبالنا.
 
 ```ocaml
   module Text = Make(struct
@@ -987,19 +721,15 @@ arrays for the leaves of our ropes.
                      end)
 ```
 
-We see here the usefulness of defining ropes as a functor, which allows us to apply it twice
-on different arguments.
+نرى هنا فائدة تعريف الحبال كدالّية محدِّدة الوسائط، وهو ما يتيح لنا تطبيقها مرتين على وسيطين مختلفين.
 
-Let us assume, for simplicity’s sake, that the text manipulated by the editor is
-stored in a reference containing a rope of type `Text.t`.
+ولنفترض، تبسيطًا، أن النص الذي يعالجه المحرر مخزَّن في مرجع يحتوي على حبل من النوع `Text.t`.
 
 ```ocaml
   let text = ref ...
 ```
 
-To insert a character `c` at offset `ofs` in line `l` of the text, it suffices to retrieve the line
-with `Text.get`, to modify it using `Line.insert`, and finally to update the text using
-`Text.set`:
+لإدراج محرف `c` عند الإزاحة `ofs` في السطر `l` من النص، يكفي استرجاع السطر بواسطة `Text.get`، وتعديله باستعمال `Line.insert`، ثم تحديث النص أخيرًا باستعمال `Text.set`:
 
 ```ocaml
   let insert_char l ofs c =
@@ -1008,7 +738,7 @@ with `Text.get`, to modify it using `Line.insert`, and finally to update the tex
     text := Text.set !text l line’
 ```
 
-Similarly, to delete a character:
+وبالمثل، لحذف محرف:
 
 ```ocaml
   let delete_char l ofs =
@@ -1017,9 +747,7 @@ Similarly, to delete a character:
     text := Text.set !text l line’
 ```
 
-Finally, to insert a new line at offset `ofs` in line `l` of the text, it suffices to cut the line `l`
-at offset `ofs` with two calls to `Line.sub`, then insert the prefix in line `l` using
-`Text.insert`, and to place the suffix in line `l+1` using `Text.set`:
+وأخيرًا، لإدراج سطر جديد عند الإزاحة `ofs` في السطر `l` من النص، يكفي قطع السطر `l` عند الإزاحة `ofs` باستدعاءين لـ `Line.sub`، ثم إدراج البادئة في السطر `l` باستعمال `Text.insert`، ووضع اللاحقة في السطر `l+1` باستعمال `Text.set`:
 
 ```ocaml
   let insert_newline l ofs =
@@ -1030,13 +758,11 @@ at offset `ofs` with two calls to `Line.sub`, then insert the prefix in line `l`
     text := Text.set r (l + 1) suffix
 ```
 
-Note that it is not necessary to “shift” all the lines: we use insertion in the rope of lines,
-just as we used insertion in the ropes of characters in `insert_char`.
+لاحظ أنه ليس من الضروري «إزاحة» جميع الأسطر: فنحن نستعمل الإدراج في حبل الأسطر، كما استعملنا الإدراج في حبال المحارف في `insert_char`.
 
-#### Remark
+#### ملاحظة
 
-Just as concatenation operations are suspended in ropes, extraction operations too
-may be suspended. The resulting OCaml type would be as follows:
+وكما أن عمليات الدمج معلَّقة (suspended) في الحبال، فإن عمليات الاستخراج أيضًا قد تكون معلَّقة. وسيكون نوع OCaml الناتج كما يلي:
 
 ```ocaml
   type t =
@@ -1045,11 +771,9 @@ may be suspended. The resulting OCaml type would be as follows:
     | App of t * t * int
 ```
 
-Everything then depends on the strategy used to choose between performing the
-concatenation and subrope operations immediately or suspending them.
+ويعتمد كل شيء بعد ذلك على الاستراتيجية المستعملة للاختيار بين إجراء عمليتي الدمج والحبل الفرعي فورًا أو تعليقهما.
 
-The extraction operation may, in fact, be suspended “for free,” by applying the
-functor `Make` repeatedly to its own result, as follows:
+بل يمكن تعليق عملية الاستخراج «مجانًا»، بتطبيق الدالّية المحدِّدة الوسائط `Make` مرارًا على ناتجها هي، كما يلي:
 
 ```ocaml
   module R1 = Make(Str)
@@ -1057,11 +781,7 @@ functor `Make` repeatedly to its own result, as follows:
   ...
 ```
 
-In the ropes of the module `R2`, the leaves are ropes of `R1`. Hence, the function
-`R1.sub` is only called when the leaf becomes sufficiently small. As long as this
-is not the case, the operation remains suspended. With a small abuse of
-notation, the types `R1.t` and `R2.t` could be said to correspond to the following
-definitions:
+في حبال الوحدة `R2`، تكون الأوراق حبالاً من `R1`. ومن ثَمّ، لا تُستدعى الدالة `R1.sub` إلا عندما تصبح الورقة صغيرة بما يكفي. وما دام الأمر ليس كذلك، تبقى العملية معلَّقة. وبقليل من التسامح في الترميز، يمكن القول إن النوعين `R1.t` و`R2.t` يقابلان التعريفين الآتيين:
 
 ```ocaml
   type R1.t =
@@ -1072,35 +792,22 @@ definitions:
     | R2.App of R2.t * R2.t * int
 ```
 
-It is clear that the node `R2.Str` suspends the extraction on a value of type `R1.t`. By
-iterating this process, we obtain a type equivalent to the preceding type
-`t`.
+ومن الواضح أن العقدة `R2.Str` تعلّق الاستخراج على قيمة من النوع `R1.t`. وبتكرار هذه العملية، نحصل على نوع مكافئ للنوع السابق `t`.
 
 >
 
-### 4.4 Persistent Arrays
+### 4.4 المصفوفات الدائمة (persistent arrays)
 
-This section presents a *persistent array*data structure. Throughout this
-section, we use the term “array” in its usual sense, to designate arrays that
-may be modified in-place. In all other cases, we use the term “persistent
-array.”
+يعرض هذا القسم بنية معطيات *المصفوفة الدائمة (persistent array)*. ونستعمل في هذا القسم كله لفظ «مصفوفة» بمعناه المعتاد، للدلالة على المصفوفات التي يمكن تعديلها في مكانها. وفي جميع الحالات الأخرى، نستعمل لفظ «المصفوفة الدائمة».
 
-The signature of persistent arrays is given in program [30](#x15-149007r30). This is exactly the same
-signature as for arrays, except that the function `set` returns a new persistent array,
- 
- 
-without changing its argument.
+تُعطى توقيعة المصفوفات الدائمة في البرنامج [30](#x15-149007r30). وهي نفس توقيعة المصفوفات تمامًا، باستثناء أن الدالة `set` تعيد مصفوفة دائمة جديدة،
 
-A desirable property of persistent arrays is that they provide operations `set` and
-`get` with the same efficiency—O(1)—as arrays, at least as long as their persistent
-nature is not used. However, we accept that there is a price to be paid for access to
-previous versions of the array. This section presents a data structure that has this
-property.
 
-The basic idea consists in using an array for the most recent version of the
-persistent array, together with extra information to allow us to go back to
-previous versions. To this end, we introduce the following two mutually recursive
-types:
+دون تغيير وسيطها.
+
+من الخصائص المرغوبة في المصفوفات الدائمة أنها توفّر العمليتين `set` و`get` بالفعالية نفسها — O(1) — التي توفّرها المصفوفات، على الأقل ما دامت طبيعتها الدائمة غير مستعملة. غير أننا نقبل أن تكون هناك تكلفة مقابل الوصول إلى إصدارات سابقة من المصفوفة. ويعرض هذا القسم بنية معطيات تمتلك هذه الخاصة.
+
+تتضمن الفكرة الأساسية استعمال مصفوفة لأحدث إصدار من المصفوفة الدائمة، إلى جانب معلومات إضافية تتيح لنا العودة إلى الإصدارات السابقة. وتحقيقًا لهذه الغاية، نُعرّف النوعين العوديين المتقابلين الآتيين:
 
 ```ocaml
   type ’a t = ’a data ref
@@ -1109,17 +816,11 @@ types:
     | Diff of int * ’a * ’a t
 ```
 
-The type `’at` is that of persistent arrays. It involves a reference to data of type `’adata`,
-which indicates its nature: either an immediate value `Arr` a, where a is an array,
-or an indirection `Diff` (i,v,p), representing a persistent array elementwise
-identical to the persistent array p, except at index i where the value v is to be
-found.
+النوع `’at` هو نوع المصفوفات الدائمة. وهو يتضمن مرجعًا إلى معطيات من النوع `’adata`، تدلّ على طبيعتها: إما قيمة مباشرة `Arr` a، حيث a مصفوفة، وإما إحالة (indirection) `Diff` (i,v,p)، تمثّل مصفوفة دائمة مطابقة عنصرًا بعنصر للمصفوفة الدائمة p، باستثناء الفهرس i حيث توجد القيمة v.
 
 >
 
-We illustrate the use of this data structure with an example. Consider the
-following series of declarations that define a persistent array `pa0`, then two others, `pa1`
-and `pa2`, obtained by two successive updates:
+نوضّح استعمال بنية المعطيات هذه بمثال. خُذ سلسلة التعريفات الآتية التي تعرّف مصفوفة دائمة `pa0`، ثم مصفوفتين أخريين، `pa1` و`pa2`، نحصل عليهما بتحديثين متتاليين:
 
 ```ocaml
   let pa0 = init 7 (fun i -> Char.chr (Char.code ’a’ + i))
@@ -1127,39 +828,25 @@ and `pa2`, obtained by two successive updates:
   let pa2 = set pa1 2 ’i’
 ```
 
-The situation after these three declarations is the following:
+تكون الحالة بعد هذه التعريفات الثلاثة كما يلي:
 
-The last constructed persistent array, `pa2`, is a reference containing the value
-`Arr[|’a’;’h’;’i’;’d’;’e’;’f’;’g’|]`. The persistent array `pa1` is a reference
-containing `Diff(2,’c’,pa2)`, and the array `pa0`, a reference containing
-`Diff(1,’b’,pa1)`. Let us assume now that we construct a fourth array `pa3` as
-follows:
+آخر مصفوفة دائمة بُنيت، `pa2`، هي مرجع يحتوي على القيمة `Arr[|’a’;’h’;’i’;’d’;’e’;’f’;’g’|]`. والمصفوفة الدائمة `pa1` مرجع يحتوي على `Diff(2,’c’,pa2)`، والمصفوفة `pa0` مرجع يحتوي على `Diff(1,’b’,pa1)`. ولنفترض الآن أننا نبني مصفوفة رابعة `pa3` كما يلي:
 
 ```ocaml
   let pa3 = set pa1 2 ’j’
 ```
 
-We proceed in two steps: We begin by making sure that the persistent array on which we
-perform the operation, `pa1`, is of the form `Arra`. For this, we invert the chain of `Diff`
-nodes that leads from `pa1` to the array `a`. We then have the following situation:
+نعمل على خطوتين: نبدأ بالتأكد من أن المصفوفة الدائمة التي نُجري عليها العملية، `pa1`، من الشكل `Arra`. ولهذا نعكس سلسلة عقد `Diff` التي تؤدي من `pa1` إلى المصفوفة `a`. فتصبح لدينا الحالة الآتية:
 
-In the second step, we create a new reference for `pa3`, containing `Arra`, where `a` has been
-modified to contain `’j’` in the second cell. We finish by modifying the reference `pa1`
-so that it now contains `Diff(2,’c’,pa3)`. The final situation is therefore as
-follows:
+وفي الخطوة الثانية، نُنشئ مرجعًا جديدًا لـ `pa3`، يحتوي على `Arra`، حيث عُدّلت `a` لتحتوي على `’j’` في الخلية الثانية. وننتهي بتعديل المرجع `pa1` بحيث يحتوي الآن على `Diff(2,’c’,pa3)`. وتكون الحالة النهائية إذن كما يلي:
 
-We will now describe the code of the different operations on persistent arrays. The
-creation of a new persistent array is straightforward:
+سنصف الآن شفرة العمليات المختلفة على المصفوفات الدائمة. وإنشاء مصفوفة دائمة جديدة مباشر:
 
 ```ocaml
   let init n f = ref (Arr (Array.init n f))
 ```
 
-For all other operations, we need a function `reroot` to invert a chain of `Diff` nodes so as
-to ensure that a persistent array `pa` is of the form `Arr` `a`. We write it as a recursive
-function `reroot:’at->’aarray` that ensures this inversion of pointers and returns the
-array a. If `pa` is a reference to a value of form `Arra`, it suffices to return
-`a`.
+بالنسبة لجميع العمليات الأخرى، نحتاج إلى دالة `reroot` لعكس سلسلة عقد `Diff` بما يضمن أن المصفوفة الدائمة `pa` من الشكل `Arr` `a`. ونكتبها كدالة عودية `reroot:’at->’aarray` تضمن هذا العكس للمؤشرات وتعيد المصفوفة a. فإذا كان `pa` مرجعًا لقيمة من الشكل `Arra`، كفى إعادة `a`.
 
 ```ocaml
   let rec reroot pa = match !pa with
@@ -1167,18 +854,14 @@ array a. If `pa` is a reference to a value of form `Arra`, it suffices to return
         a
 ```
 
-If, however, `pa` is a reference to a value of form `Diff(i,v,pa’)`, we begin by calling
-`reroot` recursively on the persistent array `pa’`.
+أما إذا كان `pa` مرجعًا لقيمة من الشكل `Diff(i,v,pa’)`، فإننا نبدأ باستدعاء `reroot` عوديًّا على المصفوفة الدائمة `pa’`.
 
 ```ocaml
     | Diff (i, v, pa’) ->
         let a = reroot pa’ in
 ```
 
-It is then guaranteed that `pa’` is a reference containing `Arra`. It now suffices to exchange
-the roles of `pa’` and `pa`, that is, to store the value `Arr` `a` in `pa`, after having modified
-`a` in place, and to store a value `Diff` in `pa’`, indicating the previous value contained in
-`a`.
+وعندئذ يُضمن أن `pa’` مرجع يحتوي على `Arra`. ويكفي الآن تبادل دوري `pa’` و`pa`، أي تخزين القيمة `Arr` `a` في `pa`، بعد تعديل `a` في مكانها، وتخزين قيمة `Diff` في `pa’` تدلّ على القيمة السابقة التي كانت في `a`.
 
 ```ocaml
         let old = a.(i) in
@@ -1188,32 +871,27 @@ the roles of `pa’` and `pa`, that is, to store the value `Arr` `a` in `pa`, 
         a
 ```
 
-The definitions of the `length` and `get` operations are straightforward if we use their
-equivalents in the `Array` module together with the `reroot` function.
+تعريفا العمليتين `length` و`get` مباشران إذا استعملنا مكافئيهما في الوحدة `Array` مع الدالة `reroot`.
 
 ```ocaml
   let length pa = Array.length (reroot pa)
   let get pa i = (reroot pa).(i)
 ```
 
-The operation `iteri` is implemented by using the function `Array.iteri`, which
-applies a function to all the elements of an array and to their indices.
+وتُنفَّذ العملية `iteri` باستعمال الدالة `Array.iteri`، التي تطبّق دالة على جميع عناصر مصفوفة وعلى فهارسها.
 
 ```ocaml
   let iteri f pa = Array.iteri f (reroot pa)
 ```
 
-The function `set` remains to be written. It constructs a new persistent array based
-on an existing persistent array `pa`, an index `i` and value `v`. We begin by calling `reroot`
-on `pa`.
+وتبقى الدالة `set` بحاجة إلى كتابة. وهي تبني مصفوفة دائمة جديدة انطلاقًا من مصفوفة دائمة موجودة `pa`، وفهرس `i`، وقيمة `v`. ونبدأ باستدعاء `reroot` على `pa`.
 
 ```ocaml
   let set pa i v =
     let a = reroot pa in
 ```
 
-We then proceed as we did in case of the function `reroot`, except that we
-construct a *new*reference for the result:
+ثم نتابع كما فعلنا في حالة الدالة `reroot`، لكننا نُنشئ مرجعًا *جديدًا* للناتج:
 
 ```ocaml
     let old = a.(i) in
@@ -1225,30 +903,19 @@ construct a *new*reference for the result:
 
 >
 
-Note that at the end of this operation, the persistent array `pa` is one indirection
-away from the array `Arra`. The entire code of persistent arrays is given in
-program [31](#x15-149053r31).
+لاحظ أنه في نهاية هذه العملية، تكون المصفوفة الدائمة `pa` على إحالة واحدة من المصفوفة `Arra`. والشفرة الكاملة للمصفوفات الدائمة معطاة في البرنامج [31](#x15-149053r31).
 
 >
 
-### 4.5 Exercises
+### 4.5 التمارين
 
-#### Resizeable Arrays
+#### المصفوفات القابلة لتغيير الحجم
 
-**4.1**Modify the function `create` so that it takes an argument `increment` of type
-`intoption` specifying a resizing strategy. If this argument is `None`, the function
-`resize` applies the preceding strategy (doubling the size of the array). If, on the other
-hand, `increment` is `Somen`, then `resize` increases the size of the array by `n` elements
-(or more if necessary).
+**4.1**عدّل الدالة `create` بحيث تأخذ وسيطًا `increment` من النوع `intoption` يحدّد استراتيجية تغيير الحجم. فإذا كان هذا الوسيط `None`، طبّقت الدالة `resize` الاستراتيجية السابقة (مضاعفة حجم المصفوفة). أما إذا كان `increment` مساويًا `Somen`، فإن `resize` يزيد حجم المصفوفة بمقدار `n` عنصرًا (أو أكثر عند الحاجة).
 
-**4.2**We may sometimes wish to reduce the size of the array, for example when it is
-large compared with the number of elements actually in use or if it occupies a lot of
-memory. Modify the function `resize` so that it halves the size of the array when the
-number of elements is less than a quarter of the size of the array. Show that the
-amortized complexity remains O(1).
+**4.2**قد نرغب أحيانًا في إنقاص حجم المصفوفة، مثلاً عندما تكون كبيرة بالمقارنة مع عدد العناصر المستعملة فعلاً أو إذا كانت تشغل ذاكرة كثيرة. عدّل الدالة `resize` بحيث تنصّف حجم المصفوفة عندما يكون عدد العناصر أقل من ربع حجم المصفوفة. وبيّن أن التعقيد المطفأ يبقى O(1).
 
-**4.3**Use a resizeable array to propose a stack structure with the following
-interface:
+**4.3**استعمل مصفوفة قابلة لتغيير الحجم لاقتراح بنية مكدس (stack) بالواجهة الآتية:
 
 ```ocaml
   module type Stack = sig
@@ -1260,51 +927,33 @@ interface:
   end
 ```
 
-The call to `makend` creates a stack containing `n` copies of the value `d`. The function `pop`
-raises an exception when the stack is empty.
+يُنشئ الاستدعاء `makend` مكدسًا يحتوي على `n` نسخة من القيمة `d`. وترفع الدالة `pop` استثناءً عندما يكون المكدس فارغًا.
 
-**4.4**In the context of the preceding exercise, show that n calls to the operations
-`push` and `pop` on a given queue have total cost O(n).
+**4.4**في سياق التمرين السابق، بيّن أن n استدعاءً للعمليتين `push` و`pop` على طابور معطى له تكلفة إجمالية O(n).
 
-#### Bit Vectors
+#### المتجهات البتية
 
-**4.5**Justify the fact that the expression `xland-x` extracts the low-order set bit of `x`
-for a non-zero integer `x`.
+**4.5**برّر كون تعبير `xland-x` يستخرج البتة المضبوطة منخفضة الرتبة في `x` من أجل عدد صحيح غير معدوم `x`.
 
-**4.6**Write a function `ntz:int->int` that calculates the number of low-order zero
-bits of its argument. Hint: You can tabulate this function over a byte and then use
-binary search.
+**4.6**اكتب دالة `ntz:int->int` تحسب عدد البتات الصفرية منخفضة الرتبة في وسيطها. إرشاد: يمكنك جدولة هذه الدالة على بايت ثم استعمال البحث الثنائي.
 
-**4.7**Write a function `blit_bits` that copies bits i to i + n− 1 of an integer x to the
-position j of a bit vector v, that is, so that we have for every index k in
-v:
+**4.7**اكتب دالة `blit_bits` تنسخ البتات من i إلى i + n− 1 من عدد صحيح x إلى الموضع j من متجه بتي v، أي بحيث يكون لدينا لكل فهرس k في v:
 
 $$\begin{cases} (blit_bits x i n v j)k = xi + k-j if j \le k < j + n \\ vk otherwise \end{cases}$$
 
-We will assume that the intervals i..i + n− 1 and j..j + n− 1 are valid for x and v,
-respectively.
+سنفترض أن المجالين i..i + n− 1 وj..j + n− 1 صالحان لـ x وv، على الترتيب.
 
-**4.8**Using the previous exercise, derive a function `blit` that copies the bits
-i1..i1 + n − 1 of a bit vector v1 into a bit vector v2 at position i2.
+**4.8**باستعمال التمرين السابق، استخلص دالة `blit` تنسخ البتات i1..i1 + n − 1 من متجه بتي v1 إلى متجه بتي v2 عند الموضع i2.
 
-**4.9**Using the preceding function `blit`, write a function `sub` that extracts the bits
-i..i + n − 1 of an array in the form of a new bit vector of size n.
+**4.9**باستعمال الدالة السابقة `blit`، اكتب دالة `sub` تستخرج البتات i..i + n − 1 من مصفوفة في شكل متجه بتي جديد بحجم n.
 
-**4.10**Still using `blit`, write a function `append` that implements the concatenation of
-two bit vectors.
+**4.10**باستعمال `blit` أيضًا، اكتب دالة `append` تنفّذ دمج متجهين بتين.
 
-**4.11**Write a function `fill` that assigns a constant value (0 or 1, given in the form
-of a boolean) to bits i..i + n − 1 of an array. You can reuse the function `blit_bits`
-with x equal to 0 or −1.
+**4.11**اكتب دالة `fill` تُسند قيمة ثابتة (0 أو 1، معطاة في شكل قيمة منطقية) إلى البتات i..i + n − 1 من مصفوفة. ويمكنك إعادة استعمال الدالة `blit_bits` مع x تساوي 0 أو −1.
 
-**4.12** Write a function `pop:int->int` that counts the number of set bits of an
-integer by tabulating its values for all 8-bit integers. This function will be four times
-faster than the one given in section [*4.2*](#bit-vectors) *Bit Vectors*.
+**4.12** اكتب دالة `pop:int->int` تحسب عدد البتات المضبوطة في عدد صحيح بجدولة قيمه لجميع الأعداد الصحيحة ذات 8 بتات. وستكون هذه الدالة أسرع بأربع مرات من الدالة المعطاة في القسم [*4.2*](#bit-vectors) *المتجهات البتية*.
 
-**4.13**The idea of a bit vector may be exploited to represent a subset of {0,1,…,30}
-(respectively, {0,1,…,62} in a 64-bit architecture) by a single integer. This is,
-moreover, a persistent data structure. Use this idea to write a module of the following
-form:
+**4.13**يمكن استغلال فكرة المتجه البتي لتمثيل مجموعة جزئية من {0,1,…,30} (أو على التوالي {0,1,…,62} في معمارية 64 بتة) بعدد صحيح واحد. وهذا، علاوة على ذلك، بنية معطيات دائمة. استعمل هذه الفكرة لكتابة وحدة بالشكل الآتي:
 
 ```ocaml
   module Bitset : Set.S type elt = int
@@ -1312,92 +961,70 @@ form:
 
 #### Ropes
 
-**4.14**Add a function to the functor `Make` that allows you to iterate over all leaves of
-a rope in infix order:
+**4.14**أضف إلى الدالّية المحدِّدة الوسائط `Make` دالة تتيح التكرار على جميع أوراق حبل بترتيب داخلي (infix):
 
 `iter_leaves:(S.t->int->int->unit)->t->unit`
 
-Each leaf is a string fragment corresponding to the three arguments of the constructor
-`Str`.
+وكل ورقة جزء من سلسلة نصية يقابل الوسائط الثلاث للبانية `Str`.
 
-**4.15**Add the parameter `small_length` as an argument of the functor
-`Make`.
+**4.15**أضف المعامل `small_length` كوسيط للدالّية المحدِّدة الوسائط `Make`.
 
-**4.16**Rewrite the functions `set`, `insert`, and `delete_char` so that they perform
-only one recursive traversal of the rope.
+**4.16**أعد كتابة الدوال `set` و`insert` و`delete_char` بحيث تُجري اجتيازًا عوديًّا واحدًا فقط للحبل.
 
-**4.17**In this and the following two exercises, we propose methods to rebalance ropes
-*a posteriori*, that is, functions of the type:
+**4.17**في هذا التمرين والتمرينين التاليين، نقترح طرقًا لإعادة موازنة الحبال *بعديًّا (a posteriori)*، أي دوالًّ من النوع:
 
 ```ocaml
   val balance : t -> t
 ```
 
-A simple method consists in constructing the list of all the leaves of the rope in infix
-order and then constructing a complete binary tree based on this list. Write a
-function `balance` following this idea.
+تتضمن الطريقة البسيطة بناء قائمة بجميع أوراق الحبل بترتيب داخلي ثم بناء شجرة ثنائية كاملة انطلاقًا من هذه القائمة. اكتب دالة `balance` وفقًا لهذه الفكرة.
 
-**4.18**The balancing algorithm proposed in the above exercise minimizes the height
-of the rope (as a tree) but does not take into consideration the length of the different
-leaves. If a leaf contains a large number of characters, it would be worthwhile to bring
-it closer to the root.
+**4.18**تُقِلّ خوارزمية الموازنة المقترحة في التمرين السابق ارتفاع الحبل (كشجرة) لكنها لا تراعي طول الأوراق المختلفة. فإذا احتوت ورقة على عدد كبير من المحارف، كان من المفيد تقريبها من الجذر.
 
-The article introducing ropes [[5](https://usr.lmf.cnrs.fr/lpo/mainli3.html#Xropes)] proposes the following balancing method: Use an
-array `a` of ropes, verifying the following invariant: if the rope `a`.(i) is non-empty, its
-length belongs to the interval [Fi,Fi+1[, where Fi is the i-th term of the
-Fibonacci series, defined by F0 = F1 = 1 and Fn+2 = Fn+1 + Fn for all
+يقترح المقال الذي قدّم الحبال [[5](https://usr.lmf.cnrs.fr/lpo/mainli3.html#Xropes)] طريقة الموازنة الآتية: استعمل مصفوفة `a` من الحبال، تحقق الثابت الآتي: إذا كان الحبل `a`.(i) غير فارغ، فإن طوله ينتمي إلى المجال [Fi,Fi+1[، حيث Fi هو الحد رقم i في متتالية فيبوناتشي، المعرَّفة بـ F0 = F1 = 1 وFn+2 = Fn+1 + Fn من أجل كل
 n ≥ 0.
 
-Initially, all the ropes in `a` are empty. We then successively insert in `a` every leaf of
-the rope to be balanced, in infix order, in the following manner, starting from i = 2:
+في البداية، تكون جميع الحبال في `a` فارغة. ثم نُدرج على التوالي في `a` كل ورقة من أوراق الحبل المراد موازنته، بترتيب داخلي، بالطريقة الآتية، بدءًا من i = 2:
 
-1. Let r be the rope obtained by concatenating the rope to be inserted with
+1. لتكن r الحبل الناتج عن دمج الحبل المراد إدراجه مع
        a.(i).
-2. If the length of r is in [Fi,Fi+1[, assign r to a.(i) and then stop.
-3. Otherwise, assign the empty rope to a.(i), increase i, and go back to step 1
-       with r as the rope to be inserted.
+2. إذا كان طول r في [Fi,Fi+1[، أسنِد r إلى a.(i) ثم توقف.
+3. وإلا، أسنِد الحبل الفارغ إلى a.(i)، وزِد i، وعُد إلى الخطوة 1
+       مع r كحبل مراد إدراجه.
 
-Once all leaves are inserted, the result is the concatenation of all the ropes in `a`. Write a
-function `balance` that implements this algorithm.
+وبعد إدراج جميع الأوراق، يكون الناتج هو دمج جميع الحبال في `a`. اكتب دالة `balance` تنفّذ هذه الخوارزمية.
 
-**4.19**Let r be the rope obtained by the algorithm described in the preceding
-exercise, n its length, and h its height, where the height of a rope is defined
-by h(`Str` _) = 0 and h(`App`(r1,r2, _)) = 1 + max(h(r1),h(r2)). Show that
-n ≥ Fh+1. (Hint: Show that h(`a`.(i)) ≤ i − 2 for every i.) From this, deduce that
-the average distance of a character to the root of the rope r is less than or
-equal to log ϕ(n) + K for a certain constant K, where ϕ is the golden ratio
+**4.19**لتكن r الحبل الناتج عن الخوارزمية الموصوفة في التمرين السابق، وn طوله، وh ارتفاعه، حيث يُعرَّف ارتفاع الحبل بـ h(`Str` _) = 0 وh(`App`(r1,r2, _)) = 1 + max(h(r1),h(r2)). بيّن أن
+n ≥ Fh+1. (إرشاد: بيّن أن h(`a`.(i)) ≤ i − 2 من أجل كل i.) واستنتج من ذلك أن
+متوسط مسافة محرف إلى جذر الحبل r أصغر من أو
+يساوي log ϕ(n) + K من أجل ثابت معين K، حيث ϕ هي النسبة الذهبية
 (1 + )∕2.
 
-**4.20**This exercise presents an optimal strategy to rebalance a rope c0, known as
-the Garsia-Wachs algorithm. The algorithm acts on a list of ropes q equal to
-⟨q0,q1,…,qm⟩, as follows:
+**4.20**يعرض هذا التمرين استراتيجية مثلى لإعادة موازنة حبل c0، تُعرف بخوارزمية غارسيا-فاخس (Garsia-Wachs). وتعمل الخوارزمية على قائمة حبال q تساوي
+⟨q0,q1,…,qm⟩، كما يلي:
 
-1. Initially, the list q is the list of leaves of c0, in infix order.
-2. As long as the list q contains at least two elements,
-  
-  determine the smallest index i, if it exists, such that length qi  ≤
-              length qi+1; otherwise let i = m;
-3. remove qi−1 and qi from the list q and form their concatenation c;
-4. determine  the  largest  index  j,  if  it  exists,  such  that  j  <  i and
-            length qj−1 ≥ length c; otherwise let j = 0;
-5. insert c in the list q just after qj−1.
+1. في البداية، تكون القائمة q هي قائمة أوراق c0، بترتيب داخلي.
+2. ما دامت القائمة q تحتوي على عنصرين على الأقل،
 
-Let c1 be the unique element left in q. This rope is optimal, but its leaves are
-     not in the same order as in c0. The result is the rope c2 that has the same leaves
-     as c0 and c1, in the same order as in c0, and at the same depth as in
+  حدِّد أصغر فهرس i، إن وُجد، بحيث يكون length qi  ≤
+              length qi+1؛ وإلا فلتكن i = m؛
+3. احذف qi−1 وqi من القائمة q وكوِّن دمجهما c؛
+4. حدِّد  أكبر  فهرس  j،  إن  وُجد،  بحيث  يكون  j  <  i  و
+            length qj−1 ≥ length c؛ وإلا فلتكن j = 0؛
+5. أدرِج c في القائمة q مباشرة بعد qj−1.
+
+ولتكن c1 العنصر الوحيد المتبقي في q. هذا الحبل أمثل، لكن أوراقه ليست بالترتيب نفسه الذي في c0. والناتج هو الحبل c2 الذي له الأوراق نفسها التي لـ c0 وc1، بالترتيب نفسه الذي في c0، وعلى العمق نفسه الذي في
      c1.
 
-Write a function `balance` that implements this algorithm. For more details on this
-algorithm, consult *The Art of Computer Programming* [[15](https://usr.lmf.cnrs.fr/lpo/mainli3.html#XKnuthV3), vol. 3, sec. 6.2.2].
+اكتب دالة `balance` تنفّذ هذه الخوارزمية. ولمزيد من التفاصيل عن هذه
+الخوارزمية، راجع *The Art of Computer Programming* [[15](https://usr.lmf.cnrs.fr/lpo/mainli3.html#XKnuthV3), vol. 3, sec. 6.2.2].
 
-#### Persistent Arrays
+#### المصفوفات الدائمة
 
-**4.21**You may have noticed that the code of `reroot` and of `set` unnecessarily
-recreates the value `Arra`. Modify the two operations to avoid this.
+**4.21**ربما لاحظت أن شفرة `reroot` و`set` تعيدان إنشاء القيمة `Arra` دون داعٍ. عدّل العمليتين لتفادي ذلك.
 
-**4.22**Simplify the function `set` in the case of a call `setpaiv`, where the index `i`
-already maps to `v` in `pa`.
+**4.22**بسّط الدالة `set` في حالة استدعاء `setpaiv`، حيث يكون الفهرس `i` مسندًا بالفعل إلى `v` في `pa`.
 
-**4.23**The recursive call in the function `reroot` is not a tail call. This can create
-problems if a persistent array is the result of a large number of modifications. Rewrite
-the function `reroot` so that it contains only tail-recursive calls.
+**4.23**الاستدعاء العودي في الدالة `reroot` ليس استدعاءً ذيليًّا (tail call). وقد يخلق ذلك
+مشكلات إذا كانت المصفوفة الدائمة ناتجة عن عدد كبير من التعديلات. أعد كتابة
+الدالة `reroot` بحيث لا تحتوي إلا على استدعاءات عودية ذيلية.

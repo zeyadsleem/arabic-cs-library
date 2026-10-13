@@ -1,107 +1,87 @@
 ---
-title: "OCaml Concepts: A Closer Look"
-lang: en
+title: "مفاهيم OCaml"
+lang: ar
 ---
 
-## 3. OCaml Concepts: A Closer Look
+## 3. مفاهيم OCaml: نظرة عن قرب
 
-What do you do if your program is ill-typed or consumes too many resources (memory
-or time)? To make the right diagnosis, it is necessary to understand the functioning of
-the compiler and the code it produces.
+ما الذي تفعله إذا كان برنامجك سيئ الأنواع (ill-typed) أو يستهلك موارد كثيرة جدًّا (ذاكرةً أو وقتًا)؟ لتشخيص المشكلة تشخيصًا صحيحًا، لا بد من فهم كيفية عمل المترجم (compiler) والشيفرة التي ينتجها.
 
-In this chapter, we address problems related to type-checking, memory use, and
-execution time.
+نتناول في هذا الفصل مسائل تتعلق بالتحقق من الأنواع (type-checking)، واستخدام الذاكرة، ووقت التنفيذ.
 
-### 3.1 Type-Checking Algorithm
+### 3.1 خوارزمية التحقق من الأنواع (type-checking)
 
-While the compiler automatically infers the types of all values defined in a program, it
-may nevertheless be useful for programmers to have at least an intuitive
-understanding of the typing rules of OCaml. This would help them understand any
-error messages that may arise.
+على الرغم من أن المترجم يستنتج تلقائيًّا أنواع جميع القيم المعرَّفة في البرنامج، فقد يكون من المفيد للمبرمجين أن يمتلكوا على الأقل فهمًا حدسيًّا لقواعد الأنواع في OCaml. فهذا يساعدهم على فهم رسائل الخطأ التي قد تظهر.
 
-To compute the type of an expression, it suffices to traverse its definition from left
-to right, beginning with the most generic type possible, `’a`, and accumulating type
-constraints.
+لحساب نوع تعبير ما، يكفي أن نجتاز تعريفه من اليسار إلى اليمين، بدءًا من النوع الأكثر عمومية ممكن، `’a`، مع تجميع قيود الأنواع.
 
-Consider, for example, the following function definition:
+لنتأمل، على سبيل المثال، تعريف الدالة التالي:
 
 ```ocaml
   let f x y = if x y then [] else [y + 1]
 ```
 
-We begin by rewriting this definition as follows:
+نبدأ بإعادة كتابة هذا التعريف على النحو التالي:
 
 ```ocaml
   let f = fun x -> fun y -> if x y then [] else [y + 1]
 ```
 
-Next, we let:
+بعد ذلك، لنفترض:
 
 ```ocaml
   val f : ’a
 ```
 
-Since `f` is an expression of the form `funx->e1`, we deduce that `’a` must be the type of a
-function, `’a1->’a2`:
+بما أن `f` تعبير من الشكل `funx->e1`، نستنتج أن `’a` يجب أن يكون نوع دالة، هو `’a1->’a2`:
 
 ```ocaml
   val f : ’a1 -> ’a2
 ```
 
-Similarly, `e1` is a function of the form `funy->e2`, so that `’a2` is equal to a type
-`’b1->’b2`:
+وبالمثل، فإن `e1` دالة من الشكل `funy->e2`، ومن ثمَّ فإن `’a2` يساوي نوعًا من الشكل `’b1->’b2`:
 
 ```ocaml
   val f : ’a1 -> ’b1 -> ’b2
 ```
 
-We now extract the type constraints on the variables `’a1`, `’b1`, and `’b2` originating from
-the expression `e2`, which is equal to:
+نستخرج الآن قيود الأنواع المفروضة على المتغيرات `’a1` و`’b1` و`’b2` والناشئة عن التعبير `e2`، الذي يساوي:
 
 ```ocaml
   if x y then [] else [y + 1]
 ```
 
-From the function application `xy`, we deduce that `x` is a function. In other words, `’a1` is
-equal to a type `’c1->’c2`. We therefore get:
+من تطبيق الدالة `xy`، نستنتج أن `x` دالة. وبعبارة أخرى، فإن `’a1` يساوي نوعًا من الشكل `’c1->’c2`. وعليه نحصل على:
 
 ```ocaml
   val f : (’c1 -> ’c2) -> ’b1 -> ’b2
 ```
 
-Next, since `y` is passed as argument to `x`, we deduce that the variable `’c1` is equal to `’b1`,
-so that the type of `f` is:
+بعد ذلك، بما أن `y` يُمرَّر وسيطًا إلى `x`، نستنتج أن المتغير `’c1` يساوي `’b1`، بحيث يصبح نوع `f`:
 
 ```ocaml
   val f : (’b1 -> ’c2) -> ’b1 -> ’b2
 ```
 
-Furthermore, since `xy` is used as the condition in an `if` construct, we deduce that `’c2` is
-equal to `bool`:
+علاوة على ذلك، بما أن `xy` يُستخدم شرطًا في بنية `if`، نستنتج أن `’c2` يساوي `bool`:
 
 ```ocaml
   val f : (’b1 -> bool) -> ’b1 -> ’b2
 ```
 
-The first branch of the `if` returns the empty list `[]`. Therefore, `’b2` is equal to
-`’dlist`:
+يُرجع الفرع الأول من `if` القائمة الفارغة `[]`. وعليه، فإن `’b2` يساوي `’dlist`:
 
 ```ocaml
   val f : (’b1 -> bool) -> ’b1 -> ’d list
 ```
 
-Finally, the second branch `[y+1]` provides the last two constraints. From the addition
-`y+1`, we deduce that `y` is of type `int`. The list `[y+1]` therefore has the type `intlist`,
-and the variable `’d` is equal to `int`. The complete type of the function `f` is
-therefore:
+أخيرًا، يوفّر الفرع الثاني `[y+1]` القيدين الأخيرين. من عملية الجمع `y+1`، نستنتج أن `y` من النوع `int`. وعليه فإن القائمة `[y+1]` من النوع `intlist`، والمتغير `’d` يساوي `int`. ومن ثمَّ فإن النوع الكامل للدالة `f` هو:
 
 ```ocaml
   val f : (int -> bool) -> int -> int list
 ```
 
-Let us now study the case of an ill-typed function. The function `g` below takes
-two arguments, `x` and `y`. The type inference algorithm detects the following
-error:
+لندرس الآن حالة دالة سيئة الأنواع. تأخذ الدالة `g` أدناه وسيطين، هما `x` و`y`. وتكتشف خوارزمية استنتاج الأنواع (type inference) الخطأ التالي:
 
 ```ocaml
   # let g x y = if x y then [x] else [y] ;;
@@ -110,78 +90,51 @@ error:
          The type variable ’a occurs inside ’a -> bool
 ```
 
-The initial steps in the typing of `g` are the same as those in case of `f`. Thus,
-having scrutinized the expression `xy`, we deduce that `g` has the following
-type:
+الخطوات الأولية في تحديد نوع `g` هي نفسها في حالة `f`. وهكذا، بعد فحص التعبير `xy`، نستنتج أن `g` له النوع التالي:
 
 ```ocaml
   val g : (’b1 -> bool) -> ’b1 -> ’b2
 ```
 
-The first branch of the `if` returns the list `[x]`. Therefore, the variable `’b2` must be equal
-to `(’b1->bool)list`. Similarly, the second branch returns the list `[y]`. So `’b2` must
-be of type `’b1list`. Therefore, for `g` to be well typed, the types `(’b1->bool)list` and
-`’b1list` must be equal. This would require the equation of types `’b1=’b1->bool` to
-have a solution, which is not possible in OCaml (unless we enable the option
-`-rectypes` of the compiler or interpreter). We now understand the above error
- 
- 
-message: It indicates that the variable `y` is of type `’a`, whereas it should have type
-`’a->bool`, which is not possible because the variable `’a` appears within the type
-`’a->bool`.
+يُرجع الفرع الأول من `if` القائمة `[x]`. وعليه، يجب أن يساوي المتغير `’b2` النوع `(’b1->bool)list`. وبالمثل، يُرجع الفرع الثاني القائمة `[y]`. لذا يجب أن يكون `’b2` من النوع `’b1list`. وعليه، لكي تكون `g` جيدة الأنواع، يجب أن يتساوى النوعان `(’b1->bool)list` و`’b1list`. وهذا يستلزم أن تكون لمعادلة الأنواع `’b1=’b1->bool` حلٌّ، وهو أمر غير ممكن في OCaml (ما لم نُمكّن الخيار `-rectypes` في المترجم أو المفسّر). نفهم الآن رسالة الخطأ أعلاه: فهي تشير إلى أن المتغير `y` من النوع `’a`، بينما يجب أن يكون من النوع `’a->bool`، وهو أمر غير ممكن لأن المتغير `’a` يظهر داخل النوع `’a->bool`.
 
-In general, to determine the type of a program, or understand its typing errors, it
-is necessary to know the type constraints imposed by the constructs of the language.
-Here we present a (non-exhaustive) list of these constraints.
+بشكل عام، لتحديد نوع برنامج، أو لفهم أخطاء الأنواع فيه، لا بد من معرفة قيود الأنواع التي تفرضها بنى اللغة. نقدّم هنا قائمة (غير شاملة) بهذه القيود.
 
-#### If-then-else
+#### إذا-فإن-وإلا (If-then-else)
 
-In a conditional `ife1thene2elsee3`, the expression `e1` must be of type `bool`,
-and the expressions `e2` and `e3` must be of the same type, whatever that
-may be. The type of the conditional is that of `e2` (and therefore also that of
-`e3`).
+في الشرط `ife1thene2elsee3`، يجب أن يكون التعبير `e1` من النوع `bool`، ويجب أن يكون التعبيران `e2` و`e3` من النوع نفسه، أيًّا كان. ونوع الشرط هو نوع `e2` (ومن ثمَّ أيضًا نوع `e3`).
 
-#### If-then
+#### إذا-فإن (If-then)
 
-A conditional expression `ife1thene2` (without the `else` branch) has type `unit`. The
-expression `e1` must be of type `bool` and `e2` of type `unit`.
+التعبير الشرطي `ife1thene2` (من دون فرع `else`) من النوع `unit`. ويجب أن يكون التعبير `e1` من النوع `bool` و`e2` من النوع `unit`.
 
-#### While
+#### حلقة while (While)
 
-In a loop `whilee1doe2done`, the expression `e1` must be of type `bool` and `e2` of type
-`unit`. The `while` loop is of type `unit`.
+في الحلقة `whilee1doe2done`، يجب أن يكون التعبير `e1` من النوع `bool` و`e2` من النوع `unit`. وحلقة `while` من النوع `unit`.
 
-#### For
+#### حلقة for (For)
 
-In a loop `fori=e1toe2doe3done`, the expressions `e1` and `e2` must be of type `int` and
-the expression `e3` of type `unit`. The `for` loop is of type `unit`.
+في الحلقة `fori=e1toe2doe3done`، يجب أن يكون التعبيران `e1` و`e2` من النوع `int` والتعبير `e3` من النوع `unit`. وحلقة `for` من النوع `unit`.
 
-#### Sequence
+#### التتابع (Sequence)
 
-In a sequence `e1;e2`, the expression `e1` must be of type `unit` while `e2` may be of any
-type. The type of `e2` gives the type of the sequence. If `e1` is not of type `unit`, we may
-write `let_=e1ine2` or `ignoree1;e2`.
+في التتابع `e1;e2`، يجب أن يكون التعبير `e1` من النوع `unit` بينما قد يكون `e2` من أي نوع. ونوع `e2` هو الذي يحدد نوع التتابع. وإذا لم يكن `e1` من النوع `unit`، يمكننا كتابة `let_=e1ine2` أو `ignoree1;e2`.
 
-#### Declaration
+#### التعريف (Declaration)
 
-In a *local*declaration `letp=e1ine2`, the pattern `p` and the expression `e1` must be of
-the same type. The expression `e2` may be of any type. This is also the type of the
-declaration. In a *global*declaration `letp=e`, the type of `p` must be that of
-`e`.
+في التعريف *المحلي* `letp=e1ine2`، يجب أن يكون النمط `p` والتعبير `e1` من النوع نفسه. وقد يكون التعبير `e2` من أي نوع. وهذا أيضًا هو نوع التعريف. وفي التعريف *العالمي* `letp=e`، يجب أن يكون نوع `p` مطابقًا لنوع `e`.
 
-#### Function
+#### الدالة (Function)
 
-A function of the form `functionp->e` or `funp->e` is of type `t1->t2`, where `t1` is the
-type of the pattern `p` and `t2` is the type of the expression `e`.
+الدالة من الشكل `functionp->e` أو `funp->e` من النوع `t1->t2`، حيث `t1` هو نوع النمط `p` و`t2` هو نوع التعبير `e`.
 
-#### Application
+#### التطبيق (Application)
 
-The application `e1e2` requires that `e1` be of type `t1->t2` and that `e2` be of type `t1`.
-The type of the result of the application is `t2`.
+يتطلب التطبيق `e1e2` أن يكون `e1` من النوع `t1->t2` وأن يكون `e2` من النوع `t1`. ونوع نتيجة التطبيق هو `t2`.
 
-#### Pattern Matching
+#### المطابقة (Pattern Matching)
 
-Consider the pattern matching construct:
+لنتأمل بنية المطابقة (pattern matching):
 
 ```ocaml
   match e with
@@ -190,14 +143,11 @@ Consider the pattern matching construct:
    | pk when bk -> ek
 ```
 
-The associated constraints are that the expressions `e1`, …, `ek` must all have the same type,
-and that the expressions `b1`, …, `bk` must all be of type `bool`. The patterns `p1`, …, `pk`
-must all have the same type as `e`. The global type of this construct is that of the
-expressions `e1`, …, `ek`.
+القيود المرتبطة هي أن جميع التعبيرات `e1`، …، `ek` يجب أن تكون من النوع نفسه، وأن جميع التعبيرات `b1`، …، `bk` يجب أن تكون من النوع `bool`. ويجب أن تكون جميع الأنماط `p1`، …، `pk` من النوع نفسه الذي عليه `e`. والنوع الكلي لهذه البنية هو نوع التعبيرات `e1`، …، `ek`.
 
-#### Exception
+#### الاستثناء (Exception)
 
-Consider a `try-with` block of the form:
+لنتأمل كتلة `try-with` من الشكل:
 
 ```ocaml
   try
@@ -208,113 +158,54 @@ Consider a `try-with` block of the form:
    | pk -> ek
 ```
 
-Here, the expressions `e`, `e1`, …, `ek` must all be of the same type. The patterns `p1`, …, `pk`
-must designate exceptions (of the predefined type `exn`). The type of the `try-with`
-block is that of the expression `e`.
+هنا، يجب أن تكون جميع التعبيرات `e`، `e1`، …، `ek` من النوع نفسه. ويجب أن تشير الأنماط `p1`، …، `pk` إلى استثناءات (من النوع المعرَّف مسبقًا `exn`). ونوع كتلة `try-with` هو نوع التعبير `e`.
 
-### 3.2 Runtime Model
+### 3.2 نموذج وقت التشغيل (Runtime Model)
 
-As a rule, to make the best use of a programming language, it helps to understand its
-runtime model. OCaml is no exception in this regard. By runtime model, we
-mean the time (see the next section) and space complexity of the different
-constructs of the language. Even if we can often ignore these complexities by
-remaining at a higher level of abstraction, it is worthwhile to understand
-them.
+كقاعدة عامة، للاستفادة المثلى من لغة برمجة ما، من المفيد فهم نموذج وقت التشغيل (runtime model) الخاص بها. وOCaml ليست استثناءً في هذا الشأن. ونعني بنموذج وقت التشغيل التعقيد الزمني (انظر القسم التالي) والتعقيد المكاني لمختلف بنى اللغة. وحتى إن كان بإمكاننا غالبًا تجاهل هذه التعقيدات بالبقاء عند مستوى أعلى من التجريد، فمن الجدير بالجهد فهمها.
 
-#### Value Representation
+#### تمثيل القيم (Value Representation)
 
-We begin by explaining the memory representations of OCaml values. An OCaml
-value occupies exactly one memory word (32 or 64 bits, depending on the
-architecture). If we consider this word as an integer, we may distinguish two cases,
-depending on whether the integer is even or odd:
+نبدأ بشرح تمثيلات الذاكرة لقيم OCaml. تشغل قيمة OCaml كلمة ذاكرة واحدة بالضبط (32 أو 64 بت، حسب المعمارية). وإذا اعتبرنا هذه الكلمة عددًا صحيحًا، أمكننا التمييز بين حالتين، حسب كون العدد زوجيًّا أو فرديًّا:
 
-- if it is an odd integer 2n + 1, we interpret it as the integer value n;
-- if it is an even integer, we interpret it as a pointer.
+- إذا كان عددًا صحيحًا فرديًّا 2n + 1، فإننا نفسّره على أنه القيمة الصحيحة n؛
+- وإذا كان عددًا صحيحًا زوجيًّا، فإننا نفسّره على أنه مؤشر (pointer).
 
-In short, an OCaml value is either an integer or a pointer. If it is an integer, it can
-represent a value of type `int`, a character, a boolean, or even a constant constructor
-like `[]` or `None`. Note that this explains the limitation of the type `int` to 31 bits (63 in
-a 64-bit machine), mentioned previously. If the value is a pointer, it points to a *block*
-allocated in memory. A block occupies k + 1 memory words, with k ≥ 1.
-The first word of the block, called the *header*, plays a particular role that
-we will explain later. The following k words contain OCaml values, and we
- 
- 
-say that k is the size of the block. We will represent a block of size 5 as
-follows:
+باختصار، قيمة OCaml إما عدد صحيح وإما مؤشر. فإذا كانت عددًا صحيحًا، فيمكنها تمثيل قيمة من النوع `int`، أو حرف، أو قيمة منطقية، أو حتى باني ثابت (constant constructor) مثل `[]` أو `None`. لاحظ أن هذا يفسّر قصر النوع `int` على 31 بت (63 بت في آلة 64 بت)، كما ذُكر سابقًا. أما إذا كانت القيمة مؤشرًا، فإنه يشير إلى *كتلة* (block) مخصَّصة في الذاكرة. وتشغل الكتلة k + 1 كلمة ذاكرة، مع k ≥ 1.
 
-Thus, the pair `(1,2)` is represented by a pointer to a block containing two values, namely,
-the integer values 3 and 5 representing respectively the integers 1 and 2:
+وتؤدي الكلمة الأولى من الكتلة، المسماة *الترويسة* (header)، دورًا خاصًّا سنشرحه لاحقًا. وتحتوي الكلمات k التالية على قيم OCaml، ونقول إن k هو حجم الكتلة. وسنُمثّل كتلة بحجم 5 على النحو التالي:
 
-More generally, an n-tuple is represented by a pointer to a block of size n. Arrays and
-records are also represented in memory by pointers to blocks. Thus, the array
-`[|1;2|]` and the record {a=1; b=2} have *exactly*the same representation in memory
-as the pair `(1,2)`. We explained previously that a reference was nothing but a
-particular case of records, with a single field `contents` (see the additional
-information in section [*2.6*](https://usr.lmf.cnrs.fr/lpo/mainch2.html#drawing-a-curve) *Tracing a Curve*). We deduce from this that the
-value `ref1` is represented in memory in the form of a block of size 1, that
-is:
+وهكذا، يُمثَّل الزوج `(1,2)` بمؤشر إلى كتلة تحتوي على قيمتين، هما القيمتان الصحيحتان 3 و5 اللتان تمثّلان على التوالي العددين الصحيحين 1 و2:
 
-The `mutable` nature of the field `contents` means that the value contained in this
-block, here 3, can be modified in place. The same is true for the values of an
-array.
+وبشكل أعم، يُمثَّل الصفّ المكوَّن من n عنصرًا (n-tuple) بمؤشر إلى كتلة بحجم n. كما تُمثَّل المصفوفات والسجلات في الذاكرة بمؤشرات إلى كتل. وهكذا، فإن المصفوفة `[|1;2|]` والسجل {a=1; b=2} لهما *بالضبط* التمثيل نفسه في الذاكرة الذي للزوج `(1,2)`. وقد شرحنا سابقًا أن المرجع ليس إلا حالة خاصة من السجلات، بحقل واحد هو `contents` (انظر المعلومات الإضافية في القسم [*2.6*](https://usr.lmf.cnrs.fr/lpo/mainch2.html#drawing-a-curve) *تتبّع منحنى*). ونستنتج من ذلك أن القيمة `ref1` تُمثَّل في الذاكرة على هيئة كتلة بحجم 1، أي:
 
-Let us now consider the representation of concrete types. The idea is simple:
-Constant constructors are represented by integers and other constructors by (pointers
-to) blocks. Consider, for example, the type:
+وتعني صفة `mutable` للحقل `contents` أن القيمة الموجودة في هذه الكتلة، وهي هنا 3، يمكن تعديلها في مكانها. وينطبق الأمر نفسه على قيم المصفوفة.
+
+لنتأمل الآن تمثيل الأنواع الملموسة. الفكرة بسيطة: تُمثَّل البواني الثابتة أعدادًا صحيحة، بينما تُمثَّل البواني الأخرى بـ(مؤشرات إلى) كتل. خذ على سبيل المثال النوع:
 
 ```ocaml
   type t = A | B of t * t | C | D of char
 ```
 
-The two constant constructors `A` and `C` are represented by the integers 1 and 3,
-respectively. The two non-constant constructors `B` and `D` are represented by pointers
-to blocks of size 2 and 1, respectively. Thus, the value `B(A,B(D’a’,C))` corresponds to
-three blocks, as follows:
+يُمثَّل البانيان الثابتان `A` و`C` بالعددين الصحيحين 1 و3 على التوالي. ويُمثَّل البانيان غير الثابتين `B` و`D` بمؤشرين إلى كتلتين بحجم 2 و1 على التوالي. وهكذا، تقابل القيمة `B(A,B(D’a’,C))` ثلاث كتل، على النحو التالي:
 
-Here, the value 195 corresponds to 2 × 97 + 1, where 97 is the code of the
-character `’a’`.
+هنا، تقابل القيمة 195 المقدار 2 × 97 + 1، حيث 97 هو رمز الحرف `’a’`.
 
-For faster access, a pointer to a block points to its first field rather than its
-header. The latter contains the tag of the constructor, here `B` or `D`. This information is
-used particularly when pattern matching.
+وللوصول الأسرع، يشير المؤشر إلى الكتلة إلى حقلها الأول بدلًا من ترويستها. وتحتوي هذه الأخيرة على وسم الباني (tag)، وهنا `B` أو `D`. وتُستخدم هذه المعلومة بخاصة عند المطابقة (pattern matching).
 
-Consider the type of lists as a second example: The constant constructor `[]` is
-represented by the integer 1. The constructor `::` is represented by (a pointer to) a
-block of size 2. The list `1::2::3::[]` is therefore represented in memory as follows:
+لنتأمل نوع القوائم كمثال ثانٍ: يُمثَّل الباني الثابت `[]` بالعدد الصحيح 1. ويُمثَّل الباني `::` بـ(مؤشر إلى) كتلة بحجم 2. وعليه تُمثَّل القائمة `1::2::3::[]` في الذاكرة على النحو التالي:
 
-We observe that OCaml lists are not fundamentally different from the linked
-lists used in C or Java. When an OCaml program manipulates lists (passing
-them as arguments of functions, returning them, etc.), it only manipulates
-the pointers to the blocks, exactly like a C or Java program would. The
-essential difference is that OCaml only permits the construction of well-formed
-lists since pointers are not explicit in the language. Where programmers
-using C or Java have to *think*about checking whether a pointer is `null`,
-programmers using OCaml would use a pattern matching construct that
-would *force*them to consider this case, and with a very concise syntax at
-that.
+نلاحظ أن قوائم OCaml لا تختلف جوهريًّا عن القوائم المترابطة (linked lists) المستخدمة في C أو Java. فعندما يتعامل برنامج OCaml مع القوائم (بتمريرها وسائط إلى الدوال، أو إرجاعها، وما إلى ذلك)، فإنه لا يتعامل إلا مع المؤشرات إلى الكتل، تمامًا كما يفعل برنامج بلغة C أو Java. والفرق الجوهري أن OCaml لا تسمح إلا ببناء قوائم سليمة البنية، ذلك أن المؤشرات ليست صريحة في اللغة. فبينما يضطر المبرمجون بلغة C أو Java إلى *التفكير* في التحقق مما إذا كان المؤشر `null`، يستخدم المبرمجون بلغة OCaml بنية مطابقة (pattern matching) *تُلزمهم* بالنظر في هذه الحالة، وبصياغة موجزة جدًّا كذلك.
 
-In general, the header contains the tag of the block. Beyond the cases we have
-already illustrated, the header can also identify a floating-point number, an array of
-floats, a string, an object, a function, etc. Note that the tag provides far less
-information than the type of the value. In general, the memory representation of
-OCaml values does not include typing information. The OCaml standard library
-provides a module `Obj` that can be used to explore this representation. We can thus
-test whether a value is represented as a block and, if so, retrieve its tag, size,
-fields, etc. This module must be used with caution given its strongly untyped
-nature.
+بشكل عام، تحتوي الترويسة على وسم الكتلة. وإلى جانب الحالات التي وضّحناها، يمكن للترويسة أيضًا أن تحدد عددًا عشريًّا (floating-point number)، أو مصفوفة أعداد عشرية، أو سلسلة نصية، أو كائنًا، أو دالة، وما إلى ذلك. لاحظ أن الوسم يوفّر قدرًا أقل بكثير من المعلومات من نوع القيمة. وبشكل عام، لا يتضمن تمثيل الذاكرة لقيم OCaml معلومات الأنواع. وتوفّر المكتبة القياسية في OCaml وحدة `Obj` يمكن استخدامها لاستكشاف هذا التمثيل. وهكذا يمكننا اختبار ما إذا كانت قيمة ممثَّلة ككتلة، وإن كان الأمر كذلك نستعيد وسمها وحجمها وحقولها، وما إلى ذلك. ويجب استخدام هذه الوحدة بحذر نظرًا لطبيعتها غير المصنَّفة الأنواع بشدة.
 
-#### Notation
+#### الترميز (Notation)
 
-In what follows, we will simplify the graphical representation of OCaml values:
-Headers will not be drawn, and integer values will not be transformed using n↦2n + 1.
-Thus, the list `[1;2;3]` will be represented simply as:
+في ما يلي، سنبسّط التمثيل البياني لقيم OCaml: لن تُرسم الترويسات، ولن تُحوَّل القيم الصحيحة باستخدام n↦2n + 1. وهكذا، ستُمثَّل القائمة `[1;2;3]` ببساطة على النحو التالي:
 
-#### Comparison Operators
+#### معامِلات المقارنة (Comparison Operators)
 
-The equality operator `=` that we have already used several times may be applied to
-any two values, provided that they are of the same type. Thus, we can use it to
-compare values of the following type:
+يمكن تطبيق معامِل التساوي `=` الذي استخدمناه سابقًا عدة مرات على أي قيمتين، بشرط أن تكونا من النوع نفسه. وهكذا، يمكننا استخدامه لمقارنة قيم من النوع التالي:
 
 ```ocaml
   # type ty = D | A of int | B of bool | C;;
@@ -325,38 +216,25 @@ compare values of the following type:
   - : bool = false
 ```
 
-This operator compares the structures of two values and therefore corresponds to the
-usual mathematical notion of equality. It is called the *structural equality*operator. Its
-negation is written as `<>`.
+يقارن هذا المعامِل بين بنيتَي قيمتين، ولذلك فهو يقابل المفهوم الرياضي المعتاد للمساواة. ويُسمّى معامِل *التساوي البنيوي* (structural equality). وتُكتب نقيضه على الصورة `<>`.
 
-OCaml also provides another equality operator, `==`. It is called the *physical equality*operator. Its negation is written as `!=`. The operator `==` compares values as
-integers, even if these integers represent memory addresses. Accordingly, we
-can observe that two constructor applications allocate two different memory
-blocks:
+كما توفّر OCaml معامِل تساوٍ آخر هو `==`. ويُسمّى معامِل *التساوي الفيزيائي* (physical equality). وتُكتب نقيضه على الصورة `!=`. ويقارن المعامِل `==` بين القيم كأعداد صحيحة، حتى لو كانت هذه الأعداد تمثّل عناوين ذاكرة. وبناءً على ذلك، يمكننا أن نلاحظ أن تطبيقَي بانيين يخصّصان كتلتي ذاكرة مختلفتين:
 
 ```ocaml
   # A 1 == A 1 ;;
   - : bool = false
 ```
 
-Now that we know how OCaml values are represented, we can further deduce that
-`=` and `==` coincide on values like integers, characters, and constant constructors. In
-case of more complex types, predicting the result of a comparison using physical
-equality is more difficult. It would be necessary to have a precise understanding of
-how the compiler manages memory allocation.
+الآن بعد أن عرفنا كيف تُمثَّل قيم OCaml، يمكننا أن نستنتج كذلك أن `=` و`==` يتطابقان على قيم كالأعداد الصحيحة والأحرف والبواني الثابتة. أما في حالة الأنواع الأكثر تعقيدًا، فالتنبؤ بنتيجة مقارنة باستخدام التساوي الفيزيائي أصعب. إذ يلزم أن يكون لدينا فهم دقيق لكيفية إدارة المترجم لتخصيص الذاكرة.
 
-The physical equality operator *always*finishes in constant time, whereas
-structural equality can take an arbitrary amount of time and even loop on
-cyclic data. Let us illustrate this point with an example. We construct a
-cyclic list `l` using a feature of OCaml that permits us to define a value using
-`let-rec`:
+وينتهي معامِل التساوي الفيزيائي *دائمًا* في زمن ثابت، بينما قد يستغرق التساوي البنيوي زمنًا اعتباطيًّا، بل قد يدخل في حلقة لا نهائية على بيانات دائرية. ولنوضّح هذه النقطة بمثال. ننشئ قائمة دائرية `l` باستخدام ميزة في OCaml تتيح لنا تعريف قيمة باستخدام `let-rec`:
 
 ```ocaml
   # let rec l = 1 :: l ;;
   l : int list = [1; 1; 1; ... ]
 ```
 
-The evaluation of `l==l` terminates whereas that of `l=l` does not.
+ينتهي تقييم `l==l` بينما لا ينتهي تقييم `l=l`.
 
 ```ocaml
   # l == l ;;
@@ -364,10 +242,7 @@ The evaluation of `l==l` terminates whereas that of `l=l` does not.
   # l = l ;;
 ```
 
-OCaml provides other structural comparison operators: on the one hand,
-``, `=` of type `’a->’a->bool`; and on the other hand, an order
-relation `Stdlib.compare` of type `’a->’a->int`, compatible with the preceding
-operators.
+توفّر OCaml معامِلات مقارنة بنيوية أخرى: من جهة، ``, `=` من النوع `’a->’a->bool`؛ ومن جهة أخرى، علاقة ترتيب `Stdlib.compare` من النوع `’a->’a->int`، متوافقة مع المعامِلات السابقة.
 
 ```ocaml
   # C < A 1 ;;
@@ -378,14 +253,9 @@ operators.
   - : int = -1
 ```
 
-The comparison operators are based on the uniform representation of
-values explained previously. However, their definition remains arbitrary and
-entirely linked to the internal representation of values in the language. It
-remains, nevertheless, useful to have a “generic ” order relation, even if it is
-arbitrary.
+تستند معامِلات المقارنة إلى التمثيل الموحَّد للقيم الذي شرحناه سابقًا. غير أن تعريفها يبقى اعتباطيًّا ومرتبطًا كليًّا بالتمثيل الداخلي للقيم في اللغة. ومع ذلك، يبقى من المفيد وجود علاقة ترتيب «عامة»، حتى وإن كانت اعتباطية.
 
-For example, we can use `Stdlib.compare` to construct complex structures that
-require an order relation, such as sets:
+على سبيل المثال، يمكننا استخدام `Stdlib.compare` لبناء بُنى معقّدة تتطلب علاقة ترتيب، مثل المجموعات (sets):
 
 ```ocaml
   # module S = Set.Make(
@@ -394,61 +264,33 @@ require an order relation, such as sets:
        end);;
 ```
 
-Here, the definition of `Stdlib.compare` is not important as long as it is an order
-relation. However, if a specific notion of comparison is needed, it would have to be
-defined.
+هنا، ليس تعريف `Stdlib.compare` مهمًّا ما دام علاقة ترتيب. ومع ذلك، إذا دعت الحاجة إلى مفهوم مقارنة محدَّد، توجّب تعريفه.
 
-#### Other Generic Functions
+#### دوال عامة أخرى (Other Generic Functions)
 
-OCaml provides other generic functions, such as:
+توفّر OCaml دوال عامة أخرى، مثل:
 
-- a hash function Hashtbl.hash of type ’a -> int;
-- marshalling
-       functions, mentioned previously (see the additional information in section
-       2.7 Copying a File).
+- دالة تجزئة (hash function) هي Hashtbl.hash من النوع ’a -> int؛
+- دوال التسلسل (marshalling functions)، المذكورة سابقًا (انظر المعلومات الإضافية في القسم 2.7 نسخ ملف).
 
-#### Automatic Memory Management
+#### الإدارة التلقائية للذاكرة (Automatic Memory Management)
 
-As in other languages, like Lisp and Java, memory management in OCaml is
-automated. This means that the programmer explicitly indicates allocations
-(by constructing an array or a record, applying a constructor, etc.) but not
-*deallocations*. Deallocation is performed automatically by the *garbage collector*(GC).
-The functioning of the GC is intimately linked with the representation of
-OCaml values. On the one hand, the GC can distinguish between pointers and
-other values by examining the parity of the value. On the other, in case of a
-block, the header contains the information needed by the GC: the tag (as was
-explained above), the size of the block, and a few bits to mark the block as
-being in use. Thus, in a 32-bit architecture, the header is of the following
-form:
+كما في لغات أخرى، مثل Lisp وJava، فإن إدارة الذاكرة في OCaml آلية. وهذا يعني أن المبرمج يحدّد عمليات التخصيص صراحةً (ببناء مصفوفة أو سجل، أو تطبيق باني، وما إلى ذلك) لكنه لا يحدّد *عمليات التحرير*. ويُنفَّذ التحرير تلقائيًّا بواسطة *جامع المهملات* (garbage collector, GC). يرتبط عمل جامع المهملات (GC) ارتباطًا وثيقًا بتمثيل قيم OCaml. فمن جهة، يستطيع جامع المهملات التمييز بين المؤشرات والقيم الأخرى بفحص زوجية القيمة. ومن جهة أخرى، في حالة كتلة، تحتوي الترويسة على المعلومات التي يحتاجها جامع المهملات: الوسم (كما شُرح أعلاه)، وحجم الكتلة، وبضع بتات لتمييز الكتلة بأنها قيد الاستخدام. وهكذا، في معمارية 32 بت، تكون الترويسة على الشكل التالي:
 
 | 31 | … | 10 | 9 | 8 | 7 | … | 0 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| size | GC | tag |  |  |  |  |  |
+| الحجم | GC | الوسم |  |  |  |  |  |
 
-As the size of a block is encoded in 22 bits, it is relatively limited (up to 222 − 1,
-that is 4194303). This is, for instance, the maximum size of OCaml arrays. It can be
-obtained using `Sys.max_array_length`. The maximum size of strings is four times
-larger, because strings have a more compact representation than arrays. Thus,
-`Sys.max_string_length` = 224 − 5 = 16777211. In a 64-bit machine, by contrast,
-these limits are well beyond what can be allocated in memory (respectively 254 − 1
-and 257 − 9).
+بما أن حجم الكتلة مُرمَّز في 22 بت، فإنه محدود نسبيًّا (حتى 222 − 1، أي 4194303). وهذا، على سبيل المثال، هو الحجم الأقصى لمصفوفات OCaml. ويمكن الحصول عليه باستخدام `Sys.max_array_length`. أما الحجم الأقصى للسلاسل النصية فهو أكبر بأربعة أضعاف، لأن للسلاسل النصية تمثيلًا أكثر إحكامًا من المصفوفات. وهكذا، `Sys.max_string_length` = 224 − 5 = 16777211. أما في آلة 64 بت، فهذه الحدود تتجاوز بكثير ما يمكن تخصيصه في الذاكرة (على التوالي 254 − 1 و257 − 9).
 
-#### Representation of Functions
+#### تمثيل الدوال (Representation of Functions)
 
-Whenever a function may be used as a first-class value (see section [*2.6*](https://usr.lmf.cnrs.fr/lpo/mainch2.html#drawing-a-curve) *Tracing a Curve*), it is represented by a pointer to a block. We speak then of *closure*. A closure
-contains two things:
+كلما أمكن استخدام دالة كقيمة من الرتبة الأولى (first-class value) (انظر القسم [*2.6*](https://usr.lmf.cnrs.fr/lpo/mainch2.html#drawing-a-curve) *تتبّع منحنى*)، فإنها تُمثَّل بمؤشر إلى كتلة. ونتحدث حينئذ عن *إغلاق* (closure). ويحتوي الإغلاق على شيئين:
 
-- a pointer to the code to be executed;
-- the values of variables susceptible of being used by this code, termed the
-       environment.
+- مؤشر إلى الشيفرة المراد تنفيذها؛
+- قيم المتغيرات التي قد تستخدمها هذه الشيفرة، وتُسمّى البيئة (environment).
 
-The construction of a closure therefore consists in allocating a block whose size is
-determined by that of the environment, that is, by the number of free variables in
-the body of the function. Conversely, the application of a closure f to a
-value v consists in calling the function indicated by the code pointer of f
-and passing two arguments to the function, namely, the environment (in
-the form of the closure f itself) and the value v. Consider the following
-example:
+وبالتالي يتكوّن إنشاء الإغلاق من تخصيص كتلة يتحدَّد حجمها بحجم البيئة، أي بعدد المتغيرات الحرة في جسم الدالة. وبالمقابل، يتكوّن تطبيق إغلاق f على قيمة v من استدعاء الدالة التي يشير إليها مؤشر الشيفرة في f وتمرير وسيطين إلى الدالة، هما البيئة (على هيئة الإغلاق f نفسه) والقيمة v. لنتأمل المثال التالي:
 
 ```ocaml
   let diff_quotient dx f x = (f (x +. dx) -. f x) /. dx
@@ -456,43 +298,20 @@ example:
   let my_cos = derivative sin
 ```
 
-The value `derivative` is a function obtained by partially applying the function
-`diff_quotient`. It is represented by a closure whose code pointer corresponds to
-`funf->funx->...`, and whose environment contains the value of `dx`, namely, `1e-10`.
-Similarly, the value of `my_cos` is a closure whose code pointer corresponds to
-`funx->...`, and whose environment contains the values of `dx` (namely, `1e-10`) and `f`
-(namely, `sin`). The value `sin` is another example of a closure, whose environment is
-empty.
+القيمة `derivative` دالة ناتجة عن التطبيق الجزئي للدالة `diff_quotient`. وتُمثَّل بإغلاق يوافق مؤشر شيفرته `funf->funx->...`، وتحتوي بيئته على قيمة `dx`، وهي `1e-10`. وبالمثل، فإن قيمة `my_cos` إغلاق يوافق مؤشر شيفرته `funx->...`، وتحتوي بيئته على قيمتي `dx` (وهي `1e-10`) و`f` (وهي `sin`). والقيمة `sin` مثال آخر على إغلاق بيئته فارغة.
 
-### 3.3 Analyzing the Execution Time of a Program
+### 3.3 تحليل زمن تنفيذ برنامج (Analyzing the Execution Time of a Program)
 
-From the preceding discussion, we may deduce a certain number of facts concerning
-the time complexity of OCaml operations:
+مما سبق، يمكننا أن نستنتج عددًا من الحقائق المتعلقة بالتعقيد الزمني لعمليات OCaml:
 
-- The  application  of  a  non-constant  constructor  is  proportional  to  the
-       number of fields, since it consists in assigning the constructor arguments
-       to the fields of a block. As the number of arguments of a constructor is
-       known statically, this operation takes constant time and space.
-- The application of a function also takes constant time, irrespective of how
-       the function was constructed. Of course, we speak here of the application
-       operation only, and not of the cost of evaluating the arguments or the
-       function itself; these may be arbitrarily expensive.
+- يتناسب تطبيق باني غير ثابت مع عدد الحقول، لأنه يتكوّن من إسناد وسائط الباني إلى حقول الكتلة. وبما أن عدد وسائط الباني معروف ساكنًا (statically)، فإن هذه العملية تستغرق زمنًا ومساحة ثابتين.
+- كما يستغرق تطبيق دالة زمنًا ثابتًا، بغض النظر عن كيفية بناء الدالة. وبطبيعة الحال، نتحدث هنا عن عملية التطبيق فقط، لا عن كلفة تقييم الوسائط أو الدالة نفسها؛ فقد تكون هذه باهظة الكلفة بشكل اعتباطي.
 
-In what follows, we offer several practical and theoretical tools to measure and analyze
-the execution time of a program.
+في ما يلي، نقدّم عدة أدوات عملية ونظرية لقياس زمن تنفيذ برنامج وتحليله.
 
-#### Measuring Execution Time
+#### قياس زمن التنفيذ (Measuring Execution Time)
 
-It is easy to measure the total execution time of a program using a watch or, better
-yet, with a tool provided by the operating system. The execution time of *part*of an
-OCaml program, can be measured just as easily, and with great precision, using the
-function `Unix.times` of the module `Unix`. This function returns a record whose field
-`tms_utime` contains the time that has elapsed since the start of the program. This is a
-floating-point number, expressed in seconds, with precision greater than a
-millisecond. By calculating the difference between the two values returned by
-this function at two different points of the program, we deduce the precise
-execution time of that part of the code. We would typically write something
-like:
+من السهل قياس الزمن الكلي لتنفيذ برنامج باستخدام ساعة توقيت، أو أفضل من ذلك، باستخدام أداة توفّرها نظم التشغيل. ويمكن قياس زمن تنفيذ *جزء* من برنامج OCaml بالسهولة نفسها، وبدقة كبيرة، باستخدام الدالة `Unix.times` من الوحدة `Unix`. تُرجع هذه الدالة سجلًا يحتوي حقله `tms_utime` على الزمن المنقضي منذ بدء البرنامج. وهو عدد عشري (floating-point number)، معبَّر عنه بالثواني، بدقة تفوق الميلي ثانية. وبحساب الفرق بين القيمتين اللتين تُرجعهما هذه الدالة عند نقطتين مختلفتين من البرنامج، نستنتج الزمن الدقيق لتنفيذ ذلك الجزء من الشيفرة. وعادةً نكتب شيئًا من قبيل:
 
 ```ocaml
   let start = (times ()).tms_utime in
@@ -500,30 +319,15 @@ like:
   let stop = (times ()).tms_utime in
 ```
 
-We can then calculate the elapsed time using `stop-.start`. Exercises [3.3](#x13-130001r3) and [3.4](#x13-130002r4) focus
-on writing generic code for such measurements.
+يمكننا بعد ذلك حساب الزمن المنقضي باستخدام `stop-.start`. ويركّز التمرينان [3.3](#x13-130001r3) و[3.4](#x13-130002r4) على كتابة شيفرة عامة لمثل هذه القياسات.
 
-#### Informal Notions of Complexity
+#### مفاهيم غير صورية للتعقيد (Informal Notions of Complexity)
 
-It is useful to measure the execution time of a program to evaluate its efficiency, for
-example, to compare it with another program, as well as to determine whether it can
-be used to solve a given problem. If we write a program that sorts an array of n
-entries, we may measure its execution time for small values of n and then try to
-extrapolate to larger values. If, for example, we are able to sort n = 1000
- 
- 
-entries in a hundredth of a second, and if we observe that the execution
-time is multiplied by a factor of 4 each time that n is doubled, then we may
-estimate that we would need over two and a half hours to sort a million
-entries.
+من المفيد قياس زمن تنفيذ برنامج لتقييم كفاءته، على سبيل المثال لمقارنته ببرنامج آخر، وكذلك لتحديد ما إذا كان يمكن استخدامه لحل مسألة معيّنة. فإذا كتبنا برنامجًا يفرز مصفوفة من n مدخلة، أمكننا قياس زمن تنفيذه لقيم صغيرة من n ثم محاولة الاستقراء إلى قيم أكبر. فإذا تمكّنّا، على سبيل المثال، من فرز n = 1000 مدخلة في جزء من مئة من الثانية، ولاحظنا أن زمن التنفيذ يتضاعف أربع مرات كلما تضاعفت n، فيمكننا أن نقدّر أننا سنحتاج إلى أكثر من ساعتين ونصف لفرز مليون مدخلة.
 
-The *complexity*of a program, or more generally of an algorithm, is defined as the
-number of elementary operations that it must perform as a function of the size of the
-input data. In the above example, the complexity may be expressed as a function f of
-the number n of entries: f(n) is the number of elementary operations performed to
-sort n inputs.
+يُعرَّف *تعقيد* برنامج، أو بشكل أعم تعقيد خوارزمية، بأنه عدد العمليات الأولية التي يجب أن ينفّذها بدلالة حجم بيانات الإدخال. وفي المثال أعلاه، يمكن التعبير عن التعقيد بدالة f للعدد n من المدخلات: f(n) هو عدد العمليات الأولية المنفَّذة لفرز n من المدخلات.
 
-**Figure 3.1: Execution time of f(n) operations, assuming a billion operations per second. Note that “–” indicates that the time is less than one second and “∞” that it is greater than one year.**
+**الشكل 3.1: زمن تنفيذ f(n) عملية، بافتراض مليار عملية في الثانية. لاحظ أن «–» تشير إلى أن الزمن أقل من ثانية واحدة، وأن «∞» تشير إلى أنه أكبر من سنة.**
 
 |  | f(n) = |  |  |  |  |  |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -538,25 +342,13 @@ sort n inputs.
 | 108 | – | – | 2 s | 116 j | ∞ | ∞ |
 | 109 | – | 1 s | 21 s | ∞ | ∞ | ∞ |
 
-By elementary operations, we mean the operations that are atomic for the
-machine, for example, addition. If we assume that a machine these days performs a
-billion operations per second, figure [3.1](#execution-time-of-fn-operations-assuming-a-billion-operations-per-second-note-that-indicates-that-the-time-is-less-than-one-second-and-that-it-is-greater-than-one-year) gives the execution time of f(n) operations
-for different functions f.
+ونعني بالعمليات الأولية العمليات الذرية بالنسبة إلى الآلة، مثل الجمع. وبافتراض أن آلة هذه الأيام تنفّذ مليار عملية في الثانية، يعطي الشكل [3.1](#execution-time-of-fn-operations-assuming-a-billion-operations-per-second-note-that-indicates-that-the-time-is-less-than-one-second-and-that-it-is-greater-than-one-year) زمن تنفيذ f(n) عملية لدوال مختلفة f.
 
-In practice, the precise nature of the elementary operations and their
-respective cost is not important. We can term any operation whose time cost
-is constant an elementary operation. This includes arithmetic operations,
-function and constructor applications, assignments, etc. It suffices to retain
-the following principle: A million elementary operations can be performed
-instantaneously, a billion in a few dozen seconds, and a trillion over several
-hours.
+عمليًّا، ليست الطبيعة الدقيقة للعمليات الأولية ولا كلفتها النسبية ذات أهمية. ويمكننا أن نسمّي أي عملية كلفتها الزمنية ثابتة عمليةً أولية. ويشمل ذلك العمليات الحسابية، وتطبيقات الدوال والبواني، والإسنادات، وما إلى ذلك. ويكفي أن نحتفظ بالمبدأ التالي: يمكن تنفيذ مليون عملية أولية لحظيًّا، ومليار عملية في بضع عشرات من الثواني، وتريليون عملية على مدى عدة ساعات.
 
-#### Complexity Analysis
+#### تحليل التعقيد (Complexity Analysis)
 
-Rather than experimental evaluations, we can analyze the code of a program to
-calculate the number of elementary operations that it will perform. Let us suppose,
-for example, that our sorting program is written as two nested loops, such
-as:
+بدلًا من التقييمات التجريبية، يمكننا تحليل شيفرة برنامج لحساب عدد العمليات الأولية التي سينفّذها. ولنفترض، على سبيل المثال، أن برنامج الفرز لدينا مكتوب على هيئة حلقتين متداخلتين، على النحو التالي:
 
 ```ocaml
   for i = 1 to n - 1 do
@@ -564,68 +356,37 @@ as:
       ...
 ```
 
-Here, we assume that the omitted code (denoted by `...`) contains only a finite number of
-elementary operations, say C. We can then deduce that the total complexity is
-exactly:
+هنا، نفترض أن الشيفرة المحذوفة (المشار إليها بـ `...`) لا تحتوي إلا على عدد منتهٍ من العمليات الأولية، ولتكن C. ويمكننا حينئذ أن نستنتج أن التعقيد الكلي يساوي بالضبط:
 
 $$n-1 \sum n(n- - 1) - f(n) = C \times i = C 2 . i = 1$$
 
-This confirms our experimental observation that doubling n causes f(n) to be
-multiplied by approximately four. In practice, it is rarely this simple to analyze the
-complexity. Certain operations are only performed in certain cases, depending on
-checks performed by the program, which in turn depend on the inputs. We generally
-settle for the calculation of the *worst-case*complexity, which provides an upper bound
-on the total number of operations performed. We may also calculate the *average*
-complexity over the set of possible inputs of size n, for a given distribution of these
-inputs.
+وهذا يؤكد ملاحظتنا التجريبية بأن مضاعفة n تؤدي إلى ضرب f(n) بنحو أربعة تقريبًا. وعمليًّا، قلّما يكون تحليل التعقيد بهذه البساطة. فبعض العمليات لا تُنفَّذ إلا في حالات معيّنة، اعتمادًا على فحوص يجريها البرنامج، وهذه بدورها تتوقف على المدخلات. ونكتفي عمومًا بحساب تعقيد *أسوأ حالة* (worst-case)، الذي يوفّر حدًّا أعلى للعدد الكلي للعمليات المنفَّذة. ويمكننا أيضًا حساب تعقيد *المتوسط* على مجموعة المدخلات الممكنة ذات الحجم n، في مقابل توزيع معيّن لهذه المدخلات.
 
-#### Big O Notation
+#### ترميز O الكبير (Big O Notation)
 
-In practice, we use the big O notation to bound the complexity of a program. To
-express that a function f, defined on the natural numbers, does not grow faster than
-another function g, also defined on the natural numbers, we write:
+عمليًّا، نستخدم ترميز O الكبير لتحديد حدّ لتعقيد برنامج. وللتعبير عن أن دالة f، معرَّفة على الأعداد الطبيعية، لا تنمو أسرع من دالة أخرى g معرَّفة أيضًا على الأعداد الطبيعية، نكتب:
 
 $$f(n) = O(g(n))$$
 
-This means that there is a constant C such that f(n) ≤ Cg(n) for large enough n,
-or, more formally:
+وهذا يعني وجود ثابت C بحيث يكون f(n) ≤ Cg(n) من أجل قيم n كبيرة بما يكفي، أو، بصورة أكثر صورية:
 
 $$\exists C \exists N, \forall n \ge N, f (n ) \le Cg (n)$$
 
-If f(n) denotes the complexity of an algorithm in terms of a parameter n, we say
-that “the complexity of the algorithm is in O(g(n))” if f(n) = O(g(n)). In the
-example involving sorting, the complexity is in O(n2).
+إذا دلّت f(n) على تعقيد خوارزمية بدلالة وسيط n، قلنا إن «تعقيد الخوارزمية من الرتبة O(g(n))» إذا كان f(n) = O(g(n)). وفي مثال الفرز، يكون التعقيد من الرتبة O(n2).
 
-An algorithm whose complexity is in O(1) is executed in constant time,
-independently of the size of the data. It therefore involves a constant number of
-elementary operations, for example, two additions and a multiplication. An algorithm
-is said to be: *logarithmic*if its complexity is in O(log n); *linear*if it is in O(n);
-*linearithmic*if it is in O(nlog n); *quadratic*if it is in O(n2) and, more generally,
-*polynomial*if there is a constant k such that its complexity is in O(nk); and
-*exponential*if it is in O(2n).
+الخوارزمية التي يكون تعقيدها من الرتبة O(1) تُنفَّذ في زمن ثابت، بصرف النظر عن حجم البيانات. وبناءً على ذلك فإنها تتضمن عددًا ثابتًا من العمليات الأولية، مثل جمعتين وضربة. وتوصف الخوارزمية بأنها: *لوغاريتمية* إذا كان تعقيدها من الرتبة O(log n)؛ و*خطية* إذا كان من الرتبة O(n)؛ و*شبه خطية* إذا كان من الرتبة O(nlog n)؛ و*تربيعية* إذا كان من الرتبة O(n2)؛ وبشكل أعم *كثيرة الحدود* إذا وُجد ثابت k بحيث يكون تعقيدها من الرتبة O(nk)؛ و*أُسّية* إذا كان من الرتبة O(2n).
 
-In general, we do not seek to exhibit the constants C and N hidden in the
-notation O. We are only concerned with the asymptotic order of magnitude, for
-example, when deciding whether one algorithm is better than another. Of
-course, for a *specific*value of n, an algorithm in O(n2) can certainly take less
-time to execute than another in O(log n), by virtue of the constants behind
-the O’s.
+بشكل عام، لا نسعى إلى إظهار الثابتين C وN المخفيين في الترميز O. وإنما يهمّنا فقط رتبة المقدار المقارِبة (asymptotic order of magnitude)، على سبيل المثال عند الحكم على ما إذا كانت خوارزمية أفضل من أخرى. وبطبيعة الحال، فمن أجل قيمة *محدَّدة* لـ n، قد تستغرق خوارزمية من الرتبة O(n2) وقتًا أقل من أخرى من الرتبة O(log n)، بحكم الثوابت الكامنة خلف رموز O.
 
-#### Amortized Complexity
+#### التعقيد المُطفَّأ (Amortized Complexity)
 
-It is often worthwhile to calculate the total complexity of a sequence of n operations
-and then divide by n, in order to obtain the average cost of each operation. This
-average cost may prove inferior to the worst-case complexity. We call the
-average complexity thus obtained *amortized complexity*, as opposed to the
-worst-case complexity. We give examples of amortized complexity in chapters [4](https://usr.lmf.cnrs.fr/lpo/mainch4.html#arrays1)
-and [6](https://usr.lmf.cnrs.fr/lpo/mainch6.html#queues).
+غالبًا ما يستحق الأمر حساب التعقيد الكلي لتتابع من n عملية ثم القسمة على n، للحصول على الكلفة المتوسطة لكل عملية. وقد تكون هذه الكلفة المتوسطة أدنى من تعقيد أسوأ حالة. ونسمّي التعقيد المتوسط الناتج بهذه الطريقة *التعقيد المُطفَّأ*، في مقابل تعقيد أسوأ حالة. ونقدّم أمثلة على التعقيد المُطفَّأ في الفصلين [4](https://usr.lmf.cnrs.fr/lpo/mainch4.html#arrays1) و[6](https://usr.lmf.cnrs.fr/lpo/mainch6.html#queues).
 
-### 3.4 Exercises
+### 3.4 تمارين
 
-#### Type-checking Algorithm
+#### خوارزمية التحقق من الأنواع
 
-**3.1**Are the following functions well typed? If so, what is their type? If not, explain
-why.
+**3.1** هل الدوال التالية جيدة الأنواع؟ وإن كانت كذلك، فما نوعها؟ وإن لم تكن، فاشرح السبب.
 
 ```ocaml
   let f1 x = let y = !x + 2 in y
@@ -638,29 +399,24 @@ why.
   let f8 x y z = x y z
 ```
 
-**3.2**Consider the two functions below:
+**3.2** لنتأمل الدالتين أدناه:
 
 ```ocaml
   let foo x = x.a := (snd x.b) + 1
   let bar x = x.c <- (fst x.b) :: x.c
 ```
 
-Define `’at` as a record type so that we have:
+عرّف `’at` نوع سجل بحيث نحصل على:
 
 ```ocaml
   val foo : ’a t -> unit
   val bar : ’a t -> unit
 ```
 
-#### Analyzing the Execution Time of a Program
+#### تحليل زمن تنفيذ برنامج
 
-**3.3**Write a function `time:(unit->unit)->float` that measures the execution time
-of the function passed as argument. Use the function `Unix.times` as explained
-above.
+**3.3** اكتب دالة `time:(unit->unit)->float` تقيس زمن تنفيذ الدالة المُمرَّرة كوسيط. استخدم الدالة `Unix.times` كما شُرح أعلاه.
 
-**3.4**Write a function `time5:(unit->unit)->float` that does the following: executes
-the function passed as argument five times, measuring the execution time each time;
-eliminates the smallest and largest of the values obtained; and returns the mean of
-the three remaining values.
+**3.4** اكتب دالة `time5:(unit->unit)->float` تفعل ما يلي: تنفّذ الدالة المُمرَّرة كوسيط خمس مرات، مع قياس زمن التنفيذ في كل مرة؛ وتحذف أصغر القيم الناتجة وأكبرها؛ وتُرجع متوسط القيم الثلاث المتبقية.
 
-**3.5**Write a program that produces the table in figure [3.1](#execution-time-of-fn-operations-assuming-a-billion-operations-per-second-note-that-indicates-that-the-time-is-less-than-one-second-and-that-it-is-greater-than-one-year).
+**3.5** اكتب برنامجًا يُنتج الجدول الوارد في الشكل [3.1](#execution-time-of-fn-operations-assuming-a-billion-operations-per-second-note-that-indicates-that-the-time-is-less-than-one-second-and-that-it-is-greater-than-one-year).

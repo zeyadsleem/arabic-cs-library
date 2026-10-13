@@ -1,77 +1,77 @@
 ---
-title: "Bibliography"
-lang: en
+title: "المراجع"
+lang: ar
 ---
 
-## Bibliography
+## المراجع
 
-## Bibliography
+## المراجع
 
-[1]   Stephen Adams. Functional pearls: Efficient sets – a balancing
+[1]   Stephen Adams. Functional pearls: Efficient sets – a balancing
  act. *Journal of Functional Programming*, 3(4):553–561, October 1993.
  Expanded version available as Technical Report CSTR 92-10, University of
  Southampton.
 
-[2]   G. M. Adel’son-Vel’ski and E. M. Landis. *An algorithm for the organization of information*. *Soviet Mathematics–Doklady*, 3(5):1259–1263,
+[2]   G. M. Adel’son-Vel’ski and E. M. Landis. *An algorithm for the organization of information*. *Soviet Mathematics–Doklady*, 3(5):1259–1263,
  September 1962.
 
-[3]   Alfred V. Aho, John E. Hopcroft, and Jeffrey Ullman. *Data Structures and Algorithms*. Addison-Wesley Longman Publishing Co., Inc., Boston,
+[3]   Alfred V. Aho, John E. Hopcroft, and Jeffrey Ullman. *Data Structures and Algorithms*. Addison-Wesley Longman Publishing Co., Inc., Boston,
  MA, USA, 1983.
 
-[4]   Henry G. Baker. Shallow binding makes functional arrays fast.
+[4]   Henry G. Baker. Shallow binding makes functional arrays fast.
  *SIGPLAN Not.*, 26(8):145–147, 1991.
 
-[5]   Hans-Juergen Boehm, Russell R. Atkinson, and Michael F. Plass.
+[5]   Hans-Juergen Boehm, Russell R. Atkinson, and Michael F. Plass.
  Ropes: An alternative to strings. *Software - Practice and Experience*,
  25(12):1315–1330, 1995.
 
-[6]   John Conway. Doomsday rule. 
+[6]   John Conway. Doomsday rule. 
 `http://en.wikipedia.org/wiki/Doomsday_algorithm`.
 
-[7]   Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and
+[7]   Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and
  Clifford Stein. *Introduction to Algorithms, Second Edition*. The MIT Press,
  September 2001.
 
-[8]   Guy Cousineau and Michel Mauny. *Approche fonctionnelle de la programmation*. Ediscience International, 1995.
+[8]   Guy Cousineau and Michel Mauny. *Approche fonctionnelle de la programmation*. Ediscience International, 1995.
 
-[9]   Guy Cousineau and Michel Mauny. *The Functional Approach to Programming*. Cambridge University Press, 1998. Traduction anglaise
- de [[8](#XCousineau-Mauny-1995a)].
+[9]   Guy Cousineau and Michel Mauny. *The Functional Approach to Programming*. Cambridge University Press, 1998. الترجمة الإنجليزية
+ لـ [[8](#XCousineau-Mauny-1995a)].
 
-[10]   Jeremy Gibbons and Oege de Moor, editors. *The Fun of Programming*.
+[10]   Jeremy Gibbons and Oege de Moor, editors. *The Fun of Programming*.
  Cornerstones in Computing. Palgrave, 2003.
 
-[11]   Jr. Henry G. Baker. Shallow binding in Lisp 1.5. *Commun. ACM*,
+[11]   Jr. Henry G. Baker. Shallow binding in Lisp 1.5. *Commun. ACM*,
  21(7):565–569, 1978.
 
-[12]   Gérard Huet. The Zipper. *Journal of Functional Programming*,
+[12]   Gérard Huet. The Zipper. *Journal of Functional Programming*,
  7(5):549–554, September 1997.
 
-[13]   D. E. Knuth. *The Art of Computer Programming. Volume 1: Fundamental Algorithms*. Addison-Wesley, 1968.
+[13]   D. E. Knuth. *The Art of Computer Programming. Volume 1: Fundamental Algorithms*. Addison-Wesley, 1968.
 
-[14]   D. E. Knuth. *The Art of Computer Programming. Volume 2: Seminumerical Algorithms*. Addison-Wesley, 1969.
+[14]   D. E. Knuth. *The Art of Computer Programming. Volume 2: Seminumerical Algorithms*. Addison-Wesley, 1969.
 
-[15]   D. E. Knuth. *The Art of Computer Programming. Volume 3: Sorting and Searching*. Addison-Wesley, 1973.
+[15]   D. E. Knuth. *The Art of Computer Programming. Volume 3: Sorting and Searching*. Addison-Wesley, 1973.
 
-[16]   Donald E. Knuth. *The Art of Computer Programming, volume 4A: Combinatorial Algorithms, Part 1*. Addison-Wesley Professional, 1st edition,
+[16]   Donald E. Knuth. *The Art of Computer Programming, volume 4A: Combinatorial Algorithms, Part 1*. Addison-Wesley Professional, 1st edition,
  2011.
 
-[17]   Richard E. Korf. Iterative-deepening-A*: An optimal admissible tree
+[17]   Richard E. Korf. Iterative-deepening-A*: An optimal admissible tree
  search. In *IJCAI*, pages 1034–1036, 1985.
 
-[18]   Donald R. Morrison. *PATRICIA—Practical Algorithm To Retrieve Information Coded in Alphanumeric*. *J. ACM*, 15(4):514–534, 1968.
+[18]   Donald R. Morrison. *PATRICIA—Practical Algorithm To Retrieve Information Coded in Alphanumeric*. *J. ACM*, 15(4):514–534, 1968.
 
-[19]   Chris Okasaki. *Purely Functional Data Structures*. Cambridge
+[19]   Chris Okasaki. *Purely Functional Data Structures*. Cambridge
  University Press, 1998.
 
-[20]   Chris Okasaki and Andrew Gill. *Fast Mergeable Integer Maps*. In
+[20]   Chris Okasaki and Andrew Gill. *Fast Mergeable Integer Maps*. In
  *Workshop on ML*, pages 77–86, September 1998.
 
-[21]   Robert Sedgewick and Kevin Wayne. *Algorithms, 4th Edition*.
+[21]   Robert Sedgewick and Kevin Wayne. *Algorithms, 4th Edition*.
  Addison-Wesley, 2011.
 
-[22]   Daniel Dominic Sleator and Robert Endre Tarjan. *Self Adjusting Heaps*. *SIAM J. Comput.*, 15(1):52–69, February 1986.
+[22]   Daniel Dominic Sleator and Robert Endre Tarjan. *Self Adjusting Heaps*. *SIAM J. Comput.*, 15(1):52–69, February 1986.
 
-[23]   Robert Endre Tarjan. *Efficiency of a Good But Not Linear Set Union Algorithm*. *J. ACM*, 22(2):215–225, 1975.
+[23]   Robert Endre Tarjan. *Efficiency of a Good But Not Linear Set Union Algorithm*. *J. ACM*, 22(2):215–225, 1975.
 
-[24]   Henry S. Warren. *Hacker’s Delight*. Addison-Wesley Professional, July
+[24]   Henry S. Warren. *Hacker’s Delight*. Addison-Wesley Professional, July
  2002.

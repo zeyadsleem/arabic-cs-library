@@ -1,65 +1,64 @@
 ---
-title: "Graph Algorithms"
-lang: en
+title: "خوارزميات الرسوم البيانية"
+lang: ar
 ---
 
-## 13. Graph Algorithms
+## 13. خوارزميات الرسوم البيانية
 
-In this chapter, we present graph algorithms. These algorithms are independent of the
-underlying graph data structure. They can be used, in particular, with all the graph
-structures of chapter [7](https://usr.lmf.cnrs.fr/lpo/mainch7.html#graphs). Below, we will take as given a module `G` whose signature
-includes at least the types, functions, and modules of program [98](#x29-304002r98). Graphs are of type
-`graph`, and their vertices are of type `vertex`. The function `iter_vertex` iterates
-over the vertices of a given graph, applying a function passed as argument
-to each of them. The function `iter_succ` iterates over the successors of a
-given vertex. The module `H` provides a hash table structure with vertices as
-keys.
+نعرض في هذا الفصل خوارزميات الرسوم البيانية. هذه الخوارزميات مستقلة عن بنية
+بيانات الرسم البياني الأساسية. ويمكن استخدامها، على وجه الخصوص، مع جميع بنى
+الرسوم البيانية الواردة في الفصل [7](https://usr.lmf.cnrs.fr/lpo/mainch7.html#graphs). فيما يلي، سنعتبر معطاةً وحدة `G` يتضمّن
+توقيعها على الأقل الأنواع والدوال والوحدات الخاصة بالبرنامج [98](#x29-304002r98). الرسوم البيانية من النوع
+`graph`، ورؤوسها من النوع `vertex`. الدالة `iter_vertex` تمرّ على رؤوس رسم بياني معطى،
+وتطبّق دالةً تُمرَّر كوسيط على كل واحد منها. والدالة `iter_succ` تمرّ على الرؤوس
+اللاحقة (successors) لرأس معطى. وتوفّر الوحدة `H` بنية جدول تجزئة (hash table)
+مفاتيحها رؤوس.
 
 >
 
-### 13.1 Breadth-First Search
+### 13.1 البحث بالعرض أولاً
 
-The first traversal that we present is called *breadth-first search*(BFS). It consists in
-exploring the graph by moving outwards “in concentric circles,” from a particular
-vertex s, called the root. We first traverse the vertices that are exactly one arc away
-from the root s, then those situated two arcs away, and so forth. Consider, for
-example, the graph on the left in figure [13.1](#breadthfirst-search-of-a-graph). Beginning from vertex 5, we
-first visit vertices 4 and 1, which are directly linked to vertex 5. We then
-visit vertices 0, 6 and 2, followed by vertex 7, and finally vertex 3. The
-graph, with distances to the root indicated as exponents, is shown on the
-right.
+أول عملية اجتياز نعرضها تُسمّى *البحث بالعرض أولاً*(BFS). وهي تتمثل في
+استكشاف الرسم البياني بالتحرّك نحو الخارج «في دوائر متحدة المركز»، انطلاقاً من رأس
+معيّن s يُسمّى الجذر. نمرّ أولاً على الرؤوس التي تبعد قوساً واحداً بالضبط
+عن الجذر s، ثم على تلك التي تبعد قوسين، وهكذا. خُذ، على
+سبيل المثال، الرسم البياني الواقع على اليسار في الشكل [13.1](#breadthfirst-search-of-a-graph). بدءاً من الرأس 5،
+نزور أولاً الرأسين 4 و1، وهما مرتبطان مباشرةً بالرأس 5. ثم
+نزور الرؤوس 0 و6 و2، يليها الرأس 7، وأخيراً الرأس 3. ويظهر
+الرسم البياني، مع المسافات إلى الجذر مكتوبةً كأُسُس، على
+اليمين.
 
 ![](/images/learn-ocaml/graph-algorithms-0-bfs_queue_0-mps-.webp){#breadthfirst-search-of-a-graph}
 
-**Figure 13.1: Breadth-first search of a graph.**
+**الشكل 13.1: البحث بالعرض أولاً في رسم بياني.**
 
 ![PIC](/images/learn-ocaml/graph-algorithms-1-bfs_queue_6-mps-.webp)
 
-We write breadth-first search as a function `iter_bfs` that takes as arguments a
-graph `g`, a root `s`, and a function `f` that will be applied to the elements of `g` as these
-are discovered. We begin by creating a hash table that will contain the vertices
-already discovered by the traversal.
+نكتب البحث بالعرض أولاً في صورة دالة `iter_bfs` تأخذ كوسائط
+رسمًا بيانيًا `g` وجذرًا `s` ودالةً `f` ستُطبَّق على عناصر `g` أثناء
+اكتشافها. نبدأ بإنشاء جدول تجزئة يحتوي على الرؤوس
+المكتشَفة سابقًا بواسطة الاجتياز.
 
 ```ocaml
   let iter_bfs f g s =
     let visited = H.create () in
 ```
 
-The search itself is based on the use of a *queue*into which vertices are inserted as they
-are discovered. The idea is that, at any point in time, the queue will contain the
-vertices situated at distance d from the root, followed by the vertices situated at
-distance d + 1:
+يعتمد البحث نفسه على استخدام *طابور* (queue) تُدرَج فيه الرؤوس أثناء
+اكتشافها. والفكرة أنه، في أي لحظة زمنية، سيحتوي الطابور على
+الرؤوس الواقعة على مسافة d من الجذر، تليها الرؤوس الواقعة على
+مسافة d + 1:
 
-| ← | vertices at distance d | vertices at distance d + 1 | ← |
+| ← | رؤوس على مسافة d | رؤوس على مسافة d + 1 | ← |
 | --- | --- | --- | --- |
 
-This is the concretization of our notion of “concentric circles,”
-more precisely of the two consecutive concentric circles that are being
-considered. This property is crucial for the correctness of breadth-first
-search[^1].
-Here, we use the module `Queue` to implement the queue. Initially, it contains only the
-root. It is useful to write a function `add` that adds a vertex simultaneously in the hash
-table and the queue. We begin by using it on the root `s`.
+وهذا هو التجسيد لمفهومنا عن «الدوائر متحدة المركز»،
+وبشكل أدقّ للدائرتين المتتاليتين قيد
+الاعتبار. وهذه الخاصية جوهرية لصحة البحث
+بالعرض أولاً[^1].
+وهنا نستخدم الوحدة `Queue` لتنفيذ الطابور. وهو يحتوي في البداية على
+الجذر فقط. ومن المفيد كتابة دالة `add` تُضيف رأسًا في آن واحد إلى جدول
+التجزئة وإلى الطابور. نبدأ باستخدامها على الجذر `s`.
 
 ```ocaml
     let queue = Queue.create () in
@@ -67,12 +66,11 @@ table and the queue. We begin by using it on the root `s`.
     add s;
 ```
 
-Another important property is that each vertex contained in the queue is also contained
-in the table `visited`, which the function `add` guarantees in an obvious manner. We
-use a loop to examine vertices in the order in which they are discovered, until all
-vertices reachable from the root have been examined. As long as the queue is not
-empty, we extract the first element `v` of the queue and apply the visitor function `f` to
-it.
+وثمة خاصية مهمة أخرى هي أنّ كل رأس موجود في الطابور موجود أيضًا
+في الجدول `visited`، وهذا ما تضمنه الدالة `add` بطريقة واضحة. ونستخدم
+حلقة لفحص الرؤوس بالترتيب الذي اكتُشفت به، إلى أن تُفحص جميع
+الرؤوس التي يمكن الوصول إليها من الجذر. وما دام الطابور غير
+فارغ، نستخرج العنصر الأول `v` من الطابور ونطبّق عليه الدالة الزائرة `f`.
 
 ```ocaml
     while not (Queue.is_empty queue) do
@@ -80,79 +78,79 @@ it.
       f v;
 ```
 
-For each successor `w` of `v` not yet found, that is, not contained in the table `visited`, we
-use `add` to add it to both the queue and the table.
+لكل رأس لاحق (successor) `w` للرأس `v` لم يُعثَر عليه بعد، أي غير موجود في الجدول `visited`،
+نستخدم `add` لإضافته إلى كلٍّ من الطابور والجدول.
 
 ```ocaml
       iter_succ (fun w -> if not (H.mem visited w) then add w) g v
     done
 ```
 
-This completes the `while` loop and the function `iter_bfs`. The complete code is given in
-program [99](#x29-305020r99) below.
+وبذلك تكتمل حلقة `while` والدالة `iter_bfs`. ويُعطى الكود الكامل في
+البرنامج [99](#x29-305020r99) أدناه.
 
 >
 
-This code applies equally well to undirected and directed graphs. Note that some
-vertices may not be discovered by this algorithm. These are the vertices v for
-which there is no path between the root and v. In other words, breadth-first
-search determines the set of vertices that can be reached from the root and
-even determines their minimal distance from the root in number of arcs (see
-exercise [13.1](#x29-315001r1)).
+ينطبق هذا الكود بالقدر نفسه على الرسوم البيانية غير الموجّهة والموجّهة. لاحظ أن بعض
+الرؤوس قد لا يكتشفها هذا الخوارزم. وهذه هي الرؤوس v التي
+لا يوجد مسار بينها وبين الجذر. بعبارة أخرى، يحدّد البحث
+بالعرض أولاً مجموعة الرؤوس التي يمكن الوصول إليها من الجذر،
+بل ويحدّد مسافتها الدنيا من الجذر بعدد الأقواس (انظر
+التمرين [13.1](#x29-315001r1)).
 
-The complexity of breadth-first search is easy to determine. Each vertex is placed
-in the queue at most once and is therefore examined at most once. Each arc is
-considered at most once, when its starting vertex is examined. For a graph with N
-vertices and E arcs, the complexity is therefore O(N + E), which is optimal. The
-complexity in space is O(N), since the queue, like the hash table, may contain
-(almost) all vertices in the worst case.
+من السهل تحديد تعقيد البحث بالعرض أولاً. يُوضَع كل رأس
+في الطابور مرة واحدة على الأكثر، ومن ثُمَّ يُفحص مرة واحدة على الأكثر. ويُنظر إلى كل قوس
+مرة واحدة على الأكثر، عند فحص رأس بدايته. بالنسبة إلى رسم بياني فيه N
+رأسًا وE قوسًا، يكون التعقيد بالتالي O(N + E)، وهو أمثل. أما
+التعقيد في المكان فهو O(N)، لأن الطابور، شأنه شأن جدول التجزئة، قد يحتوي
+على (جميع) الرؤوس تقريبًا في أسوأ الحالات.
 
-There is another way to implement breadth-first search, without using a queue. As
-noted above, the queue has a very particular structure, with vertices at distance d
-followed by vertices at distance d + 1. We see, therefore, that the queue structure is
-not really necessary. All we need are two “buckets,” one containing the vertices at
-distance d, and the other, those at distance d + 1. We may concretize these, for
-instance, using lists. When we are done with bucket d, we swap the two buckets. This
-does not affect the complexity.
+ثمة طريقة أخرى لتنفيذ البحث بالعرض أولاً، دون استخدام طابور. وكما
+لوحظ أعلاه، فإنّ للطابور بنية خاصة جدًا، إذ يحتوي على الرؤوس على مسافة d
+تليها الرؤوس على مسافة d + 1. ولذلك نرى أنّ بنية الطابور
+ليست ضرورية فعلًا. كل ما نحتاجه هو «دلوان»، أحدهما يحتوي على الرؤوس على
+مسافة d، والآخر على تلك على مسافة d + 1. ويمكننا تجسيدهما،
+مثلًا، باستخدام قوائم. وعندما ننتهي من الدلو d، نبادل الدلوين. وهذا
+لا يؤثّر في التعقيد.
 
-### 13.2 Depth-First Search
+### 13.2 البحث بالعمق أولاً
 
-The second graph traversal that we present is *depth-first search*(DFS). It uses a
-backtracking algorithm: As long as we can follow an arc, we do so, and when it is no
-longer possible, we backtrack. As with breadth-first search, we mark vertices as they
-are discovered, to avoid getting stuck in a cycle. Consider the example of the graph on
-the left in figure [13.2](#example-of-depthfirst-search). We begin a depth-first search from vertex 2. Two arcs come
-out of this vertex, 2 → 4 and 2 → 5. We arbitrarily choose to consider the arc
-2 → 5 first and, accordingly, proceed to vertex 5. No arc comes out of 5,
+ثاني عملية اجتياز للرسم البياني نعرضها هي *البحث بالعمق أولاً*(DFS). وتستخدم
+خوارزمية تتبّع خلفي (backtracking): ما دمنا قادرين على اتّباع قوس، نفعل ذلك، وعندما
+يتعذّر ذلك، نتراجع. وكما في البحث بالعرض أولاً، نُعلّم الرؤوس أثناء
+اكتشافها، لتفادي الوقوع في حبس دورة. خُذ مثال الرسم البياني الواقع على
+اليسار في الشكل [13.2](#example-of-depthfirst-search). نبدأ بحثًا بالعمق أولاً من الرأس 2. يخرج قوسان
+من هذا الرأس: 2 → 4 و2 → 5. نختار اعتباطًا النظر في القوس
+2 → 5 أولاً، وبالتالي ننتقل إلى الرأس 5. لا يخرج أي قوس من 5،
  
  
-so we cannot continue. We therefore backtrack to vertex 2, and consider
-the second outgoing arc, 2 → 4. From 4, we can only follow the arc 4 → 3.
-Similarly, from 3, we can only follow the arc 3 → 1. Two arcs emerge from
-vertex 1: 1 → 0 and 1 → 4. We choose to follow the arc 1 → 4 first. It leads to a
-vertex that has already been visited. We therefore backtrack. Returning to 1,
-we consider the other arc, 1 → 0, which leads to 0. From there, the only
-outgoing arc leads to 3, which has also already been visited. We therefore
-return to 0, then to 1, then to 3, then to 4, and finally to 2. The traversal
-is complete. If we redraw the graph with the order in which the vertices
-were discovered as exponents, we get the graph on the right in figure [13.2](#example-of-depthfirst-search).
+لذلك لا يمكننا المواصلة.
+لذلك نتراجع إلى الرأس 2، وننظر في القوس الخارج الثاني، 2 → 4. ومن 4، لا
+يمكننا اتبّاع سوى القوس 4 → 3. وكذلك، من 3، لا يمكننا اتبّاع سوى القوس 3 → 1. ويخرج قوسان
+من الرأس 1: 1 → 0 و1 → 4. نختار اتبّاع القوس 1 → 4 أولاً. وهو يقود إلى
+رأس زُير سابقًا. لذلك نتراجع. وبالعودة إلى 1،
+ننظر في القوس الآخر، 1 → 0، الذي يقود إلى 0. ومن هناك، القوس
+الخارج الوحيد يقود إلى 3، وقد زُير هو أيضًا سابقًا. لذلك
+نعود إلى 0، ثم إلى 1، ثم إلى 3، ثم إلى 4، وأخيراً إلى 2. ويكتمل
+الاجتياز. وإذا أعدنا رسم الرسم البياني بترتيب اكتشاف
+الرؤوس مكتوبًا كأُسُس، نحصل على الرسم البياني على اليمين في الشكل [13.2](#example-of-depthfirst-search).
 
 ![](/images/learn-ocaml/graph-algorithms-2-dfs1-mps-.webp){#example-of-depthfirst-search}
 
-**Figure 13.2: Example of depth-first search.**
+**الشكل 13.2: مثال على البحث بالعمق أولاً.**
 
 ![PIC](/images/learn-ocaml/graph-algorithms-3-dfs2-mps-.webp)
 
-As with breadth-first search, we will make use of a hash table containing the
-vertices already discovered.
+وكما في البحث بالعرض أولاً، سنستخدم جدول تجزئة يحتوي على
+الرؤوس المكتشَفة سابقًا.
 
 ```ocaml
   let iter_dfs f g s =
     let visited = H.create () in
 ```
 
-Depth-first search is written as a recursive local function `visit` taking a vertex `v` as
-argument. Its code is a few lines long:
+يُكتب البحث بالعمق أولاً في صورة دالة محلية عودية `visit` تأخذ رأسًا `v`
+كوسيط. وكودها لا يزيد عن بضعة أسطر:
 
 ```ocaml
     let rec visit v =
@@ -163,101 +161,100 @@ argument. Its code is a few lines long:
       end
 ```
 
-If vertex `v` has already been discovered, there is nothing more to be done. Otherwise, we
-mark it and visit it with the function `f`. Then, we consider each successor `w`,
-recursively triggering a depth-first search on each one. One detail is crucial: We added
-`v` to the table `visited` *before*considering its successors. This is what keeps us from
-getting stuck in a cycle. To conclude the function `iter_dfs`, we have only to call
-`visit` on the root `s`:
+إذا كان الرأس `v` قد اكتُشف سابقًا، فلا شيء آخر يُفعل. وإلا، فإننا
+نُعلّمه ونزوره بالدالة `f`. ثم ننظر في كل رأس لاحق `w`،
+ونُشغّل عليه بشكل عودي بحثًا بالعمق أولاً. وثمة تفصيل جوهري: أضفنا
+`v` إلى الجدول `visited` *قبل*النظر في رؤوسه اللاحقة. وهذا هو ما يمنعنا من
+الوقوع في حبس دورة. ولإنهاء الدالة `iter_dfs`، ليس علينا سوى استدعاء
+`visit` على الجذر `s`:
 
 ```ocaml
     in
     visit s
 ```
 
-The complete code is given in program [100](#x29-306017r100).
+يُعطى الكود الكامل في البرنامج [100](#x29-306017r100).
 
 >
 
-The complexity is O(N + E), by the same logic as in case of breadth-first search.
-Space complexity is subtler since it is the stack of recursive calls that contains the
-vertices being visited, and that plays the role of the queue in breadth-first search.
-Since in the worst case all the vertices can be present in the stack or hash table, it
-follows that the space complexity is O(N).
+التعقيد هو O(N + E)، بالمنطق نفسه كما في حالة البحث بالعرض أولاً.
+أما تعقيد المكان فمنطقه أدقّ، إذ إنّ مكدّس الاستدعاءات العودية هو الذي يحتوي على
+الرؤوس قيد الزيارة، وهو الذي يلعب دور الطابور في البحث بالعرض أولاً.
+ولأنّ جميع الرؤوس قد تكون حاضرة في المكدّس أو جدول التجزئة في أسوأ الحالات،
+فإنّ تعقيد المكان هو O(N).
 
-Like breadth-first search, depth-first search allows us to determine the set of
-vertices that can be reached from the root `s`. Figure [13.3](#another-depthfirst-search) illustrates another example,
-where depth-first search is triggered from vertex 1. Vertices 2 and 5 are not
-discovered. In particular, depth-first search, like breadth-first search, is a way to
-determine the existence of a path between a particular vertex, namely, the root, and
-other vertices of the graph. If that is the only objective (if, for example, the minimal
-distance does not interest us), depth-first search is generally more efficient. Indeed, its
-memory use (that is, the call stack) is often inferior to that of breadth-first search.
-The typical example is that of a tree, in which memory use is limited to the height of
-the tree for depth-first search, but could be as large as the entire tree in
-case of breadth-first search. Depth-first search has many other applications
-that lie beyond the scope of this book. See, for example, *Introduction to Algorithms* [[7](https://usr.lmf.cnrs.fr/lpo/mainli3.html#Xcormen)].
+وكما في البحث بالعرض أولاً، يسمح لنا البحث بالعمق أولاً بتحديد مجموعة
+الرؤوس التي يمكن الوصول إليها من الجذر `s`. ويوضّح الشكل [13.3](#another-depthfirst-search) مثالًا آخر،
+حيث يُشغَّل البحث بالعمق أولاً من الرأس 1. ولا يُكتشَف الرأسان 2 و5.
+وعلى وجه الخصوص، فإنّ البحث بالعمق أولاً، شأنه شأن البحث بالعرض أولاً، وسيلة
+لتحديد وجود مسار بين رأس معيّن، وهو الجذر، ورؤوس أخرى من الرسم البياني. وإذا
+كان ذلك هو الهدف الوحيد (إذا لم تكن المسافة الدنيا تهمّنا، مثلًا)،
+فإنّ البحث بالعمق أولاً يكون عادةً أكثر كفاءة. فاستهلاكه للذاكرة (أي مكدّس
+الاستدعاءات) يكون كثيرًا ما أدنى من استهلاك البحث بالعرض أولاً.
+والمثال النموذجي هو الشجرة، إذ يقتصر استهلاك الذاكرة على ارتفاع
+الشجرة في حالة البحث بالعمق أولاً، لكنه قد يبلغ حجم الشجرة بأكملها في
+حالة البحث بالعرض أولاً. وللبحث بالعمق أولاً تطبيقات كثيرة أخرى
+تقع خارج نطاق هذا الكتاب. انظر، على سبيل المثال، *Introduction to Algorithms* [[7](https://usr.lmf.cnrs.fr/lpo/mainli3.html#Xcormen)].
 
 ![](/images/learn-ocaml/graph-algorithms-4-dfs3-mps-.webp){#another-depthfirst-search}
 
-**Figure 13.3: Another depth-first search.**
+**الشكل 13.3: بحث بالعمق أولاً آخر.**
 
-### 13.3 Shortest Path
+### 13.3 المسار الأقصر
 
-We consider here graphs whose arcs are labeled with weights (representing distances,
-for example). We seek the shortest path between two vertices, where the length is no
-longer the number of arcs but rather the sum of weights along the path. Thus, if we
-consider the weighted graph of figure [13.4](#example-of-a-weighted-graph), the shortest path from vertex 2 to
-vertex 0 is of length 5. This is the path 2 → 4 → 3 → 1 → 0, which is shorter than
-the path 2 → 1 → 0, of length 6, even if the latter contains fewer arcs. Similarly,
-the shortest path from vertex 2 to vertex 5, via vertex 4, is of length 2.
+ننظر هنا في رسوم بيانية موسومة أقواسها بأوزان (تمثّل مسافات،
+مثلًا). ونبحث عن المسار الأقصر بين رأسين، حيث لا يكون الطول
+عدد الأقواس بل مجموع الأوزان على طول المسار. وهكذا، إذا
+نظرنا في الرسم البياني الموزون في الشكل [13.4](#example-of-a-weighted-graph)، فإنّ المسار الأقصر من الرأس 2 إلى
+الرأس 0 طوله 5. وهذا هو المسار 2 → 4 → 3 → 1 → 0، وهو أقصر من
+المسار 2 → 1 → 0 الذي طوله 6، حتى إن كان الأخير يحتوي على أقواس أقل. وبالمثل،
+فإنّ المسار الأقصر من الرأس 2 إلى الرأس 5، مرورًا بالرأس 4، طوله 2.
 
 ![](/images/learn-ocaml/graph-algorithms-5-dijkstra1-mps-.webp){#example-of-a-weighted-graph}
 
-**Figure 13.4: Example of a weighted graph.**
+**الشكل 13.4: مثال على رسم بياني موزون.**
 
-As with breadth- and depth-first search, we take as given a vertex `s`, from which
-we seek to determine the shortest paths to the other vertices. We also require the
-weight of each arc. One possibility is to modify the graph structure to include this.
-Here, however, we take as given a weight function `weight` of the following type, where
-weights are of type `float`:
+وكما في البحث بالعرض والعمق أولاً، نعتبر معطىً رأسًا `s` نبحث منه عن
+تحديد المسارات الأقصر إلى الرؤوس الأخرى. ونحتاج كذلك إلى
+وزن كل قوس. ومن الممكن تعديل بنية الرسم البياني لتضمين ذلك.
+لكننا هنا نعتبر معطاةً دالة وزن `weight` من النوع التالي، حيث
+الأوزان من النوع `float`:
 
 ```ocaml
   val weight: graph -> vertex -> vertex -> float
 ```
 
-This function will only be called with arguments `g`, `x`, and `y` if there is an arc between `x`
-and `y` in the graph `g`.
+لن تُستدعى هذه الدالة إلا بالوسائط `g` و`x` و`y` إذا وُجد قوس بين `x`
+و`y` في الرسم البياني `g`.
 
-We present two algorithms to solve the problem. The first, Dijkstra’s algorithm,
-assumes that the weights are always non-negative. The second, the Bellman-Ford
-algorithm, involves no such hypothesis regarding the weights.
+نعرض خوارزميتين لحلّ المسألة. الأولى، خوارزمية ديكسترا (Dijkstra)،
+تفترض أنّ الأوزان غير سالبة دائمًا. والثانية، خوارزمية بلمان-فورد
+(Bellman-Ford)، لا تتضمّن أي افتراض من هذا القبيل بشأن الأوزان.
 
-#### Dijkstra’s Algorithm
+#### خوارزمية ديكسترا
 
-Dijkstra’s algorithm is a generalization of breadth-first search. Here, too, we
-proceed in “concentric circles.” The difference is that the radii of these circles
-represent distance in terms of total weight rather than number of arcs. Thus, in
-the example above, starting from the root 2, we first reach the vertices at
-distance 1 (namely, 4), then those at distance 2 (namely, 3 and 5), then those
-at distance 3 (namely, 1), and finally those at distance 5 (namely, 0). A
-possible complication is that we may reach a vertex at a certain distance (for
-example, vertex 5 with the arc 2 → 5), and then later find a shorter path by
-taking different arcs (for example, 2 → 4 → 5). A queue no longer suffices
-as it did in breadth-first search. Instead, we will use a *priority queue*(see
-chapter [6](https://usr.lmf.cnrs.fr/lpo/mainch6.html#queues)). The priority queue will contain the vertices already found, ordered
-by distance from the root. When a better path to a vertex is found, the
+خوارزمية ديكسترا تعميم للبحث بالعرض أولاً. وهنا أيضًا
+نتقدّم في «دوائر متحدة المركز». والفرق أنّ أنصاف أقطار هذه الدوائر
+تمثّل المسافة بدلالة الوزن الكلي لا عدد الأقواس. وهكذا، في
+المثال أعلاه، بدءًا من الجذر 2، نصل أولاً إلى الرؤوس على
+مسافة 1 (وهو 4)، ثم إلى تلك على مسافة 2 (وهما 3 و5)، ثم إلى تلك
+على مسافة 3 (وهو 1)، وأخيراً إلى تلك على مسافة 5 (وهو 0). ومن
+التعقيدات المحتملة أن نصل إلى رأس على مسافة معيّنة (على
+سبيل المثال، الرأس 5 عبر القوس 2 → 5)، ثم نجد لاحقًا مسارًا أقصر
+باتّباع أقواس مختلفة (على سبيل المثال، 2 → 4 → 5). ولم يعد الطابور
+كافيًا كما كان في البحث بالعرض أولاً. بل سنستخدم *طابور أولوية*
+(priority queue) (انظر الفصل [6](https://usr.lmf.cnrs.fr/lpo/mainch6.html#queues)). وسيحتوي طابور الأولوية على الرؤوس المكتشَفة
+بالترتيب حسب المسافة من الجذر. وعند العثور على مسار أفضل إلى رأس،
  
  
-vertex is reinserted in the queue with a higher priority, that is, a shorter
-distance[^2].
+يُعاد إدراج الرأس في الطابور بأولوية أعلى، أي مسافة أقصر[^2].
 
-We now describe the code of Dijkstra’s algorithm. To implement the priority
-queue, we assume a functor `PriorityQueue`, parametrized by a type `t` equipped with
-a total order. (Such functors were presented in chapter [6](https://usr.lmf.cnrs.fr/lpo/mainch6.html#queues).) Here, the type `t` will be
-that of pairs (v,d), where v is a vertex and d is its distance from the root. The order
-on these pairs is that obtained by comparing the distances. We introduce the
-following module:
+نصف الآن كود خوارزمية ديكسترا. ولتنفيذ طابور
+الأولوية، نفترض وجود دالة رافدة (functor) اسمها `PriorityQueue`، مُعامَلة بنوع `t` مزوّد
+بترتيب كلي. (وقد عُرضت مثل هذه الدوال الرافدة في الفصل [6](https://usr.lmf.cnrs.fr/lpo/mainch6.html#queues).) وهنا سيكون النوع `t` هو
+نوع الأزواج (v,d)، حيث v رأس وd مسافته من الجذر. والترتيب
+المعتمد على هذه الأزواج هو الناتج عن مقارنة المسافات. ونُعرِّف
+الوحدة التالية:
 
 ```ocaml
   module VertexDistance = struct
@@ -266,81 +263,81 @@ following module:
   end
 ```
 
-It only remains to apply the functor `PriorityQueue` to the module `VertexDistance`,
-that is:
+ولم يتبقَّ سوى تطبيق الدالة الرافدة `PriorityQueue` على الوحدة `VertexDistance`،
+أي:
 
 ```ocaml
   module P = PriorityQueue(VertexDistance)
 ```
 
-We assume here that the module `P` provides a function `create` to construct a new
-priority queue, a function `add` to add an element, and a function `extract_min` that
-removes and returns the smallest element for the order defined by the function
+نفترض هنا أنّ الوحدة `P` توفّر دالة `create` لبناء طابور أولوية
+جديد، ودالة `add` لإضافة عنصر، ودالة `extract_min` التي
+تحذف وتُعيد أصغر عنصر بالنسبة إلى الترتيب المعرَّف بالدالة
 `compare`.
 
-We now arrive at the code of the algorithm itself. We write it as a function
-`dijkstra` that takes as arguments a graph `g`, a root `s`, and a function `f`. The
-function `f` will be applied to elements of `g` as their shortest distance to `s` is
-determined, the vertex being passed to `f` as first argument, and its distance as second
-argument. We begin by creating a hash table that will contain the vertices already
-reached by the traversal.
+نصل الآن إلى كود الخوارزمية نفسها. نكتبها في صورة دالة
+`dijkstra` تأخذ كوسائط رسمًا بيانيًا `g` وجذرًا `s` ودالةً `f`. وستُطبَّق
+الدالة `f` على عناصر `g` عند تحديد مسافتها الدنيا إلى `s`،
+حيث يُمرَّر الرأس إلى `f` كوسيط أول، ومسافته كوسيط
+ثانٍ. نبدأ بإنشاء جدول تجزئة يحتوي على الرؤوس التي
+وصل إليها الاجتياز سابقًا.
 
 ```ocaml
   let rec dijkstra f g s =
     let visited = H.create () in
 ```
 
-We also create a hash table, `distance`, and the priority queue, `queue`. The hash table will
-contain the distance currently known for each vertex.
+نُنشئ أيضًا جدول تجزئة، `distance`، وطابور الأولوية، `queue`. وسيحتوي جدول
+التجزئة على المسافة المعروفة حاليًا لكل رأس.
 
 ```ocaml
     let distance = H.create () in
     let queue = P.create () in
 ```
 
-It is convenient to introduce a function `add` that will add a vertex to both these data
-structures at the same time. We begin by applying it to the root `s`.
+من الملائم تعريف دالة `add` تُضيف رأسًا إلى بنيتي البيانات هاتين
+في الوقت نفسه. ونبدأ بتطبيقها على الجذر `s`.
 
 ```ocaml
     let add v d = H.replace distance v d; P.add queue (v, d) in
     add s 0.;
 ```
 
-We will see below why `H.replace` is preferred over `H.add`. We then continue with a loop
-as long as the queue is not empty.
+سنرى أدناه سبب تفضيل `H.replace` على `H.add`. ثم نواصل بحلقة
+ما دام الطابور غير فارغ.
 
 ```ocaml
     while not (P.is_empty queue) do
 ```
 
-We extract the first element of the queue, `u`, together with the distance to the root, `du`. If
-the vertex `u` is already in `visited`, then we have already determined the distance
-of `s` to `u`, and there is nothing more to be done.
+نستخرج العنصر الأول من الطابور، `u`، مع المسافة إلى الجذر `du`. وإذا
+كان الرأس `u` موجودًا في `visited` سابقًا، فقد حدّدنا مسافة
+`s` إلى `u` بالفعل، ولم يعد هناك ما يُفعل.
 
 ```ocaml
       let (u, du) = P.extract_min queue in
       if not (H.mem visited u) then begin
 ```
 
-This situation can indeed occur when a first path is found and another, shorter, path is
-found subsequently. The latter then passes before the former in the priority queue.
-When the longer path finally comes out of the queue, it should be ignored. If the
-vertex is not in `visited`, however, that means that we have just found a shortest path
-from `s` to `u`, which we indicate by adding `u` to the table `visited` and by applying the
-visitor function `f` to `u` and `du`.
+قد تحدث هذه الحالة فعلًا عند العثور على مسار أول ثم العثور لاحقًا على مسار
+آخر أقصر. وحينئذٍ يمرّ الأخير قبل الأول في طابور الأولوية.
+وعندما يخرج المسار الأطول أخيرًا من الطابور، ينبغي تجاهله. وإذا
+كان الرأس غير موجود في `visited`، فذلك يعني أننا وجدنا للتوّ مسارًا أقصر
+من `s` إلى `u`، وهذا ما نشير إليه بإضافة `u` إلى الجدول `visited` وبتطبيق
+الدالة الزائرة `f` على `u` و`du`.
 
 ```ocaml
         H.add visited u ();
         f u du;
 ```
 
-Next, we will examine all arcs emerging from `u`. For each arc `u` → `v`, the distance to `v`
-obtained by following the corresponding arc is the sum of the distance `du` and the arc
-weight, that is, `weightuv`. Several scenarios are possible for the vertex `v`. Either it is
-the first time that it is reached, or it was already in `distance`. In the latter case, we
-may have decreased the distance to `v` by passing through `u`. If so, it suffices to use
-the function `add` to update the tables. We handle each successor `v` in the function
-`visit` below:
+بعد ذلك، سنفحص جميع الأقواس الخارجة من `u`. ولكل قوس `u` → `v`، تكون المسافة إلى `v`
+الناتجة من اتبّاع القوس المقابل هي مجموع المسافة `du` ووزن
+القوس، أي `weightuv`. وتُحتمَل عدة سيناريوهات بالنسبة إلى الرأس `v`. إما أن يكون
+الوصول إليه للمرة الأولى، أو أنه كان موجودًا في `distance` سابقًا. وفي الحالة الأخيرة،
+قد نكون قد خفّضنا المسافة إلى `v` بالمرور عبر `u`. وإذا كان الأمر كذلك، كفى استخدام
+الدالة `add` لتحديث الجدولين. ونعالج كل رأس لاحق `v` في الدالة
+`visit` أدناه:
 
 ```ocaml
         let visit v =
@@ -351,8 +348,8 @@ the function `add` to update the tables. We handle each successor `v` in the fu
 
 >
 
-It only remains to apply this function to all arcs emerging from `u`, which
-concludes the body of the `while` loop.
+ولم يتبقَّ سوى تطبيق هذه الدالة على جميع الأقواس الخارجة من `u`، وهو ما
+يُنهي جسم حلقة `while`.
 
 ```ocaml
         in
@@ -361,53 +358,52 @@ concludes the body of the `while` loop.
     done
 ```
 
-Once we exit the `while` loop, all vertices that may be reached from `s` have been visited.
-The complete code is given in program [101](#x29-308034r101) above.
+وبعد الخروج من حلقة `while`، يكون قد زُير كل رأس يمكن الوصول إليه من `s`.
+ويُعطى الكود الكامل في البرنامج [101](#x29-308034r101) أعلاه.
 
-Figure [13.5](#result-of-dijkstras-algorithm) shows the result of Dijkstra’s algorithm on the graph given in the
-previous example, with 2 as root. The graph is drawn with the final distances
-obtained for each vertex as exponents. In this example, all vertices have been reached
-by the traversal. As for the breadth- and depth-first searches, this is not
-always the case: only vertices for which there is a path from the root will be
-reached.
+ويُظهر الشكل [13.5](#result-of-dijkstras-algorithm) نتيجة خوارزمية ديكسترا على الرسم البياني المعطى في
+المثال السابق، مع 2 جذرًا. وقد رُسم الرسم البياني بالمسافات النهائية
+المتحصَّلة لكل رأس مكتوبةً كأُسُس. وفي هذا المثال، وُصل إلى جميع الرؤوس
+بواسطة الاجتياز. أما في البحث بالعرض والعمق أولاً، فليس الأمر
+كذلك دائمًا: فلا يُوصل إلا إلى الرؤوس التي يوجد لها مسار من الجذر.
 
 ![](/images/learn-ocaml/graph-algorithms-6-dijkstra2-mps-.webp){#result-of-dijkstras-algorithm}
 
-**Figure 13.5: Result of Dijkstra’s algorithm.**
+**الشكل 13.5: نتيجة خوارزمية ديكسترا.**
 
-##### Complexity
+##### التعقيد
 
-Let us evaluate the cost of Dijkstra’s algorithm in the worst case. The priority queue
-can contain up to E elements, because the algorithm visits each arc at most once, and
-each arc can lead to the insertion of an element in the queue. Assuming that the
-priority queue operations `add` and `extract_min` have logarithmic cost (as is the case
-for the priority queues described in chapter [6](https://usr.lmf.cnrs.fr/lpo/mainch6.html#queues)), each operation on the queue will have
-cost O(log E), that is, O(log N), since E ≤ N2. The total cost is therefore
+لنقيّم كلفة خوارزمية ديكسترا في أسوأ الحالات. قد يحتوي طابور الأولوية
+على ما يصل إلى E عنصر، لأنّ الخوارزمية تمرّ على كل قوس مرة واحدة على الأكثر،
+وكل قوس قد يؤدي إلى إدراج عنصر في الطابور. وبافتراض أنّ عمليتي
+طابور الأولوية `add` و`extract_min` لهما كلفة لوغاريتمية (كما هو الحال
+في طوابير الأولوية الموصوفة في الفصل [6](https://usr.lmf.cnrs.fr/lpo/mainch6.html#queues))، فستكون لكل عملية على الطابور
+كلفة O(log E)، أي O(log N)، بما أنّ E ≤ N2. والكلفة الكلية بالتالي هي
 O(E log N).
 
-#### Bellman-Ford Algorithm
+#### خوارزمية بلمان-فورد
 
-We present here a second solution to the shortest path problem, this time without
-assuming that the weights are non-negative. Omitting this assumption introduces a
-subtlety. If the graph contains a cycle with strictly negative total weight,
-and if this cycle can be reached from the root, then none of the vertices
-that can be reached from the cycle will have a shortest path because we can
-take this cycle as many times as we wish, reducing the total weight of the
-path each time. The Bellman-Ford algorithm computes the shortest paths
-from the root and detects any negative cycle that may be reached from the
-root.
+نعرض هنا حلًّا ثانيًا لمسألة المسار الأقصر، هذه المرة دون
+افتراض أنّ الأوزان غير سالبة. وإسقاط هذا الافتراض يُدخل
+دقةً لطيفة. فإذا احتوى الرسم البياني على دورة وزنها الكلي سالب تمامًا،
+وإذا أمكن الوصول إلى هذه الدورة من الجذر، فلن يكون لأي من الرؤوس
+التي يمكن الوصول إليها من الدورة مسار أقصر، لأننا نستطيع
+سلوك هذه الدورة أيّ عدد نشاء من المرات، مقلّلين وزن المسار الكلي
+في كل مرة. وتحسب خوارزمية بلمان-فورد المسارات الأقصر
+من الجذر وتكشف أي دورة سالبة يمكن الوصول إليها من
+الجذر.
 
-This algorithm consists in repeating the following operation N times: Consider
-each arc `u` → `v` of the graph and determine if taking it will reduce the distance
-currently known between the source and `v`. The idea is that a shortest path
-between `s` and `v` cannot contain more than N − 1 arcs, without which this path
-would contain a cycle, which we could remove from the path if it is of non-negative
+تتضمّن هذه الخوارزمية تكرار العملية التالية N مرة: انظر في
+كل قوس `u` → `v` من الرسم البياني وحدّد ما إذا كان سلوكه سيقلّل المسافة
+المعروفة حاليًا بين المصدر و`v`. والفكرة أنّ المسار الأقصر
+بين `s` و`v` لا يمكن أن يحتوي على أكثر من N − 1 قوسًا، وإلا لاحتوى هذا المسار
+على دورة، يمكننا حذفها من المسار إذا كان وزنها غير سالب.
  
  
-weight. This is why N iterations suffice.
+الوزن. ولهذا تكفي N تكرارات.
 
-Let us now write the code of the Bellman-Ford algorithm. We begin by defining a
-function `iter_edge` that traverses all the arcs of a graph `g`.
+نكتب الآن كود خوارزمية بلمان-فورد. نبدأ بتعريف
+دالة `iter_edge` تمرّ على جميع أقواس رسم بياني `g`.
 
 ```ocaml
   let iter_edge f g =
@@ -415,20 +411,20 @@ function `iter_edge` that traverses all the arcs of a graph `g`.
       iter_succ (fun v -> f u v (weight g u v)) g u) g
 ```
 
-For each arc `u` → `v`, the function `iter_edge` applies the function `f` to the vertices `u` and
-`v`, and the distance of the arc `u` → `v` given by the function `weight`.
+لكل قوس `u` → `v`، تطبّق الدالة `iter_edge` الدالة `f` على الرأسين `u` و
+`v`، وعلى مسافة القوس `u` → `v` المعطاة بالدالة `weight`.
 
-The function `bellman_ford` takes a graph `g` and a root vertex `s` as arguments. It
-begins by creating a hash table `h` containing the known distances for each
-vertex.
+وتأخذ الدالة `bellman_ford` رسمًا بيانيًا `g` ورأس جذر `s` كوسيطين. وهي
+تبدأ بإنشاء جدول تجزئة `h` يحتوي على المسافات المعروفة لكل
+رأس.
 
 ```ocaml
   let bellman_ford g s =
     let h = H.create () in
 ```
 
-We begin by initializing this table, giving `s` distance 0 and every other vertex an infinite
-distance.
+نبدأ بتهيئة هذا الجدول، بإعطاء `s` المسافة 0 وإعطاء كل رأس آخر مسافة
+لانهائية.
 
 ```ocaml
     iter_vertex (fun v -> H.add h v max_float) g;
@@ -437,27 +433,26 @@ distance.
 
 >
 
-We use here the constant `max_float` to represent an infinite distance. Then we
-repeat the following operation N − 1 times: We examine each arc, using a `for` loop
-and the function `iter_edge`.
+نستخدم هنا الثابت `max_float` لتمثيل مسافة لانهائية. ثم
+نكرّر العملية التالية N − 1 مرة: نفحص كل قوس، باستخدام حلقة `for`
+والدالة `iter_edge`.
 
 ```ocaml
     for i = 1 to nb_vertex g - 1 do
       iter_edge (fun u v w ->
 ```
 
-For each arc `u` → `v`, we compute the distance `d` from the root to `v` that is obtained by
-taking this arc. If it is smaller than the best distance currently known, we record
-it.
+لكل قوس `u` → `v`، نحسب المسافة `d` من الجذر إلى `v` الناتجة عن
+سلوك هذا القوس. وإذا كانت أصغر من أفضل مسافة معروفة حاليًا، نسجّلها.
 
 ```ocaml
         let d = H.find h u +. w in
         if d < H.find h v then H.replace h v d
 ```
 
-Once this `for` loop is complete, we redo the operation an N-th and final time. This time,
-the shortest paths can only be improved by the presence of a negative cycle. We will
-signal this case by raising an exception.
+وبعد اكتمال حلقة `for` هذه، نعيد العملية مرة N وأخيرة. وهذه المرة،
+لا يمكن تحسين المسارات الأقصر إلا بوجود دورة سالبة. وسنشير إلى هذه
+الحالة بإطلاق استثناء.
 
 ```ocaml
     done;
@@ -466,69 +461,69 @@ signal this case by raising an exception.
         raise NegativeCycle
 ```
 
-This completes the Bellman-Ford algorithm. We can return the table `h` that gives the
-distance of each vertex to the source. This is what is done in program [102](#x29-310014r102).
+وبذلك تكتمل خوارزمية بلمان-فورد. ويمكننا إرجاع الجدول `h` الذي يعطي
+مسافة كل رأس إلى المصدر. وهذا ما يُفعل في البرنامج [102](#x29-310014r102).
 
 ![](/images/learn-ocaml/graph-algorithms-7-bf_1-mps-.webp){#illustration-of-the-bellmanford-algorithm}
 
-**Figure 13.6: Illustration of the Bellman-Ford algorithm.**
+**الشكل 13.6: توضيح لخوارزمية بلمان-فورد.**
 
-We illustrate the Bellman-Ford algorithm with an example. Consider the graph of
-figure [13.6](#illustration-of-the-bellmanford-algorithm), for which we seek to determine the distances from vertex 5. The table to
-the right of the graph gives the distance found for each vertex after each step.
-Initially, all the vertices are at an infinite distance, except the root 5. At each step,
-we assume the vertices are traversed in the order of their numbering. We observe,
-for example, that the distance to vertex 2 initially takes the value 3 (the
-arc 5 → 2), then the value 2 (passing through vertex 1), and finally the
-value -2 (passing through the vertices 4 and 1). After that, it no longer
-varies. More generally, we observe here that none of the distances is improved
-during the last two steps of the algorithm. In particular, there is no negative
-cycle.
+نوضّح خوارزمية بلمان-فورد بمثال. خُذ الرسم البياني في
+الشكل [13.6](#illustration-of-the-bellmanford-algorithm)، الذي نبحث فيه عن تحديد المسافات من الرأس 5. والجدول الواقع
+على يمين الرسم البياني يعطي المسافة المكتشَفة لكل رأس بعد كل خطوة.
+وفي البداية، تكون جميع الرؤوس على مسافة لانهائية، إلا الجذر 5. وفي كل خطوة،
+نفترض أنّ الرؤوس تُجتاز بترتيب ترقيمها. ونلاحظ،
+على سبيل المثال، أنّ المسافة إلى الرأس 2 تأخذ أولاً القيمة 3 (القوس
+5 → 2)، ثم القيمة 2 (بالمرور عبر الرأس 1)، وأخيراً
+القيمة -2 (بالمرور عبر الرأسين 4 و1). وبعد ذلك، لا تتغيّر
+بعد الآن. وبشكل أعمّ، نلاحظ هنا أنّ أياً من المسافات لا تتحسّن
+خلال الخطوتين الأخيرتين من الخوارزمية. وعلى وجه الخصوص، لا توجد
+دورة سالبة.
 
-##### Complexity
+##### التعقيد
 
-The cost of the Bellman-Ford algorithm in the worst case is easy to evaluate. We
-perform exactly N passes, and each pass examines each of the E arcs once and only
-once. The complexity is therefore O(EN), that is, O(N3) in the worst case. In
-practice, however, we can significantly improve performance by observing that many
-arcs are examined unnecessarily when the distance from the root to the starting
-vertex has not been modified. Another simple optimization consists in stopping once a
-pass has not improved any of the distances. The complexity in the worst case remains,
-nevertheless, the same.
+من السهل تقييم كلفة خوارزمية بلمان-فورد في أسوأ الحالات. فنحن
+ننفّذ N مرورًا بالضبط، ويفحص كل مرور كل قوس من الأقواس E مرة واحدة ومرة
+فقط. ولذلك يكون التعقيد O(EN)، أي O(N3) في أسوأ الحالات. أما في
+الممارسة، فيمكننا تحسين الأداء بشكل ملحوظ بملاحظة أنّ كثيرًا من
+الأقواس تُفحص بلا داعٍ عندما لا تكون المسافة من الجذر إلى الرأس
+البداية قد تغيّرت. ومن التحسينات البسيطة الأخرى التوقّف بمجرّد أنّ
+مرورًا لم يحسّن أيًّا من المسافات. لكنّ التعقيد في أسوأ الحالات يبقى،
+مع ذلك، هو نفسه.
 
-### 13.4 Minimum spanning tree
+### 13.4 الشجرة الممتدة الدنيا
 
-We consider here an undirected graph whose arcs are labeled with weights. We also
-assume that the graph is connected, that is, that each pair of vertices is linked by a
-path. A *spanning tree*is a subset of the arcs, that does not contain a cycle, and that
-links all vertices together. It is easy to convince ourselves that such a tree exists. For
-example, a depth-first search beginning at an arbitrary vertex will determine
-such a tree: it is formed by all the arcs that led to the discovery of a new
-vertex.
+ننظر هنا في رسم بياني غير موجّه موسومة أقواسه بأوزان. ونفترض أيضًا
+أنّ الرسم البياني متّصل، أي أنّ كل زوج من الرؤوس مرتبط
+بمسار. و*الشجرة الممتدة*(spanning tree) مجموعة جزئية من الأقواس لا تحتوي على دورة
+وتربط جميع الرؤوس معًا. ومن السهل إقناع أنفسنا بوجود مثل هذه الشجرة. فمثلًا،
+سينتج بحث بالعمق أولاً يبدأ من رأس اعتباطي
+شجرةً كهذه: وهي تتكوّن من جميع الأقواس التي أدّت إلى اكتشاف
+رأس جديد.
 
-We seek then to solve the problem of finding a spanning tree whose total
-weight is minimal. We present here a solution known as *Kruskal’s algorithm*.
-This algorithm consists in traversing the arcs in increasing order of weight.
-For each arc u − v, we determine if a cycle is created by adding the arc to
-the set of arcs already selected to form the spanning tree. If this is so, we
-ignore the arc. Otherwise, we select it. Once all the arcs have been examined,
-the set of selected arcs form a minimum spanning tree (see exercises [13.24](#x29-318001r24)
-and [13.25](#x29-318002r25)).
+نبحث بعد ذلك في مسألة إيجاد شجرة ممتدة وزنها الكلي
+أدنى ما يمكن. ونعرض هنا حلًّا يُعرف بـ*خوارزمية كروسكال*(Kruskal).
+وتتضمّن هذه الخوارزمية اجتياز الأقواس بترتيب تصاعدي للوزن.
+ولكل قوس u − v، نحدّد ما إذا كانت إضافة القوس إلى
+مجموعة الأقواس المختارة سابقًا لتكوين الشجرة الممتدة تُنشئ دورة. فإن كان
+الأمر كذلك، نتجاهل القوس. وإلا، نختاره. وبعد فحص جميع الأقواس،
+تشكّل مجموعة الأقواس المختارة شجرة ممتدة دنيا (انظر التمرينين [13.24](#x29-318001r24)
+و[13.25](#x29-318002r25)).
 
-To implement this algorithm, we need to find an efficient means to determine if
-selecting a new arc introduces a cycle among the already selected arcs. Luckily, there
-is a simple solution to this problem, in the form of the structure of disjoint sets
-studied in chapter [8](https://usr.lmf.cnrs.fr/lpo/mainch8.html#disjoint-sets). Indeed, it suffices to construct an initial structure in which each
-vertex constitutes a class by itself. For any selected arc u − v, we merge the
-classes of u and v. This materializes the fact that there now exists a path
-between every pair of vertices in the new class. To test if an arc introduces a
-cycle, it suffices therefore to test whether its extremities belong to the same
-class.
+ولتنفيذ هذه الخوارزمية، نحتاج إلى إيجاد وسيلة فعّالة لتحديد ما إذا كان
+اختيار قوس جديد يُدخل دورة بين الأقواس المختارة سابقًا. ولحسن الحظ، يوجد
+حلّ بسيط لهذه المسألة، في صورة بنية المجموعات المنفصلة
+المدروسة في الفصل [8](https://usr.lmf.cnrs.fr/lpo/mainch8.html#disjoint-sets). ففي الواقع، يكفي بناء بنية أوّلية يكون فيها كل
+رأس صنفًا قائمًا بذاته. ولكل قوس مختار u − v، ندمج صنفي
+u وv. وهذا يجسّد وجود مسار الآن
+بين كل زوج من الرؤوس في الصنف الجديد. ولاختبار ما إذا كان قوس يُدخل
+دورة، يكفي بالتالي اختبار ما إذا كان طرفاه ينتميان إلى الصنف
+نفسه.
 
-Let us now write the code for Kruskal’s algorithm, as a function `spanning_tree`
-that takes a graph as argument and returns a minimum spanning tree in the form of a
-list of arcs. We take as given a module `UF` for the structure of disjoint sets (see
-chapter [8](https://usr.lmf.cnrs.fr/lpo/mainch8.html#disjoint-sets)), with the following signature:
+نكتب الآن كود خوارزمية كروسكال، في صورة دالة `spanning_tree`
+تأخذ رسمًا بيانيًا كوسيط وتُعيد شجرة ممتدة دنيا في صورة
+قائمة أقواس. ونعتبر معطاةً وحدة `UF` لبنية المجموعات المنفصلة (انظر
+الفصل [8](https://usr.lmf.cnrs.fr/lpo/mainch8.html#disjoint-sets))، بالتوقيع التالي:
 
 ```ocaml
   module UF: sig
@@ -538,39 +533,39 @@ chapter [8](https://usr.lmf.cnrs.fr/lpo/mainch8.html#disjoint-sets)), with the 
   end
 ```
 
-We assume there is a function `vertices` that returns the list of vertices of a graph. Such
-a function is easy to obtain from `iter_vertex`. Similarly, we assume there is a
-function `edges` that returns the list of all arcs of a graph, each arc being a triple
-(x,y,w), where w is the weight of the arc x − y. Here, too, this function is easy to
-obtain from `iter_edge` and `weight`.
+نفترض وجود دالة `vertices` تُعيد قائمة رؤوس رسم بياني. ومن السهل
+الحصول على دالة كهذه من `iter_vertex`. وبالمثل، نفترض وجود
+دالة `edges` تُعيد قائمة جميع أقواس رسم بياني، حيث يكون كل قوس ثلاثية
+(x,y,w)، فيها w وزن القوس x − y. وهنا أيضًا، من السهل الحصول على هذه الدالة
+من `iter_edge` والدالة `weight`.
 
-The code of Kruskal’s algorithm begins by creating a *union-find*structure based
-on the list of vertices of the graph:
+ويبدأ كود خوارزمية كروسكال بإنشاء بنية *union-find* انطلاقًا
+من قائمة رؤوس الرسم البياني:
 
 ```ocaml
   let spanning_tree g =
     let uf = UF.create (vertices g) in
 ```
 
-Next, we sort the list of arcs of the graph in increasing order of weight, using the library
-function `List.sort`. The comparison used here is that of weights, with the usual
-order on floating-point numbers, that is, `Stdlib.compare`.
+ثم نرتّب قائمة أقواس الرسم البياني بترتيب تصاعدي للوزن، باستخدام دالة
+المكتبة `List.sort`. والمقارنة المستخدمة هنا هي مقارنة الأوزان، بالترتيب
+المعتاد على أعداد الفاصلة العائمة، أي `Stdlib.compare`.
 
 ```ocaml
     let compare (_,_,w1) (_,_,w2) = Stdlib.compare w1 w2 in
     let edges = List.sort compare (edges g) in
 ```
 
-The list of arcs selected to form the spanning tree is stored in a local reference `st`.
+وتُخزَّن قائمة الأقواس المختارة لتكوين الشجرة الممتدة في مرجع محلي `st`.
 
 ```ocaml
     let st = ref [] in
 ```
 
-We then write a function `cover` that examines an arc `(u,v,w)` and determines if it should
-be selected. For this, we compare the classes of vertices `u` and `v` using the function
-`UF.find`. If they are different, we add the arc to the list `st` and merge the two classes,
-using the function `UF.union`.
+ثم نكتب دالة `cover` تفحص قوسًا `(u,v,w)` وتحدّد ما إذا كان ينبغي
+اختياره. ولذلك، نقارن صنفي الرأسين `u` و`v` باستخدام الدالة
+`UF.find`. وإذا كانا مختلفين، نضيف القوس إلى القائمة `st` وندمج الصنفين،
+باستخدام الدالة `UF.union`.
 
 ```ocaml
     let cover ((u, v, w) as e) =
@@ -580,8 +575,8 @@ using the function `UF.union`.
       end
 ```
 
-Finally, it only remains to examine each arc of the list `edges` using this function, and
-then return the resulting list.
+وأخيراً، لم يتبقَّ سوى فحص كل قوس من القائمة `edges` بهذه الدالة،
+ثم إرجاع القائمة الناتجة.
 
 ```ocaml
     in
@@ -589,360 +584,355 @@ then return the resulting list.
     !st
 ```
 
-The code of Kruskal’s algorithm is given in program [103](#x29-312031r103).
+ويُعطى كود خوارزمية كروسكال في البرنامج [103](#x29-312031r103).
 
 >
 
-We illustrate Kruskal’s algorithm with an example. Consider the graph on the top
-left of figure [13.7](#illustration-of-kruskals-algorithm). Arcs are considered in increasing order of weight, as presented in
-the table on the right in the figure. For each arc, we indicate if it is selected (column
-“added”) and the resulting partition in the *union-find*structure. The spanning tree
-obtained in the end is illustrated at the bottom left of the figure. Its total
-weight is -2. It is important to note that arcs of the same weight may be
-considered in any order. Thus, we have examined here the arc 0 − 1 before the
-arc 1 − 4, but we could equally have done it the other way around. The spanning
-tree would have been different, but its total weight would have been the
-same.
+نوضّح خوارزمية كروسكال بمثال. خُذ الرسم البياني الواقع في أعلى
+يسار الشكل [13.7](#illustration-of-kruskals-algorithm). وتُنظر الأقواس بترتيب تصاعدي للوزن، كما هو معروض في
+الجدول على يمين الشكل. ولكل قوس، نبيّن ما إذا كان مختارًا (عمود
+«أُضيف») والتقسيم الناتج في بنية *union-find*. والشجرة الممتدة
+المتحصَّل عليها في النهاية موضّحة في أسفل يسار الشكل. ووزنها الكلي
+-2. ومن المهم ملاحظة أنّ الأقواس ذات الوزن نفسه قد
+تُنظر بأي ترتيب. وهكذا، نظرنا هنا في القوس 0 − 1 قبل
+القوس 1 − 4، لكن كان بإمكاننا أيضًا فعل العكس. وكانت الشجرة
+الممتدة ستختلف، لكن وزنها الكلي كان سيظل
+هو نفسه.
 
 ![](/images/learn-ocaml/graph-algorithms-8-kruskal_1-mps-.webp){#illustration-of-kruskals-algorithm}
 
-**Figure 13.7: Illustration of Kruskal’s algorithm.**
+**الشكل 13.7: توضيح لخوارزمية كروسكال.**
 
 ![PIC](/images/learn-ocaml/graph-algorithms-9-kruskal_2-mps-.webp)
 
-A number of variations and optimizations are possible. Exercise [13.26](#x29-318003r26) thus
-proposes interrupting the arc traversal once we have selected N − 1 arcs.
-Similarly, exercise [13.27](#x29-318004r27) proposes using a priority queue rather than a sorting
-algorithm. Be that as it may, the key idea remains the use of the disjoint-set data
-structure.
+وثمة عدد من التنويعات والتحسينات الممكنة. فالتمرين [13.26](#x29-318003r26) مثلًا
+يقترح قطع اجتياز الأقواس بمجرّد اختيار N − 1 قوسًا.
+وبالمثل، يقترح التمرين [13.27](#x29-318004r27) استخدام طابور أولوية بدلًا من خوارزمية
+ترتيب. وعلى أي حال، تبقى الفكرة الجوهرية استخدام بنية بيانات
+المجموعات المنفصلة.
 
-##### Complexity
+##### التعقيد
 
-The cost of Kruskal’s algorithm is split between that of sorting the set E of arcs and
-that of examining each arc. The first cost is O(E log E) in the worst case, if we use a
-sorting algorithm of optimal complexity (see chapter [12](https://usr.lmf.cnrs.fr/lpo/mainch12.html#sorting-algorithms)). The second cost is O(E) if
-we consider that the operations on the *union-find*structure are constant
-time (see chapter [8](https://usr.lmf.cnrs.fr/lpo/mainch8.html#disjoint-sets)). The complexity of Kruskal’s algorithm is therefore
+تنقسم كلفة خوارزمية كروسكال بين كلفة ترتيب مجموعة الأقواس E
+وكلفة فحص كل قوس. والكلفة الأولى هي O(E log E) في أسوأ الحالات، إذا استخدمنا
+خوارزمية ترتيب ذات تعقيد أمثل (انظر الفصل [12](https://usr.lmf.cnrs.fr/lpo/mainch12.html#sorting-algorithms)). والكلفة الثانية هي O(E) إذا
+اعتبرنا أنّ العمليات على بنية *union-find* ذات زمن
+ثابت (انظر الفصل [8](https://usr.lmf.cnrs.fr/lpo/mainch8.html#disjoint-sets)). ويكون تعقيد خوارزمية كروسكال بالتالي
 O(E log E).
 
-### 13.5 Exercises
+### 13.5 التمارين
 
-#### Breadth-first Search
+#### البحث بالعرض أولاً
 
-**13.1**Modify the function `iter_bfs` to compute the distance, in number of arcs,
-between the root and each vertex discovered by the traversal. A simple approach
-consists in associating this distance with each vertex in the table `visited`. Return
-this table as the result of the function `iter_bfs`.
+**13.1**عدّل الدالة `iter_bfs` لتحسب المسافة، بعدد الأقواس،
+بين الجذر وكل رأس يكتشفه الاجتياز. ومن المقاربات البسيطة
+أن تربط هذه المسافة بكل رأس في الجدول `visited`. وأعِد
+هذا الجدول كنتيجة للدالة `iter_bfs`.
 
-**13.2**Modify the function `iter_bfs` so as to return a shortest path between the root
-and the vertex, for each vertex discovered by the traversal. For each vertex
-discovered, store the vertex that led to it, for instance, in a hash table. We
-can then recover the path from the vertex discovered to the root “by going
-backwards.”
+**13.2**عدّل الدالة `iter_bfs` لتُعيد مسارًا أقصر بين الجذر
+والرأس، لكل رأس يكتشفه الاجتياز. ولكل رأس
+مكتشَف، خزّن الرأس الذي أدّى إليه، مثلًا في جدول تجزئة. ويمكننا
+بعد ذلك استرجاع المسار من الرأس المكتشَف إلى الجذر «بالسير
+عكسيًا».
 
-**13.3**Write a function that performs a breadth-first traversal of the nodes of a *tree*
-by imitating the breadth-first search of a graph.
+**13.3**اكتب دالة تُجري اجتيازًا بالعرض أولاً لعقد *شجرة*
+بمحاكاة البحث بالعرض أولاً في رسم بياني.
 
-**13.4**Implement a cursor for binary trees (see section [*9.3*](https://usr.lmf.cnrs.fr/lpo/mainch9.html#cursors) *Cursors*) corresponding to
-breadth-first search.
+**13.4**نفّذ مؤشّرًا (cursor) للأشجار الثنائية (انظر القسم [*9.3*](https://usr.lmf.cnrs.fr/lpo/mainch9.html#cursors) *Cursors*) يقابل
+البحث بالعرض أولاً.
 
-**13.5**Use the previous exercise to write a program that colors a graph with k colors
-without using the same color for two vertices linked by an arc. Proceed by
-*backtracking*, using the persistent nature of the cursor to backtrack. If no color
-assignment is possible, raise the exception `Not_found`.
+**13.5**استخدم التمرين السابق لكتابة برنامج يلوّن رسمًا بيانيًا بـ k لونًا
+دون استخدام اللون نفسه لرأسين مرتبطين بقوس. افعل ذلك
+بـ*التتبّع الخلفي* (backtracking)، مستفيدًا من الطبيعة الدائمة للمؤشّر للتراجع. وإذا تعذّر
+إسناد أي لون، أطلِق الاستثناء `Not_found`.
 
-#### Depth-first Search
+#### البحث بالعمق أولاً
 
-**13.6**Redo exercise [13.2](#x29-315002r2) for depth-first search.
+**13.6**أعد التمرين [13.2](#x29-315002r2) للبحث بالعمق أولاً.
 
-**13.7**In many applications of depth-first search, we wish to traverse *all*the vertices
-of the graph and not merely those that can be reached from a vertex `s`. Using
-the function `iter_vertex` that traverses all vertices of the graph, modify
-the function `iter_dfs` so that every vertex of the graph is visited exactly
-once.
+**13.7**في كثير من تطبيقات البحث بالعمق أولاً، نرغب في اجتياز *جميع* رؤوس
+الرسم البياني لا الرؤوس التي يمكن الوصول إليها من رأس `s` فحسب. باستخدام
+الدالة `iter_vertex` التي تمرّ على جميع رؤوس الرسم البياني، عدّل
+الدالة `iter_dfs` بحيث يُزار كل رأس من الرسم البياني مرة واحدة
+بالضبط.
 
-**13.8**For an undirected graph, a *connected component* is a maximal set of vertices
-pairwise linked by a path. Explain how the variant of depth-first search proposed in
+**13.8**في رسم بياني غير موجّه، *المكوّن المتّصل* (connected component) هو مجموعة عظمى من الرؤوس
+مرتبطة بعضها ببعض بمسار. اشرح كيف تحدّد الصيغة البديلة للبحث بالعمق أولاً المقترحة في
  
  
-the previous exercise determines the connected components of an undirected graph.
-Write the corresponding code.
+يحدّد التمرين السابق المكوّنات المتّصلة لرسم بياني غير موجّه.
+اكتب الكود المقابل.
 
-**13.9**Rewrite the function `iter_dfs` using a `while` loop rather than a recursive
-function. Hint: Use a *stack*containing the vertices from which the depth-first search is
-to be performed. The code should resemble that of a breadth-first search, with the
-stack replacing the queue. There is, however, a difference in the treatment of the
-vertices already visited. Show that the vertices are not necessarily visited in the same
-order as in the recursive version.
+**13.9**أعد كتابة الدالة `iter_dfs` باستخدام حلقة `while` بدلًا من دالة
+عودية. إرشاد: استخدم *مكدّسًا* يحتوي على الرؤوس التي سيجري منها البحث بالعمق
+أولاً. وينبغي أن يشبه الكود كود البحث بالعرض أولاً، مع
+استبدال المكدّس بالطابور. وثمة فرق، مع ذلك، في معالجة
+الرؤوس المزارة سابقًا. بيّن أنّ الرؤوس لا تُزار بالضرورة بالترتيب
+نفسه كما في الصيغة العودية.
 
-**13.10**Depth-first search can be modified to detect the presence of a cycle in the
-graph. When the function `iter_dfs` comes across an already visited vertex, we do not
-know *a priori*if we have found a cycle. It could be that the vertex has already been
-reached by a parallel path. Instead of two states (reached/not reached), the
-marking of the vertices should therefore be modified to use three: reached/being
-visited/visited. Write a function `has_cycle` that determines the presence of a cycle in
-a graph. Modify the function so that it returns the list of vertices of the cycle found, if
-any.
+**13.10**يمكن تعديل البحث بالعمق أولاً لكشف وجود دورة في
+الرسم البياني. فعندما تصادف الدالة `iter_dfs` رأسًا مزارًا سابقًا، لا
+نعرف *مبدئيًا* ما إذا كنا وجدنا دورة. فقد يكون الرأس قد وُصل إليه سابقًا
+بمسار موازٍ. وبدلًا من حالتين (وُصل إليه/لم يُوصل إليه)، ينبغي
+بالتالي تعديل تعليم الرؤوس لاستخدام ثلاث: وُصل إليه/قيد
+الزيارة/زُير. اكتب دالة `has_cycle` تحدّد وجود دورة في
+رسم بياني. وعدّل الدالة بحيث تُعيد قائمة رؤوس الدورة المكتشَفة، إن
+وُجدت.
 
-**13.11** Let G be a directed graph that does not contain a cycle. We call such graphs
-*directed acyclic graphs*(DAG). A *topological sort*of G is a traversal of its vertices
-compatible with the arcs, that is, where a vertex x is visited before a vertex y if there
-is an arc x → y. Modify program [100](#x29-306017r100) so that it performs a topological sort, in the
-form of a function with the following type:
+**13.11** ليكن G رسمًا بيانيًا موجّهًا لا يحتوي على دورة. ونسمّي مثل هذه الرسوم البيانية
+*الرسوم البيانية الموجّهة اللادورية*(DAG). و*الترتيب الطوبولوجي* لـ G هو اجتياز لرؤوسه
+متوافق مع الأقواس، أي حيث يُزار الرأس x قبل الرأس y إذا
+وُجد قوس x → y. عدّل البرنامج [100](#x29-306017r100) بحيث يُجري ترتيبًا طوبولوجيًا،
+في صورة دالة من النوع التالي:
 
 ```ocaml
   topological_sort: (vertex -> unit) -> graph -> unit
 ```
 
-Use a stack to which a vertex `v` is added once the call to `visitv` terminates. Once the
-depth-first search is completed, apply the function passed as argument to all the
-elements of the stack.
+استخدم مكدّسًا يُضاف إليه الرأس `v` بمجرّد انتهاء الاستدعاء `visitv`. وبعد أن
+يكتمل البحث بالعمق أولاً، طبّق الدالة المُمرَّرة كوسيط على جميع
+عناصر المكدّس.
 
-**13.12**For a directed graph, a *strongly connected component*is any maximal set of
+**13.12**في رسم بياني موجّه، *المكوّن المتّصل بقوة*(strongly connected component) هو أي مجموعة عظمى من
  
  
-vertices pairwise linked by a path. Kosaraju-Sharir’s algorithm computes the set of
-strongly connected components of a graph G, in time O(N + E), using two depth-first
-searches. It proceeds as follows:
+رؤوس مرتبطة بعضها ببعض بمسار. وتحسب خوارزمية كوسارجو-شعيرير (Kosaraju-Sharir) مجموعة
+المكوّنات المتّصلة بقوة لرسم بياني G، في زمن O(N + E)، باستخدام بحثين بالعمق
+أولاً. وهي تسير كما يلي:
 
-- We begin by constructing the transposition GR of the graph G, that is,
-       the graph having the same vertices as G but with the arcs reversed (see
-       exercise 7.1).
-- Next, we traverse the vertices of GR according to a topological sort (see
-       previous exercise). For each vertex v, we perform a depth-first search in G,
-       starting from v, if v is not already part of a strongly connected component.
-       All the vertices that are reached by this search are then placed in a new
-       component.
+- نبدأ ببناء تبديل GR للرسم البياني G، أي
+       الرسم البياني ذي الرؤوس نفسها التي في G لكن بأقواس معكوسة (انظر
+       التمرين 7.1).
+- ثم نجتاز رؤوس GR وفق ترتيب طوبولوجي (انظر
+       التمرين السابق). ولكل رأس v، نُجري بحثًا بالعمق أولاً في G،
+       بدءًا من v، إذا لم يكن v جزءًا من مكوّن متّصل بقوة بالفعل.
+       وتوضع بعد ذلك جميع الرؤوس التي يصل إليها هذا البحث في مكوّن
+       جديد.
 
-Write a function `scc:graph->vertexlistlist` that uses this algorithm to compute the
-strongly connected components of a graph.
+اكتب دالة `scc:graph->vertexlistlist` تستخدم هذه الخوارزمية لحساب
+المكوّنات المتّصلة بقوة لرسم بياني.
 
-**13.13**We can use depth-first search to construct a perfect maze in an n×m grid. A
-perfect maze is one in which there is one and only one path between any two cells. We
-begin by considering the graph in which all cells of the grid are linked to their
-neighbors:
+**13.13**يمكننا استخدام البحث بالعمق أولاً لبناء متاهة مثالية في شبكة n×m. والمتاهة
+المثالية هي التي يوجد فيها مسار واحد فقط بين أي خليتين. ونبدأ
+بالنظر في الرسم البياني الذي ترتبط فيه جميع خلايا الشبكة
+بجيرانها:
 
-We then perform a depth-first search beginning from an arbitrary vertex (for example,
-the top left one). When we traverse the successors of a vertex, we do so in random
-order. Once the traversal is completed, the maze is obtained by declaring that we can
-pass from one vertex to another if the corresponding arc was taken during the
- 
- 
-depth-first search. Exercise [8.7](https://usr.lmf.cnrs.fr/lpo/mainch8.html#x22-236034r7) proposes another way of constructing a perfect
-maze.
+ثم نُجري بحثًا بالعمق أولاً بدءًا من رأس اعتباطي (مثلًا
+الواقع أعلى اليسار). وعندما نجتاز رؤوسًا لاحقة لرأس ما، نفعل ذلك بترتيب
+عشوائي. وبعد اكتمال الاجتياز، نحصل على المتاهة بأن نعلن أنه يمكننا
+المرور من رأس إلى آخر إذا سُلك القوس المقابل خلال
+البحث بالعمق أولاً. ويقترح التمرين [8.7](https://usr.lmf.cnrs.fr/lpo/mainch8.html#x22-236034r7) طريقة أخرى لبناء متاهة
+مثالية.
 
-**13.14**We consider here the problem of playing peg solitaire. This is a
-game of patience consisting of 32 pegs on a board with 33 holes. Initially,
-the pegs occupy all the holes, except the one at the center of the board.
+**13.14**ننظر هنا في مسألة لعب سوليتير الأوتاد (peg solitaire). وهي
+لعبة صبر تتكوّن من 32 وتدًا على لوح فيه 33 ثقبًا. وفي البداية،
+تشغل الأوتاد جميع الثقوب، إلا الثقب الواقع في مركز اللوح.
 
-A peg can be removed from the board by having one of the four adjacent pegs jump over
-it, provided that the hole where the peg is to land is empty. Here are two possible
-moves starting from the initial position.
+ويمكن إزالة وتد من اللوح بأن يقفز عليه أحد الأوتاد الأربعة المجاورة،
+بشرط أن يكون الثقب الذي سيهبط فيه الوتد فارغًا. وها هي نقلتان ممكنتان
+انطلاقًا من الوضع الابتدائي.
 
-The aim of the game is to arrive at a situation in which there is only one peg remaining,
-which occupies the central position.
+والهدف من اللعبة هو الوصول إلى وضع لا يبقى فيه سوى وتد واحد،
+يشغل الموضع المركزي.
 
-We can easily solve this problem using depth-first search on a graph in which each vertex
-represents a board configuration.
+ويمكننا حل هذه المسألة بسهولة باستخدام البحث بالعمق أولاً على رسم بياني يمثّل فيه كل رأس
+تشكيلةً من تشكيلات اللوح.
 
-- A board configuration can be represented by an integer whose (i+7j)-th bit
-       indicates the presence of a peg at position (i,j) for 0 ≤ i,j < 7. Assuming
-       a 64-bit machine, we let type state = int. Define two constants, initial
-       and final, representing respectively the initial and final configurations of
-       the game.
-- A move can be represented by two configurations, the first one indicating the
-   two pegs involved (the one that is moved and the one jumped over), and the
-   second indicating the final position of the peg that was moved. For example, the
-   first move above is represented as follows:
+- يمكن تمثيل تشكيلة اللوح بعدد صحيح تدلّ بتّته رقم (i+7j)
+       على وجود وتد في الموضع (i,j) من أجل 0 ≤ i,j < 7. وبافتراض
+       آلة ذات 64 بتًا، نكتب type state = int. وعرّف ثابتين، initial
+       وfinal، يمثّلان على التوالي التشكيلة الابتدائية والنهائية
+       للعبة.
+- يمكن تمثيل نقلة بتشكيلتين، تدلّ الأولى على
+   الوتدين المعنيين (الذي يُحرَّك والذي يُقفز عليه)، وتدلّ
+   الثانية على الموضع النهائي للوتد الذي حُرِّك. مثلًا،
+   تدلّ النقلة الأولى أعلاه على ما يلي:
   
-  Let `typemove=state*state`. Construct a list containing the 88 possible moves
-   (independent of what the configuration may be).
-- Write a function possible_move to test if a move is possible in a given
-       configuration and a function move that performs the move, if one is possible.
-       Derive from it a function iter_succ that traverses all possible moves in a given
-       configuration.
-- Modify the function iter_dfs of program 100 to interrupt the traversal once
-       the configuration final is reached and return the path found, as in
-       exercise 13.6 above.
-- Finally, write a function print that displays a configuration on the screen,
-       and use it to display the solution found, in the form of 32 successive
-       configurations.
+  لنكتب `typemove=state*state`. أنشئ قائمة تحتوي على النقلات الـ 88 الممكنة
+   (بشكل مستقل عن التشكيلة كيفما كانت).
+- اكتب دالة possible_move لاختبار ما إذا كانت نقلة ممكنة في تشكيلة
+       معيّنة، ودالة move تُجري النقلة، إن كانت ممكنة.
+       واستنتج منهما دالة iter_succ تمرّ على جميع النقلات الممكنة في تشكيلة
+       معيّنة.
+- عدّل الدالة iter_dfs في البرنامج 100 لتقطع الاجتياز بمجرّد
+       الوصول إلى التشكيلة final وتُعيد المسار المكتشَف، كما في
+       التمرين 13.6 أعلاه.
+- وأخيرًا، اكتب دالة print تعرض تشكيلة على الشاشة،
+       واستخدمها لعرض الحل الذي عُثر عليه، في صورة 32 تشكيلة
+       متتالية.
 
-Note: The problem of peg solitaire is one of the problems discussed in the book by
-Cousineau and Mauny *The Functional Approach to Programming* [[9](https://usr.lmf.cnrs.fr/lpo/mainli3.html#XCousineau-Mauny-1998), page
+ملاحظة: مسألة سوليتير الأوتاد من المسائل التي نوقشت في كتاب
+Cousineau وMauny *The Functional Approach to Programming* [[9](https://usr.lmf.cnrs.fr/lpo/mainli3.html#XCousineau-Mauny-1998)، الصفحة
 216].
 
-**13.15**In the preceding exercise, depth-first search was a good solution because all
-the paths were of the same length. When this is not the case, and if we seek a path
-of minimal length, it is necessary to turn to breadth-first search instead.
-However, this may require a lot of memory. In this case, *Iterative deepening search* (IDS) offers a solution that has low memory requirements, but which is
-still able to find a path of minimal length. The idea is to execute successive
-depth-first searches, limited to maximal depths that are larger and larger.
+**13.15**في التمرين السابق، كان البحث بالعمق أولاً حلًّا جيدًا لأنّ جميع
+المسارات كانت بالطول نفسه. وعندما لا يكون الأمر كذلك، وإذا كنا نبحث عن مسار
+بطول أدنى، فلا بدّ من اللجوء إلى البحث بالعرض أولاً بدلًا منه.
+لكن قد يتطلب ذلك ذاكرة كبيرة. وفي هذه الحالة، يقدّم *البحث بالتعميق التكراري* (Iterative deepening search, IDS) حلًّا بمتطلبات ذاكرة منخفضة، لكنه
+قادر مع ذلك على إيجاد مسار بطول أدنى. والفكرة هي تنفيذ عمليات بحث
+متتالية بالعمق أولاً، محدودة بأعماق عظمى تكبر تدريجيًا.
 
-- Explain why we can no longer memoize the vertices already visited during the
-   depth-first searches. Consider the following graph and assume that we traverse
-   it beginning at vertex 0.
-- Implement iterative deepening search as a function
-       ids: (vertex -> bool) -> graph -> vertex -> unit that stops once it reaches a
-       vertex that satisfies the function passed as argument.
-- In case of the traversal of a complete binary tree starting at the root, show that
-       iterative deepening search is no costlier than breadth-first and depth-first
-       searches.
+- اشرح لماذا لم يعد بإمكاننا تخزين الرؤوس المزارة سابقًا خلال عمليات
+   البحث بالعمق أولاً. خُذ الرسم البياني التالي وافترض أننا نجتازه
+   بدءًا من الرأس 0.
+- نفّذ البحث بالتعميق التكراري في صورة دالة
+       ids: (vertex -> bool) -> graph -> vertex -> unit تتوقف بمجرّد وصولها إلى
+       رأس يحقق الدالة المُمرَّرة كوسيط.
+- في حالة اجتياز شجرة ثنائية كاملة بدءًا من الجذر، بيّن أنّ
+       البحث بالتعميق التكراري ليس أعلى كلفة من البحث بالعرض أولاً والبحث بالعمق
+       أولاً.
 
-#### Shortest Paths
+#### المسارات الأقصر
 
-**13.16**Generalize the function `dijkstra` for distances of an arbitrary type, for
-example in the form of a functor.
+**13.16**عمّم الدالة `dijkstra` من أجل مسافات من نوع اعتباطي،
+مثلًا في صورة دالة رافدة.
 
-**13.17**Redo exercise [13.2](#x29-315002r2) for Dijkstra’s algorithm. Note: When a path is improved,
-the corresponding table must be updated.
+**13.17**أعد التمرين [13.2](#x29-315002r2) لخوارزمية ديكسترا. ملاحظة: عند تحسين مسار،
+ينبغي تحديث الجدول المقابل.
 
-**13.18**Redo the steps of the Bellman-Ford algorithm, illustrated in figure [13.6](#illustration-of-the-bellmanford-algorithm),
-assuming that the weight of the arc 0 → 4 is -3.
+**13.18**أعد خطوات خوارزمية بلمان-فورد، الموضّحة في الشكل [13.6](#illustration-of-the-bellmanford-algorithm)،
+بافتراض أنّ وزن القوس 0 → 4 هو -3.
 
-**13.19**Warshall’s algorithm (exercice [7.6](https://usr.lmf.cnrs.fr/lpo/mainch7.html#x21-229006r6)) can be easily adapted to compute *all*
-shortest paths in a graph. This is the Floyd-Warshall algorithm. Let V = {0,…,N − 1}.
-Initially, the distance di,j between vertices i and j equals the weight of the
-corresponding arc, if there is one, and is otherwise ∞. The algorithm then
-computes the minimal distance di,j from i to j in O(N3) time as follows:
+**13.19**يمكن تكييف خوارزمية وارشال (exercice [7.6](https://usr.lmf.cnrs.fr/lpo/mainch7.html#x21-229006r6)) بسهولة لحساب *جميع*
+المسارات الأقصر في رسم بياني. وهذه هي خوارزمية فلويد-وارشال (Floyd-Warshall). ليكن V = {0,…,N − 1}.
+وفي البداية، تكون المسافة di,j بين الرأسين i وj مساوية لوزن
+القوس المقابل، إن وُجد، ولانهائية فيما عدا ذلك. ثم تحسب الخوارزمية
+المسافة الدنيا di,j من i إلى j في زمن O(N3) كما يلي:
 
-| for k from 0 to N − 1 |
+| لكل k من 0 إلى N − 1 |
 | --- |
-| for i from 0 to N − 1 |
-| for j from 0 to N − 1 |
+| لكل i من 0 إلى N − 1 |
+| لكل j من 0 إلى N − 1 |
 | di,j ← min(di,j,di,k + dk,j) |
 
-Write a function that implements this algorithm. How can we treat the general case,
-when vertices are not necessarily the integers 0,…,N − 1?
+اكتب دالة تنفّذ هذه الخوارزمية. كيف يمكننا معالجة الحالة العامة،
+حين لا تكون الرؤوس بالضرورة الأعداد الصحيحة 0,…,N − 1؟
 
-**13.20**Although Dijkstra’s algorithm allows us to find a path of minimal cost, it
-may visit a number of vertices in the graph unnecessarily. Suppose we use Dijkstra’s
-algorithm to find the shortest path (in terms of distance) between two cities on a road
-network. The algorithm will explore the network in larger and larger concentric circles
-centered around the starting city, until it reaches the destination city. If we take the
-example of the French road network, and if we seek the shortest path between Paris
-and Nice, it is likely that almost all the cities of France will have been visited before
-Nice is reached.
+**13.20**مع أنّ خوارزمية ديكسترا تسمح لنا بإيجاد مسار بأدنى كلفة، فإنها
+قد تزور عددًا من رؤوس الرسم البياني بلا داعٍ. افترض أننا نستخدم خوارزمية ديكسترا
+لإيجاد المسار الأقصر (بدلالة المسافة) بين مدينتين في شبكة
+طرق. فستستكشف الخوارزمية الشبكة في دوائر متحدة المركز أكبر وأكبر
+مركزها مدينة البداية، إلى أن تصل إلى مدينة الوجهة. وإذا أخذنا
+مثال شبكة الطرق الفرنسية، وإذا بحثنا عن المسار الأقصر بين باريس
+ونيس، فمن المرجح أن تكون جميع مدن فرنسا تقريبًا قد زُيرت قبل
+الوصول إلى نيس.
 
-The A⋆ algorithm allows us to solve this problem through a finer control of the
-order in which vertices are visited. This control takes the form of a heuristic that
-estimates the distance remaining between a vertex and the destination. The
-A⋆ algorithm is identical to Dijkstra’s algorithm, except that the queue no longer
-uses distance to the source as priority, but rather the sum of this distance and the
-value given by the heuristic. If the heuristic is *admissible*, that is, if it never
-overestimates the remaining distance, then the A⋆ algorithm will find the shortest
-path. An admissible heuristic for the road-network example is the distance
-as a crow flies. If the heuristic always returns zero, we recover Dijkstra’s
-algorithm.
+وتسمح لنا خوارزمية A⋆ بحل هذه المسألة من خلال تحكّم أدقّ في
+الترتيب الذي تُزار به الرؤوس. ويتخذ هذا التحكّم صورة استدلال (heuristic) يقدّر
+المسافة المتبقية بين رأس ما والوجهة. وخوارزمية
+A⋆ مطابقة لخوارزمية ديكسترا، إلا أنّ الطابور لم يعد
+يستخدم المسافة إلى المصدر كأولوية، بل مجموع هذه المسافة
+والقيمة التي يعطيها الاستدلال. وإذا كان الاستدلال *مقبولًا*، أي إذا لم يبالغ
+أبدًا في تقدير المسافة المتبقية، فإنّ خوارزمية A⋆ ستجد المسار الأقصر.
+ومن الاستدلالات المقبولة في مثال شبكة الطرق المسافة
+الجوية. وإذا أعاد الاستدلال الصفر دائمًا، استعدنا خوارزمية
+ديكسترا.
 
-Let us consider the example of an infinite grid in which each point is linked to its
-eight direct neighbors.
+لننظر في مثال شبكة لانهائية يرتبط فيها كل نقطة بجيرانها
+الثمانية المباشرين.
 
-The cost here is the Euclidean distance, that is, four neighbors are at distance 1, and the
+الكلفة هنا هي المسافة الإقليدية، أي أنّ أربعة جيران على مسافة 1، و
+الأربعة الآخرون على مسافة. ويمكننا بالتالي استخدام المسافة الإقليدية كاستدلال
+بين النقطة المعنية (x,y) ونقطة الوجهة (xd,yd)، أي.
+
+ويوضّح الشكل أعلاه نتيجة خوارزمية A⋆ في إيجاد مسار من النقطة
+(0,0)، الموسومة بـ 1، إلى النقطة (5,10)، الموسومة بـ 103، مع استبعاد العقد السوداء من
+الشبكة. وكما نرى، لم تُزر سوى 103 عقدة. وكانت خوارزمية ديكسترا ستجد
+المسار الأقصر بدورها، لكن العدد الكلي للعقد المزارة كان سيكون
+أكبر بكثير (أكثر من 800).
+
+افترض أننا معطون دالة `heuristic:graph->vertex->vertex->float`،
+ونفّذ خوارزمية A⋆ بتعديل كود البرنامج [101](#x29-308034r101). وطبّق ذلك على
+المثال السابق وتحقّق من أننا نصل فعلًا إلى نتيجة الشكل
+أعلاه.
+
+**13.21**«سوليتير الفرنسية» تختلف عن سوليتير التمرين [13.14](#x29-316021r14)، المسمّى «سوليتير الإنجليزية»,
+بوجود أربعة أوتاد إضافية في المواضع (1,1) و(5,1) و(1,5) و(5,5).
+
+وسوليتير الفرنسية، بشكل مفاجئ، أصعب بكثير في الحل من سوليتير الإنجليزية.
+وفضلًا عن ذلك، توجد تركيبات من التشكيلات الابتدائية/النهائية التي
+لا تقبل حلًّا، مثلًا التشكيلة التي يُزال فيها
+الوتد المركزي في البداية ويتعيّن وضع الوتد الأخير في
  
  
-other four at distance. We can therefore use as heuristic the Euclidean distance
-between the point in question (x,y) and the destination point (xd,yd), that is,.
+المركز[^3].
+وعليه، سنخفّف شروط مواضع الأوتاد الابتدائية والنهائية.
 
-The figure above shows the result of the A⋆ algorithm finding a path from point
-(0,0), labelled 1, to point (5,10), labelled 103, the black nodes being excluded from
-the grid. As we see, only 103 nodes were visited. Dijkstra’s algorithm would also have
-found the shortest path, but the total number of visited nodes would have been much
-larger (over 800).
+تتمثل إحدى مقاربات حل سوليتير الفرنسية في استخدام خوارزمية A⋆
+المعروضة في التمرين السابق. عدّل كود التمرين [13.14](#x29-316021r14) كما يلي:
 
-Assume we are given a function `heuristic:graph->vertex->vertex->float`, and
-implement the A⋆ algorithm by modifying the code of program [101](#x29-308034r101). Apply this to
-the preceding example and verify that we do indeed arrive at the result of the figure
-above.
-
-**13.21**“French solitaire” differs from that of exercise [13.14](#x29-316021r14), called “English solitaire,”
-by virtue of four additional pegs present in positions (1,1), (5,1), (1,5), and (5,5).
-
-French solitaire is, surprisingly, much harder to solve than English solitaire.
-Furthermore, there exist combinations of starting/final configurations that
-do not admit of a solution, for example, the configuration in which the
-central peg is removed at the start and the last peg must be placed at the
- 
- 
-center[^3].
-We will accordingly loosen the conditions on the positions of the initial and final
-pegs.
-
-One approach to solving French solitaire consists in using the A⋆ algorithm
-presented in the preceding exercise. Modify the code of exercise [13.14](#x29-316021r14) as follows:
-
-- Add the 8 new moves linked to the 4 new pegs to the the list of all possible
-       moves.
-- Write a heuristic function that evaluates how “compactly” pegs are laid out
-       on the board. Given the representation of the grid as an integer, we may
-       compute a rough approximation by counting the number of bit inversions,
-       that is, the number of times that we pass from a 1 bit to a 0 bit, and vice
-       versa.
-- Finally, replace depth-first search with the A⋆algorithm. Here is an
-   example of initial and final configurations for which there exists a solution.
+- أضف النقلات الثماني الجديدة المرتبطة بالأوتاد الأربعة الجديدة إلى قائمة جميع النقلات
+       الممكنة.
+- اكتب دالة استدلال تقيّم مدى «إحكام» ترتيب الأوتاد
+       على اللوح. وبالنظر إلى تمثيل الشبكة بعدد صحيح، يمكننا
+       حساب تقريب خشن بإحصاء عدد انقلابات البتّات،
+       أي عدد المرات التي ننتقل فيها من بتّ 1 إلى بتّ 0، والعكس
+       بالعكس.
+- وأخيرًا، استبدل البحث بالعمق أولاً بخوارزمية A⋆. وها هو
+   مثال على تشكيلتين ابتدائية ونهائية توجد لهما حل.
   
   …
 
-As in exercise [13.14](#x29-316021r14), present the solution by displaying all successive configurations of the
-board.
+كما في التمرين [13.14](#x29-316021r14)، اعرض الحل بعرض جميع التشكيلات المتتالية
+للوح.
 
-**13.22**It is possible to combine the ideas of iterative deepening search (exercise [13.15](#x29-316025r15))
-and the A⋆ algorithm (exercise [13.20](#x29-317007r20)), to obtain an algorithm known as
-IDA⋆ (*iterative deepening A*⋆). The idea is as follows: At each iteration, we execute a
-depth-first search of all the states where the heuristic does not exceed a given
-threshold, without seeking to memoize already visited states. Once the search is over,
-we take as the new threshold the smallest value of the heuristic obtained during the
-previous search. In other words, each iteration pushes the threshold of the heuristic a
-little further until a path is found or no vertex takes a value greater than the
-threshold. To initiate the process, it suffices to take as initial threshold the heuristic
-for the root vertex. As with the A⋆algorithm, an admissible heuristic, that is, one
-that never overestimates the remaining distance, guarantees that IDA⋆ will
-find a shortest path. The IDA⋆ algorithm was discovered by Korf [[17](https://usr.lmf.cnrs.fr/lpo/mainli3.html#XKorf85)] in
+**13.22**من الممكن الجمع بين أفكار البحث بالتعميق التكراري (التمرين [13.15](#x29-316025r15))
+وخوارزمية A⋆ (التمرين [13.20](#x29-317007r20))، للحصول على خوارزمية تُعرف باسم
+IDA⋆ (*iterative deepening A*⋆). والفكرة كما يلي: في كل تكرار، نُجري
+بحثًا بالعمق أولاً على جميع الحالات التي لا يتجاوز فيها الاستدلال عتبة
+معيّنة، دون السعي إلى تخزين الحالات المزارة سابقًا. وبعد انتهاء البحث،
+نتخذ كعتبة جديدة أصغر قيمة للاستدلال حُصل عليها خلال
+البحث السابق. بعبارة أخرى، تدفع كل تكرار عتبة الاستدلال
+قليلًا إلى الأمام إلى أن يُعثر على مسار أو لا يأخذ أي رأس قيمة أكبر من
+العتبة. ولبدء العملية، يكفي اتخاذ استدلال الرأس الجذر كعتبة
+ابتدائية. وكما في خوارزمية A⋆، فإنّ استدلالًا مقبولًا، أي استدلالًا
+لا يبالغ أبدًا في تقدير المسافة المتبقية، يضمن أنّ IDA⋆
+ستجد مسارًا أقصر. وقد اكتشف خوارزمية IDA⋆ كُورف (Korf) [[17](https://usr.lmf.cnrs.fr/lpo/mainli3.html#XKorf85)] في
 1985.
 
-Assume we are given a function `heuristic:graph->vertex->vertex->float`, and
-modify the code of exercise [13.15](#x29-316025r15) to implement the IDA⋆algorithm. The following
-exercise proposes an application of this algorithm.
+افترض أننا معطون دالة `heuristic:graph->vertex->vertex->float`،
+وعدّل كود التمرين [13.15](#x29-316025r15) لتنفيذ خوارزمية IDA⋆. ويقترح التمرين
+التالي تطبيقًا لهذه الخوارزمية.
 
-**13.23**A good application of the IDA⋆ algorithm proposed in the preceding exercise
-is the *game of fifteen*. The game consists in a 4 × 4 grid containing 15 tiles, numbered
-from 1 to 15. The sixteenth position is empty, and we may place in it one of
-the adjacent tiles. Initially, the tiles are scrambled, for example as follows:
+**13.23**من التطبيقات الجيدة لخوارزمية IDA⋆ المقترحة في التمرين السابق
+*لعبة الخمسة عشر*. وتتكوّن اللعبة من شبكة 4 × 4 تحتوي على 15 بلاطة مرقّمة
+من 1 إلى 15. والموضع السادس عشر فارغ، ويمكننا وضع إحدى
+البلاطات المجاورة فيه. وفي البداية، تكون البلاطات مبعثرة، مثلًا كما يلي:
 
-The aim is to place the tiles in increasing
-order[^4].
+والهدف هو وضع البلاطات بترتيب
+تصاعدي[^4].
 
-To solve the game, we will use the following heuristic: For each tile, we compute the
-distance that separates it from its final position, in terms of number of rows and
-columns. This is called the Manhattan distance. In the preceding example, tile 7 is
-initially at distance 4 from its final position because it has to be moved up by one
-row, and right by three columns. For a given configuration, we then take the sum of
-the Manhattan distances of the fifteen tiles, which is a lower bound on the number of
-moves that remain to be done. This is an admissible heuristic, and we will thus be
-able to find a smallest solution. Solve the game using the IDA⋆ algorithm. The
-example of the game of fifteen is presented in the article by Korf that introduced the
-IDA⋆ algorithm.
+ولحل اللعبة، سنستخدم الاستدلال التالي: لكل بلاطة، نحسب
+المسافة التي تفصلها عن موضعها النهائي، من حيث عدد الأسطر
+والأعمدة. وتُسمّى هذه مسافة مانهاتن. وفي المثال السابق، تكون البلاطة 7
+في البداية على مسافة 4 من موضعها النهائي لأنّها يجب أن تُنقل إلى أعلى بسطر
+واحد، وإلى اليمين بثلاثة أعمدة. ولتشكيلة معيّنة، نأخذ بعد ذلك مجموع
+مسافات مانهاتن للبلاطات الخمس عشرة، وهو حدّ أدنى لعدد
+النقلات المتبقية. وهذا استدلال مقبول، وسنتمكّن بالتالي من
+إيجاد حل أصغر. حل اللعبة باستخدام خوارزمية IDA⋆. وقد عُرض
+مثال لعبة الخمسة عشر في مقال كُورف الذي قدّم
+خوارزمية IDA⋆.
 
-#### Minimum Spanning Tree
+#### الشجرة الممتدة الدنيا
 
-**13.24**Show that the set of arcs returned by Kruskal’s algorithm does indeed form a
-tree.
+**13.24**بيّن أنّ مجموعة الأقواس التي تُعيدها خوارزمية كروسكال تشكّل فعلًا
+شجرة.
 
-**13.25**Show that the result of Kruskal’s algorithm is indeed a minimum spanning
-tree.
+**13.25**بيّن أنّ نتيجة خوارزمية كروسكال هي فعلًا شجرة ممتدة
+دنيا.
 
-**13.26**Improve the code of program [103](#x29-312031r103) so that it stops as soon as N − 1 arcs have
-been added to the spanning tree.
+**13.26**حسّن كود البرنامج [103](#x29-312031r103) بحيث يتوقف بمجرّد إضافة N − 1 قوسًا
+إلى الشجرة الممتدة.
 
-**13.27**Reimplement program [103](#x29-312031r103) using a priority queue rather than a sorting
-algorithm. How does it differ from the previous exercise?
+**13.27**أعد تنفيذ البرنامج [103](#x29-312031r103) باستخدام طابور أولوية بدلًا من خوارزمية
+ترتيب. وفيم يختلف عن التمرين السابق؟
 
-[^3]: The program `seq` is a Unix tool that displays all the integers from 1 to n, one integer per
- line. It is the simplest way to obtain exactly n lines of text.
-[^4]: Chapter [9](https://usr.lmf.cnrs.fr/lpo/mainch9.html#zippers) will present another type of iterator which can solve this problem.
-[^5]: Here, we use the French naming system of musical notes, which is used in many other
- countries as well.
-[^1]: Another solution, notably adopted in the hash tables of the OCaml standard library,
- consists is using an array whose size `n` is a power of 2. The modulo operation can then be
- implemented with `land(n-1)`, which has the added advantage of being much cheaper than a
- division.
+[^3]: البرنامج `seq` أداة من يونيكس تعرض جميع الأعداد الصحيحة من 1 إلى n، عددًا صحيحًا لكل
+ سطر. وهي أبسط طريقة للحصول على n سطرًا من النص بالضبط.
+[^4]: سيعرض الفصل [9](https://usr.lmf.cnrs.fr/lpo/mainch9.html#zippers) نوعًا آخر من المُكرِّرات قادرًا على حل هذه المسألة.
+[^5]: نستخدم هنا نظام تسمية النوتات الموسيقية الفرنسي، وهو مستخدم في بلدان
+ أخرى كثيرة أيضًا.
+[^1]: حلّ آخر، معتمد بشكل بارز في جداول التجزئة في المكتبة المعيارية لـ OCaml،
+ يتمثل في استخدام مصفوفة حجمها `n` قوة للعدد 2. ويمكن عندئذ تنفيذ عملية باقي القسمة
+ بـ`land(n-1)`، وهو ما له ميزة إضافية هي أنه أرخص بكثير من
+ القسمة.

@@ -1,64 +1,64 @@
 ---
-title: "Zippers"
-lang: en
+title: "السحّابات"
+lang: ar
 ---
 
-## 9. Zippers
+## 9. السحّابات (zippers)
 
-In this chapter, we present a general technique to traverse data structures. This
-technique does not involve a specific traversal order and allows for the possibility of
-local modifications (inserting, removing, etc.). It goes by the name of *zipper*. We
-present it here in the context of lists and trees, but it can be adapted to many other
-data structures.
+نقدّم في هذا الفصل تقنية عامة لاجتياز بنى المعطيات. لا تعتمد هذه
+التقنية على ترتيب اجتياز (traversal) محدّد، وتتيح إمكانية إجراء تعديلات
+موضعية (إدراج، حذف، وما إلى ذلك). وهي تُعرف باسم *السحّاب (zipper)*. نعرضها
+هنا في سياق القوائم والأشجار، لكن يمكن تكييفها مع العديد من بنى
+المعطيات الأخرى.
 
-### 9.1 Zippers on Lists
+### 9.1 السحّابات على القوائم
 
-Suppose we wish to “navigate” within a list of type `’alist`, that is, move from
-element to element, occasionally performing modifications. The image that comes to
-mind here is that of a cursor in a text editor, and the action of the keys of the
-keyboard, used to move, insert, delete characters, etc.
+لنفترض أننا نرغب في «التنقّل» داخل قائمة من النمط `’alist`، أي الانتقال من
+عنصر إلى عنصر مع إجراء تعديلات عرضية أحياناً. الصورة التي تتبادر إلى الذهن
+هنا هي صورة مؤشّر في محرّر نصوص، وفعل مفاتيح
+لوحة المفاتيح المستخدمة للتحرّك والإدراج والحذف وغير ذلك.
 
-Consider a list containing seven elements, with the cursor placed after the third,
-as illustrated in figure [9.1](#a-cursor-on-a-list).
+لنأخذ قائمة تحتوي على سبعة عناصر، مع وضع المؤشّر بعد العنصر الثالث،
+كما هو مبيّن في الشكل [9.1](#a-cursor-on-a-list).
 
 ![](/images/learn-ocaml/zippers-0-zipper_list-mps-.webp){#a-cursor-on-a-list}
 
-**Figure 9.1: A cursor on a list.**
+**الشكل 9.1: مؤشّر على قائمة.**
 
-We represent this situation with two lists, one containing the elements
-situated to the left of the cursor, and another containing the elements situated
-to the right. It is convenient to represent the first of these lists in reverse
-order, so that the element situated immediately to the left of the cursor is
-easily accessible. Figure [9.2](#a-zipper-on-a-list) illustrates this representation on the preceding
-example.
+نمثّل هذه الحالة بقائمتين، تحتوي إحداهما على العناصر
+الواقعة إلى يسار المؤشّر، والأخرى على العناصر الواقعة
+إلى اليمين. ومن المناسب تمثيل القائمة الأولى بترتيب
+معكوس، بحيث يصبح العنصر الواقع مباشرة إلى يسار المؤشّر
+سهل الوصول. يوضّح الشكل [9.2](#a-zipper-on-a-list) هذا التمثيل على المثال
+السابق.
 
 ![](/images/learn-ocaml/zippers-1-zipper_list_expl-mps-.webp){#a-zipper-on-a-list}
 
-**Figure 9.2: A zipper on a list.**
+**الشكل 9.2: سحّاب على قائمة.**
 
-This structure consisting of two lists is called a *zipper*. We define it using the
-following type:
+تُسمّى هذه البنية المكوّنة من قائمتين *سحّاباً (zipper)*. ونعرّفها باستخدام
+النمط التالي:
 
 ```ocaml
   type ’a zipper = { left: ’a list; right: ’a list; }
 ```
 
-To construct such a zipper from a list `l`, with the cursor placed all the way to the
-left, we initialize the left list to `[]` and the right list to `l`.
+لبناء سحّاب كهذا انطلاقاً من قائمة `l`، مع وضع المؤشّر في أقصى
+اليسار، نهيّئ القائمة اليسرى إلى `[]` والقائمة اليمنى إلى `l`.
 
 ```ocaml
   let of_list l =
     { left = []; right = l }
 ```
 
-Let us consider next the navigation and modification operations for the
-zipper.
+لننتقل الآن إلى عمليات التنقّل والتعديل في
+السحّاب.
 
-#### Navigation Operations
+#### عمليات التنقّل
 
-The first navigation operation consists in moving the cursor to the right. This is only
-possible if the right list contains at least one element. In this case, we move the first
-element of this list to the head of the left list.
+تتضمّن عملية التنقّل الأولى تحريك المؤشّر إلى اليمين. وهذا لا يكون
+ممكناً إلا إذا كانت القائمة اليمنى تحتوي على عنصر واحد على الأقل. في هذه الحالة ننقل العنصر
+الأول من هذه القائمة إلى رأس القائمة اليسرى.
 
 ```ocaml
   let move_right z = match z.right with
@@ -66,49 +66,48 @@ element of this list to the head of the left list.
     | x :: r -> { left = x :: z.left; right = r }
 ```
 
-The application of the function `move_right` to the example of figure [9.2](#a-zipper-on-a-list) returns the
-zipper illustrated in figure [9.3](#the-zipper-after-a-move-to-the-right).
+يُرجع تطبيق الدالة `move_right` على مثال الشكل [9.2](#a-zipper-on-a-list) السحّاب
+المبيّن في الشكل [9.3](#the-zipper-after-a-move-to-the-right).
 
 ![](/images/learn-ocaml/zippers-2-zipper_list_expl2-mps-.webp){#the-zipper-after-a-move-to-the-right}
 
-**Figure 9.3: The zipper after a move to the right.**
+**الشكل 9.3: السحّاب بعد الانتقال إلى اليمين.**
 
-We similarly write a function `move_left` to move the cursor to the left (see
-program [73](#x23-239012r73), following page).
+وبالمثل نكتب دالة `move_left` لتحريك المؤشّر إلى اليسار (انظر
+البرنامج [73](#x23-239012r73)، الصفحة التالية).
 
-To convert a zipper `z` into a list, it suffices to concatenate the two lists `z.left` and
-`z.right`, reversing the former. This is precisely what the function `List.rev_append`
-does.
+لتحويل سحّاب `z` إلى قائمة، يكفي وصل القائمتين `z.left` و
+`z.right` مع عكس الأولى. وهذا بالضبط ما تفعله الدالة `List.rev_append`.
 
 ```ocaml
   let to_list z =
     List.rev_append z.left z.right
 ```
 
-Equivalently, we could have moved the cursor all the way to the left and then retrieved
-the right list.
+وبشكل مكافئ، كان بإمكاننا تحريك المؤشّر إلى أقصى اليسار ثم استرجاع
+القائمة اليمنى.
 
 >
 
-#### Modification Operations
+#### عمليات التعديل
 
-To insert an element at the cursor position, it suffices to place that element
-at the head of one of the two lists. If we insert it at the head of the left
-list, the cursor will be to the right of the new element (as in case of a text
-editor).
+لإدراج عنصر عند موضع المؤشّر، يكفي وضع ذلك العنصر
+في رأس إحدى القائمتين. وإذا أدرجناه في رأس القائمة
+اليسرى، فسيكون المؤشّر إلى يمين العنصر الجديد (كما في حالة محرّر
+نصوص).
 
 ```ocaml
   let insert z x =
     { z with left = x :: z.left }
 ```
 
-If we wish instead to leave the cursor to the left of the inserted element, it suffices to
-replace `left` by `right` in the code above.
+أما إذا أردنا بدلاً من ذلك إبقاء المؤشّر إلى يسار العنصر المُدرج، فيكفي
+استبدال `left` بـ `right` في الشيفرة أعلاه.
 
-Another modification operation consists in removing an element. For example, we
-may remove the element to the left of the cursor, if such an element exists. (This is
-what the *backspace*key does in a text editor.) This operation is equivalent to
-removing the head of the `left` list.
+وتتضمّن عملية تعديل أخرى حذف عنصر. فعلى سبيل المثال، يمكننا
+حذف العنصر الواقع إلى يسار المؤشّر، إن وُجد عنصر كذلك. (وهذا هو
+ما يفعله مفتاح *backspace* في محرّر النصوص.) وتكافئ هذه العملية
+حذف رأس القائمة `left`.
 
 ```ocaml
   let delete_left z = match z.left with
@@ -116,38 +115,37 @@ removing the head of the `left` list.
     | _ :: l -> { z with left = l }
 ```
 
-We can similarly write an operation `delete_right` that removes the element immediately
-to the right of the cursor.
+وبالمثل يمكننا كتابة عملية `delete_right` تحذف العنصر الواقع مباشرة
+إلى يمين المؤشّر.
 
-### 9.2 Zippers on Trees
+### 9.2 السحّابات على الأشجار
 
-The technique of the zipper also applies to other data structures, such as trees.
-Consider, for example, the case of polymorphic binary trees defined by the following
-type:
+تنطبق تقنية السحّاب أيضاً على بنى معطيات أخرى، مثل الأشجار.
+خُذ مثلاً حالة الأشجار الثنائية متعدّدة الأشكال المعرّفة بالنمط
+التالي:
 
 ```ocaml
   type ’a tree = E | N of ’a tree * ’a * ’a tree
 ```
 
-What is the analog of the cursor in case of a tree? It is the designation of a
-particular node together with the possibility of navigating within the tree, that is,
-moving up, or moving down along the left or right subtrees.
+ما هو نظير المؤشّر في حالة شجرة؟ إنه تعيين
+عقدة معيّنة مع إمكانية التنقّل داخل الشجرة، أي
+الصعود أو النزول على طول الشجرتين الجزئيتين اليسرى أو اليمنى.
 
-Consider the tree in figure [9.4](#a-cursor-on-a-tree), in which we place the cursor on the node
-containing `5`. The zipper contains the position of the node in question and the subtree
-at that position. The former is represented by the path from the root to the node,
-that is, the sequence of moves indicating at each step whether we descend along the
-left or the right subtree. For example, the path to reach node `5` is the sequence `[`*left*`;`
+خُذ الشجرة في الشكل [9.4](#a-cursor-on-a-tree)، حيث نضع المؤشّر على العقدة
+التي تحتوي على `5`. يحتوي السحّاب على موضع العقدة المعنية والشجرة الجزئية
+عند ذلك الموضع. ويمثّل الأول المسار من الجذر إلى العقدة،
+أي متتالية الحركات التي تحدّد عند كل خطوة ما إذا كنا ننزل على طول
+الشجرة الجزئية اليسرى أو اليمنى. فعلى سبيل المثال، المسار للوصول إلى العقدة `5` هو المتتالية `[`*left*`;`
 *right*`]`.
 
 ![](/images/learn-ocaml/zippers-3-zipper_tree_expl-mps-.webp){#a-cursor-on-a-tree}
 
-**Figure 9.4: A cursor on a tree.**
+**الشكل 9.4: مؤشّر على شجرة.**
 
-We introduce the following type to represent such paths. The constructor `Top`
-represents the empty path, that is, the position of the root of the tree. The
-constructors `Left` and `Right` indicate, respectively, a move along the left or right
-subtrees.
+نُعرّف النمط التالي لتمثيل مثل هذه المسارات. يمثّل الباني `Top`
+المسار الفارغ، أي موضع جذر الشجرة. ويدلّ البانيان `Left` و `Right` على
+حركة على طول الشجرتين الجزئيتين اليسرى أو اليمنى على التوالي.
 
 ```ocaml
   type ’a path =
@@ -156,58 +154,58 @@ subtrees.
     | Right of ’a tree * ’a * ’a path
 ```
 
-For each move, we keep track of the subtree along which we did not descend. This is
-necessary in order to be able to move back up the tree. The zipper on binary trees is
-then defined by the following type:
+نحتفظ عند كل حركة بالشجرة الجزئية التي لم ننزل عبرها. وهذا ضروري
+كي نتمكّن من الصعود مجدّداً في الشجرة. ويُعرَّف سحّاب الأشجار الثنائية
+حينئذٍ بالنمط التالي:
 
 ```ocaml
   type ’a zipper = { path : ’a path; tree : ’a tree }
 ```
 
-The field `tree` contains the subtree at the cursor. The field `path` contains the path
-leading to this subtree. Just as in case of the zipper on lists, where we chose to
-represent the left list in reverse order, we choose here to store the path of the node
-*towards*the root, rather than *from*the root. Figure [9.5](#a-zipper-on-a-tree) gives the zipper for the
-preceding example.
+يحتوي الحقل `tree` على الشجرة الجزئية عند المؤشّر. ويحتوي الحقل `path` على المسار
+المؤدّي إلى هذه الشجرة الجزئية. وكما في حالة السحّاب على القوائم، حيث اخترنا
+تمثيل القائمة اليسرى بترتيب معكوس، نختار هنا تخزين مسار العقدة
+*نحو* الجذر، بدلاً من *من* الجذر. ويعطي الشكل [9.5](#a-zipper-on-a-tree) السحّاب للمثال
+السابق.
 
 ![](/images/learn-ocaml/zippers-4-zipper_tree_expl2-mps-.webp){#a-zipper-on-a-tree}
 
-**Figure 9.5: A zipper on a tree.**
+**الشكل 9.5: سحّاب على شجرة.**
 
-The first constructor of the path is `Right` because the cursor designates a right
-subtree. The next step of the path is `Left` because node 3 is the root of a left subtree.
-Finally, the path reaches the root of the tree, 8.
+الباني الأول للمسار هو `Right` لأن المؤشّر يعيّن شجرة جزئية
+يمنى. والخطوة التالية في المسار هي `Left` لأن العقدة 3 هي جذر شجرة جزئية يسرى.
+وأخيراً يبلغ المسار جذر الشجرة، 8.
 
-The zipper with the cursor at the root of a tree is constructed using the empty
-path.
+يُبنى السحّاب مع المؤشّر عند جذر الشجرة باستخدام المسار
+الفارغ.
 
 ```ocaml
   let of_tree t = { path = Top; tree = t }
 ```
 
-Let us now write the navigation functions. We begin with a function `down_left` to
-move down the left subtree. For this, we examine the form of the tree at the cursor.
-We fail if it is empty.
+لنكتب الآن دوال التنقّل. نبدأ بدالة `down_left`
+للنزول على طول الشجرة الجزئية اليسرى. ولهذا نفحص شكل الشجرة عند المؤشّر.
+ونفشل إذا كانت فارغة.
 
 ```ocaml
   let down_left z = match z.tree with
     | E -> invalid_arg "down_left"
 ```
 
-Otherwise, we return the zipper where the subtree at the cursor is the left subtree, and
-the path is extended with the constructor `Left` to signify that we have moved down
-the left.
+وإلا نُرجع السحّاب الذي تكون فيه الشجرة الجزئية عند المؤشّر هي الشجرة الجزئية اليسرى،
+ويمتدّ المسار بالباني `Left` للدلالة على أننا نزلنا
+عبر اليسار.
 
 ```ocaml
     | N (l, x, r) -> { path = Left (z.path, x, r); tree = l }
 ```
 
-The node `x` and its right subtree `r` are kept in the path, as arguments of the constructor
-`Left`. We similarly write a function `down_right` that moves down the right
-subtree.
+تُحفظ العقدة `x` وشجرتها الجزئية اليمنى `r` في المسار، كوسيطين للباني
+`Left`. وبالمثل نكتب دالة `down_right` تنزل عبر الشجرة الجزئية
+اليمنى.
 
-The function to move up the tree examines the current path. We fail if the path is
-empty.
+تفحص دالة الصعود في الشجرة المسار الحالي. ونفشل إذا كان المسار
+فارغاً.
 
 ```ocaml
   let up z = match z.path with
@@ -215,20 +213,20 @@ empty.
         invalid_arg "up"
 ```
 
-Otherwise, we must reconstruct the node of the tree situated above the cursor. For this,
+وإلا وجب علينا إعادة بناء عقدة الشجرة الواقعة فوق المؤشّر. ولهذا
  
  
-we use the information contained in the path as well as the subtree contained in the
-field `tree`. If we move down the left subtree, the path would be of the form
-`Left(p,x,r)`, and the reconstructed node would have `z.tree` as its left subtree, `x` as
-its root, and `r` as its right subtree.
+نستخدم المعلومات الواردة في المسار وكذلك الشجرة الجزئية الموجودة في
+الحقل `tree`. فإذا نزلنا عبر الشجرة الجزئية اليسرى، يكون المسار على الشكل
+`Left(p,x,r)`، وتكون العقدة المُعاد بناؤها ذات `z.tree` كشجرة جزئية يسرى لها، و`x`
+كجذر لها، و`r` كشجرة جزئية يمنى لها.
 
 ```ocaml
     | Left (p, x, r) ->
         { path = p; tree = N (z.tree, x, r) }
 ```
 
-If we move down the right subtree, we proceed symmetrically.
+وإذا نزلنا عبر الشجرة الجزئية اليمنى، نتابع بشكل متناظر.
 
 ```ocaml
     | Right (l, x, p) ->
@@ -237,97 +235,95 @@ If we move down the right subtree, we proceed symmetrically.
 
 >
 
-The function that reconstructs the entire tree from a given zipper moves the
-cursor up the tree until it reaches the top. We stop when the path is `Top` and return
-the tree contained in the field `tree`.
+تعيد الدالة التي تعيد بناء الشجرة بأكملها من سحّاب معطى تحريك
+المؤشّر صعوداً في الشجرة حتى يبلغ القمة. ونتوقف عندما يصبح المسار `Top` ونُرجع
+الشجرة الموجودة في الحقل `tree`.
 
 ```ocaml
   let rec to_tree z =
     if z.path = Top then z.tree else to_tree (up z)
 ```
 
-The complete code of the zipper on binary trees is given in program [74](#x23-241033r74).
+تُعطى الشيفرة الكاملة للسحّاب على الأشجار الثنائية في البرنامج [74](#x23-241033r74).
 
-Note: You may wonder about the commonalities between zippers on lists and
-those on trees. Indeed, the zipper on lists seems to be a completely symmetric
-structure, its two fields `left` and `right` being of the same type. However, you may
-also understand it as being asymmetrical, with `left` playing the same role as `path`,
-and `right`, that of `tree`. Thus, we could have defined the following type to represent
-a position in a list:
+ملاحظة: قد تتساءل عن أوجه الشبه بين السحّابات على القوائم
+وتلك على الأشجار. ففي الواقع، يبدو السحّاب على القوائم بنية
+متناظرة تماماً، إذ إن حقليه `left` و `right` من النمط نفسه. غير أنك قد
+تفهمه أيضاً على أنه غير متناظر، إذ يؤدي `left` الدور نفسه الذي يؤدّيه `path`،
+ويؤدّي `right` دور `tree`. وبناءً على ذلك، كان بإمكاننا تعريف النمط التالي لتمثيل
+موضع في قائمة:
 
 ```ocaml
   type ’a path = Top | Right of ’a * ’a path
 ```
 
-Since this type is clearly identical to `’alist`, we did not consider it worthwhile to
-define a new type. Zippers on lists and trees thus embody the very same
-idea.
+ولأن هذا النمط مطابق بوضوح للنمط `’alist`، لم نرَ أنه يجدر بنا
+تعريف نمط جديد. وهكذا تجسّد السحّابات على القوائم والأشجار الفكرة
+ذاتها بعينها.
 
-#### Application: Comparing Two Binary Search Trees
+#### تطبيق: مقارنة شجرتين ثنائيتين للبحث
 
-In chapter [5](https://usr.lmf.cnrs.fr/lpo/mainch5.html#sets-and-dictionaries), we presented binary search trees, which can represent sets of
-elements equipped with a total order. If we wish to construct a set of sets, it
-is therefore necessary to equip binary search trees themselves with a total
-order.
+في الفصل [5](https://usr.lmf.cnrs.fr/lpo/mainch5.html#sets-and-dictionaries)، عرضنا أشجار البحث الثنائية، التي يمكن أن تمثّل مجموعات من
+العناصر مزوّدة بترتيب كلي. فإذا أردنا بناء مجموعة من المجموعات،
+كان من الضروري أن نزوّد أشجار البحث الثنائية نفسها بترتيب
+كلي.
 
-One solution is to construct the list of elements for the two trees in infix
-order and then compare the two lists, for example, lexicographically. This is
-nevertheless somewhat naive, since the two trees may contain many elements but
+أحد الحلول هو بناء قائمة عناصر لكل من الشجرتين بترتيب
+وُسْطي ثم مقارنة القائمتين، مثلاً معجمياً. وهذا مع ذلك ساذج إلى حدّ ما، لأن الشجرتين قد تحتويان على عناصر كثيرة لكنهما
  
  
-may differ rapidly, in which case we would have constructed the two lists in
-vain.
+قد تختلفان بسرعة، وفي هذه الحالة نكون قد بنينا القائمتين
+عبثاً.
 
-A more efficient solution is preferable, working directly on the trees. However, this
-is not straightforward since two binary search trees can contain the same elements
-without having the same structure, as illustrated in figure [9.6](#two-binary-search-trees-containing-the-same-elements). One solution consists
-in using the zipper structure to execute a *simultaneous*infix traversal of the two
-trees.
+يُفضَّل حل أكثر كفاءة يعمل مباشرة على الشجرتين. غير أن هذا
+ليس مباشراً لأن شجرتي بحث ثنائيتين يمكن أن تحتويان على العناصر نفسها
+من دون أن يكون لهما البنية نفسها، كما هو مبيّن في الشكل [9.6](#two-binary-search-trees-containing-the-same-elements). ويتمثّل أحد الحلول
+في استخدام بنية السحّاب لتنفيذ اجتياز وُسْطي *متزامن* للشجرتين.
 
 ![](/images/learn-ocaml/zippers-5-zipper_sf-mps-.webp){#two-binary-search-trees-containing-the-same-elements}
 
-**Figure 9.6: Two binary search trees containing the same elements.**
+**الشكل 9.6: شجرتان ثنائيتان للبحث تحتويان على العناصر نفسها.**
 
-We begin by writing a function that descends all the way to the bottom left of a
-tree and returns the zipper corresponding to this position. This amounts to iterating
-the function `down_left` as long as possible.
+نبدأ بكتابة دالة تنزل إلى أقصى أسفل يسار شجرة
+وتُرجع السحّاب المقابل لهذا الموضع. وهذا يعادل تكرار
+الدالة `down_left` قدر الإمكان.
 
-Concretely, we write a function `leftmost` by passing it a zipper as accumulator. If
-the tree is empty, we return the zipper passed as argument:
+وبشكل ملموس، نكتب دالة `leftmost` بتمرير سحّاب إليها كمراكم. فإذا
+كانت الشجرة فارغة، نُرجع السحّاب الممرَّر كوسيط:
 
 ```ocaml
   let rec leftmost z = function
     | E -> z
 ```
 
-Otherwise, we move down the left subtree, accumulating the visited node in the
-zipper.
+وإلا ننزل عبر الشجرة الجزئية اليسرى، مع تجميع العقدة المزارة في
+السحّاب.
 
 ```ocaml
     | N (l, x, r) -> leftmost (Left (z, x, r)) l
 ```
 
-If we consider the two trees of figure [9.6](#two-binary-search-trees-containing-the-same-elements), `t1` and `t2`, then the zippers
-obtained with `leftmostTopt1` and `leftmostTopt2` have the following form:
+وإذا أخذنا الشجرتين في الشكل [9.6](#two-binary-search-trees-containing-the-same-elements)، `t1` و `t2`، فإن السحّابين
+الناتجين عن `leftmostTopt1` و `leftmostTopt2` يكونان على الشكل التالي:
 
 ```ocaml
   leftmost Top t1 = Left (Left (..., 3, ...), 1, ...)
   leftmost Top t2 = Left (Left (..., 4, ...), 1, ...)
 ```
 
-Figure [9.7](#the-two-zippers-for-the-trees-of-figureref-figcomparbres) depicts the two zippers. We can verify that both start off with the smallest
-value, namely, 1.
+يصور الشكل [9.7](#the-two-zippers-for-the-trees-of-figureref-figcomparbres) السحّابين. ويمكننا التحقق من أن كليهما يبدأ بالقيمة
+الصغرى، وهي 1.
 
 ![](/images/learn-ocaml/zippers-6-zipper_sf1-mps-.webp){#the-two-zippers-for-the-trees-of-figureref-figcomparbres}
 
-**Figure 9.7: The two zippers for the trees of figure 9.6.**
+**الشكل 9.7: السحّابان للشجرتين في الشكل 9.6.**
 
 ![PIC](/images/learn-ocaml/zippers-7-zipper_sf2-mps-.webp)
 
-Next, we have to write a function `compare` to perform the actual comparison. This
-function takes as argument two zippers and a function `cmp` to compare the elements.
-If the two zippers are `Top`, the comparison is over, and we return `0` to indicate
-equality.
+التالي، علينا كتابة دالة `compare` لتنفيذ المقارنة الفعلية. تأخذ هذه
+الدالة كوسيطين سحّابين ودالة `cmp` لمقارنة العناصر.
+فإذا كان السحّابان `Top`، انتهت المقارنة، ونُرجع `0` للدلالة على
+التساوي.
 
 ```ocaml
   let rec compare cmp z1 z2 = match z1, z2 with
@@ -335,9 +331,9 @@ equality.
         0
 ```
 
-If the two zippers are of the form `Left`, we compare the elements that they designate
-using the function `cmp`. If they differ, the comparison is over, and the result given by
-`cmp` is returned.
+وإذا كان السحّابان على الشكل `Left`، نقارن العنصرين اللذين يعيّنانهما
+باستخدام الدالة `cmp`. فإذا اختلفا، انتهت المقارنة، وتُرجع النتيجة التي تعطيها
+`cmp`.
 
 ```ocaml
     | Left (z1, x1, r1), Left (z2, x2, r2) ->
@@ -345,17 +341,17 @@ using the function `cmp`. If they differ, the comparison is over, and the result
         if c <> 0 then c
 ```
 
-If they are equal, however, the comparison must continue. We look for the following
-elements, by calling `leftmost` on the two right subtrees, `r1` and `r2`. We then call
-`compare` recursively.
+أما إذا تساويا، وجب أن تستمر المقارنة. فنبحث عن العنصرين
+التاليين، باستدعاء `leftmost` على الشجرتين الجزئيتين اليمنيين، `r1` و `r2`. ثم نستدعي
+`compare` عودياً.
 
 ```ocaml
         else compare cmp (leftmost z1 r1) (leftmost z2 r2)
 ```
 
-If one of the two zippers equals `Top` and the other `Left`, this means that one of the two
-traversals has reached the end, but not the other. We therefore return `-1` or `1`, as the
-case may be.
+وإذا كان أحد السحّابين يساوي `Top` والآخر `Left`، فهذا يعني أن أحد
+الاجتيازين بلغ النهاية دون الآخر. ولذلك نُرجع `-1` أو `1`، حسب
+الحالة.
 
 ```ocaml
     | Top, Left _ ->
@@ -364,17 +360,17 @@ case may be.
         1
 ```
 
-Finally, by construction, the case of a zipper of the form `Right` cannot occur. We
-dispense with it as follows:
+وأخيراً، بحكم البناء، لا يمكن أن تحدث حالة سحّاب على الشكل `Right`. ونتخلّص منها
+كما يلي:
 
 ```ocaml
     | Right _, _ | _, Right _ ->
         assert false
 ```
 
-To solve the initial problem of how to compare two trees `t1` and `t2`, it suffices to
-construct the two zippers with the function `leftmost`, and then compare them using
-the function `compare`.
+ولحلّ المشكلة الأولية المتمثّلة في كيفية مقارنة شجرتين `t1` و `t2`، يكفي أن
+نبني السحّابين بالدالة `leftmost`، ثم نقارنهما باستخدام
+الدالة `compare`.
 
 ```ocaml
   let compare_tree cmp t1 t2 =
@@ -383,51 +379,50 @@ the function `compare`.
 
 >
 
-The complete code is given in program [75](#x23-242032r75). Note that the two functions `leftmost`
-and `compare` are tail recursive.
+تُعطى الشيفرة الكاملة في البرنامج [75](#x23-242032r75). لاحظ أن الدالتين `leftmost`
+و `compare` عوديتان ذيليّتان.
 
-### 9.3 Cursors
+### 9.3 المؤشّرات
 
-When discussing the problem of comparing binary trees, we saw the importance of
-traversing a data structure step by step. This method of traversal is different from
-that of higher-order iterators like `iter` and `fold`, with which we would not have been
-able to solve that problem.
+عند مناقشة مشكلة مقارنة الأشجار الثنائية، رأينا أهمية
+اجتياز بنية معطيات خطوة بخطوة. وتختلف طريقة الاجتياز هذه عن
+طريقة المُكرِّرات ذات الرتبة الأعلى مثل `iter` و `fold`، التي لم يكن بوسعنا
+أن نحلّ بها تلك المشكلة.
 
-In general, for an arbitrary data structure of type `’at`, we would like a *cursor*
-interface in order to traverse its elements one by one. Such an interface is given in
-program [76](#x23-243002r76).
+وبشكل عام، بالنظر إلى بنية معطيات اعتباطية من النمط `’at`، نرغب في واجهة *مؤشّر (cursor)*
+لاجتياز عناصرها واحداً واحداً. وتُعطى مثل هذه الواجهة في
+البرنامج [76](#x23-243002r76).
 
 >
 
-The interface contains an abstract polymorphic type, `’aenum`, for the cursor,
-where the variable `’a` is the type of the elements. The function `start` returns a
-new cursor. The function `step` returns the current element and the cursor
-corresponding to the next element, or raises the exception `Exit` if the iteration is
-complete.
+تحتوي الواجهة على نمط مجرّد متعدّد الأشكال، `’aenum`، للمؤشّر،
+حيث المتغيّر `’a` هو نمط العناصر. وتُرجع الدالة `start` مؤشّراً
+جديداً. وتُرجع الدالة `step` العنصر الحالي والمؤشّر
+المقابل للعنصر التالي، أو ترفع الاستثناء `Exit` إذا اكتمل التكرار.
 
-This interface defines persistent cursors, which means that the cursor passed as
-input to the function `step` is not modified. We may thus reuse the cursor,
-for example, in an algorithm that uses *backtracking*. Another possibility is
-that of imperative cursors, where the function `step` returns only the current
-element and advances the cursor to the following element by a side effect (see
-exercise [9.12](#x23-249005r12)).
+تُعرّف هذه الواجهة مؤشّرات دائمة، بمعنى أن المؤشّر الممرَّر
+كمدخل إلى الدالة `step` لا يُعدَّل. وهكذا يمكننا إعادة استخدام المؤشّر،
+مثلاً في خوارزمية تستخدم *الرجوع بالآثار (backtracking)*. وهناك احتمال آخر
+هو المؤشّرات الأمرية، حيث تُرجع الدالة `step` العنصر الحالي فقط
+وتتقدّم بالمؤشّر إلى العنصر التالي بأثر جانبي (انظر
+التمرين [9.12](#x23-249005r12)).
 
-We will now implement persistent cursors on lists and trees.
+سننفّذ الآن مؤشّرات دائمة على القوائم والأشجار.
 
-#### Cursors on Lists
+#### المؤشّرات على القوائم
 
-The zipper on lists is itself a convenient cursor. It is, nevertheless, unnecessarily
-complex since we do not need to keep track of the elements situated to the left of the
-cursor. In other words, the cursor for lists is nothing but the right list, that
-is:
+السحّاب على القوائم هو بحدّ ذاته مؤشّر مناسب. غير أنه مع ذلك معقّد
+بلا داعٍ لأننا لا نحتاج إلى تتبّع العناصر الواقعة إلى يسار
+المؤشّر. وبعبارة أخرى، ليس مؤشّر القوائم سوى القائمة اليمنى،
+أي:
 
 ```ocaml
   type ’a enum = ’a list
 ```
 
-The function `start` reduces to the identity. The function `step` raises the exception
-`Exit` if the cursor is empty. Otherwise, it returns the head of the list and the rest of
-the list as the new cursor.
+تختزل الدالة `start` إلى دالة الهوية. وترفع الدالة `step` الاستثناء
+`Exit` إذا كان المؤشّر فارغاً. وإلا فإنها تُرجع رأس القائمة وبقية
+القائمة كمؤشّر جديد.
 
 ```ocaml
   let step = function
@@ -435,42 +430,41 @@ the list as the new cursor.
     | x :: r -> x, r
 ```
 
-Note that the persistent nature of lists ensures the persistence of the cursor. The
-complete code is given in program [77](#x23-244007r77).
+لاحظ أن الطبيعة الدائمة للقوائم تضمن ديمومة المؤشّر. وتُعطى الشيفرة
+الكاملة في البرنامج [77](#x23-244007r77).
 
 >
 
-#### Cursors on Trees
+#### المؤشّرات على الأشجار
 
 >
 
-To define a cursor on trees, it is first necessary to choose a traversal order. We
-arbitrarily choose infix order here. (See exercises [9.8](#x23-249001r8) et [9.9](#x23-249002r9) for other traversal
-orders.)
+لتعريف مؤشّر على الأشجار، يلزم أولاً اختيار ترتيب اجتياز. ونختار
+هنا الترتيب الوُسْطي اعتباطاً. (انظر التمرينين [9.8](#x23-249001r8) و [9.9](#x23-249002r9) لترتيبي اجتياز
+آخرين.)
 
-Unlike zippers on lists, zippers on trees do not immediately provide us with
-an operation to produce the next element in the infix traversal. However,
-we have seen how the zipper permits this operation when dealing with the
-problem of comparing binary trees. Only the two constructors `Top` and `Left`
-of the zipper are necessary. We therefore define the following type for the
-cursor:
+وعلى خلاف السحّابات على القوائم، لا توفّر لنا السحّابات على الأشجار فوراً
+عملية لإنتاج العنصر التالي في الاجتياز الوُسْطي. غير أننا
+رأينا كيف يتيح السحّاب هذه العملية عند معالجة
+مشكلة مقارنة الأشجار الثنائية. ولا يلزم سوى البانيين `Top` و `Left`
+من السحّاب. ولذلك نعرّف النمط التالي للمؤشّر:
 
 ```ocaml
   type ’a enum = Top | Left of ’a * ’a tree * ’a enum
 ```
 
-The function `start` places the cursor on the element situated at the bottom
-left of the tree. For this, we use the function `leftmost` that was written for
-program [75](#x23-242032r75).
+تضع الدالة `start` المؤشّر على العنصر الواقع في أسفل
+يسار الشجرة. ولهذا نستخدم الدالة `leftmost` التي كُتبت من أجل
+البرنامج [75](#x23-242032r75).
 
 ```ocaml
   let start t =
     leftmost t Top
 ```
 
-The function `step` raises the exception `Exit` if the cursor is `Top`. Otherwise, it
-returns the element `x` contained in the constructor `Left` and constructs a new cursor
-by calling `leftmost` on the right subtree of `x`.
+ترفع الدالة `step` الاستثناء `Exit` إذا كان المؤشّر `Top`. وإلا فإنها
+تُرجع العنصر `x` الموجود في الباني `Left` وتبني مؤشّراً جديداً
+باستدعاء `leftmost` على الشجرة الجزئية اليمنى لـ `x`.
 
 ```ocaml
   let step = function
@@ -478,98 +472,98 @@ by calling `leftmost` on the right subtree of `x`.
     | Left (x, r, e) -> x, leftmost r e
 ```
 
-This is exactly what we did in program [75](#x23-242032r75) to move to the next element.
+وهذا بالضبط ما فعلناه في البرنامج [75](#x23-242032r75) للانتقال إلى العنصر التالي.
 
-As in case of lists, the immutable nature of the type `enum` guarantees the
-persistence of the cursor. The complete code is given in program [78](#x23-245001r78) (see previous
-page).
+وكما في حالة القوائم، تضمن الطبيعة غير القابلة للتغيير للنمط `enum`
+ديمومة المؤشّر. وتُعطى الشيفرة الكاملة في البرنامج [78](#x23-245001r78) (انظر الصفحة
+السابقة).
 
 >
 
-### 9.4 Exercises
+### 9.4 التمارين
 
-#### Zippers on Lists
+#### السحّابات على القوائم
 
-**9.1**Equip the zipper on lists with functions `to_start` and `to_end`, that permit
-moving to the beginning and end of a list, respectively.
+**9.1** زوّد السحّاب على القوائم بالدالتين `to_start` و `to_end`، اللتين تتيحان
+الانتقال إلى بداية القائمة ونهايتها على التوالي.
 
-**9.2**Rewrite the function `to_list` in the same manner as the function
+**9.2** أعد كتابة الدالة `to_list` بالطريقة نفسها التي كُتبت بها الدالة
 `to_tree`.
 
-**9.3**Consider the following problem: Given a non-empty list of integers, determine if
-there exists a binary tree whose leaves, considered in infix order, are located at the
-depths given by the list. For example, the list [1;3;3;2] corresponds to a binary tree,
-but not the list [1;3;3]. We propose the following algorithm to solve this problem:
+**9.3** خُذ المشكلة التالية: بالنظر إلى قائمة غير فارغة من الأعداد الصحيحة، حدّد ما إذا
+كانت توجد شجرة ثنائية تكون أوراقها، باعتبارها بالترتيب الوُسْطي، عند
+الأعماق المعطاة في القائمة. فعلى سبيل المثال، القائمة [1;3;3;2] تقابل شجرة ثنائية،
+لكن القائمة [1;3;3] لا تقابلها. ونقترح الخوارزمية التالية لحلّ هذه المشكلة:
 
-- If the list contains a single element, the algorithm terminates. The result
-       is positive if and only if the element is 0, which corresponds to the empty
-       tree.
-- Otherwise, we search for the first two consecutive elements of the list that
-       are equal. If there are none, we fail. Otherwise, calling n the common value
-       of the two integers, we replace the two occurrences of n by the integer
-       n − 1, which corresponds to an internal node.
-- Start again with the resulting list.
+- إذا احتوت القائمة على عنصر واحد، انتهت الخوارزمية. وتكون النتيجة
+       موجبة إذا وفقط إذا كان العنصر 0، وهو ما يقابل الشجرة
+       الفارغة.
+- وإلا نبحث عن أول عنصرين متتاليين في القائمة
+       متساويين. فإن لم يوجد أي منهما، نفشل. وإلا، بإطلاق الاسم n على القيمة المشتركة
+       للعددين الصحيحين، نستبدل موضعَي n بالعدد الصحيح
+       n − 1، وهو ما يقابل عقدة داخلية.
+- نبدأ من جديد بالقائمة الناتجة.
 
-Write a function `is_tree:intlist->bool` that implements this algorithm by using the
-zipper structure so as to avoid starting at the beginning of the list each time. The
-total complexity must be linear in the length of the list.
+اكتب دالة `is_tree:intlist->bool` تنفّذ هذه الخوارزمية باستخدام
+بنية السحّاب لتفادي البدء من بداية القائمة في كل مرة. ويجب أن تكون
+التعقيدية الكلية خطية في طول القائمة.
 
-**9.4**It is possible to program an efficient text editor using the zipper structure. Each
-line of text is a zipper on a list of characters, as explained earlier. Similarly, a file is
-viewed as a zipper on the list of lines. We use the following types to represent a line
-and a text, respectively:
+**9.4** يمكن برمجة محرّر نصوص فعّال باستخدام بنية السحّاب. فكل
+سطر نصي هو سحّاب على قائمة محارف، كما شُرح سابقاً. وبالمثل، يُنظر إلى الملف
+على أنه سحّاب على قائمة الأسطر. ونستخدم النمطين التاليين لتمثيل سطر
+ونصّ على التوالي:
 
 ```ocaml
   type line = { left: char list; right: char list }
   type text = { up: line list; current: line; down: line list }
 ```
 
-The field `current` of the type `text` represents the current line on which the cursor is
-found. The fields `up` and `down` are the analogs of `left` and `right` for lines.
-Write the functions `insert_char`, `return`, `backspace`, etc. for such a text
-editor.
+يمثّل الحقل `current` من النمط `text` السطر الحالي الذي يوجد
+عليه المؤشّر. والحقلان `up` و `down` هما نظيرا `left` و `right` بالنسبة للأسطر.
+اكتب الدوال `insert_char` و `return` و `backspace` وغيرها لمحرّر نصوص
+كهذا.
 
-#### Zippers on Trees
+#### السحّابات على الأشجار
 
-**9.5**Write a function `remove_leaf:’azipper->’azipper` that verifies that
-the zipper passed as argument points to a node that has no children, and
-removes it. Such a node is of the form `N(E,x,E)`. Conversely, write a function
-`insert_leaf:’a->’azipper->’azipper` that verifies that the zipper passed as
-argument points to a leaf node (that is, `E`), and which inserts in its place a new node
-containing the value passed as argument.
+**9.5** اكتب دالة `remove_leaf:’azipper->’azipper` تتحقق من أن
+السحّاب الممرَّر كوسيط يشير إلى عقدة ليس لها أبناء،
+وتحذفها. وتكون هذه العقدة على الشكل `N(E,x,E)`. وبالعكس، اكتب دالة
+`insert_leaf:’a->’azipper->’azipper` تتحقق من أن السحّاب الممرَّر
+كوسيط يشير إلى عقدة ورقة (أي `E`)، وتُدرج في موضعها عقدة جديدة
+تحتوي على القيمة الممرَّرة كوسيط.
 
-**9.6**Write a function `remove_leftmost:’azipper->’azipper` that verifies
-that the zipper passed as argument points to a node of the tree that has
-no left child, and removes it. Make sure to retain the right subtree, if it is
-present.
+**9.6** اكتب دالة `remove_leftmost:’azipper->’azipper` تتحقق
+من أن السحّاب الممرَّر كوسيط يشير إلى عقدة في الشجرة ليس
+لها ابن أيسر، وتحذفها. واحرص على الاحتفاظ بالشجرة الجزئية اليمنى، إن
+وُجدت.
 
-**9.7**Consider n-ary trees labeled by strings, defined by the following type:
+**9.7** خُذ الأشجار n-ary الموسومة بسلاسل محارف، المعرّفة بالنمط التالي:
 
 ```ocaml
   type tree = N of string * tree list
 ```
 
-Define a zipper structure on such trees.
+عرّف بنية سحّاب على مثل هذه الأشجار.
 
-#### Cursors
+#### المؤشّرات
 
-**9.8**Write a cursor on binary trees corresponding to a prefix traversal, that is, a
-traversal in which each node is visited before its two subtrees.
+**9.8** اكتب مؤشّراً على الأشجار الثنائية يقابل اجتيازاً سابقاً (prefix)، أي
+اجتيازاً تُزار فيه كل عقدة قبل شجرتيها الجزئيتين.
 
-**9.9**Write a cursor on binary trees corresponding to a postfix traversal, that is, a
-traversal in which each node is visited after its two subtrees.
+**9.9** اكتب مؤشّراً على الأشجار الثنائية يقابل اجتيازاً لاحقاً (postfix)، أي
+اجتيازاً تُزار فيه كل عقدة بعد شجرتيها الجزئيتين.
 
-**9.10**Rewrite the comparison of binary trees (program [75](#x23-242032r75)) using the cursor on trees
-(program [78](#x23-245001r78)).
+**9.10** أعد كتابة مقارنة الأشجار الثنائية (البرنامج [75](#x23-242032r75)) باستخدام المؤشّر على الأشجار
+(البرنامج [78](#x23-245001r78)).
 
-**9.11**Rather than raising an exception `Exit` when the cursor has reached the end of
-the traversal, the function `step` can return a value of type `option`, that is,
-`step:’aenum->(’a*’aenum)option`. Rewrite the cursors on lists and trees with this
-new interface.
+**9.11** بدلاً من رفع الاستثناء `Exit` عندما يبلغ المؤشّر نهاية
+الاجتياز، يمكن للدالة `step` أن تُرجع قيمة من النمط `option`، أي
+`step:’aenum->(’a*’aenum)option`. أعد كتابة المؤشّرات على القوائم والأشجار بهذه
+الواجهة الجديدة.
 
-**9.12**If the persistence of the cursor is not used, we may consider an imperative
-version in which the function `step` returns the current element only and advances to
-the next element by a side effect, that is, `step:’aenum->’a`. Rewrite the cursors on
-lists and trees with this new interface.
+**9.12** إذا لم تُستخدم ديمومة المؤشّر، يمكننا النظر في نسخة أمرية
+تُرجع فيها الدالة `step` العنصر الحالي فقط وتتقدّم إلى
+العنصر التالي بأثر جانبي، أي `step:’aenum->’a`. أعد كتابة المؤشّرات على
+القوائم والأشجار بهذه الواجهة الجديدة.
 
-**9.13**Implement a cursor on arrays.
+**9.13** نفّذ مؤشّراً على المصفوفات.

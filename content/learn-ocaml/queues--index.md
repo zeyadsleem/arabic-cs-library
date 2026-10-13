@@ -1,55 +1,37 @@
 ---
-title: "Queues"
-lang: en
+title: "الطوابير"
+lang: ar
 ---
 
-## 6. Queues
+## 6. الطوابير
 
-This chapter presents several data structures known as *queues*. A queue is a
-data structure whose elements are taken out in the order in which they were
-inserted, thus corresponding precisely to the usual notion of queue. We can also
-associate elements with priorities, in which case the elements are no longer
-taken out in the order in which they were inserted. This is called a *priority queue*.
+يعرض هذا الفصل عدة بنى معطيات تُعرف باسم *الطوابير (queues)*. والطابور (queue) بنية معطيات تُستخرج عناصرها بالترتيب الذي أُدرجت به، وهو ما يقابل بدقة المفهوم المعتاد للطابور. ويمكننا أيضًا إقران العناصر بأولويات، وفي هذه الحالة لا تُستخرج العناصر بعد ذلك بالترتيب الذي أُدرجت به. ويُسمى هذا *طابور الأولوية (priority queue)*.
 
-### 6.1 Imperative Queues
+### 6.1 الطوابير الأمرية (imperative queues)
 
-This section presents a data structure of imperative queues based on linked
-lists. The signature of this structure is given in program [57](#x20-201002r57) (see following
-page).
+يعرض هذا القسم بنية معطيات للطوابير الأمرية مبنية على القوائم المترابطة. وتُعطى توقيعة هذه البنية في البرنامج [57](#x20-201002r57) (انظر الصفحة التالية).
 
 >
 
-The idea is as follows: If a queue `q` contains the elements 1, 2, 3, inserted in this
-order, then it is represented by a circular linked list in which each element points to
-the following one in the queue, and the last element points to the first. To be able to
-insert and remove elements in constant time, it suffices to keep a pointer to the final
-element of the queue, here, 3. We therefore have the following situation:
+الفكرة كما يلي: إذا احتوى طابور `q` على العناصر 1، 2، 3، مُدرجة بهذا الترتيب، فإنه يُمثَّل بقائمة مترابطة دائرية يشير فيها كل عنصر إلى العنصر التالي له في الطابور، ويشير العنصر الأخير إلى الأول. ولكي نتمكن من إدراج العناصر وإزالتها في زمن ثابت، يكفي أن نحتفظ بمؤشر إلى العنصر الأخير في الطابور، وهنا العنصر 3. وبذلك تكون لدينا الحالة التالية:
 
-Thus, to insert a new element, 4, it suffices to insert it after 3, that is, between 3 and 1,
-and to shift the pointer to 4.
+وهكذا، لإدراج عنصر جديد، هو 4، يكفي إدراجه بعد 3، أي بين 3 و1، ثم نقل المؤشر إلى 4.
 
-We access the first element, here 1, by following the pointer contained in the final
-element. To remove the first element, it suffices to make the final element
-point to the second one, here 2, which is obtained by following two pointers.
+نصل إلى العنصر الأول، وهنا 1، بتتبع المؤشر الموجود في العنصر الأخير. ولإزالة العنصر الأول، يكفي أن نجعل العنصر الأخير يشير إلى العنصر الثاني، وهنا 2، الذي نحصل عليه بتتبع مؤشرين.
 
-We begin by introducing a type `’acell` to represent the cells of the linked list, in
-the usual way.
+نبدأ بتعريف نوع `’acell` لتمثيل خلايا القائمة المترابطة، بالطريقة المعتادة.
 
 ```ocaml
   type ’a cell = { elt : ’a; mutable next : ’a cell }
 ```
 
-We then represent a queue by a reference to the last cell. A problem arises when it
-comes to representing the empty queue, for which we would not want to
-have any list cells at all. We choose therefore to represent a queue with a
-reference to a value of type `’acelloption`, where `None` represents the empty
-queue.
+ثم نمثّل الطابور بمرجع إلى الخلية الأخيرة. وتنشأ مشكلة عند تمثيل الطابور الفارغ، الذي لا نريد أن يحتوي على أي خلايا قائمة على الإطلاق. لذلك نختار تمثيل الطابور بمرجع إلى قيمة من النوع `’acelloption`، حيث يمثّل `None` الطابور الفارغ.
 
 ```ocaml
   type ’a t = ((’a cell) option) ref
 ```
 
-The implementation of the functions `create` and `is_empty` is clear.
+تنفيذ الدالتين `create` و`is_empty` واضح.
 
 ```ocaml
   let create () =
@@ -58,12 +40,9 @@ The implementation of the functions `create` and `is_empty` is clear.
     !q = None
 ```
 
-#### Inserting an Element
+#### إدراج عنصر
 
-Inserting an element `x` into a queue `q` follows the scheme mentioned above. If `q` is
-empty, we create a circular list of one element and modify `q` so that it points to this
-element. We use here the possibility afforded by OCaml of constructing a cyclic value
-with `letrec`.
+يتبع إدراج عنصر `x` في طابور `q` المخطط المذكور أعلاه. فإذا كان `q` فارغًا، ننشئ قائمة دائرية من عنصر واحد ونعدّل `q` بحيث يشير إلى هذا العنصر. ونستعمل هنا الإمكانية التي يتيحها OCaml لبناء قيمة دورية بواسطة `letrec`.
 
 ```ocaml
   let push x q = match !q with
@@ -72,9 +51,7 @@ with `letrec`.
         q := Some c
 ```
 
-If `q` is not empty, we create a new cell `c` containing `x`, that we insert between
-the final and first elements, and then modify `q` so that it points to this new
-cell.
+وإذا لم يكن `q` فارغًا، ننشئ خلية جديدة `c` تحتوي على `x`، ندرجها بين العنصرين الأخير والأول، ثم نعدّل `q` بحيث يشير إلى هذه الخلية الجديدة.
 
 ```ocaml
     | Some last ->
@@ -83,10 +60,9 @@ cell.
         q := Some c
 ```
 
-#### Extracting an Element
+#### استخراج عنصر
 
-To extract the first element of a queue `q`, we begin by testing whether `q` is empty. In
-this case, we raise an exception.
+لاستخراج العنصر الأول من طابور `q`، نبدأ باختبار ما إذا كان `q` فارغًا. وفي هذه الحالة نرفع استثناءً.
 
 ```ocaml
   let pop q = match !q with
@@ -94,10 +70,7 @@ this case, we raise an exception.
         invalid_arg "pop"
 ```
 
-When `q` is not empty, it is convenient to treat the case in which `q` contains only one
-element separately. Here, the final element points to itself. It thus suffices to empty
-the queue, giving it the value `None` and returning the only element that it
-contained.
+عندما لا يكون `q` فارغًا، يكون من المناسب معالجة الحالة التي يحتوي فيها `q` على عنصر واحد فقط بشكل منفصل. وهنا يشير العنصر الأخير إلى نفسه. لذا يكفي إفراغ الطابور بإعطائه القيمة `None` وإرجاع العنصر الوحيد الذي كان يحتويه.
 
 ```ocaml
     | Some last when last.next == last ->
@@ -105,10 +78,7 @@ contained.
         last.elt
 ```
 
-In the general case, when `q` contains at least two elements, we begin by determining the
-first element of the queue, `first`. We then remove it from the linked list by making
-the final element point to the second one. The value to be returned is contained in the
-cell `first`.
+في الحالة العامة، عندما يحتوي `q` على عنصرين على الأقل، نبدأ بتحديد العنصر الأول في الطابور، `first`. ثم نزيله من القائمة المترابطة بجعل العنصر الأخير يشير إلى العنصر الثاني. والقيمة الواجب إرجاعها موجودة في الخلية `first`.
 
 ```ocaml
     | Some last ->
@@ -117,50 +87,29 @@ cell `first`.
         first.elt
 ```
 
-The complete code is given in program [58](#x20-203014r58) (see following page).
+الكود الكامل معطى في البرنامج [58](#x20-203014r58) (انظر الصفحة التالية).
 
 >
 
-#### Complexity
+#### التعقيد
 
-It is clear that the operations `create`, `is_empty`, `push`, and `pop` all execute in
-constant time. A queue containing N elements occupies three words per element in
-memory (being a record with two fields, `elt` and `next`), plus two words for the
-reference.
+من الواضح أن العمليات `create` و`is_empty` و`push` و`pop` تُنفَّذ كلها في زمن ثابت. والطابور الذي يحتوي على N عنصرًا يشغل ثلاث كلمات لكل عنصر في الذاكرة (لكونه سجلًا بحقلين، هما `elt` و`next`)، إضافة إلى كلمتين للمرجع.
 
 >
 
-### 6.2 Persistent Queues
+### 6.2 الطوابير الدائمة (persistent queues)
 
-In this section, we present a data structure of *persistent*queues. The signature of such
-a structure is given in program [59](#x20-205010r59). We see, in particular, that the operations `push`
-and `pop` return a modified version of the data structure.
+في هذا القسم، نعرض بنية معطيات للطوابير *الدائمة (persistent)*. وتُعطى توقيعة هذه البنية في البرنامج [59](#x20-205010r59). ونرى، على وجه الخصوص، أن العمليتين `push` و`pop` تُعيدان نسخة معدَّلة من بنية المعطيات.
 
-A naive idea would consist in representing a queue by a list. This solution is
-unfortunately very inefficient, because either the insertion or the extraction operation
-would have to be performed at the end of the list. To implement these two
-operations more efficiently, a simple idea consists in using not one but two lists.
-The first list contains the elements at the front of the queue, in order. The
-second list contains the elements at the back of the queue, in reverse order. In
-this way, both insertion and extraction are done at the head of a list. For
- 
- 
-example, the queue containing the elements 1, 2, 3, 4, 5, inserted in this order,
-may be represented by the two lists `[1;2]` and `[5;4;3]`. However, the queue
-could equally be represented by the two lists `[1]` and `[5;4;3;2]`, or even by
-`[1;2;3;4;5]` and `[]`, which are all equivalent representations of the same
-queue.
+قد تتمثل فكرة ساذجة في تمثيل طابور بقائمة. لكن هذا الحل غير فعّال جدًا للأسف، لأنه سيتعين إمّا تنفيذ عملية الإدراج أو عملية الاستخراج في نهاية القائمة. ولتنفيذ هاتين العمليتين بكفاءة أكبر، تتمثل فكرة بسيطة في استعمال قائمتين لا قائمة واحدة. فالقائمة الأولى تحتوي على العناصر الموجودة في مقدمة الطابور، بالترتيب. والقائمة الثانية تحتوي على العناصر الموجودة في مؤخرة الطابور، بترتيب معكوس. وبهذه الطريقة، يتم الإدراج والاستخراج معًا عند رأس القائمة. وعلى سبيل المثال، قد يُمثَّل الطابور الذي يحتوي على العناصر 1، 2، 3، 4، 5، المُدرجة بهذا الترتيب، بالقائمتين `[1;2]` و`[5;4;3]`. غير أن الطابور قد يُمثَّل بالقدر نفسه بالقائمتين `[1]` و`[5;4;3;2]`، أو حتى بـ `[1;2;3;4;5]` و`[]`، وكلها تمثيلات مكافئة للطابور نفسه.
 
-We therefore introduce the type of persistent queues simply as a synonym for a
-pair of lists.
+لذلك نعرّف نوع الطوابير الدائمة ببساطة كمرادف لزوج من القوائم.
 
 ```ocaml
   type ’a t = ’a list * ’a list
 ```
 
-The first list represents the front of the queue. The second represents the back of the
-queue. The definitions of the empty queue `empty` and the function `is_empty` are
-clear.
+تمثّل القائمة الأولى مقدمة الطابور. وتمثّل الثانية مؤخرة الطابور. وتعريفا الطابور الفارغ `empty` والدالة `is_empty` واضحان.
 
 ```ocaml
   let empty = [], []
@@ -172,16 +121,14 @@ clear.
 
 >
 
-To insert an element `x`, it suffices to add it to the head of the second
-list.
+لإدراج عنصر `x`، يكفي إضافته إلى رأس القائمة الثانية.
 
 ```ocaml
   let push x (o, i) =
     (o, x :: i)
 ```
 
-Extraction is a more delicate operation. There are three possible cases. First, when
-the queue is empty, we raise an exception.
+الاستخراج عملية أكثر دقة. وهناك ثلاث حالات ممكنة. أولًا، عندما يكون الطابور فارغًا، نرفع استثناءً.
 
 ```ocaml
   let pop = function
@@ -189,19 +136,14 @@ the queue is empty, we raise an exception.
         invalid_arg "pop"
 ```
 
-Second, when the first list, which represents the front of the queue, contains at least one
-element, it suffices to extract this element.
+ثانيًا، عندما تحتوي القائمة الأولى، التي تمثّل مقدمة الطابور، على عنصر واحد على الأقل، يكفي استخراج هذا العنصر.
 
 ```ocaml
     | x :: o, i ->
         x, (o, i)
 ```
 
-Third, when all the elements are in the back of the queue, it suffices to reverse the list `i`
-and proceed as in the previous case, where the element to be extracted was
-at the head of the list. The tail of the list thus obtained becomes the new
-front of the queue, and the back of the new queue no longer contains any
-elements.
+ثالثًا، عندما تكون جميع العناصر في مؤخرة الطابور، يكفي عكس القائمة `i` والمضي كما في الحالة السابقة، حيث كان العنصر الواجب استخراجه عند رأس القائمة. ويصبح ذيل القائمة الناتجة بذلك المقدمة الجديدة للطابور، ولم تعد مؤخرة الطابور الجديد تحتوي على أي عناصر.
 
 ```ocaml
     | [], i ->
@@ -209,82 +151,39 @@ elements.
         | x :: o -> x, (o, [])
 ```
 
-Since the list `i` is not empty, the list `List.revi` is also not empty. Rather than write a
-non-exhaustive pattern matching, which would trigger a compiler warning, we
-indicate explicitly that the case of an empty list cannot occur.
+بما أن القائمة `i` ليست فارغة، فإن القائمة `List.revi` ليست فارغة أيضًا. وبدلًا من كتابة مطابقة نمط غير شاملة تُطلق تحذيرًا من المترجم، نذكر صراحةً أن حالة القائمة الفارغة لا يمكن أن تحدث.
 
 ```ocaml
         | [] -> assert false
 ```
 
-The complete code is given in program [60](#x20-205036r60).
+الكود الكامل معطى في البرنامج [60](#x20-205036r60).
 
 >
 
-#### Complexity
+#### التعقيد
 
-It is clear that the operations `is_empty` and `push` execute in constant time. The
-operation `pop` can, however, have cost O(N) for a queue containing N elements. This
-is the case when all the elements are at the back of the queue so that the list has to
-be inverted. Nevertheless, if we consider a sequence of M successive `push` and `pop`
-operations, starting from an empty queue, then the total cost cannot be greater than
-O(M). Indeed, each element may be involved in, at most, one list reversal. The `pop`
-operation therefore has amortized cost O(1). The space complexity is the
-same as in case of imperative queues, with three words per element of the
-queue.
+من الواضح أن العمليتين `is_empty` و`push` تُنفَّذان في زمن ثابت. غير أن العملية `pop` قد تكون كلفتها O(N) لطابور يحتوي على N عنصرًا. وهذا هو الحال عندما تكون جميع العناصر في مؤخرة الطابور بحيث يجب عكس القائمة. ومع ذلك، إذا نظرنا إلى متتالية من M عملية متعاقبة من `push` و`pop`، انطلاقًا من طابور فارغ، فإن الكلفة الإجمالية لا يمكن أن تتجاوز O(M). وفعلًا، قد يشارك كل عنصر في عملية عكس واحدة للقائمة على الأكثر. ومن ثمّ فإن للعملية `pop` كلفة مطفأة O(1). أما تعقيد المساحة فهو نفسه كما في حالة الطوابير الأمرية، بثلاث كلمات لكل عنصر من الطابور.
 
-### 6.3 Imperative Priority Queues
+### 6.3 طوابير الأولوية الأمرية (imperative priority queues)
 
-In this section and the next, we will consider queues in which the elements are
-associated with priorities. In such queues, called *priority queues*, the elements
-are removed in the order fixed by their priority rather than in the order in
-which they were entered. We present here an *imperative*data structure of
-priority queues, whose signature is given in program [61](#x20-207004r61) (see the following
-page).
+في هذا القسم والقسم التالي، سنتناول طوابير تُقرن فيها العناصر بأولويات. وفي مثل هذه الطوابير، المسماة *طوابير الأولوية (priority queues)*، تُزال العناصر بالترتيب الذي تحدده أولوياتها لا بالترتيب الذي أُدخلت به. ونعرض هنا بنية معطيات *أمرية (imperative)* لطوابير الأولوية، تُعطى توقيعتها في البرنامج [61](#x20-207004r61) (انظر الصفحة التالية).
 
-In this interface, the notion of minimality coincides with the notion of greatest
-priority. Unlike with ordinary queues, here we distinguish the access and removal of
-the first element using two separate operations. This is for the sake of efficiency, as
-will be explained later. Accordingly, the function `get_min` returns the element of
-the queue with the highest priority, and the function `remove_min` removes
-it.
+في هذه الواجهة، يتوافق مفهوم الصغر مع مفهوم الأولوية العليا. وخلافًا للطوابير العادية، نميّز هنا بين الوصول إلى العنصر الأول وإزالته باستعمال عمليتين منفصلتين. وذلك لأجل الكفاءة، كما سيُوضَّح لاحقًا. وبناءً على ذلك، تُعيد الدالة `get_min` العنصر ذا الأولوية الأعلى في الطابور، وتزيله الدالة `remove_min`.
 
-To implement an efficient priority queue, it is necessary to use a more complex
-data structure than in case of ordinary queues. One solution consists in organizing the
-elements as a *heap*. A heap is a binary tree in which the element stored at each node
-has a higher priority than the two elements situated immediately below it. The
-element with the highest priority is therefore found at the root. Thus, a heap
-containing the elements {3,7,9,12,21}, ordered by magnitude, may have the following
-shape:
+لتنفيذ طابور أولوية فعّال، من الضروري استعمال بنية معطيات أكثر تعقيدًا من حالة الطوابير العادية. ويتمثل أحد الحلول في تنظيم العناصر في *كومة (heap)*. والكومة شجرة ثنائية يحمل فيها العنصر المخزَّن عند كل عقدة أولوية أعلى من أولوية العنصرين الواقعين تحتها مباشرة. لذا يوجد العنصر ذو الأولوية الأعلى عند الجذر. وهكذا، قد يكون للكومة التي تحتوي على العناصر {3,7,9,12,21}، مرتبة حسب المقدار، الشكل التالي:
 
-We note that there are other heaps containing the same elements. However, for the
-sake of efficiency, it is preferable to choose a heap of minimal height. Heaps
-represented by complete binary trees (in which all levels are filled except, perhaps, the
-last one) have minimal height. It turns out that a complete binary tree can
-be easily represented using an array. The idea consists in numbering the
-nodes of the tree from top to bottom and left to right, beginning from 0.
-The result of this numbering of the heap above yields the following labeling:
+نلاحظ أن هناك أكوامًا أخرى تحتوي على العناصر نفسها. غير أنه، لأجل الكفاءة، يُفضَّل اختيار كومة ذات ارتفاع أدنى. والأكوام الممثَّلة بأشجار ثنائية كاملة (تُملأ فيها جميع المستويات عدا الأخير ربما) لها ارتفاع أدنى. ويتضح أنه يمكن تمثيل شجرة ثنائية كاملة بسهولة باستعمال مصفوفة. وتتمثل الفكرة في ترقيم عقد الشجرة من أعلى إلى أسفل ومن اليسار إلى اليمين، بدءًا من 0. وتُنتج نتيجة هذا الترقيم للكومة أعلاه التسميات التالية:
 
-This numbering permits the representation of the heap in an array of five elements as
-follows:
+ويتيح هذا الترقيم تمثيل الكومة في مصفوفة من خمسة عناصر كما يلي:
 
-In general, the root of the tree occupies the cell at index 0, and the roots of the two
-subtrees of the node stored at cell i are stored in cells 2i + 1 and 2i + 2, respectively.
-Conversely, the parent of node i is stored at ⌊(i − 1)∕2⌋.
+بوجه عام، يشغل جذر الشجرة الخلية ذات الفهرس 0، ويُخزَّن جذرا الشجرتين الفرعيتين للعقدة المخزَّنة في الخلية i في الخليتين 2i + 1 و2i + 2 على التوالي. وبالعكس، يُخزَّن أب العقدة i في ⌊(i − 1)∕2⌋.
 
 >
 
-One problem remains: We do not know the size of the priority queue
-beforehand and therefore cannot fix in advance the maximum size of the array.
-An elegant solution consists in using resizeable arrays. Such arrays were
-presented in section [*4.1*](https://usr.lmf.cnrs.fr/lpo/mainch4.html#resizeable-arrays)*Resizeable Arrays*. It then suffices to write a functor
-parametrized by a structure of resizeable arrays. A signature for such arrays,
-`ResizeableArray`, is given in program [17](https://usr.lmf.cnrs.fr/lpo/mainch4.html#x15-133002r17), at the start of chapter [4](https://usr.lmf.cnrs.fr/lpo/mainch4.html#arrays1). As far as the
-elements are concerned, we require a type equipped with a total order and a
-default value. The corresponding signature, `OrderedWithDummy`, is given in
-program [62](#x20-207027r62).
+تبقى مشكلة واحدة: لا نعرف حجم طابور الأولوية مسبقًا، ومن ثمّ لا يمكننا تحديد الحجم الأقصى للمصفوفة بشكل مسبق. ويتمثل أحد الحلول الأنيقة في استعمال المصفوفات القابلة لتغيير الحجم. وقد عُرضت مثل هذه المصفوفات في القسم [*4.1*](https://usr.lmf.cnrs.fr/lpo/mainch4.html#resizeable-arrays)*المصفوفات القابلة لتغيير الحجم (resizeable arrays)*. لذا يكفي عندئذ كتابة دالة تصنيف (functor) مُعامَلة ببنية للمصفوفات القابلة لتغيير الحجم. وتُعطى توقيعة لمثل هذه المصفوفات، هي `ResizeableArray`، في البرنامج [17](https://usr.lmf.cnrs.fr/lpo/mainch4.html#x15-133002r17)، في بداية الفصل [4](https://usr.lmf.cnrs.fr/lpo/mainch4.html#arrays1). وفيما يخص العناصر، نحتاج إلى نوع مزوَّد بترتيب كلي وقيمة افتراضية. وتُعطى التوقيعة المقابلة، وهي `OrderedWithDummy`، في البرنامج [62](#x20-207027r62).
 
-The functor of priority queues then takes the following form:
+تأخذ دالة تصنيف طوابير الأولوية عندئذ الشكل التالي:
 
 ```ocaml
 module Make(X: OrderedWithDummy)(A: ResizeableArray)
@@ -292,18 +191,16 @@ module Make(X: OrderedWithDummy)(A: ResizeableArray)
 struct
 ```
 
-Module `X` is then that of elements, and module `A` that of resizeable arrays.
+الوحدة `X` هي وحدة العناصر حينئذ، والوحدة `A` هي وحدة المصفوفات القابلة لتغيير الحجم.
 
-The types `elt` and `t` are respectively synonyms for `X.t` and `eltA.t`.
+والنوعان `elt` و`t` مرادفان على التوالي لـ `X.t` و`eltA.t`.
 
 ```ocaml
   type elt = X.t
   type t = elt A.t
 ```
 
-In fact, a heap is nothing but a resizeable array. The function `create` constructs an
-empty array with `A.make`, and the function `is_empty` tests whether the array is
-empty.
+في الواقع، ليست الكومة سوى مصفوفة قابلة لتغيير الحجم. وتبني الدالة `create` مصفوفة فارغة بواسطة `A.make`، وتختبر الدالة `is_empty` ما إذا كانت المصفوفة فارغة.
 
 ```ocaml
   let create () = A.make 0 X.dummy
@@ -312,8 +209,7 @@ empty.
 
 >
 
-The function `get_min` returns the root of the heap, if it exists, and raises an
-exception otherwise.
+تُعيد الدالة `get_min` جذر الكومة، إذا كان موجودًا، وترفع استثناءً في الحالة المعاكسة.
 
 ```ocaml
   let get_min h =
@@ -321,27 +217,17 @@ exception otherwise.
     A.get h 0
 ```
 
-The code is given in program [63](#x20-208020r63).
+الكود معطى في البرنامج [63](#x20-208020r63).
 
-#### Inserting an Element
+#### إدراج عنصر
 
-Inserting an element `x` in a heap `h` consists in adding `x` into the tree that represents `h`
-while preserving the heap structure. One approach consists in adding `x` at the bottom
-right and then moving it up the tree as long as is necessary. In our implementation,
-this boils down to extending the array by one cell, inserting the value `x` there, and
-then moving `x` up until it reaches the correct position. For this, we use the following
-algorithm: if `x` is smaller than its parent, we exchange the two values and
-repeat.
+يتمثل إدراج عنصر `x` في كومة `h` في إضافة `x` إلى الشجرة التي تمثّل `h` مع الحفاظ على بنية الكومة. ويتمثل أحد الأساليب في إضافة `x` في أسفل اليمين ثم تحريكه صعودًا في الشجرة بالقدر اللازم. وفي تنفيذنا، يُختصر هذا إلى توسيع المصفوفة بخلية واحدة، وإدراج القيمة `x` فيها، ثم تحريك `x` صعودًا حتى يبلغ موضعه الصحيح. ولهذا نستعمل الخوارزمية التالية: إذا كان `x` أصغر من أبيه، نبادل القيمتين ونكرر.
 
-For example, let us consider again the following heap:
+على سبيل المثال، لنعاين مرة أخرى الكومة التالية:
 
-The insertion of the element 1 in this heap is performed in three steps:
+ويُنفَّذ إدراج العنصر 1 في هذه الكومة في ثلاث خطوات:
 
-We begin by writing a function `move_up` that inserts an element `x` in the heap `h`, starting
-at position `i`. This function assumes that the tree of root `i`, obtained by placing `x` at
-`i`, is a heap. The function `move_up` first considers the case in which `i` is 0, that
-is, when we have reached the root. It then suffices to insert `x` at position
-`i`.
+نبدأ بكتابة دالة `move_up` تُدرج عنصرًا `x` في الكومة `h`، انطلاقًا من الموضع `i`. وتفترض هذه الدالة أن شجرة الجذر `i`، الناتجة عن وضع `x` عند `i`، هي كومة. وتعالج الدالة `move_up` أولًا الحالة التي يكون فيها `i` مساويًا 0، أي عندما نكون قد بلغنا الجذر. حينئذ يكفي إدراج `x` عند الموضع `i`.
 
 ```ocaml
   let rec move_up h x i =
@@ -349,10 +235,7 @@ is, when we have reached the root. It then suffices to insert `x` at position
       A.set h i x
 ```
 
-If, however, we are at an internal node, we calculate the index `fi` of the parent of `i` and
-the value `y` stored in this node. If `y` is greater than `x`, we need to move `x` up while
-moving `y` down to position `i`. We then call `move_up` recursively beginning from
-`fi`.
+أما إذا كنا عند عقدة داخلية، فنحسب الفهرس `fi` لأب `i` والقيمة `y` المخزَّنة في هذه العقدة. وإذا كان `y` أكبر من `x`، يجب أن نحرّك `x` صعودًا مع تحريك `y` نزولًا إلى الموضع `i`. ثم نستدعي `move_up` استدعاءً تكراريًا انطلاقًا من `fi`.
 
 ```ocaml
     else
@@ -364,16 +247,13 @@ moving `y` down to position `i`. We then call `move_up` recursively beginning fr
       end
 ```
 
-If, however, `y` is less than or equal to `x`, then `x` is at its final position, and it suffices to
-store it there.
+أما إذا كان `y` أصغر من `x` أو مساويًا له، فإن `x` عند موضعه النهائي، ويكفي تخزينه هناك.
 
 ```ocaml
       else A.set h i x
 ```
 
-The function `add` proceeds in two steps. It increases the size of the array by one
-unit, adding a cell at the end of the array. Then it calls the function `move_up`,
-beginning from this cell.
+تسير الدالة `add` في خطوتين. فهي تزيد حجم المصفوفة بمقدار وحدة واحدة، بإضافة خلية في نهاية المصفوفة. ثم تستدعي الدالة `move_up` انطلاقًا من هذه الخلية.
 
 ```ocaml
   let add x h =
@@ -382,51 +262,33 @@ beginning from this cell.
     move_up h x n
 ```
 
-The code is given in program [63](#x20-208020r63) (see next page).
+الكود معطى في البرنامج [63](#x20-208020r63) (انظر الصفحة التالية).
 
 >
 
-#### Removing the Smallest Element
+#### إزالة أصغر عنصر
 
-Removing the smallest element of a heap is more delicate. The reason for this is that
-we remove the root of the tree and must, therefore, find an element to replace it. The
-idea consists in choosing the element at the bottom right of the heap, that
-is, the element occupying the last cell of the array, placing it at the root,
-and then moving it down the heap until it reaches its place. This is roughly
-what we did when inserting an element, where we moved the new element
-up.
+تُعدّ إزالة أصغر عنصر من كومة عملية أكثر دقة. والسبب في ذلك أننا نزيل جذر الشجرة، ومن ثمّ يجب أن نجد عنصرًا لنستبدله به. وتتمثل الفكرة في اختيار العنصر الواقع في أسفل يمين الكومة، أي العنصر الذي يشغل الخلية الأخيرة من المصفوفة، ووضعه عند الجذر، ثم تحريكه نزولًا في الكومة حتى يبلغ موضعه. وهذا تقريبًا ما فعلناه عند إدراج عنصر، حيث حرّكنا العنصر الجديد صعودًا.
 
-Let us assume, for example, that we wish to remove the smallest element of the
-following heap:
+لنفترض، على سبيل المثال، أننا نريد إزالة أصغر عنصر من الكومة التالية:
 
-We replace the root, 1, by the element at the bottom right, 8. Then we make 8 move
-down until it reaches its place. For this, we compare 8 with the roots a and b of the
-two subtrees. If a and b are both greater than 8, the descent is complete.
-Otherwise, we exchange 8 with the smaller of the two nodes a and b, and
-continue the descent. In the example, 8 is successively exchanged with 4 and 5:
+نستبدل الجذر، وهو 1، بالعنصر الواقع في أسفل اليمين، وهو 8. ثم نجعل 8 ينزل حتى يبلغ موضعه. ولهذا نقارن 8 بجذري الشجرتين الفرعيتين a وb. فإذا كان a وb كلاهما أكبر من 8، يكتمل النزول. وإلا، نبادل 8 بالأصغر من العقدتين a وb، ونواصل النزول. وفي المثال، يُبادَل 8 على التوالي بـ 4 و5:
 
-We begin by writing a function that compares two nodes, given by their indices `l`
-and `r`, and returns the smaller of the two.
+نبدأ بكتابة دالة تقارن عقدتين، معطاتين بفهرسيهما `l` و`r`، وتُعيد الأصغر منهما.
 
 ```ocaml
   let min h l r =
     if X.compare (A.get h r) (A.get h l) < 0 then r else l
 ```
 
-Next, we write a function `smallest_node` that determines if a value `x`, situated
-at node `i`, needs to move down the heap or not. The value `x` is not that
-of the node `i` because we do not know yet if this will be its final position.
-However, the function `smallest_node` acts as if the node `i` had the value `x`.
-The function `smallest_node` accordingly takes as parameters the heap `h`,
-the value `x`, and the index `i`. We begin by calculating the left child `l` of
-node `i`.
+بعد ذلك، نكتب دالة `smallest_node` تحدّد ما إذا كانت قيمة `x`، الواقعة عند العقدة `i`، بحاجة إلى النزول في الكومة أم لا. ولا تكون القيمة `x` هي قيمة العقدة `i` لأننا لا نعرف بعد ما إذا كان هذا سيكون موضعها النهائي. غير أن الدالة `smallest_node` تتصرّف كما لو كانت العقدة `i` تحمل القيمة `x`. وبناءً على ذلك، تأخذ الدالة `smallest_node` وسائط هي الكومة `h` والقيمة `x` والفهرس `i`. ونبدأ بحساب الابن الأيسر `l` للعقدة `i`.
 
 ```ocaml
   let smallest_node h x i =
     let l = 2 * i + 1 in
 ```
 
-If the node `i` has no children, we return `i`.
+إذا لم تكن للعقدة `i` أي أبناء، نُعيد `i`.
 
 ```ocaml
     let n = A.length h in
@@ -434,10 +296,7 @@ If the node `i` has no children, we return `i`.
       i
 ```
 
-If, however, the node `l` is part of the heap, we determine the index `j` of the smallest child
-of `i`. For this, it is convenient to determine if the right child `r=l+1` exists. If it does,
-we compare the nodes `l` and `r` with the function `min`. Otherwise, the index `j` is equal
-to `l`.
+أما إذا كانت العقدة `l` جزءًا من الكومة، فنحدّد الفهرس `j` لأصغر ابن للعقدة `i`. ولهذا، من المناسب تحديد ما إذا كان الابن الأيمن `r=l+1` موجودًا. فإن كان موجودًا، نقارن العقدتين `l` و`r` بالدالة `min`. وإلا، يكون الفهرس `j` مساويًا لـ `l`.
 
 ```ocaml
     else
@@ -445,33 +304,27 @@ to `l`.
       let j = if r < n then min h l r else l in
 ```
 
-Finally, we compare the value of the node `j` with that of `x`.
+وأخيرًا، نقارن قيمة العقدة `j` بقيمة `x`.
 
 ```ocaml
       if X.compare (A.get h j) x < 0 then j else i
 ```
 
-Moving down the heap is implemented by a recursive function `move_down` that
-takes as parameters the heap `h`, the value `x` that is moving down, and the index `i` of
- 
- 
-the candidate node. We begin by calling the function `smallest_node` to calculate the
-index `j` that should receive the value `x`.
+يُنجَز النزول في الكومة بدالة تكرارية `move_down` تأخذ وسائط هي الكومة `h` والقيمة `x` التي تنزل والفهرس `i` للعقدة المرشَّحة. ونبدأ باستدعاء الدالة `smallest_node` لحساب الفهرس `j` الذي ينبغي أن يستقبل القيمة `x`.
 
 ```ocaml
   let rec move_down h x i =
     let j = smallest_node h x i in
 ```
 
-If `j=i`, the descent is complete and it suffices to store the value `x` at index `i`.
+إذا كان `j=i`، اكتمل النزول ويكفي تخزين القيمة `x` عند الفهرس `i`.
 
 ```ocaml
     if j = i then
       A.set h i x
 ```
 
-Otherwise, we move the value of the node `j` up to the node `i` and then continue moving
-down from `j`.
+وإلا، ننقل قيمة العقدة `j` صعودًا إلى العقدة `i` ثم نواصل النزول من `j`.
 
 ```ocaml
     else begin
@@ -480,7 +333,7 @@ down from `j`.
     end
 ```
 
-The function for removing the smallest element of a heap `h` is then the following:
+وتكون دالة إزالة أصغر عنصر من كومة `h` عندئذ كما يلي:
 
 ```ocaml
   let remove_min h =
@@ -491,51 +344,23 @@ The function for removing the smallest element of a heap `h` is then the followi
     if n > 0 then move_down h x 0
 ```
 
-We consider three cases: If the heap is empty, we raise an exception. Next, if it contains
-only one element, it is not necessary to call the function `move_down`. Finally, if the
-heap contains more than one element, it is worthwhile to resize the array
-with `A.resize`. The complete code is given in programs [63](#x20-208020r63) (see page [542](#x20-208020r63))
-and [64](#x20-209035r64).
+ننظر في ثلاث حالات: إذا كانت الكومة فارغة، نرفع استثناءً. ثم إذا كانت تحتوي على عنصر واحد فقط، ليس من الضروري استدعاء الدالة `move_down`. وأخيرًا، إذا كانت الكومة تحتوي على أكثر من عنصر واحد، يجدر تغيير حجم المصفوفة بـ `A.resize`. والكود الكامل معطى في البرنامجين [63](#x20-208020r63) (انظر الصفحة [542](#x20-208020r63)) و[64](#x20-209035r64).
 
 >
 
-#### Complexity
+#### التعقيد
 
-It is clear that the functions `create`, `is_empty`, and `get_min` have constant cost. In
-case of the functions `add` and `remove_min`, their cost is bounded by the height of the
-heap. Indeed, in one case, we move from the leaves towards the root, and in the other,
-we move from the root towards the leaves. Since the heap is a complete binary tree,
-its height is logarithmic in the number of elements. For a priority queue containing N
-elements, the functions `add` and `remove_min` therefore have cost O(log N). A simpler
-way of looking at it consists in noting that the function `move_up` divides
-its argument `i` by two at each recursive call. Therefore, it cannot be called
-more than O(log N) times. Similarly, the function `move_down` multiplies its
-argument by two at each recursive call and, therefore, cannot be called more than
-O(log N) times. Of course, all of this applies only in an amortized manner by
-virtue of the calls to `resize`, which are amortized O(1), as we showed in
-chapter [4](https://usr.lmf.cnrs.fr/lpo/mainch4.html#arrays1).
+من الواضح أن للدوال `create` و`is_empty` و`get_min` كلفة ثابتة. أما في حالة الدالتين `add` و`remove_min`، فكلفتهما محدودة بارتفاع الكومة. وفعلًا، ننتقل في إحدى الحالتين من الأوراق نحو الجذر، وفي الأخرى من الجذر نحو الأوراق. وبما أن الكومة شجرة ثنائية كاملة، فإن ارتفاعها لوغاريتمي في عدد العناصر. لذا فإن للدالتين `add` و`remove_min`، في طابور أولوية يحتوي على N عنصرًا، كلفة O(log N). وثمة طريقة أبسط للنظر إلى الأمر تتمثل في ملاحظة أن الدالة `move_up` تقسم وسيطها `i` على اثنين عند كل استدعاء تكراري. ومن ثمّ لا يمكن استدعاؤها أكثر من O(log N) مرة. وبالمثل، تضرب الدالة `move_down` وسيطها في اثنين عند كل استدعاء تكراري، ومن ثمّ لا يمكن استدعاؤها أكثر من O(log N) مرة. وبالطبع، لا ينطبق كل هذا إلا بصورة مطفأة بحكم الاستدعاءات إلى `resize`، وهي مطفأة O(1)، كما بيّنّا في الفصل [4](https://usr.lmf.cnrs.fr/lpo/mainch4.html#arrays1).
 
-The space complexity depends on the implementation of the resizeable array. If we
-use the implementation presented at the start of chapter [4](https://usr.lmf.cnrs.fr/lpo/mainch4.html#arrays1), where the size of the
-array was doubled when it had to be increased, the array contains at most two times
-more elements than required. A priority queue containing N elements therefore
-occupies at most 2N memory words.
+يعتمد تعقيد المساحة على تنفيذ المصفوفة القابلة لتغيير الحجم. فإذا استعملنا التنفيذ المعروض في بداية الفصل [4](https://usr.lmf.cnrs.fr/lpo/mainch4.html#arrays1)، حيث كان حجم المصفوفة يُضاعَف عند الحاجة إلى زيادته، فإن المصفوفة تحتوي على ضعف عدد العناصر المطلوب على الأكثر. ومن ثمّ يشغل طابور أولوية يحتوي على N عنصرًا 2N كلمة ذاكرة على الأكثر.
 
-### 6.4 Persistent Priority Queues
+### 6.4 طوابير الأولوية الدائمة (persistent priority queues)
 
-In this section, we present a data structure of *persistent*priority queues, whose
-signature is given in program [65](#x20-211018r65).
+في هذا القسم، نعرض بنية معطيات لطوابير الأولوية *الدائمة (persistent)*، تُعطى توقيعتها في البرنامج [65](#x20-211018r65).
 
-As in the previous section, we use a heap data structure, except that here it is
-directly represented by a binary tree. Unlike in case of AVL trees, no extra
- 
- 
-information is stored in the nodes for the purposes of balancing. We will see later that
-these heaps nevertheless have amortized logarithmic complexity. We say these trees
-are *self-balancing*.
+كما في القسم السابق، نستعمل بنية معطيات الكومة، إلا أنها هنا ممثَّلة مباشرة بشجرة ثنائية. وخلافًا لحالة أشجار AVL، لا تُخزَّن أي معلومات إضافية في العقد لأغراض الموازنة. وسنرى لاحقًا أن لهذه الأكوام مع ذلك تعقيدًا لوغاريتميًا مطفأً. ونقول إن هذه الأشجار *ذاتية الموازنة (self-balancing)*.
 
-The functor of persistent priority queues therefore takes the following
-form:
+لذلك تأخذ دالة تصنيف طوابير الأولوية الدائمة الشكل التالي:
 
 ```ocaml
 module Make(X: Ordered) :
@@ -544,17 +369,13 @@ struct
   type elt = X.t
 ```
 
-The argument `X`, of type `Ordered`, defines the type of elements. These must be
-equipped with a comparison function corresponding to the priority order (see
-program [33](https://usr.lmf.cnrs.fr/lpo/mainch5.html#x16-156015r33) of chapter [5](https://usr.lmf.cnrs.fr/lpo/mainch5.html#sets-and-dictionaries) for the signature `Ordered`). The type `elt` of the elements
-of the queue is thus a synonym for `X.t`. The type `t` is the type of binary
-trees.
+تحدّد الوسيطة `X`، من النوع `Ordered`، نوع العناصر. ويجب أن تكون هذه مزوَّدة بدالة مقارنة تقابل ترتيب الأولوية (انظر البرنامج [33](https://usr.lmf.cnrs.fr/lpo/mainch5.html#x16-156015r33) من الفصل [5](https://usr.lmf.cnrs.fr/lpo/mainch5.html#sets-and-dictionaries) للحصول على التوقيعة `Ordered`). ومن ثمّ يكون النوع `elt` لعناصر الطابور مرادفًا لـ `X.t`. والنوع `t` هو نوع الأشجار الثنائية.
 
 ```ocaml
   type t = Empty | Node of t * elt * t
 ```
 
-The definitions of the empty heap and the function `is_empty` are clear.
+تعريفا الكومة الفارغة والدالة `is_empty` واضحان.
 
 ```ocaml
   let empty = Empty
@@ -562,7 +383,7 @@ The definitions of the empty heap and the function `is_empty` are clear.
     h = Empty
 ```
 
-The structure of the heap gives immediate access to the smallest element.
+تتيح بنية الكومة وصولًا فوريًا إلى أصغر عنصر.
 
 ```ocaml
   let get_min = function
@@ -572,19 +393,14 @@ The structure of the heap gives immediate access to the smallest element.
 
 >
 
-All the subtlety of this structure lies in the function `merge` that merges two
-heaps. Assuming we have already written this function, it is easy to write the
-functions `add` and `remove_min`. Indeed, the addition of an element `x` to a
-heap `h` consists in merging the heap containing the single element `x` with
-`h`.
+يكمن كل التلطّف في هذه البنية في الدالة `merge` التي تدمج كومتين. وبافتراض أننا كتبنا هذه الدالة بالفعل، يصبح من السهل كتابة الدالتين `add` و`remove_min`. وفعلًا، تتمثل إضافة عنصر `x` إلى كومة `h` في دمج الكومة التي تحتوي على العنصر الوحيد `x` مع `h`.
 
 ```ocaml
   let add x h =
     merge (Node (Empty, x, Empty)) h
 ```
 
-Similarly, the removal of the smallest element of a heap consists in merging the two child
-heaps of the root.
+وبالمثل، تتمثل إزالة أصغر عنصر من كومة في دمج كومتي الابن للجذر.
 
 ```ocaml
   let remove_min = function
@@ -592,8 +408,7 @@ heaps of the root.
     | Node (a, _, b) -> merge a b
 ```
 
-All we have to do now is write the function `merge` that merges two heaps `ha` and
-`hb`. If one of the two heaps is empty, how to do so is clear.
+لم يبق علينا الآن سوى كتابة الدالة `merge` التي تدمج كومتين `ha` و`hb`. وإذا كانت إحدى الكومتين فارغة، فطريقة ذلك واضحة.
 
 ```ocaml
   let rec merge ha hb = match ha, hb with
@@ -601,83 +416,54 @@ All we have to do now is write the function `merge` that merges two heaps `ha` a
         h
 ```
 
-If, however, none of the heaps is empty, we construct the resulting heap as follows. Its
-root is the smallest of the two roots of `ha` and `hb`. Assume that the root of `ha` is
-smaller.
+أما إذا لم تكن أيا من الكومتين فارغة، فإننا نبني الكومة الناتجة كما يلي. جذرها هو الأصغر بين جذري `ha` و`hb`. ولنفترض أن جذر `ha` هو الأصغر.
 
 ```ocaml
     | Node (la, xa, ra), Node (lb, xb, rb) ->
         if X.compare xa xb <= 0 then
 ```
 
-We must now determine the two subtrees of `Node(_,xa,_)`. There are several possibilities
-that result from recursively calling `merge` on two of the three trees `la`, `ra`, and `hb`, and
-from choosing the result as the left or right subtree. Among these possibilities, we
-choose the one that performs a rotation of the subtrees from right to left, so as to
-ensure self-balancing. Thus, `ra` takes the position of `la`, and `la` is merged with
-`hb`.
+يجب علينا الآن تحديد الشجرتين الفرعيتين للعقدة `Node(_,xa,_)`. وهناك عدة إمكانات تنتج عن استدعاء `merge` استدعاءً تكراريًا على اثنتين من الأشجار الثلاث `la` و`ra` و`hb`، وعن اختيار النتيجة شجرةً فرعية يسرى أو يمنى. ومن بين هذه الإمكانات، نختار تلك التي تُجري دورانًا للشجرتين الفرعيتين من اليمين إلى اليسار، بما يضمن الموازنة الذاتية. وهكذا، تتخذ `ra` موضع `la`، وتُدمج `la` مع `hb`.
 
 ```ocaml
           Node (ra, xa, merge la hb)
 ```
 
-The other situation, in which the root of `hb` is smaller, is symmetrical.
+أما الحالة الأخرى، التي يكون فيها جذر `hb` هو الأصغر، فهي متناظرة.
 
 ```ocaml
         else Node (rb, xb, merge lb ha)
 ```
 
-The complete code of persistent priority queues is given in program [66](#x20-211048r66).
+الكود الكامل لطوابير الأولوية الدائمة معطى في البرنامج [66](#x20-211048r66).
 
 >
 
-#### Complexity
+#### التعقيد
 
-The functions `empty`, `is_empty`, and `get_min` clearly have constant cost. The analysis
-is subtler in case of the function `merge`, and hence `add` and `remove_min`. In the worst
-case, `merge` can have a cost as large as the total number of elements. However, for a
-sequence of `add` and `remove_min` operations, executed successively on a heap, this
-worst case cannot occur each time. We can show that the *amortized*cost of each
-operation is, in fact, O(log N), where N is the number of elements in the heap. For an
-analysis of this complexity, we refer the reader to the article by Sleator and Tarjan
-introducing self-balancing heaps [[22](https://usr.lmf.cnrs.fr/lpo/mainli3.html#XSleatorTarjan1986heaps)] or the chapter on heaps by Okasaki in *The Fun of Programming* [[10](https://usr.lmf.cnrs.fr/lpo/mainli3.html#XGibbonsdeMoor2003)].
+من الواضح أن للدوال `empty` و`is_empty` و`get_min` كلفة ثابتة. ويكون التحليل أكثر دقة في حالة الدالة `merge`، ومن ثمّ `add` و`remove_min`. وفي أسوأ الحالات، قد تكون كلفة `merge` بقدر العدد الإجمالي للعناصر. غير أنه، بالنسبة إلى متتالية من عمليات `add` و`remove_min`، تُنفَّذ على التوالي على كومة، لا يمكن أن تحدث أسوأ حالة كهذه في كل مرة. ويمكننا أن نبيّن أن الكلفة *المطفأة (amortized)* لكل عملية هي في الواقع O(log N)، حيث N هو عدد العناصر في الكومة. ولتحليل هذا التعقيد، نحيل القارئ إلى مقالة Sleator وTarjan التي قدّمت الأكوام ذاتية الموازنة [[22](https://usr.lmf.cnrs.fr/lpo/mainli3.html#XSleatorTarjan1986heaps)] أو إلى الفصل الخاص بالأكوام بقلم Okasaki في *متعة البرمجة (The Fun of Programming)* [[10](https://usr.lmf.cnrs.fr/lpo/mainli3.html#XGibbonsdeMoor2003)].
 
-### 6.5 Exercises
+### 6.5 تمارين
 
-#### Linked Lists
+#### القوائم المترابطة
 
-**6.1**Write a function `iter:(’a->unit)->’at->unit` that traverses the elements of a
-queue in the order in which they were inserted.
+**6.1** اكتب دالة `iter:(’a->unit)->’at->unit` تمرّ على عناصر طابور بالترتيب الذي أُدرجت به.
 
-**6.2**Write a function `transfer:’at->’at->unit` that takes two queues `q1` and `q2` as
-arguments, moves all the elements of `q1` into `q2`, and empties the queue `q1`. Make
-sure that this operation executes in constant time.
+**6.2** اكتب دالة `transfer:’at->’at->unit` تأخذ طابورين `q1` و`q2` وسيطين، وتنقل جميع عناصر `q1` إلى `q2`، وتُفرغ الطابور `q1`. واحرص على أن تُنفَّذ هذه العملية في زمن ثابت.
 
-**6.3**Modify the queue structure of program [58](#x20-203014r58) to keep track of the total number of
-elements throughout. You can make type `t` into a record with a mutable field
-containing the number of elements of the queue.
+**6.3** عدّل بنية الطابور في البرنامج [58](#x20-203014r58) بحيث تتعقّب العدد الإجمالي للعناصر باستمرار. ويمكنك جعل النوع `t` سجلًا بحقل قابل للتعديل يحتوي على عدد عناصر الطابور.
 
-#### Pairs of Lists
+#### أزواج القوائم
 
-**6.4**Consider the case of a queue `q`, in which the list representing the front is empty.
-If the operation `pop` is performed multiple times, then the reversal of the list `i`,
-representing the back of the queue, will also be performed multiple times. To remedy
-this, we can memoize the reversal of `i` in the original queue `q` by means of a side
-effect. Accordingly, we adopt an equivalent representation of the queue `q` that is still
-persistent. Modify the type `’at` as follows:
+**6.4** انظر في حالة طابور `q` تكون فيه القائمة الممثِّلة للمقدمة فارغة. فإذا نُفِّذت العملية `pop` عدة مرات، فسيُنفَّذ أيضًا عكس القائمة `i`، الممثِّلة لمؤخرة الطابور، عدة مرات. ولمعالجة ذلك، يمكننا تخزين نتيجة عكس `i` في الطابور الأصلي `q` بواسطة أثر جانبي. وبناءً على ذلك، نعتمد تمثيلًا مكافئًا للطابور `q` يظل دائمًا. عدّل النوع `’at` كما يلي:
 
 ```ocaml
     type ’a t = { mutable o : ’a list; mutable i : ’a list }
 ```
 
-Reimplement the operations on these queues. The mutable nature of the fields of this
-type does not allow defining a polymorphic value `empty`. It suffices to replace it by a
-function `create:unit->’at`.
+أعد تنفيذ العمليات على هذه الطوابير. ولا تتيح الطبيعة القابلة للتعديل لحقول هذا النوع تعريف قيمة `empty` متعددة الأشكال. ويكفي استبدالها بدالة `create:unit->’at`.
 
-**6.5**Note that the representation of queues as pairs of lists is symmetrical. We can
-therefore perform insertion and removal operations from the two ends of the queue
-with equal facility. We call the resulting structure a double-ended queue or *dequeue*.
-We can name the four operations as follows:
+**6.5** لاحظ أن تمثيل الطوابير كأزواج من القوائم متماثل. لذا يمكننا تنفيذ عمليات الإدراج والإزالة من طرفي الطابور بالسهولة نفسها. ونسمي البنية الناتجة طابورًا مزدوج النهاية (double-ended queue) أو *dequeue*. ويمكننا تسمية العمليات الأربع كما يلي:
 
 ```ocaml
     val push_front : ’a -> ’a t -> ’a t
@@ -686,101 +472,54 @@ We can name the four operations as follows:
     val pop_back : ’a t -> ’a * ’a t
 ```
 
-The functions `push_back` and `pop_front` correspond to the functions `push` and `pop`
-already written. Write the functions `push_front` and `pop_back`.
+تقابل الدالتان `push_back` و`pop_front` الدالتين `push` و`pop` المكتوبتين بالفعل. اكتب الدالتين `push_front` و`pop_back`.
 
-**6.6**The double-ended queues of the previous exercise may prove inefficient. Indeed,
-alternating removals from the two ends of the queue can end up requiring many list
-reversals. To remedy this, we can try to balance the lengths of the two lists, so as to
-ensure a minimum proportion of elements at each end. For this, we let c ≥ 2 be a
-constant and impose the following invariant on the lengths li and lo of the two
-lists:
+**6.6** قد تكون الطوابير مزدوجة النهاية في التمرين السابق غير فعّالة. وفعلًا، قد تنتهي عمليات الإزالة المتناوبة من طرفي الطابور إلى اقتضاء العديد من عمليات عكس القوائم. ولمعالجة ذلك، يمكننا محاولة موازنة طولي القائمتين، بما يضمن نسبة دنيا من العناصر عند كل طرف. ولهذا، نعتبر c ≥ 2 ثابتًا ونفرض الثابت التالي على الطولين li وlo للقائمتين:
 
 $$li \le c\times lo + 1 and lo \le c\times li + 1$$
 
-Modify the type `’at` as follows, to keep track of the length of each list.
+عدّل النوع `’at` كما يلي، بحيث تتعقّب طول كل قائمة.
 
 ```ocaml
     type ’a t = { li : int; i : ’a list; lo : int; o : ’a list }
 ```
 
-Reimplement the operations for double-ended queues. For more details concerning
-this structure, and notably for its analysis, you can consult the book by
-Okasaki [[19](https://usr.lmf.cnrs.fr/lpo/mainli3.html#Xokasaki98), sec. 8.4].
+أعد تنفيذ العمليات الخاصة بالطوابير مزدوجة النهاية. ولمزيد من التفاصيل بشأن هذه البنية، ولا سيما تحليلها، يمكنك الرجوع إلى كتاب Okasaki [[19](https://usr.lmf.cnrs.fr/lpo/mainli3.html#Xokasaki98), sec. 8.4].
 
-#### Heap Structures
+#### بنى الأكوام
 
-**6.7**You can use the heap structure to easily implement an efficient sorting
-algorithm, called *heapsort*. The idea is as follows: We insert all the elements to be
-sorted in a heap, and then extract them successively with the functions `get_min` and
-`remove_min`. Add a function `sort:X.tarray->unit` to the functor `Make` to sort an
-array using this algorithm. If the complexity of the heap operations is logarithmic
-(which is the case when you use resizeable arrays of constant amortized complexity),
-then the complexity of this sorting algorithm is O(nlog n), that is, optimal. Heapsort
-will be described in detail in chapter [12](https://usr.lmf.cnrs.fr/lpo/mainch12.html#sorting-algorithms).
+**6.7** يمكنك استعمال بنية الكومة لتنفيذ خوارزمية فرز فعّالة بسهولة، تُسمى *الفرز بالكومة (heapsort)*. والفكرة كما يلي: نُدرج جميع العناصر الواجب فرزها في كومة، ثم نستخرجها على التوالي بالدالتين `get_min` و`remove_min`. أضف دالة `sort:X.tarray->unit` إلى دالة التصنيف `Make` لفرز مصفوفة باستعمال هذه الخوارزمية. وإذا كان تعقيد عمليات الكومة لوغاريتميًا (وهو الحال عندما تستعمل مصفوفات قابلة لتغيير الحجم ذات تعقيد مطفأ ثابت)، فإن تعقيد خوارزمية الفرز هذه هو O(nlog n)، أي الأمثل. وسيُوصَف الفرز بالكومة بالتفصيل في الفصل [12](https://usr.lmf.cnrs.fr/lpo/mainch12.html#sorting-algorithms).
 
-**6.8**Several different elements of a heap can have the same priority. This is, for
-example, the case when the elements are pairs for which the function `compare`
-takes into account only one of the two components. Show that the order of
-insertion in a priority queue is preserved, that is, that the elements of equal
-priority are extracted from the queue in the same order in which they were
-inserted.
+**6.8** قد يكون لعناصر مختلفة متعددة في كومة الأولوية نفسها. وهذا هو الحال، على سبيل المثال، عندما تكون العناصر أزواجًا لا تأخذ فيها الدالة `compare` في الحسبان سوى إحدى المركّبتين. بيّن أن ترتيب الإدراج في طابور أولوية محفوظ، أي أن العناصر ذات الأولوية المتساوية تُستخرج من الطابور بالترتيب نفسه الذي أُدرجت به.
 
-**6.9**We wish to add an operation `remove` to remove an element from a priority
-queue. Several problems arise. On the one hand, the same element may occur
-several times in the queue. On the other, to implement the removal of an
-element x efficiently, it is necessary to determine at which index it appears
-without traversing the entire array, which is not possible with the current
-structure.
+**6.9** نريد إضافة عملية `remove` لإزالة عنصر من طابور أولوية. وتنشأ عدة مشاكل. فمن جهة، قد يتكرر العنصر نفسه عدة مرات في الطابور. ومن جهة أخرى، لتنفيذ إزالة عنصر x بكفاءة، من الضروري تحديد الفهرس الذي يظهر عنده دون المرور على المصفوفة بأكملها، وهو أمر غير ممكن مع البنية الحالية.
 
-We propose to resolve these two problems as follows. When an element is added
-in the priority queue, we return a “pointer” to the user, that may be used
-subsequently to remove this element. The signature is accordingly modified as
-follows:
+نقترح حلّ هاتين المشكلتين كما يلي. عندما يُضاف عنصر إلى طابور الأولوية، نُعيد إلى المستخدم «مؤشرًا» (pointer) يمكن استعماله لاحقًا لإزالة هذا العنصر. وتُعدَّل التوقيعة بناءً على ذلك كما يلي:
 
 ```ocaml
     type pointer
     val add: elt -> t -> pointer
 ```
 
-Internally, the type `pointer` contains the index where the corresponding element of the
-array is stored. This index is updated when the element is moved within the array. In
-practice, it is simplest to also include the value of the element along with the
- 
- 
-index:
+داخليًا، يحتوي النوع `pointer` على الفهرس الذي يُخزَّن عنده العنصر المقابل في المصفوفة. ويُحدَّث هذا الفهرس عندما يُنقل العنصر داخل المصفوفة. وعمليًا، الأبسط هو تضمين قيمة العنصر أيضًا إلى جانب الفهرس:
 
 ```ocaml
     type pointer = { elt: elt; mutable index: int }
 ```
 
-The resizeable array then contains values of type `pointer` rather than `elt`. Modify
-the priority queue structure following this idea and provide a function
-`remove:pointer->t->unit`. Hint: To remove the element situated at index i, replace
-it with the final element of the resizeable array. It suffices then to re-establish the
-heap property, by using either `move_up` or `move_down`. Show that the complexity of
-`remove` is in O(log n).
+تحتوي المصفوفة القابلة لتغيير الحجم حينئذ على قيم من النوع `pointer` بدلًا من `elt`. عدّل بنية طابور الأولوية وفق هذه الفكرة وقدّم دالة `remove:pointer->t->unit`. تلميح: لإزالة العنصر الواقع عند الفهرس i، استبدله بالعنصر الأخير في المصفوفة القابلة لتغيير الحجم. ويكفي حينئذ إعادة إرساء خاصية الكومة، باستعمال `move_up` أو `move_down`. بيّن أن تعقيد `remove` من الرتبة O(log n).
 
-**6.10**In the context of the above exercise, a value of type `pointer` may reference an
-element that is no longer in the queue. A call to `remove` could therefore corrupt the
-structure. Remedy this problem by invalidating all pointers corresponding to an
-element that is no longer in the queue, so that the function `remove` is able to fail
-cleanly.
+**6.10** في سياق التمرين أعلاه، قد تشير قيمة من النوع `pointer` إلى عنصر لم يعد موجودًا في الطابور. ومن ثمّ قد يؤدي استدعاء `remove` إلى إفساد البنية. عالج هذه المشكلة بإبطال جميع المؤشرات المقابلة لعنصر لم يعد موجودًا في الطابور، بحيث تتمكن الدالة `remove` من الفشل بشكل نظيف.
 
-**6.11**It can be interesting to have priority queues that provide an operation
-`change_priority` to modify the priority of an existing element. Reusing the idea of
-exercise [6.9](#x20-216005r9), provide the following new operation:
+**6.11** قد يكون من المثير للاهتمام أن تكون لدينا طوابير أولوية تقدّم عملية `change_priority` لتعديل أولوية عنصر موجود. وبإعادة استعمال فكرة التمرين [6.9](#x20-216005r9)، قدّم العملية الجديدة التالية:
 
 ```ocaml
   val change_priority : pointer -> elt -> t -> unit
 ```
 
-This operation modifies the value of an element already present in the queue. Show that
-the complexity of `change_priority` is in O(log n).
+تعدّل هذه العملية قيمة عنصر موجود بالفعل في الطابور. بيّن أن تعقيد `change_priority` من الرتبة O(log n).
 
-**6.12**In certain cases, we may wish to distinguish the priority of an element from its
-value. Modify the implementation of priority queues to give them the following
-signature:
+**6.12** في بعض الحالات، قد نرغب في التمييز بين أولوية العنصر وقيمته. عدّل تنفيذ طوابير الأولوية بحيث تعطيها التوقيعة التالية:
 
 ```ocaml
   module Make(P: Ordered)(V: WithDummy) :
@@ -796,14 +535,10 @@ signature:
   end
 ```
 
-The type `P.t` is that of priorities and `V.t`, that of values. As the signatures indicate,
-the first is equipped with a function `compare` and the second with a default
-value.
+النوع `P.t` هو نوع الأولويات، والنوع `V.t` هو نوع القيم. وكما تشير التوقيعات، فإن الأول مزوَّد بدالة `compare` والثاني بقيمة افتراضية.
 
-#### Self-Balancing Heaps
+#### أكوام ذاتية الموازنة
 
-**6.13**Redo exercise [6.7](#x20-216001r7) (heapsort) with self-balancing heaps. What is the
-complexity of this sorting algorithm?
+**6.13** أعد التمرين [6.7](#x20-216001r7) (الفرز بالكومة) باستعمال أكوام ذاتية الموازنة. ما تعقيد خوارزمية الفرز هذه؟
 
-**6.14**Using a reference, wrap the code of program [66](#x20-211048r66) in a module with the
-imperative signature of program [57](#x20-201002r57).
+**6.14** باستعمال مرجع، غلّف كود البرنامج [66](#x20-211048r66) في وحدة ذات التوقيعة الأمرية للبرنامج [57](#x20-201002r57).

@@ -1,26 +1,26 @@
 ---
-title: "Title page"
-lang: en
+title: "صفحة العنوان"
+lang: ar
 ---
 
-## Title page
+## صفحة العنوان
 
 _______________________________________________________________________ 
-**Learn Programming with OCaml** 
-**Algorithms and Data Structures** 
+**تعلم البرمجة باستخدام OCaml** 
+**الخوارزميات وهياكل البيانات** 
 _____________________________ 
 **Sylvain Conchon & Jean-Christophe Filliâtre** 
-**Translated by Urmila Nair** 
- 
- 
-**March 11, 2025**
+**ترجمة: Urmila Nair** 
+  
+**11 مارس 2025**
 
-The OCaml Software Foundation funded the translation of this book into
-English by [Urmila Nair](https://www.aropefastenedbetween.fr/), and suggested that the result be made Open Access.
-The present English version is thus available under the license [CC BY SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.en).
+موّلت مؤسسة OCaml Software Foundation ترجمة هذا الكِتاب إلى
+الإنجليزية على يد [Urmila Nair](https://www.aropefastenedbetween.fr/)، واقترحت أن تكون النتيجة متاحة بوصول مفتوح.
+النسخة الإنجليزية الحالية متاحة تحت الترخيص [CC BY SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.en).
 
-Compiled from commit `89f4126` on March 11, 2025.
+مُجمَّعة من الـ commit `89f4126` في 11 مارس 2025.
 
 ________________________ 
-For our wives and daughters 
+لزوجاتنا وبناتنا 
 _________________
+

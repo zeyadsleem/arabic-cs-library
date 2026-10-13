@@ -1,18 +1,18 @@
 ---
-title: "Arithmetic"
-lang: en
+title: "الحسابيات"
+lang: ar
 ---
 
-## 10. Arithmetic
+## 10. الحسابيات
 
-### 10.1 Euclid’s Algorithm
+### 10.1 الخوارزمية الإقليدية (Euclid’s Algorithm)
 
-The most famous of all algorithms is certainly that of Euclid. It calculates
-the greatest common divisor of two integers, x and y, written x ∧ y, and
-called the “gcd of x and y”. Given two non-negative integers x and y, Euclid’s
-algorithm replaces the pair (x,y) by the pair (y,x mod y), continuing until y
-reaches zero. It then returns the value of x, which is the gcd of the initial
-values of x and y. We write this algorithm in the form of a recursive function
+أشهر جميع الخوارزميات هو بلا شك خوارزمية إقليدس (Euclid). وهي تحسب
+القاسم المشترك الأكبر لعددين صحيحين x و y، ويُكتب x ∧ y، ويُسمّى
+«قاسم x و y الأكبر». وإذا أُعطي عددان صحيحان غير سالبين x و y، فإن
+الخوارزمية الإقليدية تستبدل الزوج (x,y) بالزوج (y,x mod y)، وتستمر حتى
+تبلغ y الصفر. ثم تُعيد قيمة x، وهي القاسم المشترك الأكبر للقيمتين
+الابتدائيتين لـ x و y. ونكتب هذه الخوارزمية في صورة دالة عودية
 `gcd`:
 
 ```ocaml
@@ -20,177 +20,173 @@ values of x and y. We write this algorithm in the form of a recursive function
     if y = 0 then x else gcd y (x mod y)
 ```
 
-The correctness of the algorithm follows from the fact that each iteration preserves the
-greatest common divisor of x and y. When we reach `y` = 0, we return `x`, that is, `x`∧ 0,
-which is then the gcd of the initial values of `x` and `y`. In other words, we have used the
-following two properties of the gcd:
+تتبع صحة الخوارزمية من كون كل تكرار يحافظ على القاسم المشترك الأكبر
+لـ x و y. وعندما نبلغ `y` = 0، نُعيد `x`، أي `x`∧ 0،
+وهو إذن القاسم المشترك الأكبر للقيمتين الابتدائيتين لـ `x` و `y`. بعبارة أخرى، استعملنا
+الخاصيتين التاليتين للقاسم المشترك الأكبر:
 
 $$x \wedge y = y \wedge (x mod y), x \wedge 0 = x.$$
 
-The termination of the algorithm follows from the fact that `y` decreases strictly in
-each iteration, remaining non-negative throughout. Indeed, we have the invariant that
+يتبع توقف الخوارزمية من كون `y` يتناقص تناقصًا صارمًا في
+كل تكرار، مع بقائه غير سالب طوال ذلك. وبالفعل، لدينا الثابت (invariant) القائل إن
 `x`,`y` ≥ 0.
 
-The complexity of Euclid’s algorithm is given by Lamé’s theorem. It states that, if
-the algorithm performs s iterations with x > y > 0, then x ≥ Fs+1 and y ≥ Fs, where
-(Fn) is the Fibonacci sequence. We deduce from this that Euclid’s algorithm
-is logarithmic, that is, s = O(log x). In the general case, the complexity is
-O(log(max(x,y))); see exercise [10.1](#x25-260001r1). A detailed analysis may be found in *The Art of Computer Programming* [[14](https://usr.lmf.cnrs.fr/lpo/mainli3.html#XKnuthV2), sec. 4.5.3].
+يُعطى تعقيد الخوارزمية الإقليدية بمبرهنة لاميه (Lamé’s theorem). وتنصّ
+على أنه إذا نفّذت الخوارزمية s تكرارًا مع x > y > 0، فإن x ≥ Fs+1 و y ≥ Fs، حيث
+(Fn) هو متتالية فيبوناتشي (Fibonacci sequence). ونستنتج من ذلك أن الخوارزمية الإقليدية
+لوغاريتمية، أي s = O(log x). وفي الحالة العامة، يكون التعقيد
+O(log(max(x,y)))؛ انظر التمرين [10.1](#x25-260001r1). ويمكن إيجاد تحليل مفصّل في كتاب *فن البرمجة الحاسوبية* [[14](https://usr.lmf.cnrs.fr/lpo/mainli3.html#XKnuthV2)، القسم 4.5.3].
 
-Exercise [10.2](#x25-260002r2) generalizes the function `gcd` to integers x and y that are not
-necessarily non-negative.
+يعمّم التمرين [10.2](#x25-260002r2) الدالة `gcd` على الأعداد الصحيحة x و y التي ليست
+بالضرورة غير سالبة.
 
-#### The Extended Euclidean Algorithm
+#### الخوارزمية الإقليدية الموسّعة (Extended Euclidean Algorithm)
 
-We can easily modify Euclid’s algorithm to compute the Bézout coefficients, that is,
-two integers u and v satisfying the following equation:
+يمكننا بسهولة تعديل الخوارزمية الإقليدية لحساب معاملات بيزو (Bézout coefficients)، أي
+عددين صحيحين u و v يحققان المعادلة التالية:
 
 |  | (10.1) |
 | --- | --- |
 
-This is known as the extended Euclidean algorithm. We implement it in the form of a
-function `extended_gcd` that takes the integers x and y as arguments and returns the
-triple (u,v,x ∧ y). The code is given in program [79](#x25-253004r79).
+يُعرف هذا بالخوارزمية الإقليدية الموسّعة. وننفّذه في صورة دالة
+`extended_gcd` تأخذ العددين الصحيحين x و y كسمتين وتُعيد
+الثلاثية (u,v,x ∧ y). ويُعطى الرمز في البرنامج [79](#x25-253004r79).
 
-It is easy to see that the third component of the returned triple is the gcd of x and
-y. Indeed, if we focus on this component, we find the same computations as those
-performed in the function `gcd` with the variables x and y, since x −⌊⌋y is nothing
-but x mod y. To verify the equation [10.1](#x25-253002r1), it suffices to proceed by induction on y.
-The base case y = 0 is clear. For the induction step, the induction hypothesis tells us
-that:
+من السهل ملاحظة أن المكوّن الثالث للثلاثية المُعادة هو القاسم المشترك الأكبر لـ x و
+y. وبالفعل، إذا ركّزنا على هذا المكوّن، نجد الحسابات نفسها التي
+تُجرى في الدالة `gcd` بالمتغيرين x و y، لأن x −⌊⌋y ليس سوى
+x mod y. وللتحقق من المعادلة [10.1](#x25-253002r1)، يكفي الاستدلال بالاستقراء على y.
+والحالة الأساسية y = 0 واضحة. وفي خطوة الاستقراء، تخبرنا فرضية الاستقراء
+بأن:
 
 $$x uy + v(x - ⌊ - ⌋y) = x \wedge y y$$
 
-This is equivalent to:
+وهذا يكافئ:
 
 $$x vx + (u- ⌊ - y⌋v)y = x\wedge y,$$
 
-which corresponds to the code of the function `extended_gcd`.
+وهو ما يوافق رمز الدالة `extended_gcd`.
 
-The complexity of `extended_gcd` is the same as that of the function `gcd`. The
-number of operations performed in each iteration is certainly greater, but remains
-bounded, and the number of iterations is exactly the same. Therefore, the complexity
-is still O(log x).
-
->
-
-### 10.2 Exponentiation by Squaring
-
-For n ∈ ℕ, a naive computation of xn performs n− 1 multiplications. The algorithm
-of exponentiation by squaring consists in computing xn while performing only
-O(log n) multiplications. It makes use of the following identities:
-
-$$\begin{cases} (x2)n/2 if n is even \\ xn = 2(n-1)/2 x (x ) if n is odd. \end{cases}$$
-
-Its translation in OCaml, for x of type `int`, is easy. We may write, for example,
-the code given in program [80](#x25-254002r80). It uses the fact that `n/2` returns ⌊`n`∕2⌋, irrespective of
-whether `n` is even or odd.
-
-There are multiple variants. We may, for example, treat `n` = 1 as a special case,
-but this is not particularly useful. (See also exercise [10.4](#x25-261001r4).) In any case, the central
-idea remains the following: If we divide the exponent by at least two in each step, the
-total number of recursive calls is proportionate to log(n), and so is the number of
-multiplications.
-
-More precisely, we can show by induction on k that, if 2k−1 ≤ n < 2k, then the
-function `exp` performs exactly k recursive calls. As each recursive call to `exp` performs
-one or two multiplications, we deduce that the total number of multiplications is
-bound by 2log n.
-
-The applications of this algorithm are innumerable, especially since x does not
-necessarily have to be of type `int`. Once we have a unit and an associative operation,
-that is, a monoid M, we may apply this algorithm to compute xn for x ∈ M and
-n ∈ ℕ. Exercise [10.6](#x25-261003r6) proposes one such generalization.
+تعقيد `extended_gcd` هو نفس تعقيد الدالة `gcd`. فرقم العمليات
+المُنفَّذة في كل تكرار أكبر بلا شك، لكنه يبقى محدودًا، وعدد التكرارات هو نفسه تمامًا. ولذلك
+يظل التعقيد O(log x).
 
 >
 
-### 10.3 Modular Arithmetic
+### 10.2 الرفع إلى الأس بالتربيع (Exponentiation by Squaring)
 
-In this section, we assume that we are looking to perform arithmetic modulo m for a
-fixed value of m. This is interesting for several reasons. We may, for instance, wish to
-compute a very large value but be interested only in its final k digits in base 10. In
-this case, we will have m = 10k. We could also use the Chinese Remainder Theorem
-to compute a given value modulo several pairwise relative prime integers and
-represent in this way integers potentially larger than those provided by the machine.
-See exercise [10.8](#x25-262004r8).
+من أجل n ∈ ℕ، يُجري الحساب الساذج لـ xn عددًا من العمليات يساوي n− 1 عملية ضرب. وتقوم خوارزمية
+الرفع إلى الأس بالتربيع على حساب xn بإجراء O(log n) من عمليات الضرب فقط. وهي تستعمل
+المتطابقات التالية:
 
-In the rest of this section, we assume `m` is a constant of type `int` such that `m` > 0.
-We will write a certain number of functions that manipulate integers modulo `m`, that
-is, integers x such that:
+$$\begin{cases} (x2)n/2 إذا كان n زوجيًا \\ xn = 2(n-1)/2 x (x ) إذا كان n فرديًا. \end{cases}$$
+
+وترجمتها إلى OCaml، من أجل x من النوع `int`، سهلة. ويمكننا أن نكتب، على سبيل المثال،
+الرمز المُعطى في البرنامج [80](#x25-254002r80). وهو يستعمل كون `n/2` يُعيد ⌊`n`∕2⌋، بغضّ النظر عن
+كون `n` زوجيًا أم فرديًا.
+
+توجد صِيغ متعددة. يمكننا، على سبيل المثال، معالجة `n` = 1 كحالة خاصة،
+لكن هذا ليس مفيدًا بشكل خاص. (انظر أيضًا التمرين [10.4](#x25-261001r4).) وعلى أي حال، تبقى الفكرة
+المركزية كما يلي: إذا قسمنا الأس على اثنين على الأقل في كل خطوة، فإن
+العدد الإجمالي للنداءات العودية يتناسب مع log(n)، وكذلك عدد
+عمليات الضرب.
+
+وبشكل أدقّ، يمكننا أن نُثبت بالاستقراء على k أنه إذا كان 2k−1 ≤ n < 2k، فإن
+الدالة `exp` تُجري k نداءً عوديًا بالضبط. وبما أن كل نداء عودي لـ `exp` يُجري
+عملية ضرب واحدة أو عمليتين، نستنتج أن العدد الإجمالي لعمليات الضرب
+محدود بـ 2log n.
+
+وتطبيقات هذه الخوارزمية لا تُعَدّ ولا تُحصى، خاصة أن x ليس
+بالضرورة من النوع `int`. فبمجرد أن يكون لدينا عنصر محايد (unit) وعملية تجميعية
+(associative operation)، أي بنية مونويد (monoid) M، يمكننا تطبيق هذه الخوارزمية لحساب xn من أجل x ∈ M و
+n ∈ ℕ. ويقترح التمرين [10.6](#x25-261003r6) أحد هذه التعميمات.
+
+>
+
+### 10.3 الحسابيات النمطية (Modular Arithmetic)
+
+نفترض في هذا القسم أننا نرغب في إجراء حسابيات بقياس (modulo) m من أجل
+قيمة ثابتة لـ m. وهذا مثير للاهتمام لأسباب عدة. فقد نرغب، على سبيل المثال، في
+حساب قيمة ضخمة جدًا مع الاهتمام فقط بخاناتها k الأخيرة في الأساس 10. وفي
+هذه الحالة يكون لدينا m = 10k. ويمكننا أيضًا استعمال مبرهنة الباقي الصينية (Chinese Remainder
+Theorem) لحساب قيمة معطاة بقياس عدة أعداد صحيحة أولية فيما بينها،
+وتمثيل أعداد صحيحة يحتمل أن تكون أكبر من تلك التي توفّرها الآلة بهذه الطريقة.
+انظر التمرين [10.8](#x25-262004r8).
+
+وفي ما تبقّى من هذا القسم، نفترض أن `m` ثابت من النوع `int` بحيث `m` > 0.
+وسنكتب عددًا من الدوال التي تتعامل مع الأعداد الصحيحة بقياس `m`،
+أي الأعداد الصحيحة x التي تحقق:
 
 |  | (10.2) |
 | --- | --- |
 
-Exercise [10.7](#x25-262001r7) proposes to gather together the various functions in a functor
-parametrized by `m`. We begin with a function `of_int` that takes an arbitrary integer `x`
-and returns its residue modulo `m`. We cannot simply do `x mod m` because if `x` is
-negative, then `xmodm` is also negative. In general, `amodb` has the same sign as `a`. We
+ويقترح التمرين [10.7](#x25-262001r7) جمع الدوال المختلفة في دالة وصفية (functor)
+مُعاملَة بـ `m`. نبدأ بدالة `of_int` تأخذ عددًا صحيحًا اعتباطيًا `x`
+وتُعيد باقيه بقياس `m`. ولا يمكننا ببساطة إجراء `x mod m` لأنه إذا كان `x`
+سالبًا، فإن `xmodm` يكون سالبًا أيضًا. وبشكل عام، يحمل `amodb` الإشارة نفسها لـ `a`. ولذلك
  
- 
-therefore write:
+نكتب:
 
 ```ocaml
   let of_int x =
     let r = x mod m in if r < 0 then r + m else r
 ```
 
-Addition modulo `m` is easily written if we assume that the operands are already integers
-modulo `m`. To guarantee the property ([10.2](#x25-255002r2)), it suffices to subtract `m` if the value of
-`x+y` is greater than or equal to `m`.
+ويُكتب الجمع بقياس `m` بسهولة إذا افترضنا أن المعاملات هي بالفعل أعداد صحيحة
+بقياس `m`. ولضمان الخاصية ([10.2](#x25-255002r2))، يكفي طرح `m` إذا كانت قيمة
+`x+y` أكبر من أو تساوي `m`.
 
 ```ocaml
   let add x y =
     let r = x + y in if r >= m then r - m else r
 ```
 
-The integers `x` and `y` being non-negative, the sign is not a problem here. Nevertheless, for
-the addition to be correct, the operation `x+y` must not overflow, that is, we must have
-`x+y` ≤ `max_int`. An easy way of guaranteeing this is to impose a maximum value on `m`,
-namely, `m` ≤ `max_int`∕2 + 1. We can do this by placing the following assertion at the
-beginning of the code:
+ولأن العددين الصحيحين `x` و `y` غير سالبين، فالإشارة ليست مشكلة هنا. ومع ذلك، ولكي
+يكون الجمع صحيحًا، يجب ألا تفيض العملية `x+y`، أي يجب أن يكون لدينا
+`x+y` ≤ `max_int`. وهناك طريقة سهلة لضمان ذلك، وهي فرض قيمة قصوى على `m`،
+أي `m` ≤ `max_int`∕2 + 1. ويمكننا فعل ذلك بوضع التوكيد (assertion) التالي في
+بداية الرمز:
 
 ```ocaml
   let () = assert (0 < m && m <= max_int/2 + 1)
 ```
 
-Subtraction is written just as easily, if we take care to return a non-negative value, as we
-did above for the function `of_int`.
+ويُكتب الطرح بسهولة مماثلة، إذا حرصنا على إعادة قيمة غير سالبة، كما
+فعلنا أعلاه في الدالة `of_int`.
 
 ```ocaml
   let sub x y =
     let r = x - y in if r < 0 then r + m else r
 ```
 
-Arithmetic overflow is not possible here, thanks to the assumption that we made earlier
-for the addition operation. (It is, nevertheless, worth convincing yourself of this.) The
-code of these first three operations is given in program [81](#x25-255014r81).
+ولا يمكن حدوث فيض حسابي هنا، بفضل الافتراض الذي وضعناه سابقًا
+لعملية الجمع. (ومع ذلك، يجدر بك أن تقنع نفسك بذلك.) ويُعطى
+رمز هذه العمليات الثلاث الأولى في البرنامج [81](#x25-255014r81).
 
 >
 
-#### Multiplication
+#### الضرب
 
-Multiplication is a subtler affair. For operands that are sufficiently small,
-that is, less than, it suffices to perform the multiplication and take its
-residue:
+الضرب مسألة أدقّ. فمن أجل معاملات صغيرة بما فيه الكفاية،
+أي أصغر من، يكفي إجراء عملية الضرب وأخذ باقيها:
 
 ```ocaml
   let mul x y =
     (x * y) mod m
 ```
 
-However, if we do not wish to restrict the range of the operands, and keep only the
-restriction already imposed, namely, `m` ≤ `max_int`∕2 + 1, we cannot use ordinary
-multiplication as it could trigger an overflow. We can, however, work around this
-difficulty by performing the multiplication as one would by hand. Suppose `x` is written
-in base 2 as:
+ومع ذلك، إذا لم نرغب في تقييد مجال المعاملات، واكتفينا بالقيد المفروض
+أصلًا، أي `m` ≤ `max_int`∕2 + 1، فلا يمكننا استعمال الضرب العادي لأنه قد
+يُسبّب فيضًا. لكن يمكننا التغلب على هذه الصعوبة بإجراء الضرب كما يُجرى
+يدويًا. لنفترض أن `x` مكتوب في الأساس 2 على الصورة:
 
 $$(xkxk-1...x1x0)2$$
 
-where xk is the most significant digit and x0, the least significant digit. We
-will then write a loop that calculates (xk…xi)2 ×`y` (mod `m`), for i varying
-from k + 1 to 0. We write it as a `for` loop, accumulating the result in a
-reference `r`. Given the assumption on `m` and the fact that the OCaml type `int` is
-represented with `Sys.word_size-1` signed bits (see chapter [3](https://usr.lmf.cnrs.fr/lpo/mainch3.html#ocaml-concepts-a-closer-look)), we can begin with
+حيث xk هو الرقم الأكثر دلالة (most significant digit) و x0 الرقم الأقل دلالة (least significant digit). وسنكتب
+بعد ذلك حلقة (loop) تحسب (xk…xi)2 ×`y` (mod `m`)، من أجل i متغيّر
+من k + 1 إلى 0. ونكتبها على شكل حلقة `for`، مع تجميع النتيجة في
+مرجع (reference) `r`. وبالنظر إلى الافتراض على `m` وإلى كون النوع `int` في OCaml
+ممثلًا بـ `Sys.word_size-1` بتة إشارية (signed bits) (انظر الفصل [3](https://usr.lmf.cnrs.fr/lpo/mainch3.html#ocaml-concepts-a-closer-look))، يمكننا البدء بـ
 i = `Sys.word_size-4`.
 
 ```ocaml
@@ -199,72 +195,72 @@ i = `Sys.word_size-4`.
     for i = Sys.word_size - 4 downto 0 do
 ```
 
-In each iteration of the loop, we begin by multiplying `r` by 2, modulo `m`, which we do with
-the function `add`.
+في كل تكرار من الحلقة، نبدأ بضرب `r` في 2، بقياس `m`، وهو ما نفعله
+بالدالة `add`.
 
 ```ocaml
       r := add !r !r;
 ```
 
-We then have `!r` ≡ (xk…xi)2 × 2 ×`y` (mod `m`). Next, we test the bit xi and, if it equals 1,
-we add `y` to `r` to re-establish the loop invariant.
+ويكون لدينا بعد ذلك `!r` ≡ (xk…xi)2 × 2 ×`y` (mod `m`). ثم نختبر البتة xi وإذا كانت
+تساوي 1، نضيف `y` إلى `r` لإعادة إرساء ثابت الحلقة.
 
 ```ocaml
       if x land (1 lsl i) <> 0 then r := add !r y
 ```
 
-Once out of the loop, we have `!r` ≡ xkxk−1…x1x0 ×`y` (mod `m`), that is, `!r` ≡ `x`×`y` (mod `m`), which is the desired result. The code is given in program [82](#x25-256012r82).
+وبعد الخروج من الحلقة، يكون لدينا `!r` ≡ xkxk−1…x1x0 ×`y` (mod `m`)، أي `!r` ≡ `x`×`y` (mod `m`)، وهو النتيجة المطلوبة. ويُعطى الرمز في البرنامج [82](#x25-256012r82).
 
 >
 
-#### Division
+#### القسمة
 
-The division of `x` by `y` modulo `m` assumes that `y` and `m` are relatively prime,
-and returns a result `q` such that `q`×`y` = `x` (mod `m`). We use the extended
-Euclidean algorithm (program [79](#x25-253004r79)). Indeed, if `y` and `m` are relative prime integers,
-then the extended Euclidean algorithm gives us two integers, `u` and `v`, such
-that:
+تفترض قسمة `x` على `y` بقياس `m` أن `y` و `m` أوليان فيما بينهما،
+وتُعيد نتيجة `q` بحيث `q`×`y` = `x` (mod `m`). ونستعمل الخوارزمية
+الإقليدية الموسّعة (البرنامج [79](#x25-253004r79)). وبالفعل، إذا كان `y` و `m` عددين صحيحين أوليين فيما بينهما،
+فإن الخوارزمية الإقليدية الموسّعة تعطينا عددين صحيحين، `u` و `v`،
+بحيث:
 
 $$u \times y + v \times m = 1$$
 
-This follows from equation [10.1](#x25-253002r1). Multiplying this equality by `x`, we get:
+ويتبع هذا من المعادلة [10.1](#x25-253002r1). وبضرب هذه المساواة في `x`، نحصل على:
 
 $$(x \times u)\times y = x (mod m)$$
 
-The result of the division is therefore `x`×`u`. The code is given in program [82](#x25-256012r82). It
-uses `of_intu` because `u` may be negative, but could be made more efficient since
-Euclid’s algorithm guarantees that |`u`| < `m`, so that the use of `of_int` is unnecessarily
-complicated.
+ونتتيجة القسمة إذن هي `x`×`u`. ويُعطى الرمز في البرنامج [82](#x25-256012r82). وهو
+يستعمل `of_intu` لأن `u` قد يكون سالبًا، لكن يمكن جعله أكثر كفاءة بما أن
+الخوارزمية الإقليدية تضمن أن |`u`| < `m`، بحيث يصبح استعمال `of_int` معقدًا بلا
+ضرورة.
 
-### 10.4 Matrix Calculus
+### 10.4 حساب المصفوفات (Matrix Calculus)
 
-In this section, we implement some basic matrix operations. For the sake of simplicity,
-we assume that the matrices have integer coefficients. Exercise [10.9](#x25-263001r9) proposes a
-generalization to matrices with arbitrary coefficients.
+ننفّذ في هذا القسم بعض العمليات الأساسية على المصفوفات. وتبسيطًا،
+نفترض أن المصفوفات ذات معاملات صحيحة. ويقترح التمرين [10.9](#x25-263001r9)
+تعميمًا على مصفوفات ذات معاملات اعتباطية.
 
-As we explained in section [*2.5*](https://usr.lmf.cnrs.fr/lpo/mainch2.html#sieve-of-eratosthenes) *Sieve of Eratosthenes*, a matrix is simply an array
-of arrays, that is:
+وكما شرحنا في القسم [*2.5*](https://usr.lmf.cnrs.fr/lpo/mainch2.html#sieve-of-eratosthenes) *غربال إراتوستينس* (Sieve of Eratosthenes)، فإن المصفوفة ليست سوى مصفوفة
+من المصفوفات (array of arrays)، أي:
 
 ```ocaml
   type matrix = int array array
 ```
 
-We recall that we must not write `Array.make3(Array.make4v)` to create a 3 × 4 matrix, but
-rather `Array.make_matrix34v`, or equivalently, `Array.init3(fun_->Array.make4v)`.
+ونُذكّر بأنه يجب ألا نكتب `Array.make3(Array.make4v)` لإنشاء مصفوفة 3 × 4، بل
+بالأحرى `Array.make_matrix34v`، أو بالمثل `Array.init3(fun_->Array.make4v)`.
 
-Other than `Array.make_matrix`, the OCaml standard library does not
-provide operations on matrices. Let us begin therefore by writing a function
-`init_matrix`, analog of `Array.init` for matrices. The function takes as arguments
-the dimensions `n` and `m` of the matrix, and a function `f` to initialize each
-element.
+وبخلاف `Array.make_matrix`، لا توفّر المكتبة المعيارية لـ OCaml
+عمليات على المصفوفات. فلنبدأ إذن بكتابة دالة
+`init_matrix`، نظيرة `Array.init` بالنسبة للمصفوفات. تأخذ الدالة كسمتين
+بُعدي المصفوفة `n` و `m`، ودالة `f` لتهيئة كل
+عنصر.
 
 ```ocaml
   let init_matrix n m f =
     Array.init n (fun i -> Array.init m (fun j -> f i j))
 ```
 
-In other words, we return the matrix M of size `n`×`m` such that Mi,j = `f` i j.
-We derive from this a function `id` to construct the identity matrix of size
+بعبارة أخرى، نُعيد المصفوفة M ذات الحجم `n`×`m` بحيث Mi,j = `f` i j.
+ونستخلص من ذلك دالة `id` لبناء مصفوفة الوحدة (identity matrix) ذات الحجم
 `n`×`n`.
 
 ```ocaml
@@ -274,17 +270,17 @@ We derive from this a function `id` to construct the identity matrix of size
 
 >
 
-Next, let us write a function `size` that returns the dimensions of a matrix, that is,
-the number of rows and columns, as a pair. Assuming that a matrix always contains
-at least one row, we may write:
+بعد ذلك، لنكتب دالة `size` تُعيد أبعاد مصفوفة، أي
+عدد الأسطر والأعمدة، في شكل زوج. وبافتراض أن المصفوفة تحتوي دائمًا
+على سطر واحد على الأقل، يمكننا كتابة:
 
 ```ocaml
   let size a =
     (Array.length a, Array.length a.(0))
 ```
 
-Let us now consider the addition of two matrices A and B. We begin by verifying that
-they have the same size.
+ولننظر الآن في جمع مصفوفتين A و B. نبدأ بالتحقق من
+أن لهما الحجم نفسه.
 
 ```ocaml
   let add a b =
@@ -292,21 +288,21 @@ they have the same size.
     if size b <> s then invalid_arg "add";
 ```
 
-It then suffices to use `init_matrix` to construct the matrix whose general term is
+ثم يكفي استعمال `init_matrix` لبناء المصفوفة التي حدّها العام هو
 Ai,j + Bi,j.
 
 ```ocaml
     init_matrix n m (fun i j -> a.(i).(j) + b.(i).(j))
 ```
 
-The product of a matrix A of size n × p and a matrix B of size p × m is a matrix C of
-size n × m whose general term is given by:
+وجداء مصفوفة A ذات الحجم n × p ومصفوفة B ذات الحجم p × m هو مصفوفة C ذات
+الحجم n × m يُعطى حدّها العام بـ:
 
 |  | (10.3) |
 | --- | --- |
 
-We begin by determining the dimensions of the two matrices and by verifying that
-the number of columns of A is indeed equal to the number of rows of B.
+نبدأ بتحديد أبعاد المصفوفتين وبالتحقق من
+أن عدد أعمدة A يساوي فعلًا عدد أسطر B.
 
 ```ocaml
   let mul a b =
@@ -315,8 +311,8 @@ the number of columns of A is indeed equal to the number of rows of B.
     if q <> p then invalid_arg "mul";
 ```
 
-We then write a local function `product` that computes the coefficient Ci,j following
-equation ([10.3](#x25-258048r3)).
+ثم نكتب دالة محلية `product` تحسب المعامل Ci,j وفق
+المعادلة ([10.3](#x25-258048r3)).
 
 ```ocaml
     let product i j =
@@ -325,118 +321,117 @@ equation ([10.3](#x25-258048r3)).
       !s
 ```
 
-It only remains to create a matrix of size n × m with the function `init_matrix` by
-passing it the function `product` as argument.
+ولا يبقى سوى إنشاء مصفوفة ذات الحجم n × m بالدالة `init_matrix`
+بتمرير الدالة `product` إليها كسمة.
 
 ```ocaml
     in
     init_matrix n m product
 ```
 
-The complete code is given aboev in program [83](#x25-258010r83). An array of arrays is not the
-only possibility for representing a matrix. There are other representations that are
-more economical in terms of memory when a large number of elements are
-equal. We then speak of *sparse*matrices. Exercise [10.13](#x25-263006r13) proposes one such
-representation.
+ويُعطى الرمز الكامل أعلاه في البرنامج [83](#x25-258010r83). وليست مصفوفة من المصفوفات
+الاحتمال الوحيد لتمثيل مصفوفة. فهناك تمثيلات أخرى أكثر
+اقتصادًا من حيث الذاكرة عندما يكون عدد كبير من العناصر
+متساويًا. ونتكلم حينئذ عن المصفوفات *المتفرّقة* (sparse matrices). ويقترح التمرين [10.13](#x25-263006r13) أحد هذه
+التمثيلات.
 
-### 10.5 Exercises
+### 10.5 التمارين
 
-#### Euclid’s Algorithm
+#### الخوارزمية الإقليدية (Euclid’s Algorithm)
 
-**10.1**The complexity result given in section [10.1](#euclids-algorithm) assumes x > y. Show that in the
-general case the complexity is O(log(max(x,y))).
+**10.1** تفترض نتيجة التعقيد المعطاة في القسم [10.1](#euclids-algorithm) أن x > y. بيّن أن التعقيد في
+الحالة العامة هو O(log(max(x,y))).
 
-**10.2**Euclid’s algorithm as presented above assumes x,y ≥ 0. If x or y is negative,
-the algorithm could return a negative result. (The operation `mod` returns a value of
-the same sign as its first argument.) Write a second version of the function `gcd` that
-always returns a non-negative result irrespective of the sign of its arguments. In which
-case will the result be zero?
+**10.2** تفترض الخوارزمية الإقليدية كما عُرضت أعلاه أن x,y ≥ 0. وإذا كان x أو y سالبًا،
+فقد تُعيد الخوارزمية نتيجة سالبة. (تُعيد العملية `mod` قيمة لها
+الإشارة نفسها لسمتها الأولى.) اكتب نسخة ثانية من الدالة `gcd` تُعيد
+دائمًا نتيجة غير سالبة بصرف النظر عن إشارة سماتها. وفي أي
+حالة ستكون النتيجة صفرًا؟
 
-**10.3**Let x,y,m be three positive integers such that y ∧ m = 1. The quotient of x
-by y modulo m is any integer w such that:
+**10.3** لتكن x,y,m ثلاثة أعداد صحيحة موجبة بحيث y ∧ m = 1. إن خارج قسمة x
+على y بقياس m هو أي عدد صحيح w بحيث:
 
 $$0 \le w < m and x \equiv yw (mod m ).$$
 
-Write a function to compute the quotient of x by y modulo m.
+اكتب دالة لحساب خارج قسمة x على y بقياس m.
 
-#### Exponentiation by Squaring
+#### الرفع إلى الأس بالتربيع (Exponentiation by Squaring)
 
-**10.4**Write a variant of the function `exp` based on the following identities:
+**10.4** اكتب صيغة بديلة للدالة `exp` مبنية على المتطابقات التالية:
 
-$$\begin{cases} (xn/2)2 if n is even \\ xn = (n-1)/22 x (x ) if n is odd. \end{cases}$$
+$$\begin{cases} (xn/2)2 إذا كان n زوجيًا \\ xn = (n-1)/22 x (x ) إذا كان n فرديًا. \end{cases}$$
 
-Is there a difference in terms of efficiency?
+هل يوجد فرق من حيث الكفاءة؟
 
-**10.5** Write a tail-recursive version of the function `exp`. This is not very interesting
-if n is a machine integer since log(n) is then very small compared to the maximum
-number of nested calls supported by the stack. However, if n is very large, for example
-n = 2220, tail recursion is necessary.
+**10.5** اكتب نسخة عودية ذيلية (tail-recursive) من الدالة `exp`. وهذا ليس مثيرًا للاهتمام كثيرًا
+إذا كان n عددًا صحيحًا آليًا (machine integer)، لأن log(n) يكون حينئذ صغيرًا جدًا مقارنة بالعدد
+الأقصى للنداءات المتداخلة التي يدعمها المكدّس (stack). ومع ذلك، إذا كان n كبيرًا جدًا، على سبيل المثال
+n = 2220، فإن العودية الذيلية ضرورية.
 
-**10.6**Write the code of program [80](#x25-254002r80) as a functor computing xn for x of an arbitrary
-type `t`, provided that this type `t` is equipped with a constant `one` and an operation
+**10.6** اكتب رمز البرنامج [80](#x25-254002r80) على شكل دالة وصفية (functor) تحسب xn من أجل x من نوع
+`t` اعتباطي، بشرط أن يكون هذا النوع `t` مزوّدًا بثابت `one` وعملية
 `mul`.
 
-#### Modular Arithmetic
+#### الحسابيات النمطية (Modular Arithmetic)
 
-**10.7**Write the code of programs [81](#x25-255014r81) and [82](#x25-256012r82) as a functor parametrized by the value
-of `m`, that is:
+**10.7** اكتب رمز البرنامجين [81](#x25-255014r81) و [82](#x25-256012r82) على شكل دالة وصفية مُعاملَة بقيمة
+`m`، أي:
 
 ```ocaml
  module Modulo(M: sig val m: int end): sig ... end = struct ... end
 ```
 
-Why is it useful to write such a functor? Is it useful to have this functor export an
-*abstract*type of integers modulo m?
+لماذا يكون كتابة مثل هذه الدالة الوصفية مفيدًا؟ وهل من المفيد أن تُصدّر هذه الدالة الوصفية نوعًا
+*مجردًا* (abstract) للأعداد الصحيحة بقياس m؟
 
-**10.8**If m1 and m2 are two relatively prime integers, the Chinese Remainder
-Theorem allows us to represent every integer x between 0 (inclusive) and m1m2
-(exclusive) by a pair (x1,x2), where x  ≡  x1  (mod m1) and x ≡ x2 (mod m2).
-This representation is useful when m1 and m2 are representable in the machine but
-m1m2 is not (being too large). Write the addition, subtraction, and multiplication
-operations on this representation of integers. Given the pair (x1,x2), how can we
-recover the integer x that it represents?
+**10.8** إذا كان m1 و m2 عددين صحيحين أوليين فيما بينهما، فإن مبرهنة الباقي الصينية
+تتيح لنا تمثيل كل عدد صحيح x بين 0 (شاملًا) و m1m2
+(غير شامل) بزوج (x1,x2)، حيث x ≡ x1 (mod m1) و x ≡ x2 (mod m2).
+وهذا التمثيل مفيد عندما يكون m1 و m2 قابلين للتمثيل في الآلة لكن
+m1m2 ليس كذلك (لكونه كبيرًا جدًا). اكتب عمليات الجمع والطرح والضرب
+على هذا التمثيل للأعداد الصحيحة. وبمعرفة الزوج (x1,x2)، كيف يمكننا
+استرجاع العدد الصحيح x الذي يمثّله؟
 
-More generally, we may consider k integers m1,m2,…,mk pairwise relatively prime
-and represent arbitrary integers by k-tuples. For more details, consult *The Art of Computer Programming* (vol. 2, sec. 4.3.2).
+وبشكل أعمّ، يمكننا أن ننظر في k عددًا صحيحًا m1,m2,…,mk أولية فيما بينها مثنى مثنى
+ونمثّل أعدادًا صحيحة اعتباطية بـ k-tuples. ولمزيد من التفاصيل، راجع *فن البرمجة الحاسوبية* (المجلد 2، القسم 4.3.2).
 
-#### Matrix Calculus
+#### حساب المصفوفات (Matrix Calculus)
 
-**10.9**Write the code of figure [83](#x25-258010r83) as a functor parametrized by the type of matrix
-elements, constants `zero` and `one` of this type, and operations `add` and `mul` on this
-type.
+**10.9** اكتب رمز الشكل [83](#x25-258010r83) على شكل دالة وصفية مُعاملَة بنوع عناصر المصفوفة،
+والثابتين `zero` و `one` من هذا النوع، والعمليتين `add` و `mul` على هذا
+النوع.
 
-**10.10** Write a function `power:t->int->t` that raises a matrix to power n using the
-algorithm of exponentiation by squaring.
+**10.10** اكتب دالة `power:t->int->t` ترفع مصفوفة إلى القوة n باستعمال
+خوارزمية الرفع إلى الأس بالتربيع.
 
-**10.11**The numbers of the Fibonacci sequence (Fn) satisfy the following
-identity:
+**10.11** تحقق أعداد متتالية فيبوناتشي (Fn) المتطابقة التالية:
 
-In other words, we may compute Fn by raising a 2 × 2 matrix to power n. Derive a
-program from the preceding exercise that computes Fn in O(log n) elementary
-arithmetic operations.
+بعبارة أخرى، يمكننا حساب Fn برفع مصفوفة 2 × 2 إلى القوة n. واستخلص
+من التمرين السابق برنامجًا يحسب Fn بـ O(log n) من العمليات الحسابية
+الأولية.
 
-Note, however, that this does not mean that that we are able to compute Fn for
-large values of n. In fact, the terms of the Fibonacci sequence grow exponentially. If
-we make use of arbitrary-precision integers, the cost of the arithmetic operations
-themselves must be taken into account, and the complexity will not be O(log n).
-Otherwise, the calculation will quickly overflow.
+لاحظ، مع ذلك، أن هذا لا يعني أننا قادرون على حساب Fn من أجل
+قيم كبيرة لـ n. في الواقع، تنمو حدود متتالية فيبوناتشي نموًا أُسّيًا. وإذا
+استعملنا أعدادًا صحيحة بدقة اعتباطية، فيجب أخذ كلفة العمليات الحسابية
+نفسها في الحسبان، ولن يكون التعقيد O(log n).
+وبخلاف ذلك، سيفيض الحساب سريعًا.
 
-**10.12** Combining the preceding exercise and the modular arithmetic of the
-preceding section, write a program that computes the final seven digits of F106. The
-computation should be instantaneous.
+**10.12** بالجمع بين التمرين السابق والحسابيات النمطية من
+القسم السابق، اكتب برنامجًا يحسب الخانات السبع الأخيرة من F106. وينبغي أن يكون
+الحساب آنيًا.
 
-**10.13**When a matrix contains many identical elements (for example, many zero
-elements), it can be interesting to represent it more compactly than as an array of
-arrays. One solution consists in representing each row of the matrix by a dictionary
-that associates some of the column indices with their corresponding elements,
-the others taking a default value. For example, for matrices with integer
-coefficients whose zero elements are not represented, we may define the following
-type:
+**10.13** عندما تحتوي مصفوفة على كثير من العناصر المتطابقة (على سبيل المثال، كثير من العناصر
+الصفرية)، قد يكون من المثير للاهتمام تمثيلها بشكل أكثر إحكامًا من مصفوفة من
+المصفوفات. ويتمثّل أحد الحلول في تمثيل كل سطر من المصفوفة بقاموس (dictionary)
+يربط بعض أدلّة الأعمدة بالعناصر المقابلة لها،
+في حين تأخذ العناصر الأخرى قيمة افتراضية. فعلى سبيل المثال، من أجل مصفوفات ذات معاملات
+صحيحة لا تُحتمل عناصرها الصفرية، يمكننا تعريف النوع
+التالي:
 
 ```ocaml
   type matrix = { cols: int; rows: M.t array }
 ```
 
-where `M.t` is the type of a dictionary associating integers with integers (for example,
-obtained using the module `Map`), and where the field `cols` stores the number of
-columns. Write the functions `id`, `size`, `add`, and `mul` for this type.
+حيث `M.t` هو نوع قاموس يربط الأعداد الصحيحة بالأعداد الصحيحة (مثلًا،
+يُحصَّل عليه باستعمال الوحدة `Map`)، وحيث يخزّن الحقل `cols` عدد
+الأعمدة. اكتب الدوال `id` و `size` و `add` و `mul` لهذا النوع.
