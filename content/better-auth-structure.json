@@ -1,0 +1,35 @@
+{
+  "chapters": [
+    {
+      "key": "getting-started",
+      "title": "Getting Started",
+      "titleAr": "مقدمات",
+      "sections": [
+        { "slug": "index", "title": "مقدمة", "order": 0 },
+        { "slug": "installation", "title": "التثبيت", "order": 1 },
+        { "slug": "basic-usage", "title": "الاستخدام الأساسي", "order": 2 },
+        { "slug": "comparison", "title": "المقارنة", "order": 3 }
+      ]
+    },
+    {
+      "key": "concepts",
+      "title": "Concepts",
+      "titleAr": "المفاهيم",
+      "sections": [
+        { "slug": "index", "title": "واجهة برمجة التطبيقات (API)", "order": 0 },
+        { "slug": "cli", "title": "واجهة سطر الأوامر (CLI)", "order": 1 },
+        { "slug": "client", "title": "العميل (Client)", "order": 2 },
+        { "slug": "cookies", "title": "ملفات تعريف الارتباط (Cookies)", "order": 3 },
+        { "slug": "database", "title": "قاعدة البيانات", "order": 4 },
+        { "slug": "email", "title": "البريد الإلكتروني", "order": 5 },
+        { "slug": "hooks", "title": "الخطافات (Hooks)", "order": 6 },
+        { "slug": "oauth", "title": "OAuth", "order": 7 },
+        { "slug": "plugins", "title": "الإضافات (Plugins)", "order": 8 },
+        { "slug": "rate-limit", "title": "تحديد المعدل (Rate Limit)", "order": 9 },
+        { "slug": "session-management", "title": "إدارة الجلسات", "order": 10 },
+        { "slug": "typescript", "title": "TypeScript", "order": 11 },
+        { "slug": "users-accounts", "title": "المستخدمون والحسابات", "order": 12 }
+      ]
+    }
+  ]
+}
