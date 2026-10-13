@@ -1,0 +1,515 @@
+{
+  "chapters": [
+    {
+      "key": "getting-started",
+      "title": "Getting Started",
+      "titleAr": "مقدمات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Hono",
+          "order": 0
+        },
+        {
+          "slug": "basic",
+          "title": "البدء",
+          "order": 1
+        },
+        {
+          "slug": "cloudflare-workers",
+          "title": "Cloudflare Workers",
+          "order": 2
+        },
+        {
+          "slug": "cloudflare-workers-vite",
+          "title": "Cloudflare Workers + Vite",
+          "order": 3
+        },
+        {
+          "slug": "cloudflare-pages",
+          "title": "Cloudflare Pages",
+          "order": 4
+        },
+        {
+          "slug": "deno",
+          "title": "Deno",
+          "order": 5
+        },
+        {
+          "slug": "bun",
+          "title": "`Bun`",
+          "order": 6
+        },
+        {
+          "slug": "fastly",
+          "title": "`Fastly Compute`",
+          "order": 7
+        },
+        {
+          "slug": "vercel",
+          "title": "Vercel",
+          "order": 8
+        },
+        {
+          "slug": "nextjs",
+          "title": "Next.js",
+          "order": 9
+        },
+        {
+          "slug": "netlify",
+          "title": "Netlify",
+          "order": 10
+        },
+        {
+          "slug": "aws-lambda",
+          "title": "AWS Lambda",
+          "order": 11
+        },
+        {
+          "slug": "lambda-edge",
+          "title": "Lambda@Edge",
+          "order": 12
+        },
+        {
+          "slug": "azure-functions",
+          "title": "Azure Functions",
+          "order": 13
+        },
+        {
+          "slug": "google-cloud-run",
+          "title": "Google Cloud Run",
+          "order": 14
+        },
+        {
+          "slug": "supabase-functions",
+          "title": "Supabase Edge Functions",
+          "order": 15
+        },
+        {
+          "slug": "ali-function-compute",
+          "title": "Alibaba Cloud Function Compute",
+          "order": 16
+        },
+        {
+          "slug": "cloudbase",
+          "title": "Tencent CloudBase",
+          "order": 17
+        },
+        {
+          "slug": "webassembly-wasi",
+          "title": "WebAssembly (مع WASI)",
+          "order": 18
+        },
+        {
+          "slug": "service-worker",
+          "title": "`Service Worker`",
+          "order": 19
+        },
+        {
+          "slug": "nodejs",
+          "title": "Node.js",
+          "order": 20
+        }
+      ]
+    },
+    {
+      "key": "concepts",
+      "title": "Concepts",
+      "titleAr": "المفاهيم",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الفلسفة",
+          "order": 21
+        },
+        {
+          "slug": "routers",
+          "title": "الموجِّهات",
+          "order": 22
+        },
+        {
+          "slug": "benchmarks",
+          "title": "معايير الأداء",
+          "order": 23
+        },
+        {
+          "slug": "web-standard",
+          "title": "معايير الويب",
+          "order": 24
+        },
+        {
+          "slug": "middleware",
+          "title": "الوسيط",
+          "order": 25
+        },
+        {
+          "slug": "developer-experience",
+          "title": "تجربة المطور",
+          "order": 26
+        },
+        {
+          "slug": "stacks",
+          "title": "Hono Stacks",
+          "order": 27
+        }
+      ]
+    },
+    {
+      "key": "middleware-builtin",
+      "title": "Built-in Middleware",
+      "titleAr": "الوسائط المدمجة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "البرمجية الوسيطة Basic Auth",
+          "order": 28
+        },
+        {
+          "slug": "bearer-auth",
+          "title": "البرمجية الوسيطة Bearer Auth",
+          "order": 29
+        },
+        {
+          "slug": "body-limit",
+          "title": "البرمجية الوسيطة Body Limit",
+          "order": 30
+        },
+        {
+          "slug": "cache",
+          "title": "برمجية وسيطة للتخزين المؤقت",
+          "order": 31
+        },
+        {
+          "slug": "combine",
+          "title": "دمج البرمجيات الوسيطة",
+          "order": 32
+        },
+        {
+          "slug": "compress",
+          "title": "البرمجية الوسيطة Compress",
+          "order": 33
+        },
+        {
+          "slug": "context-storage",
+          "title": "وسيط تخزين السياق",
+          "order": 34
+        },
+        {
+          "slug": "cors",
+          "title": "برمجية وسيطة CORS",
+          "order": 35
+        },
+        {
+          "slug": "csrf",
+          "title": "حماية CSRF",
+          "order": 36
+        },
+        {
+          "slug": "etag",
+          "title": "برمجية وسيطة ETag",
+          "order": 37
+        },
+        {
+          "slug": "ip-restriction",
+          "title": "وسيط تقييد IP",
+          "order": 38
+        },
+        {
+          "slug": "jsx-renderer",
+          "title": "البرمجية الوسيطة JSX Renderer",
+          "order": 39
+        },
+        {
+          "slug": "jwk",
+          "title": "البرمجية الوسيطة JWK Auth",
+          "order": 40
+        },
+        {
+          "slug": "jwt",
+          "title": "البرمجية الوسيطة JWT Auth",
+          "order": 41
+        },
+        {
+          "slug": "logger",
+          "title": "برمجية وسيطة للتسجيل",
+          "order": 42
+        },
+        {
+          "slug": "language",
+          "title": "البرمجية الوسيطة Language",
+          "order": 43
+        },
+        {
+          "slug": "method-not-allowed",
+          "title": "وسيط Method Not Allowed",
+          "order": 44
+        },
+        {
+          "slug": "method-override",
+          "title": "وسيط تجاوز الطريقة (Method Override)",
+          "order": 45
+        },
+        {
+          "slug": "mount",
+          "title": "تركيب البرمجية الوسيطة",
+          "order": 46
+        },
+        {
+          "slug": "pretty-json",
+          "title": "البرمجية الوسيطة Pretty JSON",
+          "order": 47
+        },
+        {
+          "slug": "request-id",
+          "title": "البرمجية الوسيطة Request ID",
+          "order": 48
+        },
+        {
+          "slug": "secure-headers",
+          "title": "وسيط الرؤوس الآمنة",
+          "order": 49
+        },
+        {
+          "slug": "timeout",
+          "title": "برمجية وسيطة للمهلة",
+          "order": 50
+        },
+        {
+          "slug": "timing",
+          "title": "البرمجية الوسيطة Server-Timing",
+          "order": 51
+        },
+        {
+          "slug": "trailing-slash",
+          "title": "وسيط الشرطة المائلة اللاحقة",
+          "order": 52
+        }
+      ]
+    },
+    {
+      "key": "middleware-third-party",
+      "title": "Third-party Middleware",
+      "titleAr": "الوسائط الخارجية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "برمجيات وسيطة من طرف ثالث",
+          "order": 53
+        }
+      ]
+    },
+    {
+      "key": "helpers",
+      "title": "Helpers",
+      "titleAr": "المساعدات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "مساعد `Accepts`",
+          "order": 54
+        },
+        {
+          "slug": "adapter",
+          "title": "مساعد `Adapter`",
+          "order": 55
+        },
+        {
+          "slug": "conninfo",
+          "title": "مُساعد ConnInfo",
+          "order": 56
+        },
+        {
+          "slug": "cookie",
+          "title": "مساعد `Cookie`",
+          "order": 57
+        },
+        {
+          "slug": "css",
+          "title": "مساعد css",
+          "order": 58
+        },
+        {
+          "slug": "dev",
+          "title": "مساعد التطوير",
+          "order": 59
+        },
+        {
+          "slug": "factory",
+          "title": "مساعد `Factory`",
+          "order": 60
+        },
+        {
+          "slug": "html",
+          "title": "مساعد `html`",
+          "order": 61
+        },
+        {
+          "slug": "jwt",
+          "title": "مساعد مصادقة JWT",
+          "order": 62
+        },
+        {
+          "slug": "proxy",
+          "title": "مساعد `Proxy`",
+          "order": 63
+        },
+        {
+          "slug": "route",
+          "title": "مساعد `Route`",
+          "order": 64
+        },
+        {
+          "slug": "ssg",
+          "title": "مساعد SSG",
+          "order": 65
+        },
+        {
+          "slug": "streaming",
+          "title": "مُساعد البث",
+          "order": 66
+        },
+        {
+          "slug": "testing",
+          "title": "مساعد الاختبار",
+          "order": 67
+        },
+        {
+          "slug": "websocket",
+          "title": "مُساعد WebSocket",
+          "order": 68
+        }
+      ]
+    },
+    {
+      "key": "guides",
+      "title": "Guides",
+      "titleAr": "الأدلة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الترحيل إلى v5",
+          "order": 69
+        },
+        {
+          "slug": "create-hono",
+          "title": "`Create-hono`",
+          "order": 70
+        },
+        {
+          "slug": "examples",
+          "title": "أمثلة",
+          "order": 71
+        },
+        {
+          "slug": "middleware",
+          "title": "الوسيط",
+          "order": 72
+        },
+        {
+          "slug": "helpers",
+          "title": "المساعدات",
+          "order": 73
+        },
+        {
+          "slug": "jsx",
+          "title": "`JSX`",
+          "order": 74
+        },
+        {
+          "slug": "jsx-dom",
+          "title": "مكوّنات العميل",
+          "order": 75
+        },
+        {
+          "slug": "testing",
+          "title": "الاختبار",
+          "order": 76
+        },
+        {
+          "slug": "validation",
+          "title": "التحقق",
+          "order": 77
+        },
+        {
+          "slug": "rpc",
+          "title": "`RPC`",
+          "order": 78
+        },
+        {
+          "slug": "best-practices",
+          "title": "أفضل الممارسات",
+          "order": 79
+        },
+        {
+          "slug": "others",
+          "title": "متفرقات",
+          "order": 80
+        },
+        {
+          "slug": "faq",
+          "title": "الأسئلة الشائعة",
+          "order": 81
+        }
+      ]
+    },
+    {
+      "key": "api",
+      "title": "API",
+      "titleAr": "مرجع الواجهة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "API",
+          "order": 82
+        },
+        {
+          "slug": "hono",
+          "title": "App - Hono",
+          "order": 83
+        },
+        {
+          "slug": "routing",
+          "title": "التوجيه",
+          "order": 84
+        },
+        {
+          "slug": "context",
+          "title": "السياق",
+          "order": 85
+        },
+        {
+          "slug": "request",
+          "title": "`HonoRequest`",
+          "order": 86
+        },
+        {
+          "slug": "exception",
+          "title": "`HTTPException`",
+          "order": 87
+        },
+        {
+          "slug": "presets",
+          "title": "الإعدادات المسبقة",
+          "order": 88
+        }
+      ]
+    },
+    {
+      "key": "agents",
+      "title": "Coding Agents",
+      "titleAr": "الوكلاء",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Hono لوكلاء البرمجة",
+          "order": 89
+        },
+        {
+          "slug": "cli",
+          "title": "Hono CLI",
+          "order": 90
+        }
+      ]
+    }
+  ]
+}

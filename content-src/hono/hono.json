@@ -1,0 +1,639 @@
+[
+  {
+    "order": 0,
+    "key": "getting-started",
+    "slug": "index",
+    "title": "Hono",
+    "url": "https://hono.dev/docs/index"
+  },
+  {
+    "order": 1,
+    "key": "getting-started",
+    "slug": "basic",
+    "title": "Getting Started",
+    "url": "https://hono.dev/docs/getting-started/basic"
+  },
+  {
+    "order": 2,
+    "key": "getting-started",
+    "slug": "cloudflare-workers",
+    "title": "Cloudflare Workers",
+    "url": "https://hono.dev/docs/getting-started/cloudflare-workers"
+  },
+  {
+    "order": 3,
+    "key": "getting-started",
+    "slug": "cloudflare-workers-vite",
+    "title": "Cloudflare Workers + Vite",
+    "url": "https://hono.dev/docs/getting-started/cloudflare-workers-vite"
+  },
+  {
+    "order": 4,
+    "key": "getting-started",
+    "slug": "cloudflare-pages",
+    "title": "Cloudflare Pages",
+    "url": "https://hono.dev/docs/getting-started/cloudflare-pages"
+  },
+  {
+    "order": 5,
+    "key": "getting-started",
+    "slug": "deno",
+    "title": "Deno",
+    "url": "https://hono.dev/docs/getting-started/deno"
+  },
+  {
+    "order": 6,
+    "key": "getting-started",
+    "slug": "bun",
+    "title": "Bun",
+    "url": "https://hono.dev/docs/getting-started/bun"
+  },
+  {
+    "order": 7,
+    "key": "getting-started",
+    "slug": "fastly",
+    "title": "Fastly Compute",
+    "url": "https://hono.dev/docs/getting-started/fastly"
+  },
+  {
+    "order": 8,
+    "key": "getting-started",
+    "slug": "vercel",
+    "title": "Vercel",
+    "url": "https://hono.dev/docs/getting-started/vercel"
+  },
+  {
+    "order": 9,
+    "key": "getting-started",
+    "slug": "nextjs",
+    "title": "Next.js",
+    "url": "https://hono.dev/docs/getting-started/nextjs"
+  },
+  {
+    "order": 10,
+    "key": "getting-started",
+    "slug": "netlify",
+    "title": "Netlify",
+    "url": "https://hono.dev/docs/getting-started/netlify"
+  },
+  {
+    "order": 11,
+    "key": "getting-started",
+    "slug": "aws-lambda",
+    "title": "AWS Lambda",
+    "url": "https://hono.dev/docs/getting-started/aws-lambda"
+  },
+  {
+    "order": 12,
+    "key": "getting-started",
+    "slug": "lambda-edge",
+    "title": "Lambda@Edge",
+    "url": "https://hono.dev/docs/getting-started/lambda-edge"
+  },
+  {
+    "order": 13,
+    "key": "getting-started",
+    "slug": "azure-functions",
+    "title": "Azure Functions",
+    "url": "https://hono.dev/docs/getting-started/azure-functions"
+  },
+  {
+    "order": 14,
+    "key": "getting-started",
+    "slug": "google-cloud-run",
+    "title": "Google Cloud Run",
+    "url": "https://hono.dev/docs/getting-started/google-cloud-run"
+  },
+  {
+    "order": 15,
+    "key": "getting-started",
+    "slug": "supabase-functions",
+    "title": "Supabase Edge Functions",
+    "url": "https://hono.dev/docs/getting-started/supabase-functions"
+  },
+  {
+    "order": 16,
+    "key": "getting-started",
+    "slug": "ali-function-compute",
+    "title": "Alibaba Cloud Function Compute",
+    "url": "https://hono.dev/docs/getting-started/ali-function-compute"
+  },
+  {
+    "order": 17,
+    "key": "getting-started",
+    "slug": "cloudbase",
+    "title": "Tencent CloudBase",
+    "url": "https://hono.dev/docs/getting-started/cloudbase"
+  },
+  {
+    "order": 18,
+    "key": "getting-started",
+    "slug": "webassembly-wasi",
+    "title": "WebAssembly (w/ WASI)",
+    "url": "https://hono.dev/docs/getting-started/webassembly-wasi"
+  },
+  {
+    "order": 19,
+    "key": "getting-started",
+    "slug": "service-worker",
+    "title": "Service Worker",
+    "url": "https://hono.dev/docs/getting-started/service-worker"
+  },
+  {
+    "order": 20,
+    "key": "getting-started",
+    "slug": "nodejs",
+    "title": "Node.js",
+    "url": "https://hono.dev/docs/getting-started/nodejs"
+  },
+  {
+    "order": 21,
+    "key": "concepts",
+    "slug": "index",
+    "title": "Philosophy",
+    "url": "https://hono.dev/docs/concepts/index"
+  },
+  {
+    "order": 22,
+    "key": "concepts",
+    "slug": "routers",
+    "title": "Routers",
+    "url": "https://hono.dev/docs/concepts/routers"
+  },
+  {
+    "order": 23,
+    "key": "concepts",
+    "slug": "benchmarks",
+    "title": "Benchmarks",
+    "url": "https://hono.dev/docs/concepts/benchmarks"
+  },
+  {
+    "order": 24,
+    "key": "concepts",
+    "slug": "web-standard",
+    "title": "Web Standards",
+    "url": "https://hono.dev/docs/concepts/web-standard"
+  },
+  {
+    "order": 25,
+    "key": "concepts",
+    "slug": "middleware",
+    "title": "Middleware",
+    "url": "https://hono.dev/docs/concepts/middleware"
+  },
+  {
+    "order": 26,
+    "key": "concepts",
+    "slug": "developer-experience",
+    "title": "Developer Experience",
+    "url": "https://hono.dev/docs/concepts/developer-experience"
+  },
+  {
+    "order": 27,
+    "key": "concepts",
+    "slug": "stacks",
+    "title": "Hono Stacks",
+    "url": "https://hono.dev/docs/concepts/stacks"
+  },
+  {
+    "order": 28,
+    "key": "middleware-builtin",
+    "slug": "index",
+    "title": "Basic Auth Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/index"
+  },
+  {
+    "order": 29,
+    "key": "middleware-builtin",
+    "slug": "bearer-auth",
+    "title": "Bearer Auth Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/bearer-auth"
+  },
+  {
+    "order": 30,
+    "key": "middleware-builtin",
+    "slug": "body-limit",
+    "title": "Body Limit Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/body-limit"
+  },
+  {
+    "order": 31,
+    "key": "middleware-builtin",
+    "slug": "cache",
+    "title": "Cache Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/cache"
+  },
+  {
+    "order": 32,
+    "key": "middleware-builtin",
+    "slug": "combine",
+    "title": "Combine Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/combine"
+  },
+  {
+    "order": 33,
+    "key": "middleware-builtin",
+    "slug": "compress",
+    "title": "Compress Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/compress"
+  },
+  {
+    "order": 34,
+    "key": "middleware-builtin",
+    "slug": "context-storage",
+    "title": "Context Storage Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/context-storage"
+  },
+  {
+    "order": 35,
+    "key": "middleware-builtin",
+    "slug": "cors",
+    "title": "CORS Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/cors"
+  },
+  {
+    "order": 36,
+    "key": "middleware-builtin",
+    "slug": "csrf",
+    "title": "CSRF Protection",
+    "url": "https://hono.dev/docs/middleware/builtin/csrf"
+  },
+  {
+    "order": 37,
+    "key": "middleware-builtin",
+    "slug": "etag",
+    "title": "ETag Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/etag"
+  },
+  {
+    "order": 38,
+    "key": "middleware-builtin",
+    "slug": "ip-restriction",
+    "title": "IP Restriction Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/ip-restriction"
+  },
+  {
+    "order": 39,
+    "key": "middleware-builtin",
+    "slug": "jsx-renderer",
+    "title": "JSX Renderer Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/jsx-renderer"
+  },
+  {
+    "order": 40,
+    "key": "middleware-builtin",
+    "slug": "jwk",
+    "title": "JWK Auth Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/jwk"
+  },
+  {
+    "order": 41,
+    "key": "middleware-builtin",
+    "slug": "jwt",
+    "title": "JWT Auth Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/jwt"
+  },
+  {
+    "order": 42,
+    "key": "middleware-builtin",
+    "slug": "logger",
+    "title": "Logger Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/logger"
+  },
+  {
+    "order": 43,
+    "key": "middleware-builtin",
+    "slug": "language",
+    "title": "Language Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/language"
+  },
+  {
+    "order": 44,
+    "key": "middleware-builtin",
+    "slug": "method-not-allowed",
+    "title": "Method Not Allowed Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/method-not-allowed"
+  },
+  {
+    "order": 45,
+    "key": "middleware-builtin",
+    "slug": "method-override",
+    "title": "Method Override Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/method-override"
+  },
+  {
+    "order": 46,
+    "key": "middleware-builtin",
+    "slug": "mount",
+    "title": "Mount Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/mount"
+  },
+  {
+    "order": 47,
+    "key": "middleware-builtin",
+    "slug": "pretty-json",
+    "title": "Pretty JSON Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/pretty-json"
+  },
+  {
+    "order": 48,
+    "key": "middleware-builtin",
+    "slug": "request-id",
+    "title": "Request ID Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/request-id"
+  },
+  {
+    "order": 49,
+    "key": "middleware-builtin",
+    "slug": "secure-headers",
+    "title": "Secure Headers Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/secure-headers"
+  },
+  {
+    "order": 50,
+    "key": "middleware-builtin",
+    "slug": "timeout",
+    "title": "Timeout Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/timeout"
+  },
+  {
+    "order": 51,
+    "key": "middleware-builtin",
+    "slug": "timing",
+    "title": "Server-Timing Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/timing"
+  },
+  {
+    "order": 52,
+    "key": "middleware-builtin",
+    "slug": "trailing-slash",
+    "title": "Trailing Slash Middleware",
+    "url": "https://hono.dev/docs/middleware/builtin/trailing-slash"
+  },
+  {
+    "order": 53,
+    "key": "middleware-third-party",
+    "slug": "index",
+    "title": "Third-party Middleware",
+    "url": "https://hono.dev/docs/middleware/third-party/index"
+  },
+  {
+    "order": 54,
+    "key": "helpers",
+    "slug": "index",
+    "title": "Accepts Helper",
+    "url": "https://hono.dev/docs/helpers/index"
+  },
+  {
+    "order": 55,
+    "key": "helpers",
+    "slug": "adapter",
+    "title": "Adapter Helper",
+    "url": "https://hono.dev/docs/helpers/adapter"
+  },
+  {
+    "order": 56,
+    "key": "helpers",
+    "slug": "conninfo",
+    "title": "ConnInfo Helper",
+    "url": "https://hono.dev/docs/helpers/conninfo"
+  },
+  {
+    "order": 57,
+    "key": "helpers",
+    "slug": "cookie",
+    "title": "Cookie Helper",
+    "url": "https://hono.dev/docs/helpers/cookie"
+  },
+  {
+    "order": 58,
+    "key": "helpers",
+    "slug": "css",
+    "title": "css Helper",
+    "url": "https://hono.dev/docs/helpers/css"
+  },
+  {
+    "order": 59,
+    "key": "helpers",
+    "slug": "dev",
+    "title": "Dev Helper",
+    "url": "https://hono.dev/docs/helpers/dev"
+  },
+  {
+    "order": 60,
+    "key": "helpers",
+    "slug": "factory",
+    "title": "Factory Helper",
+    "url": "https://hono.dev/docs/helpers/factory"
+  },
+  {
+    "order": 61,
+    "key": "helpers",
+    "slug": "html",
+    "title": "html Helper",
+    "url": "https://hono.dev/docs/helpers/html"
+  },
+  {
+    "order": 62,
+    "key": "helpers",
+    "slug": "jwt",
+    "title": "JWT Authentication Helper",
+    "url": "https://hono.dev/docs/helpers/jwt"
+  },
+  {
+    "order": 63,
+    "key": "helpers",
+    "slug": "proxy",
+    "title": "Proxy Helper",
+    "url": "https://hono.dev/docs/helpers/proxy"
+  },
+  {
+    "order": 64,
+    "key": "helpers",
+    "slug": "route",
+    "title": "Route Helper",
+    "url": "https://hono.dev/docs/helpers/route"
+  },
+  {
+    "order": 65,
+    "key": "helpers",
+    "slug": "ssg",
+    "title": "SSG Helper",
+    "url": "https://hono.dev/docs/helpers/ssg"
+  },
+  {
+    "order": 66,
+    "key": "helpers",
+    "slug": "streaming",
+    "title": "Streaming Helper",
+    "url": "https://hono.dev/docs/helpers/streaming"
+  },
+  {
+    "order": 67,
+    "key": "helpers",
+    "slug": "testing",
+    "title": "Testing Helper",
+    "url": "https://hono.dev/docs/helpers/testing"
+  },
+  {
+    "order": 68,
+    "key": "helpers",
+    "slug": "websocket",
+    "title": "WebSocket Helper",
+    "url": "https://hono.dev/docs/helpers/websocket"
+  },
+  {
+    "order": 69,
+    "key": "guides",
+    "slug": "index",
+    "title": "Migrating to v5",
+    "url": "https://hono.dev/docs/guides/index"
+  },
+  {
+    "order": 70,
+    "key": "guides",
+    "slug": "create-hono",
+    "title": "Create-hono",
+    "url": "https://hono.dev/docs/guides/create-hono"
+  },
+  {
+    "order": 71,
+    "key": "guides",
+    "slug": "examples",
+    "title": "Examples",
+    "url": "https://hono.dev/docs/guides/examples"
+  },
+  {
+    "order": 72,
+    "key": "guides",
+    "slug": "middleware",
+    "title": "Middleware",
+    "url": "https://hono.dev/docs/guides/middleware"
+  },
+  {
+    "order": 73,
+    "key": "guides",
+    "slug": "helpers",
+    "title": "Helpers",
+    "url": "https://hono.dev/docs/guides/helpers"
+  },
+  {
+    "order": 74,
+    "key": "guides",
+    "slug": "jsx",
+    "title": "JSX",
+    "url": "https://hono.dev/docs/guides/jsx"
+  },
+  {
+    "order": 75,
+    "key": "guides",
+    "slug": "jsx-dom",
+    "title": "Client Components",
+    "url": "https://hono.dev/docs/guides/jsx-dom"
+  },
+  {
+    "order": 76,
+    "key": "guides",
+    "slug": "testing",
+    "title": "Testing",
+    "url": "https://hono.dev/docs/guides/testing"
+  },
+  {
+    "order": 77,
+    "key": "guides",
+    "slug": "validation",
+    "title": "Validation",
+    "url": "https://hono.dev/docs/guides/validation"
+  },
+  {
+    "order": 78,
+    "key": "guides",
+    "slug": "rpc",
+    "title": "RPC",
+    "url": "https://hono.dev/docs/guides/rpc"
+  },
+  {
+    "order": 79,
+    "key": "guides",
+    "slug": "best-practices",
+    "title": "Best Practices",
+    "url": "https://hono.dev/docs/guides/best-practices"
+  },
+  {
+    "order": 80,
+    "key": "guides",
+    "slug": "others",
+    "title": "Miscellaneous",
+    "url": "https://hono.dev/docs/guides/others"
+  },
+  {
+    "order": 81,
+    "key": "guides",
+    "slug": "faq",
+    "title": "Frequently Asked Questions",
+    "url": "https://hono.dev/docs/guides/faq"
+  },
+  {
+    "order": 82,
+    "key": "api",
+    "slug": "index",
+    "title": "API",
+    "url": "https://hono.dev/docs/api/index"
+  },
+  {
+    "order": 83,
+    "key": "api",
+    "slug": "hono",
+    "title": "App - Hono",
+    "url": "https://hono.dev/docs/api/hono"
+  },
+  {
+    "order": 84,
+    "key": "api",
+    "slug": "routing",
+    "title": "Routing",
+    "url": "https://hono.dev/docs/api/routing"
+  },
+  {
+    "order": 85,
+    "key": "api",
+    "slug": "context",
+    "title": "Context",
+    "url": "https://hono.dev/docs/api/context"
+  },
+  {
+    "order": 86,
+    "key": "api",
+    "slug": "request",
+    "title": "HonoRequest",
+    "url": "https://hono.dev/docs/api/request"
+  },
+  {
+    "order": 87,
+    "key": "api",
+    "slug": "exception",
+    "title": "HTTPException",
+    "url": "https://hono.dev/docs/api/exception"
+  },
+  {
+    "order": 88,
+    "key": "api",
+    "slug": "presets",
+    "title": "Presets",
+    "url": "https://hono.dev/docs/api/presets"
+  },
+  {
+    "order": 89,
+    "key": "agents",
+    "slug": "index",
+    "title": "Hono for Coding Agents",
+    "url": "https://hono.dev/docs/agents/index"
+  },
+  {
+    "order": 90,
+    "key": "agents",
+    "slug": "cli",
+    "title": "Hono CLI",
+    "url": "https://hono.dev/docs/agents/cli"
+  }
+]

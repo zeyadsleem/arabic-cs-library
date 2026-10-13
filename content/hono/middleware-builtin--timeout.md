@@ -1,0 +1,106 @@
+---
+title: "برمجية وسيطة للمهلة"
+book: hono
+chapter: middleware-builtin
+slug: timeout
+order: 50
+source: https://hono.dev/docs/middleware/builtin/timeout
+lang: ar
+---
+
+يتيح لك وسيط المهلة (Timeout Middleware) إدارة مهلات الطلبات في تطبيقك بسهولة. يسمح لك بتعيين مدة قصوى للطلبات وتحديد استجابات خطأ مخصصة اختياريًا إذا تم تجاوز المهلة المحددة.
+
+## Import
+
+```ts
+import { Hono } from 'hono'
+import { timeout } from 'hono/timeout'
+```
+
+## الاستخدام
+
+إليك كيفية استخدام وسيط المهلة (Timeout Middleware) مع كل من الإعدادات الافتراضية والمخصصة:
+
+الإعدادات الافتراضية:
+
+```ts
+const app = new Hono()
+
+// Applying a 5-second timeout
+app.use('/api', timeout(5000))
+
+// Handling a route
+app.get('/api/data', async (c) => {
+  // Your route handler logic
+  return c.json({ data: 'Your data here' })
+})
+```
+
+إعدادات مخصصة:
+
+```ts
+import { HTTPException } from 'hono/http-exception'
+
+// Custom exception factory function
+const customTimeoutException = (context) =>
+  new HTTPException(408, {
+    message: `Request timeout after waiting ${context.req.headers.get(
+      'Duration'
+    )} seconds. Please try again later.`,
+  })
+
+// for Static Exception Message
+// const customTimeoutException = new HTTPException(408, {
+//   message: 'Operation timed out. Please try again later.'
+// });
+
+// Applying a 1-minute timeout with a custom exception
+app.use('/api/long-process', timeout(60000, customTimeoutException))
+
+app.get('/api/long-process', async (c) => {
+  // Simulate a long process
+  await new Promise((resolve) => setTimeout(resolve, 61000))
+  return c.json({ data: 'This usually takes longer' })
+})
+```
+
+## ملاحظات
+
+- يمكن تحديد مدة المهلة (timeout) بالميلي ثانية. سيرفض الوسيط الوعد (promise) تلقائيًا وقد يرمي خطأً إذا تم تجاوز المدة المحددة.
+
+- لا يمكن استخدام وسيطة المهلة (timeout middleware) مع البث (stream)؛ لذا، استخدم `stream.close` و `setTimeout` معًا.
+
+```ts
+app.get('/sse', async (c) => {
+  let id = 0
+  let running = true
+  let timer: number | undefined
+
+  return streamSSE(c, async (stream) => {
+    timer = setTimeout(() => {
+      console.log('Stream timeout reached, closing stream')
+      stream.close()
+    }, 3000) as unknown as number
+
+    stream.onAbort(async () => {
+      console.log('Client closed connection')
+      running = false
+      clearTimeout(timer)
+    })
+
+    while (running) {
+      const message = `It is ${new Date().toISOString()}`
+      await stream.writeSSE({
+        data: message,
+        event: 'time-update',
+        id: String(id++),
+      })
+      await stream.sleep(1000)
+    }
+  })
+})
+```
+
+## تعارضات البرمجيات الوسيطة
+
+كن حذرًا بشأن ترتيب الوسائط، خاصةً عند استخدام وسائط معالجة الأخطاء أو الوسائط الأخرى المرتبطة بالتوقيت، لأنها قد تؤثر على سلوك وسيط المهلة (timeout) هذا.
