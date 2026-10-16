@@ -1,0 +1,756 @@
+const n="learn-ocaml",s="graph-algorithms",e="خوارزميات الرسوم البيانية",a="index",p="خوارزميات الرسوم البيانية",o=[{depth:2,id:"13-خوارزميات-الرسوم-البيانية",text:"13. خوارزميات الرسوم البيانية"},{depth:3,id:"131-البحث-بالعرض-أولا",text:"13.1 البحث بالعرض أولاً"},{depth:3,id:"132-البحث-بالعمق-أولا",text:"13.2 البحث بالعمق أولاً"},{depth:3,id:"133-المسار-الأقصر",text:"13.3 المسار الأقصر"},{depth:3,id:"134-الشجرة-الممتدة-الدنيا",text:"13.4 الشجرة الممتدة الدنيا"},{depth:3,id:"135-التمارين",text:"13.5 التمارين"}],c=`<h2 id="13-خوارزميات-الرسوم-البيانية">13. خوارزميات الرسوم البيانية</h2>
+<p>نعرض في هذا الفصل خوارزميات الرسوم البيانية. هذه الخوارزميات مستقلة عن بنية
+بيانات الرسم البياني الأساسية. ويمكن استخدامها، على وجه الخصوص، مع جميع بنى
+الرسوم البيانية الواردة في الفصل <a href="https://usr.lmf.cnrs.fr/lpo/mainch7.html#graphs">7</a>. فيما يلي، سنعتبر معطاةً وحدة <code>G</code> يتضمّن
+توقيعها على الأقل الأنواع والدوال والوحدات الخاصة بالبرنامج <a href="#x29-304002r98">98</a>. الرسوم البيانية من النوع
+<code>graph</code>، ورؤوسها من النوع <code>vertex</code>. الدالة <code>iter_vertex</code> تمرّ على رؤوس رسم بياني معطى،
+وتطبّق دالةً تُمرَّر كوسيط على كل واحد منها. والدالة <code>iter_succ</code> تمرّ على الرؤوس
+اللاحقة (successors) لرأس معطى. وتوفّر الوحدة <code>H</code> بنية جدول تجزئة (hash table)
+مفاتيحها رؤوس.</p>
+<blockquote></blockquote>
+<h3 id="131-البحث-بالعرض-أولا">13.1 البحث بالعرض أولاً</h3>
+<p>أول عملية اجتياز نعرضها تُسمّى <em>البحث بالعرض أولاً</em>(BFS). وهي تتمثل في
+استكشاف الرسم البياني بالتحرّك نحو الخارج «في دوائر متحدة المركز»، انطلاقاً من رأس
+معيّن s يُسمّى الجذر. نمرّ أولاً على الرؤوس التي تبعد قوساً واحداً بالضبط
+عن الجذر s، ثم على تلك التي تبعد قوسين، وهكذا. خُذ، على
+سبيل المثال، الرسم البياني الواقع على اليسار في الشكل <a href="#breadthfirst-search-of-a-graph">13.1</a>. بدءاً من الرأس 5،
+نزور أولاً الرأسين 4 و1، وهما مرتبطان مباشرةً بالرأس 5. ثم
+نزور الرؤوس 0 و6 و2، يليها الرأس 7، وأخيراً الرأس 3. ويظهر
+الرسم البياني، مع المسافات إلى الجذر مكتوبةً كأُسُس، على
+اليمين.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/graph-algorithms-0-bfs_queue_0-mps-.webp" alt="" id="breadthfirst-search-of-a-graph"></p>
+<p><strong>الشكل 13.1: البحث بالعرض أولاً في رسم بياني.</strong></p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/graph-algorithms-1-bfs_queue_6-mps-.webp" alt="PIC"></p>
+<p>نكتب البحث بالعرض أولاً في صورة دالة <code>iter_bfs</code> تأخذ كوسائط
+رسمًا بيانيًا <code>g</code> وجذرًا <code>s</code> ودالةً <code>f</code> ستُطبَّق على عناصر <code>g</code> أثناء
+اكتشافها. نبدأ بإنشاء جدول تجزئة يحتوي على الرؤوس
+المكتشَفة سابقًا بواسطة الاجتياز.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> iter_bfs f g s =
+    <span class="hljs-keyword">let</span> visited = <span class="hljs-type">H</span>.create <span class="hljs-literal">()</span> <span class="hljs-keyword">in</span>
+</code></pre>
+<p>يعتمد البحث نفسه على استخدام <em>طابور</em> (queue) تُدرَج فيه الرؤوس أثناء
+اكتشافها. والفكرة أنه، في أي لحظة زمنية، سيحتوي الطابور على
+الرؤوس الواقعة على مسافة d من الجذر، تليها الرؤوس الواقعة على
+مسافة d + 1:</p>
+<table>
+<thead>
+<tr>
+<th>←</th>
+<th>رؤوس على مسافة d</th>
+<th>رؤوس على مسافة d + 1</th>
+<th>←</th>
+</tr>
+</thead>
+</table>
+<p>وهذا هو التجسيد لمفهومنا عن «الدوائر متحدة المركز»،
+وبشكل أدقّ للدائرتين المتتاليتين قيد
+الاعتبار. وهذه الخاصية جوهرية لصحة البحث
+بالعرض أولاً<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>.
+وهنا نستخدم الوحدة <code>Queue</code> لتنفيذ الطابور. وهو يحتوي في البداية على
+الجذر فقط. ومن المفيد كتابة دالة <code>add</code> تُضيف رأسًا في آن واحد إلى جدول
+التجزئة وإلى الطابور. نبدأ باستخدامها على الجذر <code>s</code>.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> queue = <span class="hljs-type">Queue</span>.create <span class="hljs-literal">()</span> <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> add w = <span class="hljs-type">H</span>.add visited w <span class="hljs-literal">()</span>; <span class="hljs-type">Queue</span>.add w queue <span class="hljs-keyword">in</span>
+    add s;
+</code></pre>
+<p>وثمة خاصية مهمة أخرى هي أنّ كل رأس موجود في الطابور موجود أيضًا
+في الجدول <code>visited</code>، وهذا ما تضمنه الدالة <code>add</code> بطريقة واضحة. ونستخدم
+حلقة لفحص الرؤوس بالترتيب الذي اكتُشفت به، إلى أن تُفحص جميع
+الرؤوس التي يمكن الوصول إليها من الجذر. وما دام الطابور غير
+فارغ، نستخرج العنصر الأول <code>v</code> من الطابور ونطبّق عليه الدالة الزائرة <code>f</code>.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">while</span> not (<span class="hljs-type">Queue</span>.is_empty queue) <span class="hljs-keyword">do</span>
+      <span class="hljs-keyword">let</span> v = <span class="hljs-type">Queue</span>.pop queue <span class="hljs-keyword">in</span>
+      f v;
+</code></pre>
+<p>لكل رأس لاحق (successor) <code>w</code> للرأس <code>v</code> لم يُعثَر عليه بعد، أي غير موجود في الجدول <code>visited</code>،
+نستخدم <code>add</code> لإضافته إلى كلٍّ من الطابور والجدول.</p>
+<pre><code class="language-ocaml">      iter_succ (<span class="hljs-keyword">fun</span> w -&gt; <span class="hljs-keyword">if</span> not (<span class="hljs-type">H</span>.mem visited w) <span class="hljs-keyword">then</span> add w) g v
+    <span class="hljs-keyword">done</span>
+</code></pre>
+<p>وبذلك تكتمل حلقة <code>while</code> والدالة <code>iter_bfs</code>. ويُعطى الكود الكامل في
+البرنامج <a href="#x29-305020r99">99</a> أدناه.</p>
+<blockquote></blockquote>
+<p>ينطبق هذا الكود بالقدر نفسه على الرسوم البيانية غير الموجّهة والموجّهة. لاحظ أن بعض
+الرؤوس قد لا يكتشفها هذا الخوارزم. وهذه هي الرؤوس v التي
+لا يوجد مسار بينها وبين الجذر. بعبارة أخرى، يحدّد البحث
+بالعرض أولاً مجموعة الرؤوس التي يمكن الوصول إليها من الجذر،
+بل ويحدّد مسافتها الدنيا من الجذر بعدد الأقواس (انظر
+التمرين <a href="#x29-315001r1">13.1</a>).</p>
+<p>من السهل تحديد تعقيد البحث بالعرض أولاً. يُوضَع كل رأس
+في الطابور مرة واحدة على الأكثر، ومن ثُمَّ يُفحص مرة واحدة على الأكثر. ويُنظر إلى كل قوس
+مرة واحدة على الأكثر، عند فحص رأس بدايته. بالنسبة إلى رسم بياني فيه N
+رأسًا وE قوسًا، يكون التعقيد بالتالي O(N + E)، وهو أمثل. أما
+التعقيد في المكان فهو O(N)، لأن الطابور، شأنه شأن جدول التجزئة، قد يحتوي
+على (جميع) الرؤوس تقريبًا في أسوأ الحالات.</p>
+<p>ثمة طريقة أخرى لتنفيذ البحث بالعرض أولاً، دون استخدام طابور. وكما
+لوحظ أعلاه، فإنّ للطابور بنية خاصة جدًا، إذ يحتوي على الرؤوس على مسافة d
+تليها الرؤوس على مسافة d + 1. ولذلك نرى أنّ بنية الطابور
+ليست ضرورية فعلًا. كل ما نحتاجه هو «دلوان»، أحدهما يحتوي على الرؤوس على
+مسافة d، والآخر على تلك على مسافة d + 1. ويمكننا تجسيدهما،
+مثلًا، باستخدام قوائم. وعندما ننتهي من الدلو d، نبادل الدلوين. وهذا
+لا يؤثّر في التعقيد.</p>
+<h3 id="132-البحث-بالعمق-أولا">13.2 البحث بالعمق أولاً</h3>
+<p>ثاني عملية اجتياز للرسم البياني نعرضها هي <em>البحث بالعمق أولاً</em>(DFS). وتستخدم
+خوارزمية تتبّع خلفي (backtracking): ما دمنا قادرين على اتّباع قوس، نفعل ذلك، وعندما
+يتعذّر ذلك، نتراجع. وكما في البحث بالعرض أولاً، نُعلّم الرؤوس أثناء
+اكتشافها، لتفادي الوقوع في حبس دورة. خُذ مثال الرسم البياني الواقع على
+اليسار في الشكل <a href="#example-of-depthfirst-search">13.2</a>. نبدأ بحثًا بالعمق أولاً من الرأس 2. يخرج قوسان
+من هذا الرأس: 2 → 4 و2 → 5. نختار اعتباطًا النظر في القوس
+2 → 5 أولاً، وبالتالي ننتقل إلى الرأس 5. لا يخرج أي قوس من 5،</p>
+<p>لذلك لا يمكننا المواصلة.
+لذلك نتراجع إلى الرأس 2، وننظر في القوس الخارج الثاني، 2 → 4. ومن 4، لا
+يمكننا اتبّاع سوى القوس 4 → 3. وكذلك، من 3، لا يمكننا اتبّاع سوى القوس 3 → 1. ويخرج قوسان
+من الرأس 1: 1 → 0 و1 → 4. نختار اتبّاع القوس 1 → 4 أولاً. وهو يقود إلى
+رأس زُير سابقًا. لذلك نتراجع. وبالعودة إلى 1،
+ننظر في القوس الآخر، 1 → 0، الذي يقود إلى 0. ومن هناك، القوس
+الخارج الوحيد يقود إلى 3، وقد زُير هو أيضًا سابقًا. لذلك
+نعود إلى 0، ثم إلى 1، ثم إلى 3، ثم إلى 4، وأخيراً إلى 2. ويكتمل
+الاجتياز. وإذا أعدنا رسم الرسم البياني بترتيب اكتشاف
+الرؤوس مكتوبًا كأُسُس، نحصل على الرسم البياني على اليمين في الشكل <a href="#example-of-depthfirst-search">13.2</a>.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/graph-algorithms-2-dfs1-mps-.webp" alt="" id="example-of-depthfirst-search"></p>
+<p><strong>الشكل 13.2: مثال على البحث بالعمق أولاً.</strong></p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/graph-algorithms-3-dfs2-mps-.webp" alt="PIC"></p>
+<p>وكما في البحث بالعرض أولاً، سنستخدم جدول تجزئة يحتوي على
+الرؤوس المكتشَفة سابقًا.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> iter_dfs f g s =
+    <span class="hljs-keyword">let</span> visited = <span class="hljs-type">H</span>.create <span class="hljs-literal">()</span> <span class="hljs-keyword">in</span>
+</code></pre>
+<p>يُكتب البحث بالعمق أولاً في صورة دالة محلية عودية <code>visit</code> تأخذ رأسًا <code>v</code>
+كوسيط. وكودها لا يزيد عن بضعة أسطر:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> visit v =
+      <span class="hljs-keyword">if</span> not (<span class="hljs-type">H</span>.mem visited v) <span class="hljs-keyword">then</span> <span class="hljs-keyword">begin</span>
+        <span class="hljs-type">H</span>.add visited v <span class="hljs-literal">()</span>;
+        f v;
+        iter_succ visit g v
+      <span class="hljs-keyword">end</span>
+</code></pre>
+<p>إذا كان الرأس <code>v</code> قد اكتُشف سابقًا، فلا شيء آخر يُفعل. وإلا، فإننا
+نُعلّمه ونزوره بالدالة <code>f</code>. ثم ننظر في كل رأس لاحق <code>w</code>،
+ونُشغّل عليه بشكل عودي بحثًا بالعمق أولاً. وثمة تفصيل جوهري: أضفنا
+<code>v</code> إلى الجدول <code>visited</code> <em>قبل</em>النظر في رؤوسه اللاحقة. وهذا هو ما يمنعنا من
+الوقوع في حبس دورة. ولإنهاء الدالة <code>iter_dfs</code>، ليس علينا سوى استدعاء
+<code>visit</code> على الجذر <code>s</code>:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">in</span>
+    visit s
+</code></pre>
+<p>يُعطى الكود الكامل في البرنامج <a href="#x29-306017r100">100</a>.</p>
+<blockquote></blockquote>
+<p>التعقيد هو O(N + E)، بالمنطق نفسه كما في حالة البحث بالعرض أولاً.
+أما تعقيد المكان فمنطقه أدقّ، إذ إنّ مكدّس الاستدعاءات العودية هو الذي يحتوي على
+الرؤوس قيد الزيارة، وهو الذي يلعب دور الطابور في البحث بالعرض أولاً.
+ولأنّ جميع الرؤوس قد تكون حاضرة في المكدّس أو جدول التجزئة في أسوأ الحالات،
+فإنّ تعقيد المكان هو O(N).</p>
+<p>وكما في البحث بالعرض أولاً، يسمح لنا البحث بالعمق أولاً بتحديد مجموعة
+الرؤوس التي يمكن الوصول إليها من الجذر <code>s</code>. ويوضّح الشكل <a href="#another-depthfirst-search">13.3</a> مثالًا آخر،
+حيث يُشغَّل البحث بالعمق أولاً من الرأس 1. ولا يُكتشَف الرأسان 2 و5.
+وعلى وجه الخصوص، فإنّ البحث بالعمق أولاً، شأنه شأن البحث بالعرض أولاً، وسيلة
+لتحديد وجود مسار بين رأس معيّن، وهو الجذر، ورؤوس أخرى من الرسم البياني. وإذا
+كان ذلك هو الهدف الوحيد (إذا لم تكن المسافة الدنيا تهمّنا، مثلًا)،
+فإنّ البحث بالعمق أولاً يكون عادةً أكثر كفاءة. فاستهلاكه للذاكرة (أي مكدّس
+الاستدعاءات) يكون كثيرًا ما أدنى من استهلاك البحث بالعرض أولاً.
+والمثال النموذجي هو الشجرة، إذ يقتصر استهلاك الذاكرة على ارتفاع
+الشجرة في حالة البحث بالعمق أولاً، لكنه قد يبلغ حجم الشجرة بأكملها في
+حالة البحث بالعرض أولاً. وللبحث بالعمق أولاً تطبيقات كثيرة أخرى
+تقع خارج نطاق هذا الكتاب. انظر، على سبيل المثال، <em>Introduction to Algorithms</em> [<a href="https://usr.lmf.cnrs.fr/lpo/mainli3.html#Xcormen">7</a>].</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/graph-algorithms-4-dfs3-mps-.webp" alt="" id="another-depthfirst-search"></p>
+<p><strong>الشكل 13.3: بحث بالعمق أولاً آخر.</strong></p>
+<h3 id="133-المسار-الأقصر">13.3 المسار الأقصر</h3>
+<p>ننظر هنا في رسوم بيانية موسومة أقواسها بأوزان (تمثّل مسافات،
+مثلًا). ونبحث عن المسار الأقصر بين رأسين، حيث لا يكون الطول
+عدد الأقواس بل مجموع الأوزان على طول المسار. وهكذا، إذا
+نظرنا في الرسم البياني الموزون في الشكل <a href="#example-of-a-weighted-graph">13.4</a>، فإنّ المسار الأقصر من الرأس 2 إلى
+الرأس 0 طوله 5. وهذا هو المسار 2 → 4 → 3 → 1 → 0، وهو أقصر من
+المسار 2 → 1 → 0 الذي طوله 6، حتى إن كان الأخير يحتوي على أقواس أقل. وبالمثل،
+فإنّ المسار الأقصر من الرأس 2 إلى الرأس 5، مرورًا بالرأس 4، طوله 2.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/graph-algorithms-5-dijkstra1-mps-.webp" alt="" id="example-of-a-weighted-graph"></p>
+<p><strong>الشكل 13.4: مثال على رسم بياني موزون.</strong></p>
+<p>وكما في البحث بالعرض والعمق أولاً، نعتبر معطىً رأسًا <code>s</code> نبحث منه عن
+تحديد المسارات الأقصر إلى الرؤوس الأخرى. ونحتاج كذلك إلى
+وزن كل قوس. ومن الممكن تعديل بنية الرسم البياني لتضمين ذلك.
+لكننا هنا نعتبر معطاةً دالة وزن <code>weight</code> من النوع التالي، حيث
+الأوزان من النوع <code>float</code>:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">val</span> weight: graph -&gt; vertex -&gt; vertex -&gt; <span class="hljs-built_in">float</span>
+</code></pre>
+<p>لن تُستدعى هذه الدالة إلا بالوسائط <code>g</code> و<code>x</code> و<code>y</code> إذا وُجد قوس بين <code>x</code>
+و<code>y</code> في الرسم البياني <code>g</code>.</p>
+<p>نعرض خوارزميتين لحلّ المسألة. الأولى، خوارزمية ديكسترا (Dijkstra)،
+تفترض أنّ الأوزان غير سالبة دائمًا. والثانية، خوارزمية بلمان-فورد
+(Bellman-Ford)، لا تتضمّن أي افتراض من هذا القبيل بشأن الأوزان.</p>
+<h4>خوارزمية ديكسترا</h4>
+<p>خوارزمية ديكسترا تعميم للبحث بالعرض أولاً. وهنا أيضًا
+نتقدّم في «دوائر متحدة المركز». والفرق أنّ أنصاف أقطار هذه الدوائر
+تمثّل المسافة بدلالة الوزن الكلي لا عدد الأقواس. وهكذا، في
+المثال أعلاه، بدءًا من الجذر 2، نصل أولاً إلى الرؤوس على
+مسافة 1 (وهو 4)، ثم إلى تلك على مسافة 2 (وهما 3 و5)، ثم إلى تلك
+على مسافة 3 (وهو 1)، وأخيراً إلى تلك على مسافة 5 (وهو 0). ومن
+التعقيدات المحتملة أن نصل إلى رأس على مسافة معيّنة (على
+سبيل المثال، الرأس 5 عبر القوس 2 → 5)، ثم نجد لاحقًا مسارًا أقصر
+باتّباع أقواس مختلفة (على سبيل المثال، 2 → 4 → 5). ولم يعد الطابور
+كافيًا كما كان في البحث بالعرض أولاً. بل سنستخدم <em>طابور أولوية</em>
+(priority queue) (انظر الفصل <a href="https://usr.lmf.cnrs.fr/lpo/mainch6.html#queues">6</a>). وسيحتوي طابور الأولوية على الرؤوس المكتشَفة
+بالترتيب حسب المسافة من الجذر. وعند العثور على مسار أفضل إلى رأس،</p>
+<p>يُعاد إدراج الرأس في الطابور بأولوية أعلى، أي مسافة أقصر[^2].</p>
+<p>نصف الآن كود خوارزمية ديكسترا. ولتنفيذ طابور
+الأولوية، نفترض وجود دالة رافدة (functor) اسمها <code>PriorityQueue</code>، مُعامَلة بنوع <code>t</code> مزوّد
+بترتيب كلي. (وقد عُرضت مثل هذه الدوال الرافدة في الفصل <a href="https://usr.lmf.cnrs.fr/lpo/mainch6.html#queues">6</a>.) وهنا سيكون النوع <code>t</code> هو
+نوع الأزواج (v,d)، حيث v رأس وd مسافته من الجذر. والترتيب
+المعتمد على هذه الأزواج هو الناتج عن مقارنة المسافات. ونُعرِّف
+الوحدة التالية:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-type">VertexDistance</span> = <span class="hljs-keyword">struct</span>
+    <span class="hljs-keyword">type</span> t = vertex * <span class="hljs-built_in">float</span>
+    <span class="hljs-keyword">let</span> compare (_, d1) (_, d2) = <span class="hljs-type">Stdlib</span>.compare d1 d2
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>ولم يتبقَّ سوى تطبيق الدالة الرافدة <code>PriorityQueue</code> على الوحدة <code>VertexDistance</code>،
+أي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-type">P</span> = <span class="hljs-type">PriorityQueue</span>(<span class="hljs-type">VertexDistance</span>)
+</code></pre>
+<p>نفترض هنا أنّ الوحدة <code>P</code> توفّر دالة <code>create</code> لبناء طابور أولوية
+جديد، ودالة <code>add</code> لإضافة عنصر، ودالة <code>extract_min</code> التي
+تحذف وتُعيد أصغر عنصر بالنسبة إلى الترتيب المعرَّف بالدالة
+<code>compare</code>.</p>
+<p>نصل الآن إلى كود الخوارزمية نفسها. نكتبها في صورة دالة
+<code>dijkstra</code> تأخذ كوسائط رسمًا بيانيًا <code>g</code> وجذرًا <code>s</code> ودالةً <code>f</code>. وستُطبَّق
+الدالة <code>f</code> على عناصر <code>g</code> عند تحديد مسافتها الدنيا إلى <code>s</code>،
+حيث يُمرَّر الرأس إلى <code>f</code> كوسيط أول، ومسافته كوسيط
+ثانٍ. نبدأ بإنشاء جدول تجزئة يحتوي على الرؤوس التي
+وصل إليها الاجتياز سابقًا.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> dijkstra f g s =
+    <span class="hljs-keyword">let</span> visited = <span class="hljs-type">H</span>.create <span class="hljs-literal">()</span> <span class="hljs-keyword">in</span>
+</code></pre>
+<p>نُنشئ أيضًا جدول تجزئة، <code>distance</code>، وطابور الأولوية، <code>queue</code>. وسيحتوي جدول
+التجزئة على المسافة المعروفة حاليًا لكل رأس.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> distance = <span class="hljs-type">H</span>.create <span class="hljs-literal">()</span> <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> queue = <span class="hljs-type">P</span>.create <span class="hljs-literal">()</span> <span class="hljs-keyword">in</span>
+</code></pre>
+<p>من الملائم تعريف دالة <code>add</code> تُضيف رأسًا إلى بنيتي البيانات هاتين
+في الوقت نفسه. ونبدأ بتطبيقها على الجذر <code>s</code>.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> add v d = <span class="hljs-type">H</span>.replace distance v d; <span class="hljs-type">P</span>.add queue (v, d) <span class="hljs-keyword">in</span>
+    add s <span class="hljs-number">0.</span>;
+</code></pre>
+<p>سنرى أدناه سبب تفضيل <code>H.replace</code> على <code>H.add</code>. ثم نواصل بحلقة
+ما دام الطابور غير فارغ.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">while</span> not (<span class="hljs-type">P</span>.is_empty queue) <span class="hljs-keyword">do</span>
+</code></pre>
+<p>نستخرج العنصر الأول من الطابور، <code>u</code>، مع المسافة إلى الجذر <code>du</code>. وإذا
+كان الرأس <code>u</code> موجودًا في <code>visited</code> سابقًا، فقد حدّدنا مسافة
+<code>s</code> إلى <code>u</code> بالفعل، ولم يعد هناك ما يُفعل.</p>
+<pre><code class="language-ocaml">      <span class="hljs-keyword">let</span> (u, du) = <span class="hljs-type">P</span>.extract_min queue <span class="hljs-keyword">in</span>
+      <span class="hljs-keyword">if</span> not (<span class="hljs-type">H</span>.mem visited u) <span class="hljs-keyword">then</span> <span class="hljs-keyword">begin</span>
+</code></pre>
+<p>قد تحدث هذه الحالة فعلًا عند العثور على مسار أول ثم العثور لاحقًا على مسار
+آخر أقصر. وحينئذٍ يمرّ الأخير قبل الأول في طابور الأولوية.
+وعندما يخرج المسار الأطول أخيرًا من الطابور، ينبغي تجاهله. وإذا
+كان الرأس غير موجود في <code>visited</code>، فذلك يعني أننا وجدنا للتوّ مسارًا أقصر
+من <code>s</code> إلى <code>u</code>، وهذا ما نشير إليه بإضافة <code>u</code> إلى الجدول <code>visited</code> وبتطبيق
+الدالة الزائرة <code>f</code> على <code>u</code> و<code>du</code>.</p>
+<pre><code class="language-ocaml">        <span class="hljs-type">H</span>.add visited u <span class="hljs-literal">()</span>;
+        f u du;
+</code></pre>
+<p>بعد ذلك، سنفحص جميع الأقواس الخارجة من <code>u</code>. ولكل قوس <code>u</code> → <code>v</code>، تكون المسافة إلى <code>v</code>
+الناتجة من اتبّاع القوس المقابل هي مجموع المسافة <code>du</code> ووزن
+القوس، أي <code>weightuv</code>. وتُحتمَل عدة سيناريوهات بالنسبة إلى الرأس <code>v</code>. إما أن يكون
+الوصول إليه للمرة الأولى، أو أنه كان موجودًا في <code>distance</code> سابقًا. وفي الحالة الأخيرة،
+قد نكون قد خفّضنا المسافة إلى <code>v</code> بالمرور عبر <code>u</code>. وإذا كان الأمر كذلك، كفى استخدام
+الدالة <code>add</code> لتحديث الجدولين. ونعالج كل رأس لاحق <code>v</code> في الدالة
+<code>visit</code> أدناه:</p>
+<pre><code class="language-ocaml">        <span class="hljs-keyword">let</span> visit v =
+          <span class="hljs-keyword">let</span> d = du +. weight g u v <span class="hljs-keyword">in</span>
+          <span class="hljs-keyword">if</span> not (<span class="hljs-type">H</span>.mem distance v) || d &lt; <span class="hljs-type">H</span>.find distance v <span class="hljs-keyword">then</span>
+            add v d
+</code></pre>
+<blockquote></blockquote>
+<p>ولم يتبقَّ سوى تطبيق هذه الدالة على جميع الأقواس الخارجة من <code>u</code>، وهو ما
+يُنهي جسم حلقة <code>while</code>.</p>
+<pre><code class="language-ocaml">        <span class="hljs-keyword">in</span>
+        iter_succ visit g u
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">done</span>
+</code></pre>
+<p>وبعد الخروج من حلقة <code>while</code>، يكون قد زُير كل رأس يمكن الوصول إليه من <code>s</code>.
+ويُعطى الكود الكامل في البرنامج <a href="#x29-308034r101">101</a> أعلاه.</p>
+<p>ويُظهر الشكل <a href="#result-of-dijkstras-algorithm">13.5</a> نتيجة خوارزمية ديكسترا على الرسم البياني المعطى في
+المثال السابق، مع 2 جذرًا. وقد رُسم الرسم البياني بالمسافات النهائية
+المتحصَّلة لكل رأس مكتوبةً كأُسُس. وفي هذا المثال، وُصل إلى جميع الرؤوس
+بواسطة الاجتياز. أما في البحث بالعرض والعمق أولاً، فليس الأمر
+كذلك دائمًا: فلا يُوصل إلا إلى الرؤوس التي يوجد لها مسار من الجذر.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/graph-algorithms-6-dijkstra2-mps-.webp" alt="" id="result-of-dijkstras-algorithm"></p>
+<p><strong>الشكل 13.5: نتيجة خوارزمية ديكسترا.</strong></p>
+<h5>التعقيد</h5>
+<p>لنقيّم كلفة خوارزمية ديكسترا في أسوأ الحالات. قد يحتوي طابور الأولوية
+على ما يصل إلى E عنصر، لأنّ الخوارزمية تمرّ على كل قوس مرة واحدة على الأكثر،
+وكل قوس قد يؤدي إلى إدراج عنصر في الطابور. وبافتراض أنّ عمليتي
+طابور الأولوية <code>add</code> و<code>extract_min</code> لهما كلفة لوغاريتمية (كما هو الحال
+في طوابير الأولوية الموصوفة في الفصل <a href="https://usr.lmf.cnrs.fr/lpo/mainch6.html#queues">6</a>)، فستكون لكل عملية على الطابور
+كلفة O(log E)، أي O(log N)، بما أنّ E ≤ N2. والكلفة الكلية بالتالي هي
+O(E log N).</p>
+<h4>خوارزمية بلمان-فورد</h4>
+<p>نعرض هنا حلًّا ثانيًا لمسألة المسار الأقصر، هذه المرة دون
+افتراض أنّ الأوزان غير سالبة. وإسقاط هذا الافتراض يُدخل
+دقةً لطيفة. فإذا احتوى الرسم البياني على دورة وزنها الكلي سالب تمامًا،
+وإذا أمكن الوصول إلى هذه الدورة من الجذر، فلن يكون لأي من الرؤوس
+التي يمكن الوصول إليها من الدورة مسار أقصر، لأننا نستطيع
+سلوك هذه الدورة أيّ عدد نشاء من المرات، مقلّلين وزن المسار الكلي
+في كل مرة. وتحسب خوارزمية بلمان-فورد المسارات الأقصر
+من الجذر وتكشف أي دورة سالبة يمكن الوصول إليها من
+الجذر.</p>
+<p>تتضمّن هذه الخوارزمية تكرار العملية التالية N مرة: انظر في
+كل قوس <code>u</code> → <code>v</code> من الرسم البياني وحدّد ما إذا كان سلوكه سيقلّل المسافة
+المعروفة حاليًا بين المصدر و<code>v</code>. والفكرة أنّ المسار الأقصر
+بين <code>s</code> و<code>v</code> لا يمكن أن يحتوي على أكثر من N − 1 قوسًا، وإلا لاحتوى هذا المسار
+على دورة، يمكننا حذفها من المسار إذا كان وزنها غير سالب.</p>
+<p>الوزن. ولهذا تكفي N تكرارات.</p>
+<p>نكتب الآن كود خوارزمية بلمان-فورد. نبدأ بتعريف
+دالة <code>iter_edge</code> تمرّ على جميع أقواس رسم بياني <code>g</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> iter_edge f g =
+    iter_vertex (<span class="hljs-keyword">fun</span> u -&gt;
+      iter_succ (<span class="hljs-keyword">fun</span> v -&gt; f u v (weight g u v)) g u) g
+</code></pre>
+<p>لكل قوس <code>u</code> → <code>v</code>، تطبّق الدالة <code>iter_edge</code> الدالة <code>f</code> على الرأسين <code>u</code> و
+<code>v</code>، وعلى مسافة القوس <code>u</code> → <code>v</code> المعطاة بالدالة <code>weight</code>.</p>
+<p>وتأخذ الدالة <code>bellman_ford</code> رسمًا بيانيًا <code>g</code> ورأس جذر <code>s</code> كوسيطين. وهي
+تبدأ بإنشاء جدول تجزئة <code>h</code> يحتوي على المسافات المعروفة لكل
+رأس.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> bellman_ford g s =
+    <span class="hljs-keyword">let</span> h = <span class="hljs-type">H</span>.create <span class="hljs-literal">()</span> <span class="hljs-keyword">in</span>
+</code></pre>
+<p>نبدأ بتهيئة هذا الجدول، بإعطاء <code>s</code> المسافة 0 وإعطاء كل رأس آخر مسافة
+لانهائية.</p>
+<pre><code class="language-ocaml">    iter_vertex (<span class="hljs-keyword">fun</span> v -&gt; <span class="hljs-type">H</span>.add h v max_float) g;
+    <span class="hljs-type">H</span>.add h s <span class="hljs-number">0.</span>;
+</code></pre>
+<blockquote></blockquote>
+<p>نستخدم هنا الثابت <code>max_float</code> لتمثيل مسافة لانهائية. ثم
+نكرّر العملية التالية N − 1 مرة: نفحص كل قوس، باستخدام حلقة <code>for</code>
+والدالة <code>iter_edge</code>.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">for</span> i = <span class="hljs-number">1</span> <span class="hljs-keyword">to</span> nb_vertex g - <span class="hljs-number">1</span> <span class="hljs-keyword">do</span>
+      iter_edge (<span class="hljs-keyword">fun</span> u v w -&gt;
+</code></pre>
+<p>لكل قوس <code>u</code> → <code>v</code>، نحسب المسافة <code>d</code> من الجذر إلى <code>v</code> الناتجة عن
+سلوك هذا القوس. وإذا كانت أصغر من أفضل مسافة معروفة حاليًا، نسجّلها.</p>
+<pre><code class="language-ocaml">        <span class="hljs-keyword">let</span> d = <span class="hljs-type">H</span>.find h u +. w <span class="hljs-keyword">in</span>
+        <span class="hljs-keyword">if</span> d &lt; <span class="hljs-type">H</span>.find h v <span class="hljs-keyword">then</span> <span class="hljs-type">H</span>.replace h v d
+</code></pre>
+<p>وبعد اكتمال حلقة <code>for</code> هذه، نعيد العملية مرة N وأخيرة. وهذه المرة،
+لا يمكن تحسين المسارات الأقصر إلا بوجود دورة سالبة. وسنشير إلى هذه
+الحالة بإطلاق استثناء.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">done</span>;
+    iter_edge (<span class="hljs-keyword">fun</span> u v w -&gt;
+      <span class="hljs-keyword">if</span> <span class="hljs-type">H</span>.find h u +. w &lt; <span class="hljs-type">H</span>.find h v <span class="hljs-keyword">then</span>
+        raise <span class="hljs-type">NegativeCycle</span>
+</code></pre>
+<p>وبذلك تكتمل خوارزمية بلمان-فورد. ويمكننا إرجاع الجدول <code>h</code> الذي يعطي
+مسافة كل رأس إلى المصدر. وهذا ما يُفعل في البرنامج <a href="#x29-310014r102">102</a>.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/graph-algorithms-7-bf_1-mps-.webp" alt="" id="illustration-of-the-bellmanford-algorithm"></p>
+<p><strong>الشكل 13.6: توضيح لخوارزمية بلمان-فورد.</strong></p>
+<p>نوضّح خوارزمية بلمان-فورد بمثال. خُذ الرسم البياني في
+الشكل <a href="#illustration-of-the-bellmanford-algorithm">13.6</a>، الذي نبحث فيه عن تحديد المسافات من الرأس 5. والجدول الواقع
+على يمين الرسم البياني يعطي المسافة المكتشَفة لكل رأس بعد كل خطوة.
+وفي البداية، تكون جميع الرؤوس على مسافة لانهائية، إلا الجذر 5. وفي كل خطوة،
+نفترض أنّ الرؤوس تُجتاز بترتيب ترقيمها. ونلاحظ،
+على سبيل المثال، أنّ المسافة إلى الرأس 2 تأخذ أولاً القيمة 3 (القوس
+5 → 2)، ثم القيمة 2 (بالمرور عبر الرأس 1)، وأخيراً
+القيمة -2 (بالمرور عبر الرأسين 4 و1). وبعد ذلك، لا تتغيّر
+بعد الآن. وبشكل أعمّ، نلاحظ هنا أنّ أياً من المسافات لا تتحسّن
+خلال الخطوتين الأخيرتين من الخوارزمية. وعلى وجه الخصوص، لا توجد
+دورة سالبة.</p>
+<h5>التعقيد</h5>
+<p>من السهل تقييم كلفة خوارزمية بلمان-فورد في أسوأ الحالات. فنحن
+ننفّذ N مرورًا بالضبط، ويفحص كل مرور كل قوس من الأقواس E مرة واحدة ومرة
+فقط. ولذلك يكون التعقيد O(EN)، أي O(N3) في أسوأ الحالات. أما في
+الممارسة، فيمكننا تحسين الأداء بشكل ملحوظ بملاحظة أنّ كثيرًا من
+الأقواس تُفحص بلا داعٍ عندما لا تكون المسافة من الجذر إلى الرأس
+البداية قد تغيّرت. ومن التحسينات البسيطة الأخرى التوقّف بمجرّد أنّ
+مرورًا لم يحسّن أيًّا من المسافات. لكنّ التعقيد في أسوأ الحالات يبقى،
+مع ذلك، هو نفسه.</p>
+<h3 id="134-الشجرة-الممتدة-الدنيا">13.4 الشجرة الممتدة الدنيا</h3>
+<p>ننظر هنا في رسم بياني غير موجّه موسومة أقواسه بأوزان. ونفترض أيضًا
+أنّ الرسم البياني متّصل، أي أنّ كل زوج من الرؤوس مرتبط
+بمسار. و<em>الشجرة الممتدة</em>(spanning tree) مجموعة جزئية من الأقواس لا تحتوي على دورة
+وتربط جميع الرؤوس معًا. ومن السهل إقناع أنفسنا بوجود مثل هذه الشجرة. فمثلًا،
+سينتج بحث بالعمق أولاً يبدأ من رأس اعتباطي
+شجرةً كهذه: وهي تتكوّن من جميع الأقواس التي أدّت إلى اكتشاف
+رأس جديد.</p>
+<p>نبحث بعد ذلك في مسألة إيجاد شجرة ممتدة وزنها الكلي
+أدنى ما يمكن. ونعرض هنا حلًّا يُعرف بـ<em>خوارزمية كروسكال</em>(Kruskal).
+وتتضمّن هذه الخوارزمية اجتياز الأقواس بترتيب تصاعدي للوزن.
+ولكل قوس u − v، نحدّد ما إذا كانت إضافة القوس إلى
+مجموعة الأقواس المختارة سابقًا لتكوين الشجرة الممتدة تُنشئ دورة. فإن كان
+الأمر كذلك، نتجاهل القوس. وإلا، نختاره. وبعد فحص جميع الأقواس،
+تشكّل مجموعة الأقواس المختارة شجرة ممتدة دنيا (انظر التمرينين <a href="#x29-318001r24">13.24</a>
+و<a href="#x29-318002r25">13.25</a>).</p>
+<p>ولتنفيذ هذه الخوارزمية، نحتاج إلى إيجاد وسيلة فعّالة لتحديد ما إذا كان
+اختيار قوس جديد يُدخل دورة بين الأقواس المختارة سابقًا. ولحسن الحظ، يوجد
+حلّ بسيط لهذه المسألة، في صورة بنية المجموعات المنفصلة
+المدروسة في الفصل <a href="https://usr.lmf.cnrs.fr/lpo/mainch8.html#disjoint-sets">8</a>. ففي الواقع، يكفي بناء بنية أوّلية يكون فيها كل
+رأس صنفًا قائمًا بذاته. ولكل قوس مختار u − v، ندمج صنفي
+u وv. وهذا يجسّد وجود مسار الآن
+بين كل زوج من الرؤوس في الصنف الجديد. ولاختبار ما إذا كان قوس يُدخل
+دورة، يكفي بالتالي اختبار ما إذا كان طرفاه ينتميان إلى الصنف
+نفسه.</p>
+<p>نكتب الآن كود خوارزمية كروسكال، في صورة دالة <code>spanning_tree</code>
+تأخذ رسمًا بيانيًا كوسيط وتُعيد شجرة ممتدة دنيا في صورة
+قائمة أقواس. ونعتبر معطاةً وحدة <code>UF</code> لبنية المجموعات المنفصلة (انظر
+الفصل <a href="https://usr.lmf.cnrs.fr/lpo/mainch8.html#disjoint-sets">8</a>)، بالتوقيع التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-type">UF</span>: <span class="hljs-keyword">sig</span>
+    <span class="hljs-keyword">val</span> create : vertex <span class="hljs-built_in">list</span> -&gt; t
+    <span class="hljs-keyword">val</span> find : t -&gt; vertex -&gt; vertex
+    <span class="hljs-keyword">val</span> union : t -&gt; vertex -&gt; vertex -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>نفترض وجود دالة <code>vertices</code> تُعيد قائمة رؤوس رسم بياني. ومن السهل
+الحصول على دالة كهذه من <code>iter_vertex</code>. وبالمثل، نفترض وجود
+دالة <code>edges</code> تُعيد قائمة جميع أقواس رسم بياني، حيث يكون كل قوس ثلاثية
+(x,y,w)، فيها w وزن القوس x − y. وهنا أيضًا، من السهل الحصول على هذه الدالة
+من <code>iter_edge</code> والدالة <code>weight</code>.</p>
+<p>ويبدأ كود خوارزمية كروسكال بإنشاء بنية <em>union-find</em> انطلاقًا
+من قائمة رؤوس الرسم البياني:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> spanning_tree g =
+    <span class="hljs-keyword">let</span> uf = <span class="hljs-type">UF</span>.create (vertices g) <span class="hljs-keyword">in</span>
+</code></pre>
+<p>ثم نرتّب قائمة أقواس الرسم البياني بترتيب تصاعدي للوزن، باستخدام دالة
+المكتبة <code>List.sort</code>. والمقارنة المستخدمة هنا هي مقارنة الأوزان، بالترتيب
+المعتاد على أعداد الفاصلة العائمة، أي <code>Stdlib.compare</code>.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> compare (_,_,w1) (_,_,w2) = <span class="hljs-type">Stdlib</span>.compare w1 w2 <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> edges = <span class="hljs-type">List</span>.sort compare (edges g) <span class="hljs-keyword">in</span>
+</code></pre>
+<p>وتُخزَّن قائمة الأقواس المختارة لتكوين الشجرة الممتدة في مرجع محلي <code>st</code>.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> st = <span class="hljs-built_in">ref</span> <span class="hljs-literal">[]</span> <span class="hljs-keyword">in</span>
+</code></pre>
+<p>ثم نكتب دالة <code>cover</code> تفحص قوسًا <code>(u,v,w)</code> وتحدّد ما إذا كان ينبغي
+اختياره. ولذلك، نقارن صنفي الرأسين <code>u</code> و<code>v</code> باستخدام الدالة
+<code>UF.find</code>. وإذا كانا مختلفين، نضيف القوس إلى القائمة <code>st</code> وندمج الصنفين،
+باستخدام الدالة <code>UF.union</code>.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> cover ((u, v, w) <span class="hljs-keyword">as</span> e) =
+      <span class="hljs-keyword">if</span> <span class="hljs-type">UF</span>.find uf u &lt;&gt; <span class="hljs-type">UF</span>.find uf v <span class="hljs-keyword">then</span> <span class="hljs-keyword">begin</span>
+        <span class="hljs-type">UF</span>.union uf u v;
+        st := e :: !st
+      <span class="hljs-keyword">end</span>
+</code></pre>
+<p>وأخيراً، لم يتبقَّ سوى فحص كل قوس من القائمة <code>edges</code> بهذه الدالة،
+ثم إرجاع القائمة الناتجة.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">in</span>
+    <span class="hljs-type">List</span>.iter cover edges;
+    !st
+</code></pre>
+<p>ويُعطى كود خوارزمية كروسكال في البرنامج <a href="#x29-312031r103">103</a>.</p>
+<blockquote></blockquote>
+<p>نوضّح خوارزمية كروسكال بمثال. خُذ الرسم البياني الواقع في أعلى
+يسار الشكل <a href="#illustration-of-kruskals-algorithm">13.7</a>. وتُنظر الأقواس بترتيب تصاعدي للوزن، كما هو معروض في
+الجدول على يمين الشكل. ولكل قوس، نبيّن ما إذا كان مختارًا (عمود
+«أُضيف») والتقسيم الناتج في بنية <em>union-find</em>. والشجرة الممتدة
+المتحصَّل عليها في النهاية موضّحة في أسفل يسار الشكل. ووزنها الكلي
+-2. ومن المهم ملاحظة أنّ الأقواس ذات الوزن نفسه قد
+تُنظر بأي ترتيب. وهكذا، نظرنا هنا في القوس 0 − 1 قبل
+القوس 1 − 4، لكن كان بإمكاننا أيضًا فعل العكس. وكانت الشجرة
+الممتدة ستختلف، لكن وزنها الكلي كان سيظل
+هو نفسه.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/graph-algorithms-8-kruskal_1-mps-.webp" alt="" id="illustration-of-kruskals-algorithm"></p>
+<p><strong>الشكل 13.7: توضيح لخوارزمية كروسكال.</strong></p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/graph-algorithms-9-kruskal_2-mps-.webp" alt="PIC"></p>
+<p>وثمة عدد من التنويعات والتحسينات الممكنة. فالتمرين <a href="#x29-318003r26">13.26</a> مثلًا
+يقترح قطع اجتياز الأقواس بمجرّد اختيار N − 1 قوسًا.
+وبالمثل، يقترح التمرين <a href="#x29-318004r27">13.27</a> استخدام طابور أولوية بدلًا من خوارزمية
+ترتيب. وعلى أي حال، تبقى الفكرة الجوهرية استخدام بنية بيانات
+المجموعات المنفصلة.</p>
+<h5>التعقيد</h5>
+<p>تنقسم كلفة خوارزمية كروسكال بين كلفة ترتيب مجموعة الأقواس E
+وكلفة فحص كل قوس. والكلفة الأولى هي O(E log E) في أسوأ الحالات، إذا استخدمنا
+خوارزمية ترتيب ذات تعقيد أمثل (انظر الفصل <a href="https://usr.lmf.cnrs.fr/lpo/mainch12.html#sorting-algorithms">12</a>). والكلفة الثانية هي O(E) إذا
+اعتبرنا أنّ العمليات على بنية <em>union-find</em> ذات زمن
+ثابت (انظر الفصل <a href="https://usr.lmf.cnrs.fr/lpo/mainch8.html#disjoint-sets">8</a>). ويكون تعقيد خوارزمية كروسكال بالتالي
+O(E log E).</p>
+<div class="exercises"><h3 id="135-التمارين">13.5 التمارين</h3>
+<h4>البحث بالعرض أولاً</h4>
+<p><strong>13.1</strong>عدّل الدالة <code>iter_bfs</code> لتحسب المسافة، بعدد الأقواس،
+بين الجذر وكل رأس يكتشفه الاجتياز. ومن المقاربات البسيطة
+أن تربط هذه المسافة بكل رأس في الجدول <code>visited</code>. وأعِد
+هذا الجدول كنتيجة للدالة <code>iter_bfs</code>.</p>
+<p><strong>13.2</strong>عدّل الدالة <code>iter_bfs</code> لتُعيد مسارًا أقصر بين الجذر
+والرأس، لكل رأس يكتشفه الاجتياز. ولكل رأس
+مكتشَف، خزّن الرأس الذي أدّى إليه، مثلًا في جدول تجزئة. ويمكننا
+بعد ذلك استرجاع المسار من الرأس المكتشَف إلى الجذر «بالسير
+عكسيًا».</p>
+<p><strong>13.3</strong>اكتب دالة تُجري اجتيازًا بالعرض أولاً لعقد <em>شجرة</em>
+بمحاكاة البحث بالعرض أولاً في رسم بياني.</p>
+<p><strong>13.4</strong>نفّذ مؤشّرًا (cursor) للأشجار الثنائية (انظر القسم <a href="https://usr.lmf.cnrs.fr/lpo/mainch9.html#cursors"><em>9.3</em></a> <em>Cursors</em>) يقابل
+البحث بالعرض أولاً.</p>
+<p><strong>13.5</strong>استخدم التمرين السابق لكتابة برنامج يلوّن رسمًا بيانيًا بـ k لونًا
+دون استخدام اللون نفسه لرأسين مرتبطين بقوس. افعل ذلك
+بـ<em>التتبّع الخلفي</em> (backtracking)، مستفيدًا من الطبيعة الدائمة للمؤشّر للتراجع. وإذا تعذّر
+إسناد أي لون، أطلِق الاستثناء <code>Not_found</code>.</p>
+<h4>البحث بالعمق أولاً</h4>
+<p><strong>13.6</strong>أعد التمرين <a href="#x29-315002r2">13.2</a> للبحث بالعمق أولاً.</p>
+<p><strong>13.7</strong>في كثير من تطبيقات البحث بالعمق أولاً، نرغب في اجتياز <em>جميع</em> رؤوس
+الرسم البياني لا الرؤوس التي يمكن الوصول إليها من رأس <code>s</code> فحسب. باستخدام
+الدالة <code>iter_vertex</code> التي تمرّ على جميع رؤوس الرسم البياني، عدّل
+الدالة <code>iter_dfs</code> بحيث يُزار كل رأس من الرسم البياني مرة واحدة
+بالضبط.</p>
+<p><strong>13.8</strong>في رسم بياني غير موجّه، <em>المكوّن المتّصل</em> (connected component) هو مجموعة عظمى من الرؤوس
+مرتبطة بعضها ببعض بمسار. اشرح كيف تحدّد الصيغة البديلة للبحث بالعمق أولاً المقترحة في</p>
+<p>يحدّد التمرين السابق المكوّنات المتّصلة لرسم بياني غير موجّه.
+اكتب الكود المقابل.</p>
+<p><strong>13.9</strong>أعد كتابة الدالة <code>iter_dfs</code> باستخدام حلقة <code>while</code> بدلًا من دالة
+عودية. إرشاد: استخدم <em>مكدّسًا</em> يحتوي على الرؤوس التي سيجري منها البحث بالعمق
+أولاً. وينبغي أن يشبه الكود كود البحث بالعرض أولاً، مع
+استبدال المكدّس بالطابور. وثمة فرق، مع ذلك، في معالجة
+الرؤوس المزارة سابقًا. بيّن أنّ الرؤوس لا تُزار بالضرورة بالترتيب
+نفسه كما في الصيغة العودية.</p>
+<p><strong>13.10</strong>يمكن تعديل البحث بالعمق أولاً لكشف وجود دورة في
+الرسم البياني. فعندما تصادف الدالة <code>iter_dfs</code> رأسًا مزارًا سابقًا، لا
+نعرف <em>مبدئيًا</em> ما إذا كنا وجدنا دورة. فقد يكون الرأس قد وُصل إليه سابقًا
+بمسار موازٍ. وبدلًا من حالتين (وُصل إليه/لم يُوصل إليه)، ينبغي
+بالتالي تعديل تعليم الرؤوس لاستخدام ثلاث: وُصل إليه/قيد
+الزيارة/زُير. اكتب دالة <code>has_cycle</code> تحدّد وجود دورة في
+رسم بياني. وعدّل الدالة بحيث تُعيد قائمة رؤوس الدورة المكتشَفة، إن
+وُجدت.</p>
+<p><strong>13.11</strong> ليكن G رسمًا بيانيًا موجّهًا لا يحتوي على دورة. ونسمّي مثل هذه الرسوم البيانية
+<em>الرسوم البيانية الموجّهة اللادورية</em>(DAG). و<em>الترتيب الطوبولوجي</em> لـ G هو اجتياز لرؤوسه
+متوافق مع الأقواس، أي حيث يُزار الرأس x قبل الرأس y إذا
+وُجد قوس x → y. عدّل البرنامج <a href="#x29-306017r100">100</a> بحيث يُجري ترتيبًا طوبولوجيًا،
+في صورة دالة من النوع التالي:</p>
+<pre><code class="language-ocaml">  topological_sort: (vertex -&gt; <span class="hljs-built_in">unit</span>) -&gt; graph -&gt; <span class="hljs-built_in">unit</span>
+</code></pre>
+<p>استخدم مكدّسًا يُضاف إليه الرأس <code>v</code> بمجرّد انتهاء الاستدعاء <code>visitv</code>. وبعد أن
+يكتمل البحث بالعمق أولاً، طبّق الدالة المُمرَّرة كوسيط على جميع
+عناصر المكدّس.</p>
+<p><strong>13.12</strong>في رسم بياني موجّه، <em>المكوّن المتّصل بقوة</em>(strongly connected component) هو أي مجموعة عظمى من</p>
+<p>رؤوس مرتبطة بعضها ببعض بمسار. وتحسب خوارزمية كوسارجو-شعيرير (Kosaraju-Sharir) مجموعة
+المكوّنات المتّصلة بقوة لرسم بياني G، في زمن O(N + E)، باستخدام بحثين بالعمق
+أولاً. وهي تسير كما يلي:</p>
+<ul>
+<li>نبدأ ببناء تبديل GR للرسم البياني G، أي
+الرسم البياني ذي الرؤوس نفسها التي في G لكن بأقواس معكوسة (انظر
+التمرين 7.1).</li>
+<li>ثم نجتاز رؤوس GR وفق ترتيب طوبولوجي (انظر
+التمرين السابق). ولكل رأس v، نُجري بحثًا بالعمق أولاً في G،
+بدءًا من v، إذا لم يكن v جزءًا من مكوّن متّصل بقوة بالفعل.
+وتوضع بعد ذلك جميع الرؤوس التي يصل إليها هذا البحث في مكوّن
+جديد.</li>
+</ul>
+<p>اكتب دالة <code>scc:graph-&gt;vertexlistlist</code> تستخدم هذه الخوارزمية لحساب
+المكوّنات المتّصلة بقوة لرسم بياني.</p>
+<p><strong>13.13</strong>يمكننا استخدام البحث بالعمق أولاً لبناء متاهة مثالية في شبكة n×m. والمتاهة
+المثالية هي التي يوجد فيها مسار واحد فقط بين أي خليتين. ونبدأ
+بالنظر في الرسم البياني الذي ترتبط فيه جميع خلايا الشبكة
+بجيرانها:</p>
+<p>ثم نُجري بحثًا بالعمق أولاً بدءًا من رأس اعتباطي (مثلًا
+الواقع أعلى اليسار). وعندما نجتاز رؤوسًا لاحقة لرأس ما، نفعل ذلك بترتيب
+عشوائي. وبعد اكتمال الاجتياز، نحصل على المتاهة بأن نعلن أنه يمكننا
+المرور من رأس إلى آخر إذا سُلك القوس المقابل خلال
+البحث بالعمق أولاً. ويقترح التمرين <a href="https://usr.lmf.cnrs.fr/lpo/mainch8.html#x22-236034r7">8.7</a> طريقة أخرى لبناء متاهة
+مثالية.</p>
+<p><strong>13.14</strong>ننظر هنا في مسألة لعب سوليتير الأوتاد (peg solitaire). وهي
+لعبة صبر تتكوّن من 32 وتدًا على لوح فيه 33 ثقبًا. وفي البداية،
+تشغل الأوتاد جميع الثقوب، إلا الثقب الواقع في مركز اللوح.</p>
+<p>ويمكن إزالة وتد من اللوح بأن يقفز عليه أحد الأوتاد الأربعة المجاورة،
+بشرط أن يكون الثقب الذي سيهبط فيه الوتد فارغًا. وها هي نقلتان ممكنتان
+انطلاقًا من الوضع الابتدائي.</p>
+<p>والهدف من اللعبة هو الوصول إلى وضع لا يبقى فيه سوى وتد واحد،
+يشغل الموضع المركزي.</p>
+<p>ويمكننا حل هذه المسألة بسهولة باستخدام البحث بالعمق أولاً على رسم بياني يمثّل فيه كل رأس
+تشكيلةً من تشكيلات اللوح.</p>
+<ul>
+<li>
+<p>يمكن تمثيل تشكيلة اللوح بعدد صحيح تدلّ بتّته رقم (i+7j)
+على وجود وتد في الموضع (i,j) من أجل 0 ≤ i,j &lt; 7. وبافتراض
+آلة ذات 64 بتًا، نكتب type state = int. وعرّف ثابتين، initial
+وfinal، يمثّلان على التوالي التشكيلة الابتدائية والنهائية
+للعبة.</p>
+</li>
+<li>
+<p>يمكن تمثيل نقلة بتشكيلتين، تدلّ الأولى على
+الوتدين المعنيين (الذي يُحرَّك والذي يُقفز عليه)، وتدلّ
+الثانية على الموضع النهائي للوتد الذي حُرِّك. مثلًا،
+تدلّ النقلة الأولى أعلاه على ما يلي:</p>
+<p>لنكتب <code>typemove=state*state</code>. أنشئ قائمة تحتوي على النقلات الـ 88 الممكنة
+(بشكل مستقل عن التشكيلة كيفما كانت).</p>
+</li>
+<li>
+<p>اكتب دالة possible_move لاختبار ما إذا كانت نقلة ممكنة في تشكيلة
+معيّنة، ودالة move تُجري النقلة، إن كانت ممكنة.
+واستنتج منهما دالة iter_succ تمرّ على جميع النقلات الممكنة في تشكيلة
+معيّنة.</p>
+</li>
+<li>
+<p>عدّل الدالة iter_dfs في البرنامج 100 لتقطع الاجتياز بمجرّد
+الوصول إلى التشكيلة final وتُعيد المسار المكتشَف، كما في
+التمرين 13.6 أعلاه.</p>
+</li>
+<li>
+<p>وأخيرًا، اكتب دالة print تعرض تشكيلة على الشاشة،
+واستخدمها لعرض الحل الذي عُثر عليه، في صورة 32 تشكيلة
+متتالية.</p>
+</li>
+</ul>
+<p>ملاحظة: مسألة سوليتير الأوتاد من المسائل التي نوقشت في كتاب
+Cousineau وMauny <em>The Functional Approach to Programming</em> [<a href="https://usr.lmf.cnrs.fr/lpo/mainli3.html#XCousineau-Mauny-1998">9</a>، الصفحة
+216].</p>
+<p><strong>13.15</strong>في التمرين السابق، كان البحث بالعمق أولاً حلًّا جيدًا لأنّ جميع
+المسارات كانت بالطول نفسه. وعندما لا يكون الأمر كذلك، وإذا كنا نبحث عن مسار
+بطول أدنى، فلا بدّ من اللجوء إلى البحث بالعرض أولاً بدلًا منه.
+لكن قد يتطلب ذلك ذاكرة كبيرة. وفي هذه الحالة، يقدّم <em>البحث بالتعميق التكراري</em> (Iterative deepening search, IDS) حلًّا بمتطلبات ذاكرة منخفضة، لكنه
+قادر مع ذلك على إيجاد مسار بطول أدنى. والفكرة هي تنفيذ عمليات بحث
+متتالية بالعمق أولاً، محدودة بأعماق عظمى تكبر تدريجيًا.</p>
+<ul>
+<li>اشرح لماذا لم يعد بإمكاننا تخزين الرؤوس المزارة سابقًا خلال عمليات
+البحث بالعمق أولاً. خُذ الرسم البياني التالي وافترض أننا نجتازه
+بدءًا من الرأس 0.</li>
+<li>نفّذ البحث بالتعميق التكراري في صورة دالة
+ids: (vertex -&gt; bool) -&gt; graph -&gt; vertex -&gt; unit تتوقف بمجرّد وصولها إلى
+رأس يحقق الدالة المُمرَّرة كوسيط.</li>
+<li>في حالة اجتياز شجرة ثنائية كاملة بدءًا من الجذر، بيّن أنّ
+البحث بالتعميق التكراري ليس أعلى كلفة من البحث بالعرض أولاً والبحث بالعمق
+أولاً.</li>
+</ul>
+<h4>المسارات الأقصر</h4>
+<p><strong>13.16</strong>عمّم الدالة <code>dijkstra</code> من أجل مسافات من نوع اعتباطي،
+مثلًا في صورة دالة رافدة.</p>
+<p><strong>13.17</strong>أعد التمرين <a href="#x29-315002r2">13.2</a> لخوارزمية ديكسترا. ملاحظة: عند تحسين مسار،
+ينبغي تحديث الجدول المقابل.</p>
+<p><strong>13.18</strong>أعد خطوات خوارزمية بلمان-فورد، الموضّحة في الشكل <a href="#illustration-of-the-bellmanford-algorithm">13.6</a>،
+بافتراض أنّ وزن القوس 0 → 4 هو -3.</p>
+<p><strong>13.19</strong>يمكن تكييف خوارزمية وارشال (exercice <a href="https://usr.lmf.cnrs.fr/lpo/mainch7.html#x21-229006r6">7.6</a>) بسهولة لحساب <em>جميع</em>
+المسارات الأقصر في رسم بياني. وهذه هي خوارزمية فلويد-وارشال (Floyd-Warshall). ليكن V = {0,…,N − 1}.
+وفي البداية، تكون المسافة di,j بين الرأسين i وj مساوية لوزن
+القوس المقابل، إن وُجد، ولانهائية فيما عدا ذلك. ثم تحسب الخوارزمية
+المسافة الدنيا di,j من i إلى j في زمن O(N3) كما يلي:</p>
+<table>
+<thead>
+<tr>
+<th>لكل k من 0 إلى N − 1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>لكل i من 0 إلى N − 1</td>
+</tr>
+<tr>
+<td>لكل j من 0 إلى N − 1</td>
+</tr>
+<tr>
+<td>di,j ← min(di,j,di,k + dk,j)</td>
+</tr>
+</tbody>
+</table>
+<p>اكتب دالة تنفّذ هذه الخوارزمية. كيف يمكننا معالجة الحالة العامة،
+حين لا تكون الرؤوس بالضرورة الأعداد الصحيحة 0,…,N − 1؟</p>
+<p><strong>13.20</strong>مع أنّ خوارزمية ديكسترا تسمح لنا بإيجاد مسار بأدنى كلفة، فإنها
+قد تزور عددًا من رؤوس الرسم البياني بلا داعٍ. افترض أننا نستخدم خوارزمية ديكسترا
+لإيجاد المسار الأقصر (بدلالة المسافة) بين مدينتين في شبكة
+طرق. فستستكشف الخوارزمية الشبكة في دوائر متحدة المركز أكبر وأكبر
+مركزها مدينة البداية، إلى أن تصل إلى مدينة الوجهة. وإذا أخذنا
+مثال شبكة الطرق الفرنسية، وإذا بحثنا عن المسار الأقصر بين باريس
+ونيس، فمن المرجح أن تكون جميع مدن فرنسا تقريبًا قد زُيرت قبل
+الوصول إلى نيس.</p>
+<p>وتسمح لنا خوارزمية A⋆ بحل هذه المسألة من خلال تحكّم أدقّ في
+الترتيب الذي تُزار به الرؤوس. ويتخذ هذا التحكّم صورة استدلال (heuristic) يقدّر
+المسافة المتبقية بين رأس ما والوجهة. وخوارزمية
+A⋆ مطابقة لخوارزمية ديكسترا، إلا أنّ الطابور لم يعد
+يستخدم المسافة إلى المصدر كأولوية، بل مجموع هذه المسافة
+والقيمة التي يعطيها الاستدلال. وإذا كان الاستدلال <em>مقبولًا</em>، أي إذا لم يبالغ
+أبدًا في تقدير المسافة المتبقية، فإنّ خوارزمية A⋆ ستجد المسار الأقصر.
+ومن الاستدلالات المقبولة في مثال شبكة الطرق المسافة
+الجوية. وإذا أعاد الاستدلال الصفر دائمًا، استعدنا خوارزمية
+ديكسترا.</p>
+<p>لننظر في مثال شبكة لانهائية يرتبط فيها كل نقطة بجيرانها
+الثمانية المباشرين.</p>
+<p>الكلفة هنا هي المسافة الإقليدية، أي أنّ أربعة جيران على مسافة 1، و
+الأربعة الآخرون على مسافة. ويمكننا بالتالي استخدام المسافة الإقليدية كاستدلال
+بين النقطة المعنية (x,y) ونقطة الوجهة (xd,yd)، أي.</p>
+<p>ويوضّح الشكل أعلاه نتيجة خوارزمية A⋆ في إيجاد مسار من النقطة
+(0,0)، الموسومة بـ 1، إلى النقطة (5,10)، الموسومة بـ 103، مع استبعاد العقد السوداء من
+الشبكة. وكما نرى، لم تُزر سوى 103 عقدة. وكانت خوارزمية ديكسترا ستجد
+المسار الأقصر بدورها، لكن العدد الكلي للعقد المزارة كان سيكون
+أكبر بكثير (أكثر من 800).</p>
+<p>افترض أننا معطون دالة <code>heuristic:graph-&gt;vertex-&gt;vertex-&gt;float</code>،
+ونفّذ خوارزمية A⋆ بتعديل كود البرنامج <a href="#x29-308034r101">101</a>. وطبّق ذلك على
+المثال السابق وتحقّق من أننا نصل فعلًا إلى نتيجة الشكل
+أعلاه.</p>
+<p><strong>13.21</strong>«سوليتير الفرنسية» تختلف عن سوليتير التمرين <a href="#x29-316021r14">13.14</a>، المسمّى «سوليتير الإنجليزية»,
+بوجود أربعة أوتاد إضافية في المواضع (1,1) و(5,1) و(1,5) و(5,5).</p>
+<p>وسوليتير الفرنسية، بشكل مفاجئ، أصعب بكثير في الحل من سوليتير الإنجليزية.
+وفضلًا عن ذلك، توجد تركيبات من التشكيلات الابتدائية/النهائية التي
+لا تقبل حلًّا، مثلًا التشكيلة التي يُزال فيها
+الوتد المركزي في البداية ويتعيّن وضع الوتد الأخير في</p>
+<p>المركز<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>.
+وعليه، سنخفّف شروط مواضع الأوتاد الابتدائية والنهائية.</p>
+<p>تتمثل إحدى مقاربات حل سوليتير الفرنسية في استخدام خوارزمية A⋆
+المعروضة في التمرين السابق. عدّل كود التمرين <a href="#x29-316021r14">13.14</a> كما يلي:</p>
+<ul>
+<li>
+<p>أضف النقلات الثماني الجديدة المرتبطة بالأوتاد الأربعة الجديدة إلى قائمة جميع النقلات
+الممكنة.</p>
+</li>
+<li>
+<p>اكتب دالة استدلال تقيّم مدى «إحكام» ترتيب الأوتاد
+على اللوح. وبالنظر إلى تمثيل الشبكة بعدد صحيح، يمكننا
+حساب تقريب خشن بإحصاء عدد انقلابات البتّات،
+أي عدد المرات التي ننتقل فيها من بتّ 1 إلى بتّ 0، والعكس
+بالعكس.</p>
+</li>
+<li>
+<p>وأخيرًا، استبدل البحث بالعمق أولاً بخوارزمية A⋆. وها هو
+مثال على تشكيلتين ابتدائية ونهائية توجد لهما حل.</p>
+<p>…</p>
+</li>
+</ul>
+<p>كما في التمرين <a href="#x29-316021r14">13.14</a>، اعرض الحل بعرض جميع التشكيلات المتتالية
+للوح.</p>
+<p><strong>13.22</strong>من الممكن الجمع بين أفكار البحث بالتعميق التكراري (التمرين <a href="#x29-316025r15">13.15</a>)
+وخوارزمية A⋆ (التمرين <a href="#x29-317007r20">13.20</a>)، للحصول على خوارزمية تُعرف باسم
+IDA⋆ (<em>iterative deepening A</em>⋆). والفكرة كما يلي: في كل تكرار، نُجري
+بحثًا بالعمق أولاً على جميع الحالات التي لا يتجاوز فيها الاستدلال عتبة
+معيّنة، دون السعي إلى تخزين الحالات المزارة سابقًا. وبعد انتهاء البحث،
+نتخذ كعتبة جديدة أصغر قيمة للاستدلال حُصل عليها خلال
+البحث السابق. بعبارة أخرى، تدفع كل تكرار عتبة الاستدلال
+قليلًا إلى الأمام إلى أن يُعثر على مسار أو لا يأخذ أي رأس قيمة أكبر من
+العتبة. ولبدء العملية، يكفي اتخاذ استدلال الرأس الجذر كعتبة
+ابتدائية. وكما في خوارزمية A⋆، فإنّ استدلالًا مقبولًا، أي استدلالًا
+لا يبالغ أبدًا في تقدير المسافة المتبقية، يضمن أنّ IDA⋆
+ستجد مسارًا أقصر. وقد اكتشف خوارزمية IDA⋆ كُورف (Korf) [<a href="https://usr.lmf.cnrs.fr/lpo/mainli3.html#XKorf85">17</a>] في
+1985.</p>
+<p>افترض أننا معطون دالة <code>heuristic:graph-&gt;vertex-&gt;vertex-&gt;float</code>،
+وعدّل كود التمرين <a href="#x29-316025r15">13.15</a> لتنفيذ خوارزمية IDA⋆. ويقترح التمرين
+التالي تطبيقًا لهذه الخوارزمية.</p>
+<p><strong>13.23</strong>من التطبيقات الجيدة لخوارزمية IDA⋆ المقترحة في التمرين السابق
+<em>لعبة الخمسة عشر</em>. وتتكوّن اللعبة من شبكة 4 × 4 تحتوي على 15 بلاطة مرقّمة
+من 1 إلى 15. والموضع السادس عشر فارغ، ويمكننا وضع إحدى
+البلاطات المجاورة فيه. وفي البداية، تكون البلاطات مبعثرة، مثلًا كما يلي:</p>
+<p>والهدف هو وضع البلاطات بترتيب
+تصاعدي<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>.</p>
+<p>ولحل اللعبة، سنستخدم الاستدلال التالي: لكل بلاطة، نحسب
+المسافة التي تفصلها عن موضعها النهائي، من حيث عدد الأسطر
+والأعمدة. وتُسمّى هذه مسافة مانهاتن. وفي المثال السابق، تكون البلاطة 7
+في البداية على مسافة 4 من موضعها النهائي لأنّها يجب أن تُنقل إلى أعلى بسطر
+واحد، وإلى اليمين بثلاثة أعمدة. ولتشكيلة معيّنة، نأخذ بعد ذلك مجموع
+مسافات مانهاتن للبلاطات الخمس عشرة، وهو حدّ أدنى لعدد
+النقلات المتبقية. وهذا استدلال مقبول، وسنتمكّن بالتالي من
+إيجاد حل أصغر. حل اللعبة باستخدام خوارزمية IDA⋆. وقد عُرض
+مثال لعبة الخمسة عشر في مقال كُورف الذي قدّم
+خوارزمية IDA⋆.</p>
+<h4>الشجرة الممتدة الدنيا</h4>
+<p><strong>13.24</strong>بيّن أنّ مجموعة الأقواس التي تُعيدها خوارزمية كروسكال تشكّل فعلًا
+شجرة.</p>
+<p><strong>13.25</strong>بيّن أنّ نتيجة خوارزمية كروسكال هي فعلًا شجرة ممتدة
+دنيا.</p>
+<p><strong>13.26</strong>حسّن كود البرنامج <a href="#x29-312031r103">103</a> بحيث يتوقف بمجرّد إضافة N − 1 قوسًا
+إلى الشجرة الممتدة.</p>
+<p><strong>13.27</strong>أعد تنفيذ البرنامج <a href="#x29-312031r103">103</a> باستخدام طابور أولوية بدلًا من خوارزمية
+ترتيب. وفيم يختلف عن التمرين السابق؟</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>حلّ آخر، معتمد بشكل بارز في جداول التجزئة في المكتبة المعيارية لـ OCaml،
+يتمثل في استخدام مصفوفة حجمها <code>n</code> قوة للعدد 2. ويمكن عندئذ تنفيذ عملية باقي القسمة
+بـ<code>land(n-1)</code>، وهو ما له ميزة إضافية هي أنه أرخص بكثير من
+القسمة. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>البرنامج <code>seq</code> أداة من يونيكس تعرض جميع الأعداد الصحيحة من 1 إلى n، عددًا صحيحًا لكل
+سطر. وهي أبسط طريقة للحصول على n سطرًا من النص بالضبط. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>سيعرض الفصل <a href="https://usr.lmf.cnrs.fr/lpo/mainch9.html#zippers">9</a> نوعًا آخر من المُكرِّرات قادرًا على حل هذه المسألة. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+</div>`,l={book:n,chapter:s,chapterTitle:e,slug:a,title:p,headings:o,html:c};export{n as book,s as chapter,e as chapterTitle,l as default,o as headings,c as html,a as slug,p as title};

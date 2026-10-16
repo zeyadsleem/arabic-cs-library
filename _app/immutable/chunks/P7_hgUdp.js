@@ -1,0 +1,618 @@
+const s="learn-ocaml",a="arrays",n="المصفوفات",e="index",p="المصفوفات",l=[{depth:2,id:"4-المصفوفات",text:"4. المصفوفات"},{depth:3,id:"41-المصفوفات-القابلة-لتغيير-الحجم",text:"4.1 المصفوفات القابلة لتغيير الحجم"},{depth:3,id:"42-المتجهات-البتية-bit-vectors",text:"4.2 المتجهات البتية (bit vectors)"},{depth:3,id:"43-الحبال-ropes",text:"4.3 الحبال (ropes)"},{depth:3,id:"44-المصفوفات-الدائمة-persistent-arrays",text:"4.4 المصفوفات الدائمة (persistent arrays)"},{depth:3,id:"45-التمارين",text:"4.5 التمارين"}],c=`<h2 id="4-المصفوفات">4. المصفوفات</h2>
+<p>من أبسط بنى المعطيات المصفوفة (array)، التي يمثّلها النوع <code>array</code> في OCaml. نعرض في هذا الفصل عدة تنويعات على بنية المعطيات هذه. فنوضّح كيفية بناء مصفوفات قابلة لتغيير الحجم، ومصفوفات مضغوطة من القيم المنطقية، ومصفوفات ذات عملية دمج فعّالة، ومصفوفات دائمة.</p>
+<h3 id="41-المصفوفات-القابلة-لتغيير-الحجم">4.1 المصفوفات القابلة لتغيير الحجم</h3>
+<p>المصفوفة القابلة لتغيير الحجم (resizeable array) هي مصفوفة يمكن زيادة حجمها أو إنقاصه في أي وقت بواسطة عملية <code>resize</code>. وتُعطى توقيعة هذه المصفوفات في البرنامج <a href="#x15-133002r17">17</a>.
+(سنستعمل المصفوفات القابلة لتغيير الحجم في الفصلين <a href="https://usr.lmf.cnrs.fr/lpo/mainch5.html#sets-and-dictionaries">5</a> و<a href="https://usr.lmf.cnrs.fr/lpo/mainch6.html#queues">6</a>.)</p>
+<blockquote></blockquote>
+<p>الفكرة الكامنة وراء تنفيذ المصفوفات القابلة لتغيير الحجم بسيطة: نستعمل مصفوفة عادية لتخزين العناصر، فإذا صارت صغيرة جدًّا خصّصنا مصفوفة أكبر ننسخ إليها العناصر الموجودة. ولتفادي إضاعة وقت كبير في التخصيص والنسخ، نسمح للمصفوفة الداعمة (backing array) بأن تكون أكبر من اللازم، مع بقاء العناصر التي تتجاوز فهرسًا معينًا غير مستعملة.</p>
+<p>وبالتالي فإن نوع المصفوفات القابلة لتغيير الحجم هو سجل (record) يحتوي على مصفوفة عادية في حقل <code>data</code> وعلى عدد العناصر المستعملة في حقل <code>size</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> ’a t = {
+    <span class="hljs-keyword">mutable</span> size: <span class="hljs-built_in">int</span>;
+    <span class="hljs-keyword">mutable</span> data: ’a <span class="hljs-built_in">array</span>;
+  }
+</code></pre>
+<p>وهكذا، إذا كانت <code>v</code> مصفوفة قابلة لتغيير الحجم من هذا القبيل، أمكننا تمثيل الحالة كما يلي:</p>
+<p>بناءً على ذلك، سنحافظ في ما يلي على الثابت (invariant) الآتي:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>v</mi><mi mathvariant="normal">.</mi><mi>s</mi><mi>i</mi><mi>z</mi><mi>e</mi><mo>≤</mo><mi>A</mi><mi>r</mi><mi>r</mi><mi>a</mi><mi>y</mi><mi mathvariant="normal">.</mi><mi>l</mi><mi>e</mi><mi>n</mi><mi>g</mi><mi>t</mi><mi>h</mi><mi>v</mi><mi mathvariant="normal">.</mi><mi>d</mi><mi>a</mi><mi>t</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">0 \\le v.size \\le Array.length v.data</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7955em;vertical-align:-0.136em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="mord">.</span><span class="mord mathnormal">s</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.044em;">z</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="mord">.</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="mord">.</span><span class="mord mathnormal">d</span><span class="mord mathnormal">a</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span></span></span></span></span>
+<p>إذا أردنا زيادة حجم المصفوفة <code>v</code>، فهناك احتمالان ينبغي النظر فيهما. فإذا لم يتجاوز الحجم الجديد سعة المصفوفة <code>v.data</code>، كفى تعديل <code>v.size</code>. وإلا خصّصنا مصفوفة جديدة كبيرة بما يكفي ونسخنا</p>
+<p>عناصر <code>v.data</code> إليها. ثم نُسند هذه المصفوفة الجديدة إلى <code>v.data</code>.
+وكلما أردنا إنقاص حجم المصفوفة <code>v</code>، كفى تعديل <code>v.size</code>.</p>
+<p>غير أن هناك صعوبة طفيفة تتعلق بهذه النقطة الأخيرة. إذ ينبغي عدم الاحتفاظ بالمؤشرات إلى العناصر التي لم تعد مستعملة، حتى يتمكن جامع القمامة (GC) من جمعها كلما أمكن ذلك. ولذلك نحتاج إلى قيمة من النوع المناسب لتحل محل العناصر التي لم تعد مستعملة. وتحقيقًا لهذه الغاية، سنشترط توفير قيمة افتراضية عند إنشاء المصفوفة. وسنحفظها في حقل ثالث من السجل. وهكذا نصل إلى النوع الآتي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> ’a t = {
+    default: ’a;
+    <span class="hljs-keyword">mutable</span> size: <span class="hljs-built_in">int</span>;
+    <span class="hljs-keyword">mutable</span> data: ’a <span class="hljs-built_in">array</span>;
+  }
+</code></pre>
+<p>لنكتب الآن شفرة العمليات المختلفة. يُعطى طول المصفوفة القابلة لتغيير الحجم بواسطة الحقل <code>size</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> length a = a.size
+</code></pre>
+<p>لإنشاء مصفوفة جديدة قابلة لتغيير الحجم، يكفي استعمال <code>Array.make</code> وتخزين الحجم والقيمة الافتراضية.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> make n d = { default = d; size = n; data = <span class="hljs-type">Array</span>.make n d }
+</code></pre>
+<p>بصفة عامة، سنحافظ على الثابت الآتي على النوع <code>t</code>: كل عنصر يتجاوز الفهرس <code>size</code>، أي كل عنصر غير مستعمل، يحتوي على القيمة المخزَّنة في الحقل <code>default</code>.</p>
+<blockquote></blockquote>
+<p>للوصول إلى العنصر ذي الرتبة <code>i</code> في مصفوفة قابلة لتغيير الحجم <code>a</code>، لا بد من التحقق من صلاحية الفهرس، لأن المصفوفة <code>a.data</code> قد تحتوي على أكثر من <code>a.size</code> عنصر.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> get a i =
+    <span class="hljs-keyword">if</span> i &lt; <span class="hljs-number">0</span> || i &gt;= a.size <span class="hljs-keyword">then</span> invalid_arg <span class="hljs-string">&quot;get&quot;</span>;
+    a.data.(i)
+</code></pre>
+<p>لاحظ أنه متى جرى هذا التحقق، أمكننا استعمال <code>Array.unsafe_get</code> للوصول إلى <code>a.data</code> لمزيد من الفعالية. وعملية الإسناد مماثلة:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> set a i v =
+    <span class="hljs-keyword">if</span> i &lt; <span class="hljs-number">0</span> || i &gt;= a.size <span class="hljs-keyword">then</span> invalid_arg <span class="hljs-string">&quot;set&quot;</span>;
+    a.data.(i) &lt;- v
+</code></pre>
+<p>يكمن كل الدقة في الدالة <code>resize</code>، التي تعدّل حجم مصفوفة قابلة لتغيير الحجم <code>a</code>. وهناك عدة حالات ممكنة. فإذا كان الحجم الجديد <code>s</code> أصغر من <code>a.size</code> أو يساويه، كفى استبدال العناصر الواقعة بين <code>s</code> و<code>a.size-1</code> بالقيمة <code>a.default</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> resize a s =
+    <span class="hljs-keyword">if</span> s &lt;= a.size <span class="hljs-keyword">then</span>
+      <span class="hljs-type">Array</span>.fill a.data s (a.size - s) a.default
+</code></pre>
+<p>ويمكننا كذلك إعادة تخصيص العناصر في مصفوفة أصغر (انظر التمرين <a href="#x15-151002r2">4.2</a>). أما إذا كان <code>s</code> أكبر من <code>a.size</code>، فلا بد من التحقق مما إذا كانت المصفوفة <code>a.data</code> كبيرة بما يكفي لاحتواء <code>s</code> عنصرًا. لذلك نحسب الحجم <code>n</code> للمصفوفة <code>a.data</code> ونقارنه بـ <code>s</code>.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span>
+      <span class="hljs-keyword">let</span> n = <span class="hljs-type">Array</span>.length a.data <span class="hljs-keyword">in</span>
+      <span class="hljs-keyword">if</span> s &gt; n <span class="hljs-keyword">then</span> <span class="hljs-keyword">begin</span>
+</code></pre>
+<p>إذا كان <code>s</code> أكبر من <code>n</code>، فلا بد من تغيير حجم المصفوفة. ونختار هنا استراتيجية مضاعفة حجم المصفوفة <code>a.data</code>. (انظر التمرين <a href="#x15-151001r1">4.1</a> لاستراتيجية أخرى.) ولما كان ذلك قد لا يكفي، نحسب الحجم الجديد باعتباره القيمة العظمى لـ <code>2*n</code> و<code>s</code>.</p>
+<pre><code class="language-ocaml">        <span class="hljs-keyword">let</span> n’ = max (<span class="hljs-number">2</span> * n) s <span class="hljs-keyword">in</span>
+</code></pre>
+<p>ولضمان السلامة التامة، كان يلزم تقييد الحجم الجديد بالحجم الأقصى للمصفوفات، أي <code>Sys.max_array_length</code>، والفشل إذا كانت القيمة <code>s</code> كبيرة جدًّا. وقد تُرك هذا تمرينًا للقارئ.</p>
+<p>ثم نخصّص مصفوفة جديدة بحجم <code>n’</code> ننسخ إليها عناصر <code>a.data</code> المستعملة. ولهذا نستعمل الدالة <code>Array.blit</code>، التي تنسخ جزءًا من مصفوفة إلى أخرى.</p>
+<pre><code class="language-ocaml">        <span class="hljs-keyword">let</span> a’ = <span class="hljs-type">Array</span>.make n’ a.default <span class="hljs-keyword">in</span>
+        <span class="hljs-type">Array</span>.blit a.data <span class="hljs-number">0</span> a’ <span class="hljs-number">0</span> a.size;
+</code></pre>
+<p>ثم نستبدل المصفوفة <code>a.data</code> بالمصفوفة الجديدة.</p>
+<pre><code class="language-ocaml">        a.data &lt;- a’
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">end</span>;
+</code></pre>
+<p>عندما <code>s&lt;=n</code>، لا يبقى ما يُفعل. وأخيرًا، في جميع الحالات، ننتهي بتحديث الحقل <code>size</code>.</p>
+<pre><code class="language-ocaml">    a.size &lt;- s
+</code></pre>
+<p>وبهذا يكتمل تنفيذ المصفوفات القابلة لتغيير الحجم. والشفرة معطاة كاملة في البرنامج <a href="#x15-133028r18">18</a> (انظر الصفحة <a href="#x15-133028r18">303</a>).</p>
+<h4>التعقيد</h4>
+<p>تُستعمل المصفوفات القابلة لتغيير الحجم عادةً عندما لا يكون عدد العناصر المراد تخزينها معروفًا مسبقًا (انظر التمرين <a href="#x15-151003r3">4.3</a>). لنفترض أننا نبدأ بمصفوفة قابلة لتغيير الحجم</p>
+<p>طولها 0 ونزيد طولها n مرة بمقدار وحدة واحدة، لننتهي بمصفوفة طولها n. وتقتضي الاستراتيجية الساذجة، التي تمنح المصفوفة <code>data</code> الطول نفسه بالضبط الذي للمصفوفة القابلة لتغيير الحجم، أن تكون تكلفة كل عملية <code>resize</code> بطول i مقدار i. وتكون التكلفة الإجمالية عندئذ تربيعية:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>n</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo><mn>1</mn><mo>+</mo><mn>2</mn><mo>+</mo><mo>⋅</mo><mo>⋅</mo><mo>⋅</mo><mo>+</mo><mi>n</mi><mo>=</mo><mo>−</mo><mo>−</mo><mo>−</mo><mo>−</mo><mo>−</mo><mo>−</mo><mo>−</mo><mo>−</mo><mo>=</mo><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mn>2</mn><mo stretchy="false">)</mo><mn>.2</mn></mrow><annotation encoding="application/x-tex">n(n + 1) 1 + 2 + \\cdot \\cdot \\cdot + n = - - - - - - - - = O (n2). 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.4445em;"></span><span class="mord">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">−</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mord">2</span><span class="mclose">)</span><span class="mord">.2</span></span></span></span></span>
+<p>بيد أن الاستراتيجية التي تنفذها <code>resize</code> هنا أكثر دقة، وهي تتمثل في مضاعفة حجم المصفوفة (على الأقل) كلما احتاجت إلى الزيادة. وتكون التكلفة الإجمالية عندئذ خطية، ويمكن بيان ذلك كما يلي: لنفترض، دون إخلال بالعمومية، أن n ≥ 2. ولتكن k = ⌊log 2(n)⌋، أي 2k ≤ n &lt; 2k+1. بدءًا من مصفوفة فارغة، نكون قد نفّذنا ما مجموعه k + 2 عملية تغيير حجم للوصول إلى مصفوفة <code>data</code> بحجم نهائي 2k+1. وبعد عملية تغيير الحجم رقم i، حيث i = 0,…,k + 1، يكون حجم المصفوفة 2i. لذلك تكون تكلفة عملية تغيير الحجم رقم i مقدار 2i. والتكلفة الإجمالية عندئذ:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>k</mi><mo>∑</mo><mo>+</mo><mn>12</mn><mi>i</mi><mo>=</mo><mn>2</mn><mi>k</mi><mo>+</mo><mn>2</mn><mo>−</mo><mn>1</mn><mo>&lt;</mo><mn>4</mn><mi>n</mi><mi mathvariant="normal">.</mi><mi>i</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">k\\sum + 1 2i = 2k + 2 - 1 &lt; 4n. i = 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.6em;vertical-align:-0.55em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-symbol large-op" style="position:relative;top:0em;">∑</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">+</span><span class="mord">12</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6835em;vertical-align:-0.0391em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord">4</span><span class="mord mathnormal">n</span><span class="mord">.</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></span>
+<p>وبعبارة أخرى، فإن بعض عمليات <code>resize</code> لها تكلفة ثابتة (عندما لا تكون زيادة الحجم ضرورية فعلاً). في المقابل، لعمليات أخرى تكلفة غير ثابتة، لكن التعقيد الإجمالي يبقى خطيًّا. وبأخذ المتوسط على العمليات n، يكون الأمر كما لو كانت كل إضافة ذات تكلفة ثابتة. لذلك فإن توسيع مصفوفة قابلة لتغيير الحجم بمقدار وحدة واحدة له <em>تعقيد مطفأ (amortized complexity)</em> من الرتبة O(1).</p>
+<h3 id="42-المتجهات-البتية-bit-vectors">4.2 المتجهات البتية (bit vectors)</h3>
+<p>إذا احتاج برنامج إلى معالجة مجموعة من الأعداد الصحيحة تقع ضمن مجال معقول، وإذا لم تكن الاستدامة مطلوبة، أمكن استعمال مصفوفة من القيم المنطقية. وهذا ما فعلناه مثلاً في القسم <a href="https://usr.lmf.cnrs.fr/lpo/mainch2.html#sieve-of-eratosthenes"><em>2.5</em></a> <em>غربال إراتوستينس</em>. غير أنه، بما أن القيمة المنطقية تُمثَّل بكلمة ذاكرة واحدة (32 أو 64 بتة حسب المعمارية)، تُهدر ذاكرة كثيرة. فبينما تكفي بتة واحدة لكل عنصر، تشغل مصفوفة القيم المنطقية 32 أو 64 ضعف هذا المقدار. وبنية معطيات المتجه البتي (bit vector) مفيدة تحديدًا في هذا الشأن: فهي تتيح استعمال بتة واحدة لكل عنصر.</p>
+<p>توقيعة بنية المعطيات هذه هي نفسها تمامًا توقيعة المصفوفات، باستثناء أن العناصر من النوع <code>bool</code>. وتُعطى بداية هذه التوقيعة في البرنامج <a href="#x15-135013r19">19</a> (انظر أدناه).</p>
+<p>يقوم التنفيذ على استعمال مصفوفة عادية من الأعداد الصحيحة وتخزين عدة قيم منطقية في كل عدد صحيح: 31 قيمة منطقية في معمارية 32 بتة و63 قيمة منطقية في معمارية 64 بتة. (تذكّر أن OCaml تحجز بتة واحدة من كل عدد صحيح لاستعمال جامع القمامة.) ونبدأ بجعل <code>bpi</code> عدد القيم المنطقية المخزَّنة في كل عدد صحيح.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> bpi = <span class="hljs-type">Sys</span>.word_size - <span class="hljs-number">1</span>
+</code></pre>
+<p>يُعطى الحجم الأقصى للمتجه البتي إذن بالقيمة الآتية:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> max_length = <span class="hljs-type">Sys</span>.max_array_length * bpi
+</code></pre>
+<p>لتمثيل متجه بتي، نُعرّف النوع الآتي <code>t</code>:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> t = {
+    length : <span class="hljs-built_in">int</span>;
+    bits : <span class="hljs-built_in">int</span> <span class="hljs-built_in">array</span>;
+  }
+</code></pre>
+<p>يحتوي الحقل <code>length</code> على العدد الفعلي للقيم المنطقية الموجودة في المتجه البتي، إذ لا يكون هذا العدد بالضرورة مضاعفًا لـ <code>bpi</code>. ويحتوي الحقل <code>bits</code> على مصفوفة الأعداد الصحيحة. وإذا كانت b0,b1,…,b<code>bpi</code>−1 أول <code>bpi</code> عنصرًا من مصفوفة القيم المنطقية، فإنها تُمثَّل في الخلية الأولى من المصفوفة <code>bits</code> بالعدد الصحيح</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>b</mi><mn>0</mn><mo>+</mo><mn>2</mn><mi>b</mi><mn>1</mn><mo>+</mo><mo>⋅</mo><mo>⋅</mo><mo>⋅</mo><mo>+</mo><mn>2</mn><mi>b</mi><mi>p</mi><mi>i</mi><mo>−</mo><mn>1</mn><mi>b</mi><mi>b</mi><mi>p</mi><mi>i</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">b0 + 2b1 + \\cdot \\cdot \\cdot + 2bpi-1bbpi-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">b</span><span class="mord">0</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord">2</span><span class="mord mathnormal">b</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.4445em;"></span><span class="mord">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">2</span><span class="mord mathnormal">b</span><span class="mord mathnormal">p</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mord mathnormal">bb</span><span class="mord mathnormal">p</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></span>
+<p>وتُمثَّل العناصر <code>bpi</code> التالية بالطريقة نفسها بالعدد الصحيح الثاني من المصفوفة <code>bits</code>، وهكذا دواليك. وعندما لا يكون عدد العناصر مضاعفًا لـ <code>bpi</code>، تبقى بعض البتات عالية الرتبة في آخر عدد صحيح من المصفوفة غير مستعملة. وللسماح بمقارنة المتجهات البتية بنيويًّا، نفرض الثابت الآتي على التمثيل:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>(4.1)</th>
+</tr>
+</thead>
+</table>
+<p>يمكننا إذن استعمال عمليتي OCaml <code>=</code> أو <code>&lt;&gt;</code> على المتجهات البتية، بغض النظر عن كيفية بنائها.</p>
+<blockquote></blockquote>
+<h4>الإنشاء</h4>
+<p>نبدأ بالدالة <code>create</code>، التي تبني متجهًا بتيًّا بحجم <code>n</code>، حيث يكون لجميع العناصر القيمة نفسها <code>b</code>. وباستثناء العدد الصحيح الأخير، ستحتوي جميع عناصر المصفوفة <code>bits</code> على القيمة نفسها: 0 إذا كان <code>b</code> مساويًا <code>false</code> أو −1 إذا كان <code>b</code> مساويًا <code>true</code>. ويرجع ذلك إلى أنه في تمثيل المتمم الثنائي (two’s complement)، يُكتب −1 في النظام الثنائي باستعمال الرقم 1 فقط، أي −1 = (1⋯1)2. لذلك تبدأ الدالة <code>create</code> بتعريف هذه القيمة الأولية، 0 أو −1، حسب قيمة
+<code>b</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> create n b =
+    <span class="hljs-keyword">let</span> initv = <span class="hljs-keyword">if</span> b <span class="hljs-keyword">then</span> -<span class="hljs-number">1</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span> <span class="hljs-keyword">in</span>
+</code></pre>
+<p>يتحدد عدد عناصر المصفوفة <code>bits</code> عندئذ بالقسمة الإقليدية لـ <code>n</code> على <code>bpi</code>.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> q = n / bpi <span class="hljs-keyword">and</span> r = n <span class="hljs-keyword">mod</span> bpi <span class="hljs-keyword">in</span>
+</code></pre>
+<p>إذا كان الباقي <code>r</code> مساويًا 0، فجميع عناصر المصفوفة مستعملة بالكامل، ويكفي بناء مصفوفة بحجم <code>q</code> مهيّأة بالقيمة <code>initv</code>.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">if</span> r = <span class="hljs-number">0</span> <span class="hljs-keyword">then</span>
+      { length = n; bits = <span class="hljs-type">Array</span>.make q initv }
+</code></pre>
+<p>أما إذا لم يكن الباقي <code>r</code> مساويًا 0، فنحتاج إلى بناء مصفوفة من <code>q</code> + 1 عددًا صحيحًا. وتحتوي جميع العناصر على <code>initv</code>، باستثناء الأخير، الذي يجب أن تكون بتاته عالية الرتبة 0 احترامًا للثابت. وبشكل أدق، إذا كان <code>b</code> مساويًا <code>true</code>، فيجب أن يحتوي العنصر الأخير من المصفوفة على <code>r</code> بتة مضبوطة منخفضة الرتبة بالضبط. ويُحصل على ذلك بسهولة باستعمال التعبير <code>(1lslr)-1</code>. وبهذا تكتمل الدالة <code>create</code>:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span>
+      <span class="hljs-keyword">let</span> a = <span class="hljs-type">Array</span>.make (q + <span class="hljs-number">1</span>) initv <span class="hljs-keyword">in</span>
+      <span class="hljs-keyword">if</span> b <span class="hljs-keyword">then</span> a.(q) &lt;- (<span class="hljs-number">1</span> <span class="hljs-keyword">lsl</span> r) - <span class="hljs-number">1</span>;
+      { length = n; bits = a }
+    <span class="hljs-keyword">end</span>
+</code></pre>
+<p>الشفرة الكاملة معطاة في البرنامج <a href="#x15-136015r20">20</a>.</p>
+<blockquote></blockquote>
+<h4>القراءة</h4>
+<p>لقراءة العنصر ذي الرتبة n في متجه بتي، يجب أولاً تحديد الفهرس i للعدد الصحيح المقابل في المصفوفة، ثم الفهرس j للبتة المقابلة داخل هذا العدد الصحيح. وتُستخرج قيمتا i وj من القسمة الإقليدية لـ n على <code>bpi</code>. وبمعرفة العنصر ذي الرتبة i من المصفوفة، يكفي، لاستخراج البتة ذات الرتبة j، إزاحة هذا العدد الصحيح j موضعًا إلى اليمين باستعمال <code>lsr</code>، ثم اختبار بتته الأقل دلالة. فننتهي إلى الدالة الآتية:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> get v n =
+    <span class="hljs-keyword">let</span> i = n / bpi <span class="hljs-keyword">and</span> j = n <span class="hljs-keyword">mod</span> bpi <span class="hljs-keyword">in</span>
+    (v.bits.(i) <span class="hljs-keyword">lsr</span> j) <span class="hljs-keyword">land</span> <span class="hljs-number">1</span> &lt;&gt; <span class="hljs-number">0</span>
+</code></pre>
+<p>وبشكل مكافئ، يمكننا كذلك إجراء عملية <em>العطف البتي (logical and)</em> على العدد الصحيح الذي يحتوي على بتة واحدة مضبوطة في الموضع j، والذي نحصل عليه بالتعبير <code>1lslj</code>:</p>
+<pre><code class="language-ocaml">    v.bits.(i) <span class="hljs-keyword">land</span> (<span class="hljs-number">1</span> <span class="hljs-keyword">lsl</span> j) &lt;&gt; <span class="hljs-number">0</span>
+</code></pre>
+<h4>الكتابة</h4>
+<p>لإسناد قيمة <code>b</code> من النوع <code>bool</code> إلى العنصر ذي الرتبة n في متجه بتي <code>v</code>، نبدأ بتحديد موضعه تمامًا كما فعلنا في القراءة، عبر القسمة الإقليدية لـ n على <code>bpi</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> set v n b =
+    <span class="hljs-keyword">let</span> i = n / bpi <span class="hljs-keyword">and</span> j = n <span class="hljs-keyword">mod</span> bpi <span class="hljs-keyword">in</span>
+</code></pre>
+<p>ثم ننظر في الحالتين الممكنتين كلًّا على حدة. فإذا كان <code>b</code> مساويًا <code>true</code>، أي إذا كان يجب ضبط البتة ذات الرتبة j في <code>v.bits.(i)</code> على 1، أجرينا عملية <em>الفصل المنطقي (logical or)</em> على العدد الصحيح الذي يحتوي على بتة واحدة مضبوطة في الموضع j.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">if</span> b <span class="hljs-keyword">then</span>
+      v.bits.(i) &lt;- v.bits.(i) <span class="hljs-keyword">lor</span> (<span class="hljs-number">1</span> <span class="hljs-keyword">lsl</span> j)
+</code></pre>
+<p>وإلا وجب ضبط البتة ذات الرتبة j على 0، وهو ما يمكن إجراؤه بعملية <em>العطف المنطقي (logical and)</em> على عدد صحيح جميع بتاته مضبوطة باستثناء البتة j.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">else</span>
+      v.bits.(i) &lt;- v.bits.(i) <span class="hljs-keyword">land</span> lnot (<span class="hljs-number">1</span> <span class="hljs-keyword">lsl</span> j)
+</code></pre>
+<p>الشفرة الكاملة للدالتين <code>get</code> و<code>set</code> معطاة في البرنامج <a href="#x15-138010r21">21</a>. ومن الواضح أن تكلفة العمليتين O(1).</p>
+<blockquote></blockquote>
+<h4>العمليات المتعلقة بالمجموعات</h4>
+<p>تظهر فائدة المتجهات البتية بجلاء عند استعمالها لتمثيل المجموعات. فعلى وجه الخصوص، يمكن تنفيذ عمليات الاتحاد والتقاطع والمتمم بكفاءة بواسطة العمليات البتية المقابلة.</p>
+<p>خُذ مثلاً عملية <em>العطف المنطقي (logical and)</em> لمتجهين بتين، <code>inter</code>، التي تحسب أيضًا تقاطع المجموعتين المقابلتين. وهذه العملية لا معنى لها إلا عندما يكون المتجهان البتيان بالحجم نفسه. ونبدأ بالتحقق من ذلك.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> inter v1 v2 =
+    <span class="hljs-keyword">let</span> l1 = v1.length <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">if</span> l1 &lt;&gt; v2.length <span class="hljs-keyword">then</span> invalid_arg <span class="hljs-string">&quot;Bitv.inter&quot;</span>;
+</code></pre>
+<p>ومتى علمنا أن المتجهين بالحجم نفسه، نفّذنا عملية <em>العطف المنطقي</em> نفسها. ولهذا يمكننا استعمال الدالة <code>Array.mapi</code>، التي تبني مصفوفة بتطبيق دالة على جميع عناصر مصفوفة أخرى.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> b = <span class="hljs-type">Array</span>.mapi (<span class="hljs-keyword">fun</span> i ei -&gt; ei <span class="hljs-keyword">land</span> v2.bits.(i)) v1.bits <span class="hljs-keyword">in</span>
+    { length = l1; bits = b }
+</code></pre>
+<p>وبهذا تكتمل الدالة <code>inter</code>. ويمكننا بالمثل كتابة الدالة <code>union</code>، التي تحسب الاتحاد المجموعي، بإجراء عملية <em>الفصل المنطقي (logical or)</em>.</p>
+<blockquote></blockquote>
+<p>لاحظ أن الثابت (<a href="#x15-135012r1">4.1</a>) محترَم، لأن <em>العطف</em> و<em>الفصل</em> يحافظان على الأصفار عالية الرتبة غير المستعملة. أما العمليات البتية مثل <em>النفي (negation)</em> أو <em>الفصل الحصري (exclusive or)</em> فليس الأمر كذلك. وفي هذه الحالات، لا بد من إعادة إرساء الثابت بتصفير البتات عالية الرتبة غير المستعملة <em>بعديًّا (a posteriori)</em>. ولنكتب دالة <code>normalize</code> تفعل ذلك. نبدأ بجعل <code>r</code> عدد البتات المستعملة في العدد الصحيح الأخير من المصفوفة.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> normalize v =
+    <span class="hljs-keyword">let</span> r = v.length <span class="hljs-keyword">mod</span> bpi <span class="hljs-keyword">in</span>
+</code></pre>
+<p>فإذا لم يكن هذا العدد صفرًا، وجب تصفير جميع البتات ذات الرتبة <code>r</code> وما فوقها. ويمكن تنفيذ ذلك باستعمال قناع يحتوي على <code>r</code> بتة مضبوطة منخفضة الرتبة بالضبط، أي <code>1lslr-1</code>.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">if</span> r &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">then</span>
+      <span class="hljs-keyword">let</span> s = <span class="hljs-type">Array</span>.length v.bits - <span class="hljs-number">1</span> <span class="hljs-keyword">in</span>
+      v.bits.(s) &lt;- v.bits.(s) <span class="hljs-keyword">land</span> (<span class="hljs-number">1</span> <span class="hljs-keyword">lsl</span> r - <span class="hljs-number">1</span>)
+</code></pre>
+<p>وبهذا تكتمل الدالة <code>normalize</code>.</p>
+<p>ويمكننا بسهولة أن نستخلص من هذا دالة <code>compl</code> تحسب النفي البتي لمتجه بتي، أي متمم المجموعة المقابلة.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> compl v =
+    <span class="hljs-keyword">let</span> b = <span class="hljs-type">Array</span>.map lnot v.bits <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> r = { length = v.length; bits = b } <span class="hljs-keyword">in</span>
+    normalize r;
+    r
+</code></pre>
+<p>الدالتان <code>inter</code> و<code>compl</code> ملخَّصتان في البرنامج <a href="#x15-139008r22">22</a> (انظر الصفحة <a href="#x15-139008r22">320</a>).
+وتكلفتهما O(n) في الزمن والمكان، حيث n حجم المتجهات البتية المعنية.</p>
+<p>من بين العمليات الأخرى المفيدة المتعلقة بالمجموعات، يمكننا أيضًا النظر في التكرار على جميع العناصر. وبالنسبة لمتجه بتي، يتلخص هذا في التكرار على مجموعة الفهارس التي تكون فيها القيمة المنطقية المقابلة <code>true</code>. ويمكن التعبير عن تكرار كهذا بدالة من الشكل:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">val</span> iteri_true : (<span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>) -&gt; t -&gt; <span class="hljs-built_in">unit</span>
+</code></pre>
+<p>لتنفيذ هذه الدالة، نكرّر على عناصر المصفوفة باستعمال <code>Array.iteri</code>. ولكل عنصر، نكرّر على البتات المضبوطة بحلقة تختبر كل بتة على التوالي. فنحصل على الشفرة الآتية:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> iteri_true f v =
+    <span class="hljs-type">Array</span>.iteri
+      (<span class="hljs-keyword">fun</span> i ei -&gt;
+         <span class="hljs-keyword">let</span> index = i * bpi <span class="hljs-keyword">in</span>
+         <span class="hljs-keyword">for</span> j = <span class="hljs-number">0</span> <span class="hljs-keyword">to</span> bpi - <span class="hljs-number">1</span> <span class="hljs-keyword">do</span>
+           <span class="hljs-keyword">if</span> ei <span class="hljs-keyword">land</span> (<span class="hljs-number">1</span> <span class="hljs-keyword">lsl</span> j) &lt;&gt; <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> f (index + j)
+         <span class="hljs-keyword">done</span>)
+      v.bits
+</code></pre>
+<p>ليس من الضروري معالجة حالة العنصر الأخير من المصفوفة على حدة، لأن الثابت يضمن بدقة أن البتات غير المستعملة قيمتها 0.</p>
+<blockquote></blockquote>
+<p>ومع أن هذا الحل صحيح، فهو قليل الفعالية نسبيًّا، لأنه يختبر <em>جميع</em> بتات المصفوفة على التوالي. ونريد أن تنخفض تكلفة التكرار كلما قلّت البتات المضبوطة. وبعبارة أخرى، نحتاج إلى وسيلة فعّالة للتكرار على البتات المضبوطة في عدد صحيح.</p>
+<p>ومن حسن الحظ أن تمثيل المتمم الثنائي يتيح استخراج البتة المضبوطة منخفضة الرتبة في عدد صحيح <code>x</code> بسهولة بإجراء عملية <em>عطف منطقي</em> بين <code>x</code> و<code>-x</code> (انظر التمرين <a href="#x15-152001r5">4.5</a>). وهذا يوفّر وسيلة فعّالة للتكرار على البتات المضبوطة في عدد صحيح، باستخراج كل بتة مضبوطة وتصفيرها على التوالي بترتيب متزايد.</p>
+<p>غير أنه تبقى صعوبة واحدة: فالتعبير <code>xland-x</code> لا يعيد <em>الفهرس</em> i للبتة المضبوطة منخفضة الرتبة في <code>x</code>، بل يعيد 2i. ولذلك نحتاج إلى حساب اللوغاريتم ذي الأساس 2 لهذه القيمة، أو ما يكافئه، أي عدد الأصفار منخفضة الرتبة. ولهذا، لنفترض أن لدينا دالة <code>ntz</code>، اختصارًا لـ <em>number of trailing zeros</em>، تحسب عدد الأصفار منخفضة الرتبة في عدد صحيح.</p>
+<p>ويمكننا عندئذ إعادة كتابة الجزء من شفرة <code>iteri_true</code> الذي يفحص البتات المضبوطة في <code>ei</code> بمساعدة دالة عودية <code>visit</code> بدلاً من حلقة <code>for</code>.</p>
+<pre><code class="language-ocaml">       <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> visit x =
+         <span class="hljs-keyword">if</span> x &lt;&gt; <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> <span class="hljs-keyword">begin</span>
+           <span class="hljs-keyword">let</span> b = x <span class="hljs-keyword">land</span> -x <span class="hljs-keyword">in</span>
+           f (index + ntz b);
+           visit (x - b)
+         <span class="hljs-keyword">end</span>
+       <span class="hljs-keyword">in</span>
+       visit ei
+</code></pre>
+<p>تنتهي الدالة <code>visit</code> بمجرد أن تصير وسيطها 0، أي عندما لا تحتوي على أي بتة مضبوطة. وإلا استخرجنا البتة المضبوطة منخفضة الرتبة، <code>b</code>. فنستدعي <code>f</code> على الفهرس المقابل <code>index+ntzb</code>، ثم نستدعي <code>visit</code> مرة أخرى على <code>x-b</code>، وهي <code>x</code> بعد تصفير البتة ذات الرتبة <code>b</code>. والشفرة الكاملة لـ <code>iteri_true</code> معطاة في البرنامج <a href="#x15-139055r23">23</a> (انظر
+الصفحة <a href="#x15-139055r23">324</a>). وتُخصص الدالة <code>ntz</code> للتمرين <a href="#x15-152002r6">4.6</a>.</p>
+<p>أخيرًا، لنكتب دالة <code>cardinal:t-&gt;int</code>، تحسب عدد البتات المضبوطة في المتجه البتي، أي أصل المجموعة (cardinal). ويكفي حساب مجموع عدد البتات المضبوطة في كل عنصر من المصفوفة. وإذا افترضنا أن لدينا دالة <code>pop</code> من النوع <code>int-&gt;int</code> تحسب عدد البتات المضبوطة في عدد صحيح، أمكن الحصول على الدالة <code>cardinal</code> بسهولة.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> cardinal v =
+    <span class="hljs-type">Array</span>.fold_left (<span class="hljs-keyword">fun</span> n x -&gt; n + pop x) <span class="hljs-number">0</span> v.bits
+</code></pre>
+<p>وتبقى الدالة <code>pop</code> (اختصارًا لـ <em>population count</em>) بحاجة إلى كتابة. ويمكننا كتابتها باستخراج البتات واحدة تلو الأخرى، مرة أخرى بفضل التعبير <code>xland-x</code>:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> pop x =
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> count n x =
+      <span class="hljs-keyword">if</span> x = <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> n <span class="hljs-keyword">else</span> count (n + <span class="hljs-number">1</span>) (x - (x <span class="hljs-keyword">land</span> -x)) <span class="hljs-keyword">in</span>
+    count <span class="hljs-number">0</span> x
+</code></pre>
+<p>ويمكننا جعل هذه الدالة أكثر فعالية بجدولتها (انظر التمرين <a href="#x15-152008r12">4.12</a>).</p>
+<h4>عمليات أخرى على المتجهات البتية</h4>
+<p>لتكتمل مكتبة المتجهات البتية، ينبغي أن توفر عمليات أخرى أيضًا. فمن جهة، ينبغي أن توفر العمليات نفسها التي نستعملها للمصفوفات، مثل <code>append</code> و<code>sub</code> و<code>fill</code> و<code>blit</code>. ومن جهة أخرى، ينبغي أن تقدّم كذلك عمليات حسابية تفسّر المتجه البتي كعدد صحيح من n بتة، مثل الجمع والإزاحات والتحويلات من وإلى الأنواع الصحيحة المختلفة في OCaml. ويُقترح بعض هذه العمليات في التمارين <a href="#x15-152004r8">4.8</a>–<a href="#x15-152007r11">4.11</a>.</p>
+<blockquote></blockquote>
+<h3 id="43-الحبال-ropes">4.3 الحبال (ropes)</h3>
+<p>يعرض هذا القسم بنية معطيات <em>الحبل (rope)</em>. وقد أدخلت هذه البنية في الأصل بديلاً عن السلاسل النصية (strings)، لمعالجة المسائل الآتية:</p>
+<ul>
+<li>السلاسل النصية ليست دائمة؛ فهي غير قابلة للتعديل في OCaml، لكن هذا ليس بالضرورة الحال في لغات أخرى، مثل C مثلاً.</li>
+<li>السلاسل النصية محدودة الحجم، خصوصًا عند استعمال OCaml على جهاز 32 بتة، حيث الحد هو 224 − 5 حرفًا.</li>
+<li>للدمج واستخراج السلسلة الجزئية تكلفة كبيرة، وخاصة في المكان، لأنهما يتضمنان نسخ محتوى السلسلة النصية الأساسية.</li>
+</ul>
+<p>لمعالجة هذه المسائل، تستند بنية الحبل إلى فكرة بسيطة: الحبل ليس سوى شجرة ثنائية أوراقها سلاسل نصية (عادية) وينبغي تفسير عقدها الداخلية على أنها عمليات دمج. لذلك يقابل الحبل النوع الآتي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> t =
+    | <span class="hljs-type">Str</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">string</span>
+    | <span class="hljs-type">App</span> <span class="hljs-keyword">of</span> t * t
+</code></pre>
+<p>مثلاً، إحدى القيم الممكنة التي يمكن أن تمثّل بها السلسلة النصية <code>&quot;averylongstring&quot;</code> هي الآتية:</p>
+<p>يدفعنا اعتباران إلى تنقيح النوع المقترح <code>t</code>. فمن جهة، تتطلب خوارزميات عديدة وصولاً فعّالاً إلى طول الحبل، خصوصًا لتقرير ما إذا كان ينبغي النزول عبر الشجرة الجزئية اليسرى أم اليمنى لعقدة <code>App</code>. لذلك يُستحسن توسيم كل عقدة داخلية بطول الحبل. ومن جهة أخرى، من المهم تقاسم السلاسل الجزئية بين الحبال نفسها وكذلك مع السلاسل النصية العادية المستعملة لبناء الحبال. ومن ثَمّ، بدلاً من أن تشير عقدة <code>Str</code> إلى سلسلة نصية كاملة في OCaml، نفضّل أن تدلّ على سلسلة جزئية من سلسلة نصية في OCaml. وتُمثَّل السلسلة الجزئية من سلسلة s بثلاثية (s,o,n)، تدل على s[o..o + n − 1]، أي الجزء من s الذي طوله n والبداية عند الإزاحة o. وهكذا نحصل على النوع الآتي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> t =
+    | <span class="hljs-type">Str</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">string</span> * <span class="hljs-built_in">int</span> * <span class="hljs-built_in">int</span>
+    | <span class="hljs-type">App</span> <span class="hljs-keyword">of</span> t * t * <span class="hljs-built_in">int</span>
+</code></pre>
+<p>تمثّل العقدة <code>App</code>(r1,r2,n) دمج الحبلين r1 وr2، وطولهما الإجمالي n. وكان يمكننا كذلك تخزين حجمي r1 وr2 في العقدة. غير أن الاحتفاظ بالحجم الإجمالي وحده أكثر اقتصادًا من حيث حيّز الذاكرة، ولا ضياع في الفعالية عمليًّا.</p>
+<h4>العمومية (genericity)</h4>
+<p>نلاحظ أن مفهوم الحبل لا يرتبط بمفهوم السلسلة النصية. فبدلاً من النوع <code>string</code>، يمكننا بالمثل استعمال مصفوفات أو قوائم من المحارف، أو، بصفة أعم، متتاليات من قيم نوع غير المحارف. بل إن كل ما نحتاجه هو بنية معطيات من <em>المتتاليات</em> لنوع معين من <em>المحارف</em>. ويمكننا عندئذ بناء حبال تتكون أوراقها من هذه المتتاليات.</p>
+<p>ولبنية المعطيات الناتجة <em>التوقيعة نفسها</em> التي بدأنا بها، أي توقيعة المتتاليات لنوع المحارف نفسه.</p>
+<p>يعطي البرنامج <a href="#x15-142001r24">24</a> توقيعة دنيا <code>STRING</code> لبنية معطيات السلاسل النصية. النوع المجرّد <code>t</code> هو نوع السلاسل النصية، والنوع <code>char</code> هو نوع محارفها. ولا تحتوي هذه التوقيعة إلا على العمليات اللازمة لتنفيذ بنية الحبل. وهي متوافقة مع عمليات الوحدة <code>String</code> في OCaml.</p>
+<blockquote></blockquote>
+<blockquote></blockquote>
+<p>نُعرّف توقيعة <code>ROPE</code> للحبال في البرنامج <a href="#x15-142014r25">25</a>. وتتضمن هذه التوقيعة الوحدة <code>S</code> للسلاسل النصية التي ستكون أوراق الحبال. وتوفّر التوقيعة <code>ROPE</code> العمليات نفسها التي توفّرها السلاسل النصية، لنوع المحارف نفسه، وهو ما يمكن ترجمته كما يلي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">include</span> <span class="hljs-type">STRING</span> <span class="hljs-keyword">with</span> <span class="hljs-keyword">type</span> <span class="hljs-built_in">char</span> = <span class="hljs-type">S</span>.<span class="hljs-built_in">char</span>
+</code></pre>
+<p>الحبال غير قابلة للتعديل. وعمليات التحديث (<code>set</code> وغيرها) تعيد حبالاً جديدة.</p>
+<p>تُنفَّذ بنية الحبل طبيعيًّا كدالّية محدِّدة الوسائط (functor) تُعامَل بوحدة <code>X</code> ذات التوقيعة <code>STRING</code>:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-type">Make</span>(<span class="hljs-type">X</span> : <span class="hljs-type">STRING</span>) : (<span class="hljs-type">ROPE</span> <span class="hljs-keyword">with</span> <span class="hljs-keyword">module</span> <span class="hljs-type">S</span> = <span class="hljs-type">X</span>) = <span class="hljs-keyword">struct</span>
+</code></pre>
+<p>للوحدة الناتجة عن تطبيق هذه الدالّية المحدِّدة الوسائط التوقيعة <code>ROPEwithmoduleS=X</code>، التي تحدّد أن وحدتها <code>S</code> هي الوحدة <code>X</code> الممرَّرة وسيطًا للدالّية المحدِّدة الوسائط. ولذلك تبدأ الشفرة بتعريف <code>S</code> على أنها تساوي <code>X</code>:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-type">S</span> = <span class="hljs-type">X</span>
+</code></pre>
+<p>نوع محارف الحبل هو نوع محارف السلاسل النصية نفسه:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> <span class="hljs-built_in">char</span> = <span class="hljs-type">S</span>.<span class="hljs-built_in">char</span>
+</code></pre>
+<p>ونوع الحبال كما عُرض سابقًا:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> t =
+    | <span class="hljs-type">Str</span> <span class="hljs-keyword">of</span> <span class="hljs-type">S</span>.t * <span class="hljs-built_in">int</span> * <span class="hljs-built_in">int</span>
+    | <span class="hljs-type">App</span> <span class="hljs-keyword">of</span> t * t * <span class="hljs-built_in">int</span>
+</code></pre>
+<p>سنفرض عدة ثوابت على هذا النوع. فمن جهة، لكل حبل من الشكل <code>Str(s,o,n)</code>، لدينا المتباينات:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>o</mi><mo separator="true">,</mo><mn>0</mn><mo>≤</mo><mi>n</mi><mi>a</mi><mi>n</mi><mi>d</mi><mi>o</mi><mo>+</mo><mi>n</mi><mo>≤</mo><mi>S</mi><mi mathvariant="normal">.</mi><mi>l</mi><mi>e</mi><mi>n</mi><mi>g</mi><mi>t</mi><mi>h</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">0 \\le o, 0 \\le n and o + n \\le S.length s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">o</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">nan</span><span class="mord mathnormal">d</span><span class="mord mathnormal">o</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mord">.</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal">s</span></span></span></span></span>
+<p>ومن جهة أخرى، لكل حبل من الشكل <code>App(u,v,n)</code>، لدينا المتباينات:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mi>l</mi><mi>e</mi><mi>n</mi><mi>g</mi><mi>t</mi><mi>h</mi><mi>u</mi><mo separator="true">,</mo><mn>0</mn><mo>&lt;</mo><mi>l</mi><mi>e</mi><mi>n</mi><mi>g</mi><mi>t</mi><mi>h</mi><mi>v</mi><mi>a</mi><mi>n</mi><mi>d</mi><mi>n</mi><mo>=</mo><mi>l</mi><mi>e</mi><mi>n</mi><mi>g</mi><mi>t</mi><mi>h</mi><mi>u</mi><mo>+</mo><mi>l</mi><mi>e</mi><mi>n</mi><mi>g</mi><mi>t</mi><mi>h</mi><mi>v</mi></mrow><annotation encoding="application/x-tex">0 &lt; length u, 0 &lt; length v and n = length u + length v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6835em;vertical-align:-0.0391em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="mord mathnormal">an</span><span class="mord mathnormal">d</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal">u</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span></span></span></span></span>
+<h4>العمليات الأساسية</h4>
+<p>بتعريف النوع <code>t</code>، يمكن حساب طول الحبل في زمن ثابت.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> length = <span class="hljs-keyword">function</span>
+    | <span class="hljs-type">Str</span> (_,_,n)
+    | <span class="hljs-type">App</span> (_,_,n) -&gt; n
+</code></pre>
+<p>وبناء الحبل الفارغ مباشر باستعمال السلسلة النصية الفارغة:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> empty =
+    <span class="hljs-type">Str</span> (<span class="hljs-type">S</span>.empty, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+</code></pre>
+<p>وبصفة أعم، يُعطى الحبل المقابل لسلسلة نصية <code>s</code> بما يلي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> of_string s =
+    <span class="hljs-type">Str</span> (s, <span class="hljs-number">0</span>, <span class="hljs-type">S</span>.length s)
+</code></pre>
+<p>والأهم أنه يجب أن يكون النوع <code>S.t</code> نفسه دائمًا، لضمان كلٍّ من الطبيعة الدائمة للحبال وصحة عمليات الحبال. وهذا هو الحال عندما يكون <code>S.t</code> هو النوع <code>string</code>، إذ إن السلاسل النصية في OCaml غير قابلة للتعديل.</p>
+<blockquote></blockquote>
+<p>للوصول إلى المحرف ذي الرتبة i في حبل، يكفي النزول في الشجرة حتى بلوغ الورقة الهدف. ونفترض أن الفهرس صالح. ويُكتب الجزء العودي من العملية كما يلي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> unsafe_get t i = <span class="hljs-keyword">match</span> t <span class="hljs-keyword">with</span>
+    | <span class="hljs-type">Str</span> (s, ofs, _) -&gt;
+        <span class="hljs-type">S</span>.get s (ofs + i)
+    | <span class="hljs-type">App</span> (t1, t2, _) -&gt;
+        <span class="hljs-keyword">let</span> n1 = length t1 <span class="hljs-keyword">in</span>
+        <span class="hljs-keyword">if</span> i &lt; n1 <span class="hljs-keyword">then</span> unsafe_get t1 i <span class="hljs-keyword">else</span> unsafe_get t2 (i - n1)
+</code></pre>
+<p>نرى هنا أهمية القدرة على استرجاع حجم <code>t1</code> في زمن ثابت. لذلك يتحدد تعقيد هذه العملية بارتفاع الشجرة. وكما سنرى لاحقًا، يمكن موازنة الحبال لتقليل هذا الارتفاع.</p>
+<p>نُعرّف دالة <code>get</code> تتحقق أيضًا من صلاحية الفهرس، كغلاف حول <code>unsafe_get</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> get t i =
+    <span class="hljs-keyword">if</span> i &lt; <span class="hljs-number">0</span> || i &gt;= length t <span class="hljs-keyword">then</span> invalid_arg <span class="hljs-string">&quot;get&quot;</span>;
+    unsafe_get t i
+</code></pre>
+<p>تُعرض هذه العمليات الأساسية على الحبال معًا في البرنامج <a href="#x15-143011r26">26</a> (انظر
+الصفحة <a href="#x15-143011r26">339</a>).</p>
+<h4>الدمج</h4>
+<p><em>مبدئيًّا (A priori)</em>، فإن دمج حبلين <code>t1</code> و<code>t2</code> بسيط بقدر تطبيق البانية <code>App</code> وحساب الطول الإجمالي، أي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> append t1 t2 =
+    <span class="hljs-type">App</span> (t1, t2, length t1 + length t2)
+</code></pre>
+<p>نلاحظ أن هذه العملية تستغرق إذن زمنًا ثابتًا. غير أن عمليات الدمج المتكررة قد تؤدي إلى تزايد سريع في عدد العقد، ومن ثَمّ في ارتفاع الشجرة، على حساب عمليات أخرى.</p>
+<p>ثمة فكرتان تتيحان لنا التحكم في عدد العقد وارتفاع الشجرة. وتتمثل الفكرة الأولى في دمج الأوراق «الصغيرة» فعليًّا (أي السلاسل النصية القصيرة) عندما توجد متجاورة في الشجرة. ويمكننا أن نختار، مثلاً، دمج الورقتين <code>s1</code> و<code>s2</code> في الحالات الثلاث المبيَّنة في الشكل <a href="#possible-situations-with-adjacent-leaves">4.1</a>. وتقابل الحالة الأولى دمج حبل فرعه الأيمن هو الورقة الصغيرة <code>s1</code> مع ورقة صغيرة أخرى <code>s2</code>. وتقابل الثانية دمج ورقتين صغيرتين، <code>s1</code> و<code>s2</code>. أما الثالثة فهي الصورة المعكوسة للأولى.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/arrays-0-rope_append_small-mps-.webp" alt="" id="possible-situations-with-adjacent-leaves"></p>
+<p><strong>الشكل 4.1: الحالات الممكنة مع الأوراق المتجاورة.</strong></p>
+<p>لتحديد ما إذا كانت الأوراق صغيرة بما يكفي لتُدمج، نستعمل ثابتًا:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> small_length = <span class="hljs-number">256</span>
+</code></pre>
+<p>الثابت اعتباري وينبغي اختياره حسب الاستعمال المحدَّد لبنية الحبل. ويقترح التمرين <a href="#x15-153002r15">4.15</a> جعل هذا الثابت وسيطًا للدالّية المحدِّدة الوسائط.</p>
+<p>لتنفيذ دمج ورقتين، نُعرّف الدالة العامة الآتية التي تدمج أجزاء من سلسلتين نصيتين، <code>s1</code> و<code>s2</code>:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> append_string s1 ofs1 len1 s2 ofs2 len2 =
+    <span class="hljs-type">Str</span> (<span class="hljs-type">S</span>.append (<span class="hljs-type">S</span>.sub s1 ofs1 len1) (<span class="hljs-type">S</span>.sub s2 ofs2 len2),
+         <span class="hljs-number">0</span>, len1 + len2)
+</code></pre>
+<p>نعطي الآن شفرة الدالة <code>append</code>، التي تنفّذ دمج حبلين <code>t1</code> و<code>t2</code>.</p>
+<p>نبدأ بالنظر في الحالة التي يكون فيها أحد الحبلين فارغًا.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> append t1 t2 = <span class="hljs-keyword">match</span> t1, t2 <span class="hljs-keyword">with</span>
+    | <span class="hljs-type">Str</span> (_,_,<span class="hljs-number">0</span>), t | t, <span class="hljs-type">Str</span> (_,_,<span class="hljs-number">0</span>) -&gt;
+        t
+</code></pre>
+<p>بعد ذلك، ننظر في الحالات الثلاث الممكنة التي توجد فيها ورقتان صغيرتان متجاورتين. وأبسط حالة هي التي تكون فيها <code>t1</code> و<code>t2</code> هما الورقتان المعنيتان. فنستعمل عندئذ الدالة <code>append_string</code>:</p>
+<pre><code class="language-ocaml">    | <span class="hljs-type">Str</span> (s1, ofs1, len1), <span class="hljs-type">Str</span> (s2, ofs2, len2)
+     <span class="hljs-keyword">when</span> len1 &lt;= small_length &amp;&amp; len2 &lt;= small_length -&gt;
+        append_string s1 ofs1 len1 s2 ofs2 len2
+</code></pre>
+<p>والحالتان الأخريان مماثلتان:</p>
+<pre><code class="language-ocaml">    | <span class="hljs-type">App</span> (t1, <span class="hljs-type">Str</span> (s1, ofs1, len1), _), <span class="hljs-type">Str</span> (s2, ofs2, len2)
+      <span class="hljs-keyword">when</span> ... -&gt; ...
+    | <span class="hljs-type">Str</span> (s1, ofs1, len1), <span class="hljs-type">App</span> (<span class="hljs-type">Str</span> (s2, ofs2, len2), t2, _)
+      <span class="hljs-keyword">when</span> ... -&gt; ...
+</code></pre>
+<p>وأخيرًا، الحالة العامة هي ببساطة تطبيق البانية <code>App</code>، كما ناقشنا سابقًا:</p>
+<pre><code class="language-ocaml">    | t1, t2 -&gt;
+        <span class="hljs-type">App</span> (t1, t2, length t1 + length t2)
+</code></pre>
+<blockquote></blockquote>
+<p>الشفرة الكاملة لـ <code>append</code> معطاة في البرنامج <a href="#x15-144027r27">27</a>.</p>
+<p>في ما تبقى من القسم، سنستعمل المعامل المُداخل (infix) <code>++</code> للدلالة على دمج الحبال.</p>
+<pre><code class="language-ocaml">   <span class="hljs-keyword">let</span> (++) = append
+</code></pre>
+<p>تتضمن الفكرة الثانية التي تتيح لنا التحكم في ارتفاع الحبال <em>إعادة موازنة (rebalancing)</em> الشجرات الأساسية. ويمكننا تنفيذ الموازنة تدريجيًّا أثناء بناء الحبل، باستعمال مثلاً التقنية نفسها التي تُستعمل لشجرات AVL (انظر الفصل <a href="https://usr.lmf.cnrs.fr/lpo/mainch5.html#sets-and-dictionaries">5</a>). وسيلزم عندئذ تعديل السطر الأخير من الدالة <code>append</code> لاستدعاء دالة موازنة بدلاً من البانية <code>App</code>. ويمكننا بالمثل تصوّر إعادة موازنة <em>بعدية (a posteriori)</em> تُنفَّذ إما انتقائيًّا، عندما يصبح ارتفاع الشجرة كبيرًا جدًّا، أو صراحةً، عندما يطلب المستعمل ذلك. وتقترح التمارين <a href="#x15-153004r17">4.17</a>–<a href="#x15-153016r20">4.20</a> طرقًا مختلفة لتنفيذ إعادة موازنة <em>بعدية</em>.</p>
+<h4>استخراج حبل فرعي</h4>
+<p>تتعلق العملية التالية باستخراج جزء من حبل، محدَّد بإزاحة وطول. ويقوم الاستخراج على الاحتفاظ فقط بأجزاء الحبل الواقعة ضمن هذا الجزء، مع إعادة بناء عقد <code>Str</code> التي تتداخل معه جزئيًّا عند الحاجة. بل إن الأفضل تحديد الجزء المراد استخراجه بأنه يمتد من الإزاحة <code>start</code> (شاملة) إلى الإزاحة <code>stop</code> (غير شاملة). ونفترض أن هذا جزء صالح وغير فارغ، أي:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>s</mi><mi>t</mi><mi>a</mi><mi>r</mi><mi>t</mi><mo>&lt;</mo><mi>s</mi><mi>t</mi><mi>o</mi><mi>p</mi><mo>≤</mo><mi>l</mi><mi>e</mi><mi>n</mi><mi>g</mi><mi>t</mi><mi>h</mi><mi>t</mi><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">0 \\le start &lt; stop \\le length t.</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6542em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8304em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord mathnormal">o</span><span class="mord mathnormal">p</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal">t</span><span class="mord">.</span></span></span></span></span>
+<p>تبدأ دالة الاستخراج، <code>mksub</code>، بالنظر في الحالة الخاصة التي يكون فيها الجزء هو الحبل كله.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> mksub start stop t =
+    <span class="hljs-keyword">if</span> start = <span class="hljs-number">0</span> &amp;&amp; stop = length t <span class="hljs-keyword">then</span>
+      t
+</code></pre>
+<p>وهذا يتيح، قدر الإمكان، تقاسم الحبال الفرعية بين ناتج الاستخراج والحبل الأولي. ولولا هذه الحالة الخاصة، لأُعيد بناء هذه الحبال الفرعية كلها.</p>
+<p>وفي الحالة العامة، نفحص شكل الحبل <code>t</code>. فإذا كانت <code>t</code> ورقة، كفى تعديل مواصفة الجزء:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">else</span> <span class="hljs-keyword">match</span> t <span class="hljs-keyword">with</span>
+      | <span class="hljs-type">Str</span> (s, ofs, _) -&gt;
+          <span class="hljs-type">Str</span> (s, ofs+start, stop-start)
+</code></pre>
+<p>لاحظ أن هذه عملية ذات زمن ثابت، لا تستدعي <code>S.sub</code>، وأنها تتقاسم <code>s</code> بين الحبل الأولي وناتج الاستخراج. أما الحبل من الشكل <code>App</code>، فهناك ثلاث حالات ينبغي النظر فيها. الأولى هي عندما يكون الجزء محتوى بالكامل في الحبل الفرعي الأيسر. ويكفي عندئذ إجراء استدعاء عودي.</p>
+<pre><code class="language-ocaml">      | <span class="hljs-type">App</span> (t1, t2, _) -&gt;
+          <span class="hljs-keyword">let</span> n1 = length t1 <span class="hljs-keyword">in</span>
+          <span class="hljs-keyword">if</span> stop &lt;= n1 <span class="hljs-keyword">then</span> mksub start stop t1
+</code></pre>
+<p>وبالتناظر، قد يكون الجزء محتوى بالكامل في الحبل الفرعي الأيمن.</p>
+<pre><code class="language-ocaml">          <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> start &gt;= n1 <span class="hljs-keyword">then</span> mksub (start-n1) (stop-n1) t2
+</code></pre>
+<p>وأخيرًا، قد يتداخل الجزء مع كلٍّ من <code>t1</code> و<code>t2</code>. ويكفي عندئذ دمج جزء <code>t1</code> مع جزء <code>t2</code>.</p>
+<pre><code class="language-ocaml">          <span class="hljs-keyword">else</span> mksub start n1 t1 ++ mksub <span class="hljs-number">0</span> (stop-n1) t2
+</code></pre>
+<p>لاحظ أن أياً من هذين الجزأين ليس فارغًا، وهو ما يحترم ثابت <code>mksub</code>. ولاحظ أيضًا أن <code>t1</code> أو <code>t2</code> قد يكون محتوى بالكامل في الناتج، وفي هذه الحالة سيُتقاسمان بحكم السطرين الأولين من الدالة <code>mksub</code>.</p>
+<p>بعد ذلك، نُعرّف دالة استخراج <code>sub</code> محدَّدة بإزاحة <code>ofs</code> وطول <code>len</code> (مشابهة لـ <code>String.sub</code> أو <code>Array.sub</code>). وهي تتحقق من صلاحية الوسائط، ثم تعالج الحالة الخاصة بجزء فارغ أو تستدعي الدالة العودية <code>mksub</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> sub t ofs len =
+    <span class="hljs-keyword">let</span> stop = ofs + len <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">if</span> ofs &lt; <span class="hljs-number">0</span> || len &lt; <span class="hljs-number">0</span> || stop &gt; length t <span class="hljs-keyword">then</span> invalid_arg <span class="hljs-string">&quot;sub&quot;</span>;
+    <span class="hljs-keyword">if</span> len = <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> empty <span class="hljs-keyword">else</span> mksub ofs stop t
+</code></pre>
+<p>الشفرة الكاملة معطاة في البرنامج <a href="#x15-145022r28">28</a>.</p>
+<blockquote></blockquote>
+<h4>عمليات التحديث</h4>
+<p>ننظر الآن في عدة عمليات لإدراج المحارف أو حذفها في حبل. ولما كانت الحبال دائمة، فإن هذه العمليات لا تعدّلها في مكانها، بل تعيد حبالاً جديدة.</p>
+<blockquote></blockquote>
+<p>لننظر مثلاً في العملية <code>set</code>، التي تُدرج المحرف <code>c</code> عند الإزاحة <code>i</code> في حبل <code>t</code>. نبدأ بالتحقق من أن الإزاحة <code>i</code> صالحة، أي 0 ≤ <code>i</code> &lt; <code>length t</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> set t i c =
+    <span class="hljs-keyword">let</span> n = length t <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">if</span> i &lt; <span class="hljs-number">0</span> || i &gt;= n <span class="hljs-keyword">then</span> invalid_arg <span class="hljs-string">&quot;set&quot;</span>;
+</code></pre>
+<p>بعد ذلك، يكفي استخراج الحبلين الفرعيين الواقعين إلى يسار الإزاحة <code>i</code> وإلى يمينها، واستعمال الدمج لإدراج المحرف <code>c</code>.</p>
+<pre><code class="language-ocaml">    sub t <span class="hljs-number">0</span> i ++ make <span class="hljs-number">1</span> c ++ sub t (i + <span class="hljs-number">1</span>) (n - i - <span class="hljs-number">1</span>)
+</code></pre>
+<p>غير أننا نلاحظ أن هذا الحل ليس أمثل، لأنه يُجري اجتيازين عوديين للحبل حيث كان يكفي اجتياز واحد. ويقترح التمرين <a href="#x15-153003r16">4.16</a> تحسينًا في هذا الشأن.</p>
+<p>ويمكننا بالمثل تعريف العمليات <code>insert</code> (التي تُدرج حبلاً داخل حبل آخر عند إزاحة معطاة)، و<code>insert_char</code> (التي تُدرج محرفًا في حبل)، و<code>delete_char</code> (التي تحذف المحرف ذا الرتبة i من حبل). والشفرة الكاملة للعمليات الأربع معطاة في البرنامج <strong>??</strong> (انظر الصفحة السابقة). وبهذا ننهي مناقشتنا للدالّية المحدِّدة الوسائط التي تعرّف الحبال.</p>
+<h4>تطبيق: محرر نصوص</h4>
+<p>تعدّ الحبال بنية مثالية لمحررات النصوص، خصوصًا لدعم النصوص الطويلة جدًّا، التي قلّما تُعالَج جيدًا في محررات النصوص، بما فيها أشهرها.</p>
+<p>فبدلاً من استعمال حبل واحد لتمثيل النص المراد تحريره كاملاً، سنستعمل الدالّية المحدِّدة الوسائط لمزيد من المرونة. فالتعامل مع أسطر النص باستعمال حبل واحد أمر عسير: إذ يجب إيجاد فواصل الأسطر، أو تسجيل إزاحاتها في جدول</p>
+<p>يجب إبقاؤه متزامنًا مع النص. وبدلاً من ذلك، يمكننا استعمال حبال عناصرها محارف لتمثيل الأسطر، وحبل عناصره أسطر لتمثيل النص كله.</p>
+<p>لذلك نبدأ ببناء بنية حبل للأسطر. وتستند وسيطة الدالّية المحدِّدة الوسائط <code>Make</code> إلى الوحدة <code>String</code> في OCaml:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-type">Str</span> = <span class="hljs-keyword">struct</span>
+    <span class="hljs-keyword">include</span> <span class="hljs-type">String</span>
+    <span class="hljs-keyword">let</span> get = unsafe_get
+    <span class="hljs-keyword">type</span> <span class="hljs-built_in">char</span> = <span class="hljs-type">Char</span>.t
+    <span class="hljs-keyword">let</span> empty = <span class="hljs-string">&quot;&quot;</span>
+    <span class="hljs-keyword">let</span> append = (^)
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>لاحظ أننا نستعمل <code>String.unsafe_get</code> بدلاً من <code>String.get</code>، لأن كل وصول إلى محارف سلسلة نصية موجودة في حبل مضمون أنه صالح. ويمكننا بذلك تفادي فحوص لا لزوم لها. وتُحصل الحبال بتطبيق الدالّية المحدِّدة الوسائط <code>Make</code> كما يلي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-type">Line</span> = <span class="hljs-type">Make</span>(<span class="hljs-type">Str</span>)
+</code></pre>
+<p>بعد ذلك، نُنشئ بنية حبل أخرى للنص كله، «محارفها» هي الأسطر. ويكفي لهذا تطبيق الدالّية المحدِّدة الوسائط <code>Make</code> مرة أخرى، باستعمال مصفوفات هذه المرة لأوراق حبالنا.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-type">Text</span> = <span class="hljs-type">Make</span>(<span class="hljs-keyword">struct</span>
+                       <span class="hljs-keyword">type</span> <span class="hljs-built_in">char</span> = <span class="hljs-type">Line</span>.t
+                       <span class="hljs-keyword">type</span> t = <span class="hljs-type">Line</span>.t <span class="hljs-built_in">array</span>
+                       <span class="hljs-keyword">let</span> empty = <span class="hljs-literal">[||]</span>
+                       <span class="hljs-keyword">let</span> length = <span class="hljs-type">Array</span>.length
+                       <span class="hljs-keyword">let</span> make = <span class="hljs-type">Array</span>.make
+                       <span class="hljs-keyword">let</span> append = <span class="hljs-type">Array</span>.append
+                       <span class="hljs-keyword">let</span> get = <span class="hljs-type">Array</span>.unsafe_get
+                       <span class="hljs-keyword">let</span> sub = <span class="hljs-type">Array</span>.sub
+                     <span class="hljs-keyword">end</span>)
+</code></pre>
+<p>نرى هنا فائدة تعريف الحبال كدالّية محدِّدة الوسائط، وهو ما يتيح لنا تطبيقها مرتين على وسيطين مختلفين.</p>
+<p>ولنفترض، تبسيطًا، أن النص الذي يعالجه المحرر مخزَّن في مرجع يحتوي على حبل من النوع <code>Text.t</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> text = <span class="hljs-built_in">ref</span> ...
+</code></pre>
+<p>لإدراج محرف <code>c</code> عند الإزاحة <code>ofs</code> في السطر <code>l</code> من النص، يكفي استرجاع السطر بواسطة <code>Text.get</code>، وتعديله باستعمال <code>Line.insert</code>، ثم تحديث النص أخيرًا باستعمال <code>Text.set</code>:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> insert_char l ofs c =
+    <span class="hljs-keyword">let</span> line = <span class="hljs-type">Text</span>.get !text l <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> line’ = <span class="hljs-type">Line</span>.insert_char line ofs c <span class="hljs-keyword">in</span>
+    text := <span class="hljs-type">Text</span>.set !text l line’
+</code></pre>
+<p>وبالمثل، لحذف محرف:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> delete_char l ofs =
+    <span class="hljs-keyword">let</span> line = <span class="hljs-type">Text</span>.get !text l <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> line’ = <span class="hljs-type">Line</span>.delete_char line ofs <span class="hljs-keyword">in</span>
+    text := <span class="hljs-type">Text</span>.set !text l line’
+</code></pre>
+<p>وأخيرًا، لإدراج سطر جديد عند الإزاحة <code>ofs</code> في السطر <code>l</code> من النص، يكفي قطع السطر <code>l</code> عند الإزاحة <code>ofs</code> باستدعاءين لـ <code>Line.sub</code>، ثم إدراج البادئة في السطر <code>l</code> باستعمال <code>Text.insert</code>، ووضع اللاحقة في السطر <code>l+1</code> باستعمال <code>Text.set</code>:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> insert_newline l ofs =
+    <span class="hljs-keyword">let</span> line = <span class="hljs-type">Text</span>.get !text l <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> prefix = <span class="hljs-type">Line</span>.sub line <span class="hljs-number">0</span> ofs <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> suffix = <span class="hljs-type">Line</span>.sub line ofs (<span class="hljs-type">Line</span>.length line - ofs) <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> r = <span class="hljs-type">Text</span>.insert_char !text l prefix <span class="hljs-keyword">in</span>
+    text := <span class="hljs-type">Text</span>.set r (l + <span class="hljs-number">1</span>) suffix
+</code></pre>
+<p>لاحظ أنه ليس من الضروري «إزاحة» جميع الأسطر: فنحن نستعمل الإدراج في حبل الأسطر، كما استعملنا الإدراج في حبال المحارف في <code>insert_char</code>.</p>
+<h4>ملاحظة</h4>
+<p>وكما أن عمليات الدمج معلَّقة (suspended) في الحبال، فإن عمليات الاستخراج أيضًا قد تكون معلَّقة. وسيكون نوع OCaml الناتج كما يلي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> t =
+    | <span class="hljs-type">Str</span> <span class="hljs-keyword">of</span> <span class="hljs-type">S</span>.t
+    | <span class="hljs-type">Sub</span> <span class="hljs-keyword">of</span> t * <span class="hljs-built_in">int</span> * <span class="hljs-built_in">int</span>
+    | <span class="hljs-type">App</span> <span class="hljs-keyword">of</span> t * t * <span class="hljs-built_in">int</span>
+</code></pre>
+<p>ويعتمد كل شيء بعد ذلك على الاستراتيجية المستعملة للاختيار بين إجراء عمليتي الدمج والحبل الفرعي فورًا أو تعليقهما.</p>
+<p>بل يمكن تعليق عملية الاستخراج «مجانًا»، بتطبيق الدالّية المحدِّدة الوسائط <code>Make</code> مرارًا على ناتجها هي، كما يلي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-type">R1</span> = <span class="hljs-type">Make</span>(<span class="hljs-type">Str</span>)
+  <span class="hljs-keyword">module</span> <span class="hljs-type">R2</span> = <span class="hljs-type">Make</span>(<span class="hljs-type">R1</span>)
+  ...
+</code></pre>
+<p>في حبال الوحدة <code>R2</code>، تكون الأوراق حبالاً من <code>R1</code>. ومن ثَمّ، لا تُستدعى الدالة <code>R1.sub</code> إلا عندما تصبح الورقة صغيرة بما يكفي. وما دام الأمر ليس كذلك، تبقى العملية معلَّقة. وبقليل من التسامح في الترميز، يمكن القول إن النوعين <code>R1.t</code> و<code>R2.t</code> يقابلان التعريفين الآتيين:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> <span class="hljs-type">R1</span>.t =
+    | <span class="hljs-type">R1</span>.<span class="hljs-type">Str</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">string</span> * <span class="hljs-built_in">int</span> * <span class="hljs-built_in">int</span>
+    | <span class="hljs-type">R1</span>.<span class="hljs-type">App</span> <span class="hljs-keyword">of</span> <span class="hljs-type">R1</span>.t * <span class="hljs-type">R1</span>.t * <span class="hljs-built_in">int</span>
+  <span class="hljs-keyword">type</span> <span class="hljs-type">R2</span>.t =
+    | <span class="hljs-type">R2</span>.<span class="hljs-type">Str</span> <span class="hljs-keyword">of</span> <span class="hljs-type">R1</span>.t * <span class="hljs-built_in">int</span> * <span class="hljs-built_in">int</span>
+    | <span class="hljs-type">R2</span>.<span class="hljs-type">App</span> <span class="hljs-keyword">of</span> <span class="hljs-type">R2</span>.t * <span class="hljs-type">R2</span>.t * <span class="hljs-built_in">int</span>
+</code></pre>
+<p>ومن الواضح أن العقدة <code>R2.Str</code> تعلّق الاستخراج على قيمة من النوع <code>R1.t</code>. وبتكرار هذه العملية، نحصل على نوع مكافئ للنوع السابق <code>t</code>.</p>
+<blockquote></blockquote>
+<h3 id="44-المصفوفات-الدائمة-persistent-arrays">4.4 المصفوفات الدائمة (persistent arrays)</h3>
+<p>يعرض هذا القسم بنية معطيات <em>المصفوفة الدائمة (persistent array)</em>. ونستعمل في هذا القسم كله لفظ «مصفوفة» بمعناه المعتاد، للدلالة على المصفوفات التي يمكن تعديلها في مكانها. وفي جميع الحالات الأخرى، نستعمل لفظ «المصفوفة الدائمة».</p>
+<p>تُعطى توقيعة المصفوفات الدائمة في البرنامج <a href="#x15-149007r30">30</a>. وهي نفس توقيعة المصفوفات تمامًا، باستثناء أن الدالة <code>set</code> تعيد مصفوفة دائمة جديدة،</p>
+<p>دون تغيير وسيطها.</p>
+<p>من الخصائص المرغوبة في المصفوفات الدائمة أنها توفّر العمليتين <code>set</code> و<code>get</code> بالفعالية نفسها — O(1) — التي توفّرها المصفوفات، على الأقل ما دامت طبيعتها الدائمة غير مستعملة. غير أننا نقبل أن تكون هناك تكلفة مقابل الوصول إلى إصدارات سابقة من المصفوفة. ويعرض هذا القسم بنية معطيات تمتلك هذه الخاصة.</p>
+<p>تتضمن الفكرة الأساسية استعمال مصفوفة لأحدث إصدار من المصفوفة الدائمة، إلى جانب معلومات إضافية تتيح لنا العودة إلى الإصدارات السابقة. وتحقيقًا لهذه الغاية، نُعرّف النوعين العوديين المتقابلين الآتيين:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> ’a t = ’a data <span class="hljs-built_in">ref</span>
+  <span class="hljs-keyword">and</span> ’a data =
+    | <span class="hljs-type">Arr</span> <span class="hljs-keyword">of</span> ’a <span class="hljs-built_in">array</span>
+    | <span class="hljs-type">Diff</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">int</span> * ’a * ’a t
+</code></pre>
+<p>النوع <code>’at</code> هو نوع المصفوفات الدائمة. وهو يتضمن مرجعًا إلى معطيات من النوع <code>’adata</code>، تدلّ على طبيعتها: إما قيمة مباشرة <code>Arr</code> a، حيث a مصفوفة، وإما إحالة (indirection) <code>Diff</code> (i,v,p)، تمثّل مصفوفة دائمة مطابقة عنصرًا بعنصر للمصفوفة الدائمة p، باستثناء الفهرس i حيث توجد القيمة v.</p>
+<blockquote></blockquote>
+<p>نوضّح استعمال بنية المعطيات هذه بمثال. خُذ سلسلة التعريفات الآتية التي تعرّف مصفوفة دائمة <code>pa0</code>، ثم مصفوفتين أخريين، <code>pa1</code> و<code>pa2</code>، نحصل عليهما بتحديثين متتاليين:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> pa0 = init <span class="hljs-number">7</span> (<span class="hljs-keyword">fun</span> i -&gt; <span class="hljs-type">Char</span>.chr (<span class="hljs-type">Char</span>.code ’a’ + i))
+  <span class="hljs-keyword">let</span> pa1 = set pa0 <span class="hljs-number">1</span> ’h’
+  <span class="hljs-keyword">let</span> pa2 = set pa1 <span class="hljs-number">2</span> ’i’
+</code></pre>
+<p>تكون الحالة بعد هذه التعريفات الثلاثة كما يلي:</p>
+<p>آخر مصفوفة دائمة بُنيت، <code>pa2</code>، هي مرجع يحتوي على القيمة <code>Arr[|’a’;’h’;’i’;’d’;’e’;’f’;’g’|]</code>. والمصفوفة الدائمة <code>pa1</code> مرجع يحتوي على <code>Diff(2,’c’,pa2)</code>، والمصفوفة <code>pa0</code> مرجع يحتوي على <code>Diff(1,’b’,pa1)</code>. ولنفترض الآن أننا نبني مصفوفة رابعة <code>pa3</code> كما يلي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> pa3 = set pa1 <span class="hljs-number">2</span> ’j’
+</code></pre>
+<p>نعمل على خطوتين: نبدأ بالتأكد من أن المصفوفة الدائمة التي نُجري عليها العملية، <code>pa1</code>، من الشكل <code>Arra</code>. ولهذا نعكس سلسلة عقد <code>Diff</code> التي تؤدي من <code>pa1</code> إلى المصفوفة <code>a</code>. فتصبح لدينا الحالة الآتية:</p>
+<p>وفي الخطوة الثانية، نُنشئ مرجعًا جديدًا لـ <code>pa3</code>، يحتوي على <code>Arra</code>، حيث عُدّلت <code>a</code> لتحتوي على <code>’j’</code> في الخلية الثانية. وننتهي بتعديل المرجع <code>pa1</code> بحيث يحتوي الآن على <code>Diff(2,’c’,pa3)</code>. وتكون الحالة النهائية إذن كما يلي:</p>
+<p>سنصف الآن شفرة العمليات المختلفة على المصفوفات الدائمة. وإنشاء مصفوفة دائمة جديدة مباشر:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> init n f = <span class="hljs-built_in">ref</span> (<span class="hljs-type">Arr</span> (<span class="hljs-type">Array</span>.init n f))
+</code></pre>
+<p>بالنسبة لجميع العمليات الأخرى، نحتاج إلى دالة <code>reroot</code> لعكس سلسلة عقد <code>Diff</code> بما يضمن أن المصفوفة الدائمة <code>pa</code> من الشكل <code>Arr</code> <code>a</code>. ونكتبها كدالة عودية <code>reroot:’at-&gt;’aarray</code> تضمن هذا العكس للمؤشرات وتعيد المصفوفة a. فإذا كان <code>pa</code> مرجعًا لقيمة من الشكل <code>Arra</code>، كفى إعادة <code>a</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> reroot pa = <span class="hljs-keyword">match</span> !pa <span class="hljs-keyword">with</span>
+    | <span class="hljs-type">Arr</span> a -&gt;
+        a
+</code></pre>
+<p>أما إذا كان <code>pa</code> مرجعًا لقيمة من الشكل <code>Diff(i,v,pa’)</code>، فإننا نبدأ باستدعاء <code>reroot</code> عوديًّا على المصفوفة الدائمة <code>pa’</code>.</p>
+<pre><code class="language-ocaml">    | <span class="hljs-type">Diff</span> (i, v, pa’) -&gt;
+        <span class="hljs-keyword">let</span> a = reroot pa’ <span class="hljs-keyword">in</span>
+</code></pre>
+<p>وعندئذ يُضمن أن <code>pa’</code> مرجع يحتوي على <code>Arra</code>. ويكفي الآن تبادل دوري <code>pa’</code> و<code>pa</code>، أي تخزين القيمة <code>Arr</code> <code>a</code> في <code>pa</code>، بعد تعديل <code>a</code> في مكانها، وتخزين قيمة <code>Diff</code> في <code>pa’</code> تدلّ على القيمة السابقة التي كانت في <code>a</code>.</p>
+<pre><code class="language-ocaml">        <span class="hljs-keyword">let</span> old = a.(i) <span class="hljs-keyword">in</span>
+        a.(i) &lt;- v;
+        pa := <span class="hljs-type">Arr</span> a;
+        pa’ := <span class="hljs-type">Diff</span> (i, old, pa);
+        a
+</code></pre>
+<p>تعريفا العمليتين <code>length</code> و<code>get</code> مباشران إذا استعملنا مكافئيهما في الوحدة <code>Array</code> مع الدالة <code>reroot</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> length pa = <span class="hljs-type">Array</span>.length (reroot pa)
+  <span class="hljs-keyword">let</span> get pa i = (reroot pa).(i)
+</code></pre>
+<p>وتُنفَّذ العملية <code>iteri</code> باستعمال الدالة <code>Array.iteri</code>، التي تطبّق دالة على جميع عناصر مصفوفة وعلى فهارسها.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> iteri f pa = <span class="hljs-type">Array</span>.iteri f (reroot pa)
+</code></pre>
+<p>وتبقى الدالة <code>set</code> بحاجة إلى كتابة. وهي تبني مصفوفة دائمة جديدة انطلاقًا من مصفوفة دائمة موجودة <code>pa</code>، وفهرس <code>i</code>، وقيمة <code>v</code>. ونبدأ باستدعاء <code>reroot</code> على <code>pa</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> set pa i v =
+    <span class="hljs-keyword">let</span> a = reroot pa <span class="hljs-keyword">in</span>
+</code></pre>
+<p>ثم نتابع كما فعلنا في حالة الدالة <code>reroot</code>، لكننا نُنشئ مرجعًا <em>جديدًا</em> للناتج:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> old = a.(i) <span class="hljs-keyword">in</span>
+    a.(i) &lt;- v;
+    <span class="hljs-keyword">let</span> res = <span class="hljs-built_in">ref</span> (<span class="hljs-type">Arr</span> a) <span class="hljs-keyword">in</span>
+    pa := <span class="hljs-type">Diff</span> (i, old, res);
+    res
+</code></pre>
+<blockquote></blockquote>
+<p>لاحظ أنه في نهاية هذه العملية، تكون المصفوفة الدائمة <code>pa</code> على إحالة واحدة من المصفوفة <code>Arra</code>. والشفرة الكاملة للمصفوفات الدائمة معطاة في البرنامج <a href="#x15-149053r31">31</a>.</p>
+<blockquote></blockquote>
+<div class="exercises"><h3 id="45-التمارين">4.5 التمارين</h3>
+<h4>المصفوفات القابلة لتغيير الحجم</h4>
+<p><strong>4.1</strong>عدّل الدالة <code>create</code> بحيث تأخذ وسيطًا <code>increment</code> من النوع <code>intoption</code> يحدّد استراتيجية تغيير الحجم. فإذا كان هذا الوسيط <code>None</code>، طبّقت الدالة <code>resize</code> الاستراتيجية السابقة (مضاعفة حجم المصفوفة). أما إذا كان <code>increment</code> مساويًا <code>Somen</code>، فإن <code>resize</code> يزيد حجم المصفوفة بمقدار <code>n</code> عنصرًا (أو أكثر عند الحاجة).</p>
+<p><strong>4.2</strong>قد نرغب أحيانًا في إنقاص حجم المصفوفة، مثلاً عندما تكون كبيرة بالمقارنة مع عدد العناصر المستعملة فعلاً أو إذا كانت تشغل ذاكرة كثيرة. عدّل الدالة <code>resize</code> بحيث تنصّف حجم المصفوفة عندما يكون عدد العناصر أقل من ربع حجم المصفوفة. وبيّن أن التعقيد المطفأ يبقى O(1).</p>
+<p><strong>4.3</strong>استعمل مصفوفة قابلة لتغيير الحجم لاقتراح بنية مكدس (stack) بالواجهة الآتية:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">Stack</span> = <span class="hljs-keyword">sig</span>
+    <span class="hljs-keyword">type</span> ’a t
+    <span class="hljs-keyword">val</span> make : <span class="hljs-built_in">int</span> -&gt; ’a -&gt; ’a t
+    <span class="hljs-keyword">val</span> length : ’a t -&gt; <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">val</span> push : ’a t -&gt; ’a -&gt; <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">val</span> pop : ’a t -&gt; ’a
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>يُنشئ الاستدعاء <code>makend</code> مكدسًا يحتوي على <code>n</code> نسخة من القيمة <code>d</code>. وترفع الدالة <code>pop</code> استثناءً عندما يكون المكدس فارغًا.</p>
+<p><strong>4.4</strong>في سياق التمرين السابق، بيّن أن n استدعاءً للعمليتين <code>push</code> و<code>pop</code> على طابور معطى له تكلفة إجمالية O(n).</p>
+<h4>المتجهات البتية</h4>
+<p><strong>4.5</strong>برّر كون تعبير <code>xland-x</code> يستخرج البتة المضبوطة منخفضة الرتبة في <code>x</code> من أجل عدد صحيح غير معدوم <code>x</code>.</p>
+<p><strong>4.6</strong>اكتب دالة <code>ntz:int-&gt;int</code> تحسب عدد البتات الصفرية منخفضة الرتبة في وسيطها. إرشاد: يمكنك جدولة هذه الدالة على بايت ثم استعمال البحث الثنائي.</p>
+<p><strong>4.7</strong>اكتب دالة <code>blit_bits</code> تنسخ البتات من i إلى i + n− 1 من عدد صحيح x إلى الموضع j من متجه بتي v، أي بحيث يكون لدينا لكل فهرس k في v:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo fence="true">{</mo><mtable rowspacing="0.36em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mo stretchy="false">(</mo><mi>b</mi><mi>l</mi><mi>i</mi><msub><mi>t</mi><mi>b</mi></msub><mi>i</mi><mi>t</mi><mi>s</mi><mi>x</mi><mi>i</mi><mi>n</mi><mi>v</mi><mi>j</mi><mo stretchy="false">)</mo><mi>k</mi><mo>=</mo><mi>x</mi><mi>i</mi><mo>+</mo><mi>k</mi><mo>−</mo><mi>j</mi><mi>i</mi><mi>f</mi><mi>j</mi><mo>≤</mo><mi>k</mi><mo>&lt;</mo><mi>j</mi><mo>+</mo><mi>n</mi></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>v</mi><mi>k</mi><mi>o</mi><mi>t</mi><mi>h</mi><mi>e</mi><mi>r</mi><mi>w</mi><mi>i</mi><mi>s</mi><mi>e</mi></mrow></mstyle></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\\begin{cases} (blit_bits x i n v j)k = xi + k-j if j \\le k &lt; j + n \\\\ vk otherwise \\end{cases}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:3em;vertical-align:-1.25em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size4">{</span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.69em;"><span style="top:-3.69em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mopen">(</span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">i</span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathnormal">i</span><span class="mord mathnormal">t</span><span class="mord mathnormal">s</span><span class="mord mathnormal">x</span><span class="mord mathnormal">in</span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span><span class="mclose">)</span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal">x</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">n</span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mord mathnormal">o</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal" style="margin-right:0.0278em;">er</span><span class="mord mathnormal" style="margin-right:0.0269em;">w</span><span class="mord mathnormal">i</span><span class="mord mathnormal">se</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.19em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
+<p>سنفترض أن المجالين i..i + n− 1 وj..j + n− 1 صالحان لـ x وv، على الترتيب.</p>
+<p><strong>4.8</strong>باستعمال التمرين السابق، استخلص دالة <code>blit</code> تنسخ البتات i1..i1 + n − 1 من متجه بتي v1 إلى متجه بتي v2 عند الموضع i2.</p>
+<p><strong>4.9</strong>باستعمال الدالة السابقة <code>blit</code>، اكتب دالة <code>sub</code> تستخرج البتات i..i + n − 1 من مصفوفة في شكل متجه بتي جديد بحجم n.</p>
+<p><strong>4.10</strong>باستعمال <code>blit</code> أيضًا، اكتب دالة <code>append</code> تنفّذ دمج متجهين بتين.</p>
+<p><strong>4.11</strong>اكتب دالة <code>fill</code> تُسند قيمة ثابتة (0 أو 1، معطاة في شكل قيمة منطقية) إلى البتات i..i + n − 1 من مصفوفة. ويمكنك إعادة استعمال الدالة <code>blit_bits</code> مع x تساوي 0 أو −1.</p>
+<p><strong>4.12</strong> اكتب دالة <code>pop:int-&gt;int</code> تحسب عدد البتات المضبوطة في عدد صحيح بجدولة قيمه لجميع الأعداد الصحيحة ذات 8 بتات. وستكون هذه الدالة أسرع بأربع مرات من الدالة المعطاة في القسم <a href="#bit-vectors"><em>4.2</em></a> <em>المتجهات البتية</em>.</p>
+<p><strong>4.13</strong>يمكن استغلال فكرة المتجه البتي لتمثيل مجموعة جزئية من {0,1,…,30} (أو على التوالي {0,1,…,62} في معمارية 64 بتة) بعدد صحيح واحد. وهذا، علاوة على ذلك، بنية معطيات دائمة. استعمل هذه الفكرة لكتابة وحدة بالشكل الآتي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-type">Bitset</span> : <span class="hljs-type">Set</span>.<span class="hljs-type">S</span> <span class="hljs-keyword">type</span> elt = <span class="hljs-built_in">int</span>
+</code></pre>
+<h4>Ropes</h4>
+<p><strong>4.14</strong>أضف إلى الدالّية المحدِّدة الوسائط <code>Make</code> دالة تتيح التكرار على جميع أوراق حبل بترتيب داخلي (infix):</p>
+<p><code>iter_leaves:(S.t-&gt;int-&gt;int-&gt;unit)-&gt;t-&gt;unit</code></p>
+<p>وكل ورقة جزء من سلسلة نصية يقابل الوسائط الثلاث للبانية <code>Str</code>.</p>
+<p><strong>4.15</strong>أضف المعامل <code>small_length</code> كوسيط للدالّية المحدِّدة الوسائط <code>Make</code>.</p>
+<p><strong>4.16</strong>أعد كتابة الدوال <code>set</code> و<code>insert</code> و<code>delete_char</code> بحيث تُجري اجتيازًا عوديًّا واحدًا فقط للحبل.</p>
+<p><strong>4.17</strong>في هذا التمرين والتمرينين التاليين، نقترح طرقًا لإعادة موازنة الحبال <em>بعديًّا (a posteriori)</em>، أي دوالًّ من النوع:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">val</span> balance : t -&gt; t
+</code></pre>
+<p>تتضمن الطريقة البسيطة بناء قائمة بجميع أوراق الحبل بترتيب داخلي ثم بناء شجرة ثنائية كاملة انطلاقًا من هذه القائمة. اكتب دالة <code>balance</code> وفقًا لهذه الفكرة.</p>
+<p><strong>4.18</strong>تُقِلّ خوارزمية الموازنة المقترحة في التمرين السابق ارتفاع الحبل (كشجرة) لكنها لا تراعي طول الأوراق المختلفة. فإذا احتوت ورقة على عدد كبير من المحارف، كان من المفيد تقريبها من الجذر.</p>
+<p>يقترح المقال الذي قدّم الحبال [<a href="https://usr.lmf.cnrs.fr/lpo/mainli3.html#Xropes">5</a>] طريقة الموازنة الآتية: استعمل مصفوفة <code>a</code> من الحبال، تحقق الثابت الآتي: إذا كان الحبل <code>a</code>.(i) غير فارغ، فإن طوله ينتمي إلى المجال [Fi,Fi+1[، حيث Fi هو الحد رقم i في متتالية فيبوناتشي، المعرَّفة بـ F0 = F1 = 1 وFn+2 = Fn+1 + Fn من أجل كل
+n ≥ 0.</p>
+<p>في البداية، تكون جميع الحبال في <code>a</code> فارغة. ثم نُدرج على التوالي في <code>a</code> كل ورقة من أوراق الحبل المراد موازنته، بترتيب داخلي، بالطريقة الآتية، بدءًا من i = 2:</p>
+<ol>
+<li>لتكن r الحبل الناتج عن دمج الحبل المراد إدراجه مع
+a.(i).</li>
+<li>إذا كان طول r في [Fi,Fi+1[، أسنِد r إلى a.(i) ثم توقف.</li>
+<li>وإلا، أسنِد الحبل الفارغ إلى a.(i)، وزِد i، وعُد إلى الخطوة 1
+مع r كحبل مراد إدراجه.</li>
+</ol>
+<p>وبعد إدراج جميع الأوراق، يكون الناتج هو دمج جميع الحبال في <code>a</code>. اكتب دالة <code>balance</code> تنفّذ هذه الخوارزمية.</p>
+<p><strong>4.19</strong>لتكن r الحبل الناتج عن الخوارزمية الموصوفة في التمرين السابق، وn طوله، وh ارتفاعه، حيث يُعرَّف ارتفاع الحبل بـ h(<code>Str</code> _) = 0 وh(<code>App</code>(r1,r2, _)) = 1 + max(h(r1),h(r2)). بيّن أن
+n ≥ Fh+1. (إرشاد: بيّن أن h(<code>a</code>.(i)) ≤ i − 2 من أجل كل i.) واستنتج من ذلك أن
+متوسط مسافة محرف إلى جذر الحبل r أصغر من أو
+يساوي log ϕ(n) + K من أجل ثابت معين K، حيث ϕ هي النسبة الذهبية
+(1 + )∕2.</p>
+<p><strong>4.20</strong>يعرض هذا التمرين استراتيجية مثلى لإعادة موازنة حبل c0، تُعرف بخوارزمية غارسيا-فاخس (Garsia-Wachs). وتعمل الخوارزمية على قائمة حبال q تساوي
+⟨q0,q1,…,qm⟩، كما يلي:</p>
+<ol>
+<li>في البداية، تكون القائمة q هي قائمة أوراق c0، بترتيب داخلي.</li>
+<li>ما دامت القائمة q تحتوي على عنصرين على الأقل،</li>
+</ol>
+<p>حدِّد أصغر فهرس i، إن وُجد، بحيث يكون length qi  ≤
+length qi+1؛ وإلا فلتكن i = m؛
+3. احذف qi−1 وqi من القائمة q وكوِّن دمجهما c؛
+4. حدِّد  أكبر  فهرس  j،  إن  وُجد،  بحيث  يكون  j  &lt;  i  و
+length qj−1 ≥ length c؛ وإلا فلتكن j = 0؛
+5. أدرِج c في القائمة q مباشرة بعد qj−1.</p>
+<p>ولتكن c1 العنصر الوحيد المتبقي في q. هذا الحبل أمثل، لكن أوراقه ليست بالترتيب نفسه الذي في c0. والناتج هو الحبل c2 الذي له الأوراق نفسها التي لـ c0 وc1، بالترتيب نفسه الذي في c0، وعلى العمق نفسه الذي في
+c1.</p>
+<p>اكتب دالة <code>balance</code> تنفّذ هذه الخوارزمية. ولمزيد من التفاصيل عن هذه
+الخوارزمية، راجع <em>The Art of Computer Programming</em> [<a href="https://usr.lmf.cnrs.fr/lpo/mainli3.html#XKnuthV3">15</a>, vol. 3, sec. 6.2.2].</p>
+<h4>المصفوفات الدائمة</h4>
+<p><strong>4.21</strong>ربما لاحظت أن شفرة <code>reroot</code> و<code>set</code> تعيدان إنشاء القيمة <code>Arra</code> دون داعٍ. عدّل العمليتين لتفادي ذلك.</p>
+<p><strong>4.22</strong>بسّط الدالة <code>set</code> في حالة استدعاء <code>setpaiv</code>، حيث يكون الفهرس <code>i</code> مسندًا بالفعل إلى <code>v</code> في <code>pa</code>.</p>
+<p><strong>4.23</strong>الاستدعاء العودي في الدالة <code>reroot</code> ليس استدعاءً ذيليًّا (tail call). وقد يخلق ذلك
+مشكلات إذا كانت المصفوفة الدائمة ناتجة عن عدد كبير من التعديلات. أعد كتابة
+الدالة <code>reroot</code> بحيث لا تحتوي إلا على استدعاءات عودية ذيلية.</p>
+</div>`,o={book:s,chapter:a,chapterTitle:n,slug:e,title:p,headings:l,html:c};export{s as book,a as chapter,n as chapterTitle,o as default,l as headings,c as html,e as slug,p as title};

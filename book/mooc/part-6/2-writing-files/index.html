@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.C9kBkw8T.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/wzL9zxmz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B48Sj80-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.fkPBtkuJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DIwFP-Q7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BuJFa1RM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C-mfcZys.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/4FQnCmEH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.CYJfTZwp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DBCy9BRL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="كتابة الملفات — الجزء 6: الملفات والأخطاء"/><!----><title>كتابة الملفات | برمجة بايثون 2026 — جامعة هلسنكي</title>
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/mooc">برمجة بايثون 2026 — جامعة هلسنكي</a> <span class="reader-bar__chapter">› الجزء 6: الملفات والأخطاء</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 6 من 15">6 / 15</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/mooc/part-6/1-reading-files">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/mooc/part-6/3-errors">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>الجزء 1: البدء</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-1/index">الجزء 1</a></li><li><a href="../../../../book/mooc/part-1/1-getting-started">البدء</a></li><li><a href="../../../../book/mooc/part-1/2-information-from-the-user">المعلومات من المستخدم</a></li><li><a href="../../../../book/mooc/part-1/3-more-about-variables">المزيد عن المتغيّرات</a></li><li><a href="../../../../book/mooc/part-1/4-arithmetic-operations">العمليات الحسابية</a></li><li><a href="../../../../book/mooc/part-1/5-conditional-statements">الجمل الشرطية</a></li><!--]--></ul><h3>الجزء 2: الجمل الشرطية</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-2/index">الجزء 2</a></li><li><a href="../../../../book/mooc/part-2/1-programming_terminology">مصطلحات البرمجة</a></li><li><a href="../../../../book/mooc/part-2/2-else-elif">المزيد عن الجمل الشرطية</a></li><li><a href="../../../../book/mooc/part-2/3-combining-conditions">دمج الشروط</a></li><li><a href="../../../../book/mooc/part-2/4-simple-loops">الحلقات البسيطة</a></li><!--]--></ul><h3>الجزء 3: الحلقات</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-3/index">الجزء 3</a></li><li><a href="../../../../book/mooc/part-3/1-loops-with-conditions">الحلقات مع الشروط</a></li><li><a href="../../../../book/mooc/part-3/2-working-with-strings">العمل مع السلاسل النصية</a></li><li><a href="../../../../book/mooc/part-3/3-more-loops">المزيد عن الحلقات</a></li><li><a href="../../../../book/mooc/part-3/4-defining-functions">تعريف الدوال</a></li><!--]--></ul><h3>الجزء 4: الدوال والقوائم</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-4/index">الجزء 4</a></li><li><a href="../../../../book/mooc/part-4/1-vscode">محرر Visual Studio Code ومفسر Python وأداة التنقيح المدمجة</a></li><li><a href="../../../../book/mooc/part-4/2-more-functions">المزيد من الدوال</a></li><li><a href="../../../../book/mooc/part-4/3-lists">القوائم</a></li><li><a href="../../../../book/mooc/part-4/4-definite-iteration">التكرار المحدَّد</a></li><li><a href="../../../../book/mooc/part-4/5-print-statement-formatting">تنسيق أمر الطباعة</a></li><li><a href="../../../../book/mooc/part-4/6-strings-and-lists">المزيد من السلاسل النصية والقوائم</a></li><!--]--></ul><h3>الجزء 5: هياكل البيانات</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-5/index">الجزء 5</a></li><li><a href="../../../../book/mooc/part-5/1-more-lists">المزيد عن القوائم</a></li><li><a href="../../../../book/mooc/part-5/2-references">المراجع</a></li><li><a href="../../../../book/mooc/part-5/3-dictionary">القاموس</a></li><li><a href="../../../../book/mooc/part-5/4-tuple">الصف</a></li><!--]--></ul><h3 class="active-chapter">الجزء 6: الملفات والأخطاء</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-6/index">الجزء 6</a></li><li><a href="../../../../book/mooc/part-6/1-reading-files">قراءة الملفات</a></li><li><a href="../../../../book/mooc/part-6/2-writing-files" class="active">كتابة الملفات</a></li><li><a href="../../../../book/mooc/part-6/3-errors">معالجة الأخطاء</a></li><li><a href="../../../../book/mooc/part-6/4-scope-of-variables">المتغيّرات المحلية والعالمية</a></li><!--]--></ul><h3>الجزء 7: الوحدات</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-7/index">الجزء 7</a></li><li><a href="../../../../book/mooc/part-7/1-modules">الوحدات</a></li><li><a href="../../../../book/mooc/part-7/2-randomness">العشوائية</a></li><li><a href="../../../../book/mooc/part-7/3-times-and-dates">الأوقات والتواريخ</a></li><li><a href="../../../../book/mooc/part-7/4-data-processing">معالجة البيانات</a></li><li><a href="../../../../book/mooc/part-7/5-creating-modules">إنشاء وحداتك الخاصة</a></li><li><a href="../../../../book/mooc/part-7/6-more-features">المزيد من ميزات Python</a></li><!--]--></ul><h3>الجزء 8: الكائنات والصنوف</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-8/index">الجزء 8</a></li><li><a href="../../../../book/mooc/part-8/1-objects-and-methods">الكائنات والتابعات</a></li><li><a href="../../../../book/mooc/part-8/2-classes-and-objects">الأصناف والكائنات</a></li><li><a href="../../../../book/mooc/part-8/3-defining-classes">تعريف الأصناف</a></li><li><a href="../../../../book/mooc/part-8/4-defining-methods">تعريف التوابع</a></li><li><a href="../../../../book/mooc/part-8/5-more-examples-of-classes">المزيد من أمثلة الأصناف</a></li><!--]--></ul><h3>الجزء 9: المزيد عن الكائنات</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-9/index">الجزء 9</a></li><li><a href="../../../../book/mooc/part-9/1-objects-and-references">الكائنات والمراجع</a></li><li><a href="../../../../book/mooc/part-9/2-objects-as-attributes">الكائنات كخصائص</a></li><li><a href="../../../../book/mooc/part-9/3-encapsulation">التغليف</a></li><li><a href="../../../../book/mooc/part-9/4-scope-of-methods">نطاق التوابع</a></li><li><a href="../../../../book/mooc/part-9/5-class-attributes">خصائص الصنف</a></li><li><a href="../../../../book/mooc/part-9/6-more-examples-with-classes">مزيد من الأمثلة على الأصناف</a></li><!--]--></ul><h3>الجزء 10: تراكيب الأصناف</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-10/index">الجزء 10</a></li><li><a href="../../../../book/mooc/part-10/1-class-hierarchies">تراكيب الأصناف</a></li><li><a href="../../../../book/mooc/part-10/2-access-modifiers">مُعدِّلات الوصول</a></li><li><a href="../../../../book/mooc/part-10/3-oo-programming-techniques">تقنيات البرمجة الكائنية</a></li><li><a href="../../../../book/mooc/part-10/4-application-development">تطوير تطبيق أكبر</a></li><!--]--></ul><h3>الجزء 11: ميزات متقدمة</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-11/index">الجزء 11</a></li><li><a href="../../../../book/mooc/part-11/1-list-comprehensions">إدراكات القوائم</a></li><li><a href="../../../../book/mooc/part-11/2-more-comprehensions">المزيد من الإدراكات</a></li><li><a href="../../../../book/mooc/part-11/3-recursion">التعاود</a></li><li><a href="../../../../book/mooc/part-11/4-more-recursion-examples">المزيد من أمثلة التعاود</a></li><!--]--></ul><h3>الجزء 12: البرمجة الدالية</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-12/index">الجزء 12</a></li><li><a href="../../../../book/mooc/part-12/1-functions-as-arguments">الدوال كوسائط</a></li><li><a href="../../../../book/mooc/part-12/2-generators">المولّدات</a></li><li><a href="../../../../book/mooc/part-12/3-functional-programming">البرمجة الدالية</a></li><li><a href="../../../../book/mooc/part-12/4-regular-expressions">التعبيرات النمطية</a></li><!--]--></ul><h3>الجزء 13: الألعاب مع Pygame</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-13/index">الجزء 13</a></li><li><a href="../../../../book/mooc/part-13/1-pygame">مكتبة pygame</a></li><li><a href="../../../../book/mooc/part-13/2-animation">التحريك</a></li><li><a href="../../../../book/mooc/part-13/3-events">الأحداث</a></li><li><a href="../../../../book/mooc/part-13/4-more-pygame-techniques">تقنيات pygame إضافية</a></li><!--]--></ul><h3>الجزء 14: مشروع اللعبة</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-14/index">الجزء 14</a></li><li><a href="../../../../book/mooc/part-14/1-game-project">مشروع اللعبة</a></li><li><a href="../../../../book/mooc/part-14/2-robot-and-boxes">الروبوت والصناديق</a></li><li><a href="../../../../book/mooc/part-14/3-finishing-the-game">إنهاء اللعبة</a></li><li><a href="../../../../book/mooc/part-14/4-your-own-game">لعبتك الخاصة</a></li><!--]--></ul><h3>صفحات مساعدة</h3> <ul><!--[--><li><a href="../../../../book/mooc/auxiliary/index">عن هذه الدورة</a></li><li><a href="../../../../book/mooc/auxiliary/frontmatter-guide">دليل بيانات الترويسة الأمامية</a></li><li><a href="../../../../book/mooc/auxiliary/vocabulary">المفردات</a></li><li><a href="../../../../book/mooc/auxiliary/error_messages">رسائل الأخطاء الشائعة</a></li><li><a href="../../../../book/mooc/auxiliary/faq">الأسئلة الشائعة</a></li><li><a href="../../../../book/mooc/auxiliary/exam_adv">اختبار الدورة المتقدمة في البرمجة 15.08.</a></li><li><a href="../../../../book/mooc/auxiliary/exam_intro">اختبار مقدمة في البرمجة 05.09.</a></li><li><a href="../../../../book/mooc/auxiliary/support-and-assistance">الدعم والمساعدة</a></li><li><a href="../../../../book/mooc/auxiliary/all-exercises">جميع التمارين</a></li><li><a href="../../../../book/mooc/auxiliary/exam">اختبار 4.6.</a></li><li><a href="../../../../book/mooc/auxiliary/grading-and-exams">التقييم والاختبارات</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>كتابة الملفات</h1> <!--[0--><nav class="toc-inline" aria-label="في هذا القسم"><p>في هذا القسم</p> <ul><!--[--><li><a href="#إنشاء-ملف-جديد">إنشاء ملف جديد</a></li><li><a href="#إلحاق-بيانات-بملف-موجود">إلحاق بيانات بملف موجود</a></li><li><a href="#كتابة-ملفات-csv">كتابة ملفات CSV</a></li><li><a href="#مسح-محتوى-الملفات-وحذفها">مسح محتوى الملفات وحذفها</a></li><li><a href="#معالجة-البيانات-بصيغة-csv">معالجة البيانات بصيغة CSV</a></li><!--]--></ul></nav><!--]--> <!--[-1--><div class="reader-content"><!----><blockquote>
+<p><strong>أهداف التعلّم</strong></p>
+<p>بعد إتمام هذا القسم</p>
+<ul>
+<li>ستعرف كيف تنشئ ملفات بشيفرة Python</li>
+<li>ستكون قادرًا على كتابة بيانات نصية داخل ملف</li>
+<li>ستعرف كيف تنشئ ملف CSV</li>
+</ul>
+</blockquote>
+<p>حتى الآن قرأنا البيانات من الملفات، ومن الطبيعي أيضًا أن يكون من الممكن كتابة البيانات في الملفات. وعادةً يعالج البرنامج البيانات ويخزّن النتائج في ملف، لتُستخدم لاحقًا أو تُعالَج مزيدًا من خلال برنامج آخر.</p>
+<p>يمكننا إنشاء ملف جديد في كل مرة نريد فيها كتابة البيانات في ملف، لكن يمكننا أيضًا إلحاق بيانات جديدة بنهاية ملف موجود. وفي الحالتين نستخدم الدالة <code>open</code> من القسم السابق. أما للكتابة في الملفات فتتطلب الدالة وسيطًا ثانيًا.</p>
+<h2 id="إنشاء-ملف-جديد">إنشاء ملف جديد</h2>
+<p>إذا أردت إنشاء ملف جديد، فستستدعي الدالة <code>open</code> بالوسيط الإضافي <code>w</code>، ليشير إلى أن الملف ينبغي فتحه في وضع الكتابة. وعندها قد يبدو استدعاء الدالة هكذا:</p>
+<pre><code class="language-python"><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;new_file.txt&quot;</span>, <span class="hljs-string">&quot;w&quot;</span>) <span class="hljs-keyword">as</span> my_file:
+    <span class="hljs-comment"># code to write something to the file</span>
+</code></pre>
+<p><strong>ملاحظة: إذا كان الملف موجودًا أصلًا فسيُستبدل كل محتواه بالكامل</strong>. ينبغي أن تكون شديد الحذر عند إنشاء ملفات جديدة.</p>
+<p>وبفتح الملف يمكنك كتابة البيانات فيه. ويمكنك استخدام التابع <code>write</code>، الذي يأخذ السلسلة النصية المراد كتابتها كوسيط له.</p>
+<pre><code class="language-python"><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;new_file.txt&quot;</span>, <span class="hljs-string">&quot;w&quot;</span>) <span class="hljs-keyword">as</span> my_file:
+    my_file.write(<span class="hljs-string">&quot;Hello there!&quot;</span>)
+</code></pre>
+<p>وعند تنفيذ البرنامج يظهر ملف جديد اسمه <code>new_file.txt</code> في الدليل. ويبدو المحتوى هكذا:</p>
+<pre><code>Hello there!
+</code></pre>
+<p>وإذا أردت فواصل أسطر في الملف فستضيفها يدويًا — الدالة <code>write</code> لا تعمل تمامًا مثل الدالة <code>print</code> الأكثر إلفة، مع أنهما متشابهتان. إذًا، فإن البرنامج التالي</p>
+<pre><code class="language-python"><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;new_file.txt&quot;</span>, <span class="hljs-string">&quot;w&quot;</span>) <span class="hljs-keyword">as</span> my_file:
+    my_file.write(<span class="hljs-string">&quot;Hello there!&quot;</span>)
+    my_file.write(<span class="hljs-string">&quot;This is the second line&quot;</span>)
+    my_file.write(<span class="hljs-string">&quot;This is the last line&quot;</span>)
+</code></pre>
+<p>ينتج عنه ملف بهذا المحتوى:</p>
+<pre><code>Hello there!This is the second lineThis is the last line
+</code></pre>
+<p>وتُحقَّق فواصل الأسطر بإضافة محارف السطر الجديد <code>\n</code> إلى السلاسل النصية الخاصة بالوسيط:</p>
+<pre><code class="language-python"><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;new_file.txt&quot;</span>, <span class="hljs-string">&quot;w&quot;</span>) <span class="hljs-keyword">as</span> my_file:
+    my_file.write(<span class="hljs-string">&quot;Hello there!\n&quot;</span>)
+    my_file.write(<span class="hljs-string">&quot;This is the second line\n&quot;</span>)
+    my_file.write(<span class="hljs-string">&quot;This is the last line\n&quot;</span>)
+</code></pre>
+<p>الآن يبدو محتوى <code>new_file.txt</code> هكذا:</p>
+<pre><code>Hello there!
+This is the second line
+This is the last line
+</code></pre>
+<blockquote>
+<p><strong>تمرين برمجي: النقش</strong></p>
+<p>يُرجى كتابة برنامج يسأل عن اسم المستخدم ثم ينشئ «نقشًا» في ملف يحدّده المستخدم. يُرجى الاطلاع على المثال أدناه.</p>
+</blockquote>
+<pre><code>Whom should I sign this to: **Ada**
+Where shall I save it: **inscribed.txt**
+</code></pre>
+<p>ويكون محتوى الملف <code>inscribed.txt</code> هو</p>
+<pre><code>Hi Ada, we hope you enjoy learning Python with us! Best, Mooc.fi Team
+</code></pre>
+<p><strong>ملاحظة:</strong> لا يطلب منك هذا التمرين كتابة أي دوال، لذا ينبغي ألّا تضع أي شيفرة داخل كتلة <code>if __name__ == &quot;__main__&quot;</code>.</p>
+<h2 id="إلحاق-بيانات-بملف-موجود">إلحاق بيانات بملف موجود</h2>
+<p>إذا أردت إلحاق بيانات بنهاية الملف بدل استبدال الملف كله، فتحتاج إلى فتح الملف في وضع الإلحاق بالوسيط <code>a</code>.</p>
+<p>وإذا لم يكن الملف موجودًا بعد، فإن وضع الإلحاق يعمل تمامًا مثل وضع الكتابة.</p>
+<p>يفتح البرنامج التالي الملف <code>new_file.txt</code> ويُلحق بضع أسطر نصية بالنهاية:</p>
+<pre><code class="language-python"><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;new_file.txt&quot;</span>, <span class="hljs-string">&quot;a&quot;</span>) <span class="hljs-keyword">as</span> my_file:
+    my_file.write(<span class="hljs-string">&quot;This is the 4th line\n&quot;</span>)
+    my_file.write(<span class="hljs-string">&quot;And yet another line.\n&quot;</span>)
+</code></pre>
+<p>وبعد تنفيذ هذا البرنامج يبدو محتوى الملف هكذا:</p>
+<pre><code>Hello there!
+This is the second line
+This is the last line
+This is the 4th line
+And yet another line.
+</code></pre>
+<p>وفي ممارسة البرمجة، ليست إلحاق البيانات بالملفات من المهام الشائعة جدًّا.</p>
+<p>وغالبًا ما يُقرأ الملف ويُعالَج ويُستبدل بالكامل. فمثلًا، حين ينبغي تغيير المحتوى في <em>وسط</em> الملف، يكون الأسهل عادةً استبدال الملف كله.</p>
+<blockquote>
+<p><strong>تمرين برمجي: المذكرة اليومية</strong></p>
+<p>يُرجى كتابة برنامج يعمل كدفتر يوميات بسيط. وتُحفظ قيود اليوميات في الملف <code>diary.txt</code>. وعند تنفيذ البرنامج ينبغي أن يقرأ أولًا أي قيود موجودة في الملف أصلًا.</p>
+</blockquote>
+<p>ملاحظة: ستغيّر الاختبارات الآلية لهذا التمرين محتوى الملف. إذا أردت الاحتفاظ بمحتواه، فانسخ الملف أولًا باسم مختلف.</p>
+<p>ويجب أن يعمل البرنامج على النحو التالي:</p>
+<pre><code>1 - add an entry, 2 - read entries, 0 - quit
+Function: **1**
+Diary entry: **Today I ate porridge**
+Diary saved
+
+1 - add an entry, 2 - read entries, 0 - quit
+Function: **2**
+Entries:
+Today I ate porridge
+1 - add an entry, 2 - read entries, 0 - quit
+Function: **1**
+Diary entry: **I went to the sauna in the evening**
+Diary saved
+
+1 - add an entry, 2 - read entries, 0 - quit
+Function: **2**
+Entries:
+Today I ate porridge
+I went to the sauna in the evening
+1 - add an entry, 2 - read entries, 0 - quit
+Function: **0**
+Bye now!
+</code></pre>
+<p>وعند تنفيذ البرنامج للمرة الثانية، ينبغي أن يحدث ما يلي:</p>
+<pre><code>1 - add an entry, 2 - read entries, 0 - quit
+Function: **2**
+Entries:
+Today I ate porridge
+I went to the sauna in the evening
+1 - add an entry, 2 - read entries, 0 - quit
+Function: **0**
+Bye now!
+</code></pre>
+<p><strong>ملاحظة:</strong> لا يطلب منك هذا التمرين كتابة أي دوال، لذا ينبغي ألّا تضع أي شيفرة داخل كتلة <code>if __name__ == &quot;__main__&quot;</code>.</p>
+<h2 id="كتابة-ملفات-csv">كتابة ملفات CSV</h2>
+<p>يمكن كتابة ملفات CSV سطرًا بسطر بالتابع <code>write</code> تمامًا كما يُكتب أي ملف آخر. ينشئ المثال التالي الملف <code>coders.csv</code>، حيث يحوي كل سطر على اسم وبيئة عمل ولغة مفضّلة وسنوات خبرة لمبرمج واحد. وتفصل الحقول عن بعضها فاصلة منقوطة.</p>
+<pre><code class="language-python"><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;coders.csv&quot;</span>, <span class="hljs-string">&quot;w&quot;</span>) <span class="hljs-keyword">as</span> my_file:
+    my_file.write(<span class="hljs-string">&quot;Eric;Windows;Pascal;10\n&quot;</span>)
+    my_file.write(<span class="hljs-string">&quot;Matt;Linux;PHP;2\n&quot;</span>)
+    my_file.write(<span class="hljs-string">&quot;Alan;Linux;Java;17\n&quot;</span>)
+    my_file.write(<span class="hljs-string">&quot;Emily;Mac;Cobol;9\n&quot;</span>)
+</code></pre>
+<p>ينتج عن تنفيذ هذا البرنامج الملف التالي:</p>
+<pre><code>Eric;Windows;Pascal;10
+Matt;Linux;PHP;2
+Alan;Linux;Java;17
+Emily;Mac;Cobol;9
+</code></pre>
+<p>وماذا لو كانت البيانات المراد كتابتها مخزّنة في ذاكرة الحاسوب داخل قائمة (list)؟</p>
+<pre><code class="language-python">coders = []
+coders.append([<span class="hljs-string">&quot;Eric&quot;</span>, <span class="hljs-string">&quot;Windows&quot;</span>, <span class="hljs-string">&quot;Pascal&quot;</span>, <span class="hljs-number">10</span>])
+coders.append([<span class="hljs-string">&quot;Matt&quot;</span>, <span class="hljs-string">&quot;Linux&quot;</span>, <span class="hljs-string">&quot;PHP&quot;</span>, <span class="hljs-number">2</span>])
+coders.append([<span class="hljs-string">&quot;Alan&quot;</span>, <span class="hljs-string">&quot;Linux&quot;</span>, <span class="hljs-string">&quot;Java&quot;</span>, <span class="hljs-number">17</span>])
+coders.append([<span class="hljs-string">&quot;Emily&quot;</span>, <span class="hljs-string">&quot;Mac&quot;</span>, <span class="hljs-string">&quot;Cobol&quot;</span>, <span class="hljs-number">9</span>])
+</code></pre>
+<p>يمكننا بناء السلسلة النصية التي نريد كتابتها كسلسلة نصية ذات بادئة f، ثم كتابة السطر الجاهز في الملف هكذا:</p>
+<pre><code class="language-python"><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;coders.csv&quot;</span>, <span class="hljs-string">&quot;w&quot;</span>) <span class="hljs-keyword">as</span> my_file:
+    <span class="hljs-keyword">for</span> coder <span class="hljs-keyword">in</span> coders:
+        line = <span class="hljs-string">f&quot;<span class="hljs-subst">{coder[<span class="hljs-number">0</span>]}</span>;<span class="hljs-subst">{coder[<span class="hljs-number">1</span>]}</span>;<span class="hljs-subst">{coder[<span class="hljs-number">2</span>]}</span>;<span class="hljs-subst">{coder[<span class="hljs-number">3</span>]}</span>&quot;</span>
+        my_file.write(line+<span class="hljs-string">&quot;\n&quot;</span>)
+</code></pre>
+<p>ولو كانت كل قائمة بيانات مبرمج طويلة جدًّا وتحوي عناصر أكثر بكثير، لكان بناء السلسلة النصية يدويًا أمرًا مُرهقًا. ويمكننا استخدام حلقة <code>for</code> لبناء السلسلة النصية بدلًا من ذلك:</p>
+<pre><code class="language-python"><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;coders.csv&quot;</span>, <span class="hljs-string">&quot;w&quot;</span>) <span class="hljs-keyword">as</span> my_file:
+    <span class="hljs-keyword">for</span> coder <span class="hljs-keyword">in</span> coders:
+        line = <span class="hljs-string">&quot;&quot;</span>
+        <span class="hljs-keyword">for</span> value <span class="hljs-keyword">in</span> coder:
+            line += <span class="hljs-string">f&quot;<span class="hljs-subst">{value}</span>;&quot;</span>
+        line = line[:-<span class="hljs-number">1</span>]
+        my_file.write(line+<span class="hljs-string">&quot;\n&quot;</span>)
+</code></pre>
+<h2 id="مسح-محتوى-الملفات-وحذفها">مسح محتوى الملفات وحذفها</h2>
+<p>قد يلزم أحيانًا مسح محتوى ملف موجود. ففتح الملف في وضع الكتابة وإغلاقه فورًا يُحدث هذا بالضبط:</p>
+<pre><code class="language-python"><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;file_to_be_cleared.txt&quot;</span>, <span class="hljs-string">&quot;w&quot;</span>) <span class="hljs-keyword">as</span> my_file:
+    <span class="hljs-keyword">pass</span>
+</code></pre>
+<p>والآن لا يحتوي كتلة <code>with</code> سوى الأمر <code>pass</code>، الذي لا يفعل شيئًا في الواقع. ولا تسمح Python بالكتل الفارغة، لذا يكون الأمر هنا ضروريًا.</p>
+<p>ومن الممكن أيضًا تجاوز كتلة <code>with</code> باستخدام أمر من سطر واحد كما يلي:</p>
+<pre><code class="language-python"><span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;file_to_be_cleared.txt&#x27;</span>, <span class="hljs-string">&#x27;w&#x27;</span>).close()
+</code></pre>
+<blockquote>
+<p><strong>حذف الملفات</strong></p>
+<p>يمكنك أيضًا حذف ملف بالكامل. وسنحتاج إلى طلب المساعدة من نظام التشغيل لتحقيق ذلك:</p>
+<pre><code class="language-python"><span class="hljs-comment"># the command to delete files is in the os module</span>
+<span class="hljs-keyword">import</span> os
+
+os.remove(<span class="hljs-string">&quot;unnecessary_file.csv&quot;</span>)
+</code></pre>
+<p>ملاحظة: لن يعمل هذا عند تشغيل الاختبارات الآلية على خوادم الدورة بسبب قيود تقنية في بيئة الاختبار. وإذا طُلب منك مسح محتوى ملف، فاستخدم الطرق الموصوفة أعلاه.</p>
+</blockquote>
+<blockquote>
+<p><strong>تمرين برمجي: تصفية محتويات ملف</strong></p>
+<p>يحتوي الملف <code>solutions.csv</code> على بعض حلول مسائل رياضية:</p>
+</blockquote>
+<pre><code class="language-csv">Arto;2+5;7
+Pekka;3-2;1
+Erkki;9+3;11
+Arto;8-3;4
+Pekka;5+5;10
+...jne...
+</code></pre>
+<p>وكما ترى أعلاه، فالصيغة في كل سطر هي <code>name_of_student;problem;result</code>. وكل العمليات إمّا جمع وإمّا طرح، ولكل واحدة وسيطان بالضبط.</p>
+<p>يُرجى كتابة دالة اسمها <code>filter_solutions()</code> والتي:</p>
+<ul>
+<li>تقرأ محتوى الملف <code>solutions.csv</code></li>
+<li>تكتب السطور التي نتيجتها <em>صحيحة</em> في الملف <code>correct.csv</code></li>
+<li>تكتب السطور التي نتيجتها <em>خاطئة</em> في الملف <code>incorrect.csv</code></li>
+</ul>
+<p>وباستخدام المثال أعلاه، يحوي الملف <code>correct.csv</code> على السطور التالية</p>
+<pre><code class="language-sh">Arto;2+5;7
+Pekka;3-2;1
+Pekka;5+5;10
+</code></pre>
+<p>أما السطورتان الأخريان فتكونان في الملف <code>incorrect.csv</code>.</p>
+<p>يُرجى كتابة السطور بنفس الترتيب الذي تظهر به في الملف الأصلي. ولا تغيّر الملف الأصلي.</p>
+<p>ملاحظة: ينبغي أن تُعطي الدالة النتيجة ذاتها بالضبط، مهما كان عدد مرات استدعائها. أي أنه لا يهم إن استُدعيت الدالة مرة واحدة</p>
+<pre><code class="language-python">filter_solutions()
+</code></pre>
+<p>أو عدة مرات متتالية</p>
+<pre><code class="language-python">filter_solutions()
+filter_solutions()
+filter_solutions()
+filter_solutions()
+</code></pre>
+<p>وبعد التنفيذ، ينبغي أن يكون محتوى الملفين <code>correct.csv</code> و<code>incorrect.csv</code> متطابقًا بالضبط في الحالتين.</p>
+<blockquote>
+<p><strong>تمرين برمجي: تخزين البيانات الشخصية</strong></p>
+<p>يُرجى كتابة دالة اسمها <code>store_personal_data(person: tuple)</code>، تأخذ صفًّا (tuple) يحوي بعض المعلومات التعريفية كوسيط لها.</p>
+</blockquote>
+<p>ويحوي الصف العناصر التالية:</p>
+<ul>
+<li>الاسم (سلسلة نصية)</li>
+<li>العمر (عدد صحيح)</li>
+<li>الطول (عدد عشري)</li>
+</ul>
+<p>تُعالَج هذه البيانات وتُكتب في الملف <code>people.csv</code>. وقد يحوي الملف بعض البيانات أصلًا؛ ويذهب السطر الجديد إلى نهاية الملف. وينبغي كتابة البيانات بالصيغة</p>
+<p>name;age;height</p>
+<p>ويجب أن يكون كل سطر في سطر مستقل. وإذا استدعينا الدالة بالوسيط <code>(&quot;Paul Paulson&quot;, 37, 175.5)</code>، فكتبت الدالة هذا السطر في نهاية الملف:</p>
+<p><code>Paul Paulson;37;175.5</code></p>
+<h2 id="معالجة-البيانات-بصيغة-csv">معالجة البيانات بصيغة CSV</h2>
+<p>لنكتب برنامجًا يقيّم أداء الطلاب في مقرر. يقرأ البرنامج ملف CSV يحوي نقاط التمارين الأسبوعية التي حصل عليها الطلاب. ثم يحسب البرنامج مجموع النقاط ويحدّد الدرجة التي حصل عليها كل طالب. وأخيرًا، ينشئ البرنامج ملف CSV يحوي مجموع النقاط والدرجة لكل طالب.</p>
+<p>ويبدو ملف CSV المُعطى مُدخَلًا للبرنامج هكذا:</p>
+<pre><code>Peter;4;2;3;5;4;0;0
+Paula;7;2;8;3;5;4;5
+Susan;3;4;3;5;3;4;4
+Emily;6;6;5;5;0;4;8
+</code></pre>
+<p>ينقسم منطق البرنامج إلى ثلاث دوال: قراءة الملف ومعالجة محتواه إلى صيغة يمكن التعامل معها، وتحديد الدرجة، وكتابة الملف.</p>
+<p>ويُقرأ الملف وفق المبادئ المذكورة في القسم السابق. وتُخزَّن البيانات في قاموس (dictionary)، حيث يكون المفتاح اسم الطالب، والقيمة قائمة بالنقاط التي حصل عليها الطالب، بصيغة عدد صحيح:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">read_weekly_points</span>(<span class="hljs-params">filename</span>):
+    weekly_points = {}
+    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(filename) <span class="hljs-keyword">as</span> my_file:
+        <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> my_file:
+            parts = line.split(<span class="hljs-string">&quot;;&quot;</span>)
+            point_list = []
+            <span class="hljs-keyword">for</span> points <span class="hljs-keyword">in</span> parts[<span class="hljs-number">1</span>:]:
+                point_list.append(<span class="hljs-built_in">int</span>(points))
+            weekly_points[parts[<span class="hljs-number">0</span>]] = point_list
+
+    <span class="hljs-keyword">return</span> weekly_points
+</code></pre>
+<p>والدالة الثانية لتحديد الدرجة بناءً على النقاط المُستلَمة. وتُستخدم هذه الدالة بدورها من قبل الدالة الثالثة، التي تكتب النتائج في الملف.</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">grade</span>(<span class="hljs-params">points</span>):
+    <span class="hljs-keyword">if</span> points &lt; <span class="hljs-number">20</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+    <span class="hljs-keyword">elif</span> points &lt; <span class="hljs-number">25</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+    <span class="hljs-keyword">elif</span> points &lt; <span class="hljs-number">30</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">2</span>
+    <span class="hljs-keyword">elif</span> points &lt; <span class="hljs-number">35</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">3</span>
+    <span class="hljs-keyword">elif</span> points &lt; <span class="hljs-number">40</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">4</span>
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">5</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">save_results</span>(<span class="hljs-params">filename, weekly_points</span>):
+    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(filename, <span class="hljs-string">&quot;w&quot;</span>) <span class="hljs-keyword">as</span> my_file:
+        <span class="hljs-keyword">for</span> name, point_list <span class="hljs-keyword">in</span> weekly_points.items():
+            point_sum = <span class="hljs-built_in">sum</span>(point_list)
+            my_file.write(<span class="hljs-string">f&quot;<span class="hljs-subst">{name}</span>;<span class="hljs-subst">{point_sum}</span>;<span class="hljs-subst">{grade(point_sum)}</span>\n&quot;</span>)
+</code></pre>
+<p>يتيح لنا هذا البناء كتابة دالة رئيسية بسيطة للغاية. لاحظ كيف تُعطى أسماء الملفات التي تُقرأ وتُكتب ضمن وسائط الدالة الرئيسية:</p>
+<pre><code class="language-python">weekly_points = read_weekly_points(<span class="hljs-string">&quot;weekly_points.csv&quot;</span>)
+save_results(<span class="hljs-string">&quot;results.csv&quot;</span>, weekly_points)
+</code></pre>
+<p>وعند تنفيذ الدالة الرئيسية يبدو محتوى الملف <code>results.csv</code> الناتج هكذا:</p>
+<pre><code>Peter;18;0
+Paula;34;3
+Susan;26;2
+Emily;41;5
+</code></pre>
+<p>لاحظ أن كل دالة معرّفة أعلاه بسيطة نسبيًّا، ولكل منها مسؤولية واحدة. وهذا منهج شائع ومُوصى به عند برمجة مجموعات أكبر. ويجعل مبدأ المسؤولية الواحدة التحقق من الوظائف أسهل، كما أنه يسهّل إجراء تعديلات على البرنامج لاحقًا وإضافة ميزات جديدة.</p>
+<p>فلنقول إن أردنا إضافة دالة لطباعة درجة طالب بعينه. فلدينا بالفعل دالة تحدّد درجة الطالب، لذا يمكننا استخدامها في دالتنا الجديدة:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_grade</span>(<span class="hljs-params">student_name, weekly_points</span>):
+    <span class="hljs-keyword">for</span> name, point_list <span class="hljs-keyword">in</span> weekly_points.items():
+        <span class="hljs-keyword">if</span> name == student_name:
+            <span class="hljs-keyword">return</span> grade(<span class="hljs-built_in">sum</span>(point_list))
+
+
+weekly_points = read_weekly_points(<span class="hljs-string">&quot;weekly_points.csv&quot;</span>)
+<span class="hljs-built_in">print</span>(get_grade(<span class="hljs-string">&quot;Paula&quot;</span>, weekly_points))
+
+</code></pre>
+<pre><code>3
+</code></pre>
+<p>وإذا قررنا أن وظيفة معينة في البرنامج بحاجة إلى إصلاح، فإن التغيير في البرنامج المُصمَّم جيدًا لا يمسّ إلا أقسامًا محدَّدة من الشيفرة، وسيكون تحديد مواضع التغيير أسهل. فمثلًا، لو أردنا تغيير حدود الدرجات، لكفانا بتطبيق التغيير في الدالة المخصّصة لتحديد الدرجة، وسينجح ذلك أيضًا في جميع الدوال الأخرى التي تستخدم هذه الدالة. ولو كانت شيفرة هذه الوظيفة الواحدة مُطبَّقة في مواضع متعددة، لكان هناك خطر محدَّد بأن ننسى تغيير جميع مواضعها عند تغيير الوظيفة.</p>
+<blockquote>
+<p><strong>تمرين برمجي: تقييم الدورة، الجزء 4</strong></p>
+<p>لنعد إلى مشروع درجة المقرر من القسم السابق.</p>
+</blockquote>
+<p>وكما توقفنا عند ذلك في المرة الماضية، كان البرنامج يقرأ ملفات تحتوي على معلومات الطلاب والتمارين المنجزة ونتائج الاختبارات ويعالجها. وسنضيف ملفًا يحوي معلومات عن المقرر. ومثال على صيغة الملف:</p>
+<pre><code>&lt;pre&gt;
+
+name: Introduction to Programming
+study credits: 5
+&lt;/pre&gt;
+</code></pre>
+<p>ثم ينبغي للبرنامج إنشاء ملفين. ينبغي أن يكون هناك ملف اسمه <code>results.txt</code> بالمحتوى التالي:</p>
+<pre><code>&lt;pre&gt;
+Introduction to Programming, 5 credits
+======================================
+name                          exec_nbr  exec_pts. exm_pts.  tot_pts.  grade
+pekka peloton                 21        5         9         14        0
+jaana javanainen              27        6         11        17        1
+liisa virtanen                35        8         14        22        3
+&lt;/pre&gt;
+</code></pre>
+<p>قسم الإحصاءات مطابق للنتائج المطبوعة في الجزء الثالث من المشروع. والإضافة الوحيدة هنا هي قسم الترويسة.</p>
+<p>بالإضافة إلى ذلك، ينبغي أن يكون هناك ملف اسمه <code>results.csv</code> بالصيغة التالية:</p>
+<pre><code>&lt;pre&gt;
+12345678;pekka peloton;0
+12345687;jaana javanainen;1
+12345699;liisa virtanen;3
+&lt;/pre&gt;
+</code></pre>
+<p>وعند تنفيذ البرنامج، ينبغي أن يبدو هكذا:</p>
+<pre><code>Student information: **students1.csv**
+Exercises completed: **exercises1.csv**
+Exam points: **exam_points1.csv**
+Course information: **course1.txt**
+Results written to files results.txt and results.csv
+</code></pre>
+<p>أي أن البرنامج لا يسأل إلا عن أسماء ملفات الإدخال. وينبغي كتابة كل المخرجات في الملفات. ولن يرى المستخدم سوى رسالة تؤكّد ذلك.</p>
+<p><strong>ملاحظة:</strong> لا يطلب منك هذا التمرين كتابة أي دوال، لذا ينبغي ألّا تضع أي شيفرة داخل كتلة <code>if __name__ == &quot;__main__&quot;</code>.</p>
+<blockquote>
+<p><strong>تمرين برمجي: البحث عن الكلمات</strong></p>
+<p>يضمّ قالب التمرين الملف <code>words.txt</code>، الذي يحوي كلمات بالإنجليزية.</p>
+</blockquote>
+<p>يُرجى كتابة دالة اسمها <code>find_words(search_term: str)</code>. تُعيد الدالة قائمة تحوي جميع كلمات الملف التي تطابق مصطلح البحث.</p>
+<p>وقد يحوي مصطلح البحث أحرفًا صغيرة ومحارف البدل التالية:</p>
+<ul>
+<li>يعني المحور <code>.</code> أنه يُقبَل أي محرف واحد مكانه. فمثلًا، يُرجع <code>ca.</code> كلمات مثل <em>cat</em> و_car_، ويرجع <code>p.ng</code> كلمات مثل <em>ping</em> و_pong_، ويرجع <code>.a.e</code> كلمات مثل <em>sane</em> و_care_ و_late_.</li>
+<li>تعني النجمة <code>*</code> في <em>نهاية</em> مصطلح البحث أنه يُقبَل أي كلمة <em>تبدأ</em> بمصطلح البحث. وتعني النجمة في <em>بداية</em> مصطلح البحث أنه يُقبَل أي كلمة <em>تنتهي</em> بمصطلح البحث. فمثلًا، يُرجع <code>ca*</code> كلمات مثل <em>california</em> و_cat_ و_caring_ و_catapult_، بينما يُرجع <code>*ane</code> كلمات مثل <em>crane</em> و_insane_ و_aeroplane_. ولا يمكن أن تكون هناك أكثر من نجمة واحدة في مصطلح البحث.</li>
+<li>وإذا لم تكن هناك محارف بدل في مصطلح البحث، تُعاد الكلمات التي تطابق مصطلح البحث تمامًا فقط.</li>
+</ul>
+<p>يمكنك أن تفترض أن كلا البدلتين لا تُستخدمان معًا في مصطلح البحث الواحد.</p>
+<p>وكلمات الملف مكتوبة بأحرف صغيرة. ويمكنك أيضًا أن تفترض أن وسيط الدالة سيكون بأحرف صغيرة بالكامل.</p>
+<p>وإذا لم تُعثر على كلمات مطابقة، ينبغي أن تُعيد الدالة قائمة فارغة.</p>
+<p>تلميح: قد يكون تابعا السلسلة النصية في Python وهما <code>startswith()</code> و<code>endswith()</code> مفيدين هنا. ويمكنك البحث عن مزيد من المعلومات عنهما عبر الإنترنت.</p>
+<p>ومثال على عمل الدالة:</p>
+<pre><code class="language-python"><span class="hljs-built_in">print</span>(find_words(<span class="hljs-string">&quot;*vokes&quot;</span>))
+</code></pre>
+<pre><code>['convokes', 'equivokes', 'evokes', 'invokes', 'provokes', 'reinvokes', 'revokes']
+</code></pre>
+<blockquote>
+<p><strong>تمرين برمجي: قاموس مخزَّن في ملف</strong></p>
+<p>يُرجى كتابة برنامج يعمل كقاموس. يمكن للمستخدم كتابة سطور جديدة أو البحث عن سطور موجودة.</p>
+</blockquote>
+<p>ويجب أن يعمل البرنامج على النحو التالي:</p>
+<pre><code>1 - Add word, 2 - Search, 3 - Quit
+Function: **1**
+The word in Finnish: **auto**
+The word in English: **car**
+Dictionary entry added
+1 - Add word, 2 - Search, 3 - Quit
+Function: **1**
+The word in Finnish: **roska**
+The word in English: **garbage**
+Dictionary entry added
+1 - Add word, 2 - Search, 3 - Quit
+Function: **1**
+The word in Finnish: **laukku**
+The word in English: **bag**
+Dictionary entry added
+1 - Add word, 2 - Search, 3 - Quit
+Function: **2**
+Search term: **bag**
+roska - garbage
+laukku - bag
+1 - Add word, 2 - Search, 3 - Quit
+Function: **2**
+Search term: **car**
+auto - car
+1 - Add word, 2 - Search, 3 - Quit
+Function: **2**
+Search term: **laukku**
+laukku - bag
+1 - Add word, 2 - Search, 3 - Quit
+Function: **3**
+Bye!
+</code></pre>
+<p>وتُكتب سطور القاموس في ملف اسمه <code>dictionary.txt</code>. وينبغي للبرنامج قراءة محتوى الملف أولًا. وتُكتب السطور الجديدة في نهاية الملف كلما أُضيفت إلى القاموس.</p>
+<p>وتبقى صيغة البيانات المخزّنة في القاموس اختيارًا منك.</p>
+<p><strong>ملاحظة:</strong> قد تغيّر الاختبارات الآلية لهذا التمرين محتوى الملف. إذا أردت الاحتفاظ بمحتواه، فانسخ الملف أولًا باسم مختلف.</p>
+<p><strong>ملاحظة 2:</strong> لا يطلب منك هذا التمرين كتابة أي دوال، لذا ينبغي ألّا تضع أي شيفرة داخل كتلة <code>if __name__ == &quot;__main__&quot;</code>.</p>
+<!---
+اختبار لمراجعة محتويات هذا القسم:
+
+> **اختبار:** (مكون تفاعلي غير متاح في النسخة الثابتة - ID: 69694e01-4c47-5b9d-8a00-b0d96a477dc7)
+
+-->
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/mooc/part-6/1-reading-files"><span class="prev-next__label">السابق</span> <span class="prev-next__title">قراءة الملفات</span></a><!--]--> <!--[0--><a href="../../../../book/mooc/part-6/3-errors"><span class="prev-next__label">التالي</span> <span class="prev-next__title">معالجة الأخطاء</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_bfwv11 = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.C9kBkw8T.js"),
+						import("../../../../_app/immutable/entry/app.fkPBtkuJ.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

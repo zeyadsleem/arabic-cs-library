@@ -1,0 +1,364 @@
+const s="learn-ocaml",a="ocaml-concepts",n="مفاهيم OCaml",e="index",l="مفاهيم OCaml",p=[{depth:2,id:"3-مفاهيم-ocaml-نظرة-عن-قرب",text:"3. مفاهيم OCaml: نظرة عن قرب"},{depth:3,id:"31-خوارزمية-التحقق-من-الأنواع-type-checking",text:"3.1 خوارزمية التحقق من الأنواع (type-checking)"},{depth:3,id:"32-نموذج-وقت-التشغيل-runtime-model",text:"3.2 نموذج وقت التشغيل (Runtime Model)"},{depth:3,id:"33-تحليل-زمن-تنفيذ-برنامج-analyzing-the-execution-time-of-a-program",text:"3.3 تحليل زمن تنفيذ برنامج (Analyzing the Execution Time of a Program)"},{depth:3,id:"34-تمارين",text:"3.4 تمارين"}],c=`<h2 id="3-مفاهيم-ocaml-نظرة-عن-قرب">3. مفاهيم OCaml: نظرة عن قرب</h2>
+<p>ما الذي تفعله إذا كان برنامجك سيئ الأنواع (ill-typed) أو يستهلك موارد كثيرة جدًّا (ذاكرةً أو وقتًا)؟ لتشخيص المشكلة تشخيصًا صحيحًا، لا بد من فهم كيفية عمل المترجم (compiler) والشيفرة التي ينتجها.</p>
+<p>نتناول في هذا الفصل مسائل تتعلق بالتحقق من الأنواع (type-checking)، واستخدام الذاكرة، ووقت التنفيذ.</p>
+<h3 id="31-خوارزمية-التحقق-من-الأنواع-type-checking">3.1 خوارزمية التحقق من الأنواع (type-checking)</h3>
+<p>على الرغم من أن المترجم يستنتج تلقائيًّا أنواع جميع القيم المعرَّفة في البرنامج، فقد يكون من المفيد للمبرمجين أن يمتلكوا على الأقل فهمًا حدسيًّا لقواعد الأنواع في OCaml. فهذا يساعدهم على فهم رسائل الخطأ التي قد تظهر.</p>
+<p>لحساب نوع تعبير ما، يكفي أن نجتاز تعريفه من اليسار إلى اليمين، بدءًا من النوع الأكثر عمومية ممكن، <code>’a</code>، مع تجميع قيود الأنواع.</p>
+<p>لنتأمل، على سبيل المثال، تعريف الدالة التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> f x y = <span class="hljs-keyword">if</span> x y <span class="hljs-keyword">then</span> <span class="hljs-literal">[]</span> <span class="hljs-keyword">else</span> [y + <span class="hljs-number">1</span>]
+</code></pre>
+<p>نبدأ بإعادة كتابة هذا التعريف على النحو التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> f = <span class="hljs-keyword">fun</span> x -&gt; <span class="hljs-keyword">fun</span> y -&gt; <span class="hljs-keyword">if</span> x y <span class="hljs-keyword">then</span> <span class="hljs-literal">[]</span> <span class="hljs-keyword">else</span> [y + <span class="hljs-number">1</span>]
+</code></pre>
+<p>بعد ذلك، لنفترض:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">val</span> f : ’a
+</code></pre>
+<p>بما أن <code>f</code> تعبير من الشكل <code>funx-&gt;e1</code>، نستنتج أن <code>’a</code> يجب أن يكون نوع دالة، هو <code>’a1-&gt;’a2</code>:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">val</span> f : ’a1 -&gt; ’a2
+</code></pre>
+<p>وبالمثل، فإن <code>e1</code> دالة من الشكل <code>funy-&gt;e2</code>، ومن ثمَّ فإن <code>’a2</code> يساوي نوعًا من الشكل <code>’b1-&gt;’b2</code>:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">val</span> f : ’a1 -&gt; ’b1 -&gt; ’b2
+</code></pre>
+<p>نستخرج الآن قيود الأنواع المفروضة على المتغيرات <code>’a1</code> و<code>’b1</code> و<code>’b2</code> والناشئة عن التعبير <code>e2</code>، الذي يساوي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">if</span> x y <span class="hljs-keyword">then</span> <span class="hljs-literal">[]</span> <span class="hljs-keyword">else</span> [y + <span class="hljs-number">1</span>]
+</code></pre>
+<p>من تطبيق الدالة <code>xy</code>، نستنتج أن <code>x</code> دالة. وبعبارة أخرى، فإن <code>’a1</code> يساوي نوعًا من الشكل <code>’c1-&gt;’c2</code>. وعليه نحصل على:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">val</span> f : (’c1 -&gt; ’c2) -&gt; ’b1 -&gt; ’b2
+</code></pre>
+<p>بعد ذلك، بما أن <code>y</code> يُمرَّر وسيطًا إلى <code>x</code>، نستنتج أن المتغير <code>’c1</code> يساوي <code>’b1</code>، بحيث يصبح نوع <code>f</code>:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">val</span> f : (’b1 -&gt; ’c2) -&gt; ’b1 -&gt; ’b2
+</code></pre>
+<p>علاوة على ذلك، بما أن <code>xy</code> يُستخدم شرطًا في بنية <code>if</code>، نستنتج أن <code>’c2</code> يساوي <code>bool</code>:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">val</span> f : (’b1 -&gt; <span class="hljs-built_in">bool</span>) -&gt; ’b1 -&gt; ’b2
+</code></pre>
+<p>يُرجع الفرع الأول من <code>if</code> القائمة الفارغة <code>[]</code>. وعليه، فإن <code>’b2</code> يساوي <code>’dlist</code>:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">val</span> f : (’b1 -&gt; <span class="hljs-built_in">bool</span>) -&gt; ’b1 -&gt; ’d <span class="hljs-built_in">list</span>
+</code></pre>
+<p>أخيرًا، يوفّر الفرع الثاني <code>[y+1]</code> القيدين الأخيرين. من عملية الجمع <code>y+1</code>، نستنتج أن <code>y</code> من النوع <code>int</code>. وعليه فإن القائمة <code>[y+1]</code> من النوع <code>intlist</code>، والمتغير <code>’d</code> يساوي <code>int</code>. ومن ثمَّ فإن النوع الكامل للدالة <code>f</code> هو:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">val</span> f : (<span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">bool</span>) -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span>
+</code></pre>
+<p>لندرس الآن حالة دالة سيئة الأنواع. تأخذ الدالة <code>g</code> أدناه وسيطين، هما <code>x</code> و<code>y</code>. وتكتشف خوارزمية استنتاج الأنواع (type inference) الخطأ التالي:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> g x y = <span class="hljs-keyword">if</span> x y <span class="hljs-keyword">then</span> [x] <span class="hljs-keyword">else</span> [y] ;;
+  <span class="hljs-type">Error</span>: <span class="hljs-type">This</span> expression has <span class="hljs-keyword">type</span> ’a but an expression was expected
+         <span class="hljs-keyword">of</span> <span class="hljs-keyword">type</span> ’a -&gt; <span class="hljs-built_in">bool</span>
+         <span class="hljs-type">The</span> <span class="hljs-keyword">type</span> variable ’a occurs inside ’a -&gt; <span class="hljs-built_in">bool</span>
+</code></pre>
+<p>الخطوات الأولية في تحديد نوع <code>g</code> هي نفسها في حالة <code>f</code>. وهكذا، بعد فحص التعبير <code>xy</code>، نستنتج أن <code>g</code> له النوع التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">val</span> g : (’b1 -&gt; <span class="hljs-built_in">bool</span>) -&gt; ’b1 -&gt; ’b2
+</code></pre>
+<p>يُرجع الفرع الأول من <code>if</code> القائمة <code>[x]</code>. وعليه، يجب أن يساوي المتغير <code>’b2</code> النوع <code>(’b1-&gt;bool)list</code>. وبالمثل، يُرجع الفرع الثاني القائمة <code>[y]</code>. لذا يجب أن يكون <code>’b2</code> من النوع <code>’b1list</code>. وعليه، لكي تكون <code>g</code> جيدة الأنواع، يجب أن يتساوى النوعان <code>(’b1-&gt;bool)list</code> و<code>’b1list</code>. وهذا يستلزم أن تكون لمعادلة الأنواع <code>’b1=’b1-&gt;bool</code> حلٌّ، وهو أمر غير ممكن في OCaml (ما لم نُمكّن الخيار <code>-rectypes</code> في المترجم أو المفسّر). نفهم الآن رسالة الخطأ أعلاه: فهي تشير إلى أن المتغير <code>y</code> من النوع <code>’a</code>، بينما يجب أن يكون من النوع <code>’a-&gt;bool</code>، وهو أمر غير ممكن لأن المتغير <code>’a</code> يظهر داخل النوع <code>’a-&gt;bool</code>.</p>
+<p>بشكل عام، لتحديد نوع برنامج، أو لفهم أخطاء الأنواع فيه، لا بد من معرفة قيود الأنواع التي تفرضها بنى اللغة. نقدّم هنا قائمة (غير شاملة) بهذه القيود.</p>
+<h4>إذا-فإن-وإلا (If-then-else)</h4>
+<p>في الشرط <code>ife1thene2elsee3</code>، يجب أن يكون التعبير <code>e1</code> من النوع <code>bool</code>، ويجب أن يكون التعبيران <code>e2</code> و<code>e3</code> من النوع نفسه، أيًّا كان. ونوع الشرط هو نوع <code>e2</code> (ومن ثمَّ أيضًا نوع <code>e3</code>).</p>
+<h4>إذا-فإن (If-then)</h4>
+<p>التعبير الشرطي <code>ife1thene2</code> (من دون فرع <code>else</code>) من النوع <code>unit</code>. ويجب أن يكون التعبير <code>e1</code> من النوع <code>bool</code> و<code>e2</code> من النوع <code>unit</code>.</p>
+<h4>حلقة while (While)</h4>
+<p>في الحلقة <code>whilee1doe2done</code>، يجب أن يكون التعبير <code>e1</code> من النوع <code>bool</code> و<code>e2</code> من النوع <code>unit</code>. وحلقة <code>while</code> من النوع <code>unit</code>.</p>
+<h4>حلقة for (For)</h4>
+<p>في الحلقة <code>fori=e1toe2doe3done</code>، يجب أن يكون التعبيران <code>e1</code> و<code>e2</code> من النوع <code>int</code> والتعبير <code>e3</code> من النوع <code>unit</code>. وحلقة <code>for</code> من النوع <code>unit</code>.</p>
+<h4>التتابع (Sequence)</h4>
+<p>في التتابع <code>e1;e2</code>، يجب أن يكون التعبير <code>e1</code> من النوع <code>unit</code> بينما قد يكون <code>e2</code> من أي نوع. ونوع <code>e2</code> هو الذي يحدد نوع التتابع. وإذا لم يكن <code>e1</code> من النوع <code>unit</code>، يمكننا كتابة <code>let_=e1ine2</code> أو <code>ignoree1;e2</code>.</p>
+<h4>التعريف (Declaration)</h4>
+<p>في التعريف <em>المحلي</em> <code>letp=e1ine2</code>، يجب أن يكون النمط <code>p</code> والتعبير <code>e1</code> من النوع نفسه. وقد يكون التعبير <code>e2</code> من أي نوع. وهذا أيضًا هو نوع التعريف. وفي التعريف <em>العالمي</em> <code>letp=e</code>، يجب أن يكون نوع <code>p</code> مطابقًا لنوع <code>e</code>.</p>
+<h4>الدالة (Function)</h4>
+<p>الدالة من الشكل <code>functionp-&gt;e</code> أو <code>funp-&gt;e</code> من النوع <code>t1-&gt;t2</code>، حيث <code>t1</code> هو نوع النمط <code>p</code> و<code>t2</code> هو نوع التعبير <code>e</code>.</p>
+<h4>التطبيق (Application)</h4>
+<p>يتطلب التطبيق <code>e1e2</code> أن يكون <code>e1</code> من النوع <code>t1-&gt;t2</code> وأن يكون <code>e2</code> من النوع <code>t1</code>. ونوع نتيجة التطبيق هو <code>t2</code>.</p>
+<h4>المطابقة (Pattern Matching)</h4>
+<p>لنتأمل بنية المطابقة (pattern matching):</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">match</span> e <span class="hljs-keyword">with</span>
+   | p1 <span class="hljs-keyword">when</span> b1 -&gt; e1
+   | ...
+   | pk <span class="hljs-keyword">when</span> bk -&gt; ek
+</code></pre>
+<p>القيود المرتبطة هي أن جميع التعبيرات <code>e1</code>، …، <code>ek</code> يجب أن تكون من النوع نفسه، وأن جميع التعبيرات <code>b1</code>، …، <code>bk</code> يجب أن تكون من النوع <code>bool</code>. ويجب أن تكون جميع الأنماط <code>p1</code>، …، <code>pk</code> من النوع نفسه الذي عليه <code>e</code>. والنوع الكلي لهذه البنية هو نوع التعبيرات <code>e1</code>، …، <code>ek</code>.</p>
+<h4>الاستثناء (Exception)</h4>
+<p>لنتأمل كتلة <code>try-with</code> من الشكل:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">try</span>
+   e
+  <span class="hljs-keyword">with</span>
+   | p1 -&gt; e1
+   | ...
+   | pk -&gt; ek
+</code></pre>
+<p>هنا، يجب أن تكون جميع التعبيرات <code>e</code>، <code>e1</code>، …، <code>ek</code> من النوع نفسه. ويجب أن تشير الأنماط <code>p1</code>، …، <code>pk</code> إلى استثناءات (من النوع المعرَّف مسبقًا <code>exn</code>). ونوع كتلة <code>try-with</code> هو نوع التعبير <code>e</code>.</p>
+<h3 id="32-نموذج-وقت-التشغيل-runtime-model">3.2 نموذج وقت التشغيل (Runtime Model)</h3>
+<p>كقاعدة عامة، للاستفادة المثلى من لغة برمجة ما، من المفيد فهم نموذج وقت التشغيل (runtime model) الخاص بها. وOCaml ليست استثناءً في هذا الشأن. ونعني بنموذج وقت التشغيل التعقيد الزمني (انظر القسم التالي) والتعقيد المكاني لمختلف بنى اللغة. وحتى إن كان بإمكاننا غالبًا تجاهل هذه التعقيدات بالبقاء عند مستوى أعلى من التجريد، فمن الجدير بالجهد فهمها.</p>
+<h4>تمثيل القيم (Value Representation)</h4>
+<p>نبدأ بشرح تمثيلات الذاكرة لقيم OCaml. تشغل قيمة OCaml كلمة ذاكرة واحدة بالضبط (32 أو 64 بت، حسب المعمارية). وإذا اعتبرنا هذه الكلمة عددًا صحيحًا، أمكننا التمييز بين حالتين، حسب كون العدد زوجيًّا أو فرديًّا:</p>
+<ul>
+<li>إذا كان عددًا صحيحًا فرديًّا 2n + 1، فإننا نفسّره على أنه القيمة الصحيحة n؛</li>
+<li>وإذا كان عددًا صحيحًا زوجيًّا، فإننا نفسّره على أنه مؤشر (pointer).</li>
+</ul>
+<p>باختصار، قيمة OCaml إما عدد صحيح وإما مؤشر. فإذا كانت عددًا صحيحًا، فيمكنها تمثيل قيمة من النوع <code>int</code>، أو حرف، أو قيمة منطقية، أو حتى باني ثابت (constant constructor) مثل <code>[]</code> أو <code>None</code>. لاحظ أن هذا يفسّر قصر النوع <code>int</code> على 31 بت (63 بت في آلة 64 بت)، كما ذُكر سابقًا. أما إذا كانت القيمة مؤشرًا، فإنه يشير إلى <em>كتلة</em> (block) مخصَّصة في الذاكرة. وتشغل الكتلة k + 1 كلمة ذاكرة، مع k ≥ 1.</p>
+<p>وتؤدي الكلمة الأولى من الكتلة، المسماة <em>الترويسة</em> (header)، دورًا خاصًّا سنشرحه لاحقًا. وتحتوي الكلمات k التالية على قيم OCaml، ونقول إن k هو حجم الكتلة. وسنُمثّل كتلة بحجم 5 على النحو التالي:</p>
+<p>وهكذا، يُمثَّل الزوج <code>(1,2)</code> بمؤشر إلى كتلة تحتوي على قيمتين، هما القيمتان الصحيحتان 3 و5 اللتان تمثّلان على التوالي العددين الصحيحين 1 و2:</p>
+<p>وبشكل أعم، يُمثَّل الصفّ المكوَّن من n عنصرًا (n-tuple) بمؤشر إلى كتلة بحجم n. كما تُمثَّل المصفوفات والسجلات في الذاكرة بمؤشرات إلى كتل. وهكذا، فإن المصفوفة <code>[|1;2|]</code> والسجل {a=1; b=2} لهما <em>بالضبط</em> التمثيل نفسه في الذاكرة الذي للزوج <code>(1,2)</code>. وقد شرحنا سابقًا أن المرجع ليس إلا حالة خاصة من السجلات، بحقل واحد هو <code>contents</code> (انظر المعلومات الإضافية في القسم <a href="https://usr.lmf.cnrs.fr/lpo/mainch2.html#drawing-a-curve"><em>2.6</em></a> <em>تتبّع منحنى</em>). ونستنتج من ذلك أن القيمة <code>ref1</code> تُمثَّل في الذاكرة على هيئة كتلة بحجم 1، أي:</p>
+<p>وتعني صفة <code>mutable</code> للحقل <code>contents</code> أن القيمة الموجودة في هذه الكتلة، وهي هنا 3، يمكن تعديلها في مكانها. وينطبق الأمر نفسه على قيم المصفوفة.</p>
+<p>لنتأمل الآن تمثيل الأنواع الملموسة. الفكرة بسيطة: تُمثَّل البواني الثابتة أعدادًا صحيحة، بينما تُمثَّل البواني الأخرى بـ(مؤشرات إلى) كتل. خذ على سبيل المثال النوع:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> t = <span class="hljs-type">A</span> | <span class="hljs-type">B</span> <span class="hljs-keyword">of</span> t * t | <span class="hljs-type">C</span> | <span class="hljs-type">D</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">char</span>
+</code></pre>
+<p>يُمثَّل البانيان الثابتان <code>A</code> و<code>C</code> بالعددين الصحيحين 1 و3 على التوالي. ويُمثَّل البانيان غير الثابتين <code>B</code> و<code>D</code> بمؤشرين إلى كتلتين بحجم 2 و1 على التوالي. وهكذا، تقابل القيمة <code>B(A,B(D’a’,C))</code> ثلاث كتل، على النحو التالي:</p>
+<p>هنا، تقابل القيمة 195 المقدار 2 × 97 + 1، حيث 97 هو رمز الحرف <code>’a’</code>.</p>
+<p>وللوصول الأسرع، يشير المؤشر إلى الكتلة إلى حقلها الأول بدلًا من ترويستها. وتحتوي هذه الأخيرة على وسم الباني (tag)، وهنا <code>B</code> أو <code>D</code>. وتُستخدم هذه المعلومة بخاصة عند المطابقة (pattern matching).</p>
+<p>لنتأمل نوع القوائم كمثال ثانٍ: يُمثَّل الباني الثابت <code>[]</code> بالعدد الصحيح 1. ويُمثَّل الباني <code>::</code> بـ(مؤشر إلى) كتلة بحجم 2. وعليه تُمثَّل القائمة <code>1::2::3::[]</code> في الذاكرة على النحو التالي:</p>
+<p>نلاحظ أن قوائم OCaml لا تختلف جوهريًّا عن القوائم المترابطة (linked lists) المستخدمة في C أو Java. فعندما يتعامل برنامج OCaml مع القوائم (بتمريرها وسائط إلى الدوال، أو إرجاعها، وما إلى ذلك)، فإنه لا يتعامل إلا مع المؤشرات إلى الكتل، تمامًا كما يفعل برنامج بلغة C أو Java. والفرق الجوهري أن OCaml لا تسمح إلا ببناء قوائم سليمة البنية، ذلك أن المؤشرات ليست صريحة في اللغة. فبينما يضطر المبرمجون بلغة C أو Java إلى <em>التفكير</em> في التحقق مما إذا كان المؤشر <code>null</code>، يستخدم المبرمجون بلغة OCaml بنية مطابقة (pattern matching) <em>تُلزمهم</em> بالنظر في هذه الحالة، وبصياغة موجزة جدًّا كذلك.</p>
+<p>بشكل عام، تحتوي الترويسة على وسم الكتلة. وإلى جانب الحالات التي وضّحناها، يمكن للترويسة أيضًا أن تحدد عددًا عشريًّا (floating-point number)، أو مصفوفة أعداد عشرية، أو سلسلة نصية، أو كائنًا، أو دالة، وما إلى ذلك. لاحظ أن الوسم يوفّر قدرًا أقل بكثير من المعلومات من نوع القيمة. وبشكل عام، لا يتضمن تمثيل الذاكرة لقيم OCaml معلومات الأنواع. وتوفّر المكتبة القياسية في OCaml وحدة <code>Obj</code> يمكن استخدامها لاستكشاف هذا التمثيل. وهكذا يمكننا اختبار ما إذا كانت قيمة ممثَّلة ككتلة، وإن كان الأمر كذلك نستعيد وسمها وحجمها وحقولها، وما إلى ذلك. ويجب استخدام هذه الوحدة بحذر نظرًا لطبيعتها غير المصنَّفة الأنواع بشدة.</p>
+<h4>الترميز (Notation)</h4>
+<p>في ما يلي، سنبسّط التمثيل البياني لقيم OCaml: لن تُرسم الترويسات، ولن تُحوَّل القيم الصحيحة باستخدام n↦2n + 1. وهكذا، ستُمثَّل القائمة <code>[1;2;3]</code> ببساطة على النحو التالي:</p>
+<h4>معامِلات المقارنة (Comparison Operators)</h4>
+<p>يمكن تطبيق معامِل التساوي <code>=</code> الذي استخدمناه سابقًا عدة مرات على أي قيمتين، بشرط أن تكونا من النوع نفسه. وهكذا، يمكننا استخدامه لمقارنة قيم من النوع التالي:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">type</span> ty = <span class="hljs-type">D</span> | <span class="hljs-type">A</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">int</span> | <span class="hljs-type">B</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">bool</span> | <span class="hljs-type">C</span>;;
+  <span class="hljs-keyword">type</span> ty = <span class="hljs-type">D</span> | <span class="hljs-type">A</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">int</span> | <span class="hljs-type">B</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">bool</span> | <span class="hljs-type">C</span>
+  # <span class="hljs-type">A</span> <span class="hljs-number">1</span> = <span class="hljs-type">A</span> <span class="hljs-number">1</span> ;;
+  - : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">true</span>
+  # <span class="hljs-type">D</span> = <span class="hljs-type">B</span> <span class="hljs-literal">true</span> ;;
+  - : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">false</span>
+</code></pre>
+<p>يقارن هذا المعامِل بين بنيتَي قيمتين، ولذلك فهو يقابل المفهوم الرياضي المعتاد للمساواة. ويُسمّى معامِل <em>التساوي البنيوي</em> (structural equality). وتُكتب نقيضه على الصورة <code>&lt;&gt;</code>.</p>
+<p>كما توفّر OCaml معامِل تساوٍ آخر هو <code>==</code>. ويُسمّى معامِل <em>التساوي الفيزيائي</em> (physical equality). وتُكتب نقيضه على الصورة <code>!=</code>. ويقارن المعامِل <code>==</code> بين القيم كأعداد صحيحة، حتى لو كانت هذه الأعداد تمثّل عناوين ذاكرة. وبناءً على ذلك، يمكننا أن نلاحظ أن تطبيقَي بانيين يخصّصان كتلتي ذاكرة مختلفتين:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-type">A</span> <span class="hljs-number">1</span> == <span class="hljs-type">A</span> <span class="hljs-number">1</span> ;;
+  - : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">false</span>
+</code></pre>
+<p>الآن بعد أن عرفنا كيف تُمثَّل قيم OCaml، يمكننا أن نستنتج كذلك أن <code>=</code> و<code>==</code> يتطابقان على قيم كالأعداد الصحيحة والأحرف والبواني الثابتة. أما في حالة الأنواع الأكثر تعقيدًا، فالتنبؤ بنتيجة مقارنة باستخدام التساوي الفيزيائي أصعب. إذ يلزم أن يكون لدينا فهم دقيق لكيفية إدارة المترجم لتخصيص الذاكرة.</p>
+<p>وينتهي معامِل التساوي الفيزيائي <em>دائمًا</em> في زمن ثابت، بينما قد يستغرق التساوي البنيوي زمنًا اعتباطيًّا، بل قد يدخل في حلقة لا نهائية على بيانات دائرية. ولنوضّح هذه النقطة بمثال. ننشئ قائمة دائرية <code>l</code> باستخدام ميزة في OCaml تتيح لنا تعريف قيمة باستخدام <code>let-rec</code>:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> l = <span class="hljs-number">1</span> :: l ;;
+  l : <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span> = [<span class="hljs-number">1</span>; <span class="hljs-number">1</span>; <span class="hljs-number">1</span>; ... ]
+</code></pre>
+<p>ينتهي تقييم <code>l==l</code> بينما لا ينتهي تقييم <code>l=l</code>.</p>
+<pre><code class="language-ocaml">  # l == l ;;
+  - : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">true</span>
+  # l = l ;;
+</code></pre>
+<p>توفّر OCaml معامِلات مقارنة بنيوية أخرى: من جهة، \`\`, <code>=</code> من النوع <code>’a-&gt;’a-&gt;bool</code>؛ ومن جهة أخرى، علاقة ترتيب <code>Stdlib.compare</code> من النوع <code>’a-&gt;’a-&gt;int</code>، متوافقة مع المعامِلات السابقة.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-type">C</span> &lt; <span class="hljs-type">A</span> <span class="hljs-number">1</span> ;;
+  - : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">true</span>
+  # <span class="hljs-type">A</span> <span class="hljs-number">1</span> &lt; <span class="hljs-type">B</span> <span class="hljs-literal">true</span> ;;
+  - : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">true</span>
+  # <span class="hljs-type">Stdlib</span>.compare (<span class="hljs-type">A</span> <span class="hljs-number">1</span>) (<span class="hljs-type">B</span> <span class="hljs-literal">true</span>);;
+  - : <span class="hljs-built_in">int</span> = -<span class="hljs-number">1</span>
+</code></pre>
+<p>تستند معامِلات المقارنة إلى التمثيل الموحَّد للقيم الذي شرحناه سابقًا. غير أن تعريفها يبقى اعتباطيًّا ومرتبطًا كليًّا بالتمثيل الداخلي للقيم في اللغة. ومع ذلك، يبقى من المفيد وجود علاقة ترتيب «عامة»، حتى وإن كانت اعتباطية.</p>
+<p>على سبيل المثال، يمكننا استخدام <code>Stdlib.compare</code> لبناء بُنى معقّدة تتطلب علاقة ترتيب، مثل المجموعات (sets):</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">module</span> <span class="hljs-type">S</span> = <span class="hljs-type">Set</span>.<span class="hljs-type">Make</span>(
+       <span class="hljs-keyword">struct</span> <span class="hljs-keyword">type</span> t = ty
+              <span class="hljs-keyword">let</span> compare = <span class="hljs-type">Stdlib</span>.compare
+       <span class="hljs-keyword">end</span>);;
+</code></pre>
+<p>هنا، ليس تعريف <code>Stdlib.compare</code> مهمًّا ما دام علاقة ترتيب. ومع ذلك، إذا دعت الحاجة إلى مفهوم مقارنة محدَّد، توجّب تعريفه.</p>
+<h4>دوال عامة أخرى (Other Generic Functions)</h4>
+<p>توفّر OCaml دوال عامة أخرى، مثل:</p>
+<ul>
+<li>دالة تجزئة (hash function) هي Hashtbl.hash من النوع ’a -&gt; int؛</li>
+<li>دوال التسلسل (marshalling functions)، المذكورة سابقًا (انظر المعلومات الإضافية في القسم 2.7 نسخ ملف).</li>
+</ul>
+<h4>الإدارة التلقائية للذاكرة (Automatic Memory Management)</h4>
+<p>كما في لغات أخرى، مثل Lisp وJava، فإن إدارة الذاكرة في OCaml آلية. وهذا يعني أن المبرمج يحدّد عمليات التخصيص صراحةً (ببناء مصفوفة أو سجل، أو تطبيق باني، وما إلى ذلك) لكنه لا يحدّد <em>عمليات التحرير</em>. ويُنفَّذ التحرير تلقائيًّا بواسطة <em>جامع المهملات</em> (garbage collector, GC). يرتبط عمل جامع المهملات (GC) ارتباطًا وثيقًا بتمثيل قيم OCaml. فمن جهة، يستطيع جامع المهملات التمييز بين المؤشرات والقيم الأخرى بفحص زوجية القيمة. ومن جهة أخرى، في حالة كتلة، تحتوي الترويسة على المعلومات التي يحتاجها جامع المهملات: الوسم (كما شُرح أعلاه)، وحجم الكتلة، وبضع بتات لتمييز الكتلة بأنها قيد الاستخدام. وهكذا، في معمارية 32 بت، تكون الترويسة على الشكل التالي:</p>
+<table>
+<thead>
+<tr>
+<th>31</th>
+<th>…</th>
+<th>10</th>
+<th>9</th>
+<th>8</th>
+<th>7</th>
+<th>…</th>
+<th>0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>الحجم</td>
+<td>GC</td>
+<td>الوسم</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>بما أن حجم الكتلة مُرمَّز في 22 بت، فإنه محدود نسبيًّا (حتى 222 − 1، أي 4194303). وهذا، على سبيل المثال، هو الحجم الأقصى لمصفوفات OCaml. ويمكن الحصول عليه باستخدام <code>Sys.max_array_length</code>. أما الحجم الأقصى للسلاسل النصية فهو أكبر بأربعة أضعاف، لأن للسلاسل النصية تمثيلًا أكثر إحكامًا من المصفوفات. وهكذا، <code>Sys.max_string_length</code> = 224 − 5 = 16777211. أما في آلة 64 بت، فهذه الحدود تتجاوز بكثير ما يمكن تخصيصه في الذاكرة (على التوالي 254 − 1 و257 − 9).</p>
+<h4>تمثيل الدوال (Representation of Functions)</h4>
+<p>كلما أمكن استخدام دالة كقيمة من الرتبة الأولى (first-class value) (انظر القسم <a href="https://usr.lmf.cnrs.fr/lpo/mainch2.html#drawing-a-curve"><em>2.6</em></a> <em>تتبّع منحنى</em>)، فإنها تُمثَّل بمؤشر إلى كتلة. ونتحدث حينئذ عن <em>إغلاق</em> (closure). ويحتوي الإغلاق على شيئين:</p>
+<ul>
+<li>مؤشر إلى الشيفرة المراد تنفيذها؛</li>
+<li>قيم المتغيرات التي قد تستخدمها هذه الشيفرة، وتُسمّى البيئة (environment).</li>
+</ul>
+<p>وبالتالي يتكوّن إنشاء الإغلاق من تخصيص كتلة يتحدَّد حجمها بحجم البيئة، أي بعدد المتغيرات الحرة في جسم الدالة. وبالمقابل، يتكوّن تطبيق إغلاق f على قيمة v من استدعاء الدالة التي يشير إليها مؤشر الشيفرة في f وتمرير وسيطين إلى الدالة، هما البيئة (على هيئة الإغلاق f نفسه) والقيمة v. لنتأمل المثال التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> diff_quotient dx f x = (f (x +. dx) -. f x) /. dx
+  <span class="hljs-keyword">let</span> derivative = diff_quotient <span class="hljs-number">1e-10</span>
+  <span class="hljs-keyword">let</span> my_cos = derivative sin
+</code></pre>
+<p>القيمة <code>derivative</code> دالة ناتجة عن التطبيق الجزئي للدالة <code>diff_quotient</code>. وتُمثَّل بإغلاق يوافق مؤشر شيفرته <code>funf-&gt;funx-&gt;...</code>، وتحتوي بيئته على قيمة <code>dx</code>، وهي <code>1e-10</code>. وبالمثل، فإن قيمة <code>my_cos</code> إغلاق يوافق مؤشر شيفرته <code>funx-&gt;...</code>، وتحتوي بيئته على قيمتي <code>dx</code> (وهي <code>1e-10</code>) و<code>f</code> (وهي <code>sin</code>). والقيمة <code>sin</code> مثال آخر على إغلاق بيئته فارغة.</p>
+<h3 id="33-تحليل-زمن-تنفيذ-برنامج-analyzing-the-execution-time-of-a-program">3.3 تحليل زمن تنفيذ برنامج (Analyzing the Execution Time of a Program)</h3>
+<p>مما سبق، يمكننا أن نستنتج عددًا من الحقائق المتعلقة بالتعقيد الزمني لعمليات OCaml:</p>
+<ul>
+<li>يتناسب تطبيق باني غير ثابت مع عدد الحقول، لأنه يتكوّن من إسناد وسائط الباني إلى حقول الكتلة. وبما أن عدد وسائط الباني معروف ساكنًا (statically)، فإن هذه العملية تستغرق زمنًا ومساحة ثابتين.</li>
+<li>كما يستغرق تطبيق دالة زمنًا ثابتًا، بغض النظر عن كيفية بناء الدالة. وبطبيعة الحال، نتحدث هنا عن عملية التطبيق فقط، لا عن كلفة تقييم الوسائط أو الدالة نفسها؛ فقد تكون هذه باهظة الكلفة بشكل اعتباطي.</li>
+</ul>
+<p>في ما يلي، نقدّم عدة أدوات عملية ونظرية لقياس زمن تنفيذ برنامج وتحليله.</p>
+<h4>قياس زمن التنفيذ (Measuring Execution Time)</h4>
+<p>من السهل قياس الزمن الكلي لتنفيذ برنامج باستخدام ساعة توقيت، أو أفضل من ذلك، باستخدام أداة توفّرها نظم التشغيل. ويمكن قياس زمن تنفيذ <em>جزء</em> من برنامج OCaml بالسهولة نفسها، وبدقة كبيرة، باستخدام الدالة <code>Unix.times</code> من الوحدة <code>Unix</code>. تُرجع هذه الدالة سجلًا يحتوي حقله <code>tms_utime</code> على الزمن المنقضي منذ بدء البرنامج. وهو عدد عشري (floating-point number)، معبَّر عنه بالثواني، بدقة تفوق الميلي ثانية. وبحساب الفرق بين القيمتين اللتين تُرجعهما هذه الدالة عند نقطتين مختلفتين من البرنامج، نستنتج الزمن الدقيق لتنفيذ ذلك الجزء من الشيفرة. وعادةً نكتب شيئًا من قبيل:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> start = (times <span class="hljs-literal">()</span>).tms_utime <span class="hljs-keyword">in</span>
+  ...
+  <span class="hljs-keyword">let</span> stop = (times <span class="hljs-literal">()</span>).tms_utime <span class="hljs-keyword">in</span>
+</code></pre>
+<p>يمكننا بعد ذلك حساب الزمن المنقضي باستخدام <code>stop-.start</code>. ويركّز التمرينان <a href="#x13-130001r3">3.3</a> و<a href="#x13-130002r4">3.4</a> على كتابة شيفرة عامة لمثل هذه القياسات.</p>
+<h4>مفاهيم غير صورية للتعقيد (Informal Notions of Complexity)</h4>
+<p>من المفيد قياس زمن تنفيذ برنامج لتقييم كفاءته، على سبيل المثال لمقارنته ببرنامج آخر، وكذلك لتحديد ما إذا كان يمكن استخدامه لحل مسألة معيّنة. فإذا كتبنا برنامجًا يفرز مصفوفة من n مدخلة، أمكننا قياس زمن تنفيذه لقيم صغيرة من n ثم محاولة الاستقراء إلى قيم أكبر. فإذا تمكّنّا، على سبيل المثال، من فرز n = 1000 مدخلة في جزء من مئة من الثانية، ولاحظنا أن زمن التنفيذ يتضاعف أربع مرات كلما تضاعفت n، فيمكننا أن نقدّر أننا سنحتاج إلى أكثر من ساعتين ونصف لفرز مليون مدخلة.</p>
+<p>يُعرَّف <em>تعقيد</em> برنامج، أو بشكل أعم تعقيد خوارزمية، بأنه عدد العمليات الأولية التي يجب أن ينفّذها بدلالة حجم بيانات الإدخال. وفي المثال أعلاه، يمكن التعبير عن التعقيد بدالة f للعدد n من المدخلات: f(n) هو عدد العمليات الأولية المنفَّذة لفرز n من المدخلات.</p>
+<p><strong>الشكل 3.1: زمن تنفيذ f(n) عملية، بافتراض مليار عملية في الثانية. لاحظ أن «–» تشير إلى أن الزمن أقل من ثانية واحدة، وأن «∞» تشير إلى أنه أكبر من سنة.</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>f(n) =</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>n</td>
+<td>log n</td>
+<td>n</td>
+<td>nlog n</td>
+<td>n2</td>
+<td>n3</td>
+<td>2n</td>
+</tr>
+<tr>
+<td>101</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+</tr>
+<tr>
+<td>102</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>∞</td>
+</tr>
+<tr>
+<td>103</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>1 s</td>
+<td>∞</td>
+</tr>
+<tr>
+<td>104</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>17 m</td>
+<td>∞</td>
+</tr>
+<tr>
+<td>105</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>10 s</td>
+<td>12 j</td>
+<td>∞</td>
+</tr>
+<tr>
+<td>106</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>17 m</td>
+<td>∞</td>
+<td>∞</td>
+</tr>
+<tr>
+<td>107</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>1 j</td>
+<td>∞</td>
+<td>∞</td>
+</tr>
+<tr>
+<td>108</td>
+<td>–</td>
+<td>–</td>
+<td>2 s</td>
+<td>116 j</td>
+<td>∞</td>
+<td>∞</td>
+</tr>
+<tr>
+<td>109</td>
+<td>–</td>
+<td>1 s</td>
+<td>21 s</td>
+<td>∞</td>
+<td>∞</td>
+<td>∞</td>
+</tr>
+</tbody>
+</table>
+<p>ونعني بالعمليات الأولية العمليات الذرية بالنسبة إلى الآلة، مثل الجمع. وبافتراض أن آلة هذه الأيام تنفّذ مليار عملية في الثانية، يعطي الشكل <a href="#execution-time-of-fn-operations-assuming-a-billion-operations-per-second-note-that-indicates-that-the-time-is-less-than-one-second-and-that-it-is-greater-than-one-year">3.1</a> زمن تنفيذ f(n) عملية لدوال مختلفة f.</p>
+<p>عمليًّا، ليست الطبيعة الدقيقة للعمليات الأولية ولا كلفتها النسبية ذات أهمية. ويمكننا أن نسمّي أي عملية كلفتها الزمنية ثابتة عمليةً أولية. ويشمل ذلك العمليات الحسابية، وتطبيقات الدوال والبواني، والإسنادات، وما إلى ذلك. ويكفي أن نحتفظ بالمبدأ التالي: يمكن تنفيذ مليون عملية أولية لحظيًّا، ومليار عملية في بضع عشرات من الثواني، وتريليون عملية على مدى عدة ساعات.</p>
+<h4>تحليل التعقيد (Complexity Analysis)</h4>
+<p>بدلًا من التقييمات التجريبية، يمكننا تحليل شيفرة برنامج لحساب عدد العمليات الأولية التي سينفّذها. ولنفترض، على سبيل المثال، أن برنامج الفرز لدينا مكتوب على هيئة حلقتين متداخلتين، على النحو التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">for</span> i = <span class="hljs-number">1</span> <span class="hljs-keyword">to</span> n - <span class="hljs-number">1</span> <span class="hljs-keyword">do</span>
+    <span class="hljs-keyword">for</span> j = i <span class="hljs-keyword">downto</span> <span class="hljs-number">1</span> <span class="hljs-keyword">do</span>
+      ...
+</code></pre>
+<p>هنا، نفترض أن الشيفرة المحذوفة (المشار إليها بـ <code>...</code>) لا تحتوي إلا على عدد منتهٍ من العمليات الأولية، ولتكن C. ويمكننا حينئذ أن نستنتج أن التعقيد الكلي يساوي بالضبط:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn><mo>∑</mo><mi>n</mi><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>−</mo><mi>f</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mi>C</mi><mo>×</mo><mi>i</mi><mo>=</mo><mi>C</mi><mn>2.</mn><mi>i</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1 \\sum n(n- - 1) - f(n) = C \\times i = C 2 . i = 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1.6em;vertical-align:-0.55em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-symbol large-op" style="position:relative;top:0em;">∑</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">−</span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mord">2.</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></span>
+<p>وهذا يؤكد ملاحظتنا التجريبية بأن مضاعفة n تؤدي إلى ضرب f(n) بنحو أربعة تقريبًا. وعمليًّا، قلّما يكون تحليل التعقيد بهذه البساطة. فبعض العمليات لا تُنفَّذ إلا في حالات معيّنة، اعتمادًا على فحوص يجريها البرنامج، وهذه بدورها تتوقف على المدخلات. ونكتفي عمومًا بحساب تعقيد <em>أسوأ حالة</em> (worst-case)، الذي يوفّر حدًّا أعلى للعدد الكلي للعمليات المنفَّذة. ويمكننا أيضًا حساب تعقيد <em>المتوسط</em> على مجموعة المدخلات الممكنة ذات الحجم n، في مقابل توزيع معيّن لهذه المدخلات.</p>
+<h4>ترميز O الكبير (Big O Notation)</h4>
+<p>عمليًّا، نستخدم ترميز O الكبير لتحديد حدّ لتعقيد برنامج. وللتعبير عن أن دالة f، معرَّفة على الأعداد الطبيعية، لا تنمو أسرع من دالة أخرى g معرَّفة أيضًا على الأعداد الطبيعية، نكتب:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mi>O</mi><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f(n) = O(g(n))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">))</span></span></span></span></span>
+<p>وهذا يعني وجود ثابت C بحيث يكون f(n) ≤ Cg(n) من أجل قيم n كبيرة بما يكفي، أو، بصورة أكثر صورية:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi mathvariant="normal">∃</mi><mi>C</mi><mi mathvariant="normal">∃</mi><mi>N</mi><mo separator="true">,</mo><mi mathvariant="normal">∀</mi><mi>n</mi><mo>≥</mo><mi>N</mi><mo separator="true">,</mo><mi>f</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>≤</mo><mi>C</mi><mi>g</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\\exists C \\exists N, \\forall n \\ge N, f (n ) \\le Cg (n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">∃</span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mord">∃</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">∀</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span>
+<p>إذا دلّت f(n) على تعقيد خوارزمية بدلالة وسيط n، قلنا إن «تعقيد الخوارزمية من الرتبة O(g(n))» إذا كان f(n) = O(g(n)). وفي مثال الفرز، يكون التعقيد من الرتبة O(n2).</p>
+<p>الخوارزمية التي يكون تعقيدها من الرتبة O(1) تُنفَّذ في زمن ثابت، بصرف النظر عن حجم البيانات. وبناءً على ذلك فإنها تتضمن عددًا ثابتًا من العمليات الأولية، مثل جمعتين وضربة. وتوصف الخوارزمية بأنها: <em>لوغاريتمية</em> إذا كان تعقيدها من الرتبة O(log n)؛ و<em>خطية</em> إذا كان من الرتبة O(n)؛ و<em>شبه خطية</em> إذا كان من الرتبة O(nlog n)؛ و<em>تربيعية</em> إذا كان من الرتبة O(n2)؛ وبشكل أعم <em>كثيرة الحدود</em> إذا وُجد ثابت k بحيث يكون تعقيدها من الرتبة O(nk)؛ و<em>أُسّية</em> إذا كان من الرتبة O(2n).</p>
+<p>بشكل عام، لا نسعى إلى إظهار الثابتين C وN المخفيين في الترميز O. وإنما يهمّنا فقط رتبة المقدار المقارِبة (asymptotic order of magnitude)، على سبيل المثال عند الحكم على ما إذا كانت خوارزمية أفضل من أخرى. وبطبيعة الحال، فمن أجل قيمة <em>محدَّدة</em> لـ n، قد تستغرق خوارزمية من الرتبة O(n2) وقتًا أقل من أخرى من الرتبة O(log n)، بحكم الثوابت الكامنة خلف رموز O.</p>
+<h4>التعقيد المُطفَّأ (Amortized Complexity)</h4>
+<p>غالبًا ما يستحق الأمر حساب التعقيد الكلي لتتابع من n عملية ثم القسمة على n، للحصول على الكلفة المتوسطة لكل عملية. وقد تكون هذه الكلفة المتوسطة أدنى من تعقيد أسوأ حالة. ونسمّي التعقيد المتوسط الناتج بهذه الطريقة <em>التعقيد المُطفَّأ</em>، في مقابل تعقيد أسوأ حالة. ونقدّم أمثلة على التعقيد المُطفَّأ في الفصلين <a href="https://usr.lmf.cnrs.fr/lpo/mainch4.html#arrays1">4</a> و<a href="https://usr.lmf.cnrs.fr/lpo/mainch6.html#queues">6</a>.</p>
+<div class="exercises"><h3 id="34-تمارين">3.4 تمارين</h3>
+<h4>خوارزمية التحقق من الأنواع</h4>
+<p><strong>3.1</strong> هل الدوال التالية جيدة الأنواع؟ وإن كانت كذلك، فما نوعها؟ وإن لم تكن، فاشرح السبب.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> f1 x = <span class="hljs-keyword">let</span> y = !x + <span class="hljs-number">2</span> <span class="hljs-keyword">in</span> y
+  <span class="hljs-keyword">let</span> f2 n = <span class="hljs-keyword">for</span> i = <span class="hljs-number">1</span> <span class="hljs-keyword">to</span> n <span class="hljs-keyword">do</span> i + <span class="hljs-number">4</span> <span class="hljs-keyword">done</span>
+  <span class="hljs-keyword">let</span> f3 m n = <span class="hljs-keyword">if</span> n = m <span class="hljs-keyword">then</span> <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> <span class="hljs-number">2</span>
+  <span class="hljs-keyword">let</span> f4 l = <span class="hljs-keyword">match</span> l <span class="hljs-keyword">with</span> <span class="hljs-literal">[]</span> -&gt; <span class="hljs-literal">[]</span> | y :: s -&gt; [s]
+  <span class="hljs-keyword">let</span> f5 x y = <span class="hljs-keyword">let</span> z = x + <span class="hljs-number">1</span> <span class="hljs-keyword">in</span> y || z &gt; <span class="hljs-number">10</span>
+  <span class="hljs-keyword">let</span> f6 x = <span class="hljs-keyword">let</span> z = <span class="hljs-built_in">ref</span> x <span class="hljs-keyword">in</span> z + <span class="hljs-number">1</span>
+  <span class="hljs-keyword">let</span> f7 x y = <span class="hljs-keyword">for</span> i = x <span class="hljs-keyword">to</span> <span class="hljs-number">10</span> <span class="hljs-keyword">do</span> y := x :: !y <span class="hljs-keyword">done</span>; !y
+  <span class="hljs-keyword">let</span> f8 x y z = x y z
+</code></pre>
+<p><strong>3.2</strong> لنتأمل الدالتين أدناه:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> foo x = x.a := (snd x.b) + <span class="hljs-number">1</span>
+  <span class="hljs-keyword">let</span> bar x = x.c &lt;- (fst x.b) :: x.c
+</code></pre>
+<p>عرّف <code>’at</code> نوع سجل بحيث نحصل على:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">val</span> foo : ’a t -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">val</span> bar : ’a t -&gt; <span class="hljs-built_in">unit</span>
+</code></pre>
+<h4>تحليل زمن تنفيذ برنامج</h4>
+<p><strong>3.3</strong> اكتب دالة <code>time:(unit-&gt;unit)-&gt;float</code> تقيس زمن تنفيذ الدالة المُمرَّرة كوسيط. استخدم الدالة <code>Unix.times</code> كما شُرح أعلاه.</p>
+<p><strong>3.4</strong> اكتب دالة <code>time5:(unit-&gt;unit)-&gt;float</code> تفعل ما يلي: تنفّذ الدالة المُمرَّرة كوسيط خمس مرات، مع قياس زمن التنفيذ في كل مرة؛ وتحذف أصغر القيم الناتجة وأكبرها؛ وتُرجع متوسط القيم الثلاث المتبقية.</p>
+<p><strong>3.5</strong> اكتب برنامجًا يُنتج الجدول الوارد في الشكل <a href="#execution-time-of-fn-operations-assuming-a-billion-operations-per-second-note-that-indicates-that-the-time-is-less-than-one-second-and-that-it-is-greater-than-one-year">3.1</a>.</p>
+</div>`,t={book:s,chapter:a,chapterTitle:n,slug:e,title:l,headings:p,html:c};export{s as book,a as chapter,n as chapterTitle,t as default,p as headings,c as html,e as slug,l as title};

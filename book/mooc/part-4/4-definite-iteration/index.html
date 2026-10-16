@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.C9kBkw8T.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/wzL9zxmz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B48Sj80-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.fkPBtkuJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DIwFP-Q7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BuJFa1RM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C-mfcZys.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/4FQnCmEH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.CYJfTZwp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DBCy9BRL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="التكرار المحدَّد — الجزء 4: الدوال والقوائم"/><!----><title>التكرار المحدَّد | برمجة بايثون 2026 — جامعة هلسنكي</title>
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/mooc">برمجة بايثون 2026 — جامعة هلسنكي</a> <span class="reader-bar__chapter">› الجزء 4: الدوال والقوائم</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 4 من 15">4 / 15</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/mooc/part-4/3-lists">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/mooc/part-4/5-print-statement-formatting">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>الجزء 1: البدء</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-1/index">الجزء 1</a></li><li><a href="../../../../book/mooc/part-1/1-getting-started">البدء</a></li><li><a href="../../../../book/mooc/part-1/2-information-from-the-user">المعلومات من المستخدم</a></li><li><a href="../../../../book/mooc/part-1/3-more-about-variables">المزيد عن المتغيّرات</a></li><li><a href="../../../../book/mooc/part-1/4-arithmetic-operations">العمليات الحسابية</a></li><li><a href="../../../../book/mooc/part-1/5-conditional-statements">الجمل الشرطية</a></li><!--]--></ul><h3>الجزء 2: الجمل الشرطية</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-2/index">الجزء 2</a></li><li><a href="../../../../book/mooc/part-2/1-programming_terminology">مصطلحات البرمجة</a></li><li><a href="../../../../book/mooc/part-2/2-else-elif">المزيد عن الجمل الشرطية</a></li><li><a href="../../../../book/mooc/part-2/3-combining-conditions">دمج الشروط</a></li><li><a href="../../../../book/mooc/part-2/4-simple-loops">الحلقات البسيطة</a></li><!--]--></ul><h3>الجزء 3: الحلقات</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-3/index">الجزء 3</a></li><li><a href="../../../../book/mooc/part-3/1-loops-with-conditions">الحلقات مع الشروط</a></li><li><a href="../../../../book/mooc/part-3/2-working-with-strings">العمل مع السلاسل النصية</a></li><li><a href="../../../../book/mooc/part-3/3-more-loops">المزيد عن الحلقات</a></li><li><a href="../../../../book/mooc/part-3/4-defining-functions">تعريف الدوال</a></li><!--]--></ul><h3 class="active-chapter">الجزء 4: الدوال والقوائم</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-4/index">الجزء 4</a></li><li><a href="../../../../book/mooc/part-4/1-vscode">محرر Visual Studio Code ومفسر Python وأداة التنقيح المدمجة</a></li><li><a href="../../../../book/mooc/part-4/2-more-functions">المزيد من الدوال</a></li><li><a href="../../../../book/mooc/part-4/3-lists">القوائم</a></li><li><a href="../../../../book/mooc/part-4/4-definite-iteration" class="active">التكرار المحدَّد</a></li><li><a href="../../../../book/mooc/part-4/5-print-statement-formatting">تنسيق أمر الطباعة</a></li><li><a href="../../../../book/mooc/part-4/6-strings-and-lists">المزيد من السلاسل النصية والقوائم</a></li><!--]--></ul><h3>الجزء 5: هياكل البيانات</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-5/index">الجزء 5</a></li><li><a href="../../../../book/mooc/part-5/1-more-lists">المزيد عن القوائم</a></li><li><a href="../../../../book/mooc/part-5/2-references">المراجع</a></li><li><a href="../../../../book/mooc/part-5/3-dictionary">القاموس</a></li><li><a href="../../../../book/mooc/part-5/4-tuple">الصف</a></li><!--]--></ul><h3>الجزء 6: الملفات والأخطاء</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-6/index">الجزء 6</a></li><li><a href="../../../../book/mooc/part-6/1-reading-files">قراءة الملفات</a></li><li><a href="../../../../book/mooc/part-6/2-writing-files">كتابة الملفات</a></li><li><a href="../../../../book/mooc/part-6/3-errors">معالجة الأخطاء</a></li><li><a href="../../../../book/mooc/part-6/4-scope-of-variables">المتغيّرات المحلية والعالمية</a></li><!--]--></ul><h3>الجزء 7: الوحدات</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-7/index">الجزء 7</a></li><li><a href="../../../../book/mooc/part-7/1-modules">الوحدات</a></li><li><a href="../../../../book/mooc/part-7/2-randomness">العشوائية</a></li><li><a href="../../../../book/mooc/part-7/3-times-and-dates">الأوقات والتواريخ</a></li><li><a href="../../../../book/mooc/part-7/4-data-processing">معالجة البيانات</a></li><li><a href="../../../../book/mooc/part-7/5-creating-modules">إنشاء وحداتك الخاصة</a></li><li><a href="../../../../book/mooc/part-7/6-more-features">المزيد من ميزات Python</a></li><!--]--></ul><h3>الجزء 8: الكائنات والصنوف</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-8/index">الجزء 8</a></li><li><a href="../../../../book/mooc/part-8/1-objects-and-methods">الكائنات والتابعات</a></li><li><a href="../../../../book/mooc/part-8/2-classes-and-objects">الأصناف والكائنات</a></li><li><a href="../../../../book/mooc/part-8/3-defining-classes">تعريف الأصناف</a></li><li><a href="../../../../book/mooc/part-8/4-defining-methods">تعريف التوابع</a></li><li><a href="../../../../book/mooc/part-8/5-more-examples-of-classes">المزيد من أمثلة الأصناف</a></li><!--]--></ul><h3>الجزء 9: المزيد عن الكائنات</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-9/index">الجزء 9</a></li><li><a href="../../../../book/mooc/part-9/1-objects-and-references">الكائنات والمراجع</a></li><li><a href="../../../../book/mooc/part-9/2-objects-as-attributes">الكائنات كخصائص</a></li><li><a href="../../../../book/mooc/part-9/3-encapsulation">التغليف</a></li><li><a href="../../../../book/mooc/part-9/4-scope-of-methods">نطاق التوابع</a></li><li><a href="../../../../book/mooc/part-9/5-class-attributes">خصائص الصنف</a></li><li><a href="../../../../book/mooc/part-9/6-more-examples-with-classes">مزيد من الأمثلة على الأصناف</a></li><!--]--></ul><h3>الجزء 10: تراكيب الأصناف</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-10/index">الجزء 10</a></li><li><a href="../../../../book/mooc/part-10/1-class-hierarchies">تراكيب الأصناف</a></li><li><a href="../../../../book/mooc/part-10/2-access-modifiers">مُعدِّلات الوصول</a></li><li><a href="../../../../book/mooc/part-10/3-oo-programming-techniques">تقنيات البرمجة الكائنية</a></li><li><a href="../../../../book/mooc/part-10/4-application-development">تطوير تطبيق أكبر</a></li><!--]--></ul><h3>الجزء 11: ميزات متقدمة</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-11/index">الجزء 11</a></li><li><a href="../../../../book/mooc/part-11/1-list-comprehensions">إدراكات القوائم</a></li><li><a href="../../../../book/mooc/part-11/2-more-comprehensions">المزيد من الإدراكات</a></li><li><a href="../../../../book/mooc/part-11/3-recursion">التعاود</a></li><li><a href="../../../../book/mooc/part-11/4-more-recursion-examples">المزيد من أمثلة التعاود</a></li><!--]--></ul><h3>الجزء 12: البرمجة الدالية</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-12/index">الجزء 12</a></li><li><a href="../../../../book/mooc/part-12/1-functions-as-arguments">الدوال كوسائط</a></li><li><a href="../../../../book/mooc/part-12/2-generators">المولّدات</a></li><li><a href="../../../../book/mooc/part-12/3-functional-programming">البرمجة الدالية</a></li><li><a href="../../../../book/mooc/part-12/4-regular-expressions">التعبيرات النمطية</a></li><!--]--></ul><h3>الجزء 13: الألعاب مع Pygame</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-13/index">الجزء 13</a></li><li><a href="../../../../book/mooc/part-13/1-pygame">مكتبة pygame</a></li><li><a href="../../../../book/mooc/part-13/2-animation">التحريك</a></li><li><a href="../../../../book/mooc/part-13/3-events">الأحداث</a></li><li><a href="../../../../book/mooc/part-13/4-more-pygame-techniques">تقنيات pygame إضافية</a></li><!--]--></ul><h3>الجزء 14: مشروع اللعبة</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-14/index">الجزء 14</a></li><li><a href="../../../../book/mooc/part-14/1-game-project">مشروع اللعبة</a></li><li><a href="../../../../book/mooc/part-14/2-robot-and-boxes">الروبوت والصناديق</a></li><li><a href="../../../../book/mooc/part-14/3-finishing-the-game">إنهاء اللعبة</a></li><li><a href="../../../../book/mooc/part-14/4-your-own-game">لعبتك الخاصة</a></li><!--]--></ul><h3>صفحات مساعدة</h3> <ul><!--[--><li><a href="../../../../book/mooc/auxiliary/index">عن هذه الدورة</a></li><li><a href="../../../../book/mooc/auxiliary/frontmatter-guide">دليل بيانات الترويسة الأمامية</a></li><li><a href="../../../../book/mooc/auxiliary/vocabulary">المفردات</a></li><li><a href="../../../../book/mooc/auxiliary/error_messages">رسائل الأخطاء الشائعة</a></li><li><a href="../../../../book/mooc/auxiliary/faq">الأسئلة الشائعة</a></li><li><a href="../../../../book/mooc/auxiliary/exam_adv">اختبار الدورة المتقدمة في البرمجة 15.08.</a></li><li><a href="../../../../book/mooc/auxiliary/exam_intro">اختبار مقدمة في البرمجة 05.09.</a></li><li><a href="../../../../book/mooc/auxiliary/support-and-assistance">الدعم والمساعدة</a></li><li><a href="../../../../book/mooc/auxiliary/all-exercises">جميع التمارين</a></li><li><a href="../../../../book/mooc/auxiliary/exam">اختبار 4.6.</a></li><li><a href="../../../../book/mooc/auxiliary/grading-and-exams">التقييم والاختبارات</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>التكرار المحدَّد</h1> <!--[0--><nav class="toc-inline" aria-label="في هذا القسم"><p>في هذا القسم</p> <ul><!--[--><li><a href="#حلقة-for">حلقة for</a></li><li><a href="#الدالة-range">الدالة range</a></li><li><a href="#من-مدى-إلى-قائمة">من مدى إلى قائمة</a></li><li><a href="#تذكير-بمتطلبات-الاختبارات-الآلية">تذكير بمتطلّبات الاختبارات الآلية</a></li><li><a href="#إيجاد-أفضل-عنصر-أو-أسوأ-عنصر-في-قائمة">إيجاد أفضل عنصر أو أسوأ عنصر في قائمة</a></li><!--]--></ul></nav><!--]--> <!--[-1--><div class="reader-content"><!----><blockquote>
+<p><strong>أهداف التعلّم</strong></p>
+<p>بعد هذا القسم</p>
+<ul>
+<li>ستعرف الفرق بين التكرار المحدَّد والتكرار غير المحدَّد</li>
+<li>ستعرف كيف تعمل حلقة <code>for</code> في Python</li>
+<li>ستكون قادرًا على استخدام حلقة <code>for</code> للتكرار على القوائم والسلاسل النصية</li>
+</ul>
+</blockquote>
+<p>يمكنك استخدام حلقة <code>while</code> للمرور على عناصر قائمة، تمامًا كما استخدمنا حلقات <code>while</code> للمرور على السلاسل النصية. ويطبع البرنامج التالي عناصر القائمة، كل عنصر في سطر منفصل:</p>
+<pre><code class="language-python">my_list = [<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>]
+
+index = <span class="hljs-number">0</span>
+<span class="hljs-keyword">while</span> index &lt; <span class="hljs-built_in">len</span>(my_list):
+    <span class="hljs-built_in">print</span>(my_list[index])
+    index += <span class="hljs-number">1</span>
+</code></pre>
+<pre><code>3
+2
+4
+5
+2
+</code></pre>
+<p>هذا يعمل بطبيعة الحال، لكنه طريقة معقّدة بعض الشيء للمرور على قائمة، إذ عليك استخدام متغيّر مساعد <code>index</code> لتتذكّر العنصر الذي وصلت إليه في القائمة. ولحسن الحظ، توفّر Python طريقة أكثر حدسية للمرور على القوائم والسلاسل النصية والهياكل المشابهة الأخرى.</p>
+<h2 id="حلقة-for">حلقة <code>for</code></h2>
+<p>حين تريد المرور على مجموعة جاهزة من العناصر، تتكفّل بك حلقة <code>for</code> في Python بذلك. فمثلًا يمكن للحلقة أن تمرّ على جميع عناصر قائمة من الأول إلى الأخير.</p>
+<p>عند استخدام حلقة <code>while</code> لا «يعرف» البرنامج مسبقًا كم تكرارًا ستؤديه الحلقة. فهي تتكرر حتى يصبح الشرط خاطئًا، أو حتى يتم الخروج من الحلقة بطريقة أخرى. ولهذا فإنها تندرج تحت <em>التكرار غير المحدَّد</em>. أما مع حلقة <code>for</code> فيُحدَّد عدد التكرارات عند إعداد الحلقة، ولهذا فإنها تندرج تحت <em>التكرار المحدَّد</em>.</p>
+<p>والفكرة أن حلقة <code>for</code> تأخذ عناصر المجموعة واحدًا تلو الآخر، وتنفّذ الإجراءات نفسها على كل عنصر. فلا يحتاج المبرمج إلى التفكير في أي عنصر يجري معالجته في كل مرة. وصيغة حلقة <code>for</code> هي كما يلي:</p>
+<pre><code class="language-python"><span class="hljs-keyword">for</span> &lt;variable&gt; <span class="hljs-keyword">in</span> &lt;collection&gt;:
+    &lt;block&gt;
+</code></pre>
+<p>تأخذ حلقة <code>for</code> عنصرًا من المجموعة، وتُسنده إلى المتغيّر، وتنفّذ كتلة الشيفرة، ثم تنتقل إلى العنصر التالي. وبعد أن تتم معالجة جميع عناصر المجموعة، يستمر تنفيذ البرنامج من السطر التالي للحلقة.</p>
+<p><img src="/arabic-cs-library/images/mooc/part-4/4_4_1.png" alt="التكرار على قائمة"></p>
+<p>يطبع البرنامج التالي جميع عناصر قائمة باستخدام حلقة <code>for</code>:</p>
+<pre><code class="language-python">my_list = [<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">2</span>]
+
+<span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> my_list:
+    <span class="hljs-built_in">print</span>(item)
+</code></pre>
+<pre><code>3
+2
+4
+5
+2
+</code></pre>
+<p>بالمقارنة مع المثال في بداية هذا القسم، يصبح الهيكل أسهل في الفهم بكثير. فحلقة <code>for</code> تجعل المرور المباشر على مجموعة عناصر أمرًا بسيطًا جدًا.</p>
+<p>المبدأ نفسه ينطبق على محارف السلسلة النصية:</p>
+<pre><code class="language-python">name = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Please type in your name: &quot;</span>)
+
+<span class="hljs-keyword">for</span> character <span class="hljs-keyword">in</span> name:
+    <span class="hljs-built_in">print</span>(character)
+</code></pre>
+<pre><code>Please type in your name: **Grace**
+G
+r
+a
+c
+e
+</code></pre>
+<blockquote>
+<p><strong>تمرين برمجي: مرصّع بالنجوم</strong></p>
+<p>اكتب برنامجًا يطلب من المستخدم كتابة سلسلة نصية. ثم يطبع البرنامج كل محرف من المُدخَل في سطر منفصل. وبعد كل محرف ينبغي أن تُطبع نجمة (*) في سطر خاص بها.</p>
+</blockquote>
+<p>وهكذا ينبغي أن يعمل:</p>
+<pre><code>Please type in a string: **Python**
+P
+*
+y
+*
+t
+*
+h
+*
+o
+*
+n
+*
+</code></pre>
+<p><strong>ملاحظة:</strong> هذا التمرين لا يطلب منك كتابة أي دوال، لذا يجب أن <strong>لا</strong> تضع أي شيفرة داخل كتلة <code>if __name__ == &quot;__main__&quot;</code>.</p>
+<h2 id="الدالة-range">الدالة <code>range</code></h2>
+<p>كثيرًا ما تعرف عدد المرات التي تريد تكرار جزء معيّن من الشيفرة. فقد ترغب مثلًا في المرور على جميع الأعداد بين 1 و100. وتقوم الدالة <code>range</code> الموصولة بحلقة <code>for</code> بذلك نيابةً عنك.</p>
+<p>هناك بضع طرق مختلفة لاستدعاء دالة <code>range</code>. وأبسطها هي إعطاء الدالة وسيطًا واحدًا فقط، يدلّ على نقطة نهاية المدى. أما نقطة النهاية نفسها فمستثناة، تمامًا كما في تقطيع السلاسل النصية. وبعبارة أخرى، يوفّر الاستدعاء <code>range(n)</code> حلقة بمدى من 0 إلى <code>n-1</code>:</p>
+<pre><code class="language-python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>):
+    <span class="hljs-built_in">print</span>(i)
+</code></pre>
+<pre><code>0
+1
+2
+3
+4
+</code></pre>
+<p>مع وسيطين، تُرجع الدالة مدى بين العددَين. وتوفّر الدالة <code>range(a,b)</code> مدى يبدأ من <code>a</code> وينتهي عند <code>b-1</code>:</p>
+<pre><code class="language-python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>, <span class="hljs-number">7</span>):
+    <span class="hljs-built_in">print</span>(i)
+</code></pre>
+<pre><code>3
+4
+5
+6
+</code></pre>
+<p>وأخيرًا، بوسيط ثالث يمكنك أيضًا تحديد حجم <em>الخطوة</em> التي يتخذها المدى بين كل قيمة. ويوفّر الاستدعاء <code>range(a, b, c)</code> مدى يبدأ من <code>a</code> وينتهي عند <code>b-1</code> ويتغيّر بمقدار <code>c</code> في كل خطوة:</p>
+<pre><code class="language-python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">9</span>, <span class="hljs-number">2</span>):
+    <span class="hljs-built_in">print</span>(i)
+</code></pre>
+<pre><code>1
+3
+5
+7
+</code></pre>
+<p>ويمكن أن تكون الخطوة سالبة. عندئذٍ يكون المدى بترتيب معكوس. ولاحظ أن الوسيطَين الأوّليَين معكوكان هنا أيضًا:</p>
+<pre><code class="language-python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">6</span>, <span class="hljs-number">2</span>, -<span class="hljs-number">1</span>):
+    <span class="hljs-built_in">print</span>(i)
+</code></pre>
+<pre><code>6
+5
+4
+3
+</code></pre>
+<blockquote>
+<p><strong>تمرين برمجي: من السالب إلى الموجب</strong></p>
+<p>اكتب برنامجًا يطلب من المستخدم عددًا صحيحًا موجبًا N. ثم يطبع البرنامج جميع الأعداد بين -N وN شاملًا الطرفين، لكن <em>مع استثناء العدد 0</em>. وينبغي أن يُطبع كل عدد في سطر منفصل.</p>
+</blockquote>
+<p>مثال على السلوك المتوقع:</p>
+<pre><code>Please type in a positive integer: **4**
+-4
+-3
+-2
+-1
+1
+2
+3
+4
+</code></pre>
+<p><strong>ملاحظة:</strong> هذا التمرين لا يطلب منك كتابة أي دوال، لذا يجب أن <strong>لا</strong> تضع أي شيفرة داخل كتلة <code>if __name__ == &quot;__main__&quot;</code>.</p>
+<h2 id="من-مدى-إلى-قائمة">من مدى إلى قائمة</h2>
+<p>تُرجع الدالة <code>range</code> كائنَ مدى، يتصرّف في جوانب كثيرة كأنه قائمة، لكنه ليس قائمة في الواقع. فإذا حاولت طباعة القيمة التي تُرجعها الدالة، فلن ترى سوى وصف لكائن المدى:</p>
+<pre><code class="language-python">numbers = <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, <span class="hljs-number">7</span>)
+<span class="hljs-built_in">print</span>(numbers)
+</code></pre>
+<pre><code>range(2, 7)
+</code></pre>
+<p>تحوّل الدالة <code>list</code> المدى إلى قائمة. وستحتوي القائمة على جميع القيم الموجودة في المدى. أما دورة البرمجة المتقدمة، التي تأتي بعد هذه الدورة، فستُلقي مزيدًا من الضوء على هذا الموضوع.</p>
+<pre><code class="language-python">numbers = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, <span class="hljs-number">7</span>))
+<span class="hljs-built_in">print</span>(numbers)
+</code></pre>
+<pre><code>[2, 3, 4, 5, 6]
+</code></pre>
+<h2 id="تذكير-بمتطلبات-الاختبارات-الآلية">تذكير بمتطلّبات الاختبارات الآلية</h2>
+<p>حتى الآن، حين كان يُطلب منك في التمارين كتابة دوال، كانت القوالب تبدو هكذا:</p>
+<pre><code class="language-python"><span class="hljs-comment"># Write your solution here</span>
+<span class="hljs-comment"># You can test your function by calling it within the following block</span>
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    sentence = <span class="hljs-string">&quot;it was a dark and stormy python&quot;</span>
+    <span class="hljs-built_in">print</span>(first_word(sentence))
+    <span class="hljs-built_in">print</span>(second_word(sentence))
+    <span class="hljs-built_in">print</span>(last_word(sentence))
+</code></pre>
+<p>من الآن فصاعدًا لن تتكرر التذكيرات في القوالب باستخدام كتلة <code>if __name__ == &quot;__main__&quot;</code>. لكن الاختبارات الآلية ستظل تتطلّب استخدامها، لذا عليك إضافة الكتلة بنفسك حين تختبر دالتك داخل الدالة الرئيسية لبرنامجك.</p>
+<p><strong>ملاحظة:</strong> بعض التمارين، مثل تمرين <em>المتناظرات</em> (palindromes) الذي سيأتي لاحقًا في هذا القسم، تتطلّب منك أيضًا كتابة شيفرة تستدعي الدالة التي كتبتها. ولا ينبغي أن توضع هذه الشيفرة <em>داخل</em> كتلة <code>if __name__ == &quot;__main__&quot;</code>. ولن تنفّذ الاختبارات الآلية أي شيفرة داخل تلك الكتلة، لذا لن يكون حلّك مكتملًا إن وضعت استدعاءات دوالك هناك.</p>
+<blockquote>
+<p><strong>تمرين برمجي: قائمة نجوم</strong></p>
+<p>اكتب دالة اسمها <code>list_of_stars</code>، تأخذ قائمة من الأعداد الصحيحة كوسيط لها. وينبغي أن تطبع الدالة أسطرًا من محارف النجمة. وتحدّد الأعداد في القائمة عدد النجوم التي ينبغي أن يحتوي عليها كل سطر.</p>
+</blockquote>
+<p>فمثلًا، مع استدعاء الدالة <code>list_of_stars([3, 7, 1, 1, 2])</code> ينبغي أن يُطبع ما يلي:</p>
+<pre><code>***
+*******
+*
+*
+**
+</code></pre>
+<!-- **لاحظ** أن نظام Windows يعاني في الوقت الحالي من مشكلات في تشغيل اختبارات بعض التمارين. فإن صادفت رسالة الخطأ التالية
+
+<img src="/arabic-cs-library/images/mooc/part-4/4_3_2.png" alt="التكرار على قائمة">
+
+فيمكنك تشغيل الاختبارات بإرسالها إلى الخادم، باختيار _Submit solutions_ من قائمة TMC التي تُفتح من الرمز الموجود على يمين زر تشغيل الاختبارات.
+
+يمكن حل المشكلة بالانتقال إلى قائمة تثبيت الإضافة وتغيير موضع التمارين في "TMC Data" إلى موضع آخر له مسار ملفات أقصر، عبر زر _change path_ الظاهر في الصورة أدناه. وقد يستغرق هذا بعض الوقت، لذا انتظر انتهاء العملية.
+
+يجري العمل على إيجاد حل أفضل للمشكلة في الأيام القريبة. -->
+<blockquote>
+<p><strong>تمرين برمجي: الأناغرام</strong></p>
+<p>اكتب دالة اسمها <code>anagrams</code>، تأخذ سلسلتين نصيتين كوسيطين. وتُرجع الدالة <code>True</code> إذا كانت السلسلتان النصيتان تباديل حرفية (anagrams) لإحداهما الأخرى. وتعدّ كلمتان تباديل حرفية لإحداهما الأخرى إذا احتوتا على المحارف نفسها تمامًا.</p>
+</blockquote>
+<p>وبعض الأمثلة على كيفية عمل الدالة:</p>
+<pre><code class="language-python"><span class="hljs-built_in">print</span>(anagrams(<span class="hljs-string">&quot;tame&quot;</span>, <span class="hljs-string">&quot;meta&quot;</span>)) <span class="hljs-comment"># True</span>
+<span class="hljs-built_in">print</span>(anagrams(<span class="hljs-string">&quot;tame&quot;</span>, <span class="hljs-string">&quot;mate&quot;</span>)) <span class="hljs-comment"># True</span>
+<span class="hljs-built_in">print</span>(anagrams(<span class="hljs-string">&quot;tame&quot;</span>, <span class="hljs-string">&quot;team&quot;</span>)) <span class="hljs-comment"># True</span>
+<span class="hljs-built_in">print</span>(anagrams(<span class="hljs-string">&quot;tabby&quot;</span>, <span class="hljs-string">&quot;batty&quot;</span>)) <span class="hljs-comment"># False</span>
+<span class="hljs-built_in">print</span>(anagrams(<span class="hljs-string">&quot;python&quot;</span>, <span class="hljs-string">&quot;java&quot;</span>)) <span class="hljs-comment"># False</span>
+</code></pre>
+<p>تلميح: يمكن استخدام الدالة <code>sorted</code> على السلاسل النصية أيضًا.</p>
+<blockquote>
+<p><strong>تمرين برمجي: المتناظرات</strong></p>
+<p>اكتب دالة اسمها <code>palindromes</code>، تأخذ وسيطًا من نوع سلسلة نصية وتُرجع <code>True</code> إذا كانت السلسلة النصية متناظرة (palindrome). والمتناظرات كلمات تُكتب بنفس الطريقة تمامًا إلى الأمام وإلى الخلف.</p>
+</blockquote>
+<p>يُرجى أيضًا كتابة برنامج رئيسي يطلب من المستخدم كتابة كلمات حتى يكتب كلمة متناظرة:</p>
+<pre><code>Please type in a palindrome: **python**
+that wasn't a palindrome
+Please type in a palindrome: **java**
+that wasn't a palindrome
+Please type in a palindrome: **oddoreven**
+that wasn't a palindrome
+Please type in a palindrome: **neveroddoreven**
+neveroddoreven is a palindrome!
+</code></pre>
+<p><strong>ملاحظة:</strong> يجب <strong>ألا</strong> يكون البرنامج الرئيسي داخل كتلة <code>if __name__ == &quot;__main__&quot;:</code></p>
+<blockquote>
+<p><strong>تمرين برمجي: مجموع الأعداد الموجبة</strong></p>
+<p>اكتب دالة اسمها <code>sum_of_positives</code>، تأخذ قائمة من الأعداد الصحيحة كوسيط لها. وتُرجع الدالة مجموع القيم الموجبة في القائمة.</p>
+</blockquote>
+<pre><code class="language-python">my_list = [<span class="hljs-number">1</span>, -<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, -<span class="hljs-number">4</span>, <span class="hljs-number">5</span>]
+result = sum_of_positives(my_list)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;The result is&quot;</span>, result)
+</code></pre>
+<pre><code>The result is 9
+</code></pre>
+<p>في هذه التمارين سنستخدم القوائم كوسائط وقيم إعادَة. وقد تناول ذلك <a href="/arabic-cs-library/book/mooc/part-4/3-lists#a-list-as-an-argument-or-a-return-value">القسم السابق</a>، إن احتجت إلى مراجعة.</p>
+<blockquote>
+<p><strong>تمرين برمجي: الأعداد الزوجية</strong></p>
+<p>اكتب دالة اسمها <code>even_numbers</code>، تأخذ قائمة من الأعداد الصحيحة كوسيط. وتُرجع الدالة قائمة جديدة تحتوي على الأعداد الزوجية من القائمة الأصلية.</p>
+</blockquote>
+<pre><code class="language-python">my_list = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]
+new_list = even_numbers(my_list)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;original&quot;</span>, my_list)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;new&quot;</span>, new_list)
+</code></pre>
+<pre><code>original [1, 2, 3, 4, 5]
+new [2, 4]
+</code></pre>
+<blockquote>
+<p><strong>تمرين برمجي: مجموع القوائم</strong></p>
+<p>اكتب دالة اسمها <code>list_sum</code> تأخذ قائمتين من الأعداد الصحيحة كوسيطين. وتُرجع الدالة قائمة جديدة تحتوي على مجاميع العناصر عند كل فهرس في القائمتين الأصليتين. ويمكنك أن تفترض أن للقائمتين العدد نفسه من العناصر.</p>
+</blockquote>
+<p>مثال على عمل الدالة:</p>
+<pre><code class="language-python">a = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+b = [<span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>]
+<span class="hljs-built_in">print</span>(list_sum(a, b)) <span class="hljs-comment"># [8, 10, 12]</span>
+</code></pre>
+<blockquote>
+<p><strong>تمرين برمجي: الأعداد المختلفة</strong></p>
+<p>اكتب دالة اسمها <code>distinct_numbers</code>، تأخذ قائمة من الأعداد الصحيحة كوسيط لها. وتُرجع الدالة قائمة جديدة تحتوي على أعداد القائمة الأصلية مرتَّبة حسب القيمة، بحيث لا يظهر كل عدد مميَّز إلا مرة واحدة فقط.</p>
+</blockquote>
+<pre><code class="language-python">my_list = [<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>]
+<span class="hljs-built_in">print</span>(distinct_numbers(my_list)) <span class="hljs-comment"># [1, 2, 3]</span>
+</code></pre>
+<h2 id="إيجاد-أفضل-عنصر-أو-أسوأ-عنصر-في-قائمة">إيجاد أفضل عنصر أو أسوأ عنصر في قائمة</h2>
+<p>من المهام البرمجية الشائعة جدًا إيجاد أفضل عنصر أو أسوأ عنصر في قائمة وفق معايير ما. والحل البسيط هو استخدام متغيّر مساعد «يتذكّر» أيّ العناصر التي عولجت حتى الآن هو الأنسب. ثم يُقارَن هذا الاختيار المؤقّت الأفضل بكل عنصر على حدة، وفي نهاية التكرار يحتوي المتغيّر على الأفضل من بين العناصر كلها.</p>
+<p>مسوّدة تقريبية لا تعمل كما ينبغي بعد:</p>
+<pre><code class="language-python">best = initial_value <span class="hljs-comment"># The initial value depends on the situation</span>
+<span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> my_list:
+    <span class="hljs-keyword">if</span> item <span class="hljs-keyword">is</span> better than best:
+        best = item
+
+<span class="hljs-comment"># We now have the best one figured out!</span>
+</code></pre>
+<p>تعتمد تفاصيل شيفرة البرنامج النهائية على نوع العناصر الموجودة في القائمة، وكذلك على معايير اختيار أفضل عنصر (أو أسوأه). وقد تحتاج أحيانًا إلى أكثر من متغيّر مساعد.</p>
+<p>لنتمرّن قليلًا على هذه الطريقة.</p>
+<blockquote>
+<p><strong>تمرين برمجي: طول الأطول في القائمة</strong></p>
+<p>اكتب دالة اسمها <code>length_of_longest</code>، تأخذ قائمة من السلاسل النصية كوسيط لها. وتُرجع الدالة طول أطول سلسلة نصية.</p>
+</blockquote>
+<pre><code class="language-python">my_list = [<span class="hljs-string">&quot;first&quot;</span>, <span class="hljs-string">&quot;second&quot;</span>, <span class="hljs-string">&quot;fourth&quot;</span>, <span class="hljs-string">&quot;eleventh&quot;</span>]
+
+result = length_of_longest(my_list)
+<span class="hljs-built_in">print</span>(result)
+</code></pre>
+<pre><code class="language-python">my_list = [<span class="hljs-string">&quot;adele&quot;</span>, <span class="hljs-string">&quot;mark&quot;</span>, <span class="hljs-string">&quot;dorothy&quot;</span>, <span class="hljs-string">&quot;tim&quot;</span>, <span class="hljs-string">&quot;hedy&quot;</span>, <span class="hljs-string">&quot;richard&quot;</span>]
+
+result = length_of_longest(my_list)
+<span class="hljs-built_in">print</span>(result)
+</code></pre>
+<pre><code>8
+7
+</code></pre>
+<blockquote>
+<p><strong>تمرين برمجي: الأقصر في القائمة</strong></p>
+<p>اكتب دالة اسمها <code>shortest</code>، تأخذ قائمة من السلاسل النصية كوسيط لها. وتُرجع الدالة أيّ السلاسل النصية كانت الأقصر. وإذا كان هناك أكثر من سلسلة متساوية في القصر، فيمكن للدالة أن تُرجع أيّ من تلك السلاسل الأقصر (ولن تحدث هذه الحالة في الاختبارات). ويمكنك أن تفترض أنه لا توجد سلاسل نصية فارغة في القائمة.</p>
+</blockquote>
+<pre><code class="language-python">my_list = [<span class="hljs-string">&quot;first&quot;</span>, <span class="hljs-string">&quot;second&quot;</span>, <span class="hljs-string">&quot;fourth&quot;</span>, <span class="hljs-string">&quot;eleventh&quot;</span>]
+
+result = shortest(my_list)
+<span class="hljs-built_in">print</span>(result)
+</code></pre>
+<pre><code class="language-python">my_list = [<span class="hljs-string">&quot;adele&quot;</span>, <span class="hljs-string">&quot;mark&quot;</span>, <span class="hljs-string">&quot;dorothy&quot;</span>, <span class="hljs-string">&quot;tim&quot;</span>, <span class="hljs-string">&quot;hedy&quot;</span>, <span class="hljs-string">&quot;richard&quot;</span>]
+
+result = shortest(my_list)
+<span class="hljs-built_in">print</span>(result)
+</code></pre>
+<pre><code>first
+tim
+</code></pre>
+<blockquote>
+<p><strong>تمرين برمجي: كل الأطول في القائمة</strong></p>
+<p>اكتب دالة اسمها <code>all_the_longest</code>، تأخذ قائمة من السلاسل النصية كوسيط لها. وينبغي أن تُرجع الدالة قائمة جديدة تحتوي على أطول سلسلة نصية في القائمة الأصلية. وإذا كان هناك أكثر من سلسلة متساوية في الطول، فينبغي أن تُرجع الدالة جميع تلك السلاسل الأطول.</p>
+</blockquote>
+<p>وينبغي أن يكون ترتيب السلاسل النصية في القائمة المُرجَعة هو نفسه الترتيب في القائمة الأصلية.</p>
+<pre><code class="language-python">my_list = [<span class="hljs-string">&quot;first&quot;</span>, <span class="hljs-string">&quot;second&quot;</span>, <span class="hljs-string">&quot;fourth&quot;</span>, <span class="hljs-string">&quot;eleventh&quot;</span>]
+
+result = all_the_longest(my_list)
+<span class="hljs-built_in">print</span>(result) <span class="hljs-comment"># [&#x27;eleventh&#x27;]</span>
+</code></pre>
+<pre><code class="language-python">my_list = [<span class="hljs-string">&quot;adele&quot;</span>, <span class="hljs-string">&quot;mark&quot;</span>, <span class="hljs-string">&quot;dorothy&quot;</span>, <span class="hljs-string">&quot;tim&quot;</span>, <span class="hljs-string">&quot;hedy&quot;</span>, <span class="hljs-string">&quot;richard&quot;</span>]
+
+result = all_the_longest(my_list)
+<span class="hljs-built_in">print</span>(result) <span class="hljs-comment"># [&#x27;dorothy&#x27;, &#x27;richard&#x27;]</span>
+</code></pre>
+<!---
+
+اختبار لمراجعة محتويات هذا القسم:
+
+> **اختبار:** (مكون تفاعلي غير متاح في النسخة الثابتة - ID: b1a91143-3137-5833-a771-6801f541a43b)
+
+-->
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/mooc/part-4/3-lists"><span class="prev-next__label">السابق</span> <span class="prev-next__title">القوائم</span></a><!--]--> <!--[0--><a href="../../../../book/mooc/part-4/5-print-statement-formatting"><span class="prev-next__label">التالي</span> <span class="prev-next__title">تنسيق أمر الطباعة</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_bfwv11 = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.C9kBkw8T.js"),
+						import("../../../../_app/immutable/entry/app.fkPBtkuJ.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

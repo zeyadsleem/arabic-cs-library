@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.C9kBkw8T.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/wzL9zxmz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B48Sj80-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.fkPBtkuJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DIwFP-Q7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BuJFa1RM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C-mfcZys.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/4FQnCmEH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.CYJfTZwp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DBCy9BRL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="تعريف الدوال — الجزء 3: الحلقات"/><!----><title>تعريف الدوال | برمجة بايثون 2026 — جامعة هلسنكي</title>
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/mooc">برمجة بايثون 2026 — جامعة هلسنكي</a> <span class="reader-bar__chapter">› الجزء 3: الحلقات</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 3 من 15">3 / 15</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/mooc/part-3/3-more-loops">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/mooc/part-4/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>الجزء 1: البدء</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-1/index">الجزء 1</a></li><li><a href="../../../../book/mooc/part-1/1-getting-started">البدء</a></li><li><a href="../../../../book/mooc/part-1/2-information-from-the-user">المعلومات من المستخدم</a></li><li><a href="../../../../book/mooc/part-1/3-more-about-variables">المزيد عن المتغيّرات</a></li><li><a href="../../../../book/mooc/part-1/4-arithmetic-operations">العمليات الحسابية</a></li><li><a href="../../../../book/mooc/part-1/5-conditional-statements">الجمل الشرطية</a></li><!--]--></ul><h3>الجزء 2: الجمل الشرطية</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-2/index">الجزء 2</a></li><li><a href="../../../../book/mooc/part-2/1-programming_terminology">مصطلحات البرمجة</a></li><li><a href="../../../../book/mooc/part-2/2-else-elif">المزيد عن الجمل الشرطية</a></li><li><a href="../../../../book/mooc/part-2/3-combining-conditions">دمج الشروط</a></li><li><a href="../../../../book/mooc/part-2/4-simple-loops">الحلقات البسيطة</a></li><!--]--></ul><h3 class="active-chapter">الجزء 3: الحلقات</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-3/index">الجزء 3</a></li><li><a href="../../../../book/mooc/part-3/1-loops-with-conditions">الحلقات مع الشروط</a></li><li><a href="../../../../book/mooc/part-3/2-working-with-strings">العمل مع السلاسل النصية</a></li><li><a href="../../../../book/mooc/part-3/3-more-loops">المزيد عن الحلقات</a></li><li><a href="../../../../book/mooc/part-3/4-defining-functions" class="active">تعريف الدوال</a></li><!--]--></ul><h3>الجزء 4: الدوال والقوائم</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-4/index">الجزء 4</a></li><li><a href="../../../../book/mooc/part-4/1-vscode">محرر Visual Studio Code ومفسر Python وأداة التنقيح المدمجة</a></li><li><a href="../../../../book/mooc/part-4/2-more-functions">المزيد من الدوال</a></li><li><a href="../../../../book/mooc/part-4/3-lists">القوائم</a></li><li><a href="../../../../book/mooc/part-4/4-definite-iteration">التكرار المحدَّد</a></li><li><a href="../../../../book/mooc/part-4/5-print-statement-formatting">تنسيق أمر الطباعة</a></li><li><a href="../../../../book/mooc/part-4/6-strings-and-lists">المزيد من السلاسل النصية والقوائم</a></li><!--]--></ul><h3>الجزء 5: هياكل البيانات</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-5/index">الجزء 5</a></li><li><a href="../../../../book/mooc/part-5/1-more-lists">المزيد عن القوائم</a></li><li><a href="../../../../book/mooc/part-5/2-references">المراجع</a></li><li><a href="../../../../book/mooc/part-5/3-dictionary">القاموس</a></li><li><a href="../../../../book/mooc/part-5/4-tuple">الصف</a></li><!--]--></ul><h3>الجزء 6: الملفات والأخطاء</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-6/index">الجزء 6</a></li><li><a href="../../../../book/mooc/part-6/1-reading-files">قراءة الملفات</a></li><li><a href="../../../../book/mooc/part-6/2-writing-files">كتابة الملفات</a></li><li><a href="../../../../book/mooc/part-6/3-errors">معالجة الأخطاء</a></li><li><a href="../../../../book/mooc/part-6/4-scope-of-variables">المتغيّرات المحلية والعالمية</a></li><!--]--></ul><h3>الجزء 7: الوحدات</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-7/index">الجزء 7</a></li><li><a href="../../../../book/mooc/part-7/1-modules">الوحدات</a></li><li><a href="../../../../book/mooc/part-7/2-randomness">العشوائية</a></li><li><a href="../../../../book/mooc/part-7/3-times-and-dates">الأوقات والتواريخ</a></li><li><a href="../../../../book/mooc/part-7/4-data-processing">معالجة البيانات</a></li><li><a href="../../../../book/mooc/part-7/5-creating-modules">إنشاء وحداتك الخاصة</a></li><li><a href="../../../../book/mooc/part-7/6-more-features">المزيد من ميزات Python</a></li><!--]--></ul><h3>الجزء 8: الكائنات والصنوف</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-8/index">الجزء 8</a></li><li><a href="../../../../book/mooc/part-8/1-objects-and-methods">الكائنات والتابعات</a></li><li><a href="../../../../book/mooc/part-8/2-classes-and-objects">الأصناف والكائنات</a></li><li><a href="../../../../book/mooc/part-8/3-defining-classes">تعريف الأصناف</a></li><li><a href="../../../../book/mooc/part-8/4-defining-methods">تعريف التوابع</a></li><li><a href="../../../../book/mooc/part-8/5-more-examples-of-classes">المزيد من أمثلة الأصناف</a></li><!--]--></ul><h3>الجزء 9: المزيد عن الكائنات</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-9/index">الجزء 9</a></li><li><a href="../../../../book/mooc/part-9/1-objects-and-references">الكائنات والمراجع</a></li><li><a href="../../../../book/mooc/part-9/2-objects-as-attributes">الكائنات كخصائص</a></li><li><a href="../../../../book/mooc/part-9/3-encapsulation">التغليف</a></li><li><a href="../../../../book/mooc/part-9/4-scope-of-methods">نطاق التوابع</a></li><li><a href="../../../../book/mooc/part-9/5-class-attributes">خصائص الصنف</a></li><li><a href="../../../../book/mooc/part-9/6-more-examples-with-classes">مزيد من الأمثلة على الأصناف</a></li><!--]--></ul><h3>الجزء 10: تراكيب الأصناف</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-10/index">الجزء 10</a></li><li><a href="../../../../book/mooc/part-10/1-class-hierarchies">تراكيب الأصناف</a></li><li><a href="../../../../book/mooc/part-10/2-access-modifiers">مُعدِّلات الوصول</a></li><li><a href="../../../../book/mooc/part-10/3-oo-programming-techniques">تقنيات البرمجة الكائنية</a></li><li><a href="../../../../book/mooc/part-10/4-application-development">تطوير تطبيق أكبر</a></li><!--]--></ul><h3>الجزء 11: ميزات متقدمة</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-11/index">الجزء 11</a></li><li><a href="../../../../book/mooc/part-11/1-list-comprehensions">إدراكات القوائم</a></li><li><a href="../../../../book/mooc/part-11/2-more-comprehensions">المزيد من الإدراكات</a></li><li><a href="../../../../book/mooc/part-11/3-recursion">التعاود</a></li><li><a href="../../../../book/mooc/part-11/4-more-recursion-examples">المزيد من أمثلة التعاود</a></li><!--]--></ul><h3>الجزء 12: البرمجة الدالية</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-12/index">الجزء 12</a></li><li><a href="../../../../book/mooc/part-12/1-functions-as-arguments">الدوال كوسائط</a></li><li><a href="../../../../book/mooc/part-12/2-generators">المولّدات</a></li><li><a href="../../../../book/mooc/part-12/3-functional-programming">البرمجة الدالية</a></li><li><a href="../../../../book/mooc/part-12/4-regular-expressions">التعبيرات النمطية</a></li><!--]--></ul><h3>الجزء 13: الألعاب مع Pygame</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-13/index">الجزء 13</a></li><li><a href="../../../../book/mooc/part-13/1-pygame">مكتبة pygame</a></li><li><a href="../../../../book/mooc/part-13/2-animation">التحريك</a></li><li><a href="../../../../book/mooc/part-13/3-events">الأحداث</a></li><li><a href="../../../../book/mooc/part-13/4-more-pygame-techniques">تقنيات pygame إضافية</a></li><!--]--></ul><h3>الجزء 14: مشروع اللعبة</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-14/index">الجزء 14</a></li><li><a href="../../../../book/mooc/part-14/1-game-project">مشروع اللعبة</a></li><li><a href="../../../../book/mooc/part-14/2-robot-and-boxes">الروبوت والصناديق</a></li><li><a href="../../../../book/mooc/part-14/3-finishing-the-game">إنهاء اللعبة</a></li><li><a href="../../../../book/mooc/part-14/4-your-own-game">لعبتك الخاصة</a></li><!--]--></ul><h3>صفحات مساعدة</h3> <ul><!--[--><li><a href="../../../../book/mooc/auxiliary/index">عن هذه الدورة</a></li><li><a href="../../../../book/mooc/auxiliary/frontmatter-guide">دليل بيانات الترويسة الأمامية</a></li><li><a href="../../../../book/mooc/auxiliary/vocabulary">المفردات</a></li><li><a href="../../../../book/mooc/auxiliary/error_messages">رسائل الأخطاء الشائعة</a></li><li><a href="../../../../book/mooc/auxiliary/faq">الأسئلة الشائعة</a></li><li><a href="../../../../book/mooc/auxiliary/exam_adv">اختبار الدورة المتقدمة في البرمجة 15.08.</a></li><li><a href="../../../../book/mooc/auxiliary/exam_intro">اختبار مقدمة في البرمجة 05.09.</a></li><li><a href="../../../../book/mooc/auxiliary/support-and-assistance">الدعم والمساعدة</a></li><li><a href="../../../../book/mooc/auxiliary/all-exercises">جميع التمارين</a></li><li><a href="../../../../book/mooc/auxiliary/exam">اختبار 4.6.</a></li><li><a href="../../../../book/mooc/auxiliary/grading-and-exams">التقييم والاختبارات</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>تعريف الدوال</h1> <!--[0--><nav class="toc-inline" aria-label="في هذا القسم"><p>في هذا القسم</p> <ul><!--[--><li><a href="#معمل-شيفرة-بارسونز">معمل شيفرة بارسونز</a></li><li><a href="#تعريف-الدالة">تعريف الدالة</a></li><li><a href="#وسائط-الدالة">وسائط الدالة</a></li><li><a href="#مزيد-من-الأمثلة">مزيد من الأمثلة</a></li><li><a href="#تحذير-استخدام-المتغيرات-العامة-داخل-الدوال">تحذير: استخدام المتغيّرات العامة داخل الدوال</a></li><!--]--></ul></nav><!--]--> <!--[-1--><div class="reader-content"><!----><blockquote>
+<p><strong>أهداف التعلّم</strong></p>
+<p>بعد إتمام هذا القسم</p>
+<ul>
+<li>ستعرف كيف تكتب دوالك الخاصة وتستدعيها</li>
+<li>ستفهم ما يُقصد بالوسيط وبالمعامل في الدالة</li>
+<li>ستتمكّن من تعريف المعاملات في دوالك الخاصة</li>
+</ul>
+</blockquote>
+<h2 id="معمل-شيفرة-بارسونز">معمل شيفرة بارسونز</h2>
+<p>ضمن أبحاث جارية في تعليم علوم الحاسوب في جامعة هلسنكي، يجري تطوير برمجية جديدة للتدريب على البرمجة اسمها معمل شيفرة بارسونز (Parsons Code Lab). وفي هذه البرمجية تحلّ تمارين برمجية على هيئة <a href="https://en.wikipedia.org/wiki/Parsons_problem">مسائل بارسونز</a>، عبر ترتيب كتل الشيفرة وملئها.</p>
+<p>بالضغط على الرابط أدناه ستحصل على مجموعة من التمارين تتيح لك مراجعة كثير من المفاهيم البرمجية الأساسية التي تعلّمتها حتى الآن: الحلقات، والجمل الشرطية، وعمليات السلاسل النصية، وما شابه. وهذه التمارين مادة اختيارية داعمة ولن تؤثر على التقييم بأي شكل. غير أن معلم الدورة يستطيع الاطلاع على إحصاءات محاولات التمارين عبر لوحة تحكم المعلم في البرمجية.</p>
+<p><a href="https://parsonscodelab.web.helsinki.fi/laurasini/set/introduction-to-programming-halfway-review">إلى التمارين</a></p>
+<p>يُرجى ملاحظة أن البرمجية قيد التطوير النشط، وقد تكون هناك بعض المشكلات.
+يُرجى المساعدة في تطويرها عبر مشاركة أي مشكلات وملاحظات ممكنة من خلال استبيان ملاحظات مجهول الهوية! سيستغرق ملؤه نحو دقيقة واحدة، لكنه سيساعد في تطويرها مستقبلًا بما لا يُقدَّر.</p>
+<p><a href="https://elomake.helsinki.fi/lomakkeet/IYqXp/lomake.html">شارك ملاحظاتك</a></p>
+<p>قد تُستخدم نشاطات التمارين والملاحظات في الأبحاث بصيغة مجهولة الهوية تمامًا.
+شكرًا على مساهمتك!</p>
+<h2 id="تعريف-الدالة">تعريف الدالة</h2>
+<p>لقد استخدمنا دوال مثل <code>len</code> و<code>print</code> و<code>input</code> في برامجنا من قبل. وهذه دوال مدمجة في Python، لذا فهي دائمًا جاهزة بين يديك مهما كانت البيئة التي تبرمج فيها. لكن من الممكن أيضًا أن تُعرّف دوالك الخاصة.</p>
+<p>قبل أن يمكن استخدام دالة، يجب أن تُعرَّف أولًا. ويبدأ أي تعريف للدالة بالكلمة المفتاحية <code>def</code>، وهي اختصار لكلمة <em>تعريف</em> (<em>define</em>). ثم يأتي <em>اسم</em> الدالة، تليه قوسان وشرطة نقطتان. وتُسمَّى هذه <em>ترويسة</em> (<em>header</em>) الدالة. وبعدها يأتي <em>جسم</em> (<em>body</em>) الدالة مُزاحًا إلى الداخل تمامًا ككتلتَي <code>while</code> و<code>if</code>.</p>
+<p>فمثالًا، تُعرِّف الشيفرة التالية الدالة <code>message</code>:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">message</span>():
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;This is my very own function!&quot;</span>)
+</code></pre>
+<p>إذا نُفِّذ البرنامج أعلاه فلا يبدو أن شيئًا يحدث. والسبب في ذلك أن الشيفرة الموجودة في جسم الدالة لا تُنفَّذ إلا عندما تُستدعى الدالة.</p>
+<p>استدعاء الدالة لا يحتاج سوى إلى ذكر اسمها في شيفرتك. فإضافة استدعاء للدالة إلى نهاية البرنامج أعلاه، هكذا</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">message</span>():
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;This is my very own function!&quot;</span>)
+
+message()
+</code></pre>
+<p>ينتج عن ذلك أمرٌ مطبوع:</p>
+<pre><code>This is my very own function!
+</code></pre>
+<p>وحين تكون الدالة معرَّفة يمكن استدعاؤها عدة مرات:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">message</span>():
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;This is my very own function!&quot;</span>)
+
+message()
+message()
+message()
+</code></pre>
+<pre><code>This is my very own function!
+This is my very own function!
+This is my very own function!
+</code></pre>
+<blockquote>
+<p><strong>اختبار دوالك الخاصة</strong></p>
+<p>ملاحظة: اعتبارًا من الآن، ستطلبك معظم تمارين هذه الدورة كتابة دوالك الخاصة.</p>
+<p>حين يتكوّن برنامج من دوال فقط، لا يبدو لتنفيذه أي أثر. والشيفرة التالية لا تطبع شيئًا، رغم أنها تحتوي على أمر طباعة:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">greet</span>():
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Hi!&quot;</span>)
+</code></pre>
+<p>سبب عدم طباعة أي شيء هو أن الشيفرة الموجودة في جسم الدالة <code>greet</code> لا تُنفَّذ إلا عند استدعاء الدالة.</p>
+<p>ينبغي أن يحتوي برنامج «main» الواقع أسفل الدالة على استدعاءات دوال مناسبة، كي يمكن اختبار البرنامج. وفي الواقع، تتعامل Python مع كل شيفرة لا تقع داخل تعريفات الدوال باعتبارها جزءًا من <em>الدالة الرئيسية</em> (<em>main function</em>)، وهي التي تُنفَّذ عند تقييم الملف نفسه أو تنفيذه. فلنضف استدعاء دالة:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">greet</span>():
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Hi!&quot;</span>)
+
+<span class="hljs-comment"># All code not within function definitions is part of</span>
+<span class="hljs-comment"># the main function of the program</span>
+<span class="hljs-comment"># Calling our function:</span>
+
+greet()
+</code></pre>
+<p><strong>مهم</strong>: في هذه الدورة تتطلب الاختبارات الأوتوماتيكية التي تُشغَّل على ملفات التمارين أن تكون الدالة الرئيسية فارغة. فلا ينبغي ترك أي أمر في الدالة الرئيسية ضمن حلّك. أي أن أي شيفرة تستخدمها أنت في الاختبار يجب أن تكون داخل كتلة <code>if</code> معرَّفة خصيصًا:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">greet</span>():
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Hi!&quot;</span>)
+
+<span class="hljs-comment"># Write your main function within a block like this:</span>
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    greet()
+</code></pre>
+<p>وأي شيفرة تُترك خارج الكتلة أعلاه تسبّب خطأ:</p>
+<p><img src="/arabic-cs-library/images/mooc/part-3/3_4_1.png" alt="3_4_1.png"></p>
+<p>والهدف من ذلك هو التأكّد من اختبار حلّك على أرضية نظيفة، لأن الاختبارات تفحص غالبًا ما تطبعه دوالك. ومن المفيد ملاحظة أن الاختبارات لا تنفّذ أي شيفرة من داخل الكتلة <code>if __name__ == &quot;__main__&quot;</code>، لذا ينبغي ألّا تضع داخل الكتلة أي شيفرة لازمة لاستيفاء متطلّبات التمرين.</p>
+</blockquote>
+<blockquote>
+<p><strong>تمرين تفاعلي: الإخوة السبعة</strong></p>
+<p>يُرجى كتابة دالة اسمها <code>seven_brothers</code>. وحين تُستدعى الدالة فينبغي أن تطبع أسماء الإخوة السبعة بالترتيب الأبجدي، كما في المثال أدناه. راجع <a href="/arabic-cs-library/book/mooc/part-1/1-getting-started#programming-exercise-fix-the-code-seven-brothers">التمرين الذي يحمل الاسم نفسه في الجزء 1</a> لمزيد من التفاصيل عن الإخوة.</p>
+</blockquote>
+<pre><code>Aapo
+Eero
+Juhani
+Lauri
+Simeoni
+Timo
+Tuomas
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<h2 id="وسائط-الدالة">وسائط الدالة</h2>
+<p>غالبًا ما تأخذ الدالة واحدًا أو أكثر من <em>الوسائط</em> (<em>arguments</em>)، وقد تؤثر في ما تفعله الدالة. فمثلًا، تأخذ الدالتان المدمجتان <code>print</code> و<code>input</code> في Python النص المطلوب عرضه كوسيط:</p>
+<pre><code class="language-python"><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Hi!&quot;</span>)                           <span class="hljs-comment"># argument is the string &quot;Hi!&quot;</span>
+name = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;What is your name? &quot;</span>)    <span class="hljs-comment"># argument is the string &quot;What is your name? &quot;</span>
+<span class="hljs-built_in">print</span>(name)                            <span class="hljs-comment"># argument is the value of the variable name</span>
+</code></pre>
+<p>سبق أن ذكرنا أن مصططلحي <em>الوسيط</em> (<em>argument</em>) و_المعامل_ (<em>parameter</em>) يُستعملان في الغالب للإشارة إلى الشيء نفسه. والفرق أن <em>الوسيط</em> يُستعمل للبيانات المُمرَّرة إلى الدالة عند استدعائها، أما <em>داخل</em> الدالة فتُسنَد الوسائط إلى متغيّرات تُسمّى <em>معاملات</em>. أي، بتقريبٍ تام، حين نستدعي الدالة نسمّي قطع البيانات المُمرَّرة وسائط، وحين نعرّف الدالة نسمّيها معاملات.</p>
+<p>قد يبدو هذا تمييزًا دلاليًا غير مجدٍ، ولمّا كانت الأمور أغمق قليلًا، فإن ليس جميع المصادر تتبنّى هذا التعريف. لكننا في هذه الدورة نحاول إبقاء هذا التمييز واضحًا، إذ إن معرفة المصطلح الصحيح ستساعدك على فهم مصادر أخرى إلى جانب مادة هذه الدورة.</p>
+<p>لنعرّف بعض الدوال التي تأخذ وسائط. وفي تعريف الدالة، تُعرَّف المعاملات بين القوسين الواقعين بعد اسم الدالة:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">hello</span>(<span class="hljs-params">target</span>):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Hello&quot;</span>, target)
+</code></pre>
+<p>استدعاء هذه الدالة مرتين، هكذا</p>
+<pre><code class="language-python">hello(<span class="hljs-string">&quot;Emily&quot;</span>)
+hello(<span class="hljs-string">&quot;world!&quot;</span>)
+</code></pre>
+<p>يطبع تحيّةين مختلفتين:</p>
+<pre><code>Hello Emily
+Hello world!
+</code></pre>
+<p>فلننظر عن قرب إلى تعريف الدالة:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">hello</span>(<span class="hljs-params">target</span>):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Hello&quot;</span>, target)
+</code></pre>
+<p>في السطر الأول، أي في ترويسة الدالة، صرّحنا بأن هذه الدالة تأخذ وسيطًا وتُسنِده إلى معامل اسمُه <code>target</code>. وفي جسم الدالة يستخدم الأمر <code>print</code> القيمة المخزّنة في <code>target</code>.</p>
+<p>وحين تُستدعى الدالة يحمل المعامل <code>target</code> القيمة المُعطاة كوسيط في استدعاء الدالة. فمثلًا، استدعاء الدالة التالي</p>
+<pre><code class="language-python">name = <span class="hljs-string">&quot;Alan&quot;</span>
+hello(name)
+</code></pre>
+<p>يجعل المعامل <code>target</code> يُضبط على القيمة <code>&quot;Alan&quot;</code>.</p>
+<p>تتبع أسماء الدوال ومعاملاتها المبادئ نفسها التي تتبعها أسماء المتغيّرات. فينبغي أن تكون وصفية، وأن تتكوّن أساسًا من أحرف صغيرة ومحارف شرطة سفلية. ومرة أخرى، هناك بعض الاستثناءات لهذه الإرشادات، لكننا سنتجاهلها الآن.</p>
+<blockquote>
+<p><strong>تمرين تفاعلي: المحرف الأول</strong></p>
+<p>يحتوي التمرين على الهيكل العظمي للدالة <code>first_character</code>. يُرجى إكماله بحيث يطبع المحرف الأول من السلسلة النصية التي تأخذها كوسيط.</p>
+</blockquote>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">first_character</span>(<span class="hljs-params">text</span>):
+     <span class="hljs-comment"># write your code here</span>
+
+<span class="hljs-comment"># testing the function:</span>
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    first_character(<span class="hljs-string">&#x27;python&#x27;</span>)
+    first_character(<span class="hljs-string">&#x27;yellow&#x27;</span>)
+    first_character(<span class="hljs-string">&#x27;tomorrow&#x27;</span>)
+    first_character(<span class="hljs-string">&#x27;heliotrope&#x27;</span>)
+    first_character(<span class="hljs-string">&#x27;open&#x27;</span>)
+    first_character(<span class="hljs-string">&#x27;night&#x27;</span>)
+</code></pre>
+<pre><code>p
+y
+t
+h
+o
+n
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<blockquote>
+<p><strong>اختبار دوالك ذات الوسائط</strong></p>
+<p>كلما كانت دالتك تأخذ واحدًا أو أكثر من الوسائط، فيُستحسن أن تختبرها بوسائط مختلفة متنوعة.</p>
+<p>وانتبه خصوصًا إلى «الحالات الخاصة» الخاصة بنوع الوسيط الذي تستخدمه. كيف تتصرّف دالتك إذا كان الوسيط صفرًا أو عددًا سالبًا، أو عددًا عشريًا بدل عدد صحيح؟ وماذا يحدث إذا كان الوسيط سلسلة نصية فارغة؟</p>
+<p>فإذا لم تطلب منك المهمة صراحةً تضمين استدعاءات للدوال، فيجوز لك أن تضمّن استدعاءاتك الخاصة داخل كتلة <code>if</code> الخاصة بالدالة الرئيسية كما شُرح أعلاه. وستتجاهل الاختبارات كل ما يقع داخل كتلة if.</p>
+</blockquote>
+<h2 id="مزيد-من-الأمثلة">مزيد من الأمثلة</h2>
+<p>فلننظر إلى مزيد من أمثلة الدوال التي تأخذ وسائط. وفي تعريف الدالة التالي يكون المعامل عددًا:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">squared</span>(<span class="hljs-params">x</span>):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;The square of the number <span class="hljs-subst">{x}</span> is <span class="hljs-subst">{x * x}</span>&quot;</span>)
+
+squared(<span class="hljs-number">2</span>)
+squared(<span class="hljs-number">5</span>)
+</code></pre>
+<pre><code>The square of the number 2 is 4
+The square of the number 5 is 25
+</code></pre>
+<p>وفي المقابل، يحتوي تعريف الدالة هذا على جملة <code>if</code> داخل جسم الدالة:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">hello</span>(<span class="hljs-params">name</span>):
+    <span class="hljs-keyword">if</span> name == <span class="hljs-string">&quot;Emily&quot;</span>:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Hello&quot;</span>, name)
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Hi&quot;</span>, name)
+
+hello(<span class="hljs-string">&quot;Emily&quot;</span>)
+hello(<span class="hljs-string">&quot;Mark&quot;</span>)
+</code></pre>
+<pre><code>Hello Emily
+Hi Mark
+</code></pre>
+<p>تأخذ هذه الدالة وسيطين:</p>
+<pre><code class="language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">sum</span>(<span class="hljs-params">x, y</span>):
+    result = x + y
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;The sum of the arguments <span class="hljs-subst">{x}</span> and <span class="hljs-subst">{y}</span> is <span class="hljs-subst">{result}</span>&quot;</span>)
+
+<span class="hljs-built_in">sum</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)
+<span class="hljs-built_in">sum</span>(<span class="hljs-number">5</span>, <span class="hljs-number">24</span>)
+</code></pre>
+<pre><code>The sum of the arguments 1 and 2 is 3
+The sum of the arguments 5 and 24 is 29
+</code></pre>
+<p>وتتضمّن الدالة أيضًا المتغيّر المساعد <code>result</code>، الذي تستخدمه لتخزين مجموع وسائطها.</p>
+<p>لاحظ كيف أن أسماء المعاملات في تعريف الدالة لا علاقة لها بأي متغيّرات خارجها. فلنا نستدعي الدالة أعلاه هكذا تمامًا:</p>
+<pre><code class="language-python">x = <span class="hljs-number">100</span>
+y = <span class="hljs-number">30</span>
+<span class="hljs-built_in">sum</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)
+<span class="hljs-built_in">sum</span>(x + y, <span class="hljs-number">10</span>)
+</code></pre>
+<p>وهذا ينبغي أن يطبع</p>
+<pre><code>The sum of the arguments 1 and 2 is 3
+The sum of the arguments 130 and 10 is 140
+</code></pre>
+<p>في استدعاء الدالة الأول تُسنَد إلى المعاملين القيمتان <code>x = 1</code> و<code>y = 2</code>. وفي استدعاء الدالة الثاني تُسنَد إليهما القيمتان <code>x = 130</code> و<code>y = 10</code>، بغضّ النظر عن المتغيّرات المسمّاة بالأسماء نفسها المستخدَمة في استدعاء الدالة.</p>
+<p>وسنعود إلى تعريفات الدوال في بداية الجزء التالي من الدورة.</p>
+<!--يوجد تحذير مشابه في الأقسام 3-4 و4-6 و5-1، فتحقّق منها جميعًا إن عدّلته-->
+<h2 id="تحذير-استخدام-المتغيرات-العامة-داخل-الدوال">تحذير: استخدام المتغيّرات العامة داخل الدوال</h2>
+<p>في الأمثلة أعلاه رأينا أنه من الممكن إسناد متغيّرات جديدة داخل تعريفات الدوال. ويمكن للدالة أيضًا أن ترى متغيّرات مُسنَدة خارجها، في الدالة الرئيسية. وتُسمَّى هذه المتغيّرات متغيّرات <em>عامة</em> (<em>global</em>).</p>
+<p>استخدام المتغيّرات العامة من داخل الدوال عادةً فكرة سيّئة. فإلى جانب مشكلات أخرى، قد يسبّب ذلك أخطاء يصعب تتبّعها.</p>
+<p>فيما يلي مثال على دالة تستخدم متغيّرًا عامًّا «من باب الخطأ»:</p>
+<pre><code class="language-python"><span class="hljs-comment"># this is a global variable</span>
+name = <span class="hljs-string">&quot;Betty&quot;</span>
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">hello</span>(<span class="hljs-params">given_name</span>):
+    <span class="hljs-comment"># using the global variable instead of the parameter by mistake</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Hello&quot;</span>, name)
+
+hello(<span class="hljs-string">&quot;Steve&quot;</span>)
+hello(<span class="hljs-string">&quot;Betty&quot;</span>)
+</code></pre>
+<pre><code>Hello Betty
+Hello Betty
+</code></pre>
+<p>مهما استدعيتَ الدالة بعدد من الوسائط المختلفة، فستطبع دائمًا القيمة <code>&quot;Betty&quot;</code> المخزّنة في المتغيّر العام.</p>
+<blockquote>
+<p><strong>تمرين تفاعلي: المتوسط</strong></p>
+<p>يُرجى كتابة دالة اسمها <code>mean</code>، تأخذ ثلاثة وسائط صحيحة. وينبغي أن تطبع الدالة المتوسط الحسابي للوسائط الثلاثة.</p>
+</blockquote>
+<pre><code class="language-python">mean(<span class="hljs-number">5</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>)
+mean(<span class="hljs-number">10</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>)
+</code></pre>
+<pre><code>3.0
+4.0
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<blockquote>
+<p><strong>تمرين تفاعلي: اطبع عدّة مرّات</strong></p>
+<p>يُرجى كتابة دالة اسمها <code>print_many_times(text, times)</code>، تأخذ سلسلة نصية وعددًا صحيحًا كوسائط. ويحدد الوسيط الصحيح عدد مرّات طباعة الوسيط النصي:</p>
+</blockquote>
+<pre><code class="language-python">print_many_times(<span class="hljs-string">&quot;hi&quot;</span>, <span class="hljs-number">5</span>)
+
+<span class="hljs-built_in">print</span>()
+
+text = <span class="hljs-string">&quot;All Pythons, except one, grow up&quot;</span>
+times = <span class="hljs-number">3</span>
+print_many_times(text, times)
+</code></pre>
+<pre><code>hi
+hi
+hi
+hi
+hi
+
+All Pythons, except one, grow up.
+All Pythons, except one, grow up.
+All Pythons, except one, grow up.
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<blockquote>
+<p><strong>تمرين تفاعلي: مربع من محارف الشباك</strong></p>
+<p>يُرجى كتابة دالة اسمها <code>hash_square(length)</code>، تأخذ وسيطًا صحيحًا. وتطبع الدالة مربعًا من محارف الشباك، ويحدد الوسيط طول ضلع المربع.</p>
+</blockquote>
+<pre><code class="language-python">hash_square(<span class="hljs-number">3</span>)
+<span class="hljs-built_in">print</span>()
+hash_square(<span class="hljs-number">5</span>)
+</code></pre>
+<pre><code>###
+###
+###
+
+#####
+#####
+#####
+#####
+#####
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<blockquote>
+<p><strong>تمرين تفاعلي: رقعة شطرنج</strong></p>
+<p>يُرجى كتابة دالة اسمها <code>chessboard</code>، تطبع رقعة شطرنج مكوّنة من الآحاد والأصفار. وتأخذ الدالة وسيطًا صحيحًا يحدد طول ضلع الرقعة. راجع الأمثلة أدناه للتفاصيل:</p>
+</blockquote>
+<pre><code class="language-python">chessboard(<span class="hljs-number">3</span>)
+<span class="hljs-built_in">print</span>()
+chessboard(<span class="hljs-number">6</span>)
+</code></pre>
+<pre><code>101
+010
+101
+
+101010
+010101
+101010
+010101
+101010
+010101
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<blockquote>
+<p><strong>تمرين تفاعلي: كلمة مربَّعة</strong></p>
+<p>يُرجى كتابة دالة اسمها <code>squared</code>، تأخذ وسيطًا من نوع سلسلة نصية ووسيطًا صحيحًا، وتطبع مربعًا من المحارف كما هو محدَّد في الأمثلة أدناه.</p>
+</blockquote>
+<pre><code class="language-python">squared(<span class="hljs-string">&quot;ab&quot;</span>, <span class="hljs-number">3</span>)
+<span class="hljs-built_in">print</span>()
+squared(<span class="hljs-string">&quot;aybabtu&quot;</span>, <span class="hljs-number">5</span>)
+</code></pre>
+<pre><code>aba
+bab
+aba
+
+aybab
+tuayb
+abtua
+ybabt
+uayba
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<!---
+اختبار لمراجعة محتويات هذا القسم:
+
+> **اختبار:** (مكون تفاعلي غير متاح في النسخة الثابتة - ID: b04f1d8b-d207-5a8c-abbd-e42a3af7c12d)
+
+-->
+<p>يُرجى الإجابة على استبيان سريع حول مادة هذا الأسبوع.</p>
+<blockquote>
+<p><strong>اختبار:</strong> (مكون تفاعلي غير متاح في النسخة الثابتة - ID: 4420ccdc-8422-598a-9057-89b32e8f282a)</p>
+</blockquote>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/mooc/part-3/3-more-loops"><span class="prev-next__label">السابق</span> <span class="prev-next__title">المزيد عن الحلقات</span></a><!--]--> <!--[0--><a href="../../../../book/mooc/part-4/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">الجزء 4</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_bfwv11 = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.C9kBkw8T.js"),
+						import("../../../../_app/immutable/entry/app.fkPBtkuJ.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

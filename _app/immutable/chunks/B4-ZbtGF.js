@@ -1,0 +1,2757 @@
+const s="learn-ocaml",a="first-steps",n="الخطوات الأولى",e="index",l="الخطوات الأولى",p=[{depth:2,id:"2-الخطوات-الأولى",text:"2. الخطوات الأولى"},{depth:3,id:"21-السنوات-الكبيسة",text:"2.1 السنوات الكبيسة"},{depth:3,id:"22-طريقة-مونت-كارلو",text:"2.2 طريقة مونت كارلو"},{depth:3,id:"23-رسم-قلب-cardioid",text:"2.3 رسم قلب (cardioid)"},{depth:3,id:"24-مجموعة-ماندلبروت-mandelbrot-set",text:"2.4 مجموعة ماندلبروت (Mandelbrot set)"},{depth:3,id:"25-غربال-إراتوستينس-sieve-of-eratosthenes",text:"2.5 غربال إراتوستينس (Sieve of Eratosthenes)"},{depth:3,id:"26-رسم-منحنى",text:"2.6 رسم منحنى"},{depth:3,id:"27-نسخ-ملف",text:"2.7 نسخ ملف"},{depth:3,id:"28-عكس-ترتيب-الأسطر-في-نص",text:"2.8 عكس ترتيب الأسطر في نص"},{depth:3,id:"29-تحويل-الأعداد-الصحيحة-من-أساس-تعسفي-arbitrary-base",text:"2.9 تحويل الأعداد الصحيحة من أساس تعسّفي (arbitrary base)"},{depth:3,id:"210-بريك-أوت-دون-الطوب-breakout-without-bricks",text:"2.10 بريك أوت دون الطوب (Breakout without Bricks)"},{depth:3,id:"211-السلحفاة-لوجو-logo-turtle",text:"2.11 السلحفاة لوجو (Logo Turtle)"},{depth:3,id:"212-عزف-مقطوعة-موسيقية-playing-a-musical-score",text:"2.12 عزف مقطوعة موسيقية (Playing a Musical Score)"},{depth:3,id:"213-الأشجار-الرباعية-quadtrees",text:"2.13 الأشجار الرباعية (Quadtrees)"},{depth:3,id:"214-حل-مسألة-الملكات-n-n-queens-problem",text:"2.14 حلّ مسألة الملكات N (N-Queens Problem)"},{depth:3,id:"215-تمارين",text:"2.15 تمارين"}],c=`<h2 id="2-الخطوات-الأولى">2. الخطوات الأولى</h2>
+<p>أفضل طريقة لتعلّم لغة برمجة هي البرمجة نفسها. لذلك نعرض أدناه أربعة عشر برنامجًا (صغيرًا) للبدء مع أوسمل (OCaml). والهدف هو تقديم البُنى والأفكار الأساسية للغة.</p>
+<h3 id="21-السنوات-الكبيسة">2.1 السنوات الكبيسة</h3>
+<blockquote></blockquote>
+<blockquote></blockquote>
+<p>برنامجنا الأول، <code>leap_year.ml</code>، يحدد ما إذا كانت سنة معيّنة كبيسة. ويمكننا ترجمته باستخدام <code>ocamlc</code>.</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">  &gt;</span><span class="language-bash"> ocamlc -o leap_year leap_year.ml</span>
+</code></pre>
+<p>عند تشغيل البرنامج، ينتظر أن يُدخِل المستخدم سنة. ثم يطبع ما إذا كانت السنة كبيسة أم لا.</p>
+<pre><code class="language-text">  &gt; ./leap_year
+  2013
+  2013 is not a leap year
+</code></pre>
+<p>لننظر الآن في بنية هذا البرنامج. يقرأ السطر الأول عددًا صحيحًا من الدخل القياسي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> year = read_int <span class="hljs-literal">()</span>
+</code></pre>
+<p>يحتوي هذا السطر وحده على عدة مفاهيم من لغة أوسمل. أولًا، إنه <em>إعلان متغير</em> (variable declaration) بالشكل التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> year = ...
+</code></pre>
+<p>يُهيّئ هذا متغيرًا جديدًا <code>year</code> بنتيجة التعبير الواقع على يمين الرمز <code>=</code>. ولا يلزم التصريح بنوع المتغير <code>year</code>؛ إذ يستنتجه المترجم أو المفسّر تلقائيًا. والتعبير الواقع على يمين الرمز <code>=</code> هو <em>استدعاء دالة</em> (function call). إنه استدعاء للدالة المعرَّفة مسبقًا <code>read_int</code>.</p>
+<pre><code class="language-ocaml">       ... = read_int <span class="hljs-literal">()</span>
+</code></pre>
+<p>هنا، تشير <code>()</code> إلى أن الدالة <code>read_int</code> لا تأخذ أي وسيط ذي معنى. إنها تُعيد فقط عددًا صحيحًا مقروءًا من الدخل القياسي.</p>
+<p>يُعرِّف السطر الثاني متغيرًا منطقيًا <code>leap</code> قيمته <code>true</code> إذا وفقط إذا كانت <code>year</code> سنة كبيسة، أي إذا كانت تقبل القسمة على 4 دون 100، أو إذا كانت تقبل القسمة على 400.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> leap =
+    (year <span class="hljs-keyword">mod</span> <span class="hljs-number">4</span> = <span class="hljs-number">0</span> &amp;&amp; year <span class="hljs-keyword">mod</span> <span class="hljs-number">100</span> &lt;&gt; <span class="hljs-number">0</span>) || year <span class="hljs-keyword">mod</span> <span class="hljs-number">400</span> = <span class="hljs-number">0</span>
+</code></pre>
+<p>تُعيد المعاملة (العامل) <code>mod</code> باقي قسمة الأعداد الصحيحة. ويمثّل العاملان <code>&amp;&amp;</code> و<code>||</code> العمليتين المنطقيتين «و» و«أو» على التوالي. وكما في <code>year</code>، يُستنتج نوع المتغير <code>leap</code> تلقائيًا. ويُعرِّف السطر التالي متغيرًا ثالثًا، <code>msg</code>، يحوي سلسلة نصية:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> msg = <span class="hljs-keyword">if</span> leap <span class="hljs-keyword">then</span> <span class="hljs-string">&quot;is&quot;</span> <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;is not&quot;</span>
+</code></pre>
+<p>سيحوي المتغير <code>msg</code> السلسلة <code>&quot;is&quot;</code> إذا كانت <code>leap</code> صحيحة، والسلسلة <code>&quot;isnot&quot;</code> إذا كانت خاطئة. (تُحدَّد السلاسل بعلامتي تنصيص مزدوجتين &quot;.) لاحظ أن البنية <code>if-then-else</code> تُستخدَم هنا لبناء تعبير، ألا وهو سلسلة نصية.</p>
+<p>أخيرًا، يطبع السطر الأخير رسالة تبيّن ما إذا كانت السنة المُدخَلة كبيسة أم لا.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> = <span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;%d %s a leap year\\n&quot;</span> year msg
+</code></pre>
+<p>يُنجَز ذلك باستدعاء دالة المكتبة <code>Printf.printf</code> بثلاث وسائط: سلسلة تنسيق &quot;%d %s a leap year\\n&quot; مع القيمتين، <code>year</code> و<code>msg</code>، اللتين تحلّان على التوالي محل <code>%d</code> و<code>%s</code> في الرسالة المطبوعة. وكما ترى، يُرمَز إلى استدعاء الدالة بمجرد تجاور الدالة ووسائطها. وخلافًا للغات أخرى، لا تستخدم أوسمل أقواسًا حول الوسائط.</p>
+<pre><code class="language-ocaml">     ... = <span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;%d %s a leap year\\n&quot;</span> year msg
+</code></pre>
+<p>نُحيل القارئ إلى دليل أوسمل لمزيد من المعلومات عن المكتبة القياسية، وبوجه خاص عن الدالة <code>Printf.printf</code>. يتوفّر الدليل على الإنترنت على العنوان: <code>https://ocaml.org/manual</code>. وأخيرًا، لاحظ أن استدعاء الدالة <code>printf</code> مُضمَّن في إعلان ذي شكل محدَّد:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> = ...
+</code></pre>
+<p>هذا غامض بعض الشيء، وسنتركه كذلك في الوقت الحالي. وسنشرحه حين نتناول مطابقة الأنماط (pattern matching) في القسمين <a href="#drawing-a-curve"><em>2.6</em></a> <em>رسم منحنى</em> و<a href="#playing-a-musical-score"><em>2.12</em></a> <em>عزف مقطوعة موسيقية</em>. ويكفي الآن القول إن برنامج أوسمل، بشكل عام، سلسلة من الإعلانات تُقيَّم من الأعلى إلى الأسفل، أي بالترتيب الذي تظهر به في الملف المصدر. وخلافًا للغات مثل C أو Java، لا توجد نقطة دخول <code>main</code>. ويُستخدَم الشكل المحدَّد <code>let()=...</code> للحفاظ على التنسيق نفسه في حالة التعبيرات التي لا تُعيد قيمة. وعند استخدام هذا الشكل، يتحقق أوسمل من أن التعبير لا يُعيد قيمة فعلًا.</p>
+<h4>معلومات إضافية</h4>
+<h5>سطر الأوامر</h5>
+<p>بدلًا من قراءة السنة من الدخل القياسي، يمكننا تمريرها على سطر الأوامر. وفي هذه الحالة، يُستدعى البرنامج على النحو التالي:</p>
+<pre><code class="language-text">  &gt; ./leap_year 2013
+  2013 is not a leap year
+</code></pre>
+<p>للقيام بذلك، نستبدل السطر <code>letyear=read_int()</code> بـ:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> year = int_of_string <span class="hljs-type">Sys</span>.argv.(<span class="hljs-number">1</span>)
+</code></pre>
+<p>يستدعي هذا السطر الدالة المعرَّفة مسبقًا <code>int_of_string</code> بالوسيط <code>Sys.argv.(1)</code>. وتحتوي القيمة <code>Sys.argv.(1)</code> على السنة الممرَّرة كوسيط على سطر الأوامر. وكما هو الحال في لغات برمجة أخرى (Java أو C، مثلًا)، يمكننا استرجاع القيم الممرَّرة إلى البرنامج على شكل مصفوفة من السلاسل النصية، تُسمّى <code>Sys.argv</code> في أوسمل. وبشكل أدق، تُسمّى المصفوفة <code>argv</code>، وهي متاحة ضمن وحدة <code>Sys</code>، التي تشكّل واجهة لنظام التشغيل. ويتعلّق الترميز <code>Sys.argv</code> بـ<em>نظام الوحدات</em> في أوسمل، الذي ينظّم المكتبات في وحدات تُسمّى وحدات (modules)، تحتوي هي نفسها على قيم مختلفة. ودون الخوض في تفاصيل نظام الوحدات، يكفي القول الآن إننا نشير إلى قيمة داخل وحدة بكتابة اسم الوحدة، متبوعًا باسم القيمة، مفصولين بنقطة. (سنناقش هذا بمزيد من التفصيل في القسم <a href="#logo-turtle"><em>2.11</em></a> <em>لوجو ترتل (Logo Turtle)</em>.) وعليه، يجب قراءة <code>Sys.argv</code> على أنها «المصفوفة <code>argv</code> التي تنتمي إلى الوحدة <code>Sys</code>».</p>
+<p>نستخدم الترميز <code>t.(i)</code> للوصول إلى العنصر رقم <code>i</code> في مصفوفة <code>t</code>. وسنعود إلى مفهوم المصفوفات في القسم <a href="#sieve-of-eratosthenes"><em>2.5</em></a> <em>غربال إراتوستينس (The Sieve of Eratosthenes)</em>. العنصر الأول من <code>Sys.argv</code> هو <code>Sys.argv.(0)</code> لأن فهرسة المصفوفات تبدأ من 0. وهذا هو اسم البرنامج (هنا <code>leap_year</code>). والعنصر الثاني هو <code>Sys.argv.(1)</code>. وهذا أول وسيط يُمرَّر إلى البرنامج (<code>2013</code> في مثالنا). وبما أنه سلسلة نصية، يجب تحويله إلى عدد صحيح باستدعاء الدالة <code>int_of_string</code>، التي تنتمي إلى وحدة <code>Stdlib</code>. وهذه وحدة خاصة لا يلزم أن تُكتب <code>Stdlib.</code> قبل أسماء قيمها.</p>
+<h5>التحقق من الأنواع</h5>
+<p>لننظر الآن في بعض التفاصيل الإضافية المتعلقة بأنواع البيانات المقدَّمة في برنامجنا الأول. وبينما تُستنتَج أنواع المتغيرات تلقائيًا، يمكن أيضًا عرضها باستخدام الخيار <code>-i</code> للمترجم:</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">  &gt;</span><span class="language-bash"> ocamlc -i leap_year.ml</span>
+  val year : int
+  val leap : bool
+  val msg : string
+</code></pre>
+<p>نرى إذن أن المتغيرات <code>year</code> و<code>leap</code> و<code>msg</code> من الأنواع <code>int</code> و<code>bool</code> و<code>string</code> على التوالي. وهذه ثلاثة أنواع معرَّفة مسبقًا في أوسمل. لنفحص هذه الأنواع وأنواعًا أخرى متعلقة بها باستخدام الطرفية التفاعلية.</p>
+<h5>الأنواع int و int32 و int64</h5>
+<p>لنبدأ بالنوع <code>int</code>، الذي يقابل الأعداد الصحيحة الأصلية للمعالج، وتُسمّى أيضًا الأعداد الصحيحة الآلية. ويمكن كتابة ثابتة صحيحة بالترميز العشري، أو الثنائي (السابقة <code>0b</code>)، أو الثماني (السابقة <code>0o</code>)، أو السداسي عشر (السابقة <code>0x</code>). وهكذا يمكن كتابة الثابتة العشرية <code>91</code> على هيئة <code>0b1011011</code> في النظام الثنائي، و<code>0o133</code> في النظام الثماني، و<code>0x5B</code> في النظام السداسي عشر.</p>
+<p>العمليات المعتادة على النوع <code>int</code> هي الجمع (<code>+</code>)، والطرح (<code>-</code>)، والضرب (<code>*</code>)، وقسمة الأعداد الصحيحة (<code>/</code>)، والباقي (<code>mod</code>).</p>
+<pre><code class="language-ocaml">  # <span class="hljs-number">2</span> * (<span class="hljs-number">7</span> / <span class="hljs-number">2</span>) + <span class="hljs-number">7</span> <span class="hljs-keyword">mod</span> <span class="hljs-number">2</span>;;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">7</span>
+</code></pre>
+<p>لمزيد من الوضوح، يمكن فصل الأرقام باستخدام شرطة سفلية (<code>_</code>).</p>
+<pre><code class="language-ocaml">  # <span class="hljs-number">0x2f_ff_ff_ff</span> + <span class="hljs-number">268_435_456</span>;;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">1073741823</span>
+</code></pre>
+<p>تعتمد دقة النوع <code>int</code> على معمارية الآلة. ويُعطى الحدّان الأدنى والأقصى للنوع <code>int</code> بالثابتتين <code>min_int</code> و<code>max_int</code>.</p>
+<pre><code class="language-ocaml">  # min_int;;
+  - : <span class="hljs-built_in">int</span> = -<span class="hljs-number">1073741824</span>
+</code></pre>
+<p>على آلة ذات 32 بت، تُرمَّز قيم النوع <code>int</code> كأعداد صحيحة مؤشَّرة ذات 31 بت<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>، بحيث تأخذ <code>min_int</code> و<code>max_int</code> القيمتين −230 و 230 − 1 على التوالي. وعلى آلة ذات 64 بت، تُرمَّز قيم النوع <code>int</code> كأعداد صحيحة مؤشَّرة ذات 63 بت. ويستخدم التمثيل الآلي للأعداد الصحيحة تمثيل المتمّم الثنائي، ويمكن التعامل معه بمساعدة عمليات الإزاحة (<code>lsl</code> و<code>lsr</code> و<code>asr</code>) والعمليات البتّية (<code>land</code> و<code>lor</code> و<code>lxor</code> و<code>lnot</code>). فعلى سبيل المثال، يمكنك اختبار البتة الخامسة في تمثيل العدد الصحيح 42 باستخدام:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-number">42</span> <span class="hljs-keyword">land</span> (<span class="hljs-number">1</span> <span class="hljs-keyword">lsl</span> <span class="hljs-number">5</span>);;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">32</span>
+</code></pre>
+<p>لمعالجة الأعداد الصحيحة المؤشَّرة ذات 32 بت أو 64 بت، تقدّم أوسمل نوعين خاصين: <code>int32</code> و<code>int64</code>. وتُكتَب الثوابت الصحيحة من النوع <code>int32</code> (أو <code>int64</code>) باللاحقة <code>l</code> (أو <code>L</code>).</p>
+<pre><code class="language-ocaml">  # <span class="hljs-number">123l</span>;;
+  - : <span class="hljs-built_in">int32</span> = <span class="hljs-number">123l</span>
+  # <span class="hljs-number">10_000_000_000_000L</span>;;
+  - : <span class="hljs-built_in">int64</span> = <span class="hljs-number">10000000000000L</span>
+</code></pre>
+<p>يمكن العثور على العمليات الحسابية على هذين النوعين في وحدتي أوسمل <code>Int32</code> و<code>Int64</code>.</p>
+<h5>النوع bool</h5>
+<p>يمثّل النوع <code>bool</code> القيم المنطقية، أي <code>true</code> و<code>false</code>. والعمليات على النوع <code>bool</code> هي العطف (<code>&amp;&amp;</code>)، والفصل (<code>||</code>)، والنفي (<code>not</code>).</p>
+<pre><code class="language-ocaml">  # not <span class="hljs-literal">true</span> &amp;&amp; <span class="hljs-literal">false</span> || <span class="hljs-literal">true</span>;;
+  - : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">true</span>
+</code></pre>
+<p>للنفي الأسبقية الأعلى، يليه العطف، ثم الفصل. لذا يُقرأ التعبير السابق على النحو التالي:</p>
+<pre><code class="language-ocaml">  # ((not <span class="hljs-literal">true</span>) &amp;&amp; <span class="hljs-literal">false</span>) || <span class="hljs-literal">true</span>;;
+  - : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">true</span>
+</code></pre>
+<p>ترتيب تقييم المعاملتين <code>&amp;&amp;</code> و<code>||</code> ثابت من اليسار إلى اليمين. وعلاوةً على ذلك، لا يُقيَّم الوسيط الثاني إلا عند الحاجة، أي فقط إذا كان الوسيط الأول للمعاملة <code>&amp;&amp;</code> (أو <code>||</code> على التوالي) صحيحًا (أو خاطئًا على التوالي). وهاتان هما المعاملتان الوحيدتان المحدَّد لهما ترتيب التقييم. وعلاوةً على ذلك، هاتان هما المعاملتان الوحيدتان اللتان يكون تقييمهما كسولًا (lazy).</p>
+<p>تُعيد عمليات المقارنة <code>=</code>, <code>&lt;&gt;</code>, \`\`, <code>=</code> قيمة منطقية.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-number">1</span> &lt; <span class="hljs-number">2</span> &amp;&amp; <span class="hljs-number">3</span> = <span class="hljs-number">4</span>;;
+  - : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">false</span>
+</code></pre>
+<p>تُستخدَم التعبيرات المنطقية أساسًا في البنية الشرطية <code>ife1thene2elsee3</code>. ووفقًا لكون التعبير <code>e1</code> صحيحًا أو خاطئًا، يُقيَّم إما التعبير <code>e2</code> وإما التعبير <code>e3</code>.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">if</span> <span class="hljs-number">1</span> &lt; <span class="hljs-number">2</span> <span class="hljs-keyword">then</span> <span class="hljs-number">3</span> <span class="hljs-keyword">else</span> <span class="hljs-number">4</span>;;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">3</span>
+</code></pre>
+<p>وكما هو واضح في هذا المثال، فإن البنية <code>ifthenelse</code> تعبير كأي تعبير آخر. وبوجه خاص، لكي يكون هذا التعبير سليم النوع (well-typed)، يجب أن يكون للفرعين <code>e2</code> و<code>e3</code> النوع نفسه، الذي يصبح عندئذ نوع التعبير ككل.</p>
+<h5>النوعان char و string</h5>
+<p>تُمثَّل المحارف بالنوع <code>char</code>. وتُكتَب بين علامتي تنصيص مفردتين: <code>’a’</code>. أما المحارف غير القابلة للطباعة فتُدخَل باستخدام ترميز بالشكل <code>’\`\`\\</code>c<code>’</code>، حيث يمكن أن يكون c محرفًا (<code>n</code> أو <code>r</code> أو <code>t</code> أو ) أو رمز ASCII (بين 0 و255)، مكتوبًا بثلاثة أرقام عشرية (\\ddd) أو رقمين سداسيَّين عشريَّين (\\xdd).</p>
+<pre><code class="language-ocaml">  # ’a’;;
+  - : <span class="hljs-built_in">char</span> = ’a’
+  # ’\\n’;;
+  - : <span class="hljs-built_in">char</span> = ’\\n’
+  # ’\\\\’;;
+  - : <span class="hljs-built_in">char</span> = ’\\\\’
+  # ’\\<span class="hljs-number">126</span>’;;
+  - : <span class="hljs-built_in">char</span> = ’~’
+  # ’\\x7E’;;
+  - : <span class="hljs-built_in">char</span> = ’~’
+</code></pre>
+<p>يمكنك تحويل محرف إلى رمزه ASCII والعكس بمساعدة الدالتين <code>Char.code</code> و<code>Char.chr</code> من وحدة <code>Char</code>.</p>
+<p>تُمثَّل السلاسل النصية بالنوع <code>string</code>. وتُكتَب بين علامتي تنصيص مزدوجتين: <code>&quot;abc&quot;</code>. ويمكن داخل السلسلة النصية إدخال المحارف غير القابلة للطباعة بالصيغة نفسها المستخدمة للنوع <code>char</code>.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-string">&quot;a&quot;</span>;;
+  - : <span class="hljs-built_in">string</span> = <span class="hljs-string">&quot;a&quot;</span>
+  # <span class="hljs-string">&quot;hello world\\n&quot;</span>;;
+  - : <span class="hljs-built_in">string</span> = <span class="hljs-string">&quot;hello world\\n&quot;</span>
+  # <span class="hljs-string">&quot;&quot;</span>;;
+  - : <span class="hljs-built_in">string</span> = <span class="hljs-string">&quot;&quot;</span>
+  # <span class="hljs-string">&quot;abc\\126def&quot;</span>;;
+  - : <span class="hljs-built_in">string</span> = <span class="hljs-string">&quot;abc~def&quot;</span>
+</code></pre>
+<p>وكما هو واضح في هذا المثال، لا تملك السلسلة <code>&quot;a&quot;</code> النوع نفسه الذي يملكه المحرف <code>’a’</code>. وبشكل عام، لا يوجد تحويل بين هذين النوعين. ويمكنك الوصول إلى المحرف رقم i في سلسلة s بالترميز s<code>.[</code>i<code>]</code>، حيث يكون للمحرف الأول الفهرس 0.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-string">&quot;abc&quot;</span>.[<span class="hljs-number">1</span>];;
+  - : <span class="hljs-built_in">char</span> = ’b’
+</code></pre>
+<p>يُعطى طول سلسلة نصية بالدالة <code>String.length</code> من وحدة <code>String</code>. وأخيرًا، يمكن دمج سلسلتين نصيتين باستخدام المعاملة <code>^</code>.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-type">String</span>.length (<span class="hljs-string">&quot;abc&quot;</span> ^ <span class="hljs-string">&quot;def&quot;</span>);;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">6</span>
+</code></pre>
+<p>نُحيل القارئ إلى دليل أوسمل لمزيد من التفاصيل بشأن الوحدات المعروضة في هذا الفصل.</p>
+<h5>الإدخال/الإخراج</h5>
+<p>أبسط دوال الإدخال/الإخراج هي تلك التي تطبع قيمًا من الأنواع الأساسية، مثل <code>print_string</code>، التي استُخدمت أعلاه لطباعة <code>Hello world</code>. ومن هذه الدوال أيضًا <code>print_char</code> و<code>print_int</code> و<code>print_float</code>؛ و<code>print_newline</code> لطباعة إرجاع عربة؛ و<code>print_endline</code> لطباعة سلسلة نصية يتبعها إرجاع عربة. وتكتب دوال الطباعة الست هذه إلى الخرج القياسي. أما الكتابة إلى الخطأ القياسي، فثمّ ست دوال أخرى: <code>prerr_char</code> و<code>prerr_string</code> وغيرها. وبالمثل، توجد دوال تقرأ من الدخل القياسي، وهي <code>read_int</code> و<code>read_float</code> و<code>read_line</code>. وهناك أيضًا صيغة من الدالة <code>printf</code> للكتابة إلى الخطأ القياسي، هي <code>Printf.eprintf</code>. وستجد مزيدًا من التفاصيل بشأن الإدخال/الإخراج في القسم <a href="#copying-a-file"><em>2.7</em></a> <em>نسخ ملف</em>.</p>
+<h3 id="22-طريقة-مونت-كارلو">2.2 طريقة مونت كارلو</h3>
+<blockquote></blockquote>
+<p>برنامجنا الثاني (انظر الصفحة <a href="#x7-22014r2">46</a>)، <code>approx_pi.ml</code>، يحسب قيمة π تجريبيًا باستخدام طريقة مونت كارلو (Monte-Carlo). وتتمثّل هذه الطريقة في توليد نقاط عشوائيًا داخل مربع طول ضلعه 1، ومساحته بالتالي 1، ثم عدّ عدد هذه النقاط الواقعة داخل ربع دائرة نصف قطرها 1 مرسوم داخل هذا المربع. ومساحة ربع الدائرة هي π∕4. ويوضّح الشكل <a href="#computation-of-using-the-montecarlo-method">2.1</a> الفكرة.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/first-steps-0-pi_monte_carlo-mps-.webp" alt="" id="computation-of-using-the-montecarlo-method"></p>
+<p><strong>الشكل 2.1: حساب π باستخدام طريقة مونت كارلو.</strong></p>
+<p>نترجم البرنامج <code>approx_pi.ml</code>، مثلًا باستخدام <code>ocamlopt</code> (لكفاءة أكبر)، على النحو التالي:</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">  &gt;</span><span class="language-bash"> ocamlopt -o approx_pi approx_pi.ml</span>
+</code></pre>
+<p>ثم ننفّذ البرنامج ونعطيه عدد النقاط المطلوب توليدها. وإذا كان هذا العدد كبيرًا بما يكفي، تقترب نسبة النقاط الواقعة داخل ربع الدائرة من نسبة مساحة ربع الدائرة إلى مساحة المربع، أي π∕4. فنحصل على النتائج التالية:</p>
+<pre><code class="language-text">  &gt; ./approx_pi
+  500
+  3.136000
+  &gt; ./approx_pi
+  5000
+  3.113600
+  &gt; ./approx_pi
+  50000
+  3.149920
+  &gt; ./approx_pi
+  500000
+  3.142184
+</code></pre>
+<p>غير أنه في الممارسة العملية، تعطي هذه الطريقة قيمة لـ π صحيحة فقط حتى بضعة منازل عشرية. فمثلًا، مع 10 ملايين نقطة، تكون القيمة صحيحة فقط حتى المنزلة العشرية الثالثة.</p>
+<blockquote></blockquote>
+<p>كما في برنامجنا الأول، يحصل السطر الأول من <code>approx_pi.ml</code> على العدد <code>n</code> من النقاط المطلوب توليدها بقراءة عدد صحيح من الدخل القياسي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> n = read_int <span class="hljs-literal">()</span>
+</code></pre>
+<p>تستخدم بقية البرنامج حلقة لتوليد <code>n</code> نقطة عشوائيًا. وفي كل تكرار من تكرارات الحلقة، نزيد بمقدار 1 محتوى متغير مهيَّأ بالقيمة 0 إذا كانت النقطة المولَّدة تقع داخل ربع الدائرة ذي نصف القطر 1. وفي النهاية، نعرض القيمة التقريبية لـ π، التي تساوي أربعة أمثال نسبة عدد النقاط الواقعة داخل ربع الدائرة إلى العدد الإجمالي للنقاط.</p>
+<p>يُسمّى الحساب بهذه الطريقة، بتعديل محتوى متغير، حسابًا بواسطة <em>الآثار الجانبية</em> (side effects). وبشكل أعم، يُستخدَم مصطلح الأثر الجانبي بالنسبة إلى التعبيرات التي لا تُعيد قيمة عند تقييمها. وكما ذكرنا في القسم السابق، يُستخدَم إعلان بالشكل <code>let()=...</code> لتقييم مثل هذه التعبيرات.</p>
+<p>تتألف بقية البرنامج من التعبير الذي يلي علامة <code>=</code>. ويبدأ بتهيئة متغير <code>p</code> بإعلان بالشكل التالي:</p>
+<pre><code class="language-ocaml">     <span class="hljs-keyword">let</span> p = ... <span class="hljs-keyword">in</span>
+     ...
+</code></pre>
+<p>يُعرِّف هذا الإعلان <em>متغيرًا محليًا</em>، يقتصر استخدامه أو <em>نطاقه</em> على التعبير الذي يلي الكلمة المفتاحية <code>in</code>. ويفيد هذا النوع من الإعلانات عندما يرغب المرء في تقييد ظهور متغير، سواء لمنع استخدامه في أجزاء أخرى من البرنامج أو لأنه يرغب في إخفاء متغير آخر بالاسم نفسه مؤقتًا.</p>
+<p>يُهيَّأ المتغير <code>p</code> بـ<em>مرجع</em> (reference)، أي خلية ذاكرة يمكن تعديل محتواها، وتحوي في البداية القيمة 0. وسيُستخدَم هذا المرجع لعدّ عدد النقاط الواقعة داخل ربع الدائرة.</p>
+<pre><code class="language-ocaml">     <span class="hljs-keyword">let</span> p = <span class="hljs-built_in">ref</span> <span class="hljs-number">0</span> <span class="hljs-keyword">in</span>
+     ...
+</code></pre>
+<p>يُنشأ المتغير <code>p</code> باستدعاء الدالة المعرَّفة مسبقًا <code>ref</code> (المعرَّفة في وحدة <code>Stdlib</code>) بالعدد الصحيح 0 كوسيط. ويترتّب على تطبيق هذه الدالة تخصيص خلية ذاكرة جديدة وتهيئة محتواها بالقيمة 0. والنوع الذي يستنتجه أوسمل للمتغير <code>p</code> هو <code>intref</code>، ويُقرأ على أنه «مرجع يحوي قيمة من النوع <code>int</code>».</p>
+<p>يُعرِّف السطر التالي <em>حلقة</em> <code>for</code> تقيّم التعبير الواقع بين الكلمتين المفتاحيتين <code>do</code> و<code>done</code> عدد <code>n</code> من المرات، مع تغيير محتوى المتغير <code>k</code> من <code>1</code> إلى <code>n</code>:</p>
+<pre><code class="language-ocaml">     <span class="hljs-keyword">for</span> k = <span class="hljs-number">1</span> <span class="hljs-keyword">to</span> n <span class="hljs-keyword">do</span>
+      ...
+     <span class="hljs-keyword">done</span>
+</code></pre>
+<p>المتغير <code>k</code> هو <em>فهرس</em> الحلقة، والتعبير الواقع بين <code>do</code> و<code>done</code> هو <em>جسم</em> الحلقة. يُهيَّأ الفهرس <code>k</code> بالقيمة <code>1</code>. ثم يُقيَّم الجسم. هذه هي التكرار الأول للحلقة. بعد ذلك يُزاد <code>k</code>، ويُقيَّم الجسم مرة أخرى. هذا هو التكرار الثاني للحلقة. وهكذا دواليك. وبعد التقييم الذي تكون فيه <code>k</code> مساوية لـ <code>n</code>، تنتهي الحلقة.</p>
+<p>يبدأ جسم الحلقة بتوليد إحداثيات نقطة (x,y) عشوائيًا داخل مربع طول ضلعه 1.</p>
+<pre><code class="language-ocaml">      <span class="hljs-keyword">let</span> x = <span class="hljs-type">Random</span>.<span class="hljs-built_in">float</span> <span class="hljs-number">1.0</span> <span class="hljs-keyword">in</span>
+      <span class="hljs-keyword">let</span> y = <span class="hljs-type">Random</span>.<span class="hljs-built_in">float</span> <span class="hljs-number">1.0</span> <span class="hljs-keyword">in</span>
+</code></pre>
+<p>ولهذا الغرض، يُهيَّأ متغيران محليان، <code>x</code> و<code>y</code>، باستدعاءين للدالة <code>Random.float</code> بالوسيط <em>العدد ذي الفاصلة العائمة</em> <code>1.0</code>. ويُعيد كلٌّ من هذين الاستدعاءين عددًا ذا فاصلة عائمة بين 0 و1 (يشمل 0 ويستثني 1). وكما سنرى لاحقًا، تفرّق أوسمل تفريقًا صارمًا بين أعداد الفاصلة العائمة، وهي من النوع <code>float</code>، والأعداد الصحيحة، وهي من النوع <code>int</code>. والمهم أنه يجب إدراج نقطة بعد العدد <code>1</code> لتمثيل العدد ذي الفاصلة العائمة 1. لذا نكتب <code>1.0</code> أو <code>1.</code> لتمييزه عن العدد الصحيح <code>1</code> من النوع <code>int</code>.</p>
+<p>تزيد البنية الشرطية التي تلي محتوى المرجع <code>p</code> إذا كانت النقطة (x,y) داخل ربع الدائرة، أي إذا كان x2 + y2 ≤ 1.</p>
+<pre><code class="language-ocaml">      <span class="hljs-keyword">if</span> x *. x +. y *. y &lt;= <span class="hljs-number">1.0</span> <span class="hljs-keyword">then</span>
+        p := !p + <span class="hljs-number">1</span>
+</code></pre>
+<p>وكما نرى في التعبير <code>x*.x+.y*.y</code>، فإن المعاملات الحسابية على أعداد الفاصلة العائمة تتميّز أيضًا <em>صرفيًا</em> (syntactically) عن معاملات الأعداد الصحيحة: يجب إضافة نقطة <code>.</code> بعد إشارة كل معاملة (<code>+</code> و<code>-</code> وغيرها). وهكذا فإن <code>+.</code> هي معاملة الجمع على العوائم، و<code>*.</code> معاملة الضرب، وهكذا. ومع ذلك، تُستخدَم المعاملة نفسها <code>&lt;=</code> لمقارنة العوائم والأعداد الصحيحة. (انظر الفصل <a href="https://usr.lmf.cnrs.fr/lpo/mainch3.html#ocaml-concepts-a-closer-look">3</a> لمزيد من التفاصيل حول معاملات المقارنة.)</p>
+<p>يُستخدَم التعبير <code>p:=!p+1</code> لزيادة المرجع <code>p</code> بمقدار 1. هنا، تعمل معاملة الإسناد <code>:=</code> على تعديل محتوى مرجع، بينما تُستخدَم معاملة <em>إلغاء المرجع</em> (dereference) الأحادية البادئة <code>!</code> لاسترجاع محتوى مرجع. وعليه، إذا كان <code>p</code> مرجعًا من النوع <code>intref</code>، فإن القيمة <code>!p</code> من النوع <code>int</code>. وتنتهي الحلقة بعد التكرار الذي تكون فيه <code>k</code> مساوية لـ <code>n</code>. ثم يستمر التقييم بالتعبير الذي يلي المعاملة <code>;</code>.</p>
+<pre><code class="language-ocaml">     <span class="hljs-keyword">for</span> k = <span class="hljs-number">1</span> <span class="hljs-keyword">to</span> n <span class="hljs-keyword">do</span>
+      ...
+     <span class="hljs-keyword">done</span>;
+</code></pre>
+<p>تُسمّى سلسلة التقييمات هذه <em>تسلسل تعبيرات</em> (expression sequence). ولكي يقبل أوسمل تسلسل تعبيرات، يجب ألا يُعيد التعبير الذي قبل الفاصلة المنقوطة قيمة، أي يجب ألا يُحدِث سوى آثار جانبية.</p>
+<p>يُعرِّف الإعلان الذي يلي حلقة <code>for</code> متغيرًا محليًا <code>pi</code> يحوي تقريب π.</p>
+<pre><code class="language-ocaml">      <span class="hljs-keyword">let</span> pi = <span class="hljs-number">4.0</span> *. <span class="hljs-built_in">float</span> !p /. <span class="hljs-built_in">float</span> n <span class="hljs-keyword">in</span>
+</code></pre>
+<p>لإجراء قسمة على أعداد الفاصلة العائمة، تُحوَّل القيمتان الصحيحتان <code>!p</code> و<code>n</code> إلى عوائم باستخدام الدالة <code>float</code> (المعرَّفة في وحدة <code>Stdlib</code>).</p>
+<p>أخيرًا، نعرض تقريب π المحسوب بهذه الطريقة باستخدام الدالة <code>Printf.printf</code>:</p>
+<pre><code class="language-ocaml">      <span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;%f\\n&quot;</span> pi
+</code></pre>
+<p>وكما استخدمنا %d في سلسلة تنسيق لعرض عدد صحيح، نستخدم هنا %f لعرض عدد ذي فاصلة عائمة.</p>
+<h4>معلومات إضافية</h4>
+<p>نقدّم هنا شروحًا إضافية تتعلق بالأفكار المطروحة في هذا البرنامج الثاني.</p>
+<h5>النوع float</h5>
+<p>تُمثَّل الأعداد الحقيقية في الحاسوب باستخدام نوع خاص من الترميز يُسمّى <em>أعداد الفاصلة العائمة</em> (floating-point numbers)، أو ببساطة <em>العوائم</em> (floats). وفي أوسمل، تُرمَّز أعداد الفاصلة العائمة باستخدام معيار IEEE 754 مزدوج الدقة (64 بت). ولا توجد في أوسمل أعداد فاصلة عائمة أحادية الدقة (32 بت).</p>
+<p>كما لاحظنا سابقًا، نوع أعداد الفاصلة العائمة هو <code>float</code>. وتُكتَب ثابتة من النوع <code>float</code> إما بالترميز العشري (مثل <code>3.14</code>) وإما بالترميز العلمي (مثل <code>6.02214e23</code>). ويجب دائمًا استخدام نقطة في الترميز العشري، للإشارة إلى أن الثابتة ليست من النوع <code>int</code>. أما في حالة الترميز العلمي، فليست النقطة إلزامية.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-number">3</span> ;;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">3</span>
+  # <span class="hljs-number">3.</span> ;;
+  - : <span class="hljs-built_in">float</span> = <span class="hljs-number">3.</span>
+  # <span class="hljs-number">1e6</span> ;;
+  - : <span class="hljs-built_in">float</span> = <span class="hljs-number">1000000.</span>
+</code></pre>
+<p>تختلف العمليات على النوع <code>float</code> عن تلك التي على النوع <code>int</code>. ويتبعها نقطة، كما في حالة ثوابت أعداد الفاصلة العائمة: <code>+.</code> و<code>-.</code> و<code>*.</code> و<code>/.</code>. وخلافًا لما في لغات أخرى، تختلف أسماء العمليات الحسابية وفقًا لكون الأعداد صحيحة أو ذات فاصلة عائمة، ولا توجد تحويلات ضمنية بين النوعين <code>int</code> و<code>float</code>.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-number">2</span> +. <span class="hljs-number">3.14</span>;;
+  <span class="hljs-type">Error</span>: <span class="hljs-type">This</span> expression has <span class="hljs-keyword">type</span> <span class="hljs-built_in">int</span> but an expression was
+  expected <span class="hljs-keyword">of</span> <span class="hljs-keyword">type</span> <span class="hljs-built_in">float</span>
+</code></pre>
+<p>يجب استخدام دالتي التحويل <code>float</code> و<code>truncate</code> لتحويل الأعداد الصحيحة إلى أعداد الفاصلة العائمة والعكس.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-number">3.14</span> /. <span class="hljs-built_in">float</span> <span class="hljs-number">2</span>;;
+  - : <span class="hljs-built_in">float</span> = <span class="hljs-number">1.57</span>
+  # truncate <span class="hljs-number">3.141592</span>;;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">3</span>
+</code></pre>
+<p>تتوفر عمليات عديدة على النوع <code>float</code> في وحدة <code>Stdlib</code>، مثل الرفع إلى قوة <code>**</code>، والجذر التربيعي <code>sqrt</code>، والدوال المثلثية، والدوال اللوغاريتمية، وغيرها. وهكذا يمكن حساب قيمة π، غير المعرَّفة مسبقًا في أوسمل، باستخدام التعبير التالي:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-number">4.</span> *. atan <span class="hljs-number">1.</span>;;
+  - : <span class="hljs-built_in">float</span> = <span class="hljs-number">3.14159265358979312</span>
+</code></pre>
+<p>وخلافًا للنوع <code>int</code>، يتضمّن النوع <code>float</code> ثلاث قيم إضافية، <code>neg_infinity</code> و<code>infinity</code> و<code>nan</code>، تمثّل حسابات لا نتيجة ذات معنى لها.</p>
+<pre><code class="language-ocaml">  # -<span class="hljs-number">1.</span> /. <span class="hljs-number">0.</span>;;
+  - : <span class="hljs-built_in">float</span> = neg_infinity
+  # <span class="hljs-number">1.</span> /. <span class="hljs-number">0.</span>;;
+  - : <span class="hljs-built_in">float</span> = infinity
+  # <span class="hljs-number">0.</span> /. <span class="hljs-number">0.</span>;;
+  - : <span class="hljs-built_in">float</span> = nan
+</code></pre>
+<p>وخلافًا للغات أخرى، تقدّم أوسمل نوعًا واحدًا فقط من أعداد الفاصلة العائمة، ألا وهو أعداد الفاصلة العائمة المزدوجة الدقة 64-بت المطابقة لمعيار IEEE 754. وتقع أعداد الفاصلة العائمة بين قيمة دنيا <code>min_float</code> وقيمة قصوى <code>max_float</code>.</p>
+<pre><code class="language-ocaml">  # min_float;;
+  - : <span class="hljs-built_in">float</span> = <span class="hljs-number">2.22507385850720138e-308</span>
+  # max_float;;
+  - : <span class="hljs-built_in">float</span> = <span class="hljs-number">1.79769313486231571e+308</span>
+</code></pre>
+<h5>بنيتا let و let-in</h5>
+<p>تُستخدَم البنيتان <code>let</code> و<code>let-in</code>، على التوالي، لتعريف المتغيرات العامة والمحلية. ويجب ملاحظة نقطتين مهمتين بخصوص المتغيرات:</p>
+<ul>
+<li>المتغيرات مهيَّأة بالضرورة.</li>
+<li>يُستنتج نوع المتغير تلقائيًا.</li>
+</ul>
+<p>تنتج النقطة الأولى ببساطة من أن المتغيرات لا يمكن تعريفها إلا باستخدام البنيتين <code>let</code> و<code>let-in</code>، الذي تتطلّب صيغتهما تعبيرًا للقيمة الابتدائية. أما النقطة الثانية فهي خاصة بلغة أوسمل.</p>
+<p>يمكنك استخدام الطرفية التفاعلية لمعرفة النوع المستنتَج لمتغير. على سبيل المثال، إذا كتبنا الإعلان التالي:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> x = <span class="hljs-number">1</span>+<span class="hljs-number">2</span>;;
+</code></pre>
+<p>يعرض المفسّر الاستجابة:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">val</span> x : <span class="hljs-built_in">int</span> = <span class="hljs-number">3</span>
+</code></pre>
+<p>يشير هذا إلى أننا عرّفنا متغيرًا عامًا <code>x</code>، مهيَّأً بالعدد الصحيح <code>3</code>. ويُستنتج نوع <code>x</code> من التعبير <code>1+2</code>، ألا وهو <code>int</code>.</p>
+<p>من المهم بالقدر نفسه إتقان <em>قواعد النطاق</em> (scoping rules) للمتغيرات المعرَّفة بواسطة بنية <code>let</code> أو <code>let-in</code>. يبدأ نطاق المتغير العام <code>x</code> مباشرةً بعد الإعلان <code>let x =...</code> المستخدم لتعريفه. ويمتد هذا النطاق حتى نهاية البرنامج. أما نطاق المتغير المحلي المُعرِّف بواسطة بنية <code>let-in</code> فيقتصر على التعبير الذي يلي الكلمة المفتاحية <code>in</code>. وعليه فإن كل إعلان من الإعلانات الثلاثة أدناه يُحدِث خطأ في النطاق:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> x = x + <span class="hljs-number">1</span>;;
+  <span class="hljs-type">Error</span>: <span class="hljs-type">Unbound</span> <span class="hljs-keyword">value</span> x
+  # (<span class="hljs-keyword">let</span> v = <span class="hljs-number">1</span> + <span class="hljs-number">2</span> <span class="hljs-keyword">in</span> v * v) + v;;
+  <span class="hljs-type">Error</span>: <span class="hljs-type">Unbound</span> <span class="hljs-keyword">value</span> v
+  # <span class="hljs-keyword">let</span> z = <span class="hljs-number">1</span> + z <span class="hljs-keyword">in</span> z * <span class="hljs-number">2</span>;;
+  <span class="hljs-type">Error</span>: <span class="hljs-type">Unbound</span> <span class="hljs-keyword">value</span> z
+</code></pre>
+<p>توضّح الإعلانات الثلاثة أعلاه قاعدة مهمة تتعلق باستخدام المتغيرات: لكي يُستخدَم متغير، يجب أن يكون قد أُعلن مسبقًا. وعليه يكون البرنامج التالي صحيحًا:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> x = <span class="hljs-number">10</span>
+  <span class="hljs-keyword">let</span> y = x+<span class="hljs-number">2</span>
+</code></pre>
+<p>وفي المقابل، البرنامج أدناه خاطئ:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> y = x+<span class="hljs-number">2</span>
+  <span class="hljs-keyword">let</span> x = <span class="hljs-number">10</span>
+</code></pre>
+<p>من المهم ملاحظة أنه في التعبير <code>letx=e1ine2;e3</code>، يمتد نطاق المتغير <code>x</code> إلى التعبير <code>e2;e3</code> بأكمله. وأسبقية المعاملة <code>;</code> أعلى من أسبقية البنية <code>let</code>. وبعبارة أخرى، يجب قراءة هذا التعبير على النحو التالي: <code>letx=e1in(e2;e3)</code>. ويستفيد البرنامج <a href="#x7-22014r2">2</a> من قاعدة النطاق هذه في إعلان المتغير المحلي <code>p</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> =
+    <span class="hljs-keyword">let</span> p = ... <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">for</span> k = <span class="hljs-number">1</span> <span class="hljs-keyword">to</span> n <span class="hljs-keyword">do</span>
+      ...
+      p := !p + <span class="hljs-number">1</span>
+    <span class="hljs-keyword">done</span>;
+    <span class="hljs-keyword">let</span> pi = <span class="hljs-number">4.</span> *. <span class="hljs-built_in">float</span> !p /. <span class="hljs-built_in">float</span> n <span class="hljs-keyword">in</span>
+    ...
+</code></pre>
+<p>وهكذا يكون المتغير <code>p</code> مرئيًا في حلقة <code>for</code> وفي جسم إعلان المتغير <code>pi</code> معًا.</p>
+<p>يمكنك استخدام الاسم نفسه لعدة متغيرات، بما في ذلك متغيرات من أنواع مختلفة. وتشير استخدامات المتغير <code>x</code> دائمًا إلى أقرب إعلان. خُذ البرنامج التالي مثالًا:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> x = <span class="hljs-number">10</span>
+  <span class="hljs-keyword">let</span> y = x + <span class="hljs-number">2</span>
+  <span class="hljs-keyword">let</span> x = <span class="hljs-number">20</span>
+  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> = <span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;x=%d y=%d\\n&quot;</span> x y
+</code></pre>
+<p>يُعرِّف الإعلان <code>letx=20</code> متغيرًا <em>جديدًا</em> <code>x</code>، يحجب نطاق المتغير السابق. وعليه تكون الرسالة المعروضة عند تنفيذ البرنامج <code>x=20y=12</code>.</p>
+<h5>حلقة for</h5>
+<p>كما رأينا في مثالنا، تُستخدَم حلقات <code>for</code> لتقييم تعبير معيّن عددًا محدَّدًا من المرات. ولها الشكل التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">for</span> i = e1 <span class="hljs-keyword">to</span> e2 <span class="hljs-keyword">do</span>
+    e
+  <span class="hljs-keyword">done</span>
+</code></pre>
+<p>يُعرِّف بناء <code>for</code> فهرس الحلقة، أي المتغير <code>i</code>. ولا يمكن للمستخدم تعديل قيمته. ويقتصر نطاقه على جسم الحلقة (التعبير <code>e</code>)، ولذلك لا يمكن استخدامه في التعبيرين <code>e1</code> و<code>e2</code>. ويُقيَّم هذان التعبيران مرة واحدة فقط، قبل تنفيذ الحلقة. ويمكن ملاحظة ذلك بالبرنامج التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> =
+    <span class="hljs-keyword">for</span> i = (<span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;*&quot;</span>; <span class="hljs-number">0</span>) <span class="hljs-keyword">to</span> (<span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;.&quot;</span>; <span class="hljs-number">5</span>) <span class="hljs-keyword">do</span>
+      <span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;%d&quot;</span> i
+    <span class="hljs-keyword">done</span>
+</code></pre>
+<p>عند تنفيذ هذا البرنامج، يعرض السلسلة <code>*.012345</code>. يبدأ تقييم حلقة <code>for</code> بتهيئة الفهرس <code>i</code> بقيمة التعبير <code>(Printf.printf &quot;*&quot;; 0)</code>. ويؤدي تقييم هذا التسلسل أولًا إلى طباعة الرمز <code>*</code>. ثم تُعاد القيمة الصحيحة <code>0</code>. وتشير كون المحرف المطبوع الثاني نقطة <code>.</code> إلى أن التعبير <code>(Printf.printf&quot;.&quot;;5)</code>، الذي يوافق القيمة النهائية للفهرس، يُقيَّم بعد ذلك. وبما أن بقية الرسالة لا تحوي سوى الأعداد التي يعرضها التعبير Printf.printf &quot;%d&quot; i من جسم الحلقة، فيمكن استنتاج أن التعبيرين <code>e1</code> و<code>e2</code> لا يُقيَّمان مرة أخرى. ومن المهم أيضًا ملاحظة أنه إذا كانت قيمة <code>e1</code> أكبر تمامًا من قيمة <code>e2</code>، فلن يُنفَّذ جسم الحلقة أبدًا.</p>
+<p>توجد أيضًا صيغة من البنية <code>for</code> تسير بالاتجاه المعاكس. على سبيل المثال، يعرض البرنامج التالي الأعداد <code>9876543210</code> بهذا الترتيب.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> =
+    <span class="hljs-keyword">for</span> i = <span class="hljs-number">9</span> <span class="hljs-keyword">downto</span> <span class="hljs-number">0</span> <span class="hljs-keyword">do</span>
+      <span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;%d &quot;</span> i
+    <span class="hljs-keyword">done</span>
+</code></pre>
+<p>لاحظ أن الفهرس يمكن أن يزداد أو ينقص بمقدار 1 فقط في كل تكرار. ولتحقيق زيادات أخرى، يمكن استخدام حلقة <code>while</code>، التي ستُناقَش لاحقًا.</p>
+<p>من باب الاستيفاء، لنلاحظ أن جسم حلقة <code>for</code> في البرنامج <a href="#x7-22014r2">2</a> لا يستخدم فهرس الحلقة <code>k</code>. ويمكن لمترجم أوسمل كشف ذلك وإصدار تحذير، إذا أضفنا خيار سطر الأوامر <code>-w +a</code>:</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">  &gt;</span><span class="language-bash"> ocamlopt -w +a -o approx_pi approx_pi.ml</span>
+  Warning 35 [unused-for-index]: unused for-loop index k.
+</code></pre>
+<p>يتمثّل أحد الحلول في تجنّب تسمية فهرس الحلقة، باستبداله بشرطة سفلية <code>_</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">for</span> _ = <span class="hljs-number">1</span> <span class="hljs-keyword">to</span> n <span class="hljs-keyword">do</span>
+</code></pre>
+<p>لا يغيّر هذا سلوك حلقة <code>for</code> بأي شكل.</p>
+<h3 id="23-رسم-قلب-cardioid">2.3 رسم قلب (cardioid)</h3>
+<blockquote></blockquote>
+<p>برنامجنا الثالث (انظر الصفحة <a href="#x7-27006r3">62</a>)، <code>cardioid.ml</code>، يرسم قلبًا (cardioid)، وهو منحنى يمثّل مسار نقطة ثابتة على دائرة تدور حول دائرة ثانية بالقطر نفسه، كما هو مبيّن في الشكل <a href="#drawing-a-cardioid1">2.2</a>.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/first-steps-1-cardioide_expl-mps-.webp" alt="" id="drawing-a-cardioid1"></p>
+<p><strong>الشكل 2.2: رسم قلب (cardioid).</strong></p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/first-steps-2-cardioide-mps-.webp" alt="PIC"></p>
+<p>رياضيًا، القلب (cardioid) منحنى جبري مستوٍ يمكن تعريفه بالمعادلتين الوسيطيتين (parametric equations) التاليتين:
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo fence="true">{</mo><mtable rowspacing="0.36em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>x</mi><mo stretchy="false">(</mo><mi>θ</mi><mo stretchy="false">)</mo><mo>=</mo><mi>a</mi><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>s</mi><mi>i</mi><mi>n</mi><mo stretchy="false">(</mo><mi>θ</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mi>c</mi><mi>o</mi><mi>s</mi><mo stretchy="false">(</mo><mi>θ</mi><mo stretchy="false">)</mo><mi>y</mi><mo stretchy="false">(</mo><mi>θ</mi><mo stretchy="false">)</mo><mo>=</mo><mi>a</mi><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>s</mi><mi>i</mi><mi>n</mi><mo stretchy="false">(</mo><mi>θ</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mi>s</mi><mi>i</mi><mi>n</mi><mo stretchy="false">(</mo><mi>θ</mi><mo stretchy="false">)</mo></mrow></mstyle></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\\begin{cases} x(\\theta ) = a(1 - sin(\\theta )) cos(\\theta ) y(\\theta ) = a(1 - sin(\\theta )) sin(\\theta ) \\end{cases}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.8em;vertical-align:-0.65em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">{</span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.97em;"><span style="top:-2.97em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">θ</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal">a</span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">s</span><span class="mord mathnormal">in</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">θ</span><span class="mclose">))</span><span class="mord mathnormal">cos</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">θ</span><span class="mclose">)</span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">θ</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal">a</span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">s</span><span class="mord mathnormal">in</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">θ</span><span class="mclose">))</span><span class="mord mathnormal">s</span><span class="mord mathnormal">in</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">θ</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.47em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>حيث a هو نصف قطر كل دائرة.</p>
+<blockquote></blockquote>
+<p>لرسم القلب، نستخدم مكتبة أوسمل <code>Graphics</code>، التي تتيح فتح نافذة رسومية ثنائية الأبعاد والرسم فيها باستخدام دوال رسومية أولية. وتحتوي هذه المكتبة على وحدة واحدة، تُسمّى أيضًا <code>Graphics</code>. وبما أننا سنستخدم عددًا من دوال هذه الوحدة، يبدأ البرنامج بتوجيه لفتح الوحدة:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">open</span> <span class="hljs-type">Graphics</span>
+</code></pre>
+<p>وبهذا سنتمكن من استخدام قيم هذه المكتبة ودوالها دون الحاجة إلى إضافة اسم الوحدة <code>Graphics</code> كسابقة في كل مرة.</p>
+<p>يفتح السطر التالي نافذة رسومية بالدالة <code>open_graph</code>. تأخذ هذه الدالة كوسيط سلسلة نصية تشير إلى أبعاد النافذة.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> = open_graph <span class="hljs-string">&quot; 300x200&quot;</span>
+</code></pre>
+<p>تفتح هذه التعليمة نافذة بحجم 300 × 200، أي بعرض 300 بكسل وارتفاع 200 بكسل. (لاحظ أن الفراغ في بداية السلسلة إلزامي.) ثم نرسم داخل هذه النافذة باستخدام إحداثيات صحيحة، حيث يقع أصل الإحداثيات في أسفل يسار النافذة، وتأخذ إحداثيات x القيم من 0 إلى 299 وإحداثيات y من 0 إلى 199 (انظر الشكل <a href="#coordinate-system-of-the-library-graphics">2.3</a>).</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/first-steps-3-main1x.webp" alt="0x0yxy∙2199-a-a99xxiiss" id="coordinate-system-of-the-library-graphics"></p>
+<p><strong>الشكل 2.3: نظام إحداثيات مكتبة الرسوميات.</strong></p>
+<p>يرسم باقي البرنامج القلب. وبما أن هذا الجزء من الشيفرة لا يُعيد قيمة، فإننا نضعه داخل إعلان بالشكل التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> = ...
+</code></pre>
+<p>تعتمد الدوال التي سنستخدمها لرسم القلب على مفهوم <em>النقطة الحالية</em>. ويمكن تحديد موضع هذه النقطة باستخدام <code>moveto</code>. ويقوم استدعاء <code>lineto x y</code> برسم قطعة مستقيمة من النقطة الحالية إلى النقطة ذات الإحداثيات <code>(x,y)</code>، التي تصبح بعد ذلك النقطة الحالية الجديدة.</p>
+<p>نبدأ بوضع النقطة الحالية عند (200,150)، باستدعاء الدالة <code>moveto</code>، بغية رسم قلب يبدأ من هذه النقطة:</p>
+<pre><code class="language-ocaml">    moveto <span class="hljs-number">200</span> <span class="hljs-number">150</span>;
+</code></pre>
+<p>نستخدم حلقة <code>for</code> لتغيير الزاوية 𝜃 بين 0 و2π. ولتحقيق ذلك، نستعمل فهرسًا صحيحًا <code>i</code> يتغيّر من 0 إلى 200، ونستفيد من أن arctan(1) = π∕4 لحساب 𝜃 كـ arctan(1) × i∕25.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">for</span> i = <span class="hljs-number">0</span> <span class="hljs-keyword">to</span> <span class="hljs-number">200</span> <span class="hljs-keyword">do</span>
+     <span class="hljs-keyword">let</span> th = atan <span class="hljs-number">1.</span> *. <span class="hljs-built_in">float</span> i /. <span class="hljs-number">25.</span> <span class="hljs-keyword">in</span>
+     ...
+    <span class="hljs-keyword">done</span>
+</code></pre>
+<p>في أوسمل، يُحسَب ظل الزاوية للقوس (arctangent)، معبَّرًا عنه بالراديان، باستخدام الدالة <code>atan</code> من المكتبة القياسية <code>Stdlib</code>.</p>
+<p>يُعرِّف السطر التالي متغيرًا محليًا <code>r</code> بقيمة التعبير الجزئي الوسيط a(1 − sin(𝜃))، حيث يُثبَّت نصف قطر القلب a عند 50 بكسل:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> r = <span class="hljs-number">50.</span> *. (<span class="hljs-number">1.</span> -. sin th) <span class="hljs-keyword">in</span>
+</code></pre>
+<p>يُستخدَم هذا المتغير لإخراج جزء من حساب إحداثيات النقطة (x(𝜃),y(𝜃)).</p>
+<p>أخيرًا، باستخدام الدالة <code>lineto</code>، نرسم قطعة مستقيمة بين النقطة الحالية والنقطة ذات الإحداثيات (x(𝜃),y(𝜃)). وبما أن الإحداثيات الرسومية أعداد صحيحة، نستخدم الدالة <code>truncate</code> لاستخراج الجزء الصحيح من التعبيرات المستخدمة في حساب الإحداثيات.</p>
+<pre><code class="language-ocaml">    lineto (<span class="hljs-number">150</span> + truncate (r *. cos th))
+           (<span class="hljs-number">150</span> + truncate (r *. sin th))
+</code></pre>
+<p>بعد حلقة <code>for</code>، يُوقف آخر سطر من الشيفرة البرنامج، منتظرًا ضغط مفتاح. والغرض من ذلك منع النافذة الرسومية من الإغلاق مباشرةً بعد انتهاء الرسم.</p>
+<pre><code class="language-ocaml">    ignore (read_key<span class="hljs-literal">()</span>)
+</code></pre>
+<p>بما أننا ننتظر فقط ضغط مفتاح، فإننا نتجاهل المحرف الفعلي الذي تُعيده الدالة <code>read_key</code> باستخدام الدالة المعرَّفة مسبقًا <code>ignore</code>.</p>
+<h5>الترجمة</h5>
+<p>من أجل ترجمة البرنامج <code>cardioid.ml</code>، يجب أن نخبر المترجم صراحةً بأننا نرغب في استخدام مكتبة <code>Graphics</code>. ولا حاجة إلى ذلك في حالة الوحدات التي رأيناها سابقًا، مثل <code>Sys</code> و<code>Arg</code> و<code>Printf</code>، التي تنتمي إلى <em>المكتبة القياسية</em> لأوسمل. ومكتبة <code>Graphics</code> موجودة في الملف <code>graphics.cmxa</code>، الذي يجب إضافته إلى سطر الأوامر. وعلاوةً على ذلك، يجب أن نخبر المترجم بموقع هذا الملف، الذي نصّبه <code>opam</code>. ويمكن القيام بذلك باستخدام الأمر التالي:</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">  &gt;</span><span class="language-bash"> ocamlopt -I ‘ocamlfind query graphics‘ graphics.cmxa cardioid.ml -o cardioid</span>
+</code></pre>
+<p>تتيح أداة <code>ocamlfind</code> إيجاد موقع مكتبة <code>graphics</code>، الذي يُمرَّر بعد ذلك إلى مترجم أوسمل باستخدام الخيار <code>-I</code>. (لاحظ أنه يجب وضع الأمر <code>ocamlfind query graphics</code> بين <em>علامتي اقتباس خلفية</em>.) وإذا رغبت في استخدام المترجم <code>ocamlc</code>، فينبغي أن تستبدل اللاحقة <code>.cmxa</code> بـ <code>.cma</code>. وكما سنرى في القسم <a href="#breakout-without-bricks"><em>2.10</em></a> <em>بريك أوت بدون طوب (Breakout without Bricks)</em>، فإن ترتيب الملفات على سطر أوامر المترجم مهم: هنا، يجب أن يظهر <code>graphics.cmxa</code> قبل <code>cardioid.ml</code> لأن الأخير يستخدم مكتبة <code>Graphics</code>.</p>
+<p>هناك طريقة أخرى لترجمة برنامجنا تتمثّل في استخدام <code>dune</code>. وللقيام بذلك، نكتب ملف إعدادات، يجب أن يُسمّى <code>dune</code>، في الدليل الذي يحوي <code>cardioid.ml</code>. وينبغي أن يحتوي هذا الملف على ما يلي:</p>
+<pre><code class="language-text">  (executable
+   (name cardioid)
+   (libraries graphics))
+</code></pre>
+<p>يحدّد هذا أننا نرغب في بناء ملف تنفيذي اسمه <code>cardioid</code>، ويستخدم مكتبة <code>graphics</code>. وبافتراض أن ملفَّينا <code>cardioid.ml</code> و<code>dune</code> موجودان في الدليل <code>my-first-project/</code>، يجب أولًا تنفيذ خطوة تهيئة بالأمر التالي:</p>
+<pre><code class="language-text">  &gt; dune init project my-first-project/
+</code></pre>
+<p>يمكننا بعد ذلك الانتقال إلى الدليل <code>my-first-project/</code> وبناء الملف التنفيذي هناك:</p>
+<pre><code class="language-text">  &gt; cd my-first-project/
+  &gt; dune build
+</code></pre>
+<p>أخيرًا، يمكننا تنفيذ البرنامج بالأمر التالي:</p>
+<pre><code class="language-text">  &gt; dune exec ./cardioid.exe
+</code></pre>
+<p>يُسمّى الملف التنفيذي <code>cardioid.exe</code>، حيث تُضيف <code>dune</code> الامتداد <code>.exe</code>. وهو مخزَّن في دليل فرعي <code>_build/default/</code>، ويتيح لنا الأمر <code>dune exec</code> تشغيله مباشرةً.</p>
+<p>لاستخدام مكتبة <code>Graphics</code> من داخل الطرفية التفاعلية <code>ocaml</code>، يكفي كتابة الأمر التالي في الطرفية:</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">  &gt;</span><span class="language-bash"> ocaml -I ‘ocamlfind query graphics‘ graphics.cma</span>
+  OCaml version 4.14.0
+<span class="hljs-meta prompt_">  #</span><span class="language-bash">
+</span></code></pre>
+<p>لاحظ أن مكتبة <code>Graphics</code> يمكن أيضًا استخدامها مباشرةً من داخل TryOCaml.</p>
+<h4>مكتبة الرسوميات</h4>
+<p>إضافةً إلى الدالتين <code>moveto</code> و<code>lineto</code> المستخدمتين في برنامجنا <code>cardioid.ml</code>، تقدّم مكتبة <code>Graphics</code> دوال أخرى متنوعة: <code>plot</code> لرسم نقطة؛ و<code>set_color</code> لتعديل لون العرض؛ و<code>draw_circle</code> لرسم دائرة؛ و<code>set_line_width</code> لتغيير سماكة الخط؛ و<code>fill_rect</code> لتظليل مستطيل؛ و<code>draw_string</code> لعرض سلسلة نصية، وغيرها. نُحيل القارئ إلى الصفحة الإلكترونية لدليل أوسمل للحصول على وصف كامل لهذه المكتبة. ومن المهم ملاحظة أنه، على الرغم من أن ميزات <code>Graphics</code> محدودة، فإن لهذه المكتبة ميزة كونها متاحة على معماريات عديدة. وإذا رغبت في استخدام مكتبة أكثر تطورًا، فيمكنك استخدام (حسب نظام تشغيلك):</p>
+<ul>
+<li>OCaml-Canvas: إطار عمل Canvas محمول لأوسمل، بواجهة مشابهة لـ HTML5 Canvas.</li>
+<li>LablTk: مكتبة Tcl/Tk تتيح إنشاء واجهات رسومية (GUI) بقوائم منسدلة وأزرار وغيرها.</li>
+<li>LablGtk: تشبه LablTk لكنها مبنية على مكتبة الرسوميات Gtk.</li>
+<li>OCamlsdl: مكتبة SDL تُستخدَم أساسًا لإنشاء ألعاب الفيديو.</li>
+</ul>
+<p>هذه القائمة ليست شاملة.</p>
+<h3 id="24-مجموعة-ماندلبروت-mandelbrot-set">2.4 مجموعة ماندلبروت (Mandelbrot set)</h3>
+<blockquote></blockquote>
+<p>يُرسِم البرنامج <a href="#x7-30015r4">4</a> (انظر الصفحة <a href="#x7-30015r4">80</a>) مجموعة ماندلبروت (انظر الشكل <a href="#mandelbrot-set">2.4</a>). وتُعرَّف بأنها مجموعة النقاط (a,b) من المستوى التي لا يميل أيٌّ من التتابعين العوديين (recursive sequences) التاليين إلى اللانهاية في قيمته المطلقة.</p>
+<table>
+<thead>
+<tr>
+<th>x0</th>
+<th>=</th>
+<th>0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>y0</td>
+<td>=</td>
+<td>0</td>
+</tr>
+<tr>
+<td>xn+1</td>
+<td>=</td>
+<td>xn2 − yn2 + a</td>
+</tr>
+<tr>
+<td>yn+1</td>
+<td>=</td>
+<td>2xnyn + b</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/arabic-cs-library/images/learn-ocaml/first-steps-4-mandelbrot-mps-.webp" alt="" id="mandelbrot-set"></p>
+<p><strong>الشكل 2.4: مجموعة ماندلبروت.</strong></p>
+<p>على الرغم من عدم وجود طريقة دقيقة لتحديد ما إذا كان هذا الشرط متحققًا، يمكن إثبات أن أحد هذين التتابعين لا بد أن يميل إلى اللانهاية حالما تكون xn2 + yn2 &gt; 4. تتيح لنا هذه النتيجة، أولًا، أن نستنتج أن نقاط مجموعة ماندلبروت تنتمي إلى قرص (disc) نصف قطره 2 ومركزه (0,0). وثانيًا، تمكننا من رسم تقريب لمجموعة ماندلبروت، معرَّفةً بمجموعة النقاط (a,b) التي تحقق xn2 + yn2 ≤ 4 لأول k حدٍّ من هذين التتابعين. ولاحظ أن دقة هذا التقريب تعتمد فقط على عدد الحدود k.</p>
+<p>يبدأ البرنامج بتوجيه (directive) <code>openGraphics</code> لتبسيط استخدام دوال مكتبة الرسوميات. ويستمر بتعريف متغيرين عامين <code>width</code> و<code>height</code>، يحويان على التوالي عرض النافذة الرسومية التي نرغب في فتحها وارتفاعها (هنا 800 × 800):</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> width = <span class="hljs-number">800</span>
+  <span class="hljs-keyword">let</span> height = <span class="hljs-number">800</span>
+</code></pre>
+<p>بعد ذلك، نُثبّت القيمة k، أي العدد الأقصى للحدود المطلوب حسابها (ويكفي 100 حدٍّ للحصول على تقريب جيد):</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> k = <span class="hljs-number">100</span>
+</code></pre>
+<p>يُعرِّف الإعلان التالي دالة <code>norm2</code> تأخذ <em>وسيطين</em> x وy، وتُعيد قيمة التعبير x2 + y2.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> norm2 x y = x *. x +. y *. y
+</code></pre>
+<p>سنتناول هذا التركيب النحوي بمزيد من التفصيل في نهاية هذا القسم. وفي الوقت الحالي، لاحظ أنه، كما في حالة استدعاء دالة، لا تُفصَل أسماء الوسائط إلا بمسافات. ولاحظ أيضًا أن <em>جسم</em> الدالة، أي التعبير الواقع على يمين الرمز <code>=</code>,قد يكون تعبيرًا اعتباطيًا.</p>
+<blockquote></blockquote>
+<p>تحدد الدالة التالية، <code>mandelbrot</code>، ما إذا كانت نقطة ذات إحداثيات (<code>a</code>,<code>b</code>) تنتمي إلى مجموعة ماندلبروت، وذلك بحساب أول <code>k</code> حدٍّ من التتابعين العوديين (xn) و(yn). وبطريقة مشابهة لإعلان <code>norm2</code>، نُعلن الدالة <code>mandelbrot</code> بوسيطين <code>a</code> و<code>b</code> على النحو التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> mandelbrot a b = ...
+</code></pre>
+<p>لحساب حدود التتابعين العوديين، نعرّف دالة محلية <em>عودية</em> <code>mandel_rec</code> بثلاثة وسائط: <code>x</code> و<code>y</code> و<code>i</code>.</p>
+<pre><code class="language-ocaml">     <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> mandel_rec x y i =
+      ...
+     <span class="hljs-keyword">in</span>
+</code></pre>
+<p>يحوي الوسيطان الأولان <code>x</code> و<code>y</code> من <code>mandel_rec</code> القيمتين رقم i، أي xi وyi، من التتابعين العوديين، ويحوي الوسيط الثالث الفهرس i.</p>
+<p>وقبل أن نتناول جسم هذه الدالة، لاحظ أنه، من الناحية الصرفية، يُستخدَم إعلان بالشكل <code>letrec</code> لتعريف دالة عودية، أي دالة يمكنك استخدام اسمها نفسه داخل جسمها. وعلاوةً على ذلك، وكما هو الحال مع إعلانات المتغيرات المحلية، فإن <em>نطاق</em> الدالة <em>المحلية</em>، سواء أُدخلت بالشكل <code>let-rec-in</code> أم <code>let-in</code> ببساطة، يقتصر على التعبير الذي يلي الكلمة المفتاحية <code>in</code>.</p>
+<p>يبدأ جسم الدالة <code>mandel_rec</code> باختبار لتحديد ما إذا كنا قد وصلنا إلى حساب الحد رقم k من التتابع، أو ما إذا كان شرط الإيقاف xi2 + yi2 &gt; 4 متحققًا:</p>
+<pre><code class="language-ocaml">       <span class="hljs-keyword">if</span> i = k || norm2 x y &gt; <span class="hljs-number">4.</span> <span class="hljs-keyword">then</span> i = k
+       <span class="hljs-keyword">else</span>
+</code></pre>
+<p>في الحالتين، تنتهي الدالة <code>mandel_rec</code> وتُعيد قيمة منطقية تشير إلى ما إذا كانت النقطة في المجموعة أم لا. وإذا لم يتحقق أيٌّ من هذين الشرطين، نحسب xi+1 وyi+1 بتطبيق معادلتي التتابعين العوديين، ونخزّنهما في المتغيرين المحليين <code>x’</code> و<code>y’</code>:</p>
+<pre><code class="language-ocaml">         <span class="hljs-keyword">let</span> x’ = x *. x -. y *. y +. a <span class="hljs-keyword">in</span>
+         <span class="hljs-keyword">let</span> y’ = <span class="hljs-number">2.</span> *. x *. y +. b <span class="hljs-keyword">in</span>
+</code></pre>
+<p>ثم نستدعي الدالة <code>mandel_rec</code> مرة أخرى لحساب الحدود التالية:</p>
+<pre><code class="language-ocaml">         mandel_rec x’ y’ (i + <span class="hljs-number">1</span>)
+       <span class="hljs-keyword">in</span>
+</code></pre>
+<p>أخيرًا، تبدأ الدالة <code>mandelbrot</code> الحساب باستدعاء الدالة المحلية <code>mandel_rec</code> بالقيمتين الابتدائيتين x0 وy0 كوسيطين:</p>
+<pre><code class="language-ocaml">       <span class="hljs-keyword">in</span>
+       mandel_rec <span class="hljs-number">0.</span> <span class="hljs-number">0.</span> <span class="hljs-number">0</span>
+</code></pre>
+<p>لرسم مجموعة ماندلبروت، يكفي أن نجتاز كل صف وكل عمود من النافذة الرسومية، وأن نعرض البكسلات (<code>a</code>,<code>b</code>) التي تُعيد الدالة <code>mandelbrot</code> لها القيمة <code>true</code>.</p>
+<p>يحتوي كود الرسم على دالة <code>draw</code> تُعلَن على النحو التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> draw <span class="hljs-literal">()</span> = ...
+</code></pre>
+<p>يُستخدَم إعلان بهذا الشكل لتعريف دوال بلا وسائط. وبشكل دقيق، يُعرِّف هذا الإعلان دالة <em>بوسيط وحيد</em>، يُرمَز إليه بـ<code>()</code>، وهو القيمة الوحيدة لنوع خاص، هو <code>unit</code>. وكما سنرى في القسم <a href="#drawing-a-curve"><em>2.6</em></a> <em>رسم منحنى</em>، هذا مثال على دالة تُعرَّف بواسطة <em>مطابقة الأنماط</em> (pattern matching).</p>
+<p>تجتاز الدالة <code>draw</code> صفوف النافذة الرسومية وأعمدتها باستخدام حلقتين <code>for</code> متداخلتين:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">for</span> w = <span class="hljs-number">0</span> <span class="hljs-keyword">to</span> width - <span class="hljs-number">1</span> <span class="hljs-keyword">do</span>
+      <span class="hljs-keyword">for</span> h = <span class="hljs-number">0</span> <span class="hljs-keyword">to</span> height - <span class="hljs-number">1</span> <span class="hljs-keyword">do</span>
+        ...
+      <span class="hljs-keyword">done</span>
+    <span class="hljs-keyword">done</span>
+</code></pre>
+<p>لرسم مجموعة ماندلبروت في نافذة بحجم <code>width</code>×<code>height</code>، نعيد قياس إحداثيات النافذة إلى نقاط (<code>a</code>,<code>b</code>) في الفترة [−2,2] × [−2,2]، حيث يكون <code>a</code> و<code>b</code> متغيرين معرَّفين على النحو التالي:</p>
+<pre><code class="language-ocaml">        <span class="hljs-keyword">let</span> a = <span class="hljs-number">4.</span> *. <span class="hljs-built_in">float</span> w /. <span class="hljs-built_in">float</span> width -. <span class="hljs-number">2.</span> <span class="hljs-keyword">in</span>
+        <span class="hljs-keyword">let</span> b = <span class="hljs-number">4.</span> *. <span class="hljs-built_in">float</span> h /. <span class="hljs-built_in">float</span> height -. <span class="hljs-number">2.</span> <span class="hljs-keyword">in</span>
+</code></pre>
+<p>لم يبقَ سوى تحديد ما إذا كانت النقطة (<code>a</code>,<code>b</code>) تنتمي إلى المجموعة، باستدعاء الدالة <code>mandelbrot</code> ورسم النقطة باستخدام الدالة <code>plot</code>:</p>
+<pre><code class="language-ocaml">        <span class="hljs-keyword">if</span> mandelbrot a b <span class="hljs-keyword">then</span> plot w h
+      <span class="hljs-keyword">done</span>
+    <span class="hljs-keyword">done</span>
+</code></pre>
+<p>لإكمال البرنامج، نفتح نافذة رسومية بحجم <code>width</code> × <code>height</code> ببناء سلسلة نصية بالشكل <code>&quot;</code> w<code>x</code>h<code>&quot;</code> حيث يُستبدَل w وh بالقيمتين المحتوتين في المتغيرين <code>width</code> و<code>height</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> =
+    <span class="hljs-keyword">let</span> dim = <span class="hljs-type">Printf</span>.sprintf <span class="hljs-string">&quot; %dx%d&quot;</span> width height <span class="hljs-keyword">in</span>
+    open_graph dim;
+</code></pre>
+<p>تُبنى السلسلة النصية باستدعاء الدالة <code>Printf.sprintf</code> بسلسلة تنسيق <code>&quot;\`\`%\`\`dx\`\`%\`\`d&quot;</code> والوسيطين <code>width</code> و<code>height</code>. والدالة <code>Printf.sprintf</code> مشابهة للدالة <code>printf</code>، إلا أنها تُعيد السلسلة نتيجةً بدلًا من عرضها.</p>
+<p>أخيرًا، نرسم مجموعة ماندلبروت باستدعاء الدالة <code>draw</code>. ثم ننتظر حتى يُضغَط مفتاح لإنهاء البرنامج:</p>
+<pre><code class="language-ocaml">    draw <span class="hljs-literal">()</span>;
+    ignore (read_key <span class="hljs-literal">()</span>)
+</code></pre>
+<p>لاحظ أن الصياغة نفسها تُستخدَم في استدعاء الدالة <code>draw</code> كما تُستخدَم في إعلانها.</p>
+<h4>إعلانات الدوال</h4>
+<p>لنعد إلى مفهوم الدالة في أوسمل. تُعلَن الدالة بالكلمة المفتاحية <code>let</code>. وهكذا، تُكتب دالة عامة <code>f</code> تربط x بـ x + 1 ببساطة على النحو التالي:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> f x = x + <span class="hljs-number">1</span>;;
+  <span class="hljs-keyword">val</span> f : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>وكما هو الحال مع المتغيرات، يُستنتَج نوعها تلقائيًا. وبشكل أدق، يُستنتَج نوع وسيطها (هنا <code>int</code>) ونوع نتيجتها (وهو أيضًا <code>int</code>) معًا. ونوع <code>f</code> بالشكل <code>int-&gt;int</code>، حيث يكون النوع الواقع على يسار السهم <code>-&gt;</code> هو نوع الوسيط، والنوع الواقع على يمينه هو نوع النتيجة. غير أن قيمة <code>f</code> لا تُعرض. ولا يُعرض سوى \`\`، ما يدل على أنها دالة.</p>
+<p>يمكن أن تكون الدوال محلية، وتخضع لقواعد النطاق نفسها التي تخضع لها المتغيرات.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> sqr x = x * x <span class="hljs-keyword">in</span> sqr <span class="hljs-number">3</span> + sqr <span class="hljs-number">4</span>;;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">25</span>
+  # (<span class="hljs-keyword">let</span> sqr x = x * x <span class="hljs-keyword">in</span> sqr <span class="hljs-number">3</span>) + sqr <span class="hljs-number">4</span>;;
+  <span class="hljs-type">Error</span>: <span class="hljs-type">Unbound</span> <span class="hljs-keyword">value</span> sqr
+</code></pre>
+<p>افتراضيًا، لا تكون الدوال عودية.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> fact x = <span class="hljs-keyword">if</span> x = <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> x * fact (x-<span class="hljs-number">1</span>);;
+  <span class="hljs-type">Error</span>: <span class="hljs-type">Unbound</span> <span class="hljs-keyword">value</span> fact
+</code></pre>
+<p>يجب استخدام البنية <code>letrec</code> صراحةً لتعريف دالة عودية.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> fact x = <span class="hljs-keyword">if</span> x = <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> x * fact (x-<span class="hljs-number">1</span>);;
+  <span class="hljs-keyword">val</span> fact : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+  # fact <span class="hljs-number">10</span>;;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">3628800</span>
+</code></pre>
+<p>لاحظ أننا كتبنا في المثال السابق <code>fact(x-1)</code> وليس <code>factx-1</code>. فالتعبير الثاني يُفهم على أنه <code>(factx)-1</code>، لأن تطبيق الدالة هو المعاملة ذات الأسبقية الأعلى.</p>
+<p>يجب تعريف الدوال العودية المتبادلة <em>بشكل متزامن</em> باستخدام الكلمة المفتاحية <code>and</code>. على سبيل المثال، يمكننا تعريف دالتين عوديتين متبادلتين <code>f</code> و<code>g</code> على النحو التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> f x = ... g ...
+  <span class="hljs-keyword">and</span>     g x = ... f ...
+</code></pre>
+<p>يمكن أن تأخذ الدالة عدة وسائط، تُكتَب متجاورة ببساطة في التعريف وعند الاستدعاء. على سبيل المثال، يُعرِّف الإعلان التالي دالة <code>plus</code> بوسيطين:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> plus x y = x + y ;;
+  <span class="hljs-keyword">val</span> plus : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+  # plus <span class="hljs-number">3</span> <span class="hljs-number">4</span>;;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">7</span>
+</code></pre>
+<p>النوع الذي يستنتجه أوسمل لهذه الدالة هو <code>int-&gt;int-&gt;int</code>. وإضافة أقواس تُنتج النوع <code>int-&gt;(int-&gt;int)</code> (المعاملة <code>-&gt;</code> <em>ترابطية يمنى</em> (right-associative))، الذي يُقرأ على النحو التالي: «دالة تأخذ قيمة من النوع <code>int</code> وتُعيد دالة من النوع <code>int</code> إلى <code>int</code>». ولذلك تُرى الدالة <code>plus</code> على أنها دالة <em>بوسيط واحد</em> تُعيد دالة تنتظر <em>الوسيط الثاني</em>. وهكذا، بالمعنى الدقيق، لا تملك أوسمل دوالًا تأخذ عدة وسائط. فما توجد إلا دوال <em>عالية الرتبة</em> (higher-order) بوسيط واحد، أي دوال تأخذ <em>وسيطًا واحدًا</em> وتُعيد دالة أخرى. وسنتناول مثل هذه الدوال لاحقًا (القسم <a href="#drawing-a-curve"><em>2.6</em></a> <em>رسم منحنى</em>).</p>
+<h3 id="25-غربال-إراتوستينس-sieve-of-eratosthenes">2.5 غربال إراتوستينس (Sieve of Eratosthenes)</h3>
+<blockquote></blockquote>
+<blockquote></blockquote>
+<p>يحدد برنامجنا التالي (انظر الصفحة <a href="#x7-32006r5">88</a>) أولية الأعداد الصحيحة n ≤ N بالنسبة إلى عدد صحيح معطى N. وللقيام بذلك، يستخدم خوارزمية تُسمّى <em>غربال إراتوستينس</em> (sieve of Eratosthenes). فلنوضّح كيف تعمل من أجل N = 23. نكتب جميع الأعداد الصحيحة من 0 إلى N، ثم نحذف تدريجيًا جميع الأعداد الصحيحة غير الأولية. ومن هنا جاء اسم <em>الغربال</em>. ونبدأ بملاحظة أن 0 و1 ليسا أوليين.</p>
+<p>بعد ذلك، نحدد أول عدد صحيح لم يُحذف بعد، ألا وهو 2. فنحذف جميع مضاعفاته، أي جميع الأعداد الزوجية الأكبر من 2. وهذه مظلَّلة أدناه.</p>
+<p>ثم نكرر العملية. العدد الصحيح التالي الذي لم يُحذف بعد هو 3. فنحذف جميع مضاعفات 3، كما هي مظلَّلة أدناه.</p>
+<p>لاحظ أن بعض الأعداد الصحيحة سبق حذفها (مضاعفات 6 في هذه الحالة).</p>
+<p>العدد الصحيح التالي الذي يجب أخذه في الاعتبار هو 5. وبما أن 5 × 5 &gt; 23، يكون الغربال قد اكتمل: فجميع مضاعفات 5، أي k × 5، إما حُذفت (إذا كان k &lt; 5) وإما أكبر من 23 (إذا كان k ≥ 5). والأعداد الصحيحة المتبقية هي الأعداد الأولية الأصغر من أو تساوي N: 2 و3 و5 و7 و11 و13 و17 و19 و23.</p>
+<p>ينفّذ البرنامج <code>sieve.ml</code> غربال إراتوستينس لقيمة N تُدخَل على الدخل القياسي. نخزّن هذه القيمة في متغير <code>max</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> max = read_int <span class="hljs-literal">()</span>
+</code></pre>
+<p>ثم ننشئ مصفوفة من القيم المنطقية <code>prime</code> حجمها <code>max+1</code>. ولهذا الغرض، نستخدم دالة المكتبة <code>Array.make</code>. وهي تأخذ كوسيطين حجم المصفوفة وقيمة افتراضية لعناصرها، هي هنا <code>true</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> prime = <span class="hljs-type">Array</span>.make (max + <span class="hljs-number">1</span>) <span class="hljs-literal">true</span>
+</code></pre>
+<p>تذكّر أن المصفوفات تُفهرس بدءًا من 0. وبالتالي، فإن فهارس المصفوفة <code>prime</code> هي الأعداد الصحيحة من 0 إلى <code>max</code>، وكلاهما مشمول. ونبدأ بالإشارة إلى أن العددين 0 و1 ليسا أوليين، بإسناد القيمة <code>false</code> إلى العنصرين الموافقَين من المصفوفة <code>prime</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> =
+    prime.(<span class="hljs-number">0</span>) &lt;- <span class="hljs-literal">false</span>;
+    prime.(<span class="hljs-number">1</span>) &lt;- <span class="hljs-literal">false</span>;
+</code></pre>
+<p>ولهذا، استخدمنا البنية t<code>.(</code>i<code>). وكان يمكننا أيضًا أن نكتب </code>Array.setprime0false\`.</p>
+<p>نواصل البرنامج بتحديد أكبر عدد يجب أخذه في الاعتبار. هذا العدد هو ⌊⌋، الذي يمكن حسابه على النحو التالي:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> limit = truncate (sqrt (<span class="hljs-built_in">float</span> max)) <span class="hljs-keyword">in</span>
+</code></pre>
+<p>تتكرر الحلقة الرئيسية للغربال على الأعداد الصحيحة من 2 إلى <code>limit</code>، مختبرةً ما إذا كان كل واحد منها أوليًا. ولذلك تكون للحلقة البنية التالية:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">for</span> n = <span class="hljs-number">2</span> <span class="hljs-keyword">to</span> limit <span class="hljs-keyword">do</span>
+      <span class="hljs-keyword">if</span> prime.(n) <span class="hljs-keyword">then</span> <span class="hljs-keyword">begin</span>
+        ...
+      <span class="hljs-keyword">end</span>
+</code></pre>
+<p>تُقدّم البنية <code>begin-end</code> <em>كتلة</em> (block)، أي جزءًا من البرنامج محدَّدًا، يُشار إليه هنا بنقاط الحذف. وفي أوسمل، لا يوجد تمييز بين التعبيرات والتعليمات؛ فلا توجد إلا تعبيرات. والجزء المحدَّد من الكود ليس إذن سوى تعبير؛ وكان يمكن تحديده بأقواس. ورغم ذلك، تُبرز استخدام <code>begin-end</code> الطابع الأمرّي (imperative) لهذا التعبير.</p>
+<p>لنناقش الآن هذه الكتلة. فهي تتكون من حلقة ثانية تحذف جميع مضاعفات <code>n</code> في المصفوفة <code>prime</code>. والمنطق نفسه الذي يتيح لنا إيقاف الغربال حالما يكون <code>n</code>×<code>n</code> &gt; N يتيح لنا أيضًا بدء الحذف من <code>n</code>×<code>n</code> (بدلًا من 2<code>n</code>)، لأن المضاعفات الأصغر سبق حذفها. وللتكرار على جميع المضاعفات الصحيحة لـ <code>n</code> انطلاقًا من <code>n</code>2، نهيّئ مرجعًا <code>m</code> بالقيمة الابتدائية:</p>
+<pre><code class="language-ocaml">        <span class="hljs-keyword">let</span> m = <span class="hljs-built_in">ref</span> (n * n) <span class="hljs-keyword">in</span>
+</code></pre>
+<p>ثم نستخدم حلقة تُسند <code>false</code> إلى <code>prime.(!m)</code> وتزيد <code>m</code> بمقدار <code>n</code>، ما دام التعبير <code>!m&lt;=max</code> متحققًا. تُكتب مثل هذه الحلقة باستخدام بنية <code>while</code>، على النحو التالي:</p>
+<pre><code class="language-ocaml">        <span class="hljs-keyword">while</span> !m &lt;= max <span class="hljs-keyword">do</span>
+          prime.(!m) &lt;- <span class="hljs-literal">false</span>;
+          m := !m + n
+        <span class="hljs-keyword">done</span>
+</code></pre>
+<p>لاحظ أنه، كما في حالة حلقة <code>for</code>,يُحدَّد جسم حلقة <code>while</code> بالكلمتين المفتاحيتين <code>do</code> و<code>done</code>.</p>
+<p>بهذا يكتمل الغربال. وتشير قيم المصفوفة <code>prime</code> الآن إلى الأعداد الأصغر من أو تساوي <code>max</code> التي تكون أولية. ويمكننا عرض هذه الأعداد الأولية باستخدام حلقة أخرى.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> =
+    <span class="hljs-keyword">for</span> n = <span class="hljs-number">2</span> <span class="hljs-keyword">to</span> max <span class="hljs-keyword">do</span>
+      <span class="hljs-keyword">if</span> prime.(n) <span class="hljs-keyword">then</span> <span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;%d\\n&quot;</span> n
+    <span class="hljs-keyword">done</span>
+</code></pre>
+<p>كان يمكننا بدلًا من ذلك عرض الأعداد الأولية عند العثور عليها، أي أثناء تنفيذ الغربال. غير أن حلقة الغربال تتوقف عندما يكون <code>n</code> = ⌊⌋، لذلك كانت ستلزم حلقة أخرى على أي حال لعرض الأعداد الأولية الواقعة بين ⌊⌋ + 1 و<code>max</code>.</p>
+<h4>معلومات إضافية</h4>
+<p>نعود هنا إلى البنيتين <code>while</code> و<code>begin</code>-<code>end</code> المقدَّمتين في هذا القسم، ثم نتناول المصفوفات.</p>
+<h5>حلقة while</h5>
+<p>بشكل عام، صياغة حلقة <code>while</code> هي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">while</span> e1 <span class="hljs-keyword">do</span>
+   e2
+  <span class="hljs-keyword">done</span>
+</code></pre>
+<p>يجب أن يكون التعبير e1 من النوع <code>bool</code> والتعبير e2 من النوع <code>unit</code>.</p>
+<h5>كتلة begin-end</h5>
+<p>البنية <code>begin</code>-<code>end</code> مكافئة لزوج من الأقواس. وهكذا، يمكنك كتابة:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-number">2</span> * <span class="hljs-keyword">begin</span> <span class="hljs-number">1</span> + <span class="hljs-number">2</span> <span class="hljs-keyword">end</span>;;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">6</span>
+</code></pre>
+<p>ومع ذلك، تقتضي الاصطلاحية قصر استخدامها على التعبيرات التي تُحدِث آثارًا جانبية، قياسًا على مفهوم الكتلة في لغات مثل C أو Java.</p>
+<h5>المصفوفات</h5>
+<p>يمكن بناء مصفوفة صراحةً بتحديد القيم المكوِّنة لها.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> t = [| <span class="hljs-number">12</span>; <span class="hljs-number">32</span>; <span class="hljs-number">3</span>; <span class="hljs-number">8</span> |];;
+  <span class="hljs-keyword">val</span> t : <span class="hljs-built_in">int</span> <span class="hljs-built_in">array</span> = [|<span class="hljs-number">12</span>; <span class="hljs-number">32</span>; <span class="hljs-number">3</span>; <span class="hljs-number">8</span>|]
+</code></pre>
+<p>لتخصيص مصفوفة بحجم اعتباطي، وبوجه خاص غير معروف ساكنًا (statically)، نستخدم دالة المكتبة <code>Array.make</code>. وهي تأخذ كوسيطين حجم المصفوفة وقيمة تُستخدَم لتهيئة جميع خلاياها. (وكما هو الحال مع أي قيمة في أوسمل، يجب أن تُهيَّأ المصفوفة.)</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> u = <span class="hljs-type">Array</span>.make <span class="hljs-number">1024</span> ’a’;;
+  <span class="hljs-keyword">val</span> u : <span class="hljs-built_in">char</span> <span class="hljs-built_in">array</span> = [|’a’; ’a’; ’a’; ... |]
+</code></pre>
+<p>يمكن الحصول على حجم مصفوفة باستخدام دالة المكتبة <code>Array.length</code>.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-type">Array</span>.length u;;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">1024</span>
+</code></pre>
+<p>لاحظ أخيرًا أن الوصول إلى مصفوفة بفهرس يقع خارج نطاق الفهارس الصالحة يُنتج خطأً وقت التنفيذ، يُشار إليه باستثناء (exception):</p>
+<pre><code class="language-ocaml">  # u.(<span class="hljs-number">4012</span>);;
+  <span class="hljs-type">Exception</span>: <span class="hljs-type">Invalid_argument</span> <span class="hljs-string">&quot;index out of bounds&quot;</span>.
+</code></pre>
+<p>ستُناقَش الاستثناءات بالتفصيل لاحقًا.</p>
+<h5>المصفوفات (matrices)</h5>
+<p>لا يوجد نوع معرَّف مسبقًا للمصفوفات (matrices)، ولا، بشكل أعم، للمصفوفات متعددة الأبعاد (multidimensional arrays). فنستخدم ببساطة مصفوفات من المصفوفات. خذ على سبيل المثال المصفوفة:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo stretchy="false">(</mo><mo stretchy="false">)</mo><mn>10</mn><mi>M</mi><mo>=</mo><mo stretchy="false">(</mo><mn>23</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">( ) 1 0 M = ( 2 3 )</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mclose">)</span><span class="mord">10</span><span class="mord mathnormal" style="margin-right:0.109em;">M</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">23</span><span class="mclose">)</span></span></span></span></span>
+<p>تُمثَّل بالتعبير:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> m = [| [| <span class="hljs-number">1</span>; <span class="hljs-number">0</span> |];
+               [| <span class="hljs-number">2</span>; <span class="hljs-number">3</span> |] |];;
+    <span class="hljs-keyword">val</span> m : <span class="hljs-built_in">int</span> <span class="hljs-built_in">array</span> <span class="hljs-built_in">array</span> = [|[|<span class="hljs-number">1</span>; <span class="hljs-number">0</span>|]; [|<span class="hljs-number">2</span>; <span class="hljs-number">3</span>|]|]
+</code></pre>
+<p>يُوصَل إلى العنصر Mi,j باستخدام <code>m.(i).(j)</code>، وهو ليس سوى عمليتي وصول متتاليتين: أولًا، نصل إلى الصف <code>i</code> باستخدام <code>m.(i)</code>، ثم إلى عنصره الواقع عند الفهرس <code>j</code>.</p>
+<pre><code class="language-ocaml">  # m.(<span class="hljs-number">1</span>).(<span class="hljs-number">0</span>);;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">2</span>
+</code></pre>
+<p>تُنفَّذ جميع العمليات على المصفوفات باستخدام عمليات المصفوفات. ومع ذلك، تقدّم الوحدة <code>Array</code> عملية لإنشاء مصفوفة، هي <code>make_matrix</code>، تأخذ كوسائط أبعاد المصفوفة والقيمة الابتدائية لعناصرها. وسنعود إلى المصفوفات في القسم <a href="https://usr.lmf.cnrs.fr/lpo/mainch10.html#matrix-calculus"><em>10.4</em></a> <em>حساب المصفوفات</em> من الفصل <a href="https://usr.lmf.cnrs.fr/lpo/mainch10.html#arithmetic">10</a>.</p>
+<h5>الاسم المستعار (aliasing)</h5>
+<p>يجب التعامل مع البنى الأمرّية بحذر. وبوجه خاص، كلما أمكنت الإشارة إلى بنية أمرّية بأكثر من طريقة، قد تظن أنك تعدّل بيانات مختلفة مع أن الأمر ليس كذلك بالضرورة.</p>
+<p>يُحصل على مثال نموذجي للاسم المستعار بتخصيص مصفوفة مهيَّأة جميع عناصرها بالمصفوفة نفسها. خذ التعبير التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-type">Array</span>.make <span class="hljs-number">3</span> (<span class="hljs-type">Array</span>.make <span class="hljs-number">4</span> v)
+</code></pre>
+<p>قد تظن أنك تبني مصفوفة 3 × 4، كل عنصر من عناصرها هو <code>v</code>. وفي الواقع، يبني هذا التعبير <em>مصفوفة واحدة</em> حجمها 4 —لنسمِّها a— عناصرها لها القيمة <code>v</code>، ومصفوفة حجمها 3، عناصرها الثلاثة هي <em>نفسها</em> المصفوفة a. وبعبارة أخرى، تكون النتيجة على النحو التالي:</p>
+<p>بطبيعة الحال، هذا ليس ما نريده، لأن لدينا أربعة عناصر فقط بدلًا من اثني عشر. ولبناء مصفوفة من المصفوفات بشكل صحيح، يمكنك استخدام الدالة <code>Array.make_matrix</code> من المكتبة القياسية، بكتابة <code>Array.make_matrix34v</code>، الذي يؤدي إلى بناء المصفوفة المطلوبة، أي:</p>
+<h3 id="26-رسم-منحنى">2.6 رسم منحنى</h3>
+<blockquote></blockquote>
+<p>برنامجنا السادس (انظر الصفحة <a href="#x7-39025r6">104</a>)، <code>plot.ml</code>، يرسم منحنى محدَّدًا بمجموعة من
+النقاط في المستوى. وتقوم الخوارزمية على وصل هذه النقاط بقطع مستقيمة
+(line segments)، متجهين بترتيب تزايدي لإحداثياتها السينية. فعلى سبيل المثال،
+يُعرض المنحنى المرسوم لمجموعة النقاط {(20,15),(2,2),(30,10),(10,15)} في
+الشكل <a href="#drawing-a-curve1">2.5</a>.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/first-steps-5-main6x.webp" alt="0x0y11∙2∙22∙3∙1--05000aaxxiiss" id="drawing-a-curve1"></p>
+<p><strong>الشكل 2.5: رسم منحنى.</strong></p>
+<p>لرسم هذا المنحنى، نبدأ بقراءة عدد صحيح من الدخل القياسي
+يدل على عدد النقاط في المجموعة.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> n = read_int <span class="hljs-literal">()</span>
+</code></pre>
+<p>بعد ذلك، نعرّف دالة تقرأ إحداثيات نقطة من الدخل
+القياسي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> read_pair <span class="hljs-literal">()</span> =
+    <span class="hljs-keyword">let</span> x = read_int <span class="hljs-literal">()</span> <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> y = read_int <span class="hljs-literal">()</span> <span class="hljs-keyword">in</span>
+    (x, y)
+</code></pre>
+<p>بعد قراءة العدد الصحيح الأول، <code>x</code>، والثاني، <code>y</code>، من الدخل القياسي باستدعاءين
+للدالة <code>read_int</code>، تُعيد الدالة <code>read_pair</code> زوج الأعداد الصحيحة (<code>x</code>,<code>y</code>)، المُنشأ
+بشكل طبيعي جدًا باستخدام الصياغة <code>(x,y)</code>. ويُكتب نوع هذا الزوج على شكل <code>int*int</code> في
+أوسمل. وسنناقش الأزواج، وبشكل أعم الثنائيات (n-tuples)، بمزيد من التفصيل في نهاية
+هذا القسم.</p>
+<p>ننشئ بعد ذلك مصفوفة <code>data</code> بحجم <code>n</code>، نهيّئها بأزواج الأعداد الصحيحة
+المقروءة من الدخل القياسي. وللقيام بذلك، نستخدم دالة المكتبة <code>Array.init</code> التي
+تأخذ كوسيطين حجم المصفوفة ودالة تُستخدَم لتهيئة
+خلايا المصفوفة:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> data = <span class="hljs-type">Array</span>.init n (<span class="hljs-keyword">fun</span> i -&gt; read_pair <span class="hljs-literal">()</span>)
+</code></pre>
+<p>يوضح استدعاء الدالة <code>Array.init</code> مفهومين جديدين. أولًا، التعبير
+<code>funi-&gt;...</code> الممرَّر كوسيط إلى <code>Array.init</code> هو دالة <em>مجهولة</em> (anonymous). ويمثل
+الرمز <code>i</code> الواقع يسار السهم <code>-&gt;</code> وسيط الدالة، أما التعبير
+الواقع يمينه فجسم (body) الدالة. ثانيًا، يُظهر هذا الاستدعاء أن الدوال في أوسمل
+قيم مثلها مثل أي قيم أخرى. ونقول أيضًا إنها قيم <em>من الدرجة الأولى</em> (first-class).
+يمكن تمريرها كوسائط، وكما سنرى لاحقًا، إعادتها كناتج لدوال أخرى. والدالة
+مثل <code>Array.init</code> التي تأخذ دالة كوسيط، تُسمّى دالة <em>من الرتبة الأعلى</em> (higher-order).</p>
+<p>تُعيد الدالة <code>Array.init</code> مصفوفة تُحصَل عليها بتهيئة الخلية ذات
+الرقم k (المتراوح من 0 إلى <code>n</code>− 1) بالقيمة الناتجة عن تطبيق الدالة
+<code>(funi-&gt;read_pair())</code> على k.</p>
+<p>وهكذا، إذا كانت الأعداد الصحيحة المُدخَلة على الدخل القياسي مؤلفة من المتتالية
+<code>420152230101015</code>، فتعريف الإعلانات السابقة متغيرًا <code>n</code> يحتوي
+العدد الصحيح <code>4</code> ومصفوفة <code>data</code> تُعرض محتوياتها بيانيًا على النحو التالي:</p>
+<p>لرسم المنحنى، يجب أن نبدأ بفرز خلايا هذه المصفوفة بترتيب تزايدي
+لإحداثياتها السينية. وتحقيقًا لهذه الغاية، نبدأ بتعريف دالة تقارن
+زوجين وفق مكونهما الأول:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> compare (x1, y1) (x2, y2) = x1 - x2
+</code></pre>
+<p>تُعيد هذه الدالة عددًا صحيحًا. ويفسّر خوارزم الفرز (sorting algorithm) إشارته
+على النحو التالي:</p>
+<ul>
+<li>إذا كان x1 - x2 = 0، يعدّ الزوجان متساويين؛</li>
+<li>إذا كان x1 - x2 &gt; 0، يعدّ الزوج الأول أكبر؛</li>
+<li>إذا كان x1 - x2 &lt; 0، يعدّ الزوج الأول أصغر.</li>
+</ul>
+<p>قبل مواصلة وصف برنامجنا، لنتوقف لحظة وننظر في
+شكل هذا الإعلان.</p>
+<p>وسيطا الدالة <code>compare</code> ليسا معرفين بسيطين، بل <em>أنماط</em> (patterns). لكل منهما
+شكل زوج <code>(x</code>i,<code>y</code>i<code>)</code>. ويتيح لنا استخدام الأنماط هنا استرجاع المكونين <code>x</code>i و<code>y</code>i للزوجين الممرَّرين كوسيطين للدالة بسهولة. وهذا إعلان بواسطة <em>مطابقة الأنماط</em>
+(pattern matching). وهذا الشكل من الإعلان شائع جدًا في برامج أوسمل، وسنستخدمه في مناسبات عديدة في
+هذا الكتاب.</p>
+<blockquote></blockquote>
+<p>لفرز المصفوفة، نستخدم الدالة من الرتبة الأعلى <code>Array.sort</code> التي،
+بالإضافة إلى المصفوفة المراد فرزها، تأخذ كوسيط أول دالة
+تقارن عناصر المصفوفة. ويتم هذا الفرز في نفس المكان (in-place)، أي مباشرةً
+داخل المصفوفة <code>data</code>. ولا يُحدث استدعاء <code>Array.sort</code> سوى آثار جانبية (side effects).</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> = <span class="hljs-type">Array</span>.sort compare data
+</code></pre>
+<p>في نهاية هذا الاستدعاء، تكون محتويات <code>data</code> على النحو التالي:</p>
+<p>لا يتبقى سوى رسم المنحنى بوصل النقاط المرتَّبة بهذا الشكل، بقطع مستقيمة
+نستهل الأمر بتوجيه (directive) <code>openGraphics</code>. ثم نفتح نافذة
+رسوميات بحجم 200 × 200. ويحدد الاستدعاء <code>set_line_width3</code> سُمك قطع
+المستقيمة.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">open</span> <span class="hljs-type">Graphics</span>
+  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> =
+   open_graph <span class="hljs-string">&quot; 200x200&quot;</span>;
+   set_line_width <span class="hljs-number">3</span>;
+</code></pre>
+<p>نسترجِع بعد ذلك الزوج الأول <code>(x0,y0)</code> من الخلية ذات الرقم <code>0</code> في المصفوفة <code>data</code>، ونستخدمه
+لتثبيت إحداثيات النقطة الحالية باستخدام الدالة <code>moveto</code>:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> (x0,y0) = data.(<span class="hljs-number">0</span>) <span class="hljs-keyword">in</span> moveto x0 y0;
+</code></pre>
+<p>هنا أيضًا نستخدم إعلانًا بواسطة مطابقة الأنماط لاستخراج المكونين
+لزوج مخزَّن في المصفوفة. وتُطابَق القيمة الموجودة في <code>data.(0)</code></p>
+<p>بوساطة النمط <code>(x0,y0)</code>، الذي يعرّف متغيرين محليين <code>x0</code> و
+<code>y0</code>.</p>
+<p>نمرّ بعد ذلك على جميع عناصر المصفوفة <code>data</code> بمساعدة حلقة <code>for</code>
+لوصل النقاط:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">for</span> i = <span class="hljs-number">1</span> <span class="hljs-keyword">to</span> n-<span class="hljs-number">1</span> <span class="hljs-keyword">do</span>
+      <span class="hljs-keyword">let</span> (x,y) = data.(i) <span class="hljs-keyword">in</span>
+      lineto x y
+    <span class="hljs-keyword">done</span>;
+</code></pre>
+<p>يسترجِع جسم الحلقة الإحداثيين <code>(x,y)</code> لكل نقطة باستخدام إعلان محلي
+بمطابقة الأنماط (مطابق للإعلان أعلاه)، ويرسم خطًا من
+النقطة الحالية إلى النقطة ذات الإحداثيين <code>(x,y)</code>.</p>
+<h4>معلومات إضافية</h4>
+<h5>الأزواج والثنائيات (pairs and n-tuples)</h5>
+<p>يمكن إنشاء زوج من قيمتين <code>v1</code> و<code>v2</code> باستخدام الترميز التقليدي
+<code>(v1,v2)</code>. ويستخدم نوع الأزواج الترميز الرياضي للجداء
+الديكارتي (Cartesian product).</p>
+<pre><code class="language-ocaml">  # (<span class="hljs-number">1</span>, <span class="hljs-literal">true</span>);;
+  - : <span class="hljs-built_in">int</span> * <span class="hljs-built_in">bool</span> = (<span class="hljs-number">1</span>, <span class="hljs-literal">true</span>)
+</code></pre>
+<p>ستلاحظ أن الفاصلة تُستخدَم لإنشاء <em>الزوج</em> بينما يُستخدَم الرمز <code>*</code>
+لإنشاء <em>نوع</em> الزوج. ويُكتب الإسقاطان (projections) <code>fst</code> و<code>snd</code>
+على التوالي.</p>
+<pre><code class="language-ocaml">  # fst (<span class="hljs-number">1</span> + <span class="hljs-number">2</span>, <span class="hljs-literal">true</span>);;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">3</span>
+  # snd (<span class="hljs-number">1</span>, not <span class="hljs-literal">true</span>);;
+  - : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">false</span>
+</code></pre>
+<p>قد تكون الأزواج متداخلة بشكل تعسفي (arbitrarily nested).</p>
+<pre><code class="language-ocaml">  # ((<span class="hljs-number">1</span>, <span class="hljs-literal">true</span>), (<span class="hljs-number">3.14</span>, <span class="hljs-literal">false</span>));;
+  - : (<span class="hljs-built_in">int</span> * <span class="hljs-built_in">bool</span>) * (<span class="hljs-built_in">float</span> * <span class="hljs-built_in">bool</span>) = ((<span class="hljs-number">1</span>, <span class="hljs-literal">true</span>), (<span class="hljs-number">3.14</span>, <span class="hljs-literal">false</span>))
+</code></pre>
+<p>الأزواج حالة خاصة من الثنائيات (n-tuples)، وتستخدم الصياغة نفسها للقيم
+والأنواع.</p>
+<pre><code class="language-ocaml">  # (<span class="hljs-number">1</span>, <span class="hljs-literal">true</span>, <span class="hljs-number">3.14</span>);;
+  - : <span class="hljs-built_in">int</span> * <span class="hljs-built_in">bool</span> * <span class="hljs-built_in">float</span> = (<span class="hljs-number">1</span>, <span class="hljs-literal">true</span>, <span class="hljs-number">3.14</span>)
+</code></pre>
+<p>تجدر الإشارة إلى أن النوع <code>(int*int)*int</code> والنوع <code>int*(int*int)</code> و
+النوع <code>int*int*int</code> ليست متطابقة:</p>
+<ul>
+<li>الأول هو نوع زوج مكونه الأول زوج؛</li>
+<li>الثاني هو نوع زوج مكونه الثاني زوج؛</li>
+<li>الثالث هو نوع ثالوث (triple).</li>
+</ul>
+<h5>الإسقاطات بمطابقة الأنماط والنمط البديل (wildcard pattern)</h5>
+<p>لا توجد دوال إسقاط للثنائيات. ويجب استخدام إعلان بمطابقة الأنماط
+لاسترجاع كل مكون. على سبيل المثال:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> (x, (y, z), t) = (<span class="hljs-number">1</span>, (<span class="hljs-literal">true</span>, <span class="hljs-string">&quot;hello&quot;</span>), <span class="hljs-number">3.4</span>);;
+  <span class="hljs-keyword">val</span> x : <span class="hljs-built_in">int</span> = <span class="hljs-number">1</span>
+  <span class="hljs-keyword">val</span> y : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">true</span>
+  <span class="hljs-keyword">val</span> z : <span class="hljs-built_in">string</span> = <span class="hljs-string">&quot;hello&quot;</span>
+  <span class="hljs-keyword">val</span> t : <span class="hljs-built_in">float</span> = <span class="hljs-number">3.4</span>
+</code></pre>
+<p>إذا أردت الوصول إلى مكونات معينة فقط من ثنائية، يمكنك
+استخدام <em>نمط بديل</em> (wildcard pattern)، يُكتب على شكل <code>_</code>، لتجنب إدخال
+أسماء متغيرات غير ضرورية. على سبيل المثال، إذا أردت الوصول فقط إلى
+المكونين <code>x</code> و<code>z</code> من الثالوث أعلاه، يمكنك كتابة مطابقة الأنماط التالية:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> (x, (_, z), _) = (<span class="hljs-number">1</span>, (<span class="hljs-literal">true</span>, <span class="hljs-string">&quot;hello&quot;</span>), <span class="hljs-number">3.4</span>);;
+  <span class="hljs-keyword">val</span> x : <span class="hljs-built_in">int</span> = <span class="hljs-number">1</span>
+  <span class="hljs-keyword">val</span> z : <span class="hljs-built_in">string</span> = <span class="hljs-string">&quot;hello&quot;</span>
+</code></pre>
+<p>تتيح الأنماط البديلة أيضًا تمثيل قيم تعسفية. وهكذا، إذا أردت فقط
+الوصول إلى المكونين <code>x</code> و<code>t</code>، يمكنك استخدام نمط بديل لتمثيل
+المكون الثاني من الثالوث أعلاه:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> (x, _, t) = (<span class="hljs-number">1</span>, (<span class="hljs-literal">true</span>, <span class="hljs-string">&quot;hello&quot;</span>), <span class="hljs-number">3.4</span>);;
+  <span class="hljs-keyword">val</span> x : <span class="hljs-built_in">int</span> = <span class="hljs-number">1</span>
+  <span class="hljs-keyword">val</span> t : <span class="hljs-built_in">float</span> = <span class="hljs-number">3.4</span>
+</code></pre>
+<h5>الدوال ذات الوسائط المتعددة والثنائيات</h5>
+<p>من المهم أيضًا التمييز بوضوح بين دالة ذات وسائط
+متعددة ودالة تأخذ وسيطًا واحدًا هو ثنائية. لنأخذ،
+على سبيل المثال، الدالة التالية <code>pyth</code>:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> pyth (x, y, z) = x*x + y*y = z*z;;
+  <span class="hljs-keyword">val</span> pyth : <span class="hljs-built_in">int</span> * <span class="hljs-built_in">int</span> * <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">bool</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>تأخذ ثالوث أعداد صحيحة كوسيط. ولذلك تستدعيها باستخدام وسيط <em>وحيد</em>
+بالشكل <code>(</code>e1<code>,</code>e2<code>,</code>e3<code>)</code>، كما في الاستدعاء التالي:</p>
+<pre><code class="language-ocaml">  # pyth (<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>);;
+  - : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">true</span>
+</code></pre>
+<p>من جهة أخرى، يمكن كتابة الدالة نفسها كدالة بوسائط متعددة،
+على النحو التالي:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> pyth x y z = x*x + y*y = z*z;;
+  <span class="hljs-keyword">val</span> pyth : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">bool</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>يجب استدعاء هذه الدالة بمجرد تجاور اسمها مع <em>ثلاثة</em> وسائط، كما في
+الاستدعاء التالي:</p>
+<pre><code class="language-ocaml">  # pyth <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span>;;
+  - : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">true</span>
+</code></pre>
+<p>النوعان <code>int*int*int-&gt;bool</code> و<code>int-&gt;int-&gt;int-&gt;bool</code> يوضحان بوضوح
+الفرق بين هاتين الصيغتين. وفي هذا الكتاب، نعتمد أسلوب <em>كاري</em> (Curry)،
+الذي تأخذ فيه الدوال n من الوسائط بدلًا من ثنائية واحدة. ويتيح هذا الأسلوب، بوجه خاص، <em>الاستخدام الجزئي</em> (partial application) للدوال: إذ يمكنك تمرير عدد وسائط للدالة أقل مما تتوقعه، والحصول في المقابل على دالة أخرى. على سبيل المثال، بتطبيق
+الدالة <code>pyth</code> على عدد صحيح، تحصل على دالة تأخذ وسيطين:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> f = pyth <span class="hljs-number">3</span>;;
+  <span class="hljs-keyword">val</span> f : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">bool</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>يمكنك بعد ذلك تطبيقها عدة مرات:</p>
+<pre><code class="language-ocaml">  # f <span class="hljs-number">4</span> <span class="hljs-number">5</span>;;
+  - : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">true</span>
+  # f <span class="hljs-number">6</span> <span class="hljs-number">7</span>;;
+  - : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">false</span>
+</code></pre>
+<h5>السجلات (records)</h5>
+<p>تُستخدم الثنائيات لتجميع عدة قيم معًا. ومع ذلك، يسهل الخلط بين
+المكونات المختلفة لثنائية عندما تكون من النوع نفسه. وهكذا،
+فإن تاريخًا ممثلًا بثالوث أعداد صحيحة، من النوع <code>int*int*int</code>، لا
+يبين بوضوح أي عدد صحيح يدل على اليوم، وأيها على الشهر، وأيها على السنة. ولتصحيح
+هذا النقص، توفّر لغة أوسمل مفهوم <em>السجل</em> (record)، أي
+ثنائية ذات حقول مسماة. ولإنشاء سجل، يجب الإعلان مسبقًا عن
+نوع جديد، يصف أسماء وأنواع مختلف
+الحقول.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">type</span> date = { day : <span class="hljs-built_in">int</span>; month : <span class="hljs-built_in">int</span>; year : <span class="hljs-built_in">int</span> };;
+  <span class="hljs-keyword">type</span> date = { day : <span class="hljs-built_in">int</span>; month : <span class="hljs-built_in">int</span>; year : <span class="hljs-built_in">int</span>; }
+</code></pre>
+<p>يمكننا بعد ذلك إنشاء قيمة من النوع <code>date</code> بالصياغة التالية.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> valentine’s_day = { day = <span class="hljs-number">14</span>; month = <span class="hljs-number">2</span>; year = <span class="hljs-number">2014</span> };;
+  <span class="hljs-keyword">val</span> valentine’s_day : date = { day = <span class="hljs-number">14</span>; month = <span class="hljs-number">2</span>; year = <span class="hljs-number">2014</span> }
+</code></pre>
+<p>نصل إلى الحقل f من سجل e باستخدام الترميز e<code>.</code>f.</p>
+<pre><code class="language-ocaml">  # valentine’s_day.month;;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">2</span>
+</code></pre>
+<p>يمكن إنشاء سجل جديد انطلاقًا من سجل آخر من النوع نفسه، مع الحفاظ
+على قيم حقول معينة وإعطاء قيم جديدة لحقول أخرى. ونستخدم البنية
+<code>with</code> لهذا الغرض.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> d = { valentine’s_day <span class="hljs-keyword">with</span> day = <span class="hljs-number">15</span> };;
+  <span class="hljs-keyword">val</span> d : date = {day = <span class="hljs-number">15</span>; month = <span class="hljs-number">2</span>; year = <span class="hljs-number">2014</span>}
+</code></pre>
+<p>وهذا مطابق للإعلان التالي:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> d = { day = <span class="hljs-number">15</span>;
+              month = valentine’s_day.month;
+              year = valentine’s_day.year };;
+  <span class="hljs-keyword">val</span> d : date = {day = <span class="hljs-number">15</span>; month = <span class="hljs-number">2</span>; year = <span class="hljs-number">2014</span>}
+</code></pre>
+<p>من مزايا السجلات الأخرى مقارنة بالثنائيات أن ترتيب الحقول غير ذي أهمية.
+ولذلك يمكننا كتابة:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> us_valentine’s_day = { month = <span class="hljs-number">2</span>; day = <span class="hljs-number">14</span>; year = <span class="hljs-number">2014</span>; };;
+  <span class="hljs-keyword">val</span> us_valentine’s_day : date = {day = <span class="hljs-number">14</span>; month = <span class="hljs-number">2</span>; year = <span class="hljs-number">2014</span>}
+  # us_valentine’s_day = valentine’s_day;;
+  - : <span class="hljs-built_in">bool</span> = <span class="hljs-literal">true</span>
+</code></pre>
+<p>من الممكن أيضًا استخدام نمط لاسترجاع قيم كل حقل، مرة أخرى بأي
+ترتيب.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> { day; month; year } = valentine’s_day;;
+  <span class="hljs-keyword">val</span> day : <span class="hljs-built_in">int</span> = <span class="hljs-number">14</span>
+  <span class="hljs-keyword">val</span> month : <span class="hljs-built_in">int</span> = <span class="hljs-number">2</span>
+  <span class="hljs-keyword">val</span> year : <span class="hljs-built_in">int</span> = <span class="hljs-number">2014</span>
+</code></pre>
+<p>يمكننا حذف بعض الحقول باستخدام النمط البديل <code>_</code> للإشارة إلى الحقول
+التي ينبغي تجاهلها.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> { day; month; _ } = valentine’s_day;;
+</code></pre>
+<p>ومع ذلك، تظل الثنائيات مفيدة، وبوجه خاص لأنها لا تتطلب منا الإعلان عن
+نوع.</p>
+<h5>السجلات ذات الحقول القابلة للتعديل (mutable fields)</h5>
+<p>يصرّح المفتاح <code>mutable</code> عن حقل سجل يمكن تعديله.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">type</span> student = { number : <span class="hljs-built_in">int</span>; <span class="hljs-keyword">mutable</span> age : <span class="hljs-built_in">int</span> };;
+  <span class="hljs-keyword">type</span> student = { number : <span class="hljs-built_in">int</span>; <span class="hljs-keyword">mutable</span> age : <span class="hljs-built_in">int</span>; }
+</code></pre>
+<p>يُعدَّل حقل سجل باستخدام البنية <code>&lt;-</code>.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> birthday e = e.age &lt;- e.age + <span class="hljs-number">1</span>;;
+  <span class="hljs-keyword">val</span> birthday : student -&gt; <span class="hljs-built_in">unit</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>لا تُعيد هذه العملية قيمة. ولذلك يكون نوعها <code>unit</code>. ونلاحظ هذا
+الآثار الجانبية في المثال التالي:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> e = { number = <span class="hljs-number">123456</span>; age = <span class="hljs-number">21</span> };;
+  <span class="hljs-keyword">val</span> e : student = {number = <span class="hljs-number">123456</span>; age = <span class="hljs-number">21</span>}
+  # birthday e;;
+  - : <span class="hljs-built_in">unit</span> = <span class="hljs-literal">()</span>
+  # e;;
+  - : student = {number = <span class="hljs-number">123456</span>; age = <span class="hljs-number">22</span>}
+</code></pre>
+<p>يمكننا استخدام سجل ذي حقل <code>mutable</code> لمحاكاة المفهوم التقليدي للمتغير
+القابل للتعديل. على سبيل المثال، في حالة متغير من النوع <code>int</code>، يكفي الإعلان عن
+نوع ذي حقل قابل للتعديل وحيد <code>value</code>.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">type</span> variable = { <span class="hljs-keyword">mutable</span> <span class="hljs-keyword">value</span> : <span class="hljs-built_in">int</span> };;
+  <span class="hljs-keyword">type</span> variable = { <span class="hljs-keyword">mutable</span> <span class="hljs-keyword">value</span> : <span class="hljs-built_in">int</span>; }
+</code></pre>
+<p>نستخدم بعد ذلك <code>x.value</code> للوصول إلى محتويات المتغير <code>x</code>، والإسناد
+<code>x.value&lt;-e</code> لتعديله.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> x = { <span class="hljs-keyword">value</span> = <span class="hljs-number">41</span> };;
+  <span class="hljs-keyword">val</span> x : variable = {<span class="hljs-keyword">value</span> = <span class="hljs-number">41</span>}
+  # x.<span class="hljs-keyword">value</span> &lt;- x.<span class="hljs-keyword">value</span> + <span class="hljs-number">1</span>;;
+  - : <span class="hljs-built_in">unit</span> = <span class="hljs-literal">()</span>
+  # x.<span class="hljs-keyword">value</span>;;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">42</span>
+</code></pre>
+<p>بالمعنى الدقيق، لا نعدّل المتغير <code>x</code> نفسه. إنما نعدّل فقط القيمة
+الموجودة في السجل الذي يشير إليه <code>x</code>. وبشكل أدق، إنما هو مفهوم المؤشر
+(pointer) المستخدم هنا.</p>
+<p>ولتجنب الاضطرار إلى تعريف نوع من هذا القبيل في كل مرة نحتاج فيها إلى متغير قابل للتعديل،
+توفّر أوسمل النوع المعرَّف مسبقًا لـ<em>المراجع</em> (references)، الذي استخدمناه بالفعل (انظر
+القسم <a href="#the-montecarlo-method"><em>2.2</em></a> <em>تقريب</em>π). ويُنشأ المرجع باستخدام المفتاح <code>ref</code>.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> x = <span class="hljs-built_in">ref</span> <span class="hljs-number">41</span>;;
+  <span class="hljs-keyword">val</span> x : <span class="hljs-built_in">int</span> <span class="hljs-built_in">ref</span> = {contents = <span class="hljs-number">41</span>}
+</code></pre>
+<p>كما هو واضح، فإن نوع المرجع، المكتوب على شكل <code>intref</code>، هو نوع سجل، ذي حقل
+وحيد <code>contents</code>. ونصل إلى هذا الحقل باستخدام الترميز <code>!</code>، ونعدّل محتوياته باستخدام
+الترميز <code>:=</code>.</p>
+<pre><code class="language-ocaml">  # x := !x + <span class="hljs-number">1</span>;;
+  - : <span class="hljs-built_in">unit</span> = <span class="hljs-literal">()</span>
+  # !x;;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">42</span>
+</code></pre>
+<h5>ترتيب التقييم (evaluation order)</h5>
+<p>لا تحدد لغة أوسمل ترتيب تقييم مكونات
+الثنائيات والسجلات. وهكذا، في الزوج <code>(e1,e2)</code>، لا يمكن معرفة
+<em>مسبقًا</em> ما إذا كان التعبير <code>e1</code> سيُقيَّم قبل <code>e2</code> أم بالعكس.</p>
+<p>وبطبيعة الحال، يمكننا بسهولة معرفة ترتيب التقييم لتنفيذ معين من
+أوسمل باستخدام تعبير ينشئ زوجًا، على النحو التالي:</p>
+<pre><code class="language-ocaml">  # (read_int <span class="hljs-literal">()</span>, read_int <span class="hljs-literal">()</span>);;
+  <span class="hljs-number">4</span>
+  <span class="hljs-number">5</span>
+  - : <span class="hljs-built_in">int</span> * <span class="hljs-built_in">int</span> = (<span class="hljs-number">5</span>, <span class="hljs-number">4</span>)
+</code></pre>
+<p>نلاحظ هنا أن التعبير <code>e2</code> هو الذي يُقيَّم أولًا، لأن العدد الصحيح الأول
+المُدخَل، وهو هنا <code>4</code>، يُخزَّن في المكون الثاني من الزوج.</p>
+<p>وبشكل عام، ليست فكرة جيدة كتابة برنامج يعتمد على
+ترتيب التقييم المنفَّذ من طرف مترجم معين. ومن الأفضل استخدام إعلانات
+محلية لتحديد ترتيب التقييم. وهكذا، ما كان ينبغي لنا كتابته
+هو:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> x = read_int <span class="hljs-literal">()</span> <span class="hljs-keyword">in</span> <span class="hljs-keyword">let</span> y = read_int <span class="hljs-literal">()</span> <span class="hljs-keyword">in</span> (x, y);;
+  <span class="hljs-number">4</span>
+  <span class="hljs-number">5</span>
+  - : <span class="hljs-built_in">int</span> * <span class="hljs-built_in">int</span> = (<span class="hljs-number">4</span>, <span class="hljs-number">5</span>)
+</code></pre>
+<h5>الدوال المجهولة (anonymous functions)</h5>
+<p>لا تقتصر تعريفات الدوال المجهولة على وسيط واحد. فالدوال
+التي تأخذ عدة وسائط يمكن تعريفها على النحو التالي:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">fun</span> x y -&gt; x + y;;
+  - : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>ومن المثير للاهتمام ملاحظة أن الإعلانين التاليين متكافئان تمامًا:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> f = <span class="hljs-keyword">fun</span> x -&gt; x + <span class="hljs-number">1</span>;;
+  <span class="hljs-keyword">val</span> f : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+  # <span class="hljs-keyword">let</span> f x = x + <span class="hljs-number">1</span>;;
+  <span class="hljs-keyword">val</span> f : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<h3 id="27-نسخ-ملف">2.7 نسخ ملف</h3>
+<blockquote></blockquote>
+<p>برنامجنا التالي، <code>copy_file.ml</code>، ينسخ محتويات ملف إلى ملف آخر، مع تمرير اسمَي
+الملفين على سطر الأوامر.</p>
+<p>ولهذا، نكتب دالة <code>copy_file</code> تأخذ كوسيطين اسمي الملفين، كسلسلتين نصيتين <code>f1</code> و<code>f2</code>. نبدأ بفتح قناتين <code>c1</code> و<code>c2</code> على الملفين <code>f1</code></p>
+<p>و<code>f2</code>، على التوالي.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> copy_file f1 f2 =
+    <span class="hljs-keyword">let</span> c1 = open_in f1 <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> c2 = open_out f2 <span class="hljs-keyword">in</span>
+</code></pre>
+<p>تُفتح الأولى، <code>c1</code>، للقراءة والثانية، <code>c2</code>، للكتابة.</p>
+<p>ثم ننفّذ حلقة لا نهائية (<code>whiletrue</code>) تقرأ الحروف من <code>c1</code>
+وتكتبها إلى <code>c2</code>.</p>
+<pre><code class="language-ocaml">      <span class="hljs-keyword">while</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">do</span> output_char c2 (input_char c1) <span class="hljs-keyword">done</span>
+</code></pre>
+<p>عندما لا يتبقى أي حرف لقراءته، تُطلق الدالة <code>input_char</code> <em>استثناءً</em> معرَّفًا مسبقًا، ألا وهو <code>End_of_file</code>. يقاطع هذا تنفيذ حلقة
+<code>while</code>، وبوجه عام تنفيذ البرنامج الجاري، حتى يُلتقط (caught) الاستثناء. وهنا، نلتقط هذا الاستثناء خارج حلقة <code>while</code> مباشرةً، وذلك باستخدام
+البناء <code>try-with</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> =
+    <span class="hljs-keyword">try</span>
+      <span class="hljs-keyword">while</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">do</span> ... <span class="hljs-keyword">done</span>
+    <span class="hljs-keyword">with</span> <span class="hljs-type">End_of_file</span> -&gt;
+      close_in c1; close_out c2
+</code></pre>
+<p>معنى البناء <code>try</code> e1 <code>with</code> <code>E</code> <code>-&gt;</code> e2 هو كما يلي: نبدأ
+بتقييم التعبير e1. وإذا حصلنا على قيمة، فهي قيمة
+التعبير <code>try-with</code> بأكمله. أما إذا أطلق تقييم e1 الاستثناء <code>E</code>، فإننا
+نقيّم التعبير e2، ويكون ذلك هو ناتج التعبير ككل. وأخيرًا،
+إذا أطلق e1 استثناءً غير <code>E</code>، فلا يُلتقط الاستثناء، ويكون التعبير
+<code>try-with</code> بأسره هو ما يُطلقه.</p>
+<p>وفي حالتنا هذه، التعبير e1 حلقة لا نهائية، ولن ينتهي تقييمها أبدًا.
+غير أنها تنتهي بإطلاق الاستثناء <code>End_of_file</code>، الذي يُلتقط بعد ذلك،
+فيُغلَق الملفان <code>c1</code> و<code>c2</code>.</p>
+<p>ولا يتبقى بعد ذلك سوى استدعاء الدالة <code>copy_file</code> بالوسيطين الأولين
+لسطر الأوامر، وهما <code>Sys.argv.(1)</code> و<code>Sys.argv.(2)</code>.</p>
+<blockquote></blockquote>
+<h4>معلومات إضافية</h4>
+<h5>قنوات الإدخال/الإخراج (input/output channels)</h5>
+<p>تُمثَّل أجهزة الإدخال/الإخراج بواسطة <em>قنوات</em> (channels). وقنوات الإدخال من
+النوع المعرَّف مسبقًا <code>in_channel</code>، وقنوات الإخراج من النوع <code>out_channel</code>. وتمثل ثلاث
+قيم معرَّفة مسبقًا، على التوالي، الدخل القياسي، والخرج القياسي، والخطأ القياسي
+للبرنامج الجاري تنفيذه: <code>stdin</code> من النوع <code>in_channel</code>، و<code>stdout</code>
+و<code>stderr</code> من النوع <code>out_channel</code>.</p>
+<p>تتوفر دوال للقراءة والكتابة على القنوات. وتقرأ الدالة
+<code>input_char</code>، من النوع <code>in_channel-&gt;char</code>، حرفًا واحدًا من القناة
+الممرَّرة كوسيط. وهكذا يمكننا قراءة حرف من الدخل القياسي، <code>stdin</code>، على النحو
+التالي:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> c = input_char stdin;;
+  a
+  <span class="hljs-keyword">val</span> c : <span class="hljs-built_in">char</span> = ’a’
+</code></pre>
+<p>ويمكن استخدام دالة أعم، <code>input</code>، لقراءة n حرفًا من قناة إدخال
+وتخزينها في موضع معين داخل سلسلة نصية.</p>
+<p>وبالمثل، تكتب الدالة <code>output_char</code>، من النوع <code>out_channel-&gt;char-&gt;unit</code>، حرفًا إلى قناة إخراج. أما الدالة الأعم <code>output</code>، فتكتب سلسلة فرعية معينة. وتوجد أيضًا دالة <code>Printf.fprintf</code> تكتب إلى قناة
+إخراج، بطريقة مماثلة للدالة <code>Printf.printf</code> التي استخدمناها
+سابقًا.</p>
+<p>يمكن أيضًا التعامل مع الملفات كقنوات. وهكذا، يُفتح ملف للقراءة باستخدام
+الدالة <code>open_in</code>، من النوع <code>string-&gt;in_channel</code>، وللكتابة باستخدام الدالة
+<code>open_out</code>، من النوع <code>string-&gt;out_channel</code>. وترمز السلسلة النصية إلى اسم الملف.
+وبشكل متماثل، نغلق قناة بالدالتين <code>close_in</code> و<code>close_out</code>.</p>
+<p>يمكن أن تفشل عمليات الإدخال/الإخراج على القنوات (القراءة أو الكتابة على قناة مغلقة،
+أو صلاحيات غير صالحة، وما إلى ذلك). ويُشار إلى ذلك بشكل منهجي بإطلاق استثناء. فعلى سبيل
+المثال، القراءة بعد نهاية ملف تُطلق الاستثناء المعرَّف مسبقًا
+<code>End_of_file</code>.</p>
+<h5>الترميز (marshalling)</h5>
+<p>إضافةً إلى الحروف، يمكن استخدام القنوات لقراءة وكتابة قيم أوسمل من
+أنواع اعتباطية. ويُعرف هذا باسم <em>الترميز</em> (marshalling). وتكتب الدالة <code>output_value</code> قيمة من نوع اعتباطي إلى قناة إخراج.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> c = open_out <span class="hljs-string">&quot;foo&quot;</span> <span class="hljs-keyword">in</span>
+    output_value c (<span class="hljs-number">1</span>, <span class="hljs-number">3.14</span>, <span class="hljs-literal">true</span>);
+    close_out c;;
+  - : <span class="hljs-built_in">unit</span> = <span class="hljs-literal">()</span>
+</code></pre>
+<p>الصيغة المستخدمة خاصة بأوسمل (بل وبنسخته تحديدًا). والدالة التي
+تقوم بالعملية العكسية هي <code>input_value</code>. وعندما تقرأ قيمة مرمَّزة
+بالدالة <code>input_value</code>، يُستنتج (inferred) نوعها وفقًا لكيفية استخدامها. ومن
+الممارسات الجيدة تحديد نوع القيمة المقروءة بتعليق نوع (type annotation).
+وفيما يلي، نعيد قراءة القيمة المكتوبة في الملف <code>&quot;foo&quot;</code>، محدِّدين أن نوعها هو
+<code>int*float*bool</code>:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> c = open_in <span class="hljs-string">&quot;foo&quot;</span>;;
+  <span class="hljs-keyword">val</span> c : <span class="hljs-built_in">in_channel</span> = &lt;abstr&gt;
+  # <span class="hljs-keyword">let</span> v : <span class="hljs-built_in">int</span> * <span class="hljs-built_in">float</span> * <span class="hljs-built_in">bool</span> = input_value c;;
+  <span class="hljs-keyword">val</span> v : <span class="hljs-built_in">int</span> * <span class="hljs-built_in">float</span> * <span class="hljs-built_in">bool</span> = (<span class="hljs-number">1</span>, <span class="hljs-number">3.14</span>, <span class="hljs-literal">true</span>)
+</code></pre>
+<p>لا توجد أي معلومات عن النوع في القيمة المرمَّزة نفسها. وبوجه خاص، لا تُضمن
+سلامة النوع عند التشغيل (runtime) إذا استخدمنا قيمة مرمَّزة بطريقة غير متوافقة
+مع نوع القيمة المرمَّزة فعلًا. وفي المثال أعلاه، يمكننا
+أن ندّعي أن القيمة المقروءة زوج مكونه الأول زوج أيضًا. وهذا
+يؤدي إلى خطأ برنامج قاتل (fatal).</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> c = open_in <span class="hljs-string">&quot;foo&quot;</span>;;
+  <span class="hljs-keyword">val</span> c : <span class="hljs-built_in">in_channel</span> = &lt;abstr&gt;
+  # <span class="hljs-keyword">let</span> v = input_value c <span class="hljs-keyword">in</span> fst (fst v);;
+
+  <span class="hljs-type">Process</span> caml-toplevel segmentation fault
+</code></pre>
+<p>هذا الخطأ ليس استثناءً كان يمكننا التقاطه. بل هو، بالأحرى،
+خطأ من مستوى أدنى يقابل وصولًا غير قانوني إلى الذاكرة لا يمكن التعافي منه.</p>
+<h5>الاستثناءات (exceptions)</h5>
+<p>بعض العمليات جزئية (partial)، أي أنها غير معرَّفة لجميع القيم الممكنة
+لوسائطها. فعلى سبيل المثال، القسمة الصحيحة على الصفر غير معرَّفة. وإذا حاولت،
+رغم ذلك، إجراء هذه العملية، <em>يُطلق استثناء</em>.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-number">1</span>/<span class="hljs-number">0</span>;;
+  <span class="hljs-type">Exception</span>: <span class="hljs-type">Division_by_zero</span>.
+</code></pre>
+<p>لا ينتج عن تقييم التعبير قيمة؛ بل يفشل عند إطلاق
+الاستثناء، كما تدل الرسالة التي تبدأ بـ<code>Exception</code>. وهنا،
+<code>Division_by_zero</code> استثناء معرَّف مسبقًا. وهناك استثناء آخر معرَّف مسبقًا في أوسمل،
+<code>Invalid_argument</code>، يُستخدم غالبًا للإشارة إلى استخدام دالة خارج نطاق
+تعريفها.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-type">Random</span>.<span class="hljs-built_in">int</span> (-<span class="hljs-number">4</span>);;
+  <span class="hljs-type">Exception</span>: <span class="hljs-type">Invalid_argument</span> <span class="hljs-string">&quot;Random.int&quot;</span>.
+  # <span class="hljs-type">Char</span>.chr <span class="hljs-number">257</span>;;
+  <span class="hljs-type">Exception</span>: <span class="hljs-type">Invalid_argument</span> <span class="hljs-string">&quot;Char.chr&quot;</span>.
+</code></pre>
+<p>كما يتضح من هذه الأمثلة، ترتبط سلسلة نصية بالاستثناء
+<code>Invalid_argument</code>، تحدد اسم الدالة التي أطلقت
+الاستثناء.</p>
+<p>إن إطلاق استثناء <em>يقاطع</em> الحساب، كما نرى بتقييم
+التعبير التالي.</p>
+<pre><code class="language-ocaml">  # print_endline <span class="hljs-string">&quot;before&quot;</span>; print_int (<span class="hljs-number">1</span>/<span class="hljs-number">0</span>); print_endline <span class="hljs-string">&quot;after&quot;</span>;;
+  before
+  <span class="hljs-type">Exception</span>: <span class="hljs-type">Division_by_zero</span>.
+</code></pre>
+<p>ورغم ذلك، يمكن التقاط استثناء لمواصلة التقييم بتعبير
+آخر. وتستخدم لهذا الغرض البناء <code>trywith</code>، كما يلي:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> test x y =
+      <span class="hljs-keyword">try</span> <span class="hljs-keyword">let</span> q = x / y <span class="hljs-keyword">in</span> <span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;quotient = %d\\n&quot;</span> q
+      <span class="hljs-keyword">with</span> <span class="hljs-type">Division_by_zero</span> -&gt; <span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;error\\n&quot;</span>;;
+  <span class="hljs-keyword">val</span> test : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+  # test <span class="hljs-number">4</span> <span class="hljs-number">0</span>;;
+  error
+  - : <span class="hljs-built_in">unit</span> = <span class="hljs-literal">()</span>
+</code></pre>
+<p>هنا، نحاول حساب <code>x/y</code> وعرض قيمته. وفي حالة الفشل، أي عندما
+تستثير القسمة الاستثناء <code>Division_by_zero</code>، نلتقط الاستثناء
+ونعرض رسالة خطأ. لذلك ينتهي تقييم الدالة <code>test</code> دائمًا
+بقيمة من النوع <code>unit</code>.</p>
+<p>بشكل عام، يُقيَّم التعبير <code>try</code>e1<code>withE-&gt;</code>e2 كما يلي:</p>
+<ul>
+<li>
+<p>يُقيَّم التعبير e1 أولًا. وإذا لم يُطلق استثناءً، يكتمل
+الحساب، وتكون قيمته هي قيمة e1.</p>
+</li>
+<li>
+<p>أما إذا أطلق التعبير استثناءً، فثمة احتمالان:</p>
+<p>إذا كان الاستثناء هو E، يستمر التقييم بـe2؛</p>
+</li>
+<li>
+<p>إذا كان الاستثناء غير E، يُنشر (propagated)
+دون تقييم e2.</p>
+</li>
+</ul>
+<p>في التعبير <code>try</code>e1<code>withE-&gt;</code>e2، يجب أن يكون للتعبيرين الفرعيين e1 وe2 النوع
+نفسه، وهو أيضًا نوع التعبير ككل.</p>
+<p>يمكن للمستخدمين تعريف استثناءاتهم الخاصة بالإعلان <code>exception</code> متبوعًا
+باسم الاستثناء، الذي يجب أن يبدأ بحرف كبير. ولا يلزم أن يأخذ الاستثناء
+أي وسائط، على سبيل المثال، <code>Division_by_zero</code>:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">exception</span> <span class="hljs-type">Stop</span>;;
+  <span class="hljs-keyword">exception</span> <span class="hljs-type">Stop</span>
+</code></pre>
+<p>بدلًا من ذلك، قد يأخذ الاستثناء وسيطًا واحدًا أو أكثر، على سبيل المثال،
+<code>Invalid_argument</code>:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">exception</span> <span class="hljs-type">Error</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">string</span>;;
+  <span class="hljs-keyword">exception</span> <span class="hljs-type">Error</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">string</span>
+</code></pre>
+<p>لإطلاق استثناء، تستخدم البناء <code>raise</code>. يأخذ هذا البناء
+استثناءً كوسيط.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> f x =
+      <span class="hljs-keyword">if</span> x &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> raise (<span class="hljs-type">Error</span> <span class="hljs-string">&quot;negative argument&quot;</span>);
+      <span class="hljs-number">123</span> <span class="hljs-keyword">mod</span> x;;
+  <span class="hljs-keyword">val</span> f : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>هنا، يُنشأ الاستثناء بتطبيق المُنشئ (constructor) <code>Error</code> على السلسلة النصية
+<code>&quot;negativeargument&quot;</code>. ويمكنك ملاحظة إطلاق الاستثناء باستدعاء <code>f</code> بوسيط
+سالِب.</p>
+<pre><code class="language-ocaml">  # f (-<span class="hljs-number">1</span>);;
+  <span class="hljs-type">Exception</span>: <span class="hljs-type">Error</span> <span class="hljs-string">&quot;negative argument&quot;</span>.
+</code></pre>
+<p>الاستثناءات، في الواقع، قيم مثل أي قيم أخرى وتنتمي إلى النوع المعرَّف مسبقًا <code>exn</code>. ويمكن النظر إلى هذا
+النوع بوصفه نوعًا ملموسًا (concrete) بعدد غير محدود من المنشئات.
+والاستثناءات المعرَّفة مسبقًا ليست سوى منشئات معرَّفة مسبقًا لهذا النوع. وكل
+إعلان <code>exception</code> يضيف منشئًا جديدًا. يمكنك إنشاء قيمة من النوع <code>exn</code>
+وتمريرها كوسيط إلى <code>raise</code>:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> e = <span class="hljs-type">Error</span> <span class="hljs-string">&quot;invalid argument&quot;</span>;;
+  <span class="hljs-keyword">val</span> e : <span class="hljs-built_in">exn</span> = <span class="hljs-type">Error</span> <span class="hljs-string">&quot;invalid argument&quot;</span>
+  # raise e;;
+  <span class="hljs-type">Exception</span>: <span class="hljs-type">Error</span> <span class="hljs-string">&quot;invalid argument&quot;</span>.
+</code></pre>
+<p>البناء <code>raise</code> ليس سوى دالة تأخذ وسيطًا من النوع
+<code>exn</code>. ويمكن للتعبير <code>raise</code>e أن يأخذ أي نوع. وفي المثال السابق،
+يأخذ التعبير <code>raise(Error&quot;invalidargument&quot;)</code> النوع <code>unit</code>، لكنه
+يمكن أن يأخذ أيضًا النوع <code>int</code> إذا أردنا كتابة الدالة <code>f</code> مع
+<code>else</code>:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> f x =
+      <span class="hljs-keyword">if</span> x &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> raise (<span class="hljs-type">Error</span> <span class="hljs-string">&quot;invalid argument&quot;</span>) <span class="hljs-keyword">else</span> <span class="hljs-number">123</span> <span class="hljs-keyword">mod</span> x;;
+  <span class="hljs-keyword">val</span> f : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>يمكن استخدام الاستثناءات للإشارة إلى سلوكيات استثنائية (كما في الأمثلة
+السابقة)، وكذلك لتغيير تدفق التحكم (control flow) في البرنامج. ومن الأمثلة النموذجية
+على ذلك حلقة لا نهائية تخرج منها باستخدام استثناء. وهذا هو حال
+البرامج التفاعلية التي تخرج منها بالضغط على مفتاح. وباستخدام مكتبة <code>Graphics</code>، يمكن كتابة مثل هذه
+الحلقة كما يلي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">try</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">do</span>
+      <span class="hljs-keyword">let</span> st = wait_next_event [<span class="hljs-type">Key_pressed</span>] <span class="hljs-keyword">in</span>
+      <span class="hljs-keyword">if</span> st.keypressed &amp;&amp; st.key = ’q’ <span class="hljs-keyword">then</span> raise <span class="hljs-type">Exit</span>;
+      ...
+    <span class="hljs-keyword">done</span>
+  <span class="hljs-keyword">with</span> <span class="hljs-type">Exit</span> -&gt;
+    close_graph <span class="hljs-literal">()</span>;
+    ...
+</code></pre>
+<p>إن إطلاق الاستثناء <code>Exit</code> يقاطع الحلقة اللانهائية <code>whiletrue</code>. نلتقط
+الاستثناء، ونغلق النافذة الرسومية بالدالة <code>close_graph</code>، ثم نواصل
+البرنامج. وقد وردت أمثلة أخرى على استخدام الاستثناءات لتغيير تدفق التحكم في
+التمرينين <a href="#x7-96002r15">2.15</a> و<a href="https://usr.lmf.cnrs.fr/lpo/mainch5.html#x16-195007r7">5.7</a>.</p>
+<p>أخيرًا، لاحظ أن المكتبة القياسية لأوسمل توفر دالتين، <code>failwith</code>
+و<code>invalid_arg</code>. عند استدعائهما بسلسلة نصية <code>s</code>، تُطلقان الاستثناءين <code>Failures</code>
+و<code>Invalid_argument s</code>، على التوالي. وتوفر أوسمل أيضًا بناءً خاصًا
+<code>assert</code> <code>e</code>، يقيّم تعبيرًا <code>e</code> من النوع <code>bool</code> ويُطلق الاستثناء
+<code>Assert_failure</code> إذا كان <code>e</code> هو <code>false</code>.</p>
+<h3 id="28-عكس-ترتيب-الأسطر-في-نص">2.8 عكس ترتيب الأسطر في نص</h3>
+<blockquote></blockquote>
+<p>برنامجنا التالي، <code>tac.ml</code>، يقرأ أسطرًا نصية من الدخل القياسي ثم
+يعرضها بترتيب معكوس. ومن السهل استخدامه. بعد ترجمة البرنامج،
+ننفذه وندخل، على سبيل المثال، الأسطر الثلاثة التالية على الدخل
+القياسي:</p>
+<pre><code class="language-text">  first line
+  second line
+  third line
+</code></pre>
+<p>بمجرد أن نشير إلى نهاية الدخل (بالضغط، على سبيل المثال، على المفتاحين <code>ctrl</code> و<code>D</code>)،
+يعرض البرنامج الأسطر بترتيب معكوس:</p>
+<pre><code class="language-text">  third line
+  second line
+  first line
+</code></pre>
+<p>لتحقيق ذلك، يجب على البرنامج أن يخزن جميع الأسطر المقروءة قبل أن يتمكن من
+عرضها، لأن أول سطر يُعرض هو آخر سطر
+يُقرأ. لذلك، نحتاج إلى بنية بيانات (data structure) لتخزين الأسطر
+المقروءة. والمصفوفة غير مناسبة لأننا لا نعرف العدد الإجمالي للأسطر<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>.
+لذا سنستخدم <em>قائمة</em> (list).</p>
+<p>توفر أوسمل نوعًا مدمجًا (built-in) للقوائم. وتُنشأ القوائم من القائمة
+الفارغة، الممثلة بـ<code>[]</code>، وبإضافة عنصر x إلى مقدمة قائمة موجودة l،
+ممثلة على الشكل x <code>::</code> l. والقوائم في أوسمل <em>غير قابلة للتعديل</em> (immutable): بمجرد إنشاء قائمة، لا
+يعود من الممكن تعديلها.</p>
+<blockquote></blockquote>
+<p>يبدأ برنامجنا بتعريف مرجع، <code>lines</code>، سيحتوي قائمة
+الأسطر المقروءة. وفي البداية، تكون هذه القائمة فارغة.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> lines = <span class="hljs-built_in">ref</span> <span class="hljs-literal">[]</span>
+</code></pre>
+<p>ثم ننتقل إلى قراءة الأسطر، باستخدام دالة المكتبة <code>read_line</code>، التي تقرأ سطرًا من النص من الدخل القياسي وتعيده كسلسلة نصية. ولقراءة جميع الأسطر،
+نكتب حلقة لا نهائية:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">while</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">do</span> lines := read_line <span class="hljs-literal">()</span> :: !lines <span class="hljs-keyword">done</span>
+</code></pre>
+<p>يُضاف كل سطر يُقرأ باستخدام <code>read_line</code> إلى القائمة الموجودة في المرجع <code>lines</code>.
+وبشكل أدق، نُنشئ قائمة جديدة عنصرها الأول هو أحدث سطر قُرئ،
+متبوعًا بالعناصر الموجودة أصلًا في <code>lines</code>، أي <code>!lines</code>.
+بعد ذلك، نضبط قيمة المرجع <code>lines</code> على هذه القائمة الجديدة. وعندما
+لا يتبقى أي أسطر لقراءتها، تُطلق الدالة <code>read_line</code> الاستثناء
+<code>End_of_file</code>.</p>
+<p>نلتقط هذا الاستثناء خارج الحلقة مباشرةً:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">try</span>  <span class="hljs-keyword">while</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">do</span> ... <span class="hljs-keyword">done</span>
+    <span class="hljs-keyword">with</span> <span class="hljs-type">End_of_file</span> -&gt; <span class="hljs-literal">()</span>
+</code></pre>
+<p>بهذا نكون قد انتهينا من القراءة. ويحتوي المرجع <code>lines</code> الآن على قائمة جميع
+الأسطر المقروءة. وبتصميم هذه البنية، تكون هذه القائمة بترتيب معكوس، إذ أُضيف أحدث سطر قُرئ
+في رأس القائمة. وهذا ملائم لأن هذا هو تحديدًا
+الترتيب الذي نرغب في عرض الأسطر به. لعرض الأسطر، نبدأ
+بكتابة دالة عودية <code>print</code>، تعرض قائمة <code>l</code> من السلاسل النصية، سطرًا بعد
+سطر.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> print l =
+</code></pre>
+<p>تفحص هذه الدالة القائمة <code>l</code>، معالِجةً حالة القائمة الفارغة وحالة القائمة
+التي تحتوي عنصرًا واحدًا على الأقل، بشكل منفصل. ونميّز بين الحالتين
+باستخدام بناء أوسمل <code>match-with</code>، كما يلي:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">match</span> l <span class="hljs-keyword">with</span>
+    | <span class="hljs-literal">[]</span>     -&gt; ...case <span class="hljs-number">1.</span>..
+    | s :: r -&gt; ...case <span class="hljs-number">2.</span>..
+</code></pre>
+<p>يُقرأ هذا البناء الخاص بمطابقة الأنماط كما يلي: إذا كانت القائمة <code>l</code> على الشكل <code>[]</code>، أي إذا
+كانت هي القائمة الفارغة، نقيّم الكود المشار إليه أعلاه بـ<code>...case 1...</code>. وإذا
+كانت القائمة <code>l</code>، مع ذلك، على الشكل <code>s::r</code>، أي إذا كانت تحتوي عنصرًا أول <code>s</code> يليه
+عناصر أخرى تشكل قائمة <code>r</code>، نقيّم الكود المشار إليه أعلاه
+بـ...case 2.... وهنا، يأخذ المتغيران <code>s</code> و<code>r</code> قيمة العنصر الأول
+وبقية عناصر <code>l</code>. وفي الدالة <code>print</code>، لا نفعل شيئًا
+في الحالة الأولى. وفي الحالة الثانية، نعرض السلسلة النصية <code>s</code> ثم نستدعي
+<code>print</code> بشكل عودي على القائمة <code>r</code>. لذلك، يكون جسم الدالة <code>print</code>
+كما يلي:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">match</span> l <span class="hljs-keyword">with</span>
+    | <span class="hljs-literal">[]</span>     -&gt; <span class="hljs-literal">()</span>
+    | s :: r -&gt; print_endline s; print r
+</code></pre>
+<p>ولا يتبقى لإكمال برنامجنا سوى تطبيق هذه الدالة على القائمة الموجودة في
+المرجع <code>lines</code>، أي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> = print !lines
+</code></pre>
+<h4>معلومات إضافية</h4>
+<h5>القوائم (lists)</h5>
+<p>نوع القوائم معرَّف مسبقًا في أوسمل؛ وهو <code>list</code>. وهذا النوع <em>عام</em> (generic)، بمعنى
+أننا نستطيع إنشاء قوائم من قيم من أي نوع كان، شريطة أن تكون جميع عناصر
+قائمة معينة من النوع نفسه.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-number">1</span> :: <span class="hljs-number">2</span> :: <span class="hljs-number">3</span> :: <span class="hljs-literal">[]</span>;;
+  - : <span class="hljs-built_in">int</span> <span class="hljs-built_in">list</span> = [<span class="hljs-number">1</span>; <span class="hljs-number">2</span>; <span class="hljs-number">3</span>]
+</code></pre>
+<pre><code class="language-ocaml">  # <span class="hljs-number">1</span> :: ’a’ :: <span class="hljs-number">3</span> :: <span class="hljs-literal">[]</span>;;
+  <span class="hljs-type">Error</span>: <span class="hljs-type">This</span> expression has <span class="hljs-keyword">type</span> <span class="hljs-built_in">char</span> but an expression
+         was expected <span class="hljs-keyword">of</span> <span class="hljs-keyword">type</span> <span class="hljs-built_in">int</span>
+</code></pre>
+<p>كما نرى في المثال الأول، تعرض الطرفية التفاعلية قائمة على الشكل <code>[1;2;3]</code>. وهذا
+الترميز يمكن استخدامه أيضًا لإنشاء قائمة من عناصرها.</p>
+<pre><code class="language-ocaml">  # [’a’; ’b’; ’c’];;
+  - : <span class="hljs-built_in">char</span> <span class="hljs-built_in">list</span> = [’a’; ’b’; ’c’]
+</code></pre>
+<h5>مطابقة الأنماط (pattern matching)</h5>
+<p>عندما عرضنا الثنائيات (n-tuples)، شرحنا أنه يمكن تفكيك الأزواج باستخدام
+البناء <code>let(x,y)=</code>e1<code>in</code>e2. في الواقع، هذه المطابقة مطابقة تمامًا، من كل وجه،
+لتلك التي ناقشناها أعلاه بخصوص القوائم. والبناء <code>let</code> ليس سوى
+اختصار للتعبير <code>match</code>e1<code>with(x,y)-&gt;</code>e2. وبشكل عام، يمكن استخدام البناء <code>let</code>
+بنمط اعتباطي كوسيط أول، حتى لو كان النمط في أغلب الأحيان
+مختزلًا إلى متغير.</p>
+<p>تعمل الدالة <code>print</code> بواسطة مطابقة الأنماط على وسيطها <code>l</code>. وهذه
+الدوال شائعة جدًا في أوسمل حتى إن هناك كلمة مفتاحية، <code>function</code>،
+تقدّم دالة تعمل بواسطة مطابقة الأنماط على وسيطها. وهكذا، يمكننا أن
+نكتب:</p>
+<pre><code class="language-ocaml">   <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> print = <span class="hljs-keyword">function</span>
+    | <span class="hljs-literal">[]</span>     -&gt; <span class="hljs-literal">()</span>
+    | s :: r -&gt; print_endline s; print r
+</code></pre>
+<p>بعبارة أخرى، الكلمة المفتاحية <code>function</code> اختصار لـ<code>funx-&gt;matchxwith</code>. لاحظ أيضًا
+أن <code>function</code> تقدّم دالة بوسيط <em>واحد</em> فقط، حيث يمكن لمطابقة الأنماط
+أن تحتوي على نمط واحد أو أكثر. وفي المقابل، تعرّف <code>fun</code> دالة بعدة
+وسائط، حيث يُطابَق كل وسيط بنمط <em>واحد</em>. وهكذا، يمكننا أن
+نكتب:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">fun</span> x (y, z) -&gt; x + y * z
+</code></pre>
+<h5>اجتياز القوائم (list traversals)</h5>
+<p>الدالة <code>print</code> التي كتبناها لعرض جميع عناصر القائمة <code>!lines</code> هي
+مثال على <em>اجتياز قائمة</em> (traversal)، حيث تُعامل جميع عناصر القائمة بالطريقة نفسها،
+وبالترتيب الذي تظهر به. وهذه الاجتيازات متكررة جدًا حتى إن هناك دالة
+مكتبة لها، ألا وهي <code>List.iter</code>. وهذه دالة من الرتبة الأعلى، مثل
+<code>Array.init</code> أو <code>Array.sort</code>، اللتين عرضناهما سابقًا. تأخذ <code>List.iter</code> كوسيط
+الدالة التي ينبغي تطبيقها على كل عنصر. وهكذا، يمكننا إعادة كتابة <code>print</code> ببساطة
+على النحو التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> print l = <span class="hljs-type">List</span>.iter print_endline l
+</code></pre>
+<p>ويمكننا حتى استبدال الأسطر الخمسة الأخيرة بما يلي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> = <span class="hljs-type">List</span>.iter print_endline !lines
+</code></pre>
+<h5>مكدس الاستدعاءات (call stack)</h5>
+<p>لنفترض أننا نريد لبرنامجنا أن يعرض العدد الإجمالي للأسطر التي تمت
+قراءتها وعكسها، في رسالة من الشكل:</p>
+<pre><code class="language-text">  113 lines read
+</code></pre>
+<p>لهذا، نكتب دالة <code>length</code> تحسب طول قائمة. وكما هو الحال مع
+<code>print</code>، نكتبها في شكل دالة عودية تعمل بمطابقة الأنماط:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> length = <span class="hljs-keyword">function</span>
+    | <span class="hljs-literal">[]</span>     -&gt; <span class="hljs-number">0</span>
+    | _ :: r -&gt; <span class="hljs-number">1</span> + length r
+</code></pre>
+<p>لاحظ النمط البديل (wildcard pattern) <code>_</code> المستخدم مكان العنصر الأول من القائمة في النمط
+الثاني. لا يلزم تسمية هذه القيمة لأنها لا تُستخدم في
+حساب طول القائمة. ولا يتبقى الآن سوى عرض الطول المحسوب
+بهذه الطريقة:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> = <span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot;%d lines read\\n&quot;</span> (length !lines)
+</code></pre>
+<p>إذا شغّلنا البرنامج عدة مرات، سنلاحظ أنه يعطي فعلًا النتيجة
+المتوقعة. غير أننا لو حاولنا إمداد البرنامج بعدد كبير جدًا من
+الأسطر—لنقل 700,000 سطر—سنفاجأ بمفاجأة غير سارة: سيُعطينا البرنامج
+خطأً<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>
+حتى مع أن كل شيء عمل بشكل جيد تمامًا إلى غاية النقطة التي حاولنا فيها عرض
+عدد الأسطر:</p>
+<pre><code class="language-ocaml">  seq <span class="hljs-number">700000</span> | ./tac
+  <span class="hljs-type">Fatal</span> error: <span class="hljs-keyword">exception</span> <span class="hljs-type">Stack_overflow</span>
+</code></pre>
+<p>لتفسير هذه الظاهرة، من الضروري فهم المبدأ الكامن وراء
+تنفيذ دالة عودية مثل <code>length</code>.</p>
+<p>لنأخذ على سبيل المثال تنفيذ الاستدعاء <code>length[1;2;3]</code>. يمكننا
+«رمزيًا» فكّ هذا الاستدعاء كما يلي:</p>
+<pre><code class="language-ocaml">  length [<span class="hljs-number">1</span>; <span class="hljs-number">2</span>; <span class="hljs-number">3</span>] = <span class="hljs-number">1</span> + length [<span class="hljs-number">2</span>; <span class="hljs-number">3</span>]
+                   = <span class="hljs-number">1</span> + (<span class="hljs-number">1</span> + length [<span class="hljs-number">3</span>])
+                   = <span class="hljs-number">1</span> + (<span class="hljs-number">1</span> + (<span class="hljs-number">1</span> + length <span class="hljs-literal">[]</span>))
+                   = <span class="hljs-number">1</span> + (<span class="hljs-number">1</span> + (<span class="hljs-number">1</span> + <span class="hljs-number">0</span>))
+                   = <span class="hljs-number">1</span> + (<span class="hljs-number">1</span> + <span class="hljs-number">1</span>)
+                   = <span class="hljs-number">1</span> + <span class="hljs-number">2</span>
+                   = <span class="hljs-number">3</span>
+</code></pre>
+<p>يخصص كل استدعاء لـ<code>length</code> خلية ذاكرة لتخزين وسيط الدالة. وبشكل
+عام، يخصص استدعاء دالة، سواء أكان عوديًا أم لا، مساحة الذاكرة
+الضرورية لوسائطها ومتغيراتها المحلية. وتُحرَّر هذه المساحة
+بمجرد انتهاء استدعاء الدالة. وفي حالة الدالة العودية <code>length</code>، لا ينتهي الاستدعاء
+حتى يكتمل الاستدعاء العودي وتُجرى عملية الجمع <code>1+...</code>.
+وبوجه خاص، يتطلب الاستدعاء <code>length[1;2;3]</code> حتى أربعة استدعاءات
+دوال متداخلة للوصول إلى الاستدعاء الأخير <code>length[]</code>. وهكذا، ستكون هناك حاجة إلى أربع خلايا ذاكرة
+لتخزين وسائط كلٍّ من الاستدعاءات الأربعة، كما هو موضح في
+الشكل <a href="#representation-of-a-call-stack">2.6</a>.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/first-steps-6-length_123-mps-.webp" alt="" id="representation-of-a-call-stack"></p>
+<p><strong>الشكل 2.6: تمثيل مكدس الاستدعاءات.</strong></p>
+<p>كما يتضح في الرسم، يتيح تدرج استدعاءات الدوال تنظيم
+الذاكرة المطلوبة لها على شكل <em>مكدس</em> (stack). ومن هنا جاء مصطلح <em>مكدس الاستدعاءات</em>. ويدفع كل استدعاء
+لدالة مساحة الذاكرة المطلوبة لمتغيراتها (هنا، المتغير الوحيد <code>l</code>) إلى مكدس الاستدعاءات، ويزيل هذه المساحة عند انتهاء
+الاستدعاء.</p>
+<p>الخطأ <code>Stack_overflow</code> الذي استُثير سابقًا عند حساب طول قائمة من
+700,000 عنصر يرجع إلى حد على حجم مكدس الاستدعاءات. ويعتمد هذا الحد على
+نظام التشغيل والمترجم. وهو بشكل عام منخفض إلى حد ما، من رتبة
+عدة ميغابايت. وعندما يبلغ المكدس هذا الحد، نسميه <em>فيضان مكدس</em> (stack overflow). ثم
+يُقاطع البرنامج. ويُشار إلى ذلك إما بالاستثناء <code>Stack_overflow</code>
+في أوسمل أو بانهيار (crash) قاتل للبرنامج. ومن ناحية أخرى، إذا كان حجم
+المكدس كبيرًا (أو حتى غير محدود)، لن يُحدث البرنامج فيضان مكدس، لكنه
+سيستهلك ذاكرة أكثر فأكثر، الأمر الذي قد يتسبب في النهاية في انهيار
+الآلة.</p>
+<h5>الاستدعاءات الذيلية (tail calls)</h5>
+<p>قد تتساءل لماذا لا يسبب الاستدعاء <code>print!lines</code> فيضان مكدس، على عكس
+<code>length!lines</code>. الفرق بين الدالتين هو أنه، في الدالة
+<code>print</code>، يكون الاستدعاء العودي آخر تعبير يُقيَّم في جسم
+الدالة. وهذا ليس هو الحال في الدالة <code>length</code>، حيث تبقى عملية جمع
+لإجرائها بعد الاستدعاء العودي. وفي حالة <code>print</code>، يقوم
+المترجم <em>بتحسين</em> (optimization) يتمثل في إزالة الاستدعاء الحالي
+من مكدس الاستدعاءات، قبل إجراء الاستدعاء العودي. وهكذا، لا يحتوي مكدس الاستدعاءات
+إطلاقًا إلا على الاستدعاء الأخير لـ<code>print</code>، ومن ثم لا يزداد في
+الحجم.</p>
+<p>بشكل عام، عندما يكون استدعاء دالة هو آخر تعبير يُقيَّم في جسم
+دالة، نقول إنه <em>استدعاء ذيلي</em> (tail call). لاحظ أن هذا المفهوم ينطبق على كل من
+الدوال العودية وغير العودية. وفي الحالة الأولى، إذا كان كل استدعاء عودي</p>
+<p>استدعاءً ذيليًا، توصف الدالة بأنها <em>عودية ذيلية</em> (tail recursive). وهكذا، <code>print</code> عودية ذيلية
+بينما <code>length</code> ليست كذلك. لاحظ أن الدالة العودية يمكن أن تحتوي
+على استدعاءات ذيلية واستدعاءات غير ذيلية معًا. وهذا هو حال دالة مكارثي (McCarthy) الشهيرة 91.</p>
+<pre><code class="language-ocaml"> <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> f91 n =
+   <span class="hljs-keyword">if</span> n &gt; <span class="hljs-number">100</span> <span class="hljs-keyword">then</span> n - <span class="hljs-number">10</span> <span class="hljs-keyword">else</span> f91 (f91 (n + <span class="hljs-number">11</span>))
+</code></pre>
+<p>يمكننا تجنب فيضان المكدس في الدالة <code>length</code> بكتابتها بشكل مختلف،
+باستخدام وسيط إضافي يمثل عدد العناصر التي تم
+اجتيازها حتى الآن. وهكذا، يمكننا أن نكتب:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> length_term acc = <span class="hljs-keyword">function</span>
+    | <span class="hljs-literal">[]</span>     -&gt; acc
+    | _ :: r -&gt; length_term (<span class="hljs-number">1</span> + acc) r
+</code></pre>
+<p>في هذه النسخة، يكون الاستدعاء العودي لـ<code>length_term</code> استدعاءً ذيليًا. ولحساب طول
+قائمة، يكفي استدعاء <code>length_term</code> بالوسيط الأول <code>0</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> length l = length_term <span class="hljs-number">0</span> l
+</code></pre>
+<p>يمكننا حتى تعريف الدالة <code>length</code> كنتيجة للتطبيق الجزئي (partial application) للدالة
+<code>length_term</code> على <code>0</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> length = length_term <span class="hljs-number">0</span>
+</code></pre>
+<h3 id="29-تحويل-الأعداد-الصحيحة-من-أساس-تعسفي-arbitrary-base">2.9 تحويل الأعداد الصحيحة من أساس تعسّفي (arbitrary base)</h3>
+<blockquote></blockquote>
+<p>برنامجنا التالي (انظر الصفحة <a href="#x7-60004r9">144</a>)، <code>radix.ml</code>، يستقبل أعدادًا مكتوبةً بأساسٍ ما B،
+حيث 2 ≤ B ≤ 36، ويحوّلها إلى الأساس 10. يُمرَّر الأساس عبر سطر الأوامر (command line).
+بعد ذلك، يقرأ البرنامج أعدادًا من الدخل القياسي (standard input) ويعرضها بالأساس
+10.</p>
+<p>إليك مثالًا أول بالأساس 16:</p>
+<pre><code class="language-text">  &gt; radix 16
+  7FFF
+   -&gt; 32767
+  A0
+   -&gt; 160
+</code></pre>
+<p>بعد تشغيل البرنامج بالأساس المعطى، نُدخل الرقم 7FFF على
+الدخل القياسي، فيعرض البرنامج نتيجة التحويل، أي 32767.
+ثم نُدخل الرقم A0 فنحصل على 160.</p>
+<p>إليك مثالًا ثانيًا، بأعداد مكتوبة بالأساس 36:</p>
+<pre><code class="language-text">  &gt; radix 36
+  ZORRO
+   -&gt; 59942292
+</code></pre>
+<p>كما ترى في هذه الأمثلة، تُكتب الأعداد باستخدام المحارف
+<code>0</code> إلى <code>9</code>، و<code>A</code> (للرقم 10) إلى <code>Z</code> (للرقم 35).</p>
+<blockquote></blockquote>
+<p>لننتقل الآن إلى تنفيذ البرنامج. في البداية، نستخرج
+الأساس من سطر الأوامر ونخزّنه في متغير <code>base</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> base = int_of_string <span class="hljs-type">Sys</span>.argv.(<span class="hljs-number">1</span>)
+</code></pre>
+<p>من الممارسات الجيدة التحقق من أن العدد الصحيح يقع فعلًا بين 2 و36، وإن لم يكن كذلك، نوقف البرنامج.</p>
+<p>نواصل بتعريف دالة <code>list_of_string</code>، تحوّل سلسلة نصية (من النوع <code>string</code>) إلى قائمة محارف (من النوع <code>charlist</code>).</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> list_of_string s =
+    <span class="hljs-keyword">let</span> digits = <span class="hljs-built_in">ref</span> <span class="hljs-literal">[]</span> <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">for</span> i = <span class="hljs-number">0</span> <span class="hljs-keyword">to</span> <span class="hljs-type">String</span>.length s - <span class="hljs-number">1</span> <span class="hljs-keyword">do</span>
+      digits := s.[i] :: !digits
+    <span class="hljs-keyword">done</span>;
+    !digits
+</code></pre>
+<p>نجتاز السلسلة النصية <code>s</code>، مبتدئين بحرفها الأول، بحيث نبني قائمة يكون حرف <code>s</code> الأخير — أي الرقم الأقل دلالة (least significant digit) في العدد — في رأس القائمة.</p>
+<p>بعد ذلك، نكتب دالة <code>digit_of_char</code> لتحويل محرفٍ يمثل رقمًا إلى العدد الصحيح الموافق له.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> digit_of_char c =
+    <span class="hljs-keyword">match</span> c <span class="hljs-keyword">with</span>
+      | ’<span class="hljs-number">0</span>’..’<span class="hljs-number">9</span>’ -&gt; <span class="hljs-type">Char</span>.code c - <span class="hljs-type">Char</span>.code ’<span class="hljs-number">0</span>’
+      | ’<span class="hljs-type">A</span>’..’<span class="hljs-type">Z</span>’ -&gt; <span class="hljs-number">10</span> + <span class="hljs-type">Char</span>.code c - <span class="hljs-type">Char</span>.code ’<span class="hljs-type">A</span>’
+      | c -&gt; <span class="hljs-type">Printf</span>.eprintf <span class="hljs-string">&quot;invalid character %c\\n&quot;</span> c; exit <span class="hljs-number">1</span>
+</code></pre>
+<p>تعالج حالة مطابقة الأنماط الأولى <code>|’0’..’9’-&gt;</code> حالة محرف <code>c</code> بين <code>’0’</code> و<code>’9’</code>. تُحصل قيمته العددية ببساطة على أنها الفرق بين رمز ASCII للمحرف <code>c</code> ورمز المحرف <code>0</code>. وتسير الحالة الثانية على النحو نفسه، وذلك للمحارف بين <code>’A’</code> و<code>’Z’</code>. وبالنسبة إلى سائر المحارف، تعرض الحالة الأخيرة رسالة على الخطأ القياسي (standard error) باستخدام <code>Printf.eprintf</code> وتنهي البرنامج باستخدام الدالة المعرَّفة مسبقًا <code>exit</code>.</p>
+<p>ثم نكتب دالة <code>check_digit</code> تتحقق من أن <code>d</code> رقم صالح للأساس المعطى، أي أنه يقع بين 0 و<code>base</code>−1.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> check_digit d =
+    <span class="hljs-keyword">if</span> d &lt; <span class="hljs-number">0</span> || d &gt;= base <span class="hljs-keyword">then</span> <span class="hljs-keyword">begin</span>
+      <span class="hljs-type">Printf</span>.eprintf <span class="hljs-string">&quot;invalid digit %d\\n&quot;</span> d; exit <span class="hljs-number">1</span>
+    <span class="hljs-keyword">end</span>
+</code></pre>
+<p>لا تُعيد هذه الدالة أي نتيجة. فهي توقف البرنامج إذا لم يكن الرقم <code>d</code> صالحًا.</p>
+<p>الجزء الرئيسي من البرنامج هو حلقة لا نهائية (infinite loop) تقرأ سلسلة نصية <code>s</code> من الدخل القياسي وتحوّل العدد الموافق لها إلى الأساس 10.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> =
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">do</span>
+      <span class="hljs-keyword">let</span> s = read_line <span class="hljs-literal">()</span> <span class="hljs-keyword">in</span>
+      ...
+    <span class="hljs-keyword">done</span>
+</code></pre>
+<p>نبدأ بتحويل السلسلة النصية <code>s</code> إلى قائمة محارف <code>cl</code> باستخدام الدالة <code>list_of_string</code>.</p>
+<pre><code class="language-ocaml">      <span class="hljs-keyword">let</span> cl = list_of_string s <span class="hljs-keyword">in</span>
+</code></pre>
+<p>لتحويل القائمة <code>cl</code> إلى قائمة أرقام، نطبق الدالة <code>digit_of_char</code> على <em>كل</em> عنصر من عناصر <code>cl</code>. ولتحقيق ذلك، نستخدم دالة المكتبة <code>List.map</code>، التي تبني قائمة جديدة بتطبيق دالة معطاة على جميع عناصر قائمة.</p>
+<pre><code class="language-ocaml">      <span class="hljs-keyword">let</span> dl = <span class="hljs-type">List</span>.map digit_of_char cl <span class="hljs-keyword">in</span>
+</code></pre>
+<p>مثلًا، إذا كانت <code>cl</code> هي القائمة <code>[’A’;’0’]</code>، فإن <code>dl</code> هي القائمة <code>[10;0]</code>. وبشكل أعم، إذا عُطيت دالة f وقائمة l <code>[</code>e1<code>;</code>e2<code>;</code>...<code>;</code>en<code>]</code>، فإن لدينا:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mi>i</mi><mi>s</mi><mi>t</mi><mi mathvariant="normal">.</mi><mi>m</mi><mi>a</mi><mi>p</mi><mi>f</mi><mi>l</mi><mo>=</mo><mo stretchy="false">[</mo><mi>f</mi><mi>e</mi><mn>1</mn><mo separator="true">;</mo><mi>f</mi><mi>e</mi><mn>2</mn><mo separator="true">;</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">;</mo><mi>f</mi><mi>e</mi><mi>n</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">List.map f l = [f e1;f e2; ...;f en]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">L</span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord">.</span><span class="mord mathnormal">ma</span><span class="mord mathnormal">p</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">e</span><span class="mord">1</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">e</span><span class="mord">2</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">...</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mclose">]</span></span></span></span></span>
+<p>ثم نتحقق من أن كل رقم في القائمة <code>dl</code> صالح بتطبيق الدالة <code>check_digit</code> تباعًا على كل عنصر من عناصر <code>dl</code>.</p>
+<pre><code class="language-ocaml">      <span class="hljs-type">List</span>.iter check_digit dl;
+</code></pre>
+<p>في هذه الحالة لا نرغب في بناء قائمة جديدة بل في تطبيق <code>check_digit</code>. سيُوقف البرنامج بأكمله إذا رصدت <code>check_digit</code> رقمًا غير صالح. وبشكل عام، إذا عُطيت دالة f وقائمة l تساوي <code>[</code>e1<code>;</code>e2<code>;</code>...<code>;</code>en<code>]</code>، فإن التطبيق <code>List.iter</code> f l يعادل التسلسل التالي:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mi>i</mi><mi>s</mi><mi>t</mi><mi mathvariant="normal">.</mi><mi>i</mi><mi>t</mi><mi>e</mi><mi>r</mi><mi>f</mi><mi>l</mi><mo>=</mo><mi>f</mi><mi>e</mi><mn>1</mn><mo separator="true">;</mo><mi>f</mi><mi>e</mi><mn>2</mn><mo separator="true">;</mo><mo>⋅</mo><mo>⋅</mo><mo>⋅</mo><mo separator="true">;</mo><mi>f</mi><mi>e</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">List.iter f l = f e1;f e2; \\cdot \\cdot \\cdot ;f en</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">L</span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord">.</span><span class="mord mathnormal">i</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.0278em;">er</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">e</span><span class="mord">1</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">e</span><span class="mord">2</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">⋅</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span></span></span></span></span>
+<p>أخيرًا، سنحسب التمثيل بالأساس 10 ونعرضه. القائمة <code>dl</code> على الشكل <code>[</code>d0<code>;</code>d1<code>;</code>…<code>;</code>dn−1<code>]</code>، حيث d0 هو الرقم الموافق للحرف الأخير في السلسلة النصية، أي الرقم الأقل دلالة. لذلك من الضروري حساب القيمة التالية:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>n</mi><mo>∑</mo><mo>−</mo><mn>1</mn><mi>d</mi><mi>i</mi><mo>×</mo><mi>b</mi><mi>a</mi><mi>s</mi><mi>e</mi><mi>i</mi><mi>i</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n\\sum -1 di \\times basei i = 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.6em;vertical-align:-0.55em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-symbol large-op" style="position:relative;top:0em;">∑</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">−</span><span class="mord">1</span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">ba</span><span class="mord mathnormal">se</span><span class="mord mathnormal">ii</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></span>
+<p>إن أكثر الطرق كفاءة لتقليل عدد عمليات الضرب (وبخاصة لتجنب حساب <code>base</code>i المكلف) هي قاعدة هورنر (Horner’s rule)، التي تعيد كتابة المجموع السابق على النحو التالي:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>d</mi><mn>0</mn><mo>+</mo><mi>b</mi><mi>a</mi><mi>s</mi><mi>e</mi><mo>×</mo><mo stretchy="false">(</mo><mi>d</mi><mn>1</mn><mo>+</mo><mi>b</mi><mi>a</mi><mi>s</mi><mi>e</mi><mo>×</mo><mo stretchy="false">(</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo stretchy="false">(</mo><mi>d</mi><mi>n</mi><mo>−</mo><mn>2</mn><mo>+</mo><mi>b</mi><mi>a</mi><mi>s</mi><mi>e</mi><mo>×</mo><mo stretchy="false">(</mo><mi>d</mi><mi>n</mi><mo>−</mo><mn>1</mn><mo>+</mo><mi>b</mi><mi>a</mi><mi>s</mi><mi>e</mi><mo>×</mo><mn>0</mn><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">d0 + base \\times (d1 + base \\times (...(dn- 2 + base \\times (dn-1 + base\\times 0))...))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">d</span><span class="mord">0</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">ba</span><span class="mord mathnormal">se</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">ba</span><span class="mord mathnormal">se</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">...</span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">ba</span><span class="mord mathnormal">se</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">ba</span><span class="mord mathnormal">se</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">0</span><span class="mclose">))</span><span class="mord">...</span><span class="mclose">))</span></span></span></span></span>
+<p>يمكننا بسهولة برمجة ما سبق باستخدام دالة المكتبة <code>List.fold_right</code>، التي تتيح لنا اجتياز القائمة <code>dl</code> من العنصر الأخير dn−1 إلى العنصر الأول d0، بتطبيق دالة f على كل عنصر على النحو التالي:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>L</mi><mi>i</mi><mi>s</mi><mi>t</mi><mi mathvariant="normal">.</mi><mi>f</mi><mi>o</mi><mi>l</mi><msub><mi>d</mi><mi>r</mi></msub><mi>i</mi><mi>g</mi><mi>h</mi><mi>t</mi><mi>f</mi><mi>l</mi><mi>a</mi><mi>c</mi><mi>c</mi><mo>=</mo><mi>f</mi><mi>d</mi><mn>0</mn><mo stretchy="false">(</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo stretchy="false">(</mo><mi>f</mi><mi>d</mi><mi>n</mi><mo>−</mo><mn>2</mn><mo stretchy="false">(</mo><mi>f</mi><mi>d</mi><mi>n</mi><mo>−</mo><mn>1</mn><mi>a</mi><mi>c</mi><mi>c</mi><mo stretchy="false">)</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">List.fold_right f l acc = f d0 (...(f dn-2 (f dn-1 acc) ...))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">L</span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mord">.</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0278em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mord mathnormal">h</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">a</span><span class="mord mathnormal">cc</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">d</span><span class="mord">0</span><span class="mopen">(</span><span class="mord">...</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">d</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">d</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mord mathnormal">a</span><span class="mord mathnormal">cc</span><span class="mclose">)</span><span class="mord">...</span><span class="mclose">))</span></span></span></span></span>
+<p>تُمرَّر القيمة المحسوبة لكل عنصر من عناصر القائمة إلى الدالة f بصورة منهجية بوصفها الوسيط الثاني، ويُسمى <em>المُرتاكِم</em> (accumulator). قيمته الابتدائية، المستخدمة عند استدعاء f على العنصر الأخير dn−1 من القائمة، هي الوسيط الثالث لـ<code>List.fold_right</code>، ويسمى هنا acc. للحصول على صيغة هورنر، يكفي جعل f الدالة <code>fundacc-&gt;d+base*acc</code>. وهكذا تكون نهاية البرنامج ببساطة:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> v = <span class="hljs-type">List</span>.fold_right (<span class="hljs-keyword">fun</span> d acc -&gt; d + base * acc) dl <span class="hljs-number">0</span> <span class="hljs-keyword">in</span>
+    <span class="hljs-type">Printf</span>.printf <span class="hljs-string">&quot; -&gt; %d\\n&quot;</span> v
+</code></pre>
+<h4>معلومات إضافية</h4>
+<h5>تعدد الأشكال (Polymorphism)</h5>
+<p>لكي تكون دوال المكتبة <code>List</code>، مثل <code>iter</code> و<code>map</code> و<code>fold_right</code>، مفيدة، يجب أن تكون عامة (generic) بالنسبة إلى نوع عناصر القائمة التي تُطبق عليها، وبالنسبة إلى العملية المنفَّذة عليها كذلك. تُسمى هذه العمومية <em>تعدد الأشكال</em> (polymorphism). ويمكن توضيح المفهوم باستخدام الدالة <code>length</code> لحساب طول قائمة:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> length l =
+    <span class="hljs-keyword">match</span> l <span class="hljs-keyword">with</span>
+    | <span class="hljs-literal">[]</span>     -&gt; <span class="hljs-number">0</span>
+    | _ :: r -&gt; <span class="hljs-number">1</span> + length r
+</code></pre>
+<p>يمكن لهذه الدالة، بطبيعة الحال، أن تُطبق على قائمة أعداد صحيحة. مثلًا:</p>
+<pre><code class="language-ocaml">  # length [<span class="hljs-number">1</span>; <span class="hljs-number">6</span>; <span class="hljs-number">2</span>; <span class="hljs-number">8</span>; <span class="hljs-number">3</span>] ;;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">5</span>
+</code></pre>
+<p>غير أن هذه الدالة لا تستخدم مباشرة عناصر القائمة <code>l</code> الممرَّرة بوصفها وسيطًا (كما يدلّ عليه تطابق الأنماط <code>_::r</code>). لذلك يمكن لهذه الدالة في الواقع أن تُطبق على أي قائمة، سواء كانت قائمة سلاسل نصية أم قائمة أعداد كسرية (floating-point numbers). مثلًا:</p>
+<pre><code class="language-ocaml">  # length [<span class="hljs-string">&quot;hello&quot;</span>; <span class="hljs-string">&quot;world&quot;</span>; <span class="hljs-string">&quot;!&quot;</span>] ;;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">3</span>
+  # length [ [<span class="hljs-number">3.4</span>; .<span class="hljs-number">2</span>]; <span class="hljs-literal">[]</span>; [<span class="hljs-number">1.2</span>]; [<span class="hljs-number">5.</span>]] ;;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">4</span>
+</code></pre>
+<p>لكي يكون ما سبق ممكنًا، يجب أن تقبل الدالة <code>length</code> وسائط من الأنواع <code>intlist</code> و<code>stringlist</code> وحتى <code>floatlistlist</code>. وهذه الدالة في الواقع قابلة للتطبيق على قوائم من <em>أي نوع</em>. وفي أوسمل، يُعطى لها النوع:</p>
+<p><code>’alist-&gt;int</code></p>
+<p>حيث يمثل <em>متغير النوع</em> (type variable) <code>’a</code> أي نوع. يُقال عن نوع مثل نوع <code>length</code>، الذي يحوي متغير نوع واحدًا على الأقل، إنه <em>متعدد الأشكال</em> (polymorphic).</p>
+<p>إضافةً إلى تمثيل أي نوع، تُفيد متغيرات الأنواع أيضًا في إقامة علاقات بين الأجزاء العامة لنوع متعدد الأشكال. مثلًا، في الدالة <code>f</code> المعرَّفة بـ<code>letfgx=(gx)+1</code>، يجب أن يكون نوعا الوسيطين <code>g</code> و<code>x</code> مرتبطين لأن الدالة <code>g</code> تُطبق على <code>x</code>. ومع ذلك، يبقى <code>x</code> (ومن ثم <code>g</code>) متعدد الأشكال، لعدم وجود قيد نوع آخر يتعلق بهذه القيمة في جسم <code>f</code>. وهكذا، في نوع <code>f</code>، أي <code>(’a-&gt;int)-&gt;’a-&gt;int</code>، يربط المتغير <code>’a</code> نوع وسيط <code>g</code> بنوع <code>x</code>، دون إضافة أي قيود إضافية. وبالمثل، تكون لدالة <code>iter</code> من المكتبة <code>List</code> نوع متعدد الأشكال:</p>
+<table>
+<thead>
+<tr>
+<th><code>iter</code></th>
+<th>:</th>
+<th><code>(’a -&gt; unit) -&gt; ’a list -&gt; unit</code></th>
+</tr>
+</thead>
+</table>
+<p>وهذا يربط نوع الدالة الممرَّرة بوصفها وسيطًا بنوع عناصر القائمة التي تجتازها الدالة.</p>
+<p>يمكن لنوع متعدد الأشكال أن يحوي عدة متغيرات أنواع، لتمثيل أنواع عامة غير مرتبطة. ولنتأمل مثلًا الدالة <code>make_pair</code> المعرَّفة بـ:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> make_pair x y = (x, y)
+</code></pre>
+<p>هنا، يمكن أن يكون الوسيطان <code>x</code> و<code>y</code> من أي نوع، ولا يلزم أن يكونا مرتبطين. ومن ثم يكون لهذه الدالة نوع متعدد الأشكال بمتغيرين، أي <code>’a-&gt;’b-&gt;’a*’b</code>.</p>
+<p>بالطريقة نفسها، تكون للدالتين <code>map</code> و<code>fold_right</code> من المكتبة <code>List</code> الأنواع متعددة الأشكال التالية:</p>
+<table>
+<thead>
+<tr>
+<th><code>map</code></th>
+<th>:</th>
+<th><code>(’a -&gt; ’b) -&gt; ’a list -&gt; ’b list</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fold_right</code></td>
+<td>:</td>
+<td><code>(’a -&gt; ’b -&gt; ’b) -&gt; ’a list -&gt; ’b -&gt; ’b</code></td>
+</tr>
+</tbody>
+</table>
+<p>هذه الأنواع هي الأكثر عموميةً على الإطلاق.</p>
+<h5>المُكرِّرات (iterators) على القوائم من اليمين إلى اليسار ومن اليسار إلى اليمين</h5>
+<p>يتيح لنا الجمع بين دوال الرتب الأعلى (higher-order functions) والأنواع متعددة الأشكال تعريف <em>مُكرِّرات</em> (iterators)، أي دوال تجتاز بنى بيانات عامة، مثل القوائم.</p>
+<p>مثلًا، يمكن تعريف المُكرِّر <code>fold_right</code> المستخدم في برنامج <code>radix.ml</code> على النحو التالي:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> fold_right f l e =
+      <span class="hljs-keyword">match</span> l <span class="hljs-keyword">with</span>
+      | <span class="hljs-literal">[]</span> -&gt; e
+      | x :: r -&gt; f x (fold_right f r e);;
+  <span class="hljs-keyword">val</span> fold_right : (’a -&gt; ’b -&gt; ’b) -&gt; ’a <span class="hljs-built_in">list</span> -&gt; ’b -&gt; ’b = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>كما رأينا في برنامج <code>radix.ml</code>، يتيح لنا استخدام مثل هذا المُكرِّر تجنّب كتابة الدوال العودية. لنفترض مثلًا أننا نريد ضرب جميع عناصر قائمة أعداد كسرية. يمكننا ببساطة كتابة دالة <code>mult</code> على النحو التالي:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> sum l = fold_right (<span class="hljs-keyword">fun</span> x y -&gt; x *. y) l <span class="hljs-number">1.</span> ;;
+  <span class="hljs-keyword">val</span> mult : <span class="hljs-built_in">float</span> <span class="hljs-built_in">list</span> -&gt; <span class="hljs-built_in">float</span> = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>سبب تسمية هذا المُكرِّر <code>fold_right</code> هو أنه يعالج عناصر القائمة من اليمين إلى اليسار. فالقائمة في الواقع تُجتاز من اليسار إلى اليمين، لكن الاستدعاء العودي يُنفَّذ <em>قبل</em> تطبيق الدالة الممرَّرة بوصفها وسيطًا. وهذا يعني أن بقية القائمة تُعالج قبل عنصرها الأول. ويمكننا التأكد من هذا السلوك بتطبيق <code>fold_right</code> على دالة تطبع وسيطها الأول:</p>
+<pre><code class="language-ocaml">  # fold_right (<span class="hljs-keyword">fun</span> x <span class="hljs-literal">()</span> -&gt; print_int x) [<span class="hljs-number">1</span>;<span class="hljs-number">2</span>;<span class="hljs-number">3</span>;<span class="hljs-number">4</span>] <span class="hljs-literal">()</span>;;
+  <span class="hljs-number">4321</span>- : <span class="hljs-built_in">unit</span> = <span class="hljs-literal">()</span>
+</code></pre>
+<p>من الطبيعي هنا أن ننظر إلى المُكرِّر الآخر، الذي يجتاز العناصر ويعالجها من اليسار إلى اليمين. يُسمى طبيعيًا <code>fold_left</code> ويُكتب على النحو التالي:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> fold_left f e = <span class="hljs-keyword">function</span>
+      | <span class="hljs-literal">[]</span> -&gt; e
+      | x :: r -&gt; fold_left f (f e x) r;;
+  <span class="hljs-keyword">val</span> fold_left : (’a -&gt; ’b -&gt; ’a) -&gt; ’a -&gt; ’b <span class="hljs-built_in">list</span> -&gt; ’a = &lt;<span class="hljs-keyword">fun</span>&gt;
+</code></pre>
+<p>من الواضح أن العناصر تُعالج فعلًا من اليسار إلى اليمين:</p>
+<pre><code class="language-ocaml">  # fold_left (<span class="hljs-keyword">fun</span> <span class="hljs-literal">()</span> x -&gt; print_int x) <span class="hljs-literal">()</span> [<span class="hljs-number">1</span>;<span class="hljs-number">2</span>;<span class="hljs-number">3</span>;<span class="hljs-number">4</span>];;
+  <span class="hljs-number">1234</span>- : <span class="hljs-built_in">unit</span> = <span class="hljs-literal">()</span>
+</code></pre>
+<p>يمكننا كتابة الدالة <code>mult</code> بـ<code>fold_left</code> كما فعلنا بـ<code>fold_right</code>:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> mult l = fold_left (<span class="hljs-keyword">fun</span> x y -&gt; x *. y) <span class="hljs-number">1.</span> l ;;
+  <span class="hljs-keyword">val</span> mult : <span class="hljs-built_in">float</span> <span class="hljs-built_in">list</span> -&gt; <span class="hljs-built_in">float</span>
+</code></pre>
+<p>غير أن هناك فرقًا طفيفًا. فعلى قائمة تحوي مئات الآلاف من العناصر، قد تُحدث الدالة <code>mult</code> المكتوبة بـ<code>fold_right</code> فيضًا في المكدس (stack overflow)، ينجم عنه إما استثناء <code>Stack_overflow</code> أو توقف البرنامج فجأة. وذلك لأن الاستدعاء العودي لـ<code>fold_right</code> ليس استدعاءً ذيليًا (tail call). (وبما أن الاستدعاء يجب أن يُنفَّذ قبل إجراء العملية، فمن الضروري حفظ قيمة العنصر الأول من القائمة.) وفي المقابل، في حالة <code>fold_left</code>، يكون الاستدعاء العودي استدعاءً ذيليًا. (لا حاجة إلى المكدس لأن القيمة <code>x</code> تُستخدم قبل الاستدعاء العودي لـ<code>fold_left</code>).</p>
+<p>من المهم ملاحظة أن مُكرِّرًا مثل <code>fold_left</code> أو <code>fold_right</code> يجتاز <em>جميع</em> عناصر القائمة الممرَّرة بوصفها وسيطًا. وإذا أردنا إيقاف الحساب عند عنصر محدد، فلدينا احتمالان على الأقل<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>: إما أن نكتب دالة عودية تجتاز القائمة وتتوقف متى شئنا، وإما أن نستخدم مُكرِّرًا ونُثير استثناءً (exception) لمقاطعة اجتياز القائمة. لنعد إلى مثال الدالة <code>mult</code>. قد نرغب في إيقاف الحساب عند مواجهة القيمة 0. ويمكن كتابة النسخة التي تستخدم الاستثناء على النحو التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> mult l =
+    <span class="hljs-keyword">try</span>
+      <span class="hljs-type">List</span>.fold_left
+        (<span class="hljs-keyword">fun</span> x y -&gt; <span class="hljs-keyword">if</span> y = <span class="hljs-number">0.</span> <span class="hljs-keyword">then</span> raise <span class="hljs-type">Exit</span> <span class="hljs-keyword">else</span> x *. y) <span class="hljs-number">1.</span> l
+    <span class="hljs-keyword">with</span> <span class="hljs-type">Exit</span> -&gt; <span class="hljs-number">0.</span>
+</code></pre>
+<p>غير أنه في هذه الحالة، فإن كتابة دالة عودية تنتهي عند مواجهتها 0 أبسط وأكثر أناقة.</p>
+<h3 id="210-بريك-أوت-دون-الطوب-breakout-without-bricks">2.10 بريك أوت دون الطوب (Breakout without Bricks)</h3>
+<blockquote></blockquote>
+<p>برنامجنا العاشر (انظر الصفحة <a href="#x7-64018r10">160</a>) نسخة مبسطة من لعبة بريك أوت (Breakout)، دون الطوب. تتمثل اللعبة في جعل كرة ترتد داخل إطار، بواسطة مجداف (paddle) يُتحكم فيه باستخدام الفأرة.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/first-steps-7-breakout.webp" alt="" id="breakout-without-bricks1"></p>
+<p><strong>الشكل 2.7: بريك أوت دون الطوب.</strong></p>
+<p>بيانيًا، تكون نافذة اللعبة كما في الشكل <a href="#breakout-without-bricks1">2.7</a>، ممثلة بإطار رمادي، مع دائرة سوداء تمثل الكرة، ومستطيل أسود في أسفل نافذة اللعبة يمثل المجداف.</p>
+<p>تتضمن برمجة مثل هذه اللعبة ثلاثة مكونات رئيسية. أولًا، يجب أن نعرّف <em>ثوابت</em> (constants) اللعبة، أي أبعاد النافذة (ارتفاعها وعرضها، بالبكسل)، وأبعاد الكرة (أي نصف قطر الدائرة)، والمجداف (ارتفاع المستطيل وعرضه). ثانيًا، يجب أن نحدد <em>حالة</em> (state) اللعبة، أي مجموعة القيم التي تميزها في أي لحظة. وهنا، هي إحداثيات مركز الكرة، وسرعتها، وموضع المجداف، الذي يمكن تحديده بإحداثيات زاويته السفلية اليسرى. وتبسيطًا للأمور، يمكننا استخدام نظام الإحداثيات نفسه الذي تستخدمه المكتبة <code>Graphics</code>؛ أي أن النقطة ذات الإحداثيات (0,0) تقع في أسفل يسار النافذة، وأن محوري x وy هما على التوالي الحافتان السفلية واليسرى للنافذة. وأخيرًا، تُلعب اللعبة باستخدام خوارزمية تنفذ الخطوات التالية:</p>
+<ol>
+<li>
+<p>تهيئة حالة اللعبة (موضع الكرة وسرعتها، وموضع المجداف).</p>
+</li>
+<li>
+<p>مسح النافذة البيانية.</p>
+</li>
+<li>
+<p>حساب موضع المجداف بوصفه دالةً في الإحداثي x للفأرة.</p>
+</li>
+<li>
+<p>عرض الكرة والمجداف.</p>
+</li>
+<li>
+<p>حساب الحالة الجديدة للعبة، أي:</p>
+<p>الموضع الجديد للكرة، بوصفه دالةً في موضعها الحالي ومتجه
+سرعتها؛</p>
+</li>
+<li>
+<p>متجه السرعة الجديد للكرة، بوصفه دالةً في ارتدادها عن
+جانبي النافذة وموضع المجداف.</p>
+</li>
+</ol>
+<p>والعودة إلى الخطوة 2.</p>
+<p>وكما ترى، فإن الأفعال المنفَّذة في هذه الخطوات من نوعين: أفعال بيانية صِرفة (الخطوات 2 و3 و4)، وأفعال تتعامل مع حالة اللعبة (الخطوات 1 و5 و6). نختار تقسيم شيفرة أوسمل إلى ملفين: <code>draw.ml</code> و<code>breakout.ml</code>. يحوي الأول جميع ثوابت اللعبة ودوالها البيانية؛ ويحافظ الثاني على الحالة الحالية وينفذ الخوارزمية. وبشكل عام، لتوضيح بنية البرامج الأكبر حجمًا، من الجيد تقسيمها إلى عدة ملفات تسمى وحدات الترجمة (compilation units).</p>
+<blockquote></blockquote>
+<p>لترجمة هذا البرنامج، المقسم إلى ملفين، نستخدم سطر الأوامر التالي:</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">  &gt;</span><span class="language-bash"> ocamlc -I ‘ocamlfind query graphics‘ -o breakout graphics.cma \\
+        draw.ml breakout.ml</span>
+</code></pre>
+<p>وكما سنرى قريبًا، فإن ترتيب أسماء الملفات على سطر الأوامر مهم.</p>
+<p>يبدأ الجزء البياني (الملف <code>draw.ml</code>، البرنامج <a href="#x7-64018r10">10</a>) بتعريف أبعاد نافذة اللعبة، مع الإعلان عن أربعة ثوابت: <code>left</code> و<code>right</code> و<code>down</code> و<code>up</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> left = <span class="hljs-number">0.</span>
+  <span class="hljs-keyword">let</span> right = <span class="hljs-number">300.</span>
+  <span class="hljs-keyword">let</span> down = <span class="hljs-number">0.</span>
+  <span class="hljs-keyword">let</span> up = <span class="hljs-number">200.</span>
+</code></pre>
+<p>هذه الثوابت قيم من النوع <code>float</code>، إذ سنستخدم لاحقًا أعدادًا كسرية في حسابات المسار لضمان درجة عالية من الدقة.</p>
+<p>تعرف الثوابت الثلاثة التالية على التوالي نصف قطر الكرة، وطول المجداف، وعرضه (بالبكسل).</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> ball = <span class="hljs-number">5</span>
+  <span class="hljs-keyword">let</span> paddle = <span class="hljs-number">50</span>
+  <span class="hljs-keyword">let</span> thick = <span class="hljs-number">8</span>
+</code></pre>
+<p>أخيرًا، نصرّح عن لون <code>gray</code>، يُحصَل عليه بتحديد قيم مكوناته الثلاثة — الأحمر والأخضر والأزرق — باستخدام الدالة <code>rgb</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> gray = rgb <span class="hljs-number">240</span> <span class="hljs-number">240</span> <span class="hljs-number">240</span>
+</code></pre>
+<p>تهيّئ الدالة <code>init</code> نافذة اللعبة بفتح لوحة بيانية (canvas) بأبعاد <code>right</code>×<code>up</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> init <span class="hljs-literal">()</span> =
+    <span class="hljs-keyword">let</span> s = <span class="hljs-type">Printf</span>.sprintf <span class="hljs-string">&quot; %dx%d&quot;</span> (truncate right) (truncate up) <span class="hljs-keyword">in</span>
+    open_graph s;
+    auto_synchronize <span class="hljs-literal">false</span>
+</code></pre>
+<p>وبما أن الثابتين <code>right</code> و<code>up</code> قيمتان من النوع <code>float</code>، نستخدم الدالة المعرَّفة مسبقًا <code>truncate</code> من المكتبة القياسية لاقتطاع قيمتيهما وتحويلهما إلى عددين صحيحين. والاستدعاء <code>auto_synchronizefalse</code> يفعّل وضع <em>التخزين المؤقت المزدوج</em> (double buffering) بالجهاز البياني. وعند تفعيل هذا الوضع، تُنفَّذ جميع عمليات العرض (رسم دائرة أو مستطيل، وما إلى ذلك) في منطقة ذاكرة تُسمى <em>مخزن الدعم</em> (backing store)، وليس مباشرة على الشاشة. ويجب بعد ذلك استخدام الدالة <code>synchronize</code> صراحةً لنسخ محتويات مخزن الدعم إلى الشاشة. وبما أن هذا النسخ لحظي، فإنه يزيل أي تأثيرات «وميض» أثناء الحركة.</p>
+<p>نكتب الآن دالة لكل خطوة بيانية من خوارزمية اللعبة. تنفَّذ الخطوة 2 بدالة <code>clear</code> تمسح اللوحة برسم مستطيل رمادي بأبعاد النافذة البيانية نفسها.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> clear <span class="hljs-literal">()</span> =
+    set_color gray;
+    fill_rect <span class="hljs-number">0</span> <span class="hljs-number">0</span> (truncate right) (truncate up)
+</code></pre>
+<p>تنفَّذ الخطوة 3 من الخوارزمية بدالة <code>get_paddle_pos</code>. تبدأ باسترجاع الإحداثي <code>x</code> للموضع الحالي للفأرة (بالدالة <code>mouse_pos</code>). ولضمان عدم خروج المجداف خارج نافذة اللعبة من الجهة اليمنى، نأخذ الحد الأدنى بين القيمة المحصَّلة و<code>truncateright-paddle</code>.</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">let</span> get_paddle_pos <span class="hljs-literal">()</span> =
+  <span class="hljs-keyword">let</span> x = fst (mouse_pos <span class="hljs-literal">()</span>) <span class="hljs-keyword">in</span>
+  max <span class="hljs-number">0</span> (min x (truncate right - paddle))
+</code></pre>
+<p>تأخذ الدالة البيانية الرئيسية، <code>game</code>، الإحداثيين <code>x</code> و<code>y</code> للكرة بوصفهما وسيطين، وتنفذ الخطوات 2 و3 و4 من الخوارزمية.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> game x y =
+    clear <span class="hljs-literal">()</span>;
+    set_color black;
+    fill_circle (truncate x) (truncate y) ball;
+    <span class="hljs-keyword">let</span> x = get_paddle_pos <span class="hljs-literal">()</span> <span class="hljs-keyword">in</span>
+    fill_rect x <span class="hljs-number">0</span> paddle thick;
+    synchronize <span class="hljs-literal">()</span>;
+    x
+</code></pre>
+<p>ينفذ الملف الثاني، <code>breakout.ml</code> (انظر الصفحة <a href="#x7-64103r11">166</a>)، الخطوات 1 و5 و6 من الخوارزمية. تُرمَّز حالة اللعبة بزوجين من الأعداد الكسرية: <code>(x,y)</code> و<code>(vx,vy)</code>، يمثلان على التوالي إحداثيات الكرة وسرعتها.</p>
+<p>تحسب الدالة الأولى في هذا الملف، <code>bounce</code>، السرعة الجديدة للكرة، مراعيةً أن الكرة قد ترتد عن جانبي النافذة أو عن المجداف. لذلك تأخذ الدالة <code>bounce</code> أيضًا موضع المجداف <code>xp</code> بوصفه وسيطًا.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> bounce (x, y) (vx, vy) xp =
+    ...
+</code></pre>
+<p>لحساب المركبة الجديدة <code>vx</code>، يجب مقارنة الإحداثي <code>x</code> للكرة بالحافتين اليسرى واليمنى لنافذة اللعبة. وبما أن الثابتين <code>left</code> و<code>right</code> قد عُرِّفا في الملف <code>draw.ml</code>، فيجب استخدام تدوين النقطة <code>Draw.left</code> و<code>Draw.right</code> للإشارة إليهما. فكل وحدة ترجمة تعرّف فعلًا وحدة نمطية (module) تحمل اسم الملف نفسه، لكن بحرف أول كبير.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> vx =
+      <span class="hljs-keyword">if</span> x &lt;= <span class="hljs-type">Draw</span>.left || x &gt;= <span class="hljs-type">Draw</span>.right <span class="hljs-keyword">then</span> -. vx <span class="hljs-keyword">else</span> vx <span class="hljs-keyword">in</span>
+</code></pre>
+<p>وبالطريقة نفسها، لحساب المركبة الجديدة <code>vy</code>، يجب مقارنة الإحداثي <code>y</code> للكرة بأعلى النافذة <code>Draw.up</code>. ويتغير اتجاه سرعة الكرة أيضًا إذا اصطدمت الكرة بالمجداف، أي إذا كان الإحداثي <code>x</code> واقعًا بين <code>xp</code> و<code>xp+.floatDraw.paddle</code>، وكان الإحداثي <code>y</code> أقل من سماكة المجداف <code>Draw.thick</code>.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> vy =
+      <span class="hljs-keyword">if</span> y &lt;= <span class="hljs-built_in">float</span> <span class="hljs-type">Draw</span>.thick &amp;&amp; x &gt;= xp &amp;&amp;
+         x &lt;= xp +. <span class="hljs-built_in">float</span> <span class="hljs-type">Draw</span>.paddle || y &gt;= <span class="hljs-type">Draw</span>.up
+      <span class="hljs-keyword">then</span> -. vy <span class="hljs-keyword">else</span> vy
+    <span class="hljs-keyword">in</span>
+    (vx, vy)
+</code></pre>
+<p>تعيد الدالة التالية الموضع الجديد للكرة بجمع الإحداثيين <code>x</code> و<code>y</code>، على التوالي، إلى إحداثيي السرعة <code>vx</code> و<code>vy</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> new_position (x, y) (vx, vy) = x +. vx, y +. vy
+</code></pre>
+<blockquote></blockquote>
+<p>تنفذ الدالة <code>play</code> الحلقة بين الخطوتين 2 و6. انطلاقًا من الحالة الحالية للعبة، الممرَّرة بوصفها وسيطًا، نبدأ بالتحقق من أن الكرة لا تتجاوز أسفل نافذة اللعبة، بمقارنة الإحداثي <code>y</code> بالثابت <code>Draw.down</code>. وإذا تجاوزته الكرة، تنتهي اللعبة باستدعاء الدالة <code>failwith</code> من المكتبة القياسية:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> play (x, y) (vx, vy) =
+    <span class="hljs-keyword">if</span> y &lt;= <span class="hljs-type">Draw</span>.down <span class="hljs-keyword">then</span> failwith <span class="hljs-string">&quot;game over&quot;</span>;
+</code></pre>
+<p>إذا لم تكن اللعبة قد انتهت، نعرض الكرة والمجداف باستخدام الدالة <code>Draw.game</code>، التي تعيد الإحداثي <code>x</code> للمجداف.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> xp = <span class="hljs-type">Draw</span>.game x y <span class="hljs-keyword">in</span>
+</code></pre>
+<p>بعد ذلك، نحسب إحداثيات متجه السرعة الجديدة، ثم إحداثيات الكرة.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> vx, vy = bounce (x, y) (vx, vy) (<span class="hljs-built_in">float</span> xp) <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> x’, y’ = new_position (x, y) (vx, vy) <span class="hljs-keyword">in</span>
+</code></pre>
+<p>نعود إلى الخطوة 2 باستدعاء عودي للدالة <code>play</code> بالحالة الجديدة للعبة بوصفها وسيطًا.</p>
+<pre><code class="language-ocaml">    play (x’, y’) (vx, vy)
+</code></pre>
+<p>يفتح الجزء الرئيسي من البرنامج نافذة اللعبة باستدعاء <code>Draw.init</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> =
+    <span class="hljs-type">Draw</span>.init<span class="hljs-literal">()</span>;
+</code></pre>
+<p>ثم ينشئ متجه سرعة عشوائيًا <code>(vx,vy)</code>:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> speed = <span class="hljs-number">0.1</span> <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> vx = speed *. <span class="hljs-type">Random</span>.<span class="hljs-built_in">float</span> <span class="hljs-number">1.</span> <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> vy = speed *. <span class="hljs-type">Random</span>.<span class="hljs-built_in">float</span> <span class="hljs-number">1.</span> <span class="hljs-keyword">in</span>
+</code></pre>
+<p>أخيرًا، تبدأ اللعبة باستدعاء الدالة <code>play</code>، واضعةً الكرة فوق المجداف وفي مركز النافذة:</p>
+<pre><code class="language-ocaml">    play (<span class="hljs-type">Draw</span>.right /. <span class="hljs-number">2.</span>, <span class="hljs-built_in">float</span> <span class="hljs-type">Draw</span>.thick) (vx, vy)
+</code></pre>
+<h4>معلومات إضافية</h4>
+<h5>الترجمة المنفصلة والربط (separate compilation and linking)</h5>
+<p>يمكن تفكيك سطر الأوامر المعطى أعلاه لترجمة بريك أوت إلى عدة أوامر. يمكننا البدء بترجمة الملف <code>draw.ml</code> وحده، بالأمر:</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">  &gt;</span><span class="language-bash"> ocamlc -I ‘ocamlfind query graphics‘ -c draw.ml</span>
+</code></pre>
+<p>يحدد خيار المترجم <code>-c</code> أننا لا نرغب في إنشاء ملف تنفيذي، بل في ترجمة الشيفرة فقط. تتكون النتيجة من ملفين: <code>draw.cmi</code> و<code>draw.cmo</code>. يحوي الأول معلومات الأنواع (typing)، ويحوي الثاني الشيفرة. وهذه الشيفرة ليست مكتفية بذاتها؛ فهي على وجه الخصوص تشير إلى دوال من الوحدة النمطية <code>Graphics</code> غير مضمَّنة في هذا الملف.</p>
+<p>يمكننا بعد ذلك ترجمة الملف الثاني بأمر مماثل.</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">  &gt;</span><span class="language-bash"> ocamlc -c breakout.ml</span>
+</code></pre>
+<p>وبما أن هذا الملف يشير إلى الوحدة النمطية <code>Draw</code>، فقد كان علينا ترجمة الملف <code>draw.ml</code> أولًا. والمعلومات اللازمة لفحص الأنواع (type-checking) للملف <code>breakout.ml</code> موجودة في الملف <code>draw.cmi</code>. وهنا أيضًا، الشيفرة المحصَّلة ليست مكتفية بذاتها؛ فالملف <code>breakout.cmo</code> يشير إلى قيم ودوال من الوحدة النمطية <code>Draw</code> موجودة في <code>draw.cmo</code>.</p>
+<p>للحصول على ملف تنفيذي، يجب إجراء عملية <em>ربط</em> (linking)، تتكون من ضم عدة قطع من الشيفرات مع التحقق من إمكانية حل كل إشارة. وهنا، القطع الثلاث المعنية هي قطع مكتبة أوسمل <code>graphics.cma</code> (التي تجمع مجموعة ملفات <code>cmo</code> معًا) والملفان <code>draw.cmo</code> و<code>breakout.cmo</code>.</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">  &gt;</span><span class="language-bash"> ocamlc -I ‘ocamlfind query graphics‘ -o breakout graphics.cma \\
+        draw.cmo breakout.cmo</span>
+</code></pre>
+<p>وكما أوضحنا أعلاه، فإن ترتيب أسماء الملفات على سطر الأوامر هذا مهم. وعلى وجه الخصوص، يجب أن يكون متوافقًا مع التبعيات بين وحدات الترجمة. هنا، <code>breakout.cmo</code> <em>يعتمد</em> على <code>draw.cmo</code>، الذي يعتمد هو نفسه على <code>graphics.cma</code>. وفضلاً عن ذلك، يجب إدراك أن برنامج أوسمل لا يملك نقطة دخول محددة. فالشيفرة المحصَّلة بعد الربط تنفذ ببساطة شيفرات الملفات المختلفة الممرَّرة على سطر الأوامر، بالترتيب الذي تظهر به.</p>
+<h5>الواجهات (interfaces)</h5>
+<p>يحوي الملف <code>draw.cmi</code> الناتج عن الترجمة معلومات الأنواع لجميع القيم المعرَّفة في الملف <code>draw.ml</code>. ويمكن الحصول على المعلومات نفسها باستخدام خيار المترجم <code>-i</code>.</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">  &gt;</span><span class="language-bash"> ocamlc -I ‘ocamlfind query graphics‘ -i draw.ml</span>
+  val left : float
+  val right : float
+  ...
+  val game : float -&gt; float -&gt; int
+</code></pre>
+<p>غير أننا قد نرغب في جعل بعض هذه القيم غير قابلة للوصول من بقية البرنامج. مثلًا، قد نرغب في إخفاء الدالة <code>clear</code>. ولتحقيق ذلك، يمكننا تعريف <em>واجهة</em> (interface) للملف <code>draw.ml</code>، في شكل ملف <code>draw.mli</code>.</p>
+<blockquote></blockquote>
+<p>يُعطى مثل هذا الملف في البرنامج <a href="#x7-67002r12">12</a>. نكتبه باستخدام الصياغة نفسها التي يستخدمها خيار المترجم <code>-i</code>. ونترجم <code>draw.mli</code> قبل ترجمة <code>draw.ml</code>.</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">  &gt;</span><span class="language-bash"> ocamlc -c draw.mli</span>
+<span class="hljs-meta prompt_">  &gt;</span><span class="language-bash"> ocamlc -I ‘ocamlfind query graphics‘ -c draw.ml</span>
+</code></pre>
+<p>يُنتج الأمر الأول الملف <code>draw.cmi</code>. ويُنتج الثاني <code>draw.cmo</code> ويتحقق من توافقه مع <code>draw.cmi</code>، أي أنه يعرّف قيمًا لها الأسماء والأنواع المحددة في الملف <code>draw.cmi</code>. وعند وجود ملف <code>draw.mli</code>، يرفض المترجم ترجمة <code>draw.ml</code> حتى يُترجم <code>draw.mli</code>. وإذا حاولنا بعد ذلك استخدام قيمة في <code>breakout.ml</code> غير مذكورة في <code>draw.mli</code>، مثل <code>clear</code>، يُثار خطأ.</p>
+<pre><code class="language-console"><span class="hljs-meta prompt_">  &gt;</span><span class="language-bash"> ocamlc -c breakout.ml</span>
+  Error: Unbound value Draw.clear
+</code></pre>
+<p>ليست الواجهات مجرد وسيلة لتحديد رؤية القيم المعرَّفة في وحدة ترجمة. فهي تمكّن أيضًا من <em>الترجمة المنفصلة</em> (separate compilation). وهذا يعني أن شيفرة كل وحدة ترجمة يمكن ترجمتها بصورة مستقلة عن شيفرات الوحدات الأخرى، لأنها تعتمد على واجهاتها فقط. وبمجرد ترجمة <code>draw.mli</code>، يمكننا ترجمة <code>draw.ml</code> أو <code>breakout.ml</code> بأي ترتيب. وبوجه خاص، يتيح هذا تقسيم العمل بين عدة مطورين بمجرد وضع الواجهات. وعلاوةً على ذلك، تساعد الترجمة المنفصلة في تجنب إعادة الترجمة غير الضرورية للشيفرة. مثلًا، تغيير شيفرة الدالة <code>Draw.clear</code> يستدعي فقط إعادة ترجمة <code>draw.ml</code>، ثم إعادة عملية الربط. ولا حاجة إلى إعادة ترجمة أي وحدة أخرى تستخدم <code>Draw</code> (مثل <code>breakout.ml</code>).</p>
+<h5>الترجمة المنفصلة باستخدام dune</h5>
+<p>لترجمة برنامجنا باستخدام <code>dune</code>، نكتب ملف الإعداد التالي:</p>
+<pre><code class="language-text">  (executable
+   (name breakout)
+   (modules draw breakout)
+   (libraries graphics))
+</code></pre>
+<p>يسرد السطر <code>(modules draw breakout)</code> الوحدات النمطية اللازمة لترجمة البرنامج. وسيترجم أداة <code>dune</code> الوحدتين النمطيتين <code>Draw</code> و<code>Breakout</code> تباعًا، كما فعلنا يدويًا أعلاه. وعلى وجه الخصوص، إذا وُجد ملف <code>.mli</code>، فإنه يُترجم قبل ملف <code>.ml</code> الموافق له. وعلاوةً على ذلك، يشير السطر <code>(libraries graphics)</code> إلى أن الملفات يجب أن تُترجم باستخدام المكتبة <code>Graphics</code>.</p>
+<h5>الوحدات النمطية (modules)</h5>
+<p>استخدمنا حتى الآن وحدات نمطية شتى، بما فيها وحدات المكتبة القياسية، مثل <code>Array</code> و<code>List</code>، والوحدتين النمطيتين <code>Draw</code> و<code>Breakout</code> من المثال السابق. وقد كانت هذه الوحدات النمطية تطابق دائمًا وحدات ترجمة، أي أزواج ملفات <code>.ml</code> و<code>.mli</code>. غير أن مفهومي الوحدة النمطية والواجهة أدقّ من مفهوم الملف؛ فهما يقابلان منشآت (constructs) من اللغة. وهكذا، يمكننا تعريف واجهة <code>I</code> تحوي ثابتًا <code>a</code> ودالة <code>f</code> بالصياغة التالية:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">I</span> = <span class="hljs-keyword">sig</span>
+    <span class="hljs-keyword">val</span> a: <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">val</span> f: <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>يمكننا بعد ذلك تعريف وحدة نمطية <code>M</code> بهذه الواجهة، بالصياغة التالية:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-type">M</span> : <span class="hljs-type">I</span> = <span class="hljs-keyword">struct</span>
+    <span class="hljs-keyword">let</span> a = <span class="hljs-number">42</span>
+    <span class="hljs-keyword">let</span> b = <span class="hljs-number">3</span>
+    <span class="hljs-keyword">let</span> f x = a * x + b
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>ينفذ المترجم بعد ذلك العمليات نفسها كما لو كتبنا الواجهة <code>I</code> في ملف <code>m.mli</code> والوحدة النمطية <code>M</code> في ملف <code>m.ml</code>. وعلى وجه الخصوص، نصل إلى الثابت <code>a</code> بتدوين <code>M.a</code>، بينما لا يمكن الوصول إلى الثابت <code>b</code> خارج الوحدة النمطية <code>M</code>.</p>
+<h3 id="211-السلحفاة-لوجو-logo-turtle">2.11 السلحفاة لوجو (Logo Turtle)</h3>
+<blockquote></blockquote>
+<p>برنامجنا التالي، <code>turtle.ml</code>، نسخة مبسطة من سلحفاة لوجو (Logo turtle). فعلى الرغم من أن
+لغة البرمجة لوجو قد خرجت من الاستخدام اليوم، فإنها تبقى من الناحية المفاهيمية مثيرة للاهتمام كما كانت دائمًا. وأبرز ما تتميز به سلحفاة يمكن تحريكها بتعليمات على غرار «تقدَّم 3 وحدات» أو «انعطف يمينًا 30 درجة»، ثم يُعرَض مسارها على الشاشة.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/first-steps-8-turtle_squares-mps-.webp" alt="" id="example-of-a-drawing-using-the-logo-turtle"></p>
+<p><strong>الشكل 2.8: مثال على رسم باستخدام سلحفاة لوجو.</strong></p>
+<p>يمكننا بالتالي تتبّع مربع بسهولة، عبر تكرار التسلسل «تقدَّم، ثم انعطف يسارًا 90 درجة»، أو حتى رسم الشكل <a href="#example-of-a-drawing-using-the-logo-turtle">2.8</a> بتكرار التسلسل «ارسم مربعًا، ثم انعطف بمقدار 20 درجة» عدة مرات.</p>
+<p>هدفنا هنا هو تنفيذ بعض العمليات الأساسية للسلحفاة، مثل التقدُّم إلى الأمام، والانعطاف، ورفع القلم.</p>
+<p>يتبادر إلى الذهن سؤال طبيعي عند كتابة شيفرة السلحفاة: كيف نمثّل الزاوية التي تحدّد اتجاه السلحفاة؟</p>
+<p>يمكننا اختيار تمثيل الزاوية بالدرجات أو بالتقديرات الدائرية (radians)، كعدد صحيح أو كعدد كسري، وهكذا. وهنا، قررنا عدم الاختيار بين هذه الاحتمالات، وبدلًا من ذلك، نُبارمِد (parametrize) الشيفرة بوحدة <code>A</code> توفّر نوع الزوايا.</p>
+<p>نبدأ وفقًا لذلك بإنشاء بصمة (signature) لمثل هذه الوحدة، وهي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">ANGLE</span> = <span class="hljs-keyword">sig</span>
+    <span class="hljs-keyword">type</span> t
+    <span class="hljs-keyword">val</span> of_degrees: <span class="hljs-built_in">float</span> -&gt; t
+    <span class="hljs-keyword">val</span> add: t -&gt; t -&gt; t
+    <span class="hljs-keyword">val</span> cos: t -&gt; <span class="hljs-built_in">float</span>
+    <span class="hljs-keyword">val</span> sin: t -&gt; <span class="hljs-built_in">float</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>النوع <code>t</code> هو نوع الزوايا. ليس له تعريف؛ نقول عنه إنه <em>نوع مجرَّد</em> (abstract type). غير أننا نستطيع مع ذلك استخدامه في تنفيذ سلحفاتنا، لأننا مُنِحنا ما يلي: دالة <code>of_degrees</code>، لتحويل زاوية معبَّر عنها بالدرجات إلى قيمة من النوع <code>t</code>؛ ودالة <code>add</code>، لجمع زاويتين؛ وأخيرًا الدالتان <code>sin</code> و<code>cos</code>، لحساب جيب تمام الزاوية وجيبها.</p>
+<p>يمكننا بالتالي كتابة سلحفاة لوجو على هيئة وحدة <code>Turtle</code>، مبارَمة بوحدة <code>A</code> ذات البصمة <code>ANGLE</code>. وتُسمّى مثل هذه الوحدة <em>مُبَرْمِجًا</em> (functor)، وتُعرَّف على النحو التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-type">Turtle</span>(<span class="hljs-type">A</span>: <span class="hljs-type">ANGLE</span>) = <span class="hljs-keyword">struct</span>
+</code></pre>
+<p>داخل الوحدة <code>Turtle</code>، تكون الوحدة <code>A</code> ذات البصمة <code>ANGLE</code> مرئية ويمكن استخدامها مثل أي وحدة أخرى. فمثلًا، يمكننا إدخال مرجع (reference) باسم <code>angle</code> يحتوي على الاتجاه الحالي للسلحفاة، باستخدام:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> angle = <span class="hljs-built_in">ref</span> (<span class="hljs-type">A</span>.of_degrees <span class="hljs-number">0.</span>)
+</code></pre>
+<p>يمكننا أيضًا كتابة دالة <code>rotate_left</code> لجعل السلحفاة تنعطف <code>d</code> درجة إلى اليسار:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> rotate_left d = angle := <span class="hljs-type">A</span>.add !angle (<span class="hljs-type">A</span>.of_degrees d)
+</code></pre>
+<p>تُعطى الشيفرة الكاملة للسلحفاة المبارَمة في البرنامج <a href="#x7-70023r13">13</a> (انظر أدناه). وهناك نجد المرجعين <code>tx</code> و<code>ty</code> اللذين يتابعان الموضع الحالي للسلحفاة، ودالة <code>advance</code> لجعلها تتقدّم إلى الأمام. ويشير المرجع المنطقي (boolean) <code>draw</code> إلى ما إذا كان قلم السلحفاة مرفوعًا أم منخفضًا، ويُعدَّل بالدالتين <code>pen_up</code> و<code>pen_down</code>.</p>
+<blockquote></blockquote>
+<p>لاستخدام المُبَرْمِج <code>Turtle</code>، يجب أن نبدأ بتوفير وحدة محدَّدة ذات الواجهة <code>ANGLE</code>. فإذا اخترنا تمثيل الزوايات بالتقديرات الدائرية (radians) وبأعداد كسرية، فيمكن تعريف وحدة <code>Angle</code> على النحو التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-type">Angle</span>: <span class="hljs-type">ANGLE</span> = <span class="hljs-keyword">struct</span>
+    <span class="hljs-keyword">type</span> t = <span class="hljs-built_in">float</span>
+    <span class="hljs-keyword">let</span> add = (+.)
+    <span class="hljs-keyword">let</span> pi_over_180 = atan <span class="hljs-number">1.</span> /. <span class="hljs-number">45.</span>
+    <span class="hljs-keyword">let</span> of_degrees d = d *. pi_over_180
+    <span class="hljs-keyword">let</span> cos = <span class="hljs-type">Stdlib</span>.cos
+    <span class="hljs-keyword">let</span> sin = <span class="hljs-type">Stdlib</span>.sin
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>نحصل بعد ذلك على وحدة <code>T</code> بتطبيق المُبَرْمِج <code>Turtle</code> على الوحدة <code>Angle</code>، وهو ما يُكتب على النحو التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-type">T</span> = <span class="hljs-type">Turtle</span>(<span class="hljs-type">Angle</span>)
+</code></pre>
+<p>أخيرًا، يمكننا استخدام الوحدة <code>T</code> لتتبُّع الشكل <a href="#example-of-a-drawing-using-the-logo-turtle">2.8</a> بكتابة ما يلي مثلًا:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> square d =
+    <span class="hljs-keyword">for</span> k = <span class="hljs-number">1</span> <span class="hljs-keyword">to</span> <span class="hljs-number">4</span> <span class="hljs-keyword">do</span> <span class="hljs-type">T</span>.advance d; <span class="hljs-type">T</span>.rotate_left <span class="hljs-number">90.</span> <span class="hljs-keyword">done</span>
+  <span class="hljs-keyword">let</span> squares d a =
+    <span class="hljs-keyword">for</span> k = <span class="hljs-number">1</span> <span class="hljs-keyword">to</span> truncate (<span class="hljs-number">360.</span> /. a) <span class="hljs-keyword">do</span>
+      square d; <span class="hljs-type">T</span>.rotate_left a
+    <span class="hljs-keyword">done</span>
+  <span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> = squares <span class="hljs-number">100.</span> <span class="hljs-number">20.</span>
+</code></pre>
+<p>هنا، ترسم الدالة <code>squared</code> مربعًا طول ضلعه <code>d</code>، وترسم الدالة <code>squaresda</code> مجموعة من المربعات طول ضلع كل منها <code>d</code>، مع دوران بمقدار <code>a</code> درجة بين أي مربعين متتاليين.</p>
+<p>يكمن سبب كتابة الوحدة <code>Turtle</code> على هيئة مُبَرْمِج، مبارَمة بتمثيل الزوايا، في أنه يمكننا بعد ذلك تطبيقها على وحدات أخرى ذات البصمة <code>ANGLE</code>، والحصول بالتالي على سلاحف أخرى تُتمثَّل فيها الزوايا بشكل مختلف.</p>
+<h4>معلومات إضافية</h4>
+<h5>الأنواع المجرَّدة (Abstract Types)</h5>
+<p>في المثال أعلاه، نوع الزوايا <code>A.t</code> نوع مجرَّد، لأننا لا نعرف بعد كيف سيُنفَّذ. ويمكننا أيضًا استخدام مفهوم الأنواع المجرَّدة لـ<em>إخفاء</em> تنفيذ ملموس، حتى عندما يكون معروفًا سلفًا. وهذا ما نسميه <em>الإخفاء</em> (encapsulation). فلنفترض مثلًا أننا نرغب في تعريف وحدة للتلاعب بأعداد صحيحة بين 0 و30، والتأكد من أن جميع الأعداد الصحيحة التي نستخدمها تقع ضمن هذا المجال. نبدأ بتعريف بصمة <code>INT31</code> لهذه الوحدة:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">INT31</span> = <span class="hljs-keyword">sig</span>
+    <span class="hljs-keyword">type</span> t
+    <span class="hljs-keyword">val</span> create : <span class="hljs-built_in">int</span> -&gt; t
+    <span class="hljs-keyword">val</span> <span class="hljs-keyword">value</span> : t -&gt; <span class="hljs-built_in">int</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>تصرّح هذه البصمة بنوع مجرَّد <code>t</code>، وبدالتين <code>create</code> و<code>value</code>. ونلاحظ أنه بحكم الطبيعة المجرَّدة للنوع <code>t</code>، لا يمكن بناء قيمة من هذا النوع إلا باستخدام الدالة <code>create</code>. بعد ذلك، يمكننا بناء وحدة <code>Int31</code> بهذه البصمة.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-type">Int31</span> : <span class="hljs-type">INT31</span> = <span class="hljs-keyword">struct</span>
+    <span class="hljs-keyword">type</span> t = <span class="hljs-built_in">int</span>
+    <span class="hljs-keyword">let</span> check x = <span class="hljs-keyword">if</span> x &lt; <span class="hljs-number">0</span> || x &gt; <span class="hljs-number">30</span> <span class="hljs-keyword">then</span> invalid_arg <span class="hljs-string">&quot;Int31.create&quot;</span>
+    <span class="hljs-keyword">let</span> create x = check x; x
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">value</span> x = x
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>داخل هذه الوحدة، نُعطي النوع <code>t</code> تعريفًا، وهو <code>int</code>. أما خارج الوحدة <code>Int31</code>، فيبقى النوع <code>t</code> مجرَّدًا، أي إننا لا نعلم أن قيم النوع <code>Int31.t</code> أعداد صحيحة. واستطاعتنا بذلك فرض الثابتة التي تقضي بأن أي قيمة من النوع <code>Int31.t</code> تقع بين 0 و30. فما كان بوسعنا فعل ذلك لو كتبنا <code>typet=int</code> في الواجهة <code>INT31</code>.</p>
+<p>يتجلى الطابع المجرَّد للنوع <code>t</code> في الطريقة التي تُعرَض بها القيم في مُفسِّر أوسمل:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> x = <span class="hljs-type">Int31</span>.create <span class="hljs-number">7</span>;;
+  x : <span class="hljs-type">Int31</span>.t = &lt;abstr&gt;
+</code></pre>
+<p>هنا، القيمة المعروضة لـ<code>x</code> هي \`\`، وهي تُشير إلى قيمة ذات نوع مجرَّد. وبالتالي، لا يمكن استخدام <code>x</code> كعدد صحيح:</p>
+<pre><code class="language-ocaml">  # x + <span class="hljs-number">10</span>;;
+  <span class="hljs-type">Error</span>: <span class="hljs-type">This</span> expression has <span class="hljs-keyword">type</span> <span class="hljs-type">Int31</span>.t
+         but an expression was expected <span class="hljs-keyword">of</span> <span class="hljs-keyword">type</span> <span class="hljs-built_in">int</span>
+</code></pre>
+<p>وبالتالي، يميّز نظام الأنواع بين النوعين <code>Int31.t</code> و<code>int</code>. ومع ذلك، فإن قيمة <code>x</code> (أي العدد الصحيح 7) هي ذاتها تمامًا كما لو كان <code>x</code> من النوع <code>int</code>. فاستخدام نوع مجرَّد لا يُحدث أي كلفة إضافية في زمن التشغيل. وإذا أردنا إضافة قيمة <code>x</code> إلى 10، فلا بدّ من تطبيق الدالة <code>Int31.value</code> على <code>x</code> لاستعادة قيمة من النوع <code>int</code>.</p>
+<pre><code class="language-ocaml">  # <span class="hljs-type">Int31</span>.<span class="hljs-keyword">value</span> x + <span class="hljs-number">10</span>;;
+  - : <span class="hljs-built_in">int</span> = <span class="hljs-number">17</span>
+</code></pre>
+<h5>الأنواع الخاصة (Private Types)</h5>
+<p>كما رأينا مع النوع <code>Int31.t</code>، يمكن استخدام نوع مجرَّد لفرض ثابتة (invariant). فلننظر في مثال الوحدة <code>Polar</code>، المستخدمة لتمثيل الأعداد المركَّبة (complex numbers) بالإحداثيات القطبية، بالنوع:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> t = { rho : <span class="hljs-built_in">float</span>; theta : <span class="hljs-built_in">float</span>; }
+</code></pre>
+<p>إذا أردنا فرض الثابتة 0 ≤rho على هذا النوع، أو ضمان أن 0 ≤theta &lt; 2π، فأحد الحلول هو تعريف نوع مجرَّد. غير أننا في هذه الحالة لم نعد قادرين على الوصول إلى الحقلين <code>rho</code> و<code>theta</code> من خارج الوحدة <code>Polar</code>، وكان لا بدّ بالتالي من توفير دالتي وصول (accessor):</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">val</span> rho : t -&gt; <span class="hljs-built_in">float</span>
+  <span class="hljs-keyword">val</span> theta : t -&gt; <span class="hljs-built_in">float</span>
+</code></pre>
+<p>أما الحل الأنقت فيتمثل في جعل النوع <code>t</code> <em>نوعًا خاصًّا</em> (private type). ونمنح الوحدة بصمة يكون فيها تعريف النوع <code>t</code> مؤهَّلًا بـ<code>private</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> t = <span class="hljs-keyword">private</span> { rho : <span class="hljs-built_in">float</span>; theta : <span class="hljs-built_in">float</span>; }
+</code></pre>
+<p>يظل تعريف النوع <code>t</code> داخل الوحدة على ما هو عليه. ويترتب على الطابع الخاص للنوع <code>t</code> أنه لم يعد ممكنًا بناء سجل من النوع <code>Polar.t</code> خارج الوحدة. وبالتالي، إذا كتبنا التعبير <code>{ Polar.rho = 1.; Polar.theta = 0. }</code>، فسيُثار الخطأ التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-type">Error</span>: <span class="hljs-type">Cannot</span> create values <span class="hljs-keyword">of</span> the <span class="hljs-keyword">private</span> <span class="hljs-keyword">type</span> <span class="hljs-type">Polar</span>.t
+</code></pre>
+<p>ومع ذلك، يظل ممكنًا بناء قيم من هذا النوع داخل الوحدة <code>Polar</code>. ويمكننا بالتالي توفير دالة — أو عدة دوال — لبناء قيم من النوع <code>t</code>، مثلًا:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">val</span> create : <span class="hljs-built_in">float</span> -&gt; <span class="hljs-built_in">float</span> -&gt; t
+</code></pre>
+<p>يمكننا تنفيذ هذه الدالة داخل الوحدة بطريقة تفرض الثابتة: فإما أن نختار الفشل إذا كانت قيمتا <code>rho</code> و<code>theta</code> لا تحققان الثابتة، وإما أن نُسوِّي القيم بحيث تحققانها. والأنواع الخاصة مفيدة لأن تعريفها غير مخفي، مما يجعل بنية قيمها قابلة للوصول، لكن بناء هذه القيم يظل ممنوعًا. وفي مثالنا، يمكننا الوصول إلى الحقلين <code>rho</code> و<code>theta</code> بالترميز المعتاد في تعبير أو في مطابقة أنماط. وبالإضافة إلى ذلك، لا يمكن تعديل حقل <code>mutable</code> في سجل خاص. ولا يقتصر مفهوم الخصوصية على أنواع السجلات.</p>
+<h5>المُكرِّرات (Iterators) والأنواع المجرَّدة</h5>
+<p>تتيح المُكرِّرات اجتياز بنية بيانات (انظر القسم <a href="#x7-63000doc"><em>2.9</em></a> <em>تحويل الأعداد الصحيحة من أساس تعسّفي (arbitrary base)</em>). في حالة الأنواع الملموسة، مثل القوائم، يمكننا دائمًا اختيار تعريف دالة عودية مباشرة. أما في حالة الأنواع <em>المجرَّدة</em>، فإن ذلك لم يعد ممكنًا. ولذلك، من الحكمة توفير مُكرِّر أيضًا، على هيئة دالة <code>iter</code> أو <code>fold</code>. فمثلًا، إذا كانت وحدة <code>S</code> توفر نوعًا مجرَّدًا لمجموعات الأعداد الصحيحة — ولنُسمِّه <code>set</code> — فيمكنها أيضًا توفير دالة:</p>
+<pre><code class="language-ocaml">  fold: (<span class="hljs-built_in">int</span> -&gt; ’a -&gt; ’a) -&gt; set -&gt; ’a -&gt; ’a
+</code></pre>
+<p>يمكننا استخدام هذه الدالة لحساب مجموع عناصر مجموعة معيَّنة، وذلك رغم أننا لا نعرف تمثيلها.</p>
+<h5>المُبَرْمِجات (Functors)</h5>
+<p>تتيح لنا المُبَرْمِجات بناء بنى بيانات مبارَمة ببنى بيانات أخرى. فالمكتبة القياسية لأوسمل تحوي أربعة أمثلة على بنى بيانات مُعرَّفة على هيئة مُبَرْمِجات: <code>Hashtbl.Make</code> و<code>Set.Make</code> و<code>Map.Make</code> و<code>Weak.Make</code>. كما يحوي الجزء الثاني من هذا الكتاب أمثلة عديدة من هذا القبيل. ويمكن للمُبَرْمِجات أن تساعدنا أيضًا على كتابة خوارزميات مبارَمة ببنى بيانات أو حتى بخوارزميات أخرى (انظر الأمثلة المتنوعة في الجزء الثالث). وبصفة عامة، تُعدّ المُبَرْمِجات طريقة أنيقة لإعادة استخدام الشيفرة، عبر كتابتها بأكبر قدر ممكن من العمومية. ورغم الاختلافات العديدة بينهما، فإنها تُقارَن بـ<em>قوالب</em> C++ (templates).</p>
+<h3 id="212-عزف-مقطوعة-موسيقية-playing-a-musical-score">2.12 عزف مقطوعة موسيقية (Playing a Musical Score)</h3>
+<blockquote></blockquote>
+<p>برنامجنا التالي (انظر الصفحة <a href="#x7-76005r14">202</a>)، <code>music.ml</code>، يعزف مقطوعة موسيقية. والمقطوعات البسيطة التي سنعزفها مُمثَّلة بيانيًا كما في الشكل <a href="#musical-score">2.9</a>.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/first-steps-9-partition-.webp" alt="" id="musical-score"></p>
+<p><strong>الشكل 2.9: مقطوعة موسيقية.</strong></p>
+<p>هناك عدة أنواع من <em>الإشارات</em> (signs) هنا:</p>
+<ul>
+<li>تُحدَّد النوتات (notes) بدرجتها (أي بموضعها) على المقطوعة وبمدّتها. ونحن مهتمون فقط بالنوتات ذات مدتين محددتين: نصف النوتات (half notes) وربع النوتات (quarter notes). فنصف النوتة ضعف ربع النوتة طولًا.</li>
+<li>الأصوات الساكنة (silences)، التي نعتبر فيها بالمثل فقط تلك التي تبلغ مدتها مدّة نصف النوتة أو مدّة ربع النوتة.</li>
+</ul>
+<p>إلى هذه الإشارات، نُضيف <em>الإيقاع</em> (tempo)، الذي يحدّد عدد ربع النوتات في الدقيقة. وفي المثال أعلاه، الإيقاع هو 60 ربع نوتة في الدقيقة.</p>
+<p>لعزف النوتات، يلزمنا معرفة تردداتها الخاصة (بالهرتز). ولتسهيل هذا الحساب، نُمثّل درجة النوتة لا بموضعها على المقطوعة، بل باستخدام معلومتين اثنتين:</p>
+<ul>
+<li>نوتة رئيسة — دو، ري، مي، فا، صول، لا، سي؛</li>
+<li>أوكتاف 0 أو 1 أو 2 أو 3، إلى آخره.</li>
+</ul>
+<p>يتيح لنا هذا التمثيل تحديد تردد النوتة بسهولة، باستخدام الصيغة التالية:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>o</mi><mi>f</mi><mo>=</mo><mi>f</mi><mn>0</mn><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">o f = f0 \\times 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord">0</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span></span>
+<p>هنا، f0 هو تردد نوتتها الرئيسة في الأوكتاف 0، وo هو أوكتافها. ويعطي الجدول <a href="#frequencies-for-octave-of-the-main-musical-notes">2.10</a> الترددات في الأوكتاف 0 للنوتات الرئيسة.</p>
+<p><strong>الشكل 2.10: الترددات في الأوكتاف 0 للنوتات الموسيقية الرئيسة.</strong></p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>N</mi><mi>o</mi><mi>t</mi><mi>e</mi><mi>F</mi><mi>r</mi><mi>e</mi><mi>q</mi><mi>u</mi><mi>e</mi><mi>n</mi><mi>c</mi><mi>y</mi><mo stretchy="false">(</mo><mi>H</mi><mi>z</mi><mo stretchy="false">)</mo><mo>−</mo><mo>−</mo><mo>−</mo><mo>−</mo><mo>−</mo><mo>−</mo><mo>−</mo><mo>−</mo><mo>−</mo><mo>−</mo><mi>f</mi><mi>o</mi><mi>r</mi><mo>−</mo><mi>o</mi><mi>c</mi><mi>t</mi><mi>a</mi><mi>v</mi><mi>e</mi><mn>0</mn><mo>−</mo><mo>−</mo><mo>−</mo><mo>−</mo><mi>d</mi><mi>o</mi><mn>33</mn><mi>r</mi><mi>e</mi><mn>37</mn><mi>m</mi><mi>i</mi><mn>41</mn><mi>f</mi><mi>a</mi><mn>44</mn><mi>s</mi><mi>o</mi><mi>l</mi><mn>49</mn><mi>l</mi><mi>a</mi><mn>55</mn><mi>s</mi><mi>i</mi><mn>62</mn></mrow><annotation encoding="application/x-tex">Note Frequency (Hz) - - - - - - - - - - for - octave 0 - - - - do 33 re 37 mi 41 fa 44 sol 49 la 55 si 62</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mord mathnormal">o</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.0359em;">q</span><span class="mord mathnormal">u</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal" style="margin-right:0.0359em;">cy</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0813em;">H</span><span class="mord mathnormal" style="margin-right:0.044em;">z</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">−</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal" style="margin-right:0.0278em;">or</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">oc</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="mord mathnormal">e</span><span class="mord">0</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">−</span><span class="mord mathnormal">d</span><span class="mord mathnormal">o</span><span class="mord">33</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">e</span><span class="mord">37</span><span class="mord mathnormal">mi</span><span class="mord">41</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">a</span><span class="mord">44</span><span class="mord mathnormal">so</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord">49</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">a</span><span class="mord">55</span><span class="mord mathnormal">s</span><span class="mord mathnormal">i</span><span class="mord">62</span></span></span></span></span>
+<blockquote></blockquote>
+<p>كي يتمكن برنامجنا من تمثيل جميع عناصر المقطوعة، يبدأ بتعريف عدة أنواع. فالنوتات الرئيسة مُمثَّلة بالنوع <code>note</code> على النحو التالي <sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup>:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> note = <span class="hljs-type">Do</span> | <span class="hljs-type">Re</span> | <span class="hljs-type">Mi</span> | <span class="hljs-type">Fa</span> | <span class="hljs-type">Sol</span> | <span class="hljs-type">La</span> | <span class="hljs-type">Si</span>
+</code></pre>
+<p>هذا نوع <em>مُعدَّد</em> (enumerated)، يُعرّف مجالًا محدودًا يتكون من سبعة عناصر (<code>Do</code> و<code>Re</code> وغيرها)، تُسمّى <em>بواني إنشاء</em> (constructors). وبصياغة نحوية، يطلب أوسمل أن يبدأ اسم الباني بحرف كبير.</p>
+<p>بمجرد تعريف هذا النوع، أصبح بإمكاننا التعامل مع قيم النوع <code>note</code> بمجرد استخدام أسماء بواني إنشائها:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-type">Re</span>;;
+  - : note = <span class="hljs-type">Re</span>
+</code></pre>
+<p>تُرمَّز درجة النوتات بسجلات (records) من النوع <code>pitch</code> ذات حقلين، <code>note</code> و<code>octave</code>، يجب أن يحتويا أعدادًا صحيحة غير سالبة.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> pitch = { note : note; octave : <span class="hljs-built_in">int</span> }
+</code></pre>
+<p>أما المدد، التي هي من النوع <code>duration</code>، فمُمثَّلة بالبانيين <code>Half</code> (نصف نوتة) و<code>Quarter</code> (ربع نوتة).</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> duration = <span class="hljs-type">Half</span> | <span class="hljs-type">Quarter</span>
+</code></pre>
+<p>ولتمثيل نوعي الإشارات الذين قد يظهران في المقطوعات الموسيقية، نُعرّف النوع <code>symbol</code> على النحو التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> symbol = <span class="hljs-type">Note</span> <span class="hljs-keyword">of</span> pitch * duration | <span class="hljs-type">Rest</span> <span class="hljs-keyword">of</span> duration
+</code></pre>
+<p>هذا نوع <em>جَبْري</em> (algebraic type)، يتيح لنا التمييز بين النوتات والأصوات الساكنة بواسطة بانيين، <code>Note</code> و<code>Rest</code>. وخلافًا لبواني الإنشاء في النوعين المُعدَّدين <code>note</code> و<code>duration</code>، فإن البانيين <code>Note</code> و<code>Rest</code> لهما وسائط. ففي حالة <code>Note</code>، الوسائط من النوعين <code>pitch</code> و<code>duration</code>. أما <code>Rest</code> فله وسيط من النوع <code>duration</code>. فلإنشاء صمت مدته ربع نوتة، مثلًا، نكتب:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-type">Rest</span> <span class="hljs-type">Quarter</span>;;
+  - : symbol = <span class="hljs-type">Rest</span> <span class="hljs-type">Quarter</span>
+</code></pre>
+<p>وبالمثل، لإنشاء نوتة ري في الأوكتاف 1 وبمدّة نصف نوتة، نكتب:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-type">Note</span> ({ note = <span class="hljs-type">Re</span>; octave = <span class="hljs-number">1</span> }, <span class="hljs-type">Half</span>);;
+  - : signe = <span class="hljs-type">Note</span> ({note = <span class="hljs-type">Re</span>; octave = <span class="hljs-number">1</span>}, <span class="hljs-type">Half</span>)
+</code></pre>
+<p>أخيرًا، تُرمَّز المقطوعات بنوع السجل <code>score</code>، المكوَّن من قائمة إشارات وإيقاع (tempo) يحدّد عدد ربع النوتات في الدقيقة.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> score = { symbols : symbol <span class="hljs-built_in">list</span>;  metronome : <span class="hljs-built_in">int</span> }
+</code></pre>
+<p>تحسب الدالة الأولى في البرنامج التردد المرتبط بدرجة النوتة، استنادًا إلى الصيغة وجدول الترددات المعطيين أعلاه.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> frequency { note = n; octave = o } =
+</code></pre>
+<p>إذًا، بنوتة <code>n</code> من النوع <code>note</code> وأوكتاف <code>o</code>، تبدأ الدالة <code>frequency</code> بتحديد التردد <code>f0</code> للنوتة الرئيسة <code>n</code>، باستخدام بنية مطابقة الأنماط <code>matchnwith</code>، على النحو التالي:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> f0 =
+     <span class="hljs-keyword">match</span> n <span class="hljs-keyword">with</span>
+       | <span class="hljs-type">Do</span> -&gt; <span class="hljs-number">33</span>
+       | <span class="hljs-type">Re</span> -&gt; <span class="hljs-number">37</span>
+       | <span class="hljs-type">Mi</span> -&gt; <span class="hljs-number">41</span>
+       | <span class="hljs-type">Fa</span> -&gt; <span class="hljs-number">44</span>
+       | <span class="hljs-type">Sol</span> -&gt; <span class="hljs-number">49</span>
+       | <span class="hljs-type">La</span> -&gt; <span class="hljs-number">55</span>
+       | <span class="hljs-type">Si</span> -&gt; <span class="hljs-number">62</span>
+    <span class="hljs-keyword">in</span>
+    ...
+</code></pre>
+<p>تُعيد هذه البنية قيمًا مختلفة بحسب الباني المستخدم في إنشاء <code>n</code>. إذًا، إذا كان <code>n</code> هو الباني <code>Do</code>، فإن البنية <code>matchnwith</code> تُعيد العدد الصحيح <code>33</code>. وإلا، إذا كان <code>n</code> هو الباني <code>Re</code>، فهو العدد الصحيح <code>37</code> الذي يُعاد، وهكذا دواليك. ثُمّ يُستخدَم التردد الرئيس <code>f0</code> لحساب تردد النوتة:</p>
+<pre><code class="language-ocaml">    f0 * truncate (<span class="hljs-number">2.</span> ** <span class="hljs-built_in">float</span> o)
+</code></pre>
+<p>تحسب الدالة الثانية الزمن (بالمِلّيثوان) المقابل لمدّة <code>d</code> (نصف نوتة أو ربع نوتة)، لإيقاع معيَّن <code>t</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> milliseconds d t = ...
+</code></pre>
+<p>نبدأ بحساب زمن ربع النوتة، (<code>quarter</code>)، للإيقاع المعيَّن:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> quarter = <span class="hljs-number">60000</span> / t <span class="hljs-keyword">in</span>
+</code></pre>
+<p>بعد ذلك، وتبعًا للمدّة <code>d</code>، نُعيد <code>quarter*2</code> مِلّيثوان لربع النوتة، و<code>quarter</code> مِلّيثوان لنصف النوتة:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">match</span> d <span class="hljs-keyword">with</span>
+    | <span class="hljs-type">Half</span> -&gt; quarter * <span class="hljs-number">2</span>
+    | <span class="hljs-type">Quarter</span> -&gt; quarter
+</code></pre>
+<p>الدالة التالية، <code>sound</code>، إما تعزف نوتة موسيقية وإما تُخرِج صمتًا:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> sound t s = ...
+</code></pre>
+<p>بإيقاع <code>t</code> وإشارة <code>s</code>، تُجرِي الدالة <code>sound</code> مطابقة أنماط على <code>s</code> لتحديد ما إذا كانت نوتة موسيقية أم صمتًا:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">match</span> s <span class="hljs-keyword">with</span>
+      | <span class="hljs-type">Note</span> (p, d) -&gt;
+          ...
+      | <span class="hljs-type">Rest</span> r -&gt;
+          ...
+</code></pre>
+<p>تتيح لنا بنية مطابقة الأنماط هذه ليس فقط التمييز بين الباني المستخدم في إنشاء <code>s</code>، بل أيضًا استرجاع وسائط هذا الباني. إذًا، إذا كان <code>s</code> يقابل أول <em>نمط</em> (pattern)، وهو <code>Note(p,d)</code>، فإن المتغيرين <code>p</code> و<code>d</code> يُمثّلان على التوالي درجة النوتة ومدّتها المرتبطتين بهذا الباني. وفي النمط الثاني، يُمثّل المتغير <code>r</code> الصمت المرتبط بالباني <code>Rest</code>. وفي الحالتين، نطاق المتغيرات التي تُدخِلها الأنماط مقتصر على التعبير الواقع على الجانب الأيمن من السهم <code>-&gt;</code>.</p>
+<p>عندما يكون <code>s</code> على الشكل <code>Note(p,d)</code>، نحسب التردد <code>f</code> المرتبط بدرجة النوتة <code>p</code> باستخدام الدالة <code>frequency</code>. ثُمّ نستخدم الدالة <code>Graphics.sound</code> لإصدار صوت بتردد <code>f</code> مدّة <code>(millisecondsdt)</code>:</p>
+<pre><code class="language-ocaml">      | <span class="hljs-type">Note</span> (p, d) -&gt;
+        <span class="hljs-keyword">let</span> f = frequency p <span class="hljs-keyword">in</span>
+        <span class="hljs-type">Graphics</span>.sound f (millisecondes d t)
+</code></pre>
+<p>وعندما يكون <code>s</code> صمتًا على الشكل <code>Restr</code>، نصدر صوتًا بتردد صفر مدّة <code>(millisecondsrt)</code> مِلّيثوان.</p>
+<pre><code class="language-ocaml">      | <span class="hljs-type">Rest</span> r -&gt;
+        <span class="hljs-type">Graphics</span>.sound <span class="hljs-number">0</span> (millisecondes r t)
+</code></pre>
+<p>أخيرًا، تعزف الدالة الأخيرة نوتات المقطوعة الواحدة تلو الأخرى، باستخدام الدالة <code>sound</code>:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> play_score { symbols = l; metronome = t } =
+    <span class="hljs-type">List</span>.iter (sound t) l
+</code></pre>
+<h4>معلومات إضافية</h4>
+<h5>مطابقة الأنماط (Pattern Matching)</h5>
+<p>بصفة عامة، تُعمِّم بنية مطابقة الأنماط <code>matchvwith</code> ما اطلعنا عليه سابقًا في حالة القوائم (القسم <a href="#reversing-the-order-of-lines-in-a-text"><em>2.8</em></a> <em>عكس ترتيب الأسطر في نص</em>). فهي تحوي <code>k</code> فرعًا، يربط كل فرع نمطًا بتعبير:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">match</span> v <span class="hljs-keyword">with</span>
+    | pattern_1 -&gt; e_1
+    | pattern_2 -&gt; e_2
+    | ...
+    | pattern_k -&gt; e_k
+</code></pre>
+<p>تُقيَّم القيمة <code>v</code> أوّلًا، ثُمّ تُقارَن، من الأعلى إلى الأسفل، بكل نمط. والتعبير الوحيد الذي تُقيّمه هذه البنية هو <code>e_i</code> المقابل لأول نمط <em>متوافق</em> مع شكل <code>v</code>.</p>
+<p>صياغة الأنماط صياغة معبِّرة جدًا. فهي تتيح لنا تفكيك القيم المعقَّدة بسهولة، مثل القيم المعرَّفة باستخدام النوعين <code>t</code> و<code>u</code> التاليين:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> t = <span class="hljs-type">A</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">int</span> * <span class="hljs-built_in">float</span> | <span class="hljs-type">B</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">string</span>
+  <span class="hljs-keyword">type</span> u = { a : t; b : <span class="hljs-built_in">int</span> * t }
+</code></pre>
+<p>وبالتالي، يتيح لنا النمط <code>{ b = (_, A (x, _)) }</code> استرجاع العدد الصحيح <code>1</code> الممرَّر بوصفه وسيطًا للباني <code>A</code> في القيمة التالية:</p>
+<pre><code class="language-ocaml">  { a = <span class="hljs-type">B</span> <span class="hljs-string">&quot;foo&quot;</span>; b = (<span class="hljs-number">10</span>, <span class="hljs-type">A</span>(<span class="hljs-number">1</span>, <span class="hljs-number">4.5</span>)) }
+</code></pre>
+<p>وبصورة غير رسمية، يُقرأ النمط <code>{ b = (_, A (x, _)) }</code> على أنه «سجل يحوي حقله <code>b</code> زوجًا، مكوّنه الثاني قيمة مبنية باستخدام <code>A</code> بوسيطين، أولّهما مُسمًّى <code>x</code>».</p>
+<p>يستطيع أوسمل أيضًا التحقق من شمولية (exhaustivity) مطابقة الأنماط، بما يضمن تغطية جميع الحالات الممكنة فعلًا. إذًا، بالنسبة إلى أي قيمة <code>v</code> من النوع <code>u</code>، يكشف المُصرِّف أن مطابقة الأنماط التالية غير شاملة:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">match</span> v <span class="hljs-keyword">with</span>
+    | { a = <span class="hljs-type">A</span>(_, x); b = (_, <span class="hljs-type">B</span> y) } -&gt; ...
+    | { a = <span class="hljs-type">A</span>(_, x); b = (_, <span class="hljs-type">A</span> (y, _)) } -&gt; ...
+    | { a = <span class="hljs-type">B</span> x; b = (_, <span class="hljs-type">B</span> y) } -&gt; ...
+</code></pre>
+<p>إنه يُشير حتى إلى أن القيم على الشكل <code>{ a=B _; b=(_, A (_, _)) }</code> لا تُعالَج في مطابقة الأنماط هذه، مما قد يؤدي إلى خطأ في زمن التشغيل. وعلى النقيض، يتحقق المُصرِّف من أن البنية التالية <em>شاملة</em> فعلًا، وإن كان ذلك غير بديهي <em>من باب الأولوية</em> (a priori):</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">match</span> v <span class="hljs-keyword">with</span>
+    | { a = <span class="hljs-type">A</span>(_, x); b = (_, <span class="hljs-type">B</span> y) } -&gt; ...
+    | { a = <span class="hljs-type">A</span>(_, x); b = (_, <span class="hljs-type">A</span> (y, _)) } -&gt; ...
+    | { a = <span class="hljs-type">B</span> x; b = (_, <span class="hljs-type">B</span> y) } -&gt; ...
+    | { a = _;  b = (_, <span class="hljs-type">A</span>(_, y)) } -&gt; ...
+</code></pre>
+<p>تتيح لنا بنية مطابقة الأنماط أيضًا ربط التعبير ذاته بعدة أنماط. وهذه الأنماط، التي تُسمّى الأنماط <em>البديلة</em> (or-patterns)، تتخذ الشكل التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">match</span> v <span class="hljs-keyword">with</span>
+    | pattern_1 | pattern_2 | ... | pattern_k -&gt; e
+    | ...
+</code></pre>
+<p>القيد النحوي الوحيد هو أن كل نمط يجب أن يُدخِل أسماء المتغيرات نفسها، وأن تكون من النوع نفسه. فمثلًا، يمكننا كتابة النمط <em>البديل</em> التالي على قيم النوع <code>u</code>:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">match</span> v <span class="hljs-keyword">with</span>
+    | { a = <span class="hljs-type">A</span>(x, _) } | { b = (x, _) } -&gt; ...
+    | ...
+</code></pre>
+<p>ومن الممكن أيضًا ربط أسماء متغيرات بالأجزاء الفرعية لنمط باستخدام الترميز <code>as</code>، كما في المثال التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">match</span> v <span class="hljs-keyword">with</span>
+    | { a = <span class="hljs-type">B</span> _ ; b = (_, (<span class="hljs-type">A</span> (y, _) <span class="hljs-keyword">as</span> z)) } -&gt; (y, z)
+    | ...
+</code></pre>
+<p>هنا، يُشير المتغير <code>z</code> إلى القيمة التي يُطابَقها النمط الفرعي (sub-pattern) <code>A(y,_)</code>. وبالتالي، فإن تطبيق مطابقة الأنماط هذه على <code>{ a = B &quot;foo&quot;; b = (10, A(1, 4.5)) }</code> سيُنتج الزوج <code>(1,A(1,4.5))</code>.</p>
+<p>أخيرًا، يمكن تمديد مطابقة الأنماط بشروط منطقية اعتباطية، باستخدام الترميز <code>when</code> على النحو التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">match</span> v <span class="hljs-keyword">with</span>
+    | pattern_1 <span class="hljs-keyword">when</span> e -&gt; e_1
+    | ...
+</code></pre>
+<p>فمثلًا، يمكننا مطابقة قيم النوع <code>u</code> التي حقلها <code>a</code> على الشكل <code>A(x,_)</code>، مع <code>x</code> أكبر من <code>10</code>، على النحو التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">match</span> v <span class="hljs-keyword">with</span>
+    | { a = <span class="hljs-type">A</span>(x, _) } <span class="hljs-keyword">when</span> x &gt; <span class="hljs-number">10</span> -&gt; ...
+    | ...
+</code></pre>
+<p>من المهم ملاحظة أن تحليل الشمولية لا يأخذ هذه الشروط المنطقية في الحسبان، وأن جميع الأنماط المقيدة بمثل هذه التعبيرات تُهمَل ببساطة.</p>
+<h5>الأنواع الجَبْرية (Algebraic Types)</h5>
+<p>من الممكن أيضًا تعريف أنواع جبرية متعددة الأشكال (polymorphic). ولكي، يجب أن نشير إلى قائمة متغيرات الأنواع (أو البارامترات) التي تظهر في التعريف. فلننظر في المثال التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> (’a, ’b) t = <span class="hljs-type">C</span> <span class="hljs-keyword">of</span> ’a * <span class="hljs-built_in">int</span> | <span class="hljs-type">D</span> <span class="hljs-keyword">of</span> ’b | <span class="hljs-type">E</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">int</span>
+</code></pre>
+<p>هنا، النوع <code>t</code> مُبارمَد بمتغيرين <code>’a</code> و<code>’b</code>. والبانيان <code>C</code> و<code>D</code> متعددا الأشكال. إذًا، كما في حالة الدالة متعددة الأشكال، يمكن تطبيق هذين البانيين على وسائط من أي نوع:</p>
+<pre><code class="language-ocaml">  # <span class="hljs-keyword">let</span> v = <span class="hljs-type">C</span>(<span class="hljs-number">3</span>, <span class="hljs-string">&quot;foo&quot;</span>);;
+  <span class="hljs-keyword">val</span> v : (<span class="hljs-built_in">int</span>, <span class="hljs-built_in">string</span>) t = <span class="hljs-type">C</span>(<span class="hljs-number">3</span>, <span class="hljs-string">&quot;foo&quot;</span>)
+</code></pre>
+<p>أما النوع <code>’alist</code> الخاص بالقوائم متعددة الأشكال، المُعرَّف سلفًا في المكتبة القياسية لأوسمل، فهو مثال على نوع جَبْري متعدد الأشكال. ولو سمحت الصياغة بذلك، لأمكن تعريفه على النحو التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> ’a <span class="hljs-built_in">list</span> = <span class="hljs-literal">[]</span> | :: <span class="hljs-keyword">of</span> ’a * ’a <span class="hljs-built_in">list</span>
+</code></pre>
+<p>ومثال آخر على النوع الجَبْري متعدد الأشكال هو النوع <code>option</code> في المكتبة القياسية، المعرَّف بـ:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> ’a option = <span class="hljs-type">None</span> | <span class="hljs-type">Some</span> <span class="hljs-keyword">of</span> ’a
+</code></pre>
+<p>وهو يُستخدم خاصةً لتمثيل قيمة لم تُهيَّأ بعد، أو نتيجة اختيارية. فمثلًا، تُعيد الدالة التالية إمّا <code>None</code>، عندما يتعذّر قسمة <code>x</code> على <code>y</code>، وإمّا <code>Some(x/y)</code>:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> division x y = <span class="hljs-keyword">if</span> y = <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> <span class="hljs-type">None</span> <span class="hljs-keyword">else</span> <span class="hljs-type">Some</span> (x / y)
+</code></pre>
+<pre><code class="language-ocaml">  # division <span class="hljs-number">2</span> <span class="hljs-number">0</span>;;
+  - : <span class="hljs-built_in">int</span> option = <span class="hljs-type">None</span>
+</code></pre>
+<h3 id="213-الأشجار-الرباعية-quadtrees">2.13 الأشجار الرباعية (Quadtrees)</h3>
+<blockquote></blockquote>
+<p>برنامجنا التالي (الصفحة <a href="#x7-80021r15">219</a>)، <code>quad.ml</code>، يعالج صورًا مربّعة بالأبيض والأسود
+بحجم 2n × 2n. إذا كانت الصورة سوداء أو بيضاء بالكامل، فتُعرض باستخدام ثابت
+يدل على لونها. وإلا، فتُفكَّك إلى أربع صور جزئية، كلٌّ منها بحجم
+2n−1 × 2n−1، وفق الترتيب الموضَّح في الشكل <a href="#breaking-up-an-image">2.11</a>.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/first-steps-10-quad_tree-mps-.webp" alt="" id="breaking-up-an-image"></p>
+<p><strong>الشكل 2.11: تفكيك صورة.</strong></p>
+<p>الصورة هي اتحاد الصور الجزئية الأربع. وفي برنامجنا، يقابل النوع <code>quad</code>
+هذا التمثيل.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> quad = <span class="hljs-type">White</span> | <span class="hljs-type">Black</span> | <span class="hljs-type">Node</span> <span class="hljs-keyword">of</span> quad * quad * quad * quad
+</code></pre>
+<p>يشير الثابتان <code>White</code> و<code>Black</code> إلى صورة بيضاء بالكامل أو سوداء
+بالكامل على التوالي. ويقابل الباني <code>Node</code> صورةً مفكَّكة إلى أربع صور
+جزئية، وهي الوسائط الأربعة لهذا الباني.</p>
+<p>فلننظر في الصورة الواردة في الشكل <a href="#an-image-of-size-">2.12</a>. وتُعرض بالقيمة التالية من النوع
+<code>quad</code>:</p>
+<pre><code class="language-ocaml">  <span class="hljs-type">Node</span> (<span class="hljs-type">Node</span> (<span class="hljs-type">Black</span>, <span class="hljs-type">Black</span>, <span class="hljs-type">Black</span>, <span class="hljs-type">White</span>),
+        <span class="hljs-type">Black</span>,
+        <span class="hljs-type">Node</span> (<span class="hljs-type">Black</span>, <span class="hljs-type">Black</span>, <span class="hljs-type">Black</span>, <span class="hljs-type">White</span>),
+        <span class="hljs-type">White</span>)
+</code></pre>
+<p><img src="/arabic-cs-library/images/learn-ocaml/first-steps-11-quad_tree_example-mps-.webp" alt="" id="an-image-of-size-"></p>
+<p><strong>الشكل 2.12: صورة بحجم 4 × 4.</strong></p>
+<p>ويمكننا أيضًا أن نعرض هذه القيمة بيانيًا على النحو التالي:</p>
+<p>ولهذا نتحدَّث عن <em>أشجار</em> (trees) فيما يتعلق بمثل هذه القيم.</p>
+<p>فلنكتب الآن دالة <code>checker_board</code>، التي تبني شجرةً ربعيةً مقابلةً
+لرقعة شطرنج بحجم 2n × 2n. وبذلك، تقابل <code>checker_board3</code> الصورة
+الواردة في الشكل <a href="#an-checkerboard">2.13</a>.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/first-steps-12-damier3-mps-.webp" alt="" id="an-checkerboard"></p>
+<p><strong>الشكل 2.13: رقعة شطرنج بحجم 8 × 8.</strong></p>
+<p>نسلك طريقة التعاود (recursion) على n. فإذا كان n يساوي 0، فنجري اختيارًا
+اعتباطيًا ونُعيد مربعًا أسود.</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> checker_board = <span class="hljs-keyword">function</span>
+  | <span class="hljs-number">0</span> -&gt; <span class="hljs-type">Black</span>
+</code></pre>
+<p>وإذا كان n = 1، نُعيد رقعة شطرنج بحجم 2 × 2:</p>
+<pre><code class="language-ocaml">  | <span class="hljs-number">1</span> -&gt; <span class="hljs-type">Node</span> (<span class="hljs-type">White</span>, <span class="hljs-type">Black</span>, <span class="hljs-type">White</span>, <span class="hljs-type">Black</span>)
+</code></pre>
+<p>وأخيرًا، إذا كان n &gt; 1، نبني رقعة شطرنج بحجم 2n−1 × 2n−1 نستخدمها أربع مرات
+لبناء رقعة شطرنج بحجم 2n × 2n.</p>
+<pre><code class="language-ocaml">  | n -&gt; <span class="hljs-keyword">let</span> q = checker_board (n - <span class="hljs-number">1</span>) <span class="hljs-keyword">in</span> <span class="hljs-type">Node</span> (q, q, q, q)
+</code></pre>
+<blockquote></blockquote>
+<p>فلنكتب الآن دالة <code>draw</code> ترسم الصورة التي تمثلها شجرة رباعية.
+تأخذ هذه الدالة وسيطين هما إحداثيات المربع الذي نرغب في رسم الصورة
+فيه: الموضع (<code>x</code>,<code>y</code>) للنقطة السفلية اليسرى من الصورة، وطول الضلع <code>w</code>
+للمربع. ونسلك طريقة التعاود على بنية الشجرة الرباعية.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> draw x y w = <span class="hljs-keyword">function</span>
+</code></pre>
+<p>إذا كانت الشجرة تتألف من ورقة واحدة فقط، فنميّز بين حالتين: فبالنسبة
+للورقة البيضاء لا نفعل شيئًا؛ وبالنسبة للورقة السوداء نُظلّل المربع
+المحدَّد بـ <code>x</code> و<code>y</code> و<code>w</code>.</p>
+<pre><code class="language-ocaml">    | <span class="hljs-type">White</span> -&gt; <span class="hljs-literal">()</span>
+    | <span class="hljs-type">Black</span> -&gt; <span class="hljs-type">Graphics</span>.fill_rect x y w w
+</code></pre>
+<p>أما إذا كنا في حالة الباني <code>Node</code>، فنبدأ بحساب طول ضلع الصور
+الجزئية الأربع، وهو <code>w</code>∕2.</p>
+<pre><code class="language-ocaml">    | <span class="hljs-type">Node</span> (q1, q2, q3, q4) -&gt;
+        <span class="hljs-keyword">let</span> w = w / <span class="hljs-number">2</span> <span class="hljs-keyword">in</span>
+</code></pre>
+<p>ثم نرسم الصور الجزئية بأربع نداءات تعاوبية للدالة <code>draw</code>. نمرر في
+كل حالة إحداثيات الزاوية السفلية اليسرى للصورة الجزئية المقابلة.</p>
+<pre><code class="language-ocaml">        draw x       y       w q1;
+        draw (x + w) y       w q2;
+        draw (x + w) (y + w) w q3;
+        draw x       (y + w) w q4
+</code></pre>
+<p>وبهذه الطريقة، يمكننا رسم رقعة شطرنج بحجم 8 × 8 في مربع طول ضلعه 256
+بنداء <code>draw00256(checker_board3)</code>.</p>
+<h4>معلومات إضافية</h4>
+<h5>البواني مع السجلّات (Records)</h5>
+<p>مع النوع <code>quad</code> الخاص بالأشجار الرباعية، من السهل أن يخطئ المرء في ترتيب
+الأشجار الفرعية للباني <code>Node</code>. فيجب أن نكون يقظين جدًا وأن نحفظ الشكل
+<a href="#breaking-up-an-image">2.11</a> في الذهن باستمرار. وبديل ذلك هو تسمية الأشجار الفرعية الأربعة،
+كما نفعل مع أنواع السجلّات:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> quad =
+    | <span class="hljs-type">White</span>
+    | <span class="hljs-type">Black</span>
+    | <span class="hljs-type">Node</span> <span class="hljs-keyword">of</span> { sw: quad; se: quad; ne: quad; nw: quad }
+</code></pre>
+<p>سواء داخل نمط مطابقة أو عند بناء قيمة، نستخدم صيغة السجلّات للتعامل
+مع وسائط الباني <code>Node</code>. وهكذا، نبني عقدة (node) على النحو التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-type">Node</span> { nw = a; sw = b; se = c; ne = d }
+</code></pre>
+<p>وكما نرى هنا، فإن ترتيب الحقول في الإعلان غير مهم. وكما هو الحال مع
+السجلّات، يمكننا استخدام مطابقة الأنماط (pattern matching) لاسترجاع
+قيمها:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">match</span> q <span class="hljs-keyword">with</span>
+    | ...
+    | <span class="hljs-type">Node</span> { sw; se; ne; nw } -&gt; ...
+</code></pre>
+<p>غير أننا لا نستطيع كتابة ما يلي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">match</span> q <span class="hljs-keyword">with</span>
+    | ...
+    | <span class="hljs-type">Node</span> r -&gt; ...
+</code></pre>
+<p>والسبب هو أنه لا وجود لسجلّ كمنظومة قائمة بذاتها، بل توجد فقط صيغة
+تسمّي الوسائط الأربعة للباني <code>Node</code>.</p>
+<p>ولفهم الفرق، لنقارن الباني <code>Node</code> الوارد أعلاه بالباني <code>C</code> من النوع
+<code>t</code> أدناه:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> r = { a: <span class="hljs-built_in">int</span>; b: <span class="hljs-built_in">bool</span>; c: <span class="hljs-built_in">int</span> }
+  <span class="hljs-keyword">type</span> t = <span class="hljs-type">C</span> <span class="hljs-keyword">of</span> r | ...
+</code></pre>
+<p>هنا، الباني <code>C</code> له وسيط وحيد من النوع <code>r</code>، وهو سجلّ. ويمكن استرجاع هذه
+القيمة وتمريرها مثلًا إلى دالة تأخذ قيمة من النوع <code>r</code>:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">match</span> ... <span class="hljs-keyword">with</span>
+  | <span class="hljs-type">C</span> r -&gt; f r
+</code></pre>
+<p>غير أن لذلك ثمنًا. فالباني <code>C</code> يحتوي على مؤشّر إلى سجلّ خُصِّص له مكان
+سابقًا، ما يعني الحاجة إلى تخصيصين بدلًا من تخصيص واحد. والوصول إلى
+مكونات الباني <code>C</code> يتطلب عمليتَي وصول للذاكرة، الأولى للوصول إلى
+السجلّ والثانية للوصول إلى الحقل.</p>
+<h5>اللوازم (Invariants)</h5>
+<p>قد نرغب في ضمان خاصية ألّا تتألف شجرة رباعية قط من أربع أوراق باللون
+نفسه، إذ سيكون ذلك تمثيلًا معقَّدًا بلا داعٍ. ولفرض هذه اللازمة، يجب أن
+نجعل <code>quad</code> نوعًا مجرَّدًا (abstract) أو نوعًا خاصًا (private). وبديلًا عن
+البواني <code>Black</code> و<code>White</code> و<code>Node</code>، يجب أن نوفّر ثابتين <code>black</code> و<code>white</code>،
+ودالة <code>node</code> معرَّفة بحيث تضمن اللازمة.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> node = <span class="hljs-keyword">function</span>
+    | <span class="hljs-type">White</span>, <span class="hljs-type">White</span>, <span class="hljs-type">White</span>, <span class="hljs-type">White</span> -&gt; <span class="hljs-type">White</span>
+    | <span class="hljs-type">Black</span>, <span class="hljs-type">Black</span>, <span class="hljs-type">Black</span>, <span class="hljs-type">Black</span> -&gt; <span class="hljs-type">Black</span>
+    | q1, q2, q3, q4 -&gt; <span class="hljs-type">Node</span> (q1, q2, q3, q4)
+</code></pre>
+<p>ويُعرف هذا باسم <em>باني ذكي</em> (smart constructor).</p>
+<h5>المشاركة (Sharing)</h5>
+<p>سيُلاحظ القارئ اليقظ أن الدالة <code>checker_board</code> تجري نداءً تعاوبيًا
+<em>وحيدًا</em>، إذ تعيد استخدام نتيجتها أربع مرات. فما بنيناه ليس إذن شجرة،
+بل رسم موجَّه لا حلقات (DAG). ولهذا، يكون تصوير نتيجة <code>checker_board3</code>
+الذي يعكس تمثيلها في الذاكرة بأدقّ وجه هو:</p>
+<p>على وجه الخصوص، <code>checker_board</code> ن تعمل بزمن O(n) ومساحة O(n). وبالمقابل،
+فإن <em>رسم</em> نتيجتها يستغرق زمنًا قدره O(4n) لأن الدالة <code>draw</code> تجتاز الصور
+الجزئية الأربع تباعًا. وبعبارة أخرى، تجتاز الدالة <code>draw</code> شجرة دون أن
+تأخذ المشاركة القائمة في الذاكرة في الحسبان. ويشرح القسم
+<a href="https://usr.lmf.cnrs.fr/lpo/mainch11.html#hashconsing"><em>11.4</em></a> <em>Hash-consing</em> كيفية استغلال
+مثل هذه المشاركة.</p>
+<h5>الأشجار الثنائية (Binary Trees)</h5>
+<p>في الشجرة الثنائية، تحتوي كل عقدة داخلية على شجرتين فرعيتين بالضبط.
+والأوراق، شأنها شأن العقد، يمكن أن تكون موسومة. فمثلًا، تقابل الأشجار
+الثنائية ذات العقد الداخلية الموسومة بأعداد صحيحة النوع:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> tree = <span class="hljs-type">Leaf</span> | <span class="hljs-type">Node</span> <span class="hljs-keyword">of</span> tree * <span class="hljs-built_in">int</span> * tree
+</code></pre>
+<p>ومثلًا، تقابل الأشجار ذات الأوراق الموسومة بسلاسل نصية النوع:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> tree = <span class="hljs-type">Leaf</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">string</span> | <span class="hljs-type">Node</span> <span class="hljs-keyword">of</span> tree * tree
+</code></pre>
+<p>سيجد القارئ أمثلة عديدة من مثل هذه الأشجار في الصفحات التالية.</p>
+<h5>الأشجار المتعددة الفروع (n-ary Trees)</h5>
+<p>ليس عدد الأشجار الفرعية للعقدة الداخلية محدَّدًا بالضرورة. فقد يتبدَّن
+ويصل إلى حدّ عدم التحديد. وفي هذه الحالة، قد نمثل الأشجار الفرعية
+للعقدة بقائمة من الأشجار. فنكتب هكذا:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> tree = <span class="hljs-type">Node</span> <span class="hljs-keyword">of</span> tree <span class="hljs-built_in">list</span>
+</code></pre>
+<p>ومن الجدير بالملاحظة أننا لم نعد بحاجة إلى باني خاص لتمثيل الأوراق، لأن
+القيمة <code>Node[]</code> تؤدي هذا الدور. وبالطبع، يمكننا توسيم عقد هذه الشجرة إن
+أردنا ذلك. ومثال على ذلك موجود في القسم
+<a href="https://usr.lmf.cnrs.fr/lpo/mainch5.html#prefix-trees"><em>5.4</em></a> <em>Prefix Trees</em>.</p>
+<h3 id="214-حل-مسألة-الملكات-n-n-queens-problem">2.14 حلّ مسألة الملكات N (N-Queens Problem)</h3>
+<blockquote></blockquote>
+<p>نتعرض هنا للمسألة الكلاسيكية للملكات N: يجب وضع N ملكة على رقعة شطرنج
+بحجم N × N بحيث لا تتهدَّد أيٌّ منها الأخرى. ويعرض الشكل
+<a href="#one-solution-of-the-queens-problem">2.14</a> أحد الحلول الـ92 عندما N = 8.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/first-steps-13-solution8-mps-.webp" alt="" id="one-solution-of-the-queens-problem"></p>
+<p><strong>الشكل 2.14: أحد حلول مسألة الملكات الثماني.</strong></p>
+<p>وعلى نحو أدق، نهتم بمسألة حصر جميع الحلول، دون أن نأخذ تماثلات المسألة
+في الحسبان. ونسلك طريقةً قاسيةً نسبيًا باستكشاف جميع الاحتمالات، مع
+الملاحظة مع ذلك أن الحلول يجب أن تضم بالضرورة ملكةً واحدةً فقط على كل
+سطر من أسطر رقعة الشطرنج. وفي ضوء ذلك، نحاول ملء رقعة الشطرنج سطرًا
+سطرًا، واضعين ملكةً في كل مرة بحيث لا تتهدَّدها الملكات الواضعة
+سابقًا. وهكذا، إذا وضعنا ثلاث ملكات على الأسطر الثلاثة الأولى من رقعة
+الشطرنج، فإننا نبحث بعد ذلك عن وضع صحيح على السطر الرابع على النحو
+التالي:</p>
+<p>إذا وجدنا وضعًا، نضع ملكةً هناك ونواصل البحث على السطر التالي. وإلا،
+نرجع خطوةً إلى الوراء ونبدأ من جديد. ويُحصَّل على حلّ في كل مرة ننجح
+فيها في وضع ملكة على السطر الأخير. وبنسلكنا على هذا النحو المنهجي،
+نكون واثقين من إيجاد جميع الحلول. وتُسمَّى هذه التقنية <em>الرجوع إلى
+الخلف</em> (backtracking).</p>
+<blockquote></blockquote>
+<p>لكل سطر من رقعة الشطرنج، سيحتفظ برنامجنا بالأعمدة التي يمكن وضع ملكة
+فيها. وهكذا، بدلًا من تجربة جميع الأعمدة N في السطر الحالي، سيصبح في
+إمكاننا البحث في أقلّ بكثير من N عمودًا، وسنرجع إلى الخلف في وقت أبكر.
+ونوضح هذه الفكرة لـ N = 8.</p>
+<p>لنفترض أننا وضعنا ملكات
+بالفعل على الأسطر الثلاثة الأولى. وليس ثمة حاجة
+إلى النظر سوى في خمسة أعمدة في
+السطر الرابع (في أسفل رقعة الشطرنج).</p>
+<p>(1)</p>
+<p>علاوةً على ذلك، هناك ثلاثة مواضع في
+السطر الرابع متهدَّدة من ملكات وُضعت
+بالفعل على قُطْر أيسر. وهذه المواضع الثلاثة
+لا تحتاج إلى النظر فيها.</p>
+<p>(2)</p>
+<p>ومثلًا، هناك موضعان في السطر الرابع
+متهدَّدان من ملكات وُضعت بالفعل على
+قُطْر أيمن. وهذان الموضعان لا يحتاجان
+إلى النظر فيهما.</p>
+<p>(3)</p>
+<p>هكذا، هناك ستة مواضع على السطر
+الرابع لا يمكن استخدامها، فلا يتبقّى إلا
+موضعان للنظر فيهما، بدلًا من ثمانية.</p>
+<p>(4)</p>
+<p>سيسير برنامجنا بطريقة تعاودية، متتبعًا في كل لحظة ثلاث مجموعات من
+الأعمدة: المجموعة <code>cols</code> وهي الأعمدة التي بقيت للنظر فيها؛ والمجموعة <code>d1</code>
+وهي الأعمدة التي يجب تجنبها لأن الملكات الموضوعة فيها ستكون متهدَّدة على
+قُطْر أيسر؛ والمجموعة <code>d2</code> وهي الأعمدة التي يجب تجنبها لأن الملكات
+الموضوعة فيها ستكون متهدَّدة على قُطْر أيمن. وفي مثالنا، إذا رقّمنا
+الأعمدة بدءًا من اليمين، فلدينا <code>cols</code> = {0,2,5,6,7} و<code>d1</code> = {3,5,6} و
+<code>d2</code> = {0,3}، كما هو موضَّح في الأشكال أعلاه (على التوالي في (1) و(2)
+و(3)). ومجموعة الأعمدة التي يمكن وضع الملكات فيها تُحصَّل بحساب</p>
+<p>الفرق النظري للمجموعات <code>cols</code>∖<code>d1</code>∖<code>d2</code>، وهو ما يعطي المجموعة {2,7}، كما
+هو موضَّح في الشكل (4).</p>
+<p>وللتعامل مع مثل هذه المجموعات من الأعداد الصحيحة، نستخدم الوحدة <code>Set.Make</code>
+من المكتبة القياسية لأوسمل. وهذا مُوَلِّد (functor) نُعرِضه (instantiate)
+بنوع مجهَّز بترتيب كلي. (وسيُشرح قانون (code) مثل هذا المولِّد لاحقًا في
+هذا الكتاب، في القسم <em>AVL</em> من الفصل
+<a href="https://usr.lmf.cnrs.fr/lpo/mainch5.html#sets-and-dictionaries">5</a>.)</p>
+<p>نختار هنا الترتيب المعتاد على الأعداد الصحيحة، الذي توفره الدالة <code>compare</code>
+من المكتبة <code>Stdlib</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-type">S</span> = <span class="hljs-type">Set</span>.<span class="hljs-type">Make</span>(<span class="hljs-keyword">struct</span> <span class="hljs-keyword">type</span> t = <span class="hljs-built_in">int</span> <span class="hljs-keyword">let</span> compare = compare <span class="hljs-keyword">end</span>)
+</code></pre>
+<p>تُوفّر الوحدة الناتجة <code>S</code> بنية بيانات <code>S.t</code> تمثل مجموعة من الأعداد الصحيحة،
+وثابتًا <code>S.empty</code> يقابل المجموعة الخالية، وعمليات مثل <code>S.add</code> (إضافة
+عنصر) و<code>S.remove</code> (إزالة عنصر) و<code>S.diff</code> (الفرق النظري للمجموعات)، إلخ.
+وخاصية مهمة لهذه البنية هي <em>دوامها</em> (persistence). وهذا يعني أن
+العمليات المطبَّقة على هذه البنية لا تعدّلها، بل تُعيد بدلًا من ذلك بنى
+<em>جديدة</em>. وهكذا، إذا كان لدينا مجموعة <code>s</code> من النوع <code>S.t</code>، فإن التعبير
+<code>S.add4s</code> يدل على مجموعة جديدة (تحوي 4 وجميع عناصر <code>s</code>)، في حين تبقى
+المجموعة <code>s</code> دون تعديل.</p>
+<p>فلنكتب الآن برنامجنا باستخدام دالة تعاوبية <code>count</code> تأخذ كوسائط المجموعات
+الثلاث <code>cols</code> و<code>d1</code> و<code>d2</code> الموضَّحة أعلاه:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> count cols d1 d2 =
+</code></pre>
+<p>تُعيد هذه الدالة عدد الحلول المتوافقة مع هذه الوسائط. وينتهي البحث عندما
+تكون <code>cols</code> خالية. ونشير حينئذٍ إلى أنه قد وُجد حلّ.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">if</span> <span class="hljs-type">S</span>.is_empty cols <span class="hljs-keyword">then</span> <span class="hljs-number">1</span> <span class="hljs-keyword">else</span>
+</code></pre>
+<p>وإلا، نحسب مجموعة الأعمدة التي يمكن وضع الملكات فيها باستعمال التعبير</p>
+<p><code>S.diff(S.diffcolsd1)d2</code>، كما شُرح أعلاه. ثم نجتاز عناصر هذه المجموعة
+باستخدام المكرِّر (iterator) <code>S.fold</code>، بحيث يكون المُجمِّع هو عدد الحلول
+الموجودة حتى الآن.</p>
+<pre><code class="language-ocaml">    <span class="hljs-type">S</span>.fold
+      (<span class="hljs-keyword">fun</span> c res -&gt; ...)
+      (<span class="hljs-type">S</span>.diff (<span class="hljs-type">S</span>.diff cols d1) d2)
+      <span class="hljs-number">0</span>
+</code></pre>
+<p>بالنسبة لكل عمود <code>c</code> يمكن وضع ملكة فيه، يكفي نداء <code>count</code> نداءً تعاوبيًا
+بالمجموعات الثلاث بعد تعديلها على النحو الواجب. ولكي نعدّل <code>cols</code>، يكفي
+إزالة العنصر <code>c</code> باستخدام <code>S.remove</code>. ولكي نعدّل <code>d1</code> و<code>d2</code>، نستخدم
+<code>S.add</code> لإضافة العمود <code>c</code> إلى كل منها، ثم نزيح عناصرها بمقدار وحدة
+واحدة على الوجه اللائق. ولفعل ذلك، نعرّف دالة <code>map</code> تطبّق دالة f على
+جميع عناصر المجموعة s، أي إنها تبني المجموعة {f(x)∣x ∈ s}. ويمكننا
+كتابتها مثلًا باستخدام <code>S.fold</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> map f s = <span class="hljs-type">S</span>.fold (<span class="hljs-keyword">fun</span> x s -&gt; <span class="hljs-type">S</span>.add (f x) s) s <span class="hljs-type">S</span>.empty
+</code></pre>
+<p>بالانطلاق من هذه الدالة، يمكن تعديل المجموعة <code>d1</code> باستخدام <code>mapsucc</code>، حيث
+<code>succ</code> هي الدالة المعرَّفة مسبقًا <code>funx-&gt;x+1</code>. وكذلك تُعدَّل المجموعة
+<code>d2</code> باستخدام <code>mappred</code>، حيث <code>pred</code> هي الدالة المعرَّفة مسبقًا
+<code>funx-&gt;x-1</code>. ولذلك تكون الدالة الممرَّرة كوسيط إلى <code>S.fold</code> بالشكل
+التالي:</p>
+<pre><code class="language-ocaml">      (<span class="hljs-keyword">fun</span> c res -&gt;
+        <span class="hljs-keyword">let</span> d1 = map succ (<span class="hljs-type">S</span>.add c d1) <span class="hljs-keyword">in</span>
+        <span class="hljs-keyword">let</span> d2 = map pred (<span class="hljs-type">S</span>.add c d2) <span class="hljs-keyword">in</span>
+        res + count (<span class="hljs-type">S</span>.remove c cols) d1 d2)
+</code></pre>
+<p>بهذا تكون الدالة <code>count</code> مكتملة. ومن المهم أن نلاحظ هنا الدور المحوري الذي
+يلعبه دوام المجموعات <code>cols</code> و<code>d1</code> و<code>d2</code>. فهذه المجموعات تُعاد
+استعادتها لكل قيمة من قيم <code>c</code>، ولذلك يجب ألّا تعدّلها العمليتان <code>S.add</code>
+و<code>S.remove</code>.</p>
+<p>ولحلّ مسألة الملكات N، يكفي نداء <code>count</code> مع <code>cols</code> مساويةً للمجموعة
+{0,1,…,N − 1}، و<code>d1</code> و<code>d2</code> مساويتين كلًّا منهما للمجموعة الخالية. ولهذه
+الغاية، نعرّف دالة <code>upto</code> تبني المجموعة {0,1,…,n}.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> upto n = <span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> <span class="hljs-type">S</span>.empty <span class="hljs-keyword">else</span> <span class="hljs-type">S</span>.add n (upto (n-<span class="hljs-number">1</span>))
+</code></pre>
+<p>والجزء الرئيسي من البرنامج يسترجع قيمة N من سطر الأوامر ثم يعرض النتيجة
+التي تحصّلت عليها <code>count</code>.</p>
+<pre><code class="language-ocaml"><span class="hljs-keyword">let</span> <span class="hljs-literal">()</span> =
+  <span class="hljs-keyword">let</span> n = int_of_string <span class="hljs-type">Sys</span>.argv.(<span class="hljs-number">1</span>) <span class="hljs-keyword">in</span>
+  <span class="hljs-type">Format</span>.printf <span class="hljs-string">&quot;%d@.&quot;</span> (count (upto (n - <span class="hljs-number">1</span>)) <span class="hljs-type">S</span>.empty <span class="hljs-type">S</span>.empty)
+</code></pre>
+<p>وهكذا يمكننا حصر 365,596 حلًّا لمسألة الملكات الأربعة عشر في أقلّ من دقيقة.</p>
+<h4>معلومات إضافية</h4>
+<p>بنى البيانات التي تجدونها في الأدبيات المتعلقة بالخوارزميات هي في مجملها
+<em>أمرِيّة</em> (imperative) بطبيعتها: إذ تُعدَّل في موضعها بواسطة العمليات التي
+تُوفّرها. والمصفوفات والقوائم المترابطة هما المثالان الأولان اللذان
+يأتيان على البال. وهكذا، فالكتابة في خليّة من المصفوفة تستبدل القيمة
+السابقة بقيمة جديدة. ويحدث شيء مماثل عندما نضيف عنصرًا إلى قائمة
+مترابطة مثل:</p>
+<p>تتألف العملية من تعديل اثنين من المؤشّرات، على النحو التالي:</p>
+<p>وكما هو الحال مع المصفوفة، فقد عدَّلنا بنية القائمة <em>في موضعها</em>. وفي
+الحالتين، من الممكن العودة إلى الحالة السابقة، لكن ذلك يستلزم تعديلاً
+في الموضع أيضًا.</p>
+<p>وبالمقابل، فإن بنية البيانات <em>الدائمة</em> (persistent) هي بنية بيانات لا
+تعدّل عملياتها وسائطها قط؛ بل تُعاد <em>قيم</em> جديدة بدلًا من ذلك. وبالطبع،
+يمكننا تحويل بنية بيانات إلى بنية دائمة بنسخها بصورة منتظمة، غير أن
+ذلك سيكون غير فعّال على نحو فظيع. وهناك وسائل أخرى أكثر فعاليةً لتحويل
+بنية بيانات أمرِيّة إلى بنية دائمة. انظر مثلًا القسم
+<a href="https://usr.lmf.cnrs.fr/lpo/mainch4.html#persistent-arrays"><em>4.4</em></a> <em>Persistent Arrays</em>.</p>
+<p>ثمة فئة كاملة من بنى البيانات يكون فيها الدوام ممكنًا وفعّالًا في الوقت
+نفسه، وهي بنى البيانات <em>التي لا يتغيّر عليها الحال</em> (immutable)، والتي لا
+يمكن تعديلها بعد بنائها. وبالنسبة لمثل هذه البنى، يمكن تجنُّب النسخ غير
+الضروري عن طريق المشاركة. وأسهل طريقة لتوضيح ذلك هي حالة القوائم.</p>
+<p>إذا عرّفنا قائمة <code>l</code> بـ <code>letl=[1;2;3]</code>، فإن <code>l</code>، من حيث تمثيلها في الذاكرة،
+مؤشّر. فهي تشير إلى كتلة أولى تحوي <code>1</code> ومؤشّرًا إلى كتلة ثانية، وهكذا
+دواليك:</p>
+<p>وإذا عرّفنا الآن قائمة <code>l’</code> بإضافة عنصر آخر إلى القائمة <code>l</code>، بالإعلان
+<code>letl’=0::l</code>، فسنكون أمام الوضع التالي:</p>
+<p>يثمر تطبيق الباني <code>::</code> من تخصيص كتلة جديدة، عنصرها الأول هو <code>0</code> وعنصرها
+الثاني مؤشّر له القيمة نفسها التي للمؤشّر <code>l</code>. ويستمر المتغير <code>l</code> في
+الإشارة إلى الكتل نفسها كما كان من قبل. وبصفة عامة، فإن أي دالة قد
+نكتبها على القوائم تتميّز بأنها لا تعدّل القوائم الممرَّرة إليها كوسائط.</p>
+<p>من المهم جدًا أن نفهم أن ما ورد أعلاه ينطوي على <em>مشاركة</em>. فإعلان <code>l’</code>
+يخصّص كتلةً وحيدة (لأننا طبّقنا بانيًّا واحدًا فقط)، وتُعاد استخدام الكتل
+المكوِّنة لـ <code>l</code> دون تعديل. فلدينا قائمتان فيهما ثلاثة عناصر وأربعة
+عناصر على التوالي، هما <code>[1;2;3]</code> و<code>[0;1;2;3]</code>، لكن ثمة أربع كتل في
+الذاكرة فحسب. وعلى وجه الخصوص، <em>لا يجري أي نسخ</em>. وبصفة عامة، لا تجري
+أوسمل نسخًا للقيم قط، إلا إذا كتبنا صراحةً دالةً لفعل ذلك. ومثل هذه
+الدالة ستكون بلا فائدة في حالة القوائم لأن القائمة لا يمكن تعديلها في
+موضعها. والدالة التي تنسخ القيم غير مفيدة إلا إذا كانت بنى البيانات
+المعنية قابلةً للتعديل.</p>
+<p>صار من الواضح الآن لماذا كان إضافة عنصر إلى نهاية القائمة أصعب من
+إضافته إلى مقدّمتها. والسبب هو أن ذلك يستلزم تعديل القائمة <code>l</code> في
+موضعها:</p>
+<p>ولإضافة عنصر إلى نهاية القائمة، يجب أن ننسخ كل كتلة من كتل القائمة.
+وهذا هو فعلًا ما تفعله الدالة <code>append</code> التالية، التي تربط قائمتين (انظر
+التمرين <a href="#x7-98007r24">2.24</a>):</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> append l1 l2 = <span class="hljs-keyword">match</span> l1 <span class="hljs-keyword">with</span>
+    | <span class="hljs-literal">[]</span> -&gt; l2
+    | x :: l -&gt; x :: append l l2
+</code></pre>
+<p>نلاحظ أن هذه الدالة تُنشئ عددًا من الكتل مساويًا لعدد كتل <code>l1</code> ولا
+تشارك إلا في كتل <code>l2</code>. وهكذا، إذا أعلنّا <code>letl’=[4;5]</code> وربطنا <code>l</code> و<code>l’</code>
+بـ <code>letl’’=appendll’</code>، فسنكون أمام الوضع التالي:</p>
+<p>جرى نسخ كتل <code>l</code> ومشارَكة كتل <code>l’</code>.</p>
+<p>ولذلك، يجب استخدام القوائم كلما كانت العمليات المعنية هي الإضافة
+والإزالة من المقدّمة (بنية <em>المكدَّس</em> (stack)). وعندما نحتاج إلى الوصول
+و/أو إجراء تعديلات في مواضع اعتباطية، فالأفضل استخدام بنية بيانات أخرى.</p>
+<p>ومن الأهمية بمكان أن <em>عناصر</em> القائمة لا تنسخها الدالة <code>append</code> هي نفسها.
+ففي الواقع، المتغير <code>x</code> في قانون <code>append</code> يدل على عنصر من نوع اعتباطي
+ولا يُنسخ هو نفسه. وهذا الأمر يُحدث فرقًا في الواقع عند التعامل مع قوائم
+الأعداد الصحيحة. لكن إذا كانت لدينا قائمة <code>l</code> بثلاثة عناصر من نوع أكثر
+تعقيدًا، مثل القائمة <code>[(1,2,3);(4,5,6);(7,8,9)]</code>، فإن هذه العناصر ستكون
+مشترَكةً بين <code>l</code> و<code>appendl[(10,11,12)]</code>:</p>
+<p>قد يبدو كل هذا باهظ الثمن بلا داعٍ إذا كنّا معتادين على القوائم التي
+تُعدَّل في موضعها، وهي المقاربة التقليدية في سياق اللغات الأمرِيّة.
+غير أن ذلك سيعني التقليل من شأن المزايا العملية للدوام. علاوةً على ذلك،
+من المهم أن نلاحظ أن مفهوم الداوم يمكن تنفيذه بسهولة في لغة أمرِيّة.
+فكل ما علينا فعله هو التعامل مع القوائم المترابطة تمامًا كما يفعل
+مترجم أوسمل. وعلى العكس، يمكننا قطعًا التعامل مع قوائم قابلة للتعديل في
+موضعها في أوسمل، مثلًا بتعريف النوع التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> ’a mlist = <span class="hljs-type">Nil</span> | <span class="hljs-type">Cons</span> <span class="hljs-keyword">of</span> ’a * ’a mlist <span class="hljs-built_in">ref</span>
+</code></pre>
+<p>هنا، الوسيط الثاني للباني <code>Cons</code> هو مرجع (reference). وبخلاف اللغات
+الأمرِيّة، تُتيح أوسمل إمكانية تعريف بنى بيانات لا يتغيّر عليها الحال
+بصورة طبيعية وآمنة في الوقت نفسه. (وحتى لو برمجنا بنية بيانات دائمة
+بلغغة C، فإن نظام الأنواع لا يمكن أن يمنع التعديل في الموضع، لأن جميع
+البيانات في C قابلة للتعديل).</p>
+<p>وأخيرًا، يجب ألّا ننسى أن الذاكرة غير المستخدمة تُستعاد تلقائيًا.
+فلننظر مثلًا في التعبير التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> l = [<span class="hljs-number">1</span>;<span class="hljs-number">2</span>;<span class="hljs-number">3</span>] <span class="hljs-keyword">in</span> append l [<span class="hljs-number">4</span>;<span class="hljs-number">5</span>;<span class="hljs-number">6</span>]
+</code></pre>
+<p>الكتل الثلاث لـ <code>l</code> تُنسخ فعليًا أثناء بناء القائمة
+<code>[1;2;3;4;5;6]</code>، لكن يمكن استعادتها مباشرةً إذ لم يبقَ هناك ما يشير
+إليها في أي موضع. (ويقدّم الفصل
+<a href="https://usr.lmf.cnrs.fr/lpo/mainch3.html#ocaml-concepts-a-closer-look">3</a> تفاصيل أكثر عن إدارة الذاكرة.)</p>
+<h5>المزايا العملية للدوام</h5>
+<p>للدوام مزايا عملية كثيرة. فأولًا، هو يساعد على الاستدلال على القانون
+وصحّته: فالقيم التي يعالجها البرنامج لا يتغيّر عليها الحال، ولذلك يمكننا
+الاستدلال عليها رياضيًا. ويمكننا استخدام الاستدلال بالمعادلات دون أن
+نقلق حيال ترتيب التقييم. وهكذا يكون التحقق من صحّة الدالة <code>append</code>
+ميسورًا بمجرّد أن نُصرّح بما يُفترض أن تفعله (أي أن <code>appendl1l2</code> تبني
+القائمة المتكوِّنة من عناصر <code>l1</code>، تليها عناصر <code>l2</code>). ويكفي لذلك تعاود
+بسيط على بنية <code>l1</code>. أما إذا كنا نتعامل مع قوائم قابلة للتعديل في موضعها
+ودالة <code>append</code> تعدّل المؤشّر الأخير لـ <code>l1</code> ليجعلها تشير إلى <code>l2</code>، فإن
+حجّة الصحّة تصير أوضح صعوبةً. ويصير الفرق أشدّ إثارةً للانتباه عندما
+تكون المطلوب عكس قائمة.</p>
+<p>صحّة البرنامج مسألة مهمة، ويجب أن تأتي الأولوية عليها دائمًا على
+فعّاليته. ففي النهاية، لا أحد يريد برنامجًا سريعًا لكنه غير صحيح.</p>
+<p>الدوام ليس مفيدًا للصحّة فقط، بل هو أيضًا أداة قوية في السياقات التي
+يكون فيها <em>الرجوع إلى الخلف</em> ضروريًا. فلنفترض مثلًا أننا نكتب برنامجًا
+لإيجاد طريق للخروج من متاهة باستخدام دالة <code>find</code> تأخذ كوسيط حالةً دائمة
+وتُعيد قيمة منطقية تدل على نجاح البحث. وتُعيد دالة <code>possible_moves</code>
+التحرّكات الممكنة من حالة معيّنة في صورة قائمة. ولما كانت نوع البيانات
+دائمًا، فإن دالةً أخرى، <code>move</code>، تُعيد الحالة الناتجة عن تحرّك ما إلى
+جانب الحالة الحالية. كما نفترض أن دالةً منطقيةً <code>is_exit</code> تُعيد ما إذا كانت
+حالةٌ معيّنة تقابل المخرج. ويمكننا حينئذٍ كتابة الدالة <code>find</code> على النحو
+التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> find e =
+    is_exit e || try_move e (possible_moves e)
+  <span class="hljs-keyword">and</span> try_move e = <span class="hljs-keyword">function</span>
+    | <span class="hljs-literal">[]</span> -&gt; <span class="hljs-literal">false</span>
+    | d :: r -&gt; find (move d e) || try_move e r
+</code></pre>
+<p>هنا، <code>try_move</code> دالة تجرّب التحرّكات الممكنة في قائمة، واحدًا تلو الآخر.
+ودوام بنية البيانات التي تُمثّل الحالة هو ما يسمح لنا بكتابة مثل هذا
+القانون الموجز. فلو كانت الحالة بنية بيانات عامة تُعدَّل في موضعها، لكنا
+اضطررنا إلى إجراء التحرّك قبل نداء <code>find</code> نداءً تعاوبيًا في <code>try_move</code>.
+كما كان يتعيَّن علينا <em>التراجع</em> عن هذا التحرّك في حالة الفشل قبل تجربة
+التحرّكات الممكنة الأخرى. وسيبدو القانون حينئذٍ شيئًا من هذا القبيل:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> find <span class="hljs-literal">()</span> =
+    is_exit <span class="hljs-literal">()</span> || try_move (possible_moves <span class="hljs-literal">()</span>)
+  <span class="hljs-keyword">and</span> try_move = <span class="hljs-keyword">function</span>
+    | <span class="hljs-literal">[]</span> -&gt; <span class="hljs-literal">false</span>
+    | d :: r -&gt; (move d; find <span class="hljs-literal">()</span>) || (undo_move d; try_move r)
+</code></pre>
+<p>وهذا أقلّ وضوحًا بلا ريب وأكثر عرضةً للأخطاء. ولنلاحظ أن هذا ليس مثالًا
+مصطنعًا؛ فـ <em>الرجوع إلى الخلف</em> تقنية برمجية تُستخدم بانتظام عند تنفيذ
+اجتيازات الرسوم البيانية والتلوين وحصر الحلول، إلخ.</p>
+<p>لننظر في مثال ثانٍ على فائدة الدوام. فلنتصوَّر برنامجًا يعالج قاعدة
+بيانات. في أي لحظة، لا توجد سوى نسخة واحدة من قاعدة البيانات هذه. وليس
+ثمة من حاجة مسبقةً إذن إلى استخدام بنية بيانات دائمة من أجلها. فلنفترض
+أن التعديلات المطبَّقة على قاعدة البيانات معقَّدة، أي إنها تنطوي على عدد
+كبير من العمليات، بعضها يمكن أن يفشل.</p>
+<p>نجد أنفسنا حينئذٍ في وضع عصيب إذا احتجنا إلى <em>التراجع</em> عن الآثار
+المُنفَّذة بالفعل قبل الفشل. وعلى نحو تخطيطي، قد يبدو القانون هكذا:</p>
+<pre><code class="language-ocaml">   <span class="hljs-keyword">try</span>
+     ... perform modifications ...
+   <span class="hljs-keyword">with</span> e -&gt;
+     ... restore the database <span class="hljs-keyword">to</span> a coherent state,
+         <span class="hljs-keyword">then</span> handle the error ...
+</code></pre>
+<p>إذا استخدمنا بنية بيانات دائمة لقاعدة البيانات، فيمكن تخزينها في مرجع.
+فلنُسمِّه <code>db</code>. والعملية التي تُعدّل قاعدة البيانات تضبط قيمة هذا
+المرجع:</p>
+<pre><code class="language-ocaml">   <span class="hljs-keyword">let</span> db = <span class="hljs-built_in">ref</span> ( ... initial database ... )
+   ...
+   <span class="hljs-keyword">try</span>
+     db := ... operation that modifies the database !db ...
+   <span class="hljs-keyword">with</span> e -&gt;
+     ... handle the error ...
+</code></pre>
+<p>ومنذ تلك اللحظة، لا حاجة إلى التراجع عن أي شيء. فالتعديل، مهما كان
+تعقيدًا، يبني قاعدة بيانات جديدة تمامًا. ولا يُعدَّل المرجع <code>db</code> إلا بعد
+اكتمال هذا البناء وحده. وهذا التعديل الأخير ذرّي ولا يمكن أن يفشل. فإذا
+طُرح أي استثناء أثناء التعديل نفسه، بقي المرجع <code>db</code> دون تغيير. وسيستعيد
+مدير الذاكرة التلقائي الذاكرة التي خُصِّص لها مكان بلا داعٍ أثناء
+التعديل.</p>
+<h5>الواجهات والدوام</h5>
+<p>نوع بيانات القوائم دائم بجلاء لأنه نوع ذو تعريف معلوم، أي إنه ملموس
+(concrete) ولا يتغيّر عليه الحال. وعندما تُنفّذ وحدةٌ من وحدات أوسمل بنية
+بيانات، معلنةً كنوع <em>مجرَّد</em> (abstract)، فإن طبيعتها الدائمة أو الأمرِيّة
+غير بيّنة. وبالطبع، يمكن إحاطة المبرمج بهذا الأمر عن طريق تعليق مناسب
+في الواجهة. غير أنه، عمليًا، هي أنواع العمليات التي تُوفّر هذا المعلومة.
+فلننظر في مثال بنية بيانات دائمة تمثل المجموعات المنتهية من الأعداد
+الصحيحة. تبدو واجهة مثل هذه الوحدة هكذا:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> set
+  <span class="hljs-keyword">val</span> empty : set
+  <span class="hljs-keyword">val</span> add : <span class="hljs-built_in">int</span> -&gt; set -&gt; set
+  <span class="hljs-keyword">val</span> remove : <span class="hljs-built_in">int</span> -&gt; set -&gt; set
+  ...
+</code></pre>
+<p>الطبيعة الدائمة للمجموعات ضمينيّة في الواجهة: فالعمليتان <code>add</code>
+و<code>remove</code> تُعيدان قيمة من النوع <code>set</code>، أي مجموعةً جديدةً. وحقيقة أن
+المجموعة الخالية <code>empty</code> ثابتٌ وليست دالةً تجعل الدوام أوضح بعد. فجميع
+مواضع <code>empty</code> ستكون مشتركةً بصرف النظر عن تمثيلها. وهذا ما لم يكن
+ممكنًا مع بنية قابلة للتعديل.</p>
+<p>وبنية بيانات لمجموعات من الأعداد الصحيحة تُعدَّل في موضعها سيكون لها
+بدلًا من ذلك شكل واجهة على النحو:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> set
+  <span class="hljs-keyword">val</span> create : <span class="hljs-built_in">unit</span> -&gt; set
+  <span class="hljs-keyword">val</span> add : <span class="hljs-built_in">int</span> -&gt; set -&gt; <span class="hljs-built_in">unit</span>
+  <span class="hljs-keyword">val</span> remove : <span class="hljs-built_in">int</span> -&gt; set -&gt; <span class="hljs-built_in">unit</span>
+  ...
+</code></pre>
+<p>هنا، دالة الإضافة، <code>add</code>، لا تُعيد شيئًا لأنها تضيف عنصرًا في موضعه إلى
+بنية البيانات، والأمر نفسه ينطبق على العمليات الأخرى. وتحلّ <em>دالة</em>
+<code>create</code> التي تأخذ وسيطًا من النوع <code>unit</code> محلّ القيمة <code>empty</code>. فكل نداء
+لـ <code>create</code> يجب أن يبني نسخةً جديدةً من بنية البيانات حتى لا تؤثر
+تعديلات إحداها في موضعها على الأخرى.</p>
+<p>وللأسف، فإن نظام أنواع أوسمل لا يمنع الخلط بين نوعي بنى البيانات. وهكذا،
+يمكنك أن تعطي النوع <code>int-&gt;set-&gt;set</code> لدالة تضيف عنصرًا إلى مجموعة عبر
+الآثار الجانبية، مثلًا بإعادة المجموعة الممرَّرة إليها كوسيط. وعلى العكس،
+يمكنك أن تعطي النوع <code>unit-&gt;set</code> لدالة <code>empty</code> تُعيد مجموعةً خاليةً دائمة.
+وفي الحالتين، هذا بلا فائدة وخطر محتمل.</p>
+<p>غير أن هذا لا يعني أن بنية البيانات الدائمة يجب أن تُبرمج بالضرورة دون أي
+آثار جانبية. فالتعريف الجيّد لـ <em>دائم</em> هو:</p>
+<p><em>دائم</em> = <em>لا يتغيّر عليه الحال من وجهة الرصد</em> (observationally immutable)</p>
+<p>وبعبارة أخرى، ليس <em>تطبيقيًا خالصًا</em> (purely applicative)، بمعنى غياب الآثار
+الجانبية. وليس لدينا سوى تضمين في اتجاه واحد:</p>
+<p><em>تطبيقي خالص</em> ⇒ <em>دائم</em></p>
+<p>والعكس خاطئ: توجد بنى بيانات دائمة تستفيد من الآثار الجانبية. ويحتوي
+هذا الكتاب على أمثلة عديدة من مثل هذه البنى. وقد وُضّح هذا الموقف في
+الشكل <a href="#different-classes-of-data-structures">2.15</a>.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/first-steps-14-persistence_en-mps-.webp" alt="" id="different-classes-of-data-structures"></p>
+<p><strong>الشكل 2.15: أصناف مختلفة من بنى البيانات.</strong></p>
+<div class="exercises"><h3 id="215-تمارين">2.15 تمارين</h3>
+<h4>رسم قلب</h4>
+<p><strong>2.1</strong> عدِّل البرنامج <a href="#x7-22014r2">2</a> ليرسم مجموعة النقاط الواردة في الشكل <a href="#computation-of-using-the-montecarlo-method">2.1</a>.</p>
+<p><strong>2.2</strong> اكتب برنامجًا يرسم الشكل أدناه.</p>
+<h4>مجموعة ماندلبروت</h4>
+<p><strong>2.3</strong> عدِّل رسم مجموعة ماندلبروت عبر تلوين النقاط التي لا تنتمي إلى المجموعة بحسب أول قيمة للعدد i تتحقق عندها المتراجحة xi2 + yi2 &gt; 4. ويمكن اختيار اللون، مثلًا، بالاستكمال الخطي (interpolation) بين لونين محدَّدين سابقًا، ثم باستعمال الدالة <code>Graphics.rgb</code> (انظر القسم <a href="#breakout-without-bricks"><em>2.10</em></a><em>بريك أوت دون الطوب</em>) وقاعدة الثلاثة البسيطة.</p>
+<p><strong>2.4</strong> عدِّل قانون التمرين السابق على النحو التالي: بمجرد الانتهاء من الرسم، اختر نقطةً في المجموعة باستخدام الفأرة. ثم أعد الرسم ممركزًا حول هذه النقطة وبمقياس يساوي عشر المقياس الأصلي.</p>
+<p><strong>2.5</strong> اكتب برنامجًا يرسم ندفة ثلج كوخ (Koch snowflake). وتُحصَّل الندفة بتتبُّع ثلاث منحنيات كوخ على الأضلاع الثلاثة لمثلث متساوي الأضلاع. ويُعرَّف منحنى كوخ بعمق n بين نقطتين A و B على النحو التالي: عندما n = 0، يكون هو الواصل بين A و B.</p>
+<p>وعندما n &gt; 0، يُقسَّم الواصل [A,B] إلى ثلاثة وصول متساوية الطول، وهي [A,C] و [C,E] و [E,B]. وتُعرَّف النقطة D على أنها الرأس الثالث للمثلث متساوي الأضلاع CED:</p>
+<p>ثم نرسم أربعة منحنيات كوخ بعمق n − 1 على الوصلات الأربعة [A,C] و [C,D] و [D,E] و [E,B].</p>
+<p>وباختيار عمق ابتدائي كبير بما يكفي، نحصل على رسم بالشكل التالي:</p>
+<p><strong>2.6</strong> ليكن u0 عددًا صحيحًا أكبر من 1، وليكن (un) المتتالية المعرَّفة بالعلاقة:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo fence="true">{</mo><mtable rowspacing="0.36em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>u</mi><mi mathvariant="normal">/</mi><mn>2</mn><mi>i</mi><mi>f</mi><mi>u</mi><mi>i</mi><mi>s</mi><mi>e</mi><mi>v</mi><mi>e</mi><mi>n</mi><mi>u</mi><mi>n</mi><mo>+</mo><mn>1</mn><mo>=</mo><mi>n</mi><mi>n</mi><mn>3</mn><mi>u</mi><mi>n</mi><mo>+</mo><mn>1</mn><mi>o</mi><mi>t</mi><mi>h</mi><mi>e</mi><mi>r</mi><mi>w</mi><mi>i</mi><mi>s</mi><mi>e</mi></mrow></mstyle></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\\begin{cases} u /2 if u is even un + 1 = n n 3un + 1 otherwise \\end{cases}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.8em;vertical-align:-0.65em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">{</span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.97em;"><span style="top:-2.97em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathnormal">u</span><span class="mord">/2</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">u</span><span class="mord mathnormal">i</span><span class="mord mathnormal">se</span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal">u</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal">nn</span><span class="mord">3</span><span class="mord mathnormal">u</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">1</span><span class="mord mathnormal">o</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal" style="margin-right:0.0278em;">er</span><span class="mord mathnormal" style="margin-right:0.0269em;">w</span><span class="mord mathnormal">i</span><span class="mord mathnormal">se</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.47em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
+<p>اكتب برنامجًا يقرأ قيمة u0 باستعمال <code>read_int</code> ثم يعرض القيم المتتالية للمتتالية (un) ما دام un &gt; 1. (تنص فرضية كولاتز (Collatz conjecture) على أنه لأي قيمة لـ u0 نصل دائمًا إلى الدورة 1 → 4 → 2 → 1 →…. وقد صيغت هذه الفرضية سنة 1928، وهي لا تزال تستعصي على أفضل جهود الرياضيين.)</p>
+<p><strong>2.7</strong> تتمثل مسألة برج هانوي (tower of Hanoi) في نقل n قرصًا ذات أقطار متناقصة، مرصوصة بعضها فوق بعض، من موقع إلى آخر، باستعمال موقع ثالث بصورة مؤقتة. ولا يجوز نقل إلا قرص واحد في كل مرة، برفعه من أعلى كومة، كما لا يجوز وضعه إلا فوق قرص أكبر منه.</p>
+<p>اكتب برنامجًا باسم <code>hanoi</code> يقرأ قيمة n ثم يعرض تتابعًا صحيحًا من
+الحركات لحل المسألة، مثلًا على النحو التالي:</p>
+<pre><code class="language-text">  &gt; ./hanoi
+  4
+  moving disk from 1 to 3
+  moving disk from 1 to 2
+  moving disk from 3 to 2
+  moving disk from 1 to 3
+  ...
+</code></pre>
+<h4>غربال إراتوستينس</h4>
+<p><strong>2.8</strong> اكتب دالةً من النوع <code>sum:intarray-&gt;int</code> تحسب مجموع عناصر
+مصفوفة، أولًا باستعمال حلقة <code>for</code>، ثم بدالية تكرارية (recursive function).</p>
+<p><strong>2.9</strong> اكتب دالةً من النوع <code>occurs:intarray-&gt;int-&gt;bool</code> تحدد، لمصفوفة
+أعداد صحيحة a وقيمة صحيحة v، ما إذا كانت v تظهر في a. اكتب نسختين
+من البرنامج، إحداهما باستعمال حلقة <code>while</code> والأخرى بدالية تكرارية.</p>
+<p><strong>2.10</strong> اكتب دالةً من النوع <code>binary_search:intarray-&gt;int-&gt;bool</code> تحدد، لمصفوفة
+أعداد صحيحة a مرتبةً ترتيبًا تصاعديًا، وقيمة صحيحة v، ما إذا كانت v تظهر
+في a. استعمل البحث الثنائي (binary search) لتحصل على تعقيد O(log n)، حيث n هو طول
+المصفوفة a.</p>
+<p><strong>2.11</strong> اكتب دالةً من النوع <code>shuffle:intarray-&gt;unit</code> تخلط عناصر
+مصفوفةً عشوائيًا باستعمال الخوارزمية التالية، المسماة «خلط نوث» (Knuth shuffle)، حيث n
+هو حجم المصفوفة:</p>
+<table>
+<thead>
+<tr>
+<th>لكل i من 1 إلى n − 1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ليكن j عددًا صحيحًا عشوائيًا بين 0 و i (شاملًا الطرفين)</td>
+</tr>
+<tr>
+<td>بادل العنصرين ذَي المؤشرين i و j</td>
+</tr>
+</tbody>
+</table>
+<p>يمكنك استعمال <code>Random.int</code> k للحصول على عدد صحيح عشوائي بين 0 و k − 1. وبالطبع،
+يمكن استعمال هذه الخوارزمية للمصفوفات من أي نوع.</p>
+<h4>رسم منحنى</h4>
+<p><strong>2.12</strong> اكتب دالةً من النوع <code>sum:(int-&gt;int)-&gt;int-&gt;int-&gt;int</code> تأخذ دالة f
+وعددين صحيحين i و j وسيطين، وتحسب المجموع التالي:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>k</mi><mo>=</mo><mi>j</mi><mo>∑</mo><mi>f</mi><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo><mi mathvariant="normal">.</mi><mi>k</mi><mo>=</mo><mi>i</mi></mrow><annotation encoding="application/x-tex">k = j \\sum f(k). k = i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1.6em;vertical-align:-0.55em;"></span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-symbol large-op" style="position:relative;top:0em;">∑</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mclose">)</span><span class="mord">.</span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span></span>
+<p><strong>2.13</strong> اكتب دالة <code>dicho</code> من النوع:</p>
+<p><code>dicho:(float-&gt;float)-&gt;float-&gt;float-&gt;float</code></p>
+<p>تبحث عن صفر دالة رتيبة (monotonic function) f على فترة [a,b] باستعمال البحث
+التقريبي الثنائي (dichotomic search). والفكرة كالتالي: احسب نقطة المنتصف x للفترة [a,b]، وقارن
+إشارتَي f(a) و f(x). بحسب النتيجة، أعد الحساب على الفترة
+[a,x] أو [x,b]. توقف عندما يكون a و b قريبين من بعضهما بما يكفي. يمكنك افتراض
+أن [a,b] تحتوي صفرًا للدالة f.</p>
+<h4>نسخ ملف</h4>
+<p><strong>2.14</strong> عدِّل البرنامج <a href="#x7-48016r7">7</a> بحيث يعالج بشكل صحيح الحالة التي يتعذر فيها فتح
+أحد الملفين. وهذا يثير استثناءً (exception) من الشكل <code>Sys_error</code> s، حيث s
+سلسلة تشرح طبيعة الخطأ (الملف غير موجود، الإذن مرفوض،
+إلى آخره). ويجب عرض هذه الرسالة قبل إنهاء البرنامج باستعمال
+<code>exit1</code>.</p>
+<p><strong>2.15</strong> في لغات مثل C و Java، تُخرج الجملةُ <code>break</code> أقرب حلقةٍ محيطة،
+وتقفز الجملةُ <code>continue</code> إلى التكرار التالي للحلقة. وبالتالي، يعرض
+كود C التالي <code>124567</code>:</p>
+<pre><code class="language-text">  for (int i = 0; i &lt; 10; i++) {
+    if (i == 3) continue;
+    if (i == 8) break;
+    printf(&quot;%d&quot;, i);
+  }
+</code></pre>
+<p>اشرح كيف تُترجم هاتين الجملتين إلى أوسمل. يمكنك استعمال استثناءين،
+<code>Break</code> و <code>Continue</code>، لتحقيق ذلك.</p>
+<h4>عكس ترتيب الأسطر في نص</h4>
+<p><strong>2.16</strong> اكتب دالة <code>mult:intlist-&gt;int</code> تحسب حاصل ضرب جميع عناصر قائمة من الأعداد الصحيحة. تأكد من إعادة 0 عند أول ظهور للعدد الصحيح 0.</p>
+<p><strong>2.17</strong> أعد التمرين السابق، ولكن هذه المرة ارفع استثناءً إذا صودف 0، لتجنب ضرب العناصر الأولى من القائمة دون داعٍ.</p>
+<p><strong>2.18</strong> أعد التمرين <a href="#x7-97001r16">2.16</a> بكتابة الدالة <code>mult</code> كدالة تكرارية ذيلية (tail-recursive).</p>
+<p><strong>2.19</strong> اكتب دالة <code>insert:int-&gt;intlist-&gt;intlist</code> تُدخِل عددًا صحيحًا في قائمة من الأعداد الصحيحة مرتبة ترتيبًا تصاعديًا. تجنَّب إنشاء نسخة غير ضرورية من الجزء من القائمة الأولية الواقع بعد نقطة الإدخال.</p>
+<p><strong>2.20</strong> باستخدام الدالة <code>insert</code> أعلاه، اكتب دالة <code>insertion_sort:intlist-&gt;intlist</code> ترتب قائمة من الأعداد الصحيحة ترتيبًا تصاعديًا باستخدام الخوارزمية التالية، المعروفة باسم <em>الترتيب بالإدخال (insertion sort):</em> بدءًا من القائمة الفارغة، أدخِل كل عنصر بالتتابع، باستخدام الدالة <code>insert</code>. يُوصَف الترتيب بالإدخال بالتفصيل في الفصل <a href="https://usr.lmf.cnrs.fr/lpo/mainch12.html#sorting-algorithms">12</a>.</p>
+<h4>تحويل الأعداد الصحيحة من أساس عشوائي</h4>
+<p><strong>2.21</strong> اكتب دالة <code>mem:’a-&gt;’alist-&gt;bool</code> تحدد ما إذا كان عنصر موجودًا في قائمة، باستخدام عامل المساواة <code>=</code>. توجد هذه الدالة في المكتبة القياسية تحت اسم <code>List.mem</code>.</p>
+<p><strong>2.22</strong> اكتب دالة <code>count:’a-&gt;’alist-&gt;int</code> تحسب عدد مرات ظهور عنصر في قائمة، باستخدام عامل المساواة <code>=</code>.</p>
+<p><strong>2.23</strong> أعد كتابة دالة <code>count</code> من التمرين السابق باستخدام مكرِّر (iterator).</p>
+<p><strong>2.24</strong> اكتب دالة <code>append:’alist-&gt;’alist-&gt;’alist</code> تلصق قائمتين. إذا كانت l1 = [x1;…;xn] و l2 = [y1;…;ym]، فإن نتيجة <code>append</code> l1 l2 يجب أن تكون القائمة [x1;…;xn;y1;…;ym] ذات الطول n + m. تصرَّف بالتكرار على القائمة الأولى، وبالتالي إجراء n استدعاء تكراري. توفر مكتبة أوسمل القياسية هذه الدالة تحت اسم <code>List.append</code> وكعامل الوصل <code>@</code>.</p>
+<p><strong>2.25</strong> باستخدام الدالة <code>append</code> أعلاه، اكتب دالة <code>rev</code> من النوع <code>’alist-&gt;’alist</code> تعكس ترتيب عناصر قائمة، أي بحيث <code>rev</code> [x1;…;xn] = [xn;…;x1]. في القسم التالي، سنناقش طريقة أكثر كفاءة لتنفيذ هذه الدالة.</p>
+<p><strong>2.26</strong> اكتب دالة <code>subseq:’alist-&gt;’alist-&gt;bool</code> تحدد ما إذا كانت قائمة w1 تسلسلًا فرعيًا (sub-sequence) لقائمة أخرى w2، أي يمكن الحصول على w1 بإزالة صفر أو أكثر من عناصر w2. على سبيل المثال، [1;5;4;1] تسلسل فرعي لـ [3;1;1;5;0;4;1].</p>
+<p><strong>2.27</strong> اكتب دالة <code>exists:(’a-&gt;bool)-&gt;’alist-&gt;bool</code> تأخذ دالة بولية p وقائمة l كوسيطين، وتحدد ما إذا كانت l تحتوي على عنصر واحد على الأقل x بحيث p(x) تساوي <code>true</code>.</p>
+<p><strong>2.28</strong> باستخدام <code>List.fold_left</code>، اكتب دالة <code>forall:(’a-&gt;bool)-&gt;’alist-&gt;bool</code> تحدد ما إذا كانت جميع عناصر قائمة من النوع <code>’alist</code> تفي بشرط معطى بدالة من النوع <code>’a-&gt;bool</code>. ما هي مشكلة هذا الحل؟ اقترح نسخة أكثر كفاءة.</p>
+<p><strong>2.29</strong> اكتب دالة <code>filter:(’a-&gt;bool)-&gt;’alist-&gt;’alist</code> تأخذ دالة بولية p وقائمة l كوسيطين، وتعيد قائمة جميع العناصر x من l التي تحقق p(x) = <code>true</code>. حافظ على ترتيب العناصر. توجد هذه الدالة في المكتبة القياسية تحت اسم <code>List.filter</code>.</p>
+<p><strong>2.30</strong> باستخدام مكرِّر، اكتب دالة <code>max_seq:boollist-&gt;int</code> تعيد طول أطول تسلسل من القيم <code>true</code> المتتالية في قائمة معينة.</p>
+<p><strong>2.31</strong> اكتب دالة <code>first:(’a-&gt;bool)-&gt;’alist-&gt;’a</code> تعيد أول عنصر من القائمة الممررة كوسيطة يحقق الشرط المعطى. إذا لم يكن مثل هذا العنصر موجودًا، يجب أن ترفع الدالة الاستثناء <code>Not_found</code>.</p>
+<p><strong>2.32</strong> اكتب مكرِّر <code>fold_pairs</code> من النوع:</p>
+<p><code>fold_pairs:(’a-&gt;’b-&gt;’b-&gt;’a)-&gt;’a-&gt;’blist-&gt;’a</code></p>
+<p>يأخذ المكرِّر كوسيطين دالة f، قيمة v، وقائمة [x1;…;xn]، ويعيد:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">(</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi>f</mi><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">(</mo><mi>v</mi><mo separator="true">,</mo><mi>x</mi><mn>1</mn><mo separator="true">,</mo><mi>x</mi><mn>2</mn><mo stretchy="false">)</mo><mo separator="true">,</mo><mi>x</mi><mn>2</mn><mo separator="true">,</mo><mi>x</mi><mn>3</mn><mo stretchy="false">)</mo><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><mi>x</mi><mi>n</mi><mo>−</mo><mn>1</mn><mo separator="true">,</mo><mi>x</mi><mi>n</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><mi>x</mi><mi>n</mi><mo separator="true">,</mo><mi>x</mi><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f(f(...f(f(v,x1,x2),x2,x3),...,xn -1,xn),xn,x1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord">...</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">x</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">x</span><span class="mord">2</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">x</span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">x</span><span class="mord">3</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">...</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">x</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">x</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">x</span><span class="mord mathnormal">n</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">x</span><span class="mord">1</span><span class="mclose">)</span></span></span></span></span>
+<p>بعبارة أخرى، تجتاز الدالة جميع أزواج العناصر المتتالية (xi,xi+1)، حيث تُعتبَر القائمة دائرية.</p>
+<p><strong>2.33</strong> اقترح دالة لإنشاء مصفوفة <code>init_matrix</code>، مشابهة لـ <code>Array.init</code>، من النوع:</p>
+<pre><code class="language-ocaml">    init_matrix: (<span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; ’a) -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; ’a <span class="hljs-built_in">array</span> <span class="hljs-built_in">array</span>
+</code></pre>
+<p><strong>2.34</strong> اكتب دالة تجول:</p>
+<pre><code class="language-ocaml">    iter_matrix: (<span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; ’a -&gt; <span class="hljs-built_in">unit</span>) -&gt; ’a <span class="hljs-built_in">array</span> <span class="hljs-built_in">array</span> -&gt; <span class="hljs-built_in">unit</span>
+</code></pre>
+<p>تطبِّق دالة معينة على جميع عناصر مصفوفة. الوسيطان الأولان للدالة هما مؤشرا العنصر المقابل. اشرح لماذا يكون تجول المصفوفة صفًا صفًا (row-wise) أكثر كفاءة من تجولها عمودًا عمودًا (column-wise).</p>
+<h4>بريك أوت دون الطوب</h4>
+<p><strong>2.35</strong> بالنظر إلى ملف <code>a.ml</code> يحتوي على <code>let()=Printf.printf&quot;A\\n&quot;</code> وملف <code>b.ml</code> يحتوي على <code>let()=Printf.printf&quot;B\\n&quot;</code>، قم بترجمة هذين الملفين بشكل منفصل وتحقق من الحصول على نتائج مختلفة اعتمادًا على الترتيب الذي تُمرَّر به الملفات إلى الرابط (linker).</p>
+<p><strong>2.36</strong> بالنظر إلى ستة ملفات <code>a.mli</code>، <code>a.ml</code>، <code>b.ml</code>، <code>c.ml</code>، <code>d.mli</code>، و <code>d.ml</code>، وبمعرفة أن <code>A</code> و <code>B</code> يعتمدان على <code>C</code>، وأن <code>C</code> يعتمد على <code>D</code>، أعطِ جميع الطرق الممكنة لترجمة وربط برنامج يحتوي على وحدات الترجمة الأربع <code>A</code>، <code>B</code>، <code>C</code>، و <code>D</code>.</p>
+<p><strong>2.37</strong> أعد كتابة كود بريك أوت (Breakout) في ملف واحد مع وحدتين فرعيتين <code>Draw</code> و <code>Breakout</code>. أعطِ الوحدة <code>Draw</code> نفس الواجهة المعرفة في <code>draw.mli</code>.</p>
+<h4>سلحفاة لوغو</h4>
+<p><strong>2.38</strong> أعد التمرين <a href="#x7-93003r5">2.5</a> الذي يرسم ندفة ثلج كوخ باستخدام سلحفاة لوغو.</p>
+<p>تلميح: اكتب دالة تكرارية <code>von_koch:int-&gt;float-&gt;unit</code> يكون وسيطها الأول عدد الخطوات التكرارية والثاني طول المقطع [A,B].</p>
+<p><strong>2.39</strong> أعد كتابة الدالة الدالية <code>Turtle</code> כך تكون أيضًا مُعَلَّمَة بوحدة ذات توقيع:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">val</span> open_graph: <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+    <span class="hljs-keyword">val</span> draw_line: <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">unit</span>
+</code></pre>
+<p>هنا، <code>open_graph</code> w h تفتح نافذة بأبعاد w ×h و <code>draw_line</code> x1 y1 x2 y2 ترسم مقطعًا بين النقطتين (x1,y1) و (x2,y2). ثم نفِّذ وحدة بواجهة كهذه باستخدام <code>Graphics</code>.</p>
+<p><strong>2.40</strong> نريد تعريف وحدة تمثل ملفات مزودة بأذونات قراءة وكتابة. لهذا الغرض، نقدم نوع <code>permission</code>.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">type</span> permission = <span class="hljs-type">Read</span> | <span class="hljs-type">Write</span>
+</code></pre>
+<p>عرِّف وحدة <code>Access</code> للتعامل مع حقوق الوصول. ستوفر هذه الوحدة نوعًا مجردًا <code>t</code>، قيمة من النوع <code>t</code> هي <code>default</code>، تمثل الوصول للقراءة والكتابة، ودالتين <code>get</code> و <code>set</code> تسمحان، على التوالي، بالحصول على إذن وتعيينه.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">val</span> get : t -&gt; permission -&gt; <span class="hljs-built_in">bool</span>
+    <span class="hljs-keyword">val</span> set : t -&gt; permission -&gt; <span class="hljs-built_in">bool</span> -&gt; t
+</code></pre>
+<p>ثم عرِّف وحدة أخرى <code>File</code> لتمثيل ملف مزود بحقوق وصول. ستصدِّر هذه الوحدة نوع سجل خاص <code>t</code>، يحتوي على اسم الملف في حقل من النوع <code>string</code> وحقوق الوصول في حقل <code>mutable</code> من النوع <code>Access.t</code>. ستوفر دالة <code>create:string-&gt;t</code> تأخذ اسم الملف كوسيطة، دالة <code>chmod</code> لتعديل حقوق الوصول، دالة <code>open_in:t-&gt;in_channel</code> لفتح ملف للقراءة، ودالة <code>open_out:t-&gt;out_channel</code> لفتح ملف للكتابة. الدالتان الأخيرتان</p>
+<p>سترفعان استثناء <code>PermissionDenied</code> في حال عدم كفاية الأذونات.</p>
+<p><strong>2.41</strong> اكتب وحدات متعددة للتعامل مع القيم النقدية بعملات مختلفة. يجب أن تكون لجميع الوحدات نفس التوقيع:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">MONEY</span> = <span class="hljs-keyword">sig</span>
+    <span class="hljs-keyword">type</span> t = <span class="hljs-keyword">private</span> { i : <span class="hljs-built_in">int</span>; f : <span class="hljs-built_in">int</span> }
+    <span class="hljs-keyword">val</span> create : <span class="hljs-built_in">int</span> -&gt; <span class="hljs-built_in">int</span> -&gt; t
+    <span class="hljs-keyword">val</span> add : t -&gt; t -&gt; t
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>تمثَّل القيمة النقدية بعدد صحيح <code>i</code> وكسر <code>f</code> بين 0 و 99، يمثل عدد السنتات. العدد الصحيح <code>i</code> موقع. اكتب وحدة <code>Money</code> تنفذ التوقيع <code>MONEY</code>. اشتق منها وحدتين <code>Euro</code> و <code>Dollar</code>، كلتاهما ذات توقيع <code>MONEY</code> وبنية <code>Money</code>، لكن بنوعي <code>Euro.t</code> و <code>Dollar.t</code> متميزين. أخيرًا، اكتب دالة <code>euros_to_dollars:float-&gt;Euro.t-&gt;Dollar.t</code> تحوِّل اليورو إلى دولارين عند إعطاء سعر صرف.</p>
+<p><strong>2.42</strong> اكتب وحدة لتمثيل مجموعات من الأعداد الصحيحة بقوائم مرتبة ترتيبًا تصاعديًا، بالتوقيع التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">ISET</span> = <span class="hljs-keyword">sig</span>
+    <span class="hljs-keyword">type</span> t
+    <span class="hljs-keyword">val</span> empty : t
+    <span class="hljs-keyword">val</span> add : <span class="hljs-built_in">int</span> -&gt; t -&gt; t
+    <span class="hljs-keyword">val</span> union : t -&gt; t -&gt; t
+    <span class="hljs-keyword">val</span> mem : <span class="hljs-built_in">int</span> -&gt; t -&gt; <span class="hljs-built_in">bool</span>
+  <span class="hljs-keyword">end</span>
+</code></pre>
+<p>ما هي ميزة جعل النوع <code>t</code> نوعًا مجردًا؟</p>
+<p><strong>2.43</strong> أعد كتابة كود التمرين السابق على شكل دالة دالية (functor) مُعلمة بنوع العناصر ودالة تحدد ترتيبًا كليًا عليها، أي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">ELT</span> = <span class="hljs-keyword">sig</span> <span class="hljs-keyword">type</span> t <span class="hljs-keyword">val</span> compare: t -&gt; t -&gt; <span class="hljs-built_in">int</span> <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">module</span> <span class="hljs-type">Set</span>(<span class="hljs-type">E</span>: <span class="hljs-type">ELT</span>) : ... = <span class="hljs-keyword">struct</span> ... <span class="hljs-keyword">end</span>
+</code></pre>
+<p>هنا، قيمة <code>compare</code> x y سالبة قطعًا إذا x &lt; y، صفرية إذا x = y، وموجبة قطعًا إذا x &gt; y.</p>
+<p><strong>2.44</strong> طبِّق دالة الدالة من التمرين السابق للحصول على مجموعات من الأعداد الصحيحة الزوجية، مانحًا إياها ترتيبًا كليًا عشوائيًا.</p>
+<p><strong>2.45</strong> اكتب بنية بيانات لحدوديات متغير واحد. الفكرة هي تمثيل حدية باستخدام القائمة المرتبة لحدودها (monomials)، حيث يمثَّل كل حدٍّ بزوج من معامل وأس. وهكذا، تُمثَّل الحدية X7 − 3X4 + 2 بالقائمة [(1,7);(−3,4);(2,0)]. من أجل أن تكون عامة بالنسبة لحلقة المعاملات، اكتب بنية الحدوديات كدالة دالية <code>Poly</code> مُعلمة بوحدة ذات توقيع:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">module</span> <span class="hljs-keyword">type</span> <span class="hljs-type">Ring</span> = <span class="hljs-keyword">sig</span>
+      <span class="hljs-keyword">type</span> t
+      <span class="hljs-keyword">val</span> zero : t
+      <span class="hljs-keyword">val</span> one : t
+      <span class="hljs-keyword">val</span> add : t -&gt; t -&gt; t
+      <span class="hljs-keyword">val</span> mul : t -&gt; t -&gt; t
+      <span class="hljs-keyword">val</span> equal : t -&gt; t -&gt; <span class="hljs-built_in">bool</span>
+    <span class="hljs-keyword">end</span>
+</code></pre>
+<p>إذا كان <code>R</code> يُشير إلى وسيط دالة الدالة <code>Poly</code>، يجب أن توفر الأخيرة الدوال التالية:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">type</span> t
+    <span class="hljs-keyword">val</span> create: (<span class="hljs-type">R</span>.t * <span class="hljs-built_in">int</span>) <span class="hljs-built_in">list</span> -&gt; t
+    <span class="hljs-keyword">val</span> add: t -&gt; t -&gt; t
+    <span class="hljs-keyword">val</span> eval: t -&gt; <span class="hljs-type">R</span>.t -&gt; <span class="hljs-type">R</span>.t
+</code></pre>
+<p>هنا، <code>t</code> هو نوع الحدوديات، <code>create</code> تنشئ حدية بناءً على قائمة من الحدود، <code>add</code> تجمع حديتين، و <code>eval</code> تقيِّم حدية عند نقطة.
+تلميح: ابدأ بالدالة <code>add</code> (انظر التمرين <a href="#x7-100019r42">2.42</a>) ثم استخدمها لكتابة الدالة <code>create</code>.</p>
+<p><strong>2.46</strong> واصِل التمرين السابق بإضافة ثابتتين، <code>zero</code> و <code>one</code>، ودالتين، <code>mul</code> و <code>equal</code>، إلى توقيع دالة الدالة <code>Poly</code>. هذا يمنح الحدوديات بنية حلقة. بعبارة أخرى، يمكن كتابة توقيع دالة الدالة <code>Poly</code> بمصطلحات التوقيع <code>Ring</code>. البنيان <code>include</code> هو اختصار نحوي لتضمين تعريف توقيع في آخر:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">sig</span>
+      <span class="hljs-keyword">include</span> <span class="hljs-type">Ring</span>
+      <span class="hljs-keyword">val</span> create: (<span class="hljs-type">R</span>.t * <span class="hljs-built_in">int</span>) <span class="hljs-built_in">list</span> -&gt; t
+      <span class="hljs-keyword">val</span> eval: t -&gt; <span class="hljs-type">R</span>.t -&gt; <span class="hljs-type">R</span>.t
+    <span class="hljs-keyword">end</span>
+</code></pre>
+<p>وبذلك، يمكن الحصول على حدوديات بعدة متغيرات بتطبيق دالة الدالة <code>Poly</code> عدة مرات متتالية. على سبيل المثال، تُحصل بنية حدوديات ثلاثة متغيرات ومعاملات صحيحة كالتالي:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">module</span> <span class="hljs-type">P</span> = <span class="hljs-type">Poly</span>(<span class="hljs-type">Poly</span>(<span class="hljs-type">Poly</span>(<span class="hljs-type">Int</span>)))
+</code></pre>
+<p>يُفترَض هنا أن <code>Int</code> تنفذ التوقيع <code>Ring</code> للأعداد الصحيحة.</p>
+<h4>أشجار رباعية (Quadtrees)</h4>
+<p><strong>2.47</strong> اكتب دالة <code>rotate:quad-&gt;quad</code> تدير صورة عكس اتجاه عقارب الساعة بمقدار 90 درجة.</p>
+<p><strong>2.48</strong> اكتب دالة <code>mirror:quad-&gt;quad</code> تبني التماثل المرآتي على المحور العمودي لصورة ممثلة بشجرة رباعية. هكذا، تسمح الدالة <code>mirror</code> بالتبديل بين الصورتين التاليتين:</p>
+<p><strong>2.49</strong> اكتب دالة <code>fractal:int-&gt;quad</code> تبني شجرة رباعية تمثل كسير سجادة سيربينسكي (Sierpiński carpet fractal)، بتكرار عملية التحلل التالية:</p>
+<h4>حل مشكلة N-Queens (الملكات N)</h4>
+<p><strong>2.50</strong> عدِّل البرنامج <a href="#x7-87006r16">16</a> ليعيد أول حل موجود، في شكل مصفوفة a تعطي العمود a[i] للملكة الموجودة في الصف i. عندما لا يوجد حل، يجب رفع الاستثناء <code>Not_found</code>.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>حل آخر، تتبناه جداول التجزئة (hash tables) في مكتبة أوسمل القياسية، يتكون في استخدام مصفوفة حجمها <code>n</code> قوة لـ 2. يمكن حينئذ تنفيذ عملية الباقي (modulo) بـ <code>land(n-1)</code>، مع ميزة إضافية هي كونها أرخص بكثير من القسمة. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>يأتي هذا من كلمة re<em>trie</em>val (الاسترجاع). <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>البرنامج <code>seq</code> أداة يونكس (Unix) تعرض جميع الأعداد الصحيحة من 1 إلى n، عدد صحيح واحد في كل سطر. إنها أبسط طريقة للحصول على n أسطر نصية بالضبط. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>سيقدم الفصل <a href="https://usr.lmf.cnrs.fr/lpo/mainch9.html#zippers">9</a> نوعًا آخر من المكرِّرات (iterators) يمكنه حل هذه المشكلة. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>هنا، نستخدم نظام التسمية الفرنسي للرموز الموسيقية، المُستخدَم في العديد من البلدان الأخرى أيضًا. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+</div>`,o={book:s,chapter:a,chapterTitle:n,slug:e,title:l,headings:p,html:c};export{s as book,a as chapter,n as chapterTitle,o as default,p as headings,c as html,e as slug,l as title};

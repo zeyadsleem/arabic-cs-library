@@ -1,0 +1,99 @@
+const s="mooc",a="part-14",n="الجزء 14: مشروع اللعبة",l="2-robot-and-boxes",e="الروبوت والصناديق",p=[{depth:2,id:"معالجة-أحداث-المفاتيح",text:"معالجة أحداث المفاتيح"},{depth:2,id:"البحث-عن-الروبوت",text:"البحث عن الروبوت"},{depth:2,id:"تعديلات-على-شبكة-اللعبة",text:"تعديلات على شبكة اللعبة"},{depth:3,id:"الموقع-القديم-والجديد-للروبوت",text:"الموقع القديم والجديد للروبوت"},{depth:3,id:"هل-اصطدم-الروبوت-بجدار",text:"هل اصطدم الروبوت بجدار؟"},{depth:3,id:"تحريك-صندوق",text:"تحريك صندوق"},{depth:3,id:"تحريك-الروبوت",text:"تحريك الروبوت"},{depth:2,id:"إعادة-هيكلة",text:"إعادة هيكلة؟"}],o=`<p>أصعب ما في تنفيذ لعبة بأسلوب سوكوبان هو تحرير الروبوت بحيث يستطيع دفع الصناديق بالاتجاه المطلوب. وينبغي للعبة أن تستطيع معرفة متى يستطيع الروبوت التحرّك في اتجاه معيّن، وأن تستطيع التعامل مع أي موقف يتطلّب حركة صندوق أيضًا. لنواجه هذا التحدّي الآن.</p>
+<h2 id="معالجة-أحداث-المفاتيح">معالجة أحداث المفاتيح</h2>
+<p>يوجّه اللاعب الروبوت بمفاتيح الأسهم الأربعة، لذا ينبغي لمُعالج الأحداث لدينا أن يكون قادرًا على الاستجابة لأحداث المفاتيح المناسبة:</p>
+<pre><code class="language-python">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">check_events</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">for</span> event <span class="hljs-keyword">in</span> pygame.event.get():
+            <span class="hljs-keyword">if</span> event.<span class="hljs-built_in">type</span> == pygame.KEYDOWN:
+                <span class="hljs-keyword">if</span> event.key == pygame.K_LEFT:
+                    <span class="hljs-variable language_">self</span>.move(<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>)
+                <span class="hljs-keyword">if</span> event.key == pygame.K_RIGHT:
+                    <span class="hljs-variable language_">self</span>.move(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>)
+                <span class="hljs-keyword">if</span> event.key == pygame.K_UP:
+                    <span class="hljs-variable language_">self</span>.move(-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>)
+                <span class="hljs-keyword">if</span> event.key == pygame.K_DOWN:
+                    <span class="hljs-variable language_">self</span>.move(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>)
+
+            <span class="hljs-keyword">if</span> event.<span class="hljs-built_in">type</span> == pygame.QUIT:
+                exit()
+</code></pre>
+<p>الآن فكلّما ضغط اللاعب مفتاح أسهم، تُستدعى الطريقة <code>move</code> بزوج وسطاء مناسب. يحوي الوسيط الأول الحركة في الاتجاه الرأسي، بينما يحوي الثاني الحركة في الاتجاه الأفقي.</p>
+<h2 id="البحث-عن-الروبوت">البحث عن الروبوت</h2>
+<p>تحتاج اللعبة إلى معرفة موقع الروبوت لتحرّكه بشكل صحيح. لنُضِف الطريقة <code>find_robot</code> التي تُحدّد موقع الروبوت:</p>
+<pre><code class="language-python">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">find_robot</span>(<span class="hljs-params">self </span>):
+        <span class="hljs-keyword">for</span> y <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.height):
+            <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.width):
+                <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span>[y][x] <span class="hljs-keyword">in</span> [<span class="hljs-number">4</span>, <span class="hljs-number">6</span>]:
+                    <span class="hljs-keyword">return</span> (y, x)
+</code></pre>
+<p>تمرّ الطريقة على جميع مربّعات شبكة اللعبة وتُعيد إحداثيات المربّع الذي يحمل إمّا العدد 4 (الروبوت وحده) أو العدد 6 (الروبوت داخل مربّع هدف).</p>
+<p>الفكرة هي أنّ كلّما ضغط اللاعب مفتاح أسهم، يُحدَّد أوّلًا موقع الروبوت بالمرور على مربّعات الشبكة. وقد يبدو هذا بطيئًا إلى حدٍّ وبائدًا، إذ كان يمكننا بسهولة الاحتفاظ بمتغيّر أو متغيّرين منفصلين لتخزين موقع الروبوت. وميزة هذا النهج البحثي أنّنا لا نخزّن موقع الروبوت في موضعين مختلفين (في شبكة اللعبة *ومتغيّرات منفصلة)، بل نهتمّ بالموضع الواحد فقط (شبكة اللعبة)، وهذا يعني أنّ حالة اللعبة في ذاكرة الحاسوب أسهل في التعامل معها.</p>
+<h2 id="تعديلات-على-شبكة-اللعبة">تعديلات على شبكة اللعبة</h2>
+<p>استدعينا الطريقة <code>move</code> سابقًا، لكننا لم نُعرِّفها بعد. لنفعل ذلك الآن.</p>
+<p>تأخذ الطريقة <code>move</code> الاتجاه الذي يريد اللاعب التحرّك إليه كوسطاء. ثم تُحدِّث شبكة اللعبة وفقًا لذلك، أو تُقرّر أنّ الحركة غير مسموحة وتترك الشبكة دون تغيير.</p>
+<pre><code class="language-python">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">move</span>(<span class="hljs-params">self, move_y, move_x</span>):
+        robot_old_y, robot_old_x = <span class="hljs-variable language_">self</span>.find_robot() 
+        robot_new_y = robot_old_y + move_y
+        robot_new_x = robot_old_x + move_x
+
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span>[robot_new_y][robot_new_x] == <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span>
+
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span>[robot_new_y][robot_new_x] <span class="hljs-keyword">in</span> [<span class="hljs-number">3</span>, <span class="hljs-number">5</span>]:
+            box_new_y = robot_new_y + move_y
+            box_new_x = robot_new_x + move_x
+
+            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span>[box_new_y][box_new_x] <span class="hljs-keyword">in</span> [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>]:
+                <span class="hljs-keyword">return</span>
+
+            <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span>[robot_new_y][robot_new_x] -= <span class="hljs-number">3</span>
+            <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span>[box_new_y][box_new_x] += <span class="hljs-number">3</span>
+
+        <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span>[robot_old_y][robot_old_x] -= <span class="hljs-number">4</span>
+        <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span>[robot_new_y][robot_new_x] += <span class="hljs-number">4</span>
+</code></pre>
+<p>تحتوي الطريقة على مراحل مختلفة كثيرة، لننظر في كل واحدة منها بدورها:</p>
+<h3 id="الموقع-القديم-والجديد-للروبوت">الموقع القديم والجديد للروبوت</h3>
+<pre><code class="language-python">        robot_old_y, robot_old_x = <span class="hljs-variable language_">self</span>.find_robot() 
+        robot_new_y = robot_old_y + move_y
+        robot_new_x = robot_old_x + move_x
+</code></pre>
+<p>أوّلًا، تستدعي الطريقة <code>find_robot</code> لتحديد الموقع الحالي للروبوت قبل الحركة، ويُخزَّن ذلك في المتغيّرين <code>robot_old_y</code> و<code>robot_old_x</code>.</p>
+<p>ثم يُخزَّن الموقع الجديد للروبوت بعد الحركة المتوقّعة في المتغيّرين <code>robot_new_y</code> و<code>robot_new_x</code>. ويمكن حساب الإحداثيات الجديدة بسهولة بجمع القيم المُمرَّرة كوسطاء على الموقع القديم للروبوت، إذ يحوي كلٌّ منهما قيمًا رأسية وأفقية.</p>
+<h3 id="هل-اصطدم-الروبوت-بجدار">هل اصطدم الروبوت بجدار؟</h3>
+<pre><code class="language-python">        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span>[robot_new_y][robot_new_x] == <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span>
+</code></pre>
+<p>تتولّى جملة <code>if</code> أعلاه الموقف الذي يصطدم فيه الروبوت بجدار نتيجةً للحركة. تذكّر أنّ 1 كان موضع مربّع الجدار في قائمة الصور. وهذا غير مسموح، فتُعيد الطريقة ببساطة دون أيّ شيء آخر.</p>
+<h3 id="تحريك-صندوق">تحريك صندوق</h3>
+<pre><code class="language-python">        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span>[robot_new_y][robot_new_x] <span class="hljs-keyword">in</span> [<span class="hljs-number">3</span>, <span class="hljs-number">5</span>]:
+            box_new_y = robot_new_y + move_y
+            box_new_x = robot_new_x + move_x
+
+            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span>[box_new_y][box_new_x] <span class="hljs-keyword">in</span> [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>]:
+                <span class="hljs-keyword">return</span>
+
+            <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span>[robot_new_y][robot_new_x] -= <span class="hljs-number">3</span>
+            <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span>[box_new_y][box_new_x] += <span class="hljs-number">3</span>
+</code></pre>
+<p>إذا كان الموقع الجديد المحتمل للروبوت يحوي العدد 3 (صندوق وحده) أو العدد 5 (صندوق داخل مربّع هدف)، يحاول الروبوت تحريك الصندوق إلى المربّع التالي على التوالي. ولهذا الغرض نحتاج إلى متغيّرين جديدين: <code>box_new_y</code> و<code>box_new_x</code>، اللذين يحويان موقع الصندوق بعد الحركة.</p>
+<p>وكما هو الحال مع الروبوت، لا يمكن تحريك الصندوق إلى مربّع جدار يحمل المعرّف 1. كما لا يمكن للصندوق أن ينتقل فوق صندوق آخر، أو إلى مربّع هدف يحوي صندوقًا. لو حدث ذلك نتيجةً للحالة، تُعيد الطريقة ببساطة دون إحداث أيّ تغيير في الشبكة.</p>
+<p>وفي أيّ حالة أخرى يمكن للصندوق أن يتحرّك. يُخصم 3 من القيمة في موضع الصندوق الحالي بالشبكة، ويُضاف 3 إلى قيمته في موضعه الجديد. وبسبب الترتيب الذكي لبنود قائمة <code>images</code>، يظهر هذا صحيحًا سواء تضمّنت الحركة مربّعات أرضية أم مربّعات هدف.</p>
+<h3 id="تحريك-الروبوت">تحريك الروبوت</h3>
+<pre><code class="language-python">        <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span>[robot_old_y][robot_old_x] -= <span class="hljs-number">4</span>
+        <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span>[robot_new_y][robot_new_x] += <span class="hljs-number">4</span>
+</code></pre>
+<p>إذا وصل تنفيذ الطريقة إلى هذه النقطة دون إعادة، حان وقت تحريك الروبوت أيضًا. والإجراء مشابه لتحريك الصندوق، لكن القيمة التي تُخصم وتُضاف إلى الموضعين المناسبين في الشبكة هي 4 هذه المرة. وهذا يضمن — من جديد بفضل الترتيب الذكي لبنود قائمة <code>images</code> — أنّ النتيجة النهائية على الشبكة صحيحة سواء تضمّنت الحركة مربّعات أرضية أم مربّعات هدف.</p>
+<h2 id="إعادة-هيكلة">إعادة هيكلة؟</h2>
+<p>استخدام الشبكة وحدها لتخزين حالة اللعبة في كل وقت مفيد للغاية، من حيث إنّ متغيّرًا واحدًا فقط هو المعنيّ بهذا العملية كاملة، ومن السهل تحديث حالة الشبكة عبر جمع وطرح بسيط.</p>
+<p>والعيب في ذلك أنّه قد يصبح من الصعب قليلًا فهم شيفرة اللعبة. ولو أنّ شخصًا غير معتاد على المنطق المستخدم رأى السطر التالي من الشيفرة، لربما تحوّل قليلًا:</p>
+<pre><code class="language-python">            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span>[box_new_y][box_new_x] <span class="hljs-keyword">in</span> [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>]:
+</code></pre>
+<p>يستخدم هذا المقتطف من الشيفرة <em>أرقامًا سحرية</em> (magic numbers) للدلالة على مربّعات الشبكة. وكلّ من يقرأ الشيفرة عليه أن يعرف أنّ 1 تعني الجدار، و3 تعني صندوقًا، و5 تعني صندوقًا داخل مربّع هدف.</p>
+<p>وأسطر الجمع والطرح الذكية تبدو غامضة أكثر:</p>
+<pre><code class="language-python">            <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">map</span>[robot_new_y][robot_new_x] -= <span class="hljs-number">3</span>
+</code></pre>
+<p>كان العدد 3 يدلّ على صندوق قبل قليل، والآن يُخصم من قيمة مربّع في الشبكة. ويعمل هذا في سياق نظام الترقيم لدينا، إذ يحوّل صندوقًا (3) إلى مربّع أرضي عادي (0)، أو مربّع هدف يحوي صندوقًا (5) إلى مربّع هدف فارغ (2) — لكن فهم هذا يستلزم مقدّمة في نظام الترقيم المستخدم.</p>
+<p>يمكننا تسهيل الفهم على كلّ من يقرأ الشيفرة عبر <em>إعادة الهيكلة</em> (refactoring) لتنفيذنا. ويعني ذلك تحسين بنية الشيفرة ووضوحها. وإحدى طرق تحقيق ذلك استعمال أسماء المربّعات بدلًا من الأرقام 0 إلى 6، ولو أن هذا لا يشرح أيضًا كيف ولماذا يمكن جمع الأرقام وطرحها مع الحفاظ على سلامة الشبكة.</p>
+<p>ولجعل الشيفرة مفهومة حقًا، يلزم على الأرجح إجراء إعادة هيكلة أكثر جذرية. فعلى سبيل المثال يمكننا الاحتفاظ ببنية خريطة اللعبة في موضع واحد، وتخزين مواقع الروبوت والصناديق في بنية بيانات منفصلة. والعيب في هذا هو أنّه سيؤدّي على الأرجح إلى شيفرة أكثر بكثير، وأنّ البنية الداخلية للعبة ستصبح أعقد بكثير.</p>
+<p>وإعادة الهيكلة وجودة الشيفرة موضوع لدورات لاحقة، مثل <em>منهجيات تطوير البرمجيات</em> و<em>هندسة البرمجيات</em>.</p>
+`,c={book:s,chapter:a,chapterTitle:n,slug:l,title:e,headings:p,html:o};export{s as book,a as chapter,n as chapterTitle,c as default,p as headings,o as html,l as slug,e as title};

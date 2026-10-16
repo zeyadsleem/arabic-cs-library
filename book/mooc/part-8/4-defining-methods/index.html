@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.C9kBkw8T.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/wzL9zxmz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B48Sj80-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.fkPBtkuJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DIwFP-Q7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BuJFa1RM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C-mfcZys.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/4FQnCmEH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.CYJfTZwp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DBCy9BRL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="تعريف التوابع — الجزء 8: الكائنات والصنوف"/><!----><title>تعريف التوابع | برمجة بايثون 2026 — جامعة هلسنكي</title>
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/mooc">برمجة بايثون 2026 — جامعة هلسنكي</a> <span class="reader-bar__chapter">› الجزء 8: الكائنات والصنوف</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 8 من 15">8 / 15</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/mooc/part-8/3-defining-classes">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/mooc/part-8/5-more-examples-of-classes">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>الجزء 1: البدء</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-1/index">الجزء 1</a></li><li><a href="../../../../book/mooc/part-1/1-getting-started">البدء</a></li><li><a href="../../../../book/mooc/part-1/2-information-from-the-user">المعلومات من المستخدم</a></li><li><a href="../../../../book/mooc/part-1/3-more-about-variables">المزيد عن المتغيّرات</a></li><li><a href="../../../../book/mooc/part-1/4-arithmetic-operations">العمليات الحسابية</a></li><li><a href="../../../../book/mooc/part-1/5-conditional-statements">الجمل الشرطية</a></li><!--]--></ul><h3>الجزء 2: الجمل الشرطية</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-2/index">الجزء 2</a></li><li><a href="../../../../book/mooc/part-2/1-programming_terminology">مصطلحات البرمجة</a></li><li><a href="../../../../book/mooc/part-2/2-else-elif">المزيد عن الجمل الشرطية</a></li><li><a href="../../../../book/mooc/part-2/3-combining-conditions">دمج الشروط</a></li><li><a href="../../../../book/mooc/part-2/4-simple-loops">الحلقات البسيطة</a></li><!--]--></ul><h3>الجزء 3: الحلقات</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-3/index">الجزء 3</a></li><li><a href="../../../../book/mooc/part-3/1-loops-with-conditions">الحلقات مع الشروط</a></li><li><a href="../../../../book/mooc/part-3/2-working-with-strings">العمل مع السلاسل النصية</a></li><li><a href="../../../../book/mooc/part-3/3-more-loops">المزيد عن الحلقات</a></li><li><a href="../../../../book/mooc/part-3/4-defining-functions">تعريف الدوال</a></li><!--]--></ul><h3>الجزء 4: الدوال والقوائم</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-4/index">الجزء 4</a></li><li><a href="../../../../book/mooc/part-4/1-vscode">محرر Visual Studio Code ومفسر Python وأداة التنقيح المدمجة</a></li><li><a href="../../../../book/mooc/part-4/2-more-functions">المزيد من الدوال</a></li><li><a href="../../../../book/mooc/part-4/3-lists">القوائم</a></li><li><a href="../../../../book/mooc/part-4/4-definite-iteration">التكرار المحدَّد</a></li><li><a href="../../../../book/mooc/part-4/5-print-statement-formatting">تنسيق أمر الطباعة</a></li><li><a href="../../../../book/mooc/part-4/6-strings-and-lists">المزيد من السلاسل النصية والقوائم</a></li><!--]--></ul><h3>الجزء 5: هياكل البيانات</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-5/index">الجزء 5</a></li><li><a href="../../../../book/mooc/part-5/1-more-lists">المزيد عن القوائم</a></li><li><a href="../../../../book/mooc/part-5/2-references">المراجع</a></li><li><a href="../../../../book/mooc/part-5/3-dictionary">القاموس</a></li><li><a href="../../../../book/mooc/part-5/4-tuple">الصف</a></li><!--]--></ul><h3>الجزء 6: الملفات والأخطاء</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-6/index">الجزء 6</a></li><li><a href="../../../../book/mooc/part-6/1-reading-files">قراءة الملفات</a></li><li><a href="../../../../book/mooc/part-6/2-writing-files">كتابة الملفات</a></li><li><a href="../../../../book/mooc/part-6/3-errors">معالجة الأخطاء</a></li><li><a href="../../../../book/mooc/part-6/4-scope-of-variables">المتغيّرات المحلية والعالمية</a></li><!--]--></ul><h3>الجزء 7: الوحدات</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-7/index">الجزء 7</a></li><li><a href="../../../../book/mooc/part-7/1-modules">الوحدات</a></li><li><a href="../../../../book/mooc/part-7/2-randomness">العشوائية</a></li><li><a href="../../../../book/mooc/part-7/3-times-and-dates">الأوقات والتواريخ</a></li><li><a href="../../../../book/mooc/part-7/4-data-processing">معالجة البيانات</a></li><li><a href="../../../../book/mooc/part-7/5-creating-modules">إنشاء وحداتك الخاصة</a></li><li><a href="../../../../book/mooc/part-7/6-more-features">المزيد من ميزات Python</a></li><!--]--></ul><h3 class="active-chapter">الجزء 8: الكائنات والصنوف</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-8/index">الجزء 8</a></li><li><a href="../../../../book/mooc/part-8/1-objects-and-methods">الكائنات والتابعات</a></li><li><a href="../../../../book/mooc/part-8/2-classes-and-objects">الأصناف والكائنات</a></li><li><a href="../../../../book/mooc/part-8/3-defining-classes">تعريف الأصناف</a></li><li><a href="../../../../book/mooc/part-8/4-defining-methods" class="active">تعريف التوابع</a></li><li><a href="../../../../book/mooc/part-8/5-more-examples-of-classes">المزيد من أمثلة الأصناف</a></li><!--]--></ul><h3>الجزء 9: المزيد عن الكائنات</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-9/index">الجزء 9</a></li><li><a href="../../../../book/mooc/part-9/1-objects-and-references">الكائنات والمراجع</a></li><li><a href="../../../../book/mooc/part-9/2-objects-as-attributes">الكائنات كخصائص</a></li><li><a href="../../../../book/mooc/part-9/3-encapsulation">التغليف</a></li><li><a href="../../../../book/mooc/part-9/4-scope-of-methods">نطاق التوابع</a></li><li><a href="../../../../book/mooc/part-9/5-class-attributes">خصائص الصنف</a></li><li><a href="../../../../book/mooc/part-9/6-more-examples-with-classes">مزيد من الأمثلة على الأصناف</a></li><!--]--></ul><h3>الجزء 10: تراكيب الأصناف</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-10/index">الجزء 10</a></li><li><a href="../../../../book/mooc/part-10/1-class-hierarchies">تراكيب الأصناف</a></li><li><a href="../../../../book/mooc/part-10/2-access-modifiers">مُعدِّلات الوصول</a></li><li><a href="../../../../book/mooc/part-10/3-oo-programming-techniques">تقنيات البرمجة الكائنية</a></li><li><a href="../../../../book/mooc/part-10/4-application-development">تطوير تطبيق أكبر</a></li><!--]--></ul><h3>الجزء 11: ميزات متقدمة</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-11/index">الجزء 11</a></li><li><a href="../../../../book/mooc/part-11/1-list-comprehensions">إدراكات القوائم</a></li><li><a href="../../../../book/mooc/part-11/2-more-comprehensions">المزيد من الإدراكات</a></li><li><a href="../../../../book/mooc/part-11/3-recursion">التعاود</a></li><li><a href="../../../../book/mooc/part-11/4-more-recursion-examples">المزيد من أمثلة التعاود</a></li><!--]--></ul><h3>الجزء 12: البرمجة الدالية</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-12/index">الجزء 12</a></li><li><a href="../../../../book/mooc/part-12/1-functions-as-arguments">الدوال كوسائط</a></li><li><a href="../../../../book/mooc/part-12/2-generators">المولّدات</a></li><li><a href="../../../../book/mooc/part-12/3-functional-programming">البرمجة الدالية</a></li><li><a href="../../../../book/mooc/part-12/4-regular-expressions">التعبيرات النمطية</a></li><!--]--></ul><h3>الجزء 13: الألعاب مع Pygame</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-13/index">الجزء 13</a></li><li><a href="../../../../book/mooc/part-13/1-pygame">مكتبة pygame</a></li><li><a href="../../../../book/mooc/part-13/2-animation">التحريك</a></li><li><a href="../../../../book/mooc/part-13/3-events">الأحداث</a></li><li><a href="../../../../book/mooc/part-13/4-more-pygame-techniques">تقنيات pygame إضافية</a></li><!--]--></ul><h3>الجزء 14: مشروع اللعبة</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-14/index">الجزء 14</a></li><li><a href="../../../../book/mooc/part-14/1-game-project">مشروع اللعبة</a></li><li><a href="../../../../book/mooc/part-14/2-robot-and-boxes">الروبوت والصناديق</a></li><li><a href="../../../../book/mooc/part-14/3-finishing-the-game">إنهاء اللعبة</a></li><li><a href="../../../../book/mooc/part-14/4-your-own-game">لعبتك الخاصة</a></li><!--]--></ul><h3>صفحات مساعدة</h3> <ul><!--[--><li><a href="../../../../book/mooc/auxiliary/index">عن هذه الدورة</a></li><li><a href="../../../../book/mooc/auxiliary/frontmatter-guide">دليل بيانات الترويسة الأمامية</a></li><li><a href="../../../../book/mooc/auxiliary/vocabulary">المفردات</a></li><li><a href="../../../../book/mooc/auxiliary/error_messages">رسائل الأخطاء الشائعة</a></li><li><a href="../../../../book/mooc/auxiliary/faq">الأسئلة الشائعة</a></li><li><a href="../../../../book/mooc/auxiliary/exam_adv">اختبار الدورة المتقدمة في البرمجة 15.08.</a></li><li><a href="../../../../book/mooc/auxiliary/exam_intro">اختبار مقدمة في البرمجة 05.09.</a></li><li><a href="../../../../book/mooc/auxiliary/support-and-assistance">الدعم والمساعدة</a></li><li><a href="../../../../book/mooc/auxiliary/all-exercises">جميع التمارين</a></li><li><a href="../../../../book/mooc/auxiliary/exam">اختبار 4.6.</a></li><li><a href="../../../../book/mooc/auxiliary/grading-and-exams">التقييم والاختبارات</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>تعريف التوابع</h1> <!--[0--><nav class="toc-inline" aria-label="في هذا القسم"><p>في هذا القسم</p> <ul><!--[--><li><a href="#التوابع-في-الأصناف">التوابع في الأصناف</a></li><li><a href="#التغليف">التغليف</a></li><li><a href="#إنقاص-قيمة-العداد">إنقاص قيمة العدّاد</a></li><li><a href="#يجب-ألا-تكون-قيمة-العداد-سالبة">يجب ألّا تكون قيمة العدّاد سالبة</a></li><li><a href="#ضبط-القيمة-على-صفر">ضبط القيمة على صفر</a></li><li><a href="#إعادة-ضبط-العداد">إعادة ضبط العدّاد</a></li><li><a href="#عد-الأعداد">عدّ الأعداد</a></li><li><a href="#المجموع-والمتوسط">المجموع والمتوسط</a></li><li><a href="#مدخل-المستخدم">مُدخَل المستخدم</a></li><li><a href="#مجاميع-متعددة">مجاميع متعدّدة</a></li><!--]--></ul></nav><!--]--> <!--[-1--><div class="reader-content"><!----><blockquote>
+<p><strong>أهداف التعلّم</strong></p>
+<p>بعد إتمام هذا القسم</p>
+<ul>
+<li>ستعرف كيف تعمل توابع الصنف</li>
+<li>ستكون قادرًا على كتابة توابع جديدة في أصنافك الخاصة</li>
+<li>ستفهم مفهومي التغليف والعميل في البرمجة كائنية التوجّه</li>
+</ul>
+</blockquote>
+<p>الصنوف التي لا تحتوي إلا على خصائص بيانات لا تختلف كثيرًا عن القواميس. وستجد أدناه طريقتين لتمثيل حساب مصرفي، الأولى بتعريف صنف، ثم باستخدام قاموس.</p>
+<pre><code class="language-python"><span class="hljs-comment"># Example 1: bank account with class definition</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">BankAccount</span>:
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, account_number: <span class="hljs-built_in">str</span>, owner: <span class="hljs-built_in">str</span>, balance: <span class="hljs-built_in">float</span>, annual_interest: <span class="hljs-built_in">float</span></span>):
+        <span class="hljs-variable language_">self</span>.account_number = account_number
+        <span class="hljs-variable language_">self</span>.owner = owner
+        <span class="hljs-variable language_">self</span>.balance = balance
+        <span class="hljs-variable language_">self</span>.annual_interest = annual_interest
+
+peters_account = BankAccount(<span class="hljs-string">&quot;12345-678&quot;</span>, <span class="hljs-string">&quot;Peter Python&quot;</span>, <span class="hljs-number">1500.0</span>, <span class="hljs-number">0.015</span>)
+</code></pre>
+<pre><code class="language-python"><span class="hljs-comment"># Example 2: bank account with dictionary</span>
+peters_account = {<span class="hljs-string">&quot;account_number&quot;</span>: <span class="hljs-string">&quot;12345-678&quot;</span>, <span class="hljs-string">&quot;owner&quot;</span>: <span class="hljs-string">&quot;Peter Python&quot;</span>, <span class="hljs-string">&quot;balance&quot;</span>: <span class="hljs-number">1500.0</span>, <span class="hljs-string">&quot;annual_interest&quot;</span>: <span class="hljs-number">0.015</span>}
+</code></pre>
+<p>مع القاموس يكون التنفيذ أقصر بكثير وأكثر مباشرة. أما مع الصنف فالبنية أكثر «إحكامًا»، بحيث يمكننا أن نتوقّع أن تكون كل كائنات <code>BankAccount</code> متشابهة في البنية. والصنف يحمل اسمًا أيضًا. فيُشار إلى الصنف <code>BankAccount</code> عند إنشاء حساب مصرفي جديد، ويكون نوع الكائن <code>BankAccount</code> لا <code>dict</code>.</p>
+<p>ومن المزايا المهمّة الأخرى للأصناف أنها، إضافة إلى البيانات، يمكن أن تحتوي على وظائف. ومن المبادئ الموجِّهة في البرمجة كائنية التوجّه أن الكائن يُستخدم للوصول إلى كلٍّ من البيانات المرتبطة بالكائن والوظائف اللازمة لمعالجة تلك البيانات.</p>
+<h2 id="التوابع-في-الأصناف">التوابع في الأصناف</h2>
+<p>التابع هو برنامج فرعي أو دالة مرتبطة بصنف معيّن. وعادةً لا يؤثر التابع إلا في كائن واحد. ويُعرَّف التابع داخل تعريف الصنف، ويمكنه الوصول إلى خصائص بيانات الصنف تمامًا مثل أي متغيّر آخر.</p>
+<p>لنواصل مع الصنف <code>BankAccount</code> الذي قدّمناه أعلاه. ولدينا أدناه تابع جديد يضيف الفائدة إلى الحساب:</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BankAccount</span>:
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, account_number: <span class="hljs-built_in">str</span>, owner: <span class="hljs-built_in">str</span>, balance: <span class="hljs-built_in">float</span>, annual_interest: <span class="hljs-built_in">float</span></span>):
+        <span class="hljs-variable language_">self</span>.account_number = account_number
+        <span class="hljs-variable language_">self</span>.owner = owner
+        <span class="hljs-variable language_">self</span>.balance = balance
+        <span class="hljs-variable language_">self</span>.annual_interest = annual_interest
+
+    <span class="hljs-comment"># This method adds the annual interest to the balance of the account</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_interest</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.balance += <span class="hljs-variable language_">self</span>.balance * <span class="hljs-variable language_">self</span>.annual_interest
+
+
+peters_account = BankAccount(<span class="hljs-string">&quot;12345-678&quot;</span>, <span class="hljs-string">&quot;Peter Python&quot;</span>, <span class="hljs-number">1500.0</span>, <span class="hljs-number">0.015</span>)
+peters_account.add_interest()
+<span class="hljs-built_in">print</span>(peters_account.balance)
+</code></pre>
+<pre><code>1522.5
+</code></pre>
+<p>يضرب التابع <code>add_interest</code> رصيد الحساب في نسبة الفائدة السنوية، ثم يضيف الناتج إلى الرصيد الحالي. ولا يعمل التابع إلا على الكائن الذي استُدعي عليه.</p>
+<p>لنرَ كيف يعمل ذلك حين نكون قد أنشأنا عدّة نسخ من الصنف:</p>
+<pre><code class="language-python"><span class="hljs-comment"># The class BankAccount is defined in the previous example</span>
+
+peters_account = BankAccount(<span class="hljs-string">&quot;12345-678&quot;</span>, <span class="hljs-string">&quot;Peter Python&quot;</span>, <span class="hljs-number">1500.0</span>, <span class="hljs-number">0.015</span>)
+paulas_account = BankAccount(<span class="hljs-string">&quot;99999-999&quot;</span>, <span class="hljs-string">&quot;Paula Pythonen&quot;</span>, <span class="hljs-number">1500.0</span>, <span class="hljs-number">0.05</span>)
+pippas_account = BankAccount(<span class="hljs-string">&quot;1111-222&quot;</span>, <span class="hljs-string">&quot;Pippa Programmer&quot;</span>, <span class="hljs-number">1500.0</span>, <span class="hljs-number">0.001</span>)
+
+<span class="hljs-comment"># Add interest on Peter&#x27;s and Paula&#x27;s accounts, but not on Pippa&#x27;s</span>
+peters_account.add_interest()
+paulas_account.add_interest()
+
+<span class="hljs-comment"># Print all account balances</span>
+<span class="hljs-built_in">print</span>(peters_account.balance)
+<span class="hljs-built_in">print</span>(paulas_account.balance)
+<span class="hljs-built_in">print</span>(pippas_account.balance)
+</code></pre>
+<pre><code>1522.5
+1575.0
+1500.0
+</code></pre>
+<p>وكما ترى أعلاه، لا تُضاف الفائدة السنوية إلا إلى الحسابات التي استُدعي التابع عليها. ولأن نسب الفائدة السنوية مختلفة في حسابَي Peter وPaula، فإن النتائج تختلف في هذين الحسابين. أما رصيد حساب Pippa فلا يتغيّر، لأن التابع <code>add_interest</code> لم يُستدعَ على الكائن <code>pippas_account</code>.</p>
+<h2 id="التغليف">التغليف <span class="content-anchor" id="encapsulation"></span></h2>
+<p>في البرمجة كائنية التوجّه تظهر كلمة <em>العميل</em> من حين إلى آخر. ويُقصد بها قسم من الشيفرة ينشئ كائنًا ويستخدم الخدمة التي توفّرها توابعه. وعندما تُستخدم البيانات التي يحتويها كائن عبر التوابع التي يوفّرها فقط، يُضمن <em>التكامل الداخلي</em> للكائن. وعمليًا يعني هذا أن صنف <code>BankAccount</code> مثلًا يوفّر توابع للتعامل مع خاصية <code>balance</code>، فلا يصل العميل إلى الرصيد مباشرةً أبدًا. ويمكن لهذه التوابع حينها أن تتحقّق من أن الرصيد غير مسموح له بأن يهبط تحت الصفر، على سبيل المثال.</p>
+<p>ومثال على كيفية عمل ذلك:</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BankAccount</span>:
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, account_number: <span class="hljs-built_in">str</span>, owner: <span class="hljs-built_in">str</span>, balance: <span class="hljs-built_in">float</span>, annual_interest: <span class="hljs-built_in">float</span></span>):
+        <span class="hljs-variable language_">self</span>.account_number = account_number
+        <span class="hljs-variable language_">self</span>.owner = owner
+        <span class="hljs-variable language_">self</span>.balance = balance
+        <span class="hljs-variable language_">self</span>.annual_interest = annual_interest
+
+    <span class="hljs-comment"># This method adds the annual interest to the balance of the account</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_interest</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.balance += <span class="hljs-variable language_">self</span>.balance * <span class="hljs-variable language_">self</span>.annual_interest
+
+    <span class="hljs-comment"># This method &quot;withdraws&quot; money from the account</span>
+    <span class="hljs-comment"># If the withdrawal is successful the method returns True, and False otherwise</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">withdraw</span>(<span class="hljs-params">self, amount: <span class="hljs-built_in">float</span></span>):
+        <span class="hljs-keyword">if</span> amount &lt;= <span class="hljs-variable language_">self</span>.balance:
+            <span class="hljs-variable language_">self</span>.balance -= amount
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+peters_account = BankAccount(<span class="hljs-string">&quot;12345-678&quot;</span>, <span class="hljs-string">&quot;Peter Python&quot;</span>, <span class="hljs-number">1500.0</span>, <span class="hljs-number">0.015</span>)
+
+<span class="hljs-keyword">if</span> peters_account.withdraw(<span class="hljs-number">1000</span>):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;The withdrawal was successful, the balance is now&quot;</span>, peters_account.balance)
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;The withdrawal was unsuccessful, the balance is insufficient&quot;</span>)
+
+<span class="hljs-comment"># Yritetään uudestaan</span>
+<span class="hljs-keyword">if</span> peters_account.withdraw(<span class="hljs-number">1000</span>):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;The withdrawal was successful, the balance is now&quot;</span>, peters_account.balance)
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;The withdrawal was unsuccessful, the balance is insufficient&quot;</span>)
+</code></pre>
+<pre><code>The withdrawal was successful, the balance is now 500.0
+The withdrawal was unsuccessful, the balance is insufficient
+</code></pre>
+<p>تُسمّى المحافظة على التكامل الداخلي للكائن وتوفير توابع ملائمة لضمان ذلك <em>التغليف</em>. والفكرة أن أعمال الكائن الداخلية تبقى مخفية عن العميل، لكن الكائن يوفّر توابع يمكن استخدامها للوصول إلى البيانات المخزّنة فيه.</p>
+<p>إضافة تابع لا تخفي الخاصية تلقائيًا. فرغم أن تعريف صنف <code>BankAccount</code> يحتوي على التابع <code>withdraw</code> لسحب المال، فإن شيفرة العميل لا تزال قادرة على الوصول إلى خاصية <code>balance</code> وتغييرها مباشرةً:</p>
+<pre><code class="language-python">peters_account = BankAccount(<span class="hljs-string">&quot;12345-678&quot;</span>, <span class="hljs-string">&quot;Peter Python&quot;</span>, <span class="hljs-number">1500.0</span>, <span class="hljs-number">0.015</span>)
+
+<span class="hljs-comment"># Attempt to withdraw 2000</span>
+<span class="hljs-keyword">if</span> peters_account.withdraw(<span class="hljs-number">2000</span>):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;The withdrawal was successful, the balance is now&quot;</span>, peters_account.balance)
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;The withdrawal was unsuccessful, the balance is insufficient&quot;</span>)
+
+    <span class="hljs-comment"># &quot;Force&quot; the withdrawal of 2000</span>
+    peters_account.balance -= <span class="hljs-number">2000</span>
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;The balance is now:&quot;</span>, peters_account.balance)
+</code></pre>
+<pre><code>The withdrawal was unsuccessful, the balance is insufficient
+The balance is now: -500.0
+</code></pre>
+<p>من الممكن إخفاء خصائص البيانات عن شيفرة العميل، وقد يساعد ذلك في حلّ هذه المشكلة. وسنعود إلى هذا الموضوع في الجزء التالي.</p>
+<blockquote>
+<p><strong>تمرين برمجي: عدّاد تنازلي</strong></p>
+<p>يتضمّن هذا التمرين عدّة أجزاء. ويمكنك تسليم الأجزاء منفصلة. ويستحق كل جزء نقطة تمرين واحدة.</p>
+</blockquote>
+<p>يحتوي قالب التمرين على صنف مكتمل جزئيًا هو <code>DecreasingCounter</code>:</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DecreasingCounter</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, initial_value: <span class="hljs-built_in">int</span></span>):
+        <span class="hljs-variable language_">self</span>.value = initial_value
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">print_value</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;value:&quot;</span>, <span class="hljs-variable language_">self</span>.value)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">decrease</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">pass</span>
+
+    <span class="hljs-comment"># define the rest of your methods here</span>
+</code></pre>
+<p>يمكن الآن استخدام الصنف كما هو موضّح أدناه، وينبغي أن ينتج المخرجات التالية بعد إكمال الجزء الأول من التمرين:</p>
+<pre><code class="language-python">counter = DecreasingCounter(<span class="hljs-number">10</span>)
+counter.print_value()
+counter.decrease()
+counter.print_value()
+counter.decrease()
+counter.print_value()
+</code></pre>
+<pre><code>value: 10
+value: 9
+value: 8
+</code></pre>
+<h3 id="إنقاص-قيمة-العداد">إنقاص قيمة العدّاد</h3>
+<p>يُرجى إكمال التابع <code>decrease</code> المعرَّف في القالب، بحيث ينقص القيمة المخزّنة في العدّاد بمقدار واحد. وراجع المثال أعلاه لمعرفة السلوك المتوقّع.</p>
+<h3 id="يجب-ألا-تكون-قيمة-العداد-سالبة">يجب ألّا تكون قيمة العدّاد سالبة</h3>
+<p>يُرجى إضافة وظيفة إلى تابعك <code>decrease</code>، بحيث لا تصل قيمة العدّاد أبدًا إلى قيم سالبة. فإذا كانت قيمة العدّاد 0، فلن تُنقَص أكثر.</p>
+<pre><code class="language-python">counter = DecreasingCounter(<span class="hljs-number">2</span>)
+counter.print_value()
+counter.decrease()
+counter.print_value()
+counter.decrease()
+counter.print_value()
+counter.decrease()
+counter.print_value()
+</code></pre>
+<pre><code>value: 2
+value: 1
+value: 0
+value: 0
+</code></pre>
+<h3 id="ضبط-القيمة-على-صفر">ضبط القيمة على صفر</h3>
+<p>يُرجى إضافة تابع <code>set_to_zero</code> يضبط قيمة العدّاد على 0:</p>
+<pre><code class="language-python">counter = DecreasingCounter(<span class="hljs-number">100</span>)
+counter.print_value()
+counter.set_to_zero()
+counter.print_value()
+</code></pre>
+<pre><code>value: 100
+value: 0
+</code></pre>
+<h3 id="إعادة-ضبط-العداد">إعادة ضبط العدّاد</h3>
+<p>يُرجى إضافة تابع <code>reset_original_value()</code> يعيد العدّاد إلى حالته الابتدائية:</p>
+<pre><code class="language-python">counter = DecreasingCounter(<span class="hljs-number">55</span>)
+counter.decrease()
+counter.decrease()
+counter.decrease()
+counter.decrease()
+counter.print_value()
+counter.reset_original_value()
+counter.print_value()
+</code></pre>
+<pre><code>value: 51
+value: 55
+</code></pre>
+<p>وختامًا لهذا القسم، لننظر إلى صنف يمثّل أفضل نتيجة شخصية للاعب. ويحتوي تعريف الصنف على توابع تحقّق منفصلة تتأكّد من صلاحية الوسائط المُمرَّرة. وتُستدعى هذه التوابع بالفعل داخل الباني. ويضمن ذلك أن الكائن المُنشأ سليم داخليًا.</p>
+<pre><code class="language-python"><span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> date
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">PersonalBest</span>:
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">str</span>, day: <span class="hljs-built_in">int</span>, month: <span class="hljs-built_in">int</span>, year: <span class="hljs-built_in">int</span>, points: <span class="hljs-built_in">int</span></span>):
+        <span class="hljs-comment"># Default values</span>
+        <span class="hljs-variable language_">self</span>.player = <span class="hljs-string">&quot;&quot;</span>
+        <span class="hljs-variable language_">self</span>.date_of_pb = date(<span class="hljs-number">1900</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>)
+        <span class="hljs-variable language_">self</span>.points = <span class="hljs-number">0</span>
+
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.name_ok(player):
+            <span class="hljs-variable language_">self</span>.player = player
+
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.date_ok(day, month, year):
+            <span class="hljs-variable language_">self</span>.date_of_pb = date(year, month, day)
+
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.points_ok(points):
+            <span class="hljs-variable language_">self</span>.points = points
+
+    <span class="hljs-comment"># Helper methods to check the arguments are valid</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">name_ok</span>(<span class="hljs-params">self, name: <span class="hljs-built_in">str</span></span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(name) &gt;= <span class="hljs-number">2</span> <span class="hljs-comment"># Name should be at least two characters long</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">date_ok</span>(<span class="hljs-params">self, day, month, year</span>):
+        <span class="hljs-keyword">try</span>:
+            date(year, month, day)
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">except</span>:
+            <span class="hljs-comment"># an exception is raised if the arguments are not valid</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">points_ok</span>(<span class="hljs-params">self, points</span>):
+        <span class="hljs-keyword">return</span> points &gt;= <span class="hljs-number">0</span>
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    result1 = PersonalBest(<span class="hljs-string">&quot;Peter&quot;</span>, <span class="hljs-number">1</span>, <span class="hljs-number">11</span>, <span class="hljs-number">2020</span>, <span class="hljs-number">235</span>)
+    <span class="hljs-built_in">print</span>(result1.points)
+    <span class="hljs-built_in">print</span>(result1.player)
+    <span class="hljs-built_in">print</span>(result1.date_of_pb)
+
+    <span class="hljs-comment"># The date was not valid</span>
+    result2 = PersonalBest(<span class="hljs-string">&quot;Paula&quot;</span>, <span class="hljs-number">4</span>, <span class="hljs-number">13</span>, <span class="hljs-number">2019</span>, <span class="hljs-number">4555</span>)
+    <span class="hljs-built_in">print</span>(result2.points)
+    <span class="hljs-built_in">print</span>(result2.player)
+    <span class="hljs-built_in">print</span>(result2.date_of_pb) <span class="hljs-comment"># Tulostaa oletusarvon 1900-01-01</span>
+</code></pre>
+<pre><code>235
+Peter
+2020-11-01
+4555
+Paula
+1900-01-01
+</code></pre>
+<p>وفي المثال أعلاه استُدعيت التوابع المساعدة أيضًا عبر اسم المعامل <code>self</code> حين استُخدمت في الباني. ومن الممكن كذلك تضمين تعريفات توابع <em>ساكنة</em> في تعريفات الأصناف. وهذه توابع يمكن استدعاؤها دون إنشاء نسخة من الصنف على الإطلاق. وسنعود إلى هذا الموضوع في الجزء التالي.</p>
+<p>لا يُستخدم اسم المعامل <code>self</code> إلا عند الإشارة إلى ميزات <em>الكائن بوصفه نسخة من الصنف</em>. وتشمل هذه كلًّا من خصائص البيانات والتوابع المرتبطة بالكائن. ولزيادة الالتباس في المصطلحات، يُشار إلى خصائص البيانات والتوابع معًا أحيانًا ببساطة باسم <em>خصائص</em> الكائن، ولهذا حدّدنا في هذه المادة غالبًا <em>خصائص البيانات</em> حين نعني المتغيّرات المعرَّفة داخل الصنف. وهنا تختلف مصطلحات بعض مبرمجي Python قليلًا عن المصطلحات المستخدمة في البرمجة كائنية التوجّه على نطاق أوسع، حيث تشير <em>الخصائص</em> عادةً إلى خصائص بيانات الكائن فقط.</p>
+<p>ومن الممكن أيضًا إنشاء متغيّرات محلية داخل تعريفات التوابع دون الإشارة إلى <code>self</code>. وينبغي أن تفعل ذلك إن لم تكن هناك حاجة إلى الوصول إلى المتغيّرات خارج التابع. ولا تحتاج المتغيّرات المحلية داخل التوابع إلى كلمات مفتاحية خاصة؛ فهي تُستخدم تمامًا مثل أي متغيّرات عادية صادفتها حتى الآن.</p>
+<p>فهذا مثلًا سيعمل:</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BonusCard</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, name: <span class="hljs-built_in">str</span>, balance: <span class="hljs-built_in">float</span></span>):
+        <span class="hljs-variable language_">self</span>.name = name
+        <span class="hljs-variable language_">self</span>.balance = balance
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_bonus</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-comment"># The variable bonus below is a local variable.</span>
+        <span class="hljs-comment"># It is not a data attribute of the object.</span>
+        <span class="hljs-comment"># It can not be accessed directly through the object.</span>
+        bonus = <span class="hljs-variable language_">self</span>.balance * <span class="hljs-number">0.25</span>
+        <span class="hljs-variable language_">self</span>.balance += bonus
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_superbonus</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-comment"># The superbonus variable is also a local variable.</span>
+        <span class="hljs-comment"># Usually helper variables are local variables because</span>
+        <span class="hljs-comment"># there is no need to access them from the other</span>
+        <span class="hljs-comment"># methods in the class or directly through an object.</span>
+        superbonus = <span class="hljs-variable language_">self</span>.balance * <span class="hljs-number">0.5</span>
+        <span class="hljs-variable language_">self</span>.balance += superbonus
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__str__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-string">f&quot;BonusCard(name=<span class="hljs-subst">{self.name}</span>, balance=<span class="hljs-subst">{self.balance}</span>)&quot;</span>
+</code></pre>
+<blockquote>
+<p><strong>تمرين برمجي: الاسم الأول واسم العائلة</strong></p>
+<p>يُرجى كتابة صنف اسمه <code>Person</code> له <em>خاصية واحدة</em> هي <code>name</code>، وتُضبط بوسيط يُعطى للباني.</p>
+</blockquote>
+<p>يُرجى أيضًا إضافة تابعين:</p>
+<p>ينبغي أن يُعيد التابع <code>return_first_name</code> الاسم الأول للشخص، بينما ينبغي أن يُعيد التابع <code>return_last_name</code> اسم العائلة للشخص.</p>
+<p>يمكنك أن تفترض أن الاسم المُمرَّر إلى الباني سيحوي عنصرَي اسم بالضبط يفصلهما محرف مسافة.</p>
+<p>ومثال على الاستخدام:</p>
+<pre><code class="language-python"><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    peter = Person(<span class="hljs-string">&quot;Peter Pythons&quot;</span>)
+    <span class="hljs-built_in">print</span>(peter.return_first_name())
+    <span class="hljs-built_in">print</span>(peter.return_last_name())
+
+    paula = Person(<span class="hljs-string">&quot;Paula Pythonnen&quot;</span>)
+    <span class="hljs-built_in">print</span>(paula.return_first_name())
+    <span class="hljs-built_in">print</span>(paula.return_last_name())
+</code></pre>
+<pre><code>Peter
+Pythons
+Paula
+Pythonnen
+</code></pre>
+<blockquote>
+<p><strong>تمرين برمجي: إحصاءات على الأعداد</strong></p>
+<p>يُطلب منك في هذا التمرين إنشاء برنامج للتعامل مع الأعداد، على غرار التمرين الذي أنجزته في <a href="/arabic-cs-library/book/mooc/part-2/4-simple-loops#programming-exercise-working-with-numbers">نهاية الجزء 2</a> في دورة مقدّمة إلى البرمجة. وهذه المرة ستعرّف صنفًا لهذا الغرض.</p>
+</blockquote>
+<h3 id="عد-الأعداد">عدّ الأعداد</h3>
+<p>يُرجى كتابة صنف اسمه <code>NumberStats</code> بالتوابع التالية:</p>
+<ul>
+<li>يضيف التابع <code>add_number</code> عددًا جديدًا إلى السجل الإحصائي</li>
+<li>يُعيد التابع <code>count_numbers</code> عدد الأعداد التي أُضيفت</li>
+</ul>
+<p>في هذه المرحلة لا حاجة إلى تخزين الأعداد نفسها في أي هيكل بيانات. ويكفي أن تتذكّر ببساطة كم عددًا أُضيف. والتابع <code>add_number</code> يأخذ وسيطًا بالفعل، لكن لا حاجة إلى معالجة القيمة الفعلية بأي شكل بعد.</p>
+<p>يحتوي قالب التمرين على الهيكل التالي لتعريف الصنف:</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span>  <span class="hljs-title class_">NumberStats</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.numbers = <span class="hljs-number">0</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_number</span>(<span class="hljs-params">self, number:<span class="hljs-built_in">int</span></span>):
+        <span class="hljs-keyword">pass</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">count_numbers</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">pass</span>
+</code></pre>
+<pre><code class="language-python">stats = NumberStats()
+stats.add_number(<span class="hljs-number">3</span>)
+stats.add_number(<span class="hljs-number">5</span>)
+stats.add_number(<span class="hljs-number">1</span>)
+stats.add_number(<span class="hljs-number">2</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Numbers added:&quot;</span>, stats.count_numbers())
+</code></pre>
+<pre><code>Numbers added: 4
+</code></pre>
+<h3 id="المجموع-والمتوسط">المجموع والمتوسط</h3>
+<p>يُرجى إضافة التوابع التالية إلى تعريف صنفك:</p>
+<ul>
+<li>ينبغي أن يُعيد التابع <code>get_sum</code> مجموع الأعداد المُضافة (وإذا لم تُضف أي أعداد، فينبغي أن يُعيد التابع 0)</li>
+<li>ينبغي أن يُعيد التابع <code>average</code> متوسط الأعداد المُضافة (وإذا لم تُضف أي أعداد، فينبغي أن يُعيد التابع 0)</li>
+</ul>
+<pre><code class="language-python">stats = NumberStats()
+stats.add_number(<span class="hljs-number">3</span>)
+stats.add_number(<span class="hljs-number">5</span>)
+stats.add_number(<span class="hljs-number">1</span>)
+stats.add_number(<span class="hljs-number">2</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Numbers added:&quot;</span>, stats.count_numbers())
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Sum of numbers:&quot;</span>, stats.get_sum())
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Mean of numbers:&quot;</span>, stats.average())
+</code></pre>
+<pre><code>Numbers added: 4
+Sum of numbers: 11
+Mean of numbers: 2.75
+</code></pre>
+<h3 id="مدخل-المستخدم">مُدخَل المستخدم</h3>
+<p>يُرجى كتابة برنامج رئيسي يظلّ يسأل المستخدم عن أعداد صحيحة حتى يُدخل المستخدم -1. وينبغي للبرنامج حينها أن يطبع مجموع الأعداد المُدخلة ومتوسطها.</p>
+<p>ينبغي أن يستخدم برنامجك كائنًا من <code>NumberStats</code> لتسجيل الأعداد المُضافة.</p>
+<p>ملاحظة: لا حاجة إلى تغيير صنف <code>NumberStats</code> في هذا الجزء من التمرين، ما دام قد اجتاز اختبارات الجزء السابق من التمرين. واستخدم نسخة من الصنف لإكمال هذا الجزء.</p>
+<p>ملاحظة 2: ينبغي ألّا يوضع برنامجك الرئيسي داخل كتلة <code>if __name__ == &quot;__main__&quot;</code>، وإلا فلن تعمل الاختبارات.</p>
+<pre><code>Please type in integer numbers:
+**4**
+**2**
+**5**
+**2**
+**-1**
+Sum of numbers: 13
+Mean of numbers: 3.25
+</code></pre>
+<h3 id="مجاميع-متعددة">مجاميع متعدّدة</h3>
+<p>يُرجى الإضافة إلى برنامجك الرئيسي بحيث يحسب أيضًا بشكل منفصل مجموع الأعداد الزوجية والأعداد الفردية المُضافة.</p>
+<p>ملاحظة: لا تغيّر تعريف صنف <code>NumberStats</code> في هذا الجزء من التمرين أيضًا. بل عرّف ثلاثة كائنات من <code>NumberStats</code>. ويتتبّع أحدها كل الأعداد، ويتتبّع آخر الأعداد الزوجية، ويتتبّع الثالث الأعداد الفردية المُدخلة.</p>
+<p>ملاحظة 2: ينبغي ألّا يوضع برنامجك الرئيسي داخل كتلة <code>if __name__ == &quot;__main__&quot;</code>، وإلا فلن تعمل الاختبارات.</p>
+<p>يُرجى الاطلاع على هذا المثال لمعرفة كيف ينبغي أن تعمل دالتك الرئيسية:</p>
+<pre><code>Please type in integer numbers:
+**4**
+**2**
+**5**
+**2**
+**-1**
+Sum of numbers: 13
+Mean of numbers: 3.25
+Sum of even numbers: 8
+Sum of odd numbers: 5
+</code></pre>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/mooc/part-8/3-defining-classes"><span class="prev-next__label">السابق</span> <span class="prev-next__title">تعريف الأصناف</span></a><!--]--> <!--[0--><a href="../../../../book/mooc/part-8/5-more-examples-of-classes"><span class="prev-next__label">التالي</span> <span class="prev-next__title">المزيد من أمثلة الأصناف</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_bfwv11 = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.C9kBkw8T.js"),
+						import("../../../../_app/immutable/entry/app.fkPBtkuJ.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

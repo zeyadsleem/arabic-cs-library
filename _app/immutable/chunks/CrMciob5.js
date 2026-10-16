@@ -1,0 +1,144 @@
+const s="mooc",n="part-4",a="الجزء 4: الدوال والقوائم",p="1-vscode",l="محرر Visual Studio Code ومفسر Python وأداة التنقيح المدمجة",t=[{depth:2,id:"تشغيل-الشيفرة",text:"تشغيل الشيفرة"},{depth:2,id:"مفسر-python-التفاعلي",text:"مفسر Python التفاعلي"},{depth:2,id:"أداة-التنقيح-المدمجة",text:"أداة التنقيح المدمجة"}],e=`<blockquote>
+<p><strong>أهداف التعلم</strong></p>
+<p>بعد هذا القسم</p>
+<ul>
+<li>ستكون مجهزًا لاستخدام محرر Visual Studio Code في إتمام تمارين هذه الدورة</li>
+<li>ستكون على معرفة بمفسر Python التفاعلي، وستكون قادرًا على استخدامه لتشغيل الشيفرة</li>
+</ul>
+</blockquote>
+<p>حتى الآن كانت كل تمارين هذه الدورة تُنجَز مباشرة في صفحات الدورة داخل نوافذ محرر مدمجة. البرمجة في المتصفح مناسبة جدًا للخطوات الأولى في البرمجة، لكن حان الوقت الآن للبدء باستخدام محرر مستقل مخصص للبرمجة.</p>
+<p>هناك العشرات من المحررات المختلفة الملائمة للبرمجة. في هذه الدورة سنستخدم محرر <a href="https://code.visualstudio.com/">Visual Studio Code</a>، الذي ذاع استخدامه في السنوات الأخيرة.</p>
+<p>يُرجى تثبيت محرر Visual Studio Code على حاسوبك الآن. قد تحتاج أيضًا إلى تثبيت Python وإضافة Visual Studio Code الخاصة بـ Python. وستحتاج أيضًا إلى إضافة TMC، التي تتولى تشغيل الاختبارات المصاحبة للتمارين. في إضافة TMC، اختر <strong>MOOC</strong> بصفة المنظمة و<strong>Python Programming 2026</strong> بصفة الدورة.</p>
+<p><a href="https://www.mooc.fi/en/installation/vscode">هناك دليل</a> لتثبيت كل هذه الأشياء وتشغيلها. اقرأ التعليمات الخاصة بالعمل على التمارين وتسليمها، ثم أنجز المهمة أدناه:</p>
+<blockquote>
+<p><strong>تمرين برمجي: مرحبًا Visual Studio Code</strong></p>
+<p>اكتب برنامجًا يسأل المستخدم عن المحرر الذي يستخدمه. ينبغي أن يواصل البرنامج السؤال حتى يكتب المستخدم <em>Visual Studio Code</em>.</p>
+</blockquote>
+<p>ألقِ نظرة على مثال السلوك المتوقع أدناه:</p>
+<pre><code>Editor: **Emacs**
+not good
+Editor: **Vim**
+not good
+Editor: **Word**
+awful
+Editor: **Atom**
+not good
+Editor: **Visual Studio Code**
+an excellent choice!
+</code></pre>
+<p>إذا كتب المستخدِم Word أو Notepad، يردّ البرنامج بـ <em>awful</em>. أما خيارات المحررات غير المقبولة الأخرى فيتلقى الردّ <em>not good</em>.</p>
+<p>يجب أن تكون ردود فعل البرنامج غير حساسة لحالة الأحرف. أي أن الإدخال نفسه من المستخدم بأحرف صغيرة أو بأحرف كبيرة أو بحالة مختلطة ينبغي أن يؤدي إلى الردّ نفسه:</p>
+<pre><code>Editor: **NOTEPAD**
+awful
+Editor: **viSUal STudiO cODe**
+an excellent choice!
+</code></pre>
+<p>تلميح: أبسط طريقة لتحقيق ذلك هي تحويل كل الأحرف إلى الحالة نفسها. تابع <code>lower</code> في سلاسل Python يحوّل السلسلة النصية بالكامل إلى أحرف صغيرة. مثال على استخدامه:</p>
+<pre><code class="language-python">mystring = <span class="hljs-string">&quot;Visual Studio CODE&quot;</span>
+<span class="hljs-keyword">if</span> <span class="hljs-string">&quot;visual studio code&quot;</span> == mystring.lower():
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;this was the string I was looking for!&quot;</span>)
+</code></pre>
+<p><strong>ملاحظة:</strong> هذا التمرين لا يطلب منك كتابة أي دوال، لذا يجب أن <strong>لا</strong> تضع أي شيفرة داخل كتلة <code>if __name__ == &quot;__main__&quot;</code>. الأمر نفسه ينطبق على أي تمارين قادمة لا تطلب الدوال صراحةً.</p>
+<h2 id="تشغيل-الشيفرة">تشغيل الشيفرة</h2>
+<p>في Visual Studio Code، أسهل طريقة لتشغيل شيفرتك هي النقر على المثلث في الزاوية العلوية اليمنى. يحدث أحيانًا أن يبقى برنامج ما يعمل في الخلفية، ربما لأنه ينتظر إدخالًا من المستخدم أو أنه عالق في حلقة لا نهائية، دون أن تُدرك ذلك. قد لا تلاحظ ذلك إلا عندما تحاول تشغيل البرنامج التالي، الذي لن يعمل ببساطة لأن التنفيذ السابق ما زال يحتجز الموارد. الحل السريع هو الضغط في الوقت نفسه على المفتاحين <em>Control</em>+<em>C</em>، ما يوقف تنفيذ أي عملية جارية. يجب أن يعمل البرنامج التالي الآن جيدًا.</p>
+<h2 id="مفسر-python-التفاعلي">مفسر Python التفاعلي</h2>
+<p>من أهم الأدوات لأي مبرمج Python هو مفسر Python التفاعلي.</p>
+<p>قد تختلف طريقة بدء تشغيل المفسر حسب منصتك. في نظام Linux أو Mac، يمكنك كتابة <code>python3</code> في الطرفية. أما في Windows فقد يكون الأمر في سطر الأوامر هو <code>python</code>. يبدو تشغيل المفسر على Mac كما يلي:</p>
+<p><img src="/arabic-cs-library/images/mooc/part-4/4_1_1.png" alt="4_1_1.png"></p>
+<p>من الممكن أيضًا تشغيل المفسر داخل Visual Studio Code. أولًا يجب أن تنفّذ برنامجًا بالنقر على المثلث. سيُفتح بذلك قسم <em>Terminal</em> على شاشتك، حيث يمكنك الآن كتابة <code>python3</code> (أو <code>python</code>):</p>
+<p><img src="/arabic-cs-library/images/mooc/part-4/4_1_2.png" alt="4_1_2.png"></p>
+<p>يمكنك أيضًا تجربة مفسر Python يعمل في المتصفح، مثل <a href="https://www.python.org/shell/">https://www.python.org/shell/</a>.</p>
+<p>المفسر هو طريقة لتنفيذ شيفرة Python سطرًا بسطر بمجرد أن تكتبها. عندما تكتب سطرًا من الشيفرة وتضغط <em>Enter</em>، ينفّذ المفسر الشيفرة فورًا ويعرض عليك النتائج:</p>
+<p><img src="/arabic-cs-library/images/mooc/part-4/4_1_3.png" alt="4_1_3.png"></p>
+<p>أي شيفرة Python يمكن كتابتها في ملف يمكن كتابتها أيضًا في المفسر. بل يمكنك حتى إسناد قيم إلى المتغيّرات وتعريف التوابع:</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span>t = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> number <span class="hljs-keyword">in</span> t:
+<span class="hljs-meta">... </span>  <span class="hljs-built_in">print</span>(number)
+...
+<span class="hljs-number">1</span>
+<span class="hljs-number">2</span>
+<span class="hljs-number">3</span>
+<span class="hljs-number">4</span>
+<span class="hljs-number">5</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">def</span> <span class="hljs-title function_">absolute_value</span>(<span class="hljs-params">number</span>):
+<span class="hljs-meta">... </span>  <span class="hljs-keyword">if</span> number&lt;<span class="hljs-number">0</span>:
+<span class="hljs-meta">... </span>     number = -number
+<span class="hljs-meta">... </span>  <span class="hljs-keyword">return</span> number
+...
+<span class="hljs-meta">&gt;&gt;&gt; </span>x = <span class="hljs-number">10</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>y = -<span class="hljs-number">7</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>absolute_value(number)
+Traceback (most recent call last):
+  File <span class="hljs-string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="hljs-number">1</span>, <span class="hljs-keyword">in</span> &lt;module&gt;
+NameError: name <span class="hljs-string">&#x27;number&#x27;</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> defined
+<span class="hljs-meta">&gt;&gt;&gt; </span>absolute_value(x)
+<span class="hljs-number">10</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>absolute_value(y)
+<span class="hljs-number">7</span>
+&gt;&gt;&gt;
+</code></pre>
+<p>المفسر هو الأنسب لإجراء فحوصات صغيرة. فمثلًا، يمكنك تجربة الدوال والتوابع، أو التحقق مما إذا كانت موجودة أصلًا:</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-string">&quot;TextYteXt&quot;</span>.toupper()
+Traceback (most recent call last):
+  File <span class="hljs-string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="hljs-number">1</span>, <span class="hljs-keyword">in</span> &lt;module&gt;
+AttributeError: <span class="hljs-string">&#x27;str&#x27;</span> <span class="hljs-built_in">object</span> has no attribute <span class="hljs-string">&#x27;toupper&#x27;</span>
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-string">&quot;TextYteXt&quot;</span>.upper()
+<span class="hljs-string">&#x27;TEXTYTEXT&#x27;</span>
+&gt;&gt;&gt;
+</code></pre>
+<p>إذا وُجد تابع تحتاجه، وتستطيع أن تتذكّره <em>تقريبًا</em>، فمن الأسرع أحيانًا أن تتجاوز Google وتستخدم دالة <code>dir</code> في المفسر. إنها تخبرك بالتوابع المتاحة للاستخدام على كائن معين:</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">dir</span>(<span class="hljs-string">&quot;this is a string&quot;</span>)
+[<span class="hljs-string">&#x27;__add__&#x27;</span>, <span class="hljs-string">&#x27;__class__&#x27;</span>, <span class="hljs-string">&#x27;__contains__&#x27;</span>, <span class="hljs-string">&#x27;__delattr__&#x27;</span>, <span class="hljs-string">&#x27;__dir__&#x27;</span>, <span class="hljs-string">&#x27;__doc__&#x27;</span>, <span class="hljs-string">&#x27;__eq__&#x27;</span>,
+<span class="hljs-string">&#x27;__format__&#x27;</span>, <span class="hljs-string">&#x27;__ge__&#x27;</span>, <span class="hljs-string">&#x27;__getattribute__&#x27;</span>, <span class="hljs-string">&#x27;__getitem__&#x27;</span>, <span class="hljs-string">&#x27;__getnewargs__&#x27;</span>, <span class="hljs-string">&#x27;__gt__&#x27;</span>,
+<span class="hljs-string">&#x27;__hash__&#x27;</span>, <span class="hljs-string">&#x27;__init__&#x27;</span>, <span class="hljs-string">&#x27;__init_subclass__&#x27;</span>, <span class="hljs-string">&#x27;__iter__&#x27;</span>, <span class="hljs-string">&#x27;__le__&#x27;</span>, <span class="hljs-string">&#x27;__len__&#x27;</span>, <span class="hljs-string">&#x27;__lt__&#x27;</span>,
+<span class="hljs-string">&#x27;__mod__&#x27;</span>, <span class="hljs-string">&#x27;__mul__&#x27;</span>, <span class="hljs-string">&#x27;__ne__&#x27;</span>, <span class="hljs-string">&#x27;__new__&#x27;</span>, <span class="hljs-string">&#x27;__reduce__&#x27;</span>, <span class="hljs-string">&#x27;__reduce_ex__&#x27;</span>, <span class="hljs-string">&#x27;__repr__&#x27;</span>,
+<span class="hljs-string">&#x27;__rmod__&#x27;</span>, <span class="hljs-string">&#x27;__rmul__&#x27;</span>, <span class="hljs-string">&#x27;__setattr__&#x27;</span>, <span class="hljs-string">&#x27;__sizeof__&#x27;</span>, <span class="hljs-string">&#x27;__str__&#x27;</span>, <span class="hljs-string">&#x27;__subclasshook__&#x27;</span>,
+<span class="hljs-string">&#x27;capitalize&#x27;</span>, <span class="hljs-string">&#x27;casefold&#x27;</span>, <span class="hljs-string">&#x27;center&#x27;</span>, <span class="hljs-string">&#x27;count&#x27;</span>, <span class="hljs-string">&#x27;encode&#x27;</span>, <span class="hljs-string">&#x27;endswith&#x27;</span>, <span class="hljs-string">&#x27;expandtabs&#x27;</span>, <span class="hljs-string">&#x27;find&#x27;</span>,
+<span class="hljs-string">&#x27;format&#x27;</span>, <span class="hljs-string">&#x27;format_map&#x27;</span>, <span class="hljs-string">&#x27;index&#x27;</span>, <span class="hljs-string">&#x27;isalnum&#x27;</span>, <span class="hljs-string">&#x27;isalpha&#x27;</span>, <span class="hljs-string">&#x27;isascii&#x27;</span>, <span class="hljs-string">&#x27;isdecimal&#x27;</span>, <span class="hljs-string">&#x27;isdigit&#x27;</span>,
+<span class="hljs-string">&#x27;isidentifier&#x27;</span>, <span class="hljs-string">&#x27;islower&#x27;</span>, <span class="hljs-string">&#x27;isnumeric&#x27;</span>, <span class="hljs-string">&#x27;isprintable&#x27;</span>, <span class="hljs-string">&#x27;isspace&#x27;</span>, <span class="hljs-string">&#x27;istitle&#x27;</span>, <span class="hljs-string">&#x27;isupper&#x27;</span>, <span class="hljs-string">&#x27;join&#x27;</span>,
+<span class="hljs-string">&#x27;ljust&#x27;</span>, <span class="hljs-string">&#x27;lower&#x27;</span>, <span class="hljs-string">&#x27;lstrip&#x27;</span>, <span class="hljs-string">&#x27;maketrans&#x27;</span>, <span class="hljs-string">&#x27;partition&#x27;</span>, <span class="hljs-string">&#x27;replace&#x27;</span>, <span class="hljs-string">&#x27;rfind&#x27;</span>, <span class="hljs-string">&#x27;rindex&#x27;</span>, <span class="hljs-string">&#x27;rjust&#x27;</span>,<span class="hljs-string">&#x27;rpartition&#x27;</span>, <span class="hljs-string">&#x27;rsplit&#x27;</span>, <span class="hljs-string">&#x27;rstrip&#x27;</span>, <span class="hljs-string">&#x27;split&#x27;</span>, <span class="hljs-string">&#x27;splitlines&#x27;</span>, <span class="hljs-string">&#x27;startswith&#x27;</span>, <span class="hljs-string">&#x27;strip&#x27;</span>, <span class="hljs-string">&#x27;swapcase&#x27;</span>,
+<span class="hljs-string">&#x27;title&#x27;</span>, <span class="hljs-string">&#x27;translate&#x27;</span>, <span class="hljs-string">&#x27;upper&#x27;</span>, <span class="hljs-string">&#x27;zfill&#x27;</span>]
+</code></pre>
+<p>سلاسل Python النصية تحتوي على عدد كبير من التوابع المتاحة، كما ترى أعلاه. عند هذه النقطة قد يكون من الأفضل تجاهل أي توابع تحتوي على شرطة سفلية في أسمائها، لكن الباقي قد يكون مفيدًا فعلًا. بعضها يمكنك استنتاجه بتجربته، والبعض الآخر يمكنك البحث عنه على الإنترنت.</p>
+<p>قوائم Python لا تحتوي على هذا العدد الكبير من التوابع:</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">dir</span>([])
+[<span class="hljs-string">&#x27;__add__&#x27;</span>, <span class="hljs-string">&#x27;__class__&#x27;</span>, <span class="hljs-string">&#x27;__contains__&#x27;</span>, <span class="hljs-string">&#x27;__delattr__&#x27;</span>, <span class="hljs-string">&#x27;__delitem__&#x27;</span>, <span class="hljs-string">&#x27;__dir__&#x27;</span>, <span class="hljs-string">&#x27;__doc__&#x27;</span>,
+<span class="hljs-string">&#x27;__eq__&#x27;</span>, <span class="hljs-string">&#x27;__format__&#x27;</span>, <span class="hljs-string">&#x27;__ge__&#x27;</span>, <span class="hljs-string">&#x27;__getattribute__&#x27;</span>, <span class="hljs-string">&#x27;__getitem__&#x27;</span>, <span class="hljs-string">&#x27;__gt__&#x27;</span>, <span class="hljs-string">&#x27;__hash__&#x27;</span>,
+<span class="hljs-string">&#x27;__iadd__&#x27;</span>, <span class="hljs-string">&#x27;__imul__&#x27;</span>, <span class="hljs-string">&#x27;__init__&#x27;</span>, <span class="hljs-string">&#x27;__init_subclass__&#x27;</span>, <span class="hljs-string">&#x27;__iter__&#x27;</span>, <span class="hljs-string">&#x27;__le__&#x27;</span>, <span class="hljs-string">&#x27;__len__&#x27;</span>,
+<span class="hljs-string">&#x27;__lt__&#x27;</span>, <span class="hljs-string">&#x27;__mul__&#x27;</span>, <span class="hljs-string">&#x27;__ne__&#x27;</span>, <span class="hljs-string">&#x27;__new__&#x27;</span>, <span class="hljs-string">&#x27;__reduce__&#x27;</span>, <span class="hljs-string">&#x27;__reduce_ex__&#x27;</span>, <span class="hljs-string">&#x27;__repr__&#x27;</span>,
+<span class="hljs-string">&#x27;__reversed__&#x27;</span>, <span class="hljs-string">&#x27;__rmul__&#x27;</span>, <span class="hljs-string">&#x27;__setattr__&#x27;</span>, <span class="hljs-string">&#x27;__setitem__&#x27;</span>, <span class="hljs-string">&#x27;__sizeof__&#x27;</span>, <span class="hljs-string">&#x27;__str__&#x27;</span>,
+<span class="hljs-string">&#x27;__subclasshook__&#x27;</span>, <span class="hljs-string">&#x27;append&#x27;</span>, <span class="hljs-string">&#x27;clear&#x27;</span>, <span class="hljs-string">&#x27;copy&#x27;</span>, <span class="hljs-string">&#x27;count&#x27;</span>, <span class="hljs-string">&#x27;extend&#x27;</span>, <span class="hljs-string">&#x27;index&#x27;</span>, <span class="hljs-string">&#x27;insert&#x27;</span>, <span class="hljs-string">&#x27;pop&#x27;</span>,
+<span class="hljs-string">&#x27;remove&#x27;</span>, <span class="hljs-string">&#x27;reverse&#x27;</span>, <span class="hljs-string">&#x27;sort&#x27;</span>]
+&gt;&gt;&gt;
+</code></pre>
+<p>لنجرّب بعضها، يبدو <code>reverse</code> و<code>clear</code> واعدين:</p>
+<pre><code class="language-python"><span class="hljs-meta">&gt;&gt;&gt; </span>numbers = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>numbers.reverse()
+<span class="hljs-meta">&gt;&gt;&gt; </span>numbers
+[<span class="hljs-number">5</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>]
+<span class="hljs-meta">&gt;&gt;&gt; </span>numbers.clear()
+<span class="hljs-meta">&gt;&gt;&gt; </span>numbers
+[]
+</code></pre>
+<p>كما ترى، هذه التوابع تؤدي تقريبًا ما تتوقعه من أسمائها.</p>
+<p>لاحظ كيف أن المفسر لا يطبع أي شيء عند تنفيذ الأمر <code>numbers.reverse()</code>. والسبب هو أن المفسر لا يطبع شيئًا إلا إذا كان سطر الشيفرة يحتوي على قيمة. أما التابع <code>reverse()</code> هنا فلا يُرجع أي قيمة.</p>
+<p>في المثال أعلاه طبَعنا قيمة القائمة <code>numbers</code> بكتابة اسم المتغيّر فقط. في الواقع، نادرًا ما يكون ضروريًا كتابة أوامر <code>print</code> صراحةً في المفسر. لكن يمكنك تضمينها إن أردت.</p>
+<p>تذكّر أن تُغلق المفسر عند انتهائك. إن الأمران <code>quit()</code> و<code>exit()</code> يُغلقانه، وكذلك الضغط على المفتاحين <em>Control</em>+<em>D</em> (Linux/Mac) أو <em>Control</em>+<em>Z</em> (Windows). هذا مهم خاصةً في Visual Studio Code، إذ إن محاولة تنفيذ برنامج Python آخر بينما المفسر ما زال يعمل تؤدي إلى رسالة خطأ غامضة إلى حد ما:</p>
+<p><img src="/arabic-cs-library/images/mooc/part-4/4_1_4.png" alt="4_1_4.png"></p>
+<h2 id="أداة-التنقيح-المدمجة">أداة التنقيح المدمجة <span class="content-anchor" id="the-built-in-debugger"></span></h2>
+<p>لقد أمضينا وقتًا وجهدًا لا بأس بهما في تطوير مهارات التنقيح، بشكل أساسي بواسطة التنقيح باستخدام عبارات الطباعة. لكن محرر Visual Studio Code يضع بين يديك أداة أخرى: وهي <em>منقّح مرئي</em> مدمج.</p>
+<p>للبدء في التنقيح، عليك أولًا أن تعرّف <em>نقطة توقف</em> في شيفرتك. نقطة التوقف هي موضع في برنامجك يتوقف فيه المنقّح عن التنفيذ. يمكنك تعيين نقطة توقف بالنقر على الحافة اليسرى لأي سطر في برنامجك.</p>
+<p>المثال التالي هو محاولة فيها بعض العيوب في حل التمرين <em>مجموع الأعداد المتتالية</em> في <a href="/arabic-cs-library/book/mooc/part-3/1-loops-with-conditions">الجزء السابق</a>. هناك نقطة توقف في السطر 5:</p>
+<p><img src="/arabic-cs-library/images/mooc/part-4/4_1_5.png" alt="4_1_5.png"></p>
+<p>بعد تعيين نقطة التوقف، اختر <em>Start debugging</em> من قائمة <em>Run</em>. سيُفتح ذلك قائمة من الخيارات، حيث يجب أن تختار <em>Python File</em>:</p>
+<p><img src="/arabic-cs-library/images/mooc/part-4/4_1_6.png" alt="4_1_6.png"></p>
+<p>هذا يشغّل المنقّح، الذي ينفّذ شيفرتك كالمعتاد حتى يصل التنفيذ إلى نقطة توقف ويتوقف. إذا طلبت شيفرتك إدخالًا، فتذكّر أن تكتبه في الطرفية:</p>
+<p><img src="/arabic-cs-library/images/mooc/part-4/4_1_7.png" alt="4_1_7.png"></p>
+<p>توجد على اليسار الآن طريقة عرض <em>Variables</em>، التي تحتوي على القيم الحالية لكل المتغيّرات النشطة في الشيفرة. يمكنك متابعة التنفيذ سطرًا بسطر بالنقر على السهم المتجه إلى الأسفل، الذي يحمل الاسم <em>Step into</em>.</p>
+<p>في الصورة أدناه، تكون الحلقة في الشيفرة قد تكررت عدة مرات بالفعل:</p>
+<p><img src="/arabic-cs-library/images/mooc/part-4/4_1_8.png" alt="4_1_8.png"></p>
+<p>يحتوي المنقّح على تبويب <em>Debug console</em>، الذي يتيح لك تقييم التعابير بالقيم الحالية المخزّنة في المتغيّرات. مثلًا، يمكنك التحقق من قيمة التعبير المنطقي في شرط الحلقة:</p>
+<p><img src="/arabic-cs-library/images/mooc/part-4/4_1_9.png" alt="4_1_9.png"></p>
+<p>يمكنك إدراج عدة نقاط توقف في شيفرة برنامجك. وعندما يتوقف التنفيذ، يمكنك تشغيله مجددًا بالنقر على المثلث الأزرق. ويمضي التنفيذ حتى يصل إلى نقطة التوقف التالية.</p>
+<p>المنقّح المرئي المدمج هو بديل جيد للتنقيح بعبارات الطباعة. الأمر متروك لك لتختار أيّهما ستستخدم أكثر في المستقبل. لكل مبرمج تفضيلاته، لكن من الجيد دائمًا تجربة خيارات مختلفة قبل الاستقرار على حل واحد.</p>
+`,r={book:s,chapter:n,chapterTitle:a,slug:p,title:l,headings:t,html:e};export{s as book,n as chapter,a as chapterTitle,r as default,t as headings,e as html,p as slug,l as title};

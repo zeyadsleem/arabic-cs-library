@@ -1,0 +1,383 @@
+const e="learn-ocaml",s="zippers",n="السحّابات",a="index",p="السحّابات",c=[{depth:2,id:"9-السحابات-zippers",text:"9. السحّابات (zippers)"},{depth:3,id:"91-السحابات-على-القوائم",text:"9.1 السحّابات على القوائم"},{depth:3,id:"92-السحابات-على-الأشجار",text:"9.2 السحّابات على الأشجار"},{depth:3,id:"93-المؤشرات",text:"9.3 المؤشّرات"},{depth:3,id:"94-التمارين",text:"9.4 التمارين"}],o=`<h2 id="9-السحابات-zippers">9. السحّابات (zippers)</h2>
+<p>نقدّم في هذا الفصل تقنية عامة لاجتياز بنى المعطيات. لا تعتمد هذه
+التقنية على ترتيب اجتياز (traversal) محدّد، وتتيح إمكانية إجراء تعديلات
+موضعية (إدراج، حذف، وما إلى ذلك). وهي تُعرف باسم <em>السحّاب (zipper)</em>. نعرضها
+هنا في سياق القوائم والأشجار، لكن يمكن تكييفها مع العديد من بنى
+المعطيات الأخرى.</p>
+<h3 id="91-السحابات-على-القوائم">9.1 السحّابات على القوائم</h3>
+<p>لنفترض أننا نرغب في «التنقّل» داخل قائمة من النمط <code>’alist</code>، أي الانتقال من
+عنصر إلى عنصر مع إجراء تعديلات عرضية أحياناً. الصورة التي تتبادر إلى الذهن
+هنا هي صورة مؤشّر في محرّر نصوص، وفعل مفاتيح
+لوحة المفاتيح المستخدمة للتحرّك والإدراج والحذف وغير ذلك.</p>
+<p>لنأخذ قائمة تحتوي على سبعة عناصر، مع وضع المؤشّر بعد العنصر الثالث،
+كما هو مبيّن في الشكل <a href="#a-cursor-on-a-list">9.1</a>.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/zippers-0-zipper_list-mps-.webp" alt="" id="a-cursor-on-a-list"></p>
+<p><strong>الشكل 9.1: مؤشّر على قائمة.</strong></p>
+<p>نمثّل هذه الحالة بقائمتين، تحتوي إحداهما على العناصر
+الواقعة إلى يسار المؤشّر، والأخرى على العناصر الواقعة
+إلى اليمين. ومن المناسب تمثيل القائمة الأولى بترتيب
+معكوس، بحيث يصبح العنصر الواقع مباشرة إلى يسار المؤشّر
+سهل الوصول. يوضّح الشكل <a href="#a-zipper-on-a-list">9.2</a> هذا التمثيل على المثال
+السابق.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/zippers-1-zipper_list_expl-mps-.webp" alt="" id="a-zipper-on-a-list"></p>
+<p><strong>الشكل 9.2: سحّاب على قائمة.</strong></p>
+<p>تُسمّى هذه البنية المكوّنة من قائمتين <em>سحّاباً (zipper)</em>. ونعرّفها باستخدام
+النمط التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> ’a zipper = { left: ’a <span class="hljs-built_in">list</span>; right: ’a <span class="hljs-built_in">list</span>; }
+</code></pre>
+<p>لبناء سحّاب كهذا انطلاقاً من قائمة <code>l</code>، مع وضع المؤشّر في أقصى
+اليسار، نهيّئ القائمة اليسرى إلى <code>[]</code> والقائمة اليمنى إلى <code>l</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> of_list l =
+    { left = <span class="hljs-literal">[]</span>; right = l }
+</code></pre>
+<p>لننتقل الآن إلى عمليات التنقّل والتعديل في
+السحّاب.</p>
+<h4>عمليات التنقّل</h4>
+<p>تتضمّن عملية التنقّل الأولى تحريك المؤشّر إلى اليمين. وهذا لا يكون
+ممكناً إلا إذا كانت القائمة اليمنى تحتوي على عنصر واحد على الأقل. في هذه الحالة ننقل العنصر
+الأول من هذه القائمة إلى رأس القائمة اليسرى.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> move_right z = <span class="hljs-keyword">match</span> z.right <span class="hljs-keyword">with</span>
+    | <span class="hljs-literal">[]</span> -&gt; invalid_arg <span class="hljs-string">&quot;move_right&quot;</span>
+    | x :: r -&gt; { left = x :: z.left; right = r }
+</code></pre>
+<p>يُرجع تطبيق الدالة <code>move_right</code> على مثال الشكل <a href="#a-zipper-on-a-list">9.2</a> السحّاب
+المبيّن في الشكل <a href="#the-zipper-after-a-move-to-the-right">9.3</a>.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/zippers-2-zipper_list_expl2-mps-.webp" alt="" id="the-zipper-after-a-move-to-the-right"></p>
+<p><strong>الشكل 9.3: السحّاب بعد الانتقال إلى اليمين.</strong></p>
+<p>وبالمثل نكتب دالة <code>move_left</code> لتحريك المؤشّر إلى اليسار (انظر
+البرنامج <a href="#x23-239012r73">73</a>، الصفحة التالية).</p>
+<p>لتحويل سحّاب <code>z</code> إلى قائمة، يكفي وصل القائمتين <code>z.left</code> و
+<code>z.right</code> مع عكس الأولى. وهذا بالضبط ما تفعله الدالة <code>List.rev_append</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> to_list z =
+    <span class="hljs-type">List</span>.rev_append z.left z.right
+</code></pre>
+<p>وبشكل مكافئ، كان بإمكاننا تحريك المؤشّر إلى أقصى اليسار ثم استرجاع
+القائمة اليمنى.</p>
+<blockquote></blockquote>
+<h4>عمليات التعديل</h4>
+<p>لإدراج عنصر عند موضع المؤشّر، يكفي وضع ذلك العنصر
+في رأس إحدى القائمتين. وإذا أدرجناه في رأس القائمة
+اليسرى، فسيكون المؤشّر إلى يمين العنصر الجديد (كما في حالة محرّر
+نصوص).</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> insert z x =
+    { z <span class="hljs-keyword">with</span> left = x :: z.left }
+</code></pre>
+<p>أما إذا أردنا بدلاً من ذلك إبقاء المؤشّر إلى يسار العنصر المُدرج، فيكفي
+استبدال <code>left</code> بـ <code>right</code> في الشيفرة أعلاه.</p>
+<p>وتتضمّن عملية تعديل أخرى حذف عنصر. فعلى سبيل المثال، يمكننا
+حذف العنصر الواقع إلى يسار المؤشّر، إن وُجد عنصر كذلك. (وهذا هو
+ما يفعله مفتاح <em>backspace</em> في محرّر النصوص.) وتكافئ هذه العملية
+حذف رأس القائمة <code>left</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> delete_left z = <span class="hljs-keyword">match</span> z.left <span class="hljs-keyword">with</span>
+    | <span class="hljs-literal">[]</span> -&gt; invalid_arg <span class="hljs-string">&quot;delete_left&quot;</span>
+    | _ :: l -&gt; { z <span class="hljs-keyword">with</span> left = l }
+</code></pre>
+<p>وبالمثل يمكننا كتابة عملية <code>delete_right</code> تحذف العنصر الواقع مباشرة
+إلى يمين المؤشّر.</p>
+<h3 id="92-السحابات-على-الأشجار">9.2 السحّابات على الأشجار</h3>
+<p>تنطبق تقنية السحّاب أيضاً على بنى معطيات أخرى، مثل الأشجار.
+خُذ مثلاً حالة الأشجار الثنائية متعدّدة الأشكال المعرّفة بالنمط
+التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> ’a tree = <span class="hljs-type">E</span> | <span class="hljs-type">N</span> <span class="hljs-keyword">of</span> ’a tree * ’a * ’a tree
+</code></pre>
+<p>ما هو نظير المؤشّر في حالة شجرة؟ إنه تعيين
+عقدة معيّنة مع إمكانية التنقّل داخل الشجرة، أي
+الصعود أو النزول على طول الشجرتين الجزئيتين اليسرى أو اليمنى.</p>
+<p>خُذ الشجرة في الشكل <a href="#a-cursor-on-a-tree">9.4</a>، حيث نضع المؤشّر على العقدة
+التي تحتوي على <code>5</code>. يحتوي السحّاب على موضع العقدة المعنية والشجرة الجزئية
+عند ذلك الموضع. ويمثّل الأول المسار من الجذر إلى العقدة،
+أي متتالية الحركات التي تحدّد عند كل خطوة ما إذا كنا ننزل على طول
+الشجرة الجزئية اليسرى أو اليمنى. فعلى سبيل المثال، المسار للوصول إلى العقدة <code>5</code> هو المتتالية <code>[</code><em>left</em><code>;</code>
+<em>right</em><code>]</code>.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/zippers-3-zipper_tree_expl-mps-.webp" alt="" id="a-cursor-on-a-tree"></p>
+<p><strong>الشكل 9.4: مؤشّر على شجرة.</strong></p>
+<p>نُعرّف النمط التالي لتمثيل مثل هذه المسارات. يمثّل الباني <code>Top</code>
+المسار الفارغ، أي موضع جذر الشجرة. ويدلّ البانيان <code>Left</code> و <code>Right</code> على
+حركة على طول الشجرتين الجزئيتين اليسرى أو اليمنى على التوالي.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> ’a path =
+    | <span class="hljs-type">Top</span>
+    | <span class="hljs-type">Left</span> <span class="hljs-keyword">of</span> ’a path * ’a * ’a tree
+    | <span class="hljs-type">Right</span> <span class="hljs-keyword">of</span> ’a tree * ’a * ’a path
+</code></pre>
+<p>نحتفظ عند كل حركة بالشجرة الجزئية التي لم ننزل عبرها. وهذا ضروري
+كي نتمكّن من الصعود مجدّداً في الشجرة. ويُعرَّف سحّاب الأشجار الثنائية
+حينئذٍ بالنمط التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> ’a zipper = { path : ’a path; tree : ’a tree }
+</code></pre>
+<p>يحتوي الحقل <code>tree</code> على الشجرة الجزئية عند المؤشّر. ويحتوي الحقل <code>path</code> على المسار
+المؤدّي إلى هذه الشجرة الجزئية. وكما في حالة السحّاب على القوائم، حيث اخترنا
+تمثيل القائمة اليسرى بترتيب معكوس، نختار هنا تخزين مسار العقدة
+<em>نحو</em> الجذر، بدلاً من <em>من</em> الجذر. ويعطي الشكل <a href="#a-zipper-on-a-tree">9.5</a> السحّاب للمثال
+السابق.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/zippers-4-zipper_tree_expl2-mps-.webp" alt="" id="a-zipper-on-a-tree"></p>
+<p><strong>الشكل 9.5: سحّاب على شجرة.</strong></p>
+<p>الباني الأول للمسار هو <code>Right</code> لأن المؤشّر يعيّن شجرة جزئية
+يمنى. والخطوة التالية في المسار هي <code>Left</code> لأن العقدة 3 هي جذر شجرة جزئية يسرى.
+وأخيراً يبلغ المسار جذر الشجرة، 8.</p>
+<p>يُبنى السحّاب مع المؤشّر عند جذر الشجرة باستخدام المسار
+الفارغ.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> of_tree t = { path = <span class="hljs-type">Top</span>; tree = t }
+</code></pre>
+<p>لنكتب الآن دوال التنقّل. نبدأ بدالة <code>down_left</code>
+للنزول على طول الشجرة الجزئية اليسرى. ولهذا نفحص شكل الشجرة عند المؤشّر.
+ونفشل إذا كانت فارغة.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> down_left z = <span class="hljs-keyword">match</span> z.tree <span class="hljs-keyword">with</span>
+    | <span class="hljs-type">E</span> -&gt; invalid_arg <span class="hljs-string">&quot;down_left&quot;</span>
+</code></pre>
+<p>وإلا نُرجع السحّاب الذي تكون فيه الشجرة الجزئية عند المؤشّر هي الشجرة الجزئية اليسرى،
+ويمتدّ المسار بالباني <code>Left</code> للدلالة على أننا نزلنا
+عبر اليسار.</p>
+<pre><code class="language-ocaml">    | <span class="hljs-type">N</span> (l, x, r) -&gt; { path = <span class="hljs-type">Left</span> (z.path, x, r); tree = l }
+</code></pre>
+<p>تُحفظ العقدة <code>x</code> وشجرتها الجزئية اليمنى <code>r</code> في المسار، كوسيطين للباني
+<code>Left</code>. وبالمثل نكتب دالة <code>down_right</code> تنزل عبر الشجرة الجزئية
+اليمنى.</p>
+<p>تفحص دالة الصعود في الشجرة المسار الحالي. ونفشل إذا كان المسار
+فارغاً.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> up z = <span class="hljs-keyword">match</span> z.path <span class="hljs-keyword">with</span>
+    | <span class="hljs-type">Top</span> -&gt;
+        invalid_arg <span class="hljs-string">&quot;up&quot;</span>
+</code></pre>
+<p>وإلا وجب علينا إعادة بناء عقدة الشجرة الواقعة فوق المؤشّر. ولهذا</p>
+<p>نستخدم المعلومات الواردة في المسار وكذلك الشجرة الجزئية الموجودة في
+الحقل <code>tree</code>. فإذا نزلنا عبر الشجرة الجزئية اليسرى، يكون المسار على الشكل
+<code>Left(p,x,r)</code>، وتكون العقدة المُعاد بناؤها ذات <code>z.tree</code> كشجرة جزئية يسرى لها، و<code>x</code>
+كجذر لها، و<code>r</code> كشجرة جزئية يمنى لها.</p>
+<pre><code class="language-ocaml">    | <span class="hljs-type">Left</span> (p, x, r) -&gt;
+        { path = p; tree = <span class="hljs-type">N</span> (z.tree, x, r) }
+</code></pre>
+<p>وإذا نزلنا عبر الشجرة الجزئية اليمنى، نتابع بشكل متناظر.</p>
+<pre><code class="language-ocaml">    | <span class="hljs-type">Right</span> (l, x, p) -&gt;
+        { path = p; tree = <span class="hljs-type">N</span> (l, x, z.tree) }
+</code></pre>
+<blockquote></blockquote>
+<p>تعيد الدالة التي تعيد بناء الشجرة بأكملها من سحّاب معطى تحريك
+المؤشّر صعوداً في الشجرة حتى يبلغ القمة. ونتوقف عندما يصبح المسار <code>Top</code> ونُرجع
+الشجرة الموجودة في الحقل <code>tree</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> to_tree z =
+    <span class="hljs-keyword">if</span> z.path = <span class="hljs-type">Top</span> <span class="hljs-keyword">then</span> z.tree <span class="hljs-keyword">else</span> to_tree (up z)
+</code></pre>
+<p>تُعطى الشيفرة الكاملة للسحّاب على الأشجار الثنائية في البرنامج <a href="#x23-241033r74">74</a>.</p>
+<p>ملاحظة: قد تتساءل عن أوجه الشبه بين السحّابات على القوائم
+وتلك على الأشجار. ففي الواقع، يبدو السحّاب على القوائم بنية
+متناظرة تماماً، إذ إن حقليه <code>left</code> و <code>right</code> من النمط نفسه. غير أنك قد
+تفهمه أيضاً على أنه غير متناظر، إذ يؤدي <code>left</code> الدور نفسه الذي يؤدّيه <code>path</code>،
+ويؤدّي <code>right</code> دور <code>tree</code>. وبناءً على ذلك، كان بإمكاننا تعريف النمط التالي لتمثيل
+موضع في قائمة:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> ’a path = <span class="hljs-type">Top</span> | <span class="hljs-type">Right</span> <span class="hljs-keyword">of</span> ’a * ’a path
+</code></pre>
+<p>ولأن هذا النمط مطابق بوضوح للنمط <code>’alist</code>، لم نرَ أنه يجدر بنا
+تعريف نمط جديد. وهكذا تجسّد السحّابات على القوائم والأشجار الفكرة
+ذاتها بعينها.</p>
+<h4>تطبيق: مقارنة شجرتين ثنائيتين للبحث</h4>
+<p>في الفصل <a href="https://usr.lmf.cnrs.fr/lpo/mainch5.html#sets-and-dictionaries">5</a>، عرضنا أشجار البحث الثنائية، التي يمكن أن تمثّل مجموعات من
+العناصر مزوّدة بترتيب كلي. فإذا أردنا بناء مجموعة من المجموعات،
+كان من الضروري أن نزوّد أشجار البحث الثنائية نفسها بترتيب
+كلي.</p>
+<p>أحد الحلول هو بناء قائمة عناصر لكل من الشجرتين بترتيب
+وُسْطي ثم مقارنة القائمتين، مثلاً معجمياً. وهذا مع ذلك ساذج إلى حدّ ما، لأن الشجرتين قد تحتويان على عناصر كثيرة لكنهما</p>
+<p>قد تختلفان بسرعة، وفي هذه الحالة نكون قد بنينا القائمتين
+عبثاً.</p>
+<p>يُفضَّل حل أكثر كفاءة يعمل مباشرة على الشجرتين. غير أن هذا
+ليس مباشراً لأن شجرتي بحث ثنائيتين يمكن أن تحتويان على العناصر نفسها
+من دون أن يكون لهما البنية نفسها، كما هو مبيّن في الشكل <a href="#two-binary-search-trees-containing-the-same-elements">9.6</a>. ويتمثّل أحد الحلول
+في استخدام بنية السحّاب لتنفيذ اجتياز وُسْطي <em>متزامن</em> للشجرتين.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/zippers-5-zipper_sf-mps-.webp" alt="" id="two-binary-search-trees-containing-the-same-elements"></p>
+<p><strong>الشكل 9.6: شجرتان ثنائيتان للبحث تحتويان على العناصر نفسها.</strong></p>
+<p>نبدأ بكتابة دالة تنزل إلى أقصى أسفل يسار شجرة
+وتُرجع السحّاب المقابل لهذا الموضع. وهذا يعادل تكرار
+الدالة <code>down_left</code> قدر الإمكان.</p>
+<p>وبشكل ملموس، نكتب دالة <code>leftmost</code> بتمرير سحّاب إليها كمراكم. فإذا
+كانت الشجرة فارغة، نُرجع السحّاب الممرَّر كوسيط:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> leftmost z = <span class="hljs-keyword">function</span>
+    | <span class="hljs-type">E</span> -&gt; z
+</code></pre>
+<p>وإلا ننزل عبر الشجرة الجزئية اليسرى، مع تجميع العقدة المزارة في
+السحّاب.</p>
+<pre><code class="language-ocaml">    | <span class="hljs-type">N</span> (l, x, r) -&gt; leftmost (<span class="hljs-type">Left</span> (z, x, r)) l
+</code></pre>
+<p>وإذا أخذنا الشجرتين في الشكل <a href="#two-binary-search-trees-containing-the-same-elements">9.6</a>، <code>t1</code> و <code>t2</code>، فإن السحّابين
+الناتجين عن <code>leftmostTopt1</code> و <code>leftmostTopt2</code> يكونان على الشكل التالي:</p>
+<pre><code class="language-ocaml">  leftmost <span class="hljs-type">Top</span> t1 = <span class="hljs-type">Left</span> (<span class="hljs-type">Left</span> (..., <span class="hljs-number">3</span>, ...), <span class="hljs-number">1</span>, ...)
+  leftmost <span class="hljs-type">Top</span> t2 = <span class="hljs-type">Left</span> (<span class="hljs-type">Left</span> (..., <span class="hljs-number">4</span>, ...), <span class="hljs-number">1</span>, ...)
+</code></pre>
+<p>يصور الشكل <a href="#the-two-zippers-for-the-trees-of-figureref-figcomparbres">9.7</a> السحّابين. ويمكننا التحقق من أن كليهما يبدأ بالقيمة
+الصغرى، وهي 1.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/zippers-6-zipper_sf1-mps-.webp" alt="" id="the-two-zippers-for-the-trees-of-figureref-figcomparbres"></p>
+<p><strong>الشكل 9.7: السحّابان للشجرتين في الشكل 9.6.</strong></p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/zippers-7-zipper_sf2-mps-.webp" alt="PIC"></p>
+<p>التالي، علينا كتابة دالة <code>compare</code> لتنفيذ المقارنة الفعلية. تأخذ هذه
+الدالة كوسيطين سحّابين ودالة <code>cmp</code> لمقارنة العناصر.
+فإذا كان السحّابان <code>Top</code>، انتهت المقارنة، ونُرجع <code>0</code> للدلالة على
+التساوي.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> compare cmp z1 z2 = <span class="hljs-keyword">match</span> z1, z2 <span class="hljs-keyword">with</span>
+    | <span class="hljs-type">Top</span>, <span class="hljs-type">Top</span> -&gt;
+        <span class="hljs-number">0</span>
+</code></pre>
+<p>وإذا كان السحّابان على الشكل <code>Left</code>، نقارن العنصرين اللذين يعيّنانهما
+باستخدام الدالة <code>cmp</code>. فإذا اختلفا، انتهت المقارنة، وتُرجع النتيجة التي تعطيها
+<code>cmp</code>.</p>
+<pre><code class="language-ocaml">    | <span class="hljs-type">Left</span> (z1, x1, r1), <span class="hljs-type">Left</span> (z2, x2, r2) -&gt;
+        <span class="hljs-keyword">let</span> c = cmp x1 x2 <span class="hljs-keyword">in</span>
+        <span class="hljs-keyword">if</span> c &lt;&gt; <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> c
+</code></pre>
+<p>أما إذا تساويا، وجب أن تستمر المقارنة. فنبحث عن العنصرين
+التاليين، باستدعاء <code>leftmost</code> على الشجرتين الجزئيتين اليمنيين، <code>r1</code> و <code>r2</code>. ثم نستدعي
+<code>compare</code> عودياً.</p>
+<pre><code class="language-ocaml">        <span class="hljs-keyword">else</span> compare cmp (leftmost z1 r1) (leftmost z2 r2)
+</code></pre>
+<p>وإذا كان أحد السحّابين يساوي <code>Top</code> والآخر <code>Left</code>، فهذا يعني أن أحد
+الاجتيازين بلغ النهاية دون الآخر. ولذلك نُرجع <code>-1</code> أو <code>1</code>، حسب
+الحالة.</p>
+<pre><code class="language-ocaml">    | <span class="hljs-type">Top</span>, <span class="hljs-type">Left</span> _ -&gt;
+        -<span class="hljs-number">1</span>
+    | <span class="hljs-type">Left</span> _, <span class="hljs-type">Top</span> -&gt;
+        <span class="hljs-number">1</span>
+</code></pre>
+<p>وأخيراً، بحكم البناء، لا يمكن أن تحدث حالة سحّاب على الشكل <code>Right</code>. ونتخلّص منها
+كما يلي:</p>
+<pre><code class="language-ocaml">    | <span class="hljs-type">Right</span> _, _ | _, <span class="hljs-type">Right</span> _ -&gt;
+        <span class="hljs-keyword">assert</span> <span class="hljs-literal">false</span>
+</code></pre>
+<p>ولحلّ المشكلة الأولية المتمثّلة في كيفية مقارنة شجرتين <code>t1</code> و <code>t2</code>، يكفي أن
+نبني السحّابين بالدالة <code>leftmost</code>، ثم نقارنهما باستخدام
+الدالة <code>compare</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> compare_tree cmp t1 t2 =
+    compare cmp (leftmost <span class="hljs-type">Top</span> t1) (leftmost <span class="hljs-type">Top</span> t2)
+</code></pre>
+<blockquote></blockquote>
+<p>تُعطى الشيفرة الكاملة في البرنامج <a href="#x23-242032r75">75</a>. لاحظ أن الدالتين <code>leftmost</code>
+و <code>compare</code> عوديتان ذيليّتان.</p>
+<h3 id="93-المؤشرات">9.3 المؤشّرات</h3>
+<p>عند مناقشة مشكلة مقارنة الأشجار الثنائية، رأينا أهمية
+اجتياز بنية معطيات خطوة بخطوة. وتختلف طريقة الاجتياز هذه عن
+طريقة المُكرِّرات ذات الرتبة الأعلى مثل <code>iter</code> و <code>fold</code>، التي لم يكن بوسعنا
+أن نحلّ بها تلك المشكلة.</p>
+<p>وبشكل عام، بالنظر إلى بنية معطيات اعتباطية من النمط <code>’at</code>، نرغب في واجهة <em>مؤشّر (cursor)</em>
+لاجتياز عناصرها واحداً واحداً. وتُعطى مثل هذه الواجهة في
+البرنامج <a href="#x23-243002r76">76</a>.</p>
+<blockquote></blockquote>
+<p>تحتوي الواجهة على نمط مجرّد متعدّد الأشكال، <code>’aenum</code>، للمؤشّر،
+حيث المتغيّر <code>’a</code> هو نمط العناصر. وتُرجع الدالة <code>start</code> مؤشّراً
+جديداً. وتُرجع الدالة <code>step</code> العنصر الحالي والمؤشّر
+المقابل للعنصر التالي، أو ترفع الاستثناء <code>Exit</code> إذا اكتمل التكرار.</p>
+<p>تُعرّف هذه الواجهة مؤشّرات دائمة، بمعنى أن المؤشّر الممرَّر
+كمدخل إلى الدالة <code>step</code> لا يُعدَّل. وهكذا يمكننا إعادة استخدام المؤشّر،
+مثلاً في خوارزمية تستخدم <em>الرجوع بالآثار (backtracking)</em>. وهناك احتمال آخر
+هو المؤشّرات الأمرية، حيث تُرجع الدالة <code>step</code> العنصر الحالي فقط
+وتتقدّم بالمؤشّر إلى العنصر التالي بأثر جانبي (انظر
+التمرين <a href="#x23-249005r12">9.12</a>).</p>
+<p>سننفّذ الآن مؤشّرات دائمة على القوائم والأشجار.</p>
+<h4>المؤشّرات على القوائم</h4>
+<p>السحّاب على القوائم هو بحدّ ذاته مؤشّر مناسب. غير أنه مع ذلك معقّد
+بلا داعٍ لأننا لا نحتاج إلى تتبّع العناصر الواقعة إلى يسار
+المؤشّر. وبعبارة أخرى، ليس مؤشّر القوائم سوى القائمة اليمنى،
+أي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> ’a enum = ’a <span class="hljs-built_in">list</span>
+</code></pre>
+<p>تختزل الدالة <code>start</code> إلى دالة الهوية. وترفع الدالة <code>step</code> الاستثناء
+<code>Exit</code> إذا كان المؤشّر فارغاً. وإلا فإنها تُرجع رأس القائمة وبقية
+القائمة كمؤشّر جديد.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> step = <span class="hljs-keyword">function</span>
+    | <span class="hljs-literal">[]</span> -&gt; raise <span class="hljs-type">Exit</span>
+    | x :: r -&gt; x, r
+</code></pre>
+<p>لاحظ أن الطبيعة الدائمة للقوائم تضمن ديمومة المؤشّر. وتُعطى الشيفرة
+الكاملة في البرنامج <a href="#x23-244007r77">77</a>.</p>
+<blockquote></blockquote>
+<h4>المؤشّرات على الأشجار</h4>
+<blockquote></blockquote>
+<p>لتعريف مؤشّر على الأشجار، يلزم أولاً اختيار ترتيب اجتياز. ونختار
+هنا الترتيب الوُسْطي اعتباطاً. (انظر التمرينين <a href="#x23-249001r8">9.8</a> و <a href="#x23-249002r9">9.9</a> لترتيبي اجتياز
+آخرين.)</p>
+<p>وعلى خلاف السحّابات على القوائم، لا توفّر لنا السحّابات على الأشجار فوراً
+عملية لإنتاج العنصر التالي في الاجتياز الوُسْطي. غير أننا
+رأينا كيف يتيح السحّاب هذه العملية عند معالجة
+مشكلة مقارنة الأشجار الثنائية. ولا يلزم سوى البانيين <code>Top</code> و <code>Left</code>
+من السحّاب. ولذلك نعرّف النمط التالي للمؤشّر:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> ’a enum = <span class="hljs-type">Top</span> | <span class="hljs-type">Left</span> <span class="hljs-keyword">of</span> ’a * ’a tree * ’a enum
+</code></pre>
+<p>تضع الدالة <code>start</code> المؤشّر على العنصر الواقع في أسفل
+يسار الشجرة. ولهذا نستخدم الدالة <code>leftmost</code> التي كُتبت من أجل
+البرنامج <a href="#x23-242032r75">75</a>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> start t =
+    leftmost t <span class="hljs-type">Top</span>
+</code></pre>
+<p>ترفع الدالة <code>step</code> الاستثناء <code>Exit</code> إذا كان المؤشّر <code>Top</code>. وإلا فإنها
+تُرجع العنصر <code>x</code> الموجود في الباني <code>Left</code> وتبني مؤشّراً جديداً
+باستدعاء <code>leftmost</code> على الشجرة الجزئية اليمنى لـ <code>x</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> step = <span class="hljs-keyword">function</span>
+    | <span class="hljs-type">Top</span> -&gt; raise <span class="hljs-type">Exit</span>
+    | <span class="hljs-type">Left</span> (x, r, e) -&gt; x, leftmost r e
+</code></pre>
+<p>وهذا بالضبط ما فعلناه في البرنامج <a href="#x23-242032r75">75</a> للانتقال إلى العنصر التالي.</p>
+<p>وكما في حالة القوائم، تضمن الطبيعة غير القابلة للتغيير للنمط <code>enum</code>
+ديمومة المؤشّر. وتُعطى الشيفرة الكاملة في البرنامج <a href="#x23-245001r78">78</a> (انظر الصفحة
+السابقة).</p>
+<blockquote></blockquote>
+<div class="exercises"><h3 id="94-التمارين">9.4 التمارين</h3>
+<h4>السحّابات على القوائم</h4>
+<p><strong>9.1</strong> زوّد السحّاب على القوائم بالدالتين <code>to_start</code> و <code>to_end</code>، اللتين تتيحان
+الانتقال إلى بداية القائمة ونهايتها على التوالي.</p>
+<p><strong>9.2</strong> أعد كتابة الدالة <code>to_list</code> بالطريقة نفسها التي كُتبت بها الدالة
+<code>to_tree</code>.</p>
+<p><strong>9.3</strong> خُذ المشكلة التالية: بالنظر إلى قائمة غير فارغة من الأعداد الصحيحة، حدّد ما إذا
+كانت توجد شجرة ثنائية تكون أوراقها، باعتبارها بالترتيب الوُسْطي، عند
+الأعماق المعطاة في القائمة. فعلى سبيل المثال، القائمة [1;3;3;2] تقابل شجرة ثنائية،
+لكن القائمة [1;3;3] لا تقابلها. ونقترح الخوارزمية التالية لحلّ هذه المشكلة:</p>
+<ul>
+<li>إذا احتوت القائمة على عنصر واحد، انتهت الخوارزمية. وتكون النتيجة
+موجبة إذا وفقط إذا كان العنصر 0، وهو ما يقابل الشجرة
+الفارغة.</li>
+<li>وإلا نبحث عن أول عنصرين متتاليين في القائمة
+متساويين. فإن لم يوجد أي منهما، نفشل. وإلا، بإطلاق الاسم n على القيمة المشتركة
+للعددين الصحيحين، نستبدل موضعَي n بالعدد الصحيح
+n − 1، وهو ما يقابل عقدة داخلية.</li>
+<li>نبدأ من جديد بالقائمة الناتجة.</li>
+</ul>
+<p>اكتب دالة <code>is_tree:intlist-&gt;bool</code> تنفّذ هذه الخوارزمية باستخدام
+بنية السحّاب لتفادي البدء من بداية القائمة في كل مرة. ويجب أن تكون
+التعقيدية الكلية خطية في طول القائمة.</p>
+<p><strong>9.4</strong> يمكن برمجة محرّر نصوص فعّال باستخدام بنية السحّاب. فكل
+سطر نصي هو سحّاب على قائمة محارف، كما شُرح سابقاً. وبالمثل، يُنظر إلى الملف
+على أنه سحّاب على قائمة الأسطر. ونستخدم النمطين التاليين لتمثيل سطر
+ونصّ على التوالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> line = { left: <span class="hljs-built_in">char</span> <span class="hljs-built_in">list</span>; right: <span class="hljs-built_in">char</span> <span class="hljs-built_in">list</span> }
+  <span class="hljs-keyword">type</span> text = { up: line <span class="hljs-built_in">list</span>; current: line; down: line <span class="hljs-built_in">list</span> }
+</code></pre>
+<p>يمثّل الحقل <code>current</code> من النمط <code>text</code> السطر الحالي الذي يوجد
+عليه المؤشّر. والحقلان <code>up</code> و <code>down</code> هما نظيرا <code>left</code> و <code>right</code> بالنسبة للأسطر.
+اكتب الدوال <code>insert_char</code> و <code>return</code> و <code>backspace</code> وغيرها لمحرّر نصوص
+كهذا.</p>
+<h4>السحّابات على الأشجار</h4>
+<p><strong>9.5</strong> اكتب دالة <code>remove_leaf:’azipper-&gt;’azipper</code> تتحقق من أن
+السحّاب الممرَّر كوسيط يشير إلى عقدة ليس لها أبناء،
+وتحذفها. وتكون هذه العقدة على الشكل <code>N(E,x,E)</code>. وبالعكس، اكتب دالة
+<code>insert_leaf:’a-&gt;’azipper-&gt;’azipper</code> تتحقق من أن السحّاب الممرَّر
+كوسيط يشير إلى عقدة ورقة (أي <code>E</code>)، وتُدرج في موضعها عقدة جديدة
+تحتوي على القيمة الممرَّرة كوسيط.</p>
+<p><strong>9.6</strong> اكتب دالة <code>remove_leftmost:’azipper-&gt;’azipper</code> تتحقق
+من أن السحّاب الممرَّر كوسيط يشير إلى عقدة في الشجرة ليس
+لها ابن أيسر، وتحذفها. واحرص على الاحتفاظ بالشجرة الجزئية اليمنى، إن
+وُجدت.</p>
+<p><strong>9.7</strong> خُذ الأشجار n-ary الموسومة بسلاسل محارف، المعرّفة بالنمط التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> tree = <span class="hljs-type">N</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">string</span> * tree <span class="hljs-built_in">list</span>
+</code></pre>
+<p>عرّف بنية سحّاب على مثل هذه الأشجار.</p>
+<h4>المؤشّرات</h4>
+<p><strong>9.8</strong> اكتب مؤشّراً على الأشجار الثنائية يقابل اجتيازاً سابقاً (prefix)، أي
+اجتيازاً تُزار فيه كل عقدة قبل شجرتيها الجزئيتين.</p>
+<p><strong>9.9</strong> اكتب مؤشّراً على الأشجار الثنائية يقابل اجتيازاً لاحقاً (postfix)، أي
+اجتيازاً تُزار فيه كل عقدة بعد شجرتيها الجزئيتين.</p>
+<p><strong>9.10</strong> أعد كتابة مقارنة الأشجار الثنائية (البرنامج <a href="#x23-242032r75">75</a>) باستخدام المؤشّر على الأشجار
+(البرنامج <a href="#x23-245001r78">78</a>).</p>
+<p><strong>9.11</strong> بدلاً من رفع الاستثناء <code>Exit</code> عندما يبلغ المؤشّر نهاية
+الاجتياز، يمكن للدالة <code>step</code> أن تُرجع قيمة من النمط <code>option</code>، أي
+<code>step:’aenum-&gt;(’a*’aenum)option</code>. أعد كتابة المؤشّرات على القوائم والأشجار بهذه
+الواجهة الجديدة.</p>
+<p><strong>9.12</strong> إذا لم تُستخدم ديمومة المؤشّر، يمكننا النظر في نسخة أمرية
+تُرجع فيها الدالة <code>step</code> العنصر الحالي فقط وتتقدّم إلى
+العنصر التالي بأثر جانبي، أي <code>step:’aenum-&gt;’a</code>. أعد كتابة المؤشّرات على
+القوائم والأشجار بهذه الواجهة الجديدة.</p>
+<p><strong>9.13</strong> نفّذ مؤشّراً على المصفوفات.</p>
+</div>`,l={book:e,chapter:s,chapterTitle:n,slug:a,title:p,headings:c,html:o};export{e as book,s as chapter,n as chapterTitle,l as default,c as headings,o as html,a as slug,p as title};

@@ -1,0 +1,380 @@
+const s="mooc",n="part-8",a="الجزء 8: الكائنات والصنوف",e="5-more-examples-of-classes",l="المزيد من أمثلة الأصناف",p=[{depth:2,id:"المثال-1-صنف-rectangle",text:"المثال 1: صنف Rectangle"},{depth:2,id:"طباعة-كائن",text:"طباعة كائن"},{depth:3,id:"بنية-الصنف-الجديد",text:"بنية الصنف الجديد"},{depth:3,id:"الدفع-مقابل-الغداء",text:"الدفع مقابل الغداء"},{depth:3,id:"إيداع-المال-على-البطاقة",text:"إيداع المال على البطاقة"},{depth:3,id:"عدة-بطاقات",text:"عدّة بطاقات"},{depth:2,id:"المثال-2-قائمة-المهام",text:"المثال 2: قائمة المهام"},{depth:3,id:"صنف-اسمه-series",text:"صنف اسمه Series"},{depth:3,id:"إضافة-تقييمات",text:"إضافة تقييمات"},{depth:3,id:"البحث-عن-مسلسلات",text:"البحث عن مسلسلات"}],c=`<blockquote>
+<p><strong>أهداف التعلّم</strong></p>
+<p>بعد إتمام هذا القسم</p>
+<ul>
+<li>ستكون قادرًا على إنشاء أصناف أكثر تنوّعًا</li>
+<li>ستعرف كيف تضيف تابع <code>__str__</code> إلى تعريفات أصنافك</li>
+</ul>
+</blockquote>
+<h2 id="المثال-1-صنف-rectangle">المثال 1: صنف Rectangle</h2>
+<p>لننظر إلى صنف يمثّل مستطيلًا في فضاء ثنائي الأبعاد:</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Rectangle</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, left_upper: <span class="hljs-built_in">tuple</span>, right_lower: <span class="hljs-built_in">tuple</span></span>):
+        <span class="hljs-variable language_">self</span>.left_upper = left_upper
+        <span class="hljs-variable language_">self</span>.right_lower = right_lower
+        <span class="hljs-variable language_">self</span>.width = right_lower[<span class="hljs-number">0</span>]-left_upper[<span class="hljs-number">0</span>]
+        <span class="hljs-variable language_">self</span>.height = right_lower[<span class="hljs-number">1</span>]-left_upper[<span class="hljs-number">1</span>]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">area</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.width * <span class="hljs-variable language_">self</span>.height
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">perimeter</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.width * <span class="hljs-number">2</span> + <span class="hljs-variable language_">self</span>.height * <span class="hljs-number">2</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">move</span>(<span class="hljs-params">self, x_change: <span class="hljs-built_in">int</span>, y_change: <span class="hljs-built_in">int</span></span>):
+        corner = <span class="hljs-variable language_">self</span>.left_upper
+        <span class="hljs-variable language_">self</span>.left_upper = (corner[<span class="hljs-number">0</span>]+x_change, corner[<span class="hljs-number">1</span>]+y_change)
+        corner = <span class="hljs-variable language_">self</span>.right_lower
+        <span class="hljs-variable language_">self</span>.right_lower = (corner[<span class="hljs-number">0</span>]+x_change, corner[<span class="hljs-number">1</span>]+y_change)
+</code></pre>
+<p>يُنشأ كائن <code>Rectangle</code> جديد بوسيطين هما صفّان. ويحتوي هذان الصفّان على إحداثيَّي x وy للزاوية العلوية اليسرى والزاوية السفلية اليمنى. ويحسب الباني ارتفاع المستطيل وعرضه انطلاقًا من هاتين القيمتين.</p>
+<p>يحسب التابعان <code>area</code> و<code>perimeter</code> مساحة المستطيل ومحيطه انطلاقًا من الارتفاع والعرض. ويحرّك التابع <code>move</code> المستطيل بمقدار قيمتَي x وy المُعطاتين كوسيطين.</p>
+<p>ويُمثَّل المستطيل في نظام إحداثيات تتزايد فيه إحداثيات x من اليسار إلى اليمين، وتتزايد فيه إحداثيات y من الأعلى إلى الأسفل. وهذه طريقة شائعة للتعامل مع الإحداثيات في البرمجة، لأن اعتبار الزاوية العلوية اليسرى لشاشة الحاسوب النقطة التي يساوي فيها x وy صفرًا غالبًا أسهل وأكثر طبيعية.</p>
+<p>ويعمل البرنامج التالي على اختبار صنف <code>Rectangle</code>:</p>
+<pre><code class="language-python">rectangle = Rectangle((<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">4</span>, <span class="hljs-number">3</span>))
+<span class="hljs-built_in">print</span>(rectangle.left_upper)
+<span class="hljs-built_in">print</span>(rectangle.right_lower)
+<span class="hljs-built_in">print</span>(rectangle.width)
+<span class="hljs-built_in">print</span>(rectangle.height)
+<span class="hljs-built_in">print</span>(rectangle.perimeter())
+<span class="hljs-built_in">print</span>(rectangle.area())
+
+rectangle.move(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>)
+<span class="hljs-built_in">print</span>(rectangle.left_upper)
+<span class="hljs-built_in">print</span>(rectangle.right_lower)
+</code></pre>
+<pre><code>(1, 1)
+(4, 3)
+3
+2
+10
+6
+(4, 4)
+(7, 6)
+</code></pre>
+<h2 id="طباعة-كائن">طباعة كائن</h2>
+<p>حين يكون لديك كائن أُنشئ من صنف عرّفته بنفسك، لا تكون الاستجابة الافتراضية لاستدعاء الأمر <code>print</code> بذلك الكائن كوسيط له مفيدة كثيرًا:</p>
+<pre><code class="language-python">rectangle = Rectangle((<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">4</span>, <span class="hljs-number">3</span>))
+<span class="hljs-built_in">print</span>(rectangle)
+</code></pre>
+<p>وينبغي أن تبدو المخرجات المطبوعة على نحو يشبه هذا:</p>
+<pre><code>&lt;__main__.Rectangle object at 0x000002D7BF148A90&gt;
+</code></pre>
+<p>ومن الواضح أننا نريد تحكّمًا أكبر بما يُطبع. وأسهل طريقة لفعل ذلك هي إضافة تابع خاص هو <code>__str__</code> إلى تعريف الصنف. والغرض منه إرجاع صورة عن حالة الكائن بصيغة سلسلة نصية. وإذا احتوى تعريف الصنف على تابع <code>__str__</code>، فإن القيمة التي يُعيدها هذا التابع هي التي تُطبع عند تنفيذ الأمر <code>print</code>.</p>
+<p>إذًا، لنضف تعريف تابع <code>__str__</code> إلى صنفنا <code>Rectangle</code>:</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Rectangle</span>:
+
+    <span class="hljs-comment"># ...the rest of the class goes here the same as above...</span>
+
+    <span class="hljs-comment"># This method returns the state of the object in string format</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__str__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-string">f&quot;rectangle <span class="hljs-subst">{self.left_upper}</span> ... <span class="hljs-subst">{self.right_lower}</span>&quot;</span>
+</code></pre>
+<p>والآن ينتج الأمر <code>print</code> شيئًا أكثر ملاءمة للمستخدم:</p>
+<pre><code class="language-python">rectangle = Rectangle((<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">4</span>, <span class="hljs-number">3</span>))
+<span class="hljs-built_in">print</span>(rectangle)
+</code></pre>
+<pre><code>rectangle (1, 1) ... (4, 3)
+</code></pre>
+<p>وربما يُستخدم التابع <code>__str__</code> في كثير من الأحيان أكثر لصياغة تمثيل نصي للكائن بالدالة <code>str</code>، كما يظهر في البرنامج التالي:</p>
+<pre><code class="language-python">rectangle = Rectangle((<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">4</span>, <span class="hljs-number">3</span>))
+str_rep = <span class="hljs-built_in">str</span>(rectangle)
+<span class="hljs-built_in">print</span>(str_rep)
+</code></pre>
+<pre><code>rectangle (1, 1) ... (4, 3)
+</code></pre>
+<p>هناك مزيد من التوابع الخاصة ذات الشرطات السفلية التي يمكن تعريفها للأصناف. ومنها التابع <code>__repr__</code>، وهو شبيه إلى حدّ ما بالتابع <code>__str__</code>. والغرض منه توفير تمثيل تقني لحالة الكائن. وسنصادف هذا التابع لاحقًا.</p>
+<blockquote>
+<p><strong>تمرين برمجي: ساعة الإيقاف</strong></p>
+<p>يحتوي قالب التمرين على الهيكل التالي لصنف <code>Stopwatch</code>:</p>
+</blockquote>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Stopwatch</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.seconds = <span class="hljs-number">0</span>
+        <span class="hljs-variable language_">self</span>.minutes = <span class="hljs-number">0</span>
+</code></pre>
+<p>يُرجى الإضافة إلى تعريف الصنف بحيث يعمل كما يلي:</p>
+<pre><code class="language-python">watch = Stopwatch()
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">3600</span>):
+    <span class="hljs-built_in">print</span>(watch)
+    watch.tick()
+</code></pre>
+<pre><code>00:00
+00:01
+00:02
+... many more lines printed out
+00:59
+01:00
+01:01
+... many, many more lines printed out
+59:58
+59:59
+00:00
+00:01
+</code></pre>
+<p>إذًا، يضيف التابع <code>tick</code> ثانية واحدة إلى ساعة الإيقاف. والقيمة العظمى للثواني والدقائق معًا هي 59. وينبغي أن يحتوي تعريف صنفك أيضًا على تابع <code>__str__</code> يُعيد تمثيلًا نصيًا لحالة ساعة الإيقاف، كما هو موضّح في المثال أعلاه.</p>
+<p><strong>تلميح:</strong> قد يسهّل اختبار التابع <code>tick</code> أن تضبط مؤقتًا القيمتين الابتدائيتين للثواني والدقائق على قيمة أقرب إلى 59 في الباني. وإذا غيّرت القيمتين الابتدائيتين، فتذكّر إعادتهما قبل التسليم.</p>
+<blockquote>
+<p><strong>تمرين برمجي: الساعة</strong></p>
+<p>يُرجى تعريف صنف جديد اسمه <code>Clock</code> يوسّع قدرات صنفك <code>Stopwatch</code>. وينبغي أن يعمل كما يلي:</p>
+</blockquote>
+<pre><code class="language-python">clock = Clock(<span class="hljs-number">23</span>, <span class="hljs-number">59</span>, <span class="hljs-number">55</span>)
+<span class="hljs-built_in">print</span>(clock)
+clock.tick()
+<span class="hljs-built_in">print</span>(clock)
+clock.tick()
+<span class="hljs-built_in">print</span>(clock)
+clock.tick()
+<span class="hljs-built_in">print</span>(clock)
+clock.tick()
+<span class="hljs-built_in">print</span>(clock)
+clock.tick()
+<span class="hljs-built_in">print</span>(clock)
+clock.tick()
+<span class="hljs-built_in">print</span>(clock)
+
+clock.<span class="hljs-built_in">set</span>(<span class="hljs-number">12</span>, <span class="hljs-number">5</span>)
+<span class="hljs-built_in">print</span>(clock)
+</code></pre>
+<pre><code>23:59:55
+23:59:56
+23:59:57
+23:59:58
+23:59:59
+00:00:00
+00:00:01
+12:05:00
+</code></pre>
+<p>وكما ترى أعلاه، ينبغي أن يأخذ الباني قيمًا ابتدائية للساعات والدقائق والثواني كوسائط، وأن يضبطها على النحو المناسب. ويضيف التابع <code>tick</code> ثانية واحدة إلى الساعة. ويضبط التابع <code>set</code> قيمتين جديدتين للساعات والدقائق، و_يضبط الثواني على صفر_.</p>
+<blockquote>
+<p><strong>تمرين برمجي: LunchCard</strong></p>
+<p>في Unicafe، مقصف الطلبة في جامعة هلسنكي، يمكن للطلبة أن يدفعوا ثمن غدائهم ببطاقة سحب خاصة.</p>
+</blockquote>
+<p>في هذا التمرين ستكتب صنفًا اسمه <code>LunchCard</code>، غرضه محاكاة الوظائف التي توفّرها بطاقة السحب الخاصة بالمقصف.</p>
+<h3 id="بنية-الصنف-الجديد">بنية الصنف الجديد</h3>
+<p>يُرجى إنشاء صنف جديد اسمه <code>LunchCard</code>.</p>
+<p>اكتب أولًا الباني للصنف. وينبغي أن يأخذ الرصيد الابتدائي المتاح على البطاقة كوسيط، وأن يحفظه كخاصية. وهذا موفَّر لك في الهيكل أدناه.</p>
+<p>ثم اكتب تابع <code>__str__</code> يُعيد سلسلة نصية تحتوي على الرصيد: «الرصيد هو X يورو». وينبغي أن يُطبع الرصيد المتاح بدقة منزلة عشرية واحدة. وراجع المثال أدناه لمعرفة طريقة الاستخدام.</p>
+<p>وهذا تنفيذ هيكلي للصنف:</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">LunchCard</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, balance: <span class="hljs-built_in">float</span></span>):
+        <span class="hljs-variable language_">self</span>.balance = balance
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__str__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">pass</span>
+</code></pre>
+<p>ومثال على الاستخدام:</p>
+<pre><code class="language-python">card = LunchCard(<span class="hljs-number">50</span>)
+<span class="hljs-built_in">print</span>(card)
+</code></pre>
+<p>وينبغي أن ينتج تنفيذ ما سبق المخرجات المطبوعة التالية:</p>
+<pre><code>The balance is 50.0 euros
+</code></pre>
+<h3 id="الدفع-مقابل-الغداء">الدفع مقابل الغداء</h3>
+<p>يُرجى تنفيذ التوابع التالية في صنفك LunchCard:</p>
+<ul>
+<li>يطرح <code>eat_lunch</code> مبلغ 2.60 يورو من الرصيد على البطاقة</li>
+<li>يطرح <code>eat_special</code> مبلغ 4.60 يورو من الرصيد على البطاقة</li>
+</ul>
+<p>ويمكنك استخدام الدالة الرئيسية التالية لاختبار صنفك:</p>
+<pre><code class="language-python">card = LunchCard(<span class="hljs-number">50</span>)
+<span class="hljs-built_in">print</span>(card)
+
+card.eat_lunch()
+<span class="hljs-built_in">print</span>(card)
+
+card.eat_special()
+card.eat_lunch()
+<span class="hljs-built_in">print</span>(card)
+</code></pre>
+<p>وينبغي أن ينتج هذا المخرجات المطبوعة التالية:</p>
+<pre><code>The balance is 50.0 euros
+The balance is 47.4 euros
+The balance is 40.2 euros
+</code></pre>
+<p>وتأكّد من أن الرصيد غير مسموح له أبدًا بأن يصل إلى أعداد أقل من الصفر:</p>
+<pre><code class="language-python">card = LunchCard(<span class="hljs-number">4</span>)
+<span class="hljs-built_in">print</span>(card)
+
+card.eat_lunch()
+<span class="hljs-built_in">print</span>(card)
+
+card.eat_lunch()
+<span class="hljs-built_in">print</span>(card)
+</code></pre>
+<pre><code>The balance is 4.0 euros
+The balance is 1.4 euros
+The balance is 1.4 euros
+</code></pre>
+<p>وإذا لم يكن على البطاقة مال كافٍ للدفع مقابل الغداء، فينبغي ألّا يُطرح ثمن الغداء من الرصيد.</p>
+<h3 id="إيداع-المال-على-البطاقة">إيداع المال على البطاقة</h3>
+<p>نفّذ التابع <code>deposit_money</code> في صنفك <code>LunchCard</code>.</p>
+<p>ويزيد التابع الرصيد على البطاقة بالمقدار المُعطى كوسيط.</p>
+<pre><code class="language-python">card = LunchCard(<span class="hljs-number">10</span>)
+<span class="hljs-built_in">print</span>(card)
+card.deposit_money(<span class="hljs-number">15</span>)
+<span class="hljs-built_in">print</span>(card)
+card.deposit_money(<span class="hljs-number">10</span>)
+<span class="hljs-built_in">print</span>(card)
+card.deposit_money(<span class="hljs-number">200</span>)
+<span class="hljs-built_in">print</span>(card)
+</code></pre>
+<pre><code>The balance is 10.0 euros
+The balance is 25.0 euros
+The balance is 35.0 euros
+The balance is 235.0 euros
+</code></pre>
+<p>وينبغي أن يعالج التابع الوسائط الأقل من الصفر عبر <a href="/arabic-cs-library/book/mooc/part-6/3-errors#raising-exceptions">رفع استثناء</a> من النوع <code>ValueError</code>:</p>
+<pre><code class="language-python">card = LunchCard(<span class="hljs-number">10</span>)
+card.deposit_money(-<span class="hljs-number">10</span>)
+</code></pre>
+<pre><code>File &quot;testi.py&quot;, line 3, in lunchcard
+ValueError: You cannot deposit an amount of money less than zero
+</code></pre>
+<p><strong>ملاحظة:</strong> ينبغي أن <em>يرفع</em> هذا التابع استثناءً. وراجع تعليمات رفع الاستثناءات في <a href="/arabic-cs-library/book/mooc/part-6/3-errors#raising-exceptions">الجزء 6</a>. ولا ينبغي تحت أي ظرف أن يطبع التابع نفسه أي شيء — فالمثال أعلاه مخرجات مطبوعة من مفسّر Python حين صادف الاستثناء.</p>
+<h3 id="عدة-بطاقات">عدّة بطاقات</h3>
+<p>يُرجى كتابة دالة رئيسية تحتوي على تسلسل الأحداث التالي:</p>
+<ul>
+<li>أنشئ بطاقة غداء لـ Peter. الرصيد الابتدائي على البطاقة هو 20 يورو.</li>
+<li>أنشئ بطاقة غداء لـ Grace. الرصيد الابتدائي على البطاقة هو 30 يورو.</li>
+<li>يتناول Peter وجبة خاصة</li>
+<li>تتناول Grace غداءً عاديًا</li>
+<li><em>اطبع الرصيد على كل بطاقة (في سطور منفصلة، مع اسم المالك في بداية السطر)</em></li>
+<li>يودع Peter مبلغ 20 يورو</li>
+<li>تتناول Grace الوجبة الخاصة</li>
+<li><em>اطبع الرصيد على كل بطاقة (في سطور منفصلة، مع اسم المالك في بداية السطر)</em></li>
+<li>يتناول Peter غداءً عاديًا</li>
+<li>يتناول Peter غداءً عاديًا</li>
+<li>تودع Grace مبلغ 50 يورو</li>
+<li><em>اطبع الرصيد على كل بطاقة (في سطور منفصلة، مع اسم المالك في بداية السطر)</em></li>
+</ul>
+<p>جسم البرنامج الرئيسي</p>
+<pre><code class="language-python">peters_card = LunchCard(<span class="hljs-number">20</span>)
+graces_card = LunchCard(<span class="hljs-number">30</span>)
+<span class="hljs-comment"># the rest of your main function</span>
+</code></pre>
+<p>وينبغي أن تطبع دالتك الرئيسية ما يلي بالضبط:</p>
+<pre><code>Peter: The balance is 15.4 euros
+Grace: The balance is 27.4 euros
+Peter: The balance is 35.4 euros
+Grace: The balance is 22.8 euros
+Peter: The balance is 30.2 euros
+Grace: The balance is 72.8 euros
+</code></pre>
+<h2 id="المثال-2-قائمة-المهام">المثال 2: قائمة المهام</h2>
+<p>يمثّل الصنف <code>TaskList</code> التالي قائمة بالمهام:</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TaskList</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.tasks = []
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_task</span>(<span class="hljs-params">self, name: <span class="hljs-built_in">str</span>, priority: <span class="hljs-built_in">int</span></span>):
+        <span class="hljs-variable language_">self</span>.tasks.append((priority, name))
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_next</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.tasks.sort()
+        <span class="hljs-comment"># The list method pop removes and returns the last item in a list</span>
+        task = <span class="hljs-variable language_">self</span>.tasks.pop()
+        <span class="hljs-comment"># Return the name of the task (the second item in the tuple)</span>
+        <span class="hljs-keyword">return</span> task[<span class="hljs-number">1</span>]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">number_of_tasks</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.tasks)
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">clear_tasks</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.tasks = []
+</code></pre>
+<p>يضيف التابع <code>add_task</code> مهمة جديدة إلى القائمة. ولكل مهمة أيضًا أولوية مرتبطة بها تُستخدم في ترتيب المهام. ويزيل التابع <code>get_next</code> المهمة ذات الأولوية الأعلى في القائمة ويُعيدها. وهناك أيضًا التابع <code>number_of_tasks</code> الذي يُعيد عدد المهام في القائمة، وأخيرًا التابع <code>clear_tasks</code> الذي يفرّغ قائمة المهام.</p>
+<p>وداخل الكائن تُخزَّن المهام في قائمة. وكل مهمة صف يحتوي على أولوية المهمة واسمها. وتُخزَّن قيمة الأولوية أولًا، بحيث تكون المهمة ذات الأولوية الأعلى آخر عنصر في القائمة عند ترتيبها. ولهذا يمكننا حينها أن نستخدم ببساطة التابع <code>pop</code> لاسترجاع العنصر ذي الأولوية الأعلى وإزالته.</p>
+<p>يُرجى الاطلاع على البرنامج التالي مع قائمة المهام وهي قيد الاستخدام:</p>
+<pre><code class="language-python">tasks = TaskList()
+tasks.add_task(<span class="hljs-string">&quot;studying&quot;</span>, <span class="hljs-number">50</span>)
+tasks.add_task(<span class="hljs-string">&quot;exercise&quot;</span>, <span class="hljs-number">60</span>)
+tasks.add_task(<span class="hljs-string">&quot;cleaning&quot;</span>, <span class="hljs-number">10</span>)
+<span class="hljs-built_in">print</span>(tasks.number_of_tasks())
+<span class="hljs-built_in">print</span>(tasks.get_next())
+<span class="hljs-built_in">print</span>(tasks.number_of_tasks())
+tasks.add_task(<span class="hljs-string">&quot;date&quot;</span>, <span class="hljs-number">100</span>)
+<span class="hljs-built_in">print</span>(tasks.number_of_tasks())
+<span class="hljs-built_in">print</span>(tasks.get_next())
+<span class="hljs-built_in">print</span>(tasks.get_next())
+<span class="hljs-built_in">print</span>(tasks.number_of_tasks())
+tasks.clear_tasks()
+<span class="hljs-built_in">print</span>(tasks.number_of_tasks())
+</code></pre>
+<pre><code>3
+exercise
+2
+3
+date
+studying
+1
+0
+</code></pre>
+<blockquote>
+<p><strong>تمرين برمجي: المسلسل</strong></p>
+<h3 id="صنف-اسمه-series">صنف اسمه Series</h3>
+</blockquote>
+<p>يُرجى كتابة صنف اسمه <code>Series</code> بالوظائف التالية:</p>
+<pre><code class="language-python">dexter = Series(<span class="hljs-string">&quot;Dexter&quot;</span>, <span class="hljs-number">8</span>, [<span class="hljs-string">&quot;Crime&quot;</span>, <span class="hljs-string">&quot;Drama&quot;</span>, <span class="hljs-string">&quot;Mystery&quot;</span>, <span class="hljs-string">&quot;Thriller&quot;</span>])
+<span class="hljs-built_in">print</span>(dexter)
+</code></pre>
+<pre><code>Dexter (8 seasons)
+genres: Crime, Drama, Mystery, Thriller
+no ratings
+</code></pre>
+<p>وينبغي أن يأخذ الباني عنوان المسلسل وعدد المواسم وقائمة بأنواعه كوسائط له.</p>
+<p><strong>تلميح:</strong> كلما احتجت إلى إنتاج سلسلة نصية من قائمة تحتوي على سلاسل نصية، مع محرف فاصل تختاره بين العناصر، يمكنك استخدام التابع <code>join</code> كما يلي:</p>
+<pre><code class="language-python">genre_list = [<span class="hljs-string">&quot;Crime&quot;</span>, <span class="hljs-string">&quot;Drama&quot;</span>, <span class="hljs-string">&quot;Mystery&quot;</span>, <span class="hljs-string">&quot;Thriller&quot;</span>]
+genre_string = <span class="hljs-string">&quot;, &quot;</span>.join(genre_list)
+<span class="hljs-built_in">print</span>(genre_string)
+</code></pre>
+<pre><code>Crime, Drama, Mystery, Thriller
+</code></pre>
+<h3 id="إضافة-تقييمات">إضافة تقييمات</h3>
+<p>يُرجى تنفيذ التابع <code>rate(rating: int)</code> الذي يتيح لك إضافة تقييم بين 0 و5 إلى أي كائن مسلسل. وستحتاج أيضًا إلى تعديل التابع <code>__str__</code> بحيث يطبع عدد التقييمات المُضافة ومتوسطها مقرّبًا إلى منزلة عشرية واحدة، في حال وجود تقييمات.</p>
+<pre><code class="language-python">dexter = Series(<span class="hljs-string">&quot;Dexter&quot;</span>, <span class="hljs-number">8</span>, [<span class="hljs-string">&quot;Crime&quot;</span>, <span class="hljs-string">&quot;Drama&quot;</span>, <span class="hljs-string">&quot;Mystery&quot;</span>, <span class="hljs-string">&quot;Thriller&quot;</span>])
+dexter.rate(<span class="hljs-number">4</span>)
+dexter.rate(<span class="hljs-number">5</span>)
+dexter.rate(<span class="hljs-number">5</span>)
+dexter.rate(<span class="hljs-number">3</span>)
+dexter.rate(<span class="hljs-number">0</span>)
+<span class="hljs-built_in">print</span>(dexter)
+</code></pre>
+<pre><code>Dexter (8 seasons)
+genres: Crime, Drama, Mystery, Thriller
+5 ratings, average 3.4 points
+</code></pre>
+<h3 id="البحث-عن-مسلسلات">البحث عن مسلسلات</h3>
+<p>يُرجى تنفيذ هاتين الدالتين اللتين تتيحان لك البحث في قائمة مسلسلات: <code>minimum_grade(rating: float, series_list: list)</code> و<code>includes_genre(genre: str, series_list: list)</code>.</p>
+<p>وهذا مثال على كيفية استخدام التوابع الجديدة:</p>
+<pre><code class="language-python">s1 = Series(<span class="hljs-string">&quot;Dexter&quot;</span>, <span class="hljs-number">8</span>, [<span class="hljs-string">&quot;Crime&quot;</span>, <span class="hljs-string">&quot;Drama&quot;</span>, <span class="hljs-string">&quot;Mystery&quot;</span>, <span class="hljs-string">&quot;Thriller&quot;</span>])
+s1.rate(<span class="hljs-number">5</span>)
+
+s2 = Series(<span class="hljs-string">&quot;South Park&quot;</span>, <span class="hljs-number">24</span>, [<span class="hljs-string">&quot;Animation&quot;</span>, <span class="hljs-string">&quot;Comedy&quot;</span>])
+s2.rate(<span class="hljs-number">3</span>)
+
+s3 = Series(<span class="hljs-string">&quot;Friends&quot;</span>, <span class="hljs-number">10</span>, [<span class="hljs-string">&quot;Romance&quot;</span>, <span class="hljs-string">&quot;Comedy&quot;</span>])
+s3.rate(<span class="hljs-number">2</span>)
+
+series_list = [s1, s2, s3]
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;a minimum grade of 4.5:&quot;</span>)
+<span class="hljs-keyword">for</span> series <span class="hljs-keyword">in</span> minimum_grade(<span class="hljs-number">4.5</span>, series_list):
+    <span class="hljs-built_in">print</span>(series.title)
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;genre Comedy:&quot;</span>)
+<span class="hljs-keyword">for</span> series <span class="hljs-keyword">in</span> includes_genre(<span class="hljs-string">&quot;Comedy&quot;</span>, series_list):
+    <span class="hljs-built_in">print</span>(series.title)
+</code></pre>
+<pre><code>a minimum rating of 4.5:
+Dexter
+genre Comedy:
+South Park
+Friends
+</code></pre>
+<p>تفترض الشيفرة أعلاه والاختبارات الآلية لهذا التمرين أن صنفك يحتوي على خاصية <code>title</code>. وإذا استخدمت اسم خاصية آخر للإشارة إلى اسم المسلسل، فيُرجى تغييره قبل التسليم.</p>
+<p>يُرجى الإجابة عن استبيان سريع حول مواد هذا الأسبوع.</p>
+<blockquote>
+<p><strong>اختبار:</strong> (مكون تفاعلي غير متاح في النسخة الثابتة - ID: e56e0522-daf3-5ab3-922a-0b23870a6e97)</p>
+</blockquote>
+`,t={book:s,chapter:n,chapterTitle:a,slug:e,title:l,headings:p,html:c};export{s as book,n as chapter,a as chapterTitle,t as default,p as headings,c as html,e as slug,l as title};

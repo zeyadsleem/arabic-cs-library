@@ -1,0 +1,361 @@
+const n="mooc",e="part-2",t="الجزء 2: الجمل الشرطية",s="3-combining-conditions",a="دمج الشروط",l=[{depth:2,id:"المشغلات-المنطقية",text:"المشغّلات المنطقية"},{depth:2,id:"دمج-الشروط-وتسلسلها",text:"دمج الشروط وتسلسلها"},{depth:2,id:"الجمل-الشرطية-المتداخلة",text:"الجمل الشرطية المتداخلة"}],p=`<blockquote>
+<p><strong>أهداف التعلّم</strong></p>
+<p>بعد إتمام هذا القسم</p>
+<ul>
+<li>ستعرف كيف تستخدم المشغّلات <code>and</code> و<code>or</code> و<code>not</code> في الشروط</li>
+<li>ستتمكّن من كتابة جمل شرطية متداخلة</li>
+</ul>
+</blockquote>
+<h2 id="المشغلات-المنطقية">المشغّلات المنطقية</h2>
+<p>يمكنك دمج الشروط باستخدام المشغّلات المنطقية <code>and</code> و<code>or</code>. ويُحدّد المشغّل <code>and</code> أن جميع الشروط المعطاة يجب أن تكون صحيحة في الوقت نفسه. ويُحدّد المشغّل <code>or</code> أن واحدًا على الأقل من الشروط المعطاة يجب أن يكون صحيحًا.</p>
+<p>فمثلًا، الشرط <code>number &gt;= 5 and number &lt;= 8</code> يُحدّد أن <code>number</code> يجب أن يكون 5 على الأقل و8 على الأكثر في الوقت نفسه. أي أنه يجب أن يكون بين 5 و8.</p>
+<pre><code class="language-python">number = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Please type in a number: &quot;</span>))
+<span class="hljs-keyword">if</span> number &gt;= <span class="hljs-number">5</span> <span class="hljs-keyword">and</span> number &lt;= <span class="hljs-number">8</span>:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;The number is between 5 and 8&quot;</span>)
+</code></pre>
+<p>وفي المقابل، الشرط <code>number &lt; 5 or number &gt; 8</code> يُحدّد أن <code>number</code> يجب أن يكون أقل من 5 أو أكبر من 8. أي أنه يجب ألّا يقع ضمن النطاق من 5 إلى 8.</p>
+<pre><code class="language-python">number = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Please type in a number: &quot;</span>))
+<span class="hljs-keyword">if</span> number &lt; <span class="hljs-number">5</span> <span class="hljs-keyword">or</span> number &gt; <span class="hljs-number">8</span>:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;The number is not within the range of 5 to 8&quot;</span>)
+</code></pre>
+<p>يبيّن جدول الحقيقة التالي سلوك هذه المشغّلات في الحالات المختلفة:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">a</th>
+<th style="text-align:center">b</th>
+<th style="text-align:center">a and b</th>
+<th style="text-align:center">a or b</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">خطأ</td>
+<td style="text-align:center">خطأ</td>
+<td style="text-align:center">خطأ</td>
+<td style="text-align:center">خطأ</td>
+</tr>
+<tr>
+<td style="text-align:center">صحيح</td>
+<td style="text-align:center">خطأ</td>
+<td style="text-align:center">خطأ</td>
+<td style="text-align:center">صحيح</td>
+</tr>
+<tr>
+<td style="text-align:center">خطأ</td>
+<td style="text-align:center">صحيح</td>
+<td style="text-align:center">خطأ</td>
+<td style="text-align:center">صحيح</td>
+</tr>
+<tr>
+<td style="text-align:center">صحيح</td>
+<td style="text-align:center">صحيح</td>
+<td style="text-align:center">صحيح</td>
+<td style="text-align:center">صحيح</td>
+</tr>
+</tbody>
+</table>
+<p>أحيانًا من الضروري أن تعرف ما إذا كان شيء ما <em>غير</em> صحيح. ويُنفي المشغّل <code>not</code> الشرط:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">a</th>
+<th style="text-align:center">not a</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">صحيح</td>
+<td style="text-align:center">خطأ</td>
+</tr>
+<tr>
+<td style="text-align:center">خطأ</td>
+<td style="text-align:center">صحيح</td>
+</tr>
+</tbody>
+</table>
+<p>والمثال السابق مع <em>استثناء</em> النطاق من 5 إلى 8 يمكن برمجته على هذا النحو أيضًا:</p>
+<pre><code class="language-python">number = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Please type in a number: &quot;</span>))
+<span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> (number &gt;= <span class="hljs-number">5</span> <span class="hljs-keyword">and</span> number &lt;= <span class="hljs-number">8</span>):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;The number is not within the range of 5 to 8&quot;</span>)
+</code></pre>
+<p>خاصةً في البرمجة، ما زالت المشغّلات المنطقية تُسمّى <em>مشغّلات منطقية بوليانية</em> (<em>Boolean operators</em>).</p>
+<blockquote>
+<p><strong>الشروط المدمجة المبسّطة</strong></p>
+<p>الشرط <code>x &gt;= a and x &lt;= b</code> طريقة شائعة جدًّا للتحقّق مما إذا كان العدد <code>x</code> يقع ضمن النطاق من <code>a</code> إلى <code>b</code>. وتعمل التعبيرات ذات هذه البنية بالطريقة نفسها في معظم لغات البرمجة.</p>
+<p>تسمح Python أيضًا بكتابة مختصرة مبسّطة لدمج الشروط: <code>a &lt;= x &lt;= b</code> يحقق النتيجة نفسها التي تحققها الصيغة الأطول باستخدام <code>and</code>. وقد تكون هذه الصيغة المختصرة أكثر ألفةً كما في الرياضيات، لكنها ليست مستخدَمة على نطاق واسع في برمجة Python، وربما ذلك لأن عددًا قليلًا جدًّا من لغات البرمجة الأخرى تملك اختصارًا مشابهًا.</p>
+</blockquote>
+<h2 id="دمج-الشروط-وتسلسلها">دمج الشروط وتسلسلها</h2>
+<p>يطلب البرنامج التالي من المستخدم إدخال أربعة أعداد. ثم يحدّد أيّها هو الأكبر من بين الأربعة، بمساعدة بعض الشروط:</p>
+<pre><code class="language-python">n1 = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Number 1: &quot;</span>))
+n2 = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Number 2: &quot;</span>))
+n3 = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Number 3: &quot;</span>))
+n4 = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Number 4: &quot;</span>))
+
+<span class="hljs-keyword">if</span> n1 &gt; n2 <span class="hljs-keyword">and</span> n1 &gt; n3 <span class="hljs-keyword">and</span> n1 &gt; n4:
+    greatest = n1
+<span class="hljs-keyword">elif</span> n2 &gt; n3 <span class="hljs-keyword">and</span> n2 &gt; n4:
+    greatest = n2
+<span class="hljs-keyword">elif</span> n3 &gt; n4:
+    greatest = n3
+<span class="hljs-keyword">else</span>:
+    greatest = n4
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot; <span class="hljs-subst">{greatest}</span> is the greatest of the numbers.&quot;</span>)
+</code></pre>
+<pre><code>Number 1: **2**
+Number 2: **4**
+Number 3: **1**
+Number 4: **1**
+4 is the greatest of the numbers.
+</code></pre>
+<p>في المثال أعلاه، لا يكون الشرط الأول <code>n1 &gt; n2 and n1 &gt; n3 and n1 &gt; n4</code> صحيحًا إلا إذا كانت الشروط الثلاثة في داخله صحيحة.</p>
+<blockquote>
+<p><strong>تمرين تفاعلي: التحقّق من العمر</strong></p>
+<p>يُرجى كتابة برنامج يطلب من المستخدم عمره. وإذا كان العمر غير معقول، أي أقل من 5 أو رقم لا يمكن أن يكون عمرًا حقيقيًا لإنسان، فينبغي للبرنامج أن يطبع تعليقًا.</p>
+</blockquote>
+<p>انظر إلى أمثلة السلوك المتوقَّع أدناه لتعرف أي تعليق ينطبق في كل حالة.</p>
+<pre><code>What is your age? **13**
+Ok, you're 13 years old
+</code></pre>
+<pre><code>What is your age? **2**
+I suspect you can't write quite yet...
+</code></pre>
+<pre><code>What is your age? **-4**
+That must be a mistake
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<blockquote>
+<p><strong>تمرين تفاعلي: الأبناء</strong></p>
+<p>يُرجى كتابة برنامج يطلب اسم المستخدم. وإذا كان الاسم Huey أو Dewey أو Louie، فينبغي للبرنامج أن يتعرّف على المستخدم بوصفه أحد أبناء دونالد دَك.</p>
+</blockquote>
+<p>وبالمنوال نفسه، إذا كان الاسم Morty أو Ferdie، فينبغي للبرنامج أن يتعرّف على المستخدم بوصفه أحد أبناء ميكي ماوس.</p>
+<p>بعض الأمثلة:</p>
+<pre><code>Please type in your name: **Morty**
+I think you might be one of Mickey Mouse's nephews.
+</code></pre>
+<pre><code>Please type in your name: **Huey**
+I think you might be one of Donald Duck's nephews.
+</code></pre>
+<pre><code>Please type in your name: **Ken**
+You're not a nephew of any character I know of.
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<blockquote>
+<p><strong>تمرين تفاعلي: الدرجات والنقاط</strong></p>
+<p>يوضّح الجدول أدناه حدود الدرجات في مقرر جامعي معيّن. يُرجى كتابة برنامج يطلب عدد النقاط التي حصلت عليها، ثم يطبع الدرجة التي حصلت عليها وفق الجدول.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">النقاط</th>
+<th style="text-align:center">الدرجة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">&lt; 0</td>
+<td style="text-align:center">مستحيل!</td>
+</tr>
+<tr>
+<td style="text-align:center">0-49</td>
+<td style="text-align:center">راسب</td>
+</tr>
+<tr>
+<td style="text-align:center">50-59</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">60-69</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">70-79</td>
+<td style="text-align:center">3</td>
+</tr>
+<tr>
+<td style="text-align:center">80-89</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">90-100</td>
+<td style="text-align:center">5</td>
+</tr>
+<tr>
+<td style="text-align:center">&gt; 100</td>
+<td style="text-align:center">مستحيل!</td>
+</tr>
+</tbody>
+</table>
+<p>بعض الأمثلة:</p>
+<pre><code>How many points [0-100]: **37**
+Grade: fail
+</code></pre>
+<pre><code>How many points [0-100]: **76**
+Grade: 3
+</code></pre>
+<pre><code>How many points [0-100]: **-3**
+Grade: impossible!
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<blockquote>
+<p><strong>تمرين تفاعلي: FizzBuzz</strong></p>
+<p>يُرجى كتابة برنامج يطلب من المستخدم عددًا صحيحًا. وإذا كان العدد يقبل القسمة على ثلاثة، فينبغي للبرنامج أن يطبع Fizz. وإذا كان العدد يقبل القسمة على خمسة، فينبغي للبرنامج أن يطبع Buzz. وإذا كان العدد يقبل القسمة على ثلاثة وخمسة معًا، فينبغي للبرنامج أن يطبع FizzBuzz.</p>
+</blockquote>
+<p>بعض أمثلة السلوك المتوقَّع:</p>
+<pre><code>Number: **9**
+Fizz
+</code></pre>
+<pre><code>Number: **7**
+</code></pre>
+<pre><code>Number: **20**
+Buzz
+</code></pre>
+<pre><code>Number: **45**
+FizzBuzz
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<h2 id="الجمل-الشرطية-المتداخلة">الجمل الشرطية المتداخلة</h2>
+<p>يمكن أيضًا أن تكون الجمل الشرطية متداخلة داخل جمل شرطية أخرى. فمثلًا، يتحقّق البرنامج التالي مما إذا كان العدد أكبر من صفر، ثم مما إذا كان فرديًا أم زوجيًا:</p>
+<pre><code class="language-python">number = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Please type in a number: &quot;</span>))
+
+<span class="hljs-keyword">if</span> number &gt; <span class="hljs-number">0</span>:
+    <span class="hljs-keyword">if</span> number % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;The number is even&quot;</span>)
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;The number is odd&quot;</span>)
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;The number is negative or zero&quot;</span>)
+</code></pre>
+<p>بعض أمثلة لسلوك هذا البرنامج:</p>
+<pre><code>Please type in a number: **3**
+The number is odd
+
+Please type in a number: **18**
+The number is even
+
+Please type in a number: **-4**
+The number is negative or zero
+</code></pre>
+<p>ومع الجمل الشرطية المتداخلة، من الضروري أن تكون المسافات البادئة (المزاحة) مضبوطة على الوجه الصحيح. فالمسافات البادئة هي التي تحدّد أي الفروع مرتبطة ببعضها. فمثلًا، يُعدّ فرع <code>if</code> وفرع <code>else</code> لهما مقدار المسافات نفسها قبل النص فرعَين لجملة شرطية واحدة.</p>
+<p>ويمكن في كثير من الأحيان تحقيق النتيجة نفسها إما باستخدام الجمل الشرطية المتداخلة وإما باستخدام شروط مدمجة مع المشغّلات المنطقية. والمثال أدناه لا يختلف وظيفيًا عن المثال أعلاه، إذ سيطبع الشيء نفسه تمامًا مع المُدخَلات نفسها:</p>
+<pre><code class="language-python">number = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Please type in a number: &quot;</span>))
+
+<span class="hljs-keyword">if</span> number &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> number % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;The number is even&quot;</span>)
+<span class="hljs-keyword">elif</span> number &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> number % <span class="hljs-number">2</span> != <span class="hljs-number">0</span>:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;The number is odd&quot;</span>)
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;The number is negative or zero&quot;</span>)
+</code></pre>
+<p>وليس أحد الأسلوبين أفضل بطبيعته من الآخر، لكن في حالات مختلفة قد يبدو أحدهما أكثر منطقية. وفي هذا المثال بالذات يميل معظم الناس إلى أن النسخة الأولى ذات التداخل أوضح حدسًا.</p>
+<blockquote>
+<p><strong>تمرين تفاعلي: السنة الكبيسة</strong></p>
+<p>بشكل عام، أي سنة تقبل القسمة على أربعة هي سنة كبيسة. لكن إذا كانت السنة تقبل القسمة على 100 أيضًا، فهي سنة كبيسة فقط إذا كانت تقبل القسمة على 400 أيضًا.</p>
+</blockquote>
+<p>يُرجى كتابة برنامج يطلب من المستخدم سنة، ثم يطبع ما إذا كانت تلك السنة سنة كبيسة أم لا.</p>
+<p>بعض الأمثلة:</p>
+<pre><code>Please type in a year: **2011**
+That year is not a leap year.
+</code></pre>
+<pre><code>Please type in a year: **2020**
+That year is a leap year.
+</code></pre>
+<pre><code>Please type in a year: **1800**
+That year is not a leap year.
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<blockquote>
+<p><strong>تمرين تفاعلي: الأبجدي في المنتصف</strong></p>
+<p>يُرجى كتابة برنامج يطلب من المستخدم ثلاثة أحرف. ثم ينبغي للبرنامج أن يطبع الحرف الذي سيقع في المنتصف من الحروف الثلاثة لو كانت الأحرف مرتبة أبجديًّا.</p>
+</blockquote>
+<p>يمكنك افتراض أن الأحرف ستكون إما بأحرف كبيرة جميعها أو بأحرف صغيرة جميعها.</p>
+<p>بعض أمثلة السلوك المتوقَّع:</p>
+<pre><code>1st letter: x
+2nd letter: c
+3rd letter: p
+The letter in the middle is p
+</code></pre>
+<pre><code>1st letter: C
+2nd letter: B
+3rd letter: A
+The letter in the middle is B
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<blockquote>
+<p><strong>تمرين تفاعلي: حاسبة ضريبة الهدايا</strong></p>
+<p>يقول بعض الناس إن دفع الضرائب يجعل الفنلنديين سعداء، فلنرَ إذًا إن كان سرّ السعادة يكمن في إحدى الضرائب الواردة في قانون الضرائب الفنلندي.</p>
+</blockquote>
+<p><a href="https://www.vero.fi/en/individuals/property/gifts/">وفقًا لهيئة الضرائب الفنلندية</a>، تُعرَّف الهدية على أنها نقل ملكية إلى شخص آخر مقابل لا تعويض ولا مقابل مالي. فإذا كان مجموع قيمة الهدايا التي تتلقّاها من مانح واحد خلال 3 سنوات هو 5000 يورو أو أكثر، فيجب عليك دفع ضريبة هدية.</p>
+<p>وعند تلقّي الهدية من قريب قريب أو من أحد أفراد الأسرة، فيُحدَّد المبلغ الواجب دفعه من الضريبة وفق الجدول التالي، وهو متاح أيضًا على <a href="https://www.vero.fi/en/individuals/property/gifts/gift-tax-calculator/">هذا الموقع</a>:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">قيمة الهدية</th>
+<th style="text-align:center">الضريبة عند الحد الأدنى</th>
+<th style="text-align:center">نسبة الضريبة على الجزء الزائد (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">5 000 — 25 000</td>
+<td style="text-align:center">100</td>
+<td style="text-align:center">8</td>
+</tr>
+<tr>
+<td style="text-align:center">25 000 — 55 000</td>
+<td style="text-align:center">1 700</td>
+<td style="text-align:center">10</td>
+</tr>
+<tr>
+<td style="text-align:center">55 000 — 200 000</td>
+<td style="text-align:center">4 700</td>
+<td style="text-align:center">12</td>
+</tr>
+<tr>
+<td style="text-align:center">200 000 — 1 000 000</td>
+<td style="text-align:center">22 100</td>
+<td style="text-align:center">15</td>
+</tr>
+<tr>
+<td style="text-align:center">1 000 000 —</td>
+<td style="text-align:center">142 100</td>
+<td style="text-align:center">17</td>
+</tr>
+</tbody>
+</table>
+<p>إذن، بالنسبة إلى هدية قيمتها 6000 يورو، يدفع المستلِم ضريبة قدرها 180 يورو (100 + (6 000 - 5 000) * 0.08). وبالمنوال نفسه، بالنسبة إلى هدية قيمتها 75 000 يورو، يدفع المستلِم ضريبة قدرها 7 100 يورو (4 700 + (75 000 - 55 000) * 0.12).</p>
+<p>يُرجى كتابة برنامج يحسب المبلغ الصحيح من ضريبة هدية قادمة من قريب قريب. وانظر إلى الأمثلة أدناه لتعرف ما هو متوقَّع. ولاحظ غياب فواصل الآلاف في قيم المُدخَلات - يمكنك افتراض أنه لن توجد مسافات أو فواصل آلاف أخرى في الأعداد التي يكتبها المستخدم، إذ لم نتناول بعد كيفية التعامل معها.</p>
+<pre><code>Value of gift: **3500**
+No tax!
+</code></pre>
+<pre><code>Value of gift: **5000**
+Amount of tax: 100.0 euros
+</code></pre>
+<pre><code>Value of gift: **27500**
+Amount of tax: 1950.0 euros
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<!--
+
+اختبار لمراجعة محتويات هذا القسم:
+
+> **اختبار:** (مكون تفاعلي غير متاح في النسخة الثابتة - ID: 6bfd7e0d-2998-5697-80dc-418703fabbbf)
+
+
+-->
+`,r={book:n,chapter:e,chapterTitle:t,slug:s,title:a,headings:l,html:p};export{n as book,e as chapter,t as chapterTitle,r as default,l as headings,p as html,s as slug,a as title};

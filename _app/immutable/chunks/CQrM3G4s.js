@@ -1,0 +1,260 @@
+const s="mooc",n="part-9",a="الجزء 9: المزيد عن الكائنات",l="5-class-attributes",e="خصائص الصنف",p=[{depth:2,id:"متغيرات-الصنف",text:"متغيّرات الصنف"},{depth:2,id:"توابع-الصنف",text:"توابع الصنف"}],t=`<blockquote>
+<p><strong>أهداف التعلّم</strong></p>
+<p>بعد إتمام هذا القسم</p>
+<ul>
+<li>ستألف مصطلحي متغيّر الصنف وتابع الصنف</li>
+<li>ستعرف كيف تختلف السمات الساكنة عن سمات النسخ</li>
+<li>ستكون قادرًا على إضافة سمات ساكنة إلى أصنافك الخاصة</li>
+</ul>
+</blockquote>
+<p><em>السمات</em> (traits) مفهوم جوهري في البرمجة الكائنية. ويشمل المصطلح التوابع والمتغيّرات المُعرَّفة في تعريف الصنف. ولا يستعمل كل مبرمجي Python مصطلح «السمات»، بل يفضّل بعضهم «الخصائص» أو «الميزات» أو «الأعضاء». وقد رُحب بمصطلح السمات على نحو واسع في عالم البرمجة الكائنية الأوسع، ولهذا فهو المصطلح الذي نستعمله هنا.</p>
+<p>وإلى الآن تعاملنا مع <em>سمات الكائنات</em> في معظمها. وتشمل التوابع والخصائص المتاحة في أي نسخة من صنف. وفي الحقيقة، يمكن أن يكون للصنف <em>نفسه</em> أيضًا سمات، تُسمّى أحيانًا <em>السمات الساكنة</em>، أو بتحديد أكثر <em>متغيّرات الصنف</em> و_توابع الصنف_.</p>
+<h2 id="متغيرات-الصنف">متغيّرات الصنف <span class="content-anchor" id="class-variables"></span></h2>
+<p>لكل نسخة من صنف قيمها المحدَّدة الخاصة بكل خاصية مُعرَّفة في الصنف، كما رأينا في أمثلة الأقسام السابقة. لكن ماذا لو أردنا أن نملك بعض البيانات التي تتشاركها النسخ المختلفة؟ هنا يظهر <em>متغيّر الصنف</em>، المعروف أيضًا بالمتغيّر الساكن. فمتغيّر الصنف متغيّر يُوصَل إليه من خلال الصنف نفسه، لا من خلال النسخ المُنشأة بناءً عليه. وفي أي لحظة محدَّدة أثناء تنفيذ البرنامج يكون لمتغيّر الصنف قيمة واحدة فقط، مهما كان عدد النسخ المُنشأة من الصنف.</p>
+<p>يُعلن متغيّر الصنف دون بادئة <code>self</code>، وعادةً خارج أي تعريف تابع، لأنه ينبغي أن يكون متاحًا من أي مكان داخل الصنف، بل وحتى من خارج الصنف.</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SavingsAccount</span>:
+    general_rate = <span class="hljs-number">0.03</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, account_number: <span class="hljs-built_in">str</span>, balance: <span class="hljs-built_in">float</span>, interest_rate: <span class="hljs-built_in">float</span></span>):
+        <span class="hljs-variable language_">self</span>.__account_number = account_number
+        <span class="hljs-variable language_">self</span>.__balance = balance
+        <span class="hljs-variable language_">self</span>.__interest_rate = interest_rate
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_interest</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-comment"># The total interest rate equals </span>
+        <span class="hljs-comment"># the general rate + the interest rate of the account</span>
+        total_interest = SavingsAccount.general_rate + <span class="hljs-variable language_">self</span>.__interest_rate
+        <span class="hljs-variable language_">self</span>.__balance += <span class="hljs-variable language_">self</span>.__balance * total_interest
+
+<span class="hljs-meta">    @property</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">balance</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.__balance
+</code></pre>
+<p>وبما أن المتغيّر <code>general_rate</code> مُعرَّف داخل الصنف لكنه خارج أي تعريفات التوابع، ولا يستخدم بادئة <code>self</code>، فهو متغيّر صنف.</p>
+<p>ويُوصَل إلى متغيّر الصنف من خلال اسم الصنف، فمثلًا هكذا:</p>
+<pre><code class="language-python"><span class="hljs-comment"># The general rate exists independently of any object instances</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;The general interest rate is&quot;</span>, SavingsAccount.general_rate)
+
+account = SavingsAccount(<span class="hljs-string">&quot;12345&quot;</span>, <span class="hljs-number">1000</span>, <span class="hljs-number">0.05</span>)
+<span class="hljs-comment"># Add the total interest accrued to the balance on the account</span>
+account.add_interest()
+<span class="hljs-built_in">print</span>(account.balance)
+</code></pre>
+<pre><code>The general interest rate is 0.03
+1080.0
+</code></pre>
+<p>إذًا، تُوصَل متغيّرات الصنف من خلال اسم الصنف، فمثلًا عبر <code>SavingsAccount.general_rate</code>، بينما تُوصَل متغيّرات النسخ من خلال اسم متغيّر الكائن، مثل <code>account.balance</code>. ومتغيّر النسخ لا يوجد بطبيعته إلا حين تُنشأ نسخة من الصنف، لكن متغيّر الصنف متاح في كل مكان وفي كل لحظة يكون فيها الصنف نفسه متاحًا.</p>
+<p>تكون متغيّرات الصنف مفيدة حين تُرد قيم تتشاركها كل نسخات الصنف. وفي المثال أعلاه افترضنا أن نسبة الفائدة الكلية لكل حسابات الادخار تتكوّن من مكوّنين: نسبة الفائدة العامة تتشاركها كل الحسابات، لكن لكل حساب أيضًا نسبة فائدة تخصّه في متغيّر نسخة. وقد تتغيّر النسبة العامة أيضًا، لكن التغيير يؤثر حينها في كل نسخات الصنف بالتساوي.</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SavingsAccount</span>:
+    general_rate = <span class="hljs-number">0.03</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, account_number: <span class="hljs-built_in">str</span>, balance: <span class="hljs-built_in">float</span>, interest_rate: <span class="hljs-built_in">float</span></span>):
+        <span class="hljs-variable language_">self</span>.__account_number = account_number
+        <span class="hljs-variable language_">self</span>.__balance = balance
+        <span class="hljs-variable language_">self</span>.__interest_rate = interest_rate
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_interest</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-comment"># The total interest rate equals </span>
+        <span class="hljs-comment"># the general rate + the interest rate of the account</span>
+        total_interest = SavingsAccount.general_rate + <span class="hljs-variable language_">self</span>.__interest_rate
+        <span class="hljs-variable language_">self</span>.__balance += <span class="hljs-variable language_">self</span>.__balance * total_interest
+
+<span class="hljs-meta">    @property</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">balance</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.__balance
+
+<span class="hljs-meta">    @property</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">total_interest</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.__interest_rate + SavingsAccount.general_rate
+</code></pre>
+<pre><code class="language-python">account1 = SavingsAccount(<span class="hljs-string">&quot;12345&quot;</span>, <span class="hljs-number">100</span>, <span class="hljs-number">0.03</span>)
+account2 = SavingsAccount(<span class="hljs-string">&quot;54321&quot;</span>, <span class="hljs-number">200</span>, <span class="hljs-number">0.06</span>)
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;General interest rate:&quot;</span>, SavingsAccount.general_rate)
+<span class="hljs-built_in">print</span>(account1.total_interest)
+<span class="hljs-built_in">print</span>(account2.total_interest)
+
+<span class="hljs-comment"># The general rate of interest is now 10 percent</span>
+SavingsAccount.general_rate = <span class="hljs-number">0.10</span>
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;General interest rate:&quot;</span>, SavingsAccount.general_rate)
+<span class="hljs-built_in">print</span>(account1.total_interest)
+<span class="hljs-built_in">print</span>(account2.total_interest)
+</code></pre>
+<pre><code>General interest rate: 0.03
+0.06
+0.09
+General interest rate: 0.1
+0.13
+0.16
+</code></pre>
+<p>ومتى تغيّرت نسبة الفائدة العامة، تغيّرت نسبة الفائدة الكلية لكل نسخات الصنف. وكما ترى أعلاه، يمكن إضافة تابع قراءة باستخدام زينة <code>@property</code> حتى وإن لم تكن هناك خاصية بنفس الاسم في الصنف. وهذا التابع يُرجع مجموع نسبة الفائدة العامة ونسبة فائدة الحساب الخاصة به.</p>
+<p>لننظر إلى مثال آخر. يُستخدم الصنف <code>PhoneNumber</code> لتعريف رقم هاتف واحد، لكنه يحوي أيضًا بعض رموز الدول في قاموس. وهذا القاموس متغيّر صنف، وبذلك يتشاركه كل نسخات الصنف، لأن رمز الدولة لأرقام الهاتف من دولة واحدة يكون دائمًا نفسه.</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">PhoneNumber</span>:
+    country_codes = {<span class="hljs-string">&quot;Finland&quot;</span>: <span class="hljs-string">&quot;+358&quot;</span>, <span class="hljs-string">&quot;Sweden&quot;</span>: <span class="hljs-string">&quot;+46&quot;</span>, <span class="hljs-string">&quot;United States&quot;</span>: <span class="hljs-string">&quot;+1&quot;</span>}
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, name: <span class="hljs-built_in">str</span>, phone_number: <span class="hljs-built_in">str</span>, country: <span class="hljs-built_in">str</span></span>):
+        <span class="hljs-variable language_">self</span>.__name = name
+        <span class="hljs-variable language_">self</span>.__phone_number = phone_number
+        <span class="hljs-variable language_">self</span>.__country = country
+
+<span class="hljs-meta">    @property</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">phone_number</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-comment"># When the country code prefix is added </span>
+        <span class="hljs-comment"># the initial zero is removed from the phone number</span>
+        <span class="hljs-keyword">return</span> PhoneNumber.country_codes[<span class="hljs-variable language_">self</span>.__country] + <span class="hljs-string">&quot; &quot;</span> + <span class="hljs-variable language_">self</span>.__phone_number[<span class="hljs-number">1</span>:]
+</code></pre>
+<pre><code class="language-python">paulas_no = PhoneNumber(<span class="hljs-string">&quot;Paula Pythons&quot;</span>, <span class="hljs-string">&quot;050 1234 567&quot;</span>, <span class="hljs-string">&quot;Finland&quot;</span>)
+<span class="hljs-built_in">print</span>(paulas_no.phone_number)
+</code></pre>
+<pre><code>+358 50 1234 567
+</code></pre>
+<p>يحوي كل كائن <code>PhoneNumber</code> اسم المالك، والرقم نفسه، ودولة رقم الهاتف. وحين يُوصَل إلى الخاصية التي تحوي رقم الهاتف عبر تابع القراءة، يُستخرج رمز الدولة المناسب من قاموس متغيّر الصنف بناءً على خاصية الدولة، ويُضاف الناتج في مقدمة الرقم.</p>
+<p>تنفيذ المثال أعلاه ليس عمليًّا على نحو يُذكر في بقية الجوانب. وفي المثال التالي أضفنا توابع قراءة وكتابة لكل الخصائص:</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">PhoneNumber</span>:
+    country_codes = {<span class="hljs-string">&quot;Finland&quot;</span>: <span class="hljs-string">&quot;+358&quot;</span>, <span class="hljs-string">&quot;Sweden&quot;</span>: <span class="hljs-string">&quot;+46&quot;</span>, <span class="hljs-string">&quot;United States&quot;</span>: <span class="hljs-string">&quot;+1&quot;</span>}
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, name: <span class="hljs-built_in">str</span>, phone_number: <span class="hljs-built_in">str</span>, country: <span class="hljs-built_in">str</span></span>):
+        <span class="hljs-variable language_">self</span>.__name = name
+        <span class="hljs-comment"># This is a call to the phone_number.setter method</span>
+        <span class="hljs-variable language_">self</span>.phone_number = phone_number
+        <span class="hljs-comment"># This is a call to the country.setter method</span>
+        <span class="hljs-variable language_">self</span>.country = country
+
+    <span class="hljs-comment"># the getter method for phone_number combines the country code </span>
+    <span class="hljs-comment"># and the attribute phone_number</span>
+<span class="hljs-meta">    @property</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">phone_number</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-comment"># the initial zero is removed as the country code is prefixed</span>
+        <span class="hljs-keyword">return</span> PhoneNumber.country_codes[<span class="hljs-variable language_">self</span>.__country] + <span class="hljs-string">&quot; &quot;</span> + <span class="hljs-variable language_">self</span>.__phone_number[<span class="hljs-number">1</span>:]
+
+<span class="hljs-meta">    @phone_number.setter</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">phone_number</span>(<span class="hljs-params">self, number</span>):
+        <span class="hljs-comment"># Making sure the number contains only numbers and space characters</span>
+        <span class="hljs-keyword">for</span> character <span class="hljs-keyword">in</span> number:
+            <span class="hljs-keyword">if</span> character <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-string">&quot;1234567890 &quot;</span>:
+                <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">&quot;A phone number can only contain numbers and spaces&quot;</span>)
+        <span class="hljs-variable language_">self</span>.__phone_number = number
+
+    <span class="hljs-comment"># a getter for only the number itself without the country code</span>
+<span class="hljs-meta">    @property</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">local_number</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.__phone_number
+
+<span class="hljs-meta">    @property</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">country</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.__country
+
+<span class="hljs-meta">    @country.setter</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">country</span>(<span class="hljs-params">self, country</span>):
+        <span class="hljs-comment"># Making sure the country is a key in the dictionary of country codes</span>
+        <span class="hljs-keyword">if</span> country <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> PhoneNumber.country_codes:
+            <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">&quot;This country is not on the list.&quot;</span>)
+        <span class="hljs-variable language_">self</span>.__country = country
+
+<span class="hljs-meta">    @property</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">name</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.__name
+
+<span class="hljs-meta">    @name.setter</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">name</span>(<span class="hljs-params">self, name</span>):
+        <span class="hljs-variable language_">self</span>.__name = name
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__str__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-string">f&quot;<span class="hljs-subst">{self.phone_number}</span> (<span class="hljs-subst">{self.__name}</span>)&quot;</span>
+</code></pre>
+<pre><code class="language-python"><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    pn = PhoneNumber(<span class="hljs-string">&quot;Peter Pythons&quot;</span>, <span class="hljs-string">&quot;040 111 1111&quot;</span>, <span class="hljs-string">&quot;Sweden&quot;</span>)
+    <span class="hljs-built_in">print</span>(pn)
+    <span class="hljs-built_in">print</span>(pn.phone_number)
+    <span class="hljs-built_in">print</span>(pn.local_number)
+</code></pre>
+<pre><code>+46 40 111 1111 (Peter Pythons)
++46 40 111 1111
+040 111 1111
+</code></pre>
+<blockquote>
+<p><strong>تمرين برمجي: الرموز البريدية</strong></p>
+<p>يحوي قالب التمرين تعريف الصنف <code>City</code> الذي يمثّل مدينة واحدة.</p>
+</blockquote>
+<p>يُرجى إضافة متغيّر صنف اسمه <code>postcodes</code> يشير إلى قاموس. مفاتيح القاموس أسماء مدن، والقيم المرتبطة بها الرموز البريدية لتلك المدن. وكلاهما سلسلة نصية.</p>
+<p>وينبغي أن يحوي القاموس (على الأقل) الرموز البريدية التالية:</p>
+<ul>
+<li>هلسنكي 00100</li>
+<li>توركو 20100</li>
+<li>تامبيري 33100</li>
+<li>روفانييمي 96100</li>
+<li>أولو 90100</li>
+</ul>
+<p>ولا تحتاج إلى تنفيذ أي وظيفة أخرى.</p>
+<h2 id="توابع-الصنف">توابع الصنف</h2>
+<p>تابع الصنف، المسمّى أيضًا تابعًا ساكنًا، تابع لا يرتبط بأي نسخة مفردة من الصنف. ويمكن استدعاء تابع الصنف دون إنشاء أي نسخة من الصنف.</p>
+<p>التوابع الساكنة عادةً أدوات تتعلق بغرض الصنف، لكنها منفصلة عن النسخ بمعنى أنه لا ينبغي أن يكون من الضروري إنشاء نسخ من الصنف لتتمكن من استدعائها. والتوابع الساكنة عادةً عامة، بحيث يمكن استدعاؤها من خارج الصنف ومن داخله، بما في ذلك من داخل نسخ الصنف.</p>
+<p>يُعرَّف تابع الصنف بالزينة <code>@classmethod</code>. والمعامل الأول دائمًا <code>cls</code>. واسم المتغيّر <code>cls</code> يشبه المعامل <code>self</code>. والفرق أن <code>cls</code> يشير إلى الصنف بينما <code>self</code> يشير إلى نسخة من الصنف. ولا يُدرج أيٌّ من المعاملَين في قائمة الوسائط حين تُستدعى الدالة؛ بل تملأ Python القيمة المناسبة تلقائيًّا.</p>
+<p>في المثال التالي لدينا صنف ينمذج تسجيلات المركبات. ويحوي الصنف <code>Registration</code> تابعًا ساكنًا للتحقّق من صحة لوحة التسجيل. وهذا التابع تابع صنف ساكن لأنه من المفيد التحقّق من صحة لوحة التسجيل حتى قبل إنشاء أي كائن <code>Registration</code> على الإطلاق:</p>
+<pre><code class="language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Registration</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, owner: <span class="hljs-built_in">str</span>, make: <span class="hljs-built_in">str</span>, year: <span class="hljs-built_in">int</span>, license_plate: <span class="hljs-built_in">str</span></span>):
+        <span class="hljs-variable language_">self</span>.__owner = owner
+        <span class="hljs-variable language_">self</span>.__make = make
+        <span class="hljs-variable language_">self</span>.__year = year
+
+        <span class="hljs-comment"># Call the license_plate.setter method</span>
+        <span class="hljs-variable language_">self</span>.license_plate = license_plate
+
+<span class="hljs-meta">    @property</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">license_plate</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.__license_plate
+
+<span class="hljs-meta">    @license_plate.setter</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">license_plate</span>(<span class="hljs-params">self, plate</span>):
+        <span class="hljs-keyword">if</span> Registration.license_plate_valid(plate):
+            <span class="hljs-variable language_">self</span>.__license_plate = plate
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">&quot;The license plate is not valid&quot;</span>)
+
+    <span class="hljs-comment"># A class method for validating the license plate</span>
+<span class="hljs-meta">    @classmethod</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">license_plate_valid</span>(<span class="hljs-params">cls, plate: <span class="hljs-built_in">str</span></span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(plate) &lt; <span class="hljs-number">3</span> <span class="hljs-keyword">or</span> <span class="hljs-string">&quot;-&quot;</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> plate:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+        <span class="hljs-comment"># Check the beginning and end sections of the plate separately</span>
+        letters, numbers = plate.split(<span class="hljs-string">&quot;-&quot;</span>)
+
+        <span class="hljs-comment"># the beginning section can have only letters</span>
+        <span class="hljs-keyword">for</span> character <span class="hljs-keyword">in</span> letters:
+            <span class="hljs-keyword">if</span> character.lower() <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-string">&quot;abcdefghijklmnopqrstuvwxyzåäö&quot;</span>:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+        <span class="hljs-comment"># the end section can have only numbers</span>
+        <span class="hljs-keyword">for</span> character <span class="hljs-keyword">in</span> numbers:
+            <span class="hljs-keyword">if</span> character <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-string">&quot;1234567890&quot;</span>:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre>
+<pre><code class="language-python">registration = Registration(<span class="hljs-string">&quot;Mary Motorist&quot;</span>, <span class="hljs-string">&quot;Volvo&quot;</span>, <span class="hljs-string">&quot;1992&quot;</span>, <span class="hljs-string">&quot;abc-123&quot;</span>)
+
+<span class="hljs-keyword">if</span> Registration.license_plate_valid(<span class="hljs-string">&quot;xyz-789&quot;</span>):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;This is a valid license plate!&quot;</span>)
+</code></pre>
+<pre><code>This is a valid license plate!
+</code></pre>
+<p>يمكن التحقّق من صحة لوحة التسجيل حتى دون إنشاء أي نسخة من الصنف، فمثلًا عبر <code>Registration.license_plate_valid(&quot;xyz-789&quot;)</code>. ونفس التابع يُستدعى داخل باني الصنف. لاحظ: حتى داخل الباني يُوصَل إلى هذا التابع من خلال اسم الصنف، لا <code>self</code>!</p>
+<blockquote>
+<p><strong>تمرين برمجي: مساعد القائمة</strong></p>
+<p>يُرجى إنشاء صنف اسمه <code>ListHelper</code> يحوي التابعَين الصنفيين التاليين.</p>
+</blockquote>
+<ul>
+<li><code>greatest_frequency(my_list: list)</code> يُرجع العنصر الأكثر تكرارًا في القائمة</li>
+<li><code>doubles(my_list: list)</code> يُرجع عدد العناصر الفريدة التي تظهر مرتين على الأقل في القائمة</li>
+</ul>
+<p>وينبغي أن يمكن استخدام هذين التابعين دون إنشاء نسخة من الصنف. وهذا مثال على كيفية استخدام هذين التابعين:</p>
+<pre><code class="language-python">numbers = [<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>]
+<span class="hljs-built_in">print</span>(ListHelper.greatest_frequency(numbers))
+<span class="hljs-built_in">print</span>(ListHelper.doubles(numbers))
+</code></pre>
+<pre><code>5
+3
+</code></pre>
+`,c={book:s,chapter:n,chapterTitle:a,slug:l,title:e,headings:p,html:t};export{s as book,n as chapter,a as chapterTitle,c as default,p as headings,t as html,l as slug,e as title};

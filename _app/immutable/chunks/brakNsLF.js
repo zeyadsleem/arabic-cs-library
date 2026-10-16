@@ -1,0 +1,265 @@
+const s="learn-ocaml",a="dynamic-programming",n="البرمجة الديناميكية",e="index",p="البرمجة الديناميكية",l=[{depth:2,id:"11-البرمجة-الديناميكية-والحفظ-memoization",text:"11. البرمجة الديناميكية والحفظ (memoization)"},{depth:3,id:"111-الفكرة-الأساسية",text:"11.1 الفكرة الأساسية"},{depth:3,id:"112-الحفظ-الآلي",text:"11.2 الحفظ الآلي"},{depth:3,id:"113-الفروق-بين-الحفظ-والبرمجة-الديناميكية",text:"11.3 الفروق بين الحفظ والبرمجة الديناميكية"},{depth:3,id:"114-التجزئة-hash-consing",text:"11.4 التجزئة (hash-consing)"},{depth:3,id:"115-التمارين",text:"11.5 التمارين"}],t=`<h2 id="11-البرمجة-الديناميكية-والحفظ-memoization">11. البرمجة الديناميكية والحفظ (memoization)</h2>
+<p>البرمجة الديناميكية (dynamic programming) والحفظ (memoization) تقنيتان وثيقتا الصلة، تقومان على فكرة أنّ من الأفضل تجنّب حساب الشيء نفسه مرّتين.</p>
+<h3 id="111-الفكرة-الأساسية">11.1 الفكرة الأساسية</h3>
+<p>نوضّح التقنيتين من خلال المثال البسيط لمتتالية فيبوناتشي (Fibonacci). ونتذكّر أنّ هذه المتتالية من الأعداد الصحيحة (Fn) تُعرَّف كما يلي:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo fence="true">{</mo><mtable rowspacing="0.36em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>F</mi><mn>0</mn></msub><mo>=</mo><mn>0</mn></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>F</mi><mn>1</mn></msub><mo>=</mo><mn>1</mn></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>F</mi><mi>n</mi></msub><mo>=</mo><msub><mi>F</mi><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></msub><mo>+</mo><msub><mi>F</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>إذا كان </mtext><mi>n</mi><mo>≥</mo><mn>2</mn></mrow></mstyle></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\\begin{cases} F_0 = 0 \\\\ F_1 = 1 \\\\ F_n = F_{n-2} + F_{n-1} &amp; \\text{إذا كان } n \\ge 2 \\end{cases}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:4.32em;vertical-align:-1.91em;"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.35em;"><span style="top:-2.2em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎩</span></span></span><span style="top:-2.192em;"><span class="pstrut" style="height:3.15em;"></span><span style="height:0.316em;width:0.8889em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.8889em" height="0.316em" style="width:0.8889em" viewBox="0 0 888.89 316" preserveAspectRatio="xMinYMin"><path d="M384 0 H504 V316 H384z M384 0 H504 V316 H384z"/></svg></span></span><span style="top:-3.15em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎨</span></span></span><span style="top:-4.292em;"><span class="pstrut" style="height:3.15em;"></span><span style="height:0.316em;width:0.8889em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.8889em" height="0.316em" style="width:0.8889em" viewBox="0 0 888.89 316" preserveAspectRatio="xMinYMin"><path d="M384 0 H504 V316 H384z M384 0 H504 V316 H384z"/></svg></span></span><span style="top:-4.6em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎧</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.85em;"><span></span></span></span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.41em;"><span style="top:-4.41em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord">0</span></span></span><span style="top:-2.97em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord">1</span></span></span><span style="top:-1.53em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.91em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:1em;"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:-0.47em;"><span style="top:-1.53em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord text"><span class="mord">إذا كان </span></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.91em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
+<p>من السهل بما يكفي كتابة دالة تخصيصية (recursive) تحسب Fn انطلاقًا من هذا التعريف:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> fib n =
+    <span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">1</span> <span class="hljs-keyword">then</span> n <span class="hljs-keyword">else</span> fib (n - <span class="hljs-number">2</span>) + fib (n - <span class="hljs-number">1</span>)
+</code></pre>
+<p>غير أنّ هذا الحل يبقى بدائيًّا إلى حدٍّ ما. فحساب F50 يستغرق أكثر من دقيقة. والمشكلة هنا لا تكمن في التخصيص (recursion) نفسه، بل في أنّنا نحسب القيم ذاتها لـ Fn عدّة مرّات. فمثلًا، لحساب F5 سيُحسب F3 مرّتين وF2 ثلاث مرّات، كما يظهر في مخطط الاستدعاء في الشكل <a href="#call-graph-of-f">11.1</a>.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/dynamic-programming-0-fib5_tree-mps-.webp" alt="" id="call-graph-of-f"></p>
+<p><strong>الشكل 11.1: مخطط الاستدعاء لـ F5.</strong></p>
+<p>من السهل ملاحظة أنّ حساب Fn يتطلّب، في الحالة العامة، عددًا من عمليات الجمع يساوي Fn+1 − 1، لأنّ معادلة التخصيص مطابقة تمامًا لتلك التي تُعرّف Fn. ويمكننا ملاحظة ذلك تجريبيًّا. فحاسوب من نحو عام 2011 يستغرق ثانيتين لحساب F42، وثلاث ثوانٍ لحساب F43، وخمس ثوانٍ لحساب F44، وهكذا. ونُلاحظ هنا حدود متتالية فيبوناتشي. وبالاستقراء، يمكننا القول إنّ حساب F50 سيستغرق 89 ثانية، وهذا صحيح بدقّة تصل إلى نصف ثانية! وبما أنّ Fn ينمو نموًّا أُسِّيًّا، فلا يمكننا أن نأمل في المضي قدمًا في حساب المتتالية بهذه الطريقة.</p>
+<h4>11.1.1 الحفظ (memoization)</h4>
+<p>لكوننا نحسب الشيء نفسه عدّة مرّات، يتبادر إلينا بشكل طبيعي جدًّا أنّه يمكننا تخزين النتائج الوسيطة في جدول. ومن شأن جدول كهذا أن يربط كل عدد صحيح n بالقيمة Fn. وبناءً على ذلك، نتّبع ما يلي: لحساب <code>fibn</code>، نبدأ بالتحقق ممّا إذا كان هناك مدخل في الجدول يقابل <code>n</code>، وفي هذه الحالة نعيد القيمة الموافقة. وإلا نحسب <code>fibn</code> بدلالة <code>fib(n-2)+fib(n-1)</code>، أي بالتخصيص. ثم نعيد النتيجة بعد إضافتها إلى الجدول. وهذه التقنية، التي تقوم على استخدام جدول لتخزين النتائج الوسيطة، تُسمّى <em>الحفظ</em> (memoization)، وهو مصطلح صاغه الباحث دونالد ميتشي (Donald Michie) عام 1968.</p>
+<p>ولنُنفّذ هذه الفكرة في دالة <code>fib_memo</code>. نبدأ بإدخال جدول تجزئة (hash table) لتخزين النتائج الوسيطة، ونختار له حجمًا ابتدائيًّا اعتباطيًّا:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> memo = <span class="hljs-type">Hashtbl</span>.create <span class="hljs-number">17</span>
+</code></pre>
+<p>تبدأ الدالة <code>fib_memo</code> بالتحقق ممّا إذا كانت قيمة <code>fib</code> <code>n</code> موجودة بالفعل في الجدول <code>memo</code>. فإن كانت كذلك، تُعاد:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> fib_memo n =
+    <span class="hljs-keyword">try</span>
+      <span class="hljs-type">Hashtbl</span>.find memo n
+</code></pre>
+<p>وإلا نحسب النتيجة تمامًا كما في الدالة <code>fib</code>، أي باستخدام استدعاءين تخصيصيَّين:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">with</span> <span class="hljs-type">Not_found</span> -&gt;
+      <span class="hljs-keyword">let</span> fn = <span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">1</span> <span class="hljs-keyword">then</span> n
+               <span class="hljs-keyword">else</span> fib_memo (n-<span class="hljs-number">2</span>) + fib_memo (n-<span class="hljs-number">1</span>) <span class="hljs-keyword">in</span>
+</code></pre>
+<p>ثم نخزّنها في الجدول <code>memo</code> قبل إعادتها:</p>
+<pre><code class="language-ocaml">      <span class="hljs-type">Hashtbl</span>.add memo n fn;
+      fn
+</code></pre>
+<p>وبهذا تنتهي الدالة <code>fib_memo</code>. وفعّاليتها أكبر بكثير من فعالية <code>fib</code>. فحساب F50، على سبيل المثال، يصبح فوريًّا (خلافًا للثواني الـ 89 التي تستغرقها <code>fib</code>). ويمكننا أن نبيّن أنّ تعقيد <code>fib_memo</code> خطّي. وبديهيًّا، نفهم أنّ حساب Fn لم يعد يستلزم حساب Fi إلا مرّة واحدة لكل i ≤ n. ويرد الكود الكامل للدالة <code>fib_memo</code> في البرنامج <a href="#x26-266015r84">84</a> أدناه. ولاحظ أنّ الجدول <code>memo</code> مُعرَّف <em>خارج</em> الدالة <code>fib_memo</code>، لأنّه يجب أن يكون نفسه في جميع الاستدعاءات التخصيصية.</p>
+<blockquote></blockquote>
+<h4>11.1.2 البرمجة الديناميكية</h4>
+<p>قد يبدو استخدام جدول تجزئة لحفظ حساب متتالية فيبوناتشي مكلفًا بلا ضرورة. ففي النهاية لن نخزّن سوى قيم Fi من أجل i ≤ n، وهي قيم تكفي لها مصفوفة (array) بحجم n + 1. ولو أردنا إعادة كتابة الدالة <code>fib_memo</code> وفقًا لهذه الفكرة، لأمكننا، على سبيل المثال، أن نبدأ بإسناد القيمة −1 إلى كل خلية في المصفوفة، للدلالة على أنّ القيمة لم تُحسب بعد. وثمّة احتمال آخر يتمثّل في ملء المصفوفة بترتيب معيّن. وفي حالتنا هذه، نرى أنّه يكفي ملء المصفوفة بترتيب متزايد، لأنّ حساب Fi يتطلّب قيمتَي Fi−2 وFi−1. وهذه التقنية، التي تقوم على استخدام جدول وملئه تدريجيًّا بنتائج الحسابات الوسيطة، تُسمّى <em>البرمجة الديناميكية</em> (dynamic programming)، وغالبًا ما تُختصر بـ DP.</p>
+<p>ولنُنفّذ هذه الفكرة في دالة <code>fib_dp</code>. نبدأ بمعالجة الحالة الخاصة n = 0. وفي الحالة العامة، عندما n &gt; 0، نخصّص مصفوفة <code>f</code> بحجم <code>n</code> + 1، ستضمّ قيم Fi.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> fib_dp n =
+    <span class="hljs-keyword">if</span> n = <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> <span class="hljs-number">0</span> <span class="hljs-keyword">else</span>
+    <span class="hljs-keyword">let</span> f = <span class="hljs-type">Array</span>.make (n+<span class="hljs-number">1</span>) <span class="hljs-number">0</span> <span class="hljs-keyword">in</span>
+</code></pre>
+<p>يجوز تخصيص هذه المصفوفة <em>داخل</em> الدالة <code>fib_dp</code>، لأنّها، خلافًا لـ <code>fib_memo</code>، لن تكون تخصيصية. بعد ذلك نملأ خلايا المصفوفة <code>f</code> بترتيب متزايد، مع معاملة <code>f.(1)</code> كحالة خاصة.</p>
+<pre><code class="language-ocaml">    f.(<span class="hljs-number">1</span>) &lt;- <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span> i = <span class="hljs-number">2</span> <span class="hljs-keyword">to</span> n <span class="hljs-keyword">do</span> f.(i) &lt;- f.(i-<span class="hljs-number">2</span>) + f.(i-<span class="hljs-number">1</span>) <span class="hljs-keyword">done</span>;
+</code></pre>
+<p>وبمجرد أن تُملأ المصفوفة، ما علينا إلا إعادة القيمة الموجودة في خليتها الأخيرة.</p>
+<pre><code class="language-ocaml">    f.(n)
+</code></pre>
+<p>وبهذا تنتهي الدالة <code>fib_dp</code>. وكما في حالة <code>fib_memo</code>، فإنّ تعقيدها خطّي. ويمكن ملاحظة ذلك بسهولة، لأنّ الكود لا يعدو أن يكون حلقة <code>for</code> بسيطة. ويرد الكود الكامل للدالة <code>fib_dp</code> في البرنامج <a href="#x26-267010r85">85</a>.</p>
+<blockquote></blockquote>
+<h5>ملاحظة</h5>
+<p>لقد اخترنا متتالية فيبوناتشي مثالًا لأسباب تربوية. فمن الواضح، بطبيعة الحال، أنّه من السهل جدًّا حساب حدود هذه المتتالية في زمن خطّي دون استخدام الحفظ ولا البرمجة الديناميكية (انظر التمرين <a href="#x26-273001r1">11.1</a>).</p>
+<h3 id="112-الحفظ-الآلي">11.2 الحفظ الآلي</h3>
+<p>قد يجعلنا استخدام مصفوفة في <code>fib_dp</code>، بدلًا من جدول التجزئة في <code>fib_memo</code>، نعتقد أنّ البرمجة الديناميكية أسهل تنفيذًا من الحفظ. وهذا صحيح فعلًا في هذا المثال.</p>
+<p>ومع ذلك، من المهم أن نفهم أنّنا، لكتابة <code>fib_dp</code>، اعتمدنا على أمرين: كان علينا حساب Fi من أجل كل i ≤ n؛ وكان بمقدورنا حسابها بترتيب متزايد. وفي الحالة العامة، قد لا تكون مدخلات الدالة التي نريد حسابها أعدادًا صحيحة متتالية بالضرورة. وقد لا تكون أعدادًا صحيحة إطلاقًا، أو قد لا تكون التبعيات بين القيم المختلفة بهذه البساطة.</p>
+<p>أمّا الحفظ، في المقابل، فأسهل تنفيذًا. فيكفي إضافة بضعة أسطر من الكود للاستعلام عن جدول التجزئة وملئه، دون تعديل بنية الدالة. ويمكننا القيام بذلك آليًّا.</p>
+<p>والأفضل من ذلك، يمكننا تنفيذ إجراء الحفظ <em>مرّة واحدة وإلى الأبد</em>، في صورة دالة عالية الرتبة (higher-order function) هي <code>memo_fun</code>، تأخذ وسيطًا دالة <code>f</code> يُراد حفظها. نبدأ بإنشاء جدول تجزئة نخزّن فيه النتائج المحسوبة مسبقًا.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> memo_fun f =
+    <span class="hljs-keyword">let</span> h = <span class="hljs-type">Hashtbl</span>.create <span class="hljs-number">17</span> <span class="hljs-keyword">in</span>
+</code></pre>
+<p>ثم نُعيد دالة تُجري الحفظ، أي تستشير الجدول وتملؤه حسب الحاجة.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">fun</span> x -&gt;
+      <span class="hljs-keyword">try</span> <span class="hljs-type">Hashtbl</span>.find h x
+      <span class="hljs-keyword">with</span> <span class="hljs-type">Not_found</span> -&gt; <span class="hljs-keyword">let</span> v = f x <span class="hljs-keyword">in</span> <span class="hljs-type">Hashtbl</span>.add h x v; v
+</code></pre>
+<p>نوع الدالة <code>memo_fun</code> كما يلي:</p>
+<pre><code class="language-ocaml">    memo_fun : (’a -&gt; ’b) -&gt; ’a -&gt; ’b
+</code></pre>
+<p>وكما نرى، تأخذ <code>memo_fun</code> وسيطًا دالةً بنوع اعتباطي وتُعيد دالة من النوع نفسه. وتنبع الصفة المتعدّدة الأشكال (polymorphic) للدالة من استخدام جداول التجزئة العامة في OCaml (انظر التمرين <a href="#x26-273002r2">11.2</a>).</p>
+<p>ولحفظ الدالة <code>fib</code>، يكفي أن نكتب:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> fib_memo2 = memo_fun fib
+</code></pre>
+<p>إذا حسبنا <code>fib_memo250</code> مرّتين، يصبح الحساب الثاني فوريًّا لأنّ النتيجة موجودة في الجدول. غير أنّ الحساب الأول يستغرق وقتًا مماثلًا لِما يستغرقه دون حفظ. فخلال الاستدعاء الأول، نحسب <code>fib50</code> لأنّ القيمة غير موجودة في الجدول. وأثناء هذا الحساب، تُوجَّه استدعاءات تخصيصية إلى الدالة <code>fib</code> لا إلى نسختها المحفوظة <code>fib_memo2</code>.</p>
+<p>وقد نعتقد أنّ حلًّا يكمن في كتابة الكود التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> fib_memo3 =
+    memo_fun (<span class="hljs-keyword">fun</span> n -&gt; <span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">1</span> <span class="hljs-keyword">then</span> n
+                       <span class="hljs-keyword">else</span> fib_memo3 (n-<span class="hljs-number">2</span>) + fib_memo3 (n-<span class="hljs-number">1</span>))
+</code></pre>
+<p>للأسف، لا ينجح هذا أيضًا. فكل استدعاء لـ <code>fib_memo3</code> يستلزم استدعاءً جديدًا لـ <code>memo_fun</code>، ما يؤدّي إلى تخصيص جدول تجزئة جديد. وبذلك تُفقد النتائج المحسوبة سابقًا ويتعذّر العثور عليها.</p>
+<p>ولحلّ هذه المشكلة، أي تخصيص جدول تجزئة واحد وإجراء استدعاءات تخصيصية إلى الدالة التي تُحفظ، لا بدّ من إعادة كتابة الدالة <code>memo_fun</code> بأسلوب أكثر دقّة. ونفعل ذلك في صورة دالة <code>memo_rec</code> يمكن استخدامها كما يلي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> fib_memo4 =
+    memo_rec (<span class="hljs-keyword">fun</span> f n -&gt; <span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">1</span> <span class="hljs-keyword">then</span> n <span class="hljs-keyword">else</span> f (n-<span class="hljs-number">2</span>) + f (n-<span class="hljs-number">1</span>))
+</code></pre>
+<p>هنا، يضمن الاستدعاء الوحيد لـ <code>memo_rec</code> إنشاء جدول واحد. وتُمرَّر الدالة التي يُراد حفظها في صورة وسيط إضافي <code>f</code>.</p>
+<p>وتُكتب الدالة <code>memo_rec</code> كما يلي. نبدأ، كما في حالة <code>memo_fun</code>، بإنشاء جدول:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> memo_rec ff =
+    <span class="hljs-keyword">let</span> h = <span class="hljs-type">Hashtbl</span>.create <span class="hljs-number">5003</span> <span class="hljs-keyword">in</span>
+</code></pre>
+<p>ثم نُعرّف الدالة <em>التخصيصية</em> <code>f</code> التي تُجري الحفظ:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> f x =
+      <span class="hljs-keyword">try</span> <span class="hljs-type">Hashtbl</span>.find h x
+      <span class="hljs-keyword">with</span> <span class="hljs-type">Not_found</span> -&gt; <span class="hljs-keyword">let</span> v = ff f x <span class="hljs-keyword">in</span> <span class="hljs-type">Hashtbl</span>.add h x v; v
+    <span class="hljs-keyword">in</span>
+    f
+</code></pre>
+<p>عندما لا تكون النتيجة في الجدول، نحسب النتيجة <code>v</code> باستخدام <code>fffx</code>، أي بتمرير الدالة <code>f</code> والوسيط <code>x</code> إلى الدالة <code>ff</code> التي يوفّرها المستخدم. ويرد الكود الكامل لـ <code>memo_rec</code> في البرنامج <a href="#x26-269029r86">86</a>.</p>
+<blockquote></blockquote>
+<p>وكما في حالة <code>memo_fun</code>، فإنّ نوع <code>memo_rec</code> متعدّد الأشكال، لكنّه أكثر تعقيدًا:</p>
+<p><code>memo_rec: ((’a -&gt; ’b) -&gt; ’a -&gt; ’b) -&gt; ’a -&gt; ’b</code></p>
+<p>نوع الدالة <code>ff</code> هو <code>(’a-&gt;’b)-&gt;’a-&gt;’b</code>، ويمكن قراءته على أنّه <code>(’a-&gt;’b)-&gt;(’a-&gt;’b)</code>. أي أنّها تأخذ وسيطًا دالةً من النوع <code>’a-&gt;’b</code> وتُعيد دالة من النوع نفسه.</p>
+<h3 id="113-الفروق-بين-الحفظ-والبرمجة-الديناميكية">11.3 الفروق بين الحفظ والبرمجة الديناميكية</h3>
+<p>في بعض الحالات، قد يُفضَّل اعتماد البرمجة الديناميكية على الحفظ. خُذ مثال حساب معاملات ذات الحدّين (binomial coefficients) C(n,k)، التي يكون تعريفها التخصيصي كما يلي:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo fence="true">{</mo><mtable rowspacing="0.36em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>C</mi><mo stretchy="false">(</mo><mi>n</mi><mo separator="true">,</mo><mn>0</mn><mo stretchy="false">)</mo><mo>=</mo><mn>1</mn></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>C</mi><mo stretchy="false">(</mo><mi>n</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mn>1</mn></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>C</mi><mo stretchy="false">(</mo><mi>n</mi><mo separator="true">,</mo><mi>k</mi><mo stretchy="false">)</mo><mo>=</mo><mi>C</mi><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo separator="true">,</mo><mi>k</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>+</mo><mi>C</mi><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo separator="true">,</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>إذا كان </mtext><mn>0</mn><mo>&lt;</mo><mi>k</mi><mo>&lt;</mo><mi>n</mi></mrow></mstyle></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\\begin{cases} C(n,0) = 1 \\\\ C(n,n) = 1 \\\\ C(n,k) = C(n - 1,k - 1) + C(n - 1,k) &amp; \\text{إذا كان } 0 &lt; k &lt; n \\end{cases}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:4.32em;vertical-align:-1.91em;"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.35em;"><span style="top:-2.2em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎩</span></span></span><span style="top:-2.192em;"><span class="pstrut" style="height:3.15em;"></span><span style="height:0.316em;width:0.8889em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.8889em" height="0.316em" style="width:0.8889em" viewBox="0 0 888.89 316" preserveAspectRatio="xMinYMin"><path d="M384 0 H504 V316 H384z M384 0 H504 V316 H384z"/></svg></span></span><span style="top:-3.15em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎨</span></span></span><span style="top:-4.292em;"><span class="pstrut" style="height:3.15em;"></span><span style="height:0.316em;width:0.8889em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.8889em" height="0.316em" style="width:0.8889em" viewBox="0 0 888.89 316" preserveAspectRatio="xMinYMin"><path d="M384 0 H504 V316 H384z M384 0 H504 V316 H384z"/></svg></span></span><span style="top:-4.6em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎧</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.85em;"><span></span></span></span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.41em;"><span style="top:-4.41em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord">1</span></span></span><span style="top:-2.97em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord">1</span></span></span><span style="top:-1.53em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.91em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:1em;"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:-0.47em;"><span style="top:-1.53em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord text"><span class="mord">إذا كان </span></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.91em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
+<p>يمكن تطبيق كلٍّ من الحفظ والبرمجة الديناميكية على هذا التعريف. في الحالة الأولى سيكون لدينا جدول تجزئة مفهرس بالزوج (n,k)، وفي الحالة الثانية مصفوفة (matrix) مفهرسة بـ n و k. غير أنّنا، إذا سعينا إلى حساب C(n,k) من أجل n = 2 × 105 و k = 105، فمن المرجّح أن نتجاوز الذاكرة المتاحة في الآلة (بافتراض حاسوب مكتبي عادي). وفي الحالة الأولى، سيحدث ذلك عند ملء جدول التجزئة، وفي الثانية عند محاولة تخصيص المصفوفة. والسبب هو أنّ التعقيد في الزمن <em>وفي المساحة</em> من الرتبة O(nk). وفي المثال السابق، سيتعيّن علينا تخزين 15 مليار نتيجة وسيطة على الأقل.</p>
+<p>ومع ذلك، إذا نظرنا عن كثب، نجد أنّ حساب C(n,k) من أجل قيمة معطاة لـ n لا يتطلّب سوى قيم C(n− 1,k). وبناءً على ذلك، يمكننا إجراء الحساب من أجل قيم متزايدة لـ n، حتى وإن لم تكن جميع القيم المحسوبة مفيدة في النهاية. ويمكننا تصوّر الوضع برسم مثلث باسكال كما في الشكل <a href="#pascals-triangle">11.2</a>. وسنحسب القيم سطرًا سطرًا، مع الاحتفاظ بسطر واحد فقط في أي لحظة.</p>
+<p><strong>الشكل 11.2: مثلث باسكال.</strong></p>
+<table>
+<thead>
+<tr>
+<th>1</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>4</td>
+<td>6</td>
+<td>4</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>5</td>
+<td>10</td>
+<td>10</td>
+<td>5</td>
+<td>1</td>
+</tr>
+<tr>
+<td>⋮</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>ولنُنفّذ هذه الفكرة في دالة <code>comb_smart_dp</code>. نبدأ بتخصيص مصفوفة <code>row</code> بحجم <code>n+1</code> ستضمّ سطر مثلث باسكال الجاري حسابه:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> comb_smart_dp n k =
+    <span class="hljs-keyword">let</span> row = <span class="hljs-type">Array</span>.make (n+<span class="hljs-number">1</span>) <span class="hljs-number">0</span> <span class="hljs-keyword">in</span>
+</code></pre>
+<p>في الواقع، تكفي مصفوفة بحجم <code>k+1</code> (انظر التمرين <a href="#x26-273003r3">11.3</a>).</p>
+<p>في البداية، تُملأ هذه المصفوفة بالأصفار. ونُهيّئ الخلية الأولى بالقيمة 1.</p>
+<pre><code class="language-ocaml">    row.(<span class="hljs-number">0</span>) &lt;- <span class="hljs-number">1</span>;
+</code></pre>
+<p>لن تتغيّر هذه القيمة فيما يلي، لأنّ العمود الأول من مثلث باسكال لا يحتوي إلا على الآحاد. بعد ذلك، نكتب حلقة لحساب السطر <code>i</code> من مثلث باسكال:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">for</span> i = <span class="hljs-number">1</span> <span class="hljs-keyword">to</span> n <span class="hljs-keyword">do</span>
+</code></pre>
+<p>سيُجرى هذا الحساب في المكان نفسه داخل المصفوفة <code>row</code>، بافتراض أنّها تضمّ قيم السطر (<code>i</code>− 1). ولتجنّب طمس قيم لم تُستخدم بعد، سنحسب القيم الجديدة من اليمين إلى اليسار، لأنّ هذه القيم لا تعتمد على تلك الواقعة إلى أقصى اليمين. ونُتابع بحلقة ثانية:</p>
+<pre><code class="language-ocaml">      <span class="hljs-keyword">for</span> j = i <span class="hljs-keyword">downto</span> <span class="hljs-number">1</span> <span class="hljs-keyword">do</span> row.(j) &lt;- row.(j) + row.(j-<span class="hljs-number">1</span>) <span class="hljs-keyword">done</span>
+</code></pre>
+<p>هنا نستفيد من كون <code>row.(i)</code> تحتوي على 0، ما يمكّننا من تجنّب إدخال حالة خاصة. ونتوقّف عندما <code>j</code> = 1 لأنّ القيمة <code>row.(0)</code> لا تحتاج إلى إعادة حساب، كما أوضحنا أعلاه. وبعد أن نخرج من الحلقة المزدوجة، تكون المصفوفة <code>row</code> قد أصبحت تضمّ السطر <code>n</code> من مثلث باسكال، ولم يتبقّ لنا إلا إعادة <code>row.(k)</code>:</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">done</span>;
+    row.(k)
+</code></pre>
+<p>يبقى التعقيد الزمني من الرتبة O(nk)، أمّا تعقيد المساحة فهو O(n) فقط. وفي المثال المعطى أعلاه، حيث n = 2 × 105 و k = 105، تُحصَّل النتيجة الآن في بضع ثوانٍ. ولاحظ، مع ذلك، أنّها تُسبّب طفحًا حسابيًّا (arithmetic overflow) (انظر التمرين <a href="#x26-273004r4">11.4</a>).</p>
+<p>وخلاصة هذا التمرين الصغير أنّ البرمجة الديناميكية، التي تتيح تحكّمًا أدقّ في استخدام الذاكرة، قد تكون أحيانًا أكثر فائدة من الحفظ. وعلى العكس من ذلك، فإنّ الحفظ، في كثير من الحالات التي لا يكون فيها هذا القدر الإضافي من التحكّم ضروريًّا، أبسط بكثير في التنفيذ.</p>
+<h3 id="114-التجزئة-hash-consing">11.4 التجزئة (hash-consing)</h3>
+<p>وكما يمكننا تجنّب حساب الشيء نفسه مرّتين، كما فعلنا أعلاه، يمكننا بالمثل تجنّب بناء البيانات نفسها عدّة مرّات، لتوفير الذاكرة. ويمكننا القيام بذلك بأمان ما دمنا نتعامل مع قيم لن تُعدَّل لاحقًا. فمثلًا، إذا كنا قد بنينا القائمة <code>[1;2;3]</code> بالفعل، فلا جدوى من إعادة بنائها من جديد. ويمكننا بدلًا من ذلك إعادة استخدامها.</p>
+<p>وتُعرف تقنية إعادة استخدام القيم التي بُنيت بالفعل بـ <em>التجزئة</em> (hash-consing). وهي ببساطة تطبيق تقنية الحفظ على بناء القيم. ويجمع مصطلح التجزئة (hash-consing) على وجه التحديد فكرة التجزئة (hashing) المستخدمة في الحفظ مع فكرة التخصيص[^1].
+وهنا سوف نوضّح كيفية تنفيذ هذه التقنية، متخذين مثالًا أشجارًا ثنائية تحتوي على محارف، أي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> tree = <span class="hljs-type">E</span> | <span class="hljs-type">N</span> <span class="hljs-keyword">of</span> tree * <span class="hljs-built_in">char</span> * tree
+</code></pre>
+<p>وتقوم الفكرة على توفير بديل للباني (constructor) <code>N</code>، في صورة دالة <code>node</code> تتصرّف تمامًا كما يتصرّف هذا الباني، لكنّها تُعيد قيمة مماثلة بنيويًّا، إذا كانت قد بُنيت من قبل. ويتمثّل أحد الحلول الممكنة في حفظ الدالة <code>node</code> مباشرةً، أي بتخزين قيم النوع <code>tree</code> التي بُنيت بالفعل في جدول تجزئة. غير أنّ المضي في هذا النهج لن يكون فعّالًا كثيرًا. فحساب مفاتيح التجزئة ومقارنة قيم النوع <code>tree</code> كلاهما يتطلّب اجتيازات قد تكون مكلفة.</p>
+<p>وثمّة حل أفضل بكثير يقوم على تجنّب هذه الاجتيازات بإقران عدد صحيح، يُستخدم في دالة التجزئة، بكل قيمة من النوع <code>tree</code>. لذا نبدأ بتعديل النوع <code>tree</code> قليلًا كي نخزّن عددًا صحيحًا كأول وسيط للباني <code>N</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> tree = <span class="hljs-type">E</span> | <span class="hljs-type">N</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">int</span> * tree * <span class="hljs-built_in">char</span> * tree
+</code></pre>
+<p>وسنرى أدناه كيف يُحسب هذا العدد الصحيح. نكتب دالة تُعيد هذا العدد الصحيح عندما يُعطى الباني <code>N</code>، والعدد الصحيح 0 في غير ذلك.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> unique = <span class="hljs-keyword">function</span>
+    | <span class="hljs-type">E</span> -&gt; <span class="hljs-number">0</span>
+    | <span class="hljs-type">N</span> (u, _, _, _) -&gt; u
+</code></pre>
+<p>وسنبرّر اسم هذه الدالة أدناه، موضّحين لماذا هذا العدد الصحيح فريد في الواقع. وفي الوقت الحاضر، لا يهمّ ذلك لأنّ غايتنا ليست سوى تعريف دالة تجزئة. وفيما يلي تعريف دالة التجزئة:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> hash = <span class="hljs-keyword">function</span>
+    | <span class="hljs-type">E</span> -&gt;
+        <span class="hljs-number">0</span>
+    | <span class="hljs-type">N</span> (_, l, c, r) -&gt;
+        (<span class="hljs-number">19</span> * (<span class="hljs-number">19</span> * unique l + <span class="hljs-type">Char</span>.code c) + unique r) <span class="hljs-keyword">land</span> max_int
+</code></pre>
+<p>لا تستخدم هذه الدالة العدد الصحيح المخزَّن في الباني <code>N</code>. فدالة <code>hash</code> ستُستخدم تحديدًا لتحديد ما إذا كانت شجرة جذرها <code>c</code> وشجرتاها الفرعيتان <code>l</code> و <code>r</code> قد بُنيت بالفعل. لذا يجب ألّا تعتمد إلا على القيم <code>l</code> و <code>c</code> و <code>r</code>. ولحساب النتيجة في زمن ثابت، تستخدم دالة <code>hash</code> الأعداد الصحيحة المخزَّنة في الشجرتين الفرعيتين <code>l</code> و <code>r</code>، عبر دالة <code>unique</code>. وتُستخدم العملية <code>landmax_int</code> هنا لضمان نتيجة غير سالبة.</p>
+<p>وتقوم الفكرة الثانية على مقارنة قيمتين من النوع <code>tree</code> في زمن ثابت بالاستفادة من أنّ شجريهما الفرعيتين قد شارُكتا بالفعل إن كانتا متساويتين، ومن ثمّ فهما متساويتان فيزيائيًّا. ولهذا نكتب دالة <code>equal</code> تستخدم المساواة الفيزيائية <code>==</code> على الشجرتين الفرعيتين.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> equal t1 t2 = <span class="hljs-keyword">match</span> t1, t2 <span class="hljs-keyword">with</span>
+    | <span class="hljs-type">E</span>, <span class="hljs-type">E</span> -&gt; <span class="hljs-literal">true</span>
+    | <span class="hljs-type">N</span> (_, l1, c1, r1), <span class="hljs-type">N</span> (_, l2, c2, r2) -&gt;
+        l1 == l2 &amp;&amp; c1 == c2 &amp;&amp; r1 == r2
+    | _ -&gt; <span class="hljs-literal">false</span>
+</code></pre>
+<p>وبتزوّدنا بهاتين الدالتين، يمكننا الآن بناء جدول تجزئة لحفظ بناء الأشجار. ويمكننا فعل ذلك باستخدام الفونكتور (functor) <code>Hashtbl.Make</code> من المكتبة القياسية لـ OCaml. غير أنّ جدولًا كهذا سيحتفظ بالقيم المبنية إلى الأبد. أمّا ما نريده، في المقابل، فهو أن يتمكّن جامع القمامة (GC) من استعادة المساحة المخصَّصة لقيم لم تعد مستخدَمة، كما يفعل عادةً.</p>
+<p>ولهذا، سنستخدم بنية جدول تجزئة أخرى مضمّنة في المكتبة القياسية لـ OCaml، ألا وهي الفونكتور <code>Weak.Make</code>. وتوقيعه مطابق لتوقيع الفونكتور <code>Hashtbl.Make</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-type">X</span> = <span class="hljs-keyword">struct</span>
+    <span class="hljs-keyword">type</span> t = tree
+    <span class="hljs-keyword">let</span> hash = ...
+    <span class="hljs-keyword">let</span> equal = ...
+  <span class="hljs-keyword">end</span>
+  <span class="hljs-keyword">module</span> <span class="hljs-type">W</span> = <span class="hljs-type">Weak</span>.<span class="hljs-type">Make</span>(<span class="hljs-type">X</span>)
+</code></pre>
+<p>توفّر الوحدة <code>W</code> الناتجة بنية مجموعة (set) من قيم النوع <code>tree</code>، تختفي عناصرها عندما لا يُشار إليها في أي مكان سوى بمؤشر من هذه البنية. وتُسمّى مؤشرات كهذه، التي لا يأخذها جامع القمامة في الحسبان، <em>مراجع ضعيفة</em> (weak references). ومن هنا اسم الوحدة: <code>Weak</code>.</p>
+<p>ويمكننا الآن بناء الجدول الذي سيضمّ قيم النوع <code>tree</code> المبنية. ونهيّئه بحجم اعتباطي.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> nodes = <span class="hljs-type">W</span>.create <span class="hljs-number">5003</span>
+</code></pre>
+<blockquote></blockquote>
+<p>ولم يتبقّ إلا كتابة الدالة <code>node</code> التي ستُجري الحفظ الفعلي. وهي تستخدم عدّادًا عامًّا، مهيّأً بالقيمة 1.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> node =
+    <span class="hljs-keyword">let</span> cpt = <span class="hljs-built_in">ref</span> <span class="hljs-number">1</span> <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">fun</span> l c r -&gt;
+</code></pre>
+<p>نبدأ ببناء الشجرة المطلوبة، باستخدام القيمة الحالية للعدّاد.</p>
+<pre><code class="language-ocaml">      <span class="hljs-keyword">let</span> n0 = <span class="hljs-type">N</span> (!cpt, l, c, r) <span class="hljs-keyword">in</span>
+</code></pre>
+<p>بعد ذلك نستشير جدول التجزئة لتحديد ما إذا كانت قيمة كهذه قد بُنيت بالفعل. وتوفّر الوحدة <code>W</code> بسهولة دالة <code>merge</code> تحدّد ما إذا كانت قيمة مماثلة موجودة بالفعل في المجموعة، وإن لم تكن، تضيفها. وفي كلتا الحالتين، تكون القيمة المُعادة محتواةً في الجدول.</p>
+<pre><code class="language-ocaml">      <span class="hljs-keyword">let</span> n = <span class="hljs-type">W</span>.merge nodes n0 <span class="hljs-keyword">in</span>
+</code></pre>
+<p>لم يتبقّ إلا زيادة قيمة العدّاد إذا أُضيفت عقدة جديدة إلى الجدول، وهو ما يمكن تحديده بسهولة بمقارنة <code>n</code> و <code>n0</code> باستخدام المقارنة الفيزيائية. وفي جميع الحالات، نُعيد الشجرة <code>n</code>.</p>
+<pre><code class="language-ocaml">      <span class="hljs-keyword">if</span> n == n0 <span class="hljs-keyword">then</span> incr cpt;
+      n
+</code></pre>
+<p>ويرد الكود الكامل في البرنامج <a href="#x26-271037r87">87</a>.</p>
+<p>بطبيعة الحال، كل هذا صحيح فقط إذا كانت أي شجرتين تحملان العدد الصحيح نفسه متساويتين فعلًا. ولضمان ذلك، يجب أن نغلّف النوع <code>tree</code> خلف واجهة تمنع المستخدمين من إسناد هذا العدد الصحيح على نحو اعتباطي. وأحد الاحتمالات هو جعل <code>tree</code> نوعًا خاصًّا (private type). وترد واجهة كهذه في البرنامج <a href="#x26-271084r88">88</a> (انظر الصفحة التالية). وبهذه الطريقة، يمكننا أن نبرّر <em>بعديًّا</em> أنّ العدد الصحيح المخزَّن في كل شجرة فريد بمعنى أنّ أي شجرتين تحملان العدد الصحيح نفسه متساويتان. غير أنّ قيمتين متساويتين يمكن أن تحملا عددًا صحيحًا مختلفًا. فالقيمة قد تُبنى، ثم يستعيدها جامع القمامة، ثم يُعاد بناؤها على نحو مماثل لاحقًا، بعدد صحيح مختلف.</p>
+<p>ومزايا التجزئة (hash-consing) عديدة. أولًا، تتيح لنا الاقتصاد في الذاكرة. صحيح أنّ ثمّة كلفة إضافية مرتبطة بالحفظ، لكنّ هذه الكلفة من الزمن الثابت. فقد حرصنا على كتابة دالة مساواة ودالة تجزئة بكلفة ثابتة. والميزة الثانية للتجزئة (hash-consing) هي أنّه يمكننا الآن استخدام المساواة الفيزيائية <code>==</code> بدلًا من المساواة البنيوية. فقيمتان من النوع <code>tree</code> متساويتان إذا وفقط إذا كانتا متساويتين فيزيائيًّا. وهذا مضمون بتغليف النوع <code>tree</code> خلف نوع خاص. وثالثًا، لدينا ترتيب كلّي على النوع <code>tree</code>، بكلفة ثابتة، بمقارنة القيم التي تُعيدها الدالة <code>unique</code>. وعلى وجه الخصوص، يمكننا الآن بناء بنى بيانات، مثلًا باستخدام الفونكتورين <code>Set.Make</code> أو <code>Map.Make</code>، تكون فعّالة كما في حالة الأعداد الصحيحة. وأخيرًا، لدينا دالة تجزئة ممتازة على النوع <code>tree</code>، ألا وهي الدالة <code>unique</code>. ويقترح التمرين <a href="#x26-274001r6">11.6</a> استخدامها لحفظ دالة تخصيصية على الأشجار.</p>
+<p>ومن المهم أن نُكرّر هنا أنّ تقنية التجزئة (hash-consing) لا تنطبق إلا على البنى القابلة للمشاركة. وبالتالي، تنطبق التقنية على البنى الدائمة (persistent)، لا على البنى القابلة للتغيير (mutable).</p>
+<blockquote></blockquote>
+<div class="exercises"><h3 id="115-التمارين">11.5 التمارين</h3>
+<h4>البرمجة الديناميكية والحفظ</h4>
+<p><strong>11.1</strong> عدّل الدالة <code>fib_dp</code> بحيث لا تستخدم سوى عددين صحيحين بدلًا من مصفوفة.</p>
+<p><strong>11.2</strong> أعد تنفيذ الدالة <code>memo_rec</code> في صورة فونكتور مُعامَل بنوع وسائط الدالة المحفوظة، بحيث يمكن استخدام جداول تجزئة غير الجداول العامة في OCaml.</p>
+<p><strong>11.3</strong> عدّل الدالة <code>comb_smart_dp</code> بحيث لا تحسب قيم مثلث باسكال بعد العمود <code>k</code>.</p>
+<p><strong>11.4</strong> عدّل الدالة <code>comb_smart_dp</code> بحيث تُعيد عددًا صحيحًا بدقّة اعتباطية (النوع <code>Num.num</code> من مكتبة OCaml). ملاحظة: لم يعد التعقيد من الرتبة O(nk) لأنّ عمليات الجمع لم تعد عمليات ذرّية. فكلفتها تعتمد على حجم المعاملات، وهذه تنمو بسرعة في مثلث باسكال.</p>
+<p><strong>11.5</strong> تُعرَّف مسافة التحرير (edit distance) بين سلسلتين بأنّها أصغر عدد من عمليات الإدراج والحذف والاستبدال للمحارف اللازمة للانتقال من إحداهما إلى الأخرى. فمثلًا، المسافة بين <code>&quot;duck&quot;</code> و <code>&quot;duke&quot;</code> تساوي اثنين (حذف واحد وإدراج واحد). اكتب دالة تخصيصية تأخذ وسيطين سلسلتين <code>a</code> و <code>b</code>، ومؤشّرين <code>i</code> و <code>j</code>، وتُعيد المسافة بين السلسلتين <code>a</code>[0..<code>i</code>[ و <code>b</code>[0..<code>j</code>[. واشرح لماذا ننتهي إلى إجراء الاستدعاءات نفسها عدّة مرّات. وحسّن الفعالية باستخدام الحفظ أو البرمجة الديناميكية.</p>
+<h4>التجزئة (hash-consing)</h4>
+<p><strong>11.6</strong> اكتب دالة محفوظة <code>height</code> تحسب ارتفاع شجرة بالاستفادة من كون الأشجار قد خضعت للتجزئة (hash-consing).</p>
+<p><strong>11.7</strong> اكتب بنية قوائم من الأعداد الصحيحة تستفيد من تقنية التجزئة (hash-consing).</p>
+<p><strong>11.8</strong> عمّم التمرين السابق على فونكتور يأخذ وسيطًا نوع العناصر، مزوّدًا بدالة مساواة ودالة تجزئة.</p>
+<p><strong>11.9</strong> كيف يمكن تجنّب تطبيق الباني <code>N</code> في الدالة <code>node</code> في البرنامج <a href="#x26-271037r87">87</a> عندما تكون القيمة قد بُنيت بالفعل؟</p>
+</div>`,c={book:s,chapter:a,chapterTitle:n,slug:e,title:p,headings:l,html:t};export{s as book,a as chapter,n as chapterTitle,c as default,l as headings,t as html,e as slug,p as title};

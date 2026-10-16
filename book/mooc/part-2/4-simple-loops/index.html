@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.C9kBkw8T.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/wzL9zxmz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B48Sj80-.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.fkPBtkuJ.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DIwFP-Q7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BuJFa1RM.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/C-mfcZys.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/4FQnCmEH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.CYJfTZwp.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DBCy9BRL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="الحلقات البسيطة — الجزء 2: الجمل الشرطية"/><!----><title>الحلقات البسيطة | برمجة بايثون 2026 — جامعة هلسنكي</title>
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/mooc">برمجة بايثون 2026 — جامعة هلسنكي</a> <span class="reader-bar__chapter">› الجزء 2: الجمل الشرطية</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 2 من 15">2 / 15</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/mooc/part-2/3-combining-conditions">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/mooc/part-3/index">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>الجزء 1: البدء</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-1/index">الجزء 1</a></li><li><a href="../../../../book/mooc/part-1/1-getting-started">البدء</a></li><li><a href="../../../../book/mooc/part-1/2-information-from-the-user">المعلومات من المستخدم</a></li><li><a href="../../../../book/mooc/part-1/3-more-about-variables">المزيد عن المتغيّرات</a></li><li><a href="../../../../book/mooc/part-1/4-arithmetic-operations">العمليات الحسابية</a></li><li><a href="../../../../book/mooc/part-1/5-conditional-statements">الجمل الشرطية</a></li><!--]--></ul><h3 class="active-chapter">الجزء 2: الجمل الشرطية</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-2/index">الجزء 2</a></li><li><a href="../../../../book/mooc/part-2/1-programming_terminology">مصطلحات البرمجة</a></li><li><a href="../../../../book/mooc/part-2/2-else-elif">المزيد عن الجمل الشرطية</a></li><li><a href="../../../../book/mooc/part-2/3-combining-conditions">دمج الشروط</a></li><li><a href="../../../../book/mooc/part-2/4-simple-loops" class="active">الحلقات البسيطة</a></li><!--]--></ul><h3>الجزء 3: الحلقات</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-3/index">الجزء 3</a></li><li><a href="../../../../book/mooc/part-3/1-loops-with-conditions">الحلقات مع الشروط</a></li><li><a href="../../../../book/mooc/part-3/2-working-with-strings">العمل مع السلاسل النصية</a></li><li><a href="../../../../book/mooc/part-3/3-more-loops">المزيد عن الحلقات</a></li><li><a href="../../../../book/mooc/part-3/4-defining-functions">تعريف الدوال</a></li><!--]--></ul><h3>الجزء 4: الدوال والقوائم</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-4/index">الجزء 4</a></li><li><a href="../../../../book/mooc/part-4/1-vscode">محرر Visual Studio Code ومفسر Python وأداة التنقيح المدمجة</a></li><li><a href="../../../../book/mooc/part-4/2-more-functions">المزيد من الدوال</a></li><li><a href="../../../../book/mooc/part-4/3-lists">القوائم</a></li><li><a href="../../../../book/mooc/part-4/4-definite-iteration">التكرار المحدَّد</a></li><li><a href="../../../../book/mooc/part-4/5-print-statement-formatting">تنسيق أمر الطباعة</a></li><li><a href="../../../../book/mooc/part-4/6-strings-and-lists">المزيد من السلاسل النصية والقوائم</a></li><!--]--></ul><h3>الجزء 5: هياكل البيانات</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-5/index">الجزء 5</a></li><li><a href="../../../../book/mooc/part-5/1-more-lists">المزيد عن القوائم</a></li><li><a href="../../../../book/mooc/part-5/2-references">المراجع</a></li><li><a href="../../../../book/mooc/part-5/3-dictionary">القاموس</a></li><li><a href="../../../../book/mooc/part-5/4-tuple">الصف</a></li><!--]--></ul><h3>الجزء 6: الملفات والأخطاء</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-6/index">الجزء 6</a></li><li><a href="../../../../book/mooc/part-6/1-reading-files">قراءة الملفات</a></li><li><a href="../../../../book/mooc/part-6/2-writing-files">كتابة الملفات</a></li><li><a href="../../../../book/mooc/part-6/3-errors">معالجة الأخطاء</a></li><li><a href="../../../../book/mooc/part-6/4-scope-of-variables">المتغيّرات المحلية والعالمية</a></li><!--]--></ul><h3>الجزء 7: الوحدات</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-7/index">الجزء 7</a></li><li><a href="../../../../book/mooc/part-7/1-modules">الوحدات</a></li><li><a href="../../../../book/mooc/part-7/2-randomness">العشوائية</a></li><li><a href="../../../../book/mooc/part-7/3-times-and-dates">الأوقات والتواريخ</a></li><li><a href="../../../../book/mooc/part-7/4-data-processing">معالجة البيانات</a></li><li><a href="../../../../book/mooc/part-7/5-creating-modules">إنشاء وحداتك الخاصة</a></li><li><a href="../../../../book/mooc/part-7/6-more-features">المزيد من ميزات Python</a></li><!--]--></ul><h3>الجزء 8: الكائنات والصنوف</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-8/index">الجزء 8</a></li><li><a href="../../../../book/mooc/part-8/1-objects-and-methods">الكائنات والتابعات</a></li><li><a href="../../../../book/mooc/part-8/2-classes-and-objects">الأصناف والكائنات</a></li><li><a href="../../../../book/mooc/part-8/3-defining-classes">تعريف الأصناف</a></li><li><a href="../../../../book/mooc/part-8/4-defining-methods">تعريف التوابع</a></li><li><a href="../../../../book/mooc/part-8/5-more-examples-of-classes">المزيد من أمثلة الأصناف</a></li><!--]--></ul><h3>الجزء 9: المزيد عن الكائنات</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-9/index">الجزء 9</a></li><li><a href="../../../../book/mooc/part-9/1-objects-and-references">الكائنات والمراجع</a></li><li><a href="../../../../book/mooc/part-9/2-objects-as-attributes">الكائنات كخصائص</a></li><li><a href="../../../../book/mooc/part-9/3-encapsulation">التغليف</a></li><li><a href="../../../../book/mooc/part-9/4-scope-of-methods">نطاق التوابع</a></li><li><a href="../../../../book/mooc/part-9/5-class-attributes">خصائص الصنف</a></li><li><a href="../../../../book/mooc/part-9/6-more-examples-with-classes">مزيد من الأمثلة على الأصناف</a></li><!--]--></ul><h3>الجزء 10: تراكيب الأصناف</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-10/index">الجزء 10</a></li><li><a href="../../../../book/mooc/part-10/1-class-hierarchies">تراكيب الأصناف</a></li><li><a href="../../../../book/mooc/part-10/2-access-modifiers">مُعدِّلات الوصول</a></li><li><a href="../../../../book/mooc/part-10/3-oo-programming-techniques">تقنيات البرمجة الكائنية</a></li><li><a href="../../../../book/mooc/part-10/4-application-development">تطوير تطبيق أكبر</a></li><!--]--></ul><h3>الجزء 11: ميزات متقدمة</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-11/index">الجزء 11</a></li><li><a href="../../../../book/mooc/part-11/1-list-comprehensions">إدراكات القوائم</a></li><li><a href="../../../../book/mooc/part-11/2-more-comprehensions">المزيد من الإدراكات</a></li><li><a href="../../../../book/mooc/part-11/3-recursion">التعاود</a></li><li><a href="../../../../book/mooc/part-11/4-more-recursion-examples">المزيد من أمثلة التعاود</a></li><!--]--></ul><h3>الجزء 12: البرمجة الدالية</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-12/index">الجزء 12</a></li><li><a href="../../../../book/mooc/part-12/1-functions-as-arguments">الدوال كوسائط</a></li><li><a href="../../../../book/mooc/part-12/2-generators">المولّدات</a></li><li><a href="../../../../book/mooc/part-12/3-functional-programming">البرمجة الدالية</a></li><li><a href="../../../../book/mooc/part-12/4-regular-expressions">التعبيرات النمطية</a></li><!--]--></ul><h3>الجزء 13: الألعاب مع Pygame</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-13/index">الجزء 13</a></li><li><a href="../../../../book/mooc/part-13/1-pygame">مكتبة pygame</a></li><li><a href="../../../../book/mooc/part-13/2-animation">التحريك</a></li><li><a href="../../../../book/mooc/part-13/3-events">الأحداث</a></li><li><a href="../../../../book/mooc/part-13/4-more-pygame-techniques">تقنيات pygame إضافية</a></li><!--]--></ul><h3>الجزء 14: مشروع اللعبة</h3> <ul><!--[--><li><a href="../../../../book/mooc/part-14/index">الجزء 14</a></li><li><a href="../../../../book/mooc/part-14/1-game-project">مشروع اللعبة</a></li><li><a href="../../../../book/mooc/part-14/2-robot-and-boxes">الروبوت والصناديق</a></li><li><a href="../../../../book/mooc/part-14/3-finishing-the-game">إنهاء اللعبة</a></li><li><a href="../../../../book/mooc/part-14/4-your-own-game">لعبتك الخاصة</a></li><!--]--></ul><h3>صفحات مساعدة</h3> <ul><!--[--><li><a href="../../../../book/mooc/auxiliary/index">عن هذه الدورة</a></li><li><a href="../../../../book/mooc/auxiliary/frontmatter-guide">دليل بيانات الترويسة الأمامية</a></li><li><a href="../../../../book/mooc/auxiliary/vocabulary">المفردات</a></li><li><a href="../../../../book/mooc/auxiliary/error_messages">رسائل الأخطاء الشائعة</a></li><li><a href="../../../../book/mooc/auxiliary/faq">الأسئلة الشائعة</a></li><li><a href="../../../../book/mooc/auxiliary/exam_adv">اختبار الدورة المتقدمة في البرمجة 15.08.</a></li><li><a href="../../../../book/mooc/auxiliary/exam_intro">اختبار مقدمة في البرمجة 05.09.</a></li><li><a href="../../../../book/mooc/auxiliary/support-and-assistance">الدعم والمساعدة</a></li><li><a href="../../../../book/mooc/auxiliary/all-exercises">جميع التمارين</a></li><li><a href="../../../../book/mooc/auxiliary/exam">اختبار 4.6.</a></li><li><a href="../../../../book/mooc/auxiliary/grading-and-exams">التقييم والاختبارات</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>الحلقات البسيطة</h1> <!--[0--><nav class="toc-inline" aria-label="في هذا القسم"><p>في هذا القسم</p> <ul><!--[--><li><a href="#الحلقات-والمتغيرات-المساعدة">الحلقات والمتغيّرات المساعدة</a></li><li><a href="#تنقيح-عبارات-الطباعة-داخل-الحلقات">تنقيح عبارات الطباعة داخل الحلقات</a></li><li><a href="#دمج-السلاسل-النصية-بالمشغل">دمج السلاسل النصية بالمشغّل +</a></li><li><a href="#الجزء-1">الجزء 1</a></li><li><a href="#الجزء-2">الجزء 2</a></li><li><a href="#ما-قبل-التمرين">ما قبل التمرين</a></li><li><a href="#الجزء-1-العد">الجزء 1: العدّ</a></li><li><a href="#الجزء-2-المجموع">الجزء 2: المجموع</a></li><li><a href="#الجزء-3-المعدل">الجزء 3: المعدّل</a></li><!--]--></ul></nav><!--]--> <!--[-1--><div class="reader-content"><!----><blockquote>
+<p><strong>أهداف التعلّم</strong></p>
+<p>بعد إتمام هذا القسم</p>
+<ul>
+<li>ستعرف ما معنى الحلقة في البرمجة</li>
+<li>ستتمكّن من استخدام حلقة <code>while True</code> في برامجك</li>
+<li>ستعرف كيف تستخدم الأمر <code>break</code> للخروج من حلقة</li>
+</ul>
+</blockquote>
+<p>لقد غطّينا الآن البنى الشرطية بتفصيل. وهناك تقنية أساسية أخرى في البرمجة وهي <em>التكرار</em> (<em>iteration</em>). وهما معًا يشكّلان بنى التحكّم الأساسية التي يجب على كل مبرمج إتقانها. وتُسمّيان بنى التحكّم لأنهما يسمحان لك أساسًا بالتحكّم في أي سطور من الشيفرة ستُنفَّذ ومتى. فبينما تتيح لك البنى الشرطية <em>الاختيار بين</em> أجزاء من الشيفرة، تتيح لك بنى التكرار <em>تكرار</em> أجزاء من الشيفرة. وكثيرًا ما تُسمّى <em>حلقات</em> (<em>loops</em>)، لأنها تتيح للبرنامج أن &quot;يلتف&quot; إلى سطر سبق أن نُفِّذ. وتُسمّى عملية تنفيذ تكرار واحد من الحلقة أيضًا تكرارًا (<em>iteration</em>) للحلقة.</p>
+<p>يُقدّم هذا القسم حلقة <code>while</code> بسيطة. بنيتها مشابهة للجمل الشرطية التي غطّيناها من قبل. وفي الجزء التالي سنغوص في بعض الأمثلة الأكثر تقدّمًا.</p>
+<p>لننظر إلى برنامج يطلب من المستخدم إدخال عدد ثم يطبع مربّع هذا العدد. ويستمر ذلك حتى يكتب المستخدم -1.</p>
+<pre><code class="language-python"><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+    number = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Please type in a number, -1 to quit: &quot;</span>))
+
+    <span class="hljs-keyword">if</span> number == -<span class="hljs-number">1</span>:
+        <span class="hljs-keyword">break</span>
+
+    <span class="hljs-built_in">print</span>(number ** <span class="hljs-number">2</span>)
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Thanks and bye!&quot;</span>)
+</code></pre>
+<p>قد يبدو تشغيل البرنامج على النحو التالي:</p>
+<pre><code>Please type in a number, -1 to quit: **2**
+4
+Please type in a number, -1 to quit: **4**
+16
+Please type in a number, -1 to quit: **10**
+100
+Please type in a number, -1 to quit: **-1**
+Thanks and bye!
+</code></pre>
+<p>وكما ترى أعلاه، يطلب البرنامج عدة أعداد بفضل جملة <code>while</code> الموجودة فيه. وعندما يكتب المستخدم -1، يُنفَّذ الأمر <code>break</code>، الذي يخرج من الحلقة ويستأنف التنفيذ من أول سطر بعد كتلة <code>while</code>.</p>
+<p>وفي الحلقات، من الضروري دائمًا أن تتوفّر طريقة للخروج من الحلقة عند نقطة ما في الشيفرة، وإلا فقد يستمر التكرار إلى ما لا نهاية. ولتوضيح ذلك، لنغيّر قليلًا المثال أعلاه:</p>
+<pre><code class="language-python">number = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Please type in a number, -1 to quit: &quot;</span>))
+<span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+    <span class="hljs-keyword">if</span> number == -<span class="hljs-number">1</span>:
+        <span class="hljs-keyword">break</span>
+
+    <span class="hljs-built_in">print</span>(number ** <span class="hljs-number">2</span>)
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Thanks and bye!&quot;</span>)
+</code></pre>
+<p>في هذه النسخة يطلب البرنامج من المستخدم كتابة عدد <em>خارج الحلقة</em>. وإذا كتب المستخدم أي عدد آخر غير -1، فلا يُخرَج من الحلقة أبدًا. وهذا يشكّل <em>حلقة لا نهائية</em> (<em>infinite loop</em>)، أي أن كتلة الشيفرة داخل الحلقة تتكرّر بلا نهاية:</p>
+<pre><code>Please type in a number, -1 to quit: **2**
+4
+4
+4
+4
+4
+4
+4
+4
+(continued ad infinitum...)
+</code></pre>
+<p>والبرنامج التالي له بنية مشابهة للمثال السابق على الحلقة اللانهائية، لكن تجربة المستخدم مختلفة كثيرًا. إذ يتيح هذا البرنامج للمستخدم المتابعة فقط إذا كتب الرمز السري الصحيح <em>1234</em>:</p>
+<pre><code class="language-python"><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+    code = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Please type in your PIN: &quot;</span>)
+    <span class="hljs-keyword">if</span> code == <span class="hljs-string">&quot;1234&quot;</span>:
+        <span class="hljs-keyword">break</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Incorrect...try again&quot;</span>)
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Correct PIN entered!&quot;</span>)
+</code></pre>
+<pre><code>Please type in your PIN: **0000**
+Incorrect...try again
+Please type in your PIN: **9999**
+Incorrect...try again
+Please type in your PIN: **1234**
+Correct PIN entered!
+</code></pre>
+<blockquote>
+<p><strong>تمرين تفاعلي: هل نواصل؟</strong></p>
+<p>لننشئ برنامجًا على غرار المثال أعلاه. ينبغي أن يطبع هذا البرنامج الرسالة &quot;hi&quot; ثم أن يسأل &quot;Shall we continue?&quot; حتى يُدخل المستخدم كلمة &quot;no&quot;. ثم ينبغي للبرنامج أن يطبع &quot;okay then&quot; وينتهي. يُرجى الاطلاع على المثال أدناه.</p>
+</blockquote>
+<pre><code>hi
+Shall we continue? **yes**
+hi
+Shall we continue? **oui**
+hi
+Shall we continue? **jawohl**
+hi
+Shall we continue? **no**
+okay then
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<blockquote>
+<p><strong>تمرين تفاعلي: التحقّق من صحّة المُدخَل</strong></p>
+<p>يُرجى كتابة برنامج يطلب من المستخدم أعدادًا صحيحة.</p>
+</blockquote>
+<p>وإذا كان العدد أقل من صفر، فينبغي للبرنامج أن يطبع الرسالة &quot;Invalid number&quot;.</p>
+<p>وإذا كان العدد أكبر من صفر، فينبغي للبرنامج أن يطبع الجذر التربيعي للعدد باستخدام دالة <code>sqrt</code> في Python.</p>
+<p>وفي الحالتين، ينبغي للبرنامج بعد ذلك أن يطلب عددًا آخر.</p>
+<p>وإذا أدخل المستخدم العدد صفر، فينبغي للبرنامج أن يتوقّف عن طلب الأعداد وأن يخرج من الحلقة.</p>
+<p>تجد أدناه تذكيرًا بكيفية استخدام دالة <code>sqrt</code>. ولا تنسَ أن تستوردها بـ<code>import</code> في بداية البرنامج.</p>
+<pre><code class="language-python"><span class="hljs-comment"># sqrt function will not work without this line in the beginning of the program</span>
+<span class="hljs-keyword">from</span> math <span class="hljs-keyword">import</span> sqrt
+
+<span class="hljs-built_in">print</span>(sqrt(<span class="hljs-number">9</span>))
+</code></pre>
+<pre><code>3.0
+</code></pre>
+<p>مثال على السلوك المتوقَّع لبرنامجك:</p>
+<pre><code>Please type in a number: **16**
+4.0
+Please type in a number: **4**
+2.0
+Please type in a number: **-3**
+Invalid number
+Please type in a number: **1**
+1.0
+Please type in a number: **0**
+Exiting...
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<blockquote>
+<p><strong>تمرين تفاعلي: إصلاح الشيفرة: العدّ التنازلي</strong></p>
+<p>ينبغي أن يطبع هذا برنامج تنازليًا. والشيفرة على النحو التالي:</p>
+</blockquote>
+<pre><code class="language-python">number = <span class="hljs-number">5</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Countdown!&quot;</span>)
+<span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+  <span class="hljs-built_in">print</span>(number)
+  number = number - <span class="hljs-number">1</span>
+  <span class="hljs-keyword">if</span> number &gt; <span class="hljs-number">0</span>:
+    <span class="hljs-keyword">break</span>
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Now!&quot;</span>)
+</code></pre>
+<p>وينبغي أن يطبع هذا</p>
+<pre><code>Countdown!
+5
+4
+3
+2
+1
+Now!
+</code></pre>
+<p>لكن البرنامج لا يعمل تمامًا كما ينبغي. يُرجى إصلاحه.</p>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<blockquote>
+<p><strong>تمرين تفاعلي: تكرار كلمة المرور</strong></p>
+<p>يُرجى كتابة برنامج يطلب من المستخدم كلمة مرور. ثم ينبغي للبرنامج أن يطلب من المستخدم كتابة كلمة المرور مرة أخرى. وإذا كتب المستخدم شيئًا غير كلمة المرور الأولى، فينبغي للبرنامج أن يواصل الطلب حتى يكتب المستخدم كلمة المرور الأولى مرة أخرى بشكل صحيح.</p>
+</blockquote>
+<p>اطّلع على السلوك المتوقَّع أدناه:</p>
+<pre><code>Password: **sekred**
+Repeat password: **secret**
+They do not match!
+Repeat password: **cantremember**
+They do not match!
+Repeat password: **sekred**
+User account created!
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<h2 id="الحلقات-والمتغيرات-المساعدة">الحلقات والمتغيّرات المساعدة</h2>
+<p>لنجعل مثال التحقّق من الرمز السري أكثر واقعية قليلًا. فهذه النسخة تتيح للمستخدم ثلاث محاولات فقط لكتابة الرمز السري.</p>
+<p>يستخدم البرنامج متغيّرَي مساعدَين. فالمتغيّر <code>attempts</code> يتتبّع عدد المرات التي كتب فيها المستخدم رمزًا سريًا. والمتغيّر <code>success</code> يُعيَّن على <code>True</code> أو <code>False</code> بناءً على ما إذا كان المستخدم قد نجح في تسجيل الدخول.</p>
+<pre><code class="language-python">attempts = <span class="hljs-number">0</span>
+
+<span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+    code = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Please type in your PIN: &quot;</span>)
+    attempts += <span class="hljs-number">1</span>
+
+    <span class="hljs-keyword">if</span> code == <span class="hljs-string">&quot;1234&quot;</span>:
+        success = <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">break</span>
+
+    <span class="hljs-keyword">if</span> attempts == <span class="hljs-number">3</span>:
+        success = <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">break</span>
+
+    <span class="hljs-comment"># this is printed if the code was incorrect AND there have been less than three attempts</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Incorrect...try again&quot;</span>)
+
+<span class="hljs-keyword">if</span> success:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Correct PIN entered!&quot;</span>)
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Too many attempts...&quot;</span>)
+</code></pre>
+<pre><code>Please type in your PIN: **0000**
+Incorrect...try again
+Please type in your PIN: **1234**
+Correct PIN entered!
+</code></pre>
+<pre><code>Please type in your PIN: **0000**
+Incorrect...try again
+Please type in your PIN: **9999**
+Incorrect...try again
+Please type in your PIN: **4321**
+Too many attempts...
+</code></pre>
+<p>تُخرَج الحلقة <em>إما</em> عندما يكتب المستخدم الرمز السري الصحيح <em>أو</em> عندما تكون المحاولات قد تجاوزت الحد. وتتحقّق جملة <code>if</code> التالية للحلقة من قيمة المتغيّر <code>success</code> وتطبع رسالة وفق ذلك.</p>
+<h2 id="تنقيح-عبارات-الطباعة-داخل-الحلقات">تنقيح عبارات الطباعة داخل الحلقات</h2>
+<p>إن إضافة الحلقات إلى البرامج تضيف أيضًا مصادر محتملة للأخطاء. فيصبح إتقان استخدام عبارات الطباعة للتنقيح، كما عُرِّفت في <a href="/arabic-cs-library/book/mooc/part-2/1-programming_terminology">القسم الأول من هذا الجزء</a>، أكثر أهمية.</p>
+<p>لننظر إلى برنامج يكاد يكون مطابقًا للمثال السابق، مع فارق وحيد مهم:</p>
+<pre><code class="language-python">attempts = <span class="hljs-number">0</span>
+
+<span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+    code = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Please type in your PIN: &quot;</span>)
+    attempts += <span class="hljs-number">1</span>
+
+    <span class="hljs-keyword">if</span> attempts == <span class="hljs-number">3</span>:
+        success = <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">break</span>
+
+    <span class="hljs-keyword">if</span> code == <span class="hljs-string">&quot;1234&quot;</span>:
+        success = <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">break</span>
+
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Incorrect...try again&quot;</span>)
+
+<span class="hljs-keyword">if</span> success:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Correct PIN entered!&quot;</span>)
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Too many attempts...&quot;</span>)
+</code></pre>
+<p>تتصرّف هذه النسخة على نحو غريب عندما يكتب المستخدم الرمز الصحيح في المحاولة الثالثة:</p>
+<pre><code>Please type in your PIN: **0000**
+Incorrect...try again
+Please type in your PIN: **9999**
+Incorrect...try again
+Please type in your PIN: **1234**
+Too many attempts...
+</code></pre>
+<p>إذن، لنحاول أن نجد السبب بإضافة بعض عبارات الطباعة للتنقيح في مواقع مدروسة داخل الحلقة:</p>
+<pre><code class="language-python"><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;beginning of the while block:&quot;</span>)
+    code = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Please type in your PIN: &quot;</span>)
+    attempts += <span class="hljs-number">1</span>
+
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;attempts:&quot;</span>, attempts)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;condition1:&quot;</span>, attempts == <span class="hljs-number">3</span>)
+    <span class="hljs-keyword">if</span> attempts == <span class="hljs-number">3</span>:
+        success = <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">break</span>
+
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;code:&quot;</span>, code)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;condition2:&quot;</span>, code == <span class="hljs-string">&quot;1234&quot;</span>)
+    <span class="hljs-keyword">if</span> code == <span class="hljs-string">&quot;1234&quot;</span>:
+        success = <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">break</span>
+
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Incorrect...try again&quot;</span>)
+</code></pre>
+<pre><code>beginning of the while block:
+Please type in your PIN: **2233**
+attempts: 1
+condition1: False
+code: 2233
+condition2: False
+Incorrect...try again
+beginning of the while block:
+Please type in your PIN: **4545**
+attempts: 2
+condition1: False
+code: 4545
+condition2: False
+Incorrect...try again
+beginning of the while block:
+Please type in your PIN: **1234**
+attempts: 3
+condition1: True
+Too many attempts...
+</code></pre>
+<p>ومن المخرجات أعلاه نرى أن شرط جملة <code>if</code> الأولى يكون <code>True</code> أثناء التكرار الثالث للحلقة، فتُنهى الحلقة. ولا يصل هذا التكرار أبدًا إلى جملة <code>if</code> الثانية، التي تتحقّق مما إذا كانت الشيفرة قد كُتبت بشكل صحيح:</p>
+<pre><code class="language-python">  <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+    <span class="hljs-comment"># ....</span>
+
+    <span class="hljs-comment"># this block is executed too early</span>
+    <span class="hljs-keyword">if</span> attempts == <span class="hljs-number">3</span>:
+        success = <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">break</span>
+
+    <span class="hljs-comment"># the third iteration never gets this far</span>
+    <span class="hljs-keyword">if</span> code == <span class="hljs-string">&quot;1234&quot;</span>:
+        success = <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">break</span>
+</code></pre>
+<p>إنّ ترتيب الجمل الشرطية، أو ترتيب الفروع المختلفة داخل جملة شرطية، سبب شائع للأخطاء، خاصةً في الحلقات. وعبارات الطباعة للتنقيح هي غالبًا أبسط طريقة للعثور على سببها.</p>
+<blockquote>
+<p><strong>تمرين تفاعلي: الرمز السري وعدد المحاولات</strong></p>
+<p>يُرجى كتابة برنامج يواصل سؤال المستخدم عن رمز سري حتى يكتب الرمز الصحيح، وهو <em>4321</em>. وينبغي للبرنامج بعد ذلك أن يطبع عدد المرات التي جرّب فيها المستخدم رموزًا مختلفة.</p>
+</blockquote>
+<pre><code>PIN: **3245**
+Wrong
+PIN: **1234**
+Wrong
+PIN: **0000**
+Wrong
+PIN: **4321**
+Correct! It took you 4 attempts
+</code></pre>
+<p>وإذا أصاب المستخدم في المحاولة الأولى، فينبغي للبرنامج أن يطبع شيئًا مختلفًا قليلًا:</p>
+<pre><code>PIN: **4321**
+Correct! It only took you one single attempt!
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<blockquote>
+<p><strong>تمرين تفاعلي: السنة الكبيسة التالية</strong></p>
+<p>يُرجى كتابة برنامج يطلب من المستخدم سنة، ثم يطبع السنة الكبيسة التالية.</p>
+</blockquote>
+<pre><code>Year: **2023**
+The next leap year after 2023 is 2024
+</code></pre>
+<p>وإذا أدخل المستخدم سنة كبيسة (مثل 2024)، فينبغي للبرنامج أن يطبع السنة الكبيسة التالية:</p>
+<pre><code>Year: **2024**
+The next leap year after 2024 is 2028
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<h2 id="دمج-السلاسل-النصية-بالمشغل">دمج السلاسل النصية بالمشغّل +</h2>
+<p>استخدم مثال التحقّق من الرمز السري أعلاه متغيّرًا مساعدًا هو <code>attempts</code> لتتبّع عدد المرات التي حاول فيها المستخدم كتابة شيفرة:</p>
+<pre><code class="language-python">attempts = <span class="hljs-number">0</span>
+
+<span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+    code = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Please type in your PIN: &quot;</span>)
+    attempts += <span class="hljs-number">1</span>
+    <span class="hljs-comment"># ...</span>
+</code></pre>
+<p>يُعيَّن هذا المتغيّر على صفر خارج الحلقة، ويزيد كل تكرار قيمته بمقدار واحد.</p>
+<p>وتنطبق فكرة الزيادة المشابهة على متغيّرات السلاسل النصية أيضًا. فمثلًا يمكن للبرنامج أن يتتبّع جميع الرموز السرّية التي كتبها المستخدم:</p>
+<pre><code class="language-python">
+codes = <span class="hljs-string">&quot;&quot;</span>
+attempts = <span class="hljs-number">0</span>
+
+<span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+    code = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Please type in your PIN: &quot;</span>)
+    attempts += <span class="hljs-number">1</span>
+    codes += code + <span class="hljs-string">&quot;, &quot;</span>
+    <span class="hljs-comment"># ...</span>
+</code></pre>
+<p>يُهيَّأ المتغيّر المساعد على <em>سلسلة نصية فارغة</em>، أي سلسلة نصية لا تحوي أي محارف:</p>
+<pre><code class="language-python">codes = <span class="hljs-string">&quot;&quot;</span>
+</code></pre>
+<p>ومع كل تكرار تصير السلسلة النصية أطول، إذ تُضاف الشيفرة التي كتبها المستخدم مع فاصلة:</p>
+<pre><code class="language-python">    code = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Please type in your PIN: &quot;</span>)
+    codes += code + <span class="hljs-string">&quot;, &quot;</span>
+</code></pre>
+<p>وإذا كتب المستخدم الرموز <em>1111 2222 1234</em>، فإن قيمة <code>codes</code> في نهاية تنفيذ البرنامج ستكون</p>
+<pre><code>1111, 2222, 1234,
+</code></pre>
+<blockquote>
+<p><strong>تمرين تفاعلي: القصّة</strong></p>
+<h3 id="الجزء-1">الجزء 1</h3>
+</blockquote>
+<p>يُرجى كتابة برنامج يواصل سؤال المستخدم عن كلمات. وإذا كتب المستخدم <code>end</code>، فينبغي للبرنامج أن يطبع القصّة التي شكّلتها الكلمات، ثم ينتهي.</p>
+<pre><code>Please type in a word: **Once**
+Please type in a word: **upon**
+Please type in a word: **a**
+Please type in a word: **time**
+Please type in a word: **there**
+Please type in a word: **was**
+Please type in a word: **a**
+Please type in a word: **girl**
+Please type in a word: **end**
+Once upon a time there was a girl
+</code></pre>
+<h3 id="الجزء-2">الجزء 2</h3>
+<p>غيّر البرنامج بحيث تنتهي الحلقة أيضًا إذا كتب المستخدم الكلمة نفسها مرتين متتاليتين.</p>
+<pre><code>Please type in a word: **It**
+Please type in a word: **was**
+Please type in a word: **a**
+Please type in a word: **dark**
+Please type in a word: **and**
+Please type in a word: **stormy**
+Please type in a word: **night**
+Please type in a word: **night**
+It was a dark and stormy night
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<blockquote>
+<p><strong>تمرين تفاعلي: العمل مع الأعداد</strong></p>
+<h3 id="ما-قبل-التمرين">ما قبل التمرين</h3>
+</blockquote>
+<p>يُرجى كتابة برنامج يطلب من المستخدم أعدادًا صحيحة. وينبغي للبرنامج أن يواصل طلب الأعداد حتى يكتب المستخدم صفرًا.</p>
+<pre><code>Please type in integer numbers. Type in 0 to finish.
+Number: **5**
+Number: **22**
+Number: **9**
+Number: **-2**
+Number: **0**
+</code></pre>
+<h3 id="الجزء-1-العد">الجزء 1: العدّ</h3>
+<p>بعد قراءة الأعداد، ينبغي للبرنامج أن يطبع عدد الأعداد التي كُتبت. ولا ينبغي أن يُحتسب الصفر في النهاية ضمن هذا العدد.</p>
+<p>وستحتاج هنا إلى متغيّر جديد يتتبّع الأعداد المكتوبة.</p>
+<pre><code>... the program asks for numbers
+Numbers typed in 4
+</code></pre>
+<h3 id="الجزء-2-المجموع">الجزء 2: المجموع</h3>
+<p>ينبغي للبرنامج أيضًا أن يطبع مجموع جميع الأعداد التي كُتبت. ولا ينبغي أن يُحتسب الصفر في النهاية ضمن هذه العملية الحسابية.</p>
+<p>وينبغي للبرنامج الآن أن يطبع ما يلي:</p>
+<pre><code>... the program asks for numbers
+Numbers typed in 4
+The sum of the numbers is 34
+</code></pre>
+<h3 id="الجزء-3-المعدل">الجزء 3: المعدّل</h3>
+<p>ينبغي للبرنامج أيضًا أن يطبع معدّل الأعداد. ولا ينبغي أن يُحتسب الصفر في النهاية ضمن هذه العملية الحسابية. ويمكنك افتراض أن المستخدم سيكتب دائمًا عددًا صحيحًا صالحًا واحدًا على الأقل لا يساوي صفرًا.</p>
+<pre><code>... the program asks for numbers
+Numbers typed in 4
+The sum of the numbers is 34
+The mean of the numbers is 8.5
+</code></pre>
+<h4>الجزء 4: الموجب والسالب</h4>
+<p>ينبغي للبرنامج أيضًا أن يطبع إحصاءات عن كم من الأعداد كانت موجبة وكم منها كانت سالبة. ولا ينبغي أن يُحتسب الصفر في النهاية ضمن هذه العملية الحسابية.</p>
+<pre><code>... the program asks for numbers
+Numbers typed in 4
+The sum of the numbers is 34
+The mean of the numbers is 8.5
+Positive numbers 3
+Negative numbers 1
+</code></pre>
+<blockquote>
+<p><em>ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.</em></p>
+</blockquote>
+<!--
+
+اختبار لمراجعة محتويات هذا القسم:
+
+> **اختبار:** (مكون تفاعلي غير متاح في النسخة الثابتة - ID: 63a51999-e525-5f1d-a333-b26392a5585b)
+
+
+-->
+<p>يُرجى الإجابة على استبيان سريع حول مواد هذا الأسبوع.</p>
+<blockquote>
+<p><strong>اختبار:</strong> (مكون تفاعلي غير متاح في النسخة الثابتة - ID: 21a09240-92d7-5eb0-bae0-a5f89b5045c2)</p>
+</blockquote>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/mooc/part-2/3-combining-conditions"><span class="prev-next__label">السابق</span> <span class="prev-next__title">دمج الشروط</span></a><!--]--> <!--[0--><a href="../../../../book/mooc/part-3/index"><span class="prev-next__label">التالي</span> <span class="prev-next__title">الجزء 3</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_bfwv11 = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.C9kBkw8T.js"),
+						import("../../../../_app/immutable/entry/app.fkPBtkuJ.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

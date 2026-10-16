@@ -1,0 +1,1026 @@
+const s="learn-ocaml",a="sorting",n="خوارزميات الترتيب",e="index",t="خوارزميات الترتيب",o=[{depth:2,id:"12-خوارزميات-الترتيب",text:"12. خوارزميات الترتيب"},{depth:3,id:"121-الترتيب-بالإدراج-insertion-sort",text:"12.1 الترتيب بالإدراج (insertion sort)"},{depth:3,id:"122-الترتيب-السريع-quicksort",text:"12.2 الترتيب السريع (quicksort)"},{depth:3,id:"123-الترتيب-بالدمج-merge-sort",text:"12.3 الترتيب بالدمج (merge sort)"},{depth:3,id:"124-الترتيب-بالكومة-heapsort",text:"12.4 الترتيب بالكومة (heapsort)"},{depth:3,id:"125-التعقيد-الأمثل",text:"12.5 التعقيد الأمثل"},{depth:3,id:"126-التقييم-التجريبي-experimental-evaluation",text:"12.6 التقييم التجريبي (experimental evaluation)"},{depth:3,id:"127-التمارين",text:"12.7 التمارين"}],p=`<h2 id="12-خوارزميات-الترتيب">12. خوارزميات الترتيب</h2>
+<p>يعرض هذا الفصل عدة خوارزميات للترتيب (sorting algorithms) على القوائم والمصفوفات.
+نفترض أن العناصر المطلوب ترتيبها من النوع <code>elt</code>، مزوّدة بترتيب كلي يُعطى في صورة دالة
+<code>compare</code> من النوع <code>elt-&gt;elt-&gt;int</code>. وستكون لدوال الترتيب على القوائم والمصفوفات
+على التوالي النوعان <code>eltlist-&gt;eltlist</code> و<code>eltarray-&gt;unit</code>. ونفترض أننا نرتّب القوائم
+والمصفوفات ترتيبًا تصاعديًا. وللتيسير، نعرّف الدالتين <code>lt</code> و<code>le</code> على
+النحو التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> lt x y = compare x y &lt; <span class="hljs-number">0</span>
+  <span class="hljs-keyword">let</span> le x y = compare x y &lt;= <span class="hljs-number">0</span>
+</code></pre>
+<p>في هذا الفصل كله، سنرمز بـ N إلى عدد العناصر المطلوب ترتيبها. ولكل خوارزمية
+ترتيب معروضة، نبيّن تعقيدها لا من حيث عدد المقارنات المُنفّذة فحسب، بل أيضًا
+من حيث عدد التخصيصات (allocations) الأساسية في حالة القوائم وعدد الإسنادات (assignments) في حالة المصفوفات.
+ولكل واحدة منها، نعطي التعقيد في أفضل الحالات وأسوئها ومتوسطها. وفي
+الحالة المتوسطة، نفترض أن العناصر المطلوب ترتيبها متمايزة وأن التباديل (permutations) الممكنة N!
+للمُدخل كلها متساوية الاحتمال. وذكّر أن التعقيد الأمثل لخوارزمية ترتيب لا
+تُجري إلا مقارنات بين العناصر هو O(N log N) (انظر القسم <a href="#optimal-complexity">12.5</a>).</p>
+<h3 id="121-الترتيب-بالإدراج-insertion-sort">12.1 الترتيب بالإدراج (insertion sort)</h3>
+<p>يتمثل الترتيب بالإدراج في إدراج كل عنصر تباعًا ضمن مجموعة العناصر المرتّبة
+بالفعل. وهذا ما نفعله، على سبيل المثال، عند ترتيب رزمة من البطاقات.</p>
+<h4>12.1.1 القوائم</h4>
+<p>يتمثل الترتيب بالإدراج على قائمة في اجتيازها مع إدراج كل عنصر تباعًا
+في الجزء المرتّب بالفعل. لذلك نبدأ بكتابة دالة <code>insert</code> تُدرج عنصرًا <code>x</code>
+في قائمة مفترض أنها مرتّبة. ويكون الرمز على النحو
+التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> insert x = <span class="hljs-keyword">function</span>
+    | y :: l <span class="hljs-keyword">when</span> lt y x -&gt; y :: insert x l
+    | l -&gt; x :: l
+</code></pre>
+<p>تقابل الحالة الأولى من مطابقة الأنماط إدراجًا عوديًا عندما يكون العنصر الأول
+من القائمة أصغر من <code>x</code>. وتقابل الحالة الثانية من مطابقة الأنماط
+الحالة التي يكون فيها <code>x</code> أصغر من جميع عناصر <code>l</code>، سواء كانت <code>l</code> فارغة أم
+لا.</p>
+<p>عندئذٍ يتمثل الترتيب في اجتياز القائمة باستعمال <code>List.fold_left</code>، مع اتخاذ
+الجزء المرتّب بالفعل من القائمة مركمًا (accumulator).</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> insertion_sort l =
+    <span class="hljs-type">List</span>.fold_left (<span class="hljs-keyword">fun</span> acc x -&gt; insert x acc) <span class="hljs-literal">[]</span> l
+</code></pre>
+<p>قد يثبت هذا الرمز مشكلةً في القوائم الطويلة: فلأن الدالة <code>insert</code> ليست
+عودية ذيلية (tail recursive)، فإنها قد تتجاوز سعة المكدس (stack overflow). ومع ذلك، من السهل تعديل الدالة <code>insert</code>
+لجعلها عودية ذيلية. ويمكننا فعل ذلك بإضافة مركم يحوي القائمة،
+بترتيب معكوس، للعناصر الأصغر من <code>x</code> التي فُحصت بالفعل. وإذا
+أسمينا هذا المركم <code>acc</code>، تصبح لدينا الحالة التالية عندما نحاول إدراج
+<code>x</code> في <code>l</code>:</p>
+<p>بمجرد تحديد موضع <code>x</code>، يكفي عكس المركم
+<code>acc</code> وربط (concatenate) النتيجة بـ <code>l</code>. وتفعل الدالة <code>List.rev_append</code>
+هذا بالضبط، وهي عودية ذيلية. ويُعطى الرمز النهائي للترتيب بالإدراج في
+البرنامج <a href="#x28-277013r89">89</a>.</p>
+<blockquote></blockquote>
+<h5>التعقيد</h5>
+<p>عندما تُدرج الدالة <code>insert</code> عنصرًا <code>x</code> في الموضع k ضمن <code>l</code>، فإنها تُجري k
+مقارنة و2k تخصيصًا (k لبناء المركم وk في
+<code>List.rev_append</code>). وفي أفضل الحالات يكون k دائمًا مساويًا 1، وفي أسوئها
+يساوي طول القائمة، ما يعطي في النهاية الجدول في الشكل <a href="#complexity-of-insertion-sort-on-lists">12.1</a>.</p>
+<p><strong>الشكل 12.1: تعقيد الترتيب بالإدراج على القوائم.</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>أفضل الحالات</th>
+<th>الحالة المتوسطة</th>
+<th>أسوأ الحالات</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>مقارنات</td>
+<td>N</td>
+<td>N2∕4</td>
+<td>N2∕2</td>
+</tr>
+<tr>
+<td>تخصيصات</td>
+<td>N</td>
+<td>N2∕2</td>
+<td>N2</td>
+</tr>
+</tbody>
+</table>
+<h4>12.1.2 المصفوفات</h4>
+<p>يُنفَّذ الترتيب بالإدراج على مصفوفة <code>a</code> في المكان. ويتمثل في إدراج
+كل عنصر <code>a.(i)</code> تباعًا في الجزء المرتّب بالفعل من المصفوفة <code>a</code>[<code>0</code>..<code>i-1</code>]، وهو ما
+يقابل الحالة التالية:</p>
+<table>
+<thead>
+<tr>
+<th><code>0 i-1</code></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>… مرتّب بالفعل …</td>
+<td><code>a.(i)</code></td>
+<td>… بحاجة إلى ترتيب …</td>
+</tr>
+</tbody>
+</table>
+<p>نبدأ بحلقة <code>for</code> لاجتياز المصفوفة:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> insertion_sort a =
+    <span class="hljs-keyword">for</span> i = <span class="hljs-number">1</span> <span class="hljs-keyword">to</span> <span class="hljs-type">Array</span>.length a - <span class="hljs-number">1</span> <span class="hljs-keyword">do</span>
+      <span class="hljs-keyword">let</span> v = a.(i) <span class="hljs-keyword">in</span>
+</code></pre>
+<p>لإدراج العنصر <code>a.(i)</code> في الموضع الصحيح، نستعمل حلقة <code>while</code> تُزيح
+العناصر نحو اليمين ما دامت أكبر من <code>a.(i)</code>.</p>
+<pre><code class="language-ocaml">      <span class="hljs-keyword">let</span> j = <span class="hljs-built_in">ref</span> i <span class="hljs-keyword">in</span>
+      <span class="hljs-keyword">while</span> <span class="hljs-number">0</span> &lt; !j &amp;&amp; lt v a.(!j - <span class="hljs-number">1</span>) <span class="hljs-keyword">do</span>
+        a.(!j) &lt;- a.(!j - <span class="hljs-number">1</span>);
+        decr j
+      <span class="hljs-keyword">done</span>;
+</code></pre>
+<p>وبمجرد الخروج من الحلقة، لم يبقَ سوى وضع <code>a.(i)</code> في موضعه.</p>
+<pre><code class="language-ocaml">       a.(!j) &lt;- v
+    <span class="hljs-keyword">done</span>
+</code></pre>
+<p>ويُعطى الرمز الكامل للترتيب بالإدراج على المصفوفات في البرنامج <a href="#x28-279016r90">90</a>.</p>
+<blockquote></blockquote>
+<h5>التعقيد</h5>
+<p>لاحظ أن الدالة <code>insertion_sort</code> تُجري من المقارنات مثل ما تُجريه من
+الإسنادات. وعندما تُدرج حلقة <code>while</code> العنصر <code>a.(i)</code> في الموضع <code>i</code>− k، فإنها
+تُجري k + 1 مقارنة. وفي أفضل الحالات يساوي k الصفر، وفي أسوئها يساوي <code>i</code>، ما يعطي
+في النهاية الجدول في الشكل <a href="#complexity-of-insertion-sort-on-arrays">12.2</a>.</p>
+<p><strong>الشكل 12.2: تعقيد الترتيب بالإدراج على المصفوفات.</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>أفضل الحالات</th>
+<th>الحالة المتوسطة</th>
+<th>أسوأ الحالات</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>مقارنات</td>
+<td>N</td>
+<td>N2∕4</td>
+<td>N2∕2</td>
+</tr>
+<tr>
+<td>إسنادات</td>
+<td>N</td>
+<td>N2∕4</td>
+<td>N2∕2</td>
+</tr>
+</tbody>
+</table>
+<h3 id="122-الترتيب-السريع-quicksort">12.2 الترتيب السريع (quicksort)</h3>
+<p>يعتمد الترتيب السريع على طريقة <em>تقسيم وتغلّب (divide and conquer)</em>: تُقسَّم العناصر المطلوب ترتيبها
+إلى مجموعتين جزئيتين، تكون فيهما جميع عناصر الأولى أصغر من عناصر
+الثانية. ثم نرتّب كل مجموعة جزئية عوديًا. وعمليًا، يُنفَّذ التقسيم
+بمساعدة عنصر اعتباطي p من المجموعة، يُسمّى <em>المحور (pivot)</em>. وعندئذٍ تكون المجموعتان
+الجزئيتان على التوالي العناصر الأصغر من أو المساوية لـ p، والعناصر
+الأكبر من p.</p>
+<h4>12.2.1 القوائم</h4>
+<p>لتطبيق الترتيب السريع على القوائم، نبدأ بكتابة دالة <code>partition</code> تُقسّم
+قائمة عند محور معطى <code>p</code>. ولضمان العودية الذيلية، نستعمل مركمًا
+يتألف من زوج من القوائم. ولذلك تأخذ الدالة <code>partition</code> الشكل
+التالي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> partition ((left, right) <span class="hljs-keyword">as</span> acc) p = <span class="hljs-keyword">function</span>
+</code></pre>
+<p>تمثّل القائمتان <code>left</code> و<code>right</code> العناصر الأصغر من أو المساوية لـ <code>p</code> والأكبر من <code>p</code> على التوالي. وعندما
+نبلغ القائمة الفارغة، يكفي إعادة المركم.</p>
+<pre><code class="language-ocaml">    | <span class="hljs-literal">[]</span> -&gt; acc
+</code></pre>
+<p>وإلا، نأخذ العنصر الأول <code>x</code> ونقارنه بالمحور <code>p</code>. فإذا كان <code>x</code>
+أصغر من أو مساويًا لـ <code>p</code>، أضفناه إلى <code>left</code> واستدعينا <code>partition</code> عوديًا على بقية
+القائمة، <code>s</code>.</p>
+<pre><code class="language-ocaml">    | x :: s <span class="hljs-keyword">when</span> le x p -&gt;
+        partition (x :: left, right) p s
+</code></pre>
+<p>ومن ناحية أخرى، إذا كان <code>x</code> أكبر من <code>p</code>، أضفناه إلى <code>right</code> واستدعينا
+<code>partition</code> عوديًا بالمثل.</p>
+<pre><code class="language-ocaml">    | x :: s -&gt;
+        partition (left, x :: right) p s
+</code></pre>
+<p>يتخذ الترتيب السريع صورة دالة عودية <code>quicksort</code>. والحالة الأساسية هي
+حالة القائمة الفارغة.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> quicksort = <span class="hljs-keyword">function</span>
+    | <span class="hljs-literal">[]</span> -&gt;
+        <span class="hljs-literal">[]</span>
+</code></pre>
+<p>وإذا لم تكن القائمة فارغة، نختار عنصرها الأول محورًا <code>p</code> ونُقسّم
+العناصر المتبقية باستعمال الدالة <code>partition</code>.</p>
+<pre><code class="language-ocaml">    | p :: s -&gt;
+        <span class="hljs-keyword">let</span> (left, right) = partition (<span class="hljs-literal">[]</span>, <span class="hljs-literal">[]</span>) p s <span class="hljs-keyword">in</span>
+</code></pre>
+<p>وأخيرًا، نرتّب <code>left</code> و<code>right</code> عوديًا ونربط النتيجتين، مع تذكّر
+إدراج المحور <code>p</code> في الوسط.</p>
+<pre><code class="language-ocaml">        (quicksort left) @ (p :: quicksort right)
+</code></pre>
+<p>ويُعطى الرمز الكامل للترتيب السريع على القوائم في البرنامج <a href="#x28-282020r91">91</a>.</p>
+<blockquote></blockquote>
+<p>من المهم ملاحظة أن كلا الاستدعاءين العوديين للدالة
+<code>quicksort</code> ليس عوديًا ذيليًا. ولذلك يكون تجاوز سعة المكدس ممكنًا. ويناقش التمرين <a href="#x28-302001r4">12.4</a>
+حلًا لهذه المشكلة.</p>
+<h5>التعقيد</h5>
+<p>تُجري الدالة <code>partition</code> من المقارنات والتخصيصات بقدر عدد
+العناصر في القائمة الممرَّرة كوسيطة. ولتكن C(N) عدد المقارنات
+المُنفّذة في الدالة <code>quicksort</code> من أجل قائمة طولها N.</p>
+<p>إذا أعادت <code>partition</code> قائمة طولها K وقائمة طولها N − 1 − K،
+نستنتج:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>C</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo><mo>=</mo><mi>N</mi><mo>−</mo><mn>1</mn><mo>+</mo><mi>C</mi><mo stretchy="false">(</mo><mi>K</mi><mo stretchy="false">)</mo><mo>+</mo><mi>C</mi><mo stretchy="false">(</mo><mi>N</mi><mo>−</mo><mn>1</mn><mo>−</mo><mi>K</mi><mo stretchy="false">)</mo><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">C (N) = N - 1 + C (K) + C(N - 1- K ).</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0715em;">K</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">K</span><span class="mclose">)</span><span class="mord">.</span></span></span></span></span>
+<p>تقابل أسوأ الحالات K = 0، وهو ما يعطي C(N) = N − 1 + C(N − 1)، ومن
+ثم C(N) ∼. وتقابل أفضل الحالات قائمة مقسّمة إلى نصفين متساويين، أي
+K = N∕2. ومن ذلك نستنتج بسهولة C(N) ∼ N log N. وفي ما يتعلق بعدد
+المقارنات في المتوسط، نعتبر أن المواضع النهائية الممكنة N للمحور
+كلها متساوية الاحتمال، وهو ما يعطي:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mn>1</mn><mo>∑</mo><mi>C</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo><mo>=</mo><mi>N</mi><mo>−</mo><mn>1</mn><mo>+</mo><mi>N</mi><mo>−</mo><mi>C</mi><mo stretchy="false">(</mo><mi>K</mi><mo stretchy="false">)</mo><mo>+</mo><mi>C</mi><mo stretchy="false">(</mo><mi>N</mi><mo>−</mo><mn>1</mn><mo>−</mo><mi>K</mi><mo stretchy="false">)</mo><mn>0</mn><mo>≤</mo><mi>K</mi><mo>≤</mo><mi>N</mi><mo>−</mo><mn>1</mn><mo>−</mo><mn>2</mn><mo>∑</mo><mo>=</mo><mi>N</mi><mo>−</mo><mn>1</mn><mo>+</mo><mi>N</mi><mi>C</mi><mo stretchy="false">(</mo><mi>K</mi><mo stretchy="false">)</mo><mn>.0</mn><mo>≤</mo><mi>K</mi><mo>≤</mo><mi>N</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">1 \\sum C (N ) = N - 1 + N - C (K ) + C (N - 1 - K ) 0\\le K\\le N -1 - 2 \\sum = N - 1 + N C (K ). 0\\le K\\le N -1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.6em;vertical-align:-0.55em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-symbol large-op" style="position:relative;top:0em;">∑</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0715em;">K</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">K</span><span class="mclose">)</span><span class="mord">0</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8193em;vertical-align:-0.136em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">K</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1.6em;vertical-align:-0.55em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-symbol large-op" style="position:relative;top:0em;">∑</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0715em;">K</span><span class="mclose">)</span><span class="mord">.0</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8193em;vertical-align:-0.136em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">K</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></span>
+<p>وبعد قليل من الجبر، نتركه للقارئ، نحصل على:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>C</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo><mi>C</mi><mo stretchy="false">(</mo><mi>N</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mn>22</mn><mi>N</mi><mo>−</mo><mo>+</mo><mo>−</mo><mn>1</mn><mo>−</mo><mo>=</mo><mo>−</mo><mo>−</mo><mo>−</mo><mo>−</mo><mi>N</mi><mo>−</mo><mo>−</mo><mo>−</mo><mo>−</mo><mo>+</mo><mi>N</mi><mo>−</mo><mo>+</mo><mo>−</mo><mo>−</mo><mn>1</mn><mo>−</mo><mi>N</mi><mo stretchy="false">(</mo><mi>N</mi><mo>−</mo><mo>−</mo><mo>+</mo><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">C(N ) C (N - 1) 2 2 N - + - 1 - = - - - - N - - - - + N - + - - 1 - N(N - - + - 1).</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mclose">)</span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mord">22</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mord">−</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">−</span><span class="mord">1</span><span class="mclose">)</span><span class="mord">.</span></span></span></span></span>
+<p>وهذا مجموع متداخل، يقودنا إلى استنتاج ما يلي:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>C</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo><mo>−</mo><mo>−</mo><mo>−</mo><mo>−</mo><mo>−</mo><mo>−</mo><mo>∼</mo><mn>2</mn><mi>l</mi><mi>o</mi><mi>g</mi><mi>N</mi><mi>N</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">C(N ) - - - - - - ∼ 2logN N + 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></span>
+<p>وبذلك يكون لدينا C(N) ∼ 2N log N. وفي ما يتعلق بعدد التخصيصات A(N)،
+نسير على نحو مشابه، بمعادلة مختلفة قليلًا:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>A</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo><mo>=</mo><mi>N</mi><mo>+</mo><mi>K</mi><mo>+</mo><mi>A</mi><mo stretchy="false">(</mo><mi>K</mi><mo stretchy="false">)</mo><mo>+</mo><mi>A</mi><mo stretchy="false">(</mo><mi>N</mi><mo>−</mo><mn>1</mn><mo>−</mo><mi>K</mi><mo stretchy="false">)</mo><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">A(N ) = N + K + A(K ) + A (N - 1 - K ).</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">A</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">K</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">A</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0715em;">K</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">A</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">K</span><span class="mclose">)</span><span class="mord">.</span></span></span></span></span>
+<p>وفي النهاية نحصل على النتائج المعطاة في جدول الشكل <a href="#complexity-of-quicksort-on-lists">12.3</a>.</p>
+<p><strong>الشكل 12.3: تعقيد الترتيب السريع على القوائم.</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>أفضل الحالات</th>
+<th>الحالة المتوسطة</th>
+<th>أسوأ الحالات</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>مقارنات</td>
+<td>N log N</td>
+<td>2N log N</td>
+<td>N2∕2</td>
+</tr>
+<tr>
+<td>تخصيصات</td>
+<td>N log N</td>
+<td>4N log N</td>
+<td>N2</td>
+</tr>
+</tbody>
+</table>
+<h4>12.2.2 المصفوفات</h4>
+<p>يُنفَّذ الترتيب السريع على المصفوفات في المكان. وتأخذ دالتا التقسيم والترتيب
+كوسيطتين المصفوفة وفهرسين يحدّان الجزء الواجب اعتباره. ونحتفظ
+بفكرة دالة <code>partition</code> تنظّم العناصر حول محور،
+ودالة ترتيب تسير عوديًا.</p>
+<p>تأخذ الدالة <code>partition</code> مصفوفة <code>a</code> كوسيطة، وفهرسين <code>l</code> و<code>r</code>،
+يحدّان جزءًا من المصفوفة. ويقابل هذا الجزء العناصر الواقعة بين
+الفهرسين <code>l</code> (شاملًا) و<code>r</code> (غير شامل). ونبدأ باختيار <code>a.(l)</code>
+محورًا.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> partition a l r =
+    <span class="hljs-keyword">let</span> p = a.(l) <span class="hljs-keyword">in</span>
+</code></pre>
+<p>هذا الاختيار اعتباطي ويمكن أن يؤثر في الأداء. ويقترح التمرين <a href="#x28-302005r8">12.8</a> طريقة أفضل
+لاختيار المحور.</p>
+<p>تتمثل الفكرة في اجتياز المصفوفة من اليسار إلى اليمين، بين الفهرسين <code>l</code>
+(شاملًا) و<code>r</code> (غير شامل)، بحلقة <code>for</code>. وفي كل تكرار من تكرارات الحلقة،
+تكون الحالة على النحو التالي:</p>
+<p>يعطي فهرس الحلقة <code>i</code> موضع العنصر التالي الواجب اعتباره. ويُقسّم
+الفهرس <code>m</code> الجزء الذي جرى اجتيازه بالفعل. وبتعبير أدق، هو
+فهرس آخر خلية تحوي قيمة أصغر من أو مساوية لـ <code>p</code>. ونمثّله
+بمرجع.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> m = <span class="hljs-built_in">ref</span> l <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">for</span> i = l + <span class="hljs-number">1</span> <span class="hljs-keyword">to</span> r - <span class="hljs-number">1</span> <span class="hljs-keyword">do</span>
+</code></pre>
+<p>إذا كان <code>a.(i)</code> أكبر تمامًا من <code>p</code>، تركناه في موضعه. وإلا، فحفاظًا على ثابت
+الحلقة (loop invariant)، يكفي زيادة <code>m</code> وتبديل <code>a.(i)</code> و<code>a.(!m)</code>.</p>
+<pre><code class="language-ocaml">      <span class="hljs-keyword">if</span> le a.(i) p <span class="hljs-keyword">then</span> <span class="hljs-keyword">begin</span> incr m; swap a i !m <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">done</span>;
+</code></pre>
+<p>ويُعطى رمز الدالة <code>swap</code> في البرنامج <a href="#x28-284024r92">92</a> أدناه. وبمجرد اجتياز جميع العناصر،
+نُجري تبديلًا آخر لوضع المحور في موضعه، أي في
+الموضع <code>!m</code>، ونُعيد هذا الفهرس.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">if</span> l &lt;&gt; !m <span class="hljs-keyword">then</span> swap a l !m;
+    !m
+</code></pre>
+<p>نكتب الدالة الرئيسية للترتيب السريع في صورة دالة عودية <code>quick_rec</code> تأخذ
+الوسيطات نفسها التي تأخذها الدالة <code>partition</code>. وإذا كان <code>l</code> ≥ <code>r-1</code>، فإن عدد العناصر
+المطلوب ترتيبها إما صفر أو واحد، ولا شيء هناك لفعله.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> quick_rec a l r =
+    <span class="hljs-keyword">if</span> l &lt; r - <span class="hljs-number">1</span> <span class="hljs-keyword">then</span> <span class="hljs-keyword">begin</span>
+</code></pre>
+<p>وإلا، نُقسّم العناصر بين <code>l</code> و<code>r</code>.</p>
+<pre><code class="language-ocaml">     <span class="hljs-keyword">let</span> m = partition a l r <span class="hljs-keyword">in</span>
+</code></pre>
+<p>بعد هذا الاستدعاء، يكون المحور <code>a.(m)</code> في موضعه النهائي. ثم نُجري استدعاءين
+عوديين لترتيب العناصر الأصغر من المحور والعناصر الأكبر منه
+على التوالي.</p>
+<pre><code class="language-ocaml">      quick_rec a l m;
+      quick_rec a (m + <span class="hljs-number">1</span>) r
+    <span class="hljs-keyword">end</span>
+</code></pre>
+<p>ولترتيب مصفوفة، يكفي استدعاء <code>quick_rec</code> على جميع عناصرها.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> quicksort a = quick_rec a <span class="hljs-number">0</span> (<span class="hljs-type">Array</span>.length a)
+</code></pre>
+<p>ويُعطى الرمز الكامل في البرنامج <a href="#x28-284024r92">92</a>.</p>
+<blockquote></blockquote>
+<p>وكما في حالة الترتيب السريع على القوائم، قد يحدث تجاوز لسعة المكدس. فبالفعل، الاستدعاء الأول لـ
+<code>quick_rec</code> ليس عوديًا ذيليًا، وفي أسوأ الحالات قد يساوي عدد هذه الاستدعاءات
+طول المصفوفة. ويناقش التمرين <a href="#x28-302003r6">12.6</a> حلًا لهذه
+المشكلة.</p>
+<h5>التعقيد</h5>
+<p>تُجري الدالة <code>partition</code> دائمًا ما مجموعه بالضبط (<code>r</code>−<code>l</code>) − 1 مقارنة. ولذلك يكون
+التعقيد من حيث عدد المقارنات هو نفسه كما في حالة الترتيب السريع
+على القوائم. أما من حيث عدد الإسنادات، نلاحظ أن
+الدالة <code>partition</code> تُجري من الاستدعاءات لـ <code>swap</code> بقدر ما تزيد
+<code>m</code>. وتحدث أفضل الحالات عندما يبقى المحور، في كل مرحلة،
+في الموضع الأول. عندئذٍ لا يُنفَّذ أي إسناد. ومن المهم
+ملاحظة أن هذه الحالة لا تقابل أفضل تعقيد من حيث
+المقارنات، وهو تربيعي في هذه الحالة. وهكذا، في المتوسط، وبافتراض
+أن جميع المواضع النهائية للمحور متساوية الاحتمال، يكون لدينا أقل من
+(<code>r</code>−<code>l</code>) + 1 إسناد، مع إجراء كل استدعاء لـ <code>swap</code> إسنادين. ويؤدي هذا
+إلى حساب مماثل لحساب المتوسط لعدد المقارنات.
+وقد أجرينا هذا الحساب بالفعل للقوائم وحصلنا على 2N log N.
+وفي أسوأ الحالات، يوجد المحور دائمًا في الموضع <code>r-1</code>. وعندئذٍ تُجري الدالة
+<code>partition</code> ما مجموعه 2(<code>r</code>−<code>l</code>) إسناد. ويوجد، بالتالي، ما مجموعه N2
+إسناد. وفي النهاية نحصل على النتائج المعطاة في جدول الشكل
+<a href="#complexity-of-quicksort-on-arrays">12.4</a>.</p>
+<p><strong>الشكل 12.4: تعقيد الترتيب السريع على المصفوفات.</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>أفضل الحالات</th>
+<th>الحالة المتوسطة</th>
+<th>أسوأ الحالات</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>مقارنات</td>
+<td>N log N</td>
+<td>-</td>
+<td>2N log N</td>
+<td>N2∕2</td>
+</tr>
+<tr>
+<td>إسنادات</td>
+<td>-</td>
+<td>0</td>
+<td>2N log N</td>
+<td>N2</td>
+</tr>
+</tbody>
+</table>
+<p>ولتفادي أسوأ الحالات، قدر الإمكان، يجب تنفيذ التحسينين المقترحين في
+التمرينين <a href="#x28-302005r8">12.8</a> و<a href="#x28-302008r9">12.9</a>.</p>
+<h3 id="123-الترتيب-بالدمج-merge-sort">12.3 الترتيب بالدمج (merge sort)</h3>
+<p>كما في حالة الترتيب السريع، يطبّق الترتيب بالدمج أيضًا مبدأ تقسيم وتغلّب. فهو
+يقسّم العناصر المطلوب ترتيبها إلى جزأين متساويين في الحجم، دون محاولة
+مقارنة عناصرهما. ثم يرتّب الجزأين عوديًا ويدمجهما؛
+ومن هنا جاء اسم <em>الترتيب بالدمج (merge sort)</em>. وبذلك تُتفادى أسوأ حالات الترتيب السريع، التي يكون فيها للجزأين
+حجمان غير متناسبين.</p>
+<h4>12.3.1 القوائم</h4>
+<p>نبدأ بكتابة دالة <code>split</code> تُقسّم قائمة إلى قائمتين يختلف طولاهما
+بواحد على الأكثر. ولضمان العودية الذيلية، نمرّر قائمتين <code>l1</code> و
+<code>l2</code> كمركمين. وعندما نبلغ نهاية القائمة، نُعيد الزوج
+<code>(l1,l2)</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> split l1 l2 = <span class="hljs-keyword">function</span>
+    | <span class="hljs-literal">[]</span> -&gt; (l1, l2)
+</code></pre>
+<p>وإلا، نأخذ العنصر الأول <code>x</code> ونضعه بالتناوب في <code>l1</code> أو <code>l2</code>. وأبسط
+طريقة لتحقيق ذلك هي تبادل <code>l1</code> و<code>l2</code> عند كل استدعاء.</p>
+<pre><code class="language-ocaml">    | x :: l -&gt; split (x :: l2) l1 l
+</code></pre>
+<p>تتمثل الخطوة الثانية في كتابة دالة <code>merge</code> تدمج قائمتين مرتّبتين.
+ولهذا، نُجري الاجتياز على القائمتين في آنٍ واحد.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> merge l1 l2 = <span class="hljs-keyword">match</span> l1, l2 <span class="hljs-keyword">with</span>
+</code></pre>
+<p>وإذا كانت إحداهما فارغة، أعدنا الأخرى.</p>
+<pre><code class="language-ocaml">    | <span class="hljs-literal">[]</span>, l | l, <span class="hljs-literal">[]</span> -&gt;
+        l
+</code></pre>
+<p>وإلا، نقارن العنصرين الأولين <code>x1</code> و<code>x2</code> في كل قائمة. فإذا كان <code>x1</code> أصغر، وُضع
+في رأس النتيجة، ودمجنا عوديًا الباقي <code>s1</code> من <code>l1</code> مع
+<code>l2</code>. ونسير على نحو متناظر إذا كان <code>x2</code> أصغر.</p>
+<pre><code class="language-ocaml">    | x1 :: s1, x2 :: s2 -&gt;
+        <span class="hljs-keyword">if</span> le x1 x2 <span class="hljs-keyword">then</span> x1 :: merge s1 l2 <span class="hljs-keyword">else</span> x2 :: merge l1 s2
+</code></pre>
+<p>ملاحظة: نلاحظ أن <code>merge</code> ليست عودية ذيلية. ويمكننا إصلاح ذلك بسهولة بإضافة
+وسيطة إضافية نُراكم فيها العناصر الأصغر.</p>
+<p>وأخيرًا، نكتب دالة <code>mergesort</code> تُطبّق الترتيب بالدمج على قائمة <code>l</code>. وإذا
+كانت القائمة تحوي عنصرًا واحدًا على الأكثر، أعدناها مباشرة.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> mergesort l = <span class="hljs-keyword">match</span> l <span class="hljs-keyword">with</span>
+    | <span class="hljs-literal">[]</span> | [_] -&gt;
+        l
+</code></pre>
+<p>وإلا، نُقسّم القائمة <code>l</code> إلى قائمتين باستعمال الدالة <code>split</code>:</p>
+<pre><code class="language-ocaml">    | _ -&gt;
+        <span class="hljs-keyword">let</span> l1, l2 = split <span class="hljs-literal">[]</span> <span class="hljs-literal">[]</span> l <span class="hljs-keyword">in</span>
+</code></pre>
+<p>ثم نرتّب القائمتين <code>l1</code> و<code>l2</code> عوديًا، وندمج النتيجتين باستعمال
+<code>merge</code>.</p>
+<pre><code class="language-ocaml">        merge (mergesort l1) (mergesort l2)
+</code></pre>
+<p>وعلى خلاف الدالة <code>merge</code>، لا تخاطر الدالة <code>mergesort</code> بإحداث تجاوز
+لسعة المكدس: فلأن القائمة <code>l</code> تُقسَّم إلى نصفين متساويين، يكون حجم المكدس
+لوغاريتميًا. ويحوي البرنامج <a href="#x28-287023r93">93</a> أدناه الرمز الكامل، مع الدالة <code>merge</code>
+في نسختها العودية الذيلية.</p>
+<blockquote></blockquote>
+<p>يمكننا تفادي تخصيص القائمتين <code>l1</code> و<code>l2</code> بإعادة استعمال القائمة <code>l</code> نفسها ببراعة.
+ويقترح التمرين <a href="#x28-303001r10">12.10</a> تحسينًا من هذا القبيل. وتُستعمل هذه الفكرة على وجه الخصوص في
+الدالة <code>List.sort</code> من المكتبة المعيارية لـ OCaml.</p>
+<h5>التعقيد</h5>
+<p>تُجري الدالة <code>split</code> عددًا مقداره N من التخصيصات ولا تُجري أي مقارنة. وتُجري الدالة <code>merge</code>
+من التخصيصات ضعف ما تُجريه من المقارنات: ففي الفرع الثاني من مطابقة
+الأنماط، يوجد من المقارنات بقدر ما يوجد من التخصيصات، وفي الفرع
+الأول، يساوي عدد التخصيصات التي تُجريها <code>List.rev_append</code> طول
+<code>acc</code>، وهو نفسه مساوٍ لعدد التخصيصات/المقارنات المُنفّذة
+في الجزء العودي. ولتكن C(N) (على التوالي f(N)) العدد الكلي
+للمقارنات التي تُجريها <code>mergesort</code> (على التوالي <code>merge</code>). عندئذٍ تكون لدينا
+المعادلة التالية:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>C</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo><mo>=</mo><mn>2</mn><mi>C</mi><mo stretchy="false">(</mo><mi>N</mi><mi mathvariant="normal">/</mi><mn>2</mn><mo stretchy="false">)</mo><mo>+</mo><mi>f</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">C (N ) = 2C (N /2) + f(N )</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mord">/2</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mclose">)</span></span></span></span></span>
+<p>فبالفعل، يُجرى الاستدعاءان العوديان على قائمتين لهما الطول نفسه N∕2. وفي
+أفضل الحالات، لا تفحص الدالة <code>merge</code> إلا عناصر إحدى القائمتين، لأنها
+جميعًا أصغر من عناصر القائمة الأخرى. وفي هذه الحالة f(N) = N∕2 ومن
+ثم C(N) ∼N log N. وفي أسوأ الحالات، تفحص <code>merge</code> كل عنصر، بحيث
+f(N) = N − 1؛ ومن ثم C(N) ∼ N log N. والتحليل في
+الحالة المتوسطة أدقّ (انظر [<a href="https://usr.lmf.cnrs.fr/lpo/mainli3.html#XKnuthV3">15</a>، المثال 2 ص. 646]) ويعطي f(N) = N + O(1)؛ ومن ثم</p>
+<p>C(N) ∼ N log N أيضًا. ويُستنتج عدد الإسنادات بسهولة من
+عدد المقارنات. وفي النهاية نحصل على النتائج المعطاة في جدول
+الشكل <a href="#complexity-of-merge-sort-on-lists">12.5</a>.</p>
+<p><strong>الشكل 12.5: تعقيد الترتيب بالدمج على القوائم.</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>أفضل الحالات</th>
+<th>الحالة المتوسطة</th>
+<th>أسوأ الحالات</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>مقارنات</td>
+<td>N log N</td>
+<td>N log N</td>
+<td>N log N</td>
+</tr>
+<tr>
+<td>تخصيصات</td>
+<td>2N log N</td>
+<td>3N log N</td>
+<td>3N log N</td>
+</tr>
+</tbody>
+</table>
+<h4>12.3.2 المصفوفات</h4>
+<p>فكرة الترتيب بالدمج على المصفوفات هي نفسها كما في القوائم: نقسّم العناصر المطلوب
+ترتيبها إلى نصفين متساويين. ونرتّب النصفين، ثم ندمجهما. ونحدّ
+الجزء المطلوب ترتيبه بفهرسين <code>l</code> (شاملًا) و<code>r</code> (غير شامل). وللتقسيم،
+يكفي حساب الفهرس الأوسط <code>m</code> =. ثم نرتّب عوديًا
+الجزأين المحدودين بـ <code>l</code> و<code>m</code> من جهة، و<code>m</code> و<code>r</code> من جهة أخرى. ولم يبقَ لنا
+سوى دمجهما. ويثبت أن القيام بذلك في المكان بالغ الصعوبة. والأبسط
+هو استعمال مصفوفة ثانية، تُخصَّص مرة واحدة وللأبد في بداية
+الترتيب.</p>
+<p>نبدأ بكتابة الدالة <code>merge</code> التي تُطبّق الدمج. وهي تأخذ كوسيطتين
+مصفوفتين، <code>a1</code> و<code>a2</code>، والفهارس الثلاثة <code>l</code> و<code>m</code> و<code>r</code>. والجزآن
+<code>a1</code>[<code>l</code>..<code>m</code>[ و<code>a1</code>[<code>m</code>..<code>r</code>[ مرتّبان. والهدف هو دمجهما في <code>a2</code>[<code>l</code>..<code>r</code>[. ولهذا
+نُجري الاجتياز على جزأي <code>a1</code> (بمرجعين <code>i</code> و<code>j</code>) وعلى الجزء من <code>a2</code>
+الواجب تعبئته (بحلقة <code>for</code>).</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> merge a1 a2 l m r =
+    <span class="hljs-keyword">let</span> i = <span class="hljs-built_in">ref</span> l <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">let</span> j = <span class="hljs-built_in">ref</span> m <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">for</span> k = l <span class="hljs-keyword">to</span> r - <span class="hljs-number">1</span> <span class="hljs-keyword">do</span>
+</code></pre>
+<p>وفي كل تكرار من تكرارات الحلقة، تكون الحالة على النحو التالي:</p>
+<p>يجب أن نحدّد القيمة التالية التي سنضعها في <code>a2.(k)</code>. وهي أصغر القيمتين
+<code>a1.(!i)</code> و<code>a1.(!j)</code>. ومن المهم، مع ذلك، معالجة
+الحالة التي لم يبقَ فيها عناصر في أحد النصفين. ونحدّد
+ما إذا كان العنصر سيُؤخذ من النصف الأيسر بالاختبار
+التالي:</p>
+<pre><code class="language-ocaml">      <span class="hljs-keyword">if</span> !i &lt; m &amp;&amp; (!j = r || le a1.(!i) a1.(!j)) <span class="hljs-keyword">then</span> <span class="hljs-keyword">begin</span>
+</code></pre>
+<p>يفحص هذا الاختبار ما إذا كان النصف الأيسر غير فارغ وعنصره الأول أصغر
+من العنصر الأول للنصف الأيمن، إن وُجد عنصر كهذا. وفي كلتا
+الحالتين، ننسخ العنصر إلى <code>a2.(k)</code> ونزيد الفهرس
+المقابل.</p>
+<pre><code class="language-ocaml">        a2.(k) &lt;- a1.(!i); incr i
+      <span class="hljs-keyword">end</span> <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span>
+        a2.(k) &lt;- a1.(!j); incr j
+      <span class="hljs-keyword">end</span>
+    <span class="hljs-keyword">done</span>
+</code></pre>
+<p>بعد ذلك، نطبّق الترتيب بالدمج في صورة دالة <code>mergesort</code>. نبدأ بتخصيص
+مصفوفة مؤقتة <code>tmp</code> ناتجة عن نسخ المصفوفة المطلوب ترتيبها.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> mergesort a =
+    <span class="hljs-keyword">let</span> tmp = <span class="hljs-type">Array</span>.copy a <span class="hljs-keyword">in</span>
+</code></pre>
+<p>ويُجسَّد الجزء العودي من الترتيب بالدمج عبر دالة عودية <code>mergesort_rec</code>
+تأخذ كوسيطتين الفهرسين <code>l</code> و<code>r</code> اللذين يحدّان الجزء المطلوب
+ترتيبه.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> mergesort_rec l r =
+</code></pre>
+<p>وإذا كان المقطع يحوي عنصرًا واحدًا على الأكثر، أي إذا كان <code>l</code> ≥ <code>r-1</code>، فلا شيء
+آخر هناك لفعله.</p>
+<pre><code class="language-ocaml">      <span class="hljs-keyword">if</span> l &lt; r - <span class="hljs-number">1</span> <span class="hljs-keyword">then</span> <span class="hljs-keyword">begin</span>
+</code></pre>
+<p>وإلا، نقسّم المجال إلى نصفين متساويين بحساب الموضع
+الأوسط <code>m</code>، ثم نرتّب عوديًا <code>a</code>[<code>l</code>..<code>m</code>[ و<code>a</code>[<code>m</code>..<code>r</code>[.</p>
+<pre><code class="language-ocaml">        <span class="hljs-keyword">let</span> m = (l + r) / <span class="hljs-number">2</span> <span class="hljs-keyword">in</span>
+        mergesort_rec l m;
+        mergesort_rec m r;
+</code></pre>
+<p>لاحظ أن حساب <code>(l+r)/2</code> لا يمكن أن يُحدث تجاوزًا للعدد
+الصحيح (integer overflow)، لأن الحجم الأقصى لمصفوفة OCaml أصغر بكثير من أكبر
+عدد صحيح قابل للتمثيل (انظر القسم <a href="https://usr.lmf.cnrs.fr/lpo/mainch3.html#runtime-model"><em>3.2</em></a> <em>نموذج التنفيذ</em> لمزيد من التفاصيل).</p>
+<blockquote></blockquote>
+<p>ويبقى تنفيذ الدمج. ولهذا ننسخ الجزء <code>a</code>[<code>l</code>..<code>r</code>[ كاملًا إلى
+المصفوفة <code>tmp</code> ثم نستدعي الدالة <code>merge</code>.</p>
+<pre><code class="language-ocaml">        <span class="hljs-type">Array</span>.blit a l tmp l (r - l);
+        merge tmp a l m r
+      <span class="hljs-keyword">end</span>
+</code></pre>
+<p>وأخيرًا، نرتّب المصفوفة <code>a</code> كاملة باستدعاء <code>mergesort</code> على جميع عناصرها.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">in</span>
+    mergesort_rec <span class="hljs-number">0</span> (<span class="hljs-type">Array</span>.length a)
+</code></pre>
+<p>ويحوي البرنامج <a href="#x28-289025r94">94</a> الرمز الكامل. ويمكن تحسين كفاءته أكثر: فكما في
+حالة الترتيب السريع، يمكننا التحوّل إلى الترتيب بالإدراج عندما يصبح الجزء المطلوب
+ترتيبه صغيرًا بدرجة كافية (انظر التمرين <a href="#x28-302004r7">12.7</a>). وتتمثل فكرة أخرى في تفادي نسخ <code>a</code>
+إلى <code>tmp</code>، وهو ما يستعمل <code>Array.blit</code> (انظر التمرين <a href="#x28-303003r12">12.12</a>).</p>
+<h5>التعقيد</h5>
+<p>عدد المقارنات هو نفسه تمامًا كما في حالة القوائم. وعدد
+الإسنادات هو نفسه أيضًا: N إسناد في الدالة <code>merge</code> (حيث يُنسخ كل عنصر
+من <code>a1</code> إلى <code>a2</code>) وN إسناد تُجريها <code>Array.blit</code>.</p>
+<p>ولتكن A(N) العدد الكلي للإسنادات في <code>mergesort</code>. عندئذٍ
+يكون لدينا:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>A</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo><mo>=</mo><mn>2</mn><mi>A</mi><mo stretchy="false">(</mo><mi>N</mi><mi mathvariant="normal">/</mi><mn>2</mn><mo stretchy="false">)</mo><mo>+</mo><mn>2</mn><mi>N</mi><mo separator="true">,</mo></mrow><annotation encoding="application/x-tex">A(N ) = 2A(N /2) + 2N,</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">A</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mord mathnormal">A</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mord">/2</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mpunct">,</span></span></span></span></span>
+<p>أي ما مجموعه 2N log N إسناد. وفي النهاية نحصل على نتائج
+الشكل <a href="#complexity-of-merge-sort-on-arrays">12.6</a>.</p>
+<p><strong>الشكل 12.6: تعقيد الترتيب بالدمج على المصفوفات.</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>أفضل الحالات</th>
+<th>الحالة المتوسطة</th>
+<th>أسوأ الحالات</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>مقارنات</td>
+<td>N log N</td>
+<td>N log N</td>
+<td>N log N</td>
+</tr>
+<tr>
+<td>إسنادات</td>
+<td>2N log N</td>
+<td>2N log N</td>
+<td>2N log N</td>
+</tr>
+</tbody>
+</table>
+<h3 id="124-الترتيب-بالكومة-heapsort">12.4 الترتيب بالكومة (heapsort)</h3>
+<p>يعتمد الترتيب بالكومة على استعمال طابور أولوية (priority queue). وتتيح بنية كهذه
+إضافة العناصر واستخراج أصغر عنصر فيها. والفكرة الكامنة وراء
+الترتيب بالكومة هي التالية: نبني طابور أولوية يحوي جميع العناصر المطلوب
+ترتيبها ثم نستخرج العناصر واحدًا واحدًا. ولأن عملية الاستخراج
+تُعيد أصغر عنصر في كل مرة، تخرج العناصر بترتيب تصاعدي.</p>
+<p>من حيث المبدأ، يمكن استعمال أي بنية لطابور الأولوية. غير أن بنية تكون فيها
+عمليتا الإضافة والاستخراج بتكلفة O(log N) تُعطي خوارزمية
+ترتيب مثلى في O(N log N). وكلا بنيتَي الكومة المعروضتين في الفصل <a href="https://usr.lmf.cnrs.fr/lpo/mainch6.html#queues">6</a>
+لهما تعقيد كهذا.</p>
+<h4>12.4.1 القوائم</h4>
+<p>نفترض أننا نملك دالة تصنيفية (functor) <code>PriorityQueue</code> تُطبّق بنية طابور أولوية.
+ومن حيث المبدأ، يمكننا الاختيار بين بنيتين أمرية (imperative) ودائمة (persistent).
+غير أنه لا فائدة من اختيار بنية دائمة هنا. ولذلك
+نستعمل بنية الكومة الأمرية الموصوفة في القسم <a href="https://usr.lmf.cnrs.fr/lpo/mainch6.html#imperative-priority-queues"><em>6.3</em></a> <em>طوابير الأولوية الأمرية</em>.
+وتُعطى واجهتها مجددًا في البرنامج <a href="#x28-292001r95">95</a>.</p>
+<blockquote></blockquote>
+<p>نُطبّق الدالة التصنيفية <code>PriorityQueue</code> بتمرير وحدة (module) تقارن العناصر
+بـ <code>compare</code> كوسيطة. ولتفادي الاضطرار إلى عكس القائمة في النهاية، نرتّب
+العناصر بترتيب تنازلي، أي أن العنصر ذا الأولوية الأعلى في طابور الأولوية
+سيكون أكبر عنصر بالنسبة إلى علاقة الترتيب <code>lt</code>. ولذلك نكتب:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">module</span> <span class="hljs-type">Heap</span> = <span class="hljs-type">PriorityQueue</span>(<span class="hljs-keyword">struct</span>
+                  <span class="hljs-keyword">type</span> t = elt
+                  <span class="hljs-keyword">let</span> compare x y = compare y x
+                <span class="hljs-keyword">end</span>)
+</code></pre>
+<p>تأخذ الدالة <code>heapsort</code> قائمة <code>l</code> من العناصر المطلوب ترتيبها وتبدأ
+بإنشاء كومة فارغة <code>h</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> heapsort l =
+    <span class="hljs-keyword">let</span> h = <span class="hljs-type">Heap</span>.create <span class="hljs-literal">()</span> <span class="hljs-keyword">in</span>
+</code></pre>
+<p>ثم تُضيف الدالة جميع عناصر القائمة <code>l</code> إلى الكومة.</p>
+<pre><code class="language-ocaml">    <span class="hljs-type">List</span>.iter (<span class="hljs-keyword">fun</span> x -&gt; <span class="hljs-type">Heap</span>.add x h) l;
+</code></pre>
+<p>بعد ذلك، نُنشئ مرجعًا <code>res</code> سيستقبل النتيجة المرتّبة. ونستخرج
+العناصر من الكومة بمساعدة حلقة <code>while</code>.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> res = <span class="hljs-built_in">ref</span> <span class="hljs-literal">[]</span> <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">while</span> not (<span class="hljs-type">Heap</span>.is_empty h) <span class="hljs-keyword">do</span>
+</code></pre>
+<p>وإذا لم تكن الكومة فارغة، نستخرج أصغر عنصر فيها <code>x</code> باستعمال <code>Heap.get_min</code> ثم
+نحذفه من الكومة باستعمال <code>Heap.remove_min</code>.</p>
+<pre><code class="language-ocaml">      <span class="hljs-keyword">let</span> x = <span class="hljs-type">Heap</span>.get_min h <span class="hljs-keyword">in</span>
+      <span class="hljs-type">Heap</span>.remove_min h;
+</code></pre>
+<p>نُضيف <code>x</code> في رأس القائمة الموجودة في <code>res</code> ثم نُعيد الكرّة.</p>
+<pre><code class="language-ocaml">      res := x :: !res
+    <span class="hljs-keyword">done</span>;
+</code></pre>
+<p>وبمجرد أن تصبح الكومة فارغة، يكفي إعادة محتوى <code>res</code>.</p>
+<pre><code class="language-ocaml">    !res
+</code></pre>
+<p>لاحظ أن عكس علاقة الترتيب في بنية الكومة يعني أننا
+لا نضطر إلى عكس القائمة <code>!res</code> في نهاية <code>heapsort</code>. ويحوي البرنامج <a href="#x28-292032r96">96</a>
+الرمز الكامل.</p>
+<blockquote></blockquote>
+<h5>التعقيد</h5>
+<p>يعتمد تعقيد الترتيب بالكومة على تعقيد بنية الكومة المستعملة. وكما
+ذكرنا في مقدمة هذا القسم، إذا كانت عمليتا <code>add</code> و
+<code>remove_min</code> في بنية الكومة بتكلفة لوغاريتمية على الأكثر، فإن الترتيب نفسه
+تكون تكلفته O(N log N) في أسوأ الحالات، وهو الأمثل. وإذا افترضنا الآن أن
+بنية الكومة المستعملة هي بنية القسم <a href="https://usr.lmf.cnrs.fr/lpo/mainch6.html#imperative-priority-queues"><em>6.3</em></a> <em>طوابير الأولوية الأمرية</em>، يمكننا إعطاء
+نتيجة أدقّ. فبالفعل، نعلم حينئذٍ أن <code>add</code> و<code>remove_min</code> تُجري كل منهما
+2log k مقارنة على الأكثر لإضافة عنصر إلى كومة تحوي
+k عنصر أو لحذفه منها، بحيث يكون العدد الكلي للمقارنات في أسوأ الحالات على الأكثر:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mn>4</mn><mo stretchy="false">(</mo><mi>l</mi><mi>o</mi><mi>g</mi><mn>1</mn><mo>+</mo><mi>l</mi><mi>o</mi><mi>g</mi><mn>2</mn><mo>+</mo><mo>⋅</mo><mo>⋅</mo><mo>⋅</mo><mo>+</mo><mi>l</mi><mi>o</mi><mi>g</mi><mi>N</mi><mo stretchy="false">)</mo><mo>∼</mo><mn>4</mn><mi>N</mi><mi>l</mi><mi>o</mi><mi>g</mi><mi>N</mi></mrow><annotation encoding="application/x-tex">4(log1 + log 2 + \\cdot \\cdot \\cdot + log N) ∼ 4N logN</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">4</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.4445em;"></span><span class="mord">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">4</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span></span>
+<p>بل سنرى في القسم التالي أن بناء الكومة تكلفته خطية فحسب، بحيث يكون
+المجموع مكافئًا لـ 2N log N.</p>
+<h4>12.4.2 المصفوفات</h4>
+<p>لتطبيق الترتيب بالكومة على مصفوفة <code>a</code>، سنبني بنية الكومة
+مباشرة داخل هذه المصفوفة. وتنظيم الكومة في المصفوفة هو تمامًا
+نفسه كما في القسم <a href="https://usr.lmf.cnrs.fr/lpo/mainch6.html#imperative-priority-queues"><em>6.3</em></a> <em>طوابير الأولوية الأمرية</em>: يُخزَّن الابنان الأيسر والأيمن
+لعقدة مخزّنة في الفهرس i على التوالي في الفهرسين 2i + 1 و
+2i + 2. وكما في القسم السابق، نبني كومة لعلاقة الترتيب المعكوسة،
+أي كومة يوجد فيها أكبر عنصر في الجذر.</p>
+<p>ولبناء الكومة، نأخذ عناصر المصفوفة من اليمين إلى اليسار. وفي
+كل تكرار، تكون لدينا الحالة التالية:</p>
+<p>يحوي الجزء <code>a</code>[<code>k+1</code>..<code>n</code>[ قاعدة الكومة قيد البناء، أي
+أنه غابة من أكوام تقع جذورها في فهارس i بحيث <code>k</code> &lt; i &lt; 2<code>k</code> + 3.
+ثم نُنزل القيمة <code>a.(k)</code> إلى موضعها في الكومة ذات الجذر <code>k</code>.
+وبمجرد اجتياز جميع العناصر، تصبح لدينا كومة واحدة جذرها
+0.</p>
+<p>وتتمثل الخطوة الثانية في تفكيك الكومة. ولهذا نستبدل جذرها
+r في <code>a.(0)</code> بالعنصر v في <code>a.(n-1)</code>. وتكون القيمة r حينئذٍ في
+موضعها النهائي. ثم نُعيد إنشاء بنية الكومة على <code>a</code>[0..<code>n-1</code>[ بإنزال
+v إلى موضعه في الكومة ذات الحجم <code>n-1</code> والجذر 0. ونُكرّر العملية
+على المواضع <code>n-1</code> و<code>n-2</code> وهكذا. وفي كل تكرار <code>k</code>، تكون لدينا الحالة
+التالية:</p>
+<p>توجد كومة في الجزء <code>a</code>[0..<code>k</code>[، تكون جميع عناصرها أصغر من عناصر
+الجزء <code>a</code>[<code>k</code>..<code>n</code>[ المرتّب بالفعل.</p>
+<p>تستعمل خطوتا الخوارزمية أعلاه العملية نفسها المتمثلة في إنزال
+قيمة حتى تبلغ موضعها في كومة. ويُطبَّق ذلك باستعمال دالة
+عودية <code>move_down</code> تأخذ كوسيطات مصفوفة <code>a</code> وفهرسًا <code>k</code> وقيمة
+<code>v</code> وحدًّا أعلى للفهارس، <code>n</code>.</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> move_down a k v n =
+</code></pre>
+<p>نفترض أن لدينا بالفعل كومة h1 جذرها <code>2k+1</code>، بحيث <code>2k+1</code> &lt; <code>n</code>، وبالمثل
+كومة h2 جذرها <code>2k+2</code>، بحيث <code>2k+2</code> &lt; <code>n</code>. والهدف هو بناء كومة جذرها <code>k</code>،
+تحوي <code>v</code> وجميع عناصر h1 وh2. ونبدأ بتحديد ما إذا كانت الكومة ذات الجذر <code>k</code>
+ستُختزل إلى ورقة، أي ما إذا كانت الكومة h1 فارغة. فإذا كان الأمر كذلك،
+نُسند القيمة <code>v</code> إلى <code>a.(k)</code>، وينتهي الأمر.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">let</span> r = <span class="hljs-number">2</span> * k + <span class="hljs-number">1</span> <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">if</span> r &gt;= n <span class="hljs-keyword">then</span>
+      a.(k) &lt;- v
+</code></pre>
+<p>وإلا، نحدّد الفهرس <code>rmax</code> لأكبر الجذرين في h1 وh2،
+مع معالجة الحالة التي تكون فيها h2 فارغة بعناية.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">let</span> rmax =
+        <span class="hljs-keyword">if</span> r+<span class="hljs-number">1</span> &lt; n <span class="hljs-keyword">then</span> <span class="hljs-keyword">if</span> lt a.(r) a.(r+<span class="hljs-number">1</span>) <span class="hljs-keyword">then</span> r+<span class="hljs-number">1</span> <span class="hljs-keyword">else</span> r
+        <span class="hljs-keyword">else</span> r <span class="hljs-keyword">in</span>
+</code></pre>
+<p>وإذا كانت القيمة <code>v</code> أكبر من أو مساوية لـ <code>a.(rmax)</code>، فقد اكتمل الإنزال، ويكفي
+إسناد <code>v</code> إلى <code>a.(k)</code>.</p>
+<pre><code class="language-ocaml">      <span class="hljs-keyword">if</span> le a.(rmax) v <span class="hljs-keyword">then</span> a.(k) &lt;- v
+</code></pre>
+<p>وإلا، نرفع <code>a.(rmax)</code> إلى الأعلى ونواصل إنزال <code>v</code> عوديًا عند
+الموضع <code>rmax</code>.</p>
+<pre><code class="language-ocaml">      <span class="hljs-keyword">else</span> <span class="hljs-keyword">begin</span> a.(k) &lt;- a.(rmax); move_down a rmax v n <span class="hljs-keyword">end</span>
+</code></pre>
+<p>وتأخذ دالة الترتيب مصفوفة <code>a</code> كوسيطة:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">let</span> heapsort a =
+    <span class="hljs-keyword">let</span> n = <span class="hljs-type">Array</span>.length a <span class="hljs-keyword">in</span>
+</code></pre>
+<p>نبدأ ببناء الكومة من الأسفل إلى الأعلى باستدعاء <code>move_down</code>. ونتفادى
+الاستدعاءات غير الضرورية للأكوام المختزلة إلى أوراق وحيدة بالبدء بالحلقة عند ⌊⌋− 1.
+(فبالفعل، من أجل كل فهرس <code>k</code> أكبر تمامًا، يكون لدينا <code>2k+1</code> ≥ <code>n</code>.)</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">for</span> k = n/<span class="hljs-number">2</span> - <span class="hljs-number">1</span> <span class="hljs-keyword">downto</span> <span class="hljs-number">0</span> <span class="hljs-keyword">do</span> move_down a k a.(k) n <span class="hljs-keyword">done</span>;
+</code></pre>
+<p>وبمجرد أن تُبنى الكومة بالكامل، نستخرج عناصرها واحدًا واحدًا، بترتيب تنازلي.
+وكما شُرح أعلاه، من أجل كل فهرس <code>k</code>، نستبدل <code>a.(0)</code> بالقيمة <code>v</code> في <code>a.(k)</code>
+ثم نُنزل <code>v</code> إلى موضعها في الكومة.</p>
+<pre><code class="language-ocaml">    <span class="hljs-keyword">for</span> k = n-<span class="hljs-number">1</span> <span class="hljs-keyword">downto</span> <span class="hljs-number">1</span> <span class="hljs-keyword">do</span>
+      <span class="hljs-keyword">let</span> v = a.(k) <span class="hljs-keyword">in</span> a.(k) &lt;- a.(<span class="hljs-number">0</span>); move_down a <span class="hljs-number">0</span> v k
+    <span class="hljs-keyword">done</span>
+</code></pre>
+<p>لاحظ أن مواصفة <code>move_down</code> تتيح لنا تفادي إسناد <code>v</code> إلى <code>a.(0)</code> قبل
+بدء الإنزال. ويحوي البرنامج <a href="#x28-294025r97">97</a> أدناه الرمز الكامل.</p>
+<blockquote></blockquote>
+<h5>التعقيد</h5>
+<p>لنعتبر أولًا تكلفة استدعاء واحد لـ <code>move_downakvn</code>. عدد الاستدعاءات
+العودية محدود بـ log <code>n</code> لأن قيمة <code>k</code> تتضاعف عند كل استدعاء. وعلاوة على ذلك،
+تُجري <code>move_down</code> مقارنتين على الأكثر وإسنادًا واحدًا في كل استدعاء.
+وهكذا، في أسوأ الحالات، يكون لدينا ما مجموعه 2log <code>n</code> مقارنة وlog <code>n</code>
+إسناد.</p>
+<p>وفي ما يتعلق بالترتيب نفسه، يمكننا أن نحدّ تقريبيًا عدد المقارنات C(N) في
+كل استدعاء لـ <code>move_down</code> بـ 2log N، أي ما مجموعه في أسوأ الحالات 3N log N مقارنة
+(N log N مقارنة للخطوة الأولى و2N log N للثانية). وبالمثل، يكون
+العدد الكلي للإسنادات، في أسوأ الحالات، N log N.</p>
+<p>بل يمكننا أن نكون أدقّ ونبيّن أن الخطوة الأولى من الخوارزمية،
+أي بناء الكومة، تكلفتها خطية. (انظر على سبيل المثال [<a href="https://usr.lmf.cnrs.fr/lpo/mainli3.html#Xcormen">7</a>، القسم 7.3].)
+ويترتب على ذلك أن الجزء الثاني من الخوارزمية فحسب يسهم في التعقيد
+المقارب، بحيث C(N) ∼ 2N log N. ولتحليل متوسط للترتيب بالكومة،
+يُحال القارئ إلى <em>فن البرمجة الحاسوبية</em> [<a href="https://usr.lmf.cnrs.fr/lpo/mainli3.html#XKnuthV3">15</a>، المجلد 3، ص. 152].</p>
+<p>لاحظ أن الترتيب بالكومة يُنفَّذ في ذاكرة ثابتة. فبالفعل، لا تُجري الدالة <code>move_down</code>
+إلا استدعاءات عودية ذيلية، وعلاوة على ذلك، تُنفَّذ جميع الحسابات
+في المكان داخل المصفوفة <code>a</code>.</p>
+<h3 id="125-التعقيد-الأمثل">12.5 التعقيد الأمثل</h3>
+<p>نعرض هنا برهانًا موجزًا على أن التعقيد الأمثل لخوارزمية ترتيب
+لا تُجري إلا مقارنات بين العناصر يقع في O(N log N).</p>
+<p>يمكننا أن نتصوّر خوارزمية كهذه في صورة شجرة ثنائية. ويرمز كل عقدة داخلية
+إلى مقارنة أُجريت، ويمثّل الشجران الجزئيان الأيسر (على التوالي الأيمن) بقية الخوارزمية عندما يكون الاختبار موجبًا (على التوالي سالبًا). وكل</p>
+<p>ورقة تشكّل نتيجة ممكنة، أي تبديلًا أُجري على
+المتتالية الابتدائية. وإذا افترضنا وجود N عنصرًا متمايزًا، فإن هناك N! تبديلًا
+ممكنًا، ومن ثم N! ورقة على الأقل في هذه الشجرة. وبالتالي يكون ارتفاعها على
+الأقل log N!. والآن، يقابل أطول مسار من الجذر إلى ورقة
+أكبر عدد من المقارنات التي تُجريها الخوارزمية على مُدخل.
+ويوجد، بالتالي، مُدخل يكون فيه عدد المقارنات على الأقل
+log N!. وبصيغة ستيرلينغ (Stirling’s formula)، نعلم أن log N! ∼ N log N. ولبرهان أكثر
+تفصيلًا، يُحال القارئ إلى <em>فن البرمجة الحاسوبية</em> [<a href="https://usr.lmf.cnrs.fr/lpo/mainli3.html#XKnuthV3">15</a>،
+القسم 5.3].</p>
+<h3 id="126-التقييم-التجريبي-experimental-evaluation">12.6 التقييم التجريبي (experimental evaluation)</h3>
+<p>في هذا القسم، نقارن تجريبيًا بين خوارزميات الترتيب المختلفة المعروضة في هذا الفصل.</p>
+<h4>بروتوكول التقييم</h4>
+<p>من أجل قائمة أو مصفوفة معطاة، نُقيّم أداء عدة خوارزميات على المدخل نفسه على
+النحو التالي. نُنفّذ كل خوارزمية ترتيب خمس مرات، مع قياس زمن الحساب في كل
+حالة. ونستبعد أصغر القيم وأكبرها، ونأخذ متوسط القيم الثلاث المتبقية.</p>
+<p>وبالنسبة إلى القوائم، نأخذ قوائم مبنية عشوائيًا وكذلك قوائم مرتّبة بالفعل،
+بأطوال 2i × 1000 حيث i يتراوح من 0 إلى 10. وبالنسبة إلى المصفوفات، نأخذ مصفوفات معبّأة عشوائيًا
+وكذلك مصفوفات مرتّبة بالفعل، بأطوال 2i × 1000 حيث i يتراوح من 0 إلى 12. ومن
+المهم اعتبار حالة البيانات المرتّبة بالفعل لأنها تمثّل
+وضعًا واقعيًا نرغب في التحقق فيه من كفاءة خوارزميات الترتيب لدينا.</p>
+<h4>التقييم على القوائم</h4>
+<p>نقارن الخوارزميات المدرجة في الشكل <a href="#sorting-algorithms-on-lists">12.7</a>. ويعرض الشكلان <a href="#comparison-of-sorting-algorithms-on-random-lists">12.8</a> و<a href="#comparison-of-sorting-algorithms-on-already-sorted-lists">12.9</a>
+النتائج.</p>
+<p><strong>الشكل 12.7: خوارزميات الترتيب على القوائم.</strong></p>
+<table>
+<thead>
+<tr>
+<th><code>insertion</code></th>
+<th>الترتيب بالإدراج من البرنامج <a href="#x28-277013r89">89</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>quicksort</code></td>
+<td>الترتيب السريع من البرنامج <a href="#x28-282020r91">91</a></td>
+</tr>
+<tr>
+<td><code>quicksort (log stack)</code></td>
+<td>الترتيب السريع مع إجراء الاستدعاء الأول على أصغر</td>
+</tr>
+<tr>
+<td>القائمتين بعد التقسيم (انظر التمرين <a href="#x28-302001r4">12.4</a>)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>quicksort (rand)</code></td>
+<td>الترتيب السريع مع محور مختار عشوائيًا (انظر</td>
+</tr>
+<tr>
+<td>التمرين <a href="#x28-302002r5">12.5</a>)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>mergesort</code></td>
+<td>الترتيب بالدمج من البرنامج <a href="#x28-287023r93">93</a></td>
+</tr>
+<tr>
+<td><code>mergesort (reuse)</code></td>
+<td>الترتيب بالدمج مع تحسين يتمثل في عدم</td>
+</tr>
+<tr>
+<td>إنشاء قوائم وسيطة عند التقسيم</td>
+<td></td>
+</tr>
+<tr>
+<td>(انظر التمرين <a href="#x28-303001r10">12.10</a>)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>List.sort</code></td>
+<td>الدالة <code>List.sort</code> من المكتبة المعيارية لـ OCaml</td>
+</tr>
+<tr>
+<td>(الإصدار 3.11.2)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>heapsort (arrays)</code></td>
+<td>الترتيب بالكومة من البرنامج <a href="#x28-292032r96">96</a>، باستعمال البنية المعتمدة</td>
+</tr>
+<tr>
+<td>على المصفوفات المعروضة في القسم <a href="https://usr.lmf.cnrs.fr/lpo/mainch6.html#imperative-priority-queues">6.3</a></td>
+<td></td>
+</tr>
+<tr>
+<td><code>heapsort (trees)</code></td>
+<td>الترتيب بالكومة من البرنامج <a href="#x28-292032r96">96</a>، باستعمال البنية المعتمدة</td>
+</tr>
+<tr>
+<td>على الأشجار الثنائية المعروضة في القسم <a href="https://usr.lmf.cnrs.fr/lpo/mainch6.html#persistent-priority-queues">6.4</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>بالنسبة إلى القوائم العشوائية (الشكل <a href="#comparison-of-sorting-algorithms-on-random-lists">12.8</a>)، نلاحظ ما يلي: لا يمكن استعمال الترتيب بالإدراج
+(<code>insertion</code>) إلا في حالة القوائم الصغيرة، نظرًا إلى تعقيده التربيعي.
+(لا نعطي زمن الحساب للقوائم الأطول من 16,000.) وقد أحدثت اثنتان من خوارزميات
+الترتيب السريع الثلاث، (<code>quicksort</code> و<code>quicksort (rand)</code>) تجاوزًا لسعة المكدس
+على قوائم طولها 210. وتُعاق خوارزمية <code>heapsort (trees)</code>، التي تستعمل الأشجار الثنائية،
+بسبب بناء الأشجار، حتى وإن كان تعقيدها أمثل. أما
+خوارزميات الترتيب الأخرى فكفاءتها متقاربة، وأسرعها هي خوارزمية المكتبة
+المعيارية لـ OCaml.</p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/sorting-0-sorting-random-lists-.webp" alt="" id="comparison-of-sorting-algorithms-on-random-lists"></p>
+<p><strong>الشكل 12.8: مقارنة خوارزميات الترتيب على القوائم العشوائية.</strong></p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/sorting-1-sorting-sorted-lists-.webp" alt="" id="comparison-of-sorting-algorithms-on-already-sorted-lists"></p>
+<p><strong>الشكل 12.9: مقارنة خوارزميات الترتيب على القوائم المرتّبة بالفعل.</strong></p>
+<p>وفي حالة القوائم المرتّبة بالفعل (الشكل <a href="#comparison-of-sorting-algorithms-on-already-sorted-lists">12.9</a>)، نلاحظ ما يلي: للترتيب بالإدراج
+(<code>insertion</code>) تعقيد تربيعي. (كانت الحالة المواتية ستكون
+حالة قائمة مرتّبة ترتيبًا تنازليًا.) ولخوارزميتَي الترتيب السريع الأوليين،
+<code>quicksort</code> و<code>quicksort (log stack)</code>، تعقيد تربيعي، وهو ما
+يُفسَّر بالاختيار الاعتباطي للعنصر الأول من القائمة محورًا. (لا نعطي
+زمن الحساب للقوائم التي يتجاوز طولها 16,000.) أما
+خوارزمية الترتيب السريع الثالثة، <code>quicksort (rand)</code>، فتَسلُك سلوكًا جيدًا لكنها تُحدث
+تجاوزًا لسعة المكدس على قوائم بحجم 210 × 1000. وتبقى خوارزمية <code>heapsort (trees)</code>
+مُعاقة بسبب بناء الأشجار، كما في حالة القوائم العشوائية.</p>
+<p>يمكننا أن نستخلص الاستنتاجات التالية: الترتيب بالدمج هو الأفضل في الجمع بين
+البساطة والكفاءة. حتى أبسط نسخة منه لها كفاءة مقاربة للنسخة المحسّنة
+من المكتبة المعيارية لـ OCaml. والترتيب بالكومة يؤدي دائمًا أداءً جيدًا،
+لكن تطبيقه أعقد بكثير من تطبيق الترتيب
+بالدمج. وأخيرًا، نلاحظ أن استعمال الترتيب السريع على القوائم ليس بالأمر المباشر
+لأننا يجب، في الحد الأدنى، أن نجمع التحسينين الواردين في التمرينين <a href="#x28-302001r4">12.4</a>
+و<a href="#x28-302002r5">12.5</a>، لتفادي تجاوز سعة المكدس والحالة غير المواتية ذات التعقيد
+التربيعي معًا.</p>
+<h4>التقييم على المصفوفات</h4>
+<p>نقارن الآن التقنيات المختلفة لترتيب مصفوفات من الأعداد الصحيحة استنادًا
+إلى الخوارزميات المدرجة في الشكل <a href="#sorting-algorithms-on-arrays-of-integers">12.10</a>. ويعرض الشكلان <a href="#comparison-of-sorting-on-random-arrays">12.11</a> و<a href="#comparison-of-sorting-on-already-sorted-arrays">12.12</a> النتائج.</p>
+<p><strong>الشكل 12.10: خوارزميات الترتيب على مصفوفات من الأعداد الصحيحة.</strong></p>
+<table>
+<thead>
+<tr>
+<th><code>insertion</code></th>
+<th>الترتيب بالإدراج من البرنامج <a href="#x28-279016r90">90</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>quicksort</code></td>
+<td>الترتيب السريع من البرنامج <a href="#x28-284024r92">92</a></td>
+</tr>
+<tr>
+<td><code>quicksort (insertion)</code></td>
+<td>الترتيب السريع باستعمال ترتيب بالإدراج على</td>
+</tr>
+<tr>
+<td>مقاطع صغيرة (انظر التمرين <a href="#x28-302004r7">12.7</a>)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>quicksort (log stack)</code></td>
+<td>الترتيب السريع مع إجراء الاستدعاء الأول على أصغر</td>
+</tr>
+<tr>
+<td>المقطعين (انظر التمرين <a href="#x28-302003r6">12.6</a>)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>quicksort (rand)</code></td>
+<td>الترتيب السريع مع محور مختار عشوائيًا (انظر</td>
+</tr>
+<tr>
+<td>التمرين <a href="#x28-302005r8">12.8</a>)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>mergesort</code></td>
+<td>الترتيب بالدمج من البرنامج <a href="#x28-289025r94">94</a></td>
+</tr>
+<tr>
+<td><code>merge sort (swap)</code></td>
+<td>الترتيب بالدمج مع التحسين المتمثل</td>
+</tr>
+<tr>
+<td>في تفادي استعمال <code>Array.blit</code> (انظر</td>
+<td></td>
+</tr>
+<tr>
+<td>التمرين <a href="#x28-303003r12">12.12</a>)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>Array.stable_sort</code></td>
+<td>الدالة <code>Array.stable_sort</code> من المكتبة</td>
+</tr>
+<tr>
+<td>المعيارية لـ OCaml (الإصدار 3.11.2)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>heapsort</code></td>
+<td>الترتيب بالكومة من البرنامج <a href="#x28-294025r97">97</a></td>
+</tr>
+<tr>
+<td><code>Array.sort</code></td>
+<td>الترتيب بالكومة من المكتبة المعيارية لـ OCaml</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/arabic-cs-library/images/learn-ocaml/sorting-2-sorting-random-arrays-.webp" alt="" id="comparison-of-sorting-on-random-arrays"></p>
+<p><strong>الشكل 12.11: مقارنة الترتيب على المصفوفات العشوائية.</strong></p>
+<p><img src="/arabic-cs-library/images/learn-ocaml/sorting-3-sorting-sorted-arrays-.webp" alt="" id="comparison-of-sorting-on-already-sorted-arrays"></p>
+<p><strong>الشكل 12.12: مقارنة الترتيب على المصفوفات المرتّبة بالفعل.</strong></p>
+<p>بالنسبة إلى المصفوفات العشوائية (الشكل <a href="#comparison-of-sorting-on-random-arrays">12.11</a>)، نلاحظ ما يلي: كما في حالة القوائم،
+لا يمكن استعمال الترتيب بالإدراج إلا من أجل مصفوفات صغيرة. وخوارزميتا
+الترتيب بالكومة، <code>heapsort</code> و<code>Array.sort</code>، أقل كفاءة بقليل من الترتيب بالدمج والترتيب السريع.
+وأكثر الخوارزميتين كفاءة هما كلتاهما من خوارزميات
+الترتيب بالدمج.</p>
+<p>وبالنسبة إلى المصفوفات المرتّبة بالفعل (الشكل <a href="#comparison-of-sorting-on-already-sorted-arrays">12.12</a>)، نلاحظ ما يلي: هنا تكون خوارزميات
+الترتيب السريع الثلاث الأولى، <code>quicksort</code> و<code>quicksort (insertion)</code> و<code>quicksort (log stack)</code>، في أكثر حالاتها غير المواتية، وهو ما قد يُفسَّر
+بالاختيار الاعتباطي لأقصى عنصر يسارًا محورًا. (لا نعطي زمن الحساب
+للمصفوفات التي يتجاوز طولها 16,000.) أما نسخة الترتيب السريع ذات
+المحور المختار عشوائيًا فتحقق كفاءة جيدة، مقارِبة لكفاءة
+<code>mergesort</code>.</p>
+<p>من بين جميع خوارزميات الترتيب في O(N log N)، يُعدّ الترتيب بالكومة من الأقل كفاءة
+بينما يُعدّ الترتيب بالدمج من الأكثر كفاءة. وهنا يكون الترتيب بالإدراج (<code>insertion</code>)
+الأكثر كفاءة، لأننا في الحالة المواتية ذات التعقيد الخطي.
+(كانت الحالة غير المواتية ستكون حالة مصفوفة مرتّبة ترتيبًا تنازليًا.)</p>
+<p>يمكننا أن نستخلص الاستنتاجات التالية: إذا كان مسموحًا لنا بتخصيص
+مصفوفة وسيطة، بعبارة أخرى، بمضاعفة استعمال الذاكرة مؤقتًا، فإن الترتيب
+بالدمج هو الخيار الأفضل. وكما في حالة القوائم، فهو يجمع بين البساطة والكفاءة. أما
+إذا أردنا ترتيب مصفوفة في المكان، فيجب علينا إما استعمال الترتيب بالكومة أو الترتيب السريع،
+مع الحرص على جمعه بالتحسينين الواردين في التمرينين <a href="#x28-302003r6">12.6</a> و<a href="#x28-302005r8">12.8</a>، لتفادي
+تجاوز سعة المكدس والسلوك التربيعي الناجم عن اختيار سيئ
+للمحور معًا.</p>
+<div class="exercises"><h3 id="127-التمارين">12.7 التمارين</h3>
+<p><strong>12.1</strong> اكتب دالة <code>two_way_sort:boolarray-&gt;unit</code> ترتّب مصفوفة من القيم المنطقية
+في المكان، بإجراء تبديلات للعناصر فحسب، مع الاصطلاح على أن
+<code>false</code> &lt; <code>true</code>. وينبغي أن يكون التعقيد متناسبًا مع عدد</p>
+<p>العناصر.</p>
+<p><strong>12.2</strong> (مسألة العلم الهولندي لديكسترا) اكتب دالة ترتّب مصفوفة
+في المكان. وتحوي المصفوفة قيمًا تمثّل ألوان العلم الهولندي الثلاثة،
+وهي:</p>
+<pre><code class="language-ocaml">  <span class="hljs-keyword">type</span> color = <span class="hljs-type">Blue</span> | <span class="hljs-type">White</span> | <span class="hljs-type">Red</span>
+</code></pre>
+<p>لا يجوز إجراء سوى تبديلات للعناصر في المصفوفة. وينبغي أن يكون التعقيد
+متناسبًا مع عدد العناصر.</p>
+<p><strong>12.3</strong> وبشكل أعم، نأخذ حالة مصفوفة تحوي k قيمة متمايزة.
+وللتبسيط، نفترض أننا نتعامل مع الأعداد الصحيحة 0,…,k − 1. اكتب
+دالة ترتّب مصفوفة كهذه في زمن O(max(k,N))، حيث N هو حجم
+المصفوفة.</p>
+<h4>الترتيب السريع</h4>
+<p><strong>12.4</strong> من طرق تفادي تجاوز محتمل لسعة المكدس في الدالة <code>quicksort</code> على القوائم
+أن نُجري أولًا استدعاءً غير عودي ذيلي لترتيب أصغر القائمتين،
+يتبعه استدعاء عودي ذيلي لترتيب الأكبر منهما. إرشاد: من أجل الاستدعاء العودي الذيلـي،
+عمّم الدالة <code>quicksort</code> بحيث تأخذ كوسيطتين إضافيتين القائمتين
+<code>left</code> و<code>right</code>، بحيث تُعيد <code>quicksortleftlright</code> الربط، بهذا
+الترتيب، لـ <code>left</code> والقائمة المرتّبة <code>l</code> و<code>right</code>. وبيّن أن حجم المكدس يبقى
+لوغاريتميًا حتى في أسوأ الحالات.</p>
+<p><strong>12.5</strong> عدّل الدالة <code>partition</code> على القوائم بحيث تستعمل عنصرًا مختارًا عشوائيًا من
+القائمة محورًا. والهدف هو تفادي الحالة غير المواتية لقائمة مرتّبة، حيث
+سيكون للترتيب السريع حينئذٍ تعقيد تربيعي.</p>
+<p><strong>12.6</strong> من طرق تفادي تجاوز محتمل لسعة المكدس في الدالة <code>quick_rec</code> على
+المصفوفات أن نبدأ بإجراء الاستدعاء العودي على أصغر
+الجزأين. وبيّن أن حجم المكدس يبقى لوغاريتميًا حتى في أسوأ
+الحالات.</p>
+<p><strong>12.7</strong> من الأفكار الكلاسيكية لتسريع خوارزميات الترتيب التحوّل إلى الترتيب
+بالإدراج عندما يكون عدد العناصر المطلوب ترتيبها صغيرًا، أي أقل من ثابت
+محدَّد مسبقًا (مثلًا 5). عدّل تطبيق الترتيب السريع على المصفوفات
+آخذًا هذه الفكرة في الحسبان. استعمل الدالة <code>insertion_sort</code> على المصفوفات
+(البرنامج <a href="#x28-279016r90">90</a>) وعمّمها بتمرير فهرسين، <code>l</code> و<code>r</code>، لتحديد الجزء
+المطلوب ترتيبه من المصفوفة.</p>
+<p><strong>12.8</strong> عدّل تطبيق الترتيب السريع على المصفوفات بحيث يستعمل محورًا مختارًا عشوائيًا
+في المقطع <code>a</code>[<code>l</code>..<code>r</code>[. وكما في حالة القوائم، تتمثل الفكرة في تفادي الحالة غير المواتية
+لمصفوفة مرتّبة بالفعل، حيث سيكون للترتيب السريع حينئذٍ تعقيد تربيعي. وأحد
+الحلول البسيطة هو خلط المصفوفة <em>قبل</em> ترتيبها، مثلًا باستعمال
+التمرين <a href="https://usr.lmf.cnrs.fr/lpo/mainch2.html#x7-94006r11">2.11</a>.</p>
+<p><strong>12.9</strong> عندما تكون عناصر المصفوفة كثيرة التكافؤ، لا يكفي التمرين السابق دائمًا
+لضمان اختيار جيد للمحور. عدّل الدالة <code>partition</code>
+بحيث تفصل العناصر الأصغر تمامًا من المحور (إلى
+اليسار)، والعناصر المساوية للمحور (في الوسط)، والعناصر الأكبر تمامًا
+من المحور (إلى اليمين). وبدلًا من فهرسين <code>m</code> و<code>i</code> يقسمان
+مقطع المصفوفة إلى ثلاثة أجزاء، كما هو موضّح في الشكل <strong>??</strong>، سوف
+نستعمل ثلاثة فهارس لتقسيم مقطع المصفوفة إلى أربعة أجزاء. وعلى
+الدالة الجديدة <code>partition</code> الآن أن تُعيد فهرسين. عدّل الدالة
+<code>quick_rec</code> وفقًا لذلك. ويشكّل التقسيم إلى ثلاثة أجزاء بهذه الطريقة موضوع
+التمرين <a href="#x28-301002r2">12.2</a>.</p>
+<h4>الترتيب بالدمج</h4>
+<p><strong>12.10</strong> من مصادر عدم كفاءة الترتيب بالدمج على القوائم الدالة <code>split</code>. فبالنظر إلى
+قائمة <code>l</code> تحوي n عنصرًا، تُنشئ <code>splitl</code> قائمتين جديدتين تمامًا، <code>l1</code> و<code>l2</code>،
+تحويان جميع عناصر <code>l</code>. ويمكننا تفادي هذا البناء باستعمال القائمة
+<code>l</code> وحدها، دون تخصيص أي قائمة جديدة. وبدلًا من أخذ كل عنصر ثانٍ من <code>l</code> لبناء
+<code>l1</code> و<code>l2</code>، نختار لـ <code>l1</code> العناصر ⌊n∕2⌋ الأولى من <code>l</code> ولـ <code>l2</code> العناصر
+⌈n∕2⌉ الأخيرة. ولبناء <code>l2</code>، اكتب دالة <code>chop:int-&gt;’alist-&gt;’alist</code>
+بحيث تُعيد <code>chopn1l</code> لاحقة <code>l</code> الناتجة عن حذف عناصرها <code>n1</code> الأولى.
+أما <code>l1</code>، فيكفي تمثيلها بادئةً من <code>l</code>، أي إضافة وسيطة <code>n1</code> إلى
+الدالة <code>mergesort</code>، تشير إلى وجوب ترتيب العناصر <code>n1</code> الأولى من <code>l</code>.
+أعد كتابة الدالة <code>mergesort</code> باستعمال هذه الفكرة. وأعد استعمال الدالة <code>merge</code> من
+البرنامج <a href="#x28-287023r93">93</a>. واحسب التعقيد من حيث عدد التخصيصات للدالة
+<code>mergesort</code>.</p>
+<p><strong>12.11</strong> من طرق تحسين الدالة <code>mergesort</code> على المصفوفات شبه المرتّبة
+تفادي الدمج عندما تكون، بعد الاستدعاءين العوديين،
+جميع عناصر النصف الأيسر أصغر من عناصر النصف الأيمن. ويمكننا
+اختبار ذلك بسهولة بمقارنة أقصى عنصر يمينًا في النصف الأيسر بـ
+أقصى عنصر يسارًا في النصف الأيمن. عدّل الدالة <code>mergesort</code> باستعمال هذه
+الفكرة.</p>
+<p><strong>12.12</strong> لتفادي نسخ <code>a</code> إلى <code>tmp</code> بـ <code>Array.blit</code> في الدالة <code>mergesort</code> على
+المصفوفات، أحد الاحتمالات هو ترتيب نصفي المصفوفة <code>a</code> مع نقلِهما في الوقت نفسه
+إلى المصفوفة <code>tmp</code>، ثم دمج <code>tmp</code> مرة أخرى في <code>a</code> كما يُفعل بالفعل.
+غير أن ترتيب عناصر <code>a</code> في <code>tmp</code> يقتضي، على العكس، أن يُرتَّب النصفان
+في المكان، ثم يُدمجا في <code>tmp</code>. ولذلك نحتاج إلى دالتي ترتيب
+متعاودتين (mutually recursive). ويمكننا الاكتفاء بواحدة بتمرير
+وسيطة إضافية تشير إلى ما إذا كان الترتيب واجب التنفيذ في المكان أم
+في <code>tmp</code>. عدّل الدالتين <code>mergesort</code> و<code>mergesort_rec</code> وفقًا لهذه
+الفكرة.</p>
+<p><strong>12.13</strong> في الترتيب بالدمج، كما في الترتيب السريع، يمكننا التحوّل إلى الترتيب بالإدراج عندما يكون</p>
+<p>عدد العناصر المطلوب ترتيبها صغيرًا (انظر التمرين <a href="#x28-302004r7">12.7</a>).</p>
+</div>`,c={book:s,chapter:a,chapterTitle:n,slug:e,title:t,headings:o,html:p};export{s as book,a as chapter,n as chapterTitle,c as default,o as headings,p as html,e as slug,t as title};
