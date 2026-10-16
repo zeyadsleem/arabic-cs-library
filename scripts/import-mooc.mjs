@@ -35,6 +35,12 @@ function copyFile(src, dest) {
   fs.copyFileSync(src, dest);
 }
 
+/** Read an attribute from a tag's raw attribute string. Upstream mixes both quote styles. */
+function attrValue(attrs, key) {
+  const match = attrs.match(new RegExp(`(?:^|\\s)${key}\\s*=\\s*(["'])(.*?)\\1`));
+  return match ? match[2] : null;
+}
+
 /** Transform MDX/custom components to plain markdown. */
 function transformMdx(markdown, relDir) {
   let out = markdown;
@@ -77,9 +83,7 @@ function transformMdx(markdown, relDir) {
   out = out.replace(
     /<in-browser-programming-exercise\s+([^>]*)>([\s\S]*?)<\/in-browser-programming-exercise>/g,
     (_, attrs, content) => {
-      const nameMatch = attrs.match(/name="([^"]*)"/);
-      const tmcMatch = attrs.match(/tmcname="([^"]*)"/);
-      const name = nameMatch ? nameMatch[1] : 'تمرين';
+      const name = attrValue(attrs, 'name') ?? 'تمرين';
       return `> **تمرين تفاعلي: ${name}**\n>\n> ${content.trim()}\n>\n> *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*\n`;
     }
   );
@@ -88,8 +92,7 @@ function transformMdx(markdown, relDir) {
   out = out.replace(
     /<programming-exercise\s+([^>]*)>([\s\S]*?)<\/programming-exercise>/g,
     (_, attrs, content) => {
-      const nameMatch = attrs.match(/name="([^"]*)"/);
-      const name = nameMatch ? nameMatch[1] : 'تمرين برمجي';
+      const name = attrValue(attrs, 'name') ?? 'تمرين برمجي';
       return `> **تمرين برمجي: ${name}**\n>\n> ${content.trim()}\n`;
     }
   );
