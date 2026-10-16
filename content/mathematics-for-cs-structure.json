@@ -1,0 +1,246 @@
+{
+  "chapters": [
+    {
+      "key": "ch01-what-is-a-proof",
+      "title": "What is a Proof?",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "What is a Proof?",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch02-well-ordering",
+      "title": "The Well Ordering Principle",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "The Well Ordering Principle",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "key": "ch03-logical-formulas",
+      "title": "Logical Formulas",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Logical Formulas",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "key": "ch04-math-data-types",
+      "title": "Mathematical Data Types",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Mathematical Data Types",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "key": "ch05-induction",
+      "title": "Induction",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Induction",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "key": "ch06-state-machines",
+      "title": "State Machines",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "State Machines",
+          "order": 5
+        }
+      ]
+    },
+    {
+      "key": "ch07-recursive-data-types",
+      "title": "Recursive Data Types",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Recursive Data Types",
+          "order": 6
+        }
+      ]
+    },
+    {
+      "key": "ch08-infinite-sets",
+      "title": "Infinite Sets",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Infinite Sets",
+          "order": 7
+        }
+      ]
+    },
+    {
+      "key": "ch09-number-theory",
+      "title": "Number Theory",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Number Theory",
+          "order": 8
+        }
+      ]
+    },
+    {
+      "key": "ch10-directed-graphs",
+      "title": "Directed Graphs & Partial Orders",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Directed Graphs & Partial Orders",
+          "order": 9
+        }
+      ]
+    },
+    {
+      "key": "ch11-communication-networks",
+      "title": "Communication Networks",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Communication Networks",
+          "order": 10
+        }
+      ]
+    },
+    {
+      "key": "ch12-simple-graphs",
+      "title": "Simple Graphs",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Simple Graphs",
+          "order": 11
+        }
+      ]
+    },
+    {
+      "key": "ch13-planar-graphs",
+      "title": "Planar Graphs",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Planar Graphs",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "key": "ch14-sums-asymptotics",
+      "title": "Sums and Asymptotics",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Sums and Asymptotics",
+          "order": 13
+        }
+      ]
+    },
+    {
+      "key": "ch15-cardinality-rules",
+      "title": "Cardinality Rules",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Cardinality Rules",
+          "order": 14
+        }
+      ]
+    },
+    {
+      "key": "ch16-generating-functions",
+      "title": "Generating Functions",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Generating Functions",
+          "order": 15
+        }
+      ]
+    },
+    {
+      "key": "ch17-events-probability",
+      "title": "Events and Probability Spaces",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Events and Probability Spaces",
+          "order": 16
+        }
+      ]
+    },
+    {
+      "key": "ch18-conditional-probability",
+      "title": "Conditional Probability",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Conditional Probability",
+          "order": 17
+        }
+      ]
+    },
+    {
+      "key": "ch19-random-variables",
+      "title": "Random Variables",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Random Variables",
+          "order": 18
+        }
+      ]
+    },
+    {
+      "key": "ch20-deviation",
+      "title": "Deviation from the Mean",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Deviation from the Mean",
+          "order": 19
+        }
+      ]
+    },
+    {
+      "key": "ch21-random-walks",
+      "title": "Random Walks",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Random Walks",
+          "order": 20
+        }
+      ]
+    },
+    {
+      "key": "ch22-bayesian",
+      "title": "Bayesian Inference",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Bayesian Inference",
+          "order": 21
+        }
+      ]
+    }
+  ]
+}

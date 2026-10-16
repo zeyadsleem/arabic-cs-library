@@ -10,6 +10,10 @@ playwright-report/
 .playwright-mcp/
 content-src/mit-6100l/
 
+# The Mathematics for CS source PDF is kept out of the repository; the imported
+# pages under content/mathematics-for-cs/ are the tracked artefact.
+content-src/mcs/
+
 # The Learn Programming with OCaml EPUB is cached; its unpacked tree is derived.
 content-src/learn-ocaml/OEBPS/
 
