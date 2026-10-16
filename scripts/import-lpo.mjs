@@ -495,8 +495,9 @@ const chapterBody = (html, ctx, chapter) => {
   let main = html.slice(html.indexOf('<body>') + 6, html.lastIndexOf('</body>'));
   main = stripComments(main);
   main = removeElement(main, "<div class='crosslinks'>");
-  // The caller re-emits `## N. Title`, so the page's own chapter heading is redundant.
-  if (chapter.number) main = main.replace(/<h2 class='chapterHead'[\s\S]*?<\/h2>/, '');
+  // The caller re-emits `## N. Title`, so the page's own chapter heading is
+  // redundant. Unnumbered chapters such as the bibliography get one too.
+  main = main.replace(/<h2 class='chapterHead'[\s\S]*?<\/h2>/, '');
   // The heading already carries the chapter title; the anchor-only paragraphs do not.
   main = main.replace(/<p id='[^']*'><a id='Q[^']*'><\/a>\s*<\/p>/g, '');
   return convertBlocks(main, ctx)

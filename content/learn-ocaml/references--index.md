@@ -5,8 +5,6 @@ lang: ar
 
 ## المراجع
 
-## المراجع
-
 [1]   Stephen Adams. Functional pearls: Efficient sets – a balancing
  act. *Journal of Functional Programming*, 3(4):553–561, October 1993.
  Expanded version available as Technical Report CSTR 92-10, University of
