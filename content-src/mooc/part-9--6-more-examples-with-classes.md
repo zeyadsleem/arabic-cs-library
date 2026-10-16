@@ -8,14 +8,13 @@ source: "https://programming-26.mooc.fi/part-9/6-more-examples-with-classes"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be familiar with some more examples of classes and objects
+> - You will be able to use default values for parameters in your methods
 
-After this section
-
-- You will be familiar with some more examples of classes and objects
-- You will be able to use default values for parameters in your methods
-
-</text-box>
 
 The following example consists of two classes. The class `Point` is a model for a point in two-dimensional space. The class `Line` is a model for a line segment between two points. The code below is commented; please read the comments in order to understand how the classes work.
 
@@ -289,7 +288,7 @@ Even though the following exercise finishes off this part of the material, the t
 #### Important information regarding the next exercise
 Please note that there is an issue resulting from an update in Python, which conflicts with the inbuilt library and the original file name for this exercise. If you experience any issues, we recommend redownloading the exercise folder. Once you have obtained the new local test files, you can use either "code.py" or "code_1.py" as the file name. While using Visual Studio Code, you may receive notifications about problems in the test file. However, these notifications can be safely ignored, as they are caused by the test's inability to import from either the "code.py" or "code_1.py" files.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Item, Suitcase and Cargo hold**
 >
 > In this series of exercises you will create the classes `Item`, `Suitcase` and `Cargo Hold`, which will let you further practice working on objects which contain references to other objects.
 

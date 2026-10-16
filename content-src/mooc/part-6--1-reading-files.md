@@ -8,28 +8,26 @@ source: "https://programming-26.mooc.fi/part-6/1-reading-files"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know how to read the contents of files with Python
+> - You will know what a text file and a CSV file are
+> - You will be able to process the contents of a CSV file in your programs
 
-After this section
-
-- You will know how to read the contents of files with Python
-- You will know what a text file and a CSV file are
-- You will be able to process the contents of a CSV file in your programs
-
-</text-box>
 
 <!--the same text is in sections 3-1, 5-1 and 6-1, check them all if you're changing this-->
-<text-box variant='hint' name="About the exercises on this course">
+> **About the exercises on this course**
+>
+> Becoming a proficient programmer requires a lot of practice, sometimes even quite mechanical practice. It also involves developing problem solving skills and applying intuition. This is why there are a lot of exercises of different kinds on this course. Some of them ask you to quite straightforwardly apply what you have learnt in the material, but some of them are intentionally more challenging and open-ended.
+>
+> Some of the exercises might at first seem overwhelming, but this is nothing to worry about. None of the exercises is strictly mandatory, and in fact _only 25 % of the points in each part is required to pass the course._ You can find more details about passing the course on the [page on grading](/grading-and-exams).
+>
+> **The exercises are not in any specific order of difficulty.** Each section usually introduces some new programming concepts, and these are then practised with both simpler and more complicated exercises. **If you come across an exercise that feels too difficult, move on to the next one.** You can always come back to the more difficult exercises if you have time later.
+>
+> When the going inevitably gets tough, a word of consolation: a task that seems impossibly difficult this week will likely feel rather easy in about four weeks' time.
 
-Becoming a proficient programmer requires a lot of practice, sometimes even quite mechanical practice. It also involves developing problem solving skills and applying intuition. This is why there are a lot of exercises of different kinds on this course. Some of them ask you to quite straightforwardly apply what you have learnt in the material, but some of them are intentionally more challenging and open-ended.
-
-Some of the exercises might at first seem overwhelming, but this is nothing to worry about. None of the exercises is strictly mandatory, and in fact _only 25 % of the points in each part is required to pass the course._ You can find more details about passing the course on the [page on grading](/grading-and-exams).
-
-**The exercises are not in any specific order of difficulty.** Each section usually introduces some new programming concepts, and these are then practised with both simpler and more complicated exercises. **If you come across an exercise that feels too difficult, move on to the next one.** You can always come back to the more difficult exercises if you have time later.
-
-When the going inevitably gets tough, a word of consolation: a task that seems impossibly difficult this week will likely feel rather easy in about four weeks' time.
-
-</text-box>
 
 A very common use case for programming is handling data stored in files. Programs can read data from files and write the computed results to files. Even large amounts of data become easy to process automatically when files are used.
 
@@ -105,7 +103,7 @@ Total length of lines: 81
 
 There is a line break `\n` at the end of each line in the file, but the `print` function also adds a line break by default. There are no extra line breaks in the printout above, because the line breaks at the ends of the lines are removed with the `replace` method. It replaces each line break character with an empty string. This way the lengths of the lines are also calculated correctly.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Largest number**
 >
 > The file `numbers.txt` contains integer numbers, one number per line. The contents could look like this:
 
@@ -216,7 +214,7 @@ Grades: ['4', '5', '5', '4', '5', '5', '4', '5', '4', '4']
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Fruit market**
 >
 > The file `fruits.csv` contains names of fruits, and their prices, in the format specified in this example:
 
@@ -232,7 +230,7 @@ Please write a function named `read_fruits`, which reads the file and returns a 
 NB: the function does not take any arguments. The file you are working with is always named `fruits.csv`.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Matrix**
 >
 > The file `matrix.txt` contains a matrix in the format specified in the example below:
 
@@ -567,7 +565,7 @@ The program also takes care of situations where the employee's pic is not presen
 
 Remember, the order in which items are stored in a dictionary does not matter, as the keys are processed based on hash values.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Course grading, part 1**
 >
 > This program works with two CSV files. One of them contains information about some students on a course:
 
@@ -636,7 +634,7 @@ When you have verified your program works correctly, you can remove the `if` str
 **NB2:** If Visual Studio can't find the file and you have checked that there are no spelling errors, take a look at [these instructions](/part-6/1-reading-files#what-if-visual-studio-code-cannot-find-my-file).
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Course grading, part 2**
 >
 > Let's expand the program created in the previous exercise. Now also the exam points awarded to each student are contained in a CSV file. The contents of the file follow this format:
 
@@ -678,7 +676,7 @@ exam points + exercise points   | grade
 **NB:** this exercise doesn't ask you to write any functions, so you should __not__ place any code within an `if __name__ == "__main__"` block.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Course grading, part 3**
 >
 > This exercise will continue from the previous one. Now we shall print out some statistics based on the CSV files.
 
@@ -732,7 +730,7 @@ With numbers the default behaviour is to justify to the _right_ edge. The symbol
 **NB:** this exercise doesn't ask you to write any functions, so you should __not__ place any code within an `if __name__ == "__main__"` block.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Spell checker**
 >
 > Please write a program which asks the user to type in some text. Your program should then perform a spell check, and print out feedback to the user, so that all misspelled words have stars around them. Please see the two examples below:
 
@@ -757,7 +755,7 @@ The exercise template includes the file `wordlist.txt`, which contains all the w
 **NB2** If Visual Studio can't find the file and you have checked that there are no spelling errors, take a look at [these instructions](/part-6/1-reading-files#what-if-visual-studio-code-cannot-find-my-file).
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Recipe search**
 >
 > This exercise is about creating a program which allows the user to search for recipes based on their names, preparation times, or ingredients used. The program should read the recipes from a file submitted by the user.
 
@@ -868,7 +866,7 @@ Cake pops, preparation time 60 min
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: City bikes**
 >
 > In this exercise we will write some functions for working on a file containing location data from the stations for [city bikes in Helsinki](https://www.hsl.fi/en/citybikes).
 

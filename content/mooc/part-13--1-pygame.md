@@ -1,66 +1,65 @@
 ---
-title: "Pygame"
+title: "مكتبة pygame"
 lang: ar
 source: "https://programming-26.mooc.fi/part-13/1-pygame"
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **أهداف التعلّم**
+>
+> بعد هذا القسم
+>
+> - تكون قد ثبّتَت مكتبة pygame على حاسوبك
+> - ستعرف كيفية إنشاء نافذة pygame وكيفية الخروج من البرنامج
+> - ستتمكّن من استخدام صورة محفوظة في ملف داخل نافذة pygame
 
-After this section
 
-- You will have installed the pygame library on your computer
-- You will know how to create a pygame window and how to exit a program
-- You will be able to use an image stored in a file in a pygame window
+في هذين القسمين الأخيرين من مادة المقرر سنتقن مكتبة pygame. إنها مكتبة (library) بايثون مخصّصة لبرمجة الألعاب، وتساعدك على إنشاء العناصر الرسومية، وعلى التعامل مع الأحداث (events) القادمة من لوحة المفاتيح والفأرة، وعلى تنفيذ مواصفات أخرى يلزم توفرها في الألعاب.
 
-</text-box>
+## تثبيت pygame
 
-In these last two parts of this course material we will get to grips with the pygame library. It is a Python library for programming games. It helps you create graphical elements, handle events from the keyboard and the mouse, and implement other features necessary in games.
+### لينكس
 
-## Installing pygame
+افتح سطر الأوامر، واكتب `pip3 install pygame` ثم اضغط `enter`.
 
-### Linux
+![pygame_linux.png](/images/mooc/part-13/pygame_linux.png)
 
-Open a command line, type in `pip3 install pygame` an press `enter`.
+ينبغي أن يُثبِّت هذا المكتبة على حاسوبك.
 
-<img src="pygame_linux.png">
+### ويندوز
 
-This should install the pygame library on your computer.
+افتح طرفية ويندوز عن طريق القائمة، واكتب `cmd` ثم اضغط `enter`:
 
-### Windows
+![13_1_1.png](/images/mooc/part-13/13_1_1.png)
 
-Open the Windows terminal by opening the menu, typing in `cmd` and pressing `enter`:
+ينبغي أن تُفتح نافذة مفسّر سطر الأوامر. اكتب `pip3 install pygame` ثم اضغط `enter`.
 
-<img src="13_1_1.png">
+ينبغي أن يُثبِّت هذا المكتبة على حاسوبك.
 
-The command line interpreter window should open. Type in `pip3 install pygame` and press `enter`.
+قد يتطلّب التثبيت صلاحيات مسؤول النظام. فإذا لم ينجح ما سبق، يمكنك محاولة تشغيل تطبيق الطرفية كمسؤول: افتح قائمة ويندوز، وابحث عن تطبيق CMD، وانقر عليه بزر الفأرة الأيمن ثم اختر «Run as administrator».
 
-This should install the pygame library on your computer.
+يتطلّب تثبيت pygame والوصول إليها أن يكون تثبيت Python مضبوطًا في متغيّر المسار (path) وفق التعليمات [هنا](https://www.mooc.fi/en/installation/vscode/#python3).
 
-Installation may require system administrator privileges. If the above doesn't work, you can try running the terminal application as an administrator: open the Windows menu, find the CMD application, right-click it and choose "Run as administrator".
+### ماك
 
-Installing and accessing pygame requires that your Python installation is added to path, as instructed [here](https://www.mooc.fi/en/installation/vscode/#python3).
+افتح _Terminal_، فمثلًا عبر رمز العدسة المكبّرة في الزاوية العليا اليمنى:
 
-### Mac
+![13-1-2.png](/images/mooc/part-13/13-1-2.png)
 
-Open the _Terminal_, for example through the magnifying glass symbol in the top right corner:
+ينبغي أن تُفتح أداة البحث. اكتب `terminal` ثم اضغط `enter`:
 
-<img src="13-1-2.png">
+![13-1-3.png](/images/mooc/part-13/13-1-3.png)
 
-The search tool should open. Type in `terminal` and press `enter`:
-
-<img src="13-1-3.png">
-
-Type in the following and press `enter`:
+اكتب ما يلي ثم اضغط `enter`:
 
 `pip3 install pygame`
 
-<img src="13-1-4.png">
+![13-1-4.png](/images/mooc/part-13/13-1-4.png)
 
-This should install the pygame library on your computer.
+ينبغي أن يُثبِّت هذا المكتبة على حاسوبك.
 
-## Your first program
+## برنامجك الأول
 
-Here is a simple program for checking your pygame installation works correctly:
+إليك برنامج بسيط للتحقّق من أن تثبيت pygame يعمل بصورة صحيحة:
 
 ```python
 import pygame
@@ -77,31 +76,31 @@ while True:
             exit()
 ```
 
-When this program is run, it should display a window:
+عند تشغيل هذا البرنامج ينبغي أن يعرض نافذة:
 
-<img src="pygame_first.gif">
+![pygame_first.gif](/images/mooc/part-13/pygame_first.gif)
 
-The program only consists of displaying a window, and it runs until the user closes the window.
+لا يتكوّن البرنامج إلا من عرض نافذة، وهو يعمل حتى يُغلق المستخدم النافذة.
 
-Let's take a closer look at the steps required to achieve this. The first line takes the pygame library into use: `import pygame`. The next command `pygame.init` initializes the pygame modules, and the next one creates a window with the function `pygame.display.set_mode`.
+لنتأمّل الخطوات اللازمة لتحقيق ذلك عن قرب. يُدخل السطر الأول مكتبة pygame إلى الاستخدام: `import pygame`. ثم يُهيّئ الأمر التالي `pygame.init` وحدات pygame، ويُنشئ الأمر الذي يليها نافذةً عبر الدالة `pygame.display.set_mode`.
 
 ```python
 pygame.init()
 window = pygame.display.set_mode((640, 480))
 ```
 
-The `set_mode` function takes the window dimensions as an argument. The tuple `(640, 480)` indicates that the window is 640 pixels wide and 480 pixels high. The variable name `window` can be used later to access the window, for example to draw something in it.
+تأخذ الدالة `set_mode` أبعاد النافذة وسيطًا (argument). تشير الصف (tuple) `(640, 480)` إلى أن النافذة عرضها 640 بكسل وارتفاعها 480 بكسل. ويمكن استخدام اسم المتغيّر `window` لاحقًا للوصول إلى النافذة، فمثلًا لرسم شيء فيها.
 
-The following two commands do just that:
+يفعل الأمران التاليان شيئًا مماثلًا:
 
 ```python
 window.fill((0, 0, 0))
 pygame.display.flip()
 ```
 
-The `fill` method fills the window with the colour passed as an argument. In this case the colour is black, passed as an RGB value in the tuple `(0, 0, 0)`. The `pygame.display.flip` updates the contents of the window.
+تملأ الطريقة `fill` النافذة باللون الممرور إليها كوسط. وفي هذه الحالة يكون اللون أسود، ممرورًا كقيمة RGB في الصف `(0, 0, 0)`. ويُحدّث `pygame.display.flip` محتوى النافذة.
 
-After these initialization commands the _main loop_ of the program begins:
+بعد أوامر التهيئة هذه يبدأ _الحلقة الرئيسية_ للبرنامج:
 
 ```python
 while True:
@@ -110,15 +109,15 @@ while True:
             exit()
 ```
 
-The main loop handles all events the operating system passes to the program. With each iteration the function `pygame.event.get` returns a list of any events collected since the previous iteration.
+تتعامل الحلقة الرئيسية مع كل الأحداث التي يمرّرها نظام التشغيل إلى البرنامج. ومع كل تكرار (iteration) تُعيد الدالة `pygame.event.get` قائمة بالأحداث المُجمَّعة منذ التكرار السابق، إن وُجدت.
 
-In the example above the program only handles events of type `pygame.QUIT`. This event is raised by, for example, clicking on the exit button in the corner of the window. If the `pygame.QUIT` event is raised, the program exits through the `exit` function.
+في المثال أعلاه يعالج البرنامج أحداث نوع `pygame.QUIT` فقط. يُرفَع هذا الحدث مثلًا عند النقر على زر الإغلاق في زاوية النافذة. وإذا رُفع حدث `pygame.QUIT` يخرج البرنامج عبر الدالة `exit`.
 
-You can try and see what happens if your program doesn't handle the `pygame.QUIT` event. This should mean that clicking on the exit button does nothing, which would be confusing for the user. As the program is run from the command line, you can still stop it from the command line with Control+C.
+يمكنك أن تجرّب وترى ما يحدث إذا لم يعالج برنامجك حدث `pygame.QUIT`. ينبغي أن يؤدي ذلك إلى أن النقر على زر الإغلاق لا يفعل شيئًا، وهو ما قد يربك المستخدم. وبما أن البرنامج يُشغَّل من سطر الأوامر، فلا تزال قادرًا على إيقافه من سطر الأوامر باستخدام Control+C.
 
-## Add an image
+## إضافة صورة
 
-Let's add an image to the window:
+لنضف صورةً إلى النافذة:
 
 ```python
 import pygame
@@ -138,21 +137,21 @@ while True:
             exit()
 ```
 
-The program uses this image of a robot, which is stored in the file `robot.png`:
+يستخدم البرنامج صورة هذا الروبوت، المحفوظة في الملف `robot.png`:
 
-<img src="robot.png">
+![robot.png](/images/mooc/part-13/robot.png)
 
-The file `robot.png` has to be in the same directory with the source code of the your program, or the program won't be able to find it. In the exercise templates for this part the images are waiting in the exercise directory.
+يجب أن يكون الملف `robot.png` في الدليل نفسه الذي يقع فيه شيفرة برنامجك المصدرية، وإلا لن يتمكّن البرنامج من العثور عليه. وفي قوالب تمارين هذا القسم تنتظر الصور داخل دليل التمرين.
 
-The window should now look like this:
+ينبغي أن تبدو النافذة الآن بهذا الشكل:
 
-<img src="pygame_pic.gif">
+![pygame_pic.gif](/images/mooc/part-13/pygame_pic.gif)
 
-The function `pygame.image.load` loads the image in the file `robot.png` and stores a reference to it in the variable named `robot`. The method `blit` draws the image at the location `(100, 50)`, and the function `pygame.display.flip` updates the window contents, as before. The location `(100, 50)` means that the _top left corner_ of the image is at that location within the window.
+تحمّل الدالة `pygame.image.load` الصورة في الملف `robot.png` وتخزّن إحالةً إليها في المتغيّر المسمّى `robot`. وترسم الطريقة `blit` الصورة في الموقع `(100, 50)`، وتحدّث الدالة `pygame.display.flip` محتوى النافذة كما في السابق. يعني الموقع `(100, 50)` أن _الزاوية العليا اليسرى_ للصورة تقع في هذا الموقع داخل النافذة.
 
-In pygame the origo point `(0, 0)` is in the top left corner of the window. The x coordinates increase to the right, and the y coordinates increase downwards, so that the bottom right corner has the coordinates `(640, 480)`. This is contrary to how coordinates are usually handled in e.g. mathematics, but it is quite common in a programming context, and worth getting used to.
+في pygame يقع نقطة الأصل `(0, 0)` في الزاوية العليا اليمنى للنافذة. تزداد إحداثيات x إلى اليمين، وتزداد إحداثيات y إلى الأسفل، بحيث يكون للزاوية العليا اليسرى للنافذة الإحداثيان `(640, 480)`. وهذا خلاف لما اعتُاد عليه في تعامل الرياضيات مثلًا مع الإحداثيات، لكنه شائع جدًا في سياق البرمجة، ويستحقّ أن تعتاد عليه.
 
-Once you have loaded an image, you can use it many times within the same window. The following code draws the image of the robot at three different locations:
+بمجرّد تحميلك صورةً يمكنك استخدامها مرّات عديدة داخل النافذة نفسها. ترسم الشيفرة التالية صورة الروبوت في ثلاثة مواقع مختلفة:
 
 ```python
 window.blit(robot, (0, 0))
@@ -160,11 +159,11 @@ window.blit(robot, (300, 0))
 window.blit(robot, (100, 200))
 ```
 
-The window should look like this as a result:
+ينبغي أن تبدو النافذة بهذا الشكل نتيجةً لذلك:
 
-<img src="pygame_pic2.gif">
+![pygame_pic2.gif](/images/mooc/part-13/pygame_pic2.gif)
 
-Here we set the location of the image so that it lies at the centre of the window:
+هنا نضبط موقع الصورة بحيث تقع في وسط النافذة:
 
 ```python
 width = robot.get_width()
@@ -172,43 +171,42 @@ height = robot.get_height()
 window.blit(robot, (320-width/2, 240-height/2))
 ```
 
-The window should now look like this:
+ينبغي أن تبدو النافذة الآن بهذا الشكل:
 
-<img src="pygame_pic3.gif">
+![pygame_pic3.gif](/images/mooc/part-13/pygame_pic3.gif)
 
-The method `get_width` returns the width of the image, and the method `get_height` returns its height, both in pixels. The centre of the window is at half its width and height, so at `(320, 240)`, which we can use to calculate a suitable location for the top left corner of the image, so that it lies exactly at the centre.
+تُعيد الطريقة `get_width` عرض الصورة، وتُعيد الطريقة `get_height` ارتفاعها، وكلاهما بالبكسل. يقع وسط النافذة عند نصف عرضها وارتفاعها، أي عند `(320, 240)`، ويمكننا استخدام ذلك لحساب موقع مناسب للزاوية العليا اليسرى للصورة بحيث تقع تمامًا في المنتصف.
 
-<text-box variant='hint' name='Pygame exercises'>
-
-The exercises in this part of the course have no automated tests, as the results as visually verified. The tests grant points automatically as you submit your solution to the server, no matter what your implementation. Only submit your solution when you are ready, and your solution matches the exercise description. The exercises may not have automatic tests, but the course staff will still see your solution. Also submitting incomplete solution to TMC Paste grants points automatically, so it should not be used when asking for help with the exercises in this part. You can use [Pastebin.com](https://pastebin.com/) or some another internet pastebin service when asking for help in the course's support channels.
-
-If your solution clearly does not match the exercise description, you may lose the points granted for the exercises in this part.
-
-</text-box>
-
-> **تمرين برمجي: تمرين برمجي**
+> **تمارين pygame**
 >
-> Please write a program which draws a robot in each of the four corners of the window. The end result should look like this:
-
-<img src="pygame_four.gif">
-
-
-> **تمرين برمجي: تمرين برمجي**
+> لا تختبر تمارين هذا القسم من المقرر اختبارات آلية، إذ تُتحقَّق نتائجها بصريًا. تمنح الاختبارات النقاط تلقائيًا عند تقديم حلّك إلى الخادم، مهما كانت طريقة تنفيذك. لا تقدّم حلّك إلا عندما تكون جاهزًا وأن يكون مطابقًا لوصف التمرين. ورغم أن التمارين قد تفتقر إلى الاختبارات الآلية، فإن فريق المقرر يرى حلّك على أي حال. كذلك يمنح تقديم حلّ ناقص إلى TMC Paste نقاطًا تلقائيًا، ولذلك لا ينبغي استخدامه عند طلب المساعدة حول تمارين هذا القسم. يمكنك استخدام [Pastebin.com](https://pastebin.com/) أو أي خدمة لصق (pastebin) أخرى على الإنترنت عند طلب المساعدة في قنوات دعم المقرر.
 >
-> Please write a program which draws ten robots in a row. The end result should look like this:
-
-<img src="pygame_row.gif">
+> إذا لم يكن حلّك مطابقًا لوصف التمرين بوضوح، فقد تخسر النقاط الممنوحة لتمارين هذا القسم.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: أربعة روبوتات**
 >
-> Please write a program which draws a hundred robots: ten rows with ten robots in each row. The end result should look like this:
+> اكتب برنامجًا يرسم روبوتًا في كل زوايا النافذة الأربع. ينبغي أن تبدو النتيجة النهائية بهذا الشكل:
 
-<img src="pygame_hundred.gif">
+![pygame_four.gif](/images/mooc/part-13/pygame_four.gif)
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: روبوتات في صف**
 >
-> Please write a program which draws _a thousand_ robots in random places. The end result should look like this:
+> اكتب برنامجًا يرسم عشرة روبوتات في صفّ واحد. ينبغي أن تبدو النتيجة النهائية بهذا الشكل:
 
-<img src="pygame_thousand.gif">
+![pygame_row.gif](/images/mooc/part-13/pygame_row.gif)
+
+
+> **تمرين برمجي: مئة روبوت**
+>
+> اكتب برنامجًا يرسم مئة روبوت: عشرة صفوف في كل صفّ منها عشرة روبوتات. ينبغي أن تبدو النتيجة النهائية بهذا الشكل:
+
+![pygame_hundred.gif](/images/mooc/part-13/pygame_hundred.gif)
+
+
+> **تمرين برمجي: روبوتات عشوائية**
+>
+> اكتب برنامجًا يرسم _ألف_ روبوت في مواقع عشوائية. ينبغي أن تبدو النتيجة النهائية بهذا الشكل:
+
+![pygame_thousand.gif](/images/mooc/part-13/pygame_thousand.gif)

@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-8/1-objects-and-methods"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know what an object is in programming
+> - You will understand what is meant by the independence of individual objects
+> - You will be able to create and access objects
 
-After this section
-
-- You will know what an object is in programming
-- You will understand what is meant by the independence of individual objects
-- You will be able to create and access objects
-
-</text-box>
 
 This is the first part of the Advanced Course in Programming. The material is designed to be used with the Visual Studio Code editor, just like the preceding Introduction to Programming course was. If you haven't use Visual Studio Code before, you will find the installation instructions [here](https://www.mooc.fi/en/installation/vscode), and an introduction to the programming environment from the previous course [here](/part-4/1-vscode).
 
@@ -78,13 +77,12 @@ Seven Pythons
 
 ![8_1_1.png](/images/mooc/part-8/8_1_1.png)
 
-<text-box variant="info" name="Python objects">
+> **Python objects**
+>
+> You may remember from the Introduction to Programming course that any value in Python is internally handled as an object. This means that the value stored in a variable is a _reference to an object_. The data itself is stored within the object in computer memory. If you assign a value to a new variable with the command `a = 3`, the value stored in the variable is _not_ 3, but a _reference to an object which contains the value 3_.
+>
+> Most other programming languages (at least those which support object-oriented programming) include some specially defined _primitive data types_. These usually include at least integer numbers, floating point numbers and Boolean truth values. Primitives are processed directly, meaning that they are stored directly in variables, not as references. Python has no such primitives, but working with the basic data types in Python is practically very similar. Objects of these basic data types (such as numbers, Boolean values and strings) are _immutable_, meaning that they cannot be changed in memory. If the value stored in a variable of a basic data type needs to be changed, the entire reference is replaced, but the object itself remains intact in memory.
 
-You may remember from the Introduction to Programming course that any value in Python is internally handled as an object. This means that the value stored in a variable is a _reference to an object_. The data itself is stored within the object in computer memory. If you assign a value to a new variable with the command `a = 3`, the value stored in the variable is _not_ 3, but a _reference to an object which contains the value 3_.
-
-Most other programming languages (at least those which support object-oriented programming) include some specially defined _primitive data types_. These usually include at least integer numbers, floating point numbers and Boolean truth values. Primitives are processed directly, meaning that they are stored directly in variables, not as references. Python has no such primitives, but working with the basic data types in Python is practically very similar. Objects of these basic data types (such as numbers, Boolean values and strings) are _immutable_, meaning that they cannot be changed in memory. If the value stored in a variable of a basic data type needs to be changed, the entire reference is replaced, but the object itself remains intact in memory.
-
-</text-box>
 
 ## Objects and methods
 
@@ -160,7 +158,7 @@ print(my_list)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: The smallest average result**
 >
 > Please write a function named `smallest_average(person1: dict, person2: dict, person3: dict)`, which takes three dictionary objects as its arguments.
 
@@ -191,7 +189,7 @@ print(smallest_average(person1, person2, person3))
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Row sums**
 >
 > In Python, every value stored in a variable is a reference to an object, so any value stored in a list is also a reference to an object. This is also true when modelling a matrix data structure: each value in the top level list is a reference to another list, which in turn contains references to the objects representing the elements of the matrix.
 

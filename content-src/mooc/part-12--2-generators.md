@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-12/2-generators"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know what a Python generator is
+> - You will be familiar with the keyword `yield`
+> - You will be able to write your own generator functions
 
-After this section
-
-- You will know what a Python generator is
-- You will be familiar with the keyword `yield`
-- You will be able to write your own generator functions
-
-</text-box>
 
 We have already come across situations where we're dealing with a series of items, and we'd need the next item(s) in the series, but we wouldn't necessarily want to formulate the entire series up to that point each time a new item is required. Some recursive series, such as the Fibonacci number, are a good example of such a situation. If each function call recursively generates the entire series up to the desired point, we end up generating the beginning of the series many times over.
 
@@ -127,7 +126,7 @@ Generators do not have to have a defined maximum value or termination point. The
 
 Pay mind, though: traversing a generator with a `for` loop only works if the generator terminates at some point. If the generator is built on an infinite loop, trying to traverse it with a simple `for` loop will cause an endless execution, just like a `while` loop with no end or break condition would.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Even numbers**
 >
 > Please write a generator function named `even_numbers(beginning: int, maximum: int)` which takes two integers as its arguments. The function should produce even numbers starting from `beginning` and ending with, at most, `maximum`.
 
@@ -165,7 +164,7 @@ for number in numbers:
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Prime numbers**
 >
 > A prime number is a number which is divisible only by itself and the number 1. By convention prime numbers are defined as positive integers from the number 2 upwards. The first six prime numbers are 2, 3, 5, 7, 11 and 13.
 
@@ -246,7 +245,7 @@ jkl
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Random words**
 >
 > Please write a function named `word_generator(characters: str, length: int, amount: int)` which returns a new generator for generating random words based on the parameters given.
 

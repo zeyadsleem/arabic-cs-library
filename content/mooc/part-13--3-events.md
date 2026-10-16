@@ -1,24 +1,23 @@
 ---
-title: "الأحداث (Events)"
+title: "الأحداث"
 lang: ar
 source: "https://programming-26.mooc.fi/part-13/3-events"
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **أهداف التعلّم**
+>
+> بعد هذا القسم
+>
+> - ستكون على دراية بأحداث pygame
+> - ستتمكّن من كتابة برنامج يتفاعل مع ضغطات المفاتيح
+> - ستتمكّن من كتابة برنامج يتفاعل مع أحداث الفأرة
 
-After this section
 
-- You will be familiar with pygame events
-- You will be able to write a program which reacts to key presses
-- You will be able to write a program which reacts to mouse events
+حتى الآن لم تكن حلقاتنا الرئيسية تنفّذ سوى تحريكات محدّدة مسبقًا وتتفاعل فقط مع أحداث من نوع `pygame.QUIT`، رغم أن الحلقة تتلقّى قائمة بجميع الأحداث من نظام التشغيل. فلنتعرّف إذًا على أنواع أخرى من الأحداث.
 
-</text-box>
+## معالجة الأحداث
 
-Thus far our main loops have only executed predetermined animations and reacted to only `pygame.QUIT` type events, even though the loop gets a list of all events from the operating system. Let's get to grips with some other types of events, then.
-
-## Handling events
-
-This program prints out information about all the events passed by the operating system to the pygame program, while it is running:
+يطبع هذا البرنامج معلومات عن جميع الأحداث التي يمرّرها نظام التشغيل إلى برنامج pygame أثناء تشغيله:
 
 ```python
 import pygame
@@ -33,7 +32,7 @@ while True:
             exit()
 ```
 
-Let's assume the program was left running for a while, and then the exit button was clicked. The program prints out the following info:
+لنفترض أن البرنامج بقي يعمل فترة من الزمن، ثم نُقر على زرّ الخروج. يطبع البرنامج المعلومات التالية:
 
 ```x
 <Event(4-MouseMotion {'pos': (495, 274), 'rel': (495, 274), 'buttons': (0, 0, 0), 'window': None})>
@@ -51,13 +50,13 @@ Let's assume the program was left running for a while, and then the exit button 
 <Event(12-Quit {})>
 ```
 
-The first few events concern mouse usage, ten there are some events from the keyboard, and finally the last event closes the program. Each event has at least a type, but they may also offer some other identifying info, such as the location of the mouse cursor or the key that was pressed.
+تتعلّق الأحداث القليلة الأولى باستخدام الفأرة، ثم تأتي بعض الأحداث من لوحة المفاتيح، وأخيرًا يُغلق الحدث الأخير البرنامج. ولكل حدث نوع على الأقل، لكنه قد يوفّر كذلك بعض المعلومات المميّزة الأخرى، مثل موقع مؤشّر الفأرة أو المفتاح الذي ضُغط.
 
-You can look for event descriptions in the [pygame documentation](https://www.pygame.org/docs/ref/event.html), but it can sometimes be easier to print out events with the code above, and look for the event that occurs when something you want to react to happens.
+يمكنك البحث عن أوصاف الأحداث في [توثيق pygame](https://www.pygame.org/docs/ref/event.html)، لكن قد يكون أسهل أحيانًا طباعة الأحداث بالشيفرة أعلاه، والبحث عن الحدث الذي يقع عندما يحدث شيء تريد التفاعل معه.
 
-## Keyboard events
+## أحداث لوحة المفاتيح
 
-This program can process events where the user presses the arrow key either to the right or to the left on their keyboard. The program prints out which key was pressed.
+يستطيع هذا البرنامج معالجة الأحداث التي يضغط فيها المستخدم مفتاح السهم إلى اليمين أو إلى اليسار على لوحة مفاتيحه. ويطبع البرنامج المفتاح الذي ضُغط.
 
 ```python
 import pygame
@@ -77,9 +76,9 @@ while True:
             exit()
 ```
 
-The constants `pygame.K_LEFT` and `pygame.K_RIGHT` refer to the arrow keys to the left and right. The pgyame key constants for the different keys on a keyboard are listed in the [pygame documentation](https://www.pygame.org/docs/ref/key.html#key-constants-label).
+يشير الثابتان `pygame.K_LEFT` و`pygame.K_RIGHT` إلى مفتاحَي السهم إلى اليسار وإلى اليمين. وثوابت المفاتيح في pygame الخاصة بمفاتيح لوحة المفاتيح المختلفة مدرجة في [توثيق pygame](https://www.pygame.org/docs/ref/key.html#key-constants-label).
 
-For example, if the user presses the arrow key to the right twice, then the left one once, and then the right one once more, the program prints out
+فمثلًا، إذا ضغط المستخدم مفتاح السهم إلى اليمين مرّتين، ثم مفتاح اليسار مرّة واحدة، ثم مفتاح اليمين مرّة أخرى، يطبع البرنامج
 
 ```x
 right
@@ -88,7 +87,7 @@ left
 right
 ```
 
-We now have all the tools needed to move a character, or _sprite_, on the screen to the right and left with the arrow keys. The following code will achieve this:
+لدينا الآن كل الأدوات اللازمة لتحريك شخصية، أو _كائن رسومي_ (sprite)، على الشاشة إلى اليمين وإلى اليسار بمفتاحَي السهم. وتحقيق ذلك ممكن بالشيفرة التالية:
 
 ```python
 import pygame
@@ -116,13 +115,13 @@ while True:
     pygame.display.flip()
 ```
 
-Depending on how you use your arrow keys, running the program could look like this:
+وبحسب طريقة استخدامك لمفتاحَي السهم، قد يبدو تشغيل البرنامج بهذا الشكل:
 
-<img src="pygame_move_robot.gif">
+![pygame_move_robot.gif](/images/mooc/part-13/pygame_move_robot.gif)
 
-In the code above we have the variables `x` and `y` which contain the coordinate location for the sprite. The variable `y` is set so that the sprite appears at the bottom of the window. The `y` value does not change throughout the execution of the program. The `x` value, however, increases by 10 whenever the user presses the arrow key to the right, and decreases by 10 whenever the left arrow key is pressed.
+في الشيفرة أعلاه لدينا المتغيّران `x` و`y` اللذان يحتويان على الموقع الإحداثي للكائن الرسومي. وقد ضُبط المتغيّر `y` ليظهر الكائن الرسومي في أسفل النافذة. ولا تتغيّر قيمة `y` خلال تنفيذ البرنامج. أما قيمة `x` فتزداد بمقدار 10 كلما ضغط المستخدم مفتاح السهم إلى اليمين، وتنقص بمقدار 10 كلما ضُغط مفتاح السهم إلى اليسار.
 
-The program works otherwise quite well, but the key needs to be pressed again each time we want to move again. It would be better if the movement was continuous as the key was held down. The following program offfers this functionality:
+ويعمل البرنامج عمومًا بشكل جيد، لكن يلزم ضغط المفتاح من جديد في كل مرّة نريد فيها التحرّك مرة أخرى. وسيكون من الأفضل أن تكون الحركة متواصلة طالما بقي المفتاح مضغوطًا. ويوفّر البرنامج التالي هذه الوظيفة:
 
 ```python
 import pygame
@@ -168,34 +167,34 @@ while True:
     clock.tick(60)
 ```
 
-The code now contains the variables `to_right` and `to_left`. These contain knowledge of whether the sprite should be moving to the right or to the left at any given moment. When the user presses down an arrow key, the value stored in the relevant variable become `True`. When the key is released, the value changes to `False`.
+تحتوي الشيفرة الآن على المتغيّرين `to_right` و`to_left`. وهما يحتويان على معرفة ما إذا كان ينبغي أن يتحرّك الكائن الرسومي إلى اليمين أو إلى اليسار في لحظة معيّنة. وعندما يضغط المستخدم مفتاح سهم، تصبح القيمة المخزّنة في المتغيّر المعنيّ `True`. وعندما يُطلق المفتاح تتغيّر القيمة إلى `False`.
 
-The clock is used to time the movements of the sprite, so that they potentially happen 60 times each second. If an arrow key is pressed, the sprite moves two pixels to the right or to the left. This means the sprite moves 120 pixels per second if the key is kept pressed down.
+تُستخدم الساعة لتوقيت حركات الكائن الرسومي، بحيث تحدث 60 مرّة في الثانية. وإذا ضُغط مفتاح سهم، يتحرّك الكائن الرسومي بكسلين إلى اليمين أو إلى اليسار. وهذا يعني أن الكائن الرسومي يتحرّك 120 بكسل في الثانية إذا بقي المفتاح مضغوطًا.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: أربعة اتجاهات**
 >
-> Please write a program where the player can move a robot in four directions with the arrow keys on the keyboard. The end result should look like this:
+> اكتب برنامجًا يستطيع فيه اللاعب تحريك روبوت في أربعة اتجاهات بمفتاحَي السهم على لوحة المفاتيح. ينبغي أن تبدو النتيجة النهائية بهذا الشكل:
 
-<img src="pygame_four_directions.gif">
+![pygame_four_directions.gif](/images/mooc/part-13/pygame_four_directions.gif)
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: أربعة جدران**
 >
-> Please improve the program in the previous exercise so that the robot cannot pass outside the window in any of the four directions. The end result should look like this:
+> حسّن البرنامج في التمرين السابق بحيث لا يستطيع الروبوت الخروج من النافذة في أيّ من الاتجاهات الأربعة. ينبغي أن تبدو النتيجة النهائية بهذا الشكل:
 
-<img src="pygame_four_walls.gif">
+![pygame_four_walls.gif](/images/mooc/part-13/pygame_four_walls.gif)
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: لاعبان**
 >
-> Please write a program where two players each direct their own robot. One of the players should use the arrow keys while the other could use, for example, the w-s-a-d keys. The end result should look like this:
+> اكتب برنامجًا يوجّه فيه لاعبان كلٌّ روبوته الخاص. وينبغي أن يستخدم أحد اللاعبين مفتاحَي السهم بينما يستخدم الآخر مثلًا المفاتيح w-s-a-d. ينبغي أن تبدو النتيجة النهائية بهذا الشكل:
 
-<img src="pygame_two_players.gif">
+![pygame_two_players.gif](/images/mooc/part-13/pygame_two_players.gif)
 
 
-## Mouse events
+## أحداث الفأرة
 
-The following code reacts to events where a mouse button is pressed down while the cursor is within the window area:
+تفاعل الشيفرة التالية مع الأحداث التي يُضغط فيها زرّ من أزرار الفأرة بينما يكون المؤشّر داخل منطقة النافذة:
 
 ```python
 import pygame
@@ -212,7 +211,7 @@ while True:
             exit()
 ```
 
-The execution of this program should look more or less like this:
+وينبغي أن يبدو تنفيذ هذا البرنامج على نحو ما بهذا الشكل:
 
 ```x
 you pressed the button number 1 at location (82, 135)
@@ -221,9 +220,9 @@ you pressed the button number 1 at location (269, 297)
 you pressed the button number 3 at location (515, 324)
 ```
 
-Button number 1 refers to the left mouse button and button number 3 refers to the right mouse button. 
+يشير الزرّ رقم 1 إلى زرّ الفأرة الأيسر، ويشير الزرّ رقم 3 إلى زرّ الفأرة الأيمن.
 
-This next program combines mouse event handling and drawing an image on the screen. When the user presses a mouse button while the mouse cursor is within the bounds of the window, an image of a robot is drawn at that location. 
+ويجمع البرنامج التالي بين معالجة أحداث الفأرة ورسم صورة على الشاشة. فعندما يضغط المستخدم زرًّا من أزرار الفأرة بينما يكون مؤشّر الفأرة داخل حدود النافذة، تُرسم صورة روبوت في ذلك الموقع.
 
 ```python
 import pygame
@@ -247,11 +246,11 @@ while True:
             exit()
 ```
 
-The execution of the program could look like this:
+وقد يبدو تنفيذ البرنامج بهذا الشكل:
 
-<img src="pygame_cursor.gif">
+![pygame_cursor.gif](/images/mooc/part-13/pygame_cursor.gif)
 
-The following program contains an animation where the robot sprite follows the mouse cursor.The location of the sprite is stored in the variables `robot_x` and `robot_y`. When the mouse moves, its location is stored in the variables `target_x` ja `target_y`. If the robot is not at this location, it moves to the approproate direction.
+يحتوي البرنامج التالي على تحريك يتبع فيه الكائن الرسومي للروبوت مؤشّر الفأرة. ويُخزَّن موقع الكائن الرسومي في المتغيّرين `robot_x` و`robot_y`. وعندما تتحرّك الفأرة، يُخزَّن موقعها في المتغيّرين `target_x` و`target_y`. وإذا لم يكن الروبوت في هذا الموقع، فإنه يتحرّك في الاتجاه المناسب.
 
 ```python
 import pygame
@@ -293,19 +292,19 @@ while True:
     clock.tick(60)
 ```
 
-The program's execution should look more or less like this:
+وينبغي أن يبدو تنفيذ البرنامج على نحو ما بهذا الشكل:
 
-<img src="pygame_cursor2.gif">
+![pygame_cursor2.gif](/images/mooc/part-13/pygame_cursor2.gif)
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: الروبوت والفأرة**
 >
-> Please write a program where the robot follows the mouse cursor so that the centre of the robot is always directly at the mouse cursor. The end result should look like this:
+> اكتب برنامجًا يتبع فيه الروبوت مؤشّر الفأرة بحيث يكون مركز الروبوت دائمًا عند مؤشّر الفأرة مباشرة. ينبغي أن تبدو النتيجة النهائية بهذا الشكل:
 
-<img src="pygame_robot_cursor.gif">
+![pygame_robot_cursor.gif](/images/mooc/part-13/pygame_robot_cursor.gif)
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: موقع الروبوت**
 >
-> Please write a program where the robot appears at a random location within the window. When the player clicks on the robot with the mouse, the robot moves to a new location. The end result should look like this:
+> اكتب برنامجًا يظهر فيه الروبوت في موقع عشوائي داخل النافذة. وعندما ينقر اللاعب على الروبوت بالفأرة، ينتقل الروبوت إلى موقع جديد. ينبغي أن تبدو النتيجة النهائية بهذا الشكل:
 
-<img src="pygame_robot_location.gif">
+![pygame_robot_location.gif](/images/mooc/part-13/pygame_robot_location.gif)

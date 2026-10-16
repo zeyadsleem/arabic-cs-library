@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-8/2-classes-and-objects"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know what a class is
+> - You will understand what the connection between a class and an object is
+> - You will know what is meant by object oriented programming
 
-After this section
-
-- You will know what a class is
-- You will understand what the connection between a class and an object is
-- You will know what is meant by object oriented programming
-
-</text-box>
 
 In the previous section we worked with lists, tuples, dictionaries and strings. These are all rather special cases in Python programming. Python syntax features a unique, pre-defined method of declaring an object belonging to each of these types:
 
@@ -215,7 +214,7 @@ TypeError: 'int' object is not callable
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: List of years**
 >
 > Please write a function named `list_years(dates: list)` which takes a list of `date` type objects as its argument. The function should return a new list, which contains the _years in the original list in chronological order_, from earliest to latest.
 
@@ -237,7 +236,7 @@ print(years)
 
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Shopping list**
 >
 > The exercise template contains a pre-defined `ShoppingList` class, which can be used to model a shopping list. Your task is to add a method to the class definition. You do not need to change any methods already defined.
 

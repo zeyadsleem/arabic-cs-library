@@ -6,13 +6,39 @@
 
 ## 0. الحالة الحالية (آخر تحديث)
 
-مترجم بالكامل داخل المكتبة: **40 كتاباً / 6,340 صفحة**
-`sicp` (883) · `fullstack-open-ar` (600) · `discrete-math` (549) · `500-lines` (470) · `go101-ar` (400) · `ocaml-cs3110` (400) · `postgres-internals` (320) · `learn-go-with-tests-ar` (250) · `webdev-learn-ar` (236) · `eloquent-javascript-ar` (200) · `database-foundations` (200) · `use-the-index-luke` (200) · `dive-into-systems` (190) · `db-design` (153) · `mit-6100l` (120) · `hello-algo` (118) · `go-tour` (103) · `go-style` (90) · `gobyexample-ar` (84) · `pgexercises` (70) · `patterns-dev` (53) · `aosabook` (51) · `select-star-sql` (45) · `nand2tetris-1` (40) · `nand2tetris-2` (40) · `cryptopals` (40) · `missing-semester` (38) · `frontend-architecture` (38) · `crafting-interpreters` (35) · `game-programming-patterns` (26) · `introtcs` (26) · `ahastack` (24) · `go-faq` (22) · `crypto-101` (18) · `effective-go` (16) · `open-data-structures` (14) · `xv6` (150) · `sql-mystery` (12) · `network-security` (10) · `how-to-write-go-code` (6)
+حالة `content/library.json` بعد التحقق الفعلي من المستودع: **51 كتاباً** —
+**44 في حالة `translated`** و**7 في حالة `planned`**، ولا توجد حالة ثالثة.
 
-في طابور الترجمة: **7 مصادر** بالترتيب المذكور في القسم 7، وكلّها تحتاج مستورداً
-جديداً إذ لم يُستورد مصدرها بعد. المصادر التي يمنع ترخيصها إعادة الترجمة (ND أو
-بلا ترخيص) أُدرجت في الطابور بمبادرة المستخدم مع إبقاء اسمها وحالتها ورابط مصدرها
-الأصلي في صفحتها.
+| التصنيف | العدد | التفاصيل |
+| --- | --- | --- |
+| كتب بصفحات محلية داخل المكتبة | 38 | 1184 قسماً في `src/lib/generated/sections/` |
+| كتب مستضافة خارجياً عبر `siteUrl` | 6 | `gobyexample-ar` · `learn-go-with-tests-ar` · `go101-ar` · `eloquent-javascript-ar` · `fullstack-open-ar` · `webdev-learn-ar` — ترجمتها كاملة لكنها تُقدَّم من مواقع خارجية، فلا صفحات محلية لها |
+| في طابور الترجمة | 7 | القسم 8 أدناه |
+
+`go-tour` ليست مستثنية: 103 صفحاتها العربية تُبنى من `src/lib/tour/translations/*.json`
+عبر `scripts/build-go-tour.mjs` ثم تُحقن في البيان عبر تخصيص في `build-content.mjs` —
+خط إنتاج مختلف عن خط `content/<book>/`، لكنه يمر بالفحص نفسه.
+
+بوابات الجودة المُنفَّذة فعلياً وكلّها تمر حالياً:
+
+| البوابة | النتيجة |
+| --- | --- |
+| `pnpm audit:content` | 1184 قسماً في 38 كتاباً — 0 صورة ناقصة، 0 صيغة خاطئة، 0 نص معلّم |
+| `pnpm test:content` | 45/45 |
+| `pnpm test:import` | 9/9 |
+| `pnpm check:links` | 0 رابط غير محلَّل من 137,523 مرجعاً داخلياً على 1241 صفحة |
+| `node scripts/build-content.mjs` | يخرج 0 فقط إذا كانت **كل** صفحة لكل كتاب مصنَّف `translated` بالفعل عربية |
+| `node scripts/check-mooc.mjs` | بوابة صفحة-صفحة لترجمة MOOC (القفل 2 أدناه) |
+
+ملاحظتان حول النزاهة بعد هذه الجولة:
+
+1. أُغلقت ثغرة «السقوط الصامت» في `build-content.mjs`: كان يطبع
+   `not translated yet` ثم ينشر الصفحة رغم ذلك، وقد أتت بالضبط على MOOC. الآن
+   تُجمَّع الصفحات غير العربية في قائمة واحدة ويُخرج الكود 1.
+2. صُحِّح تصنيفان كانا كاذبين: `mathematics-for-cs` كانت مُصنَّفة `translated`
+   مع 22 صفحة كلها إنجليزية، وأُعيدت إلى `planned` مع ملاحظة صريحة. أما
+   `go-tour` فكانت مُصنَّفة `planned` عن طريق خطأ وأُعيدت إلى `translated`
+   بعد التحقق أن 103 صفحاتها العربية موجودة فعلاً في البيان.
 
 ## 1. القاعدة الحاكمة: الترخيص قبل الترجمة
 
@@ -150,3 +176,90 @@
 5. ترجمة على دفعات متوازية (4-6 وكلاء لكل دفعة) مع قواعد موحّدة.
 6. فحص آلي: `lang: ar`، توازن الأسوار، تطابق عدد كتل الشيفرة، الصور محلية، صفر 404.
 7. `pnpm deploy` ثم تحقق من الروابط الحيّة.
+
+## 8. خطة الترجمات المتبقية
+
+المستويات مرتَّبة بالجاهزية: كل مستوى ما لم يكتمل لا يُفتح الذي يليه. الحجم
+مقاس بالصفحات الفعلية والبايتات، لا بالتخمين.
+
+### القفل 1 — MOOC (قيد التنفيذ الآن · 89 صفحة · 880KB)
+
+| البند | القيمة |
+| --- | --- |
+| المصدر | `content-src/mooc/` (89 ملفاً إنجليزياً — المصدر الوحيد؛ النسخة الأصلية حُذفت) |
+| العقدة | `docs/mooc-translation.md` |
+| الفاحص | `node scripts/check-mooc.mjs` (أو `pnpm check:mooc`) — أسوار الشيفرة، هوية جسم الشيفرة، الروابط، نسبة العربية، أطول تسلسل لاتيني، العناصر غير المُصيَّرة، **والأسطر الإنجليزية الباقية** |
+| القفل | `scripts/build-mooc.mjs` يُخرج 1 ويعمل سقوطاً `lang: en` لصفحة ناقصة/صحيحة الصفحة |
+
+الطريقة: دفعات ≤ 40K حرف، ترتيبها حسب الفصل لتوحيد المصطلحات، وبحد أقصى **3 وكلاء
+متزامنين** (11 وكلاء دفعةً واحدة ماتوا جميعاً بسبب حد المعدّل وأسقطوا عملهم).
+كل وكلاء يعيد قراءة الملف من القرص ويُعيد التحقق بعد الكتابة، لأن كتابة بعضهم
+نُفِي دفعةً سابقة دون أن يشعر أحد.
+
+### القفل 2 — Kinney (868 صفحة · 8.5MB · 16 دورة)
+
+| البند | القيمة |
+| --- | --- |
+| المصدر | `content-src/kinney/` — **جاهز بالكامل**، 864 ملفاً إنجليزياً |
+| خط الإنتاج | `scripts/import-kinney.mjs` + `scripts/build-kinney.mjs` موجودان |
+| نموذج التخزين | **على مستوى المقطع لا الصفحة**: `content-src/kinney-translations.json` يربط مفتاح مقطع ← النص العربي، والبناء يولّد `lang: ar` فقط عندما تكتمل مقاطع الصفحة |
+| الإذن | إذن كتابي من ستيف كيني (CC BY-NC-SA 4.0) — غير رسمي وغير تجاري |
+| الحالة | `planned`، وصفر ترجمة (JSON المخزن كائن فارغ) |
+
+أول ثلاث خطوات قبل أي ترجمة:
+
+1. **عقدة ترجمة**: `docs/kinney-translation.md` على غرار عقدة MOOC — قواعد
+   الشيفرة والصور والمصطلحات وعناصر React المُصيَّرة.
+2. **فاحص**: نسخة Kinney من `check-mooc.mjs` تفحص المقاطع المفقودة ونسبة
+   العربية وأي سطر إنجليزي متبقٍّ.
+3. **تفكيك الدفعات**: حجم الملف الأكبر هو `enterprise-ui--observability`
+   (55KB) وتوزيع الدفعات يكون لكل دورة على حدة لتوحيد المصطلحات:
+
+   | الدورة | الصفحات | الدورة | الصفحات |
+   | --- | --- | --- | --- |
+   | `aws` | 100 | `self-testing-ai-agents` | 92 |
+   | `react-typescript` | 90 | `testing` | 81 |
+   | `tailwind` | 84 | `react-performance` | 67 |
+   | `full-stack-typescript` | 54 | `visual-studio-code` | 55 |
+   | `ai-development` | 44 | `enterprise-ui` | 51 |
+   | `storybook` | 40 | `ai-development-setup` | 38 |
+   | `figma` | 31 | `openclaw` | 23 |
+   | `python-ai` | 13 | `web-security` | 1 (صفحة تعريفية) |
+
+   الترتيب المقترح من الأصغر للأكبر لمراجعة العقدة مبكراً على دفعات قصيرة:
+   `web-security → python-ai → openclaw → figma → ai-development-setup →
+   storybook → enterprise-ui → visual-studio-code → full-stack-typescript →
+   react-performance → tailwind → testing → react-typescript →
+   self-testing-ai-agents → ai-development → aws`.
+
+### القفل 3 — MCS: الرياضيات لعلوم الحاسوب (22 صفحة)
+
+- الاستيراد جاهز: `scripts/import-mcs.mjs` من `content-src/mcs/mcs.pdf`، وقد
+  أنتج 22 صفحة في `content/mathematics-for-cs/` كلها `lang: en`.
+- الحجم صغير، لذلك يُنفَّذ بعقدة مصغّرة على غرار MOOC ثم ترجمة الدفعة الواحدة.
+- الحالة `planned` بصدق الآن. («1048 صفحة» في `library.json` عدّ صفحات الـPDF
+  لا وحدات الترجمة؛ الوحدات الفعلية هي 22 ملفاً.)
+
+### القفل 4 — خمسة مصادر بلا خط استيراد بعد
+
+لا تبدأ ترجمتها قبل بناء `scripts/import-<book>.mjs`:
+
+| المصدر | الحجم | المصدر الخام | سلف الحجز قبل الترجمة |
+| --- | --- | --- | --- |
+| `networks-systems-approach` | 920 | RST في `SystemsApproach/book` | **بشرية**: مراسلة `discuss@systemsapproach.org` — ترخيصها CC BY 4.0 لكن سياسة المؤلفين تطلب مناقشة الترجمة |
+| `ocaml-manual` | 1158 | HTML على `ocaml.org/manual/5.5/` | مرجع تدريجي؛ يحتاج قراراً بحجم التغطية قبل البدء |
+| `ostep` | 714 | PDF لكل فصل | **قرار ترخيص**: الكتاب «مجاني» بلا ترخيص صريح والمؤلفان يطلبان التواصل قبل أي إعادة استخدام — يلزم تثبيت الحالة في `library.json` (`planned` مقابل `reference`) قبل أي عمل |
+| `db-performance-at-scale` | 270 | PDF أولي من Springer | CC BY 4.0 — مسالك الـPDF (استخراج صفحات) كما في MCS |
+| `open-workbook-cryptology` | 92 | LaTeX في `poritz.net/.../owoc.tex` | CC BY-SA 4.0، مسودة أولى |
+
+### بوابة القبول المشتركة لكل مستوى
+
+لا يُعلَّن مستوى كـ«مكتمل» قبل مرور كلها:
+
+1. `node scripts/check-<book>.mjs` (أو ما يكافئه) يُخرج 0 دون `PENDING`.
+2. `node scripts/build-content.mjs` يُخرج 0 — أي أن كل صفحة كل كتاب مصنَّف
+   `translated` هي عربية فعلاً.
+3. `pnpm audit:content` · `pnpm test:content` · `pnpm test:import` كلّها تمر.
+4. إعادة بناء `build/` ثم `pnpm check:links` = 0 غير محلَّل.
+5. استعادة تسجيل الكتاب في `content/library.json` + فهرس صفحاته بعد اكتماله
+   (MOOC مُزال مؤقتاً حتى يكتمل، فلا شيء من الإنجليزي يُنشر بين الفينة والأخرى).

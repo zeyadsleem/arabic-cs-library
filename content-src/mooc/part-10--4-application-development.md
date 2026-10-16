@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-10/4-application-development"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be familiar with some basic principles of application development
+> - You will be comfortable with differentiating between the different parts of an application (user interface, program logic and file handling)
+> - You will have practiced writing your own somewhat larger application
 
-After this section
-
-- You will be familiar with some basic principles of application development
-- You will be comfortable with differentiating between the different parts of an application (user interface, program logic and file handling)
-- You will have practiced writing your own somewhat larger application
-
-</text-box>
 
 Thus far in this course material we have covered a large number of Python features.
 
@@ -439,7 +438,7 @@ class PhoneBookApplication:
                 self.help()
 ```
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Phone book expansion, version 1**
 >
 > In this exercise you will create a small expansion to the phone book application. The code from the above example is in the exercise template. Please add a command which lets the user search the phone book by number. After the addition the application should work as follows:
 
@@ -568,7 +567,7 @@ NB: Even though the object is here assigned to a helper variable, the object sti
 
 If you are not quite sure what actually happens in the code above, please do try it out with the [visualisation tool](http://www.pythontutor.com/visualize.html#mode=edit).
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Phone book expansion, version 2**
 >
 > In this exercise you will create another version of the `PhoneBookApplication`. You will add addresses to the data which can be attached to a name. For simplicity's sake the functionality for saving to file has been removed, and some other methods have been renamed to better accommodate the change.
 
@@ -686,7 +685,7 @@ Writing code according to established object oriented programming principles com
 
 To finish off this part of the material you will implement one more larger application.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: CourseRecords**
 >
 > Please write an interactive application for keeping track of your studies. The internal structure is up to you, but this would be a good opportunity to practice creating a similar structure as in the PhoneBook example above.
 

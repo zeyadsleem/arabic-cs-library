@@ -8,16 +8,15 @@ source: "https://programming-26.mooc.fi/part-6/4-scope-of-variables"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know what is meant by a local variable
+> - You will know how the scope of a variable affects how it is used
+> - You will know what the Python keyword `global`means
+> - You will be able to use local and global variables in the correct contexts
 
-After this section
-
-- You will know what is meant by a local variable
-- You will know how the scope of a variable affects how it is used
-- You will know what the Python keyword `global`means
-- You will be able to use local and global variables in the correct contexts
-
-</text-box>
 
 The _scope_ of a variable refers to the sections of a program where a variable is accessible. A _local_ variable is only accessible in a defined section of the program, while a _global_ variable is available for use in any section of the program.
 

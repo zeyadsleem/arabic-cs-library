@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-13/1-pygame"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will have installed the pygame library on your computer
+> - You will know how to create a pygame window and how to exit a program
+> - You will be able to use an image stored in a file in a pygame window
 
-After this section
-
-- You will have installed the pygame library on your computer
-- You will know how to create a pygame window and how to exit a program
-- You will be able to use an image stored in a file in a pygame window
-
-</text-box>
 
 In these last two parts of this course material we will get to grips with the pygame library. It is a Python library for programming games. It helps you create graphical elements, handle events from the keyboard and the mouse, and implement other features necessary in games.
 
@@ -182,36 +181,35 @@ The window should now look like this:
 
 The method `get_width` returns the width of the image, and the method `get_height` returns its height, both in pixels. The centre of the window is at half its width and height, so at `(320, 240)`, which we can use to calculate a suitable location for the top left corner of the image, so that it lies exactly at the centre.
 
-<text-box variant='hint' name='Pygame exercises'>
+> **Pygame exercises**
+>
+> The exercises in this part of the course have no automated tests, as the results as visually verified. The tests grant points automatically as you submit your solution to the server, no matter what your implementation. Only submit your solution when you are ready, and your solution matches the exercise description. The exercises may not have automatic tests, but the course staff will still see your solution. Also submitting incomplete solution to TMC Paste grants points automatically, so it should not be used when asking for help with the exercises in this part. You can use [Pastebin.com](https://pastebin.com/) or some another internet pastebin service when asking for help in the course's support channels.
+>
+> If your solution clearly does not match the exercise description, you may lose the points granted for the exercises in this part.
 
-The exercises in this part of the course have no automated tests, as the results as visually verified. The tests grant points automatically as you submit your solution to the server, no matter what your implementation. Only submit your solution when you are ready, and your solution matches the exercise description. The exercises may not have automatic tests, but the course staff will still see your solution. Also submitting incomplete solution to TMC Paste grants points automatically, so it should not be used when asking for help with the exercises in this part. You can use [Pastebin.com](https://pastebin.com/) or some another internet pastebin service when asking for help in the course's support channels.
 
-If your solution clearly does not match the exercise description, you may lose the points granted for the exercises in this part.
-
-</text-box>
-
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Four robots**
 >
 > Please write a program which draws a robot in each of the four corners of the window. The end result should look like this:
 
 ![pygame_four.gif](/images/mooc/part-13/pygame_four.gif)
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Robots in a row**
 >
 > Please write a program which draws ten robots in a row. The end result should look like this:
 
 ![pygame_row.gif](/images/mooc/part-13/pygame_row.gif)
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: A hundred robots**
 >
 > Please write a program which draws a hundred robots: ten rows with ten robots in each row. The end result should look like this:
 
 ![pygame_hundred.gif](/images/mooc/part-13/pygame_hundred.gif)
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Random robots**
 >
 > Please write a program which draws _a thousand_ robots in random places. The end result should look like this:
 

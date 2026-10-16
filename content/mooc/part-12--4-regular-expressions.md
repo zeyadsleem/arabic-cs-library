@@ -1,25 +1,24 @@
 ---
-title: "التعبيرات النمطية (Regular Expressions)"
+title: "التعبيرات النمطية"
 lang: ar
 source: "https://programming-26.mooc.fi/part-12/4-regular-expressions"
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **أهداف التعلّم**
+>
+> بعد هذا القسم
+>
+> - ستعرف ما هي التعبيرات النمطية
+> - ستكون قادرًا على استخدام التعبيرات النمطية في برامجك الخاصة
 
-After this section
 
-- You will know what regular expressions are
-- You will be able to use regular expressions in your own programs
+أثبتنا بالفعل أن بايثون بيئة ممتازة لمعالجة النصوص. ومن الأدوات الإضافية القوية لمعالجة النصوص _التعبيرات النمطية_ (regular expressions)، التي يُختصر اسمها غالبًا بـ _regex_ أو _regexp_. وهي طريقة لاختيار السلاسل النصية التي تتبع نمطًا معيّنًا والبحث عنها. يقدّم لك هذا القسم أساسيات التعبير النمطي، لكنك ستجد معلومات أكثر بكثير على الإنترنت، بما في ذلك في [دليل](https://docs.python.org/3/howto/regex.html) بايثون.
 
-</text-box>
+## ما هي التعبيرات النمطية؟
 
-We have already established that Python is an excellent environment for processing text. One additional powerful tool for text processing is _regular expressions_, often shortened as _regex_ or _regexp_. They are a way of selecting and searching for strings which follow a certain pattern. This section introduces you to the basics of regular expression, but you will find much more information online, including in the Python [tutorial](https://docs.python.org/3/howto/regex.html).
+التعبيرات النمطية ليست ميزة خاصة ببايثون فقط. فهي تمثّل، على نحو ما، لغة برمجة داخل لغة برمجة. وهي متوافقة إلى حدٍّ ما عبر العديد من لغات البرمجة المختلفة. وللتعبيرات النمطية صياغتها الخاصة. والفكرة هي تحديد مجموعة من السلاسل النصية التي تتبع قواعد معيّنة.
 
-## What are regular expressions?
-
-Regular expressions are not just a Python feature. They represent, in a way, a programming language within a programming language. They are, to an extent, compatible across many different programming languages. Regular expressions have their own specific syntax. The idea is to define a collection of strings which follow certain rules.
-
-Let's begin with a simple example, before diving deeper into the syntax:
+لنبدأ بمثال بسيط قبل أن نتعمّق أكثر في الصياغة:
 
 ```python
 import re
@@ -40,9 +39,9 @@ Pantheon found!
 ```
 
 
-We need to `import` the `re` module in order to use regular expressions in Python. The `re` module contains many functions for working with regular expressions. In the example above, the `search` function takes two string arguments: the pattern string, and the target string where the pattern is looked for.
+نحتاج إلى `import` الوحدة `re` لكي نستخدم التعبيرات النمطية في بايثون. وتحتوي الوحدة `re` على دوال عديدة للعمل مع التعبيرات النمطية. وفي المثال أعلاه تأخذ الدالة `search` وسيطين من نوع سلسلة نصية: سلسلة النمط، والسلسلة الهدف التي يُبحث فيها عن النمط.
 
-This second example looks for any numbers in a string. The `findall` function returns a list of all the instances which match the pattern:
+يبحث هذا المثال الثاني عن أي أعداد في سلسلة نصية. وتعيد الدالة `findall` قائمة بجميع المواضع التي تطابق النمط:
 
 ```python
 import re
@@ -64,9 +63,9 @@ for number in numbers:
 ```
 
 
-## The syntax of regular expressions
+## صياغة التعبيرات النمطية
 
-Let's get familiar with the basic syntax of regular expressions. Most of the following examples make use of this testing program:
+لنتعرّف على الصياغة الأساسية للتعبيرات النمطية. وتستخدم معظم الأمثلة التالية برنامج الاختبار هذا:
 
 ```python
 import re
@@ -83,11 +82,11 @@ while True:
         print("Not found.")
 ```
 
-### Alternate substrings
+### السلاسل الفرعية البديلة
 
-The vertical bar `|`, also called the pipe character, allows you to match alternate substrings. Its significance is thus _or_. For example, the expression `911|112` matches strings which include either the substring `911` or the substring `112`.
+يتيح لك الشريط العمودي `|`، المسمى أيضًا حرف الأنبوب، مطابقة سلاسل فرعية بديلة. ومعناه إذن _أو_. على سبيل المثال، يطابق التعبير `911|112` السلاسل النصية التي تتضمن إما السلسلة الفرعية `911` أو السلسلة الفرعية `112`.
 
-An example with the testing program:
+مثال باستخدام برنامج الاختبار:
 
 
 ```
@@ -106,15 +105,15 @@ Not found.
 
 
 
-### Groups of characters
+### مجموعات الأحرف
 
-Square brackets are used to signify groups of accepted characters. For example, the expression `[aeio]` would match all strings which contain any of the characters a, e, i, or o. 
+تُستخدم الأقواس المربعة للدلالة على مجموعات الأحرف المقبولة. على سبيل المثال، يطابق التعبير `[aeio]` جميع السلاسل النصية التي تحتوي على أيٍّ من الأحرف a أو e أو i أو o.
 
-A dash is also allowed for matching ranges of characters. For example, the expression `[0-68a-d]` would match all strings which contain a digit between 0 and 6, or an eight, or a character between a and d. In this notation all ranges are _inclusive_.
+يُسمح أيضًا بالشَرطة لمطابقة نطاقات من الأحرف. على سبيل المثال، يطابق التعبير `[0-68a-d]` جميع السلاسل النصية التي تحتوي على رقم بين 0 و6، أو على الرقم ثمانية، أو على حرف بين a وd. وفي هذه الصياغة تكون جميع النطاقات _شاملة للطرفين_.
 
-Combining two sets of brackets lets you match two consecutive characters. For example, the expression `[1-3][0-9]` would match any two digit number between 10 and 39, inclusive.
+ويتيح لك الجمع بين مجموعتين من الأقواس مطابقة حرفين متتاليين. على سبيل المثال، يطابق التعبير `[1-3][0-9]` أي عدد مكوّن من رقمين بين 10 و39، شاملًا الطرفين.
 
-An example with the testing program:
+مثال باستخدام برنامج الاختبار:
 
 
 ```
@@ -134,17 +133,17 @@ Not found.
 ```
 
 
-### Repeated matches
+### المطابقات المتكرّرة
 
-Any part of an expression can be repeated with the following operators:
+يمكن تكرار أي جزء من التعبير باستخدام المعاملات التالية:
 
-* `*` repeats for any number of times, including zero
-* `+` repeats for any number of times, but at least once
-* `{m}` repeats for exactly `m` times
+* `*` يتكرّر لأي عدد من المرات، بما في ذلك الصفر
+* `+` يتكرّر لأي عدد من المرات، ولكن مرة واحدة على الأقل
+* `{m}` يتكرّر لعدد `m` من المرات بالضبط
 
-These operators work on the part of the expression immediately preceding the operator. For example, the expression `ba+b` would match the substrings `bab`, `baab` and `baaaaaaaaaaab`, among others. The expression `A[BCDE]*Z` would match the substrings `AZ`, `ADZ` or `ABCDEBCDEBCDEZ`, among others.
+تعمل هذه المعاملات على الجزء من التعبير الذي يسبق المعامل مباشرةً. على سبيل المثال، يطابق التعبير `ba+b` السلاسل الفرعية `bab` و`baab` و`baaaaaaaaaaab`، من بين غيرها. ويطابق التعبير `A[BCDE]*Z` السلاسل الفرعية `AZ` و`ADZ` و`ABCDEBCDEBCDEZ`، من بين غيرها.
 
-An example with the testing program:
+مثال باستخدام برنامج الاختبار:
 
 
 ```
@@ -165,11 +164,11 @@ Not found.
 
 
 
-### Other special characters
+### أحرف خاصة أخرى
 
-A dot is a wildcard character which can match any single character. For example, the expression `c...o` would match any five character substring beginning with a `c` and ending with an `o`, such as `c-3po` or `cello`.
+النقطة حرف بديل يمكنه مطابقة أي حرف واحد. على سبيل المثال، يطابق التعبير `c...o` أي سلسلة فرعية من خمسة أحرف تبدأ بـ `c` وتنتهي بـ `o`، مثل `c-3po` أو `cello`.
 
-The `^` character specifies that the match must be at the beginning of the string, and `$` specifies that the match must be at the end of the string. These can also be used to exclude from the matches any other characters than those specified:
+يحدّد الحرف `^` أنّ المطابقة يجب أن تكون في بداية السلسلة النصية، ويحدّد `$` أنّ المطابقة يجب أن تكون في نهاية السلسلة النصية. ويمكن أيضًا استخدامهما لاستبعاد أي أحرف أخرى غير المحدّدة من المطابقات:
 
 
 ```
@@ -183,7 +182,7 @@ Found!
 ```
 
 
-Sometimes you need to match for the special characters reserved for regular expression syntax. The backslash `\` can be used to _escape_ special characters. So, the expression `1+` matches one or more numbers `1`, but the expression `1\+` matches the string `1+`.
+تحتاج أحيانًا إلى مطابقة الأحرف الخاصة المحجوزة لصياغة التعبيرات النمطية. ويمكن استخدام الشرطة المائلة العكسية `\` لـ _تخطّي_ (escape) الأحرف الخاصة. وهكذا، يطابق التعبير `1+` الرقم `1` مرة أو أكثر، لكن التعبير `1\+` يطابق السلسلة النصية `1+`.
 
 
 ```
@@ -197,7 +196,7 @@ Found!
 ```
 
 
-Round brackets can be used to group together different parts of the expression. For example, the expression `(ab)+c` would match the substrings `abc`, `ababc` and `ababababababc`, but not the strings `ac` or `bc`, as the entire substring `ab` would have to appear at least once.
+يمكن استخدام الأقواس الدائرية لتجميع أجزاء مختلفة من التعبير معًا. على سبيل المثال، يطابق التعبير `(ab)+c` السلاسل الفرعية `abc` و`ababc` و`ababababababc`، لكنه لا يطابق السلسلتين `ac` أو `bc`، لأن السلسلة الفرعية `ab` كاملة يجب أن تظهر مرة واحدة على الأقل.
 
 
 ```
@@ -213,15 +212,15 @@ Not found.
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: التعبيرات النمطية**
 >
-> Here are some exercises for familiarizing yourself with regular expression syntax.
+> إليك بعض التمارين للتعوّد على صياغة التعبيرات النمطية.
 
-## Days of the week
+## أيام الأسبوع
 
-Using a regular expression, please write a function named `is_dotw(my_string: str)`. The function should return `True` if the string passed as an argument contains an abbreviation for a day of the week (Mon, Tue, Wed, Thu, Fri, Sat, Sun).
+باستخدام تعبير نمطي، اكتب دالة باسم `is_dotw(my_string: str)`. وينبغي أن تعيد الدالة `True` إذا كانت السلسلة النصية الممرَّرة وسيطًا تحتوي على اختصار لأحد أيام الأسبوع (Mon، Tue، Wed، Thu، Fri، Sat، Sun).
 
-Some examples of how the function should work:
+بعض الأمثلة على كيفية عمل الدالة:
 
 ```python
 print(is_dotw("Mon"))
@@ -237,11 +236,11 @@ False
 ```
 
 
-## Check for vowels
+## التحقق من حروف العلة
 
-Please write a function named `all_vowels(my_string: str)` which uses a regular expression to check whether all characters in the given string are vowels.
+اكتب دالة باسم `all_vowels(my_string: str)` تستخدم تعبيرًا نمطيًا للتحقق مما إذا كانت جميع الأحرف في السلسلة النصية المعطاة حروف علة.
 
-Some examples of how the function should work:
+بعض الأمثلة على كيفية عمل الدالة:
 
 ```python
 print(all_vowels("eioueioieoieou"))
@@ -255,11 +254,11 @@ False
 ```
 
 
-## Time of day
+## الوقت من اليوم
 
-Please write a function named `time_of_day(my_string: str)` which uses a regular expression to check whether a string in the format `XX:YY:ZZ` is a valid time in the 24-hour format, with two digits each for hours, minutes and seconds.
+اكتب دالة باسم `time_of_day(my_string: str)` تستخدم تعبيرًا نمطيًا للتحقق مما إذا كانت سلسلة نصية بالصيغة `XX:YY:ZZ` وقتًا صالحًا في نظام الـ24 ساعة، برقمين لكل من الساعات والدقائق والثواني.
 
-Some examples of how the function should work:
+بعض الأمثلة على كيفية عمل الدالة:
 
 ```python
 print(time_of_day("12:43:01"))
@@ -277,19 +276,19 @@ False
 ```
 
 
-## Grand finale
+## الختام الكبير
 
-To finish off this part of the material, let's work some more on objects and classes by building a slightly more extensive program. This exercise does not necessarily involve regular expressions, but the sections on [functions as arguments](/part-12/1-functions-as-arguments) and [list comprehensions](/part-11/1-list-comprehensions) will likely be useful.
+لإنهاء هذا الجزء من المادة، لنعمل أكثر على الكائنات والأصناف من خلال بناء برنامج أكثر توسّعًا قليلًا. لا يتضمن هذا التمرين بالضرورة تعبيرات نمطية، لكن قسمي [الدوال كوسائط](/book/mooc/part-12/1-functions-as-arguments) و[إدراكات القوائم](/book/mooc/part-11/1-list-comprehensions) سيكونان مفيدين على الأرجح.
 
-You may also find the example set in [part 10](/part-10/4-application-development) helpful.
+وقد تجد أيضًا مجموعة الأمثلة في [الجزء 10](/book/mooc/part-10/4-application-development) مفيدة.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: إحصاءات الهوكي**
 >
-> In this exercise you will build an application for examining hockey league statistics from the NHL in a couple of different ways.
+> في هذا التمرين ستبني تطبيقًا لفحص إحصاءات دوري الهوكي NHL بضع طرق مختلفة.
 
-The exercise template contains two JSON files: `partial.json` and `all.json`. The first of these is mostly meant for testing. The latter contains a lot of data, as all the NHL player stats for the 2019-20 season are included in the file.
+يحتوي قالب التمرين على ملفَّي JSON: `partial.json` و`all.json`. الملف الأول مخصّص في معظمه للاختبار. أما الثاني فيحتوي على قدر كبير من البيانات، إذ تتضمنه إحصاءات جميع لاعبي NHL لموسم 2019-20.
 
-The entry for a single player is in the following format:
+يكون مدخل اللاعب الواحد بالصيغة التالية:
 
 ```json
 {
@@ -303,19 +302,19 @@ The entry for a single player is in the following format:
 }
 ```
 
-Both files contain a list of entries in the above format.
+يحتوي الملفان على قائمة من المدخلات بالصيغة أعلاه.
 
-If you need a refresher on handling JSON files, please take a look at [part 7 of this course material](/part-7/4-data-processing#reading-json-files).
+إذا كنت بحاجة إلى تذكير بطريقة التعامل مع ملفات JSON، فانظر إلى [الجزء 7 من مادة هذا المقرر](/book/mooc/part-7/4-data-processing#reading-json-files).
 
-## Search and list
+## البحث والقائمة
 
-Please write an interactive application which first asks for the name of the file, and then offers the following functions:
+اكتب تطبيقًا تفاعليًا يسأل أولًا عن اسم الملف، ثم يقدّم الوظائف التالية:
 
-- search by name for a single player's stats
-- list all the abbreviations for team names in alphabetical order
-- list all the abbreviations for countries in alphabetical order
+- البحث بالاسم عن إحصاءات لاعب واحد
+- سرد جميع اختصارات أسماء الفِرَق بالترتيب الأبجدي
+- سرد جميع اختصارات البلدان بالترتيب الأبجدي
 
-These functionalities grant you one exercise point. Your application should now work as follows:
+تمنحك هذه الوظائف نقطة تمرين واحدة. وينبغي أن يعمل تطبيقك الآن على النحو التالي:
 
 
 ```
@@ -323,7 +322,7 @@ Travis Zajac         NJD   9 + 16 =  25
 ```
 
 
-NB: the printout format for a player must be exactly as follows:
+ملاحظة: يجب أن تكون صيغة طباعة اللاعب كما يلي بالضبط:
 
 
 ```
@@ -336,20 +335,20 @@ Markus Granlund      EDM   3 +  1 =   4
 ```
 
 
-The last line in the sample above is there to help you calculate the widths of the different fields in the output; you should not print the numbers line yourself in your final submission. 
+السطر الأخير في المثال أعلاه موجود لمساعدتك على حساب عروض الحقول المختلفة في المخرجات؛ وينبغي ألا تطبع سطر الأرقام هذا بنفسك في الحل النهائي.
 
-The abbreviation for the team is printed from the 22nd character onwards. The `+` sign is the 30th character and the `=` sign is the 35th character. All the fields should be justified to the right edge. All whitespace is space characters.
+يُطبع اختصار الفريق بدءًا من الحرف الثاني والعشرين. وعلامة `+` هي الحرف الثلاثين، وعلامة `=` هي الحرف الخامس والثلاثين. وينبغي أن تكون جميع الحقول محاذاة إلى الحافة اليمنى. وجميع المسافات البيضاء هي أحرف مسافة.
 
-F-strings are probably the easiest way to achieve the required printout. The process is similar to [this exercise](/part-6/1-reading-files#programming-exercise-course-grading-part-3) from part 6.
+من المحتمل أن تكون السلاسل المنسّقة (f-strings) أسهل طريقة لتحقيق المخرجات المطلوبة. وتشبه العملية [هذا التمرين](/book/mooc/part-6/1-reading-files#programming-exercise-course-grading-part-3) من الجزء 6.
 
-## List players by points
+## سرد اللاعبين حسب النقاط
 
-These two functionalities will grant you a second exercise point:
+ستمنحك هاتان الوظيفتان نقطة التمرين الثانية:
 
-- list players in a specific team in the order of points scored, from highest to lowest. Points equals _goals_ + _assists_
-- list players from a specific country in the order of points scored, from highest to lowest
+- سرد اللاعبين في فريق محدّد بترتيب النقاط المسجَّلة، من الأعلى إلى الأدنى. والنقاط تساوي _الأهداف_ + _التمريرات الحاسمة_
+- سرد اللاعبين من بلد محدّد بترتيب النقاط المسجَّلة، من الأعلى إلى الأدنى
 
-Your application should now work as follows:
+وينبغي أن يعمل تطبيقك الآن على النحو التالي:
 
 
 ```
@@ -358,16 +357,16 @@ Jonathan Davidsson   OTT   0 +  1 =   1
 ```
 
 
-## Most successful players
+## اللاعبون الأكثر نجاحًا
 
-These two functionalities will grant you a third exercise point:
+ستمنحك هاتان الوظيفتان نقطة التمرين الثالثة:
 
-- list of `n` players who've scored the most points
-  - if two players have the same score, whoever has scored the higher number of goals comes first
-- list of `n` players who've scored the most goals
-  - if two players have the same number of goals, whoever has played the lower number of games comes first
+- قائمة بـ `n` من اللاعبين الذين سجّلوا أكبر عدد من النقاط
+  - إذا تساوى لاعبان في النقاط، يتقدّم من سجّل عددًا أكبر من الأهداف
+- قائمة بـ `n` من اللاعبين الذين سجّلوا أكبر عدد من الأهداف
+  - إذا تساوى لاعبان في عدد الأهداف، يتقدّم من لعب عددًا أقل من المباريات
 
-Your application should now work as follows:
+وينبغي أن يعمل تطبيقك الآن على النحو التالي:
 
 
 ```
@@ -376,6 +375,6 @@ Jared McCann         PIT  14 + 21 =  35
 ```
 
 
-Please respond to a quick questionnaire on this part of the course.
+يرجى الإجابة عن استبيان سريع حول هذا الجزء من المقرر.
 
 > **اختبار:** (مكون تفاعلي غير متاح في النسخة الثابتة - ID: a03c9f5a-33a9-5aff-8d93-a89625034903)

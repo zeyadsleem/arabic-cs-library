@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-1/4-arithmetic-operations"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be able to use variables in various arithmetic operations
+> - You will know how to deal with numbers in user input
+> - You will know how to cast values into other fundamental data types
 
-After this section
-
-- You will be able to use variables in various arithmetic operations
-- You will know how to deal with numbers in user input
-- You will know how to cast values into other fundamental data types
-
-</text-box>
 
 In the previous sections you've seen examples with basic arithmetics. In the following table you can see the most common arithmetic operators in Python, with examples:
 

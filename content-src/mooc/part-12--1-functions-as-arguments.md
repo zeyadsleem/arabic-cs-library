@@ -8,16 +8,15 @@ source: "https://programming-26.mooc.fi/part-12/1-functions-as-arguments"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be able to sort lists according to different criteria
+> - You will know what a lambda expression is
+> - You will be able to use lambda expression with other Python functions
+> - You will know how a function is passed as an argument to another function
 
-After this section
-
-- You will be able to sort lists according to different criteria
-- You will know what a lambda expression is
-- You will be able to use lambda expression with other Python functions
-- You will know how a function is passed as an argument to another function
-
-</text-box>
 
 We are already familiar with the method `sort` and the function `sorted`, which are used to sort lists into their natural order. For numbers and strings this usually works just fine. For anything more complicated than that, however, what Python deems to be the natural order of items is not always what was intended by us as programmers.
 
@@ -151,7 +150,7 @@ def sort_by_price(items: list):
     return sorted(items, key=order_by_price)
 ```
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Sort by remaining stock**
 >
 > Please write a function named `sort_by_remaining_stock(items: list)`. The function takes a list of tuples as its argument. The tuples consist of the name, price and remaining stock of a product. The function should return a new list, where the items are sorted according to the stock remaining, lowest value first. The original list should not be changed.
 
@@ -173,7 +172,7 @@ watermelon 22 pcs
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Sort by number of seasons**
 >
 > Please write a function named `sort_by_seasons(items: list)` which takes a list of dictionaries as its argument. Each dictionary contains the information of a single TV show. The function should sort this list by the number of seasons each show has, in ascending order. The function should not change the original list, but return a new list instead.
 
@@ -194,7 +193,7 @@ Simpsons 32 seasons
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Sort by ratings**
 >
 > Please write a function named `sort_by_ratings(items: list)` which takes a list of dictionaries as its argument. The structure of the dictionaries is identical to the previous exercise. This function should sort the dictionaries in _descending order based on the shows' ratings_. The function should not change the original list, but return a new list instead.
 
@@ -272,7 +271,7 @@ Archie (a123), 220 cr.
 
 As you can see above, sorting by different criteria works exactly as intended. If the functions `by_id` and `by_credits` are not needed elsewhere, there are ways of making the implementation simpler. We will return to this topic after these exercises.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: ClimbingRoute**
 >
 > The exercise template contains the class definition for a `ClimbingRoute`. It works as follows:
 
@@ -361,7 +360,7 @@ print(sorted(my_list))
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Climbing areas**
 >
 > In addition to the `ClimbingRoute` from the previous exercise, the exercise template contains the class definition for a `ClimbingArea`.
 
@@ -554,7 +553,7 @@ U2 (Joshua Tree), 1986. 50 min.
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: BallPlayers**
 >
 > The exercise template contains the definition for a class named `BallPlayer`. It has the following public attributes:
 
@@ -673,7 +672,7 @@ if __name__ == "__main__":
 
 The function definition contains a default value for the keyword parameter `criterion`: `lambda x: True`. This anonymous function always returns `True` regardless of the input. So, the default behaviour is to copy all lines. As usual, if a value is given for a parameter with a default value, the new value replaces the default value.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Product search**
 >
 > This exercise deals with products which are stored in tuples. The examples all assume a variable named `products`, which is assigned the following value:
 

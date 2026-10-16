@@ -8,13 +8,12 @@ source: "https://programming-26.mooc.fi/part-11/4-more-recursion-examples"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be familiar with binary trees and some recursive algorithms used to process them
 
-After this section
-
-- You will be familiar with binary trees and some recursive algorithms used to process them
-
-</text-box>
 
 The real advantages of recursion become evident when we come across problems where iterative solutions are difficult to write. Let's take a look at _binary trees_, for instance. A binary tree is a branched structure where we have nodes, and at each node the structure branches, at most, into two child branches with nodes of their own. A binary tree could then look like this (computer science is often considered a branch of the natural sciences, but our understanding of trees is a little topsy-turvy, as you'll notice):
 
@@ -115,7 +114,7 @@ def sum_of_nodes(root: Node):
 
 The variable `node_sum` is initialised to equal the value of the current node. The value in the variable is then augmented by recursive calls to the node sums of the left and right child trees (first making sure they exist, of course). This result is then returned
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Greatest node**
 >
 > Please write a function named `greatest_node(root: Node)` which takes the root node of a binary tree as its argument.
 
@@ -169,7 +168,7 @@ def find_node(root: Node, value):
     return find_node(root.left_child, value)
 ```
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Bosses and subordinates**
 >
 > The class `Employee` models an employee of a company:
 
@@ -217,7 +216,7 @@ if __name__ == "__main__":
 
 Let's finish off this part of the material with a slightly larger exercise concentrating on object oriented programming principles. We do not recommend using recursion in this series of tasks, but list comprehension techniques will come in useful.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: OrderBook**
 >
 > In this exercise you will write two different classes, which will in turn form the backbone of the programming exercise which follows this one, where you will write an interactive application.
 
@@ -379,7 +378,7 @@ The first item in the tuple is the number of _finished_ tasks, while the second 
 If there is no programmer with the given name, the method should raise a `ValueError` exception.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Order book application**
 >
 > In this exercise you will create an interactive application for administering the tasks ordered from a software company. The implementation is completely up to you, but you may use the building blocks from the previous exercise in your application. The examples in the [last section of part 10](/part-10/4-application-development) can also prove useful.
 

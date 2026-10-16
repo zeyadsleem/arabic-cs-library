@@ -1,35 +1,33 @@
 ---
-title: "More lists"
+title: "المزيد عن القوائم"
 lang: ar
 source: "https://programming-26.mooc.fi/part-5/1-more-lists"
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **أهداف التعلّم**
+>
+> بعد إتمام هذا القسم
+>
+> - ستكون قادرًا على إنشاء قوائم من أنواع مختلفة من العناصر
+> - ستعرف كيف تستخدم القوائم لتنظيم البيانات
+> - ستكون قادرًا على تخزين مصفوفة كقائمة ثنائية الأبعاد
 
-After this section
 
-- You will be able to create lists with different types of items
-- You will know how to use lists to organise data
-- You will be able to store a matrix as a two-dimensional list
+<!--النص نفسه وارد في الأقسام 3-1 و5-1 و6-1، فتحقّق منها جميعًا إن عدّلته-->
+> **عن تمارين هذه الدورة**
+>
+> يتطلب أن تصير مبرمجًا ماهرًا الكثير من التدريب، بل أحيانًا تدريبًا ميكانيائيًّا في جوهره. كما أنه ينطوي على تنمية مهارات حلّ المشكلات وتطبيق الحدس. ولهذا تحتوي هذه الدورة على الكثير من التمارين بأنواع مختلفة. فبعضها يطلب منك تطبيق ما تعلّمته في المادة تطبيقًا مباشرًا إلى حدٍّ كبير، لكن بعضها الآخر متعمَّد أكثر ويتّسم بأنه مفتوح النهاية.
+>
+> قد يبدو بعض التمارين مربكًا في البداية، لكن لا داعي للقلق. فليس أيٌّ من التمارين إلزاميًّا بشكل قاطع، وفي الحقيقة _لا تحتاج سوى إلى 25 % من نقاط كل جزء لاجتياز الدورة._ ويمكنك العثور على مزيد من التفاصيل حول اجتياز الدورة في [صفحة الدرجات](/book/mooc/auxiliary/grading-and-exams).
+>
+> **التمارين ليست مرتّبة بأي ترتيب معيّن من حيث الصعوبة.** فكل قسم يقدّم عادةً بعض المفاهيم الجديدة في البرمجة، ثم تُمارَس هذه المفاهيم بتمارين أبسط وآخر أعقد. **وإذا صادفتك تمرين يبدو صعبًا أكثر من اللازم، فانتقل إلى التمرين التالي.** ويمكنك دائمًا العودة إلى التمارين الأصعب لاحقًا إن كان لديك الوقت.
+>
+> وحين يصبح الأمر صعبًا حتمًا، فعليك بكلمة عزاء: فالمهمة التي تبدو صعبة إلى حدٍّ مستحيل هذا الأسبوع من المرجح أن تبدو سهلة إلى حدٍّ كبير بعد نحو أربعة أسابيع.
 
-</text-box>
 
-<!--the same text is in sections 3-1, 5-1 and 6-1, check them all if you're changing this-->
-<text-box variant='hint' name="About the exercises on this course">
+## قوائم بأنواع بيانات مختلفة
 
-Becoming a proficient programmer requires a lot of practice, sometimes even quite mechanical practice. It also involves developing problem solving skills and applying intuition. This is why there are a lot of exercises of different kinds on this course. Some of them ask you to quite straightforwardly apply what you have learnt in the material, but some of them are intentionally more challenging and open-ended.
-
-Some of the exercises might at first seem overwhelming, but this is nothing to worry about. None of the exercises is strictly mandatory, and in fact _only 25 % of the points in each part is required to pass the course._ You can find more details about passing the course on the [page on grading](/grading-and-exams).
-
-**The exercises are not in any specific order of difficulty.** Each section usually introduces some new programming concepts, and these are then practised with both simpler and more complicated exercises. **If you come across an exercise that feels too difficult, move on to the next one.** You can always come back to the more difficult exercises if you have time later.
-
-When the going inevitably gets tough, a word of consolation: a task that seems impossibly difficult this week will likely feel rather easy in about four weeks' time.
-
-</text-box>
-
-## Lists with different types of data
-
-In the previous part we mainly handled lists with integer items, but any types of values can be stored in lists. A list of strings could look like this:
+في الجزء السابق تعاملنا في الغالب مع قوائم تحتوي على أعداد صحيحة، لكن يمكن تخزين أي أنواع من القيم في القوائم. ويمكن أن تبدو قائمة من السلاسل النصية هكذا:
 
 ```python
 names = ["Marlyn", "Ruth", "Paul"]
@@ -57,7 +55,7 @@ Ruth
 ```
 
 
-Floating point numbers are also valid list items:
+الأعداد العشرية عناصر صالحة في القوائم أيضًا:
 
 ```python
 measurements = [-2.5, 1.1, 7.5, 14.6, 21.0, 19.2]
@@ -82,14 +80,14 @@ The mean is: 10.15
 ```
 
 
-<!--a similar warning is in sections 3-4, 4-6 and 5-1, check them all if you're changing this-->
-## Reminder: using global variables within functions
+<!--هناك تحذير مشابه في الأقسام 3-4 و4-6 و5-1، فتحقّق منها جميعًا إن عدّلته-->
+## تذكير: استخدام المتغيّرات العامة داخل الدوال
 
-We know it is possible to assign new variables within function definitions, but the function can also see variables assigned outside it, in the main function. Such variables are called _global_ variables.
+نعرف أنه من الممكن إسناد متغيّرات جديدة داخل تعريفات الدوال، لكن الدالة ترى أيضًا المتغيّرات المسنَدة خارجها، في الدالة الرئيسية. وتُسمّى هذه المتغيّرات متغيّرات _عامة_ (_global_).
 
-Using global variables from within functions is usually a bad idea. Among other issues, doing so may cause bugs which are difficult to trace.
+عادةً ما يكون استخدام المتغيّرات العامة من داخل الدوال فكرة سيّئة. فإلى جانب مشكلات أخرى، قد يسبّب ذلك أخطاءً يصعب تتبّعها.
 
-Below is an example of a function which uses a global variable "by mistake":
+فيما يلي مثال على دالة تستخدم متغيّرًا عامًا «عن طريق الخطأ»:
 
 ```python
 def print_reversed(names: list):
@@ -120,9 +118,9 @@ Steve
 ```
 
 
-Even though both function calls have the right kind of argument, the function always prints out what is stored in the global variable `name_list`.
+رغم أن كلا استدعاءَي الدالة يتضمّن الوسيط من النوع الصحيح، فإن الدالة تطبع دائمًا ما هو مخزّن في المتغيّر العام `name_list`.
 
-To make matters even more muddled, remember that all code for testing your functions should be placed within the `if __name__ == "__main__":` block for the automatic tests. The previous example should be modified:
+ولزيادة الأمور تعقيدًا، تذكّر أن جميع شيفرة اختبار دوالك ينبغي أن توضع في كتلة `if __name__ == "__main__":` الخاصة بالاختبارات الآلية. وينبغي تعديل المثال السابق ليصبح:
 
 ```python
 def print_reversed(names: list):
@@ -141,13 +139,13 @@ if __name__ == "__main__":
     print_reversed(["Huey", "Dewey", "Louie"])
 ```
 
-Notice the global variable is assigned within the `if` block now.
+لاحظ أن المتغيّر العام صار يُسنَد داخل كتلة `if` الآن.
 
-The automatic tests in the TMC system are executed without running any of the code in the `if` block. So, in this latter example the function wouldn't even theoretically work, since it refers to the variable `name_list`, which doesn't exist at all when the tests are executed.
+تُنفَّذ الاختبارات الآلية في نظام TMC دون تشغيل أيٍّ من الشيفرة الموجودة في كتلة `if`. لذلك، فإن الدالة في هذا المثال الأخير لن تعمل نظريًّا أصلًا، لأنها تشير إلى المتغيّر `name_list` الذي لا يوجد إطلاقًا وقت تنفيذ الاختبارات.
 
-## Warning: overwriting a parameter and returning too early
+## تحذير: الكتابة فوق معامل والعودة مبكرًا
 
-There are a couple of novel sources of bugs we should look at before jumping into the exercises in this part. Let's have a look at a function which tells us whether an integer is found within a list. Both are defined as parameters of the function:
+هناك بضعة مصادر جديدة للأخطاء ينبغي أن نطّلع عليها قبل أن ننتقل إلى تمارين هذا الجزء. ولنعُد إلى دالة تخبرنا ما إذا كان عدد صحيح موجودًا في قائمة. وكلاهما معرَّف كمعامل للدالة:
 
 ```python
 def number_in_list(numbers: list, number: int):
@@ -158,9 +156,9 @@ def number_in_list(numbers: list, number: int):
             return False
 ```
 
-This function seems to always return `True`. The reason is that the `for` loop overwrites the value stored in the parameter `number`. Thus the condition in the `if` statement is always true.
+تبدو هذه الدالة وكأنها تُرجع `True` دائمًا. والسبب أن حلقة `for` تكتب فوق القيمة المخزّنة في المعامل `number`. وبذلك يكون الشرط في جملة `if` صحيحًا دائمًا.
 
-Renaming the parameter solves the problem:
+وإعادة تسمية المعامل تحلّ المشكلة:
 
 ```python
 def number_in_list(numbers: list, searched_number: int):
@@ -171,14 +169,14 @@ def number_in_list(numbers: list, searched_number: int):
             return False
 ```
 
-Now the condition in the `if` statement looks better. But there is a new problem, since the function still doesn't seem to work correctly. Trying out the following manifests a bug:
+يبدو الشرط في جملة `if` الآن أفضل. لكن هناك مشكلة جديدة، إذ لا تزال الدالة تبدو غير عاملة بشكل صحيح. وتُظهر تجربة ما يلي وجود خلل:
 
 ```python
 found = number_in_list([1, 2, 3, 4], 3)
 print(found)  # prints out False
 ```
 
-The issue here is that the function returns too early, without checking all the numbers in the list. In fact, the function takes only the first item in the list, and returns `True` or `False` depending on its value. We cannot know whether a number is _not present_ in the list until we have checked all the items in the list. The `return False` command should be placed outside the `for` loop:
+المشكلة هنا أن الدالة تعود مبكرًا، دون فحص جميع الأعداد في القائمة. فالواقع أن الدالة تأخذ العنصر الأول في القائمة فقط، وتُرجع `True` أو `False` بحسب قيمته. ولا يمكننا معرفة ما إذا كان عدد ما _غير موجود_ في القائمة قبل أن نفحص جميع عناصر القائمة. وينبغي أن يوضع الأمر `return False` خارج حلقة `for`:
 
 ```python
 def number_in_list(numbers: list, searched_number: int):
@@ -189,7 +187,7 @@ def number_in_list(numbers: list, searched_number: int):
     return False
 ```
 
-Let's have a look at another faulty function:
+ولنُعُد إلى دالة معطوبة أخرى:
 
 ```python
 def unique_numbers(numbers: list):
@@ -207,9 +205,9 @@ unique = unique_numbers([1, 2, 2])
 print(unique)  # prints out True
 ```
 
-This function is supposed to check whether all numbers in a list are distinct from each other, but it always returns `True`.
+ينبغي أن تفحص هذه الدالة ما إذا كانت جميع الأعداد في القائمة مختلفة عن بعضها بعض، لكنها تُرجع `True` دائمًا.
 
-Here the function again overwrites the value stored in its parameter by mistake. The function tries to use the variable `numbers` to store all the numbers already checked, but this overwrites the original argument list. Renaming the helper variable is an easy fix:
+هنا أيضًا تكتب الدالة عن طريق الخطأ فوق القيمة المخزّنة في معاملها. فتحاول الدالة استخدام المتغيّر `numbers` لتخزين جميع الأعداد التي فحصتها بالفعل، لكن هذا يكتب فوق قائمة الوسائط الأصلية. وإعادة تسمية المتغيّر المساعد حلٌّ سهل:
 
 ```python
 def unique_numbers(numbers: list):
@@ -227,13 +225,13 @@ unique = unique_numbers([1, 2, 2])
 print(unique)  # prints out False
 ```
 
-Problems like this, and many others, can be located and fixed with the help of the debugger or the [visualisation tool](http://www.pythontutor.com/visualize.html#mode=edit). Learning to use these efficiently cannot be emphasised enough.
+يمكن تحديد مشكلات كهذه، وكثير غيرها، وإصلاحها بمساعدة أداة التنقيح أو [أداة التصوير المرئي](http://www.pythontutor.com/visualize.html#mode=edit). ولا يمكن الإفراط في التأكيد على أهمية تعلّم استخدام هاتين الأداتين بكفاءة.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: السلسلة النصية الأطول**
 >
-> Please write a function named `longest(strings: list)`, which takes a list of strings as its argument. The function finds and returns the longest string in the list. You may assume there is always a single longest string in the list.
+> اكتب دالة اسمها `longest(strings: list)`، تأخذ قائمة من السلاسل النصية كوسيط لها. وتجد الدالة أطول سلسلة نصية في القائمة وتُرجعها. ويمكنك أن تفترض أن أطول سلسلة نصية في القائمة فريدة تمامًا.
 
-An example of expected behaviour:
+مثال على السلوك المتوقّع:
 
 ```python
 
@@ -249,9 +247,9 @@ howdydoody
 ```
 
 
-## Lists within lists
+## القوائم داخل القوائم
 
-The items in a list can be lists themselves:
+يمكن لعناصر القائمة أن تكون قوائم في ذاتها:
 
 ```python
 my_list = [[5, 2, 3], [4, 1], [2, 2, 5, 1]]
@@ -267,15 +265,15 @@ print(my_list[1][0])
 ```
 
 
-Why would lists within lists be useful?
+لماذا تكون القوائم داخل القوائم مفيدة؟
 
-Remember that lists can contain items of different types. You could store information about a person in a list. For instance, you could include their name as the first item, their age as the second item, and their height in meters as the third item:
+تذكّر أن القوائم يمكن أن تحتوي على عناصر من أنواع مختلفة. ويمكنك تخزين معلومات عن شخص ما في قائمة. فمثلًا يمكنك أن تجعل اسمه العنصر الأول، وعمره العنصر الثاني، وطوله بالأمتار العنصر الثالث:
 
 ```python
 ["Anne", 12, 1.45]
 ```
 
-A database of persons could then be a list, whose items would be lists containing information about a single person:
+ومن ثمّ يمكن أن تكون قاعدة بيانات الأشخاص قائمة، تكون عناصرها قوائم تحتوي على معلومات عن شخص واحد:
 
 ```python
 persons = [["Betty", 10, 1.37], ["Peter", 7, 1.25], ["Emily", 32, 1.64], ["Alan", 39, 1.78]]
@@ -296,25 +294,25 @@ Alan: age 39 years, height 1.78 meters
 ```
 
 
-The `for` loop goes through the items in the outer list one by one. That is, each list containing information about a single person is, in turn, assigned to the variable `person`.
+تمرّ حلقة `for` على عناصر القائمة الخارجية واحدًا تلو الآخر. أي أن كل قائمة تحتوي على معلومات عن شخص واحد تُسنَد بالتبادل إلى المتغيّر `person`.
 
-Lists arent always the best way to present data, such as information about a person. We will soon come across Python _dictionaries_, which are often better suited to such situations.
+ليست القوائم دائمًا أفضل طريقة لعرض البيانات، مثل معلومات عن شخص. وسنصادف قريبًا _قاموسات_ Python (_dictionaries_)، وهي أنسب كثيرًا لهذه الحالات.
 
-## Matrices
+## المصفوفات
 
-A two-dimensional array, or a _matrix_, is also a natural application of a list within a list.
+المصفوفة ثنائية الأبعاد، أو ما يُسمّى _مصفوفة_ (_matrix_)، تطبيق طبيعي آخر لقائمة داخل قائمة.
 
-For example, the following matrix
+فمثلًا، المصفوفة التالية
 
-<img src="5_1_1.png">
+![5_1_1.png](/images/mooc/part-5/5_1_1.png)
 
-could be presented as a two-dimensional list in Python like so:
+يمكن عرضها في Python كقائمة ثنائية الأبعاد هكذا:
 
 ```python
 my_matrix = [[1, 2, 3], [3, 2, 1], [4, 5, 6]]
 ```
 
-Since a matrix is a list containing lists, the individual elements within the matrix can be accessed using consecutive square brackets. The first index refers to the row, and the second to the column. Indexing starts from zero, so for example `my_matrix[0][1]` refers to the second item on the first row.
+ولأن المصفوفة قائمة تحتوي على قوائم، يمكن الوصول إلى العناصر الفردية داخل المصفوفة باستخدام أقواس مربّعة متتالية. فيُشير الفهرس الأول إلى الصف، ويشير الثاني إلى العمود. ويبدأ الترقيم من الصفر، فمثلًا يشير `my_matrix[0][1]` إلى العنصر الثاني في الصف الأول.
 
 ```python
 my_matrix = [[1, 2, 3], [3, 2, 1], [4, 5, 6]]
@@ -331,7 +329,7 @@ print(my_matrix)
 ```
 
 
-Like any other list, the rows of the matrix can be traversed with a `for` loop. The following code prints out each row of the matrix on a separate line:
+كما في أي قائمة أخرى، يمكن المرور على صفوف المصفوفة بحلقة `for`. وتطبع الشيفرة التالية كل صف من المصفوفة في سطر منفصل:
 
 ```python
 my_matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
@@ -348,7 +346,7 @@ for row in my_matrix:
 ```
 
 
-Likewise, nested loops can be used to access the individual elements. The following code prints out each element in the matrix on a separate line with the help of two `for` loops:
+وبالمثل، يمكن استخدام الحلقات المتداخلة للوصول إلى العناصر الفردية. وتطبع الشيفرة التالية كل عنصر في المصفوفة في سطر منفصل بمساعدة حلقتي `for`:
 
 ```python
 my_matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
@@ -376,21 +374,21 @@ a new row
 ```
 
 
-## Visualising code containing lists within lists
+## تصوير شيفرة تحتوي على قوائم داخل قوائم {#visualising-code-containing-lists-within-lists}
 
-Programs containing lists within lists can feel hard to grasp at first. The [visualisation tool](http://www.pythontutor.com/visualize.html) from Python Tutor is a great help in understanding how they work. The following is a visualisation of the example above:
+قد تبدو البرامج التي تحتوي على قوائم داخل قوائم صعبة الفهم في البداية. وتساعدك [أداة التصوير المرئي](http://www.pythontutor.com/visualize.html) من Python Tutor كثيرًا في فهم كيفية عملها. وفيما يلي تصوير مرئي للمثال أعلاه:
 
-<img src="5_1_2.png">
+![5_1_2.png](/images/mooc/part-5/5_1_2.png)
 
-The image above reveals that a 3 by 3 matrix technically consists of four lists. The first list represents the entire matrix. The three remaining lists are items in the first list, and represent the rows.
+تكشف الصورة أعلاه أن مصفوفة 3 في 3 تتكون تقنيًا من أربع قوائم. ويمثّل أول هذه القوائم المصفوفة بأكملها. أما القوائم الثلاث المتبقية فهي عناصر في القائمة الأولى، وتمثّل الصفوف.
 
-As multidimensional lists can be traversed with nested loops, it would be natural to think of the lists themselves as nested, but the image above shows us this isn't actually so. Instead, the list representing the whole matrix "points" to each individual list representing a row in the matrix. This is called a _reference_, and in the [following section](/part-5/2-references) the idea will be explored more thoroughly.
+ولأن القوائم متعددة الأبعاد يمكن المرور عليها بحلقات متداخلة، من الطبيعي أن نفكر في القوائم نفسها على أنها متداخلة، لكن الصورة أعلاه تبيّن لنا أن الأمر ليس كذلك في الواقع. وبدلًا من ذلك، فإن القائمة التي تمثّل المصفوفة كاملة «تشير» إلى كل قائمة منفردة تمثّل صفًّا في المصفوفة. ويُسمّى هذا _مرجعًا_ (_reference_)، وسيُبحث في الفكرة بمزيد من التفصيل في [القسم التالي](/book/mooc/part-5/2-references).
 
-In the image above the execution has progressed to the second row of the matrix, and this list is what the variable `row` currently refers to. The variable `element` contains the element the execution is currently at. The value stored in `element` is the middle item in the list, i.e. 5.
+في الصورة أعلاه يكون التنفيذ قد تقدّم إلى الصف الثاني من المصفوفة، وهذه القائمة هي ما يشير إليه المتغيّر `row` حاليًا. أما المتغيّر `element` فيحتوي على العنصر الذي يقف عنده التنفيذ حاليًا. والقيمة المخزّنة في `element` هي العنصر الأوسط في القائمة، أي 5.
 
-## Accessing items in a matrix
+## الوصول إلى عناصر المصفوفة
 
-Accessing a single row within a matrix is simple - just choose the desired row. The following function calculates the sum of the elements on a chosen row:
+الوصول إلى صف واحد داخل المصفوفة بسيط - يكفي اختيار الصف المطلوب. وتحسب الدالة التالية مجموع عناصر الصف المختار:
 
 ```python
 def sum_of_row(my_matrix, row_no: int):
@@ -408,7 +406,7 @@ my_sum = sum_of_row(m, 1)
 print(my_sum) # prints out 33 (which equals 9 + 1 + 12 + 11)
 ```
 
-Working with columns within a matrix is slightly more complicated, as the matrix is stored by rows: 
+العمل بالأعمدة داخل المصفوفة أعقد قليلًا، لأن المصفوفة مخزّنة صفوفًا:
 
 ```python
 def sum_of_column(my_matrix, column_no: int):
@@ -425,11 +423,11 @@ my_sum = sum_of_column(m, 2)
 print(my_sum) # prints out 39 (which equals 3 + 12 + 9 + 15)
 ```
 
-The column handled here consists of the elements at index 2 on _each row_.
+يتكوّن العمود المعالَج هنا من العناصر الموجودة عند الفهرس 2 في _كل صف_.
 
-[The visualisation tool](http://www.pythontutor.com/visualize.html) is definitely recommended for understanding how these functions work.
+يُنصح بشدة باستخدام [أداة التصوير المرئي](http://www.pythontutor.com/visualize.html) لفهم كيفية عمل هذه الدوال.
 
-Changing the value of a single element within the matrix is simple: choose a row within the matrix, and then a column within the row:
+تغيير قيمة عنصر واحد داخل المصفوفة بسيط: اختر صفًّا داخل المصفوفة، ثم اختر عمودًا داخل الصف:
 
 ```python
 def change_value(my_matrix, row_no: int, column_no: int, new_value: int):
@@ -452,9 +450,9 @@ print(m)
 ```
 
 
-Notice how above we used the indexes of the row and column to access a chosen element. If we want to change the contents of the matrix, we have to access the elements by their indexes. This means that we can't use a simple `for item in list` loop to traverse the matrix if we want to change the contents of the matrix.
+لاحظ كيف استخدمنا في الأعلى فهرسي الصف والعمود للوصول إلى عنصر مختار. وإذا أردنا تغيير محتويات المصفوفة، فعلينا الوصول إلى العناصر بفهارسها. وهذا يعني أننا لا نستطيع استخدام حلقة `for item in list` بسيطة للمرور على المصفوفة إذا أردنا تغيير محتوياتها.
 
-Instead, we will have to keep track of the indexes of the elements, for example with a `while` loop, or a `for` loop using the `range` function. The following code increases the value of each element in the matrix by one:
+وبدلًا من ذلك، علينا تتبّع فهارس العناصر، مثلًا بحلقة `while` أو حلقة `for` تستخدم الدالة `range`. وتزيد الشيفرة التالية قيمة كل عنصر في المصفوفة بمقدار واحد:
 
 ```python
 m = [[1,2,3], [4,5,6], [7,8,9]]
@@ -472,13 +470,13 @@ print(m)
 ```
 
 
-The outer loop goes through indexes from zero to the length of the matrix, that is, the number of rows in the matrix. The inner loop goes through indexes from zero to the length of each row within the matrix.
+تمرّ الحلقة الخارجية على الفهارس من الصفر إلى طول المصفوفة، أي عدد صفوف المصفوفة. أما الحلقة الداخلية فتتمرّ على الفهارس من الصفر إلى طول كل صف داخل المصفوفة.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: عدد العناصر المتطابقة**
 >
-> Please write a function named `count_matching_elements(my_matrix: list, element: int)`, which takes a two-dimensional array of integers and a single integer value as its arguments. The function then counts how many elements within the matrix match the argument value.
+> اكتب دالة اسمها `count_matching_elements(my_matrix: list, element: int)`، تأخذ مصفوفة ثنائية الأبعاد من الأعداد الصحيحة وقيمة عدد صحيح واحد كوسيطين لها. ثم تعدّ الدالة كم عنصرًا داخل المصفوفة يطابق قيمة الوسيط.
 
-An example of how the function should work:
+مثال على كيفية عمل الدالة:
 
 ```python
 m = [[1, 2, 1], [0, 3, 4], [1, 0, 0]]
@@ -491,13 +489,13 @@ print(count_matching_elements(m, 1))
 ```
 
 
-## A two-dimensional array as a data structure in a game
+## مصفوفة ثنائية الأبعاد كهيكلة بيانات في لعبة
 
-A matrix can be a very useful data structure in many different games. For example, the grid of a sudoku game in the image below
+يمكن أن تكون المصفوفة بنية بيانات مفيدة جدًا في ألعاب مختلفة كثيرة. فمثلًا، شبكة لعبة سودوكو في الصورة أدناه
 
-<img src="5_1_3.png">
+![5_1_3.png](/images/mooc/part-5/5_1_3.png)
 
-can be represented in matrix form like so:
+يمكن تمثيلها بصيغة مصفوفة هكذا:
 
 ```python
 sudoku = [
@@ -513,9 +511,9 @@ sudoku = [
 ]
 ```
 
-Here the value zero represents an empty square, as zero is not an acceptable value in a finished sudoku puzzle.
+هنا تمثّل القيمة صفر مربعًا فارغًا، لأن الصفر ليست قيمة مقبولة في لغز سودوكو مكتمل.
 
-Here is a simple function for printing out the above sudoku grid:
+وفيما يلي دالة بسيطة لطبع شبكة سودوكو أعلاه:
 
 ```python
 def print_grid(sudoku):
@@ -530,7 +528,7 @@ def print_grid(sudoku):
 print_grid(sudoku)
 ```
 
-The printout should look like this::
+ينبغي أن يبدو المخرج كالتالي::
 
 ```x
 
@@ -546,28 +544,28 @@ The printout should look like this::
 
 ```
 
-Any common game with a gameboard layout can be modelled in a similar fashion. Among others, chess, Minesweeper, Battleship or Mastermind are all based on a two-dimensional grid. For sudoku, it is natural to use numbers to represent the game state, but for other games, different methods may be better.
+يمكن نمذجة أي لعبة شائعة ذات لوحة لعب بالأسلوب نفسه. فمن بين غيرها، تُبنى لعبة الشطرنج (chess)، ولعبة Minesweeper، ولعبة Battleship، ولعبة Mastermind جميعًا على شبكة ثنائية الأبعاد. أما في سودوكو فمن الطبيعي استخدام الأعداد لتمثيل حالة اللعبة، لكن في غيرها من الألعاب قد تكون الأساليب الأخرى أفضل.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Go**
 >
-> In a game of Go two players take turns to place black and white stones on a game board. The winner is the player who manages to encircle a bigger area on the board with their own game pieces. 
+> في لعبة Go يتناوب لاعبان على وضع حجرين أسود وأبيض على لوحة اللعب. والفائز هو اللاعب الذي يتمكّن من تطويق مساحة أكبر على اللوحة بقطعه اللعبية الخاصة.
 
-Please write a function named `who_won(game_board: list)`, which takes a two-dimensional array as its argument. The array consists of integer values, which represent the following situations:
+اكتب دالة اسمها `who_won(game_board: list)`، تأخذ مصفوفة ثنائية الأبعاد كوسيط لها. وتتكون المصفوفة من قيم عددية تمثّل الحالات التالية:
 
-* 0: empty square
-* 1: player 1 game piece
-* 2: player 2 game piece
+* 0: مربع فارغ
+* 1: قطعة اللاعب 1
+* 2: قطعة اللاعب 2
 
-The scoring rules of Go can be quite complex, but in this exercise it is enough to compare the number of pieces each player has on the game board. Also, the size of the game board is not limited.
+قد تكون قواعد حساب النقاط في لعبة Go معقّدة إلى حدٍّ ما، لكن في هذا التمرين يكفي مقارنة عدد القطع التي يملكها كل لاعب على لوحة اللعب. كما أن حجم لوحة اللعب غير محدود.
 
-The function should return the value 1 if player 1 won, and the value 2 if player 2 won. If both players have the same number of pieces on the board, the function should return the value 0.
+ينبغي أن تُرجع الدالة القيمة 1 إذا فاز اللاعب 1، والقيمة 2 إذا فاز اللاعب 2. وإذا تملك كلا اللاعبين العدد نفسه من القطع على اللوحة، فينبغي أن تُرجع الدالة القيمة 0.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: سودوكو: فحص الصف**
 >
-> Please write a function named `row_correct(sudoku: list, row_no: int)`, which takes a two-dimensional array representing a sudoku grid, and an integer referring to a single row, as its arguments. Rows are indexed from 0.
+> اكتب دالة اسمها `row_correct(sudoku: list, row_no: int)`، تأخذ مصفوفة ثنائية الأبعاد تمثّل شبكة سودوكو، وعددًا صحيحًا يشير إلى صف واحد، كوسيطين لها. وتُفهرَس الصفوف من 0.
 
-The function should return `True` or `False`, depending on whether the row is filled in correctly, that is, whether it contains each of the numbers 1 to 9 at most once.
+ينبغي أن تُرجع الدالة `True` أو `False`، بحسب ما إذا كان الصف معبَّأ بشكل صحيح، أي ما إذا كان يحتوي على كل الأعداد من 1 إلى 9 مرة واحدة على الأكثر.
 
 ```python
 sudoku = [
@@ -593,11 +591,11 @@ False
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: سودوكو: فحص العمود**
 >
-> Please write a function named `column_correct(sudoku: list, column_no: int)`, which takes a two-dimensional array representing a sudoku grid, and an integer referring to a single column, as its arguments. Columns are indexed from 0. 
+> اكتب دالة اسمها `column_correct(sudoku: list, column_no: int)`، تأخذ مصفوفة ثنائية الأبعاد تمثّل شبكة سودوكو، وعددًا صحيحًا يشير إلى عمود واحد، كوسيطين لها. وتُفهرَس الأعمدة من 0.
 
-The function should return `True` or `False`, depending on whether the column is filled in correctly, that is, whether it contains each of the numbers 1 to 9 at most once.
+ينبغي أن تُرجع الدالة `True` أو `False`، بحسب ما إذا كان العمود معبَّأ بشكل صحيح، أي ما إذا كان يحتوي على كل الأعداد من 1 إلى 9 مرة واحدة على الأكثر.
 
 ```python
 sudoku = [
@@ -623,13 +621,13 @@ True
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: سودوكو: فحص الكتلة**
 >
-> Please write a function named `block_correct(sudoku: list, row_no: int, column_no: int)`, which takes a two-dimensional array representing a sudoku grid, and two integers referring to the row and column indexes of a single square, as its arguments. Rows and columns are indexed from 0. 
+> اكتب دالة اسمها `block_correct(sudoku: list, row_no: int, column_no: int)`، تأخذ مصفوفة ثنائية الأبعاد تمثّل شبكة سودوكو، وعددين صحيحين يشيران إلى فهرسي الصف والعمود لمربع واحد، كوسيطين لها. وتُفهرَس الصفوف والأعمدة من 0.
 
-The function should return `True` or `False` depending on whether the 3 by 3 block to the right and down from the given indexes is filled in correctly. That is, whether the block contains each of the numbers 1 to 9 at most once.
+ينبغي أن تُرجع الدالة `True` أو `False` بحسب ما إذا كانت الكتلة 3 في 3 الواقعة إلى اليمين وإلى أسفل الفهارس المعطاة معبَّأة بشكل صحيح. أي ما إذا كانت الكتلة تحتوي على كل الأعداد من 1 إلى 9 مرة واحدة على الأكثر.
 
-Notice that this function does not strictly follow the rules of sudoku. In a real game of sudoku there are only 9 blocks to check, and these are located at indexes (0, 0), (0, 3), (0, 6), (3, 0), (3, 3), (3, 6), (6, 0), (6, 3) and (6, 6). Such restrictions on indexes should not be implemented here.
+لاحظ أن هذه الدالة لا تتبع قواعد سودوكو بدقة. ففي لعبة سودوكو الحقيقية توجد فقط 9 كتل لفحصها، وتقع عند الفهارس (0, 0) و(0, 3) و(0, 6) و(3, 0) و(3, 3) و(3, 6) و(6, 0) و(6, 3) و(6, 6). ولا ينبغي تنفيذ قيود من هذا النوع على الفهارس هنا.
 
 ```python
 sudoku = [
@@ -655,7 +653,7 @@ True
 ```
 
 
-The first function call should check the 3 by 3 block beginning with the square at indexes `0, 0`:
+ينبغي أن يفحص استدعاء الدالة الأول الكتلة 3 في 3 التي تبدأ بالمربع ذي الفهرسين `0, 0`:
 
 <pre>
 9 0 0
@@ -663,7 +661,7 @@ The first function call should check the 3 by 3 block beginning with the square 
 0 2 0
 </pre>
 
-The second function call should check the 3 by 3 block beginning with the square at row 1, column 2:
+ينبغي أن يفحص استدعاء الدالة الثاني الكتلة 3 في 3 التي تبدأ بالمربع في الصف 1 والعمود 2:
 
 <pre>
 0 2 5
@@ -671,16 +669,16 @@ The second function call should check the 3 by 3 block beginning with the square
 4 0 0
 </pre>
 
-This second block would not be checked in an actual game of sudoku, but your function should allow for it to be checked.
+لن تكون هذه الكتلة الثانية مفحوصة في لعبة سودوكو حقيقية، لكن دالتك ينبغي أن تسمح بفحصها.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: سودوكو: فحص الشبكة**
 >
-> Please write a function named `sudoku_grid_correct(sudoku: list)`, which takes a two-dimensional array representing a sudoku grid as its argument. The function should use the functions from the three previous exercises to determine whether the complete sudoku grid is filled in correctly. Copy the functions from the exercises above into your Python code file for this exercise.
+> اكتب دالة اسمها `sudoku_grid_correct(sudoku: list)`، تأخذ مصفوفة ثنائية الأبعاد تمثّل شبكة سودوكو كوسيط لها. وينبغي أن تستخدم الدالة دوال التمارين الثلاثة السابقة لتحديد ما إذا كانت شبكة سودوكو كاملة معبَّأة بشكل صحيح. وانسخ دوال التمارين أعلاه إلى ملف شيفرة Python الخاص بهذا التمرين.
 
-The function should check each of the nine rows, columns and 3 by 3 blocks in the grid. If all contain each of the numbers 1 to 9 at most once, the function returns `True`. If a single one is filled in incorrectly, the function returns `False`. 
+ينبغي أن تفحص الدالة كلًّا من الصفوف التسعة والأعمدة التسعة والكتل 3 في 3 في الشبكة. فإذا كانت جميعها تحتوي على كل الأعداد من 1 إلى 9 مرة واحدة على الأكثر، تُرجع الدالة `True`. وإذا كانت واحدة منها معبَّأة بشكل خاطئ، تُرجع الدالة `False`.
 
-The image of a sudoku grid above these exercises has the nine blocks within the grid indicated with thicker borders. These are the blocks the function should check, and they begin at the indexes (0, 0), (0, 3), (0, 6), (3, 0), (3, 3), (3, 6), (6, 0), (6, 3) and (6, 6). 
+في صورة شبكة سودوكو الموجودة أعلى هذه التمارين، تظهر الكتل التسع داخل الشبكة بحدود أكثر سماكة. وهذه هي الكتل التي ينبغي أن تفحصها الدالة، وتبدأ عند الفهارس (0, 0) و(0, 3) و(0, 6) و(3, 0) و(3, 3) و(3, 6) و(6, 0) و(6, 3) و(6, 6).
 
 ```python
 sudoku1 = [
@@ -720,7 +718,7 @@ True
 
 
 <!---
-A quiz to review the contents of this section:
+اختبار لمراجعة محتويات هذا القسم:
 
 > **اختبار:** (مكون تفاعلي غير متاح في النسخة الثابتة - ID: ccb6dcbf-1065-513f-9294-15f42a318300)
 

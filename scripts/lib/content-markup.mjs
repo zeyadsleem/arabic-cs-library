@@ -26,6 +26,21 @@ export function outsideCode(source, transform) {
   return output;
 }
 
+/** The id the reader gives a heading, and the id an upstream site gives the
+ * heading a translation was made from. Kept in one place so an anchor restored
+ * onto a translated heading matches the link that points at it.
+ * @param {string} text @returns {string}
+ */
+export function slugifyHeading(text) {
+  return text
+    .trim()
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s-]/gu, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
 /** Alternate print-only content in 500 Lines must not appear a second time in HTML.
  * @param {string} source @returns {string}
  */

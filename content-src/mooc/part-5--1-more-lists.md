@@ -8,28 +8,26 @@ source: "https://programming-26.mooc.fi/part-5/1-more-lists"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be able to create lists with different types of items
+> - You will know how to use lists to organise data
+> - You will be able to store a matrix as a two-dimensional list
 
-After this section
-
-- You will be able to create lists with different types of items
-- You will know how to use lists to organise data
-- You will be able to store a matrix as a two-dimensional list
-
-</text-box>
 
 <!--the same text is in sections 3-1, 5-1 and 6-1, check them all if you're changing this-->
-<text-box variant='hint' name="About the exercises on this course">
+> **About the exercises on this course**
+>
+> Becoming a proficient programmer requires a lot of practice, sometimes even quite mechanical practice. It also involves developing problem solving skills and applying intuition. This is why there are a lot of exercises of different kinds on this course. Some of them ask you to quite straightforwardly apply what you have learnt in the material, but some of them are intentionally more challenging and open-ended.
+>
+> Some of the exercises might at first seem overwhelming, but this is nothing to worry about. None of the exercises is strictly mandatory, and in fact _only 25 % of the points in each part is required to pass the course._ You can find more details about passing the course on the [page on grading](/grading-and-exams).
+>
+> **The exercises are not in any specific order of difficulty.** Each section usually introduces some new programming concepts, and these are then practised with both simpler and more complicated exercises. **If you come across an exercise that feels too difficult, move on to the next one.** You can always come back to the more difficult exercises if you have time later.
+>
+> When the going inevitably gets tough, a word of consolation: a task that seems impossibly difficult this week will likely feel rather easy in about four weeks' time.
 
-Becoming a proficient programmer requires a lot of practice, sometimes even quite mechanical practice. It also involves developing problem solving skills and applying intuition. This is why there are a lot of exercises of different kinds on this course. Some of them ask you to quite straightforwardly apply what you have learnt in the material, but some of them are intentionally more challenging and open-ended.
-
-Some of the exercises might at first seem overwhelming, but this is nothing to worry about. None of the exercises is strictly mandatory, and in fact _only 25 % of the points in each part is required to pass the course._ You can find more details about passing the course on the [page on grading](/grading-and-exams).
-
-**The exercises are not in any specific order of difficulty.** Each section usually introduces some new programming concepts, and these are then practised with both simpler and more complicated exercises. **If you come across an exercise that feels too difficult, move on to the next one.** You can always come back to the more difficult exercises if you have time later.
-
-When the going inevitably gets tough, a word of consolation: a task that seems impossibly difficult this week will likely feel rather easy in about four weeks' time.
-
-</text-box>
 
 ## Lists with different types of data
 
@@ -233,7 +231,7 @@ print(unique)  # prints out False
 
 Problems like this, and many others, can be located and fixed with the help of the debugger or the [visualisation tool](http://www.pythontutor.com/visualize.html#mode=edit). Learning to use these efficiently cannot be emphasised enough.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: The longest string**
 >
 > Please write a function named `longest(strings: list)`, which takes a list of strings as its argument. The function finds and returns the longest string in the list. You may assume there is always a single longest string in the list.
 
@@ -478,7 +476,7 @@ print(m)
 
 The outer loop goes through indexes from zero to the length of the matrix, that is, the number of rows in the matrix. The inner loop goes through indexes from zero to the length of each row within the matrix.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Number of matching elements**
 >
 > Please write a function named `count_matching_elements(my_matrix: list, element: int)`, which takes a two-dimensional array of integers and a single integer value as its arguments. The function then counts how many elements within the matrix match the argument value.
 
@@ -552,7 +550,7 @@ The printout should look like this::
 
 Any common game with a gameboard layout can be modelled in a similar fashion. Among others, chess, Minesweeper, Battleship or Mastermind are all based on a two-dimensional grid. For sudoku, it is natural to use numbers to represent the game state, but for other games, different methods may be better.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Go**
 >
 > In a game of Go two players take turns to place black and white stones on a game board. The winner is the player who manages to encircle a bigger area on the board with their own game pieces. 
 
@@ -567,7 +565,7 @@ The scoring rules of Go can be quite complex, but in this exercise it is enough 
 The function should return the value 1 if player 1 won, and the value 2 if player 2 won. If both players have the same number of pieces on the board, the function should return the value 0.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Sudoku: check row**
 >
 > Please write a function named `row_correct(sudoku: list, row_no: int)`, which takes a two-dimensional array representing a sudoku grid, and an integer referring to a single row, as its arguments. Rows are indexed from 0.
 
@@ -597,7 +595,7 @@ False
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Sudoku: check column**
 >
 > Please write a function named `column_correct(sudoku: list, column_no: int)`, which takes a two-dimensional array representing a sudoku grid, and an integer referring to a single column, as its arguments. Columns are indexed from 0. 
 
@@ -627,7 +625,7 @@ True
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Sudoku: check block**
 >
 > Please write a function named `block_correct(sudoku: list, row_no: int, column_no: int)`, which takes a two-dimensional array representing a sudoku grid, and two integers referring to the row and column indexes of a single square, as its arguments. Rows and columns are indexed from 0. 
 
@@ -678,7 +676,7 @@ The second function call should check the 3 by 3 block beginning with the square
 This second block would not be checked in an actual game of sudoku, but your function should allow for it to be checked.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Sudoku: check grid**
 >
 > Please write a function named `sudoku_grid_correct(sudoku: list)`, which takes a two-dimensional array representing a sudoku grid as its argument. The function should use the functions from the three previous exercises to determine whether the complete sudoku grid is filled in correctly. Copy the functions from the exercises above into your Python code file for this exercise.
 

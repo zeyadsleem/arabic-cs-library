@@ -8,14 +8,13 @@ source: "https://programming-26.mooc.fi/part-2/3-combining-conditions"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know how to use the operators `and`, `or` and `not` in conditions
+> - You will be able to write nested conditionals
 
-After this section
-
-- You will know how to use the operators `and`, `or` and `not` in conditions
-- You will be able to write nested conditionals
-
-</text-box>
 
 ## Logical operators
 
@@ -63,13 +62,12 @@ if not (number >= 5 and number <= 8):
 
 Especially in programming, logical operators are often called _Boolean operators_.
 
-<text-box variant='hint' name="Simplified combined conditions">
+> **Simplified combined conditions**
+>
+> The condition `x >= a and x <= b` is a very common way of checking whether the number `x` falls within the range of `a` to `b`. An expression with this structure works the same way in most programming languages.
+>
+> Python also allows a simplified notation for combining conditions: `a <= x <= b` achieves the same result as the longer version using `and`. This shorter notation might be more familiar from mathematics, but it is not very widely used in Python programming, possibly because very few other programming languages have a similar shorthand.
 
-The condition `x >= a and x <= b` is a very common way of checking whether the number `x` falls within the range of `a` to `b`. An expression with this structure works the same way in most programming languages.
-
-Python also allows a simplified notation for combining conditions: `a <= x <= b` achieves the same result as the longer version using `and`. This shorter notation might be more familiar from mathematics, but it is not very widely used in Python programming, possibly because very few other programming languages have a similar shorthand.
-
-</text-box>
 
 ## Combining and chaining conditions
 

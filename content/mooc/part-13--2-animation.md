@@ -1,24 +1,23 @@
 ---
-title: "الرسوم المتحركة (Animation)"
+title: "التحريك"
 lang: ar
 source: "https://programming-26.mooc.fi/part-13/2-animation"
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **أهداف التعلّم**
+>
+> بعد هذا القسم
+>
+> - ستعرف كيفية إنشاء تحريك (animation) بواسطة pygame
+> - ستتمكّن من استخدام ساعة لضبط سرعة برنامجك
+> - ستتمكّن من استخدام الدوال المثلثية الأساسية في تحريكاتك
 
-After this section
 
-- You will know how to create an animation with pygame
-- You will be able to use a clock to set the speed of your program
-- You will be able to use basic trigonometric functions in your animations
+كثير من الألعاب فيها شخصيات متحرّكة، ولذلك فإن إنشاء التحريكات خطوة تالية منطقية. يمكننا خلق وهم الحركة برسم الصورة نفسها في مواقع مختلفة على الشاشة وتوقيت التغييرات بصورة مناسبة.
 
-</text-box>
+## إنشاء تحريك
 
-Many games have moving characters, so a logical next step is creating animations. We can create the illusion of movement by drawing the same image in different locations on the screen and timing the changes appropriately.
-
-## Creating an animation
-
-The following code creates an animation where a robot moves from left to right in a pygame window:
+تُنشئ الشيفرة التالية تحريكًا ينتقل فيه روبوت من اليسار إلى اليمين داخل نافذة pygame:
 
 ```python
 import pygame
@@ -45,24 +44,24 @@ while True:
     clock.tick(60)
 ```
 
-When this is executed, the result should look like this:
+عند تنفيذ ذلك ينبغي أن تبدو النتيجة بهذا الشكل:
 
-<img src="pygame_animation.gif">
+![pygame_animation.gif](/images/mooc/part-13/pygame_animation.gif)
 
-Let's take a closer look at the commands involved. If we want to trace the movement of the image on the screen, we need to know its location, which is why we have two variables for the coordinates of the top left corner of the image:
+لنتأمّل الأوامر المستخدمة عن قرب. إذا أردنا تتبّع حركة الصورة على الشاشة، فعلينا معرفة موقعها، ولهذا السبب لدينا متغيّران لإحداثيات الزاوية العليا اليسرى للصورة:
 
 ```python
 x = 0
 y = 0
 ```
 
-We also have a clock, which we use to make sure the speed of the animation is just right:
+ولدينا أيضًا ساعة، نستخدمها للتأكّد من أن سرعة التحريك مناسبة تمامًا:
 
 ```python
 clock = pygame.time.Clock()
 ```
 
-The main loop draws the image at its current location with each iteration:
+ترسم الحلقة الرئيسية الصورة في موقعها الحالي مع كل تكرار:
 
 ```python
     window.fill((0, 0, 0))
@@ -70,29 +69,29 @@ The main loop draws the image at its current location with each iteration:
     pygame.display.flip()
 ```
 
-First the method `fill` fills the window with black, as before. The colour is passed as a tuple containing the RGB values for the colour. In this case the argument is `(0, 0, 0)`, which means that all three components - red, green and blue - have value 0. Each component can have a value between 0 and 255. So, if we passed `(255, 255, 255)` as the argument, we'd get a white window, and with `(255, 0, 0)` we'd get a red window. RGB colour codes form the backbone of digital colouring, and there are many tools online for working with them, for example [RGB Color Codes Chart](https://www.rapidtables.com/web/color/RGB_Color.html).
+أولًا تملأ الطريقة `fill` النافذة بالأسود كما في السابق. يُمرَّر اللون كصف (tuple) يحتوي على قيم RGB للون. وفي هذه الحالة يكون الوسيط `(0, 0, 0)`، أي أن المكوّنات الثلاثة جميعها — الأحمر والأخضر والأزرق — قيمتها 0. ويمكن أن تقع قيمة كل مكوّن بين 0 و255. فلو مرّرنا `(255, 255, 255)` وسيطًا لحصلنا على نافذة بيضاء، ولو مرّرنا `(255, 0, 0)` لحصلنا على نافذة حمراء. تشكّل رموز ألوان RGB العمود الفقري للتلوين الرقمي، وهناك أدوات كثيرة على الإنترنت للتعامل معها، مثل [RGB Color Codes Chart](https://www.rapidtables.com/web/color/RGB_Color.html).
 
-After the window is filled with colour the image is drawn at the given location with the `blit` method. Then the contents of the window are updated with the function `pygame.display.flip`.
+بعد امتلاء النافذة باللون تُرسم الصورة في الموقع المُعطى عبر الطريقة `blit`. ثم يُحدَّث محتوى النافذة عبر الدالة `pygame.display.flip`.
 
-Finally, the value stored in `x` is incremented, which makes the image move one pixel to the right with each iteration:
+وأخيرًا تزداد القيمة المخزّنة في `x`، وهو ما يجعل الصورة تنتقل بكسلًا واحدًا إلى اليمين مع كل تكرار:
 
 ```python
     x += 1
 ```
 
-The clock method `tick` is called at the end:
+وتُستدعى طريقة الساعة `tick` في النهاية:
 
 ```python
     clock.tick(60)
 ```
 
-The method `tick` takes care of the speed of the animation. The argument `60` dictates that the loop should be executed 60 times a second, which means that the image moves 60 pixels to the right each second. This approximately matches the _FPS_ or _frames per second_ value used with games.
+تتولّى الطريقة `tick` سرعة التحريك. يفرض الوسيط `60` أن تُنفَّذ الحلقة 60 مرّة في الثانية، وهو ما يعني أن الصورة تنتقل 60 بكسل إلى اليمين في كل ثانية. وهذا يطابق تقريبًا قيمة _FPS_ أي _الإطارات في الثانية_ المستخدمة في الألعاب.
 
-In principle, the `tick` method makes sure that the animation runs at the same speed on every computer. If there was no such timing involved, the speed of the animation would depend on the speed of the computer.
+من حيث المبدأ تضمن الطريقة `tick` أن يجري التحريك بالسرعة نفسها على كل حاسوب. فلو لم يكن هناك توقيت كهذا، لاعتمدت سرعة التحريك على سرعة الحاسوب.
 
-## Bouncing off a wall
+## الارتداد عن الجدار
 
-The previous animation was otherwise excellent, but as the robot reached a wall, it just kept going out of sight. Let's make the robot bounce off the wall.
+كان التحريك السابق ممتازًا في ما عدا أمرًا واحدًا: عندما بلغ الروبوت جدارًا واصل الخروج بعيدًا عن مجال الرؤية. لنجعل الروبوت يرتدّ عن الجدار.
 
 ```python
 import pygame
@@ -125,13 +124,13 @@ while True:
     clock.tick(60)
 ```
 
-Running the above code should look like this:
+ينبغي أن يبدو تشغيل الشيفرة أعلاه بهذا الشكل:
 
-<img src="pygame_animation2.gif">
+![pygame_animation2.gif](/images/mooc/part-13/pygame_animation2.gif)
 
-There is a new variable `velocity` which determines the direction of the movement. If the value is above zero, movement is to the right, and if it is below zero, movement is to the left. More precisely in this case, if the value is `1`, the robot moves to the right, and if it is `-1`, the robot moves to the left.
+هناك متغيّر جديد باسم `velocity` يحدّد اتجاه الحركة. فإذا كانت قيمته أعلى من صفر فالحركة إلى اليمين، وإذا كانت أدنى من صفر فالحركة إلى اليسار. وبصورة أدقّ في هذه الحالة: إذا كانت القيمة `1` يتحرّك الروبوت إلى اليمين، وإذا كانت `-1` يتحرّك الروبوت إلى اليسار.
 
-The following lines make the robot bounce off the side walls:
+تجعل الأسطر التالية الروبوت يرتدّ عن الجدران الجانبية:
 
 ```python
     if velocity > 0 and x+robot.get_width() >= 640:
@@ -140,13 +139,13 @@ The following lines make the robot bounce off the side walls:
         velocity = -velocity
 ```
 
-If the velocity is above zero so that the robot is moving to the right, and the right edge if the image goes beyond the right edge of the window, the direction is reversed and the robot starts moving to the left. Similarly, if the velocity is below zero so that the robot is moving to the left, and the left edge of the image reaches the left edge of the window, the direction is again reversed and the robot starts moving to the right again.
+فإذا كانت السرعة أعلى من صفر بحيث يتحرّك الروبوت إلى اليمين، وبلغت الحافة اليمنى للصورة الحافة اليمنى للنافذة أو تجاوزتها، انعكس الاتجاه وبدأ الروبوت يتحرّك إلى اليسار. وبالمثل، إذا كانت السرعة أدنى من صفر بحيث يتحرّك الروبوت إلى اليسار، وبلغت الحافة اليسرى للصورة الحافة اليسرى للنافذة، انعكس الاتجاه مرة أخرى وبدأ الروبوت يتحرّك إلى اليمين من جديد.
 
-This makes the robot move on a path from the left edge of the window to the right edge, and back to the left, and then to the right again, repeated ad infinitum.
+وبهذا ينتقل الروبوت في مسار من الحافة اليسرى للنافذة إلى الحافة اليمنى، ثم عائدًا إلى اليسار، ثم إلى اليمين مرة أخرى، ويتكرّر ذلك إلى ما لا نهاية.
 
-## Rotation
+## الدوران
 
-Let's create one more animation. This time the robot should _rotate_ in a circle around the centre of the window:
+لننشئ تحريكًا آخر. هذه المرّة ينبغي أن _يدور_ الروبوت في دائرة حول مركز النافذة:
 
 ```python
 import pygame
@@ -176,60 +175,60 @@ while True:
     clock.tick(60)
 ```
 
-Running the above code should look like this:
+ينبغي أن يبدو تشغيل الشيفرة أعلاه بهذا الشكل:
 
-<img src="pygame_rotation.gif">
+![pygame_rotation.gif](/images/mooc/part-13/pygame_rotation.gif)
 
-Rotation in a relatively precise circle is achieved with the help of some basic trigonometric functions. The varible `angle` contains the angle of the robots location in relation to the centre of the window and the horizontal line running through it. The sine and cosine functions from the Python math library are used to calculate the coordinates of the robot's location:
+يتحقّق الدوران في دائرة دقيقة نسبيًا بمساعدة بعض الدوال المثلثية الأساسية. يحتوي المتغيّر `angle` على زاوية موقع الروبوت بالنسبة إلى مركز النافذة والخط الأفقي المارّ به. وتُستخدم الدالتان الجيب (sine) وجيب التمام (cosine) من مكتبة math في بايثون لحساب إحداثيات موقع الروبوت:
 
 ```python
         x = 320+math.cos(angle)*100-robot.get_width()/2
         y = 240+math.sin(angle)*100-robot.get_height()/2
 ```
 
-The robot rotates around a circle of radius 100 around the centre of the window. The hypotenuse in this scenario is the radius of the circle. The cosine function gives the length of the _adjacent_ side of a right triangle in relation to the hypotenuse, which means that it gives us the `x` coordinate of the location. The sine function gives the length of the _opposite_ side, i.e. the `y` coordinate. The location is then adjusted for the size of the image, so that the centre of the circle is at the centre of the window.
+يدور الروبوت حول دائرة نصف قطرها 100 حول مركز النافذة. والوتر في هذه الحالة هو نصف قطر الدائرة. وتُعطي دالة جيب التمام طول الضلع _المجاور_ في مثلث قائم الزاوية بالنسبة إلى الوتر، أي أنها تُعطينا الإحداثي `x` للموقع. وتُعطي دالة الجيب طول الضلع _المقابل_، أي الإحداثي `y`. ثم يُعدَّل الموقع بحسب حجم الصورة، بحيث يقع مركز الدائرة في مركز النافذة.
 
-With each iteration the size of the `angle` is incremented by 0.01:llä. As we are using radians, a full circle is 2π, which equals about 6.28. It takes about 628 iterations for the robot to go a full circle, and at 60 iterations per second this takes just over 10 seconds.
+مع كل تكرار يزداد مقدار `angle` بمقدار 0.01:llä. وبما أننا نستخدم الراديان، فإن الدائرة الكاملة تساوي 2π، أي نحو 6.28. ويستغرق الروبوت نحو 628 تكرارًا لإكمال دورة كاملة، وبمعدل 60 تكرارًا في الثانية يستغرق ذلك ما يزيد قليلًا على 10 ثوانٍ.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: حركة رأسية**
 >
-> Please create an animation where the robot moves up and down in an endless loop. The end result should look like this:
+> أنشئ تحريكًا يتحرّك فيه الروبوت صعودًا وهبوطًا في حلقة لا نهائية. ينبغي أن تبدو النتيجة النهائية بهذا الشكل:
 
-<img src="pygame_vertical.gif">
+![pygame_vertical.gif](/images/mooc/part-13/pygame_vertical.gif)
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: الدوران حول المحيط**
 >
-> Please create an animation where the robot traces the perimeter of the window. The end result should look like this:
+> أنشئ تحريكًا يطوف فيه الروبوت بمحيط النافذة. ينبغي أن تبدو النتيجة النهائية بهذا الشكل:
 
-<img src="pygame_perimeter.gif">
+![pygame_perimeter.gif](/images/mooc/part-13/pygame_perimeter.gif)
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: روبوتان**
 >
-> Please create an animation where two robots move back and forth to the left and right. The lower robot should move at double the speed of the upper one. The end result should look like this:
+> أنشئ تحريكًا يتحرّك فيه روبوتان ذهابًا وإيابًا إلى اليسار وإلى اليمين. ينبغي أن يتحرّك الروبوت الأسفل بضعف سرعة الروبوت الأعلى. ينبغي أن تبدو النتيجة النهائية بهذا الشكل:
 
-<img src="pygame_move2.gif">
+![pygame_move2.gif](/images/mooc/part-13/pygame_move2.gif)
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: روبوتات في دائرة**
 >
-> Please create an animation where ten robots go round in a circle. The end result should look like this:
+> أنشئ تحريكًا تدور فيه عشرة روبوتات في دائرة. ينبغي أن تبدو النتيجة النهائية بهذا الشكل:
 
-<img src="pygame_circle.gif">
+![pygame_circle.gif](/images/mooc/part-13/pygame_circle.gif)
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: الكرة المرتدة**
 >
-> Please create an animation where a ball bounces from the edges of the window. The end result should look like this:
+> أنشئ تحريكًا ترتدّ فيه كرة عن حوافّ النافذة. ينبغي أن تبدو النتيجة النهائية بهذا الشكل:
 
-<img src="pygame_bounce.gif">
+![pygame_bounce.gif](/images/mooc/part-13/pygame_bounce.gif)
 
-The exercise template contains the image `ball.png`.
+يحتوي قالب التمرين على الصورة `ball.png`.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: غزو الروبوتات**
 >
-> Please create an animation where robots fall from the sky randomly. When a robot reaches the ground, it starts moving to the left or to the right, and finaly disappears off the screen. The end result should look like this:
+> أنشئ تحريكًا تسقط فيه الروبوتات من السماء عشوائيًا. وعندما يبلغ روبوت الأرض، يبدأ بالتحرّك إلى اليسار أو إلى اليمين، ثم يختفي أخيرًا عن الشاشة. ينبغي أن تبدو النتيجة النهائية بهذا الشكل:
 
-<img src="pygame_invasion.gif">
+![pygame_invasion.gif](/images/mooc/part-13/pygame_invasion.gif)

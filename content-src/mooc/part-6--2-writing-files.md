@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-6/2-writing-files"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know how to create files with Python code
+> - You will be able to write text based data to a file
+> - You will know how to create a CSV file
 
-After this section
-
-- You will know how to create files with Python code
-- You will be able to write text based data to a file
-- You will know how to create a CSV file
-
-</text-box>
 
 So far we have read data from files, but it is naturally also possible to write data to files. Typically a program processes data and stores the results in a file, so they can be used later or processed further by some other program.
 
@@ -84,7 +83,7 @@ This is the last line
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Inscription**
 >
 > Please write a program which asks for the name of the user and then creates an "inscription" in a file specified by the user. Please see the example below.
 
@@ -136,7 +135,7 @@ In programming practice, appending data to files is not a very common task.
 
 More often a file is read, processed and overwritten in its entirety. For example, when the contents should change in the _middle_ of the file, it is usually easiest to overwrite the entire file.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Diary**
 >
 > Please write a program which works as a simply diary. The diary entries should be saved in the file `diary.txt`. When the program is executed, it should first read any entries already in the file.
 
@@ -260,23 +259,22 @@ It is possible to also bypass the `with` block by using the following oneliner:
 open('file_to_be_cleared.txt', 'w').close()
 ```
 
-<text-box variant='hint' name='Deleting files'>
-
-You can also delete a file entirely. We will have to ask for help from the operating system to achieve this:
-
-```python
-# the command to delete files is in the os module
-import os
-
-os.remove("unnecessary_file.csv")
-```
-
-NB: this will not work when running the automatic tests on the course servers due to technical limitations in the testing environment. If you are asked to clear the contents of a file, use the methods described above.
-
-</text-box>
+> **Deleting files**
+>
+> You can also delete a file entirely. We will have to ask for help from the operating system to achieve this:
+>
+> ```python
+> # the command to delete files is in the os module
+> import os
+>
+> os.remove("unnecessary_file.csv")
+> ```
+>
+> NB: this will not work when running the automatic tests on the course servers due to technical limitations in the testing environment. If you are asked to clear the contents of a file, use the methods described above.
 
 
-> **تمرين برمجي: تمرين برمجي**
+
+> **تمرين برمجي: Filtering the contents of a file**
 >
 > The file `solutions.csv` contains some solutions to mathematics problems:
 
@@ -327,7 +325,7 @@ filter_solutions()
 After the execution, the contents of the files `correct.csv` and `incorrect.csv` should be exactly the same in either case.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Store personal data**
 >
 > Please write a function named `store_personal_data(person: tuple)`, which takes a tuple containing some identifying information as its argument.
 
@@ -445,7 +443,7 @@ print(get_grade("Paula", weekly_points))
 
 If we determine a certain functionality in the program needs fixing, in a well designed program the change will affect only some select sections of code, and it will be easier to determine where the changes should be made. For example, if we wanted to change the grade boundaries, we'd only need to implement the change in the function for determining the grade, and it would work also in all the other functions utilizing this function. If the code for this single functionality was implemented in multiple places, there would be a definite risk that we would not remember to change all the instances when changing the functionality.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Course grading, part 4**
 >
 > Let's revisit the course grading project from the previous section. 
 
@@ -509,7 +507,7 @@ That is, the program only asks for the names of the input files. All output shou
 
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Word search**
 >
 > The exercise template includes the file `words.txt`, which contains words in English.
 
@@ -541,7 +539,7 @@ print(find_words("*vokes"))
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Dictionary stored in a file**
 >
 > Please write a program which functions as a dictionary. The user can type in new entries or look for existing entries.
 

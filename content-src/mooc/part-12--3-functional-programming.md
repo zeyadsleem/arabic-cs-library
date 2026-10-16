@@ -8,14 +8,13 @@ source: "https://programming-26.mooc.fi/part-12/3-functional-programming"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know what functional programming means
+> - You will be able to make use of the functions `map`, `reduce` and `filter` in your own programs
 
-After this section
-
-- You will know what functional programming means
-- You will be able to make use of the functions `map`, `reduce` and `filter` in your own programs
-
-</text-box>
 
 Functional programming refers to a _programming paradigm_ which avoids changes in program state as much as possible. Variables are generally avoided. Instead, chains of function calls form the backbone of the program.
 
@@ -229,7 +228,7 @@ Similarly, the balance of each BankAccount is collected. The lambda function loo
 balances = map(lambda t: t.get_balance(), accounts)
 ```
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Attempted courses**
 >
 > The exercise template contains the class definition for a `CourseAttempt`. It works like this:
 
@@ -423,7 +422,7 @@ fishes = [f1, f2, f3, f4, f5]
 over_a_kilo = list(filter(lambda fish : fish.weight >= 1000, fishes))
 ```
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Filtering attempts**
 >
 > In this exercise we will continue with the `CourseAttempt` class.
 
@@ -636,21 +635,20 @@ def balance_sum_helper(balance_sum, account):
   return balance_sum + account.get_balance()
 ```
 
-<text-box variant='hint' name='Reduce without an initial value'>
+> **Reduce without an initial value**
+>
+> You do not need to always pass a third argument to the `reduce` function. For instance, summation would work just as well _without_ the initial value:
+>
+> ```python
+> my_list = [2, 3, 1, 5]
+>
+> sum_of_numbers = reduce(lambda reduced_sum, item: reduced_sum + item, my_list)
+>
+> print(sum_of_numbers)
+> ```
+>
+> If the initial value is left out, `reduce` takes the first item in the list as the initial value and starts reducing from the second item onwards.
 
-You do not need to always pass a third argument to the `reduce` function. For instance, summation would work just as well _without_ the initial value:
-
-```python
-my_list = [2, 3, 1, 5]
-
-sum_of_numbers = reduce(lambda reduced_sum, item: reduced_sum + item, my_list)
-
-print(sum_of_numbers)
-```
-
-If the initial value is left out, `reduce` takes the first item in the list as the initial value and starts reducing from the second item onwards.
-
-</text-box>
 
 **NB:** if the items in the series are of a different type than the intended reduced result, the thrd argument is mandatory. The example with the bank accounts would not work without the initial value. That is, trying this
 
@@ -666,7 +664,7 @@ TypeError: unsupported operand type(s) for +: 'BankAccount' and 'int'
 
 In the above case, when `reduce` tries to execute the `balance_sum_helper` function for the first time, the arguments it uses are the _two first items in the list_, which are both of type BankAccount. Specifically, the value assigned to the parameter `balance_sum` is the first item in the list.  The `balance_sum_helper` function tries to add an integer value to it, but adding an integer directly to a BankAccount object is not a supported operation.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Study credits**
 >
 > In this exercise we will work with a slightly modified version of the `CourseAttempt` class. The name of the student is omitted, but the number of credits is included. The class works as follows:
 

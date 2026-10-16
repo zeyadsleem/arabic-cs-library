@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-11/2-more-comprehensions"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be able to use comprehensions with strings
+> - You will know how to use comprehensions with your own classes
+> - You will be able to create dictionary comprehensions
 
-After this section
-
-- You will be able to use comprehensions with strings
-- You will know how to use comprehensions with your own classes
-- You will be able to create dictionary comprehensions
-
-</text-box>
 
 Lists are perhaps the most common target for comprehensions, but comprehensions work on any series of items, including strings. Just like in the list examples in the previous section, if a list comprehension is performed on a string, the items (i.e. the characters) in the string are plucked one by one, processed according to the expression given, and stored in a list.
 
@@ -120,7 +119,7 @@ sentence_no_initials = " ".join(word_list)
 print(sentence_no_initials)
 ```
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Filter forbidden**
 >
 > Please write a function named `filter_forbidden(string: str, forbidden: str)` which takes two strings as its arguments. The function should return a new version of the first string. It should not contain any characters from the second string.
 
@@ -281,7 +280,7 @@ if __name__ == "__main__":
 
 ```
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Products in shopping list**
 >
 > In part 10 you created an [iterable shopping list](/part-10/3-oo-programming-techniques#programming-exercise-an-iterable-shopping-list), and we just learnt that an object created from an iterable class can be used with list comprehensions. The exercise template contains a stripped down version of the `ShoppingList` with just enough functionality to fulfil the requirements of this exercise.
 
@@ -311,7 +310,7 @@ alcohol free beer
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Price difference of cheaper properties**
 >
 > This exercise is a slightly modified version of the exercise [Comparing properties](/part-9/1-objects-and-references#programming-exercise-comparing-properties) from part 9.
 
@@ -396,7 +395,7 @@ if __name__ == "__main__":
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Lengths of strings**
 >
 > Please write a function named `lengths(strings: list)` which takes a list of strings as its argument. The function should return a _dictionary_ with the strings in the list as the keys and their lengths as the values.
 
@@ -417,7 +416,7 @@ print(word_lengths)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Most common words**
 >
 > Please write a function named `most_common_words(filename: str, lower_limit: int)` which takes a filename and an integer value for a lower limit as its arguments. The function should return a dictionary containing the occurrences of the words which appear at least the number of times specified in the `lower_limit` parameter.
 

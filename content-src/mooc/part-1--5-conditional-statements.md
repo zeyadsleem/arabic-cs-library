@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-1/5-conditional-statements"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be able to use a simple conditional statement in programming
+> - You will know what a Boolean value is
+> - You will be able to express conditionals with comparison operators
 
-After this section
-
-- You will be able to use a simple conditional statement in programming
-- You will know what a Boolean value is
-- You will be able to express conditionals with comparison operators
-
-</text-box>
 
 Thus far, every program we have written has been executed line by line in order. Instead of executing every line of code every single time a program is run, it is often useful to create sections of the program which are only executed in certain situations.
 

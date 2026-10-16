@@ -46,13 +46,12 @@ Hi there, Paula Programmer
 
 The word `name` in this program is a _variable_. In the context of programming, a variable is a location for storing some _value_, such as a string or a number. This value can be used later, and it can also be changed.
 
-<text-box variant="hint" name="Naming variables">
+> **Naming variables**
+>
+> In principle, variables can be named quite freely, within certain limits specified in the Python language.
+>
+> It is a common international programming practice to name variables in English, but you may come across code where variables are named in other languages, such as the native language of the programmer. The name of the variable has no direct effect on its content, so the name, in that sense, does not matter. However, it can often be helpful in understanding how code functions if variables are named logically and in English.
 
-In principle, variables can be named quite freely, within certain limits specified in the Python language.
-
-It is a common international programming practice to name variables in English, but you may come across code where variables are named in other languages, such as the native language of the programmer. The name of the variable has no direct effect on its content, so the name, in that sense, does not matter. However, it can often be helpful in understanding how code functions if variables are named logically and in English.
-
-</text-box>
 
 > **تمرين تفاعلي: Name twice**
 >

@@ -1,21 +1,20 @@
 ---
-title: "(List comprehensions)"
+title: "إدراكات القوائم"
 lang: ar
 source: "https://programming-26.mooc.fi/part-11/1-list-comprehensions"
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **أهداف التعلّم**
+>
+> بعد هذا القسم
+>
+> - ستعرف ما هي إدراكات القوائم (list comprehensions)
+> - ستكون قادرًا على استخدام إدراكات القوائم لإنشاء قوائم جديدة
 
-After this section
 
-- You will know what list comprehensions are
-- You will be able to use list comprehensions to create new lists
+من المواضع التي تبلغ فيها البرمجة ذروة قوّتها معالجةُ متتاليات العناصر والأحداث؛ فالحواسيب بارعة في تكرار الأشياء. وقد مرّت علينا في الأجزاء السابقة من هذه المادة أمثلة على التكرار عبر السلاسل النصية والقوائم والقواميس بطرق متنوّعة.
 
-</text-box>
-
-One of the situations where programming is at its most powerful is processing sequences of items and events. Computers are good at repeating things. For example, in the previous parts of this material we have been iterating over strings, lists and dictionaries in various ways.
-
-Let's assume we have a list of integers, and we would need the same list of items in string format. A traditional way of completing the task could look like this:
+لنفترض أن لدينا قائمة من الأعداد الصحيحة، وأننا نحتاج القائمة نفسها من العناصر بصيغة السلاسل النصية. وقد تبدو الطريقة التقليدية لإنجاز المهمة هكذا:
 
 ```python
 numbers = [1, 2, 3, 6, 5, 4, 7]
@@ -25,21 +24,449 @@ for number in numbers:
     strings.append(str(number))
 ```
 
-## List comprehensions
+## إدراكات القوائم
 
-There is also a more "pythonic" way of generating lists from existing lists. These are called _list comprehensions_.
+هناك أيضًا طريقة أكثر "باثونية" لتوليد القوائم من قوائم موجودة، وهي ما يُسمّى _إدراكات القوائم_ (list comprehensions).
 
-The idea is to fit on a single line both the description of what should be done to each item on the list, and the assignment of the result to a new list.
+وتقوم الفكرة على أن نجمع في سطر واحد وصفَ ما ينبغي فعله بكل عنصر في القائمة، وإسنادَ النتيجة إلى قائمة جديدة.
 
-In the above example, the operation performed on each item on the list was very simple: each integer was converted into a string. Let's see what this would look like implemented with a list comprehension:
+في المثال أعلاه كانت العملية المُجراة على كل عنصر في القائمة بسيطة جدًّا: فقد حُوِّل كل عدد صحيح إلى سلسلة نصية. لنرَ كيف يبدو هذا عند تنفيذه بإدراك قوائم:
 
 ```python
 numbers = [1, 2, 3, 6, 5, 4, 7]
 strings = [str(number) for number in numbers]
 ```
 
-The second line above contains many of the same elements as the more traditional iterative approach, but the syntax is different. One way of generalising a list comprehension statement would be
+يحتوي السطر الثاني أعلاه على كثير من العناصر نفسها التي في الطريقة التكرارية التقليدية، لكن بناء الجملة مختلف. وإحدى طرق تعميم عبارة إدراك القوائم هي
 
 `[<expression> for <item> in <series>]`
 
-The square brackets around the list comprehension statement signal to Python that the result should be a new list. One by one, each item in the original list is processed, and the result is stored in the new list, just like in the iterative approach above. As a result we have a new list with exactly as many items as were in the original,... (truncated)
+تُشير الأقواس المربّعة حول عبارة إدراك القوائم إلى Python بأنّ النتيجة ينبغي أن تكون قائمة جديدة. فيُعالَج كل عنصر من عناصر القائمة الأصلية واحدًا واحدًا، وتُخزَّن النتيجة في القائمة الجديدة، تمامًا كما في الطريقة التكرارية أعلاه. ونتيجةً لذلك نحصل على قائمة جديدة بعددٍ من العناصر يعادل تمامًا عدد عناصر القائمة الأصلية، وقد عُولجت جميع العناصر على النحو نفسه.
+
+(ملاحظة: الأصول الأصلية لصور هذا الجزء مفقودة مؤقتًا، ولهذا توجد بعض المفردات الفنلندية في الرسوم التوضيحية في هذا الجزء. ونعمل على إصلاح ذلك.)
+
+![11_1_2.png](/images/mooc/part-11/11_1_2.png)
+
+يمكن لإدراكات القوائم أن تتعامل مع عمليات أعقد كثيرًا أيضًا. فيمكننا إجراء حسابات، مثل ضرب العناصر الأصلية في عشرة:
+
+```python
+numbers = list(range(1,10))
+print(numbers)
+
+numbers_multiplied = [number * 10 for number in numbers]
+print(numbers_multiplied)
+```
+
+
+```
+[1, 2, 3, 4, 5, 6, 7, 8, 9]
+[10, 20, 30, 40, 50, 60, 70, 80, 90]
+```
+
+
+بل إنّ التعبير داخل عبارة إدراك القوائم يمكن أن يكون أي تعبير في Python. بل يمكنك حتى نداء دوال عرّفتها بنفسك:
+
+```python
+def factorial(n: int):
+    """ The function calculates the factorial n! for integers above zero """
+    k = 1
+    while n >= 2:
+        k *= n
+        n -= 1
+    return k
+
+if __name__ == "__main__":
+    numbers = [5, 2, 4, 3, 0]
+    factorials = [factorial(number) for number in numbers]
+    print(factorials)
+```
+
+
+```
+[120, 2, 24, 6, 1]
+```
+
+
+وباستخدام حلقة `for` المألوفة أكثر يمكن التعبير عن العملية نفسها هكذا:
+
+```python
+def factorial(n: int):
+    """ The function calculates the factorial n! for integers above zero """
+    k = 1
+    while n >= 2:
+        k *= n
+        n -= 1
+    return k
+
+if __name__ == "__main__":
+    numbers = [5, 2, 4, 3, 0]
+    factorials = []
+    for number in numbers:
+        factorials.append(factorial(number))
+    print(factorials)
+```
+
+تتيح لنا إدراكات القوائم التعبير عن الوظيفة نفسها بإيجاز أكبر، ودون أن نفقد عادةً أيًّا من سهولة القراءة.
+
+ويمكننا كذلك إرجاع عبارة إدراك قوائم من دالة مباشرة. فلو احتجنا دالةً لإنتاج المضاريب (factorials) لقوائم من الأعداد، لأمكننا تحقيق ذلك بإيجاز شديد:
+
+```python
+def factorials(numbers: list):
+    return [factorial(number) for number in numbers]
+```
+
+> **تمرين برمجي**
+>
+> يُرجى كتابة دالة اسمها `square_roots(numbers: list)` تأخذ قائمة من الأعداد الصحيحة وسيطًا لها. وينبغي أن تُعيد الدالة قائمة جديدة تحتوي على الجذور التربيعية للأعداد الصحيحة الأصلية.
+
+تحتوي وحدة [math](https://docs.python.org/3/library/math.html) من المكتبة القياسية في Python على دالة مناسبة لحساب الجذر التربيعي.
+
+ينبغي أن تستخدم الدالة إدراك قوائم. والحدّ الأقصى لطول الدالة سطران من الشيفرة، بما في ذلك سطر الترويسة الذي يبدأ بالكلمة المفتاحية `def`.
+
+ينبغي أن تعمل الدالة على النحو التالي:
+
+```python
+lines = square_roots([1,2,3,4])
+for line in lines:
+    print(line)
+```
+
+
+```
+1.0
+1.4142135623730951
+1.7320508075688772
+2.0
+```
+
+
+> **تمرين برمجي**
+>
+> يُرجى كتابة دالة اسمها `rows_of_stars(numbers: list)` تأخذ قائمة من الأعداد الصحيحة وسيطًا لها. وينبغي أن تُعيد الدالة قائمة جديدة تحتوي على صفوف من النجوم. وينبغي أن يوافق طول كل صف العدد الصحيح الواقع في الفهرس نفسه في القائمة الأصلية. وينبغي أن تستخدم الدالة إدراك قوائم لتحقيق ذلك.
+
+الحدّ الأقصى لطول الدالة سطران من الشيفرة، بما في ذلك سطر الترويسة الذي يبدأ بالكلمة المفتاحية `def`.
+
+ينبغي أن تعمل الدالة على النحو التالي:
+
+```python
+rows = rows_of_stars([1,2,3,4])
+for row in rows:
+    print(row)
+
+print()
+
+rows = rows_of_stars([4, 3, 2, 1, 10])
+for row in rows:
+    print(row)
+```
+
+
+```
+*
+**
+***
+****
+
+****
+***
+**
+*
+**********
+```
+
+
+> **تمرين برمجي**
+>
+> يحتوي قالب التمرين على تعريف الصنف `ExamResult`. ولهذا الصنف الخصائص العامة التالية:
+
+* name
+* grade1
+* grade2
+* grade3
+
+يُرجى كتابة دالة اسمها `best_results(results: list)` تأخذ قائمة من كائنات ExamResult وسيطًا لها.
+
+ينبغي أن تُعيد الدالة قائمة جديدة تحتوي على أفضل نتيجة من كل كائن ExamResult فقط. وينبغي أن تستخدم الدالة إدراك قوائم لتحقيق ذلك.
+
+الحدّ الأقصى لطول الدالة سطران من الشيفرة، بما في ذلك سطر الترويسة الذي يبدأ بالكلمة المفتاحية `def`.
+
+ينبغي أن تعمل الدالة على النحو التالي:
+
+```python
+result1 = ExamResult("Peter",5,3,4)
+result2 = ExamResult("Pippa",3,4,1)
+result3 = ExamResult("Paul",2,1,3)
+results = [result1, result2, result3]
+print(best_results(results))
+```
+
+
+```
+[5, 4, 3]
+```
+
+
+> **تمرين برمجي**
+>
+> يُرجى كتابة دالة اسمها `lengths(lists: list)` تأخذ قائمة تحتوي على قوائم من الأعداد الصحيحة وسيطًا لها. وينبغي أن تُعيد الدالة قائمة جديدة تحتوي على أطوال القوائم الواقعة داخل القائمة الوسيطة.
+
+ينبغي أن تستخدم الدالة إدراك قوائم لتحقيق ذلك. والحدّ الأقصى لطول الدالة سطران من الشيفرة، بما في ذلك سطر الترويسة الذي يبدأ بالكلمة المفتاحية `def`.
+
+ينبغي أن تعمل الدالة على النحو التالي:
+
+```python
+lists = [[1,2,3,4,5], [324, -1, 31, 7],[]]
+print(lengths(lists))
+```
+
+
+```
+[5, 4, 0]
+```
+
+
+## تصفية العناصر
+
+في الأمثلة أعلاه بقيت جميع قوائمنا بالطول نفسه قبل عملية إدراك القوائم وبعدها. فقد استُخدمت في كل حالة جميع عناصر القائمة الأصلية أساسًا للقائمة الجديدة. لكننا نحتاج أحيانًا إلى _بعض_ العناصر الأصلية فقط. فكيف يمكن تحقيق ذلك؟
+
+تتيح عبارة إدراك القوائم أيضًا وجود شرط، بحيث نستطيع فحص العناصر مقابل الشرط واختيار ما يطابقه منها فقط. وبناء الجملة العام كما يلي:
+
+`[<expression> for <item> in <series> if <Boolean expression>]`
+
+والعبارة أعلاه مطابقة في ما عدا ذلك للصيغة العامة التي قدّمناها في بداية هذا القسم، لكن يوجد الآن شرط `if` في النهاية. ولا تُستخدم أساسًا للقائمة الجديدة إلا العناصر التي يكون التعبير المنطقي فيها صحيحًا من القائمة الأصلية.
+
+في المثال أدناه نختار جميع العناصر الزوجية من القائمة الأصلية أساسًا للقائمة الجديدة. وفي الواقع لا تُعالَج هذه العناصر بأي طريقة أخرى؛ بل تُسنَد إلى القائمة الجديدة كما هي:
+
+```python
+numbers = [1, 1, 2, 3, 4, 6, 4, 5, 7, 10, 12, 3]
+
+even_items = [item for item in numbers if item % 2 == 0]
+print(even_items)
+```
+
+
+```
+[2, 4, 6, 4, 10, 12]
+```
+
+
+التعبير في عبارة إدراك القوائم أعلاه ليس إلا `item` بسيطًا، وهو ما يعني أنه لا تُجرى أي عمليات على عناصر القائمة. ويمكن أن يكون التعبير أي تعبير في Python، تمامًا كما في الأمثلة السابقة. فمثلًا، تأخذ عبارة إدراك القوائم التالية جميع العناصر الزوجية في قائمة، وتضرب كلًّا منها في عشرة، وتخزّن النتيجة في قائمة جديدة:
+
+```python
+numbers = [1, 1, 2, 3, 4, 6, 4, 5, 7, 10, 12, 3]
+
+even_items = [item * 10 for item in numbers if item % 2 == 0]
+print(even_items)
+```
+
+
+```
+[20, 40, 60, 40, 100, 120]
+```
+
+
+وكلّما صادفت إدراكات قوائم أعقد وأعقد، فقد تجد من المفيد أن تحاول قراءة الشرط أولًا. فالعناصر لا تُعالَج في نهاية المطاف إلا إذا اجتازت الفحص، فمن المنطقي كثيرًا أن تعرف أولًا أيّ العناصر يجتاز مرحلة التصفية. وأحيانًا لا يكون التعبير في عبارة إدراك القوائم ممكنًا أصلًا لجميع عناصر القائمة الأصلية.
+
+فمثلًا، عملية المضروب معرّفة للأعداد الصحيحة غير السالبة فقط. وإذا لم نكن متأكدين من أن القائمة لا تحتوي إلا على قيم تساوي صفرًا أو أكبر، وجب تصفية المحتويات قبل تمريرها إلى دالة المضروب التي أنشأناها سابقًا:
+
+```python
+def factorial(n: int):
+    """ The function calculates the factorial n! for integers above zero """
+    k = 1
+    while n >= 2:
+        k *= n
+        n -= 1
+    return k
+
+if __name__ == "__main__":
+    numbers = [-2, 3, -1, 4, -10, 5, 1]
+    factorials = [factorial(number) for number in numbers if number >= 0]
+    print(factorials)
+```
+
+
+```
+[6, 24, 120, 1]
+```
+
+
+وكما رأينا في مثالنا الأول على إدراك القوائم، حيث حُوِّلت الأعداد الصحيحة إلى سلاسل نصية، لا يلزم أن تكون عناصر القائمة الجديدة من النوع نفسه الذي لعناصر القائمة الأصلية. ومواصلين من مثال المضروب أعلاه، يمكننا إنشاء صفٍّ (tuple) من كل عنصر أصلي ونظيره المعالَج، وتخزين هذه الصفوف في قائمة، جامعةً بذلك كل ما تعلّمناه حتى الآن في عبارة إدراك قوائم واحدة:
+
+```python
+def factorial(n: int):
+    """ The function calculates the factorial n! for integers above zero """
+    k = 1
+    while n >= 2:
+        k *= n
+        n -= 1
+    return k
+
+if __name__ == "__main__":
+    numbers = [-2, 3, 2, 1, 4, -10, 5, 1, 6]
+    # the variable name abbreviated here so that this would be easier to read
+    factorials = [(n, factorial(n)) for n in numbers if n > 0 and n % 2 == 0]
+    print(factorials)
+```
+
+
+```
+[(2, 2), (4, 24), (6, 720)]
+```
+
+
+وإذا فكّكنا المثال أعلاه، فلدينا التعبير المنطقي `n > 0 and n % 2 == 0`. وهذا يعني أن العناصر التي تُقبل للمعالجة الإضافية من القائمة الأصلية هي فقط الموجبة والقابلة للقسمة على اثنين معًا.
+
+ثم يُعالَج كل من هذه الأعداد الموجبة الزوجية بدوره إلى الصيغة `(n, factorial(n))`. وهذا صفٌّ، عنصره الأول هو العدد نفسه، وعنصره الثاني هو النتيجة التي تُعيدها دالة المضروب.
+
+> **تمرين برمجي**
+>
+> يُرجى كتابة دالة اسمها `remove_smaller_than(numbers: list, limit: int)` تأخذ قائمة من الأعداد الصحيحة وقيمة حدّ (بصيغة عدد صحيح أيضًا) وسيطين لها.
+
+ينبغي أن تستخدم الدالة إدراك قوائم لإنتاج قائمة جديدة دون القيم التي تقلّ عن قيمة الحدّ.
+
+الحدّ الأقصى لطول الدالة سطران من الشيفرة، بما في ذلك سطر الترويسة الذي يبدأ بالكلمة المفتاحية `def`.
+
+مثال على استخدام الدالة:
+
+```python
+numbers = [1,65, 32, -6, 9, 11]
+print(remove_smaller_than(numbers, 10))
+
+print(remove_smaller_than([-4, 7, 8, -100], 0))
+```
+
+
+```
+[65, 32, 11]
+[7, 8]
+```
+
+
+> **تمرين برمجي**
+>
+> يُرجى كتابة دالة اسمها `begin_with_vowel(words: list)` تأخذ قائمة من السلاسل النصية وسيطًا لها.
+
+ينبغي أن تستخدم الدالة تقنية إدراك القوائم لإنشاء قائمة جديدة وإرجاعها، تحتوي على الكلمات التي تبدأ بحرف علة (a, e, i, o, u) فقط من القائمة الأصلية. وينبغي قبول الأحرف الصغيرة والكبيرة معًا.
+
+الحدّ الأقصى لطول الدالة سطران من الشيفرة، بما في ذلك سطر الترويسة الذي يبدأ بالكلمة المفتاحية `def`.
+
+مثال على استخدام الدالة:
+
+```python
+word_list = ["automobile","motorbike","Animal","cat","Dog","APPLE","orange"]
+for vowelled in begin_with_vowel(word_list):
+    print(vowelled)
+```
+
+
+```
+automobile
+Animal
+APPLE
+orange
+```
+
+
+## التنفيذ البديل بإدراكات القوائم
+
+كثيرًا ما نُدرج، عند وجود جملة شرطية، فرع `else` أيضًا. ولأننا نستطيع استخدام الشروط في إدراكات القوائم، فإن فرع `else` متاح أيضًا في إدراكات القوائم. وبناء الجملة العام للشرط المستخدَم مع إدراكات القوائم كما يلي:
+
+`<expression 1> if <condition> else <expression 2>`
+
+لقد صادفنا هذه الشروط أحادية السطر، أو المعاملات الثلاثية، من قبل في [الجزء 7](/book/mooc/part-7/6-more-features). ويُقدَّر التعبير أعلاه بـ`expression 1` أو بـ`expression 2`، تبعًا لكون الشرط صحيحًا أو خاطئًا.
+
+وتذكيرًا بالموضوع، لو احتجنا إلى طباعة الأكبر من عددين، وأردنا استخدام أمر `print` واحد فقط، لأمكننا وضع ذلك كله في سطر واحد:
+
+```python
+number1 = int(input("Type in number 1:"))
+number2 = int(input("Type in number 2:"))
+print (number1 if number1 > number2 else number2)
+```
+
+وبدمج بناء جملة المعامل الثلاثي مع عبارة إدراك القوائم نحصل على البنية العامة التالية:
+
+`[<expression 1> if <condition> else <expression 2> for <item> in <series>]`
+
+قد يبدو هذا مربكًا بعض الشيء، لأن البنية الشرطية تأتي الآن قبل جزء إدراك القوائم الفعلي. وهذه هي الطريقة التي عُرِّف بها بناء الجملة، في الوقت الحالي على الأقل. وإذا كان هناك فرع `else` أيضًا، جاء الشرط أولًا. وإذا كان هناك `if` فقط، ذهب إلى النهاية. ويمكنك أن تجرّب تبديلهما لترى ما يحدث.
+
+وإدراج معامل `else` يعني أننا سنعالج مرة أخرى كل عنصر من القائمة الأصلية. وتبعًا لكون الشرط صحيحًا أو خاطئًا، تُجرى على كل عنصر في القائمة إما `expression 1` وإما `expression 2`.
+
+يتحقّق المثال التالي مما إذا كانت عناصر القائمة تساوي صفرًا أو أكبر. فيُقبل أي عنصر كذلك كما هو، أما جميع العناصر السالبة فتُنفى، بحيث تنقلب الإشارة من سالبة إلى موجبة. والنتيجة قائمة تحتوي على القيم المطلقة لعناصر القائمة الأصلية.
+
+```python
+numbers = [1, -3, 45, -110, 2, 9, -11]
+abs_vals = [number if number >= 0 else -number for number in numbers]
+print(abs_vals)
+```
+
+
+```
+[1, 3, 45, 110, 2, 9, 11]
+```
+
+
+ولنُعِد ذكر ما يحدث أعلاه: إذا كان الشرط `number >= 0` صحيحًا، خضع العنصر للتعبير `number`، فكانت النتيجة العنصر نفسه. وإذا كان الشرط خاطئًا، خضع العنصر للتعبير `-number`، فصار موجب القيمة.
+
+في المثال التالي لدينا الدالة `string_lengths` التي تأخذ قائمة وسيطًا لها، وتُعيد قائمة أخرى بأطوال ما وُجد في القائمة الأصلية من سلاسل نصية. غير أنّ هذه الدالة تقبل عناصر القائمة من أي نوع. فإذا كان العنصر سلسلة نصية، حسبت طوله. وإذا كان العنصر شيئًا آخر، أدرجت القيمة -1 في القائمة التي تُعيدها.
+
+```python
+def string_lengths(my_list: list):
+    """ The function returns the lengths of strings in a new list """
+    return [len(item) if type(item) == str else -1 for item in my_list]
+
+if __name__ == "__main__":
+    test_list = ["hi", 3, True, "there", -123.344, "toodlepip", 2, False]
+    lengths = string_lengths(test_list)
+    print(lengths)
+```
+
+
+```
+[2, -1, -1, 5, -1, 9, -1, -1]
+```
+
+
+
+
+## LotteryNumbers المطابقة
+
+يُرجى كتابة صنف اسمه `LotteryNumbers` يأخذ رقم الأسبوع (قيمة عدد صحيح) وقائمة من سبعة أعداد صحيحة وسيطين لبانيه. وينبغي أن تحتوي القائمة على أرقام اليانصيب الصحيحة للأسبوع المعطى.
+
+يُرجى أيضًا كتابة تابع اسمه `number_of_hits(numbers: list)` يأخذ قائمة من الأعداد الصحيحة وسيطًا له. ويُعيد التابع عدد الإدخالات الصحيحة في قائمة المعامل.
+
+ينبغي أن يستخدم التابع إدراك قوائم لتحقيق ذلك. والحدّ الأقصى لطول الدالة سطران من الشيفرة، بما في ذلك سطر الترويسة الذي يبدأ بالكلمة المفتاحية `def`.
+
+مثال على كيفية استخدام الصنف والدالة:
+
+```python
+week5 = LotteryNumbers(5, [1,2,3,4,5,6,7])
+my_numbers = [1,4,7,11,13,19,24]
+
+print(week5.number_of_hits(my_numbers))
+```
+
+
+```
+3
+```
+
+
+## LotteryNumbers المطابقة في مكانها
+
+يُرجى كتابة تابع اسمه `hits_in_place(numbers)` يأخذ قائمة من سبعة أعداد صحيحة وسيطًا له، ويُعيد قائمة جديدة من سبعة أعداد صحيحة. وتحتوي القائمة الجديدة على العناصر التي تطابق أرقام الأسبوع الصحيحة فقط من القائمة الأصلية. وينبغي أن تبقى هذه في الفهارس نفسها التي كانت فيها في القائمة الأصلية. أما بقية الفهارس فينبغي أن تُملأ بالقيم `-1`.
+
+ينبغي أن يستخدم التابع إدراك قوائم لتحقيق ذلك. والحدّ الأقصى لطول الدالة سطران من الشيفرة، بما في ذلك سطر الترويسة الذي يبدأ بالكلمة المفتاحية `def`.
+
+يُرجى إلقاء نظرة على المثال أدناه:
+
+```python
+week8 = LotteryNumbers(8, [1,2,3,10,20,30,33])
+my_numbers = [1,4,7,10,11,20,30]
+
+print(week8.hits_in_place(my_numbers))
+```
+
+
+```
+[1, -1, -1, 10, -1, 20, 30]
+```

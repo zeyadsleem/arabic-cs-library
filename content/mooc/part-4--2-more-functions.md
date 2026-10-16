@@ -1,33 +1,32 @@
 ---
-title: "More functions"
+title: "المزيد من الدوال"
 lang: ar
 source: "https://programming-26.mooc.fi/part-4/2-more-functions"
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **أهداف التعلم**
+>
+> بعد هذا القسم
+>
+> - ستكون على معرفة أكثر بوسائط الدوال ومعاملاتها
+> - ستكون قادرًا على إعادة القيم من الدوال، وعلى استخدام القيم في شيفرتك
+> - ستكون قادرًا على إضافة تلميحات نوع لمعاملات الدوال وقيم إعادتها
 
-After this section
 
-- You will know more about the arguments and parameters of functions
-- You will know how to return values from functions, and how to use the values in your code
-- You will be able to add type hints for parameters and return values
-
-</text-box>
-
-Let's quickly recap Python functions. Functions are defined with the keyword `def`:
+لنستعرض باختصار دوال Python (functions). تُعرَّف الدوال بالكلمة المفتاحية `def`:
 
 ```python
 def message():
     print("This message was brought to you by a function")
 ```
 
-This function can be called in your program code like this:
+ويمكن استدعاء هذه الدالة في شيفرة برنامجك هكذا:
 
 ```python
 message()
 ```
 
-Your program would then print out
+وسيطبع برنامجك عندئذٍ
 
 
 ```
@@ -35,11 +34,11 @@ This message was brought to you by a function
 ```
 
 
-## The parameters and arguments of a function
+## معاملات الدالة ووسائطها
 
-A function can take one or more arguments. When the function is called, the arguments are assigned to variables, which are defined in the function definition. These variables are called parameters, and they are listed inside the parentheses after the function name.
+يمكن أن تأخذ الدالة وسيطًا واحدًا أو أكثر. وعند استدعاء الدالة، تُسنَد الوسائط إلى متغيّرات تُعرَّف في تعريف الدالة. تُسمّى هذه المتغيّرات المعاملات (parameters)، وتُسرد بين القوسين الواقعين بعد اسم الدالة.
 
-In the following code the function `greet` has one parameter defined, while the function `sum` has two.
+في الشيفرة التالية عُرِّف معامل واحد للدالة `greet`، بينما عُرِّف معاملان للدالة `sum`.
 
 ```python
 def greet(name):
@@ -61,46 +60,45 @@ The sum of the arguments is 5
 ```
 
 
-<text-box variant='hint' name='Formal vs actual, parameter vs argument'>
+> **الشكلي مقابل الفعلي، المعامل مقابل الوسيط**
+>
+> قد تبدو المصطلحات المستخدمة للبيانات المُمرَّرة إلى الدوال مربكة. وزادةً على ذلك، تشير بعض المصادر إلى ما سمّيناه هنا معاملات ووسائط بمصطلحَي المعامل الشكلي (formal parameter) والمعامل الفعلي (actual parameter). وتطلق عليها مصادر أخرى مصطلحَي الوسيط الشكلي (formal argument) والوسيط الفعلي (actual argument). أما [توثيق Python](https://docs.python.org/3/glossary.html#term-argument) فيحدد مصطلحَي الوسيط (argument) والمعامل (parameter) وحدهما، وذلك ما سنستخدمه نحن أيضًا.
+>
+> ماذا يحدث فعلًا عند تنفيذ استدعاء الدالة `greet("Emily")`؟
+>
+> في تعريف الدالة `greet(name)` يتصرّف المعامل `name` من كل النواحي تمامًا كمتغيّر عادي. فيمكننا استخدامه داخل الدالة تمامًا كما استخدمنا المتغيّرات في الدوال الرئيسية المتعددة في برامجنا حتى الآن.
+>
+> وفي استدعاء الدالة `greet("Emily")` يكون الوسيط `"Emily"` كأي سلسلة نصية أخرى صادفناها من قبل. فيمكن مثلًا إسناده إلى متغيّر.
+>
+> إذن، عند تنفيذ استدعاء الدالة، تُسنَد قيمة الوسيط `"Emily"` إلى متغيّر المعامل `name`. وخلال _هذا التنفيذ_ للدالة تكون `name = "Emily"`. وعند استدعاء الدالة بوسيط مختلف، تكون قيمة `name` مختلفة.
+>
+> قد تبدو هذه المصطلحات كلها زائدة بعض الشيء، لكن علم الحاسوب بصفته تخصصًا يسعى فعلًا إلى أن يكون علمًا دقيقًا قدر الإمكان. واستخدام مصطلحات محدَّدة تحديدًا جيدًا أمر مفيد.
 
-The terminology around data passed to functions can feel confusing. To make matters worse, some sources refer to what we have called parameters and arguments as _formal_ and _actual parameters_. Other sources call them _formal_ and _actual arguments_. [The Python documentation](https://docs.python.org/3/glossary.html#term-argument) specifies only the terms _argument_ and _parameter_, so that is what we will use as well.
 
-What actually happens when the function call `greet("Emily")` is executed?
+## رسائل الخطأ عند تشغيل الاختبارات
 
-In the function definition `greet(name)` the parameter `name` behaves for all intents and purposes just like a normal variable. We can use it within the function just like we have used variables in the many main functions in our programs thus far.
+معظم تمارين هذه الدورة مصحوبة باختبارات أوتوماتيكية. إذا لم يعمل برنامجك كما هو محدَّد في المهمة، فستُظهر الاختبارات رسالة خطأ، وقد تكون مفيدة أو لا. ومن الجدير عادةً أن تُقرأ رسالة الخطأ بتمعّن.
 
-In the function call `greet("Emily")` the argument `"Emily"` is just like any other string we have come across before. For example, we can assign it to a variable.
+في بعض الحالات قد لا تقول رسالة الخطأ شيئًا يُذكر على الإطلاق. في التمرين التالي أدناه قد تصادف هذه الرسالة:
 
-So, when the function call is executed, the value of the argument, `"Emily"`, is assigned to the parameter variable `name`. For the duration of _this execution_ of the function, `name = "Emily"`. When the function is called with a different argument, the value of `name` will be different.
+![4_2_1.png](/images/mooc/part-4/4_2_1.png)
 
-This terminology may all seem a bit superfluous, but computer science as a discipline does aim to be as exact a science as possible. Using well defined terminology helps.
-
-</text-box>
-
-## Error messages when running tests
-
-Most exercises on this course have automatic tests attached to them. If your program doesn't work as specified in the task, the tests will show an error message, which may or may not be helpful. It is usually worth the trouble to read the error message carefully. 
-
-In some situations the error message might not tell you very much at all. In the next exercise below you may come across this error message:
-
-<img src="4_2_1.png">
-
-The message just states that you should be able to call the function `line` with the specified arguments:
+تقول الرسالة فقط إنه يجب أن تكون قادرًا على استدعاء الدالة `line` بالوسائط المحدَّدة:
 ```python
 line(5, "")
 ```
 
-The actual issue becomes clear when we try executing the function call specified in the error message. You can do this by copying the function call into your program and clicking on the triangle:
+وتتكشّف المشكلة الحقيقية عندما نحاول تنفيذ استدعاء الدالة المحدَّد في رسالة الخطأ. ويمكنك فعل ذلك بنسخ استدعاء الدالة إلى برنامجك والنقر على المثلث:
 
-<img src="4_2_2.png">
+![4_2_2.png](/images/mooc/part-4/4_2_2.png)
 
-The last lines produced by the execution, highlighted in the above image, tell us that line 4 of our code causes the error _IndexError: string index out of range_. In the [previous part](/part-3/2-working-with-strings) there was a similar example, where we tried to use an index that fell outside the scope of the string. This time the error appears because we are trying to access the first character of an empty string, that is, a string of length 0.
+وتُخبرنا الأسطر الأخيرة الناتجة عن التنفيذ، والمُبرَزة في الصورة أعلاه، أن السطر 4 من شيفرتك يسبّب الخطأ _IndexError: string index out of range_. وفي [الجزء السابق](/book/mooc/part-3/2-working-with-strings) كان هناك مثال مشابه، حيث حاولنا استخدام فهرس يقع خارج نطاق السلسلة النصية. وهذه المرة يظهر الخطأ لأننا نحاول الوصول إلى المحرف الأول من سلسلة نصية فارغة، أي سلسلة طولها 0.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: الخط**
 >
-> Please write a function named `line`, which takes two arguments: an integer and a string. The function prints out a line of text, the length of which is specified by the first argument. The character used to draw the line should be the first character in the second argument. If the second argument is an empty string, the line should consist of stars.
+> اكتب دالة اسمها `line`، تأخذ وسيطين: عددًا صحيحًا وسلسلة نصية. تطبع الدالة سطرًا من النص، طوله محدَّد بالوسيط الأول. والمحرف المستخدم في رسم السطر يجب أن يكون أول محرف في الوسيط الثاني. إذا كان الوسيط الثاني سلسلة نصية فارغة، فيجب أن يتكون السطر من نجوم.
 
-An example of expected behaviour:
+ومثال على السلوك المتوقع:
 
 ```python
 line(7, "%")
@@ -116,9 +114,9 @@ LLLLLLLLLL
 ```
 
 
-## Function calls within function calls
+## استدعاء الدوال داخل الدوال
 
-You can call a function from within another function. In fact, we have done so many times before, when we called the `print` function within our own functions in the previous part. Our own functions are functionally no different. In the following example the function `greet_many_times` calls the function `greet` as many times as specified by the argument `times`:
+يمكنك استدعاء دالة من داخل دالة أخرى. وقد فعلنا ذلك مرات كثيرة فعلًا، حين استدعينا الدالة `print` داخل دوالنا الخاصة في الجزء السابق. ودوالنا الخاصة لا تختلف عنها من الناحية الوظيفية. في المثال التالي تستدعي الدالة `greet_many_times` الدالة `greet` بعدد المرات المحدَّد بالوسيط `times`:
 
 ```python
 def greet(name):
@@ -140,13 +138,13 @@ Hello there, Emily
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: صندوق من محارف الشباك**
 >
-> Please write a function named `box_of_hashes`, which prints out a rectangle of hash characters. The function takes one argument, which specifies the height of the rectangle. The rectangle should be ten characters wide.
+> اكتب دالة اسمها `box_of_hashes`، تطبع مستطيلًا من محارف الشباك. تأخذ الدالة وسيطًا واحدًا يحدد ارتفاع المستطيل. ويجب أن يكون عرض المستطيل عشرة محارف.
 
-The function should call the function `line` from the exercise above for the actual printing out. Copy your solution to that exercise above the code for this exercise. Please don't change anything in your `line` function.
+ويجب أن تستدعي الدالة الدالة `line` من التمرين أعلاه للطباعة الفعلية. انسخ حلّك لذلك التمرين فوق شيفرة هذا التمرين. يُرجى ألا تُغيّر أي شيء في دالتك `line`.
 
-Some examples of how the function should work:
+وبعض الأمثلة على كيفية عمل الدالة:
 
 ```python
 box_of_hashes(5)
@@ -167,13 +165,13 @@ box_of_hashes(2)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: مربع من محارف الشباك**
 >
-> Please write a function named `square_of_hashes`, which draws a square of hash characters. The function takes one argument, which determines the length of the side of the square.
+> اكتب دالة اسمها `square_of_hashes`، ترسم مربعًا من محارف الشباك. تأخذ الدالة وسيطًا واحدًا يحدد طول ضلع المربع.
 
-The function should call the function `line` from the exercise above for the actual printing out. Copy your solution to that exercise above the code for this exercise. Please don't change anything in the `line` function.
+ويجب أن تستدعي الدالة الدالة `line` من التمرين أعلاه للطباعة الفعلية. انسخ حلّك لذلك التمرين فوق شيفرة هذا التمرين. يُرجى ألا تُغيّر أي شيء في دالة `line`.
 
-Some examples:
+وبعض الأمثلة:
 
 ```python
 square_of_hashes(5)
@@ -195,13 +193,13 @@ square_of_hashes(3)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: مربع**
 >
-> Please write a function named `square`, which prints out a square of characters, and takes two arguments. The first parameter specifies the length of the side of the square. The second parameter specifies the character used to draw the square.
+> اكتب دالة اسمها `square`، تطبع مربعًا من المحارف، وتأخذ وسيطين. يحدد المعامل الأول طول ضلع المربع. ويحدد المعامل الثاني المحرف المستخدم في رسم المربع.
 
-The function should call the function `line` from the exercise above for the actual printing out. Copy your solution to that exercise above the code for this exercise. Please don't change anything in the `line` function.
+ويجب أن تستدعي الدالة الدالة `line` من التمرين أعلاه للطباعة الفعلية. انسخ حلّك لذلك التمرين فوق شيفرة هذا التمرين. يُرجى ألا تُغيّر أي شيء في دالة `line`.
 
-Some examples:
+وبعض الأمثلة:
 
 ```python
 square(5, "*")
@@ -223,13 +221,13 @@ ooo
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: مثلث**
 >
-> Please write a function named `triangle`, which draws a triangle of hashes, and takes one argument. The triangle should be as tall and as wide as the value of the argument.
+> اكتب دالة اسمها `triangle`، ترسم مثلثًا من محارف الشباك، وتأخذ وسيطًا واحدًا. يجب أن يكون ارتفاع المثلث وعرضه مساويين لقيمة الوسيط.
 
-The function should call the function `line` from the exercise above for the actual printing out. Copy your solution to that exercise above the code for this exercise. Please don't change anything in the `line` function.
+ويجب أن تستدعي الدالة الدالة `line` من التمرين أعلاه للطباعة الفعلية. انسخ حلّك لذلك التمرين فوق شيفرة هذا التمرين. يُرجى ألا تُغيّر أي شيء في دالة `line`.
 
-Some examples:
+وبعض الأمثلة:
 
 ```python
 triangle(6)
@@ -252,13 +250,13 @@ triangle(3)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: شكل**
 >
-> Please write a function named `shape`, which takes four arguments. The first two parameters specify a triangle, as above, and the character used to draw it. The first parameter also specifies the width of a rectangle, while the third parameter specifies its height. The fourth parameter specifies the filler character of the rectangle. The function prints first the triangle, and then the rectangle below it.
+> اكتب دالة اسمها `shape`، تأخذ أربعة وسائط. يحدد المعاملان الأولان مثلثًا كما فوق، والمحرف المستخدم في رسمه. ويحدد المعامل الأول أيضًا عرض مستطيل، بينما يحدد المعامل الثالث ارتفاعه. ويحدد المعامل الرابع محرف حشو المستطيل. تطبع الدالة المثلث أولًا، ثم المستطيل أسفله.
 
-The function should call the function `line` from the exercise above for the actual printing out. Copy your solution to that exercise above the code for this exercise. Please don't change anything in the `line` function.
+ويجب أن تستدعي الدالة الدالة `line` من التمرين أعلاه للطباعة الفعلية. انسخ حلّك لذلك التمرين فوق شيفرة هذا التمرين. يُرجى ألا تُغيّر أي شيء في دالة `line`.
 
-Some examples:
+وبعض الأمثلة:
 
 ```python
 shape(5, "X", 3, "*")
@@ -292,18 +290,18 @@ oo
 ```
 
 
-**Hint**
+**تلميح**
 
-Don't try and solve this exercise "all at once". A good first step would be to make sure you can print the triangle reliably. Then you can try adding the rectangle.
+لا تحاول حل هذا التمرين "دفعة واحدة". فقد تكون الخطوة الأولى الجيدة هي التأكد من قدرتك على طباعة المثلث بشكل موثوق. ثم يمكنك محاولة إضافة المستطيل.
 
-This is one of the most important skills of a programmer: **concentrate on small, tangible sections of the problem at a time**. Solve and verify partial solutions, and use them to build towards a complete solution.
+وهذه من أهم مهارات المبرمج: **التركيز على أجزاء صغيرة وملموسة من المشكلة في كل مرة**. حل الحلول الجزئية وتحقق منها، ثم استخدمها للتوصل إلى حل كامل.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: شجرة التنوب**
 >
-> Please write a function named `spruce`, which takes one argument. The function prints out the text `a spruce!`, and the a spruce tree, the size of which is specified by the argument.
+> اكتب دالة اسمها `spruce`، تأخذ وسيطًا واحدًا. تطبع الدالة النص `a spruce!`، ثم شجرة التنوب بحجم تحدده قيمة الوسيط.
 
-Calling `spruce(3)` should print out
+ويجب أن يؤدي استدعاء `spruce(3)` إلى طباعة
 
 
 ```
@@ -315,7 +313,7 @@ a spruce!
 ```
 
 
-Calling `spruce(5)` should print out
+ويجب أن يؤدي استدعاء `spruce(5)` إلى طباعة
 
 
 ```
@@ -329,28 +327,28 @@ a spruce!
 ```
 
 
-**NB: to the left of the spruce there should be exactly the right amount of whitespace**. If the shape of the spruce looks correct, but the left edge of the tree is not touching the left edge of the text area in the terminal, the tests will not accept the solution.
+**ملاحظة مهمة: يجب أن تكون المسافات البيضاء على يسار شجرة التنوب بالمقدار الصحيح تمامًا**. فإذا بدا شكل شجرة التنوب صحيحًا، لكن الحافة اليسرى للشجرة لا تلامس الحافة اليسرى لمنطقة النص في الطرفية، فلن تقبل الاختبارات الحل.
 
 
-## The return value of a function
+## القيمة المعادة من الدالة
 
-Functions can also return values. For instance, the built-in Python function `input` _returns_ an input string typed in by the user. The value returned by a function can be stored in a variable:
+يمكن للدوال أيضًا أن تُعيد قيمًا. فمثلًا، الدالة المدمجة `input` في Python _تُعيد_ سلسلة نصية يُدخلها المستخدم. ويمكن تخزين القيمة التي تُعيدها دالة في متغيّر:
 
 ```python
 word = input("Please type in a word: ")
 ```
 
-When you want an integer value from the user, the input from the user has to be converted into an integer. The function we've used for this purpose is `int`, and it also returns a value:
+وعندما تريد قيمة صحيحة من المستخدم، يجب تحويل إدخال المستخدم إلى عدد صحيح. والدالة التي استخدمناها لهذا الغرض هي `int`، وهي تُعيد قيمة أيضًا:
 
 ```python
 number = int(input("Please type in an integer: "))
 ```
 
-The function `int` takes the string returned by `input` as its argument, and returns an integer type value, if an integer can be parsed from the string.
+تأخذ الدالة `int` السلسلة النصية التي تُعيدها `input` كوسيط لها، وتُعيد قيمة من النوع الصحيح، إذا كان يمكن استخلاص عدد صحيح من السلسلة النصية.
 
-## The return statement
+## عبارة return
 
-The functions you define yourself can also return values. To do this you need the `return` statement. For example, the following function `my_sum` returns the sum of its parameters:
+يمكن للدوال التي تُعرّفها بنفسك أيضًا أن تُعيد قيمًا. ولتفعل ذلك تحتاج إلى عبارة `return`. فمثلًا، تُعيد الدالة `my_sum` التالية مجموع معامليها:
 
 ```python
 def my_sum(a, b):
@@ -367,7 +365,7 @@ Sum: 5
 ```
 
 
-Here's another example of a return value. This function asks for the user's name and returns the string the user types in:
+وهناك مثال آخر على القيمة المعادة. تسأل هذه الدالة عن اسم المستخدم وتُعيد السلسلة النصية التي يكتبها:
 
 ```python
 def ask_for_name():
@@ -385,7 +383,7 @@ Hello there, Anna
 ```
 
 
-The `return` statement ends the execution of the function immediately. The following is a nifty way to create a comparison function:
+وتُنهي عبارة `return` تنفيذ الدالة فورًا. وهذه طريقة أنيقة لإنشاء دالة مقارنة:
 
 ```python
 def smallest(a,b):
@@ -397,7 +395,7 @@ print(smallest(3, 7))
 print(smallest(5, 2))
 ```
 
-The idea here is that if `a` is smaller than `b`, the function returns `a` and exits immediately. If not, the execution continues to the next line, where the value `b` is returned. A function can never execute two separate `return` statements with a single function call.
+والفكرة هنا هي أنه إذا كانت `a` أصغر من `b`، فإن الدالة تُعيد `a` وتخرج فورًا. وإلا، يستمر التنفيذ إلى السطر التالي، حيث تُعاد القيمة `b`. ولا يمكن للدالة أبدًا أن تنفّذ عبارتَي `return` منفصلتين في استدعاء دالة واحد.
 
 
 ```
@@ -406,7 +404,7 @@ The idea here is that if `a` is smaller than `b`, the function returns `a` and e
 ```
 
 
-You can make use of the `return` statement even if the function doesn't return a value. Its purpose then is to end the execution of the function:
+ويمكنك الاستفادة من عبارة `return` حتى لو لم تُعِد الدالة قيمة. ويكون هدفها عندئذٍ إنهاء تنفيذ الدالة:
 
 ```python
 def greet(name):
@@ -420,7 +418,7 @@ greet("")
 greet("Mark")
 ```
 
-If the argument (which gets stored in the variable `name`) is an empty string, the function prints out `???` and exits.
+إذا كان الوسيط (الذي يُخزَّن في المتغيّر `name`) سلسلة نصية فارغة، فإن الدالة تطبع `???` وتخرج.
 
 
 ```
@@ -430,9 +428,9 @@ Hello there, Mark
 ```
 
 
-## Using return values from functions
+## استخدام القيم المعادة من الدوال
 
-We already know that the return values of functions can be stored in variables:
+نعلم بالفعل أنه يمكن تخزين القيم المعادة من الدوال في متغيّرات:
 
 ```python
 def my_sum(a, b):
@@ -448,13 +446,13 @@ The sum is 10
 ```
 
 
-The return value of a function is a value just like any other. It is not necessary to store it in a variable in order to give it as an argument to the `print` command:
+والقيمة المعادة من دالة هي قيمة كأي قيمة أخرى. فليس من الضروري تخزينها في متغيّر لكي تُمرَّر كوسيط إلى الأمر `print`:
 
 ```python
 print("The sum is", my_sum(4, 6))
 ```
 
-The return value of a function can become the argument of another function:
+ويمكن أن تصبح القيمة المعادة من دالة وسيطًا لدالة أخرى:
 
 ```python
 def my_sum(a, b):
@@ -473,15 +471,15 @@ The result is 2
 ```
 
 
-In this case the inner function calls `my_sum(5, 2)` and `my_sum(2, 3)` are executed first. The values they return (7 and 5) are used as the arguments of the outer function call.
+وفي هذه الحالة يُنفَّذ استدعاءا الدالة الداخليان `my_sum(5, 2)` و`my_sum(2, 3)` أولًا. والقيم التي تُعيدها (7 و5) تُستخدم كوسائط لاستدعاء الدالة الخارجية.
 
-The outer function call `difference(7, 5)` returns the value 2, which is stored in the variable `result` and printed out.
+ويُعيد استدعاء الدالة الخارجية `difference(7, 5)` القيمة 2، التي تُخزَّن في المتغيّر `result` وتُطبع.
 
-In summary, values returned by functions work exactly like any other value in Python. They can be printed out, stored in variables, used in expressions and used as arguments in other function calls.
+وباختصار، تعمل القيم التي تُعيدها الدوال تمامًا كأي قيمة أخرى في Python. فيمكن طباعتها، وتخزينها في متغيّرات، واستخدامها في التعابير، واستخدامها كوسائط في استدعاءات دوال أخرى.
 
-## The difference between return and print
+## الفرق بين return وprint
 
-Sometimes the difference between a function _returning_ a value and a _print statement_ within a function can be confusing. Let's have a look at two different ways of implementing a function for working out which of two values is greater:
+قد يكون الفرق بين أن _تُعيد_ الدالة قيمة وأن تحتوي على _عبارة طباعة_ أمرًا محيّرًا أحيانًا. فلنلقِ نظرة على طريقتين مختلفتين لتنفيذ دالة تُحدد أي القيمتين أكبر:
 
 ```python
 def max1(a, b):
@@ -509,32 +507,32 @@ max2(7, 2)
 ```
 
 
-Both versions seem to be working just fine, as the maximum values are printed correctly. There is a fundamental difference between the two, however. The first of the two functions, `max1`, does not print out anything on its own, but instead it _returns_ the value which is greater. If we execute the following line
+وتبدو كلتا النسختين تعملان جيدًا، إذ تُطبع القيمة الأكبر طباعةً صحيحة. لكن هناك فرقًا جوهريًا بينهما. فالدالة الأولى من الدالتين، `max1`، لا تطبع شيئًا من تلقاء نفسها، بل _تُعيد_ القيمة الأكبر. فإذا نفّذنا السطر التالي
 
 ```python
 max1(3, 5)
 ```
 
-nothing seems to happen. The return value of the function has to be _used_ in some way in the code which called the function. For instance, it can be stored in a variable and printed out:
+لا يبدو أن شيئًا يحدث. فلا بد من _استخدام_ القيمة المعادة من الدالة بطريقة ما في الشيفرة التي استدعت الدالة. فيمكن مثلًا تخزينها في متغيّر وطباعتها:
 
 ```python
 result = max1(3, 5)
 print(result)
 ```
 
-The second version, `max2`, uses the `print` command _within the function_ to print out the greater value. If we want to see the value, it is enough to call the function
+أما النسخة الثانية، `max2`، فتستخدم الأمر `print` _داخل الدالة_ لطباعة القيمة الأكبر. فإذا أردنا رؤية القيمة، فيكفي استدعاء الدالة
 
 ```python
 max2(7, 5)
 ```
 
-and the greater value is printed out. The downside of this handy function is that the value worked out by the function is not available for use in the program which called it. That is why functions which return values are often the better option.
+فتُطبَع القيمة الأكبر. والجانب السلبي في هذه الدالة العملية هو أن القيمة التي تحسبها الدالة غير متاحة للاستخدام في البرنامج الذي استدعاها. ولهذا السبب تكون الدوال التي تُعيد قيمًا هي الخيار الأفضل في الغالب.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: أكبر عدد**
 >
-> Please write a function named  `greatest_number`, which takes three arguments. The function returns the greatest in value of the three.
+> اكتب دالة اسمها  `greatest_number`، تأخذ ثلاثة وسائط. وتُعيد الدالة أكبر القيم الثلاث قيمةً.
 
-An example of how the function is used:
+ومثال على كيفية استخدام الدالة:
 
 ```python
 print(greatest_number(3, 4, 1)) # 4
@@ -543,11 +541,11 @@ print(greatest_number(0, 0, 0)) # 0
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: نفس المحارف**
 >
-> Please write a function named `same_chars`, which takes one string and two integers as arguments. The integers refer to indexes within the string. The function should return `True` if the two characters at the indexes specified are the same. Otherwise, and especially if either of the indexes falls outside the scope of the string, the function returns `False`.
+> اكتب دالة اسمها `same_chars`، تأخذ سلسلة نصية وعددين صحيحين كوسائط. ويشير العددان الصحيحان إلى فهرسين داخل السلسلة النصية. يجب أن تُعيد الدالة `True` إذا كان المحرفان الموجودان في الفهرسين المحدَّدين متماثلين. وإلا، وخاصة إذا كان أي من الفهرسين يقع خارج نطاق السلسلة النصية، فتُعيد الدالة `False`.
 
-Some examples of how the function is used:
+وبعض الأمثلة على كيفية استخدام الدالة:
 
 ```python
 # same characters m and m
@@ -561,13 +559,13 @@ print(same_chars("programmer", 0, 12)) # False
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: الكلمات الأولى والثانية والأخيرة**
 >
-> Please write three functions: `first_word`, `second_word` and `last_word`. Each function takes a string argument.
+> اكتب ثلاث دوال: `first_word` و`second_word` و`last_word`. تأخذ كل دالة سلسلة نصية كوسيط.
 
-As their names imply, the functions return either the first, the second or the last word in the sentence they receive as their string argument.
+وكما تشير أسماؤها، تُعيد الدوال إما الكلمة الأولى أو الكلمة الثانية أو الكلمة الأخيرة في الجملة التي تتلقاها كوسيط سلسلة نصية.
 
-In each case you may assume the argument string contains at least two separate words, and all words are separated by exactly one space character. There will be no spaces in the beginning or at the end of the argument strings.
+وفي كل حالة يمكنك أن تفترض أن سلسلة الوسيط تحتوي على كلمتين منفصلتين على الأقل، وأن كل الكلمات مفصولة بمحرف مسافة واحدًا بالضبط. ولن تكون هناك مسافات في بداية السلاسل الوسيطة أو في نهايتها.
 
 ```python
 sentence = "it was a dark and stormy python"
@@ -592,19 +590,18 @@ print(second_word(sentence)) # was
 print(last_word(sentence)) # was
 ```
 
+## نوع الوسيط
 
-## The type of the argument
+واسترجاع سريع لأنواع البيانات التي صادفناها حتى الآن:
 
-A quick recap of the data types we've come across so far:
-
-Type          | Python data type | Example
+النوع          | نوع البيانات في Python | مثال
 :-------------|:----------------:|------
-integer       | `int`            | `23`
-floating point number | `float`  | `-0.45`
-string        | `str`            | `"Peter Python"`
-Boolean value | `bool`           | `True`
+عدد صحيح       | `int`            | `23`
+عدد عشري عائم | `float`  | `-0.45`
+سلسلة نصية        | `str`            | `"Peter Python"`
+قيمة منطقية | `bool`           | `True`
 
-When you call a function, it will only work correctly if the arguments you give it are of the right type. Let's have a look at an example:
+وعندما تستدعي دالة، فلن تعمل عملًا صحيحًا إلا إذا كانت الوسائط التي تُمرّرها لها من النوع الصحيح. فلنلقِ نظرة على مثال:
 
 ```python
 def print_many_times(message, times):
@@ -613,7 +610,7 @@ def print_many_times(message, times):
         times -= 1
 ```
 
-The function works as expected if we call it like this:
+وتعمل الدالة كما هو متوقع إذا استدعيناها هكذا:
 
 ```python
 print_many_times("Hello there", 5)
@@ -629,7 +626,7 @@ Hello there
 ```
 
 
-However, if we give the function an argument of the wrong type, it will not work:
+لكن إذا مرّرنا للدالة وسيطًا من النوع الخطأ، فلن تعمل:
 
 ```python
 print_many_times("Hello there", "Emily")
@@ -641,9 +638,9 @@ TypeError: '>' not supported between instances of 'str' and 'int'
 ```
 
 
-The problem here is that the second parameter `times` is compared to an integer, `0`, on line 2 of the function definition. The argument given was `"Emily"`, which is a string, not an integer. Strings and integers cannot be compared so simply, so an error ensues.
+والمشكلة هنا هي أن المعامل الثاني `times` يُقارَن بعدد صحيح، هو `0`، في السطر 2 من تعريف الدالة. والوسيط المُمرَّر كان `"Emily"`، وهو سلسلة نصية وليس عددًا صحيحًا. ولا يمكن مقارنة السلاسل النصية والأعداد الصحيحة بمثل هذه السهولة، فيحدث خطأ.
 
-To avoid issues like this you can include _type hints_ in your function definitions. The type hint specifies the type of the argument intended for the function:
+ولتجنب مشكلات مثل هذه يمكنك إدراج _تلميحات النوع_ في تعريفات دوالك. ويحدد تلميح النوع نوع الوسيط المخصص للدالة:
 
 ```python
 def print_many_times(message : str, times : int):
@@ -652,9 +649,9 @@ def print_many_times(message : str, times : int):
         times -= 1
 ```
 
-This tells anyone using the function that the argument stored in `message` is supposed to be a string, and the argument stored in `times` is supposed to be an integer.
+وهذا يُخبر أي شخص يستخدم الدالة بأن الوسيط المخزَّن في `message` من المفترض أن يكون سلسلة نصية، والوسيط المخزَّن في `times` من المفترض أن يكون عددًا صحيحًا.
 
-Similarly, the return value of a function can be hinted at in the function definition:
+وبالمثل، يمكن الإشارة إلى القيمة المعادة من دالة في تعريف الدالة:
 
 ```python
 def ask_for_name() -> str:
@@ -662,12 +659,12 @@ def ask_for_name() -> str:
     return name
  ```
 
-This tells the user of the function that the function is supposed to return a string.
+وهذا يُخبر مستخدم الدالة بأنه من المفترض أن تُعيد الدالة سلسلة نصية.
 
-**NB:** Type hinting is literally just hinting about the type of the argument or the return value. It is not a guarantee of type, and definitely not a safeguard against type errors. If a function receives an argument or returns a value of the wrong type, the function is still executed, but it might not work correctly.
+**ملاحظة مهمة:** تلميح النوع هو مجرد تلميح بشأن نوع الوسيط أو القيمة المعادة، حرفيًا لا أكثر. فهو ليس ضمانًا للنوع، وبالتأكيد ليس حماية ضد أخطاء النوع. فإذا تلقّت دالة وسيطًا من النوع الخطأ أو أعادت قيمة من النوع الخطأ، فإن الدالة تُنفَّذ مع ذلك، لكنها قد لا تعمل عملًا صحيحًا.
 
 <!---
-A quiz to review the contents of this section:
+اختبار لمراجعة محتويات هذا القسم:
 
 > **اختبار:** (مكون تفاعلي غير متاح في النسخة الثابتة - ID: fb289a3b-288a-5a9f-b3d2-07ceae5866ea)
 

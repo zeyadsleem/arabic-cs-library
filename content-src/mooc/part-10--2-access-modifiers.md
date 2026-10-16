@@ -8,14 +8,13 @@ source: "https://programming-26.mooc.fi/part-10/2-access-modifiers"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will understand the access modifiers private and protected
+> - You will know how the visibility of traits is determined in Python
 
-After this section
-
-- You will understand the access modifiers private and protected
-- You will know how the visibility of traits is determined in Python
-
-</text-box>
 
 If a trait is defined as private in the base class, it is not directly accessible in any derived classes, as was briefly mentioned in the previous section. Let's take a look at an example. In the `Notebook` class below the notes are stored in a list, and the list attribute is private:
 
@@ -172,7 +171,7 @@ Footballer - name: Peter Pythons, nickname: Pyper, position: forward
 
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Supergroup**
 >
 > The exercise template contains the class definition for a `SuperHero`.
 
@@ -208,7 +207,7 @@ Invisible Inca, superpowers: Invisibility
 If you need a refresher on getter and setter methods, please have a look at [this section in the previous part](/part-9/3-encapsulation#getters-and-setters) of the material.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Secret magic potion**
 >
 > The exercise template contains the class definition for a `MagicPotion` which allows you to save a recipe for a magic potion. The class definition contains a constructor along with the methods
 

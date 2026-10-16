@@ -1,30 +1,29 @@
 ---
-title: "المزيد من تقنيات Pygame"
+title: "تقنيات pygame إضافية"
 lang: ar
 source: "https://programming-26.mooc.fi/part-13/4-more-pygame-techniques"
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **أهداف التعلّم**
+>
+> بعد هذا القسم
+>
+> - ستعرف عنوان نافذة pygame
+> - ستتمكّن من رسم الأشكال بمساعدة pygame
+> - ستعرف كيفية عرض نص داخل نافذتك
 
-After this section
 
-- You will know how the title of the pygame window
-- You will be able to draw shapes with pygame
-- You will know how to display text in your window
+## عنوان النافذة
 
-</text-box>
-
-## The window title
-
-Your programs will look more professional if instead of "pygame window" the window title contains the actual name of the program.The title is set with the `pygame.display.set_caption` function:
+ستبدو برامجك أكثر احترافيةً إذا احتوى عنوان النافذة على اسم البرنامج الفعلي بدلًا من «نافذة pygame». يُعيَّن العنوان عبر الدالة `pygame.display.set_caption`:
 
 ```python
 pygame.display.set_caption("Great Adventure")
 ```
 
-## Drawing shapes
+## رسم الأشكال
 
-The following program draws a rectangle, a circle and a line on the screen:
+يرسم البرنامج التالي مستطيلًا ودائرة وخطًا على الشاشة:
 
 ```python
 import pygame
@@ -45,13 +44,13 @@ while True:
             exit()
 ```
 
-Running the above code should look like this:
+يبدو تشغيل الشيفرة السابقة بهذا الشكل:
 
-<img src="pygame_shapes.gif">
+![pygame_shapes.gif](/images/mooc/part-13/pygame_shapes.gif)
 
-## Drawing text
+## رسم النص
 
-Text in pygame is drawn in two steps: first we create an image containing the desired text, and then this image is drawn on the screen. It works like this:
+يُرسم النص في pygame على خطوتين: ننشئ أولًا صورةً تحتوي على النص المطلوب، ثم نرسم هذه الصورة على الشاشة. تجري العملية هكذا:
 
 ```python
 import pygame
@@ -71,36 +70,36 @@ while True:
             exit()
 ```
 
-Running the above code should look like this:
+يبدو تشغيل الشيفرة السابقة بهذا الشكل:
 
-<img src="pygame_text.gif">
+![pygame_text.gif](/images/mooc/part-13/pygame_text.gif)
 
-Here the method `pygame.font.SysFont` creates a font object, which uses the system font Arial in size 24. The the method `render` creates an image of the specified text in the given colour. This image is drawn on the window with the `blit` method, just as before.
+هنا تنشئ الطريقة `pygame.font.SysFont` كائنًا (object) للخط، يستخدم خط النظام Arial بحجم 24. ثم تنشئ الطريقة `render` صورةً للنص المحدّد باللون المُعطى. وتُرسم هذه الصورة على النافذة عبر الطريقة `blit` تمامًا كما في المثال السابق.
 
-NB: different systems will have different fonts available. If the system this program is exeuted on doesn't have the Arial font, even though Arial is a very common font available on most systems, the default system font is used instead. If you need to have a specific font available for your game, you can include the font file in the game directory and specify its location for the `pygame.font.Font` method.
+تنبيه: تختلف الخطوط المتوفرة من نظام إلى آخر. فإذا لم يكن خط Arial متوفرًا على النظام الذي يُنفَّذ عليه هذا البرنامج — رغم أن Arial خط شائع جدًا ومتوفر على معظم الأنظمة — استُخدم خط النظام الافتراضي بدلًا منه. وإذا احتجت خطًا معيّنًا للعبتك، فيمكنك وضع ملف الخط داخل مجلد اللعبة وتحديد مساره لطريقة `pygame.font.Font`.
 
-## Exercises
+## التمارين
 
-Here are some more advanced exercises for practicing what you have learned in this part of the course material.
+فيما يلي تمارين أكثر تقدّمًا للممارسة على ما تعلّمته في هذا القسم من مادة المقرر.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: الساعة**
 >
-> Please write a program which displays a clock face which displays the system time. The end result should look like this:
+> اكتب برنامجًا يعرض واجهة ساعة تُظهر وقت النظام. ينبغي أن تبدو النتيجة النهائية بهذا الشكل:
 
-<img src="pygame_clock.gif">
+![pygame_clock.gif](/images/mooc/part-13/pygame_clock.gif)
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: الكويكبات**
 >
-> Please create a game where asteroids fall from the sky. The player moves a robot left and right and tries to collect the falling rocks. The player gets a point for each asteroid collected, and the points total is shown at the top of the window. The game ends when the player misses an asteroid. The end result should look like this:
+> أنشئ لعبة تسقط فيها الكويكبات من السماء. يحرّك اللاعب روبوتًا إلى اليمين وإلى اليسار ويحاول جمع الصخور الساقطة. يحصل اللاعب على نقطة لكل كويكب يجمعه، ويظهر مجموع النقاط في أعلى النافذة. تنتهي اللعبة عندما يفوّت اللاعب كويكبًا. ينبغي أن تبدو النتيجة النهائية بهذا الشكل:
 
-<img src="pygame_asteroids.gif">
+![pygame_asteroids.gif](/images/mooc/part-13/pygame_asteroids.gif)
 
-NB: the above animation is from the Finnish version of the course. You may use the word "Points" instead of the Finnish equivalent "Pisteet" depicted above.
+تنبيه: الحركة أعلاه مأخوذة من النسخة الفنلندية من المقرر. يمكنك استخدام كلمة «النقاط» بدلًا من الكلمة الفنلندية «Pisteet» الظاهرة في الصورة.
 
-The exercise template contains the image `rock.png` for the asteroid.
+يحتوي قالب التمرين على الصورة `rock.png` للكويكب.
 
 
-Please respond to a quick questionnaire on this part of the course.
+يرجى الإجابة على استبيان سريع حول هذا القسم من المقرر.
 
 > **اختبار:** (مكون تفاعلي غير متاح في النسخة الثابتة - ID: 9b57c7ea-8983-507f-93e7-243be766e2ad)

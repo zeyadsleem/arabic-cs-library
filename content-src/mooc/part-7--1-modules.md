@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-7/1-modules"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know what a Python module is
+> - You will be able to include a module in your program with the `import` statement
+> - You will know how to look for more information on the contents of modules
 
-After this section
-
-- You will know what a Python module is
-- You will be able to include a module in your program with the `import` statement
-- You will know how to look for more information on the contents of modules
-
-</text-box>
 
 ## Debugging revisited
 
@@ -95,7 +94,7 @@ print(log(5,2))
 
 Importing modules with the star notation can be useful when testing and in some smaller projects, but it can pose some new problems, too. We will come across these later.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Hypotenuse**
 >
 > Please write a function named `hypotenuse(leg1: float, leg2: float)`, which takes the lengths of the two sides adjacent to the right angle of an orthogonal triangle. The function should return the length of the hypotenuse, or the side opposite to the right angle.
 
@@ -132,7 +131,7 @@ The function returns a list of names defined by the module. These may be, for ex
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Special characters**
 >
 > The Python module [string](https://docs.python.org/3/library/string.html) contains some string constants, which define certain groups of characters. These include for example lowercase letters and punctuation characters. Please familiarize yourself with these constants, and then write a function named `separate_characters(my_string: str)`. The function takes a string as its argument, and it should separate the characters in the string into three other strings, and return these in a tuple:
 
@@ -159,7 +158,7 @@ OlHeyaremltswrking
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Fractions**
 >
 > Please familiarize yourself with the Python module `fractions`. Use it to write a function named `fractionate(amount: int)`, which takes the number of parts as its argument. The function should divide the number 1 into as many equal sized fractions as is specified by the argument, and return these in a list.
 

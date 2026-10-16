@@ -1,21 +1,20 @@
 ---
-title: "Print statement formatting"
+title: "تنسيق أمر الطباعة"
 lang: ar
 source: "https://programming-26.mooc.fi/part-4/5-print-statement-formatting"
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **أهداف التعلّم**
+>
+> بعد هذا القسم
+>
+> - ستعرف كيف تستخدم الوسائط لتنسيق نتيجة الأمر `print`
+> - ستكون قادرًا على استخدام السلاسل النصية ذات البادئة f لتنسيق المخرجات
 
-After this section
 
-- You will know how to use arguments to format the result of the `print` command
-- You will be able to use f-strings to format printouts
+حتى الآن تعلّمنا ثلاث طرق لصياغة الوسيط المُعطى إلى الأمر `print`.
 
-</text-box>
-
-So far we have learnt three methods for formulating the argument given to the `print` command.
-
-The first is the `+` operator for strings. It allows simple concatenation of string segments:
+الطريقة الأولى هي المشغّل `+` المخصّص للسلاسل النصية. وهو يتيح الدمج البسيط لأجزاء السلسلة النصية:
 
 ```python
 name = "Mark"
@@ -23,23 +22,23 @@ age = 37
 print("Hi " + name + " your age is " + str(age) + " years" )
 ```
 
-This method will not work if any of the segments are not strings. In the example above, the variable `age` has been converted into a string with the `str` function, since it is an integer and cannot be concatenated as is.
+لن تعمل هذه الطريقة إذا لم يكن أيّ من الأجزاء سلسلة نصية. وفي المثال أعلاه، حُوِّل المتغيّر `age` إلى سلسلة نصية بواسطة الدالة `str`، لأنه عدد صحيح ولا يمكن دمجه كما هو.
 
-The second method is considering each segment of the argument as a separate argument, and splitting them up with commas:
+والطريقة الثانية هي اعتبار كل جزء من الوسيط وسيطًا منفصلًا، وفصلها بفواصل:
 
 ```python
 print("Hi", name, "your age is", age, "years" )
 ```
 
-This code produces the exact same result as the previous version. The `print` command normally adds a space character between each argument.The advantage here is that the segments can be of different types, so there is no need to convert anything into a string.
+تُنتج هذه الشيفرة النتيجة نفسها تمامًا التي تنتجها النسخة السابقة. فالأمر `print` يضيف عادةً محرف مسافة بين كل وسيطين. أما الميزة هنا فهي أن الأجزاء يمكن أن تكون من أنواع مختلفة، فلا حاجة إلى تحويل أي شيء إلى سلسلة نصية.
 
-If you want to remove the automatically added spaces, you can add a special named argument `sep`:
+وإذا أردت إزالة المسافات المضافة تلقائيًا، فيمكنك إضافة وسيط مسمّى خاص هو `sep`:
 
 ```python
 print("Hi", name, "your age is", age, "years", sep="")
 ```
 
-This prints out
+فيطبع هذا
 
 
 ```
@@ -48,7 +47,7 @@ HiMarkyour age is37years
 
 
 
-The argument `sep=""` is a _keyword argument_, and its name is short for _separator_. It specifies that the other arguments should now be separated by an empty string. You can set the separator to any string you like. For example, if you wanted each argument on a separate line, you could set the separator to `"\n"`, which is the newline character:
+الوسيط `sep=""` هو _وسيط مسمّى_ (keyword argument)، واختصار اسمه من _الفاصل_ (separator). وهو يحدّد أن فصل الوسائط الأخرى ينبغي أن يتم الآن بسلسلة نصية فارغة. ويمكنك جعل الفاصل أي سلسلة نصية ترضاها. فمثلًا، إذا أردت أن يكون كل وسيط في سطر منفصل، فيمكنك جعل الفاصل هو `"\n"`، وهو محرف السطر الجديد:
 
 ```python
 print("Hi", name, "your age is", age, "years", sep="\n")
@@ -64,7 +63,7 @@ years
 ```
 
 
-By default, the print command always ends in a newline character, but you can change this as well. The keyword argument `end` specifies what is put at the end of a line. Setting `end` to an empty string means that there is no newline character at the end of the printout:
+افتراضيًا، ينتهي أمر الطباعة دائمًا بمحرف سطر جديد، لكن يمكنك تغيير ذلك أيضًا. فالوسيط المسمّى `end` يحدّد ما يُوضع في نهاية السطر. وضبط `end` على سلسلة نصية فارغة يعني أنه لا يوجد محرف سطر جديد في نهاية المخرجات:
 
 ```python
 print("Hi ", end="")
@@ -77,9 +76,9 @@ Hi there!
 ```
 
 
-## f-strings
+## السلاسل النصية ذات البادئة f
 
-The third method to prepare strings is f-strings. The previous example with the name and the age would look like this formulated with f-strings:
+الطريقة الثالثة لتجهيز السلاسل النصية هي السلاسل النصية ذات البادئة f. وسيبدو المثال السابق الذي يستخدم الاسم والعمر على النحو التالي عند صياغته بهذه الطريقة:
 
 ```python
 name = "Erkki"
@@ -87,7 +86,7 @@ age = 39
 print(f"Hi {name} your age is {age} years")
 ```
 
-Thus far we have only used very simple f-strings, but they can be very versatile in formatting string type content. One very common use case is setting the number of decimals that are printed out with a floating point number. By default the number is quite high:
+حتى الآن استخدمنا سلاسل نصية ذات بادئة f بسيطة جدًا، لكنها متعددة الاستخدامات إلى حد كبير في تنسيق محتوى السلاسل النصية. ومن أبرز استخدامهاات تحديد عدد الخانات العشرية التي تُطبع مع عدد عشري. وافتراضيًا يكون هذا العدد كبيرًا إلى حد ما:
 
 ```python
 number = 1/3
@@ -100,7 +99,7 @@ The number is 0.333333333333333
 ```
 
 
-The specific format we want the number to be displayed in can be set within the curly brackets of the variable expression. Let's add a colon character and a _format specifier_ after the variable name:
+يمكن تحديد الصيغة التي نريد أن يُعرض بها العدد داخل الأقواس المعقوفة لتعبير المتغيّر. فلنضف محرف النقطتين و_مُحدِّد تنسيق_ (format specifier) بعد اسم المتغيّر:
 
 ```python
 number = 1/3
@@ -111,9 +110,9 @@ print(f"The number is {number:.2f}")
 The number is 0.33
 ```
 
-The format specifier `.2f` states that we want to display 2 decimals. The letter _f_ at the end means that we want the variable to be displayed as a `float`, i.e. a floating point number.
+يوضّح مُحدِّد التنسيق `.2f` أننا نريد عرض خانتين عشريتين. أما الحرف _f_ في النهاية فيعني أننا نريد عرض المتغيّر في هيئة `float`، أي عدد عشري.
 
-Here's another example, where we specify the amount of whitespace reserved for the variable in the printout. Both times the variable `name` is included in the resulting string, it has a space of 15 characters reserved. First the names are justified to the left, and then they are justified to the right:
+وهنا مثال آخر، نحدّد فيه مقدار المساحة المخصّصة للمتغيّر في المخرجات. في كلتا الحالتين تُدرَج قيمة المتغيّر `name` في السلسلة النصية الناتجة، مع تخصيص مساحة من 15 محرفًا لها. أولًا تُحاذى الأسماء إلى اليسار، ثم تُحاذى إلى اليمين:
 
 ```python
 names =  [ "Steve", "Jean", "Katherine", "Paul" ]
@@ -128,7 +127,7 @@ Katherine       centre       Katherine
 Paul            centre            Paul
 ```
 
-The uses of f-strings are not restricted to `print` commands. They can be assigned to variables and combined with other strings:
+لا تقتصر استخدامات السلاسل النصية ذات البادئة f على أوامر `print`. ويمكن إسنادها إلى متغيّرات ودمجها مع سلاسل نصية أخرى:
 
 ```python
 name = "Larry"
@@ -144,15 +143,15 @@ Hi Larry, you are 48 years of age, and you live in Palo Alto
 ```
 
 
-You can think of an f-string as a sort of function, which creates a normal string based on the "arguments" within the curly brackets.
+يمكنك التفكير في السلسلة النصية ذات البادئة f على أنها نوع من الدوال، تُنشئ سلسلة نصية عادية بناءً على «الوسائط» الموجودة داخل الأقواس المعقوفة.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: الأعداد الصحيحة إلى سلاسل نصية**
 >
-> Please write a function named `formatted`, which takes a list of floating point numbers as its argument. The function returns a new list, which contains each element of the original list in string format, rounded to two decimal points. The order of the items in the list should remain unchanged.
+> اكتب دالة اسمها `formatted`، تأخذ قائمة من الأعداد العشرية كوسيط لها. وتُرجع الدالة قائمة جديدة تحتوي على كل عنصر من عناصر القائمة الأصلية في صيغة سلسلة نصية، مقرَّبًا إلى خانتين عشريتين. وينبغي أن يبقى ترتيب العناصر في القائمة دون تغيير.
 
-_Hint: use f-strings to format the floating point numbers into suitable strings._
+_تلميح: استخدم السلاسل النصية ذات البادئة f لتنسيق الأعداد العشرية إلى سلاسل نصية مناسبة._
 
-An example of expected beahviour:
+مثال على السلوك المتوقع:
 
 ```python
 my_list = [1.234, 0.3333, 0.11111, 3.446]
@@ -167,7 +166,8 @@ print(new_list)
 
 
 <!---
-A quiz to review the contents of this section:
+
+اختبار لمراجعة محتويات هذا القسم:
 
 > **اختبار:** (مكون تفاعلي غير متاح في النسخة الثابتة - ID: 90d650f3-fde1-5132-ade9-73f3b4bf6189)
 

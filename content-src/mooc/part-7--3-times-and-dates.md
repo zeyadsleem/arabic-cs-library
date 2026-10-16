@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-7/3-times-and-dates"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know how to handle dates and times in Python code
+> - You will be able to create and use `datetime` objects
+> - You will know how to compare and calculate differences between two dates or times
 
-After this section
-
-- You will know how to handle dates and times in Python code
-- You will be able to create and use `datetime` objects
-- You will know how to compare and calculate differences between two dates or times
-
-</text-box>
 
 ## The datetime object
 
@@ -162,7 +161,7 @@ Midnight is still 8188 seconds away
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: How old**
 >
 > Please write a program which asks the user for their date of birth, and then prints out how old the user was on the eve of the new millennium. The program should ask for the day, month and year separately, and print out the age in days. Please have a look at the examples below:
 
@@ -187,7 +186,7 @@ You weren't born yet on the eve of the new millennium.
 You may assume all day-month-year combinations given as an argument will be valid dates. That is, there will not be a date like February 31st.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Valid PIC?**
 >
 > In this exercise you will validate Finnish Personal Identity Codes (PIC). 
 
@@ -265,7 +264,7 @@ You were born in the previous millennium
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Screen time**
 >
 > Please write a program for recording the amount of time the user has spent in front of a television, computer or mobile device screen over a specific period of time. 
 

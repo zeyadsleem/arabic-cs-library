@@ -8,17 +8,16 @@ source: "https://programming-26.mooc.fi/part-8/3-defining-classes"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know how to define your own classes
+> - You will be able to create objects based on classes you've defined yourself
+> - You will know how to write a constructor
+> - You are familiar with the parameter name `self`
+> - You will know what attributes are and how they are used
 
-After this section
-
-- You will know how to define your own classes
-- You will be able to create objects based on classes you've defined yourself
-- You will know how to write a constructor
-- You are familiar with the parameter name `self`
-- You will know what attributes are and how they are used
-
-</text-box>
 
 A class is defined with the keyword `class`. The syntax is as follows:
 
@@ -224,7 +223,7 @@ for number in round1.numbers:
 
 As you can see above, the attributes can be of any type. Here, each LotteryDraw object has attributes of type `list` and `date`.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Book**
 >
 > Please write a class named `Book` with the attributes `name`, `author`, `genre` and `year`, along with a constructor which assigns initial values to these attributes.
 
@@ -245,7 +244,7 @@ The genre of the book High Adventure is autobiography
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Three classes**
 >
 > Please write the three classes specified below. Each class should have exactly the same names and types of attributes as listed.
 
@@ -296,7 +295,7 @@ print(peters_account.balance)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Define class: Pet**
 >
 > Please define the class `Pet`. The class should include a constructor, which takes the initial values of the attributes `name`, `species` and `year_of_birth` as its arguments, in that specific order.
 
@@ -319,7 +318,7 @@ dog
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: The older book**
 >
 > Please write a function named `older_book(book1: Book, book2: Book)` which takes two objects of type `Book` as its arguments. The function should print out a message with the details of whichever is the older. It should print out a different message if the two books were written in the same year. Please see the examples below.
 
@@ -339,7 +338,7 @@ Fluent Python and Norma were published in 2015
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Books of a genre**
 >
 > Please write a function named `books_of_genre(books: list, genre: str)` which takes a list of objects of type `Book` and a string representing a genre as its arguments.
 

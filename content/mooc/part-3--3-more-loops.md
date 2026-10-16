@@ -1,24 +1,23 @@
 ---
-title: "More loops"
+title: "المزيد عن الحلقات"
 lang: ar
 source: "https://programming-26.mooc.fi/part-3/3-more-loops"
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **أهداف التعلّم**
+>
+> بعد إتمام هذا القسم
+>
+> - ستفهم متى يحتاج الأمر `break` إلى الخروج من الحلقات
+> - ستتمكّن من استخدام الأمر `continue` للانتقال إلى التكرار التالي
+> - ستفهم كيف تعمل الحلقات المتداخلة
 
-After this section
 
-- You will understand when the `break` command is needed to break out of loops
-- You will be able to use the `continue` command to move to the next iteration
-- You will understand how nested loops work
+## الأمر break
 
-</text-box>
+لقد صادفتَ الأمر `break` من قبل. ويمكن استخدامه لإيقاف تنفيذ حلقة فورًا. ومن الأمثلة النموذجية على استخدامه حالة يطلب فيها البرنامج مُدخَلًا من المستخدم ولا ينتهي التنفيذ إلا حين يتلقى مُدخَلًا محدَّدًا.
 
-## The break command
-
-You have already come across the `break` command. It can be used to stop the execution of a loop immediately. A typical example of where it is used is a situation where the program asks the user for input, and the execution ends only when a specific input is received.
-
-The same functionality can be achieved without the `break` command, using a suitable condition. The two programs below both ask the user to type in numbers, and calculate the sum of the numbers until the user types in -1.
+يمكن بلوغ الوظيفة نفسها دون الأمر `break`، باستخدام شرط مناسب. فكلا البرنامجين أدناه يطلب من المستخدم كتابة أعداد، ويحسب مجموعها إلى أن يكتب المستخدم العدد -1.
 
 ```python
 # 1st version using the break command
@@ -48,7 +47,7 @@ while number != -1:
 print (f"The sum is {sum}")
 ```
 
-Both programs print out the same thing with the same inputs, for example:
+يطبع كلا البرنامجين الشيء نفسه عند المُدخَلات نفسها، مثلًا:
 
 
 ```
@@ -61,9 +60,9 @@ The sum is 14
 ```
 
 
-So, the two programs are functionally practically identical. However, the first method is often easier, as the condition `number == -1` appears only once, and the variable `number` doesn't have to be initialised outside the loop.
+إذًا، البرنامجان متطابقان عمليًا من حيث الوظيفة. لكن الطريقة الأولى غالبًا أسهل، لأن الشرط `number == -1` لا يظهر سوى مرة واحدة، ولا يلزم تهيئة المتغيّر `number` خارج الحلقة.
 
-The `break` command and a suitable condition can also be used together in a while loop. For example, the following loop is repeated as long as the sum of the numbers is at most 100, but it also stops if the user types in the number -1.
+يمكن أيضًا استخدام الأمر `break` مع شرط مناسب معًا داخل حلقة `while`. فمثلًا، تتكرر الحلقة التالية ما دام مجموع الأعداد لا يتجاوز 100، لكنها تتوقف أيضًا إذا كتب المستخدم العدد -1.
 
 ```python
 sum = 0
@@ -77,7 +76,7 @@ while sum <= 100:
 print (f"The sum is {sum}")
 ```
 
-Some examples of the program's execution:
+بعض أمثلة تنفيذ البرنامج:
 
 
 ```
@@ -100,9 +99,9 @@ The sum is 106
 ```
 
 
-In the first example the execution of the loop stops because the user types in the number -1. In the second example it stops because the sum of the numbers exceeds 100.
+في المثال الأول يتوقف تنفيذ الحلقة لأن المستخدم يكتب العدد -1. وفي المثال الثاني يتوقف التنفيذ لأن مجموع الأعداد يتجاوز 100.
 
-As always in programming, there are many ways to reach the same functionality. The following program is functionally identical to the above:
+وكما هو الحال دائمًا في البرمجة، هناك طرق كثيرة للوصول إلى الوظيفة نفسها. والبرنامج التالي متطابق مع البرنامج السابق من حيث الوظيفة:
 
 ```python
 sum = 0
@@ -117,13 +116,13 @@ while True:
 
 print (f"The sum is {sum}")
 ```
-## The continue command
+## الأمر continue
 
-Another way to change the way a loop is executed is the `continue` command. It causes the execution of the loop to jump straight to the beginning of the loop, where the condition of the loop is. Then the execution continues normally with checking the condition:
+هناك طريقة أخرى لتغيير كيفية تنفيذ حلقة وهي الأمر `continue`. فهو يجعل تنفيذ الحلقة يقفز مباشرة إلى بدايتها، حيث يقع شرط الحلقة. ثم يتابع التنفيذ بشكل طبيعي مع فحص الشرط:
 
-<img src="3_3_1.png">
+![3_3_1.png](/images/mooc/part-3/3_3_1.png)
 
-For example, the following program sums up numbers from input, but it only includes the numbers which are smaller than 10. If the number is 10 or greater, the execution jumps to the beginning of the loop and the number is not added to the sum.
+فمثلًا، يجمع البرنامج التالي الأعداد المُدخَلة، لكنه يضمّ سوى الأعداد الأصغر من 10. فإذا كان العدد 10 أو أكبر، يقفز التنفيذ إلى بداية الحلقة ولا يُضاف العدد إلى المجموع.
 
 ```python
 sum = 0
@@ -150,9 +149,9 @@ The sum is 16
 ```
 
 
-## Nested loops
+## الحلقات المتداخلة
 
-Just like `if` statements, loops can also be placed inside other loops. For example, the following program uses a loop to ask the user to input numbers. It then uses another loop inside the first one to print a countdown from the given number down to 1:
+كما تمامًا مع جمل `if`، يمكن أيضًا وضع الحلقات داخل حلقات أخرى. فمثلًا، يستخدم البرنامج التالي حلقة لطلب الأعداد من المستخدم. ثم يستخدم حلقة أخرى داخل الأولى لطباعة عدّ تنازلي بدءًا من العدد المُعطى وصولًا إلى 1:
 
 ```python
 while True:
@@ -183,10 +182,9 @@ Please type in a number: **6**
 2
 1
 Please type in a number: **-1**
+```
 
-</Sample-output>
-
-When there are nested loops, `break` and `continue` commands only affect the innermost loop which they are a part of. The previous example could also be written like this:
+عندما تكون هناك حلقات متداخلة، لا يؤثر الأمران `break` و`continue` إلا على الحلقة الداخلية الأكثر عمقًا التي ينتميان إليها. ويمكن كتابة المثال السابق أيضًا هكذا:
 
 ```python
 while True:
@@ -200,11 +198,11 @@ while True:
         number -= 1
 ```
 
-Here the latter `break` command only stops the innermost loop, which is used to print the numbers. 
+وهنا لا يوقف الأمر `break` الأخير سوى الحلقة الداخلية، وهي الحلقة المستخدَمة لطباعة الأعداد.
 
-## More helper variables with loops
+## متغيّرات مساعدة أخرى مع الحلقات
 
-We've already used helper variables, which increase or decrease with every iteration of a loop, many times before, so the following program should look quite familiar in structure. The program prints out all even numbers above zero until it reaches a limit set by the user:
+لقد استخدمنا متغيّرات مساعدة، التي تزيد أو تنقص مع كل تكرار للحلقة، مرات عديدة من قبل، لذا ينبغي أن يبدو البرنامج التالي مألوفًا إلى حدٍّ كبير من حيث البنية. وهو يطبع جميع الأعداد الزوجية الأكبر من الصفر حتى يبلغ حدًّا يحدده المستخدم:
 
 ```python
 limit = int(input("Please type in a number: "))
@@ -214,8 +212,9 @@ while i < limit:
     i += 2
 ```
 
-<sample-output>
 
+
+```
 Please type in a number: **8**
 0
 2
@@ -224,9 +223,9 @@ Please type in a number: **8**
 ```
 
 
-The helper variable `i` is set to 0 before the loop, and it increases by two with every iteration.
+يُضبط المتغيّر المساعد `i` على 0 قبل الحلقة، ويزداد بمقدار اثنين مع كل تكرار.
 
-Using nested loops sometimes necessitates a separate helper variable for the inner loop. The program below prints out a "number pyramid" based on a number given by the user:
+يتطلب استخدام الحلقات المتداخلة أحيانًا متغيّرًا مساعدًا منفصلًا للحلقة الداخلية. ويطبع البرنامج أدناه «هرمًا من الأعداد» بناءً على عدد يحدّه المستخدم:
 
 ```python
 number = int(input("Please type in a number: "))
@@ -250,17 +249,17 @@ Please type in a number: **5**
 ```
 
 
-In this program the outer loop uses the helper variable `number`, which decreases by 1 with each iteration until it reaches 0. The helper variable `i` is set to 0 just before the inner loop is entered, each time the outer loop repeats.
+في هذا البرنامج تستخدم الحلقة الخارجية المتغيّر المساعد `number`، الذي ينقص بمقدار 1 مع كل تكرار حتى يبلغ 0. أمّا المتغيّر المساعد `i` فيُضبط على 0 قبل الدخول إلى الحلقة الداخلية مباشرة، في كل مرة تتكرر فيها الحلقة الخارجية.
 
-The inner loop uses the helper variable `i`, which increases by 1 with each iteration of the inner loop. The inner loop repeats until `i` is equal to `number`, and prints out each value of `i` on the same line, separated by a space character. When the inner loop finishes, the `print` command in the outer loop starts a new line.
+وتستخدم الحلقة الداخلية المتغيّر المساعد `i`، الذي يزيد بمقدار 1 مع كل تكرار من تكرارات الحلقة الداخلية. وتتكرر الحلقة الداخلية حتى تصير `i` مساويةً لـ`number`، وتطبع كل قيمة لـ`i` على السطر نفسه، مفصولةً بمحرف مسافة. وحين تنتهي الحلقة الداخلية، يبدأ الأمر `print` في الحلقة الخارجية سطرًا جديدًا.
 
-Now remember that with each iteration of the outer loop the value of `number` decreases, so the amount of times the inner loop repeats also decreases. With each repetition the line of numbers gets shorter, and thus we get the pyramid shape.
+وتذكّر الآن أن قيمة `number` تنقص مع كل تكرار من تكرارات الحلقة الخارجية، لذا تنقص أيضًا عدد مرات تكرار الحلقة الداخلية. ومع كل تكرار يصبح سطر الأعداد أقصر، وهكذا نحصل على شكل الهرم.
 
-Nested loops can get confusing fast, but understanding the way they work is essential. You may well find the Python Tutor [visualisation tool](http://www.pythontutor.com/visualize.html#mode=edit) helpful in understanding how this example works. Copy the above code into the code window of the tool and follow the formation of the printout and the changing values of the helper variables as the execution progresses.
+قد تصبح الحلقات المتداخلة مربكة سريعًا، لكن فهم طريقة عملها ضروري. ومن المرجّح أن تجد [أداة التمثيل المرئي](http://www.pythontutor.com/visualize.html#mode=edit) في موقع Python Tutor مفيدة في فهم كيفية عمل هذا المثال. انسخ الشيفرة أعلاه إلى نافذة الشيفرة في الأداة، وتابع تشكّل المخرجات وتغيّر قيم المتغيّرات المساعدة مع تقدّم التنفيذ.
 
-> **تمرين تفاعلي: Multiplication**
+> **تمرين تفاعلي: الضرب**
 >
-> Please write a program which asks the user for a positive integer number. The program then prints out a list of multiplication operations until both operands reach the number given by the user. See the examples below for details:
+> يُرجى كتابة برنامج يطلب من المستخدم عددًا صحيحًا موجبًا. ثم يطبع البرنامج قائمة بعمليات الضرب حتى يبلغ المعاملان العدد الذي أعطاه المستخدم. راجع الأمثلة أدناه للتفاصيل:
 
 
 ```
@@ -290,11 +289,11 @@ Please type in a number: 3
 
 
 
-> **تمرين تفاعلي: First letters of words**
+> **تمرين تفاعلي: الأحرف الأولى للكلمات**
 >
-> Please write a program which asks the user to type in a sentence. The program then prints out the first letter of each word in the sentence, each letter on a separate line.
+> يُرجى كتابة برنامج يطلب من المستخدم كتابة جملة. ثم يطبع البرنامج الحرف الأول من كل كلمة في الجملة، كل حرف في سطر منفصل.
 
-An example of expected behaviour:
+مثال على السلوك المتوقع:
 
 
 ```
@@ -310,13 +309,13 @@ w
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-> **تمرين تفاعلي: Factorial**
+> **تمرين تفاعلي: المضروب**
 >
-> Please write a program which asks the user to type in an integer number. If the user types in a number equal to or below 0, the execution ends. Otherwise the program prints out the factorial of the number.
+> يُرجى كتابة برنامج يطلب من المستخدم كتابة عدد صحيح. فإذا كتب المستخدم عددًا يساوي 0 أو أصغر منه، ينتهي التنفيذ. وإلا ف البرنامج يطبع مضروب العدد.
 
-The factorial of a number involves multiplying the number by all the positive integers smaller than itself. In other words, it is the product of all positive integers less than or equal to the number. For example, the factorial of 5 is 1 * 2 * 3 * 4 * 5 = 120.
+ينطوي مضروب العدد على ضرب العدد في جميع الأعداد الصحيحة الموجبة الأصغر منه. وبعبارة أخرى، هو حاصل ضرب جميع الأعداد الصحيحة الموجبة التي تقل عن العدد أو تساويه. فمثلًا، مضروب العدد 5 هو 1 * 2 * 3 * 4 * 5 = 120.
 
-Some examples of expected behaviour:
+بعض أمثلة السلوك المتوقع:
 
 
 ```
@@ -340,9 +339,9 @@ Thanks and bye!
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-> **تمرين تفاعلي: Flip the pairs**
+> **تمرين تفاعلي: اقلب الأزواج**
 >
-> Please write a program which asks the user to type in a number. The program then prints out all the positive integer values from 1 up to the number. However, the order of the numbers is changed so that each pair or numbers is flipped. That is, 2 comes before 1, 4 before 3 and so forth. See the examples below for details.
+> يُرجى كتابة برنامج يطلب من المستخدم كتابة عدد. ثم يطبع البرنامج جميع القيم الصحيحة الموجبة من 1 حتى العدد. غير أن ترتيب الأعداد يتغيّر بحيث ينقلب كل زوج من الأعداد. أي أن 2 تسبق 1، و4 تسبق 3، وهكذا. راجع الأمثلة أدناه للتفاصيل.
 
 
 ```
@@ -369,9 +368,9 @@ Please type in a number: **6**
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-> **تمرين تفاعلي: Taking turns**
+> **تمرين تفاعلي: بالتناوب**
 >
-> Please write a program which asks the user to type in a number. The program then prints out the positive integers between 1 and the number itself, alternating between the two ends of the range as in the examples below.
+> يُرجى كتابة برنامج يطلب من المستخدم كتابة عدد. ثم يطبع البرنامج الأعداد الصحيحة الموجبة بين 1 والعدد نفسه، بالتناوب بين طرفَي النطاق كما في الأمثلة أدناه.
 
 
 ```
@@ -399,7 +398,7 @@ Please type in a number: **6**
 
 
 <!---
-A quiz to review the contents of this section:
+اختبار لمراجعة محتويات هذا القسم:
 
 > **اختبار:** (مكون تفاعلي غير متاح في النسخة الثابتة - ID: b1118ae8-8dd4-563a-b6a5-0c274136535c)
 

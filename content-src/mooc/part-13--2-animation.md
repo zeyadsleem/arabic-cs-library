@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-13/2-animation"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know how to create an animation with pygame
+> - You will be able to use a clock to set the speed of your program
+> - You will be able to use basic trigonometric functions in your animations
 
-After this section
-
-- You will know how to create an animation with pygame
-- You will be able to use a clock to set the speed of your program
-- You will be able to use basic trigonometric functions in your animations
-
-</text-box>
 
 Many games have moving characters, so a logical next step is creating animations. We can create the illusion of movement by drawing the same image in different locations on the screen and timing the changes appropriately.
 
@@ -195,35 +194,35 @@ The robot rotates around a circle of radius 100 around the centre of the window.
 
 With each iteration the size of the `angle` is incremented by 0.01:llä. As we are using radians, a full circle is 2π, which equals about 6.28. It takes about 628 iterations for the robot to go a full circle, and at 60 iterations per second this takes just over 10 seconds.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Vertical movement**
 >
 > Please create an animation where the robot moves up and down in an endless loop. The end result should look like this:
 
 ![pygame_vertical.gif](/images/mooc/part-13/pygame_vertical.gif)
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Round the perimeter**
 >
 > Please create an animation where the robot traces the perimeter of the window. The end result should look like this:
 
 ![pygame_perimeter.gif](/images/mooc/part-13/pygame_perimeter.gif)
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Two robots**
 >
 > Please create an animation where two robots move back and forth to the left and right. The lower robot should move at double the speed of the upper one. The end result should look like this:
 
 ![pygame_move2.gif](/images/mooc/part-13/pygame_move2.gif)
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Robots in a circle**
 >
 > Please create an animation where ten robots go round in a circle. The end result should look like this:
 
 ![pygame_circle.gif](/images/mooc/part-13/pygame_circle.gif)
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Bouncing ball**
 >
 > Please create an animation where a ball bounces from the edges of the window. The end result should look like this:
 
@@ -232,7 +231,7 @@ With each iteration the size of the `angle` is incremented by 0.01:llä. As we a
 The exercise template contains the image `ball.png`.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Robot invasion**
 >
 > Please create an animation where robots fall from the sky randomly. When a robot reaches the ground, it starts moving to the left or to the right, and finaly disappears off the screen. The end result should look like this:
 

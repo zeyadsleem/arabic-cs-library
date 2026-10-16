@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-9/5-class-attributes"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be familiar with the terms class variable and class method
+> - You will know how static traits are different from the traits of instances
+> - You will be able to add static traits to your own classes
 
-After this section
-
-- You will be familiar with the terms class variable and class method
-- You will know how static traits are different from the traits of instances
-- You will be able to add static traits to your own classes
-
-</text-box>
 
 The _traits_ of objects are a central concept in object oriented programming. The term encompasses the methods and variables defined in the class definition. Again, not all Python programmers use the term "traits", some preferring _attributes_, _features_ or _members_. Traits is quite accepted in the wider object oriented programming world, so that is the term we use here.
 
@@ -229,7 +228,7 @@ if __name__ == "__main__":
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Postcodes**
 >
 > The exercise template contains the class definition `City` which is a model for a single city.
 
@@ -314,7 +313,7 @@ This is a valid license plate!
 
 The validity of a license plate can be checked even without creating a single instance of the class, for example with `Registration.license_plate_valid("xyz-789")`. The same method is called within the constructor of the class. NB: even within the constructor this method is accessed through the name of the class, not `self`!
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: List helper**
 >
 > Please create a class named `ListHelper` which contains the following two class methods.
 

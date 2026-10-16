@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-3/3-more-loops"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will understand when the `break` command is needed to break out of loops
+> - You will be able to use the `continue` command to move to the next iteration
+> - You will understand how nested loops work
 
-After this section
-
-- You will understand when the `break` command is needed to break out of loops
-- You will be able to use the `continue` command to move to the next iteration
-- You will understand how nested loops work
-
-</text-box>
 
 ## The break command
 
@@ -187,8 +186,7 @@ Please type in a number: **6**
 2
 1
 Please type in a number: **-1**
-
-</Sample-output>
+```
 
 When there are nested loops, `break` and `continue` commands only affect the innermost loop which they are a part of. The previous example could also be written like this:
 
@@ -218,8 +216,9 @@ while i < limit:
     i += 2
 ```
 
-<sample-output>
 
+
+```
 Please type in a number: **8**
 0
 2

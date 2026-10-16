@@ -6,7 +6,7 @@ import MarkdownIt from 'markdown-it';
 import footnotes from 'markdown-it-footnote';
 import hljs from 'highlight.js';
 import { installContentMath } from './lib/content-math.mjs';
-import { normalizeSourceMarkup, installSourceAttributes, outsideCode, readCallout, readCodeBlockCallout, readHeadingCallout } from './lib/content-markup.mjs';
+import { normalizeSourceMarkup, installSourceAttributes, outsideCode, readCallout, readCodeBlockCallout, readHeadingCallout, slugifyHeading } from './lib/content-markup.mjs';
 import { createImageResolver } from './lib/content-images.mjs';
 import { linkAcrossSections, resolveBookReferences } from './lib/content-references.mjs';
 import { resolveBasePath } from './lib/base-path.mjs';
@@ -51,15 +51,6 @@ const markdown = new MarkdownIt({
   },
 });
 markdown.use(footnotes);
-
-const slugifyHeading = (text) =>
-  text
-    .trim()
-    .toLowerCase()
-    .replace(/[^\p{L}\p{N}\s-]/gu, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
 
 const addHeadingIds = (html) =>
   html.replace(
@@ -298,6 +289,8 @@ const run = () => {
       fs.existsSync(path.join(contentDir, `${book.id}-structure.json`))
   );
 
+  const untranslated = [];
+
   for (const book of contentBooks) {
     const structure = JSON.parse(
       fs.readFileSync(path.join(contentDir, `${book.id}-structure.json`), 'utf8')
@@ -331,7 +324,7 @@ const run = () => {
         const { data, content: rawContent } = matter(raw);
         const content = convertCallouts(normalizeSourceMarkup(rawContent));
         if (data.lang && data.lang !== 'ar') {
-          console.log(`not translated yet: ${book.id}/${chapter.key}--${slug}`);
+          untranslated.push(`${book.id}/${chapter.key}--${slug} (lang: ${data.lang})`);
         }
         currentSection = `${book.id}/${chapter.key}--${slug}`;
         let html = markdown.render(content);
@@ -350,6 +343,16 @@ const run = () => {
     console.log(
       `Generated ${count} sections for ${book.id} (missing ${missing})`
     );
+  }
+
+  // A book declared `translated` must have every page in Arabic. Publishing a
+  // half-English book is how the MOOC translation shipped corrupted once.
+  if (untranslated.length) {
+    console.error(
+      `\n${untranslated.length} page(s) of translated books are not in Arabic:`
+    );
+    for (const entry of untranslated) console.error(`  - ${entry}`);
+    process.exit(1);
   }
 
   const tour = library.books.find((book) => book.id === 'go-tour' && book.status === 'translated');

@@ -8,14 +8,13 @@ source: "https://programming-26.mooc.fi/part-4/5-print-statement-formatting"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know how to use arguments to format the result of the `print` command
+> - You will be able to use f-strings to format printouts
 
-After this section
-
-- You will know how to use arguments to format the result of the `print` command
-- You will be able to use f-strings to format printouts
-
-</text-box>
 
 So far we have learnt three methods for formulating the argument given to the `print` command.
 
@@ -150,7 +149,7 @@ Hi Larry, you are 48 years of age, and you live in Palo Alto
 
 You can think of an f-string as a sort of function, which creates a normal string based on the "arguments" within the curly brackets.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Integers to strings**
 >
 > Please write a function named `formatted`, which takes a list of floating point numbers as its argument. The function returns a new list, which contains each element of the original list in string format, rounded to two decimal points. The order of the items in the list should remain unchanged.
 

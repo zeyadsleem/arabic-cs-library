@@ -1,22 +1,21 @@
 ---
-title: "ميزات Python إضافية"
+title: "المزيد من ميزات Python"
 lang: ar
 source: "https://programming-26.mooc.fi/part-7/6-more-features"
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **أهداف التعلّم**
+>
+> بعد إتمام هذا القسم
+>
+> - ستكون ملمًّا ببعض ميزات Python الإضافية
 
-بعد هذا القسم
 
-- ستتعرف على بعض ميزات Python الإضافية
+وختامًا لهذه الدورة، ستجد هنا ميزات مختلفة مفيدة في Python.
 
-</text-box>
+## الجمل الشرطية ذات السطر الواحد
 
-لإنهاء هذه الدورة، ستجد هنا العديد من ميزات Python المفيدة.
-
-## جمل شرطية في سطر واحد
-
-العبارتان التاليتان تنتجان نفس النتيجة تمامًا:
+تُنتج العبارتان التاليتان النتيجتين نفسهما تمامًا:
 
 ```python
 if x%2 == 0:
@@ -29,9 +28,9 @@ else:
 print("even" if x%2 == 0 else "odd")
 ```
 
-في المثال الأخير، لدينا تعبير شرطي (conditional expression) في سطر واحد: `a if [condition] else b`. قيمة هذا التعبير تُقيّم إلى `a` إذا كان الشرط صحيحًا، و `b` إذا كان خاطئًا. تُعرف هذه البنية أحيانًا باسم _العامل الثلاثي (ternary operator)_.
+في المثال الأخير لدينا تعبير شرطي في سطر واحد: `a if [condition] else b`. وتُقدَّر قيمة هذا التعبير بـ`a` إذا كان الشرط صحيحًا، وبـ`b` إذا كان خاطئًا. ويُشار إلى هذه البنية أحيانًا بـ_المعامل الثلاثي_ (ternary operator).
 
-يمكن أن تكون التعبيرات الشرطية مفيدة جدًا عندما تحتاج إلى إسناد شيء ما _بشكل مشروط_. على سبيل المثال، إذا كان لديك المتغيران `x` و `y`، وأردت إما زيادة قيمة `y` أو تعيينها بناءً على زوجية `x`، يمكنك كتابتها في عبارة `if else` عادية، كالتالي:
+يمكن أن تكون التعبيرات الشرطية مفيدة جدًا حين تحتاج إلى إسناد شيء ما _بشكل شرطي_. فمثلًا، لو كانت لديك المتغيّرات `x` و`y`، وأردت إما زيادة قيمة `y` وإما تعيينها بناءً على زوجية `x`، فيمكنك كتابة ذلك في جملة `if else` عادية هكذا:
 
 ```python
 if x%2 == 0:
@@ -40,300 +39,246 @@ else:
     y = 0
 ```
 
-يمكن تحقيق نفس الشيء بسطر واحد أنيق:
+ويمكن تحقيق الأمر نفسه بسطر واحد أنيق:
 
 ```python
 y = y + 1 if x%2 == 0 else 0
 ```
 
-## كتلة "فارغة"
+## كتلة «فارغة»
 
-قد تتذكر من الجزء السابق أنه لا يُسمح بوجود كتلة فارغة في برنامج Python. إذا كنت بحاجة إلى كتلة كود لا تفعل شيئًا، على سبيل المثال عند اختبار وظيفة أخرى، سيسمح لك الأمر `pass` بفعل ذلك. يمكنك، على سبيل المثال، كتابة دالة لا تفعل شيئًا:
+قد تذكر من الجزء السابق أنه لا يُسمح بوجود كتلة فارغة في برنامج Python. وإذا احتجت إلى كتلة شيفرة لا تفعل شيئًا، مثلًا عند اختبار وظيفة أخرى، فإن الأمر `pass` يتيح لك ذلك. فيمكنك مثلًا كتابة دالة لا تفعل شيئًا:
 
 ```python
 def testing():
     pass
 ```
 
-هذه الدالة ستعيد التحكم فورًا. ترك أمر `pass`، أي وجود كتلة فارغة تمامًا، سيؤدي إلى خطأ.
+سترجع هذه الدالة ببساطة على الفور. وترك الأمر `pass` خارجًا، أي وجود كتلة فارغة تمامًا، سيُنتج خطأً.
 
 ```python
-def testing():  # هذا يسبب خطأ!
+def testing():  # this causes an error!
 ```
 
-## حلقات مع كتل else
+## الحلقات مع كتل else
 
-في Python، يمكن للحلقات أيضًا أن تحتوي على كتل `else`. يتم تنفيذ هذا القسم من الكود إذا انتهت الحلقة بشكل طبيعي (أي لم يتم إيقافها بواسطة عبارة `break`).
+في Python يمكن أن تحتوي الحلقات على كتل `else` أيضًا. ويُنفَّذ هذا القسم من الشيفرة إذا انتهت الحلقة انتهاءً طبيعيًا.
 
-على سبيل المثال، في المثال التالي، نبحث عن رقم في قائمة:
+فمثلًا، في المثال التالي نتصفّح قائمة أعداد. فإذا وُجد عدد زوجي في القائمة، يطبع البرنامج رسالة وتُقطع الحلقة. وإذا لم توجد أعداد زوجية، تنتهي الحلقة انتهاءً طبيعيًا، لكن تُطبع عندئذٍ رسالة مختلفة.
 
 ```python
-numbers = [1, 3, 5, 7, 9]
-target = 5
-
-for number in numbers:
-    if number == target:
-        print("Found")
+my_list = [3,5,2,8,1]
+for x in my_list:
+    if x%2 == 0:
+        print("found an even number", x)
         break
 else:
-    print("Not found")
+    print("there were no even numbers")
 ```
 
-إذا تم العثور على الرقم، سيتم طباعة "Found" وسيتم تنفيذ `break`، مما يؤدي إلى تخطي كتلة `else`. إذا لم يتم العثور على الرقم، فستنتهي الحلقة بشكل طبيعي، وسيتم تنفيذ كتلة `else`، وسيتم طباعة "Not found".
-
-ينطبق نفس المبدأ على حلقات `while`:
+الطريقة الأكثر تقليدية لتحقيق ذلك هي استخدام متغيّر مساعد لتذكّر ما إذا كان العنصر المطلوب قد وُجد:
 
 ```python
-i = 0
-while i < 5:
-    print(i)
-    i += 1
-else:
-    print("Loop finished normally")
-```
-
-سيطبع هذا:
-
-```
-0
-1
-2
-3
-4
-Loop finished normally
-```
-
-ولكن إذا قمنا بإيقاف الحلقة باستخدام `break`:
-
-```python
-i = 0
-while i < 5:
-    if i == 3:
+my_list = [3,5,2,8,1]
+found = False
+for x in my_list:
+    if x%2 == 0:
+        print("found an even number", x)
+        found = True
         break
-    print(i)
-    i += 1
-else:
-    print("Loop finished normally")
-```
-فسيتم طباعة:
-
-```
-0
-1
-2
+if not found:
+    print("there were no even numbers")
 ```
 
-ولن يتم تنفيذ كتلة `else` لأن الحلقة لم تنتهِ بشكل طبيعي.
+واستخدام جملة `for else` يوفّر علينا عناء كتابة متغيّر منفصل.
 
-## حلقة for مع enumerate
+## القيمة الافتراضية للمعامل
 
-عندما تحتاج إلى كل من الفهرس (index) والقيمة عند التكرار على تسلسل، يمكنك استخدام الدالة المضمنة `enumerate`:
+يمكن أن يكون لدالة Python قيمة افتراضية للمعامل. وتُستخدم كلما لم يُمرَّر أي وسيط إلى الدالة. انظر المثال التالي:
 
 ```python
-names = ["Alice", "Bob", "Charlie"]
+def say_hello(name="Emily"):
+    print("Hi there,", name)
 
-for index, name in enumerate(names):
-    print(f"Index {index}: {name}")
+say_hello()
+say_hello("Eric")
+say_hello("Matthew")
+say_hello("")
 ```
 
-الناتج:
 
 ```
-Index 0: Alice
-Index 1: Bob
-Index 2: Charlie
+Hi there, Emily
+Hi there, Eric
+Hi there, Matthew
+Hi there,
 ```
 
-بشكل افتراضي، يبدأ `enumerate` العد من 0، ولكن يمكنك تحديد قيمة بداية مختلفة باستخدام المعامل `start`:
+
+ملاحظة: السلسلة النصية الفارغة تبقى سلسلة نصية، لذا لا تُستخدم القيمة الافتراضية للمعامل إذا مُرِّرت سلسلة نصية فارغة إلى الدالة.
+
+## عدد متغيّر من المعاملات
+
+يمكنك أيضًا تعريف دالة بعدد متغيّر من المعاملات، بإضافة نجمة قبل اسم المعامل. وتُحتوى كل الوسائط المتبقية المُمرَّرة إلى الدالة في صف (tuple)، ويمكن الوصول إليها عبر المعامل المسمّى.
+
+تحسب الدالة التالية عدد وسائطها ومجموعها:
 
 ```python
-for index, name in enumerate(names, start=1):
-    print(f"{index}. {name}")
+def testing(*my_args):
+    print("You passed", len(my_args), "arguments")
+    print("The sum of the arguments is", sum(my_args))
+
+testing(1, 2, 3, 4, 5)
 ```
 
-الناتج:
 
 ```
-1. Alice
-2. Bob
-3. Charlie
+You passed 5 arguments
+The sum of the arguments is 15
 ```
 
-## فك التعبئة (Unpacking) مع *
 
-يمكنك استخدام عامل `*` لفك تعبئة القيم المتبقية في تسلسل:
+> **تمرين برمجي: لغتك البرمجية الخاصة**
+>
+> ستكتب في هذا التمرين منفّذًا للغة برمجة خاصتك. ويمكنك استخدام أي تقنيات ومهارات تعلّمتها في هذه الدورة حتى الآن.
+
+ستتكوّن البرامج من أسطر، وسيكون كل سطر بأحد الصيغ التالية:
+
+* `PRINT [value]`: يطبع القيمة
+* `MOV [variable] [value]`: يُسند القيمة إلى المتغيّر
+* `ADD [variable] [value]`: يضيف القيمة إلى المتغيّر
+* `SUB [variable] [value]`: يطرح القيمة من المتغيّر
+* `MUL [variable] [value]`: يضرب المتغيّر في القيمة
+* `[location]:`: يسمّي سطر شيفرة، بحيث يمكن القفز إليه من مكان آخر
+* `JUMP [location]`: يقفز إلى الموقع المحدّد
+* `IF [condition] JUMP [location]`: إذا كان الشرط صحيحًا، يقفز إلى الموقع المحدّد
+* `END`: يُنهي التنفيذ
+
+الأقواس المربّعة أعلاه ليست إلا علامة للدلالة على المعاملات؛ انظر أدناه أمثلة على الاستخدام.
+
+يُنفَّذ البرنامج سطرًا بسطر ابتداءً من السطر الأول. وينتهي التنفيذ عندما يصادف المنفّذ الأمر `END`، أو عندما لا يتبقّى أسطر لتنفيذها.
+
+لكل برنامج 26 متغيّرًا معرّفًا مسبقًا، مسمّاة من `A` إلى `Z`. ولكل متغيّر القيمة 0 عند بدء البرنامج. وتشير العلامة `[variable]` إلى أحد هذه المتغيّرات الـ26.
+
+كل القيم التي يعالجها البرنامج أعداد صحيحة. وتشير العلامة `[value]` إما إلى قيمة مخزّنة في متغيّر، وإما إلى عدد صحيح مكتوب مباشرةً.
+
+تشير العلامة `[location]` إلى أي اسم لموقع يتكوّن من الأحرف الصغيرة من `a` إلى `z` و/أو الأرقام من `0` إلى `9`. ولا يجوز أن يكون لموقعين مختلفين الاسم نفسه.
+
+تشير العلامة `[condition]` إلى أي تعبير بالصيغة `[value] [comparison] [value]`، حيث `[comparison]` أحد المشغّلات التالية: `==` و`!=` و`<` و`<=` و`>` و`>=`.
+
+يُرجى كتابة دالة اسمها `run(program)` تأخذ قائمة تحتوي على أوامر البرنامج كوسيط لها. وكل عنصر في القائمة سطر شيفرة في البرنامج. وينبغي أن تُعيد الدالة قائمة جديدة تحتوي على نتائج أوامر `PRINT` المنفَّذة خلال تشغيل البرنامج.
+
+ويمكنك أن تفترض أن الدالة لن تُعطى إلا برامج بصيغة صحيحة تمامًا. ولست مضطرًا إلى تنفيذ أي تحقّق من صحة المُدخلات أو معالجة أخطاء.
+
+يستحق هذا التمرين نقطتين. وستحصل على نقطة واحدة إذا عملت الأوامر `PRINT` و`MOV` و`ADD` و`SUB` و`MUL` و`END` بشكل صحيح. وستحصل على نقطة أخرى إذا عملت بقية الأوامر، التي تُستخدم لتنفيذ الحلقات، بشكل صحيح أيضًا.
+
+فيما يلي بعض الأمثلة، ويمكنك استخدامها للاختبار أيضًا. المثال 1:
 
 ```python
-first, *middle, last = [1, 2, 3, 4, 5]
-print(first)   # 1
-print(middle)  # [2, 3, 4]
-print(last)    # 5
+program1 = []
+program1.append("MOV A 1")
+program1.append("MOV B 2")
+program1.append("PRINT A")
+program1.append("PRINT B")
+program1.append("ADD A B")
+program1.append("PRINT A")
+program1.append("END")
+result = run(program1)
+print(result)
 ```
 
-هذا مفيد بشكل خاص عند العمل مع دوال تقبل عددًا متغيرًا من المعاملات، أو عند الرغبة في فصل أجزاء من تسلسل.
 
-## دمج القواميس (Dictionaries)
+```
+[1, 2, 3]
+```
 
-ابتداءً من Python 3.9، يمكنك دمج القواميس باستخدام عامل `|`:
+
+المثال 2:
 
 ```python
-dict1 = {"a": 1, "b": 2}
-dict2 = {"c": 3, "d": 4}
-
-merged = dict1 | dict2
-print(merged)  # {'a': 1, 'b': 2, 'c': 3, 'd': 4}
+program2 = []
+program2.append("MOV A 1")
+program2.append("MOV B 10")
+program2.append("begin:")
+program2.append("IF A >= B JUMP quit")
+program2.append("PRINT A")
+program2.append("PRINT B")
+program2.append("ADD A 1")
+program2.append("SUB B 1")
+program2.append("JUMP begin")
+program2.append("quit:")
+program2.append("END")
+result = run(program2)
+print(result)
 ```
 
-يمكنك أيضًا تحديث قاموس في مكانه باستخدام `|=`:
+
+```
+[1, 10, 2, 9, 3, 8, 4, 7, 5, 6]
+```
+
+
+المثال 3 (المضروب):
 
 ```python
-dict1 = {"a": 1, "b": 2}
-dict2 = {"c": 3, "d": 4}
-
-dict1 |= dict2
-print(dict1)  # {'a': 1, 'b': 2, 'c': 3, 'd': 4}
+program3 = []
+program3.append("MOV A 1")
+program3.append("MOV B 1")
+program3.append("begin:")
+program3.append("PRINT A")
+program3.append("ADD B 1")
+program3.append("MUL A B")
+program3.append("IF B <= 10 JUMP begin")
+program3.append("END")
+result = run(program3)
+print(result)
 ```
 
-في الإصدارات الأقدم من Python، يمكنك تحقيق نفس الشيء باستخدام طريقة `update` أو فك التعبئة:
+
+```
+[1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800]
+```
+
+
+المثال 4 (الأعداد الأولية):
 
 ```python
-# Python 3.5+
-merged = {**dict1, **dict2}
+program4 = []
+program4.append("MOV N 50")
+program4.append("PRINT 2")
+program4.append("MOV A 3")
+program4.append("begin:")
+program4.append("MOV B 2")
+program4.append("MOV Z 0")
+program4.append("test:")
+program4.append("MOV C B")
+program4.append("new:")
+program4.append("IF C == A JUMP error")
+program4.append("IF C > A JUMP over")
+program4.append("ADD C B")
+program4.append("JUMP new")
+program4.append("error:")
+program4.append("MOV Z 1")
+program4.append("JUMP over2")
+program4.append("over:")
+program4.append("ADD B 1")
+program4.append("IF B < A JUMP test")
+program4.append("over2:")
+program4.append("IF Z == 1 JUMP over3")
+program4.append("PRINT A")
+program4.append("over3:")
+program4.append("ADD A 1")
+program4.append("IF A <= N JUMP begin")
+result = run(program4)
+print(result)
 ```
 
-## f-strings مع محددات التنسيق
-
-تسمح f-strings بتضمين محددات تنسيق (format specifiers) بعد النقطتين:
-
-```python
-import math
-
-print(f"Pi is approximately {math.pi:.2f}")
-print(f"Pi is approximately {math.pi:.4f}")
-```
-
-الناتج:
 
 ```
-Pi is approximately 3.14
-Pi is approximately 3.1416
+[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]
 ```
 
-يحدد `.2f` عددًا عشريًا بنقطتين عشريتين، و `.4f` بأربع نقاط عشريتين.
 
-## تعبيرات المولدات (Generator expressions)
+يُرجى الإجابة عن استبيان تقييم الدورة. وتساعدنا نتائج الاستبيان على تحسين الدورة.
 
-تشبه تعبيرات المولدات قوائم الفهم (list comprehensions)، لكنها تستخدم أقواسًا بدلاً من أقواس مربعة، وتنتج مولدًا (generator) بدلاً من قائمة. هذا يعني أنها تنتج القيم واحدة تلو الأخرى عند الطلب، بدلاً من إنشاء القائمة بأكملها في الذاكرة مرة واحدة.
-
-```python
-# قائمة فهم - تنشئ القائمة كاملة في الذاكرة
-squares_list = [x**2 for x in range(1000000)]
-
-# تعبير مولد - ينتج القيم عند الطلب
-squares_gen = (x**2 for x in range(1000000))
-```
-
-المولدات أكثر كفاءة في استخدام الذاكرة عند التعامل مع تسلسلات كبيرة، حيث لا تحتاج إلى تخزين جميع القيم في الذاكرة في وقت واحد.
-
-> **ملاحظة:** يمكنك التكرار على المولد مرة واحدة فقط. بمجرد استنفاد المولد، لا يمكن إعادة استخدامه.
-
-## وحدة `pathlib` للمسارات
-
-توفر وحدة `pathlib` (المتوفرة منذ Python 3.4) طريقة كائنية التوجه (object-oriented) للعمل مع مسارات نظام الملفات، وهي بديل حديث وأكثر سهولة من وحدة `os.path`:
-
-```python
-from pathlib import Path
-
-# إنشاء كائن مسار
-path = Path("folder/subfolder/file.txt")
-
-# التحقق من وجود المسار
-print(path.exists())
-
-# الحصول على اسم الملف
-print(path.name)        # file.txt
-print(path.stem)        # file (بدون امتداد)
-print(path.suffix)      # .txt
-
-# الحصول على الدليل الأب
-print(path.parent)      # folder/subfolder
-
-# قراءة وكتابة الملفات
-path.write_text("Hello, world!")
-content = path.read_text()
-```
-
-تجعل `pathlib` عمليات المسار الشائعة أكثر وضوحًا وأقل عرضة للأخطاء مقارنة بالتلاعب بالسلاسل النصية.
-
-## إدارة السياق (Context managers) مع `contextlib`
-
-يمكنك إنشاء مديري سياق مخصصين باستخدام دالة `contextmanager` من وحدة `contextlib`:
-
-```python
-from contextlib import contextmanager
-
-@contextmanager
-def timer():
-    import time
-    start = time.time()
-    try:
-        yield
-    finally:
-        end = time.time()
-        print(f"Elapsed: {end - start:.2f} seconds")
-
-with timer():
-    # بعض العمليات التي تستغرق وقتًا
-    sum(range(1000000))
-```
-
-هذا يسمح بكتابة كود إعداد وتنظيف (setup/teardown) قابل لإعادة الاستخدام بطريقة نظيفة.
-
-## وحدة `dataclasses`
-
-توفر وحدة `dataclasses` (منذ Python 3.7) مُزخرفًا (decorator) يولد تلقائيًا طرقًا خاصة مثل `__init__`، `__repr__`، و `__eq__` للفئات التي تخزن البيانات بشكل أساسي:
-
-```python
-from dataclasses import dataclass
-
-@dataclass
-class Person:
-    name: str
-    age: int
-    city: str = "Unknown"  # قيمة افتراضية
-
-person = Person("Alice", 30, "New York")
-print(person)        # Person(name='Alice', age=30, city='New York')
-print(person.name)   # Alice
-```
-
-هذا يقلل بشكل كبير من الكود النمطي (boilerplate) اللازم لفئات البيانات البسيطة.
-
-## التلميحات النوعية المتقدمة
-
-يدعم Python تلميحات أنواع متقدمة مثل `Union`، `Optional`، `List`، `Dict`، `Tuple`، و `Callable` من وحدة `typing`:
-
-```python
-from typing import Union, Optional, List, Dict, Tuple, Callable
-
-def process_items(items: List[str]) -> Dict[str, int]:
-    return {item: len(item) for item in items}
-
-def greet(name: Optional[str] = None) -> str:
-    if name is None:
-        return "Hello, stranger!"
-    return f"Hello, {name}!"
-
-# Union - يمكن أن يكون إما int أو str
-def stringify(value: Union[int, str]) -> str:
-    return str(value)
-```
-
-ابتداءً من Python 3.10، يمكنك استخدام بناء الجملة `X | Y` بدلاً من `Union[X, Y]`:
-
-```python
-def stringify(value: int | str) -> str:
-    return str(value)
-```
-
-> **ملاحظة:** التلميحات النوعية في Python اختيارية ولا يتم فرضها وقت التشغيل (runtime). إنها أدوات للمطورين ومحللي الكود الثابت (static analyzers) للمساعدة في اكتشاف الأخطاء مبكرًا.
+> **اختبار:** (مكون تفاعلي غير متاح في النسخة الثابتة - ID: 8675c2f0-2d0d-54b2-9ce2-7ba7692e95f0)

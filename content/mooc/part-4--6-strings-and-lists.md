@@ -1,20 +1,19 @@
 ---
-title: "More strings and lists"
+title: "المزيد من السلاسل النصية والقوائم"
 lang: ar
 source: "https://programming-26.mooc.fi/part-4/6-strings-and-lists"
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **أهداف التعلّم**
+>
+> بعد هذا القسم
+>
+> - ستصبح على دراية بمزيد من طرق تقطيع السلاسل النصية والقوائم
+> - ستفهم ما يعنيه عدم قابلية السلاسل النصية للتغيير
+> - ستكون قادرًا على استخدام التابعين `count` و`replace`
 
-After this section
 
-- You will be familiar with more methods for slicing strings and lists
-- You will understand what immutability of strings means
-- You will be able to use the methods `count` and `replace`
-
-</text-box>
-
-You are already familiar with the `[]` syntax for accessing a part of a string:
+لقد تعوّدت من قبل على صيغة `[]` للوصول إلى جزء من سلسلة نصية:
 
 ```python
 my_string = "exemplary"
@@ -27,7 +26,7 @@ mpla
 ```
 
 
-The same syntax works with lists. Lists can be sliced just like strings:
+وتعمل الصيغة نفسها مع القوائم، إذ يمكن تقطيع القوائم تمامًا كما تُقطَّع السلاسل النصية:
 
 ```python
 my_list = [3,4,2,4,6,1,2,4,2]
@@ -40,9 +39,9 @@ print(my_list[3:7])
 ```
 
 
-## More slices
+## مزيد من التقطيعات
 
-In fact, the `[]` syntax works very similarly to the `range` function, which means we can also give it a step:
+في الواقع، تعمل صيغة `[]` بطريقة مشابهة جدًا للدالة `range`، ما يعني أننا يمكننا أيضًا أن نمنحها خطوة:
 
 ```python
 my_string = "exemplary"
@@ -58,7 +57,7 @@ eepa
 ```
 
 
-If we omit either of the indexes, the operator defaults to including everything. Among other things, this allows us to write a very short program to reverse a string:
+وإذا أسقطنا أحد الفهرسين، فإن المشغّل يضمّ كل شيء افتراضيًا. وإلى جانب أمور أخرى، يتيح هذا كتابة برنامج قصير جدًا يعكس سلسلة نصية:
 
 ```python
 my_string = input("Please type in a string: ")
@@ -72,14 +71,14 @@ yralpmexe
 ```
 
 
-<!--a similar warning is in sections 3-4, 4-6 and 5-1, check them all if you're changing this-->
-## Warning: using global variables within functions
+<!--يوجد تحذير مشابه في الأقسام 3-4 و4-6 و5-1، فراجعها جميعًا إن كنت تُعدّل هذا-->
+## تحذير: استخدام المتغيّرات العامة داخل الدوال
 
-We know it is possible to assign new variables within function definitions, but the function can also see variables assigned outside it, in the main function. Such variables are called _global_ variables.
+نعلم أنه من الممكن إسناد متغيّرات جديدة داخل تعريفات الدوال، لكن الدالة تستطيع أيضًا أن ترى متغيّرات أُسندت خارجها، في الدالة الرئيسية. وتُسمّى هذه المتغيّرات متغيّرات _عامة_ (global).
 
-Using global variables from within functions is usually a bad idea. Among other issues, doing so may cause bugs which are difficult to trace.
+استخدام المتغيّرات العامة من داخل الدوال عادةً فكرة سيئة. وإلى جانب المشكلات الأخرى، قد يسبّب ذلك أخطاءً يصعب تتبّعها.
 
-Below is an example of a function which uses a global variable "by mistake":
+فيما يلي مثال على دالة تستخدم متغيّرًا عامًا «من باب الخطأ»:
 
 ```python
 def print_reversed(names: list):
@@ -110,9 +109,9 @@ Steve
 ```
 
 
-Even though both function calls have the right kind of argument, the function always prints out what is stored in the global variable `name_list`.
+رغم أن استدعاءَي الدالة يمرّران الوسيط من النوع المناسب، فإن الدالة تطبع دائمًا ما هو مخزَّن في المتغيّر العام `name_list`.
 
-To make matters even more muddled, remember that all code for testing your functions should be placed within the `if __name__ == "__main__":` block for the automatic tests. The previous example should be modified:
+ولزيادة الأمر تعقيدًا، تذكّر أن كل شيفرة لاختبار دوالك ينبغي أن توضع داخل كتلة `if __name__ == "__main__":` من أجل الاختبارات الآلية. وينبغي تعديل المثال السابق:
 
 ```python
 def print_reversed(names: list):
@@ -131,15 +130,15 @@ if __name__ == "__main__":
     print_reversed(["Huey", "Dewey", "Louie"])
 ```
 
-Notice the global variable is assigned within the `if` block now.
+لاحظ أن المتغيّر العام صار يُسنَد داخل كتلة `if` الآن.
 
-The automatic tests in the TMC system are executed without running any of the code in the `if` block. So, in this latter example the function wouldn't even theoretically work, since it refers to the variable `name_list`, which doesn't exist at all when the tests are executed.
+تُنفَّذ الاختبارات الآلية في نظام TMC دون تشغيل أيٍّ من الشيفرة الموجودة في كتلة `if`. لذا، في هذا المثال الأخير لا تعمل الدالة حتى نظريًا، لأنها تشير إلى المتغيّر `name_list` الذي لا وجود له إطلاقًا عند تنفيذ الاختبارات.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: كل شيء معكوس**
 >
-> Please write a function named `everything_reversed`, which takes a list of strings as its argument. The function returns a new list with all of the items on the original list reversed. Also the order of items should be reversed on the new list.
+> اكتب دالة اسمها `everything_reversed`، تأخذ قائمة من السلاسل النصية كوسيط لها. وتُعيد الدالة قائمة جديدة تحوي جميع عناصر القائمة الأصلية معكوسة. كما ينبغي أن يكون ترتيب العناصر معكوسًا في القائمة الجديدة.
 
-An example of how the function should work:
+مثال على كيفية عمل الدالة:
 
 ```python
 my_list = ["Hi", "there", "example", "one more"]
@@ -153,16 +152,16 @@ print(new_list)
 ```
 
 
-## Strings are immutable
+## السلاسل النصية غير قابلة للتغيير
 
-Strings and lists have a lot in common, especially in the way they behave with different operators. The main difference is that strings are _immutable_. That means they cannot be changed.
+تشترك السلاسل النصية والقوائم في الكثير، ولا سيما في طريقة سلوكها مع المشغّلات المختلفة. والفرق الرئيسي هو أن السلاسل النصية _غير قابلة للتغيير_ (immutable). أي أنها لا يمكن تعديلها.
 
 ```python
 my_string = "exemplary"
 my_string[0] = "a"
 ```
 
-Strings cannot be changed, so the execution of this program causes an error:
+لا يمكن تغيير السلاسل النصية، لذا يسبّب تنفيذ هذا البرنامج خطأً:
 
 
 ```
@@ -170,33 +169,33 @@ TypeError: 'str' object does not support item assignment
 ```
 
 
-A similar error follows if you try to sort a string with the `sort` method.
+ويتبعك خطأ مشابه إن حاولت ترتيب سلسلة نصية باستخدام تابع `sort`.
 
-Strings themselves are immutable, but the variables holding them are not. A string can be replaced by another string.
+السلاسل النصية نفسها غير قابلة للتغيير، لكن المتغيّرات التي تحملها قابلة للتغيير. ويمكن استبدال سلسلة نصية بسلسلة نصية أخرى.
 
-The following two examples are thus fundamentally different:
+لذلك، يختلف المثالان التاليان جوهريًا:
 
 ```python
 my_list = [1,2,3]
 my_list[0] = 10
 ```
 
-<img src="4_6_1.png">
+![4_6_1.png](/images/mooc/part-4/4_6_1.png)
 
 ```python
 my_string = "Hey"
 my_string = my_string + "!"
 ```
 
-<img src="4_6_2.png">
+![4_6_2.png](/images/mooc/part-4/4_6_2.png)
 
-The first example changes the contents of the referenced list. The second example replaces the reference to the original string with a reference to another string. The original string is still somewhere in computer memory, but there is no reference to it, and it cannot be used in the program any longer.
+يغيّر المثال الأول محتوى القائمة المُشار إليها. أما المثال الثاني فيستبدل المرجع إلى السلسلة النصية الأصلية بمرجع إلى سلسلة نصية أخرى. وما زالت السلسلة النصية الأصلية في مكان ما من ذاكرة الحاسوب، لكن لا يوجد أي مرجع إليها، ولم يعد من الممكن استخدامها في البرنامج.
 
-We will return to this subject in the next part, where references to lists are explored in more detail.
+سنعود إلى هذا الموضوع في الجزء التالي، حيث تُناقش المراجع إلى القوائم بمزيد من التفصيل.
 
-## More methods for lists and strings
+## مزيد من التوابع للقوائم والسلاسل النصية
 
-The method `count` counts the number of times the specified item or substring occurs in the target. The method works similarly with both strings and lists:
+يعدّ تابع `count` عدد مرات ورود العنصر أو السلسلة الفرعية المحدَّدة في الهدف. ويعمل هذا التابع بطريقة مماثلة مع السلاسل النصية والقوائم على حد سواء:
 
 ```python
 my_string = "How much wood would a woodchuck chuck if a woodchuck could chuck wood"
@@ -213,9 +212,9 @@ print(my_list.count(1))
 ```
 
 
-The method will not count overlapping occurrences. For example, in the string `aaaa` the method counts only two occurrences of the substring `aa`, even though there would actually be three if overlapping occurrences were allowed.
+لن يعدّ هذا التابع الورودات المتداخلة. فمثلًا، في السلسلة النصية `aaaa` يعدّ هذا التابع ورودين فقط من السلسلة الفرعية `aa`، مع أنه سيكون هناك ثلاثة حقًا لو سُمِح بالورودات المتداخلة.
 
-The method `replace` creates a new string, where a specified substring is replaced with another string:
+يستبدل تابع `replace` سلسلة نصية جديدة، تُستبدل فيها سلسلة فرعية محدَّدة بسلسلة نصية أخرى:
 
 ```python
 my_string = "Hi there"
@@ -229,7 +228,7 @@ Hey there
 ```
 
 
-The method will replace all occurrences of the substring:
+وسيستبدل هذا التابع جميع ورودات السلسلة الفرعية:
 
 ```python
 sentence = "sheila sells seashells on the seashore"
@@ -242,7 +241,7 @@ SHEila sells seaSHElls on the seashore
 ```
 
 
-When using the `replace` method, a typical mistake is forgetting that strings are immutable:
+وعند استخدام تابع `replace`، يكون الخطأ الشائع هو نسيان أن السلاسل النصية غير قابلة للتغيير:
 
 ```python
 my_string = "Python is fun"
@@ -258,7 +257,7 @@ Python is fun
 ```
 
 
-If the old string is no longer needed, the new string can be assigned to the same variable:
+وإذا لم تعد السلسلة النصية القديمة ضرورية، فيمكن إسناد السلسلة النصية الجديدة إلى المتغيّر نفسه:
 
 ```python
 my_string = "Python is fun"
@@ -274,11 +273,11 @@ Java is fun
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: المحرف الأكثر شيوعًا**
 >
-> Please write a function named `most_common_character`, which takes a string argument. The function returns the character which has the most occurrences within the string. If there are many characters with equally many occurrences, the one which appears first in the string should be returned.
+> اكتب دالة اسمها `most_common_character`، تأخذ سلسلة نصية كوسيط لها. وتُعيد الدالة المحرف الأكثر ورودًا داخل السلسلة النصية. وإذا كان هناك عدّة محارف متساوية في عدد الورودات، فينبغي إعادة المحرف الذي يظهر أولًا في السلسلة النصية.
 
-An example of expected behaviour:
+مثال على السلوك المتوقع:
 
 ```python
 first_string = "abcdbde"
@@ -296,13 +295,13 @@ e
 
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: ممنوع حروف العلة**
 >
-> Please write a function named `no_vowels`, which takes a string argument. The function returns a new string, which should be the same as the original but with all vowels removed.
+> اكتب دالة اسمها `no_vowels`، تأخذ سلسلة نصية كوسيط لها. وتُعيد الدالة سلسلة نصية جديدة، ينبغي أن تكون مطابقةً للأصلية مع حذف جميع حروف العلة منها.
 
-You can assume the string will contain only characters from the lowercase English alphabet a...z.
+يمكنك أن تفترض أن السلسلة النصية ستحتوي على محارف من الأبجدية الإنجليزية الصغيرة a...z فقط.
 
-An example of expected behaviour:
+مثال على السلوك المتوقع:
 
 ```python
 my_string = "this is an example"
@@ -316,11 +315,11 @@ ths s n xmpl
 
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: ممنوع الصراخ**
 >
-> The Python string method `isupper()` returns `True` if a string consists of _only_ uppercase characters.
+> يُعيد تابع السلسلة النصية `isupper()` في Python القيمة `True` إذا كانت السلسلة النصية تتكون من محارف _كبيرة_ فقط.
 
-Some examples:
+بعض الأمثلة:
 
 ```python
 print("XYZ".isupper())
@@ -336,9 +335,9 @@ False
 ```
 
 
-Please use the `isupper` method to write a function named `no_shouting`, which takes a list of strings as an argument. The function returns a new list, containing only those items from the original which do not consist of solely uppercase characters.
+يُرجى استخدام تابع `isupper` لكتابة دالة اسمها `no_shouting`، تأخذ قائمة من السلاسل النصية كوسيط لها. وتُعيد الدالة قائمة جديدة لا تحوي سوى تلك العناصر من القائمة الأصلية التي لا تتكون محارفها بالكامل من أحرف كبيرة.
 
-An example of expected behaviour:
+مثال على السلوك المتوقع:
 
 ```python
 my_list = ["ABC", "def", "UPPER", "ANOTHERUPPER", "lower", "another lower", "Capitalized"]
@@ -352,15 +351,15 @@ print(pruned_list)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: المتجاورون في القائمة**
 >
-> Given a list of integers, let's decide that two consecutive items in the list are neighbours if their difference is 1. So, items 1 and 2 would be neighbours, and so would items 56 and 55.
+> لمعطى قائمة من الأعداد الصحيحة، لنقرّر أن العنصرين المتتاليين في القائمة يكونان متجاورين إذا كان الفرق بينهما 1. إذن يكون العنصران 1 و2 متجاورين، وكذلك العنصران 56 و55.
 
-Please write a function named `longest_series_of_neighbours`, which looks for the longest series of neighbours within the list, and returns its length.
+يُرجى كتابة دالة اسمها `longest_series_of_neighbours`، تبحث عن أطول سلسلة متجاورين داخل القائمة، وتُعيد طولها.
 
-For example, in the list `[1, 2, 5, 4, 3, 4]` the longest list of neighbours would be  `[5, 4, 3, 4]`, with a length of 4.
+فمثلًا، في القائمة `[1, 2, 5, 4, 3, 4]` تكون أطول قائمة متجاورين هي `[5, 4, 3, 4]`، وطولها 4.
 
-An example function call:
+مثال على استدعاء الدالة:
 
 ```python
 my_list = [1, 2, 5, 7, 6, 5, 6, 3, 4, 1, 0]
@@ -373,13 +372,13 @@ print(longest_series_of_neighbours(my_list))
 ```
 
 
-## Developing a larger programming project
+## تطوير مشروع برمجي أكبر
 
-This fourth part culminates in a slightly larger programming project, where you get to apply many of the techniques learnt so far.
+يختتم هذا الجزء الرابع بمشروع برمجي أكبر قليلًا، حيث تطبّق كثيرًا من التقنيات التي تعلّمتها حتى الآن.
 
-Rule No. 1 in tackling any programming project is not trying to solve everything at once. The program should be built out of smaller sections, such as helper functions. You should verify the operation of each part before moving on to the next. If you try to handle too much at once, most likely only chaos ensues.
+القاعدة الأولى في معالجة أي مشروع برمجي هي ألّا تحاول حلّ كل شيء دفعة واحدة. فبينبغي أن يُبنى البرنامج من أجزاء أصغر، مثل دوال مساعدة. وينبغي أن تتحقق من عمل كل جزء قبل الانتقال إلى الجزء الذي يليه. وإذا حاولت معالجة الكثير دفعة واحدة، فلا يُحسن أن يؤول الأمر إلا إلى الفوضى.
 
-To do this you will need a way of testing your functions outside the main function. You can achieve this by defining a main function explicitly, and calling this function from outside any other function in the program. A single function call is then easy to comment out for testing. The first steps in building the following programming project could look like this:
+ولتحقيق ذلك ستحتاج إلى وسيلة لاختبار دوالك خارج الدالة الرئيسية. ويمكنك تحقيق ذلك بتعريف دالة رئيسية صراحةً، واستدعاء هذه الدالة من خارج أي دالة أخرى في البرنامج. عندئذٍ يصبح من السهل تعليق استدعاء الدالة الواحدة أثناء الاختبار. ويمكن أن تبدو الخطوات الأولى في بناء مشروع البرمجة التالي هكذا:
 
 ```python
 def main():
@@ -389,7 +388,7 @@ def main():
 main()
 ```
 
-Now the helper functions can be tested without running the main function:
+والآن يمكن اختبار دوال المساعدة دون تشغيل الدالة الرئيسية:
 
 ```python
 # helper function for determining the grade based on the amount of points
@@ -409,12 +408,12 @@ result = grade(student_points)
 print(result)
 ```
 
-## Passing data from one function to another
+## تمرير البيانات من دالة إلى أخرى {#passing-data-from-one-function-to-another}
 
-<!--- see also section 6-4, some significant overlap-->
-When a program contains multiple functions, the question arises: how do you pass data from one function to another?
+<!--- راجع أيضًا القسم 6-4، فهناك ترابط كبير-->
+عندما يحتوي البرنامج على عدّة دوال، يطرح السؤال نفسه: كيف تمرّر البيانات من دالة إلى أخرى؟
 
-The following example asks the user for some integer values. The program then prints out these values and performs an "analysis" on them. The program is divided into three separate functions:
+يسأل المثال التالي المستخدم عن بعض قيم الأعداد الصحيحة. ثم يطبع البرنامج هذه القيم ويُجري عليها «تحليلًا». وينقسم البرنامج إلى ثلاث دوال منفصلة:
 
 ```python
 def input_from_user(how_many: int):
@@ -443,7 +442,7 @@ analysis_result = analyze(inputs)
 print(analysis_result)
 ```
 
-When the program is executed, it could go like this:
+وعند تنفيذ البرنامج، يمكن أن يسير الأمر هكذا:
 
 
 ```
@@ -463,15 +462,15 @@ There are altogether 5 numbers, the mean is 11.6, the smallest is -53 and the gr
 ```
 
 
-The idea here is that the main function "saves" all data processed by the program. In this case all that is needed is the input from the user in the variable `inputs`.
+والفكرة هنا أن الدالة الرئيسية «تحفظ» كل البيانات التي يعالجها البرنامج. وفي هذه الحالة لا نحتاج سوى إلى مُدخَل المستخدم في المتغيّر `inputs`.
 
-If the input is needed in a function, it is passed as an argument. This happens with the functions `print_result` and `analyze`. If the function produces data that is needed elsewhere in the program, the function returns it with the `return` command, and it is stored in a variable in the main function. This happens with the functions `input_from_user` and `analyze`.
+وإذا كانت المُدخَلات مطلوبة داخل دالة، فإنها تُمرَّر كوسيط. وهذا ما يحدث مع الدالتين `print_result` و`analyze`. وإذا أنتجت الدالة بيانات يحتاجها البرنامج في مواضع أخرى، فإنها تُعيدها بالأمر `return`، فتُخزَّن في متغيّر داخل الدالة الرئيسية. وهذا ما يحدث مع الدالتين `input_from_user` و`analyze`.
 
-You could use the global variable `inputs` from the main function directly in the helper functions. We have already covered why that is a bad idea, but [here is another explanation](https://softwareengineering.stackexchange.com/questions/148108/why-is-global-state-so-evil). If functions are able to change a global variable, unexpected things may start happening in the program, especially when the number of functions grows large.
+يمكنك استخدام المتغيّر العام `inputs` من الدالة الرئيسية مباشرةً داخل دوال المساعدة. وقد سبق أن شرحنا لماذا هي فكرة سيئة، لكن [إليك شرحًا آخر](https://softwareengineering.stackexchange.com/questions/148108/why-is-global-state-so-evil). فإذا استطاعت الدوال تغيير متغيّر عام، فقد تبدأ أمور غير متوقعة بالحدوث في البرنامج، ولا سيما حين يصير عدد الدوال كبيرًا.
 
-Passing data into and out of functions is best handled by arguments and return values.
+وأفضل طريقة للتعامل مع تمرير البيانات إلى الدوال وإعادتها منها هي الوسائط والقيم المعادة.
 
-You could also separate the implicit main function in the example above into its own function. Then the variable `inputs` would no longer be a global variable, but instead a local variable within the `main` function:
+ويمكنك أيضًا فصل الدالة الرئيسية الضمنية في المثال أعلاه في دالة خاصة بها. عندئذٍ لا يعود المتغيّر `inputs` متغيّرًا عامًا، بل يصير متغيّرًا محليًا داخل دالة `main`:
 
 ```python
 # your main function goes here
@@ -486,17 +485,17 @@ def main():
 main()
 ```
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: إحصاءات الدرجات**
 >
-> In this exercise you will write a program for printing out grade statistics for a university course.
+> في هذا التمرين ستكتب برنامجًا يطبع إحصاءات الدرجات لمقرر جامعي.
 
-The program asks the user for results from different students on the course. These include exam points and numbers of exercises completed. The program then prints out statistics based on the results.
+يسأل البرنامج المستخدم عن نتائج طلاب مختلفين في المقرر. وتشمل نقاط الاختبار وأعداد التمارين المنجزة. ثم يطبع البرنامج إحصاءات مبنية على هذه النتائج.
 
-Exam points are integers between 0 and 20. The number of exercises completed is an integer between 0 and 100.
+نقاط الاختبار أعداد صحيحة بين 0 و20. أما عدد التمارين المنجزة فهو عدد صحيح بين 0 و100.
 
-The program keeps asking for input until the user types in an empty line. You may assume all lines contain valid input, which means that there are two integers on each line, or the line is empty.
+يواصل البرنامج طلب المُدخَل حتى يكتب المستخدم سطرًا فارغًا. ويمكنك أن تفترض أن جميع الأسطر تحتوي على مُدخَل صحيح، ما يعني أنه يوجد عددان صحيحان في كل سطر، أو أن السطر فارغ.
 
-And example of how the data is typed in:
+ومثال على كيفية كتابة البيانات:
 
 
 ```
@@ -509,24 +508,24 @@ Statistics:
 ```
 
 
-When the user types in an empty line, the program prints out statistics. They are formulated as follows:
+وحين يكتب المستخدم سطرًا فارغًا، يطبع البرنامج إحصاءات، تُصاغ على النحو التالي:
 
-The exercises completed are converted into _exercise points_, so that completing at least 10% of the exercises grants one point, 20% grants two points, and so forth. Completing all 100 exercises grants 10 exercise points. The number of exercise points granted is an integer value, rounded down.
+تُحوَّل التمارين المنجزة إلى _نقاط تمارين_، بحيث إن أنجزت 10% على الأقل من التمارين منحت نقطة واحدة، و20% منحت نقطتين، وهكذا. وإنجاز كل التمارين الـ100 يمنح 10 نقاط تمارين. وعدد نقاط التمارين الممنوحة قيمة صحيحة، مقرَّبة إلى الأسفل.
 
-The grade for the course is determined based on the following table:
+وتُحدَّد درجة المقرر بناءً على الجدول التالي:
 
-exam points + exercise points   | grade
+نقاط الاختبار + نقاط التمارين | الدرجة
 :--:|:----:
-0–14 | 0 (i.e. fail)
+0–14 | 0 (أي رسوب)
 15–17 | 1
 18–20 | 2
 21–23 | 3
 24–27 | 4
 28–30 | 5
 
-There is also an exam cutoff threshold. If a student received less than 10 points from the exam, they automatically fail the course, regardless of their total number of points.
+وهناك أيضًا حدّ أدنى لدرجات الاختبار. فإذا حصل الطالب على أقل من 10 نقاط في الاختبار، فإنه يرسب في المقرر تلقائيًا، مهما كان مجموع نقاطه الكلي.
 
-With the example input from above the program would print out the following statistics:
+وبالمُدخَلات المثال أعلاه، يطبع البرنامج الإحصاءات التالية:
 
 
 ```
@@ -543,13 +542,13 @@ Grade distribution:
 ```
 
 
-Floating point numbers should be printed out with one decimal precision.
+ينبغي طباعة الأعداد العشرية بدقة خانة عشرية واحدة.
 
-**NB:** this exercise doesn't ask you to write any specific functions, so you should __not__ place any code within an `if __name__ == "__main__"` block. If any functionality in your program is e.g. in the `main` function, you should include the code calling this function normally, and not contain it in an `if` block like in the exercises which specify certain functions.
+**ملاحظة مهمة:** لا يطلب منك هذا التمرين كتابة أي دوال بعينها، لذا ينبغي ألّا تضع أي شيفرة داخل كتلة `if __name__ == "__main__"`. فإذا كانت أي وظيفة في برنامجك موجودة مثلًا في دالة `main`، فينبغي أن تُدرج الشيفرة التي تستدعي هذه الدالة بشكل عادي، وألّا تضعها داخل كتلة `if` كما في التمارين التي تحدّد دوال بعينها.
 
-**Hint:**
+**تلميح:**
 
-The user input in this program consists of lines with two integer values:
+يتكوّن مُدخَل المستخدم في هذا البرنامج من أسطر تحتوي على قيمتين عدديتين صحيحتين:
 
 
 ```
@@ -557,28 +556,27 @@ Exam points and exercises completed: **15 87**
 ```
 
 
-You have to first split the input line in two and then convert the sections into integers with the `int` function. Splitting the input can be achieved in the same way as in the exercise [First, second and last words](/part-4/2-more-functions#programming-exercise-first-second-and-last-words), but there is a simpler way as well. The string method `split` will chop the input up nicely. You will find more information by searching for *python string split* online.
+عليك أولًا أن تقسم سطر المُدخَل إلى قسمين، ثم أن تحوّل الأجزاء إلى أعداد صحيحة بالدالة `int`. ويمكن تقسيم المُدخَل بالطريقة نفسها المستخدمة في تمرين [الكلمة الأولى والثانية والأخيرة](/book/mooc/part-4/2-more-functions#programming-exercise-first-second-and-last-words)، لكن هناك طريقة أبسط أيضًا. فالتابع `split` الخاص بالسلاسل النصية سيقسم المُدخَل تقسيمًا جيدًا. وستجد المزيد من المعلومات بالبحث عن *python string split* عبر الإنترنت.
 
-<!-- **Huomaa** että tällä hetkellä Windowsissa on ongelmia joidenkin tehtävien testien suorittamisessa. Jos törmäät seuraavaan virheilmoitukseen
+<!-- **لاحظ** أن نظام Windows يعاني في الوقت الحالي من مشكلات في تشغيل اختبارات بعض التمارين. فإن صادفت رسالة الخطأ التالية
 
-<img src="4_3_2.png" alt="Listan iterointi">
+<img src="/images/mooc/part-4/4_3_2.png" alt="التكرار على قائمة">
 
-voit suorittaa testit lähettämällä ne palvelimelle valitsemalla testien suoritusnapin oikealla puolella olevasta symbolista avautuvasta TMC-valikosta _Submit solutions_.
+فيمكنك تشغيل الاختبارات بإرسالها إلى الخادم، باختيار _Submit solutions_ من قائمة TMC التي تُفتح من الرمز الموجود على يمين زر تشغيل الاختبارات.
 
-Ongelman saa korjattua menemällä laajennuksen asennusvalikkoon ja muuttamalla "TMC Data" -kohdassa tehtävien sijainnin johonkin toiseen sijaintiin, jonka tiedostopolku on lyhempi, allaolevassa kuvassa nappi _change path_. Siirrossa saattaa kestää hetken, joten odotathan operaation päättymistä.
+يمكن حل المشكلة بالانتقال إلى قائمة تثبيت الإضافة وتغيير موضع التمارين في "TMC Data" إلى موضع آخر له مسار ملفات أقصر، عبر زر _change path_ الظاهر في الصورة أدناه. وقد يستغرق هذا بعض الوقت، لذا انتظر انتهاء العملية.
 
-<img src="4_3_3.png" alt="Listan iterointi">
-
-Ongelmaan pyritään saamaan parempi ratkaisu lähipäivinä. -->
+يجري العمل على إيجاد حل أفضل للمشكلة في الأيام القريبة. -->
 
 
-<!---
-A quiz to review the contents of this section:
+<!-
+
+اختبار لمراجعة محتويات هذا القسم:
 
 > **اختبار:** (مكون تفاعلي غير متاح في النسخة الثابتة - ID: 925f1715-d762-5e44-a812-be13bff1aa44)
 
 -->
 
-Please respond to a quick questionnaire on this week's materials.
+يُرجى الإجابة على استبيان سريع حول مواد هذا الأسبوع.
 
 > **اختبار:** (مكون تفاعلي غير متاح في النسخة الثابتة - ID: 1658e788-b6ce-50b0-93ee-151e9cb6a495)

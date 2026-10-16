@@ -8,16 +8,15 @@ source: "https://programming-26.mooc.fi/part-3/2-working-with-strings"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be able to use the operators `+` and `*` with strings
+> - You will know how to find out the length of a string
+> - You will know what is meant by string indexing
+> - You will know how to look for substrings within a string
 
-After this section
-
-- You will be able to use the operators `+` and `*` with strings
-- You will know how to find out the length of a string
-- You will know what is meant by string indexing
-- You will know how to look for substrings within a string
-
-</text-box>
 
 ## String operations
 
@@ -446,15 +445,14 @@ umptious
 ```
 
 
-<text-box variant='hint' name='Half open intervals'>
+> **Half open intervals**
+>
+> In Python string processing the interval `[a:b]` is _half open_, which in this case means that the character at the beginning index `a` is included in the interval, but the character at the end index `b` is left out. Why is that?
+>
+> There is no profound reason for this feature. Rather it is a convention inherited from other programming languages.
+>
+> Half open intervals may feel unintuitive, but in practice they do have some advantages. For example, you can easily calculate the length of a slice with `b-a`. On the other hand, you must always remember that the character at the end index `b` will not be included in the slice.
 
-In Python string processing the interval `[a:b]` is _half open_, which in this case means that the character at the beginning index `a` is included in the interval, but the character at the end index `b` is left out. Why is that?
-
-There is no profound reason for this feature. Rather it is a convention inherited from other programming languages.
-
-Half open intervals may feel unintuitive, but in practice they do have some advantages. For example, you can easily calculate the length of a slice with `b-a`. On the other hand, you must always remember that the character at the end index `b` will not be included in the slice.
-
-</text-box>
 
 > **تمرين تفاعلي: Substrings, part 1**
 >
@@ -617,11 +615,10 @@ Found it at the index 3
 ```
 
 
-<text-box variant='hint' name='Methods'>
+> **Methods**
+>
+> Above we used the string _method_ `find`. Methods work quite similarly to the _functions_ covered in the previous part. What distinguishes them from functions is that methods are always attached to the _object_ they are called on. The object is the entity named before the method in the method call. In the case of `find` the object is the string where the method looks for the substring it has as an argument.
 
-Above we used the string _method_ `find`. Methods work quite similarly to the _functions_ covered in the previous part. What distinguishes them from functions is that methods are always attached to the _object_ they are called on. The object is the entity named before the method in the method call. In the case of `find` the object is the string where the method looks for the substring it has as an argument.
-
-</text-box>
 
 > **تمرين تفاعلي: Find the first substring**
 >

@@ -4,6 +4,9 @@ lang: ar
 source: "https://programming-26.mooc.fi/part-14"
 ---
 
-*سيتم عرض قائمة الصفحات في هذا القسم هنا.*
+**صفحات هذا القسم:**
 
-*سيتم عرض قائمة التمارين في هذا القسم هنا.*
+- [مشروع اللعبة](/book/mooc/part-14/1-game-project)
+- [الروبوت والصناديق](/book/mooc/part-14/2-robot-and-boxes)
+- [إنهاء اللعبة](/book/mooc/part-14/3-finishing-the-game)
+- [لعبتك الخاصة](/book/mooc/part-14/4-your-own-game)

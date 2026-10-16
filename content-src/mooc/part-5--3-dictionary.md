@@ -8,16 +8,15 @@ source: "https://programming-26.mooc.fi/part-5/3-dictionary"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be familiar with the dictionary data structure
+> - You will be able to use a dictionary with different types of keys and values
+> - You will know how to traverse through the contents of a dictionary
+> - You will be able to name some typical use cases for dictionaries
 
-After this section
-
-- You will be familiar with the dictionary data structure
-- You will be able to use a dictionary with different types of keys and values
-- You will know how to traverse through the contents of a dictionary
-- You will be able to name some typical use cases for dictionaries
-
-</text-box>
 
 Lists can be handy in many situations, but they are limited by the fact that the items are accessed through indexes; 0, 1, 2, and so forth. If you want to find some item in a list, you will either have to know its index, or, at worst, traverse through the entire list.
 
@@ -123,17 +122,16 @@ TypeError: unhashable type: 'list'
 ```
 
 
-<text-box variant="hint" name="Hash table">
+> **Hash table**
+>
+> Notice the word 'unhashable' in the error message above. This is a reference to the inner workings of the dictionary data type. Python stores the contents of a dictionary in a _hash table_. Each key is reduced to a _hash value_, which determines where the key is stored in computer memory. The error message above indicates that a list cannot be processed into a hash value, so it cannot be used as a key in a dictionary.
+>
+> The _Data Structures and Algorithms_ courses will further explore hash tables.
 
-Notice the word 'unhashable' in the error message above. This is a reference to the inner workings of the dictionary data type. Python stores the contents of a dictionary in a _hash table_. Each key is reduced to a _hash value_, which determines where the key is stored in computer memory. The error message above indicates that a list cannot be processed into a hash value, so it cannot be used as a key in a dictionary.
-
-The _Data Structures and Algorithms_ courses will further explore hash tables.
-
-</text-box>
 
 Unlike keys, the _values_ stored in a dictionary can change, so any type of data is acceptable as a value. A value can also be mapped to more than one key in the same dictionary.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Times ten**
 >
 > Please write a function named `times_ten(start_index: int, end_index: int)`, which creates and returns a new dictionary. The keys of the dictionary should be the numbers between `start_index` and `end_index` inclusive
 
@@ -152,7 +150,7 @@ print(d)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Factorials**
 >
 > Please write a function named `factorials(n: int)`, which returns the factorials of the numbers 1 to `n` in a dictionary. The number is the key, and the factorial of that number is the value mapped to it.
 
@@ -305,7 +303,7 @@ tomato
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Histogram**
 >
 > Please write a function named `histogram`, which takes a string as its argument. The function should print out a histogram representing the number of times each letter occurs in the string. Each occurrence of a letter should be represented by a star on the specific line for that letter.
 
@@ -332,7 +330,7 @@ y *
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Phone book, version 1**
 >
 > Please write a phone book application. It should work as follows:
 
@@ -369,7 +367,7 @@ As you can see above, each name can be attached to a single number only. If a ne
 **NB:** this exercise doesn't ask you to write any functions, so you should __not__ place any code within an `if __name__ == "__main__"` block.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Phone book, version 2**
 >
 > Please write an improved version of the phone book application. Each entry should now accommodate multiple phone numbers. The application should work otherwise exactly as above, but this time _all_ numbers attached to a name should be printed.
 
@@ -399,6 +397,7 @@ name: **peter**
 09-22223333
 command (1 search, 2 add, 3 quit): **3**
 quitting...
+```
 
 
 ## Removing keys and values from a dictionary
@@ -411,8 +410,9 @@ del staff["David"]
 print(staff)
 ```
 
-<sample-output>
 
+
+```
 {'Alan': 'lecturer', 'Emily': 'professor'}
 ```
 
@@ -503,7 +503,7 @@ Luckily, there is a dictionary method for just this purpose:
 staff.clear()
 ```
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Invert a dictionary**
 >
 > Please write a function named `invert(dictionary: dict)`, which takes a dictionary as its argument. The dictionary should be inverted in place so that values become keys and keys become values.
 
@@ -526,7 +526,7 @@ print(s)
 If you have trouble completing this exercise, the [visualisation tool](http://www.pythontutor.com/visualize.html#mode=edit) might help you understand what your code is or isn't doing.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Numbers spelled out**
 >
 > Please write a function named `dict_of_numbers()`, which returns a new dictionary. The dictionary should have the numbers from 0 to 99 as its keys. The value attached to each key should be the number spelled out in words. Please have a look at the example below:
 
@@ -605,7 +605,7 @@ The average height is 173.0
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Movie database**
 >
 > Please write a function named `add_movie(database: list, name: str, director: str, year: int, runtime: int)`, which adds a new movie object into a movie database.
 
@@ -633,7 +633,7 @@ print(database)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Find movies**
 >
 > Please write a function named `find_movies(database: list, search_term: str)`, which processes the movie database created in the previous exercise. The function should formulate a new list, which contains only the movies whose title includes the word searched for. Capitalisation is irrelevant here. A search for `ana` should return a list containing both `Anaconda` and `Management`.
 

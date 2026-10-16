@@ -1,134 +1,132 @@
 ---
-title: "Defining functions"
+title: "تعريف الدوال"
 lang: ar
 source: "https://programming-26.mooc.fi/part-3/4-defining-functions"
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
-
-After this section
-
-- You will know how to write and call your own functions
-- You will understand what is meant by the argument and the parameter of a function
-- You will be able to define parameters in your own functions
-
-</text-box>
-
-## Parsons Code Lab
-
-As part of ongoing research on computer science education at the University of Helsinki, a new programming practice software, Parsons Code Lab, is being developed. In the software, you get to solve programming exercises in the form of [Parsons problems](https://en.wikipedia.org/wiki/Parsons_problem); by ordering and filling in blocks of code.
-
-By clicking the link below, you'll get access to a set of exercises that lets you review many of the central programming concepts you have learned so far: loops, conditionals, string operations, etc. These exercises are voluntary supporting material and will not affect grading in any way. The course teacher can, however, view statistics on exercise attempts via the teacher dashboard of the software.
-
-[To exercises](https://parsonscodelab.web.helsinki.fi/laurasini/set/introduction-to-programming-halfway-review)
-
-Kindly note that the software is in active development and there might be some issues.
-Please help the development by sharing any possible issues and comments via an anonymous feedback questionnaire! It will take approx. 1 minute to fill in but will help further development immeasurably.
-
-[Give feedback](https://elomake.helsinki.fi/lomakkeet/IYqXp/lomake.html)
-
-Exercise activity and feedback may be used in research in a completely anonymized form.
-Thank you for your contribution!
-
-
-## The function definition
-
-We have already used functions such as `len`, `print` and `input` in our programs. These are functions built into Python, and so they are always ready at our disposal, no matter which environment we are programming in. However, it is also possible to define your own functions.
-
-Before a function can be used, it must be defined. Any function definition begins with the keyword `def`, short for _define_. Then comes the _name_ of the function, followed by parentheses and a colon character. This is called the _header_ of the function. After this, indented just like `while` and `if` blocks, comes the _body_ of the function.
-
-For example, the following code defines the function `message`:
-
-```python
-def message():
-    print("This is my very own function!")
-```
-
-If the program above is executed, nothing seems to happen. This is because the code in the body of the function is only executed when the function is _called_.
-
-Calling a function is as simple as mentioning its name in your code. Adding a function call to the end of the above program, like so
-
-```python
-def message():
-    print("This is my very own function!")
-
-message()
-```
-results in a printed statement:
-
-
-```
-This is my very own function!
-```
-
-
-When a function has been defined it can be called multiple times:
-
-```python
-def message():
-    print("This is my very own function!")
-
-message()
-message()
-message()
-```
-
-
-```
-This is my very own function!
-This is my very own function!
-This is my very own function!
-```
-
-
-<text-box variant='hint' name='Testing your own functions'>
-
-NB: from now on the majority of the exercises on this course will ask you to write your own function(s).
-
-When a program consists of only functions, executing it doesn't seem to have any effect. The following code doesn't print out anything, even though there is a print statement:
-
-```python
-def greet():
-    print("Hi!")
-```
-
-The reason nothing is printed out is that the code within the body of the `greet` function is only executed when the function is called.
-
-The "main" program below the function should contain appropriate function calls, so that the program can be tested. In fact, Python treats all code that is not within function definitions as part of the _main function_, which gets executed when the file itself is evaluated or executed. So, lets add a function call:
-
-```python
-def greet():
-    print("Hi!")
-
-# All code not within function definitions is part of
-# the main function of the program
-# Calling our function:
-
-greet()
-```
-
-**Important**: on this course the automatic tests that are run on the exercise files require an empty main function. No commands should be left in the main function of your solution. That is, any code that you yourself use for testing must be contained in a specially defined `if` block:
-
-```python
-def greet():
-    print("Hi!")
-
-# Write your main function within a block like this:
-if __name__ == "__main__":
-    greet()
-```
-
-Any code left outside the above block causes an error:
-
-<img src="3_4_1.png">
-
-The purpose of this is to make sure that your solution gets tested on a clean slate, as the tests often check what your functions print out. It is worth noting that the tests will not execute any code from within the `if __name__ == "__main__"` block, so no code that is needed to fulfil the requirements of the exercise should be placed within the block.
-
-</text-box>
-
-> **تمرين تفاعلي: Seven Brothers**
+> **أهداف التعلّم**
 >
-> Please write a function named `seven_brothers`. When the function is called, it should print out the names of the seven brothers in alphabetical order, as in the example below. See the [similarly named exercise in part 1](/part-1/1-getting-started#programming-exercise-fix-the-code-seven-brothers) for more details about the brothers.
+> بعد إتمام هذا القسم
+>
+> - ستعرف كيف تكتب دوالك الخاصة وتستدعيها
+> - ستفهم ما يُقصد بالوسيط وبالمعامل في الدالة
+> - ستتمكّن من تعريف المعاملات في دوالك الخاصة
+
+
+## معمل شيفرة بارسونز
+
+ضمن أبحاث جارية في تعليم علوم الحاسوب في جامعة هلسنكي، يجري تطوير برمجية جديدة للتدريب على البرمجة اسمها معمل شيفرة بارسونز (Parsons Code Lab). وفي هذه البرمجية تحلّ تمارين برمجية على هيئة [مسائل بارسونز](https://en.wikipedia.org/wiki/Parsons_problem)، عبر ترتيب كتل الشيفرة وملئها.
+
+بالضغط على الرابط أدناه ستحصل على مجموعة من التمارين تتيح لك مراجعة كثير من المفاهيم البرمجية الأساسية التي تعلّمتها حتى الآن: الحلقات، والجمل الشرطية، وعمليات السلاسل النصية، وما شابه. وهذه التمارين مادة اختيارية داعمة ولن تؤثر على التقييم بأي شكل. غير أن معلم الدورة يستطيع الاطلاع على إحصاءات محاولات التمارين عبر لوحة تحكم المعلم في البرمجية.
+
+[إلى التمارين](https://parsonscodelab.web.helsinki.fi/laurasini/set/introduction-to-programming-halfway-review)
+
+يُرجى ملاحظة أن البرمجية قيد التطوير النشط، وقد تكون هناك بعض المشكلات.
+يُرجى المساعدة في تطويرها عبر مشاركة أي مشكلات وملاحظات ممكنة من خلال استبيان ملاحظات مجهول الهوية! سيستغرق ملؤه نحو دقيقة واحدة، لكنه سيساعد في تطويرها مستقبلًا بما لا يُقدَّر.
+
+[شارك ملاحظاتك](https://elomake.helsinki.fi/lomakkeet/IYqXp/lomake.html)
+
+قد تُستخدم نشاطات التمارين والملاحظات في الأبحاث بصيغة مجهولة الهوية تمامًا.
+شكرًا على مساهمتك!
+
+
+## تعريف الدالة
+
+لقد استخدمنا دوال مثل `len` و`print` و`input` في برامجنا من قبل. وهذه دوال مدمجة في Python، لذا فهي دائمًا جاهزة بين يديك مهما كانت البيئة التي تبرمج فيها. لكن من الممكن أيضًا أن تُعرّف دوالك الخاصة.
+
+قبل أن يمكن استخدام دالة، يجب أن تُعرَّف أولًا. ويبدأ أي تعريف للدالة بالكلمة المفتاحية `def`، وهي اختصار لكلمة _تعريف_ (_define_). ثم يأتي _اسم_ الدالة، تليه قوسان وشرطة نقطتان. وتُسمَّى هذه _ترويسة_ (_header_) الدالة. وبعدها يأتي _جسم_ (_body_) الدالة مُزاحًا إلى الداخل تمامًا ككتلتَي `while` و`if`.
+
+فمثالًا، تُعرِّف الشيفرة التالية الدالة `message`:
+
+```python
+def message():
+    print("This is my very own function!")
+```
+
+إذا نُفِّذ البرنامج أعلاه فلا يبدو أن شيئًا يحدث. والسبب في ذلك أن الشيفرة الموجودة في جسم الدالة لا تُنفَّذ إلا عندما تُستدعى الدالة.
+
+استدعاء الدالة لا يحتاج سوى إلى ذكر اسمها في شيفرتك. فإضافة استدعاء للدالة إلى نهاية البرنامج أعلاه، هكذا
+
+```python
+def message():
+    print("This is my very own function!")
+
+message()
+```
+ينتج عن ذلك أمرٌ مطبوع:
+
+
+```
+This is my very own function!
+```
+
+
+وحين تكون الدالة معرَّفة يمكن استدعاؤها عدة مرات:
+
+```python
+def message():
+    print("This is my very own function!")
+
+message()
+message()
+message()
+```
+
+
+```
+This is my very own function!
+This is my very own function!
+This is my very own function!
+```
+
+
+> **اختبار دوالك الخاصة**
+>
+> ملاحظة: اعتبارًا من الآن، ستطلبك معظم تمارين هذه الدورة كتابة دوالك الخاصة.
+>
+> حين يتكوّن برنامج من دوال فقط، لا يبدو لتنفيذه أي أثر. والشيفرة التالية لا تطبع شيئًا، رغم أنها تحتوي على أمر طباعة:
+>
+> ```python
+> def greet():
+>     print("Hi!")
+> ```
+>
+> سبب عدم طباعة أي شيء هو أن الشيفرة الموجودة في جسم الدالة `greet` لا تُنفَّذ إلا عند استدعاء الدالة.
+>
+> ينبغي أن يحتوي برنامج «main» الواقع أسفل الدالة على استدعاءات دوال مناسبة، كي يمكن اختبار البرنامج. وفي الواقع، تتعامل Python مع كل شيفرة لا تقع داخل تعريفات الدوال باعتبارها جزءًا من _الدالة الرئيسية_ (_main function_)، وهي التي تُنفَّذ عند تقييم الملف نفسه أو تنفيذه. فلنضف استدعاء دالة:
+>
+> ```python
+> def greet():
+>     print("Hi!")
+>
+> # All code not within function definitions is part of
+> # the main function of the program
+> # Calling our function:
+>
+> greet()
+> ```
+>
+> **مهم**: في هذه الدورة تتطلب الاختبارات الأوتوماتيكية التي تُشغَّل على ملفات التمارين أن تكون الدالة الرئيسية فارغة. فلا ينبغي ترك أي أمر في الدالة الرئيسية ضمن حلّك. أي أن أي شيفرة تستخدمها أنت في الاختبار يجب أن تكون داخل كتلة `if` معرَّفة خصيصًا:
+>
+> ```python
+> def greet():
+>     print("Hi!")
+>
+> # Write your main function within a block like this:
+> if __name__ == "__main__":
+>     greet()
+> ```
+>
+> وأي شيفرة تُترك خارج الكتلة أعلاه تسبّب خطأ:
+>
+> ![3_4_1.png](/images/mooc/part-3/3_4_1.png)
+>
+> والهدف من ذلك هو التأكّد من اختبار حلّك على أرضية نظيفة، لأن الاختبارات تفحص غالبًا ما تطبعه دوالك. ومن المفيد ملاحظة أن الاختبارات لا تنفّذ أي شيفرة من داخل الكتلة `if __name__ == "__main__"`، لذا ينبغي ألّا تضع داخل الكتلة أي شيفرة لازمة لاستيفاء متطلّبات التمرين.
+
+
+> **تمرين تفاعلي: الإخوة السبعة**
+>
+> يُرجى كتابة دالة اسمها `seven_brothers`. وحين تُستدعى الدالة فينبغي أن تطبع أسماء الإخوة السبعة بالترتيب الأبجدي، كما في المثال أدناه. راجع [التمرين الذي يحمل الاسم نفسه في الجزء 1](/book/mooc/part-1/1-getting-started#programming-exercise-fix-the-code-seven-brothers) لمزيد من التفاصيل عن الإخوة.
 
 
 
@@ -145,9 +143,9 @@ Tuomas
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-## Function arguments
+## وسائط الدالة
 
-Functions often take one or more _arguments_, which may affect what the function does. For example, the built-in Python functions `print` and `input` take as argument(s) the text that is to be displayed:
+غالبًا ما تأخذ الدالة واحدًا أو أكثر من _الوسائط_ (_arguments_)، وقد تؤثر في ما تفعله الدالة. فمثلًا، تأخذ الدالتان المدمجتان `print` و`input` في Python النص المطلوب عرضه كوسيط:
 
 ```python
 print("Hi!")                           # argument is the string "Hi!"
@@ -155,25 +153,25 @@ name = input("What is your name? ")    # argument is the string "What is your na
 print(name)                            # argument is the value of the variable name
 ```
 
-It was mentioned before that the terms _argument_ and _parameter_ are often used to refer to the same thing. The distinction is that while _argument_ is used with the data passed to the function when the function is called, _inside_ the function the arguments are assigned to variables called _parameters_. So, approximately, when the function is called, we call the passed bits of data arguments, but when we are defining the function, we call them parameters.
+سبق أن ذكرنا أن مصططلحي _الوسيط_ (_argument_) و_المعامل_ (_parameter_) يُستعملان في الغالب للإشارة إلى الشيء نفسه. والفرق أن _الوسيط_ يُستعمل للبيانات المُمرَّرة إلى الدالة عند استدعائها، أما _داخل_ الدالة فتُسنَد الوسائط إلى متغيّرات تُسمّى _معاملات_. أي، بتقريبٍ تام، حين نستدعي الدالة نسمّي قطع البيانات المُمرَّرة وسائط، وحين نعرّف الدالة نسمّيها معاملات.
 
-This may seem like a futile semantic distintion, and to make things even muddier, not all sources follow this definition. On this course we attempt to keep the distinction clear, however, as knowing the correct terminology will help you understand other sources besides this course material.
+قد يبدو هذا تمييزًا دلاليًا غير مجدٍ، ولمّا كانت الأمور أغمق قليلًا، فإن ليس جميع المصادر تتبنّى هذا التعريف. لكننا في هذه الدورة نحاول إبقاء هذا التمييز واضحًا، إذ إن معرفة المصطلح الصحيح ستساعدك على فهم مصادر أخرى إلى جانب مادة هذه الدورة.
 
-Let's define some functions that take arguments. In the function definition, the parameters are defined within the parentheses after the function name:
+لنعرّف بعض الدوال التي تأخذ وسائط. وفي تعريف الدالة، تُعرَّف المعاملات بين القوسين الواقعين بعد اسم الدالة:
 
 ```python
 def hello(target):
     print("Hello", target)
 ```
 
-Calling this function twice, like so
+استدعاء هذه الدالة مرتين، هكذا
 
 ```python
 hello("Emily")
 hello("world!")
 ```
 
-prints out two different greetings:
+يطبع تحيّةين مختلفتين:
 
 
 ```
@@ -182,29 +180,29 @@ Hello world!
 ```
 
 
-Let's take a closer look at the function definition:
+فلننظر عن قرب إلى تعريف الدالة:
 
 ```python
 def hello(target):
     print("Hello", target)
 ```
 
-On the first line, in the function header, we defined that this function takes an argument, and assigns it to a parameter named `target`. In the body of the function the `print` command uses the value stored in `target`.
+في السطر الأول، أي في ترويسة الدالة، صرّحنا بأن هذه الدالة تأخذ وسيطًا وتُسنِده إلى معامل اسمُه `target`. وفي جسم الدالة يستخدم الأمر `print` القيمة المخزّنة في `target`.
 
-When the function is called, the parameter `target` has the value given as an argument in the function call. For example, the following function call
+وحين تُستدعى الدالة يحمل المعامل `target` القيمة المُعطاة كوسيط في استدعاء الدالة. فمثلًا، استدعاء الدالة التالي
 
 ```python
 name = "Alan"
 hello(name)
 ```
 
-causes the parameter `target` to be set to the value `"Alan"`.
+يجعل المعامل `target` يُضبط على القيمة `"Alan"`.
 
-The names of functions and their parameters follow the same principles as the names of variables. They should be descriptive, and contain primarily lowercase letters and underscore characters. Again, there are some exceptions to these guidelines, but we will ignore those for now.
+تتبع أسماء الدوال ومعاملاتها المبادئ نفسها التي تتبعها أسماء المتغيّرات. فينبغي أن تكون وصفية، وأن تتكوّن أساسًا من أحرف صغيرة ومحارف شرطة سفلية. ومرة أخرى، هناك بعض الاستثناءات لهذه الإرشادات، لكننا سنتجاهلها الآن.
 
-> **تمرين تفاعلي: The first character**
+> **تمرين تفاعلي: المحرف الأول**
 >
-> The exercise contains the outline of the function `first_character`. Please complete it so that it prints out the first character of the string it takes as its argument.
+> يحتوي التمرين على الهيكل العظمي للدالة `first_character`. يُرجى إكماله بحيث يطبع المحرف الأول من السلسلة النصية التي تأخذها كوسيط.
 
 ```python
 def first_character(text):
@@ -233,19 +231,18 @@ n
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-<text-box variant='hint' name='Testing your functions with arguments'>
+> **اختبار دوالك ذات الوسائط**
+>
+> كلما كانت دالتك تأخذ واحدًا أو أكثر من الوسائط، فيُستحسن أن تختبرها بوسائط مختلفة متنوعة.
+>
+> وانتبه خصوصًا إلى «الحالات الخاصة» الخاصة بنوع الوسيط الذي تستخدمه. كيف تتصرّف دالتك إذا كان الوسيط صفرًا أو عددًا سالبًا، أو عددًا عشريًا بدل عدد صحيح؟ وماذا يحدث إذا كان الوسيط سلسلة نصية فارغة؟
+>
+> فإذا لم تطلب منك المهمة صراحةً تضمين استدعاءات للدوال، فيجوز لك أن تضمّن استدعاءاتك الخاصة داخل كتلة `if` الخاصة بالدالة الرئيسية كما شُرح أعلاه. وستتجاهل الاختبارات كل ما يقع داخل كتلة if.
 
-Whenever your function takes one or more arguments, it is recommended to test it with various different arguments.
 
-Pay special heed to "special cases" specific to the type of argument you are using. How will your function behave if the argument is zero or a negative number, or a floating point number instead of an integer? What happens if the argument is an empty string?
+## مزيد من الأمثلة
 
-If the exercise assignment doesn't explicitly tell you to include function calls, you may freely include your own within the main function `if` block as explained above. The tests will ignore everything within the if block.
-
-</text-box>
-
-## More examples
-
-Let's have a look at some more examples of functions which take arguments. In the following function definition the parameter is a number:
+فلننظر إلى مزيد من أمثلة الدوال التي تأخذ وسائط. وفي تعريف الدالة التالي يكون المعامل عددًا:
 
 ```python
 def squared(x):
@@ -262,7 +259,7 @@ The square of the number 5 is 25
 ```
 
 
-Meanwhile, in this function definition there is an `if` statement within the body of the function:
+وفي المقابل، يحتوي تعريف الدالة هذا على جملة `if` داخل جسم الدالة:
 
 ```python
 def hello(name):
@@ -282,7 +279,7 @@ Hi Mark
 ```
 
 
-This function takes two arguments:
+تأخذ هذه الدالة وسيطين:
 
 ```python
 def sum(x, y):
@@ -300,9 +297,9 @@ The sum of the arguments 5 and 24 is 29
 ```
 
 
-The function also includes the helper variable `result`, which it uses to store the sum of its arguments.
+وتتضمّن الدالة أيضًا المتغيّر المساعد `result`، الذي تستخدمه لتخزين مجموع وسائطها.
 
-Notice how the names of the parameters within the function definition have no relation to any variables outside it. We might just as well call the above function like this:
+لاحظ كيف أن أسماء المعاملات في تعريف الدالة لا علاقة لها بأي متغيّرات خارجها. فلنا نستدعي الدالة أعلاه هكذا تمامًا:
 
 ```python
 x = 100
@@ -311,7 +308,7 @@ sum(1, 2)
 sum(x + y, 10)
 ```
 
-This should print out
+وهذا ينبغي أن يطبع
 
 
 ```
@@ -320,18 +317,18 @@ The sum of the arguments 130 and 10 is 140
 ```
 
 
-In the first function call the parameters are assigned the values `x = 1` and `y = 2`. In the second function call they are assigned the values `x = 130` and `y = 10`, regardless of the similarly named variables used in the function call.
+في استدعاء الدالة الأول تُسنَد إلى المعاملين القيمتان `x = 1` و`y = 2`. وفي استدعاء الدالة الثاني تُسنَد إليهما القيمتان `x = 130` و`y = 10`، بغضّ النظر عن المتغيّرات المسمّاة بالأسماء نفسها المستخدَمة في استدعاء الدالة.
 
-We will come back to function definitions in the beginning of the next part of the course.
+وسنعود إلى تعريفات الدوال في بداية الجزء التالي من الدورة.
 
-<!--a similar warning is in sections 3-4, 4-6 and 5-1, check them all if you're changing this-->
-## Warning: using global variables within functions
+<!--يوجد تحذير مشابه في الأقسام 3-4 و4-6 و5-1، فتحقّق منها جميعًا إن عدّلته-->
+## تحذير: استخدام المتغيّرات العامة داخل الدوال
 
-In the examples above we saw that it is possible to assign new variables within function definitions. The function can also see variables assigned outside it, in the main function. Such variables are called _global_ variables.
+في الأمثلة أعلاه رأينا أنه من الممكن إسناد متغيّرات جديدة داخل تعريفات الدوال. ويمكن للدالة أيضًا أن ترى متغيّرات مُسنَدة خارجها، في الدالة الرئيسية. وتُسمَّى هذه المتغيّرات متغيّرات _عامة_ (_global_).
 
-Using global variables from within functions is usually a bad idea. Among other issues, doing so may cause bugs which are difficult to trace.
+استخدام المتغيّرات العامة من داخل الدوال عادةً فكرة سيّئة. فإلى جانب مشكلات أخرى، قد يسبّب ذلك أخطاء يصعب تتبّعها.
 
-Below is an example of a function which uses a global variable "by mistake":
+فيما يلي مثال على دالة تستخدم متغيّرًا عامًّا «من باب الخطأ»:
 
 ```python
 # this is a global variable
@@ -352,11 +349,11 @@ Hello Betty
 ```
 
 
-No matter how many different arguments we call the function with, it will always print out the value `"Betty"` stored in the global variable.
+مهما استدعيتَ الدالة بعدد من الوسائط المختلفة، فستطبع دائمًا القيمة `"Betty"` المخزّنة في المتغيّر العام.
 
-> **تمرين تفاعلي: Mean**
+> **تمرين تفاعلي: المتوسط**
 >
-> Please write a function named `mean`, which takes three integer arguments. The function should print out the arithmetic mean of the three arguments.
+> يُرجى كتابة دالة اسمها `mean`، تأخذ ثلاثة وسائط صحيحة. وينبغي أن تطبع الدالة المتوسط الحسابي للوسائط الثلاثة.
 
 ```python
 mean(5, 3, 1)
@@ -372,9 +369,9 @@ mean(10, 1, 1)
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-> **تمرين تفاعلي: Print many times**
+> **تمرين تفاعلي: اطبع عدّة مرّات**
 >
-> Please write a function named `print_many_times(text, times)`, which takes a string and an integer as arguments. The integer argument specifies how many times the string argument should be printed out:
+> يُرجى كتابة دالة اسمها `print_many_times(text, times)`، تأخذ سلسلة نصية وعددًا صحيحًا كوسائط. ويحدد الوسيط الصحيح عدد مرّات طباعة الوسيط النصي:
 
 ```python
 print_many_times("hi", 5)
@@ -401,9 +398,9 @@ All Pythons, except one, grow up.
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-> **تمرين تفاعلي: A square of hashes**
+> **تمرين تفاعلي: مربع من محارف الشباك**
 >
-> Please write a function named `hash_square(length)`, which takes an integer argument. The function prints out a square of hash characters, and the argument specifies the length of the side of the square.
+> يُرجى كتابة دالة اسمها `hash_square(length)`، تأخذ وسيطًا صحيحًا. وتطبع الدالة مربعًا من محارف الشباك، ويحدد الوسيط طول ضلع المربع.
 
 ```python
 hash_square(3)
@@ -427,9 +424,9 @@ hash_square(5)
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-> **تمرين تفاعلي: Chessboard**
+> **تمرين تفاعلي: رقعة شطرنج**
 >
-> Please write a function named `chessboard`, which prints out a chessboard made out of ones and zeroes. The function takes an integer argument, which specifies the length of the side of the board. See the examples below for details:
+> يُرجى كتابة دالة اسمها `chessboard`، تطبع رقعة شطرنج مكوّنة من الآحاد والأصفار. وتأخذ الدالة وسيطًا صحيحًا يحدد طول ضلع الرقعة. راجع الأمثلة أدناه للتفاصيل:
 
 ```python
 chessboard(3)
@@ -455,9 +452,9 @@ chessboard(6)
 
 
 
-> **تمرين تفاعلي: A word squared**
+> **تمرين تفاعلي: كلمة مربَّعة**
 >
-> Please write a function named `squared`, which takes a string argument and an integer argument, and prints out a square of characters as specified by the examples below.
+> يُرجى كتابة دالة اسمها `squared`، تأخذ وسيطًا من نوع سلسلة نصية ووسيطًا صحيحًا، وتطبع مربعًا من المحارف كما هو محدَّد في الأمثلة أدناه.
 
 ```python
 squared("ab", 3)
@@ -482,12 +479,12 @@ uayba
 
 
 <!---
-A quiz to review the contents of this section:
+اختبار لمراجعة محتويات هذا القسم:
 
 > **اختبار:** (مكون تفاعلي غير متاح في النسخة الثابتة - ID: b04f1d8b-d207-5a8c-abbd-e42a3af7c12d)
 
 -->
 
-Please respond to a quick questionnaire on this week's materials.
+يُرجى الإجابة على استبيان سريع حول مادة هذا الأسبوع.
 
 > **اختبار:** (مكون تفاعلي غير متاح في النسخة الثابتة - ID: 4420ccdc-8422-598a-9057-89b32e8f282a)

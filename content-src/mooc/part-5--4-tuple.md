@@ -8,16 +8,15 @@ source: "https://programming-26.mooc.fi/part-5/4-tuple"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be familiar with the tuple data type
+> - You will be able to create tuples from various types of values
+> - You will know the difference between a tuple and a list
+> - You will be able to name some typical use cases for tuples
 
-After this section
-
-- You will be familiar with the tuple data type
-- You will be able to create tuples from various types of values
-- You will know the difference between a tuple and a list
-- You will be able to name some typical use cases for tuples
-
-</text-box>
 
 Tuple is a data structure which is, in many ways, similar to a list. The most important differences between the two are:
 
@@ -58,7 +57,7 @@ TypeError: 'tuple' object does not support item assignment
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Create a tuple**
 >
 > Please write a function named `create_tuple(x: int, y: int, z: int)`, which takes three integers as its arguments, and creates and returns a tuple based on the following criteria:
 
@@ -81,7 +80,7 @@ if __name__ == "__main__":
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: The oldest person**
 >
 > Please write a function named `oldest_person(people: list)`, which takes a list of tuples as its argument. In each tuple, the first element is the name of a person, and the second element is their year of birth. The function should find the oldest person on the list and return their name.
 
@@ -103,7 +102,7 @@ Mary
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Older people**
 >
 > In this exercise we are handling tuples just like the ones described in the previous exercise.
 
@@ -248,7 +247,7 @@ number1 = number2
 number2 = helper_var
 ```
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Student database**
 >
 > In this series of exercises you will create a simple student database. Before diving in, please spend a moment reading through the instructions and thinking about what sort of data structures are necessary for organising the data stored by your program.
 

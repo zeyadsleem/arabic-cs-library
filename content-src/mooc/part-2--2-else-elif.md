@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-2/2-else-elif"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know how to create multiple branches within conditional statements
+> - You will understand the purpose of `if`, `elif` and `else` statements within a conditional statement
+> - You will be able to use the modulo operation `%` in Boolean expressions
 
-After this section
-
-- You will know how to create multiple branches within conditional statements
-- You will understand the purpose of `if`, `elif` and `else` statements within a conditional statement
-- You will be able to use the modulo operation `%` in Boolean expressions
-
-</text-box>
 
 Let's have a look at a program which asks the user to input a number, and then prints out different messages based on whether the number is negative, positive, or equal to zero:
 

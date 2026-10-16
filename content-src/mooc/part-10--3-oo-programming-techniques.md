@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-10/3-oo-programming-techniques"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be familiar with some of the different uses for the variable name `self`
+> - You will know how to overload operators in your own classes
+> - You will be able to create an iterable class
 
-After this section
-
-- You will be familiar with some of the different uses for the variable name `self`
-- You will know how to overload operators in your own classes
-- You will be able to create an iterable class
-
-</text-box>
 
 A class can contain a method which returns an object of the very same class. For example, below we have the class `Product`, whose method `product_on_sale` returns a new Product object with the same name as the original but with a price which is 25 % lower:
 
@@ -309,7 +308,7 @@ print(persons)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Money**
 >
 > The exercise template contains an outline for a class named `Money`. This exercise asks you to implement some additional methods and to fix some small problems in the template.
 
@@ -440,7 +439,7 @@ print(e1)
 Please [encapsulate](/part-9/3-encapsulation#encapsulation) the implementation of the attributes defined in the class so that the cheat used above is not possible. The class should have no public attributes, and no getter or setter methods for the euros or the cents.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Simple date**
 >
 > In this exercise you are asked to implement the class `SimpleDate` which allows you to handle dates. For simplicity's sake we assume here that _each month has 30 days_.
 
@@ -615,7 +614,7 @@ A Good Cup of Java
 
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: An iterable shopping list**
 >
 > The exercise template contains the `ShoppingList` class from the [exercise in part 8](/part-8/2-classes-and-objects#programming-exercise-shopping-list). Please adjust the class so that it is iterable and can thus be used as follows:
 

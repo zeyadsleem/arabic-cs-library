@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-2/4-simple-loops"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know what a loop means in programming
+> - You will be able to use a `while True` loop in your programs
+> - You will know how to use the `break` command to break out of a loop
 
-After this section
-
-- You will know what a loop means in programming
-- You will be able to use a `while True` loop in your programs
-- You will know how to use the `break` command to break out of a loop
-
-</text-box>
 
 We have now covered conditional structures in some detail. Another central technique in programming is repetition, or _iteration_. Together these form the fundamental control structures any programmer must master. They are called control structures because essentially they allow you to control which lines of code get executed when. While conditional structures allow you to _choose between_ sections of code, iteration structures allow you to _repeat_ sections of code. They are often called _loops_ because they allow the program to "loop back" to some line that was already executed before. The process of executing one repetition of a loop is also referred to as an iteration of the loop.
 

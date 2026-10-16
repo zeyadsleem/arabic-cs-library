@@ -1,43 +1,42 @@
 ---
-title: "Lists"
+title: "القوائم"
 lang: ar
 source: "https://programming-26.mooc.fi/part-4/3-lists"
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **أهداف التعلّم**
+>
+> بعد هذا القسم
+>
+> - ستعرف ما هي القوائم في Python
+> - ستكون قادرًا على الوصول إلى عنصر محدَّد داخل قائمة
+> - ستعرف كيف تُضاف العناصر إلى قائمة، وكيف تُزال منها
+> - ستكون على دراية بالدوال والتابعين المدمجين في القوائم
 
-After this section
 
-- You will know what lists are in Python
-- You will be able access a specified item within a list
-- You will know how to add items to a list, and how to remove them
-- You will be familiar with built-in list functions and methods
+في برامجنا حتى الآن كنّا نخزّن البيانات بالمتغيّرات، وكان لكل قطعة من البيانات عادةً متغيّر خاص بها يحمل اسمًا. ويرتب على ذلك بطبيعة الحال بعض القيود، إذ قد يصبح تعريف متغيّرات منفصلة لكل شيء عبئًا حين تتراكم البيانات المراد معالجتها.
 
-</text-box>
+القائمة (list) في Python تجمُّع من القيم يمكن الوصول إليه عبر اسم متغيّر واحد. وتُكتب محتويات القائمة بين قوسين مربّعين. وتُسمّى القيم الموجودة في القائمة _عناصر_ (items)، وأحيانًا _مكوّنات_ (elements).
 
-Thus far in our programs we have stored data with variables, each bit of data usually having its own named variable. This obviously has some limitations, as it can get cumbersome to define separate variables for everything when there is a lot of data to handle. 
-
-A Python _list_ is a collection of values which is accessed via a single variable name. The contents of the list are written within square brackets. The values contained in the list are called _items_, or sometimes _elements_.
-
-The following command creates a new, empty list
+الأمر التالي ينشئ قائمة جديدة فارغة
 
 ```python
 my_list = []
 ```
 
-whereas this command creates a list with five items in it:
+بينما الأمر التالي ينشئ قائمة تحتوي على خمسة عناصر:
 
 ```python
 my_list = [7, 2, 2, 5, 2]
 ```
 
-## Accessing items in a list
+## الوصول إلى عناصر القائمة
 
-The items in a list are indexed in exactly the same way as characters in a string. Indexing starts from zero, and the last index is the length of the list minus 1:
+تُرقَّم عناصر القائمة بالطريقة تمامًا نفسها التي تُرقَّم بها محارف السلسلة النصية. ويبدأ الترقيم من الصفر، ويكون آخر فهرس هو طول القائمة ناقص واحدًا:
 
-<img src="4_3_1.png" alt="Lists are indexed starting from 0">
+![تُرقَّم القوائم بدءًا من 0](/images/mooc/part-4/4_3_1.png)
 
-A single list item can be accessed just like a single character in a string is accessed, with square brackets:
+ويمكن الوصول إلى عنصر واحد في القائمة بالطريقة نفسها التي تصل بها إلى محرف واحد في السلسلة النصية، باستخدام الأقواس المربّعة:
 
 ```python
 my_list = [7, 2, 2, 5, 2]
@@ -58,7 +57,7 @@ The sum of the first two items: 9
 ```
 
 
-The entire contents of the list can also be printed out:
+يمكن أيضًا طباعة محتويات القائمة كاملة:
 
 ```python
 my_list = [7, 2, 2, 5, 2]
@@ -71,7 +70,7 @@ print(my_list)
 ```
 
 
-Unlike strings, lists are mutable, which means their contents can change. You can assign a new value to an item within a list, just like you can assign a new value to a variable:
+على عكس السلاسل النصية، فالقوائم قابلة للتغيير (mutable)، أي أن محتوياتها يمكن أن تتغيّر. ويمكنك إسناد قيمة جديدة إلى عنصر داخل القائمة، تمامًا كما تسند قيمة جديدة إلى متغيّر:
 
 ```python
 my_list = [7, 2, 2, 5, 2]
@@ -87,7 +86,7 @@ print(my_list)
 ```
 
 
-The function `len` gives you the number of items in a list:
+تُعطيك الدالة `len` عدد العناصر في القائمة:
 
 ```python
 my_list = [7, 2, 2, 5, 2]
@@ -101,11 +100,11 @@ print(len(my_list))
 
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: تغيير قيمة عنصر**
 >
-> Please write a program which initialises a list with the values `[1, 2, 3, 4, 5]`. Then the program should ask the user for an index and a new value, replace the value at the given index, and print the list again. This should be looped over until the user gives -1 for the index. You can assume all given index values will fall within your list.
+> يُرجى كتابة برنامج يُهيّئ قائمة بالقيم `[1, 2, 3, 4, 5]`. ثم يسأل البرنامج المستخدم عن فهرس وعن قيمة جديدة، ويستبدل القيمة الموجودة عند الفهرس المحدَّد، ثم يطبع القائمة مرة أخرى. ويُكرَّر ذلك في حلقة حتى يُدخل المستخدم -1 بدلًا من الفهرس. ويمكنك افتراض أن جميع قيم الفهارس المُدخلة ستقع داخل نطاق قائمتك.
 
-An example execution of the program:
+مثال على تنفيذ البرنامج:
 
 
 ```
@@ -122,12 +121,12 @@ Index: **-1**
 ```
 
 
-**NB:** this exercise doesn't ask you to write any functions, so you should __not__ place any code within an `if __name__ == "__main__"` block.
+**ملاحظة:** لا يطلب منك هذا التمرين كتابة أي دوال، لذا يجب أن __لا__ تضع أي شيفرة داخل كتلة `if __name__ == "__main__"`.
 
 
-## Adding items to a list
+## إضافة العناصر إلى القائمة
 
-The `append` method adds items to the end of a list. It works like this:
+يضيف التابع `append` العناصر إلى نهاية القائمة. ويعمل هكذا:
 
 ```python
 numbers = []
@@ -143,7 +142,7 @@ print(numbers)
 ```
 
 
-The following example makes use of two separate lists:
+المثال التالي يستخدم قائمتين منفصلتين:
 
 ```python
 numbers = []
@@ -165,7 +164,7 @@ print("Shoe sizes:")
 print(shoe_sizes)
 ```
 
-The item is appended to the list on which the method is called:
+يُضاف العنصر إلى القائمة التي استُدعي عليها التابع:
 
 
 ```
@@ -176,11 +175,11 @@ Shoe sizes:
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: إضافة عناصر إلى قائمة**
 >
-> Please write a program which first asks the user for the number of items to be added. Then the program should ask for the given number of values, one by one, and add them to a list in the order they were typed in. Finally, the list is printed out.
+> يُرجى كتابة برنامج يسأل المستخدم أولًا عن عدد العناصر المطلوب إضافتها. ثم يسأل البرنامج عن العدد المحدَّد من القيم، واحدًا تلو الآخر، ويضيفها إلى قائمة بالترتيب الذي أُدخلت به. وأخيرًا تُطبع القائمة.
 
-An example of expected behaviour:
+مثال على السلوك المتوقّع:
 
 
 ```
@@ -192,16 +191,16 @@ Item 3: **34**
 ```
 
 
-**NB:** this exercise doesn't ask you to write any functions, so you should __not__ place any code within an `if __name__ == "__main__"` block.
+**ملاحظة:** لا يطلب منك هذا التمرين كتابة أي دوال، لذا يجب أن __لا__ تضع أي شيفرة داخل كتلة `if __name__ == "__main__"`.
 
 
-## Adding to a specific location
+## الإضافة إلى موضع محدَّد
 
-If you want to specify a location in the list where an item should be added, you can use the `insert` method. The method adds an item at the specified index. All the items already in the list with an index equal to or higher than the specified index are moved one index further, "to the right":
+إن أردت تحديد موضع في القائمة يُضاف إليه عنصر، فيمكنك استخدام التابع `insert`. يضيف التابع عنصرًا عند الفهرس المحدَّد. وتُزاح فهرسًا واحدًا إلى الخلف، أي «إلى اليمين»، جميع العناصر الموجودة أصلًا في القائمة التي يساوي فهرسها الفهرس المحدَّد أو يزيد عنه:
 
-<img src="4_3_2.png" alt = "Inserting an item to a list">
+![إضافة عنصر إلى قائمة](/images/mooc/part-4/4_3_2.png)
 
-So, for instance this program
+فقد، مثلًا، هذا البرنامج
 
 ```python
 numbers = [1, 2, 3, 4, 5, 6]
@@ -211,7 +210,7 @@ numbers.insert(2, 20)
 print(numbers)
 ```
 
-prints out this:
+يطبع ما يلي:
 
 
 ```
@@ -220,14 +219,14 @@ prints out this:
 ```
 
 
-## Removing items from a list
+## إزالة العناصر من القائمة {#removing-items-from-a-list}
 
-There are two different approaches to removing an item from a list:
+هناك نهجان مختلفان لإزالة عنصر من قائمة:
 
-* If the _index_ of the item is known, you can use the method `pop`.
-* If the _contents_ of the item are known, you can use the method `remove`.
+* إذا كان _فهرس_ العنصر معروفًا، فيمكنك استخدام التابع `pop`.
+* إذا كان _محتوى_ العنصر معروفًا، فيمكنك استخدام التابع `remove`.
 
-So, the method `pop` takes the index of the item you want to remove as its argument. The following program removes items at indexes 2 and 3 from the list. Notice how the indexes of the remaining items change when one is removed.
+إذًا، يأخذ التابع `pop` فهرس العنصر الذي تريد إزالته كوسيط له. ويزيل البرنامج التالي العنصرين الموجودين عند الفهرس 2 والفهرس 3 من القائمة. ولاحظ كيف تتغيّر فهارس العناصر المتبقية حين يُزال أحدها.
 
 ```python
 my_list = [1, 2, 3, 4, 5, 6]
@@ -245,7 +244,7 @@ print(my_list)
 ```
 
 
-It's useful to remember that the method `pop` also _returns_ the removed item:
+من المفيد تذكّر أن التابع `pop` يُعيد أيضًا العنصر المُزال:
 
 ```python
 my_list = [4, 2, 7, 2, 5]
@@ -262,7 +261,7 @@ print(my_list)
 ```
 
 
-The method `remove`, on the other hand, takes the value of the item to be removed as its argument. For example, this program
+أما التابع `remove` فيأخذ قيمة العنصر المراد إزالته كوسيط له. فقد، مثلًا، هذا البرنامج
 
 ```python
 my_list = [1, 2, 3, 4, 5, 6]
@@ -273,7 +272,7 @@ my_list.remove(5)
 print(my_list)
 ```
 
-prints out this:
+يطبع ما يلي:
 
 
 ```
@@ -282,7 +281,7 @@ prints out this:
 ```
 
 
-The method removes the _first_ occurrence of the value in the list, much like the string function `find` returns the first occurrence of a substring:
+يزيل التابع _أول_ ورود للقيمة في القائمة، تمامًا كما تُعيد دالة السلسلة النصية `find` أول ورود لسلسلة فرعية:
 
 ```python
 my_list = [1, 2, 1, 2]
@@ -300,11 +299,11 @@ print(my_list)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: الإضافة والإزالة**
 >
-> Please write a program which asks the user to choose between addition and removal. Depending on the choice, the program _adds an item to_ or _removes an item from_ the end of a list. The item that is added must always be one greater than the last item in the list. The first item to be added must be 1.
+> يُرجى كتابة برنامج يطلب من المستخدم الاختيار بين الإضافة والإزالة. وبحسب الاختيار، _يضيف البرنامج عنصرًا إلى_ نهاية القائمة أو _يزيل عنصرًا منها_. ويجب أن يكون العنصر المضاف دائمًا أكبر بواحد من آخر عنصر في القائمة. ويجب أن يكون أول عنصر يُضاف هو 1.
 
-The list is printed out in the beginning and after each operation. Have a look at the example execution below:
+تُطبع القائمة في البداية وبعد كل عملية. وانظر إلى مثال التنفيذ أدناه:
 
 
 ```
@@ -324,12 +323,12 @@ Bye!
 ```
 
 
-You may assume that, if the list is empty, there will not be an attempt to remove items.
+يمكنك افتراض أنه إذا كانت القائمة فارغة فلن تتم محاولة إزالة عناصر.
 
-**NB:** this exercise doesn't ask you to write any functions, so you should __not__ place any code within an `if __name__ == "__main__"` block.
+**ملاحظة:** لا يطلب منك هذا التمرين كتابة أي دوال، لذا يجب أن __لا__ تضع أي شيفرة داخل كتلة `if __name__ == "__main__"`.
 
 
-If the specified item is not in the list, the `remove` function causes an error. Just like with strings, we can check for the presence of an item with the `in` operator:
+وإذا لم يكن العنصر المحدَّد موجودًا في القائمة، فإن الدالة `remove` تُسبّب خطأً. وتمامًا كما في السلاسل النصية، يمكننا التحقق من وجود عنصر باستخدام المشغّل `in`:
 
 ```python
 my_list = [1, 3, 4]
@@ -347,9 +346,9 @@ The list contains item 1
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: الكلمة نفسها مرتين**
 >
-> Please write a program which asks the user for words. If the user types in a word for the second time, the program should print out the number of different words typed in, and exit.
+> يُرجى كتابة برنامج يطلب من المستخدم كلمات. وإذا أدخل المستخدم كلمة للمرة الثانية، ينبغي للبرنامج أن يطبع عدد الكلمات المختلفة التي أُدخلت، ثم ينتهي.
 
 
 ```
@@ -362,12 +361,12 @@ You typed in 4 different words
 ```
 
 
-**NB:** this exercise doesn't ask you to write any functions, so you should __not__ place any code within an `if __name__ == "__main__"` block.
+**ملاحظة:** لا يطلب منك هذا التمرين كتابة أي دوال، لذا يجب أن __لا__ تضع أي شيفرة داخل كتلة `if __name__ == "__main__"`.
 
 
-## Sorting lists
+## ترتيب القوائم
 
-The items in a list can be _sorted_ from smallest to greatest with the method `sort`.
+يمكن _ترتيب_ عناصر القائمة من الأصغر إلى الأكبر باستخدام التابع `sort`.
 
 ```python
 my_list = [2,5,1,2,4]
@@ -381,7 +380,7 @@ print(my_list)
 ```
 
 
-Notice how the method modifies the list itself. Sometimes we don't want to change the original list, so we use the function `sorted` instead. It _returns_ a sorted list:
+لاحظ كيف يُعدّل التابع القائمة نفسها. وفي بعض الأحيان لا نريد تغيير القائمة الأصلية، لذا نستخدم الدالة `sorted` بدلًا منه. وهي تُعيد قائمة مرتّبة:
 
 ```python
 my_list = [2,5,1,2,4]
@@ -394,7 +393,7 @@ print(sorted(my_list)))
 ```
 
 
-Remember the difference between the two: `sort` changes the order of the original list in place, whereas `sorted` creates a new, ordered copy of the list. With `sorted` we can preserve the original order of the list:
+تذكّر الفرق بين الاثنين: يُغيّر `sort` ترتيب القائمة الأصلية في مكانها، بينما تنشئ `sorted` نسخة جديدة مرتّبة من القائمة. وباستخدام `sorted` يمكننا الحفاظ على الترتيب الأصلي للقائمة:
 
 ```python
 original = [2, 5, 1, 2, 4]
@@ -410,15 +409,15 @@ print(in_order)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: القائمة مرتين**
 >
-> Please write a program which asks the user to type in values and adds them to a list. After each addition, the list is printed out in two different ways:
-- in the order the items were added
-- ordered from smallest to greatest
+> يُرجى كتابة برنامج يطلب من المستخدم إدخال قيم ويضيفها إلى قائمة. وبعد كل إضافة، تُطبع القائمة بطرقتين مختلفتين:
+- بالترتيب الذي أُضيفت به العناصر
+- مرتّبة من الأصغر إلى الأكبر
 
-The program exits when the user types in 0.
+ينتهي البرنامج حين يُدخل المستخدم 0.
 
-An example of expected behaviour:
+مثال على السلوك المتوقّع:
 
 
 ```
@@ -439,12 +438,12 @@ Bye!
 ```
 
 
-**NB:** this exercise doesn't ask you to write any functions, so you should __not__ place any code within an `if __name__ == "__main__"` block.
+**ملاحظة:** لا يطلب منك هذا التمرين كتابة أي دوال، لذا يجب أن __لا__ تضع أي شيفرة داخل كتلة `if __name__ == "__main__"`.
 
 
-## Maximum, minimum and sum
+## الأقصى والأصغر والمجموع
 
-The functions `max` and `min`, short for maximum and minimum, return the greatest and smallest item in a list, respectively. The function `sum` returns the sum of all items in a list.
+تُعيد الدالتان `max` و`min`، وهما اختصار كلمتَي «الأقصى» و«الأدنى»، أكبر عنصر وأصغر عنصر في القائمة على الترتيب. أما الدالة `sum` فتُعيد مجموع جميع عناصر القائمة.
 
 ```python
 my_list = [5, 2, 3, 1, 4]
@@ -466,9 +465,9 @@ Sum: 15
 ```
 
 
-## Methods vs functions
+## التابعون مقابل الدوال
 
-There are two different ways of processing lists in Python, which can get confusing. For the most part you will use list _methods_, such as `append` and `sort`. They are used with the dot `.` operator on the list variable:
+هناك طريقتان مختلفتان لمعالجة القوائم في Python، وقد يُثير ذلك اللبس. وفي الغالب ستستخدم _تابعين_ للقائمة، مثل `append` و`sort`. وتُستخدم مع مشغّل النقطة `.` على متغيّر القائمة:
 
 ```python
 my_list = []
@@ -483,7 +482,7 @@ my_list.append(2)
 my_list.sort()
 ```
 
-Some _functions_ are happy to take a list as an argument. Above we saw the functions `max`,  `min`, `len` and `sorted` do just that:
+بعض _الدوال_ تقبل أخذ قائمة كوسيط. ورأينا في الأعلى أن الدوال `max` و`min` و`len` و`sorted` تفعل ذلك بالضبط:
 
 ```python
 my_list = [3, 2, 7, 1]
@@ -512,9 +511,9 @@ Length of the list: 4
 ```
 
 
-## A list as an argument or a return value
+## قائمة كوسيط أو كقيمة معادة {#a-list-as-an-argument-or-a-return-value}
 
-Just like the built-in functions above, our own functions can also take a list as an argument and produce a list as a return value. The following function works out the central value in an ordered list, also called the _median_ value:
+تمامًا كالدوال المدمجة أعلاه، يمكن لدوالنا الخاصة أيضًا أن تأخذ قائمة كوسيط، وأن تُنتج قائمة كقيمة معادة. وتحسب الدالة التالية القيمة المركزية في قائمة مرتّبة، وتُعرف أيضًا بقيمة _الوسيط_ (median):
 
 ```python
 def median(my_list: list):
@@ -523,9 +522,9 @@ def median(my_list: list):
     return ordered[list_centre]
 ```
 
-The function creates an ordered version of the list given as an argument and returns the item in the very middle. Notice the integer division operator `//` used here. The index of a list should always be an integer.
+تنشئ الدالة نسخة مرتّبة من القائمة المُعطاة كوسيط، وتُرجع العنصر الموجود في وسطها تمامًا. ولاحظ استخدام مشغّل القسمة الصحيحة `//` هنا. فيجب أن يكون فهرس القائمة دائمًا عددًا صحيحًا.
 
-The function works like this:
+تعمل الدالة هكذا:
 
 ```python
 shoe_sizes = [45, 44, 36, 39, 40]
@@ -542,7 +541,7 @@ The median of the ages is 22
 ```
 
 
-A function can also return a list. The following function asks the user to type in integers and returns the input as a list:
+يمكن للدالة أيضًا أن تُرجع قائمة. وتسأل الدالة التالية المستخدم إدخال أعداد صحيحة، وتُرجع المُدخل كقائمة:
 
 ```python
 def input_numbers():
@@ -555,9 +554,9 @@ def input_numbers():
     return numbers
 ```
 
-The function makes use of a helper variable `numbers`, which is a list. All the numbers typed in by the user are added to the list. When the loop is exited from, the function returns the list with the statement `return numbers`.
+تستخدم الدالة متغيّرًا مساعدًا اسمه `numbers` وهو قائمة. وتُضاف جميع الأعداد التي أدخلها المستخدم إلى القائمة. وعند الخروج من الحلقة، تُعيد الدالة القائمة بالجملة `return numbers`.
 
-Calling the function like this
+استدعاء الدالة هكذا
 
 ```python 
 numbers = input_numbers()
@@ -566,7 +565,7 @@ print("The greatest number is", max(numbers))
 print("The median of the numbers is", median(numbers))
 ```
 
-could print this, for example:
+قد يطبع هذا، مثلًا:
 
 
 ```
@@ -581,9 +580,9 @@ The median of the numbers is 4
 ```
 
 
-This small example demonstrates one of the most important uses of functions: they can help you divide your code into smaller, easily understandable and logical wholes.
+يُظهر هذا المثال الصغير أحد أهم استخدامات الدوال: إذ تساعدك على تقسيم شيفرتك إلى كتل أصغر يسهل فهمها وذات معنى منطقي.
 
-Of course the same functionality could be achieved without writing any of our own functions:
+بالطبع يمكن تحقيق الوظيفة نفسها دون كتابة أي من دوالنا الخاصة:
 
 ```python
 numbers = []
@@ -601,11 +600,11 @@ print("The greatest number is", max(numbers))
 print("The median of the numbers is", median)
 ```
 
-In this version, following the programming logic is more difficult, as it is no longer clear which commands are a part of which functionality. The code fulfils the same purposes - reading in input, calculating the median value, and so on - but the structure is less clear.
+في هذه النسخة يكون تتبع المنطق البرمجي أصعب، إذ لم يعد واضحًا أي الأوامر تنتمي إلى أي وظيفة. فالشيفرة تحقق الأغراض نفسها - قراءة المُدخل، وحساب قيمة الوسيط، وما إلى ذلك - لكن بنية أقلّ وضوحًا.
 
-Organising your code into separate functions will improve you program's readability, but also make it easier to handle logical wholes. This in turn helps you verify that the program works as intended, as each function can be tested separately.
+تنظيم شيفرتك في دوال منفصلة سيحسّن وضوح قراءة برنامجك، كما سيجعل التعامل مع الكتل المنطقية أسهل. وهذا بدوره يساعدك على التحقق من أن البرنامج يعمل كما هو مقصود، إذ يمكن اختبار كل دالة على حدة.
 
-Another important use for functions is making code _reusable_. If you need to achieve some functionality multiple times in your program, it is a good idea to create your own function and name it appropriately:
+ومن الاستخدامات المهمة الأخرى للدوال جعل الشيفرة _قابلة لإعادة الاستخدام_. فإذا احتجت تحقيق وظيفة ما عدة مرات في برنامجك، فمن الجيد إنشاء دالة خاصتك ومنحها اسمًا مناسبًا:
 
 ```python
 print("Shoe sizes:")
@@ -618,9 +617,9 @@ print("Heights:")
 heights = input_numbers()
 ```
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: طول القائمة**
 >
-> Please write a function named `length` which takes a list as its argument and returns the length of the list.
+> يُرجى كتابة دالة اسمها `length` تأخذ قائمة كوسيط لها، وتُرجع طول القائمة.
 
 ```python
 my_list = [1, 2, 3, 4, 5]
@@ -639,9 +638,9 @@ The length is 4
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: المتوسط الحسابي**
 >
-> Please write a function named `mean`, which takes a list of integers as an argument. The function returns the arithmetic mean of the values in the list.
+> يُرجى كتابة دالة اسمها `mean` تأخذ قائمة من الأعداد الصحيحة كوسيط لها. وتُعيد الدالة المتوسط الحسابي للقيم في القائمة.
 
 ```python
 my_list = [1, 2, 3, 4, 5]
@@ -655,9 +654,9 @@ mean value is 3.0
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: مدى القائمة**
 >
-> Please write a function named  `range_of_list`, which takes a list of integers as an argument. The function returns the difference between the smallest and the largest value in the list.
+> يُرجى كتابة دالة اسمها `range_of_list` تأخذ قائمة من الأعداد الصحيحة كوسيط لها. وتُعيد الدالة الفرق بين القيمة الصغرى والعظمى في القائمة.
 
 
 ```python
@@ -673,10 +672,11 @@ The range of the list is 4
 
 
 
-There are many more ways to use lists in Python. The Python [documentation](https://docs.python.org/3/tutorial/datastructures.html) is a good place to start if you want to know more.
+هناك طرق كثيرة أخرى لاستخدام القوائم في Python. و[توثيق](https://docs.python.org/3/tutorial/datastructures.html) Python مكان جيد للبدء إن أردت معرفة المزيد.
 
 <!---
-A quiz to review the contents of this section:
+
+اختبار لمراجعة محتويات هذا القسم:
 
 > **اختبار:** (مكون تفاعلي غير متاح في النسخة الثابتة - ID: 4849cd69-1938-5f4f-8805-8445f0f5c015)
 

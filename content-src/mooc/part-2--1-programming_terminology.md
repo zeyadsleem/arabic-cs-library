@@ -8,16 +8,15 @@ source: "https://programming-26.mooc.fi/part-2/1-programming-terminology"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be familiar with some essential terminology in programming
+> - You will know the difference between a statement and an expression
+> - You will be able to find out the data type of an evaluated expression
+> - You will have learnt to use debugging methods to find mistakes in your code
 
-After this section
-
-- You will be familiar with some essential terminology in programming
-- You will know the difference between a statement and an expression
-- You will be able to find out the data type of an evaluated expression
-- You will have learnt to use debugging methods to find mistakes in your code
-
-</text-box>
 
 In the first part of this course we didn't pay much attention to terminology, so let's have a look at some central concepts in programming.
 

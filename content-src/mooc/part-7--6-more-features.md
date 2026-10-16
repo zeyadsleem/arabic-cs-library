@@ -8,13 +8,12 @@ source: "https://programming-26.mooc.fi/part-7/6-more-features"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be familiar with some more Python features
 
-After this section
-
-- You will be familiar with some more Python features
-
-</text-box>
 
 To finish off this course, here you will find various useful Python features.
 
@@ -143,7 +142,7 @@ The sum of the arguments is 15
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Your own programming language**
 >
 > In this exercise you will write your own programming language executor. You can use any techniques and skills you have learnt on this course thus far.
 

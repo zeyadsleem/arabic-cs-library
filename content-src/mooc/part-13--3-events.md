@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-13/3-events"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be familiar with pygame events
+> - You will be able to write a program which reacts to key presses
+> - You will be able to write a program which reacts to mouse events
 
-After this section
-
-- You will be familiar with pygame events
-- You will be able to write a program which reacts to key presses
-- You will be able to write a program which reacts to mouse events
-
-</text-box>
 
 Thus far our main loops have only executed predetermined animations and reacted to only `pygame.QUIT` type events, even though the loop gets a list of all events from the operating system. Let's get to grips with some other types of events, then.
 
@@ -176,21 +175,21 @@ The code now contains the variables `to_right` and `to_left`. These contain know
 
 The clock is used to time the movements of the sprite, so that they potentially happen 60 times each second. If an arrow key is pressed, the sprite moves two pixels to the right or to the left. This means the sprite moves 120 pixels per second if the key is kept pressed down.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Four directions**
 >
 > Please write a program where the player can move a robot in four directions with the arrow keys on the keyboard. The end result should look like this:
 
 ![pygame_four_directions.gif](/images/mooc/part-13/pygame_four_directions.gif)
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Four walls**
 >
 > Please improve the program in the previous exercise so that the robot cannot pass outside the window in any of the four directions. The end result should look like this:
 
 ![pygame_four_walls.gif](/images/mooc/part-13/pygame_four_walls.gif)
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Two players**
 >
 > Please write a program where two players each direct their own robot. One of the players should use the arrow keys while the other could use, for example, the w-s-a-d keys. The end result should look like this:
 
@@ -301,14 +300,14 @@ The program's execution should look more or less like this:
 
 ![pygame_cursor2.gif](/images/mooc/part-13/pygame_cursor2.gif)
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Robot and mouse**
 >
 > Please write a program where the robot follows the mouse cursor so that the centre of the robot is always directly at the mouse cursor. The end result should look like this:
 
 ![pygame_robot_cursor.gif](/images/mooc/part-13/pygame_robot_cursor.gif)
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: The location of the robot**
 >
 > Please write a program where the robot appears at a random location within the window. When the player clicks on the robot with the mouse, the robot moves to a new location. The end result should look like this:
 

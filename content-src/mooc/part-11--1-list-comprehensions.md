@@ -8,14 +8,13 @@ source: "https://programming-26.mooc.fi/part-11/1-list-comprehensions"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know what list comprehensions are
+> - You will be able to use list comprehensions to create new lists
 
-After this section
-
-- You will know what list comprehensions are
-- You will be able to use list comprehensions to create new lists
-
-</text-box>
 
 One of the situations where programming is at its most powerful is processing sequences of items and events. Computers are good at repeating things. For example, in the previous parts of this material we have been iterating over strings, lists and dictionaries in various ways.
 
@@ -120,7 +119,7 @@ def factorials(numbers: list):
     return [factorial(number) for number in numbers]
 ```
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي**
 >
 > Please write a function named `square_roots(numbers: list)` which takes a list of integers as its argument. The function should return a new list containing the square roots of the original integers. 
 
@@ -145,7 +144,7 @@ for line in lines:
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي**
 >
 > Please write a function named `rows_of_stars(numbers: list)` which takes a list of integers as its argument. The function should return a new list containing rows of stars. The length of each row should correspond to the integer at the same index in the original list. The function should use a list comprehension to achieve this.
 
@@ -180,7 +179,7 @@ for row in rows:
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي**
 >
 > The exercise template contains the class definition `ExamResult`. The class has the following public attributes:
 
@@ -211,7 +210,7 @@ print(best_results(results))
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي**
 >
 > Please write a function named `lengths(lists: list)` which takes a list containing lists of integers as its argument. The function should return a new list, containing the lengths of the lists within the argument list.
 
@@ -323,7 +322,7 @@ Picking the above example apart, we have the Boolean expression `n > 0 and n % 2
 
 These positive, even numbers are then each in turn processed into the format `(n, factorial(n))`. This is a tuple, where the first item is the number itself, and the second item is the result returned by the factorial function.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي**
 >
 > Please write a function named `remove_smaller_than(numbers: list, limit: int)` which takes a list of integers and a limit value (also in integer format) as its arguments.
 
@@ -347,7 +346,7 @@ print(remove_smaller_than([-4, 7, 8, -100], 0))
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي**
 >
 > Please write a function named `begin_with_vowel(words: list)` which takes a list of strings as its argument.
 
@@ -432,7 +431,7 @@ if __name__ == "__main__":
 
 
 
-<programming-exercise name='Lottery numbers' tmcname='part11-07_lottery_numbers'>
+
 
 ## LotteryNumbers matched
 
@@ -478,5 +477,5 @@ print(week8.hits_in_place(my_numbers))
 ```
 
 
-</programming-exercises>
+
 

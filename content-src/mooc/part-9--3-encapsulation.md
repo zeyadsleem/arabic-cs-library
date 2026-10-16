@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-9/3-encapsulation"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know what encapsulation means
+> - You will be able to create private attributes
+> - You will know how to create getters and setters for your attributes
 
-After this section
-
-- You will know what encapsulation means
-- You will be able to create private attributes
-- You will know how to create getters and setters for your attributes
-
-</text-box>
 
 In object oriented programming the term _client_ refers to a program which uses a class, or instances of a class. A class offers the client _services_ through which the client can access the objects created based on the class. The goals here are that
 
@@ -156,7 +155,7 @@ print(card.retrieve_balance())
 
 The balance cannot be changed directly because the attribute is private, but we've included the methods `deposit_money` and `withdraw_money` for changing the value. The method `retrieve_balance` returns the value stored in balance. The methods include some rudimentary checks for retaining the integrity of the object: for instance, the card cannot be overdrawn.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Car**
 >
 > Please implement a class named `Car` which has two private, _encapsulated_ variables: the amount of petrol in the tank (0 to 60 litres) and odometer reading (in kilometres). The car consumes one litre of petrol per kilometre.
 
@@ -294,7 +293,7 @@ ValueError: The amount must not be below zero
 
 **NB:** the getter method, i.e. the `@property` decorator, must be introduced before the setter method, or there will be an error when the class is executed. This is because the `@property` decorator defines the name of the "attribute" offerred to the client. The setter method, added with `.setter`, simply adds a new functionality to it.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Recording**
 >
 > Please create a class named `Recording` which models a single recording. The class should have one private variable: `__length` of type integer.
 
@@ -424,7 +423,7 @@ A total of 3 entries
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Weather station**
 >
 > Please create a class named `WeatherStation` which is used to store observations about the weather. The class should have the following public attributes:
 

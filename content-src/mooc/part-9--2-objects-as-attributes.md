@@ -8,14 +8,13 @@ source: "https://programming-26.mooc.fi/part-9/2-objects-as-attributes"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know how to use objects as attributes in other objects
+> - You will be familiar with the keyword `None`
 
-After this section
-
-- You will know how to use objects as attributes in other objects
-- You will be familiar with the keyword `None`
-
-</text-box>
 
 We have already seen examples of classes which have lists as attributes. As there is thus nothing stopping us from including mutable objects as attributes in our classes, we might as well use instances of our own classes as attributes in other classes we've defined ourselves. In the following examples we will define the classes `Course`, `Student` and `CompletedCourse`. A completed course makes use of the first two classes. The class definitions are very short and simple in order to better concentrate on the technique of using instances of our own classes as attributes.
 
@@ -131,7 +130,7 @@ from person import Person
 
 it is likely you have gotten something wrong. If you need a refresher, the `import` statement was first introduced in [part 7](/part-7/1-modules) of this course material.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Pets**
 >
 > The exercise template contains the outlines of two classes: `Person` and `Pet`. Each person has one pet. Please change the `__str__` method in the class `Person` so that it also prints out information about the person's pet as shown in the example below.
 
@@ -203,7 +202,7 @@ Goals scored by each player: [10, 22, 1]
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: A box of presents**
 >
 > In this exercise you will practice wrapping presents. You will write two classes: `Present` and `Box`. A present has a name and a weight, and a box contains presents.
 
@@ -347,7 +346,7 @@ Charlie doesn't play in Campus Allstars :(
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: The shortest person in the room**
 >
 > The exercise template contains the class `Person`. A person has a name and a height. In this exercise you will implement the class `Room`. You may add any number of persons to a room, and you may also search for and remove the shortest person in the room.
 

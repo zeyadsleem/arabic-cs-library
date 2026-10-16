@@ -10,6 +10,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
+import { rewriteTextBoxes, stripOrphanComponents, markNotation, dropDuplicatedExerciseNames, outsideCode } from './lib/mooc-markup.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const srcDir = path.join('/tmp/opencode/mooc-src', 'data');
@@ -38,14 +39,8 @@ function copyFile(src, dest) {
 function transformMdx(markdown, relDir) {
   let out = markdown;
 
-  // 1. Handle <text-box variant='learningObjectives' name='...'> ... </text-box>
-  out = out.replace(
-    /<text-box\s+variant='learningObjectives'\s+name='([^']*)'>([\s\S]*?)<\/text-box>/g,
-    (_, name, content) => {
-      const title = name || 'أهداف التعلم';
-      return `> **${title}**\n>\n> ${content.trim().split('\n').join('\n> ')}\n`;
-    }
-  );
+  // 1. Handle every <text-box variant='...' name='...'> ... </text-box> as a note
+  out = rewriteTextBoxes(out);
 
   // 2. Handle <sample-output> ... </sample-output>
   out = out.replace(
@@ -143,9 +138,15 @@ function transformMdx(markdown, relDir) {
   out = out.replace(/<stdin\s*\/>/g, '*(إدخال)*');
 
   // 10. Handle <img> tags - convert to markdown with local path (both self-closing and non-self-closing)
+  //     Additional attributes (alt, width, …) are tolerated; alt text is preserved when present.
   out = out.replace(
-    /<img\s+src="([^"]*)"\s*\/?>/g,
-    (_, src) => {
+    /<img\b([^>]*)>/g,
+    (_, attrs) => {
+      const srcMatch = attrs.match(/\bsrc\s*=\s*"([^"]*)"/);
+      if (!srcMatch) return '';
+      const src = srcMatch[1];
+      const altMatch = attrs.match(/\balt\s*=\s*"([^"]*)"/);
+      const alt = altMatch ? altMatch[1] : path.basename(src);
       // src is like "/img/diagrams/foo.png" or "1_5_1.png" (relative)
       let imgPath = src;
       if (src.startsWith('/img/')) {
@@ -156,12 +157,19 @@ function transformMdx(markdown, relDir) {
       }
       // Normalize
       imgPath = imgPath.replace(/^\.\//, '');
-      return `![${path.basename(imgPath)}](/images/mooc/${imgPath})`;
+      return `![${alt}](/images/mooc/${imgPath})`;
     }
   );
 
-  // 11. Clean up any remaining self-closing custom tags
-  out = out.replace(/<[a-z-]+\s*\/>/g, '');
+  // 11. Clean up any remaining self-closing custom tags (never inside fenced code)
+  out = outsideCode(out, (block) => block.replace(/<[a-z-]+\s*\/>/g, ''));
+
+  // 12. Drop the wrappers no rule above converted
+  out = stripOrphanComponents(out);
+
+  // 13. Show the course's syntax notation as inline code, and label exercises once
+  out = markNotation(out);
+  out = dropDuplicatedExerciseNames(out);
 
   return out;
 }

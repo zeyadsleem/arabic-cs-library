@@ -8,16 +8,15 @@ source: "https://programming-26.mooc.fi/part-6/3-errors"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know how to handle invalid input
+> - You will understand what are exceptions in programming
+> - You will be familiar with the most common exception types in Python
+> - You will be able to handle exceptions in your own programs
 
-After this section
-
-- You will know how to handle invalid input
-- You will understand what are exceptions in programming
-- You will be familiar with the most common exception types in Python
-- You will be able to handle exceptions in your own programs
-
-</text-box>
 
 The are two basic categories of errors that come up in programming contexts:
 
@@ -168,7 +167,7 @@ Thank you!
 
 Now the `except` block only contains the command `pass`, which doesn't do anything. Python does not allow empty blocks, so the command is necessary.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Reading input**
 >
 > Please write a function named `read_input`, which asks the user for input until the user types in an integer which falls within the bounds given as arguments to the function. The function should return the final valid integer value typed in by the user.
 
@@ -317,7 +316,7 @@ ValueError: The input was negative: -1
 
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Parameter validation**
 >
 > Please write a function named `new_person(name: str, age: int)`, which creates and returns a tuple containing the data in the arguments. The first element should be the name and the second the age.
 
@@ -332,7 +331,7 @@ Invalid parameters in this case include:
 * age is greater than 150
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Incorrect lottery numbers**
 >
 > The file `lottery_numbers.csv` containts winning lottery numbers in the following format:
 

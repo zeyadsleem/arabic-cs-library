@@ -8,16 +8,15 @@ source: "https://programming-26.mooc.fi/part-5/2-references"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know what is meant by a reference to a variable
+> - You will understand that there can be multiple references to the same object
+> - You will be able to use lists as parameters in functions
+> - You will know what is meant by a side effect of a function
 
-After this section
-
-- You will know what is meant by a reference to a variable
-- You will understand that there can be multiple references to the same object
-- You will be able to use lists as parameters in functions
-- You will know what is meant by a side effect of a function
-
-</text-box>
 
 Thus far we have thought of a variable as a sort of a "box" which contains the value of the variable. Technically this is not true in Python. What is stored in a variable is not the value per se, but a _reference_ to the _object_ which is the actual value of the variable. The object can be e.g. a number, a string or a list.
 
@@ -275,7 +274,7 @@ The function takes a _reference_ to a list as an argument. This is stored in the
 <!---
 The following sequence of images illustrates the states of the variables at different stages during the execution of the function:
 
-<img src="5_2_9.png" width="400">
+<img src="/images/mooc/part-5/5_2_9.png" width="400">
 -->
 
 Furthermore, the variable `new_list`, which contains the new, augmented values, is not accessible from outside the function. It is "lost" as the execution of the function finishes, and focus returns to the main function. The variable `numbers` in the main function always points to the original list.
@@ -338,7 +337,7 @@ def augment_all(my_list: list):
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Items multiplied by two**
 >
 > Please write a function named `double_items(numbers: list)`, which takes a list of integers as its argument.
 
@@ -361,7 +360,7 @@ doubled: [4, 8, 10, 6, 22, -8]
 
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Remove the smallest**
 >
 > Please write a function named `remove_smallest(numbers: list)`, which takes a list of integers as its argument.
 
@@ -384,7 +383,7 @@ if __name__ == "__main__":
 
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Sudoku: print out the grid and add a number**
 >
 > In this exercise we will complete two more functions for the sudoku project from the previous section: `print_sudoku` and `add_number`.
 
@@ -467,7 +466,7 @@ print()
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Sudoku: add number to a copy of the grid**
 >
 > This is the very last sudoku task. This time we will create a slightly different version of the function for adding new numbers to the grid.
 
@@ -530,7 +529,7 @@ _ _ _  _ _ _  _ _ _
 When dealing with nested lists you should be extra careful when copying. What all needs to be explicitly copied, and where do changes actually have an effect? The [visualisation tool](http://www.pythontutor.com/visualize.html#mode=edit) is a great help here, too, although the size of the sudoku grid will make the view less orderly than usual.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Tic-Tac-Toe**
 >
 > Tic-Tac-Toe is played on a 3 by 3 grid, by two players who take turns inputting noughts and crosses. If either player succeeds in placing three of their own symbols on any row, column or diagonal, they win. If neither player manages this, it is a draw.
 
@@ -561,7 +560,7 @@ True
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Transpose a matrix**
 >
 > Please write a function named `transpose(matrix: list)`, which takes a two-dimensional integer array, i.e., a matrix, as its argument. The function should _transpose_ the matrix. Transposing means essentially flipping the matrix over its diagonal: columns become rows, and rows become columns.
 

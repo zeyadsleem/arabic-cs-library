@@ -11,6 +11,7 @@
     "content": "node scripts/import-frontend-architecture.mjs && node scripts/build-go-tour.mjs && node scripts/build-hono.mjs && node scripts/build-better-auth.mjs && node scripts/build-mooc.mjs && node scripts/build-content.mjs",
     "build:go-browser": "node scripts/build-go-browser.mjs",
     "audit:content": "node scripts/audit-content.mjs --check",
+    "check:mooc": "node scripts/check-mooc.mjs",
     "check:links": "node scripts/check-links.mjs",
     "test:content": "node --test tests/generated-base-path.test.mjs tests/frontend-architecture.test.mjs tests/mit-6100l-content.test.mjs",
     "test:import": "node --test tests/mit-6100l.test.mjs",

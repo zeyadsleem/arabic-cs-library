@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-8/4-defining-methods"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know how class methods work
+> - You will be able to write new methods in your own classes
+> - You will understand the concepts of encapsulation and client in object oriented programming
 
-After this section
-
-- You will know how class methods work
-- You will be able to write new methods in your own classes
-- You will understand the concepts of encapsulation and client in object oriented programming
-
-</text-box>
 
 Classes which contain only data attributes are not very different from dictionaries. Below you will find two ways to model a bank account, first with a class definition, and then using a dictionary.
 
@@ -181,7 +180,7 @@ The balance is now: -500.0
 
 It is possible to hide the data attributes from the client code, which can help in solving this problem. We will return to this topic in the next part.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Decreasing counter**
 >
 > This exercise has multiple parts. You can submit the parts separately. Each part is worth one exercise point.
 
@@ -415,7 +414,7 @@ Pythonnen
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Statistics on numbers**
 >
 > In this exercise you are asked to create a program for working with numbers, similarly to the exercise completed at the [end of part 2](/part-2/4-simple-loops#programming-exercise-working-with-numbers) in the Introduction to Programming course. This time you will define a class for the purpose.
 

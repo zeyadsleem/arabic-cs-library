@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-4/6-strings-and-lists"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be familiar with more methods for slicing strings and lists
+> - You will understand what immutability of strings means
+> - You will be able to use the methods `count` and `replace`
 
-After this section
-
-- You will be familiar with more methods for slicing strings and lists
-- You will understand what immutability of strings means
-- You will be able to use the methods `count` and `replace`
-
-</text-box>
 
 You are already familiar with the `[]` syntax for accessing a part of a string:
 
@@ -139,7 +138,7 @@ Notice the global variable is assigned within the `if` block now.
 
 The automatic tests in the TMC system are executed without running any of the code in the `if` block. So, in this latter example the function wouldn't even theoretically work, since it refers to the variable `name_list`, which doesn't exist at all when the tests are executed.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Everything reversed**
 >
 > Please write a function named `everything_reversed`, which takes a list of strings as its argument. The function returns a new list with all of the items on the original list reversed. Also the order of items should be reversed on the new list.
 
@@ -278,7 +277,7 @@ Java is fun
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Most common character**
 >
 > Please write a function named `most_common_character`, which takes a string argument. The function returns the character which has the most occurrences within the string. If there are many characters with equally many occurrences, the one which appears first in the string should be returned.
 
@@ -300,7 +299,7 @@ e
 
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: No vowels allowed**
 >
 > Please write a function named `no_vowels`, which takes a string argument. The function returns a new string, which should be the same as the original but with all vowels removed.
 
@@ -320,7 +319,7 @@ ths s n xmpl
 
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: No shouting allowed**
 >
 > The Python string method `isupper()` returns `True` if a string consists of _only_ uppercase characters.
 
@@ -356,7 +355,7 @@ print(pruned_list)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Neighbours in a list**
 >
 > Given a list of integers, let's decide that two consecutive items in the list are neighbours if their difference is 1. So, items 1 and 2 would be neighbours, and so would items 56 and 55.
 
@@ -490,7 +489,7 @@ def main():
 main()
 ```
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Grade statistics**
 >
 > In this exercise you will write a program for printing out grade statistics for a university course.
 
@@ -565,13 +564,11 @@ You have to first split the input line in two and then convert the sections into
 
 <!-- **Huomaa** että tällä hetkellä Windowsissa on ongelmia joidenkin tehtävien testien suorittamisessa. Jos törmäät seuraavaan virheilmoitukseen
 
-<img src="4_3_2.png" alt="Listan iterointi">
+<img src="/images/mooc/part-4/4_3_2.png" alt="Listan iterointi">
 
 voit suorittaa testit lähettämällä ne palvelimelle valitsemalla testien suoritusnapin oikealla puolella olevasta symbolista avautuvasta TMC-valikosta _Submit solutions_.
 
 Ongelman saa korjattua menemällä laajennuksen asennusvalikkoon ja muuttamalla "TMC Data" -kohdassa tehtävien sijainnin johonkin toiseen sijaintiin, jonka tiedostopolku on lyhempi, allaolevassa kuvassa nappi _change path_. Siirrossa saattaa kestää hetken, joten odotathan operaation päättymistä.
-
-<img src="4_3_3.png" alt="Listan iterointi">
 
 Ongelmaan pyritään saamaan parempi ratkaisu lähipäivinä. -->
 

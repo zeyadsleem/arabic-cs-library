@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-13/4-more-pygame-techniques"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know how the title of the pygame window
+> - You will be able to draw shapes with pygame
+> - You will know how to display text in your window
 
-After this section
-
-- You will know how the title of the pygame window
-- You will be able to draw shapes with pygame
-- You will know how to display text in your window
-
-</text-box>
 
 ## The window title
 
@@ -87,14 +86,14 @@ NB: different systems will have different fonts available. If the system this pr
 
 Here are some more advanced exercises for practicing what you have learned in this part of the course material.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Clock**
 >
 > Please write a program which displays a clock face which displays the system time. The end result should look like this:
 
 ![pygame_clock.gif](/images/mooc/part-13/pygame_clock.gif)
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Asteroids**
 >
 > Please create a game where asteroids fall from the sky. The player moves a robot left and right and tries to collect the falling rocks. The player gets a point for each asteroid collected, and the points total is shown at the top of the window. The game ends when the player misses an asteroid. The end result should look like this:
 

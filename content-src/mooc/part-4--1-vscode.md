@@ -8,14 +8,13 @@ source: "https://programming-26.mooc.fi/part-4/1-vscode"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be equipped to use the Visual Studio Code editor to complete exercises on this course
+> - You will be familiar with the interactive Python interpreter, and will be able to use it to run code
 
-After this section
-
-- You will be equipped to use the Visual Studio Code editor to complete exercises on this course
-- You will be familiar with the interactive Python interpreter, and will be able to use it to run code
-
-</text-box>
 
 Thus far all the exercises on this course have been completed directly on the course pages in embedded editor windows. Programming in the browser is very suitable for the very first steps in programming, but now it is time to start using a separate editor especially made for programming.
 
@@ -25,7 +24,7 @@ Please install the Visual Studio Code editor on your own computer now. You may a
 
 [Here is a guide](https://www.mooc.fi/en/installation/vscode) to installing and running all of these. Read the instructions on working on and submitting exercises, and then complete the task below:
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Hello Visual Studio Code**
 >
 > Please write a program which asks the user which editor they are using. The program should keep on asking until the user types in _Visual Studio Code_.
 

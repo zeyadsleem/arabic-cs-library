@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-4/2-more-functions"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know more about the arguments and parameters of functions
+> - You will know how to return values from functions, and how to use the values in your code
+> - You will be able to add type hints for parameters and return values
 
-After this section
-
-- You will know more about the arguments and parameters of functions
-- You will know how to return values from functions, and how to use the values in your code
-- You will be able to add type hints for parameters and return values
-
-</text-box>
 
 Let's quickly recap Python functions. Functions are defined with the keyword `def`:
 
@@ -65,21 +64,20 @@ The sum of the arguments is 5
 ```
 
 
-<text-box variant='hint' name='Formal vs actual, parameter vs argument'>
+> **Formal vs actual, parameter vs argument**
+>
+> The terminology around data passed to functions can feel confusing. To make matters worse, some sources refer to what we have called parameters and arguments as _formal_ and _actual parameters_. Other sources call them _formal_ and _actual arguments_. [The Python documentation](https://docs.python.org/3/glossary.html#term-argument) specifies only the terms _argument_ and _parameter_, so that is what we will use as well.
+>
+> What actually happens when the function call `greet("Emily")` is executed?
+>
+> In the function definition `greet(name)` the parameter `name` behaves for all intents and purposes just like a normal variable. We can use it within the function just like we have used variables in the many main functions in our programs thus far.
+>
+> In the function call `greet("Emily")` the argument `"Emily"` is just like any other string we have come across before. For example, we can assign it to a variable.
+>
+> So, when the function call is executed, the value of the argument, `"Emily"`, is assigned to the parameter variable `name`. For the duration of _this execution_ of the function, `name = "Emily"`. When the function is called with a different argument, the value of `name` will be different.
+>
+> This terminology may all seem a bit superfluous, but computer science as a discipline does aim to be as exact a science as possible. Using well defined terminology helps.
 
-The terminology around data passed to functions can feel confusing. To make matters worse, some sources refer to what we have called parameters and arguments as _formal_ and _actual parameters_. Other sources call them _formal_ and _actual arguments_. [The Python documentation](https://docs.python.org/3/glossary.html#term-argument) specifies only the terms _argument_ and _parameter_, so that is what we will use as well.
-
-What actually happens when the function call `greet("Emily")` is executed?
-
-In the function definition `greet(name)` the parameter `name` behaves for all intents and purposes just like a normal variable. We can use it within the function just like we have used variables in the many main functions in our programs thus far.
-
-In the function call `greet("Emily")` the argument `"Emily"` is just like any other string we have come across before. For example, we can assign it to a variable.
-
-So, when the function call is executed, the value of the argument, `"Emily"`, is assigned to the parameter variable `name`. For the duration of _this execution_ of the function, `name = "Emily"`. When the function is called with a different argument, the value of `name` will be different.
-
-This terminology may all seem a bit superfluous, but computer science as a discipline does aim to be as exact a science as possible. Using well defined terminology helps.
-
-</text-box>
 
 ## Error messages when running tests
 
@@ -100,7 +98,7 @@ The actual issue becomes clear when we try executing the function call specified
 
 The last lines produced by the execution, highlighted in the above image, tell us that line 4 of our code causes the error _IndexError: string index out of range_. In the [previous part](/part-3/2-working-with-strings) there was a similar example, where we tried to use an index that fell outside the scope of the string. This time the error appears because we are trying to access the first character of an empty string, that is, a string of length 0.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Line**
 >
 > Please write a function named `line`, which takes two arguments: an integer and a string. The function prints out a line of text, the length of which is specified by the first argument. The character used to draw the line should be the first character in the second argument. If the second argument is an empty string, the line should consist of stars.
 
@@ -144,7 +142,7 @@ Hello there, Emily
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: A box of hashes**
 >
 > Please write a function named `box_of_hashes`, which prints out a rectangle of hash characters. The function takes one argument, which specifies the height of the rectangle. The rectangle should be ten characters wide.
 
@@ -171,7 +169,7 @@ box_of_hashes(2)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: A square of hashes**
 >
 > Please write a function named `square_of_hashes`, which draws a square of hash characters. The function takes one argument, which determines the length of the side of the square.
 
@@ -199,7 +197,7 @@ square_of_hashes(3)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: A square**
 >
 > Please write a function named `square`, which prints out a square of characters, and takes two arguments. The first parameter specifies the length of the side of the square. The second parameter specifies the character used to draw the square.
 
@@ -227,7 +225,7 @@ ooo
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: A triangle**
 >
 > Please write a function named `triangle`, which draws a triangle of hashes, and takes one argument. The triangle should be as tall and as wide as the value of the argument.
 
@@ -256,7 +254,7 @@ triangle(3)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: A shape**
 >
 > Please write a function named `shape`, which takes four arguments. The first two parameters specify a triangle, as above, and the character used to draw it. The first parameter also specifies the width of a rectangle, while the third parameter specifies its height. The fourth parameter specifies the filler character of the rectangle. The function prints first the triangle, and then the rectangle below it.
 
@@ -303,7 +301,7 @@ Don't try and solve this exercise "all at once". A good first step would be to m
 This is one of the most important skills of a programmer: **concentrate on small, tangible sections of the problem at a time**. Solve and verify partial solutions, and use them to build towards a complete solution.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: A spruce**
 >
 > Please write a function named `spruce`, which takes one argument. The function prints out the text `a spruce!`, and the a spruce tree, the size of which is specified by the argument.
 
@@ -534,7 +532,7 @@ max2(7, 5)
 
 and the greater value is printed out. The downside of this handy function is that the value worked out by the function is not available for use in the program which called it. That is why functions which return values are often the better option.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: The greatest number**
 >
 > Please write a function named  `greatest_number`, which takes three arguments. The function returns the greatest in value of the three.
 
@@ -547,7 +545,7 @@ print(greatest_number(0, 0, 0)) # 0
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Same characters**
 >
 > Please write a function named `same_chars`, which takes one string and two integers as arguments. The integers refer to indexes within the string. The function should return `True` if the two characters at the indexes specified are the same. Otherwise, and especially if either of the indexes falls outside the scope of the string, the function returns `False`.
 
@@ -565,7 +563,7 @@ print(same_chars("programmer", 0, 12)) # False
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: First, second and last words**
 >
 > Please write three functions: `first_word`, `second_word` and `last_word`. Each function takes a string argument.
 

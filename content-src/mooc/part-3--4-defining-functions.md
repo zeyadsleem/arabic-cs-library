@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-3/4-defining-functions"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know how to write and call your own functions
+> - You will understand what is meant by the argument and the parameter of a function
+> - You will be able to define parameters in your own functions
 
-After this section
-
-- You will know how to write and call your own functions
-- You will understand what is meant by the argument and the parameter of a function
-- You will be able to define parameters in your own functions
-
-</text-box>
 
 ## Parsons Code Lab
 
@@ -85,50 +84,49 @@ This is my very own function!
 ```
 
 
-<text-box variant='hint' name='Testing your own functions'>
+> **Testing your own functions**
+>
+> NB: from now on the majority of the exercises on this course will ask you to write your own function(s).
+>
+> When a program consists of only functions, executing it doesn't seem to have any effect. The following code doesn't print out anything, even though there is a print statement:
+>
+> ```python
+> def greet():
+>     print("Hi!")
+> ```
+>
+> The reason nothing is printed out is that the code within the body of the `greet` function is only executed when the function is called.
+>
+> The "main" program below the function should contain appropriate function calls, so that the program can be tested. In fact, Python treats all code that is not within function definitions as part of the _main function_, which gets executed when the file itself is evaluated or executed. So, lets add a function call:
+>
+> ```python
+> def greet():
+>     print("Hi!")
+>
+> # All code not within function definitions is part of
+> # the main function of the program
+> # Calling our function:
+>
+> greet()
+> ```
+>
+> **Important**: on this course the automatic tests that are run on the exercise files require an empty main function. No commands should be left in the main function of your solution. That is, any code that you yourself use for testing must be contained in a specially defined `if` block:
+>
+> ```python
+> def greet():
+>     print("Hi!")
+>
+> # Write your main function within a block like this:
+> if __name__ == "__main__":
+>     greet()
+> ```
+>
+> Any code left outside the above block causes an error:
+>
+> ![3_4_1.png](/images/mooc/part-3/3_4_1.png)
+>
+> The purpose of this is to make sure that your solution gets tested on a clean slate, as the tests often check what your functions print out. It is worth noting that the tests will not execute any code from within the `if __name__ == "__main__"` block, so no code that is needed to fulfil the requirements of the exercise should be placed within the block.
 
-NB: from now on the majority of the exercises on this course will ask you to write your own function(s).
-
-When a program consists of only functions, executing it doesn't seem to have any effect. The following code doesn't print out anything, even though there is a print statement:
-
-```python
-def greet():
-    print("Hi!")
-```
-
-The reason nothing is printed out is that the code within the body of the `greet` function is only executed when the function is called.
-
-The "main" program below the function should contain appropriate function calls, so that the program can be tested. In fact, Python treats all code that is not within function definitions as part of the _main function_, which gets executed when the file itself is evaluated or executed. So, lets add a function call:
-
-```python
-def greet():
-    print("Hi!")
-
-# All code not within function definitions is part of
-# the main function of the program
-# Calling our function:
-
-greet()
-```
-
-**Important**: on this course the automatic tests that are run on the exercise files require an empty main function. No commands should be left in the main function of your solution. That is, any code that you yourself use for testing must be contained in a specially defined `if` block:
-
-```python
-def greet():
-    print("Hi!")
-
-# Write your main function within a block like this:
-if __name__ == "__main__":
-    greet()
-```
-
-Any code left outside the above block causes an error:
-
-![3_4_1.png](/images/mooc/part-3/3_4_1.png)
-
-The purpose of this is to make sure that your solution gets tested on a clean slate, as the tests often check what your functions print out. It is worth noting that the tests will not execute any code from within the `if __name__ == "__main__"` block, so no code that is needed to fulfil the requirements of the exercise should be placed within the block.
-
-</text-box>
 
 > **تمرين تفاعلي: Seven Brothers**
 >
@@ -237,15 +235,14 @@ n
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-<text-box variant='hint' name='Testing your functions with arguments'>
+> **Testing your functions with arguments**
+>
+> Whenever your function takes one or more arguments, it is recommended to test it with various different arguments.
+>
+> Pay special heed to "special cases" specific to the type of argument you are using. How will your function behave if the argument is zero or a negative number, or a floating point number instead of an integer? What happens if the argument is an empty string?
+>
+> If the exercise assignment doesn't explicitly tell you to include function calls, you may freely include your own within the main function `if` block as explained above. The tests will ignore everything within the if block.
 
-Whenever your function takes one or more arguments, it is recommended to test it with various different arguments.
-
-Pay special heed to "special cases" specific to the type of argument you are using. How will your function behave if the argument is zero or a negative number, or a floating point number instead of an integer? What happens if the argument is an empty string?
-
-If the exercise assignment doesn't explicitly tell you to include function calls, you may freely include your own within the main function `if` block as explained above. The tests will ignore everything within the if block.
-
-</text-box>
 
 ## More examples
 

@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-10/1-class-hierarchies"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know what inheritance means in a programming context
+> - You will be able to write classes which inherit other classes
+> - You will know how inheritance affects the traits in classes
 
-After this section
-
-- You will know what inheritance means in a programming context
-- You will be able to write classes which inherit other classes
-- You will know how inheritance affects the traits in classes
-
-</text-box>
 
 ## Special classes for special purposes
 
@@ -336,7 +335,7 @@ if __name__ == "__main__":
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Laptop computer**
 >
 > The exercise template contains a class definition for a `Computer`, which has the attributes `model` and `speed`.
 
@@ -355,7 +354,7 @@ NoteBook Pro15, 1500 MHz, 2 kg
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Game Museum**
 >
 > The exercise template contains class definitions for a `ComputerGame` and a `GameWarehouse`. A GameWarehouse object is used to store ComputerGame objects.
 
@@ -383,7 +382,7 @@ Bubble Bobble
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Areas**
 >
 > The exercise template contains a class definition for a `Rectangle`. It represents a [rectangle shape](https://en.wikipedia.org/wiki/Rectangle). A Rectangle works like this:
 
@@ -419,7 +418,7 @@ area: 16
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Word game**
 >
 > The exercise template contains the class definition for a `WordGame`. It provides some basic functionality for playing different word-based games:
 

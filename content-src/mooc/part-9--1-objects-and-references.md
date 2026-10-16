@@ -8,14 +8,13 @@ source: "https://programming-26.mooc.fi/part-9/1-objects-and-references"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be able to use different data structures for handling objects
+> - You will know how objects can be passed as arguments
 
-After this section
-
-- You will be able to use different data structures for handling objects
-- You will know how objects can be passed as arguments
-
-</text-box>
 
 Every value in Python is an object. Any object you create based on a class you've defined yourself works exactly the same as any "regular" Python object. For example, objects can be stored in a list:
 
@@ -64,7 +63,7 @@ Total credits received: 20
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: The fastest car**
 >
 > The exercise template contains a class named `Car` which represents the features of a car through two attributes: `make (str)` and `top_speed (int)`.
 
@@ -91,7 +90,7 @@ Ferrari
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Passing submissions**
 >
 > The exercise template contains a class named `ExamSubmission` which, as the name implies, models an examinee's submission in an exam. The class has two attributes defined: `examinee (str)` and `points (int)`.
 
@@ -119,6 +118,7 @@ if __name__ == "__main__":
 ExamSubmission (examinee: Pippa, points: 19)
 ExamSubmission (examinee: Paul, points: 15)
 ExamSubmission (examinee: Persephone, points: 17)
+```
 
 
 You may remember that lists do not contain any objects themselves. They contain _references to objects_. The exact same object can appear multiple times in a single list, and it can be referred to multiple times within the list or outside it. Let's have a look at an example:
@@ -172,8 +172,9 @@ for dog in dogs:
     print(dog)
 ```
 
-<sample-output>
 
+
+```
 Dogs initially:
 Fluffy
 Fluffy
@@ -516,7 +517,7 @@ Rollercoaster (1 visitors)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Baby Centre**
 >
 > The exercise template contains a class named `Person` and a skeleton implementation for the class `BabyCentre`. A `BabyCentre` object performs various actions on a `Person` object. It may, for example, weigh or feed the person. In this exercise you will implement the rest of the `BabyCentre` class. Please do not change the class definition of `Person` in any way.
 
@@ -621,7 +622,7 @@ Total number of weigh-ins is 6
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: LunchCard and PaymentTerminal**
 >
 > In the previous part there was an [exercise](/part-8/5-more-examples-of-classes#programming-exercise-lunchcard) where you implemented the class `LunchCard`. The card had separate methods for eating a regular and a special lunch, along with a method for depositing money on the card.
 
@@ -945,7 +946,7 @@ class Person:
         return self.year_of_birth < another.year_of_birth:
 ```
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Comparing properties**
 >
 > The database of a real estate agency keeps records of available properties with objects defined by the following class:
 

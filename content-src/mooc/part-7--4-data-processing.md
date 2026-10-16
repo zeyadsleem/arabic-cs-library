@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-7/4-data-processing"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know how to use a module to process CSV files
+> - You will know how to use a module to process JSON files
+> - You will be able to retrieve and read files from the internet
 
-After this section
-
-- You will know how to use a module to process CSV files
-- You will know how to use a module to process JSON files
-- You will be able to retrieve and read files from the internet
-
-</text-box>
 
 ## Reading CSV files
 
@@ -128,7 +127,7 @@ Database Application
 
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Handling JSON files**
 >
 > Let's have a look at a JSON file, which contains some information about students in the following format:
 
@@ -182,7 +181,7 @@ print(my_request.read())
 
 Pages intended for human eyes do not usually look very pretty when their code is printed out. In the following examples, however, we will work with machine-readable _data_ from an online source. Much of the machine-readable data available online is in JSON format.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Course statistics**
 >
 > #### Retrieving the list of active courses
 
@@ -296,7 +295,7 @@ The values in the dictionary are determined as follows:
 **NB2**: The Python [math](https://docs.python.org/3/library/math.html) module has a useful function for rounding down integers.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Who cheated**
 >
 > The file `start_times.csv` contains individual start times for a programming exam, in the format `name;hh:mm`. An example:
 
@@ -320,7 +319,7 @@ Your task is to find the students who spent over 3 hours on the exam tasks. That
 Please write a function named `cheaters()`, which returns a list containing the names of the students who cheated
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Who cheated, version 2**
 >
 > You have the CSV files from the previous exercise at your disposal again. Please write a function named `final_points()`, which returns the final exam points received by the students, in a dictionary format, following these criteria:
 
@@ -344,7 +343,7 @@ In addition to the standard library, the internet is full of freely available Py
 
 * https://wiki.python.org/moin/UsefulModules
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Spell checker, version 2**
 >
 > In this exercise you will write an improved version of the Spell checker from the [previous part](/part-6/1-reading-files).
 

@@ -8,15 +8,14 @@ source: "https://programming-26.mooc.fi/part-4/4-definite-iteration"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know the difference between definite and indefinite iteration 
+> - You will know how a Python `for` loop works
+> - You will be able to use a `for` loop to iterate through lists and strings
 
-After this section
-
-- You will know the difference between definite and indefinite iteration 
-- You will know how a Python `for` loop works
-- You will be able to use a `for` loop to iterate through lists and strings
-
-</text-box>
 
 You can use a `while` loop to go through the items in a list, just like we used while loops to go through strings. The following program prints out the items in the list, each on a separate line:
 
@@ -56,7 +55,7 @@ for <variable> in <collection>:
 
 The `for` loop takes an item in the collection, assigns it to the variable, processes the block of code, and moves on to the next item. When all items in the collection have been processed, execution of the program continues from the line after the loop.
 
-<img src="4_4_1.png" alt="Iterating through a list">
+![Iterating through a list](/images/mooc/part-4/4_4_1.png)
 
 The following program prints out all the items in a list using a `for` loop:
 
@@ -99,7 +98,7 @@ e
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Star-studded**
 >
 > Please write a program which asks the user to type in a string. The program then prints each input character on a separate line. After each character there should be a star (*) printed on its own line.
 
@@ -195,7 +194,7 @@ for i in range(6, 2, -1):
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: From negative to positive**
 >
 > Please write a program which asks the user for a positive integer N. The program then prints out all numbers between -N and N inclusive, but _leaves out the number 0_. Each number should be printed on a separate line.
 
@@ -264,7 +263,7 @@ From now on there will be no more reminders in the templates to use the `if __na
 
 **NB:** some exercises, like the _Palindromes_ exercise coming up in this section, expect you to also write code which calls the function you wrote. This code should _not_ be placed within an `if __name__ == "__main__"` block. The automatic tests will not execute any code within that block, so your solution will not be complete if you place your function calls there.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: List of stars**
 >
 > Please write a function named `list_of_stars`, which takes a list of integers as its argument. The function should print out lines of star characters. The numbers in the list specify how many stars each line should contain.
 
@@ -282,18 +281,16 @@ For example, with the function call `list_of_stars([3, 7, 1, 1, 2])` the followi
 
 <!-- **Huomaa** että tällä hetkellä Windowsissa on ongelmia joidenkin tehtävien testien suorittamisessa. Jos törmäät seuraavaan virheilmoitukseen
 
-<img src="4_3_2.png" alt="Listan iterointi">
+<img src="/images/mooc/part-4/4_3_2.png" alt="Listan iterointi">
 
 voit suorittaa testit lähettämällä ne palvelimelle valitsemalla testien suoritusnapin oikealla puolella olevasta symbolista avautuvasta TMC-valikosta _Submit solutions_.
 
 Ongelman saa korjattua menemällä laajennuksen asennusvalikkoon ja muuttamalla "TMC Data" -kohdassa tehtävien sijainnin johonkin toiseen sijaintiin, jonka tiedostopolku on lyhempi, allaolevassa kuvassa nappi _change path_. Siirrossa saattaa kestää hetken, joten odotathan operaation päättymistä.
 
-<img src="4_3_3.png" alt="Listan iterointi">
-
 Ongelmaan pyritään saamaan parempi ratkaisu lähipäivinä. -->
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Anagrams**
 >
 > Please write a function named `anagrams`, which takes two strings as arguments. The function returns `True` if the strings are anagrams of each other. Two words are anagrams if they contain exactly the same characters.
 
@@ -310,7 +307,7 @@ print(anagrams("python", "java")) # False
 Hint: the function `sorted` can be used on strings as well.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Palindromes**
 >
 > Please write a function named `palindromes`, which takes a string argument and returns `True` if the string is a palindrome. Palindromes are words which are spelled exactly the same backwards and forwards.
 
@@ -332,7 +329,7 @@ neveroddoreven is a palindrome!
 **NB:**, the main program **should not be** within an `if __name__ == "__main__":` block
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: The sum of positive numbers**
 >
 > Please write a function named `sum_of_positives`, which takes a list of integers as its argument. The function returns the sum of the positive values in the list.
 
@@ -350,7 +347,7 @@ The result is 9
 
 In these exercises we will be using lists as arguments and return values. This was covered in the [previous section](/part-4/3-lists#a-list-as-an-argument-or-a-return-value), if you need a refresher.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Even numbers**
 >
 > Please write a function named `even_numbers`, which takes a list of integers as an argument. The function returns a new list containing the even numbers from the original list.
 
@@ -368,7 +365,7 @@ new [2, 4]
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: The sum of lists**
 >
 > Please write a function named `list_sum` which takes two lists of integers as arguments. The function returns a new list which contains the sums of the items at each index in the two original lists. You may assume both lists have the same number of items. 
 
@@ -381,7 +378,7 @@ print(list_sum(a, b)) # [8, 10, 12]
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Distinct numbers**
 >
 > Please write a function named `distinct_numbers`, which takes a list of integers as its argument. The function returns a new list containing the numbers from the original list in order of magnitude, and so that each distinct number is present only once.
 
@@ -410,7 +407,7 @@ The details of the final program code depend on the type of the items in the lis
 
 Let's practice this method a little.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: The length of the longest in the list**
 >
 > Please write a function named `length_of_longest`, which takes a list of strings as its argument. The function returns the length of the longest string.
 
@@ -435,7 +432,7 @@ print(result)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: The shortest in the list**
 >
 > Please write a function named `shortest`, which takes a list of strings as its argument. The function returns whichever of the strings is the shortest. If more than one are equally short, the function can return any of the shortest strings (there will be no such situation in the tests). You may assume there will be no empty strings in the list.
 
@@ -461,7 +458,7 @@ tim
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: All the longest in the list**
 >
 > Please write a function named `all_the_longest`, which takes a list of strings as its argument. The function should return a new list containing the longest string in the original list. If more than one are equally long, the function should return all of the longest strings.
 

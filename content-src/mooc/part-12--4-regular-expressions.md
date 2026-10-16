@@ -8,14 +8,13 @@ source: "https://programming-26.mooc.fi/part-12/4-regular-expressions"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know what regular expressions are
+> - You will be able to use regular expressions in your own programs
 
-After this section
-
-- You will know what regular expressions are
-- You will be able to use regular expressions in your own programs
-
-</text-box>
 
 We have already established that Python is an excellent environment for processing text. One additional powerful tool for text processing is _regular expressions_, often shortened as _regex_ or _regexp_. They are a way of selecting and searching for strings which follow a certain pattern. This section introduces you to the basics of regular expression, but you will find much more information online, including in the Python [tutorial](https://docs.python.org/3/howto/regex.html).
 
@@ -217,7 +216,7 @@ Not found.
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Regular expressions**
 >
 > Here are some exercises for familiarizing yourself with regular expression syntax.
 
@@ -287,7 +286,7 @@ To finish off this part of the material, let's work some more on objects and cla
 
 You may also find the example set in [part 10](/part-10/4-application-development) helpful.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Hockey statistics**
 >
 > In this exercise you will build an application for examining hockey league statistics from the NHL in a couple of different ways.
 

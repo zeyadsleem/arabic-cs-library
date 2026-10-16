@@ -8,14 +8,13 @@ source: "https://programming-26.mooc.fi/part-8/5-more-examples-of-classes"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be able to create more versatile classes
+> - You will know how to add a `__str__` method to your class definitions
 
-After this section
-
-- You will be able to create more versatile classes
-- You will know how to add a `__str__` method to your class definitions
-
-</text-box>
 
 
 ## Example 1: the Rectangle class
@@ -138,7 +137,7 @@ rectangle (1, 1) ... (4, 3)
 
 There are many more special underscored methods which can be defined for classes. One rather similar to the `__str__` method is the `__repr__` method. Its purpose is to provide a technical representation of the state of the object. We will come across this method later.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Stopwatch**
 >
 > The exercise template contains the following skeleton for the `Stopwatch` class:
 
@@ -180,7 +179,7 @@ So, the method `tick` adds one second to the stopwatch. The maximum value for bo
 **Hint:** it might make it easier to test the `tick` method if you temporarily set the initial values of the seconds and minutes to some value closer to 59 in the constructor. If you do change the initial values, remember to change them back before submitting.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Clock**
 >
 > Please define a new class named `Clock` which expands on the capabilities of your `Stopwatch` class. It should work as follows:
 
@@ -220,7 +219,7 @@ print(clock)
 As you can see above, the constructor should take initial values for the hours, minutes and seconds as arguments, and set these appropriately. The `tick` method adds one second to the clock. The `set` method sets new values for the hours and the minutes, and _sets the seconds to zero_.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: LunchCard**
 >
 > At Unicafe, the student cafeteria at the University of Helsinki, students can pay for their lunch with a special debit card.
 
@@ -456,7 +455,7 @@ studying
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Series**
 >
 > ### A class named Series
 

@@ -1,20 +1,19 @@
 ---
-title: "Definite iteration"
+title: "التكرار المحدَّد"
 lang: ar
 source: "https://programming-26.mooc.fi/part-4/4-definite-iteration"
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **أهداف التعلّم**
+>
+> بعد هذا القسم
+>
+> - ستعرف الفرق بين التكرار المحدَّد والتكرار غير المحدَّد
+> - ستعرف كيف تعمل حلقة `for` في Python
+> - ستكون قادرًا على استخدام حلقة `for` للتكرار على القوائم والسلاسل النصية
 
-After this section
 
-- You will know the difference between definite and indefinite iteration 
-- You will know how a Python `for` loop works
-- You will be able to use a `for` loop to iterate through lists and strings
-
-</text-box>
-
-You can use a `while` loop to go through the items in a list, just like we used while loops to go through strings. The following program prints out the items in the list, each on a separate line:
+يمكنك استخدام حلقة `while` للمرور على عناصر قائمة، تمامًا كما استخدمنا حلقات `while` للمرور على السلاسل النصية. ويطبع البرنامج التالي عناصر القائمة، كل عنصر في سطر منفصل:
 
 ```python
 my_list = [3, 2, 4, 5, 2]
@@ -35,26 +34,26 @@ while index < len(my_list):
 ```
 
 
-This obviously works, but it is a rather complicated way of going through a list, as you have to use a helper variable `index` to remember which item in the list you're at. Fortunately, Python offers a more intuitive way of traversing through lists, strings and other similar structures.
+هذا يعمل بطبيعة الحال، لكنه طريقة معقّدة بعض الشيء للمرور على قائمة، إذ عليك استخدام متغيّر مساعد `index` لتتذكّر العنصر الذي وصلت إليه في القائمة. ولحسن الحظ، توفّر Python طريقة أكثر حدسية للمرور على القوائم والسلاسل النصية والهياكل المشابهة الأخرى.
 
-## The for loop
+## حلقة `for`
 
-When you want to go through some ready collection of items, the Python `for` loop will do this for you. For instance, the loop can go through all items in a list from first to last.
+حين تريد المرور على مجموعة جاهزة من العناصر، تتكفّل بك حلقة `for` في Python بذلك. فمثلًا يمكن للحلقة أن تمرّ على جميع عناصر قائمة من الأول إلى الأخير.
 
-When using a `while` loop the program doesn't "know" beforehand how many iterations the loop will perform. It will repeat until the condition becomes false, or the loop is otherwise broken out of. That is why it falls under _indefinite iteration_. With a for loop the number of iterations is determined when the loop is set up, and so it falls under _definite iteration_.
+عند استخدام حلقة `while` لا «يعرف» البرنامج مسبقًا كم تكرارًا ستؤديه الحلقة. فهي تتكرر حتى يصبح الشرط خاطئًا، أو حتى يتم الخروج من الحلقة بطريقة أخرى. ولهذا فإنها تندرج تحت _التكرار غير المحدَّد_. أما مع حلقة `for` فيُحدَّد عدد التكرارات عند إعداد الحلقة، ولهذا فإنها تندرج تحت _التكرار المحدَّد_.
 
-The idea is that the `for` loop takes the items in the collection one by one and performs the same actions on each. The programmer does not have to worry about which item is being handled when. The syntax of the for loop is as follows:
+والفكرة أن حلقة `for` تأخذ عناصر المجموعة واحدًا تلو الآخر، وتنفّذ الإجراءات نفسها على كل عنصر. فلا يحتاج المبرمج إلى التفكير في أي عنصر يجري معالجته في كل مرة. وصيغة حلقة `for` هي كما يلي:
 
 ```python
 for <variable> in <collection>:
     <block>
 ```
 
-The `for` loop takes an item in the collection, assigns it to the variable, processes the block of code, and moves on to the next item. When all items in the collection have been processed, execution of the program continues from the line after the loop.
+تأخذ حلقة `for` عنصرًا من المجموعة، وتُسنده إلى المتغيّر، وتنفّذ كتلة الشيفرة، ثم تنتقل إلى العنصر التالي. وبعد أن تتم معالجة جميع عناصر المجموعة، يستمر تنفيذ البرنامج من السطر التالي للحلقة.
 
-<img src="4_4_1.png" alt="Iterating through a list">
+![التكرار على قائمة](/images/mooc/part-4/4_4_1.png)
 
-The following program prints out all the items in a list using a `for` loop:
+يطبع البرنامج التالي جميع عناصر قائمة باستخدام حلقة `for`:
 
 ```python
 my_list = [3, 2, 4, 5, 2]
@@ -73,9 +72,9 @@ for item in my_list:
 ```
 
 
-Compared to the example at the beginning of this section, the structure is much easier to understand. A `for` loop makes straightforward traversal through a collection of items very simple.
+بالمقارنة مع المثال في بداية هذا القسم، يصبح الهيكل أسهل في الفهم بكثير. فحلقة `for` تجعل المرور المباشر على مجموعة عناصر أمرًا بسيطًا جدًا.
 
-The same principle applies to characters in a string:
+المبدأ نفسه ينطبق على محارف السلسلة النصية:
 
 ```python
 name = input("Please type in your name: ")
@@ -95,11 +94,11 @@ e
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: مرصّع بالنجوم**
 >
-> Please write a program which asks the user to type in a string. The program then prints each input character on a separate line. After each character there should be a star (*) printed on its own line.
+> اكتب برنامجًا يطلب من المستخدم كتابة سلسلة نصية. ثم يطبع البرنامج كل محرف من المُدخَل في سطر منفصل. وبعد كل محرف ينبغي أن تُطبع نجمة (*) في سطر خاص بها.
 
-This is how it should work:
+وهكذا ينبغي أن يعمل:
 
 
 ```
@@ -119,14 +118,14 @@ n
 ```
 
 
-**NB:** this exercise doesn't ask you to write any functions, so you should __not__ place any code within an `if __name__ == "__main__"` block.
+**ملاحظة:** هذا التمرين لا يطلب منك كتابة أي دوال، لذا يجب أن __لا__ تضع أي شيفرة داخل كتلة `if __name__ == "__main__"`.
 
 
-## The function `range`
+## الدالة `range`
 
-Often you know how many times you want to repeat a certain bit of code. You might, for example, wish to go through all the numbers between 1 and 100. The `range` function plugged into a `for` loop will do this for you.
+كثيرًا ما تعرف عدد المرات التي تريد تكرار جزء معيّن من الشيفرة. فقد ترغب مثلًا في المرور على جميع الأعداد بين 1 و100. وتقوم الدالة `range` الموصولة بحلقة `for` بذلك نيابةً عنك.
 
-There are a few different ways to call the range function. The simplest way is to give the function just one argument, which signifies the end-point of the range. The end-point itself is excluded, just like with string slices. In other words, the function call `range(n)` provides a loop with a range from 0 to `n-1`:
+هناك بضع طرق مختلفة لاستدعاء دالة `range`. وأبسطها هي إعطاء الدالة وسيطًا واحدًا فقط، يدلّ على نقطة نهاية المدى. أما نقطة النهاية نفسها فمستثناة، تمامًا كما في تقطيع السلاسل النصية. وبعبارة أخرى، يوفّر الاستدعاء `range(n)` حلقة بمدى من 0 إلى `n-1`:
 
 ```python
 for i in range(5):
@@ -143,7 +142,7 @@ for i in range(5):
 ```
 
 
-With two arguments, the function will return a range between the two numbers. The function `range(a,b)` provides a range starting from `a` and ending at `b-1`:
+مع وسيطين، تُرجع الدالة مدى بين العددَين. وتوفّر الدالة `range(a,b)` مدى يبدأ من `a` وينتهي عند `b-1`:
 
 ```python
 for i in range(3, 7):
@@ -159,7 +158,7 @@ for i in range(3, 7):
 ```
 
 
-Finally, with a third argument you can also specify the size of the _step_ the range takes between each value. The function call `range(a, b, c)` provides a range starting from `a`, ending at `b-1`, and changing by `c` with every step:
+وأخيرًا، بوسيط ثالث يمكنك أيضًا تحديد حجم _الخطوة_ التي يتخذها المدى بين كل قيمة. ويوفّر الاستدعاء `range(a, b, c)` مدى يبدأ من `a` وينتهي عند `b-1` ويتغيّر بمقدار `c` في كل خطوة:
 
 ```python
 for i in range(1, 9, 2):
@@ -175,7 +174,7 @@ for i in range(1, 9, 2):
 ```
 
 
-A step can also be negative. Then the range will be in reversed orded. Notice the first two arguments are also flipped here:
+ويمكن أن تكون الخطوة سالبة. عندئذٍ يكون المدى بترتيب معكوس. ولاحظ أن الوسيطَين الأوّليَين معكوكان هنا أيضًا:
 
 ```python
 for i in range(6, 2, -1):
@@ -191,11 +190,11 @@ for i in range(6, 2, -1):
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: من السالب إلى الموجب**
 >
-> Please write a program which asks the user for a positive integer N. The program then prints out all numbers between -N and N inclusive, but _leaves out the number 0_. Each number should be printed on a separate line.
+> اكتب برنامجًا يطلب من المستخدم عددًا صحيحًا موجبًا N. ثم يطبع البرنامج جميع الأعداد بين -N وN شاملًا الطرفين، لكن _مع استثناء العدد 0_. وينبغي أن يُطبع كل عدد في سطر منفصل.
 
-An example of expected behaviour:
+مثال على السلوك المتوقع:
 
 
 ```
@@ -211,12 +210,12 @@ Please type in a positive integer: **4**
 ```
 
 
-**NB:** this exercise doesn't ask you to write any functions, so you should __not__ place any code within an `if __name__ == "__main__"` block.
+**ملاحظة:** هذا التمرين لا يطلب منك كتابة أي دوال، لذا يجب أن __لا__ تضع أي شيفرة داخل كتلة `if __name__ == "__main__"`.
 
 
-## From a range to a list
+## من مدى إلى قائمة
 
-The function `range` returns a range object, which in many ways behaves like a list, but isn't actually one. If you try printing out the value the function returns, you will only see a description of a range object:
+تُرجع الدالة `range` كائنَ مدى، يتصرّف في جوانب كثيرة كأنه قائمة، لكنه ليس قائمة في الواقع. فإذا حاولت طباعة القيمة التي تُرجعها الدالة، فلن ترى سوى وصف لكائن المدى:
 
 ```python
 numbers = range(2, 7)
@@ -229,7 +228,7 @@ range(2, 7)
 ```
 
 
-The function `list` will convert a range into a list. The list will contain all the values that are in the range. The Advanced Course in Programming course, which follows this one, will shed more light on this subject.
+تحوّل الدالة `list` المدى إلى قائمة. وستحتوي القائمة على جميع القيم الموجودة في المدى. أما دورة البرمجة المتقدمة، التي تأتي بعد هذه الدورة، فستُلقي مزيدًا من الضوء على هذا الموضوع.
 
 ```python
 numbers = list(range(2, 7))
@@ -242,9 +241,9 @@ print(numbers)
 ```
 
 
-## A reminder of the demands of the automatic tests
+## تذكير بمتطلّبات الاختبارات الآلية
 
-So far, when the exercises have asked you to write functions, the templates have looked like this:
+حتى الآن، حين كان يُطلب منك في التمارين كتابة دوال، كانت القوالب تبدو هكذا:
 
 ```python
 # Write your solution here
@@ -256,15 +255,15 @@ if __name__ == "__main__":
     print(last_word(sentence))
 ```
 
-From now on there will be no more reminders in the templates to use the `if __name__ == "__main__"` block. However, the automatic tests will still demand its use, so you will have to add the block yourself when you test your function within the main function of your program.
+من الآن فصاعدًا لن تتكرر التذكيرات في القوالب باستخدام كتلة `if __name__ == "__main__"`. لكن الاختبارات الآلية ستظل تتطلّب استخدامها، لذا عليك إضافة الكتلة بنفسك حين تختبر دالتك داخل الدالة الرئيسية لبرنامجك.
 
-**NB:** some exercises, like the _Palindromes_ exercise coming up in this section, expect you to also write code which calls the function you wrote. This code should _not_ be placed within an `if __name__ == "__main__"` block. The automatic tests will not execute any code within that block, so your solution will not be complete if you place your function calls there.
+**ملاحظة:** بعض التمارين، مثل تمرين _المتناظرات_ (palindromes) الذي سيأتي لاحقًا في هذا القسم، تتطلّب منك أيضًا كتابة شيفرة تستدعي الدالة التي كتبتها. ولا ينبغي أن توضع هذه الشيفرة _داخل_ كتلة `if __name__ == "__main__"`. ولن تنفّذ الاختبارات الآلية أي شيفرة داخل تلك الكتلة، لذا لن يكون حلّك مكتملًا إن وضعت استدعاءات دوالك هناك.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: قائمة نجوم**
 >
-> Please write a function named `list_of_stars`, which takes a list of integers as its argument. The function should print out lines of star characters. The numbers in the list specify how many stars each line should contain.
+> اكتب دالة اسمها `list_of_stars`، تأخذ قائمة من الأعداد الصحيحة كوسيط لها. وينبغي أن تطبع الدالة أسطرًا من محارف النجمة. وتحدّد الأعداد في القائمة عدد النجوم التي ينبغي أن يحتوي عليها كل سطر.
 
-For example, with the function call `list_of_stars([3, 7, 1, 1, 2])` the following should be printed out:
+فمثلًا، مع استدعاء الدالة `list_of_stars([3, 7, 1, 1, 2])` ينبغي أن يُطبع ما يلي:
 
 
 ```
@@ -276,24 +275,22 @@ For example, with the function call `list_of_stars([3, 7, 1, 1, 2])` the followi
 ```
 
 
-<!-- **Huomaa** että tällä hetkellä Windowsissa on ongelmia joidenkin tehtävien testien suorittamisessa. Jos törmäät seuraavaan virheilmoitukseen
+<!-- **لاحظ** أن نظام Windows يعاني في الوقت الحالي من مشكلات في تشغيل اختبارات بعض التمارين. فإن صادفت رسالة الخطأ التالية
 
-<img src="4_3_2.png" alt="Listan iterointi">
+<img src="/images/mooc/part-4/4_3_2.png" alt="التكرار على قائمة">
 
-voit suorittaa testit lähettämällä ne palvelimelle valitsemalla testien suoritusnapin oikealla puolella olevasta symbolista avautuvasta TMC-valikosta _Submit solutions_.
+فيمكنك تشغيل الاختبارات بإرسالها إلى الخادم، باختيار _Submit solutions_ من قائمة TMC التي تُفتح من الرمز الموجود على يمين زر تشغيل الاختبارات.
 
-Ongelman saa korjattua menemällä laajennuksen asennusvalikkoon ja muuttamalla "TMC Data" -kohdassa tehtävien sijainnin johonkin toiseen sijaintiin, jonka tiedostopolku on lyhempi, allaolevassa kuvassa nappi _change path_. Siirrossa saattaa kestää hetken, joten odotathan operaation päättymistä.
+يمكن حل المشكلة بالانتقال إلى قائمة تثبيت الإضافة وتغيير موضع التمارين في "TMC Data" إلى موضع آخر له مسار ملفات أقصر، عبر زر _change path_ الظاهر في الصورة أدناه. وقد يستغرق هذا بعض الوقت، لذا انتظر انتهاء العملية.
 
-<img src="4_3_3.png" alt="Listan iterointi">
-
-Ongelmaan pyritään saamaan parempi ratkaisu lähipäivinä. -->
+يجري العمل على إيجاد حل أفضل للمشكلة في الأيام القريبة. -->
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: الأناغرام**
 >
-> Please write a function named `anagrams`, which takes two strings as arguments. The function returns `True` if the strings are anagrams of each other. Two words are anagrams if they contain exactly the same characters.
+> اكتب دالة اسمها `anagrams`، تأخذ سلسلتين نصيتين كوسيطين. وتُرجع الدالة `True` إذا كانت السلسلتان النصيتان تباديل حرفية (anagrams) لإحداهما الأخرى. وتعدّ كلمتان تباديل حرفية لإحداهما الأخرى إذا احتوتا على المحارف نفسها تمامًا.
 
-Some examples of how the function should work:
+وبعض الأمثلة على كيفية عمل الدالة:
 
 ```python
 print(anagrams("tame", "meta")) # True
@@ -303,14 +300,14 @@ print(anagrams("tabby", "batty")) # False
 print(anagrams("python", "java")) # False
 ```
 
-Hint: the function `sorted` can be used on strings as well.
+تلميح: يمكن استخدام الدالة `sorted` على السلاسل النصية أيضًا.
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: المتناظرات**
 >
-> Please write a function named `palindromes`, which takes a string argument and returns `True` if the string is a palindrome. Palindromes are words which are spelled exactly the same backwards and forwards.
+> اكتب دالة اسمها `palindromes`، تأخذ وسيطًا من نوع سلسلة نصية وتُرجع `True` إذا كانت السلسلة النصية متناظرة (palindrome). والمتناظرات كلمات تُكتب بنفس الطريقة تمامًا إلى الأمام وإلى الخلف.
 
-Please also write a main program which asks the user to type in words until they type in a palindrome:
+يُرجى أيضًا كتابة برنامج رئيسي يطلب من المستخدم كتابة كلمات حتى يكتب كلمة متناظرة:
 
 
 ```
@@ -325,12 +322,12 @@ neveroddoreven is a palindrome!
 ```
 
 
-**NB:**, the main program **should not be** within an `if __name__ == "__main__":` block
+**ملاحظة:** يجب **ألا** يكون البرنامج الرئيسي داخل كتلة `if __name__ == "__main__":`
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: مجموع الأعداد الموجبة**
 >
-> Please write a function named `sum_of_positives`, which takes a list of integers as its argument. The function returns the sum of the positive values in the list.
+> اكتب دالة اسمها `sum_of_positives`، تأخذ قائمة من الأعداد الصحيحة كوسيط لها. وتُرجع الدالة مجموع القيم الموجبة في القائمة.
 
 ```python
 my_list = [1, -2, 3, -4, 5]
@@ -344,11 +341,11 @@ The result is 9
 ```
 
 
-In these exercises we will be using lists as arguments and return values. This was covered in the [previous section](/part-4/3-lists#a-list-as-an-argument-or-a-return-value), if you need a refresher.
+في هذه التمارين سنستخدم القوائم كوسائط وقيم إعادَة. وقد تناول ذلك [القسم السابق](/book/mooc/part-4/3-lists#a-list-as-an-argument-or-a-return-value)، إن احتجت إلى مراجعة.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: الأعداد الزوجية**
 >
-> Please write a function named `even_numbers`, which takes a list of integers as an argument. The function returns a new list containing the even numbers from the original list.
+> اكتب دالة اسمها `even_numbers`، تأخذ قائمة من الأعداد الصحيحة كوسيط. وتُرجع الدالة قائمة جديدة تحتوي على الأعداد الزوجية من القائمة الأصلية.
 
 ```python
 my_list = [1, 2, 3, 4, 5]
@@ -364,11 +361,11 @@ new [2, 4]
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: مجموع القوائم**
 >
-> Please write a function named `list_sum` which takes two lists of integers as arguments. The function returns a new list which contains the sums of the items at each index in the two original lists. You may assume both lists have the same number of items. 
+> اكتب دالة اسمها `list_sum` تأخذ قائمتين من الأعداد الصحيحة كوسيطين. وتُرجع الدالة قائمة جديدة تحتوي على مجاميع العناصر عند كل فهرس في القائمتين الأصليتين. ويمكنك أن تفترض أن للقائمتين العدد نفسه من العناصر.
 
-An example of the function at work:
+مثال على عمل الدالة:
 
 ```python
 a = [1, 2, 3]
@@ -377,9 +374,9 @@ print(list_sum(a, b)) # [8, 10, 12]
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: الأعداد المختلفة**
 >
-> Please write a function named `distinct_numbers`, which takes a list of integers as its argument. The function returns a new list containing the numbers from the original list in order of magnitude, and so that each distinct number is present only once.
+> اكتب دالة اسمها `distinct_numbers`، تأخذ قائمة من الأعداد الصحيحة كوسيط لها. وتُرجع الدالة قائمة جديدة تحتوي على أعداد القائمة الأصلية مرتَّبة حسب القيمة، بحيث لا يظهر كل عدد مميَّز إلا مرة واحدة فقط.
 
 ```python
 my_list = [3, 2, 2, 1, 3, 3, 1]
@@ -387,11 +384,11 @@ print(distinct_numbers(my_list)) # [1, 2, 3]
 ```
 
 
-## Finding the best or the worst item in a list
+## إيجاد أفضل عنصر أو أسوأ عنصر في قائمة
 
-A very common programming task is finding the best or worst item in a list, according to some criteria. A simple solution is using a helper variable to "remember" which of the items processed so far was the most suitable. This temporary best choice is then compared to each item in turn, and at the end of the iteration the variable contains the best of the bunch.
+من المهام البرمجية الشائعة جدًا إيجاد أفضل عنصر أو أسوأ عنصر في قائمة وفق معايير ما. والحل البسيط هو استخدام متغيّر مساعد «يتذكّر» أيّ العناصر التي عولجت حتى الآن هو الأنسب. ثم يُقارَن هذا الاختيار المؤقّت الأفضل بكل عنصر على حدة، وفي نهاية التكرار يحتوي المتغيّر على الأفضل من بين العناصر كلها.
 
-A rough draft which doesn't quite compile yet:
+مسوّدة تقريبية لا تعمل كما ينبغي بعد:
 
 ```python
 best = initial_value # The initial value depends on the situation
@@ -402,13 +399,13 @@ for item in my_list:
 # We now have the best one figured out!
 ```
 
-The details of the final program code depend on the type of the items in the list, and also on the criteria for choosing the best (or worst) item. Sometimes you may need more than one helper variable.
+تعتمد تفاصيل شيفرة البرنامج النهائية على نوع العناصر الموجودة في القائمة، وكذلك على معايير اختيار أفضل عنصر (أو أسوأه). وقد تحتاج أحيانًا إلى أكثر من متغيّر مساعد.
 
-Let's practice this method a little.
+لنتمرّن قليلًا على هذه الطريقة.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: طول الأطول في القائمة**
 >
-> Please write a function named `length_of_longest`, which takes a list of strings as its argument. The function returns the length of the longest string.
+> اكتب دالة اسمها `length_of_longest`، تأخذ قائمة من السلاسل النصية كوسيط لها. وتُرجع الدالة طول أطول سلسلة نصية.
 
 ```python
 my_list = ["first", "second", "fourth", "eleventh"]
@@ -431,9 +428,9 @@ print(result)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: الأقصر في القائمة**
 >
-> Please write a function named `shortest`, which takes a list of strings as its argument. The function returns whichever of the strings is the shortest. If more than one are equally short, the function can return any of the shortest strings (there will be no such situation in the tests). You may assume there will be no empty strings in the list.
+> اكتب دالة اسمها `shortest`، تأخذ قائمة من السلاسل النصية كوسيط لها. وتُرجع الدالة أيّ السلاسل النصية كانت الأقصر. وإذا كان هناك أكثر من سلسلة متساوية في القصر، فيمكن للدالة أن تُرجع أيّ من تلك السلاسل الأقصر (ولن تحدث هذه الحالة في الاختبارات). ويمكنك أن تفترض أنه لا توجد سلاسل نصية فارغة في القائمة.
 
 
 ```python
@@ -457,11 +454,11 @@ tim
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: كل الأطول في القائمة**
 >
-> Please write a function named `all_the_longest`, which takes a list of strings as its argument. The function should return a new list containing the longest string in the original list. If more than one are equally long, the function should return all of the longest strings.
+> اكتب دالة اسمها `all_the_longest`، تأخذ قائمة من السلاسل النصية كوسيط لها. وينبغي أن تُرجع الدالة قائمة جديدة تحتوي على أطول سلسلة نصية في القائمة الأصلية. وإذا كان هناك أكثر من سلسلة متساوية في الطول، فينبغي أن تُرجع الدالة جميع تلك السلاسل الأطول.
 
-The order of the strings in the returned list should be the same as in the original.
+وينبغي أن يكون ترتيب السلاسل النصية في القائمة المُرجَعة هو نفسه الترتيب في القائمة الأصلية.
 
 ```python
 my_list = ["first", "second", "fourth", "eleventh"]
@@ -479,7 +476,8 @@ print(result) # ['dorothy', 'richard']
 
 
 <!---
-A quiz to review the contents of this section:
+
+اختبار لمراجعة محتويات هذا القسم:
 
 > **اختبار:** (مكون تفاعلي غير متاح في النسخة الثابتة - ID: b1a91143-3137-5833-a771-6801f541a43b)
 

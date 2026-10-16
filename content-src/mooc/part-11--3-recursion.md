@@ -8,14 +8,13 @@ source: "https://programming-26.mooc.fi/part-11/3-recursion"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know what recursion means
+> - You will be able to write a simple recursive function
 
-After this section
-
-- You will know what recursion means
-- You will be able to write a simple recursive function
-
-</text-box>
 
 As we have seen many times before, functions can call other functions. For example:
 
@@ -87,15 +86,14 @@ if __name__ == "__main__":
 
 The more traditional iterative approach produces a shorter program which is arguably also easier to understand. With the recursive version it is not as clear that throughout the process we are working on the very same list. That is, however, the case, and that is why the recursive function works just as well.
 
-<text-box variant="hint" name="Iterative or recursive?">
+> **Iterative or recursive?**
+>
+> Computer science theory often differentiates between _iterative_ and _recursive_ algorithms, so it is best to become familiar with these terms right from the start. Iterative solutions are ones that are based on sequential processing of items, often using loops. So far we have dealt with iterative methods quite exclusively. Recursive, on the other hand, refers to a method where the function calls itself with changing parameter values.
+>
+> In principle it should be possible to solve any problem with either iterative or recursive methods. In practice, however, one or the other is usually clearly better suited to each problem. The ability to determine which is better comes largely with practice.
 
-Computer science theory often differentiates between _iterative_ and _recursive_ algorithms, so it is best to become familiar with these terms right from the start. Iterative solutions are ones that are based on sequential processing of items, often using loops. So far we have dealt with iterative methods quite exclusively. Recursive, on the other hand, refers to a method where the function calls itself with changing parameter values.
 
-In principle it should be possible to solve any problem with either iterative or recursive methods. In practice, however, one or the other is usually clearly better suited to each problem. The ability to determine which is better comes largely with practice.
-
-</text-box>
-
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Add numbers to a list**
 >
 > Please write a _recursive function_ named `add_numbers_to_list(numbers: list)`. The function takes a list of numbers as its argument, and adds new numbers to the list until the length of the list is divisible by five. Each number added to the list should be one greater than the last number in the list.
 
@@ -226,7 +224,7 @@ And so forth, and so forth.
 
 We can verify at every step that the function produces the correct results, which is often enough in basic programming tasks. The formal verifiability of algorithms is a topic for more advanced courses, such as [Data Structures and Algorithms](https://studies.helsinki.fi/courses/cur/hy-opt-cur-2122-808d3413-3db0-4ab9-89d9-e816e94bf51d).
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Recursive sum**
 >
 > Please write a recursive function named `recursive_sum(number: int)` which calculates the sum `1 + 2 + ... + number`. The exercise template contains the following outline:
 
@@ -257,7 +255,7 @@ print(recursive_sum(10))
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Balance all the brackets**
 >
 > The exercise template contains the function `balanced_brackets` which takes a string as its argument. It checks if the _round_ brackets, or parentheses, within the string are balanced. That is, for each opening bracket `(` there should be a closing bracket `)`, and all pairs of brackets should be matched in order, i.e. the bracket pairs must not be crossed.
 

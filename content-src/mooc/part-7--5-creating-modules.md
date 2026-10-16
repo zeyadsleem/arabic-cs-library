@@ -8,14 +8,13 @@ source: "https://programming-26.mooc.fi/part-7/5-creating-modules"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will be able to write your own modules
+> - You will know what the Python variable `__name__` and the value `__main__` signify
 
-After this section
-
-- You will be able to write your own modules
-- You will know what the Python variable `__name__` and the value `__main__` signify
-
-</text-box>
 
 Writing your own Python modules is easy. Any file containing valid Python code can be imported as a module. Let's assume we have a file named `words.py` with the following contents:
 
@@ -187,7 +186,7 @@ seashore
 
 In the exercises on this course, whenever you were asked to write functions, you were usually also expected to wrap test cases in an `if __name__ == "__main__"` block exactly like the one above. Now you know why.
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: String helper**
 >
 > Please write a module named `string_helper`, which contains the following functions:
 

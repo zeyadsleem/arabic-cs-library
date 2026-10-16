@@ -1,23 +1,22 @@
 ---
-title: "Working with strings"
+title: "العمل مع السلاسل النصية"
 lang: ar
 source: "https://programming-26.mooc.fi/part-3/2-working-with-strings"
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **أهداف التعلّم**
+>
+> بعد إتمام هذا القسم
+>
+> - ستتمكّن من استخدام المشغّلَين `+` و`*` مع السلاسل النصية
+> - ستعرف كيف تجد طول سلسلة نصية
+> - ستعرف ما المقصود بفهرسة السلاسل النصية
+> - ستعرف كيف تبحث عن السلاسل الفرعية داخل سلسلة نصية
 
-After this section
 
-- You will be able to use the operators `+` and `*` with strings
-- You will know how to find out the length of a string
-- You will know what is meant by string indexing
-- You will know how to look for substrings within a string
+## عمليات السلاسل النصية
 
-</text-box>
-
-## String operations
-
-Strings can be combined, or _concatenated_, with the `+` operator:
+يمكن دمج السلاسل النصية، أو _دمجها معًا_ (_concatenating_)، بواسطة المشغّل `+`:
 
 ```python
 begin = "ex"
@@ -32,7 +31,7 @@ example
 ```
 
 
-The `*` operator can also be used with a string, when the other operand is an integer. The string operand is then repeated the number of times specified by the integer. For example this would work:
+ويمكن أيضًا استخدام المشغّل `*` مع سلسلة نصية عندما يكون الطرف الآخر عددًا صحيحًا. عندئذٍ تُكرَّر السلسلة النصية بقدر المرات الذي يحدده ذلك العدد. فمثلًا، سيعمل هذا:
 
 ```python
 word = "banana"
@@ -45,7 +44,7 @@ bananabananabanana
 ```
 
 
-Using string operations together with a loop we can write a program which draws a pyramid:
+وباستخدام عمليات السلاسل النصية مع حلقة، يمكننا كتابة برنامج يرسم هرمًا:
 
 ```python
 n = 10 # number of layers in the pyramid
@@ -57,7 +56,7 @@ while n > 0:
     n -= 1
 ```
 
-This prints out the following:
+يطبع هذا ما يلي:
 
 ```x
           *
@@ -72,13 +71,13 @@ This prints out the following:
  *******************
 ```
 
-The `print` command within the loop prints a line, which begins with `n` spaces, followed by whatever is stored in the variable `row`. Then two stars are added to the end of the variable `row`, and the value of the variable `n` is decreased by 1.
+يطبع الأمر `print` داخل الحلقة سطرًا يبدأ بـ`n` محارف مسافة، ثم يليه ما هو مخزّن في المتغيّر `row`. ثم تُضاف نجمتان إلى نهاية المتغيّر `row`، وتُنقص قيمة المتغيّر `n` بمقدار 1.
 
-> **تمرين تفاعلي: String multiplied**
+> **تمرين تفاعلي: سلسلة نصية مضروبة**
 >
-> Please write a program which asks the user for a string and an amount. The program then prints out the string as many times as specified by the amount. The printout should all be on one line, with no extra spaces or symbols added.
+> يُرجى كتابة برنامج يطلب من المستخدم سلسلة نصية ومقدارًا. ثم يطبع البرنامج السلسلة النصية بقدر المرات الذي يحدده المقدار. وينبغي أن يكون المخرَج كله في سطر واحد، دون إضافة أي مسافات أو رموز زائدة.
 
-An example of expected behaviour:
+مثال على السلوك المتوقَّع:
 
 
 ```
@@ -90,11 +89,11 @@ hiyahiyahiyahiya
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-## The length and index of a string
+## طول السلسلة النصية وفهرسها
 
-The function `len` returns the number of characters in a string, which is always an integer value. For example, `len("hey")` returns 3, because there are three characters in the string `hey`.
+تعيد الدالة `len` عدد المحارف في السلسلة النصية، وهو قيمة عدد صحيح دائمًا. فمثلًا، تعيد `len("hey")` العدد 3، لأن في السلسلة النصية `hey` ثلاثة محارف.
 
-The following program asks the user for a string and then prints it "underlined". The program prints a second line with as many `-` characters as is the length of the input:
+يطلب البرنامج التالي من المستخدم سلسلة نصية ثم يطبعها «مشطوبة». ويطبع البرنامج سطرًا ثانيًا بعدد من محارف `-` يساوي طول المُدخَل:
 
 ```python
 input_string = input("Please type in a string: ")
@@ -109,13 +108,13 @@ Hi there!
 ```
 
 
-The length of a string includes all the characters in the string, including whitespace. For example, the length of the string `bye bye` is 7.
+يشمل طول السلسلة النصية جميع المحارف الموجودة فيها، بما في ذلك محارف المسافات الفارغة. فمثلًا، طول السلسلة النصية `bye bye` هو 7.
 
-> **تمرين تفاعلي: The longer string**
+> **تمرين تفاعلي: السلسلة النصية الأطول**
 >
-> Please write a program which asks the user for two strings and then prints out whichever is the longer of the two - that is, whichever has the more characters. If the strings are of equal length, the program should print out "The strings are equally long".
+> يُرجى كتابة برنامج يطلب من المستخدم سلسلتين نصيتين ثم يطبع أيّهما أطول - أي التي تحتوي على محارف أكثر. وإذا كانت السلسلتان متساويتين في الطول، فينبغي للبرنامج أن يطبع "The strings are equally long".
 
-Some examples of expected behaviour:
+بعض الأمثلة على السلوك المتوقَّع:
 
 
 ```
@@ -143,13 +142,13 @@ The strings are equally long
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-As strings are essentially sequences of characters, any single character in a string can also be retrieved. The operator `[]` finds the character with the _index_ specified within the brackets. 
+ولأن السلاسل النصية هي في جوهرها تتابعات من المحارف، فبإمكانك أيضًا استرجاع أي محرف منفرد في السلسلة النصية. فالمشغّل `[]` يجد المحرف الذي له الـ_فهرس_ (_index_) المحدَّد بين الأقواس المربّعة.
 
-The index refers to a position in the string, counting up from zero. The first character in the string has index 0, the second character has index 1, and so forth.
+يشير الفهرس إلى موضع في السلسلة النصية، ويُعدّ بدءًا من الصفر. فالمحرف الأول في السلسلة النصية فهرسه 0، والمحرف الثاني فهرسه 1، وهكذا.
 
-<img src="3_2_1.png">
+![3_2_1.png](/images/mooc/part-3/3_2_1.png)
 
-For example, this program
+فمثلًا، هذا البرنامج
 
 ```python
 
@@ -160,7 +159,7 @@ print(input_string[3])
 
 ```
 
-would print out this:
+سيطبع ما يلي:
 
 
 ```
@@ -171,7 +170,7 @@ k
 ```
 
 
-Since the first character in a string has the index 0, the last character has the index _length - 1_. The following program prints out the first and the last characters of a string:
+ولأن المحرف الأول في السلسلة النصية فهرسه 0، فإن المحرف الأخير فهرسه _الطول - 1_. ويطبع البرنامج التالي المحرفَ الأول والمحرفَ الأخير لسلسلة نصية:
 
 ```python
 input_string = input("Please type in a string: ")
@@ -187,7 +186,7 @@ Last character: g
 ```
 
 
-The following program loops through all the characters in a string from first to last:
+يدور البرنامج التالي على جميع محارف السلسلة النصية من الأول إلى الأخير:
 
 ```python
 input_string = input("Please type in a string: ")
@@ -207,11 +206,11 @@ t
 ```
 
 
-You can also use negative indexing to access characters counting from the end of the string. The last character in a string is at index -1, the second to last character is at index -2, and so forth. You can think of `input_string[-1]` as shorthand for `input_string[len(input_string) - 1]`.
+ويمكنك أيضًا استخدام الفهرسة السالبة للوصول إلى المحارف بدءًا من نهاية السلسلة النصية. فالمحرف الأخير في السلسلة النصية فهرسه -1، والمحرف الذي يسب الأخير فهرسه -2، وهكذا. ويمكنك أن تنظر إلى `input_string[-1]` على أنها صيغة مختصرة لـ `input_string[len(input_string) - 1]`.
 
-<img src="3_2_2.png">
+![3_2_2.png](/images/mooc/part-3/3_2_2.png)
 
-The example from above can be simplified with negative indexing:
+ويمكن تبسيط المثال السابق باستخدام الفهرسة السالبة:
 
 ```python
 input_string = input("Please type in a string: ")
@@ -227,9 +226,9 @@ Last character: g
 ```
 
 
-## IndexError: string index out of range
+## IndexError: فهرس السلسلة النصية خارج النطاق
 
-If you tried the above examples for yourself, you may already have come across the error message _IndexError: string index out of range_. This error appears if you try to access an index which is not present in the string.
+إذا جرّبت الأمثلة أعلاه بنفسك، فقد تكون صادفت رسالة الخطأ _IndexError: string index out of range_. ويظهر هذا الخطأ إذا حاولت الوصول إلى فهرس غير موجود في السلسلة النصية.
 
 ```python
 input_string = input("Please type in a string: ")
@@ -253,16 +252,16 @@ IndexError: string index out of range
 ```
 
 
-Sometimes an indexing error is caused by a bug in the code. For example, it is quite common to index too far when trying to access the last character in a string:
+أحيانًا يكون خطأ الفهرسة ناتجًا عن خلل في الشيفرة. فمثلًا، من الشائع جدًا أن تُفرط في الفهرسة عند محاولة الوصول إلى المحرف الأخير في سلسلة نصية:
 
 ```python
 input_string = input("Please type in a string: ")
 print("Last character: " + input_string[len(input_string)])
 ```
 
-Since string indexing begins at zero, the last character is at index `len(input_string) - 1`, not at `len(input_string)`.
+ولأن فهرسة السلاسل النصية تبدأ من الصفر، فإن المحرف الأخير فهرسه `len(input_string) - 1` وليس `len(input_string)`.
 
-There are situations where the program should prepare for errors caused by input from the user:
+وهناك حالات ينبغي فيها للبرنامج أن يستعدّ للأخطاء الناتجة عن مُدخَل المستخدم:
 
 ```python
 input_string = input("Please type in a string: ")
@@ -272,13 +271,13 @@ else:
     print("The input string is empty. There is no first character.")
 ```
 
-In the example above, if the programmer hadn't included a check for the length of the input string, a string of length zero would have caused an error. A string of length zero is also called an empty string, and here it would be achieved by just pressing Enter at the input prompt.
+في المثال أعلاه، لو لم يكن المبرمج قد أدرج فحصًا لطول سلسلة المُدخَل النصية، لأسفرت سلسلة نصية طولها صفر عن خطأ. وتُسمّى السلسلة النصية التي طولها صفر أيضًا السلسلة النصية الفارغة (_empty string_)، ويمكن الحصول عليها هنا بالضغط على Enter عند مُوجّه الإدخال.
 
-> **تمرين تفاعلي: End to beginning**
+> **تمرين تفاعلي: من النهاية إلى البداية**
 >
-> Please write a program which asks the user for a string. The program then prints out the input string in reversed order, from end to beginning. Each character should be on a separate line.
+> يُرجى كتابة برنامج يطلب من المستخدم سلسلة نصية. ثم يطبع البرنامج سلسلة المُدخَل بالترتيب المعكوس، من النهاية إلى البداية. وينبغي أن يكون كل محرف في سطر منفصل.
 
-An example of expected behaviour:
+مثال على السلوك المتوقَّع:
 
 
 ```
@@ -292,9 +291,9 @@ h
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-> **تمرين تفاعلي: Second and second to last characters**
+> **تمرين تفاعلي: المحرف الثاني والمحرف الذي يسب الأخير**
 >
-> Please write a program which asks the user for a string. The program then prints out a message based on whether the second character and the second to last character are the same or not. See the examples below.
+> يُرجى كتابة برنامج يطلب من المستخدم سلسلة نصية. ثم يطبع البرنامج رسالة بناءً على ما إذا كان المحرف الثاني والمحرف الذي يسب الأخير متطابقين أم لا. انظر الأمثلة أدناه.
 
 
 ```
@@ -312,9 +311,9 @@ The second and the second to last characters are a
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-> **تمرين تفاعلي: A line of hashes**
+> **تمرين تفاعلي: سطر من محارف `#`**
 >
-> Please write a program which prints out a line of hash characters, the width of which is chosen by the user.
+> يُرجى كتابة برنامج يطبع سطرًا من محارف `#` يختار المستخدم عرضه.
 
 
 ```
@@ -330,9 +329,9 @@ The second and the second to last characters are a
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-> **تمرين تفاعلي: A rectangle of hashes**
+> **تمرين تفاعلي: مستطيل من محارف `#`**
 >
-> Please modify the previous program so that it also asks for the height, and prints out a rectangle of hash characters accordingly.
+> يُرجى تعديل البرنامج السابق بحيث يطلب الارتفاع أيضًا، ويطبع مستطيلًا من محارف `#` بناءً على ذلك.
 
 
 ```
@@ -346,9 +345,9 @@ Height: **3**
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-> **تمرين تفاعلي: Underlining**
+> **تمرين تفاعلي: التشطيب**
 >
-> Please write a program which asks the user for strings using a loop. The program prints out each string underlined as shown in the examples below. The execution ends when the user inputs an empty string - that is, just presses Enter at the prompt.
+> يُرجى كتابة برنامج يطلب من المستخدم سلاسل نصية باستخدام حلقة. ويطبع البرنامج كل سلسلة نصية مشطوبة كما هو مبيّن في الأمثلة أدناه. وينتهي التنفيذ حين يدخل المستخدم سلسلة نصية فارغة - أي حين يضغط Enter عند المُوجّه فقط.
 
 
 ```
@@ -359,11 +358,11 @@ Hi there!
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-> **تمرين تفاعلي: Right-aligned**
+> **تمرين تفاعلي: محاذاة إلى اليمين**
 >
-> Please write a program which asks the user for a string and then prints it out so that exactly 20 characters are displayed. If the input is shorter than 20 characters, the beginning of the line is filled in with `*` characters.
+> يُرجى كتابة برنامج يطلب من المستخدم سلسلة نصية ثم يطبعها بحيث يُعرَض بالضبط 20 محرفًا. فإذا كان المُدخَل أقصر من 20 محرفًا، فإن بداية السطر تُملأ بمحارف `*`.
 
-You may assume the input string is at most 20 characters long.
+يمكنك افتراض أن سلسلة المُدخَل النصية طولها 20 محرفًا على الأكثر.
 
 
 ```
@@ -385,11 +384,11 @@ You may assume the input string is at most 20 characters long.
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-> **تمرين تفاعلي: A framed word**
+> **تمرين تفاعلي: كلمة داخل إطار**
 >
-> Please write a program which asks the user for a string and then prints out a frame of `*` characters with the word in the centre. The width of the frame should be 30 characters. You may assume the input string will always fit inside the frame.
+> يُرجى كتابة برنامج يطلب من المستخدم سلسلة نصية ثم يطبع إطارًا من محارف `*` تتوسّطه الكلمة. وينبغي أن يكون عرض الإطار 30 محرفًا. ويمكنك افتراض أن سلسلة المُدخَل النصية ستأخذ مكانها دائمًا داخل الإطار.
 
-If the length of the input string is an odd number, you may print out the word in either of the two possible centre locations.
+وإذا كان طول سلسلة المُدخَل النصية عددًا فرديًا، فيجوز لك أن تطبع الكلمة في أيٍّ من موضعي المنتصف الممكنين.
 
 
 ```
@@ -410,15 +409,15 @@ If the length of the input string is an odd number, you may print out the word i
 
 
 
-## Substrings and slices
+## السلاسل الفرعية والشرائح
 
-A _substring_ of a string is a sequence of characters that forms a part of the string. For example, the string `example` contains the substrings `exam`, `amp` and `ple`, among others. In Python programming, the process of selecting substrings is usually called _slicing_, and a substring is often referred to as a _slice_ of the string. The two terms can often be used interchangeably.
+السلسلة الفرعية (_substring_) من سلسلة نصية هي تتابع من المحارف يشكّل جزءًا من تلك السلسلة النصية. فمثلًا، تحتوي السلسلة النصية `example` على السلاسل الفرعية `exam` و`amp` و`ple` وغيرها. وفي برمجة Python، تُسمّى عملية اختيار السلاسل الفرعية عادةً _التقطيع_ (_slicing_)، وكثيرًا ما تُشار إلى السلسلة الفرعية بأنها _شريحة_ (_slice_) من السلسلة النصية. ويمكن استخدام المصطلحين في أغلب الأحيان بشكل متبادل.
 
-If you know the beginning and end indexes of the slice you wish to extract, you can do so with the notation `[a:b]`. This means the slice begins at the index `a` and ends at the last character before index `b` - that is, including the first, but excluding the last. You can think of the indexes as separator lines drawn on the left side of the indexed character, as illustrated in the image below:
+إذا كنت تعرف فهرسي بداية الشريحة ونهايتها التي تريد استخراجها، فيمكنك فعل ذلك باستخدام الترميز `[a:b]`. وهذا يعني أن الشريحة تبدأ عند الفهرس `a` وتنتهي عند آخر محرف قبل الفهرس `b` - أي أنها تضم الأول وتستثني الأخير. ويمكنك أن تتخيّل الفهارس كخطوط فاصلة مرسومة على الجانب الأيسر من المحرف المُفهرَس، كما هو موضَّح في الصورة أدناه:
 
-<img src="3_2_3.png">
+![3_2_3.png](/images/mooc/part-3/3_2_3.png)
 
-Let's have a closer look at some sliced strings:
+فلننظر عن قرب إلى بعض السلاسل النصية المقطَّعة:
 
 ```python
 input_string = "presumptious"
@@ -442,19 +441,17 @@ umptious
 ```
 
 
-<text-box variant='hint' name='Half open intervals'>
-
-In Python string processing the interval `[a:b]` is _half open_, which in this case means that the character at the beginning index `a` is included in the interval, but the character at the end index `b` is left out. Why is that?
-
-There is no profound reason for this feature. Rather it is a convention inherited from other programming languages.
-
-Half open intervals may feel unintuitive, but in practice they do have some advantages. For example, you can easily calculate the length of a slice with `b-a`. On the other hand, you must always remember that the character at the end index `b` will not be included in the slice.
-
-</text-box>
-
-> **تمرين تفاعلي: Substrings, part 1**
+> **الفترات نصف المفتوحة**
 >
-> Please write a program which asks the user to type in a string. The program then prints out all the substrings which begin with the first character, from the shortest to the longest. Have a look at the example below.
+> في معالجة السلاسل النصية في Python، الفترة `[a:b]` _نصف مفتوحة_ (_half open_)، وهذا يعني في هذه الحالة أن المحرف عند فهرس البداية `a` مُضمَّن في الفترة، بينما المحرف عند فهرس النهاية `b` مُستثنى منها. ولماذا ذلك؟
+>
+> لا يوجد سبب عميق لهذه الميزة. إنها بالأحرى عُرف متوارث من لغات برمجة أخرى.
+>
+> قد تبدو الفترات نصف المفتوحة غير بديهية، لكنها في الواقع تتمتّع ببعض المزايا. فمثلًا، يمكنك بسهولة حساب طول الشريحة بـ`b-a`. ومن الجهة الأخرى، عليك دائمًا أن تتذكّر أن المحرف عند فهرس النهاية `b` لن يكون مُضمَّنًا في الشريحة.
+
+> **تمرين تفاعلي: السلاسل الفرعية، الجزء 1**
+>
+> يُرجى كتابة برنامج يطلب من المستخدم إدخال سلسلة نصية. ثم يطبع البرنامج جميع السلاسل الفرعية التي تبدأ بالمحرف الأول، من الأقصر إلى الأطول. انظر المثال أدناه.
 
 
 ```
@@ -468,9 +465,9 @@ test
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-> **تمرين تفاعلي: Substrings, part 2**
+> **تمرين تفاعلي: السلاسل الفرعية، الجزء 2**
 >
-> Please write a program which asks the user to type in a string. The program then prints out all the substrings which end with the last character, from the shortest to the longest. Have a look at the example below.
+> يُرجى كتابة برنامج يطلب من المستخدم إدخال سلسلة نصية. ثم يطبع البرنامج جميع السلاسل الفرعية التي تنتهي بالمحرف الأخير، من الأقصر إلى الأطول. انظر المثال أدناه.
 
 
 ```
@@ -484,11 +481,11 @@ test
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-## Searching for substrings
+## البحث عن السلاسل الفرعية
 
-The `in` operator can tell us if a string contains a particular substring. The Boolean expression `a in b` is true, if `b` contains the substring `a`.
+يمكن للمشغّل `in` أن يخبرنا ما إذا كانت سلسلة نصية تحتوي على سلسلة فرعية معيّنة. فالتعبير المنطقي `a in b` يكون صحيحًا إذا كانت `b` تحتوي على السلسلة الفرعية `a`.
 
-For example, this bit of code
+فمثلًا، فإن هذه القطعة من الشيفرة
 
 ```python
 input_string = "test"
@@ -499,7 +496,7 @@ print("es" in input_string)
 print("ets" in input_string)
 ```
 
-prints out the following:
+تطبع ما يلي:
 
 
 ```
@@ -510,7 +507,7 @@ False
 ```
 
 
-The program below lets the user search for substrings within a string hardcoded into the program:
+يتيح البرنامج التالي للمستخدم البحث عن سلاسل فرعية داخل سلسلة نصية مُرمَّزة ثابتًا في البرنامج:
 
 ```python
 input_string = "perpendicular"
@@ -535,11 +532,11 @@ Found it
 ```
 
 
-> **تمرين تفاعلي: Does it contain vowels**
+> **تمرين تفاعلي: هل تحتوي على حروف العلة**
 >
-> Please write a program which asks the user to input a string. The program then prints out different messages if the string contains any of the vowels a, e or o.
+> يُرجى كتابة برنامج يطلب من المستخدم إدخال سلسلة نصية. ثم يطبع البرنامج رسائل مختلفة إذا كانت السلسلة النصية تحتوي على أيٍّ من حروف العلة a أو e أو o.
 
-You may assume the input will be in lowercase entirely. Have a look at the examples below.
+يمكنك افتراض أن المُدخَل سيكون بأحرف صغيرة بالكامل. انظر الأمثلة أدناه.
 
 
 ```
@@ -561,13 +558,13 @@ o not found
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-The operator `in` returns a Boolean value, so it will only tell us _if_ a substring exists in a string, but it will not be useful in finding out _where_ exactly it is. Instead, the Python string method `find` can be used for this purpose. It takes the substring searched for as an argument, and returns either the first index where it is found, or `-1` if the substring is not found within the string. 
+يعيد المشغّل `in` قيمة منطقية، لذا فإنه لا يخبرنا سوى _بما إذا_ كانت هناك سلسلة فرعية داخل سلسلة نصية، لكنه لا يكون مفيدًا في تحديد _مكانها_ بالضبط. وبدلًا من ذلك، يمكن استخدام تابع السلاسل النصية `find` في Python لهذا الغرض. وهو يأخذ السلسلة الفرعية المُبحَث عنها وسيطًا، ويعيد إمّا أول فهرس وُجدت عنده أو `-1` إذا لم تُعثر على السلسلة الفرعية داخل السلسلة النصية.
 
-The image below illustrates how it is used:
+توضّح الصورة التالية كيف يُستخدم:
 
-<img src="3_2_4.png">
+![3_2_4.png](/images/mooc/part-3/3_2_4.png)
 
-Some examples of how `find` is used:
+بعض أمثلة استخدام `find`:
 
 ```python
 input_string = "test"
@@ -587,7 +584,7 @@ print(input_string.find("ets"))
 ```
 
 
-The above substring search example implemented with `find`:
+مثال البحث عن السلاسل الفرعية أعلاه مُنفَّذًا باستخدام `find`:
 
 ```python
 input_string = "perpendicular"
@@ -613,17 +610,15 @@ Found it at the index 3
 ```
 
 
-<text-box variant='hint' name='Methods'>
-
-Above we used the string _method_ `find`. Methods work quite similarly to the _functions_ covered in the previous part. What distinguishes them from functions is that methods are always attached to the _object_ they are called on. The object is the entity named before the method in the method call. In the case of `find` the object is the string where the method looks for the substring it has as an argument.
-
-</text-box>
-
-> **تمرين تفاعلي: Find the first substring**
+> **التوابع**
 >
-> Please write a program which asks the user to type in a string and a single character. The program then prints the first three character slice which begins with the character specified by the user. You may assume the input string is at least three characters long. The program must print out three characters, or else nothing. 
+> استخدمنا أعلاه تابع السلسلة النصية `find`. وتعمل التوابع بطريقة مشابهة إلى حدٍّ كبير للدوال (functions) التي تناولناها في الجزء السابق. وما يميّزها عن الدوال أن التوابع مرتبطة دائمًا بـ_الكائن_ الذي تُستدعى عليه. والكائن هو الشيء المُسمّى قبل اسم التابع في استدعاءه. وفي حالة `find` يكون الكائن هو السلسلة النصية التي يبحث فيها التابع عن السلسلة الفرعية المُمرَّرة إليه كوسيط.
 
-Pay special attention to when there are less than two characters left in the string after the first occurrence of the character looked for. In that case nothing should be printed out, and there should not be any indexing errors when executing the program.
+> **تمرين تفاعلي: أوجد السلسلة الفرعية الأولى**
+>
+> يُرجى كتابة برنامج يطلب من المستخدم إدخال سلسلة نصية ومحرف واحد. ثم يطبع البرنامج شريحة المحارف الثلاثة الأولى التي تبدأ بالمحرف الذي يحدده المستخدم. ويمكنك افتراض أن سلسلة المُدخَل النصية طولها ثلاثة محارف على الأقل. ويجب أن يطبع البرنامج ثلاثة محارف، أو لا يطبع شيئًا على الإطلاق.
+
+انتبه بصفة خاصة إلى الحالة التي يتبقّى فيها أقل من محرفين في السلسلة النصية بعد أول ظهور للمحرف المُبحَث عنه. في هذه الحالة لا ينبغي طباعة شيء، ولا ينبغي أن تحدث أي أخطاء في الفهرسة أثناء تنفيذ البرنامج.
 
 
 ```
@@ -657,9 +652,9 @@ Please type in a character: **n**
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-> **تمرين تفاعلي: Find all the substrings**
+> **تمرين تفاعلي: أوجد جميع السلاسل الفرعية**
 >
-> Please make an extended version of the previous program, which prints out _all the substrings which are at least three characters long_, and which begin with the character specified by the user. You may assume the input string is at least three characters long.
+> يُرجى إنشاء نسخة موسَّعة من البرنامج السابق، تطبع _جميع السلاسل الفرعية التي يبلغ طولها ثلاثة محارف على الأقل_ والتي تبدأ بالمحرف الذي يحدده المستخدم. ويمكنك افتراض أن سلسلة المُدخَل النصية طولها ثلاثة محارف على الأقل.
 
 
 ```
@@ -679,7 +674,7 @@ nan
 ```
 
 
-**Hint** the following example may give you some inspiration as to how this exercise could be tackled:
+**تلميح** قد يمنحك المثال التالي بعض الإلهام حول كيفية معالجة هذا التمرين:
 
 ```python
 word = input("Word: ")
@@ -702,13 +697,13 @@ h
 > *ملاحظة: هذا التمرين يتطلب بيئة TMC التفاعلية ولا يعمل في النسخة الثابتة.*
 
 
-> **تمرين تفاعلي: The second occurrence**
+> **تمرين تفاعلي: الظهور الثاني**
 >
-> Please write a program which finds the _second_ occurrence of a substring. If there is no second (or first) occurrence, the program should print out a message accordingly.
+> يُرجى كتابة برنامج يجد _الظهور الثاني_ لسلسلة فرعية. وإذا لم يكن هناك ظهور ثانٍ (أو أول)، فينبغي للبرنامج أن يطبع رسالة تصف ذلك.
 
-In this exercise the occurrences _cannot_ overlap. For example, in the string `aaaa` the second occurrence of the substring `aa` is at index 2.
+في هذا التمرين لا يمكن أن يتداخل الظهوران. فمثلًا، في السلسلة النصية `aaaa` يقع الظهور الثاني للسلسلة الفرعية `aa` عند الفهرس 2.
 
-Some examples of expected behaviour:
+بعض الأمثلة على السلوك المتوقَّع:
 
 
 ```
@@ -737,7 +732,7 @@ The substring does not occur twice in the string.
 
 
 <!---
-A quiz to review the contents of this section:
+اختبار لمراجعة محتويات هذا القسم:
 
 > **اختبار:** (مكون تفاعلي غير متاح في النسخة الثابتة - ID: 6bfa7eab-80de-52e2-afe5-285af914099f)
 

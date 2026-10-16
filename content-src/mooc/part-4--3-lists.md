@@ -8,16 +8,15 @@ source: "https://programming-26.mooc.fi/part-4/3-lists"
 lang: en
 ---
 
-<text-box variant='learningObjectives' name="Learning objectives">
+> **Learning objectives**
+>
+> After this section
+>
+> - You will know what lists are in Python
+> - You will be able access a specified item within a list
+> - You will know how to add items to a list, and how to remove them
+> - You will be familiar with built-in list functions and methods
 
-After this section
-
-- You will know what lists are in Python
-- You will be able access a specified item within a list
-- You will know how to add items to a list, and how to remove them
-- You will be familiar with built-in list functions and methods
-
-</text-box>
 
 Thus far in our programs we have stored data with variables, each bit of data usually having its own named variable. This obviously has some limitations, as it can get cumbersome to define separate variables for everything when there is a lot of data to handle. 
 
@@ -39,7 +38,7 @@ my_list = [7, 2, 2, 5, 2]
 
 The items in a list are indexed in exactly the same way as characters in a string. Indexing starts from zero, and the last index is the length of the list minus 1:
 
-<img src="4_3_1.png" alt="Lists are indexed starting from 0">
+![Lists are indexed starting from 0](/images/mooc/part-4/4_3_1.png)
 
 A single list item can be accessed just like a single character in a string is accessed, with square brackets:
 
@@ -105,7 +104,7 @@ print(len(my_list))
 
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Change the value of an item**
 >
 > Please write a program which initialises a list with the values `[1, 2, 3, 4, 5]`. Then the program should ask the user for an index and a new value, replace the value at the given index, and print the list again. This should be looped over until the user gives -1 for the index. You can assume all given index values will fall within your list.
 
@@ -180,7 +179,7 @@ Shoe sizes:
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Add items to a list**
 >
 > Please write a program which first asks the user for the number of items to be added. Then the program should ask for the given number of values, one by one, and add them to a list in the order they were typed in. Finally, the list is printed out.
 
@@ -203,7 +202,7 @@ Item 3: **34**
 
 If you want to specify a location in the list where an item should be added, you can use the `insert` method. The method adds an item at the specified index. All the items already in the list with an index equal to or higher than the specified index are moved one index further, "to the right":
 
-<img src="4_3_2.png" alt = "Inserting an item to a list">
+![Inserting an item to a list](/images/mooc/part-4/4_3_2.png)
 
 So, for instance this program
 
@@ -304,7 +303,7 @@ print(my_list)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Addition and removal**
 >
 > Please write a program which asks the user to choose between addition and removal. Depending on the choice, the program _adds an item to_ or _removes an item from_ the end of a list. The item that is added must always be one greater than the last item in the list. The first item to be added must be 1.
 
@@ -351,7 +350,7 @@ The list contains item 1
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Same word twice**
 >
 > Please write a program which asks the user for words. If the user types in a word for the second time, the program should print out the number of different words typed in, and exit.
 
@@ -414,7 +413,7 @@ print(in_order)
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: List twice**
 >
 > Please write a program which asks the user to type in values and adds them to a list. After each addition, the list is printed out in two different ways:
 - in the order the items were added
@@ -622,7 +621,7 @@ print("Heights:")
 heights = input_numbers()
 ```
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: The length of a list**
 >
 > Please write a function named `length` which takes a list as its argument and returns the length of the list.
 
@@ -643,7 +642,7 @@ The length is 4
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: Arithmetic mean**
 >
 > Please write a function named `mean`, which takes a list of integers as an argument. The function returns the arithmetic mean of the values in the list.
 
@@ -659,7 +658,7 @@ mean value is 3.0
 ```
 
 
-> **تمرين برمجي: تمرين برمجي**
+> **تمرين برمجي: The range of a list**
 >
 > Please write a function named  `range_of_list`, which takes a list of integers as an argument. The function returns the difference between the smallest and the largest value in the list.
 
