@@ -1,0 +1,220 @@
+{
+  "chapters": [
+    {
+      "key": "primer-on-latency-and-bandwidth",
+      "title": "Primer on Latency and Bandwidth",
+      "titleAr": "Primer on Latency and Bandwidth",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Primer on Latency and Bandwidth",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "building-blocks-of-tcp",
+      "title": "Building Blocks of TCP",
+      "titleAr": "Building Blocks of TCP",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Building Blocks of TCP",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "building-blocks-of-udp",
+      "title": "Building Blocks of UDP",
+      "titleAr": "Building Blocks of UDP",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Building Blocks of UDP",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "transport-layer-security-tls",
+      "title": "Transport Layer Security (TLS)",
+      "titleAr": "Transport Layer Security (TLS)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Transport Layer Security (TLS)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "introduction-to-wireless-networks",
+      "title": "Introduction to Wireless Networks",
+      "titleAr": "Introduction to Wireless Networks",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Introduction to Wireless Networks",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "wifi",
+      "title": "WiFi",
+      "titleAr": "WiFi",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "WiFi",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "mobile-networks",
+      "title": "Mobile Networks",
+      "titleAr": "Mobile Networks",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Mobile Networks",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "optimizing-for-mobile-networks",
+      "title": "Optimizing for Mobile Networks",
+      "titleAr": "Optimizing for Mobile Networks",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Optimizing for Mobile Networks",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "brief-history-of-http",
+      "title": "Brief History of HTTP",
+      "titleAr": "Brief History of HTTP",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Brief History of HTTP",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "primer-on-web-performance",
+      "title": "Primer on Web Performance",
+      "titleAr": "Primer on Web Performance",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Primer on Web Performance",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "http1x",
+      "title": "HTTP/1.X",
+      "titleAr": "HTTP/1.X",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "HTTP/1.X",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "http2",
+      "title": "HTTP/2",
+      "titleAr": "HTTP/2",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "HTTP/2",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "optimizing-application-delivery",
+      "title": "Optimizing Application Delivery",
+      "titleAr": "Optimizing Application Delivery",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Optimizing Application Delivery",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "primer-on-browser-networking",
+      "title": "Primer on Browser Networking",
+      "titleAr": "Primer on Browser Networking",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Primer on Browser Networking",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "xmlhttprequest",
+      "title": "XMLHttpRequest",
+      "titleAr": "XMLHttpRequest",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "XMLHttpRequest",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "server-sent-events-sse",
+      "title": "Server-Sent Events (SSE)",
+      "titleAr": "Server-Sent Events (SSE)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "Server-Sent Events (SSE)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "websocket",
+      "title": "WebSocket",
+      "titleAr": "WebSocket",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "WebSocket",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "webrtc",
+      "title": "WebRTC",
+      "titleAr": "WebRTC",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "WebRTC",
+          "order": 0
+        }
+      ]
+    }
+  ]
+}
