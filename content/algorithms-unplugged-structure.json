@@ -1,0 +1,580 @@
+{
+  "chapters": [
+    {
+      "key": "frontmatter",
+      "title": "Front Matter",
+      "titleAr": "مقدّمة الكتاب",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الخوارزميات بدون حاسوب",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "preface",
+      "title": "Preface",
+      "titleAr": "تصدير",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "تصدير",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "part1",
+      "title": "Part I: Searching and Sorting",
+      "titleAr": "الجزء الأول: البحث والترتيب",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "نظرة عامة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch01_binary_search",
+      "title": "Binary Search",
+      "titleAr": "البحث الثنائي",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "البحث الثنائي",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch02_insertion_sort",
+      "title": "Insertion Sort",
+      "titleAr": "الترتيب بالإدراج",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الترتيب بالإدراج",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch03_fast_sorting",
+      "title": "Fast Sorting Algorithms",
+      "titleAr": "خوارزميات الترتيب السريعة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "خوارزميات الترتيب السريعة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch04_parallel_sorting",
+      "title": "Parallel Sorting – The Need for Speed",
+      "titleAr": "الترتيب المتوازي — الحاجة إلى السرعة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الترتيب المتوازي — الحاجة إلى السرعة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch05_topological_sorting",
+      "title": "Topological Sorting – How Should I Begin to Complete My To Do List?",
+      "titleAr": "الترتيب الطوبولوجي — من أين أبدأ لإتمام قائمة مهامي؟",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الترتيب الطوبولوجي — من أين أبدأ لإتمام قائمة مهامي؟",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch06_searching_texts",
+      "title": "Searching Texts – But Fast! The Boyer–Moore–Horspool Algorithm",
+      "titleAr": "البحث في النصوص — ولكن بسرعة! خوارزمية Boyer–Moore–Horspool",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "البحث في النصوص — ولكن بسرعة! خوارزمية Boyer–Moore–Horspool",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch07_depth_first_search",
+      "title": "Depth-First Search (Ariadne & Co.)",
+      "titleAr": "البحث بالعمق أولًا (Ariadne & Co.)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "البحث بالعمق أولًا (Ariadne & Co.)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch08_pledges_algorithm",
+      "title": "Pledge's Algorithm",
+      "titleAr": "خوارزمية Pledge",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "خوارزمية Pledge",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch09_cycles_in_graphs",
+      "title": "Cycles in Graphs",
+      "titleAr": "الدورات في الرسوم البيانية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الدورات في الرسوم البيانية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch10_pagerank",
+      "title": "PageRank – What Is Really Relevant in the World-Wide Web?",
+      "titleAr": "PageRank — ما الأكثر صلة فعلًا في الشبكة العنكبوتية العالمية؟",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "PageRank — ما الأكثر صلة فعلًا في الشبكة العنكبوتية العالمية؟",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "part2",
+      "title": "Part II: Arithmetic and Encryption",
+      "titleAr": "الجزء الثاني: الحساب والتشفير",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "نظرة عامة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch11_long_integer_multiplication",
+      "title": "Multiplication of Long Integers – Faster than Long Multiplication",
+      "titleAr": "ضرب الأعداد الصحيحة الطويلة — أسرع من الضرب الطويل",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "ضرب الأعداد الصحيحة الطويلة — أسرع من الضرب الطويل",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch12_euclidean_algorithm",
+      "title": "The Euclidean Algorithm",
+      "titleAr": "الخوارزمية الإقليدية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الخوارزمية الإقليدية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch13_sieve_of_eratosthenes",
+      "title": "The Sieve of Eratosthenes – How Fast Can We Compute a Prime Number Table?",
+      "titleAr": "غربال إراتوستينس — ما أسرع طريقة لحساب جدول الأعداد الأولية؟",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "غربال إراتوستينس — ما أسرع طريقة لحساب جدول الأعداد الأولية؟",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch14_one_way_functions",
+      "title": "One-Way Functions. Mind the Trap – Escape Only for the Initiated",
+      "titleAr": "الدوال أحادية الاتجاه. احذر الفخ — لا فرار إلا للمطّلعين",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الدوال أحادية الاتجاه. احذر الفخ — لا فرار إلا للمطّلعين",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch15_one_time_pad",
+      "title": "The One-Time Pad Algorithm – The Simplest and Most Secure Way to Keep Secrets",
+      "titleAr": "خوارزمية لوح المرة الواحدة — أبسط الطرق وأكثرها أمانًا لحفظ الأسرار",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "خوارزمية لوح المرة الواحدة — أبسط الطرق وأكثرها أمانًا لحفظ الأسرار",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch16_public_key_cryptography",
+      "title": "Public-Key Cryptography",
+      "titleAr": "التشفير بالمفتاح العام",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "التشفير بالمفتاح العام",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch17_share_a_secret",
+      "title": "How to Share a Secret",
+      "titleAr": "كيف نتشارك سرًّا",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "كيف نتشارك سرًّا",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch18_poker_by_email",
+      "title": "Playing Poker by Email",
+      "titleAr": "لعب البوكر بالبريد الإلكتروني",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "لعب البوكر بالبريد الإلكتروني",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch19_fingerprinting",
+      "title": "Fingerprinting",
+      "titleAr": "البصمات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "البصمات",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch20_hashing",
+      "title": "Hashing",
+      "titleAr": "التجزئة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "التجزئة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch21_codes",
+      "title": "Codes – Protecting Data Against Errors and Loss",
+      "titleAr": "الشيفرات — حماية البيانات من الأخطاء والفقد",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الشيفرات — حماية البيانات من الأخطاء والفقد",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "part3",
+      "title": "Part III: Planning, Coordination and Simulation",
+      "titleAr": "الجزء الثالث: التخطيط والتنسيق والمحاكاة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "نظرة عامة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch22_broadcasting",
+      "title": "Broadcasting – How Can I Quickly Disseminate Information?",
+      "titleAr": "البث — كيف أنشر المعلومة بسرعة؟",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "البث — كيف أنشر المعلومة بسرعة؟",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch23_numbers_into_words",
+      "title": "Converting Numbers into English Words",
+      "titleAr": "تحويل الأعداد إلى كلمات إنجليزية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "تحويل الأعداد إلى كلمات إنجليزية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch24_majority",
+      "title": "Majority – Who Gets Elected Class Rep?",
+      "titleAr": "الأغلبية — من يُنتخب ممثلًا للصف؟",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الأغلبية — من يُنتخب ممثلًا للصف؟",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch25_random_numbers",
+      "title": "Random Numbers – How Can We Create Randomness in Computers?",
+      "titleAr": "الأعداد العشوائية — كيف نصنع العشوائية في الحواسيب؟",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الأعداد العشوائية — كيف نصنع العشوائية في الحواسيب؟",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch26_matchstick_game",
+      "title": "Winning Strategies for a Matchstick Game",
+      "titleAr": "استراتيجيات الفوز في لعبة أعواد الثقاب",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "استراتيجيات الفوز في لعبة أعواد الثقاب",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch27_scheduling_tournaments",
+      "title": "Scheduling of Tournaments or Sports Leagues",
+      "titleAr": "جدولة الدوريات والبطولات الرياضية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "جدولة الدوريات والبطولات الرياضية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch28_eulerian_circuits",
+      "title": "Eulerian Circuits",
+      "titleAr": "الدورات الأويلرية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الدورات الأويلرية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch29_high_speed_circles",
+      "title": "High-Speed Circles",
+      "titleAr": "دوائر عالية السرعة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "دوائر عالية السرعة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch30_gauss_seidel",
+      "title": "Gauß–Seidel Iterative Method for the Computation of Physical Problems",
+      "titleAr": "طريقة Gauß–Seidel التكرارية لحل المسائل الفيزيائية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "طريقة Gauß–Seidel التكرارية لحل المسائل الفيزيائية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch31_dynamic_programming",
+      "title": "Dynamic Programming – Evolutionary Distance",
+      "titleAr": "البرمجة الديناميكية — المسافة التطورية",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "البرمجة الديناميكية — المسافة التطورية",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "part4",
+      "title": "Part IV: Optimization",
+      "titleAr": "الجزء الرابع: التحسين",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "نظرة عامة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch32_shortest_paths",
+      "title": "Shortest Paths",
+      "titleAr": "أقصر المسارات",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "أقصر المسارات",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch33_minimum_spanning_trees",
+      "title": "Minimum Spanning Trees (Sometimes Greed Pays Off . . . )",
+      "titleAr": "أشجار الامتداد الدنيا (أحيانًا يثمر الجشع . . .)",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "أشجار الامتداد الدنيا (أحيانًا يثمر الجشع . . .)",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch34_maximum_flows",
+      "title": "Maximum Flows – Towards the Stadium During Rush Hour",
+      "titleAr": "التدفقات العظمى — نحو الملعب في ساعة الذروة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "التدفقات العظمى — نحو الملعب في ساعة الذروة",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch35_marriage_broker",
+      "title": "Marriage Broker",
+      "titleAr": "وسيط الزواج",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "وسيط الزواج",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch36_smallest_circle",
+      "title": "The Smallest Enclosing Circle – A Contribution to Democracy from Switzerland?",
+      "titleAr": "أصغر دائرة محيطة — مساهمة من سويسرا في الديمقراطية؟",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "أصغر دائرة محيطة — مساهمة من سويسرا في الديمقراطية؟",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch37_online_algorithms",
+      "title": "Online Algorithms – What Is It Worth to Know the Future?",
+      "titleAr": "الخوارزميات الفورية — ما قيمة معرفة المستقبل؟",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "الخوارزميات الفورية — ما قيمة معرفة المستقبل؟",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch38_bin_packing",
+      "title": "Bin Packing or “How Do I Get My Stuff into the Boxes?”",
+      "titleAr": "التعبئة في الصناديق أو «كيف أُدخل أشيائي إلى الصناديق؟»",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "التعبئة في الصناديق أو «كيف أُدخل أشيائي إلى الصناديق؟»",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch39_knapsack",
+      "title": "The Knapsack Problem",
+      "titleAr": "مسألة حقيبة الظهر",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "مسألة حقيبة الظهر",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch40_travelling_salesman",
+      "title": "The Travelling Salesman Problem",
+      "titleAr": "مسألة البائع المتجول",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "مسألة البائع المتجول",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "ch41_simulated_annealing",
+      "title": "Simulated Annealing",
+      "titleAr": "التلدين المحاكى",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "التلدين المحاكى",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "key": "backmatter",
+      "title": "Author Details",
+      "titleAr": "تفاصيل المؤلفين",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "تفاصيل المؤلفين",
+          "order": 0
+        }
+      ]
+    }
+  ]
+}

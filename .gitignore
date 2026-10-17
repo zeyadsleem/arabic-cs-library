@@ -14,6 +14,10 @@ content-src/mit-6100l/
 # pages under content/mathematics-for-cs/ are the tracked artefact.
 content-src/mcs/
 
+# The Algorithms Unplugged source PDF is kept out of the repository; the imported
+# pages under content/algorithms-unplugged/ are the tracked artefact.
+content-src/algorithms-unplugged/
+
 # The Learn Programming with OCaml EPUB is cached; its unpacked tree is derived.
 content-src/learn-ocaml/OEBPS/
 
