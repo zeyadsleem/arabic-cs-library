@@ -6,14 +6,14 @@
 
 ## 0. الحالة الحالية (آخر تحديث)
 
-حالة `content/library.json` بعد التحقق الفعلي من المستودع: **51 كتاباً** —
-**44 في حالة `translated`** و**7 في حالة `planned`**، ولا توجد حالة ثالثة.
+حالة `content/library.json` بعد التحقق الفعلي من المستودع: **56 كتاباً** —
+**47 في حالة `translated`** و**9 في حالة `planned`**، ولا توجد حالة ثالثة.
 
 | التصنيف | العدد | التفاصيل |
 | --- | --- | --- |
-| كتب بصفحات محلية داخل المكتبة | 38 | 1184 قسماً في `src/lib/generated/sections/` |
-| كتب مستضافة خارجياً عبر `siteUrl` | 6 | `gobyexample-ar` · `learn-go-with-tests-ar` · `go101-ar` · `eloquent-javascript-ar` · `fullstack-open-ar` · `webdev-learn-ar` — ترجمتها كاملة لكنها تُقدَّم من مواقع خارجية، فلا صفحات محلية لها |
-| في طابور الترجمة | 7 | القسم 8 أدناه |
+| كتب بصفحات محلية داخل المكتبة | 41 | 1328 قسماً في `src/lib/generated/sections/` |
+| كتب مستضافة خارجياً عبر `siteUrl` | 7 | `gobyexample-ar` · `learn-go-with-tests-ar` · `go101-ar` · `eloquent-javascript-ar` · `fullstack-open-ar` · `webdev-learn-ar` · `mooc` — ترجمتها كاملة لكنها تُقدَّم من مواقع خارجية، فلا صفحات محلية لها |
+| في طابور الترجمة | 9 | القسم 8 أدناه |
 
 `go-tour` ليست مستثنية: 103 صفحاتها العربية تُبنى من `src/lib/tour/translations/*.json`
 عبر `scripts/build-go-tour.mjs` ثم تُحقن في البيان عبر تخصيص في `build-content.mjs` —
@@ -23,10 +23,10 @@
 
 | البوابة | النتيجة |
 | --- | --- |
-| `pnpm audit:content` | 1184 قسماً في 38 كتاباً — 0 صورة ناقصة، 0 صيغة خاطئة، 0 نص معلّم |
+| `pnpm audit:content` | 1328 قسماً في 41 كتاباً — 0 صورة ناقصة، 0 صيغة خاطئة، 0 نص معلّم |
 | `pnpm test:content` | 45/45 |
 | `pnpm test:import` | 9/9 |
-| `pnpm check:links` | 0 رابط غير محلَّل من 137,523 مرجعاً داخلياً على 1241 صفحة |
+| `pnpm check:links` | 0 رابط غير محلَّل من 153,793 مرجعاً داخلياً على 1390 صفحة |
 | `node scripts/build-content.mjs` | يخرج 0 فقط إذا كانت **كل** صفحة لكل كتاب مصنَّف `translated` بالفعل عربية |
 | `node scripts/check-mooc.mjs` | بوابة صفحة-صفحة لترجمة MOOC (القفل 2 أدناه) |
 
@@ -64,7 +64,7 @@
 | ⑤ | الأنظمة | xv6 (✅) · OSTEP (مرجع) · Nand2Tetris I (✅) · Nand2Tetris II (✅) · Dive into Systems (✅) | — |
 | ⑥ | مسار Go | Go by Example (✅) · Learn Go with Tests (✅) · Go 101 (✅) | — |
 | ⑦ | JavaScript | Eloquent JavaScript (✅) | — |
-| ⑧ | تطوير الويب | Full Stack open (✅) · Patterns.dev (✅) · AHA Stack (✅) · Frontend Architecture (✅) · معمل التعلّم — web.dev (✅) | Eloquent JS |
+| ⑧ | تطوير الويب | Full Stack open (✅) · Patterns.dev (✅) · AHA Stack (✅) · Frontend Architecture (✅) · TanStack Router (✅) · TanStack Form (✅) · معمل التعلّم — web.dev (✅) | Eloquent JS |
 | ⑨ | الشبكات | Computer Networks (بانتظار موافقة المؤلفين) | Nand2Tetris I |
 | ⑩ | قواعد البيانات | DB Design (✅) · DB Performance at Scale · Database Foundations (✅) · PostgreSQL Internals (✅) · Use The Index (✅) | — |
 | ⑪ | اللغات | Learn Programming with OCaml · OCaml Manual (مرجع) · CS3110 (✅) · Crafting Interpreters (✅) | — |
@@ -166,6 +166,8 @@
 | 25 | Open Data Structures | LaTeX | 14 فصلاً | ✅ مترجم |
 | 26 | Open Workbook of Cryptology | LaTeX | 92 صفحة | في الطابور |
 | 27 | DB Performance at Scale | PDF | 11 فصلاً | في الطابور |
+| 28 | TanStack Router (دورة Ali Alaa على يوتيوب) | تفريغات التسميات التوضيحية (VTT) | 34 درساً | ✅ مترجم |
+| 29 | TanStack Form (دورة Ali Alaa على يوتيوب) | تفريغات التسميات التوضيحية (VTT) | 21 درساً | ✅ مترجم |
 
 ### نمط التنفيذ لكل مصدر
 1. `scripts/import-<book>.mjs` ← تنزيل المصدر الرسمي (مع إعادة محاولة وتفضيل IPv4).

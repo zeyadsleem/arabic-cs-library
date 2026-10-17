@@ -1,0 +1,116 @@
+{
+  "chapters": [
+    {
+      "key": "form",
+      "title": "Tanstack Form Full Course",
+      "titleAr": "دورة TanStack Form الكاملة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "مقدمة",
+          "order": 0
+        },
+        {
+          "slug": "installation",
+          "title": "التثبيت (Installation)",
+          "order": 1
+        },
+        {
+          "slug": "first-form",
+          "title": "النموذج الأول (First Form)",
+          "order": 2
+        },
+        {
+          "slug": "fields-meta-data",
+          "title": "المعلومات الوصفية للحقول (Fields Meta Data)",
+          "order": 3
+        },
+        {
+          "slug": "reactivity-and-listeners",
+          "title": "التفاعلية والمستمعات (Reactivity & Listeners)",
+          "order": 4
+        },
+        {
+          "slug": "objects-and-arrays",
+          "title": "الكائنات والمصفوفات (Objects & Arrays)",
+          "order": 5
+        },
+        {
+          "slug": "field-level-validations",
+          "title": "التحقّق من الصحة على مستوى الحقل (Field Level Validations)",
+          "order": 6
+        },
+        {
+          "slug": "form-level-validations",
+          "title": "التحقّق من الصحة على مستوى النموذج (Form Level Validations)",
+          "order": 7
+        },
+        {
+          "slug": "async-validations",
+          "title": "التحقّق من الصحة غير المتزامن (Async Validations)",
+          "order": 8
+        },
+        {
+          "slug": "dynamic-validations",
+          "title": "التحقّق الديناميكي من الصحة (Dynamic Validations)",
+          "order": 9
+        },
+        {
+          "slug": "linked-fields",
+          "title": "الحقول المرتبطة (Linked Fields)",
+          "order": 10
+        },
+        {
+          "slug": "validating-with-zod",
+          "title": "التحقّق من الصحة باستخدام Zod (Validating with ZOD)",
+          "order": 11
+        },
+        {
+          "slug": "validating-with-zod-refine-and-async",
+          "title": "التحقّق من الصحة باستخدام Zod (Refine and Async)",
+          "order": 12
+        },
+        {
+          "slug": "notes-on-form-submission",
+          "title": "ملاحظات حول إرسال النموذج (Notes on Form Submission)",
+          "order": 13
+        },
+        {
+          "slug": "using-shadcn-components",
+          "title": "استخدام مكوّنات shadcn (Using shadcn Components)",
+          "order": 14
+        },
+        {
+          "slug": "refactoring-our-form-and-using-useappform",
+          "title": "إعادة هيكلة نموذجنا واستخدام useAppForm (Refactoring Our Form & Using useAppForm)",
+          "order": 15
+        },
+        {
+          "slug": "creating-reusable-field-components",
+          "title": "إنشاء مكوّنات حقول قابلة لإعادة الاستخدام (Creating Reusable Field Components)",
+          "order": 16
+        },
+        {
+          "slug": "creating-reusable-form-components",
+          "title": "إنشاء مكوّنات نموذج قابلة لإعادة الاستخدام (Creating Reusable Form Components)",
+          "order": 17
+        },
+        {
+          "slug": "lazy-loading-form-components",
+          "title": "التحميل الكسول لمكوّنات النموذج (Lazy Loading Form Components)",
+          "order": 18
+        },
+        {
+          "slug": "breaking-forms-into-smaller-pieces-with-withform-hoc",
+          "title": "تقسيم النماذج إلى أجزاء أصغر باستخدام withForm HOC (Breaking Forms into Smaller Pieces with withForm HOC)",
+          "order": 19
+        },
+        {
+          "slug": "creating-reusable-group-of-fields-with-withfieldgroup-hoc",
+          "title": "إنشاء مجموعة حقول قابلة لإعادة الاستخدام باستخدام withFieldGroup HOC (Creating Reusable Group of Fields with withFieldGroup HOC)",
+          "order": 20
+        }
+      ]
+    }
+  ]
+}

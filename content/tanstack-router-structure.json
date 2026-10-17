@@ -1,0 +1,181 @@
+{
+  "chapters": [
+    {
+      "key": "router",
+      "title": "Tanstack Router Full Course",
+      "titleAr": "دورة TanStack Router الكاملة",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "مقدمة",
+          "order": 0
+        },
+        {
+          "slug": "installation",
+          "title": "التثبيت (Installation)",
+          "order": 1
+        },
+        {
+          "slug": "code-based-router",
+          "title": "الموجّه المبني على الكود (Code Based Router)",
+          "order": 2
+        },
+        {
+          "slug": "navigation-links",
+          "title": "روابط التنقّل (Navigation Links)",
+          "order": 3
+        },
+        {
+          "slug": "file-based-router",
+          "title": "الموجّه بالملفات (File Based Router)",
+          "order": 4
+        },
+        {
+          "slug": "nesting-routes",
+          "title": "تداخل المسارات (Nesting Routes)",
+          "order": 5
+        },
+        {
+          "slug": "pathless-layouts",
+          "title": "التخطيطات بلا مسار (Pathless Layouts)",
+          "order": 6
+        },
+        {
+          "slug": "ignored-folders",
+          "title": "المجلدات المتجاهَلة (Ignored Folders)",
+          "order": 7
+        },
+        {
+          "slug": "flat-routes",
+          "title": "المسارات المسطّحة (Flat Routes)",
+          "order": 8
+        },
+        {
+          "slug": "dynamic-path-segments",
+          "title": "مقاطع المسار الديناميكية (Dynamic Path Segments)",
+          "order": 9
+        },
+        {
+          "slug": "catch-all-routes",
+          "title": "المسارات الشاملة (Catch-All Routes)",
+          "order": 10
+        },
+        {
+          "slug": "optional-parameters",
+          "title": "المعاملات الاختيارية (Optional Parameters)",
+          "order": 11
+        },
+        {
+          "slug": "search-parameters",
+          "title": "معاملات البحث (Search Parameters)",
+          "order": 12
+        },
+        {
+          "slug": "validating-search-params-with-zod",
+          "title": "التحقّق من صحة معامِلات البحث باستخدام Zod (Validating Search Params with Zod)",
+          "order": 13
+        },
+        {
+          "slug": "handling-search-params-errors",
+          "title": "التعامل مع أخطاء معامِلات البحث (Handling Search Params Errors)",
+          "order": 14
+        },
+        {
+          "slug": "more-on-the-link-component",
+          "title": "مزيدٌ عن مكوّن الرابط (Link)",
+          "order": 15
+        },
+        {
+          "slug": "other-ways-to-navigate-programmatically",
+          "title": "طرق أخرى للتنقّل برمجيًّا",
+          "order": 16
+        },
+        {
+          "slug": "context",
+          "title": "السياق (Context)",
+          "order": 17
+        },
+        {
+          "slug": "passing-state-in-context",
+          "title": "تمرير الحالة في السياق (Passing State in Context)",
+          "order": 18
+        },
+        {
+          "slug": "loader-functions-posts-page",
+          "title": "دوالّ التحميل: صفحة المنشورات (Loader Functions: Posts Page)",
+          "order": 19
+        },
+        {
+          "slug": "adding-pagination",
+          "title": "إضافة ترقيم الصفحات (Adding Pagination)",
+          "order": 20
+        },
+        {
+          "slug": "loading-data-in-parallel-single-blog-post-page",
+          "title": "تحميل البيانات بالتوازي: صفحة التدوينة المفردة (Loading Data in Parallel: Single Blog Post Page)",
+          "order": 21
+        },
+        {
+          "slug": "pending-state-component",
+          "title": "مكوّن حالة الانتظار (Pending State Component)",
+          "order": 22
+        },
+        {
+          "slug": "loading-data-in-the-background",
+          "title": "تحميل البيانات في الخلفية (Loading Data in the Background)",
+          "order": 23
+        },
+        {
+          "slug": "error-handling",
+          "title": "معالجة الأخطاء (Error Handling)",
+          "order": 24
+        },
+        {
+          "slug": "not-found-errors",
+          "title": "أخطاء عدم الوجود (Not Found Errors)",
+          "order": 25
+        },
+        {
+          "slug": "catchboundary",
+          "title": "مكوّن اصطياد الأخطاء (CatchBoundary)",
+          "order": 26
+        },
+        {
+          "slug": "code-splitting",
+          "title": "تقسيم الكود (Code Splitting)",
+          "order": 27
+        },
+        {
+          "slug": "preloading",
+          "title": "التحميل المسبق (Preloading)",
+          "order": 28
+        },
+        {
+          "slug": "caching",
+          "title": "التخزين المؤقّت (Caching)",
+          "order": 29
+        },
+        {
+          "slug": "caching-options",
+          "title": "خيارات التخزين المؤقّت (Caching Options)",
+          "order": 30
+        },
+        {
+          "slug": "protecting-routes",
+          "title": "حماية المسارات (Protecting Routes)",
+          "order": 31
+        },
+        {
+          "slug": "protecting-multiple-routes-with-layouts",
+          "title": "حماية مسارات متعدّدة باستخدام التخطيطات (Protecting Multiple Routes with Layouts)",
+          "order": 32
+        },
+        {
+          "slug": "more-topics-and-outro",
+          "title": "مزيد من المواضيع والخاتمة (More Topics & Outro)",
+          "order": 33
+        }
+      ]
+    }
+  ]
+}

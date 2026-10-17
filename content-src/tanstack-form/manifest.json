@@ -1,0 +1,196 @@
+{
+  "generatedAt": "2026-10-16T17:02:00.023Z",
+  "origin": "https://www.youtube.com",
+  "title": "Tanstack Form Full Course",
+  "url": "https://www.youtube.com/watch?v=H2T21r5wu3g",
+  "videoId": "H2T21r5wu3g",
+  "uploadDate": "20251024",
+  "duration": 8582,
+  "chapters": [
+    {
+      "title": "Introduction",
+      "start": 0,
+      "end": 164,
+      "slug": "index",
+      "repoBranches": []
+    },
+    {
+      "title": "Installation",
+      "start": 164,
+      "end": 313,
+      "slug": "installation",
+      "repoBranches": []
+    },
+    {
+      "title": "First Form",
+      "start": 313,
+      "end": 939,
+      "slug": "first-form",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-form-course/tree/first-form"
+      ]
+    },
+    {
+      "title": "Fields Meta Data",
+      "start": 939,
+      "end": 1220,
+      "slug": "fields-meta-data",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-form-course/tree/field-meta"
+      ]
+    },
+    {
+      "title": "Reactivity & Listeners",
+      "start": 1220,
+      "end": 1842,
+      "slug": "reactivity-and-listeners",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-form-course/tree/reactivity-and-listeners"
+      ]
+    },
+    {
+      "title": "Objects & Arrays",
+      "start": 1842,
+      "end": 2651,
+      "slug": "objects-and-arrays",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-form-course/tree/objects-arrays-booleans"
+      ]
+    },
+    {
+      "title": "Field Level Validations",
+      "start": 2651,
+      "end": 3196,
+      "slug": "field-level-validations",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-form-course/tree/validation-1"
+      ]
+    },
+    {
+      "title": "Form Level Validations",
+      "start": 3196,
+      "end": 3659,
+      "slug": "form-level-validations",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-form-course/tree/validation-2"
+      ]
+    },
+    {
+      "title": "Async Validations",
+      "start": 3659,
+      "end": 3934,
+      "slug": "async-validations",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-form-course/tree/validation-3"
+      ]
+    },
+    {
+      "title": "Dynamic Validations",
+      "start": 3934,
+      "end": 4147,
+      "slug": "dynamic-validations",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-form-course/tree/validation-4"
+      ]
+    },
+    {
+      "title": "Linked Fields",
+      "start": 4147,
+      "end": 4367,
+      "slug": "linked-fields",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-form-course/tree/validation-5"
+      ]
+    },
+    {
+      "title": "Validating with ZOD",
+      "start": 4367,
+      "end": 5082,
+      "slug": "validating-with-zod",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-form-course/tree/zod-1"
+      ]
+    },
+    {
+      "title": "Validating with ZOD (Refine and Async)",
+      "start": 5082,
+      "end": 5347,
+      "slug": "validating-with-zod-refine-and-async",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-form-course/tree/zod-2"
+      ]
+    },
+    {
+      "title": "Notes on Form Submission",
+      "start": 5347,
+      "end": 5718,
+      "slug": "notes-on-form-submission",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-form-course/tree/submission"
+      ]
+    },
+    {
+      "title": "Using shadcn Components",
+      "start": 5718,
+      "end": 6105,
+      "slug": "using-shadcn-components",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-form-course/tree/shadcn-components"
+      ]
+    },
+    {
+      "title": "Refactoring Our Form & Using useAppForm",
+      "start": 6105,
+      "end": 6626,
+      "slug": "refactoring-our-form-and-using-useappform",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-form-course/tree/useAppForm-1"
+      ]
+    },
+    {
+      "title": "Creating Reusable Field Components",
+      "start": 6626,
+      "end": 7262,
+      "slug": "creating-reusable-field-components",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-form-course/tree/useAppForm-3"
+      ]
+    },
+    {
+      "title": "Creating Reusable Form Components",
+      "start": 7262,
+      "end": 7482,
+      "slug": "creating-reusable-form-components",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-form-course/tree/useAppForm-4"
+      ]
+    },
+    {
+      "title": "Lazy Loading Form Components",
+      "start": 7482,
+      "end": 7586,
+      "slug": "lazy-loading-form-components",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-form-course/tree/lazy-loading"
+      ]
+    },
+    {
+      "title": "Breaking Forms into Smaller Pieces with withForm HOC",
+      "start": 7586,
+      "end": 7864,
+      "slug": "breaking-forms-into-smaller-pieces-with-withform-hoc",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-form-course/tree/withForm"
+      ]
+    },
+    {
+      "title": "Creating Reusable Group of Fields with withFieldGroup HOC",
+      "start": 7864,
+      "end": 8582,
+      "slug": "creating-reusable-group-of-fields-with-withfieldgroup-hoc",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-form-course/tree/withFieldGroup"
+      ]
+    }
+  ]
+}

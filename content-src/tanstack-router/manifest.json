@@ -1,0 +1,312 @@
+{
+  "generatedAt": "2026-10-16T17:01:59.863Z",
+  "origin": "https://www.youtube.com",
+  "title": "Tanstack Router Full Course",
+  "url": "https://www.youtube.com/watch?v=8_sGz4DHwIA",
+  "videoId": "8_sGz4DHwIA",
+  "uploadDate": "20250913",
+  "duration": 13340,
+  "chapters": [
+    {
+      "title": "Introduction",
+      "start": 0,
+      "end": 165,
+      "slug": "index",
+      "repoBranches": []
+    },
+    {
+      "title": "Installation",
+      "start": 165,
+      "end": 434,
+      "slug": "installation",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/app-init"
+      ]
+    },
+    {
+      "title": "Code Based Router",
+      "start": 434,
+      "end": 883,
+      "slug": "code-based-router",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/code-based-init"
+      ]
+    },
+    {
+      "title": "Navigation Links",
+      "start": 883,
+      "end": 1295,
+      "slug": "navigation-links",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/navigation-links"
+      ]
+    },
+    {
+      "title": "File Based Router",
+      "start": 1295,
+      "end": 1647,
+      "slug": "file-based-router",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/file-based-conversion"
+      ]
+    },
+    {
+      "title": "Nesting Routes",
+      "start": 1647,
+      "end": 2239,
+      "slug": "nesting-routes",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/nesting-routes"
+      ]
+    },
+    {
+      "title": "Pathless Layouts",
+      "start": 2239,
+      "end": 2592,
+      "slug": "pathless-layouts",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/pathless-layouts"
+      ]
+    },
+    {
+      "title": "Ignored Folders",
+      "start": 2592,
+      "end": 2743,
+      "slug": "ignored-folders",
+      "repoBranches": []
+    },
+    {
+      "title": "Flat Routes",
+      "start": 2743,
+      "end": 3199,
+      "slug": "flat-routes",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/flat-routes"
+      ]
+    },
+    {
+      "title": "Dynamic Path Segments",
+      "start": 3199,
+      "end": 3786,
+      "slug": "dynamic-path-segments",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/dynamic-path-segments"
+      ]
+    },
+    {
+      "title": "Catch-All Routes",
+      "start": 3786,
+      "end": 4160,
+      "slug": "catch-all-routes",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/rest-params"
+      ]
+    },
+    {
+      "title": "Optional Parameters",
+      "start": 4160,
+      "end": 4610,
+      "slug": "optional-parameters",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/optional-params"
+      ]
+    },
+    {
+      "title": "Search Parameters",
+      "start": 4610,
+      "end": 5016,
+      "slug": "search-parameters",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/search-1"
+      ]
+    },
+    {
+      "title": "Validating Search Params with Zod",
+      "start": 5016,
+      "end": 5390,
+      "slug": "validating-search-params-with-zod",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/search-2"
+      ]
+    },
+    {
+      "title": "Handling Search Params Errors",
+      "start": 5390,
+      "end": 5776,
+      "slug": "handling-search-params-errors",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/search-3"
+      ]
+    },
+    {
+      "title": "More on the Link Component",
+      "start": 5776,
+      "end": 6326,
+      "slug": "more-on-the-link-component",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/more-on-link"
+      ]
+    },
+    {
+      "title": "Other ways to Navigate Programmatically",
+      "start": 6326,
+      "end": 6731,
+      "slug": "other-ways-to-navigate-programmatically",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/other-navigation"
+      ]
+    },
+    {
+      "title": "Context",
+      "start": 6731,
+      "end": 7125,
+      "slug": "context",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/context-1"
+      ]
+    },
+    {
+      "title": "Passing State in Context",
+      "start": 7125,
+      "end": 7730,
+      "slug": "passing-state-in-context",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/context-2"
+      ]
+    },
+    {
+      "title": "Loader Functions: Posts Page",
+      "start": 7730,
+      "end": 8161,
+      "slug": "loader-functions-posts-page",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/loaders-1"
+      ]
+    },
+    {
+      "title": "Adding Pagination",
+      "start": 8161,
+      "end": 8507,
+      "slug": "adding-pagination",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/loaders-2"
+      ]
+    },
+    {
+      "title": "Loading Data in Parallel: Single Blog Post Page",
+      "start": 8507,
+      "end": 8746,
+      "slug": "loading-data-in-parallel-single-blog-post-page",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/loaders-3"
+      ]
+    },
+    {
+      "title": "Pending State Component",
+      "start": 8746,
+      "end": 9022,
+      "slug": "pending-state-component",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/loaders-4"
+      ]
+    },
+    {
+      "title": "Loading Data in the Background",
+      "start": 9022,
+      "end": 9310,
+      "slug": "loading-data-in-the-background",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/loaders-5"
+      ]
+    },
+    {
+      "title": "Error Handling",
+      "start": 9310,
+      "end": 9695,
+      "slug": "error-handling",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/error-handling-1"
+      ]
+    },
+    {
+      "title": "Not Found Errors",
+      "start": 9695,
+      "end": 10146,
+      "slug": "not-found-errors",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/error-handling-2"
+      ]
+    },
+    {
+      "title": "CatchBoundary",
+      "start": 10146,
+      "end": 10307,
+      "slug": "catchboundary",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/error-handling-3"
+      ]
+    },
+    {
+      "title": "Code Splitting",
+      "start": 10307,
+      "end": 10777,
+      "slug": "code-splitting",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/code-splitting"
+      ]
+    },
+    {
+      "title": "Preloading",
+      "start": 10777,
+      "end": 11218,
+      "slug": "preloading",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/preloading"
+      ]
+    },
+    {
+      "title": "Caching",
+      "start": 11218,
+      "end": 11794,
+      "slug": "caching",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/caching-1"
+      ]
+    },
+    {
+      "title": "Caching Options",
+      "start": 11794,
+      "end": 12190,
+      "slug": "caching-options",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/caching-2"
+      ]
+    },
+    {
+      "title": "Protecting Routes",
+      "start": 12190,
+      "end": 12776,
+      "slug": "protecting-routes",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/auth-1"
+      ]
+    },
+    {
+      "title": "Protecting Multiple Routes with Layouts",
+      "start": 12776,
+      "end": 13203,
+      "slug": "protecting-multiple-routes-with-layouts",
+      "repoBranches": [
+        "https://github.com/alialaa/tanstack-router-course/tree/auth-2",
+        "https://github.com/alialaa/tanstack-router-course/tree/auth-3"
+      ]
+    },
+    {
+      "title": "More Topics & Outro",
+      "start": 13203,
+      "end": 13340,
+      "slug": "more-topics-and-outro",
+      "repoBranches": []
+    }
+  ]
+}

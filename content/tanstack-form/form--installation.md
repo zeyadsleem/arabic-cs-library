@@ -1,0 +1,37 @@
+---
+title: "التثبيت (Installation)"
+lang: ar
+source: "https://www.youtube.com/watch?v=H2T21r5wu3g&t=164s"
+---
+
+الدرس 2 من 21 · دورة TanStack Form الكاملة · 2 دقيقة و29 ثانية
+
+<div class="lecture-video"><iframe src="https://www.youtube.com/embed/H2T21r5wu3g?start=164&amp;rel=0" title="التثبيت (Installation) — الفيديو الأصلي" loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen></iframe></div>
+
+<p>الفيديو الأصلي باللغة الإنجليزية. إذا تعذّر تشغيله هنا، <a href="https://www.youtube.com/watch?v=H2T21r5wu3g&t=164s" target="_blank" rel="noopener noreferrer">شاهده على موقع المؤلف</a>. التفريغ النصي العربي الكامل أدناه.</p>
+
+<p><bdi dir="ltr">[00:04]</bdi> إذًا في هنا لديّ مشروع React مفتوح، وقد أُنشئ بكل بساطة باستخدام Vite، وقد ثُبِّت فيه shadcn أيضًا. لذا يمكنك استنساخ المستودع الذي سأوفّره إن شئت أن تُتابع معي، أو ربما أن تملك</p>
+
+<p><bdi dir="ltr">[00:15]</bdi> مشروع React خاصًا بك تحتاج إلى العمل عليه. لا يهم ذلك. وإذا شئت أيضًا أن تفعل هذا من الصفر، فيمكنك هنا أن تجد تعليمات في موقع shadcn عن كيفية إنشاء مشروع React مع Vite مع shadcn كذلك.</p>
+
+<p><bdi dir="ltr">[00:29]</bdi> هذا تقريبًا ما فعلتُه لإنشاء هذا المشروع، وأنت أيضًا لست مضطرًا لاستخدام shadcn، فاستخدام CSS فقط، لأنّنا سنرى لاحقًا كيفية دمج مكتبات المكوّنات (components) مثل هذه مع TanStack Form، ولكن ربما أنت</p>
+
+<p><bdi dir="ltr">[00:43]</bdi> تستخدم أيّ مكتبة مكوّنات أخرى، فهذا سيعمل كذلك أيضًا، ولكن في هنا لديّ هذا المكوّن app الذي يُعرض في صفحتنا الرئيسية هكذا، فلنبدأ العمل في هذا المكوّن، فلنثبّت أولًا TanStack Form، لذا نحن</p>
+
+<p><bdi dir="ltr">[01:00]</bdi> نحتاج إلى تثبيت بضعة حزم (packages)، فأولًا TanStack Form نفسه، وهو npm install @tanstack/react-form، أو بالطبع قد تستخدم شيئًا آخر غير npm. أنا أستخدم npm لذا سأقوم</p>
+
+<p><bdi dir="ltr">[01:15]</bdi> بتثبيته، وكذلك يزوّدنا TanStack Form ببعض أدوات التطوير (dev tools) التي يمكننا استخدامها من أجل تصيّد الأخطاء (debugging) في نموذجنا وما إلى ذلك. لذا يمكننا تثبيتها أيضًا بتثبيت @tanstack/react-devtools، وبالإضافة إلى ذلك يلزمنا أيضًا</p>
+
+<p><bdi dir="ltr">[01:33]</bdi> تثبيت @tanstack/react-form-devtools.</p>
+
+<p><bdi dir="ltr">[01:36]</bdi> وبعد إنجاز هذا يمكننا كذلك تثبيت @tanstack/react-form-devtools هكذا.</p>
+
+<p><bdi dir="ltr">[01:44]</bdi> والآن من أجل استخدام أدوات التطوير هذه يمكننا الذهاب إلى هنا، إلى ملف main.tsx لدينا.</p>
+
+<p><bdi dir="ltr">[01:50]</bdi> قد يكون هذا مختلفًا عندك إن أنشأت مشروعك بنفسك، غير أنّه في هنا عندما نصيّر مكوّن app هذا نحتاج أيضًا إلى تصيير TanStackDevtools. إذًا في هنا، TanStackDevtools، ثم نحتاج إلى تمرير إضافة</p>
+
+<p><bdi dir="ltr">[02:05]</bdi> النموذج (form plugin). إذًا في هنا، ضمن plugins، نحتاج إلى تمرير FormDevtoolsPlugin من @tanstack/react-form-devtools هكذا.</p>
+
+<p><bdi dir="ltr">[02:15]</bdi> ونحتاج إلى استدعاء هذه الدالة.</p>
+
+<p><bdi dir="ltr">[02:20]</bdi> وبتوفّر هذا ينبغي أن يكون لدينا هذه الأيقونة هنا التي ستعرض أدوات التطوير هذه. غير أنّه يمكننا الآن أن نبدأ وإنشاء نموذجنا الأول. إذًا</p>
