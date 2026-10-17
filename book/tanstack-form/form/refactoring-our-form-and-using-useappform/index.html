@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.FVkOZB4g.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dq2noPdq.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D-UGlvje.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DwPUIYSW.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.DFkXo_y6.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/8Zp3AgL_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/xZbOipOT.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/B0wkbjsU.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DLZrcuaH.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.DcWW2Z0j.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BFSq3G-H.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DFtLG7zR.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BeiZ3Qi_.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CErtauyA.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CFnGtpH8.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.TJQGZ7Ok.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CsKHYbED.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DWJgNkoK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/CsV55yFr.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="إعادة هيكلة نموذجنا واستخدام useAppForm (Refactoring Our Form &amp; Using useAppForm) — دورة TanStack Form الكاملة"/><!----><title>إعادة هيكلة نموذجنا واستخدام useAppForm (Refactoring Our Form &amp; Using useAppForm) | دورة TanStack Form الكاملة</title>
+		<link href="../../../../_app/immutable/assets/0.DN3hKbfu.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/tanstack-form">دورة TanStack Form الكاملة</a> <span class="reader-bar__chapter">› دورة TanStack Form الكاملة</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 1 من 1">1 / 1</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/tanstack-form/form/using-shadcn-components">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/tanstack-form/form/creating-reusable-field-components">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3 class="active-chapter">دورة TanStack Form الكاملة</h3> <ul><!--[--><li><a href="../../../../book/tanstack-form/form/index">مقدمة</a></li><li><a href="../../../../book/tanstack-form/form/installation">التثبيت (Installation)</a></li><li><a href="../../../../book/tanstack-form/form/first-form">النموذج الأول (First Form)</a></li><li><a href="../../../../book/tanstack-form/form/fields-meta-data">المعلومات الوصفية للحقول (Fields Meta Data)</a></li><li><a href="../../../../book/tanstack-form/form/reactivity-and-listeners">التفاعلية والمستمعات (Reactivity &amp; Listeners)</a></li><li><a href="../../../../book/tanstack-form/form/objects-and-arrays">الكائنات والمصفوفات (Objects &amp; Arrays)</a></li><li><a href="../../../../book/tanstack-form/form/field-level-validations">التحقّق من الصحة على مستوى الحقل (Field Level Validations)</a></li><li><a href="../../../../book/tanstack-form/form/form-level-validations">التحقّق من الصحة على مستوى النموذج (Form Level Validations)</a></li><li><a href="../../../../book/tanstack-form/form/async-validations">التحقّق من الصحة غير المتزامن (Async Validations)</a></li><li><a href="../../../../book/tanstack-form/form/dynamic-validations">التحقّق الديناميكي من الصحة (Dynamic Validations)</a></li><li><a href="../../../../book/tanstack-form/form/linked-fields">الحقول المرتبطة (Linked Fields)</a></li><li><a href="../../../../book/tanstack-form/form/validating-with-zod">التحقّق من الصحة باستخدام Zod (Validating with ZOD)</a></li><li><a href="../../../../book/tanstack-form/form/validating-with-zod-refine-and-async">التحقّق من الصحة باستخدام Zod (Refine and Async)</a></li><li><a href="../../../../book/tanstack-form/form/notes-on-form-submission">ملاحظات حول إرسال النموذج (Notes on Form Submission)</a></li><li><a href="../../../../book/tanstack-form/form/using-shadcn-components">استخدام مكوّنات shadcn (Using shadcn Components)</a></li><li><a href="../../../../book/tanstack-form/form/refactoring-our-form-and-using-useappform" class="active">إعادة هيكلة نموذجنا واستخدام useAppForm (Refactoring Our Form &amp; Using useAppForm)</a></li><li><a href="../../../../book/tanstack-form/form/creating-reusable-field-components">إنشاء مكوّنات حقول قابلة لإعادة الاستخدام (Creating Reusable Field Components)</a></li><li><a href="../../../../book/tanstack-form/form/creating-reusable-form-components">إنشاء مكوّنات نموذج قابلة لإعادة الاستخدام (Creating Reusable Form Components)</a></li><li><a href="../../../../book/tanstack-form/form/lazy-loading-form-components">التحميل الكسول لمكوّنات النموذج (Lazy Loading Form Components)</a></li><li><a href="../../../../book/tanstack-form/form/breaking-forms-into-smaller-pieces-with-withform-hoc">تقسيم النماذج إلى أجزاء أصغر باستخدام withForm HOC (Breaking Forms into Smaller Pieces with withForm HOC)</a></li><li><a href="../../../../book/tanstack-form/form/creating-reusable-group-of-fields-with-withfieldgroup-hoc">إنشاء مجموعة حقول قابلة لإعادة الاستخدام باستخدام withFieldGroup HOC (Creating Reusable Group of Fields with withFieldGroup HOC)</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>إعادة هيكلة نموذجنا واستخدام useAppForm (Refactoring Our Form &amp; Using useAppForm)</h1> <!--[-1--><!--]--> <!--[-1--><div class="reader-content"><!----><p>الدرس 16 من 21 · دورة TanStack Form الكاملة · 8 دقيقة و41 ثانية</p>
+<div class="lecture-video"><iframe src="https://www.youtube.com/embed/H2T21r5wu3g?start=6105&amp;rel=0" title="إعادة هيكلة نموذجنا واستخدام useAppForm (Refactoring Our Form & Using useAppForm) — الفيديو الأصلي" loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen></iframe></div>
+<p>الفيديو الأصلي باللغة الإنجليزية. إذا تعذّر تشغيله هنا، <a href="https://www.youtube.com/watch?v=H2T21r5wu3g&t=6105s" target="_blank" rel="noopener noreferrer">شاهده على موقع المؤلف</a>. التفريغ النصي العربي الكامل أدناه.</p>
+<blockquote>
+<p><strong>مستودع شيفرة هذا الدرس</strong></p>
+<p>الفرع: <a href="https://github.com/alialaa/tanstack-form-course/tree/useAppForm-1"><code>useAppForm-1</code></a></p>
+</blockquote>
+<p><bdi dir="ltr">[00:02]</bdi> بمكوّناته قد يكون لدينا واجهة مستخدم ذات مظهر أجمل. غير أنّنا ما زلنا نواجه مشكلة مقدار الشيفرة التي اضطررنا إلى كتابتها كي ننشئ هذا النموذج البسيط. إذًا كما ترى هنا، فإنّ هذا الملف يضمّ ما يقارب خمسمئة أو أربعمئة سطر من الشيفرة.</p>
+<p><bdi dir="ltr">[00:17]</bdi> وإذا كان لديك تطبيق يضمّ كثيرًا من النماذج، أو نماذج كبيرة، فسيكون كتابةُ ذلك في كلّ مرّة أمرًا شاقًّا.</p>
+<p><bdi dir="ltr">[00:23]</bdi> فستكون مطَّلوبًا بأن تُصيّر مكوّناتك. وستضطرّ إلى تمرير هذه النداءات (callbacks) هكذا. وستضطرّ إلى تصيير الأخطاء هكذا وما إلى ذلك.</p>
+<p><bdi dir="ltr">[00:33]</bdi> وبالطبع، هذا لا يعقل.</p>
+<p><bdi dir="ltr">[00:35]</bdi> غير أنّ TanStack Form تتيح لنا — ولحسن الحظّ — وسيلةً تجعل نماذجنا أصغر بكثير. فدعنا نرَ كيف. لكن أولًا، فلنُنظِّف ربما الأشياء قليلًا. فعلى سبيل المثال، كنّا نطبع عبر console.log هذا الكائن values هنا. فلنقم ربما</p>
+<p><bdi dir="ltr">[00:50]</bdi> بإزالة هذا. ثم في الأعلى هنا، كنّا نعرّف مخطّطنا (schema) وقيمنا الافتراضية (default values). ومن الطَّبع يمكن أن تقرن هذه في ملفٍّ منفصل أيضًا. فدعنا نفعل ذلك. فإذًا في هنا سأقوم ربما بإنشاء مجلدٍ لأضع ملفاتٍ مختلفة</p>
+<p><bdi dir="ltr">[01:06]</bdi> في داخله. إذًا داخل هذا المجلد مثلًا لننشئ مجلدًا آخر. فربما لنسمّه register form أو أيّ اسمٍ ينبغي أن يكون لهذا النموذج.</p>
+<p><bdi dir="ltr">[01:17]</bdi> وداخل هذا لننشئ ملفًا خاصًّا بالأمور المشتركة. فإذًا في هنا سأنشئ ملفًا يُدعى shared.ts. وفلننقل في هنا أشياءنا التي ستُشاركها ملفاتٌ مختلفة في هذا مكوّن نموذج التسجيل داخل</p>
+<p><bdi dir="ltr">[01:34]</bdi> مجلد نموذج التسجيل. فعلى سبيل المثال: مخطّط النموذج، والقيم الافتراضية، وخيارات النموذج. فلننسخها أو لنُقصّها من هنا ولنضعها في هنا فحسب ولنُصدّرها. وبالطبع علينا أن نستورد</p>
+<p><bdi dir="ltr">[01:50]</bdi> Zod.</p>
+<p><bdi dir="ltr">[01:52]</bdi> ونحتاج كذلك إلى استيراد formOptions أيضًا.</p>
+<p><bdi dir="ltr">[01:56]</bdi> وفلنسمّه أيضًا ربما شيئًا أوضح: خيارات نموذج التسجيل (registerFormOptions).</p>
+<p><bdi dir="ltr">[02:03]</bdi> وفلنُصدّرها.</p>
+<p><bdi dir="ltr">[02:06]</bdi> وفلنُصدّر كذلك مخطّطنا وقيمنا الافتراضية هكذا.</p>
+<p><bdi dir="ltr">[02:14]</bdi> والآن فلنعد إلى مكوّن نموذج التسجيل لدينا ولنستورد هذه الأشياء. فإذًا في هنا فلنستورد registerFormOptions.</p>
+<p><bdi dir="ltr">[02:23]</bdi> في هنا. فلنستورد مخطّط النموذج (formSchema). وأظنّ أنّه يمكننا أيضًا أن نسمّيه مخطّطَ نموذجِ التسجيل (registerFormSchema) ونحدّث هذا أيضًا كي نكون أوضح فيما هو عليه هذا الشيء. فإذًا في هنا، فلنستورد registerFormSchema و</p>
+<p><bdi dir="ltr">[02:40]</bdi> نضعه في هنا أيضًا. وأظنّ أنّه إذا حفظنا هذا فسينبغي أن يعمل كلّ شيء.</p>
+<p><bdi dir="ltr">[02:47]</bdi> فإذًا إذا حدّثنا الصفحة، فلنحاول الإرسال، وكلّ شيء يعمل؛ فالتحقق من الصحة لدينا يعمل، ولذا يمكننا كذلك أن نزيل الاستيرادات التي لا نستخدمها الآن — فلم نعد نستخدم هذه الأشياء — وأظنّ أنّ الأمر بخير في الوقت الحالي. فلننقل أيضًا</p>
+<p><bdi dir="ltr">[03:09]</bdi> هذا المكوّن ربما إلى هذا المجلد كذلك، كي يكون كلّ ما لدينا يسكن في مجلد نموذج التسجيل هذا. غير أنّه بفعلنا ذلك، سيلزمنا الذهابُ إلى app.tsx والتأكّد من أنّ</p>
+<p><bdi dir="ltr">[03:22]</bdi> استيرادك قد حُدِّث الآن إلى هذا المسار. فدعنا نُحدِّث الصفحة.</p>
+<p><bdi dir="ltr">[03:28]</bdi> وينبغي أن يبقى كلّ شيء يعمل كالمعتاد. فإذًا كان ذلك قدرًا من التنظيم، لكن الآن فلنركّز على مشكلتنا الرئيسة.</p>
+<p><bdi dir="ltr">[03:35]</bdi> ما يلزمنا فعله الآن هو أنّنا كلّما احتجنا إلى إنشاء نموذج وتصيير حقلنا، احتجنا إلى أن نجد وسيلةً نجنّب بها الاضطرار إلى كتابة كلّ هذه الشيفرة القالبية (boilerplate) لمجرّد عرضنا للـ input وعرض الأخطاء الخاصة بـ</p>
+<p><bdi dir="ltr">[03:47]</bdi> input وهكذا. وما يمكننا فعله إذًا هو أنّه بدلًا من استخدام الخُطّاف useForm الذي توفّره TanStack Form يمكننا أن ننشئ خُطّافًا مخصّصًا، وهذا الخُطّاف المخصّص سيكون مسبقًا به مكوّناتنا، أي مكوّنات الـ input لدينا، معرَّفةً مسبقًا، و</p>
+<p><bdi dir="ltr">[04:03]</bdi> كلّ ما نفعله هنا. فإذًا عندما نمرّر قيمتنا، وonBlur خاصّتنا، وonChange خاصّتنا، وهلمّ جرًا، فكلّ ذلك سيكون معرَّفًا مسبقًا في هذا الخُطّاف المخصّص، ويمكننا ببساطة أن نستخدم مكوّن input لدينا دون الاضطرار إلى تمرير كلّ</p>
+<p><bdi dir="ltr">[04:16]</bdi> ذلك من الأشياء. فدعنا نرَ كيف يمكننا فعل ذلك. فإذًا في مجلدنا سأنشئ ربما — إذًا فلننشئ في مجلد src لدينا مجلدًا جديدًا. فلنسمّه hooks، ولننشئ هذا الخُطّاف المخصّص الذي هو بسيطٌ جدًّا. ولن</p>
+<p><bdi dir="ltr">[04:31]</bdi> نضطرّ في الواقع إلى أن نفعل كثيرًا من الأشياء بأنفسنا. فTanStack Form يوفّر لنا وسيلةً بسيطة لفعل ذلك. فإذًا ننشئ ملفًا جديدًا هنا. فربما لنسمّه form-context.tsx.</p>
+<p><bdi dir="ltr">[04:43]</bdi> ومن هنا سنحتاج إلى تصدير بعض الأشياء من دالةٍ يمكننا استيرادها من TanStack Form وهي createFormHookContexts. أليس كذلك؟</p>
+<p><bdi dir="ltr">[04:57]</bdi> فهذه الدالة ستُعيد بعض الأشياء يمكننا تفكيكها (destructure) من هنا، ومنها fieldContext وformContext وأيضًا useFieldContext وuseFormContext. و</p>
+<p><bdi dir="ltr">[05:12]</bdi> نحتاج إلى تصدير كلّ ذلك كي نستطيع استخدامه في ملفٍّ آخر. ففلنُصدّر إذًا كلّ ذلك. ففي جوهر الأمر، ما سنفعله هو أنّنا سنعرّف مكوّنات لنماذجنا. وعندما نعرّف مكوّنات لنماذجنا،</p>
+<p><bdi dir="ltr">[05:25]</bdi> كما ترى هنا، فإنّ داخل مكوّننا نحتاج إلى أن نكون قادرين على الوصول إلى الحقل، أليس كذلك؟ فهذا كي نعرض قيمة الحقل، وكي نمرّر onBlur وonChange وهلمّ جرًا، نحتاج إلى الوصول إلى الحقل. غير أنّنا الآن ونحن سننطلق في</p>
+<p><bdi dir="ltr">[05:36]</bdi> تعريف هذه المكوّنات في ملفاتٍ منفصلة كما سنرى الآن، فعلينا لأجل الوصول إلى هذا الحقل أن نفعل ذلك باستخدام هذا السياق (context) الموفَّر هنا. فإذًا fieldContext وuseFieldContext هما ما سيقدّمان لنا</p>
+<p><bdi dir="ltr">[05:49]</bdi> الوصول إلى حقولنا حين ننشئ مكوّناتٍ لمدخلاتنا. فإذا كان الأمر محيّرًا لديك، فسنرى كلّ شيء الآن. علينا الآن، بعد أن أنشأنا هذا المجلد وصدّرنا أشياءنا في مجلد hooks لدينا، الانتقال إلى</p>
+<p><bdi dir="ltr">[06:03]</bdi> إنشاء ملفٍّ آخر. فلنسمّه form.tsx.</p>
+<p><bdi dir="ltr">[06:07]</bdi> في هنا، يتعيّن علينا أن نعرّف خُطّافنا المخصّص الذي — كما ذكرنا — سنستخدمه بدلًا من هذا الخُطّاف useForm، أليس كذلك؟</p>
+<p><bdi dir="ltr">[06:17]</bdi> فإذًا في هنا، نحتاج إلى استدعاء دالةٍ تُدعى createFormHook هكذا.</p>
+<p><bdi dir="ltr">[06:24]</bdi> ثم يلزمنا تمرير بعض الأشياء إليها.</p>
+<p><bdi dir="ltr">[06:26]</bdi> ثم ستُعيد أيضًا بعض الأشياء.</p>
+<p><bdi dir="ltr">[06:30]</bdi> فما الذي يلزمنا تمريره إليها؟ نحتاج إلى تمرير السياق الذي صدّرناه في الملف الآخر؛ أي fieldContext. فإذًا fieldContext يساوي fieldContext الذي من الملف الذي أنشأناه للتوِّ. وكذلك</p>
+<p><bdi dir="ltr">[06:45]</bdi> formContext أيضًا.</p>
+<p><bdi dir="ltr">[06:48]</bdi> ويمكننا أن نمرّرَ كائنًا من مكوّنات الحقول (fieldComponents). فلنجعله في الوقت الحالي كائنًا فارغًا. ويمكننا أيضًا أن نملك مكوّنات نموذج (formComponents). أليس كذلك؟ فإذًا في هنا سنمرّر مختلف المكوّنات التي سنحتاج إلى استخدامها في نماذجنا.</p>
+<p><bdi dir="ltr">[07:02]</bdi> فعبر fieldComponents يمكننا تمرير الـ input لدينا، والـ checkbox لدينا، وهلمّ جرًا. وفي formComponents يمكن أن نجد أشياء مثل أزرار الإرسال — أشياء متعلّقة بالنموذج نفسه، لا بحقلٍ معيّن. وستتوفّر لنا أمثلة أيضًا. ثم</p>
+<p><bdi dir="ltr">[07:15]</bdi> ستُعيد هذه الدالة خُطّافنا المخصّص الذي يمكننا استخدامه، وهو يُدعى useAppForm. وستُعيد أيضًا withForm وwithFieldGroup وهما دالتان يمكن أن تساعدانا أيضًا ربما على تنظيم نموذجنا قليلًا.</p>
+<p><bdi dir="ltr">[07:29]</bdi> سنتناول هذه لاحقًا، لكن فلنركّز الآن على useAppForm. وفلنُصدِّر كذلك كلَّ ذلك من هذا الملف. والآن في نموذج التسجيل لدينا، بدلًا من استخدام useForm فلنستخدم useAppForm من مجلد hooks لدينا هكذا.</p>
+<p><bdi dir="ltr">[07:48]</bdi> فبفعلنا هذا لن يتغيّر شيء — بالطبع — في هذه اللحظة. غير أنّه الآن ما يمكننا فعله هو أنّه في هنا، عندما نستدعي createFormHook، يمكننا أن نعرّف هذه المكوّنات التي نستخدمها في نموذجنا هنا.</p>
+<p><bdi dir="ltr">[08:02]</bdi> فمثلًا مكوّن الـ input، ومكوّن الـ checkbox، وهلمّ جرًا. نعرّفها في ملفاتٍ منفصلة ثم نمرّرها إلى هذه الدالة عبر fieldComponents. وبفعلنا ذلك، وباستخدامنا هذا الخُطّاف useAppForm، لن نضطر إلى كتابة</p>
+<p><bdi dir="ltr">[08:14]</bdi> كلّ ذلك كلَّ مرّة. فستكون هذه المكوّنات معرَّفةً مسبقًا في هذا الخُطّاف.</p>
+<p><bdi dir="ltr">[08:18]</bdi> ويمكننا ببساطة أن نستخدمها بطريقةٍ أبسط بكثير من ذلك. وعندما نعرّف هذه المكوّنات، سنكون قادرين على الوصول إلى حقلنا؛ لأنّنا نمرّر fieldContext هنا أصلًا، وفي هنا نُصدّر</p>
+<p><bdi dir="ltr">[08:32]</bdi> دالة useFieldContext هذه. فإذًا باستخدام هذه الدالة سنحصل على الوصول إلى حقلنا عندما نعرّف مكوّننا. فلنرَ الآن كيف يمكننا تعريف مكوّناتنا المخصّصة. إذًا فلنبدأ ربما</p>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/tanstack-form/form/using-shadcn-components"><span class="prev-next__label">السابق</span> <span class="prev-next__title">استخدام مكوّنات shadcn (Using shadcn Components)</span></a><!--]--> <!--[0--><a href="../../../../book/tanstack-form/form/creating-reusable-field-components"><span class="prev-next__label">التالي</span> <span class="prev-next__title">إنشاء مكوّنات حقول قابلة لإعادة الاستخدام (Creating Reusable Field Components)</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_1toi8e1 = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.FVkOZB4g.js"),
+						import("../../../../_app/immutable/entry/app.DFkXo_y6.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

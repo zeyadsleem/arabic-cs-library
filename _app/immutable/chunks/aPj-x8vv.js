@@ -1,0 +1,36 @@
+const t="tanstack-router",i="router",e="دورة TanStack Router الكاملة",s="pathless-layouts",n="التخطيطات بلا مسار (Pathless Layouts)",r=[],d=`<p>الدرس 7 من 34 · دورة TanStack Router الكاملة · 5 دقيقة و53 ثانية</p>
+<div class="lecture-video"><iframe src="https://www.youtube.com/embed/8_sGz4DHwIA?start=2239&amp;rel=0" title="التخطيطات بلا مسار (Pathless Layouts) — الفيديو الأصلي" loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen></iframe></div>
+<p>الفيديو الأصلي باللغة الإنجليزية. إذا تعذّر تشغيله هنا، <a href="https://www.youtube.com/watch?v=8_sGz4DHwIA&t=2239s" target="_blank" rel="noopener noreferrer">شاهده على موقع المؤلف</a>. التفريغ النصي العربي الكامل أدناه.</p>
+<blockquote>
+<p><strong>مستودع الكود لهذا الدرس</strong></p>
+<p>الفرع: <a href="https://github.com/alialaa/tanstack-router-course/tree/pathless-layouts"><code>pathless-layouts</code></a></p>
+</blockquote>
+<p><bdi dir="ltr">[00:01]</bdi> ماذا لو أردنا أن يكون لَدَينا مسار أب (parent route) يمكنه أن يعمل تخطيطًا (layout) مشتركًا لبعض المسارات؟ غير أنّنا لا نحتاج هذا التخطيط الأب إلى امتلاكه مسارًا. فمثلاً، في حالتنا، لَدَينا هذا الأب settings الذي يمكنه أن يعمل</p>
+<p><bdi dir="ltr">[00:14]</bdi> تخطيطًا لأيّ مسار يكون ابنًا له. فإذا ذهبت إلى settings/payments أو إلى settings/profile، فسَيَكُون مسار settings هذا معروضًا هنا مُصيَّرًا (rendered)، ويمكننا أن نستخدمه تخطيطًا لعرض ذلك التنقّل،</p>
+<p><bdi dir="ltr">[00:26]</bdi> مثلًا كما لَدَينا هنا. لكن ماذا لو أردت ذاك التخطيط لكن من دون ذاك المسار، دون أن تُضطرّ إلى الانتقال إلى settings/شيء ما؟ في TanStack Router يمكننا أيضًا أن تَكُون لَدَينا تخطيطات بلا مسار (pathless layouts). إذًا فلنقل إنّنا نحتاج إلى العودة إلى</p>
+<p><bdi dir="ltr">[00:44]</bdi> هذا النهج، هذا الذي فيه سَتَكُون لَدَينا تخطيط الجذر (root layout)، وسَتَكُون settings مسارًا مستقلًا بذاته، وsettings/payment مسارًا مستقلًا بذاته، وكذلك settings/profile مسارًا مستقلًا. غير أنّنا نحتاج كلّ</p>
+<p><bdi dir="ltr">[00:58]</bdi> هذه المسارات إلى امتلاك تخطيط مشترك من دون امتلاك مسار، صحيح؟ فنحن نحتاج إلى وجود نوعٍ من التخطيط هنا، وبعدها يمكن أن تكون لَدَينا مساراتنا، أي settings وsettings/payments وsettings/profile وما إلى ذلك. غير أنّ</p>
+<p><bdi dir="ltr">[01:14]</bdi> هذا الأب هنا لا نحتاج منه أن يمتلك مسارًا، بل نحتاجه فقط ليعمل تخطيطًا لعناصر واجهة مشتركة (common UI elements) كالتنقّل مثلاً. ولِنفعل ذلك، يمكننا استخدام صيغة خاصّة (special syntax) داخل مجلدنا.</p>
+<p><bdi dir="ltr">[01:27]</bdi> إذًا لِنذهب إلى هنا، وبدلًا من أن يكون اسم هذا المجلد settings، يمكننا إعادة تسميته. ولِنجعل هذا الأب بلا مسار، نضيف شرطة سفلية (underscore) فقط.</p>
+<p><bdi dir="ltr">[01:39]</bdi> ثم نضيف معرّفًا فريدًا (unique identifier) للتخطيط بلا مسار (pathless layout) الخاص بنا هذا. فِلنجعل الأمر أوضح ونسمّيه settings layout، هكذا.</p>
+<p><bdi dir="ltr">[01:49]</bdi> وما يتعيّن علينا فعله هو الإبقاء على هذا route.tsx كما هو، صحيح؟</p>
+<p><bdi dir="ltr">[01:56]</bdi> إذًا لِنُغلق هذا الملف أيضًا.</p>
+<p><bdi dir="ltr">[01:59]</bdi> الآن سَتكُون لَدَينا أخطاء لأنّنا لم نَعُد نملك هذه المسارات، لكنّنا سَنُصلح ذلك بعد قليل. فالآن داخل settings layout ثم route، سَيَعمل هذا تخطيطًا لنا لأيّ مسار</p>
+<p><bdi dir="ltr">[02:13]</bdi> سنضعه داخل هذا المجلد. فالآن، وكما تلاحظ هنا في شجرتنا، لَدَينا هذا التخطيط بوصفه أبًا، إلا أنّه لا يملك مسارًا. فباستطاعتنا الانتقال مباشرةً إلى payment.</p>
+<p><bdi dir="ltr">[02:27]</bdi> ويمكننا الانتقال مباشرةً إلى profile دون settings. لكن وكما تلاحظ، سَيُطابَق هذا التخطيط الأب، وسَيُعرض هنا. فلِنُوضّح الآن أنّ هذا تخطيط بلا مسار وليس أبًا</p>
+<p><bdi dir="ltr">[02:43]</bdi> مسارًا، هكذا. إذًا سَتَكُون لَدَينا ذلك التنقّل، وسَتَكُون لَدَينا نصّنا هنا، لكن يتعيّن علينا الآن إصلاح هذه الروابط، لأنّنا لم نَعُد نملك /settings، إنّما لَدَينا payment وprofile فقط هكذا. وهذا ينبغي أن يظلّ</p>
+<p><bdi dir="ltr">[03:00]</bdi> يعمل هكذا. وبالطبع، ما نزال بوسعنا أن نُبقي الـ URL على الصورة settings/شيء ما وأن نستخدم ذاك التخطيط نفسه. وكيف؟ دَعْنا في الواقع نُعِد هذا الـ URL إلى settings/شيء ما. وببساطة، داخل تخطيطنا، يمكننا أن نُنشئ</p>
+<p><bdi dir="ltr">[03:16]</bdi> مجلدًا باسم settings وننقل payment وprofile إلى داخل settings، هكذا.</p>
+<p><bdi dir="ltr">[03:25]</bdi> الآن يُفترض ألّا تكون لَدَينا أية أخطاء في مسارنا هنا في route.tsx داخل settings layout، ولن تكون لَدَينا أخطاء لأنّ لَدَينا الآن settings/payment وsettings/profile. الآن</p>
+<p><bdi dir="ltr">[03:39]</bdi> إذا تطلّعنا إلى شجرتنا، سَتَكُون لَدَينا هذا التخطيط الذي هو أب لـ settings/payment وsettings/profile.</p>
+<p><bdi dir="ltr">[03:48]</bdi> وماذا لو أردنا أن يَكُون /settings أيضًا مسارًا يستخدم التخطيط بلا مسار هذا كذلك؟ تذكّر، ولِفعل ذلك، يمكننا إنشاء ملف index داخل settings هكذا، أي index.tsx.</p>
+<p><bdi dir="ltr">[04:07]</bdi> والآن سَيَكُون settings مطابَقًا كذلك، وسَيَكُون ابنًا لهذا التخطيط settings layout لَدَينا هنا.</p>
+<p><bdi dir="ltr">[04:16]</bdi> إذًا أصبح بوسعنا الآن تحقيق هذا النهج، حيث تكون settings وsettings/payment وsettings/profile جميعها ذات تخطيط مشترك لا يملك مسارًا.</p>
+<p><bdi dir="ltr">[04:31]</bdi> حسنًا، رائع. لِنفعل الآن، ربّما، أمرًا أخيرًا واحدًا لهذا داخل تخطيطنا. فتذكّر أنّ تخطيطنا سَيَعيش في route.tsx داخل التخطيط. لِنصنع رابطًا يذهب إلى /settings. إذًا هنا، فلنجرب ربّما</p>
+<p><bdi dir="ltr">[04:49]</bdi> أن نُكرّر واحدًا من هذه ونُجعله يذهب مباشرةً إلى /settings.</p>
+<p><bdi dir="ltr">[04:56]</bdi> ولِنجعله يقول «الإعدادات العامة» (general settings) أو ما شابه. صحيح؟ متى توفر لنا هذا، فسَيَعمل. غير أنّه إذا ذهبنا إلى payment، فسيظلّ هذا نشطًا. صحيح؟ فذاك يحدث افتراضيًا (by default). سَيُعَدّ الرابط النشِط</p>
+<p><bdi dir="ltr">[05:13]</bdi> نشطًا إذا كان مطابَقًا، أي إذا كانت settings بالضبط هي المطابَقة، أو كانت settings/شيء ما مطابَقة أيضًا.</p>
+<p><bdi dir="ltr">[05:22]</bdi> لكن في حالتنا لا نحتاج إلى ذلك، فنحن هنا بإمكاننا تمرير exact.</p>
+<p><bdi dir="ltr">[05:27]</bdi> عذرًا، ليس هنا، بل في خيارات active يمكننا تمرير exact وضبطها إلى true، وهذا سيجعل هذا الرابط نشطًا حصرًا حين تكون settings هي المطابَقة بالضبط، لا settings/شيء ما. فبهذا سَيُصلَح الأمر.</p>
+<p><bdi dir="ltr">[05:46]</bdi> وبالمناسبة، يمكننا ضبط هذا الخيار لرابطٍ بعينه، كما يمكننا كذلك ضبطه عالميًا (globally) حين نُعرِّف موجّهنا. أحيانًا في مجلدك، قد</p>
+`,p={book:t,chapter:i,chapterTitle:e,slug:s,title:n,headings:r,html:d};export{t as book,i as chapter,e as chapterTitle,p as default,r as headings,d as html,s as slug,n as title};
