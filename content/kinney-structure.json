@@ -2309,16 +2309,6 @@
           "order": 26
         },
         {
-          "slug": "react-state-management-with-typescript",
-          "title": "React State Management with TypeScript",
-          "order": 27
-        },
-        {
-          "slug": "typescript-discriminated-unions",
-          "title": "Discriminated Unions",
-          "order": 28
-        },
-        {
           "slug": "context-and-selectors-typing",
           "title": "Context and Selectors Typing",
           "order": 29
@@ -2349,11 +2339,6 @@
           "order": 34
         },
         {
-          "slug": "polymorphic-components-and-as-prop",
-          "title": "Polymorphic Components and as Prop",
-          "order": 35
-        },
-        {
           "slug": "mirror-dom-props",
           "title": "Mirroring DOM Props",
           "order": 36
@@ -2372,11 +2357,6 @@
           "slug": "higher-order-components-typing",
           "title": "Higher Order Components Typing",
           "order": 39
-        },
-        {
-          "slug": "render-props-and-hoc-alternatives",
-          "title": "Render Props and HOC Alternatives",
-          "order": 40
         },
         {
           "slug": "typescript-react-hooks",

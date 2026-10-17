@@ -1,146 +1,177 @@
 /** Build the published kinney pages from the staged English source.
  *
- * `content-src/kinney/<course>--<lesson>.md` holds the untouched English body.
- * `content-src/kinney-translations.json` maps a page key (`<course>--<lesson>`)
- * to its Arabic title and a map of translated text segments. A page is emitted
- * with `lang: ar` once its segments are all translated and with `lang: en`
- * until then, so the book stays buildable while translation is still in flight.
+ * `content-src/kinney/<course>--<lesson>.md` holds the untouched English body and
+ * `content-src/kinney-translations/<course>--<lesson>.md` holds the Arabic page,
+ * same file name, with the Arabic title in its frontmatter. A page is emitted with
+ * `lang: ar` once its translation exists and passes every rule in
+ * `translation-rules.mjs`; otherwise the English body is published with
+ * `lang: en`, so the book stays buildable for the whole translation period and
+ * `scripts/check-kinney.mjs` is the gate that refuses to call a page done.
  *
- * Only prose segments are ever replaced: fenced code blocks, inline code, link
- * and image destinations, autolinks and heading anchors are carried over from
- * the English source verbatim. A prose segment is one run of text between those
- * markers on a line outside code fences, including any markdown that wraps it,
- * so a translator sees exactly the string whose hash they are filling in.
+ * Same-page anchors need help: a heading's slug comes from its text, so an English
+ * fragment such as `#utility-types` stops resolving the moment the heading is
+ * translated. Every fragment a page links to is therefore written next to the
+ * heading that titles it, exactly as `scripts/build-mooc.mjs` does.
  */
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createHash } from 'node:crypto';
+import { slugifyHeading } from './lib/content-markup.mjs';
+import {
+  linkTargets,
+  readTranslation,
+  sourceDirectory,
+  stagedPages,
+  translationsDirectory,
+  validatePageTranslation,
+} from './lib/kinney-translation.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const sourceDir = path.join(root, 'content-src', 'kinney');
-const outputDir = path.join(root, 'content', 'kinney');
+const outputDirectory = path.join(root, 'content', 'kinney');
 const structurePath = path.join(root, 'content', 'kinney-structure.json');
-const translationsPath = path.join(root, 'content-src', 'kinney-translations.json');
 
-const hash = (text) => createHash('sha256').update(text).digest('hex');
-const escape = (text) =>
-  text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
+const FENCE_LINE = /^ {0,3}(`{3,}|~{3,})(.*)$/;
+const HEADING_LINE = /^(#{1,6})[ \t]+(.*?)[ \t]*$/;
+const ATTRIBUTE_BLOCK = /\{[#.][^}\n]*\}/;
 
-const FENCE = /^ {0,3}(`{3,}|~{3,})(.*)$/;
-const isFenceEnd = (line, fence) => {
-  const closer = line.match(FENCE);
-  return Boolean(closer) && closer[1][0] === fence[0] && closer[1].length >= fence.length && !closer[2].trim();
-};
-
-/** Markup whose text must survive translation untouched: inline code, the
- * destination half of a link or image (the label stays translatable),
- * autolinks and heading anchors.
+/** Headings outside fenced and indented code, in document order.
+ * Some pages quote terminal output whose lines start with `#`, so code has to be
+ * skipped or the heading pairing shifts by one.
+ * @param {string} markdown @returns {Array<{line: number, level: number, text: string}>}
  */
-const PROTECTED = /(``[^`\n]+``|`[^`\n]*`|\]\(\s*(?:<[^>\n]*>|[^()\s]*)(?:\s+"[^"\n]*")?\s*\)|<https?:\/\/[^>\s]+>|\{#[^}\s]+\})/g;
-
-/** Split one markdown line into prose runs and preserved markup.
- * @param {string} line @returns {Array<{text: string, preserved: boolean}>}
- */
-const segments = (line) => {
-  const parts = [];
-  let cursor = 0;
-  for (const match of line.matchAll(PROTECTED)) {
-    if (match.index > cursor) parts.push({ text: line.slice(cursor, match.index), preserved: false });
-    parts.push({ text: match[0], preserved: true });
-    cursor = match.index + match[0].length;
-  }
-  if (cursor < line.length) parts.push({ text: line.slice(cursor), preserved: false });
-  return parts;
-};
-
-const translatable = (text) => /[a-zA-Z]{2}/.test(text.trim());
-
-/** @param {string} markdown @param {Record<string, string>} translations @param {{segments: number, missing: string[]}} report @returns {string} */
-const translateBody = (markdown, translations, report) => {
-  const lines = markdown.split('\n');
-  const out = [];
+const collectHeadings = (markdown) => {
+  const headings = [];
   let fence = null;
-  for (const line of lines) {
-    const marker = line.match(FENCE);
-    if (!fence && marker) {
-      fence = marker[1];
-      out.push(line);
-      continue;
-    }
+  markdown.split('\n').forEach((line, index) => {
+    const marker = line.match(FENCE_LINE);
     if (fence) {
-      if (isFenceEnd(line, fence)) fence = null;
-      out.push(line);
-      continue;
+      if (marker && marker[1][0] === fence[0] && marker[1].length >= fence.length && !marker[2].trim()) fence = null;
+      return;
     }
-    out.push(
-      segments(line)
-        .map(({ text, preserved }) => {
-          if (preserved || !translatable(text)) return text;
-          const key = hash(text.trim());
-          if (!Object.hasOwn(translations, key)) {
-            report.missing.push(text.trim().slice(0, 60));
-            return text;
-          }
-          report.segments += 1;
-          return text.replace(text.trim(), escape(translations[key]));
-        })
-        .join('')
-    );
-  }
-  return out.join('\n');
+    if (marker) {
+      fence = marker[1];
+      return;
+    }
+    if (/^(?: {4}|\t)/.test(line)) return;
+    const heading = line.match(HEADING_LINE);
+    if (!heading) return;
+    headings.push({
+      line: index,
+      level: heading[1].length,
+      text: heading[2].replace(ATTRIBUTE_BLOCK, '').replace(/`[^`]*`/g, '').trim(),
+    });
+  });
+  return headings;
 };
 
-const parseFrontmatter = (raw) => {
-  const match = raw.match(/^---\n([\s\S]*?)\n---\n/);
-  if (!match) throw new Error('missing frontmatter');
-  const data = {};
-  for (const line of match[1].split('\n')) {
-    const separator = line.indexOf(':');
-    if (separator < 1) continue;
-    const value = line.slice(separator + 1).trim();
-    data[line.slice(0, separator).trim()] = value.startsWith('"') ? JSON.parse(value) : value;
+/** The slug of each heading, in order, with repeats numbered the way GitHub does.
+ * @param {Array<{text: string}>} headings @returns {string[]}
+ */
+const headingSlugs = (headings) => {
+  const seen = new Map();
+  return headings.map((heading) => {
+    const base = slugifyHeading(heading.text);
+    if (!base) return '';
+    const count = seen.get(base) ?? 0;
+    seen.set(base, count + 1);
+    return count === 0 ? base : `${base}-${count}`;
+  });
+};
+
+/** Every `#fragment` the pages link to. All Kinney links are absolute URLs to the
+ * book's own site, so a fragment is the only in-page reference there is.
+ * @param {Array<{body: string}>} pages @returns {Set<string>}
+ */
+const samePageAnchors = (pages) => {
+  const anchors = new Set();
+  for (const page of pages) {
+    for (const target of linkTargets(page.body)) {
+      const hash = target.indexOf('#');
+      if (hash !== -1 && hash < target.length - 1) anchors.add(target.slice(hash + 1));
+    }
   }
-  return { data, body: raw.slice(match[0].length) };
+  return anchors;
+};
+
+/** Write the anchor a link names onto the translated heading it titles.
+ * @param {string} translated @param {string} source @param {Set<string>} anchors
+ * @returns {{body: string, attached: Set<string>}}
+ */
+const restoreAnchors = (translated, source, anchors) => {
+  const attached = new Set();
+  const english = collectHeadings(source);
+  const arabic = collectHeadings(translated);
+  if (english.length !== arabic.length) return { body: translated, attached };
+
+  const slugs = headingSlugs(english);
+  const lines = translated.split('\n');
+  english.forEach((heading, position) => {
+    const slug = slugs[position];
+    if (!slug || heading.level !== arabic[position].level || !anchors.has(slug)) return;
+    const line = lines[arabic[position].line];
+    if (ATTRIBUTE_BLOCK.test(line)) return;
+    lines[arabic[position].line] = `${line.replace(/[ \t]+$/, '')} {#${slug}}`;
+    attached.add(slug);
+  });
+  return { body: lines.join('\n'), attached };
 };
 
 const main = () => {
-  if (!fs.existsSync(translationsPath)) fs.writeFileSync(translationsPath, '{}\n');
-  const translations = JSON.parse(fs.readFileSync(translationsPath, 'utf8'));
+  const pages = stagedPages(sourceDirectory(root));
+  const anchors = samePageAnchors(pages);
+  const resolved = new Set();
   const structure = JSON.parse(fs.readFileSync(structurePath, 'utf8'));
 
-  fs.rmSync(outputDir, { recursive: true, force: true });
-  fs.mkdirSync(outputDir, { recursive: true });
+  fs.rmSync(outputDirectory, { recursive: true, force: true });
+  fs.mkdirSync(outputDirectory, { recursive: true });
 
-  const report = { pages: 0, arabic: 0, english: 0, segments: 0, missing: [] };
-  const files = fs.readdirSync(sourceDir).filter((file) => file.endsWith('.md')).sort();
+  const report = { pages: 0, arabic: 0, english: 0, invalid: [], misaligned: [] };
 
-  for (const file of files) {
-    const { data, body } = parseFrontmatter(fs.readFileSync(path.join(sourceDir, file), 'utf8'));
-    const key = `${data.chapter}--${data.slug}`;
-    const entry = translations[key];
-    const title = typeof entry?.title === 'string' && entry.title.trim() ? entry.title.trim() : data.title;
-    const lang = entry ? 'ar' : 'en';
-    const output = entry ? translateBody(body, entry.segments || {}, report) : body;
-    if (entry) report.arabic += 1;
+  for (const page of pages) {
+    const translation = readTranslation(translationsDirectory(root), page.key);
+    let body = page.body;
+    let title = page.title;
+    let lang = 'en';
+
+    if (translation) {
+      const problems = validatePageTranslation(page.key, page.body, translation);
+      if (problems.length) {
+        report.invalid.push({ key: page.key, problems });
+      } else {
+        const restored = restoreAnchors(translation.body.trim(), page.body, anchors);
+        if (restored.attached.size === 0 && samePageAnchors([page]).size) report.misaligned.push(page.key);
+        for (const slug of restored.attached) resolved.add(slug);
+        body = restored.body;
+        title = translation.title;
+        lang = 'ar';
+      }
+    }
+
+    if (lang === 'ar') report.arabic += 1;
     else report.english += 1;
+
     fs.writeFileSync(
-      path.join(outputDir, file),
-      `---\ntitle: ${JSON.stringify(title)}\nlang: ${lang}\nsource: ${JSON.stringify(data.source || '')}\n---\n\n${output.trim()}\n`
+      path.join(outputDirectory, `${page.key}.md`),
+      `---\ntitle: ${JSON.stringify(title)}\nlang: ${lang}\nsource: ${JSON.stringify(page.source)}\n---\n\n${body.trim()}\n`
     );
     report.pages += 1;
 
     for (const chapter of structure.chapters) {
-      if (chapter.key !== data.chapter) continue;
-      const section = chapter.sections.find((item) => item.slug === data.slug);
+      if (chapter.key !== page.chapter) continue;
+      const section = chapter.sections.find((item) => item.slug === page.slug);
       if (section) section.title = title;
     }
   }
 
   fs.writeFileSync(structurePath, `${JSON.stringify(structure, null, 2)}\n`);
-  console.log(`kinney: ${report.pages} pages (${report.arabic} Arabic, ${report.english} English), ${report.segments} segments translated`);
-  if (report.missing.length) {
-    console.warn(`kinney: ${report.missing.length} segments have no translation yet`);
+  console.log(`kinney: ${report.pages} pages (${report.arabic} Arabic, ${report.english} English)`);
+  for (const { key, problems } of report.invalid) {
+    console.warn(`kinney: ${key} is not valid Arabic yet, published in English`);
+    for (const problem of problems) console.warn(`  - ${problem}`);
+  }
+  const unattached = [...anchors].filter((anchor) => !resolved.has(anchor));
+  if (unattached.length) {
+    console.warn(`kinney: ${unattached.length} anchor(s) no heading answers: ${unattached.join(', ')}`);
   }
 };
 

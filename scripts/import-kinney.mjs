@@ -66,6 +66,13 @@ const decode = (text) =>
     .replace(/&#0*215;|&times;/g, '×')
     .replace(/&#0*169;|&copy;/g, '©');
 
+/** Markdown reads a literal `<` as the start of an HTML tag, so prose that
+ * really means `Partial<T>` renders as `Partial` and loses `<T>`. The brackets
+ * are escaped after decoding; code spans take their text from the DOM instead,
+ * so they are never escaped.
+ * @param {string} value @returns {string} */
+const escapeAngles = (value) => value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
 /** Fetch a page once, retrying a single time before giving up.
  * @param {string} url
  * @returns {Promise<string>}
@@ -132,6 +139,11 @@ const fenced = (language, code) => {
 
 /** Inline markdown for a node's children. `skip` holds nodes whose inline text
  * must be ignored — used to separate a list item from its nested lists.
+ *
+ * Prose is decoded here and has its angle brackets escaped, so `text` must not
+ * decode again. A code span reads `textContent` (and a code block reads its
+ * `pre`), which sidesteps both the escaping and `node-html-parser` treating a
+ * `pre` as raw text.
  * @param {Array<object>} nodes
  * @param {{base: string, skip: Set<object>}} context
  * @returns {string}
@@ -141,23 +153,32 @@ const inlineText = (nodes, context) => {
   for (const node of nodes) {
     if (context.skip.has(node)) continue;
     if (node.nodeType === 3) {
-      out += node.rawText ?? node.text ?? '';
+      out += escapeAngles(decode(node.rawText ?? node.text ?? ''));
       continue;
     }
     if (node.nodeType !== 1) continue;
     const tag = node.tagName?.toLowerCase();
     if (!tag || skippedTags.has(tag)) continue;
     if (tag === 'br') { out += '\n'; continue; }
-    if (tag === 'img') { out += ` ${node.getAttribute('alt') || ''} `; continue; }
-    if (tag === 'iframe') { out += ` ${node.getAttribute('title') || ''} `; continue; }
+    if (tag === 'img') { out += ` ${decode(node.getAttribute('alt') || '')} `; continue; }
+    if (tag === 'iframe') { out += ` ${decode(node.getAttribute('title') || '')} `; continue; }
+    if (tag === 'code') {
+      const value = decode(node.textContent || '').replace(/\s+/g, ' ').trim();
+      if (value) out += `\`${value}\``;
+      continue;
+    }
+    if (tag === 'pre' || node.getAttribute?.('data-language')) {
+      const value = readCodeBlock(node.innerHTML || '', context).code.replace(/\s+/g, ' ').trim();
+      if (value) out += `\`${value}\``;
+      continue;
+    }
     const inner = inlineText(node.childNodes, context);
     if (!inner) continue;
-    if (tag === 'code') out += `\`${decode(inner).replace(/\s+/g, ' ').trim()}\``;
-    else if (tag === 'strong' || tag === 'b') out += `**${inner.trim()}**`;
+    if (tag === 'strong' || tag === 'b') out += `**${inner.trim()}**`;
     else if (tag === 'em' || tag === 'i') out += `*${inner.trim()}*`;
     else if (tag === 'a') {
       const href = (node.getAttribute('href') || '').trim();
-      const label = decode(inner).replace(/\s+/g, ' ').trim();
+      const label = inner.replace(/\s+/g, ' ').trim();
       const target = href && !/^(#|mailto:|tel:|data:)/.test(href) ? new URL(href, context.base).href : href;
       out += target ? `[${label}](${target})` : label;
     } else out += inner;
@@ -167,21 +188,64 @@ const inlineText = (nodes, context) => {
 
 /** @param {object} node @param {{base: string}} context @returns {string} */
 const text = (node, context) => {
-  const value = decode(inlineText(node.childNodes, { ...context, skip: new Set() }));
+  const value = inlineText(node.childNodes, { ...context, skip: new Set() });
   return value.replace(/[ \t]*\n[ \t]*/g, '\n').replace(/[ \t]+/g, ' ').trim();
+};
+
+/** A list item's own text covers only its inline run. Block children such as a
+ * code block or a nested list are rendered on their own indented lines, so they
+ * keep their shape instead of collapsing into the sentence.
+ * @param {object} node @returns {boolean} */
+const isBlockChild = (node) => {
+  if (node.nodeType !== 1) return false;
+  const tag = node.tagName?.toLowerCase();
+  if (!tag || skippedTags.has(tag)) return false;
+  // A bare Shiki `pre` is skipped by `renderBlocks`; keeping it in the inline
+  // run lets it fall back to an inline code span instead of vanishing.
+  if (tag === 'pre' && node.classList?.contains('shiki')) return false;
+  if (/^h[1-6]$/.test(tag)) return true;
+  if (['p', 'pre', 'ul', 'ol', 'table', 'blockquote', 'hr', 'figcaption'].includes(tag)) return true;
+  if (node.getAttribute?.('data-language')) return true;
+  if (['div', 'section', 'figure', 'details', 'article', 'main'].includes(tag)) {
+    return Boolean(node.querySelector?.('p, pre, ul, ol, table, blockquote, [data-language]'));
+  }
+  return false;
 };
 
 /** @param {object} list @param {boolean} ordered @param {number} depth @param {{base: string}} context @returns {string[]} */
 const listItems = (list, ordered, depth, context) => {
   const lines = [];
+  const pad = '  '.repeat(depth);
   let index = 0;
   for (const item of list.querySelectorAll(':scope > li')) {
     index += 1;
-    const nested = [...item.querySelectorAll(':scope > ul, :scope > ol')];
-    const own = text(item, { ...context, skip: new Set(nested) });
-    const pad = '  '.repeat(depth);
-    lines.push(`${pad}${ordered ? `${index}.` : '-'} ${own}`.trimEnd());
-    for (const child of nested) lines.push(...listItems(child, child.tagName.toLowerCase() === 'ol', depth + 1, context));
+    const prefix = `${pad}${ordered ? `${index}.` : '-'} `;
+    const indent = ' '.repeat(prefix.length);
+    const chunks = [];
+    let inline = [];
+    const flush = () => {
+      if (!inline.length) return;
+      const value = text({ childNodes: inline }, context);
+      inline = [];
+      if (value) chunks.push(value);
+    };
+    for (const child of item.childNodes) {
+      if (!isBlockChild(child)) { inline.push(child); continue; }
+      flush();
+      // `renderBlocks` reads block-level children, so each block child goes in
+      // as a one-child wrapper — passing a `p` straight in would hand its inline
+      // children to the text fallback and drop the emphasis markers.
+      chunks.push(...renderBlocks({ childNodes: [child] }, context));
+    }
+    flush();
+    if (!chunks.length) continue;
+    const [head, ...rest] = `${chunks[0]}`.split('\n');
+    lines.push(`${prefix}${head}`.trimEnd());
+    for (const line of rest) lines.push(line ? `${indent}${line}` : '');
+    for (const chunk of chunks.slice(1)) {
+      lines.push('');
+      for (const line of chunk.split('\n')) lines.push(line ? `${indent}${line}` : '');
+    }
   }
   return lines;
 };
@@ -386,7 +450,17 @@ const main = async () => {
 
   for (const course of manifest.courses) {
     const sections = [];
+    const seenSlugs = new Set();
+    let duplicates = 0;
     for (const lesson of course.lessons) {
+      // The react-typescript manifest lists four lessons twice (they appear in a
+      // bonus section as well as the main list). Both copies share one slug and
+      // therefore one staged file, so a second section would be a phantom page.
+      if (seenSlugs.has(lesson.slug)) {
+        duplicates += 1;
+        continue;
+      }
+      seenSlugs.add(lesson.slug);
       const file = `${course.slug}--${lesson.slug}.md`;
       kept.add(file);
       let markdown;
@@ -425,7 +499,9 @@ const main = async () => {
       titleAr: courseTitlesAr[course.slug] || course.title,
       sections,
     });
-    console.log(`${course.slug}: ${sections.length}/${course.lessons.length} pages`);
+    console.log(
+      `${course.slug}: ${sections.length}/${course.lessons.length} pages${duplicates ? ` (${duplicates} duplicate lesson(s) skipped)` : ''}`
+    );
   }
 
   // A page title authored on the site beats the short table-of-contents label,
@@ -467,8 +543,21 @@ const main = async () => {
 
   const library = JSON.parse(fs.readFileSync(libraryPath, 'utf8'));
   const existing = library.books.findIndex((book) => book.id === 'kinney');
-  if (existing === -1) library.books.push(entry);
-  else library.books[existing] = entry;
+  if (existing === -1) {
+    library.books.push(entry);
+  } else {
+    // The importer owns the page inventory, not the licence record: `license`,
+    // `licenseUrl` and `note` are written by hand, so a re-import must never
+    // overwrite them (doing so once silently downgraded a recorded permission
+    // back to "unverified").
+    const recorded = library.books[existing];
+    const merged = { ...recorded };
+    for (const [key, value] of Object.entries(entry)) {
+      if (key === 'license' || key === 'note') continue;
+      merged[key] = value;
+    }
+    library.books[existing] = merged;
+  }
   fs.writeFileSync(libraryPath, `${JSON.stringify(library, null, 2)}\n`);
 
   if (failures.length) {
