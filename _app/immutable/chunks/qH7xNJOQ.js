@@ -1,6 +1,4 @@
-const p="hello-algo",n="chapter_appendix",o="الملاحق",e="index",t="المراجع",a=[{depth:2,id:"icon-materialbookshelf",text:"icon: material/bookshelf"}],l=`<hr>
-<h2 id="icon-materialbookshelf">icon: material/bookshelf</h2>
-<p>[1] توماس ه. كورمن وآخرون. مقدمة في الخوارزميات (الطبعة الثالثة).</p>
+const p="hello-algo",n="chapter_reference",e="المراجع",t="index",o="المراجع",c=[],l=`<p>[1] توماس ه. كورمن وآخرون. مقدمة في الخوارزميات (الطبعة الثالثة).</p>
 <p>[2] أديتيا بهارغافا. فهم الخوارزميات: دليل مصوَّر للمبرمجين وغيرهم من الأشخاص الفضوليين (الطبعة الأولى).</p>
 <p>[3] روبرت سيدجويك وآخرون. الخوارزميات (الطبعة الرابعة).</p>
 <p>[4] يان وي مين. بنى البيانات (نسخة لغة C).</p>
@@ -10,4 +8,4 @@ const p="hello-algo",n="chapter_appendix",o="الملاحق",e="index",t="الم
 <p>[8] وانغ تشنغ. جمال بنى البيانات والخوارزميات.</p>
 <p>[9] غايل لاكمان مكدويل. اجتياز مقابلة البرمجة: 189 سؤالاً وحلاً برمجياً (الطبعة السادسة).</p>
 <p>[10] أستون تشانغ وآخرون. الغوص في التعلّم العميق.</p>
-`,c={book:p,chapter:n,chapterTitle:o,slug:e,title:t,headings:a,html:l};export{p as book,n as chapter,o as chapterTitle,c as default,a as headings,l as html,e as slug,t as title};
+`,s={book:p,chapter:n,chapterTitle:e,slug:t,title:o,headings:c,html:l};export{p as book,n as chapter,e as chapterTitle,s as default,c as headings,l as html,t as slug,o as title};

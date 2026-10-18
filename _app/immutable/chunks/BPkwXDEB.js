@@ -44,7 +44,7 @@ const n="hello-algo",t="chapter_preface",a="المقدمة",o="suggestions",s="�
 <p>ومقارنةً بقراءة الشيفرة فحسب، فإن كتابتها بنفسك كثيراً ما تعود بفائدة أكبر. <strong>فالتطبيق العملي هو حيث يحدث التعلم الحقيقي</strong>.</p>
 <p><img src="/arabic-cs-library/images/hello-algo/chapter_preface--running_code.gif" alt="مثال على تشغيل الشيفرة"></p>
 <p>يتضمن تشغيل الشيفرة أساساً ثلاث خطوات تمهيدية.</p>
-<p><strong>الخطوة 1: تثبيت بيئة البرمجة المحلية</strong>. يرجى اتباع <a href="https://www.hello-algo.com/chapter_appendix/installation/">البرنامج التعليمي</a> في الملحق. وإذا كانت مثبتة بالفعل، يمكنك تخطي هذه الخطوة.</p>
+<p><strong>الخطوة 1: تثبيت بيئة البرمجة المحلية</strong>. يرجى اتباع <a href="https://www.hello-algo.com/en/chapter_appendix/installation/">البرنامج التعليمي</a> في الملحق. وإذا كانت مثبتة بالفعل، يمكنك تخطي هذه الخطوة.</p>
 <p><strong>الخطوة 2: استنساخ مستودع الشيفرة أو تنزيله</strong>. قم بزيارة <a href="https://github.com/krahets/hello-algo">مستودع GitHub</a>. وإذا كنت قد ثبّت <a href="https://git-scm.com/downloads">Git</a> بالفعل، يمكنك استنساخ هذا المستودع بالأمر التالي:</p>
 <pre><code class="language-shell">git clone https://github.com/krahets/hello-algo.git
 </code></pre>
