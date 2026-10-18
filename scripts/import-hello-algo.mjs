@@ -31,7 +31,11 @@ const readNav = () => {
     const chapterMatch = value.match(/^(.*?):\s*$/);
     if (chapterMatch) {
       const title = chapterMatch[1];
-      if (title.startsWith('Chapter') || title === 'Before Starting') {
+      if (
+        title.startsWith('Chapter') ||
+        title === 'Before Starting' ||
+        title === 'References'
+      ) {
         current = { title: title.replace(/^Chapter \d+\.\s*/, ''), sections: [] };
         chapters.push(current);
         CHAPTER_TITLES[title] = current.title;

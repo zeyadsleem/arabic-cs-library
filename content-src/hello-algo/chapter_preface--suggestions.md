@@ -73,7 +73,7 @@ Compared with simply reading code, writing it yourself often brings greater rewa
 
 Getting the code running mainly involves three preliminary steps.
 
-**Step 1: Install the local programming environment**. Please follow the [tutorial](https://www.hello-algo.com/chapter_appendix/installation/) in the appendix. If it is already installed, you can skip this step.
+**Step 1: Install the local programming environment**. Please follow the [tutorial](https://www.hello-algo.com/en/chapter_appendix/installation/) in the appendix. If it is already installed, you can skip this step.
 
 **Step 2: Clone or download the code repository**. Visit the [GitHub repository](https://github.com/krahets/hello-algo). If you have already installed [Git](https://git-scm.com/downloads), you can clone this repository with the following command:
 

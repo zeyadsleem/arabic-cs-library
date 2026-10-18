@@ -710,6 +710,18 @@
         }
       ],
       "titleAr": "الملاحق"
+    },
+    {
+      "key": "chapter_reference",
+      "title": "References",
+      "sections": [
+        {
+          "slug": "index",
+          "title": "References",
+          "order": 117
+        }
+      ],
+      "titleAr": "المراجع"
     }
   ]
 }

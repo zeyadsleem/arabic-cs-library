@@ -6,10 +6,6 @@ slug: index
 order: 0
 lang: en
 ---
----
-comments: true
-icon: material/rocket-launch-outline
----
 
 A few years ago, I shared the "Sword for Offer" problem solutions on LeetCode, receiving encouragement and support from many readers. During interactions with readers, the most frequently asked question I encountered was "how to get started with algorithms." Gradually, I developed a keen interest in this question.
 
