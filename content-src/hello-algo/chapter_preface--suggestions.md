@@ -59,17 +59,15 @@ Compared with plain text, videos and images have higher information density and 
 
 If, while reading this book, you encounter an animated illustration like the one shown below, **treat the illustration as primary and the text as supplementary**, and use both together to understand the content.
 
-![Example of animated illustrations](/images/hello-algo/chapter_preface--animation.gif)
+![Example of animated illustrations](/images/hello-algo/chapter_preface--animation_en.gif)
 
 ## Deepening Understanding Through Code Practice
 
-The accompanying code for this book is hosted in the [GitHub repository](https://github.com/krahets/hello-algo). As shown in the figure below, **the source code comes with test cases and can be run with one click**.
+The accompanying code for this book is hosted in the [GitHub repository](https://github.com/krahets/hello-algo). **The source code comes with test cases and can be run with one click**.
 
 If time permits, **it is recommended that you type out the code yourself**. If you have limited study time, please at least read through and run all the code.
 
 Compared with simply reading code, writing it yourself often brings greater rewards. **Hands-on practice is where real learning happens**.
-
-![Example of running code](/images/hello-algo/chapter_preface--running_code.gif)
 
 Getting the code running mainly involves three preliminary steps.
 
@@ -83,15 +81,13 @@ git clone https://github.com/krahets/hello-algo.git
 
 Alternatively, you can click the "Download ZIP" button shown below to download a ZIP archive of the repository directly and then extract it locally.
 
-![Clone repository and download code](/images/hello-algo/chapter_preface--download_code.png)
+![Clone repository and download code](/images/hello-algo/chapter_preface--download_code_en.png)
 
-**Step 3: Run the source code**. As shown in the figure below, for code blocks with file names at the top, we can find the corresponding source code files in the `codes` folder of the repository. The source code files can be run with one click, which will help you save unnecessary debugging time and allow you to focus on learning content.
+**Step 3: Run the source code**. For code blocks with file names at the top, we can find the corresponding source code files in the `codes` folder of the repository. The source code files can be run with one click, which will help you save unnecessary debugging time and allow you to focus on learning content.
 
-![Code blocks and corresponding source code files](/images/hello-algo/chapter_preface--code_md_to_repo.png)
+![Code blocks and corresponding source code files](/images/hello-algo/chapter_preface--code_md_to_repo_en.png)
 
-In addition to running code locally, **the web version also supports visual execution of Python code** (implemented based on [pythontutor](https://pythontutor.com/)). As shown in the figure below, you can click "Visual Run" below the code block to expand the view and observe the execution process of the algorithm code; you can also click "Full Screen View" for a better viewing experience.
-
-![Visual running of Python code](/images/hello-algo/chapter_preface--pythontutor_example.png)
+In addition to running code locally, **the web version also supports visual execution of Python code** (implemented based on [pythontutor](https://pythontutor.com/)). You can click "Visual Run" below the code block to expand the view and observe the execution process of the algorithm code; you can also click "Full Screen View" for a better viewing experience.
 
 ## Growing Together Through Questions and Discussions
 
@@ -99,7 +95,7 @@ When reading this book, please do not skip over points that you still do not ful
 
 As shown in the figure below, the web version has a comments section at the bottom of each chapter. I encourage you to pay close attention to the discussions there. On the one hand, you can learn about the problems that others encounter, thereby filling gaps in your own understanding and prompting deeper thought. On the other hand, I hope you will generously answer other readers' questions, share your insights, and help others improve.
 
-![Example of comments section](/images/hello-algo/chapter_preface--comment.gif)
+![Example of comments section](/images/hello-algo/chapter_preface--comment_en.png)
 
 ## Algorithm Learning Roadmap
 
