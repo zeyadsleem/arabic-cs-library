@@ -63,11 +63,13 @@ If, while reading this book, you encounter an animated illustration like the one
 
 ## Deepening Understanding Through Code Practice
 
-The accompanying code for this book is hosted in the [GitHub repository](https://github.com/krahets/hello-algo). **The source code comes with test cases and can be run with one click**.
+The accompanying code for this book is hosted in the [GitHub repository](https://github.com/krahets/hello-algo). As shown in the figure below, **the source code comes with test cases and can be run with one click**.
 
 If time permits, **it is recommended that you type out the code yourself**. If you have limited study time, please at least read through and run all the code.
 
 Compared with simply reading code, writing it yourself often brings greater rewards. **Hands-on practice is where real learning happens**.
+
+![Example of running code](/images/hello-algo/chapter_preface--running_code.gif)
 
 Getting the code running mainly involves three preliminary steps.
 
@@ -83,11 +85,13 @@ Alternatively, you can click the "Download ZIP" button shown below to download a
 
 ![Clone repository and download code](/images/hello-algo/chapter_preface--download_code_en.png)
 
-**Step 3: Run the source code**. For code blocks with file names at the top, we can find the corresponding source code files in the `codes` folder of the repository. The source code files can be run with one click, which will help you save unnecessary debugging time and allow you to focus on learning content.
+**Step 3: Run the source code**. As shown in the figure below, for code blocks with file names at the top, we can find the corresponding source code files in the `codes` folder of the repository. The source code files can be run with one click, which will help you save unnecessary debugging time and allow you to focus on learning content.
 
 ![Code blocks and corresponding source code files](/images/hello-algo/chapter_preface--code_md_to_repo_en.png)
 
-In addition to running code locally, **the web version also supports visual execution of Python code** (implemented based on [pythontutor](https://pythontutor.com/)). You can click "Visual Run" below the code block to expand the view and observe the execution process of the algorithm code; you can also click "Full Screen View" for a better viewing experience.
+In addition to running code locally, **the web version also supports visual execution of Python code** (implemented based on [pythontutor](https://pythontutor.com/)). As shown in the figure below, you can click "Visual Run" below the code block to expand the view and observe the execution process of the algorithm code; you can also click "Full Screen View" for a better viewing experience.
+
+![Visual running of Python code](/images/hello-algo/chapter_preface--pythontutor_example.png)
 
 ## Growing Together Through Questions and Discussions
 
