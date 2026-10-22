@@ -27,3 +27,6 @@ src/lib/generated/search-index.json
 # EPUB container metadata unpacked alongside the OCaml source.
 content-src/learn-ocaml/META-INF/
 content-src/learn-ocaml/mimetype
+
+# Temporary translation batch lists
+.chunks/

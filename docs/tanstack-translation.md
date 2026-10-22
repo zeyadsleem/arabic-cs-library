@@ -1,95 +1,115 @@
-# ترجمة صفحات دورات TanStack (Ali Alaa)
+# منهج دروس TanStack Router وTanStack Form
 
-كل درس من الدورتين (34 درسًا في TanStack Router و21 درسًا في TanStack Form)
-يُترجم في ملف مستقل. البناء (build-tanstack) ينشر الصفحة عربيًا فقط إذا اجتازت
-قواعد `scripts/lib/translation-rules.mjs` (الاستعاضة من `scripts/check-tanstack.mjs`)،
-وإلا يُنشر النسخة الإنجليزية حتى لا يتعطل البناء.
+هاتان دورتان مصوّرتان على YouTube للمؤلف Ali Alaa: «TanStack Router Full Course»
+(34 درسًا) و«TanStack Form Full Course» (21 درسًا). تُقدَّم الدروس في المكتبة
+بالعربية بوصفها **شرحًا مؤلَّفًا** يستند إلى كلام المؤلف في الفيديو، وإلى الشيفرة
+الفعلية لكل درس في مستودعَي الدورة، وإلى التوثيق الرسمي لـTanStack. الصفحة ليست
+تفريغًا حرفيًا للفيديو، ولا تحتوي طوابع زمنية `[MM:SS]` ولا إطار فيديو مضمّنًا.
 
 ## حالة النشر والترخيص
 
-الدورتان هي video courses على YouTube بإذن المؤلف. المستخدم أكّد الإذن
-("الإذن مؤكد"). الترجمة غير رسمية. بيع — لا — غير تجاري.
+تُنشر الدورتان بإذن المؤلف، والترجمة غير رسمية وغير تجارية ولا تعني تأييدًا من
+المؤلف أو من موقع TanStack. أمثلة الشيفرة مأخوذة من فرع كل درس في مستودع الدورة،
+وحقوقها محفوظة للمؤلف. تُذكر هذه الحقوق في تذييل كل درس وفي صفحة الكتاب.
 
 ## موضع الملفات
 
-- English source: `content-src/tanstack-router/router--<slug>.md` و
-  `content-src/tanstack-form/form--<slug>.md`.
-- Arabic translation: `content-src/tanstack-router-translations/router--<slug>.md` و
-  `content-src/tanstack-form-translations/form--<slug>.md` (شme identiders exact same name).
-- Published output: `content/tanstack-router/`، `content/tanstack-form/` (built by build-tanstack).
-- Structure index JSON: `content/tanstack-{router,form}-structure.json`.
+| المادة | المسار |
+| --- | --- |
+| التفريغ الإنجليزي (مرجع للشرح) | `content-src/<book>/<chapter>--<slug>.md` |
+| حزمة الشيفرة لكل درس | `content-src/<book>/lesson-code.json` و`content-src/<book>/code/<key>.md` |
+| الدرس العربي المؤلَّف | `content-src/<book>-translations/<chapter>--<slug>.md` |
+| الصفحة المنشورة | `content/<book>/<chapter>--<slug>.md` (يبنيها `build-tanstack`) |
+| لقطات الشاشة | `static/images/<book>/<key>--<name>.png` |
+| فهرس الكتاب | `content/<book>-structure.json` |
 
-## شكل ملف الترجمة
+`<book>` هو `tanstack-router` أو `tanstack-form`، و`<key>` هو
+`<chapter>--<slug>` (مثل `router--file-based-router`). ملف الدرس الجديد يحل محل
+ملف الترجمة القديم بالاسم نفسه.
 
-```markdown
----
-title: "العنوان العربي (English Title)"
----
+## تشريح الدرس
 
-النص العربي الكامل للصفحة…
-```
+كل درس صفحة مستقلة تتضمن بالترتيب:
 
-عنوان `title` must be Arabic. Do not write `chapter`/`slug`/`order`/`source` — the pipeline
-reads them from the English source.
+1. **العنوان** في `title` داخل الـfrontmatter، بالعربية.
+2. **مقدمة** تحت `## ماذا سنتعلّم؟`: ماذا يبني الدرس وما الفكرة التي يوضحها.
+3. **أقسام الشرح** بعناوين `##` و`###`: تشرح المفهوم خطوة بخطوة، وتُدرج كتل
+   الشيفرة الفعلية في موضعها من الشرح، مع تعليق عربي يوضح ما تفعله.
+4. **`## النتيجة`**: ما الذي تغيّر في التطبيق بعد الدرس، مع لقطة شاشة واحدة أو
+   أكثر من الفرع نفسه ووصف عربي لها.
+5. **`## جرّب بنفسك`** (اختياري): تمرين قصير أو تعديل مقترح إن كان طبيعيًا للدرس.
+6. **`## المراجع`**: رابط الفيديو، ورابط فرع الدرس على GitHub (إن وُجد)، ورابط
+   واحد على الأقل إلى صفحة التوثيق الرسمية المناسبة على `tanstack.com`.
+7. **تذييل الإسناد**: سطر يوضح أن الدرس اقتباس عربي مُعاد الصياغة من دورة المؤلف،
+   وأن الشيفرة من فرع الدرس، وأن ما أضافه المترجم من شرح أو توضيح لا ينسب للمؤلف.
 
-## ما لا يُمس أبدًا (never touch)
+## قواعد الشيفرة
 
-1. **الشيفرة** داخل fenced blocks: copy byte-for-byte (whitespace, words, fence language).
-   Do not translate comments inside code or rename variable/function/type.
-2. **Link targets**: كل `](هدف)` stays same target and order; translate display text only.
-3. **صور والمسارات**: translate alt text only, path stays.
-4. **HTML tags and attributes** (`div`, `class`, `href`, `src`, `sup`, `table`, …).
-5. **Heading anchors** `{#english-slug}` إذا وُجدت — unchanged.
-6. **Timestamp stamps** `[MM:SS]` at start of each paragraph — exact.
-7. **Branch repository** URLs in the callout — unchanged.
+- كل كتلة شيفرة يجب أن تكون **مقتطفًا حرفيًا متصلًا** من ملفات فرع الدرس
+  (المحتوى الكامل موجود في `lesson-code.json`). يجوز أخذ جزء من ملف، لكن لا يجوز
+  تعديل حرف أو إعادة تسمية أو ترجمة تعليق.
+- لغة الكتلة واحدة من: `tsx`, `ts`, `js`, `jsx`, `json`, `css`, `html`, `bash`,
+  `text`. لا تُستخدم كتل فارغة أو لغات أخرى.
+- اشرح الشيفرة في النص العربي حولها؛ لا تكتفِ بلصق الملف كاملًا بلا شرح.
+- يجوز إعادة ترتيب المقتطفات لتتبع خطوات الدرس، لكن لا تُغيَّر محتوياتها.
 
-## ما يُترجم
+## قواعد الصور
 
-Headers, paragraphs, lists, tables (including headers), text between links, alt text,
-callout titles and runk.
+- تُستخدم اللقطات الملتقطة من فرع الدرس في `static/images/<book>/<key>--<name>.png`
+  فقط، أو لقطة عامة من الكتاب نفسه إذا كان الدرس لا يغيّر الواجهة.
+- المسار المطلق `/images/<book>/<file>.png`، ونص بديل عربي يصف ما يراه القارئ.
+- لا تُستخدم صور خارجية ولا صور من موقع آخر.
 
-## style الترجمة
+## قواعد الشرح والمصطلحات
 
-- عربية فصيحة بضمير المخاطب (ando talking), no emoji, no additions, no omissions.
-- Do not truncate any paragraph; do not merge/split lines.
-- First occurrence of important term: أصل in parentheses: «المكوّنات (components)»,
-  then Arabic only.
-- Keep Latin explicitly: TanStack, React, TypeScript, Vite, Zod, GitHub, shadcn/ui,
-  Web Workers, React Query, command flags, file paths, names in code.
-- مصطلحات standardized library: component = مكوّن | hook = خُطّاف | state = حالة
-  | props = خصائص | render = تصيير | cache = ذاكرة مؤقتة | build = بناء
-  | module = وحدة | function = دالة | type = نوع | generic = عام.
-
-## Kaynağı (ASR cleanup applied during import)
-
-The English source had YouTube ASR spelling fixes applied during import:
-`tenstack`/`tanstack` → TanStack, `nex.js` → Next.js, etc. Already normalized.
-No action needed.
+- عربية فصيحة بضمير المخاطب، مباشرة وطبيعية، بلا حشو ولا إيموجي.
+- اشرح ما يقوله المؤلف وتبعه في ترتيب الأفكار، لكن أعد صياغته شرحًا لا تفريغًا.
+- لا تُخترع سلوكًا لم يذكره الفيديو أو تُضف ميزة غير موجودة في الشيفرة. إن أضفت
+  توضيحًا ضروريًا (مثلاً لماذا يعمل شيء ما)، اجعله واضحًا في التذييل.
+- أبقِ لاتينيًا: أسماء الحزم والأطر (`TanStack Router`, `React`, `TypeScript`,
+  `Vite`, `Zod`, `shadcn/ui`)، وأسماء الملفات والدوال والمتغيّرات والمسارات،
+  وأعلام سطر الأوامر، وأي نص يظهر في الشيفرة.
+- المصطلحات: route = مسار | router = موجّه | link = رابط | layout = تخطيط |
+  nested route = مسار متداخل | path segment = مقطع مسار | search params =
+  معاملات البحث | loader = مُحمِّل | pending = قيد الانتظار | error boundary =
+  حدّ الأخطاء | context = سياق | state = حالة | hook = خُطّاف | component =
+  مكوّن | props = خصائص | render = تصيير | form = استمارة | field = حقل |
+  validation = تحقّق من الصحة | schema = مخطط | submit = إرسال | default values =
+  القيم الافتراضية.
+- عند أول ذكر لمصطلح مهم، ضع الأصل بين قوسين مرة واحدة: «المُحمِّل (loader)».
 
 ## التحقق
 
 ```bash
-node scripts/check-tanstack.mjs                 # all
+node scripts/check-tanstack.mjs <key>          # درس واحد
 node scripts/check-tanstack.mjs --book tanstack-form
-node scripts/check-tanstack.mjs router--index.md
+node scripts/check-tanstack.mjs                # كل الدروس
+node --test tests/tanstack.test.mjs
 ```
 
-Output: `PASS` per verified page; `PENDING` = missing translation file;
-`FAIL` = broken rule (code block count/changed code, differing links,
-low Arabic ratio, excessive Latin run, leftover English lines, unrendered tag,
-non-Arabic title).
+يطبع الفاحص `PASS` للدرس السليم، و`PENDING` إذا غاب ملف الدرس، و`FAIL` مع قائمة
+القواعد المكسورة: وجود طابع زمني أو iframe أو كلمة transcript، غياب عنوان أو
+قسمين أو قسم المراجع، نقص رابط الفيديو أو التوثيق أو الفرع، صورة مفقودة أو خارج
+`static/images`، كتلة شيفرة ليست مقتطفًا حرفيًا من الفرع، نسبة عربية منخفضة،
+سطر إنجليزي متبقٍّ، أو وسم غير مدعوم.
 
-## Translation	before reporting PASS
+## الإنتاج واللقطات
 
-Each page must print `PASS` with 0 problems before being counted done.
-Pages size ~55k chars max; if needed, split into two writes with cat, then remove temps.
+```bash
+node scripts/import-tanstack-code.mjs --repos /tmp/opencode/tanstack-repos
+node scripts/capture-tanstack.mjs --book tanstack-router   # أو tanstack-form
+node scripts/build-tanstack.mjs                            # ينشر الصفحات
+```
 
-## Assignment of work
+`capture-tanstack` يحتاج مستودعات الدورتين في `--repos` (الافتراضي
+`/tmp/opencode/tanstack-repos`)، ويشغّل Vite لكل فرع على منفذ ثابت (5199 للموجّه
+و5198 للاستمارة). مواصفات اللقطات في `scripts/lib/tanstack-shots.mjs`.
 
-- Three concurrent translation subagents maximum.
-- Each subagent reads the English source from `content-src/<book>/<key>.md`
-  and writes Arabic to `content-src/<book>-translations/<key>.md`.
-- Each subagent must validate `node scripts/check-tanstack.mjs <key>` after writing and
-  report PASS. Parallel writes don't collide across different page files.
-EOF
-echo done
+## توزيع العمل
+
+- ثلاثة وكلاء متزامنون كحد أقصى، ودرس واحد لكل وكيل.
+- كل وكيل يقرأ: حزمة الشيفرة `code/<key>.md`، والتفريغ الإنجليزي، والترجمة
+  العربية القديمة (مرجع لغوي)، وصفحات التوثيق ذات الصلة، ولائحة اللقطات المتاحة.
+- يكتب ملفًا واحدًا في `content-src/<book>-translations/<key>.md`، ثم يشغّل
+  `node scripts/check-tanstack.mjs <key>` حتى يخرج `PASS`، ولا يلمس أي ملف آخر.
+- الفاحص هو الحكم، لا تقرير الوكيل. أي ملف فاشل يُحذف ويُعاد إسناده.

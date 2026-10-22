@@ -3,11 +3,11 @@
     {
       "key": "primer-on-latency-and-bandwidth",
       "title": "Primer on Latency and Bandwidth",
-      "titleAr": "Primer on Latency and Bandwidth",
+      "titleAr": "مقدمة في زمن الانتقال وعرض النطاق",
       "sections": [
         {
           "slug": "index",
-          "title": "Primer on Latency and Bandwidth",
+          "title": "مقدمة في زمن الانتقال وعرض النطاق",
           "order": 0
         }
       ]
@@ -15,11 +15,11 @@
     {
       "key": "building-blocks-of-tcp",
       "title": "Building Blocks of TCP",
-      "titleAr": "Building Blocks of TCP",
+      "titleAr": "الوحدات الأساسية لـ TCP",
       "sections": [
         {
           "slug": "index",
-          "title": "Building Blocks of TCP",
+          "title": "الوحدات الأساسية لـ TCP",
           "order": 0
         }
       ]
@@ -27,11 +27,11 @@
     {
       "key": "building-blocks-of-udp",
       "title": "Building Blocks of UDP",
-      "titleAr": "Building Blocks of UDP",
+      "titleAr": "الوحدات الأساسية لـ UDP",
       "sections": [
         {
           "slug": "index",
-          "title": "Building Blocks of UDP",
+          "title": "الوحدات الأساسية لـ UDP",
           "order": 0
         }
       ]
@@ -39,11 +39,11 @@
     {
       "key": "transport-layer-security-tls",
       "title": "Transport Layer Security (TLS)",
-      "titleAr": "Transport Layer Security (TLS)",
+      "titleAr": "أمان طبقة النقل (TLS)",
       "sections": [
         {
           "slug": "index",
-          "title": "Transport Layer Security (TLS)",
+          "title": "أمان طبقة النقل (TLS)",
           "order": 0
         }
       ]
@@ -51,11 +51,11 @@
     {
       "key": "introduction-to-wireless-networks",
       "title": "Introduction to Wireless Networks",
-      "titleAr": "Introduction to Wireless Networks",
+      "titleAr": "مقدمة في الشبكات اللاسلكية",
       "sections": [
         {
           "slug": "index",
-          "title": "Introduction to Wireless Networks",
+          "title": "مقدمة في الشبكات اللاسلكية",
           "order": 0
         }
       ]
@@ -63,11 +63,11 @@
     {
       "key": "wifi",
       "title": "WiFi",
-      "titleAr": "WiFi",
+      "titleAr": "شبكات WiFi",
       "sections": [
         {
           "slug": "index",
-          "title": "WiFi",
+          "title": "شبكات WiFi",
           "order": 0
         }
       ]
@@ -75,11 +75,11 @@
     {
       "key": "mobile-networks",
       "title": "Mobile Networks",
-      "titleAr": "Mobile Networks",
+      "titleAr": "شبكات المحمول",
       "sections": [
         {
           "slug": "index",
-          "title": "Mobile Networks",
+          "title": "شبكات المحمول",
           "order": 0
         }
       ]
@@ -87,11 +87,11 @@
     {
       "key": "optimizing-for-mobile-networks",
       "title": "Optimizing for Mobile Networks",
-      "titleAr": "Optimizing for Mobile Networks",
+      "titleAr": "التحسين لشبكات المحمول",
       "sections": [
         {
           "slug": "index",
-          "title": "Optimizing for Mobile Networks",
+          "title": "التحسين لشبكات المحمول",
           "order": 0
         }
       ]
@@ -99,11 +99,11 @@
     {
       "key": "brief-history-of-http",
       "title": "Brief History of HTTP",
-      "titleAr": "Brief History of HTTP",
+      "titleAr": "نبذة تاريخية عن HTTP",
       "sections": [
         {
           "slug": "index",
-          "title": "Brief History of HTTP",
+          "title": "نبذة تاريخية عن HTTP",
           "order": 0
         }
       ]
@@ -111,11 +111,11 @@
     {
       "key": "primer-on-web-performance",
       "title": "Primer on Web Performance",
-      "titleAr": "Primer on Web Performance",
+      "titleAr": "مقدمة في أداء الويب",
       "sections": [
         {
           "slug": "index",
-          "title": "Primer on Web Performance",
+          "title": "مقدمة في أداء الويب",
           "order": 0
         }
       ]
@@ -123,11 +123,11 @@
     {
       "key": "http1x",
       "title": "HTTP/1.X",
-      "titleAr": "HTTP/1.X",
+      "titleAr": "HTTP/1.X: بروتوكول HTTP الأول",
       "sections": [
         {
           "slug": "index",
-          "title": "HTTP/1.X",
+          "title": "HTTP/1.X: بروتوكول HTTP الأول",
           "order": 0
         }
       ]
@@ -135,11 +135,11 @@
     {
       "key": "http2",
       "title": "HTTP/2",
-      "titleAr": "HTTP/2",
+      "titleAr": "HTTP/2: بروتوكول HTTP الثاني",
       "sections": [
         {
           "slug": "index",
-          "title": "HTTP/2",
+          "title": "HTTP/2: بروتوكول HTTP الثاني",
           "order": 0
         }
       ]
@@ -147,11 +147,11 @@
     {
       "key": "optimizing-application-delivery",
       "title": "Optimizing Application Delivery",
-      "titleAr": "Optimizing Application Delivery",
+      "titleAr": "تحسين تسليم التطبيقات",
       "sections": [
         {
           "slug": "index",
-          "title": "Optimizing Application Delivery",
+          "title": "تحسين تسليم التطبيقات",
           "order": 0
         }
       ]
@@ -159,11 +159,11 @@
     {
       "key": "primer-on-browser-networking",
       "title": "Primer on Browser Networking",
-      "titleAr": "Primer on Browser Networking",
+      "titleAr": "مقدمة في شبكات المتصفح",
       "sections": [
         {
           "slug": "index",
-          "title": "Primer on Browser Networking",
+          "title": "مقدمة في شبكات المتصفح",
           "order": 0
         }
       ]
@@ -171,11 +171,11 @@
     {
       "key": "xmlhttprequest",
       "title": "XMLHttpRequest",
-      "titleAr": "XMLHttpRequest",
+      "titleAr": "XMLHttpRequest: طلبات الشبكة داخل المتصفح",
       "sections": [
         {
           "slug": "index",
-          "title": "XMLHttpRequest",
+          "title": "XMLHttpRequest: طلبات الشبكة داخل المتصفح",
           "order": 0
         }
       ]
@@ -183,11 +183,11 @@
     {
       "key": "server-sent-events-sse",
       "title": "Server-Sent Events (SSE)",
-      "titleAr": "Server-Sent Events (SSE)",
+      "titleAr": "الأحداث المرسلة من الخادم (SSE)",
       "sections": [
         {
           "slug": "index",
-          "title": "Server-Sent Events (SSE)",
+          "title": "الأحداث المرسلة من الخادم (SSE)",
           "order": 0
         }
       ]
@@ -195,11 +195,11 @@
     {
       "key": "websocket",
       "title": "WebSocket",
-      "titleAr": "WebSocket",
+      "titleAr": "WebSocket: اتصالات ثنائية الاتجاه",
       "sections": [
         {
           "slug": "index",
-          "title": "WebSocket",
+          "title": "WebSocket: اتصالات ثنائية الاتجاه",
           "order": 0
         }
       ]
@@ -207,11 +207,11 @@
     {
       "key": "webrtc",
       "title": "WebRTC",
-      "titleAr": "WebRTC",
+      "titleAr": "WebRTC: الاتصال الفوري داخل المتصفح",
       "sections": [
         {
           "slug": "index",
-          "title": "WebRTC",
+          "title": "WebRTC: الاتصال الفوري داخل المتصفح",
           "order": 0
         }
       ]

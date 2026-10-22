@@ -1,0 +1,12 @@
+---
+title: "تهيئة هيكل إضافة"
+---
+
+وضع الشيفرة القالبية (boilerplate) لإضافة أمر مباشر نسبيًا بمساعدة صديقنا القديم [Yeoman](https://yeoman.io/).
+
+```bash
+npm install -g yo generator-code
+yo code
+```
+
+تشغيل مُولِّد Yeoman لإضافة Visual Studio Code
