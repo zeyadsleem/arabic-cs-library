@@ -42,17 +42,17 @@
         },
         {
           "slug": "ignored-folders",
-          "title": "المجلدات المتجاهَلة (Ignored Folders)",
+          "title": "المجلدات المتجاهلة ومجموعات المسارات",
           "order": 7
         },
         {
           "slug": "flat-routes",
-          "title": "المسارات المسطّحة (Flat Routes)",
+          "title": "المسارات المسطحة",
           "order": 8
         },
         {
           "slug": "dynamic-path-segments",
-          "title": "مقاطع المسار الديناميكية (Dynamic Path Segments)",
+          "title": "مقاطع المسار الديناميكية",
           "order": 9
         },
         {
@@ -77,17 +77,17 @@
         },
         {
           "slug": "handling-search-params-errors",
-          "title": "التعامل مع أخطاء معامِلات البحث (Handling Search Params Errors)",
+          "title": "معالجة أخطاء معاملات البحث",
           "order": 14
         },
         {
           "slug": "more-on-the-link-component",
-          "title": "مزيدٌ عن مكوّن الرابط (Link)",
+          "title": "مزيد عن مكوّن الرابط (Link)",
           "order": 15
         },
         {
           "slug": "other-ways-to-navigate-programmatically",
-          "title": "طرق أخرى للتنقّل برمجيًّا",
+          "title": "طرق أخرى للتنقّل البرمجي",
           "order": 16
         },
         {
@@ -102,12 +102,12 @@
         },
         {
           "slug": "loader-functions-posts-page",
-          "title": "دوالّ التحميل: صفحة المنشورات (Loader Functions: Posts Page)",
+          "title": "دوالّ التحميل: صفحة المنشورات",
           "order": 19
         },
         {
           "slug": "adding-pagination",
-          "title": "إضافة ترقيم الصفحات (Adding Pagination)",
+          "title": "إضافة ترقيم الصفحات",
           "order": 20
         },
         {
@@ -127,7 +127,7 @@
         },
         {
           "slug": "error-handling",
-          "title": "معالجة الأخطاء (Error Handling)",
+          "title": "معالجة الأخطاء",
           "order": 24
         },
         {
@@ -137,12 +137,12 @@
         },
         {
           "slug": "catchboundary",
-          "title": "مكوّن اصطياد الأخطاء (CatchBoundary)",
+          "title": "حدّ أخطاء يقتصر على جزءٍ من الصفحة مع CatchBoundary",
           "order": 26
         },
         {
           "slug": "code-splitting",
-          "title": "تقسيم الكود (Code Splitting)",
+          "title": "تقسيم الشيفرة",
           "order": 27
         },
         {
@@ -157,7 +157,7 @@
         },
         {
           "slug": "caching-options",
-          "title": "خيارات التخزين المؤقّت (Caching Options)",
+          "title": "خيارات التخزين المؤقّت",
           "order": 30
         },
         {
